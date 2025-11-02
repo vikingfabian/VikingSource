@@ -2,19 +2,11 @@
 Change Log:
 * 
 
-Local gold
-* Doubled gold carry for soldiers
-* Fixed: Negative gold showed ERR
-* Fixed: cities lost no money when handing it to soldiers
-* Bots are allowed to take some dept on the armies to counter some of the self destructive behaviour
+
 
 fixed - will update soon
 
 #Pics
-* Relation arrow:
-war arrow
-heart arrow
-* Map filter icons
 
 #RELEASE#
 #BuiltWithMonoGame tags
@@ -35,35 +27,7 @@ x declare war comfirm
 x worker skill count
 
 #Winter update#
-* fixed: bot delay was not set by high difficulty
-* 3 new cameo factions, plus a december santa faction
-* casual mode: embassy building
-* sharp stick and slingshots are made in groups of eight, and for less resources
 
-USER INTERFACE
-* minimap
-* improved border colors
-* In-menu text input
-* Search bar for voxel models
-* Menu width option
-* placed work before stockpile
-
-GAME OPTIONS
-* 300% difficulty
--> no warmup period
--> warmanager runs at double pace
--> story is about 90 minutes shorter
--> 300% bot economy
-
-* Quick match game mode
--> start in a instant war with other nations
--> "short" game mode, about 10hours
--> tech research speed
--> a much shorter peaceful start period
--> king of the hill, or two teams
--> players are grouped in a smaller, center area
--> player start area is enlarged on "find start position" failure
--> contestants can't use ally diplomacy, but can still be done between players to adjust teams
 
 ACHIEVEMENTS: 
 * Taste the impossible: Terminate the first faction to attack you. 300% difficulty. (no pause?)
