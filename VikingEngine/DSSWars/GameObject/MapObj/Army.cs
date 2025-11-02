@@ -85,17 +85,7 @@ namespace VikingEngine.DSSWars.GameObject
         public Army()
         { }
 
-        public bool payGold(int cost)
-        {
-            if (DssRef.storage.gameRuleset.centralGold)
-            {
-                return GetFaction().payGold(cost, false, null);
-            }
-            else
-            {
-                return money.PayGold(cost, false);
-            }
-        }
+        
 
         void init(Faction faction, int overrideIx = -1)
         {
@@ -1043,13 +1033,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asynchGameObjectsUpdate(float time, bool oneMinute)
         {
-            if (debugTagged)
-            {
-                lib.DoNothing();
-            }
+            
 
             async_SoldiersUpdate(time, oneMinute);
-            
+
             if (oneMinute)
             {
                 foodCosts_import.minuteUpdate();
@@ -1057,7 +1044,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
 
-            if (!DssRef.storage.gameRuleset.centralGold)
+            if (!DssRef.storage.gameRuleset.centralGold && time > 0)
             {
                 var onCity = DssRef.world.tileGrid.Get(tilePos).City();
 
@@ -1068,7 +1055,11 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         if (money.GetGold() < goldCarryCapacity)
                         {
-                           money.AddGold(onCity.money.payGold_MuchAsPossible(goldCarryCapacity - money.GetGold()));
+                            //if (debugTagged && onCity.money.copper > 0)
+                            //{
+                            //    lib.DoNothing();
+                            //}
+                            money.AddGold(onCity.money.payGold_MuchAsPossible(goldCarryCapacity - money.GetGold()));
                         }
                         else if (money.GetGold() > goldCarryCapacity)
                         {
@@ -1078,6 +1069,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
+           
         }
 
         override public void asynchCullingUpdate(float time, bool bStateA)

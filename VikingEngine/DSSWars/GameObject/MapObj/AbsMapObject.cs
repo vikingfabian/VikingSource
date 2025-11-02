@@ -40,7 +40,31 @@ namespace VikingEngine.DSSWars.GameObject
             
             //battlesCounter = new SpottedArrayCounter<AbsMapObject>(battles);
         }
-        
+
+        public bool payGold(int cost)
+        {
+            if (DssRef.storage.gameRuleset.centralGold)
+            {
+                return GetFaction().payGold(cost, false, null);
+            }
+            else
+            {
+                return money.PayGold(cost, false);
+            }
+        }
+
+        public bool payGold(int cost, bool allowDept)
+        {
+            if (DssRef.storage.gameRuleset.centralGold)
+            {
+                return GetFaction().payGold(cost, allowDept, null);
+            }
+            else
+            {
+                return money.PayGold(cost, allowDept);
+            }
+        }
+
         virtual public bool rayCollision(Ray ray)
         {
             return false;

@@ -140,18 +140,27 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (food < minBuffer)
             {
+                bool allowDept = false;
+
                 if (GetPlayer().IsLocalPlayer())
                 {
+                    //goNegative = false;
                     Ref.update.AddSyncAction(new SyncAction(() =>
                     {
                         GetPlayer().GetLocalPlayer().hud.messages.armyLowFoodMessage(this);
                     }));
                 }
-
+                else if (!DssRef.storage.gameRuleset.centralGold && money.copper > -soldiersCount * DssConst.FoodGoldValue_BlackMarket * 100)
+                {
+                    allowDept = true;
+                }
                 //black market trade
-                var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * (minBuffer - food));
 
-                if (payGold(cost))
+                //if (localPlayer || (!DssRef.storage.gameRuleset.centralGold && 
+
+                var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * (minBuffer - food));
+                
+                if (payGold(cost, allowDept))
                 {
                     foodCosts_blackmarket.add(cost);
                     food = minBuffer;

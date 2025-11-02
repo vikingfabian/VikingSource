@@ -2,6 +2,12 @@
 Change Log:
 * 
 
+Local gold
+* Doubled gold carry for soldiers
+* Fixed: Negative gold showed ERR
+* Fixed: cities lost no money when handing it to soldiers
+* Bots are allowed to take some dept on the armies to counter some of the self destructive behaviour
+
 fixed - will update soon
 
 #Pics
@@ -9,8 +15,9 @@ fixed - will update soon
 
 #must do#
 x tutorial attack freeze
+x attack something in shared folder
+https://drive.google.com/drive/folders/1yUCu2458SJvKkGyWydINcwMtrVxyXTpi
 x (controller in voxel editor)
-x 
 
 #Winter update#
 x 300% difficulty 

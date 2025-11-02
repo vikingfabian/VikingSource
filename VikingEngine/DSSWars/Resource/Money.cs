@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Resource
             if (copper >= CopperToGold)
             {
                 long canPay = Math.Min((long)(copper * CopperToGold), goldCost);
-                goldCost -= canPay;
+                copper -= canPay;
                 return canPay;
             }
             return 0;
