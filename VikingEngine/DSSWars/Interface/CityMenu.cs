@@ -1232,22 +1232,22 @@ namespace VikingEngine.DSSWars.Interface
         void experienceTab(RichBoxContent content)
         {
             HudLib.Label(content, DssRef.lang.Experience_TopExperience);
-            experience(SpriteName.WarsWorkFarm, DssRef.lang.ExperienceType_Farm, city.cityExperienceLevels.levels_Farm.Max());
-            experience(SpriteName.WarsBuild_HenPen, DssRef.lang.ExperienceType_AnimalCare, city.cityExperienceLevels.levels_AnimalCare.Max());
-            experience(SpriteName.WarsHammer, DssRef.lang.ExperienceType_HouseBuilding, city.cityExperienceLevels.levels_HouseBuilding.Max());
-            experience(SpriteName.WarsResource_Wood, DssRef.lang.ExperienceType_WoodWork, city.cityExperienceLevels.levels_WoodCutter.Max());
-            experience(SpriteName.WarsResource_Stone, DssRef.lang.ExperienceType_StoneCutter, city.cityExperienceLevels.levels_StoneCutter.Max());
-            experience(SpriteName.WarsWorkMine, DssRef.lang.ExperienceType_Mining, city.cityExperienceLevels.levels_Mining.Max());
-            experience(SpriteName.WarsWorkMove, DssRef.lang.ExperienceType_Transport, city.cityExperienceLevels.levels_Transport.Max());
-            experience(SpriteName.WarsResource_Food, DssRef.lang.ExperienceType_Cook, city.cityExperienceLevels.levels_Cook.Max());
-            experience(SpriteName.WarsFletcherArrowIcon, DssRef.lang.ExperienceType_Fletcher, city.cityExperienceLevels.levels_Fletcher.Max());
-            experience(SpriteName.WarsWorkSmelting, DssRef.lang.ExperienceType_Smelting, city.cityExperienceLevels.levels_Smelting.Max());
-            experience(SpriteName.WarsWorkCasting, DssRef.lang.ExperienceType_Casting, city.cityExperienceLevels.levels_Casting.Max());
-            experience(SpriteName.WarsResource_Iron, DssRef.lang.ExperienceType_CraftMetal, city.cityExperienceLevels.levels_CraftMetal.Max());
-            experience(SpriteName.WarsResource_IronArmor, DssRef.lang.ExperienceType_CraftArmor, city.cityExperienceLevels.levels_CraftArmor.Max());
-            //experience(SpriteName.WarsResource_Sword, DssRef.lang.ExperienceType_CraftWeapon, city.cityExperienceLevels.levels_CraftWeapon.Max());
-            experience(SpriteName.WarsResource_Fuel, DssRef.lang.ExperienceType_CraftFuel, city.cityExperienceLevels.levels_CraftFuel.Max());
-            experience(SpriteName.WarsBuild_Chemist, DssRef.lang.ExperienceType_Chemist, city.cityExperienceLevels.levels_Chemistry.Max());
+            experience(SpriteName.WarsWorkFarm, DssRef.lang.ExperienceType_Farm, city.cityExperienceLevels.levels_Farm);
+            experience(SpriteName.WarsBuild_HenPen, DssRef.lang.ExperienceType_AnimalCare, city.cityExperienceLevels.levels_AnimalCare);
+            experience(SpriteName.WarsHammer, DssRef.lang.ExperienceType_HouseBuilding, city.cityExperienceLevels.levels_HouseBuilding);
+            experience(SpriteName.WarsResource_Wood, DssRef.lang.ExperienceType_WoodWork, city.cityExperienceLevels.levels_WoodCutter);
+            experience(SpriteName.WarsResource_Stone, DssRef.lang.ExperienceType_StoneCutter, city.cityExperienceLevels.levels_StoneCutter);
+            experience(SpriteName.WarsWorkMine, DssRef.lang.ExperienceType_Mining, city.cityExperienceLevels.levels_Mining);
+            experience(SpriteName.WarsWorkMove, DssRef.lang.ExperienceType_Transport, city.cityExperienceLevels.levels_Transport);
+            experience(SpriteName.WarsResource_Food, DssRef.lang.ExperienceType_Cook, city.cityExperienceLevels.levels_Cook);
+            experience(SpriteName.WarsFletcherArrowIcon, DssRef.lang.ExperienceType_Fletcher, city.cityExperienceLevels.levels_Fletcher);
+            experience(SpriteName.WarsWorkSmelting, DssRef.lang.ExperienceType_Smelting, city.cityExperienceLevels.levels_Smelting);
+            experience(SpriteName.WarsWorkCasting, DssRef.lang.ExperienceType_Casting, city.cityExperienceLevels.levels_Casting);
+            experience(SpriteName.WarsResource_Iron, DssRef.lang.ExperienceType_CraftMetal, city.cityExperienceLevels.levels_CraftMetal);
+            experience(SpriteName.WarsResource_IronArmor, DssRef.lang.ExperienceType_CraftArmor, city.cityExperienceLevels.levels_CraftArmor);
+            //experience(SpriteName.WarsResource_Sword, DssRef.lang.ExperienceType_CraftWeapon, city.cityExperienceLevels.levels_CraftWeapon);
+            experience(SpriteName.WarsResource_Fuel, DssRef.lang.ExperienceType_CraftFuel, city.cityExperienceLevels.levels_CraftFuel);
+            experience(SpriteName.WarsBuild_Chemist, DssRef.lang.ExperienceType_Chemist, city.cityExperienceLevels.levels_Chemistry);
 
             content.newParagraph();
             HudLib.Description(content, string.Format(DssRef.lang.Experience_TimeReductionDescription, MathExt.PercentageInteger(DssConst.XpLevelWorkTimePercReduction)));
@@ -1285,8 +1285,10 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(option);
             }
             
-            void experience(SpriteName typeIcon, string typeName, ExperienceLevel level)
+            void experience(SpriteName typeIcon, string typeName, WorkExperienceLevels experienceLevels/*ExperienceLevel level*/)
             {
+                ExperienceLevel level = experienceLevels.Max();
+
                 content.newLine();
                 content.Add(new RbImage(typeIcon));
                 content.space();
@@ -1297,6 +1299,40 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbTab(0.4f));
                 content.Add(new RbImage(LangLib.ExperienceLevelIcon(level)));
                 content.Add(new RbText(LangLib.ExperienceLevel(level)));
+
+                content.Add(new RbTab(0.8f));
+                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdSpyglass) }, null, new RbTooltip(infoTooltip, experienceLevels)));
+
+                void infoTooltip(RichBoxContent content, object tag)
+                {
+                    WorkExperienceLevels experienceLevels = (WorkExperienceLevels)tag;
+
+                    int total = 0;
+                    level(ExperienceLevel.Beginner_1, experienceLevels.Beginner_1_count);
+                    level(ExperienceLevel.Practitioner_2, experienceLevels.Practitioner_2_count);
+                    level(ExperienceLevel.Expert_3, experienceLevels.Expert_3_count);
+                    level(ExperienceLevel.Master_4, experienceLevels.Master_4_count);
+                    level(ExperienceLevel.Legendary_5, experienceLevels.Legendary_5_count);
+
+                    if (total == 0)
+                    {
+                        content.text(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light);
+                    }
+
+                    void level(ExperienceLevel level, int count)
+                    {
+                        if (count > 0)
+                        {
+                            total++;
+                            content.Add(new RbText(count.ToString()));
+                            content.Add(new RbImage(SpriteName.WarsWorker));
+                            content.Add(new RbTab(0.16f));
+                            content.Add(new RbImage(LangLib.ExperienceLevelIcon(level)));
+                            content.Add(new RbText(LangLib.ExperienceLevel(level)));
+                            content.newLine();
+                        }
+                    }
+                }
             }
         }
 

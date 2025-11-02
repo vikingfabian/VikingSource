@@ -1,8 +1,6 @@
 ﻿UPDATE
 Change Log:
-* (maybe) fixed rare ArmyStatus empty faction crash
-* fixed crash on event with no player cities 
-
+* 
 
 fixed - will update soon
 
@@ -24,8 +22,7 @@ x hide minimap/hud in pause menu
 ? cities summary tab
 x city resource in/out, + checkbox to view/(and hide text)
 x declare war comfirm
-x worker skill count
-
+x move camera focus
 #Winter update#
 
 

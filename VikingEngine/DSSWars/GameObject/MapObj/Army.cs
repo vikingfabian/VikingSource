@@ -1076,9 +1076,12 @@ namespace VikingEngine.DSSWars.GameObject
             //}
             DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref cullingTopLeft, ref cullingBottomRight);
 
-            foreach (var p in DssRef.state.localPlayers)
+            if (DssRef.state.LocalHost().unitsPixelTexture != null)
             {
-                p.unitsPixelTexture.asynch_AddArmy(this);
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.unitsPixelTexture.asynch_AddArmy(this);
+                }
             }
         }
 
