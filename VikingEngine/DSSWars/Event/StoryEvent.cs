@@ -410,43 +410,52 @@ namespace VikingEngine.DSSWars.Event
                 while (found < 3)
                 { 
                     var check = arraylib.RandomListMemberPop(searchcities);
-                    foreach (var ncityIx in check.neighborCities)
+                    if (check != null)
                     {
-                        if (!attackCities.Contains(ncityIx))
-                        { 
-                            var ncity_p = DssRef.world.cities[ncityIx];
-                            if (!completedCities.Contains(ncity_p) &&
-                                !searchcities.Contains(ncity_p))
-                            { 
-                                searchcities.Add(ncity_p);
+                        foreach (var ncityIx in check.neighborCities)
+                        {
+                            if (!attackCities.Contains(ncityIx))
+                            {
+                                var ncity_p = DssRef.world.cities[ncityIx];
+                                if (!completedCities.Contains(ncity_p) &&
+                                    !searchcities.Contains(ncity_p))
+                                {
+                                    searchcities.Add(ncity_p);
+                                }
                             }
                         }
-                    }
 
-                    var player = check.GetPlayer();
-                    if (player.IsBot() &&
-                        player.faction.diplomaticSide != DiplomaticSide.Dark &&
-                        check.cityType < CityType.Capital &&
-                        DssRef.diplomacy.GetRelationType(check.GetFaction(), p.faction) >= RelationType.RelationType0_Neutral)
+                        var player = check.GetPlayer();
+                        if (player.IsBot() &&
+                            player.faction.diplomaticSide != DiplomaticSide.Dark &&
+                            check.cityType < CityType.Capital &&
+                            DssRef.diplomacy.GetRelationType(check.GetFaction(), p.faction) >= RelationType.RelationType0_Neutral)
+                        {
+                            attackCities.Add(check.myIndex);
+                            found++;
+                        }
+                    }
+                    else
                     {
-                        attackCities.Add(check.myIndex);
-                        found++;
+                        break;
                     }
                 }
             }
 
             Ref.update.AddSyncAction(new SyncAction(() =>
             {
-                foreach (var p in DssRef.state.localPlayers)
+                if (attackCities.Count > 0)
                 {
-                    p.hud.messages.Add(DssRef.lang.EventMessage_Event_Title, DssRef.lang.EventMessage_DarkHorde);
-                }
+                    foreach (var p in DssRef.state.localPlayers)
+                    {
+                        p.hud.messages.Add(DssRef.lang.EventMessage_Event_Title, DssRef.lang.EventMessage_DarkHorde);
+                    }
 
-                foreach (var cityIx in attackCities)
-                {
-                    spawnBarbarians(DssRef.world.cities[cityIx], false);
+                    foreach (var cityIx in attackCities)
+                    {
+                        spawnBarbarians(DssRef.world.cities[cityIx], false);
+                    }
                 }
-
                 attackCities = null;
             }));
         }

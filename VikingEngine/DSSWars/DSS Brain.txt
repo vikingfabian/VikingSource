@@ -1,7 +1,7 @@
 ﻿UPDATE
 Change Log:
-* 
-
+* (maybe) fixed rare ArmyStatus empty faction crash
+* fixed crash on event with no player cities 
 
 
 fixed - will update soon
