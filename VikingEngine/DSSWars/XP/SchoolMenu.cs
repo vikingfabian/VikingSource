@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars.XP
             
             content.newLine();
 
-            HudLib.Experience(content, exp, city.GetTopSkill(exp));
+            HudLib.Experience(content, exp, city.cityExperienceLevels.Get(exp).Max());
             //LangLib.ExperienceType(exp, out string expName, out SpriteName expIcon);
             //content.Add(new RichBoxImage(expIcon));
             //content.space();

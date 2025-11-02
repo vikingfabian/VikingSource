@@ -343,7 +343,7 @@ namespace VikingEngine.DSSWars
             {
                 content.newLine();
 
-                HudLib.Experience(content, args.blueprint.experienceType, city.GetTopSkill(args.blueprint.experienceType));
+                HudLib.Experience(content, args.blueprint.experienceType, city.cityExperienceLevels.Get(args.blueprint.experienceType).Max()/*city.GetTopSkill(args.blueprint.experienceType)*/);
             }
 
             //player.hud.tooltip.create(player, content, true, blueprint.tooltipId);

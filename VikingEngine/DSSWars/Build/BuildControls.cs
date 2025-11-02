@@ -1455,7 +1455,7 @@ namespace VikingEngine.DSSWars.Build
             {
                 content.newLine();
 
-                HudLib.Experience(content, build.blueprint.experienceType, city.GetTopSkill(build.blueprint.experienceType));
+                HudLib.Experience(content, build.blueprint.experienceType, city.cityExperienceLevels.Get(build.blueprint.experienceType).Max());
             }
         }
 

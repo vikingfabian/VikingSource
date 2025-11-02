@@ -1055,10 +1055,6 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         if (money.GetGold() < goldCarryCapacity)
                         {
-                            //if (debugTagged && onCity.money.copper > 0)
-                            //{
-                            //    lib.DoNothing();
-                            //}
                             money.AddGold(onCity.money.payGold_MuchAsPossible(goldCarryCapacity - money.GetGold()));
                         }
                         else if (money.GetGold() > goldCarryCapacity)

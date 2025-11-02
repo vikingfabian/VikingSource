@@ -1232,22 +1232,22 @@ namespace VikingEngine.DSSWars.Interface
         void experienceTab(RichBoxContent content)
         {
             HudLib.Label(content, DssRef.lang.Experience_TopExperience);
-            experience(SpriteName.WarsWorkFarm, DssRef.lang.ExperienceType_Farm, city.topskill_Farm);
-            experience(SpriteName.WarsBuild_HenPen, DssRef.lang.ExperienceType_AnimalCare, city.topskill_AnimalCare);
-            experience(SpriteName.WarsHammer, DssRef.lang.ExperienceType_HouseBuilding, city.topskill_HouseBuilding);
-            experience(SpriteName.WarsResource_Wood, DssRef.lang.ExperienceType_WoodWork, city.topskill_WoodCutter);
-            experience(SpriteName.WarsResource_Stone, DssRef.lang.ExperienceType_StoneCutter, city.topskill_StoneCutter);
-            experience(SpriteName.WarsWorkMine, DssRef.lang.ExperienceType_Mining, city.topskill_Mining);
-            experience(SpriteName.WarsWorkMove, DssRef.lang.ExperienceType_Transport, city.topskill_Transport);
-            experience(SpriteName.WarsResource_Food, DssRef.lang.ExperienceType_Cook, city.topskill_Cook);
-            experience(SpriteName.WarsFletcherArrowIcon, DssRef.lang.ExperienceType_Fletcher, city.topskill_Fletcher);
-            experience(SpriteName.WarsWorkSmelting, DssRef.lang.ExperienceType_Smelting, city.topskill_Smelting);
-            experience(SpriteName.WarsWorkCasting, DssRef.lang.ExperienceType_Casting, city.topskill_Casting);
-            experience(SpriteName.WarsResource_Iron, DssRef.lang.ExperienceType_CraftMetal, city.topskill_CraftMetal);
-            experience(SpriteName.WarsResource_IronArmor, DssRef.lang.ExperienceType_CraftArmor, city.topskill_CraftArmor);
-            //experience(SpriteName.WarsResource_Sword, DssRef.lang.ExperienceType_CraftWeapon, city.topskill_CraftWeapon);
-            experience(SpriteName.WarsResource_Fuel, DssRef.lang.ExperienceType_CraftFuel, city.topskill_CraftFuel);
-            experience(SpriteName.WarsBuild_Chemist, DssRef.lang.ExperienceType_Chemist, city.topskill_Chemistry);
+            experience(SpriteName.WarsWorkFarm, DssRef.lang.ExperienceType_Farm, city.cityExperienceLevels.levels_Farm.Max());
+            experience(SpriteName.WarsBuild_HenPen, DssRef.lang.ExperienceType_AnimalCare, city.cityExperienceLevels.levels_AnimalCare.Max());
+            experience(SpriteName.WarsHammer, DssRef.lang.ExperienceType_HouseBuilding, city.cityExperienceLevels.levels_HouseBuilding.Max());
+            experience(SpriteName.WarsResource_Wood, DssRef.lang.ExperienceType_WoodWork, city.cityExperienceLevels.levels_WoodCutter.Max());
+            experience(SpriteName.WarsResource_Stone, DssRef.lang.ExperienceType_StoneCutter, city.cityExperienceLevels.levels_StoneCutter.Max());
+            experience(SpriteName.WarsWorkMine, DssRef.lang.ExperienceType_Mining, city.cityExperienceLevels.levels_Mining.Max());
+            experience(SpriteName.WarsWorkMove, DssRef.lang.ExperienceType_Transport, city.cityExperienceLevels.levels_Transport.Max());
+            experience(SpriteName.WarsResource_Food, DssRef.lang.ExperienceType_Cook, city.cityExperienceLevels.levels_Cook.Max());
+            experience(SpriteName.WarsFletcherArrowIcon, DssRef.lang.ExperienceType_Fletcher, city.cityExperienceLevels.levels_Fletcher.Max());
+            experience(SpriteName.WarsWorkSmelting, DssRef.lang.ExperienceType_Smelting, city.cityExperienceLevels.levels_Smelting.Max());
+            experience(SpriteName.WarsWorkCasting, DssRef.lang.ExperienceType_Casting, city.cityExperienceLevels.levels_Casting.Max());
+            experience(SpriteName.WarsResource_Iron, DssRef.lang.ExperienceType_CraftMetal, city.cityExperienceLevels.levels_CraftMetal.Max());
+            experience(SpriteName.WarsResource_IronArmor, DssRef.lang.ExperienceType_CraftArmor, city.cityExperienceLevels.levels_CraftArmor.Max());
+            //experience(SpriteName.WarsResource_Sword, DssRef.lang.ExperienceType_CraftWeapon, city.cityExperienceLevels.levels_CraftWeapon.Max());
+            experience(SpriteName.WarsResource_Fuel, DssRef.lang.ExperienceType_CraftFuel, city.cityExperienceLevels.levels_CraftFuel.Max());
+            experience(SpriteName.WarsBuild_Chemist, DssRef.lang.ExperienceType_Chemist, city.cityExperienceLevels.levels_Chemistry.Max());
 
             content.newParagraph();
             HudLib.Description(content, string.Format(DssRef.lang.Experience_TimeReductionDescription, MathExt.PercentageInteger(DssConst.XpLevelWorkTimePercReduction)));

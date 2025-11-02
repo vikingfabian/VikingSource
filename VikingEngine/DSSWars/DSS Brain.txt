@@ -17,7 +17,7 @@ https://drive.google.com/drive/folders/1yUCu2458SJvKkGyWydINcwMtrVxyXTpi
 x (controller in voxel editor)
 
 #Winter update - must do#
-x achievement in steamworks
+x achievement: visible, localize
 x hide minimap
 x hide minimap/hud in pause menu
 
