@@ -342,6 +342,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             void column(int colindex, Vector2 _relPos, out Vector2 finalPos, out float largestWidth, float centerPan, bool endAsShip)
             {
+                colindex = Bound.Set(colindex, 0, RowsCount - 1);
+
                 finalPos.X = _relPos.X;
                 largestWidth = 0;
                 Vector2 cellSize;
