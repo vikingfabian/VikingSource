@@ -23,8 +23,14 @@ x hide minimap/hud in pause menu
 x city resource in/out, + checkbox to view/(and hide text)
 x declare war comfirm
 x move camera focus
-#Winter update#
+x tweak timers
+x paste double tap
 
+#Winter update#
+MINI MAP
+* camera outline
+* minimap adjust zoom to map
+* pan input
 
 ACHIEVEMENTS: 
 * Taste the impossible: Terminate the first faction to attack you. 300% difficulty. (no pause?)
