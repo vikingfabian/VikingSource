@@ -1428,7 +1428,7 @@ namespace VikingEngine.DSSWars.Players
         private void updateCamera()
         {
             Vector3 camTarget = playerPointerPos;
-            camTarget.Y = 0.6f;
+            camTarget.Y = 0.1f;
 
             if ((camTarget - camera.LookTarget).Length() < 0.5f)
             {

@@ -14,21 +14,23 @@ x (controller in voxel editor)
 
 #Winter update - must do#
 x achievement: visible, localize
+
+
+Mini map:
 x hide minimap
 x hide minimap/hud in pause menu
+x auto pan scroll options
+x fix auto scroll drift
 
 ? cities summary tab
 x city resource in/out, + checkbox to view/(and hide text)
 x declare war comfirm
 x move camera focus
-x tweak timers
 x paste double tap
 
 #Winter update#
-MINI MAP
-* camera outline
-* minimap adjust zoom to map
-* pan input
+* Added 10 minutes to 300% story start
+* Moved the camera focal point up a bit
 
 ACHIEVEMENTS: 
 * Taste the impossible: Terminate the first faction to attack you. 300% difficulty. (no pause?)

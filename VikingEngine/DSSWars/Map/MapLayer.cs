@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.Map
         public MapLayer current;
         public MapLayer prevLayer;
 
-        public static readonly IntervalF FullZoomRange = new IntervalF(0.05f, 2500);
+        public static readonly IntervalF FullZoomRange = new IntervalF(1.5f, 2500);
         public static IntervalF MidToDetailZoomRange;
 
         public const float OverviewZoomStart = 80f;
