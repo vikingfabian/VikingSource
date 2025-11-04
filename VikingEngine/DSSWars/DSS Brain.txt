@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* 
+* (maybe) fixed army structure out of bounds crash
 
 fixed - will update soon
 
@@ -194,7 +194,7 @@ Animals are collected as meat
 Butcher will turn meat to food
 Riding and pulling animals in pens
 Can be used for postal delivery, military cavalry or butchered
-
+? City convert time
 
 #Autumn update#
 Army double time or slow line options for movement
