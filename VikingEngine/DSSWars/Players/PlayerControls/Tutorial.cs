@@ -228,6 +228,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public Tutorial(LocalPlayer player)
         {
+            DssRef.storage.runTutorial_1short_2normal = 2;
             cityarea = new Rectangle2();
 
             this.player = player;

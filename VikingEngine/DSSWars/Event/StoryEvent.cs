@@ -1167,7 +1167,7 @@ namespace VikingEngine.DSSWars.Event
                     {
                         p.hud.messages.Add(DssRef.lang.EventMessage_FinalBossEnterTitle, DssRef.lang.EventMessage_FinalBossEnterText);
 
-                        if (!DssRef.diplomacy.InWar(p.faction, greenwood))
+                        if (greenwood != null && !DssRef.diplomacy.InWar(p.faction, greenwood))
                         {
                             DssRef.diplomacy.GetOrCreateRelation(p.faction, greenwood).SpeakTerms = SpeakTerms.SpeakTerms1_Good;
                         }

@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* (maybe) fixed army structure out of bounds crash
+*
 
 fixed - will update soon
 
@@ -10,8 +10,6 @@ fixed - will update soon
 #BuiltWithMonoGame tags
 
 x tutorial attack freeze
-x attack something in shared folder
-https://drive.google.com/drive/folders/1yUCu2458SJvKkGyWydINcwMtrVxyXTpi
 x (controller in voxel editor)
 
 #Winter update - must do#
