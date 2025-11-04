@@ -472,8 +472,14 @@ namespace VikingEngine.DSSWars.GameObject
                         localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos, endRotation);
                         Vector3 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
                         IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
-                        var subTile = DssRef.world.subTileGrid.Get(subTilePos);
-                        if ((subTile.mainTerrain == Map.TerrainMainType.DefaultSea) != endAsShip)
+                        if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
+                        {
+                            if ((subTile.mainTerrain == Map.TerrainMainType.DefaultSea) != endAsShip)
+                            {
+                                failedPlacements.Add(group);
+                            }
+                        }
+                        else
                         {
                             failedPlacements.Add(group);
                         }

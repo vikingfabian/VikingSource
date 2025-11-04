@@ -513,7 +513,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     w.Write(ushort.MinValue);
                 }
-
+                w.Write((byte)experenceOrDistance);
 
                 writeGroups(w);
 
@@ -649,6 +649,11 @@ namespace VikingEngine.DSSWars.GameObject
                         researchBuildings.Add(building);
                     }
                 }
+            }
+
+            if (subversion >= 84)
+            {
+                experenceOrDistance = (XP.ExperienceOrDistancePrio)r.ReadByte();
             }
 
             readGroups(r, subversion, pointers);

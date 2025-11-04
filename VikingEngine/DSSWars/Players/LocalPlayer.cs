@@ -515,6 +515,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     tutorial = new PlayerControls.Tutorial(this);
                     tutorial.readGameState(r, subversion);
+                    
                 }
             }
         }
