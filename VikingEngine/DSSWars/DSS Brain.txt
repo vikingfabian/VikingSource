@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-*
+* Only one worker are ordered per update
 
 fixed - will update soon
 
