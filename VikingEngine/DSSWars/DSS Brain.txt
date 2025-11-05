@@ -2,6 +2,8 @@
 Change Log:
 * Fixed: Some experience types don't reach master
 * Optimized experience gain algorithm
+* Fixed rare worker unit dead faction crash
+* Fixed rare soldier group unit dead faction crash
 
 fixed - will update soon
 
