@@ -2,6 +2,13 @@
 Change Log:
 *
 
+War manager:
+* The manager have three gears that will tick up after the player grab land
+* Will go up around 7 and 17 cities
+* Will increase attack rate, attack size and attacker alliance ability
+* Attackers will try to end other wars to put all their focus on you
+* The players now have induvidual war managers
+
 fixed - will update soon
 
 #Pics
@@ -14,6 +21,9 @@ x (controller in voxel editor)
 x stop conscript queue on capture
 
 #Winter update#
+
+x dynamic war manager that increases pace with player size
+
 x 300% difficulty 
 x Extended diplomacy options, and be able to command allies with diplomacy points
 x casual mode: embassy building

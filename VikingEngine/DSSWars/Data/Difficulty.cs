@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Data
 
         public int MercenaryPurchaseCost_Start;
         public int MercenaryPurchaseCost_Add;
-        public float toPeacefulPercentage=0;
+        public float toPeacefulPercentage = 0;
 
         public double resourceMultiplyChance = 0;
         public bool resourceMultiplyDecrease;
@@ -213,7 +213,6 @@ namespace VikingEngine.DSSWars.Data
                     resourcesStartHelp = true;
                     //toPeacefulCheck = false;
                     aiDelayTimeSec = 60 * TimeExt.MinuteInSeconds;
-                    //toPeacefulPercentage = 0.01f;
                     PlayerBonusGold = 6000;
                     break;
 
@@ -229,7 +228,6 @@ namespace VikingEngine.DSSWars.Data
                     resourcesStartHelp = true;
                     //toPeacefulCheck = false;
                     aiDelayTimeSec = 30 * TimeExt.MinuteInSeconds;
-                    //toPeacefulPercentage = 0.05f;
                     PlayerBonusGold = 4000;
                     break;
 

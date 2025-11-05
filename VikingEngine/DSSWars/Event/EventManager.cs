@@ -15,13 +15,13 @@ using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Event
 {
-    class EventManager
+    partial class EventManager
     {
         public List<City> factories = new List<City>(3);
 
         Time dyingFactionsTimer = Time.Zero;
 
-        Time tooPeacefulCheckTimer = new Time(Ref.rnd.Float(20, 40), TimeUnit.Minutes);
+        
 
         ConcurrentQueue<AbsStoryEvent> mainStory = new ConcurrentQueue<AbsStoryEvent>();
 
@@ -647,10 +647,7 @@ namespace VikingEngine.DSSWars.Event
             }
         }
 
-        public void testToPeacefulCheck()
-        {
-            tooPeacefulCheckTimer.setZero();
-        }
+        
 
 
         void asyncUpdateDyingFactions(float time)
@@ -683,23 +680,7 @@ namespace VikingEngine.DSSWars.Event
             }
         }
 
-        void asyncUpdateTooPeaceful(float time)
-        {
-            var storyevent = mainStory.FirstOrDefault();
-            if (storyevent == null || storyevent.RunWarManager())
-            {
-                if (tooPeacefulCheckTimer.CountDown(time) &&
-                    DssRef.difficulty.toPeacefulPercentage > 0)
-                {
-                    tooPeacefulCheckTimer = new Time(Ref.rnd.Float(0.5f, 3.5f), TimeUnit.Hours);
-
-                    foreach (var p in DssRef.state.localPlayers)
-                    {
-                        p.toPeacefulCheck_asynch();
-                    }
-                }
-            }
-        }
+        
 
         
 
@@ -1138,16 +1119,5 @@ namespace VikingEngine.DSSWars.Event
         Domination,
         DarkSide,
     }
-    //enum BossTimeSettings
-    //{ 
-    //    Immediate,
-    //    Early,
-    //    Normal,
-    //    Late,
-    //    VeryLate,
-    //    //Never,
-    //    NUM
-    //}
-
 
 }

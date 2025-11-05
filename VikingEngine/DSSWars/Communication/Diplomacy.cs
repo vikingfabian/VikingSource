@@ -208,7 +208,7 @@ namespace VikingEngine.DSSWars
             return aiPlayerAsynchUpdate_collectAlliances;
         }
 
-        public bool aiPlayerAsynchUpdate_mayAlly_checkConflict(Faction faction1, Faction faction2, Faction enemyFaction)
+        public bool aiPlayerAsynchUpdate_mayAlly_checkConflict(Faction faction1, Faction faction2, Faction enemyFaction, bool tryEndOtherWars)
         {
             List<int> allies = aiPlayerAsynchUpdate_GetAllied(faction1);
 
@@ -232,12 +232,20 @@ namespace VikingEngine.DSSWars
                 //Dont get dragged into more wars
                 if (war != enemyFaction.myIndex && !wars2.Contains(war))
                 {
+                    if (tryEndOtherWars)
+                    {
+                        faction1.player.GetAiPlayer()?.tryEndBotWars(wars1);
+                        faction2.player.GetAiPlayer()?.tryEndBotWars(wars2);
+                    }
+
                     return false;
                 }
             }
 
             return true;
         }
+
+        
 
         public List<int> collectWars(Faction aifaction)
         {
