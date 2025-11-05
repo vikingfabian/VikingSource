@@ -8,8 +8,10 @@ fixed - will update soon
 
 
 #must do#
+x "Save breaking crash report & Master Caster"
 x tutorial attack freeze
 x (controller in voxel editor)
+x stop conscript queue on capture
 
 #Winter update#
 x 300% difficulty 
