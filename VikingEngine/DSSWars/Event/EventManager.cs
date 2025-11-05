@@ -21,8 +21,6 @@ namespace VikingEngine.DSSWars.Event
 
         Time dyingFactionsTimer = Time.Zero;
 
-        
-
         ConcurrentQueue<AbsStoryEvent> mainStory = new ConcurrentQueue<AbsStoryEvent>();
 
         public int maxWarsJuggles = 0;
@@ -700,10 +698,7 @@ namespace VikingEngine.DSSWars.Event
         }
 
         
-                    if (DssRef.difficulty.extremeAggression)
-                    {
-                        tooPeacefulCheckTimer.MilliSeconds *= 0.5f;
-                    }
+                   
 
         
 

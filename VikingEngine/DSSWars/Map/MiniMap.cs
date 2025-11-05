@@ -67,7 +67,12 @@ namespace VikingEngine.DSSWars.Map
         }
 
         public void update(LocalPlayer player, bool allowInput, out bool mouseOver)
-        {            
+        {
+            if (player.minimapPixelTexture == null)
+            {
+                mouseOver = false;
+                return;
+            }
             mapTexture.Texture = player.minimapPixelTexture.texture;
             unitTexture.Texture = player.unitsPixelTexture.texture;
 

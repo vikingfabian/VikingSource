@@ -30,13 +30,16 @@ namespace VikingEngine.DSSWars.Map
 
         public void Draw(int cameraIndex, LocalPlayer player)
         {
-            mapPlane.texture = player.factionPixelTexture.texture;
-            unitPlane.texture = player.unitsPixelTexture.texture;
+            if (player.factionPixelTexture != null)
+            {
+                mapPlane.texture = player.factionPixelTexture.texture;
+                unitPlane.texture = player.unitsPixelTexture.texture;
 
-            Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-            mapPlane.Draw(cameraIndex);
-            unitPlane.Draw(cameraIndex);
-            Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
+                Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+                mapPlane.Draw(cameraIndex);
+                unitPlane.Draw(cameraIndex);
+                Engine.Draw.graphicsDeviceManager.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
+            }
         }
 
         public void asyncTask()

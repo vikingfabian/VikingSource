@@ -1,5 +1,7 @@
 ﻿UPDATE
 Change Log:
+* Added 10 minutes to 300% story start
+* Moved the camera focal point up a bit
 * Only one worker are ordered per update
 
 War manager:
@@ -16,11 +18,6 @@ fixed - will update soon
 #RELEASE#
 #BuiltWithMonoGame tags
 
-x "Save breaking crash report & Master Caster"
-x tutorial attack freeze
-x (controller in voxel editor)
-x stop conscript queue on capture
-
 #Winter update - must do#
 x achievement: visible, localize
 
@@ -31,19 +28,21 @@ x hide minimap/hud in pause menu
 x auto pan scroll options
 x fix auto scroll drift
 
-? cities summary tab
-x city resource in/out, + checkbox to view/(and hide text)
+x "Save breaking crash report & Master Caster"
+x tutorial attack freeze
+x (controller in voxel editor)
+x stop conscript queue on capture
 x declare war comfirm
-x move camera focus
+x declare war button
 x paste double tap
 
-#Winter update#
 
-x dynamic war manager that increases pace with player size
+#Spring update
+x cities summary tab
+-Having a tab with queued units and also a UI element to select all baracks and recruit simultaneously per city (less micromanagement)
 
-x 300% difficulty 
-* Added 10 minutes to 300% story start
-* Moved the camera focal point up a bit
+x city resource in/out, + checkbox to view/(and hide text)
+-compressed view, no tab view
 
 ACHIEVEMENTS: 
 * Taste the impossible: Terminate the first faction to attack you. 300% difficulty. (no pause?)
@@ -70,6 +69,7 @@ x go over tutorial
 -view less resources
 -advisor
 -inform of resource use
+
 
 
 
