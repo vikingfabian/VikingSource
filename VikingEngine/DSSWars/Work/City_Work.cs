@@ -250,6 +250,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 idleWorkers.Clear();
+                int maxWorkerOrderCount = 1 + workerStatuses.Count / 100;
 
                 //Collect idle workers
                 for (int i = 0; i < workerStatuses.Count; i++)
@@ -261,45 +262,30 @@ namespace VikingEngine.DSSWars.GameObject
                         if (workerStatusActiveCount > workForce.amount)
                         {
                             --workerStatusActiveCount;
-                            //ref WorkerStatus status = ref workerStatuses.array[i];
+                            
                             status.createWorkOrder(WorkType.Exit, -1, 0, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
-                            //workerStatuses[i] = status;
                         }
                         else if (status.carry.amount > 0)
                         {
                             CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
-                            //ref WorkerStatus status = ref workerStatuses.array[i];
-                            //status.createWorkOrder(WorkType.DropOff, -1, -1, CityStructure.WorkInstance.storePosition(status.subTileEnd), this);
                             status.createWorkOrder(WorkType.DropOff, -1, 0, WorkExperienceType.Transport, -1, CityStructure.WorkInstance.storePosition(status.subTileEnd), this);
-                            //workerStatuses[i] = status;
                         }
                         else if (status.energy < 0 && (res_food.amount > 0 || faction.hasGold(1, this)))
                         {
                             CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
-                            //ref WorkerStatus status = ref workerStatuses.array[i];
-                            //status.createWorkOrder(WorkType.Eat, -1, -1, CityStructure.WorkInstance.eatPosition(status.subTileEnd), this);
                             status.createWorkOrder(WorkType.Eat, -1, 0, WorkExperienceType.NONE, -1, CityStructure.WorkInstance.eatPosition(status.subTileEnd), this);
-                            //workerStatuses[i] = status;
                         }
                         else if (status.energy <= DssConst.Worker_Starvation)
                         {
                             --workerStatusActiveCount;
                             --workForce.amount;
-                            //ref WorkerStatus status = ref workerStatuses.array[i];
+
                             status.createWorkOrder(WorkType.Starving, -1, 0, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
-                            //workerStatuses[i] = status;
                         }
-                        else//else if (workQue.Count > 0)
+                        else
                         {
                             idleWorkers.Add(i);
-                            //var status = workerStatuses[i];
                         }
-                        //else
-                        //{
-                        //    var worker = workerStatuses[i];
-                        //    worker.energy -= (Ref.TotalGameTimeSec - worker.processTimeStartStampSec) * DssConst.WorkTeamEnergyCost_WhenIdle;
-                        //    worker.processTimeStartStampSec = Ref.TotalGameTimeSec;
-                        //}
                     }
                 }
 
@@ -325,7 +311,7 @@ namespace VikingEngine.DSSWars.GameObject
                         throw new NotImplementedException();
                 }
 
-                while (workQue.Count > 0 && idleWorkers.Count > 0)
+                while (workQue.Count > 0 && idleWorkers.Count > 0 && maxWorkerOrderCount > 0)
                 {
                     var work = arraylib.PullLastMember(workQue);
 
@@ -344,7 +330,7 @@ namespace VikingEngine.DSSWars.GameObject
                             for (int i = 0; i < idleWorkers.Count; ++i)
                             {
                                 var worderIx = idleWorkers[i];
-                                var worker = workerStatuses[worderIx];
+                                var worker = workerStatuses.array[worderIx];
 
                                 var xp = worker.getXpFor(experienceType);
 
@@ -366,9 +352,10 @@ namespace VikingEngine.DSSWars.GameObject
                                 var worderIx = idleWorkers[bestWorkerListIx];
                                 idleWorkers.RemoveAt(bestWorkerListIx);
 
-                                var status = workerStatuses[worderIx];
+                                ref var status = ref workerStatuses.array[worderIx];
                                 status.createWorkOrder(work.work, work.subWork, work.workBonus, experienceType, work.orderId, work.subTile, this);
-                                workerStatuses[worderIx] = status;
+                                //workerStatuses[worderIx] = status;
+                                --maxWorkerOrderCount;
 
                                 if (work.orderId >= 0)
                                 {
@@ -391,10 +378,10 @@ namespace VikingEngine.DSSWars.GameObject
                 //Set remaning workers to wait
                 foreach (var workerIx in idleWorkers)
                 {
-                    var worker = workerStatuses[workerIx];
+                    ref var worker = ref workerStatuses.array[workerIx];
                     worker.energy -= (Ref.TotalGameTimeSec - worker.processTimeStartStampSec) * DssConst.WorkTeamEnergyCost_WhenIdle;
                     worker.processTimeStartStampSec = Ref.TotalGameTimeSec;
-                    workerStatuses[workerIx] = worker;
+                    //workerStatuses[workerIx] = worker;
                 }
 
                 if (!inRender_detailLayer)

@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-*
+* Only one worker are ordered per update
 
 fixed - will update soon
 
@@ -9,8 +9,10 @@ fixed - will update soon
 #RELEASE#
 #BuiltWithMonoGame tags
 
+x "Save breaking crash report & Master Caster"
 x tutorial attack freeze
 x (controller in voxel editor)
+x stop conscript queue on capture
 
 #Winter update - must do#
 x achievement: visible, localize
