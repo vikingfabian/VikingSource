@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
-*
+* Fixed: Some experience types don't reach master
+* Optimized experience gain algorithm
 
 fixed - will update soon
 
