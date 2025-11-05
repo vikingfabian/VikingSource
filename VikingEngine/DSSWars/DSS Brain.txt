@@ -5,6 +5,8 @@ Change Log:
 
 * Fixed: Some experience types don't reach master
 * Optimized experience gain algorithm
+* Fixed rare worker unit dead faction crash
+* Fixed rare soldier group unit dead faction crash
 * Added 10 minutes to 300% story start
 * Moved the camera focal point up a bit
 * Only one worker are ordered per update

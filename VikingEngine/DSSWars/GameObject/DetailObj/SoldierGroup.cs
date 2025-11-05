@@ -127,9 +127,9 @@ namespace VikingEngine.DSSWars.GameObject
                 setDetailLevel(true);
             }
 
-            if (tArmy.GetFaction().player.IsLocalPlayer())
+            if (tArmy.GetFaction_NoChecks().player.IsLocalPlayer())
             {
-                tArmy.GetFaction().player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
+                tArmy.GetFaction_NoChecks().player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
             }
         }
 
