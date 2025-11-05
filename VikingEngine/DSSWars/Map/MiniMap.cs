@@ -81,7 +81,8 @@ namespace VikingEngine.DSSWars.Map
             {
                 hoverHighLight.Visible = true;
 
-                updateZoom(0.005f);
+                //updateZoom(0.005f);
+                zoomInput(player.gameControls.input.ZoomValue(), 0.005f, player);
 
                 if (player.gameControls.input.mouseSelect.IsDown)
                 {
@@ -128,7 +129,7 @@ namespace VikingEngine.DSSWars.Map
             {
                 hoverHighLight.Visible = false;
 
-                updateZoom(0.002f);
+                //updateZoom(0.002f);
 
                 refreshPosition(player);
 
@@ -137,19 +138,32 @@ namespace VikingEngine.DSSWars.Map
                 updateCamera(player);
             }
 
-            void updateZoom(float speed)
-            {
-                float zoom = player.gameControls.input.ZoomValue();
-                if (zoom != 0)
-                {
-                    scale = Bound.Set(scale - zoom * speed * Ref.gamesett.scrollWheelSensitivity_game * scale, 0.5f, 5f);
-                    refreshScale();
-                    refreshPosition(player);
-                }
-            }
+            //void updateZoom(float speed)
+            //{
+            //    //float zoom = player.gameControls.input.ZoomValue();
+            //    //if (zoom != 0)
+            //    //{
+            //    //    scale = Bound.Set(scale - zoom * speed * Ref.gamesett.scrollWheelSensitivity_game * scale, 0.5f, 5f);
+            //    //    refreshScale();
+            //    //    refreshPosition(player);
+            //    //}
+            //}
         }
 
-        
+        public void OnMapZoom(float zoominput, LocalPlayer player)
+        {
+            zoomInput(zoominput, 0.001f, player);
+        }
+
+        void zoomInput(float zoom, float speed, LocalPlayer player)
+        {
+            if (zoom != 0)
+            {
+                scale = Bound.Set(scale - zoom * speed * Ref.gamesett.scrollWheelSensitivity_game * scale, 0.5f, 5f);
+                refreshScale();
+                refreshPosition(player);
+            }
+        }
 
         Vector2 screenPosToWorldXZ(Vector2 screenPos)
         {

@@ -1,22 +1,7 @@
 ﻿UPDATE
 Change Log:
 
-! Your saves from prev beta may be corrupted - sorry.
 
-* Fixed: Some experience types don't reach master
-* Optimized experience gain algorithm
-* Fixed rare worker unit dead faction crash
-* Fixed rare soldier group unit dead faction crash
-* Added 10 minutes to 300% story start
-* Moved the camera focal point up a bit
-* Only one worker are ordered per update
-
-War manager:
-* The manager have three gears that will tick up after the player grab land
-* Will go up around 7 and 17 cities
-* Will increase attack rate, attack size and attacker alliance ability
-* Attackers will try to end other wars to put all their focus on you
-* The players now have induvidual war managers
 
 fixed - will update soon
 
@@ -33,7 +18,7 @@ Mini map:
 x hide minimap
 x hide minimap/hud in pause menu
 x auto pan scroll options
-x fix auto scroll drift
+
 
 x tutorial attack freeze
 x (controller in voxel editor)
