@@ -1,5 +1,10 @@
 ﻿UPDATE
 Change Log:
+
+! Your saves from prev beta may be corrupted - sorry.
+
+* Fixed: Some experience types don't reach master
+* Optimized experience gain algorithm
 * Added 10 minutes to 300% story start
 * Moved the camera focal point up a bit
 * Only one worker are ordered per update
@@ -28,7 +33,6 @@ x hide minimap/hud in pause menu
 x auto pan scroll options
 x fix auto scroll drift
 
-x "Save breaking crash report & Master Caster"
 x tutorial attack freeze
 x (controller in voxel editor)
 x stop conscript queue on capture

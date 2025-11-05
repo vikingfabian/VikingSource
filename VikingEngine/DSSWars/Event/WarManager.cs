@@ -120,11 +120,11 @@ namespace VikingEngine.DSSWars.Players
     {
         WarManagerGear warManagerGear;
         Time tooPeacefulCheckTimer =
-#if DEBUG
-            new Time(4, TimeUnit.Seconds);
-#else
+//#if DEBUG
+            //new Time(4, TimeUnit.Seconds);
+//#else
             new Time(Ref.rnd.Float(20, 40), TimeUnit.Minutes);
-#endif
+//#endif
         public void testToPeacefulCheck()
         {
             tooPeacefulCheckTimer.setZero();
