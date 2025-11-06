@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* 
+* fixed: Empire labor priorities being reset on game load
 
 fixed - will update soon
 

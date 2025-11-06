@@ -251,6 +251,12 @@ namespace VikingEngine.DSSWars
             }
 
             workTemplate.readGameState(r, subVersion, false);
+
+            var cities_c = cities.counter();
+            while (cities_c.Next())
+            {
+                cities_c.sel.workTemplate.onFactionChange(cities_c.sel, workTemplate);
+            }
         }
 
         void writeRelations(System.IO.BinaryWriter w)
