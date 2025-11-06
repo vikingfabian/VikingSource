@@ -65,9 +65,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return HousingCount_Guard - soldiersCount;
         }
-        //public int HousingCount_ServiceMen = 0;
 
-        //public FloatingInt damages = new FloatingInt();
         public FloatingInt immigrants = new FloatingInt();
         
         public int workHutStyle = 0;

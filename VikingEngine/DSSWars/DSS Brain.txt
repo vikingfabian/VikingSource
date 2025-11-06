@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
-
+* Fixed missing culture resource bonuses: HeavyPaddedArmor, LightPlateArmor, FullPlateArmor and BronzeArmor
+* Added wood and stone to city overview
 
 
 fixed - will update soon
@@ -18,8 +19,9 @@ Mini map:
 x hide minimap
 x hide minimap/hud in pause menu
 x auto pan scroll options
+x hide cam bound on overview zoom
 
-
+x must time worker updates to speed
 x tutorial attack freeze
 x (controller in voxel editor)
 x stop conscript queue on capture
@@ -45,8 +47,6 @@ MAP
 * Map Filters
 * Diplomatic relation arrows
 
-
-x global stockpile?
 x Extended diplomacy options, and be able to command allies with diplomacy points
 - end relations (chance of bad relation)
 - (maybe) submit

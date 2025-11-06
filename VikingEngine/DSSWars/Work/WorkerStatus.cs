@@ -591,6 +591,7 @@ namespace VikingEngine.DSSWars.Work
                                     break;
 
                                 case ItemResourceType.PaddedArmor:
+                                case ItemResourceType.HeavyPaddedArmor:
                                     if (city.Culture == CityCulture.Weavers)
                                     {
                                         add += 1;
@@ -599,6 +600,8 @@ namespace VikingEngine.DSSWars.Work
 
                                 case ItemResourceType.IronArmor:
                                 case ItemResourceType.HeavyIronArmor:
+                                case ItemResourceType.LightPlateArmor:
+                                case ItemResourceType.FullPlateArmor:
                                     if (city.Culture == CityCulture.Armorsmith)
                                     {
                                         add += 1;
@@ -606,10 +609,18 @@ namespace VikingEngine.DSSWars.Work
                                     break;
                                 case ItemResourceType.Bronze:
                                 case ItemResourceType.BronzeSword:
-                                case ItemResourceType.BronzeArmor:
+                                
                                     if (city.Culture == CityCulture.BronzeCasters)
                                     {
                                         add *= 2;
+                                    }
+                                    break;
+
+                                case ItemResourceType.BronzeArmor:
+                                    if (city.Culture == CityCulture.Armorsmith ||
+                                        city.Culture == CityCulture.BronzeCasters)
+                                    {
+                                        add += 1;
                                     }
                                     break;
 

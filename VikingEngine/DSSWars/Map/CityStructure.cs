@@ -260,9 +260,9 @@ namespace VikingEngine.DSSWars.Map
                                             case Map.TerrainSubFoilType.TreeSoft:
                                             case Map.TerrainSubFoilType.TreeHard:
                                             case Map.TerrainSubFoilType.DryWood:
-                                                if (/*Trees.Count < workerCount &&*/
-                                                    (foil == TerrainSubFoilType.DryWood || subTile.terrainAmount >= TerrainContent.TreeReadySize))
+                                                if (foil == TerrainSubFoilType.DryWood || subTile.terrainAmount >= TerrainContent.TreeReadySize)
                                                 {
+                                                    ++terrainStructure.resourceCount_wood;
                                                     ++fuelSpots;
                                                     Trees.Add(subTileLoop.Position);
                                                 }
@@ -270,10 +270,8 @@ namespace VikingEngine.DSSWars.Map
 
                                             case Map.TerrainSubFoilType.StoneBlock:
                                             case Map.TerrainSubFoilType.Stones:
-                                                //if (Stones.Count < workerCount)
-                                                //{
-                                                    Stones.Add(subTileLoop.Position);
-                                                //}
+                                                ++terrainStructure.resourceCount_stone;
+                                                Stones.Add(subTileLoop.Position);
                                                 break;
 
                                             case TerrainSubFoilType.WheatFarm:

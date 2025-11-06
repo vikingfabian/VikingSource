@@ -164,6 +164,10 @@ namespace VikingEngine.DSSWars.Build
         public int mineCount_sulfur;
         public int mineCount_coal;
 
+        public int resourceCount_stone;
+        public int resourceCount_wood;
+
+
         public void miningOverviewHud(RichBoxContent content)
         {
             content.newLine();
@@ -173,6 +177,8 @@ namespace VikingEngine.DSSWars.Build
 
             int totalCount = 0;
 
+            naturalResource(content, resourceCount_wood, ItemResourceType.Wood_Group, ref totalCount);
+            naturalResource(content, resourceCount_stone, ItemResourceType.Stone_G, ref totalCount);
             mine(content, mineCount_coal, ItemResourceType.Coal, ref totalCount);
             mine(content, mineCount_bogIron, ItemResourceType.BogIron, ref totalCount);
             mine(content, mineCount_iron, ItemResourceType.Iron_G, ref totalCount);
@@ -192,7 +198,42 @@ namespace VikingEngine.DSSWars.Build
             
         }
 
+        public void naturalResource(RichBoxContent content, int count, ItemResourceType resource, ref int totalCount)
+        {
+            resourceHoverButton(content, count, resource, DssRef.lang.Work_GatherXResource, SpriteName.WarsWorkCollect, ref totalCount);
+        }
+
         public void mine(RichBoxContent content, int count, ItemResourceType resource, ref int totalCount)
+        {
+            //totalCount += count;
+            //if (count > 0)
+            //{
+            //    SpriteName icon = ResourceLib.Icon(resource);
+            //    string resourceName = LangLib.Item(resource);
+            //    var infoContent = new RichBoxContent();
+
+            //    infoContent.Add(new RbOverlapImage(new RbImage(icon), SpriteName.WarsWorkMine, VectorExt.V2FromX(-0.2f), 0.8f));
+            //    infoContent.space();
+            //    var countText = new RbText(count.ToString());
+            //    countText.overrideColor = Color.White;
+            //    infoContent.Add(countText);
+
+            //    var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null,
+            //        new RbTooltip((RichBoxContent content, object tag) =>
+            //        {
+            //            content.Add(new RbOverlapImage(new RbImage(icon), SpriteName.WarsWorkMine, Vector2.Zero, 0.8f));
+            //            content.space();
+            //            var mineString = string.Format(DssRef.lang.BuildingType_ResourceMine, resourceName);
+            //            content.Add(new RbText(TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XCountIsY, mineString, count))));
+
+            //        }));
+
+            //    content.Add(infoButton);
+            //}
+            resourceHoverButton(content, count, resource, DssRef.lang.BuildingType_ResourceMine, SpriteName.WarsWorkMine, ref totalCount);
+        }
+
+        public void resourceHoverButton(RichBoxContent content, int count, ItemResourceType resource, string categoryName, SpriteName workIcon, ref int totalCount)
         {
             totalCount += count;
             if (count > 0)
@@ -201,7 +242,7 @@ namespace VikingEngine.DSSWars.Build
                 string resourceName = LangLib.Item(resource);
                 var infoContent = new RichBoxContent();
 
-                infoContent.Add(new RbOverlapImage(new RbImage(icon), SpriteName.WarsWorkMine, VectorExt.V2FromX(-0.2f), 0.8f));
+                infoContent.Add(new RbOverlapImage(new RbImage(icon), workIcon, VectorExt.V2FromX(-0.2f), 0.8f));
                 infoContent.space();
                 var countText = new RbText(count.ToString());
                 countText.overrideColor = Color.White;
@@ -210,20 +251,14 @@ namespace VikingEngine.DSSWars.Build
                 var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null,
                     new RbTooltip((RichBoxContent content, object tag) =>
                     {
-                        //RichBoxContent content = new RichBoxContent();
-                        content.Add(new RbOverlapImage(new RbImage(icon), SpriteName.WarsWorkMine, Vector2.Zero, 0.8f));
-                        //content.Add(new RbImage(icon));
+                        content.Add(new RbOverlapImage(new RbImage(icon), workIcon, Vector2.Zero, 0.8f));
                         content.space();
-                        var mineString = string.Format(DssRef.lang.BuildingType_ResourceMine, resourceName);
+                        var mineString = string.Format(categoryName, resourceName);
                         content.Add(new RbText(TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XCountIsY, mineString, count))));
 
-
-                        //player.hud.tooltip.create(player, content, true);
                     }));
 
-                //infoButton.overrideBgColor = HudLib.InfoYellow_BG;
                 content.Add(infoButton);
-                //content.space();
             }
         }
     }

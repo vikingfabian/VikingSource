@@ -499,7 +499,6 @@ namespace VikingEngine.DSSWars.Map
                 {
                     if (grid.TryGet(x, y, out area))
                     {
-                        //var groups_sp = area.groups;
                         lock (area.groups)
                         {
                             if (area.groups != null)
