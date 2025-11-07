@@ -551,6 +551,7 @@ namespace VikingEngine.DSSWars.Event
                             barbarianArmy.setAsStartArmy();
                             barbarianArmy.setMassiveFood();
 
+                            enemyFac.money.SetGold(100000);
                             enemyFac.player.protectedFromDelete = false;
 
                             foreach (var p in DssRef.state.localPlayers)

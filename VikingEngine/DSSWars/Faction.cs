@@ -568,7 +568,7 @@ namespace VikingEngine.DSSWars
                     {
                         DeleteMe();
                     }
-                    else if (militaryStrength < 1)
+                    else if (militaryStrength < 0.4f)
                     {
                         var armiesC = armies.counter();
                         while (armiesC.Next())

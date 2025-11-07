@@ -2618,7 +2618,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string GameMenu_BlockImportAchievements => "Block achievements on imported files";
 
-        public override string EndScreen_PeaceVictoryQuote => "Let’s lay down our swords and embrace a better future";
+        public override string EndScreen_PeaceVictoryQuote => "Let's lay down our swords and embrace a better future";
 
         public override string VictoryType_DefeatBoss => "Boss defeated";
         public override string VictoryType_Domination => "Domination";
