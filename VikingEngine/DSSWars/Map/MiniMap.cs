@@ -20,14 +20,14 @@ namespace VikingEngine.DSSWars.Map
         NineSplitAreaTexture bg;
         RectangleLines cameraOutline;
 
-        //Vector2 mapSize;
         public VectorRect area;
         Vector2 areaHalfSize;
         Vector2 textureSize;
         float scale = 2f;
         bool bMouseInput;
         bool selectDown = false, panDown = false;
-        public MiniMap(LocalPlayer player)
+        bool viewCameraBound = true;
+        public MiniMap(LocalPlayer player, bool runtime)
         {
             bMouseInput = player.gameControls.input.inputSource.HasMouse;
             Vector2 sz = Engine.Screen.IconSizeV2 * 5f;
@@ -38,8 +38,6 @@ namespace VikingEngine.DSSWars.Map
             var bgArea = area;
             bgArea.AddRadius(4);
 
-            //bg = new Image(SpriteName.WhiteArea, bgArea.Position, bgArea.Size, HudLib.GUILayer + 2);
-            //bg.Color = Color.Black;
             bg = new NineSplitAreaTexture(HudLib.MinimapBorder, bgArea, HudLib.GUILayer + 2);
             bgArea.AddRadius(2);
 
@@ -64,6 +62,18 @@ namespace VikingEngine.DSSWars.Map
 
             refreshScale();
 
+            if (runtime)
+            {
+                refreshPosition(player);
+                updateCamera(player);
+            }
+        }
+
+        public void DeleteMe()
+        {
+            hoverHighLight.DeleteMe();
+            bg.DeleteMe();
+            renderTargetDrawContainer.DeleteMe();
         }
 
         public void update(LocalPlayer player, bool allowInput, out bool mouseOver)
@@ -81,7 +91,6 @@ namespace VikingEngine.DSSWars.Map
             {
                 hoverHighLight.Visible = true;
 
-                //updateZoom(0.005f);
                 zoomInput(player.gameControls.input.ZoomValue(), 0.005f, player);
 
                 if (player.gameControls.input.mouseSelect.IsDown)
@@ -129,25 +138,12 @@ namespace VikingEngine.DSSWars.Map
             {
                 hoverHighLight.Visible = false;
 
-                //updateZoom(0.002f);
-
                 refreshPosition(player);
 
                 selectDown = false;
 
                 updateCamera(player);
             }
-
-            //void updateZoom(float speed)
-            //{
-            //    //float zoom = player.gameControls.input.ZoomValue();
-            //    //if (zoom != 0)
-            //    //{
-            //    //    scale = Bound.Set(scale - zoom * speed * Ref.gamesett.scrollWheelSensitivity_game * scale, 0.5f, 5f);
-            //    //    refreshScale();
-            //    //    refreshPosition(player);
-            //    //}
-            //}
         }
 
         public void OnMapZoom(float zoominput, LocalPlayer player)
@@ -194,6 +190,12 @@ namespace VikingEngine.DSSWars.Map
 
             cameraOutline.rectangle.Center = (player.gameControls.map.camera.LookTargetXZ * scale) + mapTexture.position;
             cameraOutline.Refresh();
+
+            if (viewCameraBound == state.farLayer)
+            {
+                viewCameraBound = !state.farLayer;
+                cameraOutline.setOpacity(viewCameraBound ? 1f: 0.25f);
+            }
         }
     }
 }

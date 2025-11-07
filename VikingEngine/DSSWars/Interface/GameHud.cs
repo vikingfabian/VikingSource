@@ -65,8 +65,11 @@ namespace VikingEngine.DSSWars.Interface
             objMenu = new PlayerHud_Object(player);
             factionMenu = new PlayerHud_Faction();
 
-            miniMap = new MiniMap(player);
-            inputHelp = new PlayerHud_InputHelp(player, miniMap.area.Y);
+            if (numPlayers <= 1)
+            {
+                miniMap = new MiniMap(player, false);
+            }
+            inputHelp = new PlayerHud_InputHelp(player, inputHelpBottom());
             
 
             //hudmenu = new GameHudMenu(player);
@@ -74,6 +77,18 @@ namespace VikingEngine.DSSWars.Interface
             tooltip = new Tooltip();
             pins = new HudPinManager();
             
+        }
+
+        public float inputHelpBottom()
+        {
+            if (miniMap == null)
+            {
+                return player.playerData.view.DrawArea.Bottom;
+            }
+            else
+            {
+                return miniMap.area.Y;
+            }
         }
 
         public void initMap()
@@ -140,8 +155,11 @@ namespace VikingEngine.DSSWars.Interface
             //Debug.Log("game hud update");
             mouseOverHud = false;
 
-            miniMap.update(player, allowInput, out bool miniMapMouseOver);
-            mouseOverHud |= miniMapMouseOver;
+            if (miniMap != null)
+            {
+                miniMap.update(player, allowInput, out bool miniMapMouseOver);
+                mouseOverHud |= miniMapMouseOver;
+            }
 
             if (allowInput)
             {
@@ -161,6 +179,21 @@ namespace VikingEngine.DSSWars.Interface
                         detailLevel = 0;
                     }
                     refresh = true;
+                }
+
+                if (player.gameControls.input.ToggleMinimap.DownEvent)
+                {
+                    if (miniMap == null)
+                    {
+                        miniMap = new MiniMap(player, true);                        
+                    }
+                    else
+                    {
+                        miniMap?.DeleteMe();
+                        miniMap = null;
+                    }
+                    inputHelp.deleteMenu();
+                    inputHelp.refreshUpdate(player);
                 }
 
 

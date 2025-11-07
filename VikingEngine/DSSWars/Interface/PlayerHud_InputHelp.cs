@@ -39,6 +39,11 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
+        //public void refreshPosition(LocalPlayer player)
+        //{
+        //    deleteMenu();
+        //}
+
         public void deleteMenu()
         {
             menu?.DeleteMe();
@@ -54,7 +59,7 @@ namespace VikingEngine.DSSWars.Interface
                 return;
             }
 
-            createMenu(player, player.hud.miniMap.area.Y);
+            createMenu(player, player.hud.inputHelpBottom());
 
             var content = new RichBoxContent();
             InputMap map = player.gameControls.input;

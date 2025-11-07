@@ -2,7 +2,7 @@
 Change Log:
 * Fixed missing culture resource bonuses: HeavyPaddedArmor, LightPlateArmor, FullPlateArmor and BronzeArmor
 * Added wood and stone to city overview
-
+* will hide cam bound on overview zoom
 
 fixed - will update soon
 
@@ -16,14 +16,11 @@ x achievement: visible, localize
 
 
 Mini map:
-x hide minimap
+x hide minimap, toggle with M
 x hide minimap/hud in pause menu
-x auto pan scroll options
-x hide cam bound on overview zoom
 
 x must time worker updates to speed
-x tutorial attack freeze
-x (controller in voxel editor)
+
 x stop conscript queue on capture
 x declare war comfirm
 x declare war button

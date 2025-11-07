@@ -98,5 +98,13 @@ namespace VikingEngine.Graphics
                 lines[i].ColorAndAlpha(col, alpha);
             }
         }
+
+        public void setOpacity(float alpha)
+        {
+            for (int i = 0; i < lines.Length; ++i)
+            {
+                lines[i].Opacity = alpha;
+            }
+        }
     }
 }

@@ -64,6 +64,7 @@ namespace VikingEngine.DSSWars
         public IButtonMap Menu;
 
         public IButtonMap ToggleHudDetail;
+        public IButtonMap ToggleMinimap;
         public IButtonMap GameSpeed;
         public IButtonMap PauseGame;
 
@@ -185,6 +186,7 @@ namespace VikingEngine.DSSWars
 
             Menu = new KeyboardButtonMap(Keys.Escape);
             ToggleHudDetail = new KeyboardButtonMap(Keys.U);
+            ToggleMinimap  = new KeyboardButtonMap(Keys.M);
             GameSpeed = new KeyboardButtonMap(Keys.Tab);
             PauseGame = new KeyboardButtonMap(Keys.Space);
 
@@ -303,7 +305,7 @@ namespace VikingEngine.DSSWars
             Menu = new XboxButtonMap_TriggerAlts(Buttons.Start, inputSource.controllerIndex);
             //ToggleHudDetail = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex);
             ToggleHudDetail = new XboxButtonMap_TriggerAlts(Buttons.DPadDown, inputSource.controllerIndex);//new NoButtonMap();
-
+            ToggleMinimap = new XboxButtonMap_TriggerAlts(Buttons.DPadDown, inputSource.controllerIndex, true);
 
             Controller_TabLeft = new XboxButtonMap(Buttons.LeftShoulder, inputSource.controllerIndex);
             Controller_TabRight = new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
