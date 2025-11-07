@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void async_workUpdate()
+        public void async_workUpdate(int updateSpeed)
         {
             if (factionIndex < 0)
             { return; }
@@ -250,7 +250,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 idleWorkers.Clear();
-                int maxWorkerOrderCount = 1 + workerStatuses.Count / 100;
+                int maxWorkerOrderCount = (1 + workerStatuses.Count / 100) * updateSpeed;
 
                 //Collect idle workers
                 for (int i = 0; i < workerStatuses.Count; i++)

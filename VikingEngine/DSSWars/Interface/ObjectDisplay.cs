@@ -62,6 +62,6 @@ namespace VikingEngine.DSSWars.Interface
             this.selected = false;
         }
 
-        public bool ShowFull => player.hud.detailLevel == HudDetailLevel.Normal;
+        public bool ShowFull => player.hud.maximizedHud;
     }
 }

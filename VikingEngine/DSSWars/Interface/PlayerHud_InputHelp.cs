@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public void refreshUpdate(LocalPlayer player)
         {
-            if (player.hud.detailLevel == HudDetailLevel.Minimal)
+            if (!player.hud.maximizedHud)
             {
                 deleteMenu();
                 return;

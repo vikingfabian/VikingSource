@@ -3019,6 +3019,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 factionIndex = newFaction.myIndex;
                 technology.destroyTechOnTakeOver();
+                queueToAllConscripts(0, null);
 
                 if (!duringStartup)
                 {

@@ -4,6 +4,13 @@ Change Log:
 * Added wood and stone to city overview
 * will hide cam bound on overview zoom
 
+Mini map:
+* hide minimap, toggle with M, plus key mapping
+* hide minimap/hud in pause menu
+* tutorial hide
+* worker update delay is timed to game speed
+* stops conscript queue on capture
+
 fixed - will update soon
 
 #Pics
@@ -13,18 +20,10 @@ fixed - will update soon
 
 #Winter update - must do#
 x achievement: visible, localize
+x localize text
 
 
-Mini map:
-x hide minimap, toggle with M
-x hide minimap/hud in pause menu
 
-x must time worker updates to speed
-
-x stop conscript queue on capture
-x declare war comfirm
-x declare war button
-x paste double tap
 
 
 #Spring update
@@ -62,6 +61,9 @@ x go over tutorial
 
 
 #Todo#
+x declare war comfirm
+x declare war button
+x paste double tap
 x extra music stream retry
 x load game shows "destroy" tooltip
 x "no stone/wood" warning on automation

@@ -232,6 +232,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             cityarea = new Rectangle2();
 
             this.player = player;
+            player.hud.minimapProperty(null, true, false);
             display = new Interface.TutorialDisplay(player);
             initMissions();
             
@@ -1419,7 +1420,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.hud.messages.blockFoodWarning(false);
             DssRef.state.events.onTutorialEnd();
 
-
+            player.hud.minimapProperty(null, true, true);
         }
 
         void startUnits()

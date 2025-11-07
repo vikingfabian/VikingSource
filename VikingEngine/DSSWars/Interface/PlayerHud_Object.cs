@@ -146,7 +146,7 @@ namespace VikingEngine.DSSWars.Interface
                 return;
             }
 
-            if (player.hud.detailLevel == HudDetailLevel.Minimal &&
+            if (!player.hud.maximizedHud &&
                 (faction == null || !selected))
             {
                 deleteMenu();
@@ -174,7 +174,7 @@ namespace VikingEngine.DSSWars.Interface
                 return;
             }
 
-            if (player.hud.detailLevel == HudDetailLevel.Minimal && 
+            if (!player.hud.maximizedHud && 
                 (obj == null || !selected))
             {
                 deleteMenu();

@@ -340,7 +340,7 @@ namespace VikingEngine.DSSWars
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int InputVersion = 6;
+            const int InputVersion = 7;
             w.Write(InputVersion);
 
 
@@ -350,6 +350,7 @@ namespace VikingEngine.DSSWars
                 StopStart.write(w);
 
                 ToggleHudDetail.write(w);
+                ToggleMinimap.write(w);
                 GameSpeed.write(w);
                 PauseGame.write(w);
                 NextCity.write(w);
@@ -408,6 +409,10 @@ namespace VikingEngine.DSSWars
 
                 //Home = MapRead.Button(r, inputSource.controllerIndex);
                 ToggleHudDetail = MapRead.Button(r, inputSource.controllerIndex);
+                if (inputVersion >= 7)
+                { 
+                    ToggleMinimap = MapRead.Button(r, inputSource.controllerIndex);
+                }
                 GameSpeed = MapRead.Button(r, inputSource.controllerIndex);
                 PauseGame = MapRead.Button(r, inputSource.controllerIndex);
                 NextCity = MapRead.Button(r, inputSource.controllerIndex);
@@ -517,6 +522,8 @@ namespace VikingEngine.DSSWars
                 InputActionType.NextArmy,
                 InputActionType.NextWar,
                 InputActionType.ToggleHudDetail,
+                InputActionType.ToggleMiniMap,
+
             });
 
             return result;
@@ -565,6 +572,16 @@ namespace VikingEngine.DSSWars
                     else
                     {
                         buttonMap = StopStart;
+                    }
+                    break;
+                case InputActionType.ToggleMiniMap:
+                    if (set)
+                    {
+                        ToggleMinimap = buttonMap;
+                    }
+                    else
+                    {
+                        buttonMap = ToggleMinimap;
                     }
                     break;
 
@@ -808,6 +825,7 @@ namespace VikingEngine.DSSWars
     {
         StopStart,
         ToggleHudDetail,
+        ToggleMiniMap,
         GameSpeed,
         PauseGame,
         NextCity,

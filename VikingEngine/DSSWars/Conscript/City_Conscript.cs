@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.Players;
 using VikingEngine.PJ.Joust.DropItem;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -179,7 +180,27 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        
+        public void queueToAllConscripts(int count, LocalPlayer player)
+        {
+            for (int i = 0; i < conscriptBuildings.Count; ++i)
+            {
+                if (player == null ||
+                    player.conscriptSubTab == BuildAndExpandType.ALL ||
+                    player.conscriptSubTab == conscriptBuildings[i].type)
+                {
+                    var status = conscriptBuildings[i];
+                    if (count == 1)
+                    {
+                        status.que++;
+                    }
+                    else
+                    {
+                        status.que = count;
+                    }
+                    conscriptBuildings[i] = status;
+                }
+            }
+        }
 
         public void toggleConscriptStop()
         {

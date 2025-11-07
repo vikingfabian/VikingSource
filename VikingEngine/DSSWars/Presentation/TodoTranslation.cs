@@ -54,6 +54,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string FactionName_AerimAngren => "Aerim Angren";
 
         public string HUD_NotAvailbleInX => "No available in {0}";
+
+        public string InputActionName_MiniMap => "Mini-map";
     }
 
 
