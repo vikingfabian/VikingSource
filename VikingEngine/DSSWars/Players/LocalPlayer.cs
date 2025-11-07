@@ -767,7 +767,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Z))
                 {
-                    //
+                    DssRef.state.events.victory(Event.VictoryType.WorldPeace);
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.TestNextEvent();
                     //hud.objMenu.diplomacy?.makeServant();
@@ -785,7 +785,7 @@ namespace VikingEngine.DSSWars.Players
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
                     //battleLineUpTest3_friendly_only();
-                    battleLineUpTest2(false);
+                    //battleLineUpTest2(false);
 
                     //var tile = DssRef.world.tileGrid.Get(gameControls.mapControls.tilePosition);
                     //Debug.Log(tile.ToString());

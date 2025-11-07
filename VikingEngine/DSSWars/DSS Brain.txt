@@ -1,15 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Fixed missing culture resource bonuses: HeavyPaddedArmor, LightPlateArmor, FullPlateArmor and BronzeArmor
-* Added wood and stone to city overview
-* will hide cam bound on overview zoom
-
-Mini map:
-* hide minimap, toggle with M, plus key mapping
-* hide minimap/hud in pause menu
-* tutorial hide
-* worker update delay is timed to game speed
-* stops conscript queue on capture
+* 
 
 fixed - will update soon
 
@@ -23,9 +14,6 @@ x achievement: visible, localize
 x localize text
 
 
-
-
-
 #Spring update
 x cities summary tab
 -Having a tab with queued units and also a UI element to select all baracks and recruit simultaneously per city (less micromanagement)
@@ -33,9 +21,7 @@ x cities summary tab
 x city resource in/out, + checkbox to view/(and hide text)
 -compressed view, no tab view
 
-ACHIEVEMENTS: 
-* Taste the impossible: Terminate the first faction to attack you. 300% difficulty. (no pause?)
-* Win a quick match
+
 
 MAP
 * Optimized: Diplomacy map
