@@ -1,29 +1,25 @@
 ﻿UPDATE
 Change Log:
 * 
-
 fixed - will update soon
 
-#Pics
-
-#RELEASE#
-#BuiltWithMonoGame tags
-Historymache
 
 #SPRING UPDATE#
 * Performance: city resources have been moved to a Entity Component System 
 
-#Winter update - must do#
-x achievement: visible, localize
-x localize text
 
+#Spring update TODO
+x start with one city
 
-#Spring update
 x cities summary tab
 -Having a tab with queued units and also a UI element to select all baracks and recruit simultaneously per city (less micromanagement)
 
 x city resource in/out, + checkbox to view/(and hide text)
 -compressed view, no tab view
+-expand tooltip
+
+x Improved defenses: Mounted ballistas, and spikes
+x More diplomacy: better interaction with allies
 
 
 
