@@ -401,7 +401,7 @@ namespace VikingEngine.DSSWars.Delivery
                 if (city.deliveryServices.Count == 0)
                 {
                     //EMPTY
-                    content.text(DssRef.lang.Hud_EmptyList).overrideColor = HudLib.InfoYellow_Light;
+                    content.text(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light);
                     content.newParagraph();
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement, HudLib.TitleColor_Label);
                     content.newLine();

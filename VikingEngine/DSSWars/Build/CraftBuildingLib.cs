@@ -901,7 +901,8 @@ namespace VikingEngine.DSSWars.Build
           1,
           new UseResource[]
           {
-               new UseResource(ItemResourceType.Gold, 1),
+               new UseResource(ItemResourceType.Wood_Group, 25),
+                new UseResource(ItemResourceType.Stone_G, 25),
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
         );
@@ -936,8 +937,8 @@ namespace VikingEngine.DSSWars.Build
           1,
          new UseResource[]
           {
-               new UseResource(ItemResourceType.Wood_Group, 80),
-                new UseResource(ItemResourceType.Stone_G, 20),
+               new UseResource(ItemResourceType.Wood_Group, 100),
+                new UseResource(ItemResourceType.Stone_G, 30),
 
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
@@ -959,8 +960,8 @@ namespace VikingEngine.DSSWars.Build
           1,
           new UseResource[]
           {
-              new UseResource(ItemResourceType.Wood_Group, 20),
-                new UseResource(ItemResourceType.Stone_G, 100)
+              new UseResource(ItemResourceType.Wood_Group, 40),
+                new UseResource(ItemResourceType.Stone_G, 120)
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );
@@ -970,8 +971,8 @@ namespace VikingEngine.DSSWars.Build
           1,
            new UseResource[]
           {
-              new UseResource(ItemResourceType.Wood_Group, 20),
-                new UseResource(ItemResourceType.Stone_G, 100)
+              new UseResource(ItemResourceType.Wood_Group, 40),
+                new UseResource(ItemResourceType.Stone_G, 120)
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );
@@ -981,8 +982,8 @@ namespace VikingEngine.DSSWars.Build
           1,
            new UseResource[]
           {
-              new UseResource(ItemResourceType.Wood_Group, 20),
-                new UseResource(ItemResourceType.Stone_G, 100)
+              new UseResource(ItemResourceType.Wood_Group, 40),
+                new UseResource(ItemResourceType.Stone_G, 120)
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );
@@ -992,8 +993,8 @@ namespace VikingEngine.DSSWars.Build
           1,
            new UseResource[]
           {
-              new UseResource(ItemResourceType.Wood_Group, 20),
-                new UseResource(ItemResourceType.Stone_G, 100)
+              new UseResource(ItemResourceType.Wood_Group, 40),
+                new UseResource(ItemResourceType.Stone_G, 120)
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );

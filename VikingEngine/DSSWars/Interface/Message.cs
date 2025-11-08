@@ -253,7 +253,7 @@ namespace VikingEngine.DSSWars.Interface
 
             SoundLib.message.Play(Pan.Right);
 
-            if (player.hud.detailLevel == HudDetailLevel.Minimal)
+            if (player.hud.maximizedHud)
             {
                 RichBoxContent compact = new RichBoxContent();
                 foreach (var m in content)

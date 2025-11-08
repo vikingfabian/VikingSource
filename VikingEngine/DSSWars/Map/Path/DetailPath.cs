@@ -101,7 +101,9 @@ namespace VikingEngine.DSSWars.Map.Path
             * 3.Varje kollad center ruta ska till en sluten lista
             * 4.Varje ny ruta ska till en öppen lista
             */
-            if (center == goal)
+            if (center == goal ||
+                !DssRef.world.subTileGrid.InBounds(center) ||
+                !DssRef.world.subTileGrid.InBounds(goal))
             {
                 return null;
             }

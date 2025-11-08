@@ -228,9 +228,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public Tutorial(LocalPlayer player)
         {
+            DssRef.storage.runTutorial_1short_2normal = 2;
             cityarea = new Rectangle2();
 
             this.player = player;
+            player.hud.minimapProperty(null, true, false);
             display = new Interface.TutorialDisplay(player);
             initMissions();
             
@@ -391,7 +393,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(DssRef.todoLang.Tutorial_HighPriority, HudLib.InfoYellow_Light));
+                    content.Add(new RbText(DssRef.lang.Tutorial_HighPriority, HudLib.InfoYellow_Light));
                     
                     break;
 
@@ -1423,7 +1425,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.hud.messages.blockFoodWarning(false);
             DssRef.state.events.onTutorialEnd();
 
-
+            player.hud.minimapProperty(null, true, true);
         }
 
         void startUnits()

@@ -8,6 +8,23 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Japanese : AbsLanguage
     {
+        public override string Error_SoundInitFailure => "サウンドの初期化に失敗しました";
+
+        public override string GameMenu_ControllerDisconnected => "コントローラーが切断されました";
+
+        public override string Tutorial_HighPriority => "部下たちは優先度の高い任務から先に実行します。";
+
+        public override string BuildingType_Wall_Description => "壁は部隊を攻撃から守り、わずかな攻撃ブーストを与えます。";
+
+        public override string BuildingType_Wall_Siege => "攻城兵器は壁の防御力を低下させます。";
+
+        public override string Conscript_BlockChance => "攻撃をブロックする確率：{0}%";
+
+        public override string Battle_DeclarWarReminder => "攻撃する前に宣戦布告する必要があります。";
+
+        //--
+
+
         /// <summary>
         /// この言語の名前
         /// </summary>
@@ -2559,13 +2576,6 @@ namespace VikingEngine.DSSWars.Presentation
         public override string VictoryType_DefeatBoss => "Boss 撃破";
         public override string VictoryType_Domination => "支配";
         public override string VictoryType_WorldPeace => "世界平和";
-
-        // Launch Polish 1
-        public override string Error_SoundInitFailure => "サウンドの初期化に失敗しました";
-
-        public override string GameMenu_ControllerDisconnected => "コントローラーが切断されました";
-
-        public override string Tutorial_HighPriority => "兵士たちは優先度の高い作業から先に行います";
 
     }
 }

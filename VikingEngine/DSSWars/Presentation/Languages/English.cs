@@ -11,6 +11,23 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class English : AbsLanguage
     {
+
+        public override string Error_SoundInitFailure => "Sound initialization failed";
+
+        public override string GameMenu_ControllerDisconnected => "Controller disconnected";
+
+        public override string Tutorial_HighPriority => "Your men will complete high-priority tasks first.";
+
+        public override string BuildingType_Wall_Description => "Walls protect men from attacks and provide a slight attack boost.";
+
+        public override string BuildingType_Wall_Siege => "Siege weapons reduce wall defenses.";
+
+        public override string Conscript_BlockChance => "{0}% chance to block an attack.";
+
+        public override string Battle_DeclarWarReminder => "You must declare war to attack.";
+
+        //--
+
         /// <summary>
         /// Name of this language
         /// </summary>
@@ -2601,18 +2618,11 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string GameMenu_BlockImportAchievements => "Block achievements on imported files";
 
-        public override string EndScreen_PeaceVictoryQuote => "Let’s lay down our swords and embrace a better future";
+        public override string EndScreen_PeaceVictoryQuote => "Let's lay down our swords and embrace a better future";
 
         public override string VictoryType_DefeatBoss => "Boss defeated";
         public override string VictoryType_Domination => "Domination";
         public override string VictoryType_WorldPeace => "World Peace";
-
-        //launch polish 1
-        public override string Error_SoundInitFailure => "Sound initialization failed";
-
-        public override string GameMenu_ControllerDisconnected => "Controller disconnected";
-
-        public override string Tutorial_HighPriority => "Your men will complete high-priority tasks first";
 
     }
 }

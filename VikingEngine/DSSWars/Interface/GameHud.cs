@@ -21,8 +21,8 @@ namespace VikingEngine.DSSWars.Interface
         Timer.Basic refreshTimer = new Timer.Basic(500, false);
         public bool mouseOverHud = false;
         public bool needRefresh = false;
-        public HudDetailLevel detailLevel = HudDetailLevel.Normal;
-
+        //public HudDetailLevel detailLevel = HudDetailLevel.Normal;
+        public bool maximizedHud = true;
         //public GameHudDisplays displays;
         //public GameHudMenu hudmenu;
         public MessageGroup_Ingame messages;
@@ -65,8 +65,11 @@ namespace VikingEngine.DSSWars.Interface
             objMenu = new PlayerHud_Object(player);
             factionMenu = new PlayerHud_Faction();
 
-            miniMap = new MiniMap(player);
-            inputHelp = new PlayerHud_InputHelp(player, miniMap.area.Y);
+            if (numPlayers <= 1)
+            {
+                miniMap = new MiniMap(player, false);
+            }
+            inputHelp = new PlayerHud_InputHelp(player, inputHelpBottom());
             
 
             //hudmenu = new GameHudMenu(player);
@@ -74,6 +77,18 @@ namespace VikingEngine.DSSWars.Interface
             tooltip = new Tooltip();
             pins = new HudPinManager();
             
+        }
+
+        public float inputHelpBottom()
+        {
+            if (miniMap == null)
+            {
+                return player.playerData.view.DrawArea.Bottom;
+            }
+            else
+            {
+                return miniMap.area.Y;
+            }
         }
 
         public void initMap()
@@ -135,13 +150,45 @@ namespace VikingEngine.DSSWars.Interface
             //}
         }
 
+        public bool maxHudProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                maximizedHud = value;
+                updateMenuDisplays(true);
+            }
+            return maximizedHud;
+        }
+
+        public bool minimapProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                if (value)
+                {
+                    miniMap = new MiniMap(player, true);
+                }
+                else
+                {
+                    miniMap?.DeleteMe();
+                    miniMap = null;
+                }
+                inputHelp.deleteMenu();
+                inputHelp.refreshUpdate(player);
+            }
+            return miniMap != null;
+        }
+
         public void update(out bool refresh, bool allowInput)
         {
             //Debug.Log("game hud update");
             mouseOverHud = false;
 
-            miniMap.update(player, allowInput, out bool miniMapMouseOver);
-            mouseOverHud |= miniMapMouseOver;
+            if (miniMap != null)
+            {
+                miniMap.update(player, allowInput, out bool miniMapMouseOver);
+                mouseOverHud |= miniMapMouseOver;
+            }
 
             if (allowInput)
             {
@@ -155,12 +202,29 @@ namespace VikingEngine.DSSWars.Interface
 
                 if (player.gameControls.input.ToggleHudDetail.DownEvent)
                 {
-                    detailLevel++;
-                    if (detailLevel >= HudDetailLevel.NUM)
-                    {
-                        detailLevel = 0;
-                    }
+                    //detailLevel++;
+                    //if (detailLevel >= HudDetailLevel.NUM)
+                    //{
+                    //    detailLevel = 0;
+                    //}
+                    lib.Invert(ref maximizedHud);
                     refresh = true;
+                }
+
+                if (player.gameControls.input.ToggleMinimap.DownEvent)
+                {
+                    minimapProperty(null, true, miniMap == null);
+                    //if (miniMap == null)
+                    //{
+                    //    miniMap = new MiniMap(player, true);                        
+                    //}
+                    //else
+                    //{
+                    //    miniMap?.DeleteMe();
+                    //    miniMap = null;
+                    //}
+                    //inputHelp.deleteMenu();
+                    //inputHelp.refreshUpdate(player);
                 }
 
 
@@ -209,55 +273,59 @@ namespace VikingEngine.DSSWars.Interface
 
 
 
-                void updateMenuDisplays(bool refresh)
-                {
+                
 
-                    if (player.gameControls.diplomacy != null)
-                    {
-                        var faction = player.gameControls.diplomacy.mainSelection(out bool selected);
-
-                        objMenu.refreshDiplomacy(player, faction, selected);
-
-                        player.factionTab = MenuTab.NUM_NONE;
-                    }
-                    else if (player.gameControls.map.selection.obj != null)
-                    {
-                        updateObjectDisplay(player.gameControls.map.selection.obj, true, refresh);
-                        player.factionTab = MenuTab.NUM_NONE;
-
-
-                    }
-                    else if (player.gameControls.map.hover.obj != null)
-                    {
-                        updateObjectDisplay(player.gameControls.map.hover.obj, false, refresh);
-                        player.factionTab = MenuTab.NUM_NONE;
-                    }
-                    else if (player.factionTab != MenuTab.NUM_NONE)
-                    {
-                        //updateObjectDisplay(null, false, refresh);
-                        if (refresh)
-                        {
-                            objMenu.deleteMenu();
-                        }
-                    }
-                    else if (!player.updateObjectDisplay())
-                    {
-                        //Remove display
-                        updateObjectDisplay(null, false, refresh);
-                    }
-                }
-
-                void updateObjectDisplay(GameObject.AbsGameObject obj, bool selected, bool refresh)
-                {
-                    if (refresh)
-                    {
-                        objMenu.refreshObject(player, obj, selected);
-                    }
-                }
+                
             }
             else
             {
                 refresh = false;
+            }
+        }
+
+        void updateMenuDisplays(bool refresh)
+        {
+
+            if (player.gameControls.diplomacy != null)
+            {
+                var faction = player.gameControls.diplomacy.mainSelection(out bool selected);
+
+                objMenu.refreshDiplomacy(player, faction, selected);
+
+                player.factionTab = MenuTab.NUM_NONE;
+            }
+            else if (player.gameControls.map.selection.obj != null)
+            {
+                updateObjectDisplay(player.gameControls.map.selection.obj, true, refresh);
+                player.factionTab = MenuTab.NUM_NONE;
+
+
+            }
+            else if (player.gameControls.map.hover.obj != null)
+            {
+                updateObjectDisplay(player.gameControls.map.hover.obj, false, refresh);
+                player.factionTab = MenuTab.NUM_NONE;
+            }
+            else if (player.factionTab != MenuTab.NUM_NONE)
+            {
+                //updateObjectDisplay(null, false, refresh);
+                if (refresh)
+                {
+                    objMenu.deleteMenu();
+                }
+            }
+            else if (!player.updateObjectDisplay())
+            {
+                //Remove display
+                updateObjectDisplay(null, false, refresh);
+            }
+
+            void updateObjectDisplay(GameObject.AbsGameObject obj, bool selected, bool refresh)
+            {
+                if (refresh)
+                {
+                    objMenu.refreshObject(player, obj, selected);
+                }
             }
         }
 
@@ -296,11 +364,11 @@ namespace VikingEngine.DSSWars.Interface
             return mouseOverHud;
         }
     }
-    enum HudDetailLevel
-    { 
-        Minimal,
-        Normal,
-        //Extended,
-        NUM
-    }
+    //enum HudDetailLevel
+    //{ 
+    //    Minimal,
+    //    Normal,
+    //    //Extended,
+    //    NUM
+    //}
 }

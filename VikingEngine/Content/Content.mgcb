@@ -1956,6 +1956,27 @@
 /processorParam:TextureFormat=Compressed
 /build:Font/JapaneseRegular.spritefont
 
+#begin Font/KoreanBold.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/KoreanBold.spritefont
+
+#begin Font/KoreanConsole.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/KoreanConsole.spritefont
+
+#begin Font/KoreanRegular.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/KoreanRegular.spritefont
+
 #begin Font/Regular.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

@@ -200,7 +200,6 @@ namespace VikingEngine.DSSWars.Delivery
                 }
                 else
                 {
-
                     recieverHasAmountPlusDeliveries = city.GetGroupedResource(sendItem).amountPlusDelivery();
                 }
 

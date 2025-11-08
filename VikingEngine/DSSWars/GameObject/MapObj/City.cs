@@ -66,9 +66,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return HousingCount_Guard - soldiersCount;
         }
-        //public int HousingCount_ServiceMen = 0;
 
-        //public FloatingInt damages = new FloatingInt();
         public FloatingInt immigrants = new FloatingInt();
         
         public int workHutStyle = 0;
@@ -519,7 +517,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     w.Write(ushort.MinValue);
                 }
-
+                w.Write((byte)experenceOrDistance);
 
                 writeGroups(w);
 
@@ -543,7 +541,7 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write(res_food_safeguard);
 
                 technology.writeGameState(w, false);
-                w.Write(money.copper);
+                money.write(w);
                 w.Write(automateCity);
                 w.Write((byte)automationFocus);
                 w.Write((byte)warAutoQuality);
@@ -657,6 +655,11 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
+            if (subversion >= 84)
+            {
+                experenceOrDistance = (XP.ExperienceOrDistancePrio)r.ReadByte();
+            }
+
             readGroups(r, subversion, pointers);
      
             defenceBuildings.Clear();
@@ -697,7 +700,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                money.copper = r.ReadInt64();
+                money.read(r);
             }
 
             automateCity = r.ReadBoolean();
@@ -1389,7 +1392,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void onGuardHouseBuild(bool build_notDestroy, bool large)        
         {
-            int count = large ? DssConst.HousingCount_GuardsOffice_Small : DssConst.HousingCount_GuardsOffice_Large;
+            int count = large ? DssConst.HousingCount_GuardsOffice_Large : DssConst.HousingCount_GuardsOffice_Small;
             if (build_notDestroy)
             {
                 HousingCount_Guard += count;
@@ -1581,6 +1584,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (newGame)
             {
+                money.AddCopper(500);
+
                 switch (cityType)
                 {
                     case CityType.Village:
@@ -1974,7 +1979,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (capturePoints >= 100)
             {
                 //Power check
-                cityCaptureCehck();
+                cityCaptureCheck();
                 capturePoints = -100;                
             }
 
@@ -1982,7 +1987,7 @@ namespace VikingEngine.DSSWars.GameObject
             //capturePoints = Bound.Min(capturePoints - 10, 0);
         }
 
-        void cityCaptureCehck()
+        void cityCaptureCheck()
         {
             Task.Run(() =>
             {
@@ -1990,20 +1995,23 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     Faction faction = GetFaction();
                     Faction newOwner =  DssRef.world.unitCollAreaGrid.cityCaptureCheck(this, strengthValue > 0 ? 0 : 2);
-                    if (newOwner != faction)
+                    if (newOwner != faction && newOwner != null)                    
                     {
                         Ref.update.AddSyncAction(new SyncAction(() =>
                         {
-                            if (faction.player.IsLocalPlayer())
+                            if (newOwner.isAlive)
                             {
-                                ++faction.player.GetLocalPlayer().statistics.CitiesLost;
-                            }
-                            if (newOwner.player.IsLocalPlayer())
-                            {
-                                ++newOwner.player.GetLocalPlayer().statistics.CitiesCaptured;
-                            }
+                                if (faction != null && faction.player.IsLocalPlayer())
+                                {
+                                    ++faction.player.GetLocalPlayer().statistics.CitiesLost;
+                                }
+                                if (newOwner.player.IsLocalPlayer())
+                                {
+                                    ++newOwner.player.GetLocalPlayer().statistics.CitiesCaptured;
+                                }
 
-                            setFaction(newOwner, false, false);
+                                setFaction(newOwner, false, false);
+                            }
                         }));
                     }
                 }
@@ -3195,6 +3203,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 factionIndex = newFaction.myIndex;
                 technology.destroyTechOnTakeOver();
+                queueToAllConscripts(0, null);
 
                 if (!duringStartup)
                 {

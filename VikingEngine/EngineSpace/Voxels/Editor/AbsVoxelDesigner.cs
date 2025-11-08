@@ -822,6 +822,10 @@ namespace VikingEngine.Voxels
         {
             return voxelProject.layers.Selected().GetFrame(voxelProject.currentFrame.Value).Get(drawPoint);
         }
+        public ushort GetSafe(IntVector3 drawPoint)
+        {
+            return voxelProject.layers.Selected().GetFrame(voxelProject.currentFrame.Value).GetSafe(drawPoint);
+        }
 
         virtual public void SetVoxel(int frame, IntVector3 drawPoint, ushort material)
         {

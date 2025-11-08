@@ -1128,6 +1128,8 @@ namespace VikingEngine.DSSWars.Players
 
             if (targetZoom != camera.CurrentZoom)
             {
+                player.hud.miniMap.OnMapZoom(zoominput, player);
+
                 float zdiff = targetZoom - camera.CurrentZoom;
                 if (Math.Abs(zdiff) > 2)
                 {
@@ -1149,8 +1151,6 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
             }
-
-            
         }
 
         float? targetRotation = null;
@@ -1428,7 +1428,7 @@ namespace VikingEngine.DSSWars.Players
         private void updateCamera()
         {
             Vector3 camTarget = playerPointerPos;
-            camTarget.Y = 0.6f;
+            camTarget.Y = 0.1f;
 
             if ((camTarget - camera.LookTarget).Length() < 0.5f)
             {

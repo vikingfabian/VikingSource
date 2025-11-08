@@ -330,7 +330,7 @@ namespace VikingEngine.DSSWars.Event
 
             if (DssRef.difficulty.extremeAggression)
             {
-                triggerTimeSpan_Minutes = new IntervalF(0.2f, 1f);
+                triggerTimeSpan_Minutes = IntervalF.NoInterval(Ref.rnd.Float(9f, 12f));
             }
 
             init(
@@ -410,43 +410,52 @@ namespace VikingEngine.DSSWars.Event
                 while (found < 3)
                 { 
                     var check = arraylib.RandomListMemberPop(searchcities);
-                    foreach (var ncityIx in check.neighborCities)
+                    if (check != null)
                     {
-                        if (!attackCities.Contains(ncityIx))
-                        { 
-                            var ncity_p = DssRef.world.cities[ncityIx];
-                            if (!completedCities.Contains(ncity_p) &&
-                                !searchcities.Contains(ncity_p))
-                            { 
-                                searchcities.Add(ncity_p);
+                        foreach (var ncityIx in check.neighborCities)
+                        {
+                            if (!attackCities.Contains(ncityIx))
+                            {
+                                var ncity_p = DssRef.world.cities[ncityIx];
+                                if (!completedCities.Contains(ncity_p) &&
+                                    !searchcities.Contains(ncity_p))
+                                {
+                                    searchcities.Add(ncity_p);
+                                }
                             }
                         }
-                    }
 
-                    var player = check.GetPlayer();
-                    if (player.IsBot() &&
-                        player.faction.diplomaticSide != DiplomaticSide.Dark &&
-                        check.cityType < CityType.Capital &&
-                        DssRef.diplomacy.GetRelationType(check.GetFaction(), p.faction) >= RelationType.RelationType0_Neutral)
+                        var player = check.GetPlayer();
+                        if (player.IsBot() &&
+                            player.faction.diplomaticSide != DiplomaticSide.Dark &&
+                            check.cityType < CityType.Capital &&
+                            DssRef.diplomacy.GetRelationType(check.GetFaction(), p.faction) >= RelationType.RelationType0_Neutral)
+                        {
+                            attackCities.Add(check.myIndex);
+                            found++;
+                        }
+                    }
+                    else
                     {
-                        attackCities.Add(check.myIndex);
-                        found++;
+                        break;
                     }
                 }
             }
 
             Ref.update.AddSyncAction(new SyncAction(() =>
             {
-                foreach (var p in DssRef.state.localPlayers)
+                if (attackCities.Count > 0)
                 {
-                    p.hud.messages.Add(DssRef.lang.EventMessage_Event_Title, DssRef.lang.EventMessage_DarkHorde);
-                }
+                    foreach (var p in DssRef.state.localPlayers)
+                    {
+                        p.hud.messages.Add(DssRef.lang.EventMessage_Event_Title, DssRef.lang.EventMessage_DarkHorde);
+                    }
 
-                foreach (var cityIx in attackCities)
-                {
-                    spawnBarbarians(DssRef.world.cities[cityIx], false);
+                    foreach (var cityIx in attackCities)
+                    {
+                        spawnBarbarians(DssRef.world.cities[cityIx], false);
+                    }
                 }
-
                 attackCities = null;
             }));
         }
@@ -553,6 +562,7 @@ namespace VikingEngine.DSSWars.Event
                             barbarianArmy.setAsStartArmy();
                             barbarianArmy.setMassiveFood();
 
+                            enemyFac.money.SetGold(100000);
                             enemyFac.player.protectedFromDelete = false;
 
                             foreach (var p in DssRef.state.localPlayers)
@@ -1158,7 +1168,7 @@ namespace VikingEngine.DSSWars.Event
                     {
                         p.hud.messages.Add(DssRef.lang.EventMessage_FinalBossEnterTitle, DssRef.lang.EventMessage_FinalBossEnterText);
 
-                        if (!DssRef.diplomacy.InWar(p.faction, greenwood))
+                        if (greenwood != null && !DssRef.diplomacy.InWar(p.faction, greenwood))
                         {
                             DssRef.diplomacy.GetOrCreateRelation(p.faction, greenwood).SpeakTerms = SpeakTerms.SpeakTerms1_Good;
                         }
@@ -1399,8 +1409,8 @@ namespace VikingEngine.DSSWars.Event
     /// </summary>
     enum EventType
     {        
-        Tutorial = -1,
-        AiDelay = 0,
+        Tutorial = 0,
+        AiDelay = 1,
         AiWarDelay,
         FirstAttack,
         WarmanagerDelay,

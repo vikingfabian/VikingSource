@@ -127,9 +127,9 @@ namespace VikingEngine.DSSWars.GameObject
                 setDetailLevel(true);
             }
 
-            if (tArmy.GetFaction().player.IsLocalPlayer())
+            if (tArmy.GetFaction_NoChecks().player.IsLocalPlayer())
             {
-                tArmy.GetFaction().player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
+                tArmy.GetFaction_NoChecks().player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
             }
         }
 
@@ -664,7 +664,14 @@ namespace VikingEngine.DSSWars.GameObject
                 pathIsReady = false;
             }
 
-            waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();            
+            if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
+            {
+                waterNode = tile.IsWater();
+            }
+            else
+            {
+                waterNode = isShip;
+            }
             return goalWp;
         }
 
@@ -937,14 +944,17 @@ namespace VikingEngine.DSSWars.GameObject
                             //Capture city here
                             if (tArmy.IsArmy())
                             {
-                                var city = DssRef.world.tileGrid.Get(tilePos).City();
-                                if (DssRef.diplomacy.InWar(tArmy.factionIndex, city.factionIndex))
+                                if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
                                 {
-                                    if (city.tilePos.SideLength(tilePos) <= 2 || tArmy.GetArmy().attackTarget == city)
+                                    var city = tile.City();
+                                    if (DssRef.diplomacy.InWar(tArmy.factionIndex, city.factionIndex))
                                     {
-                                        goalWp = WP.ToWorldPos(city.tilePos);
-                                        state = GroupState.CityCapture;
-                                        return;
+                                        if (city.tilePos.SideLength(tilePos) <= 2 || tArmy.GetArmy().attackTarget == city)
+                                        {
+                                            goalWp = WP.ToWorldPos(city.tilePos);
+                                            state = GroupState.CityCapture;
+                                            return;
+                                        }
                                     }
                                 }
                             }
@@ -959,21 +969,24 @@ namespace VikingEngine.DSSWars.GameObject
 
                             if (Ref.peRnd.Chance(0.1))
                             {
-                                var city = DssRef.world.tileGrid.Get(tilePos).City();
-                                if (DssRef.diplomacy.InWar(tArmy.factionIndex, city.factionIndex))
+                                if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
                                 {
-                                    goalWp = WP.ToWorldPos(city.tilePos);
-
-                                    if (VectorExt.PlaneXZLength(goalWp - position) < CaptureDistance)
+                                    var city = tile.City();
+                                    if (DssRef.diplomacy.InWar(tArmy.factionIndex, city.factionIndex))
                                     {
-                                        city.capturePoints += CaptureAddPerMs * time;
+                                        goalWp = WP.ToWorldPos(city.tilePos);
+
+                                        if (VectorExt.PlaneXZLength(goalWp - position) < CaptureDistance)
+                                        {
+                                            city.capturePoints += CaptureAddPerMs * time;
+                                        }
+
                                     }
-                                    
-                                }
-                                else
-                                {
-                                    goalWp = armyPlacementWp;
-                                    state = GroupState.Battle;
+                                    else
+                                    {
+                                        goalWp = armyPlacementWp;
+                                        state = GroupState.Battle;
+                                    }
                                 }
                             }
 
@@ -1092,14 +1105,32 @@ namespace VikingEngine.DSSWars.GameObject
             if (faction == null)
             { return; }
 
+            if (faction != args.player.faction &&
+                args.player.gameControls.map.selection.obj != null &&
+                args.player.gameControls.map.selection.obj.IsSoldiers())
+            {
+                args.content.Add(new RbImage(SpriteName.RedErrorCross));
+                args.content.hspace();
+                args.content.Add(new RbText(DssRef.lang.Battle_DeclarWarReminder, HudLib.NotAvailableColor));
+                args.content.Add(new RbSeperationLine());
+            }
+
+
             args.content.Add(new RbBeginTitle(tooltipOrGroup? 2 : 1));
             args.content.Add(faction.FlagTextureToHud());
-            args.content.space(0.5f);
+            args.content.hspace();
+
+            if (faction != args.player.faction)
+            {
+                args.content.Add(new RbImage(Diplomacy.RelationSprite(DssRef.diplomacy.GetRelationType(faction, args.player.faction))));
+                args.content.space();
+            }
+
             TypeIcon(args.content);
-            args.content.space(0.5f);
+            args.content.hspace();
             args.content.Add(new RbText(soldierConscript.conscript.TypeName(), tooltipOrGroup ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
-            args.content.space(1);
+            args.content.space();
             args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
 
             if (compact)
@@ -2324,13 +2355,15 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 //state = GroupState.Idle;
 
-                bool waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();
-                if (waterNode != isShip)
+                if (DssRef.world.tileGrid.TryGet(tilePos, out Tile tile))
                 {
-                    Ref.update.AddSyncAction(new SyncAction2Arg<SoldierTransformType, int>(completeTransform, waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1));
-                    //completeTransform(waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1);
+                    bool waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();
+                    if (waterNode != isShip)
+                    {
+                        Ref.update.AddSyncAction(new SyncAction2Arg<SoldierTransformType, int>(completeTransform, waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1));
+                        //completeTransform(waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1);
+                    }
                 }
-
                 teleportSoldiers();
             }
             else
@@ -2477,6 +2510,11 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
+        public override bool IsSoldiers()
+        {
+            return true;
+        }
+
         public override bool rectangleCollision(ScreenToSpaceRectangleBound rectangle)
         {
             var soldiers_sp = soldiers;
@@ -2495,7 +2533,7 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        public void toGroupHud(RichBoxContent content)
+        public void toGroupHud(ObjectHudArgs args)
         {
             //string name = Name(out _);
 
@@ -2511,7 +2549,7 @@ namespace VikingEngine.DSSWars.GameObject
             //content.Add(new RbText(soldierConscript.conscript.TypeName(), HudLib.TitleColor_TypeName));
             //content.space(0.5f);
             //content.Add(new RbText(string.Format(DssRef.lang.UnitId, parentArrayIndex), HudLib.SecondaryTextColor));
-            SoldiersPresentationHud(new ObjectHudArgs(content), true, true);
+            SoldiersPresentationHud(args, true, true);
             
         }
     }    

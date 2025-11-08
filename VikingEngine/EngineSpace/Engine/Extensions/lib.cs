@@ -992,8 +992,11 @@ namespace VikingEngine
         public static Vector2 AngleToV2(float angle, float lenght)
         {
             Vector2 direction = Vector2.Zero;
-            direction.X = (float)(Math.Sin(angle) * lenght);
-            direction.Y = (float)(Math.Cos(angle) * -lenght);
+            if (lenght != 0)
+            {
+                direction.X = (float)(Math.Sin(angle) * lenght);
+                direction.Y = (float)(Math.Cos(angle) * -lenght);
+            }
             return direction;
         }
         public static float V2ToAngle(Vector2 direction)

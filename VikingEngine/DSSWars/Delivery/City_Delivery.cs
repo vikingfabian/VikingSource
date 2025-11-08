@@ -135,12 +135,6 @@ namespace VikingEngine.DSSWars.GameObject
                                     {
                                         DssRef.achieve.UnlockAchievement_async(AchievementIndex.gold_deliver);
                                     }
-                                    //if (status.inProgress.type == ItemResourceType.Food_G &&
-                                    //    resource.amount <= 2 &&
-                                    //    GetPlayer().IsLocalPlayer())
-                                    //{
-                                    //    DssRef.achieve.UnlockAchievement_async(AchievementIndex.foo);
-                                    //}
 
                                     resource.amount += status.inProgress.SendAmount;
                                     resource.deliverCount -= status.inProgress.SendAmount;
@@ -203,38 +197,39 @@ namespace VikingEngine.DSSWars.GameObject
         {
             ItemResourceType result = ItemResourceType.NONE;
 
-            if (find(MovableCityResource_WeaponMelee))
+            for (int i = 0; i < 10; ++i)
             {
-                return result;
+                if (find(MovableCityResource_WeaponMelee))
+                {
+                    return result;
+                }
+                if (find(MovableCityResource_WeaponRanged))
+                {
+                    return result;
+                }
+                if (find(MovableCityResource_Armor))
+                {
+                    return result;
+                }
+                if (find(MovableCityResource_Metals))
+                {
+                    return result;
+                }
+                if (find(MovableCityResource_Misc))
+                {
+                    return result;
+                }
             }
-            if (find(MovableCityResource_WeaponRanged))
-            {
-                return result;
-            }
-            if (find(MovableCityResource_Armor))
-            {
-                return result;
-            }
-            if (find(MovableCityResource_Metals))
-            {
-                return result;
-            }
-            if (find(MovableCityResource_Misc))
-            {
-                return result;
-            }
-            
             return result;
 
             bool find(ItemResourceType[] movableCityResource)
-            {
-                foreach (ItemResourceType type in movableCityResource)
+            {                
+                ItemResourceType type = movableCityResource[Ref.rnd.Int(movableCityResource.Length)];
+
+                if (GetGroupedResource(type).reachedBuffer())
                 {
-                    if (GetGroupedResource(type).reachedBuffer())
-                    {
-                        result = type;
-                        return true;
-                    }
+                    result = type;
+                    return true;
                 }
 
                 return false;

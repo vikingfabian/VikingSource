@@ -234,6 +234,12 @@ namespace VikingEngine.DSSWars
             }
 
             workTemplate.readGameState(r, subVersion, false);
+
+            var cities_c = cities.counter();
+            while (cities_c.Next())
+            {
+                cities_c.sel.workTemplate.onFactionChange(cities_c.sel, workTemplate);
+            }
         }
 
         void writeRelations(System.IO.BinaryWriter w)
@@ -538,26 +544,21 @@ namespace VikingEngine.DSSWars
                 previuosMoney = storeMoney;
                 storeMoney = money;
 
-                if (cities.Count == 0)
+                if (cities.Count == 0 && !player.protectedFromDelete)
                 {
-
-                    if (!player.protectedFromDelete)
+                    if (armies.Count == 0)
                     {
-
-                        if (armies.Count == 0)
+                        DeleteMe();
+                    }
+                    else if (militaryStrength < 0.4f)
+                    {
+                        var armiesC = armies.counter();
+                        while (armiesC.Next())
                         {
-                            DeleteMe();
+                            armiesC.sel.DeleteMe(DeleteReason.Desert, true);
                         }
-                        else if (militaryStrength < 1)
-                        {
-                            var armiesC = armies.counter();
-                            while (armiesC.Next())
-                            {
-                                armiesC.sel.DeleteMe(DeleteReason.Desert, true);
-                            }
 
-                            DeleteMe();
-                        }
+                        DeleteMe();
                     }
                 }
             }
@@ -1554,6 +1555,11 @@ namespace VikingEngine.DSSWars
         /// Theme: The blessed folk. A horde like farmers faction.
         /// </summary>
         Hælfolc,
+
+        /// <summary>
+        /// The Iron Saints, people who guard a mountain pass against evil.
+        /// </summary>
+        AerimAngren,
 
         NUM
     }

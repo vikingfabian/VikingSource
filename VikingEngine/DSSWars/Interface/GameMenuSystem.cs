@@ -130,7 +130,7 @@ namespace VikingEngine.DSSWars.Interface
                         RichBoxContent content = new RichBoxContent();
                         HudLib.returnButton(content, menu, true, DssRef.state.menuSystem.closeMenu);
 
-                        content.h1(DssRef.todoLang.GameMenu_ControllerDisconnected, HudLib.TitleColor_Head);
+                        content.h1(DssRef.lang.GameMenu_ControllerDisconnected, HudLib.TitleColor_Head);
 
                         menu.Refresh(content);
                     }
@@ -285,6 +285,13 @@ namespace VikingEngine.DSSWars.Interface
             });
 
             //SettingsToMenu(content, menu, false);
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_ToggleHudDetail) },
+                DssRef.state.LocalHost().hud.maxHudProperty));
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.InputActionName_MiniMap) },
+                DssRef.state.LocalHost().hud.minimapProperty));
+
 
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {

@@ -180,8 +180,7 @@ namespace VikingEngine.DSSWars.Work
                     return DssRef.lang.WorkerStatus_PickUpResource;
                 case WorkType.Plant:
                     return DssRef.lang.WorkerStatus_Plant;
-                //case WorkType.Till:
-                //    return DssRef.lang.WorkerStatus_Till;
+                
                 case WorkType.Starving:
                 case WorkType.Exit:
                     return DssRef.lang.WorkerStatus_Exit;
@@ -368,18 +367,6 @@ namespace VikingEngine.DSSWars.Work
                         //work = WorkType.Idle;                        
                     }
                     break;
-
-                //case WorkType.Till:
-                //    if (subTile.mainTerrain == TerrainMainType.DefaultLand ||
-                //        subTile.mainTerrain == TerrainMainType.Destroyed)
-                //    {
-                //        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, 0);
-                //        DssRef.world.subTileGrid.Set(subTileEnd, subTile);
-                //        gainXp = WorkExperienceType.Farm;
-                //    }
-
-                //    // work = WorkType.Idle;
-                //    break;
 
                 case WorkType.Plant:
                     if (subTile.terrainAmount == TerrainContent.FarmCulture_Empty)
@@ -607,6 +594,7 @@ namespace VikingEngine.DSSWars.Work
                                     break;
 
                                 case ItemResourceType.PaddedArmor:
+                                case ItemResourceType.HeavyPaddedArmor:
                                     if (city.Culture == CityCulture.Weavers)
                                     {
                                         add += 1;
@@ -615,6 +603,8 @@ namespace VikingEngine.DSSWars.Work
 
                                 case ItemResourceType.IronArmor:
                                 case ItemResourceType.HeavyIronArmor:
+                                case ItemResourceType.LightPlateArmor:
+                                case ItemResourceType.FullPlateArmor:
                                     if (city.Culture == CityCulture.Armorsmith)
                                     {
                                         add += 1;
@@ -622,10 +612,18 @@ namespace VikingEngine.DSSWars.Work
                                     break;
                                 case ItemResourceType.Bronze:
                                 case ItemResourceType.BronzeSword:
-                                case ItemResourceType.BronzeArmor:
+                                
                                     if (city.Culture == CityCulture.BronzeCasters)
                                     {
                                         add *= 2;
+                                    }
+                                    break;
+
+                                case ItemResourceType.BronzeArmor:
+                                    if (city.Culture == CityCulture.Armorsmith ||
+                                        city.Culture == CityCulture.BronzeCasters)
+                                    {
+                                        add += 1;
                                     }
                                     break;
 
@@ -801,8 +799,8 @@ namespace VikingEngine.DSSWars.Work
 
             void addTo(ref XP.WorkExperienceType type, ref byte xp, byte add = 0)
             {
-                bool expert = false;
-                bool master = false;
+                //bool expert = false;
+                //bool master = false;
                 ExperienceLevel level = XpLib.ToLevel(xp);
 
                 if (add == 0)
@@ -813,23 +811,33 @@ namespace VikingEngine.DSSWars.Work
                             add = WorkLib.WorkToXPTable[(int)type];
                             add += 1;
                             break;
+                        case ExperienceLevel.Practitioner_2:
+                            add = WorkLib.WorkToXPTable[(int)type];
+                            break;
                         case ExperienceLevel.Expert_3:
-                            expert = true;
+                            //expert = true;
                             if (Ref.peRnd.Chance(0.5))
                             {
                                 add = WorkLib.WorkToXPTable[(int)type];
                             }
+                            else
+                            {
+                                return;
+                            }
                             break;
                         case ExperienceLevel.Master_4:
-                            master = true;
+                            //master = true;
                             if (Ref.peRnd.Chance(0.1))
                             {
                                 add = WorkLib.WorkToXPTable[(int)type];
                             }
+                            else
+                            {
+                                return;
+                            }
                             break;
                         case ExperienceLevel.Legendary_5:
-                            //add = 0;
-                            break;
+                            return;
                     }
                 }
                 xp += add;

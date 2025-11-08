@@ -277,14 +277,17 @@ namespace VikingEngine.DSSWars.GameState
             {
                 Mouse.Visible = true;
             }
-            else
+            else 
             {
-                foreach (var player in localPlayers)
+                if (localPlayers != null)
                 {
-                    if (player.gameControls.input.inputSource.HasMouse)
+                    foreach (var player in localPlayers)
                     {
-                        Mouse.Visible = true;
-                        return;
+                        if (player.gameControls.input.inputSource.HasMouse)
+                        {
+                            Mouse.Visible = true;
+                            return;
+                        }
                     }
                 }
 

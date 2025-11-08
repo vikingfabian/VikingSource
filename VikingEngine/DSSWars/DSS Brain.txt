@@ -1,65 +1,31 @@
 ﻿UPDATE
 Change Log:
-* Fixed empty player read crash
+* 
 
+fixed - will update soon
 
 #Pics
-* Relation arrow:
-war arrow
-heart arrow
-* Map filter icons
 
 #RELEASE#
 #BuiltWithMonoGame tags
-Mail list
-Monogame, Perafilozof, gameport, förening discord
-Reddit, twitter, bluejay
-Facebook privat
 Historymache
-
-controller in voxel editor
 
 #SPRING UPDATE#
 * Performance: city resources have been moved to a Entity Component System 
 
 #Winter update - must do#
-x achievement in steamworks
-x hide minimap
-x hide minimap/hud in pause menu
+x achievement: visible, localize
+x localize text
 
-#Winter update#
-* fixed: bot delay was not set by high difficulty
-* 2 new cameo factions, plus a december santa faction
-* casual mode: embassy building
 
-USER INTERFACE
-* minimap
-* improved border colors
-* In-menu text input
-* Search bar for voxel models
-* Menu width option
-* placed work before stockpile
+#Spring update
+x cities summary tab
+-Having a tab with queued units and also a UI element to select all baracks and recruit simultaneously per city (less micromanagement)
 
-GAME OPTIONS
-* 300% difficulty
--> no warmup period
--> warmanager runs at double pace
--> story is about 90 minutes shorter
--> 300% bot economy
+x city resource in/out, + checkbox to view/(and hide text)
+-compressed view, no tab view
 
-* Quick match game mode
--> start in a instant war with other nations
--> "short" game mode, about 10hours
--> tech research speed
--> a much shorter peaceful start period
--> king of the hill, or two teams
--> players are grouped in a smaller, center area
--> player start area is enlarged on "find start position" failure
--> contestants can't use ally diplomacy, but can still be done between players to adjust teams
 
-ACHIEVEMENTS: 
-* Taste the impossible: Terminate the first faction to attack you. 300% difficulty. (no pause?)
-* Win a quick match
 
 MAP
 * Optimized: Diplomacy map
@@ -67,8 +33,6 @@ MAP
 * Map Filters
 * Diplomatic relation arrows
 
-
-x global stockpile?
 x Extended diplomacy options, and be able to command allies with diplomacy points
 - end relations (chance of bad relation)
 - (maybe) submit
@@ -83,7 +47,13 @@ x go over tutorial
 -advisor
 -inform of resource use
 
+
+
+
 #Todo#
+x declare war comfirm
+x declare war button
+x paste double tap
 x extra music stream retry
 x load game shows "destroy" tooltip
 x "no stone/wood" warning on automation
@@ -205,6 +175,7 @@ förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
 
 
 #ANIMAL UPDATE#
+Soldiers +money upkeep
 Some resource ideas for next big update:
 Stone, are either bricks or stones 
 Bricks needed for large buildings
@@ -216,6 +187,15 @@ Animals are collected as meat
 Butcher will turn meat to food
 Riding and pulling animals in pens
 Can be used for postal delivery, military cavalry or butchered
+? City convert time
+
+#Autumn update#
+Army double time or slow line options for movement
+ implement some "out of breath" status effect, but could just pull double food as an early punishment
+Army width option (and auto)
+Soldier hold command
+Soldier multi-command
+Select soldiers and split/disband
 
 --Efter release polish--
 -

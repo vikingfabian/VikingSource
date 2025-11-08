@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars
         XInputJoinHandler joinHandler = new XInputJoinHandler();
         bool controllerStartGameUpdate = false;
         Graphics.TextG maploading;
-        GuiLabel difficultyLevelText = null;
+        //GuiLabel difficultyLevelText = null;
 
         StartGameMode startGameMode = StartGameMode.Play;
         InputActionType mappingFor;
@@ -199,10 +199,10 @@ namespace VikingEngine.DSSWars
                 case UnderMenu_ListEditors:
                     {
                         var playerData = DssRef.storage.localPlayers.First();
-                        DssRef.storage.profileStorage.selectedIx = playerData.profileIndex;
+                        //DssRef.storage.profileStorage.selectedIx = playerData.profileIndex;
 
                         //var profile = DssRef.storage.profileStorage.Selected();
-                        DssRef.storage.flagStorage.selectedIx = playerData.Profile().flag.StorageIndex;//profile.flag.StorageIndex;
+                        //DssRef.storage.flagStorage.selectedIx = playerData.Profile().flag.StorageIndex;//profile.flag.StorageIndex;
 
                         RichBoxContent content = new RichBoxContent();
 
@@ -1308,7 +1308,7 @@ namespace VikingEngine.DSSWars
             var prev = DssRef.difficulty.setting_gameMode;
             DssRef.difficulty.setting_gameMode = mode;
             DssRef.storage.Save(null);
-            refreshDifficultyLevel();
+            //refreshDifficultyLevel();
             underMenu.CloseDropDown();
 
             bool mapChange = (prev == GameModeMainType.QuickMatch) != (mode == GameModeMainType.QuickMatch);
@@ -1382,6 +1382,9 @@ namespace VikingEngine.DSSWars
                 }
             }
 
+            content.newLine();
+            content.Add(new RbText( string.Format(DssRef.lang.Settings_TotalDifficulty, DssRef.difficulty.TotalDifficulty()), HudLib.InfoYellow_Light));
+
             Difficulty.OptionsRb(content, underMenu, difficultyOptionsLink);
              
 
@@ -1409,6 +1412,7 @@ namespace VikingEngine.DSSWars
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Lobby_TwoTeams) }, bQuickTwoTeamProperty));
             }
 
+            content.newParagraph();
             content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head);
 
             if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
@@ -1717,9 +1721,9 @@ namespace VikingEngine.DSSWars
             {
                 for (int i = 0; i < DssRef.storage.flagStorage.flagDesigns.Count; ++i)
                 {
-                    flagOptions.AddSubOption(DssRef.storage.flagStorage.flagDesigns[i].RbButton(), i == DssRef.storage.flagStorage.selectedIx/*playerData.Flag().StorageIndex*/, false, new RbAction1Arg<int>(selectFlagLink, i), null);
+                    flagOptions.AddSubOption(DssRef.storage.flagStorage.flagDesigns[i].RbButton(), i == DssRef.storage.flagStorage.selectedIx/*playerData.Flag().StorageIndex*/, false, new RbAction2Arg<int,bool>(selectFlagLink, i, editor), null);
                 }
-                flagOptions.menuCaption = playerData.Flag().RbButton();
+                flagOptions.menuCaption = (editor? DssRef.storage.flagStorage.Selected() : playerData.Flag()).RbButton();
                 flagOptions.injectAfter = new List<AbsRichBoxMember>() {
                                     new ArtButton(editor? RbButtonStyle.Primary : RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                                         new RbImage(SpriteName.EditorToolPencil) }, new RbAction1Arg<int>(openFlagEditor, DssRef.storage.flagStorage.selectedIx/*playerData.Flag().StorageIndex*/), new RbTooltip_Text(DssRef.lang.Lobby_FlagEdit))
@@ -1727,7 +1731,7 @@ namespace VikingEngine.DSSWars
                 flagOptions.Build(content, SpriteName.NO_IMAGE, null, underMenu);
             }
         }
-        void selectFlagLink(int flagIx)
+        void selectFlagLink(int flagIx, bool editorMode)
         {
             //LocalPlayerStorage playerData = DssRef.storage.localPlayers[ix];
 
@@ -1739,7 +1743,10 @@ namespace VikingEngine.DSSWars
             var profile = DssRef.storage.profileStorage.profiles[DssRef.storage.profileStorage.selectedIx];
             {
                 DssRef.storage.flagStorage.selectedIx = flagIx;
-                profile.flag = DssRef.storage.flagStorage.flagDesigns[flagIx];
+                if (!editorMode)
+                {
+                    profile.flag = DssRef.storage.flagStorage.flagDesigns[flagIx];
+                }
             }
             DssRef.storage.profileStorage.profiles[DssRef.storage.profileStorage.selectedIx] = profile;
             DssRef.storage.profileStorage.SaveSelected();
@@ -1881,7 +1888,7 @@ namespace VikingEngine.DSSWars
         {
             DssRef.difficulty.set(difficulty);
             DssRef.storage.Save(null);
-            refreshDifficultyLevel();
+            //refreshDifficultyLevel();
             //mainMenu();
             //newGameSettings();
             underMenu.CloseDropDown();
@@ -1925,29 +1932,7 @@ namespace VikingEngine.DSSWars
             new StartExtra();
         }
 
-        void refreshDifficultyLevel()
-        {
-            //double levelPerc = DssLib.AiEconomyLevel[DssRef.storage.aiEconomyLevel];
-            //int aggdiff = (int)DssRef.storage.aiAggressivity - (int)AiAggressivity.Medium;
-            //levelPerc *= 1.0 + aggdiff * 0.5;
-
-            //double bossTimeDiff = DssRef.storage.bossTimeSettings - BossTimeSettings.Normal;
-            //levelPerc *= 1.0 - bossTimeDiff * 0.25;
-
-            //double diplomacyDiff = DssRef.storage.diplomacyDifficulty - 1;
-            //levelPerc *= 1.0 + diplomacyDiff * 0.5;
-
-            //if (!DssRef.storage.honorGuard)
-            //{
-            //    levelPerc *= 1.25;
-            //}
-
-            //string Settings_TotalDifficulty = "Total Difficulty {0}%";
-            if (difficultyLevelText != null)
-            {
-                difficultyLevelText.text.TextString = string.Format(DssRef.lang.Settings_TotalDifficulty, DssRef.difficulty.TotalDifficulty());
-            }
-        }
+              
 
         public bool allowPauseProperty(object tag, bool set, bool value)
         {
@@ -1955,7 +1940,7 @@ namespace VikingEngine.DSSWars
             {
                 DssRef.difficulty.setting_allowPauseCommand = value;
                 DssRef.storage.Save(null);
-                refreshDifficultyLevel();
+                //refreshDifficultyLevel();
             }
             return DssRef.difficulty.setting_allowPauseCommand;
         }
@@ -1966,7 +1951,7 @@ namespace VikingEngine.DSSWars
             {
                 DssRef.storage.gameRuleset.centralGold = value;
                 DssRef.storage.Save(null);
-                refreshDifficultyLevel();
+                //refreshDifficultyLevel();
             }
             return DssRef.storage.gameRuleset.centralGold;
         }
@@ -1977,7 +1962,7 @@ namespace VikingEngine.DSSWars
             {
                 DssRef.difficulty.runStory = value;
                 DssRef.storage.Save(null);
-                refreshDifficultyLevel();
+                //refreshDifficultyLevel();
             }
             return DssRef.difficulty.runStory;
         }
@@ -2421,7 +2406,7 @@ namespace VikingEngine.DSSWars
 
             
             mapBackgroundLoading?.Abort();
-            
+            mapBackgroundLoading.loadMeta = saveMeta;
 
             var availableList = availableInput();
                 

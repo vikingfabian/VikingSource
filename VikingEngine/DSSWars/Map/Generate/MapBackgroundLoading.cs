@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         int failCount = 0;
         bool generateSuccess =false;
         CancellationTokenSource tokenSource;
-        SaveStateMeta loadMeta;
+        public SaveStateMeta loadMeta;
         public MapGenerateSettings generateSettings = new MapGenerateSettings();
 
         public MapBackgroundLoading()

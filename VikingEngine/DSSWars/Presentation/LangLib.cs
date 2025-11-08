@@ -24,6 +24,8 @@ namespace VikingEngine.DSSWars.Presentation
 {
     static class LangLib
     {       
+        
+
         public static void GameModeText(GameModeMainType mode, out string caption, out string desc)
         {
             caption = null;
@@ -677,6 +679,8 @@ namespace VikingEngine.DSSWars.Presentation
                     return DssRef.lang.InputActionName_StopStart;
                 case InputActionType.ToggleHudDetail:
                     return DssRef.lang.InputActionName_ToggleHudDetail;
+                case InputActionType.ToggleMiniMap:
+                    return DssRef.todoLang.InputActionName_MiniMap;
                 case InputActionType.GameSpeed:
                     return DssRef.lang.Input_GameSpeed;
                 case InputActionType.PauseGame:

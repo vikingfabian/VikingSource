@@ -64,6 +64,7 @@ namespace VikingEngine.DSSWars
         public IButtonMap Menu;
 
         public IButtonMap ToggleHudDetail;
+        public IButtonMap ToggleMinimap;
         public IButtonMap GameSpeed;
         public IButtonMap PauseGame;
 
@@ -185,6 +186,7 @@ namespace VikingEngine.DSSWars
 
             Menu = new KeyboardButtonMap(Keys.Escape);
             ToggleHudDetail = new KeyboardButtonMap(Keys.U);
+            ToggleMinimap  = new KeyboardButtonMap(Keys.M);
             GameSpeed = new KeyboardButtonMap(Keys.Tab);
             PauseGame = new KeyboardButtonMap(Keys.Space);
 
@@ -303,7 +305,7 @@ namespace VikingEngine.DSSWars
             Menu = new XboxButtonMap_TriggerAlts(Buttons.Start, inputSource.controllerIndex);
             //ToggleHudDetail = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex);
             ToggleHudDetail = new XboxButtonMap_TriggerAlts(Buttons.DPadDown, inputSource.controllerIndex);//new NoButtonMap();
-
+            ToggleMinimap = new XboxButtonMap_TriggerAlts(Buttons.DPadDown, inputSource.controllerIndex, true);
 
             Controller_TabLeft = new XboxButtonMap(Buttons.LeftShoulder, inputSource.controllerIndex);
             Controller_TabRight = new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
@@ -338,7 +340,7 @@ namespace VikingEngine.DSSWars
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int InputVersion = 6;
+            const int InputVersion = 7;
             w.Write(InputVersion);
 
 
@@ -348,6 +350,7 @@ namespace VikingEngine.DSSWars
                 StopStart.write(w);
 
                 ToggleHudDetail.write(w);
+                ToggleMinimap.write(w);
                 GameSpeed.write(w);
                 PauseGame.write(w);
                 NextCity.write(w);
@@ -406,6 +409,10 @@ namespace VikingEngine.DSSWars
 
                 //Home = MapRead.Button(r, inputSource.controllerIndex);
                 ToggleHudDetail = MapRead.Button(r, inputSource.controllerIndex);
+                if (inputVersion >= 7)
+                { 
+                    ToggleMinimap = MapRead.Button(r, inputSource.controllerIndex);
+                }
                 GameSpeed = MapRead.Button(r, inputSource.controllerIndex);
                 PauseGame = MapRead.Button(r, inputSource.controllerIndex);
                 NextCity = MapRead.Button(r, inputSource.controllerIndex);
@@ -515,6 +522,8 @@ namespace VikingEngine.DSSWars
                 InputActionType.NextArmy,
                 InputActionType.NextWar,
                 InputActionType.ToggleHudDetail,
+                InputActionType.ToggleMiniMap,
+
             });
 
             return result;
@@ -563,6 +572,16 @@ namespace VikingEngine.DSSWars
                     else
                     {
                         buttonMap = StopStart;
+                    }
+                    break;
+                case InputActionType.ToggleMiniMap:
+                    if (set)
+                    {
+                        ToggleMinimap = buttonMap;
+                    }
+                    else
+                    {
+                        buttonMap = ToggleMinimap;
                     }
                     break;
 
@@ -806,6 +825,7 @@ namespace VikingEngine.DSSWars
     {
         StopStart,
         ToggleHudDetail,
+        ToggleMiniMap,
         GameSpeed,
         PauseGame,
         NextCity,

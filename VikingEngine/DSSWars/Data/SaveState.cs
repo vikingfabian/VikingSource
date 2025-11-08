@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Data
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 12;
-        public const int SubVersion = 83; 
+        public const int SubVersion = 84; 
 
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
@@ -65,6 +65,7 @@ namespace VikingEngine.DSSWars.Data
         public void load()
         {
             DssRef.difficulty.setting_gameMode = meta.gameMode;
+            DssRef.state.importedWorld = meta.importedWorld;
             DataStream.BeginReadWrite.BinaryIO(false, meta.Path, null, readGameState, this, true);
         }
 
@@ -139,7 +140,7 @@ namespace VikingEngine.DSSWars.Data
             
 
             DssRef.state.Game().initGameState(false, pointers);
-            DssRef.state.importedWorld = meta.importedWorld;
+            
 
             //STATE
             if (version.sub < 79)

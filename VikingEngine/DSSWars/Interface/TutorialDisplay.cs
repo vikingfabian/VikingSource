@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public void update(ref bool mouseOverHud)
         {
-            if (player.hud.detailLevel == HudDetailLevel.Normal)
+            if (player.hud.maximizedHud)
             {
                 openMenu();
 

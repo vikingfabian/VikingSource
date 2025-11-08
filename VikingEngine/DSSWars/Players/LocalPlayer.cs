@@ -122,6 +122,8 @@ namespace VikingEngine.DSSWars.Players
 
         public StoredCameraPos storedCameraPos;
 
+        
+
         public LocalPlayer()
         {
             baseInit();
@@ -249,7 +251,7 @@ namespace VikingEngine.DSSWars.Players
             menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Men);
 
             itemDeliveryCopy = new DeliveryStatus();
-            menDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Resource);
+            itemDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Resource);
             
             goldDeliveryCopy = new DeliveryStatus();
             goldDeliveryCopy.defaultSetup(DeliveryStatus.DeliveryType_Gold);
@@ -351,7 +353,7 @@ namespace VikingEngine.DSSWars.Players
 
             hud.pins.writeGameState(w);
 
-
+            tooPeacefulCheckTimer.write(w);
             //gameControls.build.buildPriority.writeGameState(w, false);
 
             Debug.WriteCheck(w);
@@ -463,11 +465,16 @@ namespace VikingEngine.DSSWars.Players
             {
                 hud.pins.readGameState(r, subversion);
             }
-            //if (subversion >= 70)
-            //{
-            //    gameControls.build.buildPriority.readGameState(r, subversion, false);
-            //}
-            Debug.ReadCheck(r);
+
+            if (subversion >= 84)
+            {
+                tooPeacefulCheckTimer.read(r);
+            }
+                //if (subversion >= 70)
+                //{
+                //    gameControls.build.buildPriority.readGameState(r, subversion, false);
+                //}
+                Debug.ReadCheck(r);
         }
 
         public void InitTutorial(bool newGame)
@@ -512,6 +519,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     tutorial = new PlayerControls.Tutorial(this);
                     tutorial.readGameState(r, subversion);
+                    
                 }
             }
         }
@@ -634,78 +642,7 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public void toPeacefulCheck_asynch()
-        {
-            if (faction.totalWorkForce > 0)
-            {
-                int warCount = 0;
-                float opposingSize = 0;
-
-                for (int relIx = 0; relIx < faction.diplomaticRelations.Length; ++relIx)
-                {
-                    if (faction.diplomaticRelations[relIx] != null &&
-                        faction.diplomaticRelations[relIx].Relation <= RelationType.RelationTypeN2_Truce)
-                    {
-                        var opponent = faction.diplomaticRelations[relIx].opponent(faction);
-                        if (opponent.player.IsBot())
-                        {
-                            ++warCount;
-                            opposingSize += opponent.PotensialMilitaryStrength();
-                        }
-                    }
-                }
-
-                bool toPeaceful = true;
-                int maxChecks = Ref.rnd.Int(1, 5);
-
-                while (toPeaceful && maxChecks > 0)
-                {
-                    maxChecks--;
-
-                    if (opposingSize > 0)
-                    {
-                        opposingSizePerc = opposingSize / faction.PotensialMilitaryStrength();
-
-                        toPeaceful = opposingSizePerc <= DssRef.difficulty.toPeacefulPercentage;
-                    }
-                    else
-                    {
-                        opposingSizePerc = 0;
-                    }
-
-                    if (toPeaceful)
-                    {
-                        //start a war
-                        var attacker = DssRef.state.events.findAttackingNeighborFaction(faction);
-
-                        if (attacker == null && Ref.rnd.Chance(0.6))
-                        {
-                            attacker = DssRef.state.events.findAttackingNeighborFaction_keepExpanding(faction);
-
-                            //See if can gank any of the players friendlies, since they are not neihbor to the player
-                            var friend = DssRef.state.events.findFriendsToDefender(attacker, this.faction);
-                            if (friend != null)
-                            {
-                                DssRef.diplomacy.declareWar(attacker, friend);
-                            }
-                        }
-
-                        if (attacker != null)
-                        {
-                            opposingSize += attacker.PotensialMilitaryStrength();
-
-                            attacker.player.setMinimumAggression(AbsPlayer.AggressionLevel2_RandomAttacks);
-                            DssRef.diplomacy.declareWar(attacker, faction);
-                        }
-
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-            }
-        }
+        
 
        
 
@@ -830,10 +767,10 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Z))
                 {
-                    //
+                    DssRef.state.events.victory(Event.VictoryType.WorldPeace);
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.TestNextEvent();
-                    hud.objMenu.diplomacy?.makeServant();
+                    //hud.objMenu.diplomacy?.makeServant();
                 }
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
@@ -848,7 +785,7 @@ namespace VikingEngine.DSSWars.Players
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
                     //battleLineUpTest3_friendly_only();
-                    battleLineUpTest2(false);
+                    //battleLineUpTest2(false);
 
                     //var tile = DssRef.world.tileGrid.Get(gameControls.mapControls.tilePosition);
                     //Debug.Log(tile.ToString());
@@ -1717,6 +1654,8 @@ namespace VikingEngine.DSSWars.Players
             }
 
             nextDominationSize = faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();
+
+            warManagerGear = new WarManagerGear(WarManagerGear.StartGear);
         }
 
         public double diplomacyAddPerSec()

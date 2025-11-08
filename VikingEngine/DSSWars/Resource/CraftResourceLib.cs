@@ -222,7 +222,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CastMetal,
            XP.ExperienceLevel.Master_4,
-            CraftRequirement.Foundry
+            CraftRequirement.Smelter
         );
 
         //NON METAL
@@ -445,11 +445,11 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SharpStick = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.SharpStick,
-            1,
+            8,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Wood_Group, 1),
-                new UseResource(ItemResourceType.Stone_G, 1),
+                new UseResource(ItemResourceType.Wood_Group, 4),
+                new UseResource(ItemResourceType.Stone_G, 4),
             },
             XP.WorkExperienceType.CraftMetal
         );
@@ -615,11 +615,11 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint Slingshot = new CraftBlueprint(
            CraftResultType.Resource,
            (int)ItemResourceType.SlingShot,
-           4,
+           8,
            new UseResource[]
            {
-                new UseResource(ItemResourceType.Stone_G, 4),
-                new UseResource(ItemResourceType.SkinLinen_Group, 4),
+                new UseResource(ItemResourceType.Stone_G, 8),
+                new UseResource(ItemResourceType.SkinLinen_Group, 8),
            },
            XP.WorkExperienceType.Fletcher
        );
@@ -849,6 +849,8 @@ namespace VikingEngine.DSSWars.Resource
             1,
             new UseResource[]
             {
+                new UseResource(ItemResourceType.BlackPowder, 10),
+                new UseResource(ItemResourceType.Stone_G, 10),
                 new UseResource(ItemResourceType.Bronze, 20),
             },
            XP.WorkExperienceType.CastMetal,
@@ -948,7 +950,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public static readonly CraftBlueprint PlateArmor = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.IronArmor,
+            (int)ItemResourceType.LightPlateArmor,
             1,
             new UseResource[]
             {

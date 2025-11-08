@@ -11,7 +11,22 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class French : AbsLanguage
     {
-        //MISSING 49 WORDS
+        public override string Error_SoundInitFailure => "Échec de l'initialisation du son";
+
+        public override string GameMenu_ControllerDisconnected => "Manette déconnectée";
+
+        public override string Tutorial_HighPriority => "Vos hommes accompliront d'abord les tâches prioritaires.";
+
+        public override string BuildingType_Wall_Description => "Les murs protègent vos troupes des attaques et offrent un petit boost d'attaque.";
+
+        public override string BuildingType_Wall_Siege => "Les armes de siège réduisent la défense des murs.";
+
+        public override string Conscript_BlockChance => "{0}% de chance de bloquer une attaque.";
+
+        public override string Battle_DeclarWarReminder => "Vous devez déclarer la guerre avant d'attaquer.";
+
+        //--
+
 
         /// <summary>
         /// Name of this language
@@ -2598,14 +2613,6 @@ namespace VikingEngine.DSSWars.Presentation
         public override string VictoryType_DefeatBoss => "Boss vaincu";
         public override string VictoryType_Domination => "Domination";
         public override string VictoryType_WorldPeace => "Paix mondiale";
-
-
-        // Launch Polish 1
-        public override string Error_SoundInitFailure => "Échec de l’initialisation du son";
-
-        public override string GameMenu_ControllerDisconnected => "Manette déconnectée";
-
-        public override string Tutorial_HighPriority => "Vos hommes accompliront d’abord les tâches à haute priorité";
 
     }
 }

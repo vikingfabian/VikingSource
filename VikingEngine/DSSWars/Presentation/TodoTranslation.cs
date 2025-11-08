@@ -14,12 +14,8 @@ namespace VikingEngine.DSSWars.Presentation
     {
         public string GraphicsOption_IngameMenuWidth => "Game menu width";
 
-
-
         public string Error_SoundInitFailure => "Sound initialization failed";
-               
-        public string GameMenu_ControllerDisconnected => "Controller disconnected";
-
+          
         public string GameMode_QuickMatch => "Quick Match";
         public string GameMode_QuickMatch_Description => "A shorter game format. Enter a full-scale war against rival nations.";
 
@@ -52,7 +48,14 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public string FactionName_Hælfolc => "Hælfolc";
 
+        /// <summary>
+        /// The Iron Saints, people who guard a mountain pass against evil.
+        /// </summary>
+        public string FactionName_AerimAngren => "Aerim Angren";
+
         public string HUD_NotAvailbleInX => "No available in {0}";
+
+        public string InputActionName_MiniMap => "Mini-map";
     }
 
 

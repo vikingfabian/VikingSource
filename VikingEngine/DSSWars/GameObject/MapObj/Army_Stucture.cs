@@ -342,6 +342,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             void column(int colindex, Vector2 _relPos, out Vector2 finalPos, out float largestWidth, float centerPan, bool endAsShip)
             {
+                colindex = Bound.Set(colindex, 0, RowsCount - 1);
+
                 finalPos.X = _relPos.X;
                 largestWidth = 0;
                 Vector2 cellSize;
@@ -350,11 +352,14 @@ namespace VikingEngine.DSSWars.GameObject
 
                 for (int row = 1; row < RowsCount; row++)
                 {
-                    grid[colindex, row].nextPlacement(centerWp, army.armyGoalRotation, _relPos, centerPan, columnWidth, 
-                        out cellSize, out float adjLeft, false, endAsShip, resetCommand, teleport, failedPlacements);
-                    largestWidth = lib.LargestValue(largestWidth, cellSize.X);
-                    finalPos.X = adjLeft;
-                    _relPos.Y += cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;
+                    //if (grid.GetLength(1) > row)
+                    //{
+                        grid[colindex, row].nextPlacement(centerWp, army.armyGoalRotation, _relPos, centerPan, columnWidth,
+                            out cellSize, out float adjLeft, false, endAsShip, resetCommand, teleport, failedPlacements);
+                        largestWidth = lib.LargestValue(largestWidth, cellSize.X);
+                        finalPos.X = adjLeft;
+                        _relPos.Y += cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;
+                    //}
                 }
 
                 comumnWidth[colindex] = largestWidth;
@@ -467,8 +472,14 @@ namespace VikingEngine.DSSWars.GameObject
                         localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos, endRotation);
                         Vector3 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
                         IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
-                        var subTile = DssRef.world.subTileGrid.Get(subTilePos);
-                        if ((subTile.mainTerrain == Map.TerrainMainType.DefaultSea) != endAsShip)
+                        if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
+                        {
+                            if ((subTile.mainTerrain == Map.TerrainMainType.DefaultSea) != endAsShip)
+                            {
+                                failedPlacements.Add(group);
+                            }
+                        }
+                        else
                         {
                             failedPlacements.Add(group);
                         }

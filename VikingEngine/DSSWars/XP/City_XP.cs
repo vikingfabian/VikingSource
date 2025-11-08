@@ -20,23 +20,23 @@ namespace VikingEngine.DSSWars.GameObject
     partial class City
     {
         public TechnologyTemplate technology = new TechnologyTemplate();
-
-        public ExperienceLevel topskill_Farm = 0;
-        public ExperienceLevel topskill_AnimalCare = 0;
-        public ExperienceLevel topskill_HouseBuilding = 0;
-        public ExperienceLevel topskill_WoodCutter = 0;
-        public ExperienceLevel topskill_StoneCutter = 0;
-        public ExperienceLevel topskill_Mining = 0;
-        public ExperienceLevel topskill_Transport = 0;
-        public ExperienceLevel topskill_Cook = 0;
-        public ExperienceLevel topskill_Fletcher = 0;
-        public ExperienceLevel topskill_Smelting = 0;
-        public ExperienceLevel topskill_Casting = 0;
-        public ExperienceLevel topskill_CraftMetal = 0;
-        public ExperienceLevel topskill_CraftArmor = 0;
-        //public ExperienceLevel topskill_CraftWeapon = 0;
-        public ExperienceLevel topskill_CraftFuel = 0;
-        public ExperienceLevel topskill_Chemistry = 0;
+        public CityExperienceLevels cityExperienceLevels = new CityExperienceLevels();
+        //public ExperienceLevel topskill_Farm = 0;
+        //public ExperienceLevel topskill_AnimalCare = 0;
+        //public ExperienceLevel topskill_HouseBuilding = 0;
+        //public ExperienceLevel topskill_WoodCutter = 0;
+        //public ExperienceLevel topskill_StoneCutter = 0;
+        //public ExperienceLevel topskill_Mining = 0;
+        //public ExperienceLevel topskill_Transport = 0;
+        //public ExperienceLevel topskill_Cook = 0;
+        //public ExperienceLevel topskill_Fletcher = 0;
+        //public ExperienceLevel topskill_Smelting = 0;
+        //public ExperienceLevel topskill_Casting = 0;
+        //public ExperienceLevel topskill_CraftMetal = 0;
+        //public ExperienceLevel topskill_CraftArmor = 0;
+        ////public ExperienceLevel topskill_CraftWeapon = 0;
+        //public ExperienceLevel topskill_CraftFuel = 0;
+        //public ExperienceLevel topskill_Chemistry = 0;
 
         public ExperienceOrDistancePrio experenceOrDistance = ExperienceOrDistancePrio.Mix;
 
@@ -198,30 +198,30 @@ namespace VikingEngine.DSSWars.GameObject
 
             return -1;
         }
-        public ExperienceLevel GetTopSkill(WorkExperienceType experienceType)
-        {
-            switch (experienceType)
-            {
-                case WorkExperienceType.Farm: return topskill_Farm;
-                case WorkExperienceType.AnimalCare: return topskill_AnimalCare;
-                case WorkExperienceType.HouseBuilding: return topskill_HouseBuilding;
-                case WorkExperienceType.WoodWork: return topskill_WoodCutter;
-                case WorkExperienceType.StoneCutter: return topskill_StoneCutter;
-                case WorkExperienceType.Mining: return topskill_Mining;
-                case WorkExperienceType.Transport: return topskill_Transport;
-                case WorkExperienceType.Cook: return topskill_Cook;
-                case WorkExperienceType.Fletcher: return topskill_Fletcher;
-                case WorkExperienceType.Smelting: return topskill_Smelting;
-                case WorkExperienceType.CastMetal: return topskill_Casting;
-                case WorkExperienceType.CraftMetal: return topskill_CraftMetal;
-                case WorkExperienceType.CraftArmor: return topskill_CraftArmor;
-                //case WorkExperienceType.CraftWeapon: return topskill_CraftWeapon;
-                case WorkExperienceType.CraftFuel: return topskill_CraftFuel;
-                case WorkExperienceType.Chemistry: return topskill_Chemistry;
+        //public ExperienceLevel GetTopSkill(WorkExperienceType experienceType)
+        //{
+        //    switch (experienceType)
+        //    {
+        //        case WorkExperienceType.Farm: return topskill_Farm;
+        //        case WorkExperienceType.AnimalCare: return topskill_AnimalCare;
+        //        case WorkExperienceType.HouseBuilding: return topskill_HouseBuilding;
+        //        case WorkExperienceType.WoodWork: return topskill_WoodCutter;
+        //        case WorkExperienceType.StoneCutter: return topskill_StoneCutter;
+        //        case WorkExperienceType.Mining: return topskill_Mining;
+        //        case WorkExperienceType.Transport: return topskill_Transport;
+        //        case WorkExperienceType.Cook: return topskill_Cook;
+        //        case WorkExperienceType.Fletcher: return topskill_Fletcher;
+        //        case WorkExperienceType.Smelting: return topskill_Smelting;
+        //        case WorkExperienceType.CastMetal: return topskill_Casting;
+        //        case WorkExperienceType.CraftMetal: return topskill_CraftMetal;
+        //        case WorkExperienceType.CraftArmor: return topskill_CraftArmor;
+        //        //case WorkExperienceType.CraftWeapon: return topskill_CraftWeapon;
+        //        case WorkExperienceType.CraftFuel: return topskill_CraftFuel;
+        //        case WorkExperienceType.Chemistry: return topskill_Chemistry;
 
-                default: throw new NotImplementedException();
-            }
-        }
+        //        default: throw new NotImplementedException();
+        //    }
+        //}
 
         public void addTechPoints(WorkExperienceType experienceType, int gain, TechnologyGainReason reason)
         {
