@@ -683,9 +683,28 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_barracks, 6, wp, WorldData.SubTileWidth * 1f));
                     break;
 
-                case TerrainBuildingType.CityHall_Village:
+
+                case TerrainBuildingType.CityHall_Unclaimed:
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 0, wp, WorldData.SubTileWidth * 1.4f));
+                    }
+                    break;
+                case TerrainBuildingType.CityHall_Tent:
+                    {
+                        foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 1, wp, WorldData.SubTileWidth * 1.4f));
+
+                        var faction = tile.Faction_Safe();
+                        if (faction != null)
+                        {
+                            var flag = new FoliageModel(
+                            faction, 8, wp + new Vector3(0.013f, -0.020f, 0.07f), WorldData.SubTileWidth * 1.1f);
+                            foliageModels.Add(flag);
+                        }
+                    }
+                    break;
+                case TerrainBuildingType.CityHall_Village:
+                    {
+                        foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 2, wp, WorldData.SubTileWidth * 1.4f));
                     
                         var faction = tile.Faction_Safe();
                         if (faction != null)
@@ -698,7 +717,7 @@ namespace VikingEngine.DSSWars.Map
                     break;
                 case TerrainBuildingType.CityHall_Town:
                     {
-                        foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 1, wp, WorldData.SubTileWidth * 1.4f));
+                        foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 3, wp, WorldData.SubTileWidth * 1.4f));
 
                         var faction = tile.Faction_Safe();
                         if (faction != null)
@@ -711,7 +730,7 @@ namespace VikingEngine.DSSWars.Map
                     break;
                 case TerrainBuildingType.CityHall_Capital:
                     {
-                        foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 2, wp, WorldData.SubTileWidth * 1.4f));
+                        foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 4, wp, WorldData.SubTileWidth * 1.4f));
 
                         var faction = tile.Faction_Safe();
                         if (faction != null)

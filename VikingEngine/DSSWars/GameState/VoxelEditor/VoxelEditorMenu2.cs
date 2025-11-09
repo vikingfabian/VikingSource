@@ -1110,13 +1110,18 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
                             if (path.Exists())
                             {
-                                using (FileStream stream = new FileStream(path.CompleteLocalPath(false), FileMode.Open))
+                                try
                                 {
-                                    var texture = Texture2D.FromStream(Draw.graphicsDeviceManager.GraphicsDevice, stream);
-                                    file.Tag = texture;
+                                    using (FileStream stream = new FileStream(path.CompleteLocalPath(false), FileMode.Open))
+                                    {
+                                        var texture = Texture2D.FromStream(Draw.graphicsDeviceManager.GraphicsDevice, stream);
+                                        file.Tag = texture;
 
-                                    menu_sp.needRefresh = true;
+                                        menu_sp.needRefresh = true;
+                                    }
                                 }
+                                catch
+                                { }
                             }
                             //VoxelObjGridDataAnimHD animationFrames = new VoxelObjGridDataAnimHD();
                             //BeginReadWrite.BinaryIO(false, path, null, animationFrames.ReadBinaryStream, null, false);
