@@ -1,10 +1,8 @@
 ﻿UPDATE
 Change Log:
-* fixed: Empire labor priorities being reset on game load
-* fixed rare setArmyPlacement2 crash
-* fixed rare army goal outside map crash
-* fixed broken world peace qoute
-* faction retreat size lowered from strength 1 > 0.4
+* Fixed controller button down event
+* Voxel editor: muted load icons crash
+* updated hall model
 
 fixed - will update soon
 

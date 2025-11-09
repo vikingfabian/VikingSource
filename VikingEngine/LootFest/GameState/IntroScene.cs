@@ -157,7 +157,7 @@ namespace VikingEngine.LootFest.GameState
             }
             DataStream.FilePath.CreateStorageFolder(VikingEngine.LootFest.Players.PlayerStorageGroup.FileFolderName(0, false));
 
-            DesignerStorage.InitFolderStructure();
+            //DesignerStorage.InitFolderStructure();
         }
 
         void loadingThreadException(Exception e)
