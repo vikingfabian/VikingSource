@@ -6,6 +6,7 @@ fixed - will update soon
 
 #SPRING UPDATE#
 * Performance: city resources have been moved to a Entity Component System 
+* Performance: removed faction to city pointers
 
 
 #Spring update TODO
