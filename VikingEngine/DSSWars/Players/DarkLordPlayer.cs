@@ -162,7 +162,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (hasEntered)
             {
-                var city = faction.cities.GetRandomUnsafe(Ref.rnd);
+                var city = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
                 if (city != null)
                 {
                     foreach (var n in city.neighborCities)

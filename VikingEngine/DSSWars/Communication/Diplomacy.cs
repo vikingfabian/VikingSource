@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.ToGG.MoonFall;
 
@@ -161,11 +162,14 @@ namespace VikingEngine.DSSWars
         public List<int> aiPlayerAsynchUpdate_collectThreats(Faction aifaction, float threatFactor = 1.6f)
         { 
             aiPlayerAsynchUpdate_threats.Clear();
-            
-            var cities_c = aifaction.cities.counter();
-            while (cities_c.Next())
+
+            //var cities_c = aifaction.cities.counter();
+            //while (cities_c.Next())
+            //{
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref aifaction.cities, DssRef.world.cities, out City city))
             {
-                foreach (var nCityIx in cities_c.sel.neighborCities)
+                foreach (var nCityIx in city.neighborCities)
                 {
                     var ncity = DssRef.world.cities[nCityIx];
                     if (ncity.factionIndex != aifaction.myIndex &&

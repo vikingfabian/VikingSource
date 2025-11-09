@@ -556,11 +556,14 @@ namespace VikingEngine.DSSWars.Event
             {
                 if (DssRef.diplomacy.InWar(faction, p.faction))
                 {
-                    var citiesC = p.faction.cities.counter();
-                    while (citiesC.Next())
+                    //var citiesC = p.faction.cities.counter();
+                    //while (citiesC.Next())
+                    //{
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref p.faction.cities, DssRef.world.cities, out City citySel))
                     {
-                        if (citiesC.sel.previousOwner == faction.myIndex && 
-                            (citiesC.sel.myIndex == faction.lostCity_Time0 || citiesC.sel.myIndex == faction.lostCity_Time1))
+                        if (citySel.previousOwner == faction.myIndex && 
+                            (citySel.myIndex == faction.lostCity_Time0 || citySel.myIndex == faction.lostCity_Time1))
                         { //Credited with killing off the faction
                             p.factionsTerminated++;
 
@@ -843,7 +846,7 @@ namespace VikingEngine.DSSWars.Event
         //}
         public Faction findAttackingNeighborFaction(Faction defender)
         {
-            var cities = defender.cities.toList();
+            var cities = defender.cities.toList(DssRef.world.cities);
 
             while (cities.Count > 0)
             {
@@ -868,7 +871,7 @@ namespace VikingEngine.DSSWars.Event
         {
             if (attacker != null && defender != null)
             {
-                var cities = attacker.cities.toList();
+                var cities = attacker.cities.toList(DssRef.world.cities);
 
                 while (cities.Count > 0)
                 {
@@ -904,7 +907,7 @@ namespace VikingEngine.DSSWars.Event
                 int checkIx = Math.Min(Ref.rnd.Int(factionsToCheck.Count), Ref.rnd.Int(factionsToCheck.Count));
                 Faction check = arraylib.Pull(factionsToCheck, checkIx);
 
-                var cities = check.cities.toList();
+                var cities = check.cities.toList(DssRef.world.cities);
 
                 while (cities.Count > 0)
                 {

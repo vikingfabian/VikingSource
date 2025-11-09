@@ -235,38 +235,41 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.hud.minimapProperty(null, true, false);
             display = new Interface.TutorialDisplay(player);
             initMissions();
-            
+
 
             //Setup resources and map
-            var cityCounter = player.faction.cities.counter();
-            while (cityCounter.Next())
+            //var cityCounter = player.faction.cities.counter();
+            //while (cityCounter.Next())
+            //{
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
             {
-                cityCounter.sel.resourceAmountSet(EntityComponent.CityResoureIndex.wood, 0);
-                cityCounter.sel.resourceAmountSet(EntityComponent.CityResoureIndex.sharpstick, CollectWeaponArmorAmount - 6);
-                cityCounter.sel.resourceAmountSet(EntityComponent.CityResoureIndex.paddedArmor, CollectWeaponArmorAmount - 6);
+                citySel.resourceAmountSet(EntityComponent.CityResoureIndex.wood, 0);
+                citySel.resourceAmountSet(EntityComponent.CityResoureIndex.sharpstick, CollectWeaponArmorAmount - 6);
+                citySel.resourceAmountSet(EntityComponent.CityResoureIndex.paddedArmor, CollectWeaponArmorAmount - 6);
 
-                //cityCounter.sel.res_wood.amount = 0;
-                //cityCounter.sel.res_sharpstick.amount = CollectWeaponArmorAmount - 6;//30;
-                //cityCounter.sel.res_paddedArmor.amount = CollectWeaponArmorAmount - 6;
+                //citySel.res_wood.amount = 0;
+                //citySel.res_sharpstick.amount = CollectWeaponArmorAmount - 6;//30;
+                //citySel.res_paddedArmor.amount = CollectWeaponArmorAmount - 6;
 
                 if (DssRef.storage.runTutorial_1short_2normal == 1)
                 {
-                    cityCounter.sel.resourceAmountSet(EntityComponent.CityResoureIndex.Palisade, 50);
-                    //cityCounter.sel.res_Palisade.amount = 50;
-                    cityCounter.sel.createStartupBarracks();
+                    citySel.resourceAmountSet(EntityComponent.CityResoureIndex.Palisade, 50);
+                    //citySel.res_Palisade.amount = 50;
+                    citySel.createStartupBarracks();
                 }
 
 
-                CityStructure.WorkInstance.setupTutorialMap(cityCounter.sel);
+                CityStructure.WorkInstance.setupTutorialMap(citySel);
 
                 if (cityarea.X == 0)
                 {
-                    cityarea.pos = cityCounter.sel.tilePos;
+                    cityarea.pos = citySel.tilePos;
                     cityarea.size = IntVector2.One;
                 }
                 else
                 {
-                    cityarea.includeTile(cityCounter.sel.tilePos);
+                    cityarea.includeTile(citySel.tilePos);
                 }
             }
 
@@ -961,11 +964,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     if (!buildDefences_moveGuard)
                     {
-                        var citiesC = player.faction.cities.counter();
+                        //var citiesC = player.faction.cities.counter();
 
-                        while (citiesC.Next())
+                        //while (citiesC.Next())
+                        //{
+                        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                        while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
                         {
-                            var soldierGroupsC = citiesC.sel.groups.counter();
+                            var soldierGroupsC = citySel.groups.counter();
                             while (soldierGroupsC.Next())
                             {
                                 var cmd = soldierGroupsC.sel.command;

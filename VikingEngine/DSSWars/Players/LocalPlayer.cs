@@ -611,12 +611,15 @@ namespace VikingEngine.DSSWars.Players
                 {
                     int guardCount = 12;
 
-                    var citiesC = faction.cities.counter();
-                    while (citiesC.Next())
+                    //var citiesC = faction.cities.counter();
+                    //while (citiesC.Next())
+                    //{
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                     {
-                        if (citiesC.sel != faction.mainCity)
+                        if (citySel != faction.mainCity)
                         {
-                            onTile = citiesC.sel.ArmySpawnTilePos();
+                            onTile = citySel.ArmySpawnTilePos();
                             var army = faction.NewArmy(onTile);
                             for (int i = 0; i < 4; ++i)
                             {
@@ -650,10 +653,13 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium)
             {
-                var citiesC = faction.cities.counter();
-                while (citiesC.Next())
+                //var citiesC = faction.cities.counter();
+                //while (citiesC.Next())
+                //{
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    foreach (var n in citiesC.sel.neighborCities)
+                    foreach (var n in citySel.neighborCities)
                     {
                         DssRef.world.cities[n].GetPlayer().onPlayerNeighborCapture(this);
                     }
@@ -922,7 +928,7 @@ namespace VikingEngine.DSSWars.Players
 
             automation.asyncUpdate();
 
-            var city = faction.cities.GetRandomUnsafe(Ref.rnd);
+            var city = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
             if (city != null && 
                 city.automateCity && 
                 city.automationFocus == AutomationFocus.Military)
@@ -1625,10 +1631,13 @@ namespace VikingEngine.DSSWars.Players
                 {
                     try
                     {
-                        var citiesC = faction.cities.counter();
-                        while (citiesC.Next())
+                        //var citiesC = faction.cities.counter();
+                        //while (citiesC.Next())
+                        //{
+                        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                        while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                         {
-                            citiesC.sel.checkPlayerFuelAccess_OnGamestart_async();
+                            citySel.checkPlayerFuelAccess_OnGamestart_async();
                         }
                     }
                     catch (Exception ex)

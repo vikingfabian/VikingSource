@@ -220,21 +220,24 @@ namespace VikingEngine.DSSWars.Delivery
                 }
                 HudLib.Label(content, DssRef.lang.Hud_RecieveingCity);
                 content.newLine();
-                var cities_c = city.GetFaction().cities.counter();
-                while (cities_c.Next())
+                //var cities_c = city.GetFaction().cities.counter();
+                //while (cities_c.Next())
+                //{
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref city.GetFaction().cities, DssRef.world.cities, out City citySel))
                 {
-                    if (cities_c.sel != city && city.tilePos.SideLength(cities_c.sel.tilePos) <= DssConst.DeliveryMaxDistance)
+                    if (citySel != city && city.tilePos.SideLength(citySel.tilePos) <= DssConst.DeliveryMaxDistance)
                     {
                         var buttonContent = new RichBoxContent();
-                        cities_c.sel.tagToHud(buttonContent);
+                        citySel.tagToHud(buttonContent);
                         if (buttonContent.Count > 0)
                         {
                             buttonContent.space();
                         }
-                        buttonContent.Add(new RbText(cities_c.sel.TypeName()));
+                        buttonContent.Add(new RbText(citySel.TypeName()));
 
-                        var button = new ArtToggle(cities_c.sel.myIndex == currentStatus.profile.toCity, buttonContent, 
-                            new RbAction1Arg<int>(cityClick, cities_c.sel.myIndex, RbSoundType.Option), 
+                        var button = new ArtToggle(citySel.myIndex == currentStatus.profile.toCity, buttonContent, 
+                            new RbAction1Arg<int>(cityClick, citySel.myIndex, RbSoundType.Option), 
                             new RbTooltip((RichBoxContent content, object tag /*City toCity*/) =>
                             {
                                 City toCity = (City)tag;
@@ -268,8 +271,8 @@ namespace VikingEngine.DSSWars.Delivery
                                     //}
                                 }
                                 //player.hud.tooltip.create(player, content, true);
-                            }, cities_c.sel));
-                        //button.setGroupSelectionColor(HudLib.RbSettings, cities_c.sel.parentArrayIndex == currentStatus.profile.toCity);
+                            }, citySel));
+                        //button.setGroupSelectionColor(HudLib.RbSettings, citySel.parentArrayIndex == currentStatus.profile.toCity);
                         content.Add(button);
                         //content.space();
                     }

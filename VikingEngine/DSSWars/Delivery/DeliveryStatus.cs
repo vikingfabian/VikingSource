@@ -92,11 +92,14 @@ namespace VikingEngine.DSSWars.Delivery
                 return;
             }
 
-            var citiesC = player.faction.cities.counter();
+            //var citiesC = player.faction.cities.counter();
 
-            while (citiesC.Next())
+            //while (citiesC.Next())
+            //{
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref player.faction.cities))
             {
-                if (citiesC.sel.myIndex == profile.toCity)
+                if (citiesC.sel == profile.toCity)
                 {
                     return;
                 }

@@ -888,14 +888,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
 
             int current = 0;
-            var citiesC = player.faction.cities.counter();
-            while (citiesC.Next())
+            //var citiesC = player.faction.cities.counter();
+            //while (citiesC.Next())
+            //{
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
             {
                 if (current == tabCity)
                 {
                     //focus on city
-                    map.cameraFocus = citiesC.sel;
-                    mapSelect(citiesC.sel);
+                    map.cameraFocus = citySel;
+                    mapSelect(citySel);
 
                     return;
                 }

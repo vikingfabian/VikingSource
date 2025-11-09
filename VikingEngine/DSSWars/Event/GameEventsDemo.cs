@@ -29,11 +29,14 @@ namespace VikingEngine.DSSWars.Event
 
             if (!DssRef.state.LocalHost().profile.casualControls)
             {
-                var citiesC = DssRef.state.LocalHost().faction.cities.counter();
-                while (citiesC.Next())
+                //var citiesC = DssRef.state.LocalHost().faction.cities.counter();
+                //while (citiesC.Next())
+                //{
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref DssRef.state.LocalHost().faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    citiesC.sel.AddGroupedResource(EntityComponent.CityResoureIndex.Palisade, 20);
-                    citiesC.sel.AddGroupedResource(EntityComponent.CityResoureIndex.food, 500);
+                    citySel.AddGroupedResource(EntityComponent.CityResoureIndex.Palisade, 20);
+                    citySel.AddGroupedResource(EntityComponent.CityResoureIndex.food, 500);
 
                     //citiesC.sel.res_Palisade.amount += 20;
                     //citiesC.sel.res_food.amount += 500;

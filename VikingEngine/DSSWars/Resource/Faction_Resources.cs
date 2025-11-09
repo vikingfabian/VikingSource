@@ -324,10 +324,13 @@ namespace VikingEngine.DSSWars
             else
             { 
                 tradeTemplate.changeResourcePrice(change, resourceType);
-                var cityCounter = cities.counter();
-                while (cityCounter.Next())
+                //var cityCounter = cities.counter();
+                //while (cityCounter.Next())
+                //{
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
                 {
-                    cityCounter.sel.tradeTemplate.onFactionValueChange(tradeTemplate);
+                    citySel.tradeTemplate.onFactionValueChange(tradeTemplate);
                 }
             }
         }
@@ -352,11 +355,14 @@ namespace VikingEngine.DSSWars
         }
 
         public void refreshCityWork()
-        { 
-            var cityCounter = cities.counter();
-            while (cityCounter.Next())
+        {
+            //var cityCounter = cities.counter();
+            //while (cityCounter.Next())
+            //{
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
             {
-                cityCounter.sel.workTemplate.onFactionChange(cityCounter.sel, workTemplate);
+                citySel.workTemplate.onFactionChange(citySel, workTemplate);
             }
         }
 
@@ -469,10 +475,13 @@ namespace VikingEngine.DSSWars
             {
                 int perCity = value / cityCount;
 
-                var citiesC = cities.counter();
-                while (citiesC.Next())
+                //var citiesC = cities.counter();
+                //while (citiesC.Next())
+                //{
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
                 {
-                    citiesC.sel.money.AddGold(perCity);
+                    citySel.money.AddGold(perCity);
                 }
             }           
         }
@@ -484,25 +493,29 @@ namespace VikingEngine.DSSWars
             //int cityIncomeCount = 0;
             int workForceCount = 0;
             //int nobel = 0;
-            var citiesC = cities.counter();
+            
             CityEconomyData newCitiesEconomy = new CityEconomyData();
             float citiesFoodProduce = 0;
             float citiesFoodSpend = 0;
             float soldResources = 0;
             citiesMilitaryStrenght = 0;
 
-            while (citiesC.Next())
+            //var citiesC = cities.counter();
+            //            while (citiesC.Next())
+            //            {
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
             {
                 //citiesC.sel.updateIncome_asynch();
                 //CityEconomyData data = citiesC.sel.calcIncome_async();
-                CityEconomyData data = new CityEconomyData(citiesC.sel);
+                CityEconomyData data = new CityEconomyData(citySel);
                 newCitiesEconomy.Add(data);
                 //cityIncomeCount += data.total();
-                workForceCount += citiesC.sel.workForce.amount;
-                citiesFoodProduce += citiesC.sel.foodProduction.displayValue_gold_sec;
-                citiesFoodSpend += citiesC.sel.foodSpending.displayValue_gold_sec;
-                soldResources += citiesC.sel.soldResources.displayValue_gold_sec;
-                citiesMilitaryStrenght += citiesC.sel.strengthValue;
+                workForceCount += citySel.workForce.amount;
+                citiesFoodProduce += citySel.foodProduction.displayValue_gold_sec;
+                citiesFoodSpend += citySel.foodSpending.displayValue_gold_sec;
+                soldResources += citySel.soldResources.displayValue_gold_sec;
+                citiesMilitaryStrenght += citySel.strengthValue;
                 //if (citiesC.sel.nobelHouse)
                 //{
                 //    ++nobel;
@@ -687,17 +700,20 @@ namespace VikingEngine.DSSWars
 
         public void updateResourceOverview_async()
         {
-            var citiesC = cities.counter();
+            //var citiesC = cities.counter();
 
             for (int itemIx = 0; itemIx < CityResoureIndex.COUNT; itemIx++)
             {
                 ref ResourceOverview overview = ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIx];
                 overview.clearCurrent();
-                
-                citiesC.Reset();
-                while (citiesC.Next())
+
+                //citiesC.Reset();
+                //while (citiesC.Next())
+                //{
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
                 {
-                    overview.current += DssRef.world.cityResouces[citiesC.sel.resourceComponentStartIndex + itemIx].amount;
+                    overview.current += DssRef.world.cityResouces[citySel.resourceComponentStartIndex + itemIx].amount;
                 }
             }
             //res_wood.clearCurrent();

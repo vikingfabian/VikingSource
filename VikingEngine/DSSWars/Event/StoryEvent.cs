@@ -112,10 +112,13 @@ namespace VikingEngine.DSSWars.Event
                 int totalWorkForce = 0;
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    var citiesC = p.faction.cities.counter();
-                    while (citiesC.Next())
+                    //var citiesC = p.faction.cities.counter();
+                    //while (citiesC.Next())
+                    //{
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref p.faction.cities, DssRef.world.cities, out City citySel))
                     {
-                        totalWorkForce += citiesC.sel.HousingCount_Workers;
+                        totalWorkForce += citySel.HousingCount_Workers;
                     }
                 }
 
@@ -404,7 +407,7 @@ namespace VikingEngine.DSSWars.Event
 
             foreach (var p in DssRef.state.localPlayers)
             {
-                List<City> searchcities = p.faction.cities.toList();
+                List<City> searchcities = p.faction.cities.toList(DssRef.world.cities);
 
                 int found = 0;
                 while (found < 3)
@@ -708,12 +711,15 @@ namespace VikingEngine.DSSWars.Event
             for (int playerIx = 0; playerIx < DssRef.state.localPlayers.Count; ++playerIx)
             {
                 City mostSouth = null;
-                var citiesC = DssRef.state.localPlayers[playerIx].faction.cities.counter();
-                while (citiesC.Next())
+                //var citiesC = DssRef.state.localPlayers[playerIx].faction.cities.counter();
+                //while (citiesC.Next())
+                //{
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref DssRef.state.localPlayers[playerIx].faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    if (mostSouth == null || citiesC.sel.tilePos.Y > mostSouth.tilePos.Y)
+                    if (mostSouth == null || citySel.tilePos.Y > mostSouth.tilePos.Y)
                     {
-                        mostSouth = citiesC.sel;
+                        mostSouth = citySel;
                     }
                 }
 
@@ -998,10 +1004,13 @@ namespace VikingEngine.DSSWars.Event
             List<Faction> adjacentFactions(Faction faction)
             {
                 List<Faction> factions = new List<Faction>();
-                var citiesC = faction.cities.counter();
-                while (citiesC.Next())
+                //var citiesC = faction.cities.counter();
+                //while (citiesC.Next())
+                //{
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    foreach (var n in citiesC.sel.neighborCities)
+                    foreach (var n in citySel.neighborCities)
                     {
                         var ncity = DssRef.world.cities[n];
                         var nCityFaction = ncity.GetFaction();

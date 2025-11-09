@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.Players
             int count = Bound.Min(faction.cities.Count / 4, 1);
             for (int i = 0; i < count; i++)
             {
-                City city = faction.cities.GetRandomSafe(Ref.rnd);
+                City city = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
 
                 if (city != null)
                 {

@@ -1310,13 +1310,16 @@ namespace VikingEngine.DSSWars.Players
                             //    new SoldierGroup(mainArmy, DssLib.SoldierProfile_CrossbowMan);
                             //}
 
-                            var citiesC = faction.cities.counter();
-                            while (citiesC.Next())
+                            //var citiesC = faction.cities.counter();
+                            //while (citiesC.Next())
+                            //{
+                            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                            while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                             {
-                                int count = citiesC.sel.cityType == CityType.Town ? 5 : 2;
+                                int count = citySel.cityType == CityType.Town ? 5 : 2;
                                 //if (citiesC.sel.CityType == CityType.Large)
                                 //{
-                                IntVector2 pos = citiesC.sel.ArmySpawnTilePos();
+                                IntVector2 pos = citySel.ArmySpawnTilePos();
                                 var army = faction.NewArmy(pos);
                                 
                                 for (int i = 0; i < count; ++i)
@@ -1337,12 +1340,15 @@ namespace VikingEngine.DSSWars.Players
 
                     case FactionType.UnitedKingdom:
                         {
-                            var citiesC = faction.cities.counter();
-                            while (citiesC.Next())
+                            //var citiesC = faction.cities.counter();
+                            //while (citiesC.Next())
+                            //{
+                            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                            while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                             {
-                                if (citiesC.sel.cityType == CityType.Town)
+                                if (citySel.cityType == CityType.Town)
                                 {
-                                    IntVector2 pos = citiesC.sel.ArmySpawnTilePos();
+                                    IntVector2 pos = citySel.ArmySpawnTilePos();
                                     var army = faction.NewArmy(pos);
 
                                     for (int i = 0; i < 10; ++i)
@@ -1380,12 +1386,15 @@ namespace VikingEngine.DSSWars.Players
                     case FactionType.DyingHate:
                     case FactionType.DyingDestru:
                         {
-                            var citiesC = faction.cities.counter();
-                            while (citiesC.Next())
+                            //var citiesC = faction.cities.counter();
+                            //while (citiesC.Next())
+                            //{
+                            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                            while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                             {
-                                if (citiesC.sel.cityType == CityType.Town)
+                                if (citySel.cityType == CityType.Town)
                                 {
-                                    IntVector2 pos = citiesC.sel.ArmySpawnTilePos();
+                                    IntVector2 pos = citySel.ArmySpawnTilePos();
                                     var army = faction.NewArmy(pos);
 
                                     for (int i = 0; i < 10; ++i)
@@ -1630,7 +1639,7 @@ namespace VikingEngine.DSSWars.Players
                 }
                 else if (protect && faction.cities.Count > 0) 
                 {
-                    City city = faction.cities.GetRandomSafe(Ref.rnd);
+                    City city = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
 
                     if (city != null && buySoldiersBalanceCheck_asynch(city, inWar, 0.02, out bool guardOnly))
                     {
@@ -2190,7 +2199,7 @@ namespace VikingEngine.DSSWars.Players
             City checkCity1 = null;
             City checkCity2 = null;
 
-            checkCity1 = faction.cities.GetRandomUnsafe(Ref.rnd);
+            checkCity1 = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
             if (checkCity1 == null)
             {
                 return null;
@@ -2201,7 +2210,7 @@ namespace VikingEngine.DSSWars.Players
                 return checkCity1;
             }
 
-            checkCity2 = faction.cities.GetRandomUnsafe(Ref.rnd);
+            checkCity2 = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
             if (checkCity2 == null)
             {
                 return null;
@@ -2281,7 +2290,7 @@ namespace VikingEngine.DSSWars.Players
             const int TrialCount = 3;
             for (int i = 0; i < TrialCount; ++i)
             {
-                City myCity = faction.cities.GetRandomUnsafe(Ref.rnd);
+                City myCity = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
                 if (myCity == null)
                 {
                     return null;
@@ -2289,7 +2298,7 @@ namespace VikingEngine.DSSWars.Players
 
                 for (int j = 0; j < TrialCount; ++j)
                 {
-                    City otherCity = otherFaction.cities.GetRandomUnsafe(Ref.rnd);
+                    City otherCity = otherFaction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
                     if (otherCity == null)
                     {
                         return null;
@@ -2317,7 +2326,7 @@ namespace VikingEngine.DSSWars.Players
             const int TrialCount = 3;
             for (int i = 0; i < TrialCount; ++i)
             {
-                City myCity = faction.cities.GetRandomUnsafe(Ref.rnd);
+                City myCity = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
                 if (myCity == null)
                 {
                     return null;
