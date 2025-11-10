@@ -466,7 +466,7 @@ namespace VikingEngine.DSSWars.Players
                 hud.pins.readGameState(r, subversion);
             }
 
-            if (subversion >= 84)
+            if (subversion >= 85)
             {
                 tooPeacefulCheckTimer.read(r);
             }

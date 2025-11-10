@@ -361,7 +361,7 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            if (subversion >= 84)
+            if (subversion >= 85)
             {
                 int quickMatchFactionsCount = r.ReadByte();
                 if (quickMatchFactionsCount > 0)

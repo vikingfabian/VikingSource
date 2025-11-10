@@ -1,7 +1,6 @@
 ﻿UPDATE
 Change Log:
-* heatmap water color
-* heatmap to red instead of black
+* 
 
 fixed - will update soon
 

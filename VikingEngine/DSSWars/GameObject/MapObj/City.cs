@@ -660,7 +660,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            if (subversion >= 84)
+            if (subversion >= 85)
             {
                 experenceOrDistance = (XP.ExperienceOrDistancePrio)r.ReadByte();
             }
