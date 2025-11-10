@@ -1,8 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Fixed controller button down event
-* Voxel editor: muted load icons crash
-* updated hall model
+* 
 
 fixed - will update soon
 
@@ -10,6 +8,10 @@ fixed - will update soon
 #SPRING UPDATE#
 * Performance: city resources have been moved to a Entity Component System 
 * Performance: removed faction to city pointers
+
+UNCLAIMED LAND
+* Settler unit in conscript
+
 
 
 #Spring update TODO

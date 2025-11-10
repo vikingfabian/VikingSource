@@ -580,11 +580,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            if (subversion >= 84)
-            { 
+            if (subversion >= 86)
+            {
                 cityType = (CityType)r.ReadByte();
             }
-
             workForce.amount = r.ReadUInt16();
             HousingCount_Workers = r.ReadUInt16();
             HousingCount_Guard = r.ReadUInt16();
@@ -666,7 +665,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            if (subversion >= 84)
+            if (subversion >= 85)
             {
                 experenceOrDistance = (XP.ExperienceOrDistancePrio)r.ReadByte();
             }
