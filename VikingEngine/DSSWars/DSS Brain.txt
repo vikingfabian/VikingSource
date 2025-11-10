@@ -3,6 +3,7 @@ Change Log:
 * Fixed controller button down event
 * Voxel editor: muted load icons crash
 * updated hall model
+* will store city size
 
 fixed - will update soon
 
