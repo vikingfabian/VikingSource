@@ -467,6 +467,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             try
             {
+                w.Write((byte)cityType);
+
                 w.Write(Bound.UShort(workForce.amount));
                 w.Write(Bound.UShort(HousingCount_Workers));
                 w.Write(Bound.UShort(HousingCount_Guard));
@@ -573,6 +575,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
+            if (subversion >= 86)
+            {
+                cityType = (CityType)r.ReadByte();
+            }
             workForce.amount = r.ReadUInt16();
             HousingCount_Workers = r.ReadUInt16();
             HousingCount_Guard = r.ReadUInt16();

@@ -147,7 +147,7 @@ namespace VikingEngine.DSSWars.Map
 
                         if (t.heightLevel <= Height.LowerWaterHeight)
                         {
-                            color = Color.Gray;
+                            color = Color.CornflowerBlue;
                         }
                         else if (t.CityIndex == prevCity)
                         {
