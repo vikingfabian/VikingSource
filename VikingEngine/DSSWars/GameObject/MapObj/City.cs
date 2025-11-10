@@ -572,7 +572,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            if (subversion >= 85)
+            if (subversion >= 86)
             {
                 cityType = (CityType)r.ReadByte();
             }
