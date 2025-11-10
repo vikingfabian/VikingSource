@@ -976,7 +976,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             generateCityType(CityType.Town, numHeadCities * 2, 9, generateSettings);
             generateCityType(CityType.Village, numHeadCities * 4, 8, generateSettings);
 
-            world.Init_CityComponents();
+            world.Init_CityComponents(world.cities.Count);
             foreach (City city in world.cities)
             {
                 city.generateCultureAndEconomy(world, cityCultureCollection);

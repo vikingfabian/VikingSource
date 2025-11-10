@@ -141,105 +141,6 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.SilverCoin, NoCityResource, DefaultWeight, Minting.SilverCoin, null);
             new ItemProperties(ItemResourceType.ElfCoin, NoCityResource, DefaultWeight, Minting.ElfCoin, null);
 
-            //items = new ItemProperties[(int)ItemResourceType.NUM];
-
-            //// wood variants
-            //new ItemProperties(ItemResourceType.HardWood, CityResoureIndex.wood, 1f / 20, null, null); //complete, has index
-            //new ItemProperties(ItemResourceType.SoftWood, CityResoureIndex.wood, 1f / 30, null, null);
-            //new ItemProperties(ItemResourceType.DryWood, CityResoureIndex.wood, 1f / 60, null, null);
-
-            //// basic resources
-            //new ItemProperties(ItemResourceType.Stone_G, 1f / CarryStones, null, null);//incomplete, has no index
-            //new ItemProperties(ItemResourceType.IronOre_G, 1f / 10, null, null);
-            //new ItemProperties(ItemResourceType.GoldOre, 1f / 10, null, null);
-            //new ItemProperties(ItemResourceType.Egg, 1f / 60, null, null);
-            //new ItemProperties(ItemResourceType.Pig, 1f, null, null);
-            //new ItemProperties(ItemResourceType.Hen, 1f / 4, null, null);
-            //new ItemProperties(ItemResourceType.Wheat, 1f / 10, null, null);
-            //new ItemProperties(ItemResourceType.Linen, 1f / 10, null, null);
-
-            //// fuel & food
-            //new ItemProperties(ItemResourceType.Fuel_G, CityResoureIndex.fuel, DefaultWeight, CraftResourceLib.Fuel1, null);
-            //new ItemProperties(ItemResourceType.Coal, DefaultWeight, CraftResourceLib.Charcoal, null);
-            //new ItemProperties(ItemResourceType.Food_G, 1f / CarryFood, CraftResourceLib.Food1, CraftResourceLib.Food2);
-            //new ItemProperties(ItemResourceType.Beer, DefaultWeight, CraftResourceLib.Beer, null);
-            //new ItemProperties(ItemResourceType.CoolingFluid, DefaultWeight, CraftResourceLib.CoolingFluid, null);
-
-            //// metals & alloys
-            //new ItemProperties(ItemResourceType.Copper, DefaultWeight, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
-            //new ItemProperties(ItemResourceType.Tin, DefaultWeight, CraftResourceLib.Tin, null);
-            //new ItemProperties(ItemResourceType.Lead, DefaultWeight, CraftResourceLib.Lead, null);
-            //new ItemProperties(ItemResourceType.Iron_G, DefaultWeight, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
-            //new ItemProperties(ItemResourceType.Silver, DefaultWeight, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
-            //new ItemProperties(ItemResourceType.Gold, DefaultWeight, Minting.ConvertGoldOre, null);
-            //new ItemProperties(ItemResourceType.Bronze, DefaultWeight, CraftResourceLib.Bronze, null);
-            //new ItemProperties(ItemResourceType.CastIron, DefaultWeight, CraftResourceLib.CastIron, null);
-            //new ItemProperties(ItemResourceType.BloomeryIron, DefaultWeight, CraftResourceLib.BloomeryIron, null);
-            //new ItemProperties(ItemResourceType.Steel, DefaultWeight, CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling);
-            //new ItemProperties(ItemResourceType.Mithril, DefaultWeight, CraftResourceLib.Mithril, null);
-
-            //// armors
-            //new ItemProperties(ItemResourceType.PaddedArmor, DefaultWeight, CraftResourceLib.PaddedArmor, null);
-            //new ItemProperties(ItemResourceType.HeavyPaddedArmor, DefaultWeight, CraftResourceLib.HeavyPaddedArmor, null);
-            //new ItemProperties(ItemResourceType.BronzeArmor, DefaultWeight, CraftResourceLib.BronzeArmor, null);
-            //new ItemProperties(ItemResourceType.IronArmor, DefaultWeight, CraftResourceLib.MailArmor, null);
-            //new ItemProperties(ItemResourceType.HeavyIronArmor, DefaultWeight, CraftResourceLib.HeavyMailArmor, null);
-            //new ItemProperties(ItemResourceType.LightPlateArmor, DefaultWeight, CraftResourceLib.PlateArmor, null);
-            //new ItemProperties(ItemResourceType.FullPlateArmor, DefaultWeight, CraftResourceLib.FullPlateArmor, null);
-            //new ItemProperties(ItemResourceType.MithrilArmor, DefaultWeight, CraftResourceLib.MithrilArmor, null);
-
-            //// buildings & tools
-            //new ItemProperties(ItemResourceType.Palisade, DefaultWeight, CraftResourceLib.Palisade, null);
-            //new ItemProperties(ItemResourceType.Toolkit, DefaultWeight, CraftResourceLib.Toolkit, null);
-            //new ItemProperties(ItemResourceType.Wagon2Wheel, DefaultWeight, CraftResourceLib.WagonLight, null);
-            //new ItemProperties(ItemResourceType.Wagon4Wheel, DefaultWeight, CraftResourceLib.WagonHeavy, null);
-
-            //// gunpowder & ballistics
-            //new ItemProperties(ItemResourceType.BlackPowder, DefaultWeight, CraftResourceLib.BlackPowder, null);
-            //new ItemProperties(ItemResourceType.GunPowder, DefaultWeight, CraftResourceLib.GunPowder, null);
-            //new ItemProperties(ItemResourceType.LedBullet, DefaultWeight, CraftResourceLib.LedBullets, null);
-
-            //// melee weapons
-            //new ItemProperties(ItemResourceType.SharpStick, DefaultWeight, CraftResourceLib.SharpStick, null);
-            //new ItemProperties(ItemResourceType.BronzeSword, DefaultWeight, CraftResourceLib.BronzeSword, null);
-            //new ItemProperties(ItemResourceType.ShortSword, DefaultWeight, CraftResourceLib.ShortSword, null);
-            //new ItemProperties(ItemResourceType.Sword, DefaultWeight, CraftResourceLib.Sword, null);
-            //new ItemProperties(ItemResourceType.LongSword, DefaultWeight, CraftResourceLib.LongSword, null);
-            //new ItemProperties(ItemResourceType.HandSpear, DefaultWeight, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
-            //new ItemProperties(ItemResourceType.MithrilSword, DefaultWeight, CraftResourceLib.MithrilSword, null);
-            //new ItemProperties(ItemResourceType.Warhammer, DefaultWeight, CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
-            //new ItemProperties(ItemResourceType.TwoHandSword, DefaultWeight, CraftResourceLib.TwoHandSword, null);
-            //new ItemProperties(ItemResourceType.KnightsLance, DefaultWeight, CraftResourceLib.KnightsLance, null);
-
-            //// ranged weapons
-            //new ItemProperties(ItemResourceType.SlingShot, DefaultWeight, CraftResourceLib.Slingshot, null);
-            //new ItemProperties(ItemResourceType.ThrowingSpear, DefaultWeight, CraftResourceLib.ThrowingSpear1, CraftResourceLib.ThrowingSpear2);
-            //new ItemProperties(ItemResourceType.Bow, DefaultWeight, CraftResourceLib.Bow, null);
-            //new ItemProperties(ItemResourceType.LongBow, DefaultWeight, CraftResourceLib.LongBow, null);
-            //new ItemProperties(ItemResourceType.Crossbow, DefaultWeight, CraftResourceLib.CrossBow, null);
-            //new ItemProperties(ItemResourceType.MithrilBow, DefaultWeight, CraftResourceLib.MithrilBow, null);
-
-            //// firearms
-            //new ItemProperties(ItemResourceType.HandCannon, DefaultWeight, CraftResourceLib.BronzeHandCannon, null);
-            //new ItemProperties(ItemResourceType.HandCulverin, DefaultWeight, CraftResourceLib.BronzeHandCulverin, null);
-            //new ItemProperties(ItemResourceType.Rifle, DefaultWeight, CraftResourceLib.Rifle, null);
-            //new ItemProperties(ItemResourceType.Blunderbuss, DefaultWeight, CraftResourceLib.Blunderbus, null);
-
-            //// siege engines
-            //new ItemProperties(ItemResourceType.Ballista, DefaultWeight, CraftResourceLib.Ballista_Iron, CraftResourceLib.Ballista_Bronze);
-            //new ItemProperties(ItemResourceType.Manuballista, DefaultWeight, CraftResourceLib.ManuBallista, null);
-            //new ItemProperties(ItemResourceType.Catapult, DefaultWeight, CraftResourceLib.Catapult, null);
-            //new ItemProperties(ItemResourceType.SiegeCannonBronze, DefaultWeight, CraftResourceLib.SiegeCannonBronze, null);
-            //new ItemProperties(ItemResourceType.ManCannonBronze, DefaultWeight, CraftResourceLib.ManCannonBronze, null);
-            //new ItemProperties(ItemResourceType.SiegeCannonIron, DefaultWeight, CraftResourceLib.SiegeCannonIron, null);
-            //new ItemProperties(ItemResourceType.ManCannonIron, DefaultWeight, CraftResourceLib.ManCannonIron, null);
-
-            //// coins
-            //new ItemProperties(ItemResourceType.CopperCoin, DefaultWeight, Minting.CopperCoin, null);
-            //new ItemProperties(ItemResourceType.BronzeCoin, DefaultWeight, Minting.BronzeCoin, null);
-            //new ItemProperties(ItemResourceType.SilverCoin, DefaultWeight, Minting.SilverCoin, null);
-            //new ItemProperties(ItemResourceType.ElfCoin, DefaultWeight, Minting.ElfCoin, null);
-
 
             for (int i = 0; i < items.Length; ++i)
             {
@@ -322,6 +223,23 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelData.armor = ArmorLevel.Masterful;
             }
 
+            {
+                var weapon = Get(ItemResourceType.Settler);
+                ref var soldier = ref weapon.soldierData;
+                soldier.attackDamage = DssConst.WeaponDamage_SharpStick;
+                soldier.attackDamageStructure = soldier.attackDamage;
+                soldier.attackDamageSea = soldier.attackDamage;
+
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = 0.03f;
+                soldier.modelName = LootFest.VoxelModelName.war_folkman;
+                soldier.icon = SpriteName.WarsUnitIcon_Folkman;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+                soldier.factionColoredModel = true;
+
+                soldier.modelData.weapon = ItemResourceType.Settler;
+                soldier.modelData.modelType = ModelType.Soldier;
+            }
 
             //Init weapons
             {

@@ -10,6 +10,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.Map;
 using VikingEngine.Network;
@@ -398,7 +399,7 @@ namespace VikingEngine.DSSWars
 
             int cityCount = r.ReadInt32();
             cities = new List<City>(cityCount);
-            Init_CityComponents();
+            Init_CityComponents(cityCount);
             for (int cityIndex = 0; cityIndex < cityCount; ++cityIndex)
             {
                 City c = new City(cityIndex);
@@ -682,6 +683,7 @@ namespace VikingEngine.DSSWars
             if (cityCount > 0)
             {
                 cities = new List<City>(cityCount);
+                Init_CityComponents(cityCount);
                 for (int cityIndex = 0; cityIndex < cityCount; ++cityIndex)
                 {
                     City c = new City(cityIndex, r, version);
@@ -706,6 +708,7 @@ namespace VikingEngine.DSSWars
                 {
                     int factionLength = r.ReadInt32();
                     factions = new SpottedArray<Faction>(factionLength);
+                    init_FactionComponents();
 
                     for (int i = 0; i < factionLength; ++i)
                     {
@@ -856,7 +859,7 @@ namespace VikingEngine.DSSWars
                     throw new EndlessLoopException("getPlayerAvailableFaction");
                 }
 
-                if (loops == 100 || loops == 200 || loops == 300)
+                if (loops == 100 || loops == 200 || loops == 300 || loops == 400 || loops == 500)
                 {
                     centerArea.AddRadius(10);
                 }

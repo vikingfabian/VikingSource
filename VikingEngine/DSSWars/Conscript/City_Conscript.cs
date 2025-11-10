@@ -152,13 +152,13 @@ namespace VikingEngine.DSSWars.GameObject
                                                     DssRef.achieve.UnlockAchievement_async(AchievementIndex.iron_cannon);
                                                     break;
                                             }
-                                            if (status.inProgress.weapon == ItemResourceType.KnightsLance)
-                                                //&&
-                                                //(status.inProgress.armorLevel == ItemResourceType.FullPlateArmor || status.inProgress.armorLevel == ItemResourceType.MithrilArmor) &&
-                                                //status.inProgress.training == TrainingLevel.Professional)
-                                            {
+                                            //if (status.inProgress.weapon == ItemResourceType.KnightsLance)
+                                            //    //&&
+                                            //    //(status.inProgress.armorLevel == ItemResourceType.FullPlateArmor || status.inProgress.armorLevel == ItemResourceType.MithrilArmor) &&
+                                            //    //status.inProgress.training == TrainingLevel.Professional)
+                                            //{
                                                 
-                                            }
+                                            //}
 
                                             //switch (Culture)
                                             //{

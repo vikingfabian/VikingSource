@@ -119,6 +119,7 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modweapon_mithrilsword,
                 VoxelModelName.modweapon_rifle,
                 VoxelModelName.modweapon_sharpstick,
+                VoxelModelName.modweapon_settler,
                 VoxelModelName.modweapon_shortbow,
                 VoxelModelName.modweapon_sling,
                 VoxelModelName.modweapon_spear,

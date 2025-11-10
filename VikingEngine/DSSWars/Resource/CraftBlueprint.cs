@@ -276,7 +276,7 @@ namespace VikingEngine.DSSWars.Resource
                 content.space();
                 content.Add(new RbText(name()));
             }
-            if (includeLevel)
+            if (includeLevel && experienceType != WorkExperienceType.NONE)
             
             //if (levelRequirement > ExperienceLevel.Beginner_1)
             {

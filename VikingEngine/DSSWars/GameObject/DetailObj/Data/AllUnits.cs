@@ -154,6 +154,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             switch (filterType)
             {
+                case UnitFilterType.Settler:
+                    return SpriteName.MissingImage;
                 case UnitFilterType.SharpStick:
                     return SpriteName.WarsUnitIcon_Folkman;
 
@@ -227,6 +229,7 @@ namespace VikingEngine.DSSWars.GameObject
 
     enum UnitFilterType
     { 
+        Settler,
         SharpStick,
         Sword,
         LongSword,

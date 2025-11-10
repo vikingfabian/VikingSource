@@ -396,7 +396,7 @@ namespace VikingEngine.DSSWars.Map
         static readonly Color MiniMapCol_LargeCity = new Color(226, 11, 88);
         static readonly Color MiniMapCol_SmallCity = new Color(194, 4, 72);
         static readonly Color MiniMapCol_CampsiteCity = new Color(148, 0, 17);
-        static readonly Color MiniMapCol_UnclaimedCity = Color.Blue;
+        static readonly Color MiniMapCol_UnclaimedCity = Color.LightBlue;
 
         public bool HasBorderImage() { return BorderCount > 0; }
 
@@ -465,29 +465,14 @@ namespace VikingEngine.DSSWars.Map
         public Color MinimapColor_Minimap(Faction playerFaction, IntVector2 pos)
         {
             if (tileContent == TileContent.City)
+            {
+                if (City().cityType == CityType.UnClaimed)
+                {
+                    lib.DoNothing();
+                }
                 return cityColor_Minimap();
-
-            //if (heightLevel <= Height.LowerWaterHeight)
-            //{
-            //    foreach (var dir in IntVector2.Dir4Array)
-            //    {
-            //        if (DssRef.world.tileGrid.TryGet(pos + dir, out var nTile))
-            //        {
-            //            if (nTile.heightLevel > Height.LowerWaterHeight)
-            //            {
-            //                return lib.IsEven(pos.X + pos.Y) ?
-            //                    WorldData.WaterDarkCol1 : WorldData.WaterDarkCol2;
-            //            }
-            //        }
-            //    }
-
-            //    return lib.IsEven(pos.X + pos.Y) ?
-            //        WorldData.WaterVeryDarkCol1 : WorldData.WaterVeryDarkCol2;
-            //}
-            //else if (heightLevel == Height.LowWaterHeight)
-            //{
-            //    return lib.IsEven(pos.X + pos.Y) ? WorldData.WaterEdgeColorBright : WorldData.WaterEdgeColor;
-            //}
+            }
+           
             if (heightLevel <= Height.LowWaterHeight)
             { 
                 return WorldData.WaterDarkCol2;

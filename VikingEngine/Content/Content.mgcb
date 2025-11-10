@@ -2473,6 +2473,9 @@
 #begin VoxelModel/Character/modweapon_rifle.vox
 /copy:VoxelModel/Character/modweapon_rifle.vox
 
+#begin VoxelModel/Character/modweapon_settler.vox
+/copy:VoxelModel/Character/modweapon_settler.vox
+
 #begin VoxelModel/Character/modweapon_sharpstick.vox
 /copy:VoxelModel/Character/modweapon_sharpstick.vox
 

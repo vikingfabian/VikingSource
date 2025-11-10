@@ -61,6 +61,11 @@ namespace VikingEngine.DSSWars
 
             switch (modelData.weapon)
             {
+                case Resource.ItemResourceType.Settler:
+                    weaponModel = VoxelModelName.modweapon_settler;
+                    weaponRightArmType = WeaponRightArmType.Bow;
+                    weaponHatFrame = 13;
+                    break;
                 case Resource.ItemResourceType.SharpStick:
                     weaponModel = VoxelModelName.modweapon_sharpstick;
                     weaponRightArmType = WeaponRightArmType.Bow;

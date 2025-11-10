@@ -63,6 +63,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string UnitType_UnclaimedLand => "Unclaimed land";
         public string UnitType_Settler => "Settler";
+        public string UnitType_Settler_Description => "Found a new city";
     }
 
 

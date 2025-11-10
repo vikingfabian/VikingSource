@@ -1603,6 +1603,9 @@ namespace VikingEngine.DSSWars.Presentation
                     return DssRef.lang.ResourceType_Workers;
                 case ItemResourceType.ServiceMen:
                     return DssRef.lang.ResourceType_ServiceMen;
+                case ItemResourceType.Settler:
+                    return DssRef.todoLang.UnitType_Settler;
+
 
                 case ItemResourceType.CopperCoin:
                 case ItemResourceType.BronzeCoin:
@@ -1668,9 +1671,11 @@ namespace VikingEngine.DSSWars.Presentation
         {
             switch (filterType)
             {
+                case UnitFilterType.Settler:
+                    return DssRef.todoLang.UnitType_Settler;
                 case UnitFilterType.SharpStick:
                     return DssRef.lang.UnitType_Folkman;
-                
+
                 case UnitFilterType.Sword:
                 case UnitFilterType.LongSword:
                     return DssRef.lang.UnitType_Soldier;

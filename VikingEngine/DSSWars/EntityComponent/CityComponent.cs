@@ -14,14 +14,20 @@ namespace VikingEngine.DSSWars
 
         public GroupedResource[] cityResouces;
 
-        public void Init_CityComponents()
+
+        public void InitCity(City city)
+        { 
+            city.resourceComponentStartIndex = CityResoureIndex.COUNT * city.myIndex;
+        }
+
+        public void Init_CityComponents(int cityCount)
         {
-            cityResouces = new GroupedResource[CityResoureIndex.COUNT * cities.Count];
+            cityResouces = new GroupedResource[CityResoureIndex.COUNT * cityCount];
 
             int startIndex = 0;
-            for (int cityIx = 0; cityIx < cities.Count; cityIx++)
+            for (int cityIx = 0; cityIx < cityCount; cityIx++)
             {
-                cities[cityIx].resourceComponentStartIndex = startIndex;
+                //cities[cityIx].resourceComponentStartIndex = startIndex;
 
                 // Basics
                 cityResouces[startIndex + CityResoureIndex.wood] = new GroupedResource { amount = 20, goalBuffer = 300 };

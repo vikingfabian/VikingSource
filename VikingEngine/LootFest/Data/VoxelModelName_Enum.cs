@@ -71,6 +71,7 @@ namespace VikingEngine.LootFest
         modweapon_mithrilbow,
         modweapon_mithrilsword,
         modweapon_rifle,
+        modweapon_settler,
         modweapon_sharpstick,
         modweapon_shortbow,
         modweapon_sling,

@@ -327,7 +327,7 @@ namespace VikingEngine.DSSWars.GameObject
         public City(int index, IntVector2 pos, CityType type, WorldData world)
         {
             this.myIndex = index;
-
+            world.InitCity(this);
             this.tilePos = pos;
             this.cityType = type;
         }
@@ -335,11 +335,13 @@ namespace VikingEngine.DSSWars.GameObject
         public City(int index)
         {
             this.myIndex = index;
+            DssRef.world.InitCity(this);
         }
 
         public City(int index, System.IO.BinaryReader r, int version)
         {
             this.myIndex = index;
+            DssRef.world.InitCity(this);
             readMapFile(r, version);
         }
 
@@ -469,6 +471,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             try
             {
+                w.Write((byte)cityType);
+
                 w.Write(Bound.UShort(workForce.amount));
                 w.Write(Bound.UShort(HousingCount_Workers));
                 w.Write(Bound.UShort(HousingCount_Guard));
@@ -560,6 +564,7 @@ namespace VikingEngine.DSSWars.GameObject
                     w.Write(true);
                     casualProgress.writeGameState(w);
                 }
+
                 Debug.WriteCheck(w);
 
                 //throw new Exception("test");
@@ -575,6 +580,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
+            if (subversion >= 84)
+            { 
+                cityType = (CityType)r.ReadByte();
+            }
+
             workForce.amount = r.ReadUInt16();
             HousingCount_Workers = r.ReadUInt16();
             HousingCount_Guard = r.ReadUInt16();
@@ -1631,6 +1641,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             switch (cityType)
             {
+                case CityType.Campsite:
+                    WorkersMaxLimit = DssConst.CampHall_MaxWorkForce;
+                    break;
                 case CityType.Village:
                     WorkersMaxLimit = DssConst.VillageHall_MaxWorkForce;
                     break;
@@ -1673,83 +1686,12 @@ namespace VikingEngine.DSSWars.GameObject
             //}
         }
 
-        //public void setFactoryType(bool set)
-        //{
-        //    if (set)
-        //    {
-        //        if (cityType != CityType.Factory)
-        //        {
-        //            cityType = CityType.Factory;
-
-        //            HousingCount_Workers += DssConst.HeadCityStartMaxWorkForce;
-        //            //detailObj.refreshModel();
-
-        //            if (overviewModel != null)
-        //            {
-        //                overviewModel.scale = VectorExt.V3(IconScale() * overviewModel.OneBlockScale);
-        //            }
-
-        //            DssRef.state.events.onFactoryBuilt(this);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (cityType == CityType.Factory)
-        //        {
-        //            cityType = CityType.Town;
-
-        //            HousingCount_Workers -= DssConst.HeadCityStartMaxWorkForce;
-        //            //detailObj.refreshModel();
-
-        //            if (overviewModel != null)
-        //            {
-        //                overviewModel.scale = VectorExt.V3(IconScale() * overviewModel.OneBlockScale);
-        //            }
-
-        //            DssRef.state.events?.onFactoryDestroyed(this);
-        //        }
-        //    }
-        //}
-
-        //public bool canBuyNobelHouse()
-        //{
-        //    return !nobelHouse &&
-        //        workForce >= DssLib.NobelHouseWorkForceReqiurement &&
-        //        faction.gold >= DssLib.NobleHouseCost;
-        //}
-
         public bool canEverGetNobelHouse()
         {
             return true;//maxEpandWorkSize >= DssLib.NobelHouseWorkForceReqiurement;
         }
 
-        //public void buyNobelHouseAction()
-        //{
-        //    if (canBuyNobelHouse() &&
-        //        faction.payMoney(DssLib.NobleHouseCost, false))
-        //    {
-        //        addNobelHouseFeatures();
-        //    }
-        //}
-
-        //void addNobelHouseFeatures()
-        //{
-        //    nobelHouse = true;
-
-        //    if (!HasUnitPurchaseOption(UnitType.Knight))
-        //    {
-        //        var typeData = DssRef.profile.Get(UnitType.Knight);
-
-        //        CityPurchaseOption knightPurchase = new CityPurchaseOption()
-        //        {
-        //            unitType = UnitType.Knight,
-        //            goldCost = typeData.goldCost,
-        //        };
-
-        //        cityPurchaseOptions.Add(knightPurchase);
-        //    }
-        //}
-
+     
         public bool hasNeededAreaSize()
         {
             int maxFit = WorkersPerTile * HutMaxLevel * areaSize;

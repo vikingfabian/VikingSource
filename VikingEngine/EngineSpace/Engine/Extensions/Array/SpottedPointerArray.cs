@@ -488,7 +488,7 @@ namespace VikingEngine
 
         public void read_ushort(System.IO.BinaryReader r)
         {
-            Count = r.ReadInt32();
+            Count = r.ReadUInt16();
             if (Count > Array.Length)
             {
                 Array = new int[Count];
