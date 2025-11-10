@@ -1646,16 +1646,6 @@ namespace VikingEngine.DSSWars.Interface
                             
                             break;
                     }
-                    //if (resourcesSubTab == ResourcesSubTab.Overview_Armor ||
-                    //    resourcesSubTab == ResourcesSubTab.Stockpile_Armor)
-                    //    //resourcesSubTab == ResourcesSubTab.Work_Armor)
-                    //{
-                        
-                    //}
-                    //else
-                    //{
-                    //    content.space();
-                    //}
                 }
                 content.newParagraph();
             }
@@ -1665,51 +1655,12 @@ namespace VikingEngine.DSSWars.Interface
             switch (player.resourcesSubTab)
             {
                 case ResourcesSubTab.Overview_Resources:
-                    //content.h1(DssRef.lang.MenuTab_Resources).overrideColor = HudLib.TitleColor_Label;
-                    //content.newLine();
-
-                    content.Add(new RbImage(SpriteName.WarsResource_Water));
-                    content.space();
-                    content.Add(new RbText(TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Water) + ": " + string.Format(DssRef.lang.Language_CollectProgress, city.res_water.amount, city.maxWaterTotal)));
-                    content.Add(new RbTab(0.4f));
-                    content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
-                    content.Add(new RbText(TextLib.OneDecimal(city.waterAddPerSec)));
-                    content.space();
-                    if (DssRef.difficulty.GodPowers())
-                    {
-                        content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText("= 0", HudLib.GodPower_Color) },
-                           new RbAction(() => { city.waterAddPerSec = 0; }),
-                           null, true));
-
-                        content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText("+0.1", HudLib.GodPower_Color) },
-                            new RbAction(() => { city.waterAddPerSec += 0.1f; }),
-                            null, true));
-                    }
-
-                    HudLib.InfoButton(content,
-                       new RbTooltip((RichBoxContent content, object tag) =>
-                       {
-                           //RichBoxContent content = new RichBoxContent();
-                           content.h2(TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Water)).overrideColor = HudLib.TitleColor_Label;
-                           content.newLine();
-                           content.Add(new RbImage(SpriteName.WarsResource_Water));
-                           content.Add(new RbText(string.Format(DssRef.lang.Resource_CurrentAmount, city.res_water.amount)));
-
-                           content.text(string.Format(DssRef.lang.Resource_MaxAmount, city.maxWaterTotal));
-
-                           content.newLine();
-                           content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
-                           content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.OneDecimal(city.waterAddPerSec))));
-
-                           content.newParagraph();
-                           HudLib.Description(content, DssRef.lang.Resource_WaterAddLimit);
-
-                           //player.hud.tooltip.create(player, content, true);
-                       }));
+                    
+                    city.waterToHud(content, true);
 
                     bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
 
-                    city.GetGroupedResource(CityResoureIndex.wood)/*res_wood*/.toMenu(content, ItemResourceType.Wood_Group, woodSafeGuard, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);//New solution
+                    city.GetGroupedResource(CityResoureIndex.wood).toMenu(content, ItemResourceType.Wood_Group, woodSafeGuard, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);//New solution
                     city.GetGroupedResource(CityResoureIndex.stone).toMenu(content, ItemResourceType.Stone_G, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);// Replace "res_stone", and continue with the rest
                     city.GetGroupedResource(CityResoureIndex.rawFood).toMenu(content, ItemResourceType.RawFood_Group, rawFoodSafeGuard, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
                     city.GetGroupedResource(CityResoureIndex.skinLinnen).toMenu(content, ItemResourceType.SkinLinen_Group, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
@@ -2102,6 +2053,8 @@ namespace VikingEngine.DSSWars.Interface
 
             
         }
+
+        
 
         private void godPowerSetAllResources(RichBoxContent content, ItemResourceType[] Resources)
         {

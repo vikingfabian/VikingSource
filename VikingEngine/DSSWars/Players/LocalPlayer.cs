@@ -661,7 +661,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     foreach (var n in citySel.neighborCities)
                     {
-                        DssRef.world.cities[n].GetPlayer().onPlayerNeighborCapture(this);
+                        DssRef.world.cities[n].GetPlayer()?.onPlayerNeighborCapture(this);
                     }
                 }
             }

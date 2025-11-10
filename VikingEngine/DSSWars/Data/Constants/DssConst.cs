@@ -126,6 +126,7 @@ namespace VikingEngine.DSSWars
         public static int TaxPerWorker_copp = 10;
         public static int UpkeepPerServiceMan_copp = 10;
         public static int UpkeepPerGuard_copp = 10;
+        public static int CampsiteCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 2);
         public static int SmallCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 5);
         public static int LargeCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 7);
         public static int HeadCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 10);
@@ -169,9 +170,12 @@ namespace VikingEngine.DSSWars
         public const int HousingCount_ServiceHouse_Large = 10;
         public const int HousingCount_ServiceHouse_Small = 5;
 
+        public static int CampHall_MaxWorkForce = 120;
         public static int VillageHall_MaxWorkForce = 250;
         public static int TownHall_MaxWorkForce = 500;
 
+
+        public static int CampHall_GuardHousing = 4;
         public static int VillageHall_GuardHousing = 10;
         public static int TownHall_GuardHousing = 20;
         public static int CapitalHall_GuardHousing = 40;

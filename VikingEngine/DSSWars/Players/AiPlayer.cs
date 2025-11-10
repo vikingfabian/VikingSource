@@ -2262,18 +2262,21 @@ namespace VikingEngine.DSSWars.Players
             foreach (var nIx in city.neighborCities)
             {
                 var nCity = DssRef.world.cities[nIx];
-                if (nCity.factionIndex != faction.myIndex)
+                if (nCity.HasFaction())
                 {
-                    var relation = DssRef.diplomacy.GetRelationType(nCity.GetFaction(), faction);
-                    if (relation <= RelationType.RelationTypeN1_Enemies)
-                    { 
-                        return true;
-                    }
-                    else if (!inWarOnly &&
-                        relation <= RelationType.RelationType0_Neutral &&
-                        nCity.GetFaction_NoChecks().militaryStrength > faction.militaryStrength * 2)
+                    if (nCity.factionIndex != faction.myIndex)
                     {
-                        return true;                        
+                        var relation = DssRef.diplomacy.GetRelationType(nCity.GetFaction(), faction);
+                        if (relation <= RelationType.RelationTypeN1_Enemies)
+                        {
+                            return true;
+                        }
+                        else if (!inWarOnly &&
+                            relation <= RelationType.RelationType0_Neutral &&
+                            nCity.GetFaction_NoChecks().militaryStrength > faction.militaryStrength * 2)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
@@ -2336,7 +2339,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     City c = DssRef.world.cities[m];
                     var cityFaction = c.GetFaction_NoChecks();
-                    if (cityFaction != faction && cityFaction != weakestOpponent)
+                    if (cityFaction != null && cityFaction != faction && cityFaction != weakestOpponent)
                     {
                         if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium &&
                             cityFaction.player.IsLocalPlayer())

@@ -56,152 +56,155 @@ namespace VikingEngine.DSSWars.Map
                             for (int dir = 0; dir < 4; ++dir)
                             {
                                 int borderRegion = t.GetBorder(dir);
-                                if (borderRegion >= 0 && GameObject.City.Get(borderRegion).factionIndex != t.City().factionIndex)
+                                if (borderRegion >= 0)
                                 {
-                                    //if (dir.toOtherRegion >= 0 && GameObject.City.Get(dir.toOtherRegion).Faction != t.City.Faction)
-                                    //{
-
-                                    switch (dir)
+                                    var factionIx = GameObject.City.Get(borderRegion).factionIndex;
+                                    if (factionIx < 0 || GameObject.City.Get(borderRegion).factionIndex != t.City().factionIndex)
                                     {
-                                        default: //N
-                                            //Outer edge, uncolored
-                                            cornerNW.X = tileCenter.X - TileHalfScale;
-                                            cornerNW.Y = uncoloredY;
-                                            cornerNW.Z = tileCenter.Z - TileHalfScale;
 
-                                            cornerNE.X = tileCenter.X + TileHalfScale;
-                                            cornerNE.Y = uncoloredY;
-                                            cornerNE.Z = tileCenter.Z - TileHalfScale;
 
-                                            cornerSE = cornerNE;
-                                            cornerSE.Z += UncoloredEdgeWidth;
-
-                                            cornerSW = cornerNW;
-                                            cornerSW.Z += UncoloredEdgeWidth;
-
-                                            //Inner edge, colored and below
-                                            innerCornerNW = cornerSW;
-                                            innerCornerNW.Y = coloredY;
-
-                                            innerCornerNE = cornerSE;
-                                            innerCornerNE.Y = coloredY;
-
-                                            innerCornerSW = cornerSW;
-                                            innerCornerSW.Z += ColoredEdgeWidth;
-
-                                            innerCornerSE = cornerSE;
-                                            innerCornerSE.Z += ColoredEdgeWidth;
-                                            break;
-                                        case 1: //E
-                                            //Outer edge, uncolored
-                                            cornerNW.X = tileCenter.X + TileHalfScale;
-                                            cornerNW.Y = uncoloredY;
-                                            cornerNW.Z = tileCenter.Z - TileHalfScale;
-
-                                            cornerNE.X = tileCenter.X + TileHalfScale;
-                                            cornerNE.Y = uncoloredY;
-                                            cornerNE.Z = tileCenter.Z + TileHalfScale;
-
-                                            cornerSE = cornerNE;
-                                            cornerSE.X -= UncoloredEdgeWidth;
-
-                                            cornerSW = cornerNW;
-                                            cornerSW.X -= UncoloredEdgeWidth;
-
-                                            //Inner edge, colored and below
-                                            innerCornerNW = cornerSW;
-                                            innerCornerNW.Y = coloredY;
-
-                                            innerCornerNE = cornerSE;
-                                            innerCornerNE.Y = coloredY;
-
-                                            innerCornerSW = cornerSW;
-                                            innerCornerSW.X -= ColoredEdgeWidth;
-
-                                            innerCornerSE = cornerSE;
-                                            innerCornerSE.X -= ColoredEdgeWidth;
-                                            break;
-
-                                        case 2: //S
-                                            //Outer edge, uncolored
-                                            cornerNW.X = tileCenter.X + TileHalfScale;
-                                            cornerNW.Y = uncoloredY;
-                                            cornerNW.Z = tileCenter.Z + TileHalfScale;
-
-                                            cornerNE.X = tileCenter.X - TileHalfScale;
-                                            cornerNE.Y = uncoloredY;
-                                            cornerNE.Z = tileCenter.Z + TileHalfScale;
-
-                                            cornerSE = cornerNE;
-                                            cornerSE.Z -= UncoloredEdgeWidth;
-
-                                            cornerSW = cornerNW;
-                                            cornerSW.Z -= UncoloredEdgeWidth;
-
-                                            //Inner edge, colored and below
-                                            innerCornerNW = cornerSW;
-                                            innerCornerNW.Y = coloredY;
-
-                                            innerCornerNE = cornerSE;
-                                            innerCornerNE.Y = coloredY;
-
-                                            innerCornerSW = cornerSW;
-                                            innerCornerSW.Z -= ColoredEdgeWidth;
-
-                                            innerCornerSE = cornerSE;
-                                            innerCornerSE.Z -= ColoredEdgeWidth;
-                                            break;
-
-                                        case 3: //W
-                                            //Outer edge, uncolored
-                                            cornerNW.X = tileCenter.X - TileHalfScale;
-                                            cornerNW.Y = uncoloredY;
-                                            cornerNW.Z = tileCenter.Z + TileHalfScale;
-
-                                            cornerNE.X = tileCenter.X - TileHalfScale;
-                                            cornerNE.Y = uncoloredY;
-                                            cornerNE.Z = tileCenter.Z - TileHalfScale;
-
-                                            cornerSE = cornerNE;
-                                            cornerSE.X += UncoloredEdgeWidth;
-
-                                            cornerSW = cornerNW;
-                                            cornerSW.X += UncoloredEdgeWidth;
-
-                                            //Inner edge, colored and below
-                                            innerCornerNW = cornerSW;
-                                            innerCornerNW.Y = coloredY;
-
-                                            innerCornerNE = cornerSE;
-                                            innerCornerNE.Y = coloredY;
-
-                                            innerCornerSW = cornerSW;
-                                            innerCornerSW.X += ColoredEdgeWidth;
-
-                                            innerCornerSE = cornerSE;
-                                            innerCornerSE.X += ColoredEdgeWidth;
-                                            break;
-                                    }
-
-                                    polygons.Add(new Graphics.PolygonColor(new Vector3[]
+                                        switch (dir)
                                         {
+                                            default: //N
+                                                     //Outer edge, uncolored
+                                                cornerNW.X = tileCenter.X - TileHalfScale;
+                                                cornerNW.Y = uncoloredY;
+                                                cornerNW.Z = tileCenter.Z - TileHalfScale;
+
+                                                cornerNE.X = tileCenter.X + TileHalfScale;
+                                                cornerNE.Y = uncoloredY;
+                                                cornerNE.Z = tileCenter.Z - TileHalfScale;
+
+                                                cornerSE = cornerNE;
+                                                cornerSE.Z += UncoloredEdgeWidth;
+
+                                                cornerSW = cornerNW;
+                                                cornerSW.Z += UncoloredEdgeWidth;
+
+                                                //Inner edge, colored and below
+                                                innerCornerNW = cornerSW;
+                                                innerCornerNW.Y = coloredY;
+
+                                                innerCornerNE = cornerSE;
+                                                innerCornerNE.Y = coloredY;
+
+                                                innerCornerSW = cornerSW;
+                                                innerCornerSW.Z += ColoredEdgeWidth;
+
+                                                innerCornerSE = cornerSE;
+                                                innerCornerSE.Z += ColoredEdgeWidth;
+                                                break;
+                                            case 1: //E
+                                                    //Outer edge, uncolored
+                                                cornerNW.X = tileCenter.X + TileHalfScale;
+                                                cornerNW.Y = uncoloredY;
+                                                cornerNW.Z = tileCenter.Z - TileHalfScale;
+
+                                                cornerNE.X = tileCenter.X + TileHalfScale;
+                                                cornerNE.Y = uncoloredY;
+                                                cornerNE.Z = tileCenter.Z + TileHalfScale;
+
+                                                cornerSE = cornerNE;
+                                                cornerSE.X -= UncoloredEdgeWidth;
+
+                                                cornerSW = cornerNW;
+                                                cornerSW.X -= UncoloredEdgeWidth;
+
+                                                //Inner edge, colored and below
+                                                innerCornerNW = cornerSW;
+                                                innerCornerNW.Y = coloredY;
+
+                                                innerCornerNE = cornerSE;
+                                                innerCornerNE.Y = coloredY;
+
+                                                innerCornerSW = cornerSW;
+                                                innerCornerSW.X -= ColoredEdgeWidth;
+
+                                                innerCornerSE = cornerSE;
+                                                innerCornerSE.X -= ColoredEdgeWidth;
+                                                break;
+
+                                            case 2: //S
+                                                    //Outer edge, uncolored
+                                                cornerNW.X = tileCenter.X + TileHalfScale;
+                                                cornerNW.Y = uncoloredY;
+                                                cornerNW.Z = tileCenter.Z + TileHalfScale;
+
+                                                cornerNE.X = tileCenter.X - TileHalfScale;
+                                                cornerNE.Y = uncoloredY;
+                                                cornerNE.Z = tileCenter.Z + TileHalfScale;
+
+                                                cornerSE = cornerNE;
+                                                cornerSE.Z -= UncoloredEdgeWidth;
+
+                                                cornerSW = cornerNW;
+                                                cornerSW.Z -= UncoloredEdgeWidth;
+
+                                                //Inner edge, colored and below
+                                                innerCornerNW = cornerSW;
+                                                innerCornerNW.Y = coloredY;
+
+                                                innerCornerNE = cornerSE;
+                                                innerCornerNE.Y = coloredY;
+
+                                                innerCornerSW = cornerSW;
+                                                innerCornerSW.Z -= ColoredEdgeWidth;
+
+                                                innerCornerSE = cornerSE;
+                                                innerCornerSE.Z -= ColoredEdgeWidth;
+                                                break;
+
+                                            case 3: //W
+                                                    //Outer edge, uncolored
+                                                cornerNW.X = tileCenter.X - TileHalfScale;
+                                                cornerNW.Y = uncoloredY;
+                                                cornerNW.Z = tileCenter.Z + TileHalfScale;
+
+                                                cornerNE.X = tileCenter.X - TileHalfScale;
+                                                cornerNE.Y = uncoloredY;
+                                                cornerNE.Z = tileCenter.Z - TileHalfScale;
+
+                                                cornerSE = cornerNE;
+                                                cornerSE.X += UncoloredEdgeWidth;
+
+                                                cornerSW = cornerNW;
+                                                cornerSW.X += UncoloredEdgeWidth;
+
+                                                //Inner edge, colored and below
+                                                innerCornerNW = cornerSW;
+                                                innerCornerNW.Y = coloredY;
+
+                                                innerCornerNE = cornerSE;
+                                                innerCornerNE.Y = coloredY;
+
+                                                innerCornerSW = cornerSW;
+                                                innerCornerSW.X += ColoredEdgeWidth;
+
+                                                innerCornerSE = cornerSE;
+                                                innerCornerSE.X += ColoredEdgeWidth;
+                                                break;
+                                        }
+
+                                        polygons.Add(new Graphics.PolygonColor(new Vector3[]
+                                            {
                                             cornerNW,//nw,
                                             cornerNE,//ne,  
                                             cornerSW,//sw,
                                             cornerSE,//se,
-                                        },
-                                        tex, UncoloredEdge));
-                                    polygons.Add(new Graphics.PolygonColor(new Vector3[]
-                                        {
+                                            },
+                                            tex, UncoloredEdge));
+                                        polygons.Add(new Graphics.PolygonColor(new Vector3[]
+                                            {
                                             innerCornerNW,//nw,
                                             innerCornerNE,//ne,  
                                             innerCornerSW,//sw,
                                             innerCornerSE,//se,
-                                        },
-                                        tex, t.FactionColor()));
-                                    //break;
-                                }
+                                            },
+                                            tex, t.FactionColor()));
 
+                                    }
+
+                                }
                             }
                         }
                     }

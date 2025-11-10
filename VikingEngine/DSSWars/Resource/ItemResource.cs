@@ -192,110 +192,11 @@ namespace VikingEngine.DSSWars.Resource
         ServiceMen,
 
         Palisade,
+        Settler,
 
         NUM,
 
         RESOURCES,
     }
 
-    //enum ItemResourceType
-    //{
-    //    NONE,
-
-    //    Hen,
-    //    Pig,
-    //    Goat,
-    //    Ox,
-    //    Egg,
-    //    Milk,
-    //    Cheese,
-    //    Meat,
-
-    //    RawLeather, 
-    //    Leather,
-
-    //    WoodShoe,
-    //    LeatherShoe,
-
-    //    SoftWood,
-    //    HardWood,
-    //    DryWood,
-    //    Planks,
-    //    Barrel,
-    //    Box,
-    //    Wheel,
-    //    Wagon,
-    //    Coal, 
-    //    Tar,
-
-    //    Linen,
-    //    Wool,
-    //    Rope,
-    //    Cloth,
-    //    Clothes,
-    //    Bag,
-
-    //    IronOre_G,
-    //    TinOre,
-    //    CupperOre,
-    //    SilverOre,
-    //    GoldOre,
-    //    MithrilOre,
-
-    //    Iron_G,
-    //    Steel,
-    //    Tin,
-    //    Cupper,
-    //    LongBow,
-    //    Silver,
-    //    Gold,
-    //    Mithril,
-
-    //    Bow,
-
-
-    //    SharpStick,
-    //    Sword,
-    //    Shield,
-
-    //    LightArmor,
-    //    MediumArmor,
-    //    HeavyArmor,
-    //    //Padding,
-    //    //Gambeson,
-    //    //Brigandine,
-    //    //PlateArmor,
-
-    //    StoneBlock,
-    //    Stone_G,
-    //    Clay,
-    //    Brick,
-
-    //    Hemp,
-
-    //    Wheat,
-    //    Rapeseed,
-    //    RES_,
-    //    Beer,
-    //    Food_G,
-
-    //    Water_G,
-    //    SaltWater,
-
-    //    Fuel_G,
-    //    Poop,
-
-    //    Ballista,
-    //    KnightsLance,
-    //    TwoHandSword,
-
-    //    Wood_Group,
-    //    RawFood_Group,
-    //    SkinLinen_Group,
-    //    Men,
-
-
-
-    //    NUM,
-    //}
 }

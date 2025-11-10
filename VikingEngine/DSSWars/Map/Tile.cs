@@ -382,18 +382,21 @@ namespace VikingEngine.DSSWars.Map
             }
             else
             {
-                return ColorExt.Empty;
+                return Color.Gray;
             }
         }
 
         static readonly Color MapCol_HeadCity = new Color(255,174,184);
         static readonly Color MapCol_LargeCity = new Color(253,0,30);
-        static readonly Color MapCol_SmallCity = new Color(148,0,17);
+        static readonly Color MapCol_SmallCity = new Color(148, 0, 17);
+        static readonly Color MapCol_CampsiteCity = new Color(148, 0, 17);
+        static readonly Color MapCol_UnclaimedCity = Color.Blue;
 
         static readonly Color MiniMapCol_HeadCity = new Color(251, 37, 114);
         static readonly Color MiniMapCol_LargeCity = new Color(226, 11, 88);
         static readonly Color MiniMapCol_SmallCity = new Color(194, 4, 72);
-
+        static readonly Color MiniMapCol_CampsiteCity = new Color(148, 0, 17);
+        static readonly Color MiniMapCol_UnclaimedCity = Color.Blue;
 
         public bool HasBorderImage() { return BorderCount > 0; }
 
@@ -536,7 +539,7 @@ namespace VikingEngine.DSSWars.Map
 
             if (faction < 0)
             {
-                return Color.Black;
+                return ColorExt.VeryDarkGray;
             }
 
             if (faction == playerFaction.myIndex)
@@ -592,13 +595,15 @@ namespace VikingEngine.DSSWars.Map
             City city = City();
             int faction = city.factionIndex;
 
+            Color factionCol;
             if (faction < 0)
             {
-                return Color.Black;
+                factionCol = Color.Gray;
             }
-            
-            Color factionCol = DssRef.world.factions.Array[faction].Color();
-
+            else
+            {
+                factionCol = DssRef.world.factions.Array[faction].Color();
+            }
             int distance = city.tilePos.SideLength(pos);
             
             if (distance == 1)
@@ -607,7 +612,11 @@ namespace VikingEngine.DSSWars.Map
             }
             else if (hasBorder(out bool sameFaction))
             {
-                if (ColorExt.GetBrightNess(factionCol) > 0.3f)
+                if (faction < 0)
+                {
+                    factionCol = Color.LightGray;
+                }
+                else if (ColorExt.GetBrightNess(factionCol) > 0.3f)
                 {
                     if (sameFaction)
                     {
@@ -655,7 +664,10 @@ namespace VikingEngine.DSSWars.Map
                 default: return MapCol_HeadCity;
                 case CityType.Town: return MapCol_LargeCity;
                 case CityType.Village: return MapCol_SmallCity;
-            }           
+                case CityType.Campsite: return MapCol_CampsiteCity;
+                case CityType.UnClaimed: return MapCol_UnclaimedCity;
+
+            }
         }
         public Color cityColor_Minimap()
         {
@@ -664,6 +676,8 @@ namespace VikingEngine.DSSWars.Map
                 default: return MiniMapCol_HeadCity;
                 case CityType.Town: return MiniMapCol_LargeCity;
                 case CityType.Village: return MiniMapCol_SmallCity;
+                case CityType.Campsite: return MiniMapCol_CampsiteCity;
+                case CityType.UnClaimed: return MiniMapCol_UnclaimedCity;
             }
         }
         static float[] TypeToWalkingMultiplier;

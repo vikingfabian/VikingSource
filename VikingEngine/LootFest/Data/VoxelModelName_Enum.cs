@@ -220,6 +220,7 @@ namespace VikingEngine.LootFest
         armystand,
         armystand_detail,
         cityicon,
+        unclaimed_icon,
         buildarea,
         godfire,
         wars_borderstick,

@@ -95,7 +95,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 //Order new food
                 City city = DssRef.world.tileGrid.Get(tilePos).City();
-                if (city != null)
+                if (city != null && city.HasFaction())
                 {
                     float bufferGoal_minutes = -1;
                     if (city.factionIndex == factionIndex)

@@ -72,7 +72,10 @@ namespace VikingEngine.DSSWars.GameObject
         public void async_workUpdate(int updateSpeed)
         {
             if (factionIndex < 0)
-            { return; }
+            {
+                CityStructure.WorkInstance.update(this, 0);
+                return; 
+            }
 
             var faction = GetFaction();
             if (faction == null)

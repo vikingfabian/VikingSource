@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.Conscript
 {
@@ -28,6 +29,23 @@ namespace VikingEngine.DSSWars.Conscript
                 TypeToBarrackTypeIx.Add(BarrackTypes[i], i);
             }
         }
+
+        public static readonly CraftBlueprint CraftSettler = new CraftBlueprint(
+            CraftResultType.NoSet,
+            0,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Men, 60),
+                new UseResource(ItemResourceType.SharpStick, 30),
+                new UseResource(ItemResourceType.Food_G, 400),
+                new UseResource(ItemResourceType.Wood_Group, 300),
+                new UseResource(ItemResourceType.SkinLinen_Group, 500)
+            },
+            XP.WorkExperienceType.NONE,
+            XP.ExperienceLevel.Beginner_1,
+            CraftRequirement.None
+        );
     }
 
 }

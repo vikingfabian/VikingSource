@@ -157,21 +157,28 @@ namespace VikingEngine.DSSWars.Map
                         {
                             Faction faction = t.Faction();
 
-                            float value = 0;
-                            switch (filter)
+                            if (faction != null)
                             {
-                                case FactionMapFilter.PopulationHeatmap:
-                                   value = faction.totalWorkForce;
-                                   break;
+                                float value = 0;
+                                switch (filter)
+                                {
+                                    case FactionMapFilter.PopulationHeatmap:
+                                        value = faction.totalWorkForce;
+                                        break;
 
-                                case FactionMapFilter.StrengthHeatmap:
-                                    value = faction.militaryStrength;
-                                    break;
+                                    case FactionMapFilter.StrengthHeatmap:
+                                        value = faction.militaryStrength;
+                                        break;
+                                }
+
+                                color = ColorExt.HeatColor_Inferno(value / max);
+                                prevCity = t.CityIndex;
+                                prevColor = color;
                             }
-
-                            color = ColorExt.HeatColor_Inferno(value / max);
-                            prevCity = t.CityIndex;
-                            prevColor = color;
+                            else
+                            {
+                                color = Color.Gray;
+                            }
                         }
 
                         texture.SetPixel(loop.Position, color);

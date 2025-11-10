@@ -1321,6 +1321,18 @@ namespace VikingEngine.DSSWars.Build
          XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Expert_3
       );
 
+        public static readonly CraftBlueprint CityHall_Village = new CraftBlueprint(
+            CraftResultType.NoSet,
+            0,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.ServiceMen, DssConst.VillageHall_RequiredStaff),
+                new UseResource(ItemResourceType.Gold, 500),
+                new UseResource(ItemResourceType.Wood_Group, 50),
+            },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+            );
 
         public static readonly CraftBlueprint CityHall_Town = new CraftBlueprint(
             CraftResultType.NoSet,

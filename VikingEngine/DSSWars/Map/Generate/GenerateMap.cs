@@ -10,6 +10,7 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.Network;
 
 namespace VikingEngine.DSSWars.Map.Generate
 {
@@ -99,7 +100,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         {
                             clearCityData();
 
-                            generateCities();
+                            generateCities(generateSettings);
                             bindTilesToCities();
                             bool areasuccess = calculateCityAreaSize_success();
                             if (!areasuccess)
@@ -110,7 +111,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         break;
 
                     case GenerateMapPass.Countries:
-                        factionStartAreas(worldMeta.mapSize);
+                        factionStartAreas(worldMeta.mapSize, generateSettings);
                         break;
 
                     case GenerateMapPass.AllPopulation:
@@ -120,7 +121,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                             world.rnd = new PcgRandom(Ref.rnd.Ushort());
                             clearCityData();
 
-                            generateCities();
+                            generateCities(generateSettings);
                             bindTilesToCities();
                             bool areasuccess = calculateCityAreaSize_success();
                             if (!areasuccess)
@@ -128,7 +129,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                                 return false;
                             }
 
-                            factionStartAreas(worldMeta.mapSize);
+                            factionStartAreas(worldMeta.mapSize, generateSettings);
                         }
                         break;
                 }
@@ -155,7 +156,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 extraTasks.Add(setLowWaterHeightAndWaterHeatmap());
 
                 LoadStatus = 55;
-                generateCities();
+                generateCities(generateSettings);
                 LoadStatus = 60;
                 bindTilesToCities();
                 LoadStatus = 65;
@@ -169,7 +170,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                 if (generateSettings.factionsOnMap)
                 {
-                    factionStartAreas(worldMeta.mapSize);
+                    factionStartAreas(worldMeta.mapSize, generateSettings);
                 }
 
                 if (save)
@@ -403,6 +404,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                         foreach (var c in world.cities)
                         {
                             City city = c;
+
+                           
                             // Start the task and add it to the list
                             tasks.Add(Task.Factory.StartNew(() =>
                             {
@@ -964,14 +967,14 @@ namespace VikingEngine.DSSWars.Map.Generate
             }
         }
 
-        void generateCities()
+        void generateCities(MapGenerateSettings generateSettings)
         {
             int numHeadCities = world.areaTileCount / 2000;
             world.cities = new List<City>(numHeadCities);
 
-            generateCityType(CityType.Capital, numHeadCities, HeadCityNeededFreeRadius);
-            generateCityType(CityType.Town, numHeadCities * 2, 9);
-            generateCityType(CityType.Village, numHeadCities * 4, 8);
+            generateCityType(CityType.Capital, numHeadCities, HeadCityNeededFreeRadius, generateSettings);
+            generateCityType(CityType.Town, numHeadCities * 2, 9, generateSettings);
+            generateCityType(CityType.Village, numHeadCities * 4, 8, generateSettings);
 
             world.Init_CityComponents();
             foreach (City city in world.cities)
@@ -979,8 +982,13 @@ namespace VikingEngine.DSSWars.Map.Generate
                 city.generateCultureAndEconomy(world, cityCultureCollection);
             }
         }
-        void generateCityType(CityType type, int amount, float neededSpace)
+        void generateCityType(CityType type, int amount, float neededSpace, MapGenerateSettings generateSettings)
         {
+            if (world.rnd.Chance(generateSettings.percentageUnclaimed))
+            {
+                type = CityType.UnClaimed;
+            }
+
             ConcurrentStack<IntVector2> preppedTiles = new ConcurrentStack<IntVector2>();
 
             int totalAmount = world.cities.Count + amount;
@@ -1233,7 +1241,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             return true;
         }
 
-        void factionStartAreas(MapSize mapSize)
+        void factionStartAreas(MapSize mapSize, MapGenerateSettings generateSettings)
         {
             int goalWorkForce = DssConst.HeadCityStartMaxWorkForce + DssConst.LargeCityStartMaxWorkForce + DssConst.SmallCityStartMaxWorkForce;
 
@@ -1261,13 +1269,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             foreach (City c in world.cities)
             {
-                //if (c == last)
-                //{
-                //    lib.DoNothing();
-                //}
-                //c.SetStartFaction(goalWorkForce, world.factions, world);
-
-                if (c.factionIndex < 0)
+                if (c.factionIndex < 0 && c.cityType > CityType.UnClaimed)
                 {
                     int size = goalWorkForce;
                     bool rndEmpire = useRandomEmpires && world.rnd.Chance(0.25);
@@ -1275,6 +1277,9 @@ namespace VikingEngine.DSSWars.Map.Generate
                     { 
                         size = MathExt.MultiplyInt(randomEmpiresSizeMulti.GetRandom(world.rnd), size);
                     }
+
+                    size = MathExt.MultiplyInt(size, 1.0 - generateSettings.percentageUnclaimed);
+
                     //region.Reset((int)size);
                     var faction = new Faction(world, FactionType.DefaultAi);
                     int regionCurrentWorkforce = region.GetStartFactionRegion(size, c, world, faction);
@@ -1285,17 +1290,17 @@ namespace VikingEngine.DSSWars.Map.Generate
                         faction.availableForPlayer = true;
                     }
                 }
-#if DEBUG
-                if (c.factionIndex < 0)
-                {
-                    throw new Exception();
-                }
-#endif
+//#if DEBUG
+//                if (c.factionIndex < 0)
+//                {
+//                    throw new Exception();
+//                }
+//#endif
             }
 
             if (world.factions.Count > DssLib.RtsMaxFactions)
             {
-                throw new Exception();
+                throw new Exception("RtsMaxFactions");
             }
         }
 

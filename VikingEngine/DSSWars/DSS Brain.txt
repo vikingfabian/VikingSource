@@ -47,7 +47,8 @@ x go over tutorial
 -advisor
 -inform of resource use
 
-
+Open simplex noise
+https://gist.github.com/digitalshadow/134a3a02b67cecd72181
 
 
 #Todo#

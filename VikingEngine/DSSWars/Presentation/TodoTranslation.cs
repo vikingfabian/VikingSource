@@ -56,6 +56,13 @@ namespace VikingEngine.DSSWars.Presentation
         public string HUD_NotAvailbleInX => "No available in {0}";
 
         public string InputActionName_MiniMap => "Mini-map";
+
+
+
+        //##SPRING##
+
+        public string UnitType_UnclaimedLand => "Unclaimed land";
+        public string UnitType_Settler => "Settler";
     }
 
 

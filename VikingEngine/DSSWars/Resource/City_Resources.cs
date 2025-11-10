@@ -431,7 +431,22 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public void AddGroupedResource(int itemIndex, int add)
-        {            
+        {
+#if DEBUG
+            if (factionIndex < 0)
+            {
+                throw new Exception();
+            }
+            if (resourceComponentStartIndex + itemIndex >= DssRef.world.cityResouces.Length)
+            {
+                throw new Exception();
+            }
+            if (itemIndex + factionIndex * CityResoureIndex.COUNT >= DssRef.world.factionResourceOverviews.Length)
+            {
+                throw new Exception();
+            }
+#endif
+
             ref var resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex];
             resource.amount += add;
 

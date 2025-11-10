@@ -43,25 +43,31 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return false;
         }
+
+        public bool HasFaction()
+        {
+            return factionIndex >= 0;
+        }
+
         virtual public Faction GetFaction_NoChecks()
         {
-#if DEBUG
+
             if (factionIndex < 0)
             {
-                throw new Exception();
+                return null;
             }
-#endif
+
             return DssRef.world.factions.Array[factionIndex];
         }
 
         virtual public Faction GetFaction()
         {
-#if DEBUG
+
             if (factionIndex < 0)
             {
-                throw new Exception();
+                return null;
             }
-#endif
+
             return DssRef.world.faction(factionIndex);
         }
 
@@ -72,12 +78,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Players.AbsPlayer GetPlayer()
         {
-#if DEBUG
+
             if (factionIndex < 0)
             {
-                throw new Exception();
+                return null;
             }
-#endif
+
             return DssRef.world.factions.Array[factionIndex]?.player;
         }
 

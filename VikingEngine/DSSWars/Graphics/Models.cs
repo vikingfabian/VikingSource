@@ -176,6 +176,7 @@ namespace VikingEngine.DSSWars
 
 
             //VOXEL
+            loadVoxelModel(VoxelModelName.unclaimed_icon, false);
             loadVoxelModel(VoxelModelName.war_town1, false);
             loadVoxelModel(VoxelModelName.war_town2, false);
             loadVoxelModel(VoxelModelName.war_town3, false);

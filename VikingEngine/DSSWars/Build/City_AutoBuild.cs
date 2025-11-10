@@ -43,6 +43,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void workAutoBuild(bool fuelSafeGuard, bool rawFoodSafeGuard)
         {
+
             var player = GetPlayer();
 
             //EMPTY

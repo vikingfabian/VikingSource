@@ -2722,6 +2722,9 @@
 #begin VoxelModel/LfWars/slingstone.vox
 /copy:VoxelModel/LfWars/slingstone.vox
 
+#begin VoxelModel/LfWars/unclaimed_icon.vox
+/copy:VoxelModel/LfWars/unclaimed_icon.vox
+
 #begin VoxelModel/LfWars/war_archer_i2.vox
 /copy:VoxelModel/LfWars/war_archer_i2.vox
 
