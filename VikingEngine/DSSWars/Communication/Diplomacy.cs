@@ -169,8 +169,10 @@ namespace VikingEngine.DSSWars
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref aifaction.cities, DssRef.world.cities, out City city))
             {
-                foreach (var nCityIx in city.neighborCities)
+                DssRef.world.neighborCities.LoopSpan(city.myIndex, city.neighborCitiesCount, out int nc_start, out int nc_exEnd);
+                for (int ncaIx = nc_start; ncaIx < nc_exEnd; ++ncaIx)//foreach (var nCityIx in city.neighborCities)
                 {
+                    int nCityIx = DssRef.world.neighborCities.array[ncaIx];
                     var ncity = DssRef.world.cities[nCityIx];
                     if (ncity.factionIndex != aifaction.myIndex &&
                         !aiPlayerAsynchUpdate_threats.Contains(nCityIx))

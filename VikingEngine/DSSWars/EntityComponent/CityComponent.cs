@@ -10,13 +10,14 @@ namespace VikingEngine.DSSWars
 {  
     partial class WorldData
     {
-        
 
+        public EcsStaticArray neighborCities;
         public GroupedResource[] cityResouces;
 
         public void Init_CityComponents()
         {
             cityResouces = new GroupedResource[CityResoureIndex.COUNT * cities.Count];
+            neighborCities = new EcsStaticArray(8, cities.Count);
 
             int startIndex = 0;
             for (int cityIx = 0; cityIx < cities.Count; cityIx++)

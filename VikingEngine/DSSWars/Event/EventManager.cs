@@ -854,9 +854,11 @@ namespace VikingEngine.DSSWars.Event
 
                 if (city != null)
                 {
-                    foreach (var cindex in city.neighborCities)
+                    DssRef.world.neighborCities.LoopSpan(city.myIndex, city.neighborCitiesCount, out int nc_start, out int nc_exEnd);
+                    for (int i = nc_start; i < nc_exEnd; ++i)
+                    //foreach (var cindex in city.neighborCities)
                     {
-                        var otherfaction = DssRef.world.cities[cindex].GetFaction();
+                        var otherfaction = DssRef.world.cities[DssRef.world.neighborCities.array[i]].GetFaction();
                         if (factionMayStartWar(otherfaction, defender))
                         {
                             return otherfaction;
@@ -879,9 +881,11 @@ namespace VikingEngine.DSSWars.Event
 
                     if (city != null)
                     {
-                        foreach (var cindex in city.neighborCities)
+                        //foreach (var cindex in city.neighborCities)
+                        DssRef.world.neighborCities.LoopSpan(city.myIndex, city.neighborCitiesCount, out int nc_start, out int nc_exEnd);
+                        for (int i = nc_start; i < nc_exEnd; ++i)
                         {
-                            var otherfaction = DssRef.world.cities[cindex].GetFaction();
+                            var otherfaction = DssRef.world.cities[DssRef.world.neighborCities.array[i]].GetFaction();
                             if (otherfaction != attacker && otherfaction != defender &&
                                 DssRef.diplomacy.GetRelationType(otherfaction, defender) >= RelationType.RelationType2_Good)
                             {
@@ -915,12 +919,15 @@ namespace VikingEngine.DSSWars.Event
 
                     if (city != null)
                     {
-                        foreach (var cindex in city.neighborCities)
+                        //foreach (var cindex in city.neighborCities)
+                        DssRef.world.neighborCities.LoopSpan(city.myIndex, city.neighborCitiesCount, out int nc_start, out int nc_exEnd);
+                        for (int i = nc_start; i < nc_exEnd; ++i)
                         {
-                            var otherfaction = DssRef.world.cities[cindex].GetFaction();
-                            if (otherfaction.myIndex != city.factionIndex &&
-                                !factionsChecked[otherfaction.myIndex])
+                            var otherfactionIx = DssRef.world.cities[DssRef.world.neighborCities.array[i]].factionIndex;
+                            if (otherfactionIx != city.factionIndex &&
+                                !factionsChecked[otherfactionIx])
                             {
+                                var otherfaction = DssRef.world.faction(otherfactionIx);
                                 if (factionMayStartWar(otherfaction, defender))
                                 {
                                     return otherfaction;
@@ -928,7 +935,7 @@ namespace VikingEngine.DSSWars.Event
                                 else
                                 {
                                     factionsToCheck.Add(otherfaction);
-                                    factionsChecked[otherfaction.myIndex] = true;
+                                    factionsChecked[otherfactionIx] = true;
                                 }
                             }
                         }

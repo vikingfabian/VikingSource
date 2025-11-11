@@ -415,11 +415,13 @@ namespace VikingEngine.DSSWars.Event
                     var check = arraylib.RandomListMemberPop(searchcities);
                     if (check != null)
                     {
-                        foreach (var ncityIx in check.neighborCities)
+                        DssRef.world.neighborCities.LoopSpan(check.myIndex, check.neighborCitiesCount, out int nc_start, out int nc_exEnd);
+                        for (int ncaIx = nc_start; ncaIx < nc_exEnd; ++ncaIx)//foreach (var ncityIx in check.neighborCities)
                         {
-                            if (!attackCities.Contains(ncityIx))
+                            int nCityIx = DssRef.world.neighborCities.array[ncaIx];
+                            if (!attackCities.Contains(nCityIx))
                             {
-                                var ncity_p = DssRef.world.cities[ncityIx];
+                                var ncity_p = DssRef.world.cities[nCityIx];
                                 if (!completedCities.Contains(ncity_p) &&
                                     !searchcities.Contains(ncity_p))
                                 {
@@ -1004,15 +1006,16 @@ namespace VikingEngine.DSSWars.Event
             List<Faction> adjacentFactions(Faction faction)
             {
                 List<Faction> factions = new List<Faction>();
-                //var citiesC = faction.cities.counter();
-                //while (citiesC.Next())
-                //{
+                
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    foreach (var n in citySel.neighborCities)
+                    DssRef.world.neighborCities.LoopSpan(citySel.myIndex, citySel.neighborCitiesCount, out int nc_start, out int nc_exEnd);
+                    for (int ncaIx = nc_start; ncaIx < nc_exEnd; ++ncaIx)//foreach (var nCityIx in city.neighborCities)
                     {
-                        var ncity = DssRef.world.cities[n];
+                        //foreach (var n in citySel.neighborCities)
+                    
+                        var ncity = DssRef.world.cities[DssRef.world.neighborCities.array[ncaIx]];
                         var nCityFaction = ncity.GetFaction();
 
                         if (nCityFaction != faction &&
