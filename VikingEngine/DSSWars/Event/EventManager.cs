@@ -165,7 +165,7 @@ namespace VikingEngine.DSSWars.Event
                     DssRef.achieve.UnlockAchievement_async(AchievementIndex.worthy_friends);
                 }
 
-                if (worldPeace && peaceStrength > warStrength)
+                if (worldPeace && peaceStrength > warStrength && p.faction.cities.Count < DssRef.world.cities.Count / 2)
                 {
                     Ref.update.AddSyncAction(new SyncAction1Arg<VictoryType>(victory, VictoryType.WorldPeace));
                     return;
