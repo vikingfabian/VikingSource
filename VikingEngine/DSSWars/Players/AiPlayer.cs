@@ -2175,18 +2175,19 @@ namespace VikingEngine.DSSWars.Players
 
             City city = null;
 
-            foreach (int m in inDanger.neighborCities)
+            EcsStaticArrayCounter neighbors = inDanger.CityNeighbors();
+            while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (int m in inDanger.neighborCities)
             {
-                City c = DssRef.world.cities[m];
-                if (c.factionIndex == faction.myIndex)
+                //City c = DssRef.world.cities[m];
+                if (nCity.factionIndex == faction.myIndex)
                 {
                     if (city == null)
                     {
-                        city = c;
+                        city = nCity;
                     }
-                    else if (c.workForce.amount > city.workForce.amount)
+                    else if (nCity.workForce.amount > city.workForce.amount)
                     {
-                        city = c;
+                        city = nCity;
                     }
                 }
             }
@@ -2259,9 +2260,10 @@ namespace VikingEngine.DSSWars.Players
 
         public bool IsWarBorderCity(City city, bool inWarOnly)
         {
-            foreach (var nIx in city.neighborCities)
+            EcsStaticArrayCounter neighbors = city.CityNeighbors();
+            while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var nIx in city.neighborCities)
             {
-                var nCity = DssRef.world.cities[nIx];
+                //var nCity = DssRef.world.cities[nIx];
                 if (nCity.factionIndex != faction.myIndex)
                 {
                     var relation = DssRef.diplomacy.GetRelationType(nCity.GetFaction(), faction);
@@ -2332,10 +2334,11 @@ namespace VikingEngine.DSSWars.Players
                     return null;
                 }
 
-                foreach (var m in myCity.neighborCities)
+                EcsStaticArrayCounter neighbors = myCity.CityNeighbors();
+                while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var m in myCity.neighborCities)
                 {
-                    City c = DssRef.world.cities[m];
-                    var cityFaction = c.GetFaction_NoChecks();
+                    //City c = DssRef.world.cities[m];
+                    var cityFaction = nCity.GetFaction_NoChecks();
                     if (cityFaction != faction && cityFaction != weakestOpponent)
                     {
                         if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium &&

@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars
         public void Init_CityComponents()
         {
             cityResouces = new GroupedResource[CityResoureIndex.COUNT * cities.Count];
-            neighborCities = new EcsStaticArray(8, cities.Count);
+            neighborCities = new EcsStaticArray(12, cities.Count);
 
             int startIndex = 0;
             for (int cityIx = 0; cityIx < cities.Count; cityIx++)

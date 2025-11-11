@@ -427,10 +427,10 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(Debug.Byte_OrCrash(workHutStyle));
 
             w.Write(Debug.Byte_OrCrash(neighborCitiesCount));
-            DssRef.world.neighborCities.LoopSpan(myIndex, neighborCitiesCount, out int nc_start, out int nc_exEnd);
-            for (int i = nc_start; i < nc_exEnd; ++i)//each (var n in neighborCities)
+            EcsStaticArrayCounter neighbors = CityNeighbors();
+            while (neighbors.Next(out int nCityIx))//each (var n in neighborCities)
             {
-                w.Write(Debug.Ushort_OrCrash(DssRef.world.neighborCities.array[i]));
+                w.Write(Debug.Ushort_OrCrash(nCityIx));
             }
 
 
@@ -3143,11 +3143,11 @@ namespace VikingEngine.DSSWars.GameObject
             content.text(DssRef.lang.CityCultureDescription, HudLib.InfoYellow_Light);
         }
 
-        public void AddNeighborCity(int nCityIndex)
+        public void AddNeighborCity(WorldData world, int nCityIndex)
         {
             if (nCityIndex >= 0)
             {
-                DssRef.world.neighborCities.Add(myIndex, ref neighborCitiesCount, nCityIndex, true); 
+                world.neighborCities.Add(myIndex, ref neighborCitiesCount, nCityIndex, true); 
                 //if (!neighborCities.Contains(nCityIndex))
                 //{
                 //    neighborCities.Add(nCityIndex);
@@ -3164,11 +3164,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Faction faction = GetFaction();
 
-            DssRef.world.neighborCities.LoopSpan(myIndex, neighborCitiesCount, out int nc_start, out int nc_exEnd);
-            for (int i = nc_start; i < nc_exEnd; ++i)//each (var n in neighborCities)
-            //foreach (int n in neighborCities)
+            //DssRef.world.neighborCities.LoopSpan(myIndex, neighborCitiesCount, out int nc_start, out int nc_exEnd);
+            //for (int i = nc_start; i < nc_exEnd; ++i)
+            EcsStaticArrayCounter neighbors = CityNeighbors();
+            while (neighbors.Next(DssRef.world.cities, out City nCity))//
             {
-                var cFaction = Get(DssRef.world.neighborCities.array[i]).GetFaction();
+                var cFaction = nCity.GetFaction();
                 if (cFaction != faction && cFaction.player is Players.AiPlayer)
                 {
                     cFaction.player.IsPlayerNeighbor = true;
@@ -3176,14 +3177,23 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public EcsStaticArrayCounter CityNeighbors()
+        { 
+            return new EcsStaticArrayCounter(DssRef.world.neighborCities, myIndex, neighborCitiesCount);
+        }
+
         public bool HasPlayerNeighbor()
         {
             Faction faction = GetFaction();
 
-            DssRef.world.neighborCities.LoopSpan(myIndex, neighborCitiesCount, out int nc_start, out int nc_exEnd);
-            for (int ncaIx = nc_start; ncaIx < nc_exEnd; ++ncaIx)//foreach (int n in neighborCities)
+
+            //DssRef.world.neighborCities.LoopSpan(myIndex, neighborCitiesCount, out int nc_start, out int nc_exEnd);
+            //for (int ncaIx = nc_start; ncaIx < nc_exEnd; ++ncaIx)//foreach (int n in neighborCities)
+            EcsStaticArrayCounter neighbors = CityNeighbors();
+
+            while(neighbors.Next(DssRef.world.cities, out City nCity))
             {
-                var cFaction = Get(DssRef.world.neighborCities.array[ncaIx]).GetFaction();
+                var cFaction = nCity.GetFaction();
                 if (cFaction != faction && cFaction.player.IsPlayerNeighbor)
                 {
                     return true;

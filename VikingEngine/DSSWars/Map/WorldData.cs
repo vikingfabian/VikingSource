@@ -858,7 +858,7 @@ namespace VikingEngine.DSSWars
 
                 if (loops == 100 || loops == 200 || loops == 300)
                 {
-                    centerArea.AddRadius(10);
+                    centerArea.AddRadius(20);
                 }
             }
 

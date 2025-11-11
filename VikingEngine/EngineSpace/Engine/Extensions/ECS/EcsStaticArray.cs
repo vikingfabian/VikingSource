@@ -39,7 +39,7 @@ namespace VikingEngine
             return false;
         }
 
-         public bool Next<T>(List<T> list, out T value)
+        public bool Next<T>(List<T> list, out T value)
         {
             index++;
             if (index < end)
@@ -49,7 +49,7 @@ namespace VikingEngine
                 return true;
             }
 
-            value = default(T);
+            value = default;
             return false;
         }
     }

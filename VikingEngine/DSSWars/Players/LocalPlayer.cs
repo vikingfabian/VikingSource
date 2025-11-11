@@ -659,9 +659,10 @@ namespace VikingEngine.DSSWars.Players
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    foreach (var n in citySel.neighborCities)
+                    EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in citySel.neighborCities)
                     {
-                        DssRef.world.cities[n].GetPlayer().onPlayerNeighborCapture(this);
+                        nCity.GetPlayer().onPlayerNeighborCapture(this);
                     }
                 }
             }
@@ -671,9 +672,10 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium)
             {
-                foreach (var n in city.neighborCities)
+                EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in city.neighborCities)
                 {
-                    DssRef.world.cities[n].GetPlayer().onPlayerNeighborCapture(this);
+                    nCity.GetPlayer().onPlayerNeighborCapture(this);
                 }                
             }
 

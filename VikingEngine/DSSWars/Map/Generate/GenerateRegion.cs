@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using VikingEngine.DSSWars.GameObject;
 
@@ -25,12 +26,14 @@ namespace VikingEngine.DSSWars.Map.Generate
                 checkEndIx = cities.Count -1;
                 for (int cityIx = checkStartIx; cityIx <= checkEndIx; cityIx++)
                 {
-                    foreach (int n in cities[cityIx].neighborCities)
+                    var city = cities[cityIx];
+                    EcsStaticArrayCounter neighbors = new EcsStaticArrayCounter(world.neighborCities, city.myIndex, city.neighborCitiesCount);//cities[cityIx].CityNeighbors();                    
+                    while (neighbors.Next(world.cities, out City nCity))//foreach (int n in cities[cityIx].neighborCities)
                     {
-                        City c = world.cities[n];
-                        if (c.factionIndex < 0)
+                        //City c = world.cities[n];
+                        if (nCity.factionIndex < 0)
                         {
-                            addCity(c);
+                            addCity(nCity);
 
                             if (currentWorkforce >= goalWorkForce)
                             {

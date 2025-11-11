@@ -165,9 +165,10 @@ namespace VikingEngine.DSSWars.Players
                 var city = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
                 if (city != null)
                 {
-                    foreach (var n in city.neighborCities)
+                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in city.neighborCities)
                     {
-                        var nFaction = DssRef.world.cities[n].GetFaction();
+                        var nFaction = nCity.GetFaction();
                         if (nFaction != faction &&
                             nFaction.diplomaticSide != DiplomaticSide.Light &&
                             !DssRef.diplomacy.PositiveRelationWithPlayer(nFaction))

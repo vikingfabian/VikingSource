@@ -24,8 +24,8 @@ namespace VikingEngine.DSSWars.Map.Generate
             DssRef.world = world;
             PcgRandom rnd = new PcgRandom(world.metaData.seed * city.myIndex);
 
-
-            foreach (var n in city.neighborCities)
+            EcsStaticArrayCounter neighbors = city.CityNeighbors();
+            while (neighbors.Next(out int n))//foreach (var n in city.neighborCities)
             {
                 //Low index cities track to higher
                 if (city.myIndex < n)

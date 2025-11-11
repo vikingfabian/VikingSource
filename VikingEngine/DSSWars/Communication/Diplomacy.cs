@@ -169,15 +169,14 @@ namespace VikingEngine.DSSWars
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref aifaction.cities, DssRef.world.cities, out City city))
             {
-                DssRef.world.neighborCities.LoopSpan(city.myIndex, city.neighborCitiesCount, out int nc_start, out int nc_exEnd);
-                for (int ncaIx = nc_start; ncaIx < nc_exEnd; ++ncaIx)//foreach (var nCityIx in city.neighborCities)
+                //foreach (var nCityIx in city.neighborCities)
+                EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                while (neighbors.Next(DssRef.world.cities, out City nCity))//
                 {
-                    int nCityIx = DssRef.world.neighborCities.array[ncaIx];
-                    var ncity = DssRef.world.cities[nCityIx];
-                    if (ncity.factionIndex != aifaction.myIndex &&
-                        !aiPlayerAsynchUpdate_threats.Contains(nCityIx))
+                    if (nCity.factionIndex != aifaction.myIndex &&
+                        !aiPlayerAsynchUpdate_threats.Contains(nCity.myIndex))
                     {
-                        aiPlayerAsynchUpdate_threats.Add(nCityIx);
+                        aiPlayerAsynchUpdate_threats.Add(nCity.myIndex);
                     }
                 }
             }

@@ -854,11 +854,10 @@ namespace VikingEngine.DSSWars.Event
 
                 if (city != null)
                 {
-                    DssRef.world.neighborCities.LoopSpan(city.myIndex, city.neighborCitiesCount, out int nc_start, out int nc_exEnd);
-                    for (int i = nc_start; i < nc_exEnd; ++i)
-                    //foreach (var cindex in city.neighborCities)
+                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var cindex in city.neighborCities)
                     {
-                        var otherfaction = DssRef.world.cities[DssRef.world.neighborCities.array[i]].GetFaction();
+                        var otherfaction = nCity.GetFaction();
                         if (factionMayStartWar(otherfaction, defender))
                         {
                             return otherfaction;
@@ -882,10 +881,10 @@ namespace VikingEngine.DSSWars.Event
                     if (city != null)
                     {
                         //foreach (var cindex in city.neighborCities)
-                        DssRef.world.neighborCities.LoopSpan(city.myIndex, city.neighborCitiesCount, out int nc_start, out int nc_exEnd);
-                        for (int i = nc_start; i < nc_exEnd; ++i)
+                        EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                        while (neighbors.Next(DssRef.world.cities, out City nCity))//
                         {
-                            var otherfaction = DssRef.world.cities[DssRef.world.neighborCities.array[i]].GetFaction();
+                            var otherfaction = nCity.GetFaction();
                             if (otherfaction != attacker && otherfaction != defender &&
                                 DssRef.diplomacy.GetRelationType(otherfaction, defender) >= RelationType.RelationType2_Good)
                             {
@@ -920,10 +919,10 @@ namespace VikingEngine.DSSWars.Event
                     if (city != null)
                     {
                         //foreach (var cindex in city.neighborCities)
-                        DssRef.world.neighborCities.LoopSpan(city.myIndex, city.neighborCitiesCount, out int nc_start, out int nc_exEnd);
-                        for (int i = nc_start; i < nc_exEnd; ++i)
+                        EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                        while (neighbors.Next(DssRef.world.cities, out City nCity))//
                         {
-                            var otherfactionIx = DssRef.world.cities[DssRef.world.neighborCities.array[i]].factionIndex;
+                            var otherfactionIx = nCity.factionIndex;
                             if (otherfactionIx != city.factionIndex &&
                                 !factionsChecked[otherfactionIx])
                             {
