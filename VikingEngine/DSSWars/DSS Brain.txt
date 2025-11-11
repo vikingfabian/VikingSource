@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* 
+* Fixed dragon gem faction name
 
 fixed - will update soon
 

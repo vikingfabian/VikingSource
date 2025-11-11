@@ -139,7 +139,7 @@ namespace VikingEngine.DSSWars.Players
                 case FactionType.DragonGem:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_Tomten;
+                    name = DssRef.todoLang.FactionName_DragonGem;
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     break;
 
