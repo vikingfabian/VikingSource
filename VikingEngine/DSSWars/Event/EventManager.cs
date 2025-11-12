@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.Event
                     DssRef.achieve.UnlockAchievement_async(AchievementIndex.worthy_friends);
                 }
 
-                if (worldPeace && peaceStrength > warStrength)
+                if (worldPeace && peaceStrength > warStrength && p.faction.cities.Count < DssRef.world.cities.Count / 2)
                 {
                     Ref.update.AddSyncAction(new SyncAction1Arg<VictoryType>(victory, VictoryType.WorldPeace));
                     return;
@@ -914,10 +914,11 @@ namespace VikingEngine.DSSWars.Event
                     {
                         foreach (var cindex in city.neighborCities)
                         {
-                            var otherfaction = DssRef.world.cities[cindex].GetFaction();
-                            if (otherfaction.myIndex != city.factionIndex &&
-                                !factionsChecked[otherfaction.myIndex])
+                            var otherfactionIx = DssRef.world.cities[cindex].factionIndex;
+                            if (otherfactionIx != city.factionIndex &&
+                                !factionsChecked[otherfactionIx])
                             {
+                                var otherfaction = DssRef.world.faction(otherfactionIx);
                                 if (factionMayStartWar(otherfaction, defender))
                                 {
                                     return otherfaction;
@@ -925,7 +926,7 @@ namespace VikingEngine.DSSWars.Event
                                 else
                                 {
                                     factionsToCheck.Add(otherfaction);
-                                    factionsChecked[otherfaction.myIndex] = true;
+                                    factionsChecked[otherfactionIx] = true;
                                 }
                             }
                         }
