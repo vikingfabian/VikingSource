@@ -464,27 +464,6 @@ namespace VikingEngine.DSSWars.Map
             if (tileContent == TileContent.City)
                 return cityColor_Minimap();
 
-            //if (heightLevel <= Height.LowerWaterHeight)
-            //{
-            //    foreach (var dir in IntVector2.Dir4Array)
-            //    {
-            //        if (DssRef.world.tileGrid.TryGet(pos + dir, out var nTile))
-            //        {
-            //            if (nTile.heightLevel > Height.LowerWaterHeight)
-            //            {
-            //                return lib.IsEven(pos.X + pos.Y) ?
-            //                    WorldData.WaterDarkCol1 : WorldData.WaterDarkCol2;
-            //            }
-            //        }
-            //    }
-
-            //    return lib.IsEven(pos.X + pos.Y) ?
-            //        WorldData.WaterVeryDarkCol1 : WorldData.WaterVeryDarkCol2;
-            //}
-            //else if (heightLevel == Height.LowWaterHeight)
-            //{
-            //    return lib.IsEven(pos.X + pos.Y) ? WorldData.WaterEdgeColorBright : WorldData.WaterEdgeColor;
-            //}
             if (heightLevel <= Height.LowWaterHeight)
             { 
                 return WorldData.WaterDarkCol2;
@@ -530,7 +509,6 @@ namespace VikingEngine.DSSWars.Map
         {
             float brightness = 1f - ((int)heightLevel - 2) * 0.05f;
 
-            //Tile nTile;
             City city = City();
             int faction = city.factionIndex;
 
@@ -547,19 +525,14 @@ namespace VikingEngine.DSSWars.Map
             {
                 brightness *= 0.2f;
             }
-            //Color factionCol = DssRef.world.factions.Array[faction].Color();
 
             int distance = city.tilePos.SideLength(pos);
-            //if (distance == 0)
-            //{
-            //    brightness = 1.25f;
-            //}
-            //else 
+            
             if (distance == 1)
             {
                 brightness *= 1.5f;
             }
-            else if (hasBorder(out bool sameFaction)/*BorderCount > 0*/)
+            else if (hasBorder(out bool sameFaction))
             {
                 if (sameFaction)
                 {
@@ -569,18 +542,8 @@ namespace VikingEngine.DSSWars.Map
                 {
                     brightness *= 0.6f;
                 }
-                //if (ColorExt.GetBrightNess(factionCol) > 0.3f)
-                //{
-                //    brightness -= 0.2f;
-                //}
-                //else
-                //{
-                //    factionCol = ColorExt.ChangeBrighness(factionCol, 10);
-                //    brightness += 0.1f;
-                //}
             }
 
-            //Color color = Color.Multiply(factionCol, brightness);
             return new Color(brightness, brightness, brightness);
         }
 

@@ -1,6 +1,10 @@
 ﻿UPDATE
 Change Log:
-* Fixed dragon gem faction name
+* fixed tutorial crash
+* Improved heatmap
+x Heatmap for natural resources
+
+x advisor test
 
 fixed - will update soon
 

@@ -56,6 +56,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string HUD_NotAvailbleInX => "No available in {0}";
 
         public string InputActionName_MiniMap => "Mini-map";
+
+        //public string UnitType_Faction => "Faction";
     }
 
 

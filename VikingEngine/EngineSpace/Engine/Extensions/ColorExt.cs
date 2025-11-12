@@ -91,6 +91,10 @@ namespace VikingEngine
 
             if (value < 0.33f)
             {
+                if (value <= 0)
+                { 
+                    return Color.Gray;
+                }
                 // 0.0 → 0.33 : white → yellow
                 float t = value / 0.33f;
                 return new Color(1f, 1f, 1f - t); // RGB: (1, 1, 1−t)
