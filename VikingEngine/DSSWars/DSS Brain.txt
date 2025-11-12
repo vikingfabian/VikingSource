@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Can only win peace when owning less than half of the world
+* 
 
 fixed - will update soon
 

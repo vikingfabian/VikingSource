@@ -466,8 +466,10 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 w.Write((byte)cityType);
 
-                w.Write(Bound.UShort(workForce.amount));
-                w.Write(Bound.UShort(HousingCount_Workers));
+                //w.Write(Bound.UShort(workForce.amount));
+                //w.Write(Bound.UShort(HousingCount_Workers));
+                w.Write(workForce.amount);
+                w.Write(HousingCount_Workers);
                 w.Write(Bound.UShort(HousingCount_Guard));
                 w.Write(Bound.Short(freeServiceMen.amount));
                 w.Write(Bound.Short(workingAndFreeServiceMen));
@@ -576,8 +578,17 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 cityType = (CityType)r.ReadByte();
             }
-            workForce.amount = r.ReadUInt16();
-            HousingCount_Workers = r.ReadUInt16();
+
+            if (subversion >= 87)
+            {
+                workForce.amount = r.ReadInt32();
+                HousingCount_Workers = r.ReadInt32();
+            }
+            else
+            {//old
+                workForce.amount = r.ReadUInt16();
+                HousingCount_Workers = r.ReadUInt16();
+            }
             HousingCount_Guard = r.ReadUInt16();
             freeServiceMen.amount = r.ReadInt16();
             if (subversion >= 51)
