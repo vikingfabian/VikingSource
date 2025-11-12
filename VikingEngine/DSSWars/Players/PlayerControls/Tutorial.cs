@@ -41,15 +41,31 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             CasualRecruitSoldier,
             ConscriptArmy,
             CollectFood,
-            RecruitGuard,
-            BuildDefences,
+            //RecruitGuard,
+            
             MoveArmy,
             AttackBarbarian,
             Diplomatics,
 
-            
+            EndTutorial,
 
-            End,
+            //Start of Advisor
+            TagCity,
+            LogisticsUpgrade, //FoodTag,
+            EducateBurner,
+            SendFood,
+
+            FindWoodCity,
+            FletcherPractice,
+            ProduceBow,
+            BuildDefences,
+            RecruitGuard,
+
+            FindIronCity,
+            ProduceSword,
+            ProduceMail,
+
+            EndAdvisor,
         }
 
         List2<TutorialMission> missions;
@@ -72,13 +88,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         bool CasualBuildBarracks_selectTab = false;
         bool CasualBuildBarracks_selectTab_sound = false;
         bool CasualBuildBarracks_build = false;
-        //bool casualRecruit_selectCity = false;
-        //bool casualRecruit_selectCity_sound = false;
+        
+
         bool casualRecruit_selectTab = false;
         bool casualRecruit_selectTab_sound = false;
         bool casualRecruit_recruit = false;
-        //bool casualRecruit_recruit_sound = false;
-
+        
         bool linen_selectTab = false;
         bool linen_build = false;
         bool linen_collect = false;
@@ -91,21 +106,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         bool weaponsArmor_setArmorPrio = false;
         bool weaponsArmor_produceArmor = false;
         bool weaponsArmor_produceWeapons = false;
-
-        bool recruitGuard_zoomIn = false;
-        bool recruitGuard_zoomIn_sound = false;
-        bool recruitGuard_selectCity = false;
-        bool recruitGuard_selectCity_sound = false;
-        bool recruitGuard_selectConscriptTab = false;
-        bool recruitGuard_selectConscriptTab_sound = false;
-        bool recruitGuard_selectGuardTab = false;
-        bool recruitGuard_selectGuardTab_sound = false;
-        bool recruitGuard_createGuard = false;
-
-        bool buildDefences_selectBuildTab = false;
-        bool buildDefences_selectBuildTab_sound = false;
-        bool buildDefences_buildPalisade = false;
-        bool buildDefences_moveGuard = false;
 
         bool conscriptArmy_build = false;
         bool conscriptArmy_selectTab = false;
@@ -130,6 +130,84 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         bool diplomatics_ZoomOut = false;
         bool diplomatics_ZoomOut_sound = false;
         bool diplomatics_goodRelation = false;
+
+
+        //ADVISOR
+
+        
+        //TagCity
+        TwoBools tagCity_selectCity_sound = TwoBools.False;
+        TwoBools tagCity_tagTab_sound = TwoBools.False;
+        TwoBools tagCity_foodTag_sound = TwoBools.False;
+        TwoBools tagCity_subTabTag_sound = TwoBools.False;
+        TwoBools tagCity_rawFoodToHud_sound = TwoBools.False;
+        TwoBools tagCity_fuelToHud_sound = TwoBools.False;
+        TwoBools tagCity_foodToHud_sound = TwoBools.False;
+
+        //LogisticsUpgrade,
+        bool logisticsUpgrade_selectCity = false;
+        TwoBools logisticsUpgrade_collectFood_sound = TwoBools.False;
+        TwoBools logisticsUpgrade_build_sound = TwoBools.False;
+        
+        //EducateBurner,
+        TwoBools educateBurner_buildSchool = TwoBools.False;
+        TwoBools educateBurner_educateFuel = TwoBools.False;
+        TwoBools educateBurner_buildCharcoal = TwoBools.False;
+        
+        //SendFood,
+        TwoBools sendFood_buildPostal = TwoBools.False;
+        TwoBools sendFood_postalToFood = TwoBools.False;
+        TwoBools sendFood_postalQueue = TwoBools.False;
+
+        //FindWoodCity,
+        TwoBools findWoodCity_selectCity_sound = TwoBools.False;
+        TwoBools findWoodCity_bowTag_sound = TwoBools.False;
+
+        //FletcherPractice
+        TwoBools fletcherPractice_buildWorkBench_sound = TwoBools.False;
+        TwoBools fletcherPractice_setSlingerTo3_sound = TwoBools.False;
+        TwoBools fletcherPractice_setJavelinTo3_sound = TwoBools.False;
+        TwoBools fletcherPractice_setBowTo4_sound = TwoBools.False;
+        TwoBools fletcherPractice_experienceTab_sound = TwoBools.False;
+        TwoBools fletcherPractice_fletcherLevel2_sound = TwoBools.False;
+
+        //ProduceBow,
+        bool produceBow_buildLogistics = false;
+        TwoBools produceBow_buildCarpenter = TwoBools.False;
+        TwoBools produceBow_produceBow = TwoBools.False;
+
+        //BuildDefences,
+        bool buildDefences_selectBuildTab = false;
+        bool buildDefences_selectBuildTab_sound = false;
+        bool buildDefences_buildPalisade = false;
+        bool buildDefences_moveGuard = false;
+
+        //RecruitGuard,
+        bool recruitGuard_zoomIn = false;
+        bool recruitGuard_zoomIn_sound = false;
+        bool recruitGuard_selectCity = false;
+        bool recruitGuard_selectCity_sound = false;
+        bool recruitGuard_selectConscriptTab = false;
+        bool recruitGuard_selectConscriptTab_sound = false;
+        bool recruitGuard_selectGuardTab = false;
+        bool recruitGuard_selectGuardTab_sound = false;
+        bool recruitGuard_createGuard = false;
+
+
+
+        //    FindIronCity,
+        TwoBools findIronCity_selectCity_sound = TwoBools.False;
+        TwoBools findIronCity_Tag_sound = TwoBools.False;
+        TwoBools findIronCity_buildSmelter_sound = TwoBools.False;
+        TwoBools findIronCity_increasePriority_sound = TwoBools.False;
+        TwoBools findIronCity_produceIron_sound = TwoBools.False;
+
+
+        //    ProduceSword,
+        //    ProduceMail,
+
+        //    EndAdvisor,
+
 
         Rectangle2 cityarea;
 
@@ -191,7 +269,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     TutorialMission.MoveArmy,
                     TutorialMission.AttackBarbarian,
                     TutorialMission.Diplomatics,
-                    TutorialMission.End,
+                    TutorialMission.EndTutorial,
                 };
             }
             else
@@ -208,7 +286,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 //}
                 //else
                 //{
-                    missions = new List2<TutorialMission>
+                missions = new List2<TutorialMission>
                 {
                     //TutorialMission.AttackBarbarian,
                     TutorialMission.CollectResources,
@@ -219,7 +297,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     TutorialMission.MoveArmy,
                     TutorialMission.AttackBarbarian,
                     TutorialMission.Diplomatics,
-                    TutorialMission.End,
+                    TutorialMission.EndTutorial,
                 };
                 //}
             }
@@ -481,11 +559,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 case TutorialMission.AttackBarbarian:
                     content.iconicontext(HudLib.CheckImage(attackBarbarian_win), SpriteName.WarsRelationWar, string.Format( DssRef.lang.Tutorial_AttackAndDestroyX, DssRef.lang.FactionName_Barbarian));
-                    //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdSpyglass), new RbSpace(), new RbText(DssRef.lang.FactionName_Barbarian) },
-                    //    new RbAction(() =>
-                    //    {
-                    //        player.gameControls.map.cameraFocus = barbarianArmy;
-                    //    })));
+                    
                     break;
 
                 case TutorialMission.Diplomatics:
@@ -495,15 +569,15 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             }
 
-            content.newParagraph();
-            content.icontext(player.gameControls.input.mouseSelect.Icon, DssRef.lang.Tutorial_SelectInput);            
-            content.icontext(player.gameControls.input.inputSource.IsController? player.gameControls.input.cameraTiltZoom.Icon : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
-            if (missions.sel == TutorialMission.MoveArmy ||
-                missions.sel == TutorialMission.AttackBarbarian ||
-                missions.sel == TutorialMission.BuildDefences)
-            {
-                content.icontext(player.gameControls.input.mouseOrder.Icon, DssRef.lang.Tutorial_MoveInput);
-            }
+            //content.newParagraph();
+            //content.icontext(player.gameControls.input.mouseSelect.Icon, DssRef.lang.Tutorial_SelectInput);            
+            //content.icontext(player.gameControls.input.inputSource.IsController? player.gameControls.input.cameraTiltZoom.Icon : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
+            //if (missions.sel == TutorialMission.MoveArmy ||
+            //    missions.sel == TutorialMission.AttackBarbarian ||
+            //    missions.sel == TutorialMission.BuildDefences)
+            //{
+            //    content.icontext(player.gameControls.input.mouseOrder.Icon, DssRef.lang.Tutorial_MoveInput);
+            //}
         }
 
         public void update(ref bool mouseOverHud)
@@ -1335,7 +1409,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 missions.SelectIndex(nextIx);
                 display.refresh = true;
 
-                if (missions.sel >= TutorialMission.End)
+                if (missions.sel >= TutorialMission.EndTutorial)
                 {
                     if (DssRef.storage.runTutorial_1short_2normal == 1)
                     {

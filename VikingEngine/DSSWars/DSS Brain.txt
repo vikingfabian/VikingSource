@@ -2,7 +2,11 @@
 Change Log:
 * fixed tutorial crash
 * Improved heatmap
-x Heatmap for natural resources
+* Heatmap for natural resources
+
+Tutorial:
+* Compressed the display
+
 
 x advisor test
 
