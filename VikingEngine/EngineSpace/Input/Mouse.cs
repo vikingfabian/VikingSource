@@ -148,7 +148,7 @@ namespace VikingEngine.Input
 
         public static bool HasEdgePush()
         {
-            return Engine.Screen.PcTargetFullScreen && !Engine.Screen.MousePushEdge.IntersectPoint(Position);
+            return Engine.Screen.PcDisplayMode != Engine.WindowDisplayMode.Windowed && !Engine.Screen.MousePushEdge.IntersectPoint(Position);
         }
 
 

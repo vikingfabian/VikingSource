@@ -906,7 +906,7 @@ namespace VikingEngine.LootFest
             GuiLayout layout = new GuiLayout("Options", menu);
             {
                 // Controls
-                Ref.gamesett.optionsMenu(layout);
+                //Ref.gamesett.optionsMenu(layout);
 
                 new GuiSectionSeparator(layout);
 

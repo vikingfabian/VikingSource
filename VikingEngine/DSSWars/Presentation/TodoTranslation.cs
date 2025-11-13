@@ -12,8 +12,12 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
+        public string DisplayMode => "Display mode";
+        public string DisplayMode_Windowed => "Windowed";
+        public string DisplayMode_BorderlessFullscreen => "Borderless fullscreen";
+
         //public string Error_SoundInitFailure => "Sound initialization failed";
-               
+
         //public string GameMenu_ControllerDisconnected => "Controller disconnected";
 
         //public string Tutorial_HighPriority => "Your men will complete high-priority tasks first";

@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.GameState
             }
 
             Ref.gamesett.language = language;
-            Ref.gamesett.fullscreenProperty(null, true, true);
+            Ref.gamesett.SetDisplayMode(WindowDisplayMode.BorderlessFullscreen);//fullscreenProperty(null, true, true);
             new ChangeLanguageRefresh();
             
         }
