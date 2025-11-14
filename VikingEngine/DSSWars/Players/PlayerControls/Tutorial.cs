@@ -57,6 +57,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             FindWoodCity,
             FletcherPractice,
+            FletcherPracticeWait,
             ProduceBow,
             BuildDefences,
             RecruitGuard,
@@ -162,7 +163,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         //FindWoodCity,
         TwoBools findWoodCity_selectCity_sound = TwoBools.False;
         TwoBools findWoodCity_bowTag_sound = TwoBools.False;
-
+        
         //FletcherPractice
         TwoBools fletcherPractice_buildWorkBench_sound = TwoBools.False;
         TwoBools fletcherPractice_setSlingerTo3_sound = TwoBools.False;
@@ -170,6 +171,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         TwoBools fletcherPractice_setBowTo4_sound = TwoBools.False;
         TwoBools fletcherPractice_experienceTab_sound = TwoBools.False;
         TwoBools fletcherPractice_fletcherLevel2_sound = TwoBools.False;
+
+        //FletcherPracticeWait
+        TwoBools fletcherPracticeWait_skillToHud_sound = TwoBools.False;
+        TwoBools fletcherPracticeWait_progressToHud_sound = TwoBools.False;
+        TwoBools fletcherPracticeWait_levelup_sound = TwoBools.False;
 
         //ProduceBow,
         bool produceBow_buildLogistics = false;
@@ -193,8 +199,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         bool recruitGuard_selectGuardTab_sound = false;
         bool recruitGuard_createGuard = false;
 
-
-
         //    FindIronCity,
         TwoBools findIronCity_selectCity_sound = TwoBools.False;
         TwoBools findIronCity_Tag_sound = TwoBools.False;
@@ -202,11 +206,19 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         TwoBools findIronCity_increasePriority_sound = TwoBools.False;
         TwoBools findIronCity_produceIron_sound = TwoBools.False;
 
-
         //    ProduceSword,
+        TwoBools produceSword_buildSmith_sound = TwoBools.False;
+        TwoBools produceSword_swordPriority_sound = TwoBools.False;
+        TwoBools produceSword_produceSword_sound = TwoBools.False;
+
         //    ProduceMail,
+        TwoBools produceMail_buildArmorer_sound = TwoBools.False;
+        TwoBools produceMail_mailPriority_sound = TwoBools.False;
+        TwoBools produceMail_produceMail_sound = TwoBools.False;
 
         //    EndAdvisor,
+
+        //Maybe projectile progress
 
 
         Rectangle2 cityarea;

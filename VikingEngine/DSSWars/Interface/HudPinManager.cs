@@ -11,8 +11,10 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Interface
 {
@@ -20,10 +22,13 @@ namespace VikingEngine.DSSWars.Interface
     enum HudPinType
     {
         Resource,
+        TechnologyTree,
+        WorkerXp,
     }
 
     struct HudPin
     {
+        static readonly Color BgCol = new Color(0, 0, 0.1f, 0.4f);
         public static readonly HudPin Empty = new HudPin();
 
         public HudPinType type;
@@ -44,17 +49,58 @@ namespace VikingEngine.DSSWars.Interface
             id = (int)itemResource;
         }
 
+        public HudPin(TechnologyTreeType techType)
+        {
+            type = HudPinType.TechnologyTree;
+            id = (int)techType;
+        }
+
+        //public HudPin(skill techType)
+        //{
+        //    type = HudPinType.TechnologyTree;
+        //    id = (int)techType;
+        //}
+
         public void toHud(RichBoxContent content, City city)
         {
-            var item = (ItemResourceType)id;
-            var resourceCount = city.GetGroupedResource(item);
-            content.Add(new RbButton(
-                new List<AbsRichBoxMember> { 
-                    new RbImage(ResourceLib.Icon(item)),
-                    new RbSpace(0.5f), 
-                    new RbText(resourceCount.amount.ToString(), Color.White)
-                }, null, new RbTooltip_Text(TextLib.LargeFirstLetter(LangLib.Item(item))), true, new Color(0, 0, 0.1f, 0.4f)));
-        }
+            switch (type)
+            {
+                case HudPinType.Resource:
+                    var item = (ItemResourceType)id;
+                    var resourceCount = city.GetGroupedResource(item);
+                    content.Add(new RbButton(
+                        new List<AbsRichBoxMember> { 
+                            new RbImage(ResourceLib.Icon(item)),
+                            new RbSpace(0.5f), 
+                            new RbText(resourceCount.amount.ToString(), Color.White)
+                        }, null, new RbTooltip_Text(TextLib.LargeFirstLetter(LangLib.Item(item))), true, BgCol));
+                    break;
+                case HudPinType.TechnologyTree:
+                    var techType = (TechnologyTreeType)id;
+                    LangLib.Technology(techType, out SpriteName techicon, out string techname);
+                    ResearchProgress progress = city.technology.progress(techType, out int goal);
+
+                    List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(3);
+                    if (progress.points >= goal)
+                    {
+                        buttonContent.Add(new RbImage(SpriteName.WarsTechnology_Unlocked));
+                    }
+                    else
+                    {
+                        buttonContent.Add(new RbImage(SpriteName.WarsTechnology_Locked));
+                    }
+                    buttonContent.Add(new RbImage(techicon));
+                    buttonContent.Add(new RbSpace(0.5f));
+                    if (progress.points < goal)
+                    {
+                        buttonContent.Add(new RbText($"{progress.points}/{goal}"));
+                    }
+                    content.Add(new RbButton(
+                        buttonContent, null, 
+                        new RbTooltip_Text(string.Format( DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Technology_Title, techname)), 
+                        true, BgCol));
+                    break;
+        }}
 
         public bool Equals(HudPin other)
         {

@@ -4,6 +4,8 @@ Change Log:
 * Improved heatmap
 * Heatmap for natural resources
 
+x sticky hud for skill and progress
+
 Tutorial:
 * Compressed the display
 

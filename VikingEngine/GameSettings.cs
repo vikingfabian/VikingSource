@@ -159,91 +159,91 @@ namespace VikingEngine
 
         public void readSettings(System.IO.BinaryReader r, int version)
         {
-            if (version > Version) return;
-
-            Engine.Screen.WindowScalePerc = r.ReadInt32();
-            Engine.Screen.PcTargetResolution.read(r);
-            Engine.Screen.PcTargetFullScreen = r.ReadBoolean();
-            Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
-
-            MusicMasterVolume = r.ReadSingle();
-            if (version == 23)
+            if (version <= Version)
             {
-                MusicMasterVolume = 1f;
+                Engine.Screen.WindowScalePerc = r.ReadInt32();
+                Engine.Screen.PcTargetResolution.read(r);
+                Engine.Screen.PcTargetFullScreen = r.ReadBoolean();
+                Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
+
+                MusicMasterVolume = r.ReadSingle();
+                if (version == 23)
+                {
+                    MusicMasterVolume = 1f;
+                }
+                SoundVolume = r.ReadSingle();
+                VibrationLevel = r.ReadByte();
+
+                UiScale = r.ReadSingle();
+                if (UiScale < 0.5f)
+                {
+                    UiScale = 1f;
+                }
+
+                if (version >= 28)
+                {
+                    IngameMenuWidth = r.ReadSingle();
+                }
+
+                language = (LanguageType)r.ReadByte();
+
+                dyslexiaFont = r.ReadBoolean();
+
+                controllerMap.read(r);
+                keyboardMap.read(r);
+
+
+                bannedPeers.read(r, version);
+
+                ModelLightShaderEffect = r.ReadBoolean();
+
+                MasterVolume = r.ReadSingle();
+                AmbientVolume = r.ReadSingle();
+
+                MapLoadingSpeed = (ThreeOptions)r.ReadByte();
+                Blood = r.ReadInt32();
+
+                panOnZoom = r.ReadBoolean();
+                controlLayout = r.ReadInt32();
+                scrollWheelSensitivity_menu = r.ReadSingle();
+                scrollWheelSensitivity_game = r.ReadSingle();
+                if (version >= 22)
+                {
+                    keyPanSpeed = r.ReadSingle();
+                }
+
+
+                BattleMelodyVolume = r.ReadSingle();
+
+                ParticlesEffect = r.ReadBoolean();
+
+
+                if (version >= 23)
+                {
+                    lowLatencyGarbageCollecting = r.ReadBoolean();
+                }
+
+                if (version >= 25)
+                {
+                    shadowResolution = (ShadowResolution)r.ReadByte();
+                    modelShadow = r.ReadBoolean();
+                    waterFoam = r.ReadBoolean();
+                    modelBrightness = r.ReadSingle();
+                }
+
+                if (version >= 26)
+                {
+                    FrameRate = r.ReadInt32();
+
+                }
+
+                if (version >= 27)
+                {
+                    farViewDistance = r.ReadBoolean();
+
+                }
+                Debug.ReadCheck(r);
             }
-            SoundVolume = r.ReadSingle();
-            VibrationLevel = r.ReadByte();
-
-            UiScale = r.ReadSingle();
-            if (UiScale < 0.5f)
-            {
-                UiScale = 1f;
-            }
-
-            if (version >= 28)
-            {
-                IngameMenuWidth = r.ReadSingle();
-            }
-
-            language = (LanguageType)r.ReadByte();
-
-            dyslexiaFont = r.ReadBoolean();
-
-            controllerMap.read(r);
-            keyboardMap.read(r);
-
-
-            bannedPeers.read(r, version);
-
-            ModelLightShaderEffect = r.ReadBoolean();
-
-            MasterVolume = r.ReadSingle();
-            AmbientVolume = r.ReadSingle();
-
-            MapLoadingSpeed = (ThreeOptions)r.ReadByte();
-            Blood = r.ReadInt32();
-
-            panOnZoom = r.ReadBoolean();
-            controlLayout = r.ReadInt32();
-            scrollWheelSensitivity_menu = r.ReadSingle();
-            scrollWheelSensitivity_game = r.ReadSingle();
-            if (version >= 22)
-            {
-                keyPanSpeed = r.ReadSingle();
-            }
-
-
-            BattleMelodyVolume = r.ReadSingle();
-
-            ParticlesEffect = r.ReadBoolean();
-
-
-            if (version >= 23)
-            {
-                lowLatencyGarbageCollecting = r.ReadBoolean();
-            }
-
-            if (version >= 25)
-            {
-                shadowResolution = (ShadowResolution)r.ReadByte();
-                modelShadow = r.ReadBoolean();
-                waterFoam = r.ReadBoolean();
-                modelBrightness = r.ReadSingle();
-            }
-
-            if (version >= 26)
-            {
-                FrameRate = r.ReadInt32();
-               
-            }
-            
-            if (version >= 27)
-            {
-                farViewDistance = r.ReadBoolean();
-               
-            }
-            Debug.ReadCheck(r);
-
             Engine.Update.SetFrameRate(FrameRate);
             setSoundLevelsOnError();
             //MusicMasterVolume = 0;
