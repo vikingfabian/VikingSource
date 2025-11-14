@@ -311,12 +311,12 @@ namespace VikingEngine.DSSWars.XP
                 }
 
                 content.Add(new RbTab(0.7f));
-
                 CityHudPinId pinId = new CityHudPinId(city.myIndex, new HudPin(type));
-                bool onHud = player.hud.pins.isPinnedProperty(pinId, false, false);
-                content.Add(new ArtToggle(onHud, new List<AbsRichBoxMember> {
-                    new RbImage(SpriteName.HudPinIcon, 1f, onHud? Color.White : Color.Gray) }, new RbAction(() => { player.hud.pins.Set(pinId, !onHud); }),
-                    new RbTooltip_Text( DssRef.lang.HudPins)));
+                player.hud.pins.toggleButton(content, pinId);
+                //bool onHud = player.hud.pins.isPinnedProperty(pinId, false, false);
+                //content.Add(new ArtToggle(onHud, new List<AbsRichBoxMember> {
+                //    new RbImage(SpriteName.HudPinIcon, 1f, onHud? Color.White : Color.Gray) }, new RbAction(() => { player.hud.pins.Set(pinId, !onHud); }),
+                //    new RbTooltip_Text( DssRef.lang.HudPins)));
             }
 
             void godPowerLockTech(TechnologyTreeType type)

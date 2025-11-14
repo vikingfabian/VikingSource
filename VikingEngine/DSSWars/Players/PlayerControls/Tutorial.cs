@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -50,8 +51,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             EndTutorial,
 
             //Start of Advisor
-            TagCity,
-            LogisticsUpgrade, //FoodTag,
+            TagFoodCity,
+            LogisticsUpgrade,
             EducateBurner,
             SendFood,
 
@@ -286,21 +287,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
             else
             {
-                //if (DssRef.storage.runTutorial_1short_2normal == 1)
-                //{
-                //    missions = new List2<TutorialMission>
-                //{
-                //    TutorialMission.RecruitGuard,
-                //    TutorialMission.BuildDefences,
-                //    TutorialMission.MoveArmy,
-                //    TutorialMission.End,
-                //};
-                //}
-                //else
-                //{
                 missions = new List2<TutorialMission>
                 {
-                    //TutorialMission.AttackBarbarian,
                     TutorialMission.CollectResources,
                     TutorialMission.Linen,
                     TutorialMission.ProduceWeaponsArmor,
@@ -309,9 +297,31 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     TutorialMission.MoveArmy,
                     TutorialMission.AttackBarbarian,
                     TutorialMission.Diplomatics,
-                    TutorialMission.EndTutorial,
+                    //TutorialMission.EndTutorial,
                 };
-                //}
+
+                missions.AddRange(new List<TutorialMission>
+                {
+                    //Start of Advisor
+                    TutorialMission.TagFoodCity,
+                    TutorialMission.LogisticsUpgrade,
+                    TutorialMission.EducateBurner,
+                    TutorialMission.SendFood,
+
+                    TutorialMission.FindWoodCity,
+                    TutorialMission.FletcherPractice,
+                    TutorialMission.FletcherPracticeWait,
+                    TutorialMission.ProduceBow,
+                    TutorialMission.BuildDefences,
+                    TutorialMission.RecruitGuard,
+
+                    TutorialMission.FindIronCity,
+                    TutorialMission.ProduceSword,
+                    TutorialMission.ProduceMail,
+
+                    TutorialMission.EndAdvisor,
+                });
+
             }
             missions.selectFirst();
         }
@@ -408,8 +418,19 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public void tutorial_ToHud(RichBoxContent content)
         {
-            content.h1(DssRef.lang.Tutorial_MissionsTitle);
-            content.h2(string.Format(DssRef.lang.Tutorial_MissionX, missions.selIndex +1), HudLib.InfoYellow_Light);
+            int missionIndex = missions.selIndex;
+            if (missions.sel < TutorialMission.EndTutorial)
+            {
+                missionIndex += 1;
+                content.h1(DssRef.lang.Tutorial_MissionsTitle);
+            }
+            else
+            {
+                missionIndex -= (int)TutorialMission.EndTutorial;
+                content.h1(DssRef.todoLang.Tutorial_AdvisorMission);
+            }
+
+            content.h2(string.Format(DssRef.lang.Tutorial_MissionX, missionIndex), HudLib.InfoYellow_Light);
 
             switch (missions.sel)
             {
@@ -466,7 +487,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.space();
                     content.Add(new RbImage(SpriteName.WarsHammer));
                     var tabImg = new RbImage(SpriteName.WarsHudSubTabSelected);
-                    //content.Add(tabImg);
                     content.Add(new RbOverlapImage(tabImg, SpriteName.WarsResource_Sword, Vector2.Zero, 0.8f));
                     content.space();
                     content.Add(new RbText(string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Work)));
@@ -482,29 +502,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     
                     break;
 
-                case TutorialMission.RecruitGuard:
-                    content.newLine();
-                    content.Add(new RbImage(HudLib.CheckImage(recruitGuard_selectCity)));
-                    content.space();
-                    content.Add(new RbImage(SpriteName.WarsTutorialCity));
-                    content.Add(new RbText("/"));
-                    content.Add(new RbImage(SpriteName.WarsCityHall));
-                    content.space();
-                    content.Add(new RbText(DssRef.lang.Tutorial_SelectACity));
-                    //content.icontext(HudLib.CheckImage(recruitGuard_selectCity), DssRef.lang.Tutorial_SelectACity);
-                    content.iconicontext(HudLib.CheckImage(recruitGuard_zoomIn), SpriteName.WarsWorker, DssRef.lang.Tutorial_ZoomInWorkers);
-                    content.iconicontext(HudLib.CheckImage(recruitGuard_selectConscriptTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title));
-                    content.iconicontext(HudLib.CheckImage(recruitGuard_selectGuardTab), SpriteName.WarsGuard, string.Format(DssRef.lang.Tutorial_OpenGuardSubTab, DssRef.lang.Conscript_Soldiers_GuardType));
-                    content.iconicontext(HudLib.CheckImage(recruitGuard_createGuard), SpriteName.WarsUnitIcon_Folkman, string.Format(DssRef.lang.Tutorial_CreateSoldiers, DssRef.lang.Resource_TypeName_SharpStick, DssRef.lang.Resource_TypeName_PaddedArmor));
-                    
-                    break;
 
-                case TutorialMission.BuildDefences:
-                    content.iconicontext(HudLib.CheckImage(buildDefences_selectBuildTab),SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Build));
-                    content.iconicontext(HudLib.CheckImage(buildDefences_buildPalisade), SpriteName.WarsBuild_Palisade, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Palisade].Label()));
-                    content.iconicontext(HudLib.CheckImage(buildDefences_moveGuard), SpriteName.WarsGuardPostIcon, DssRef.lang.Tutorial_GuardToWall);
-                   
-                    break;
+               
 
                 case TutorialMission.ConscriptArmy:
                     content.iconicontext(HudLib.CheckImage(conscriptArmy_build), SpriteName.WarsBuild_Barracks, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.SoldierBarracks].Label()));
@@ -552,9 +551,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case TutorialMission.MoveArmy:
                     content.newLine();
                     content.Add(new RbImage(HudLib.CheckImage(moveArmy_ZoomOut)));
-                    // content.space();
-                    //content.Add(new RbImage(SpriteName.WarsTutorialArmy));
-                     content.space();
+                    
+                    content.space();
                     content.Add(new RbText(DssRef.lang.Tutorial_ZoomOutOverview));
 
                     content.newLine();
@@ -563,10 +561,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.Add(new RbImage(SpriteName.WarsTutorialArmy));
                     content.space();
                     content.Add(new RbText(DssRef.lang.Tutorial_Mission_MoveArmy));
-
-
-                    //content.icontext(HudLib.CheckImage(moveArmy_ZoomOut), DssRef.lang.Tutorial_ZoomOutOverview);
-                    //content.icontext(HudLib.CheckImage(moveArmy_SelectMove), DssRef.lang.Tutorial_Mission_MoveArmy);
                     break;
 
                 case TutorialMission.AttackBarbarian:
@@ -578,6 +572,87 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.iconicontext(HudLib.CheckImage(diplomatics_ZoomOut), SpriteName.WarsDiplomaticPoint,  DssRef.lang.Tutorial_ZoomOutDiplomacy);
                     content.iconicontext(HudLib.CheckImage(diplomatics_goodRelation), SpriteName.WarsRelationGood, DssRef.lang.Tutorial_ImproveRelations);
                     break;
+                                    
+                case TutorialMission.TagFoodCity:
+                    //TwoBools tagCity_selectCity_sound = TwoBools.False;
+                    content.newLine();
+                    content.Add(new RbImage(HudLib.CheckImage(tagCity_selectCity_sound.Value1)));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsTutorialCity));
+                    content.Add(new RbText("/"));
+                    content.Add(new RbImage(SpriteName.WarsCityHall));
+                    content.space();
+                    content.Add(new RbText(DssRef.lang.Tutorial_SelectACity + ". Not your capital."));
+                   
+                    //TwoBools tagCity_tagTab_sound = TwoBools.False;
+                    content.iconicontext(HudLib.CheckImage(tagCity_tagTab_sound.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Tag));
+                    
+                    //TwoBools tagCity_foodTag_sound = TwoBools.False;
+                    content.newLine();
+                    content.Add(new RbImage(HudLib.CheckImage(tagCity_foodTag_sound.Value1)));
+                    content.space();
+                    content.Add(new RbText("Add tag:"));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsResource_Food));
+
+                    //TwoBools tagCity_subTabTag_sound = TwoBools.False;
+                    content.iconicontext(HudLib.CheckImage(tagCity_subTabTag_sound.Value1), SpriteName.WarsHudSubTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.HudPins));
+                    //TwoBools tagCity_rawFoodToHud_sound = TwoBools.False;
+                    //TwoBools tagCity_fuelToHud_sound = TwoBools.False;
+                    //TwoBools tagCity_foodToHud_sound = TwoBools.False;
+                    addResourcePin(tagCity_rawFoodToHud_sound.Value1, ItemResourceType.RawFood_Group);
+                    addResourcePin(tagCity_fuelToHud_sound.Value1, ItemResourceType.Fuel_G);
+                    addResourcePin(tagCity_foodToHud_sound.Value1, ItemResourceType.Food_G);
+
+                    void addResourcePin(bool complete, ItemResourceType resourceType)
+                    {
+                        content.newLine();
+                        content.Add(new RbImage(HudLib.CheckImage(complete)));
+                        content.space();
+                        content.Add(new RbText("Add pin:"));
+                        content.space();
+                        content.Add(new RbImage(ResourceLib.Icon(resourceType)));
+                        content.hspace();
+                        content.Add(new RbText(LangLib.Item(resourceType)));
+                    }
+
+                    break;
+                case TutorialMission.LogisticsUpgrade: break;
+                case TutorialMission.EducateBurner: break;
+                case TutorialMission.SendFood: break;
+
+                case TutorialMission.FindWoodCity: break;
+                case TutorialMission.FletcherPractice: break;
+                case TutorialMission.FletcherPracticeWait: break;
+                case TutorialMission.ProduceBow: break;
+                
+                case TutorialMission.BuildDefences:
+                    content.iconicontext(HudLib.CheckImage(buildDefences_selectBuildTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Build));
+                    content.iconicontext(HudLib.CheckImage(buildDefences_buildPalisade), SpriteName.WarsBuild_Palisade, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Palisade].Label()));
+                    content.iconicontext(HudLib.CheckImage(buildDefences_moveGuard), SpriteName.WarsGuardPostIcon, DssRef.lang.Tutorial_GuardToWall);
+
+                    break;
+
+                case TutorialMission.RecruitGuard:
+                    content.newLine();
+                    content.Add(new RbImage(HudLib.CheckImage(recruitGuard_selectCity)));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsTutorialCity));
+                    content.Add(new RbText("/"));
+                    content.Add(new RbImage(SpriteName.WarsCityHall));
+                    content.space();
+                    content.Add(new RbText(DssRef.lang.Tutorial_SelectACity));
+                    //content.icontext(HudLib.CheckImage(recruitGuard_selectCity), DssRef.lang.Tutorial_SelectACity);
+                    content.iconicontext(HudLib.CheckImage(recruitGuard_zoomIn), SpriteName.WarsWorker, DssRef.lang.Tutorial_ZoomInWorkers);
+                    content.iconicontext(HudLib.CheckImage(recruitGuard_selectConscriptTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title));
+                    content.iconicontext(HudLib.CheckImage(recruitGuard_selectGuardTab), SpriteName.WarsGuard, string.Format(DssRef.lang.Tutorial_OpenGuardSubTab, DssRef.lang.Conscript_Soldiers_GuardType));
+                    content.iconicontext(HudLib.CheckImage(recruitGuard_createGuard), SpriteName.WarsUnitIcon_Folkman, string.Format(DssRef.lang.Tutorial_CreateSoldiers, DssRef.lang.Resource_TypeName_SharpStick, DssRef.lang.Resource_TypeName_PaddedArmor));
+
+                    break;
+
+                case TutorialMission.FindIronCity: break;
+                case TutorialMission.ProduceSword: break;
+                case TutorialMission.ProduceMail: break;
 
             }
 
@@ -1359,21 +1434,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         linen_collect;
                     break;
 
-                
-                //case TutorialMission.SharpStickWork:
-                //    missionComplete = weaponsArmor_setWeaponPrio;
-                //    break;
-
                 case TutorialMission.ProduceWeaponsArmor:
                     missionComplete = weaponsArmor_produceWeapons && weaponsArmor_produceArmor;
-                    break;
-
-                case TutorialMission.RecruitGuard:
-                    missionComplete = recruitGuard_createGuard;
-                    break;
-
-                case TutorialMission.BuildDefences:
-                    missionComplete = buildDefences_buildPalisade && buildDefences_moveGuard;
                     break;
 
                 case TutorialMission.ConscriptArmy:
@@ -1400,6 +1462,52 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         diplomatics_goodRelation;
                     break;
 
+                case TutorialMission.TagFoodCity:
+                    missionComplete = tagCity_foodTag_sound.Value1 &&
+                        tagCity_rawFoodToHud_sound.Value1 &&
+                        tagCity_fuelToHud_sound.Value1 &&
+                        tagCity_foodToHud_sound.Value1;
+                    break;
+
+                case TutorialMission.LogisticsUpgrade:
+                    missionComplete = logisticsUpgrade_build_sound.Value1;
+                    break;
+
+                case TutorialMission.EducateBurner:
+                    missionComplete = false;
+                    break;
+                case TutorialMission.SendFood:
+                    missionComplete = false;
+                    break;
+
+                case TutorialMission.FindWoodCity:
+                    missionComplete = false;
+                    break;
+                case TutorialMission.FletcherPractice:
+                    missionComplete = false;
+                    break;
+                case TutorialMission.FletcherPracticeWait:
+                    missionComplete = false;
+                    break;
+                case TutorialMission.ProduceBow:
+                    missionComplete = false;
+                    break;
+                case TutorialMission.BuildDefences:
+                    missionComplete = buildDefences_buildPalisade && buildDefences_moveGuard;
+                    break;
+                case TutorialMission.RecruitGuard:
+                    missionComplete = recruitGuard_createGuard;
+                    break;
+
+                case TutorialMission.FindIronCity:
+                    missionComplete = false;
+                    break;
+                case TutorialMission.ProduceSword:
+                    missionComplete = false;
+                    break;
+                case TutorialMission.ProduceMail:
+                    missionComplete = false;
+                    break;
             }
 
             if (missionComplete)

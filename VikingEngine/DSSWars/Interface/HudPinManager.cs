@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Interface
@@ -37,10 +38,15 @@ namespace VikingEngine.DSSWars.Interface
         public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write((byte)id);
+            w.Write((byte)type);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion)
         {
             id = r.ReadByte();
+            if (subversion >= 88)
+            { 
+                type = (HudPinType)r.ReadByte();
+            }
         }
 
         public HudPin(ItemResourceType itemResource)
@@ -55,11 +61,11 @@ namespace VikingEngine.DSSWars.Interface
             id = (int)techType;
         }
 
-        //public HudPin(skill techType)
-        //{
-        //    type = HudPinType.TechnologyTree;
-        //    id = (int)techType;
-        //}
+        public HudPin(WorkExperienceType experienceType)
+        {
+            type = HudPinType.WorkerXp;
+            id = (int)experienceType;
+        }
 
         public void toHud(RichBoxContent content, City city)
         {
@@ -99,6 +105,19 @@ namespace VikingEngine.DSSWars.Interface
                         buttonContent, null, 
                         new RbTooltip_Text(string.Format( DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Technology_Title, techname)), 
                         true, BgCol));
+                    break;
+                case HudPinType.WorkerXp:
+                    WorkExperienceType experienceType = (WorkExperienceType)id;
+                    LangLib.ExperienceType(experienceType, out string xpName, out SpriteName xpIcon);
+                    WorkExperienceLevels levels = city.cityExperienceLevels.Get(experienceType);
+
+                    content.Add(new RbButton(
+                        new List<AbsRichBoxMember> {
+                            new RbImage(xpIcon),
+                            new RbSpace(0.5f),
+                            new RbImage(LangLib.ExperienceLevelIcon( levels.Max())),
+                        }, null, new RbTooltip_Text(xpName), true, BgCol));
+                    
                     break;
         }}
 
@@ -172,6 +191,14 @@ namespace VikingEngine.DSSWars.Interface
         public HudPinManager() :
             base(8)
         { }
+
+        public void toggleButton(RichBoxContent content, CityHudPinId pinId)
+        {
+            bool onHud = TryGet(pinId);
+            content.Add(new ArtToggle(onHud, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.HudPinIcon, 1f, onHud? Color.White : Color.Gray) }, new RbAction(() => { Set(pinId, !onHud); }),
+                    new RbTooltip_Text(DssRef.lang.HudPins)));
+        }
 
         public void clear(City city)
         {

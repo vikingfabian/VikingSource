@@ -23,6 +23,9 @@ namespace VikingEngine.DSSWars.Presentation
         public string Lobby_TwoTeams => "Two teams";
 
         public string Tutorial_HighPriority => "Your men will complete high-priority tasks first";
+        
+        public string Tutorial_AdvisorMission => "Advisor mission";
+
         public string Hud_Search => "Search";
 
         public string DifficultyDescription_ExtremeAggression = "Extreme aggression";
