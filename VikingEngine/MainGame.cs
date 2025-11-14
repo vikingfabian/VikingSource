@@ -242,7 +242,7 @@ namespace VikingEngine
             base.UnloadContent();
 
             //Input.PlayerInputMap.StopAllVibration();
-            Input.Mouse.Visible = true;
+            Input.Mouse.RestoreDefault();//.Visible = true;
 
             System.Threading.Tasks.Task.Delay(500).Wait();
             //Call if one of the threads arent close after some time

@@ -1,6 +1,6 @@
 ﻿UPDATE
-Change Log:
-* 
+Change Log: 
+* render option for custom mouse pointer
 
 fixed - will update soon
 

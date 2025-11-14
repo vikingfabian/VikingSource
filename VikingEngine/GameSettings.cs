@@ -26,7 +26,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 28;
+        const int Version = 29;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -42,6 +42,7 @@ namespace VikingEngine
         public const int MaxBlood = 100;
         public int Blood = 100;
         public float UiScale = 1f;
+        public bool customCursor = false;
         public float reversedStereoValue = 1f;
         public bool dyslexiaFont = false;
         public Network.BannedPeers bannedPeers = new Network.BannedPeers();
@@ -146,6 +147,8 @@ namespace VikingEngine
             w.Write(FrameRate);
             w.Write(farViewDistance);
 
+            w.Write(customCursor);
+
             Debug.WriteCheck(w);
         }
 
@@ -232,15 +235,19 @@ namespace VikingEngine
 
             if (version >= 26)
             {
-                FrameRate = r.ReadInt32();
-               
+                FrameRate = r.ReadInt32();               
             }
             
             if (version >= 27)
             {
-                farViewDistance = r.ReadBoolean();
-               
+                farViewDistance = r.ReadBoolean();               
             }
+
+            if (version >= 29)
+            {
+                customCursor = r.ReadBoolean();
+            }
+
             Debug.ReadCheck(r);
 
             Engine.Update.SetFrameRate(FrameRate);
@@ -364,6 +371,16 @@ namespace VikingEngine
         //    }
         //    return Engine.Screen.PcTargetFullScreen;
         //}
+        public bool CustomCursorProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                customCursor = value;
+                Ref.draw.refreshCursor();
+                settingsHasChanged = true;
+            }
+            return customCursor;
+        }
 
         public bool AddSomePixelsProperty(object tag, bool set, bool value)
         {
@@ -659,6 +676,10 @@ namespace VikingEngine
                     new RbText(string.Format( Ref.langOpt.GraphicsOption_RecordingPresets_AddXPixels, Screen.RecordingPresetAddPixelsCount))
                     }, AddSomePixelsProperty));
             }
+
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdPointer), new RbSpace(0.5f), new RbText(DssRef.todoLang.GameSettings_RenderedMouseCursor) },
+                CustomCursorProperty));
 
             content.newLine();
             //content.Add(new RbImage(SpriteName.LFIconLetter));

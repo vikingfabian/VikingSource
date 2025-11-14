@@ -20,8 +20,8 @@ namespace VikingEngine.PJ
         public FinalScoreState()
             : base()
         {
-            
-            Input.Mouse.Visible = true;
+
+            Input.Mouse.View();//Input.Mouse.Hide();//Input.Mouse.Visible = true;
             draw.ClrColor = new Color(137, 191, 245);//Color.CornflowerBlue;
 
             //Calc order

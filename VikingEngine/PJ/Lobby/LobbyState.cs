@@ -70,7 +70,7 @@ namespace VikingEngine.PJ
             searchLobbiesTimer.TimeLeft = TimeExt.SecondsToMS(3);
             PjRef.LobbySong.PlayStored();
 
-            Input.Mouse.Visible = true;
+            Input.Mouse.View();//Input.Mouse.Visible = true;
             this.joinedLocalGamers = new List2<GamerData>();
             refreshControllersInUse();
 

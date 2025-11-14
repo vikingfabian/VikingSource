@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.GameState
             this.startLoadingMap = startLoadingMap;
             draw.ClrColor = Color.Black;
             Ref.lobby?.disconnect(null);
-            Input.Mouse.Visible = true;
+            Input.Mouse.RestoreDefault();//Input.Mouse.Visible = true;
         }
         void load_asynch()
         {

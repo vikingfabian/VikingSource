@@ -273,7 +273,7 @@ namespace VikingEngine.DSSWars.GameState
         {
             if (menuSystem != null && menuSystem.IsOpen())
             {
-                Mouse.Visible = true;
+                Input.Mouse.View();//Mouse.Visible = true;
             }
             else 
             {
@@ -283,13 +283,13 @@ namespace VikingEngine.DSSWars.GameState
                     {
                         if (player.gameControls.input.inputSource.HasMouse)
                         {
-                            Mouse.Visible = true;
+                            Input.Mouse.View();//Mouse.Visible = true;
                             return;
                         }
                     }
                 }
 
-                Mouse.Visible = false;
+                Mouse.Hide();//Mouse.Visible = false;
             }
         }
 
