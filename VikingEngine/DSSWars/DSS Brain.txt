@@ -11,6 +11,7 @@ Tutorial:
 
 
 x advisor test
+x Translate tutorial
 
 fixed - will update soon
 
