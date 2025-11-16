@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
@@ -75,6 +76,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         const int CollectWoodStoneAmount = 30;
         const int CollectLinenAmount = 15;
         static int CollectWeaponArmorAmount = DssConst.SoldierGroup_DefaultCount * 2;
+        const int CollectGuardResources = 10;
 
         bool collectResources_zoomIn = false;
         bool collectResources_zoomIn_sound = false;
@@ -686,7 +688,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case TutorialMission.FletcherPractice:
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbOverlapImage(new RbImage(SpriteName.warsFolder_carton), SpriteName.WarsResource_Food, Vector2.Zero));
+                    content.Add(new RbOverlapImage(new RbImage(SpriteName.warsFolder_carton), SpriteName.WarsResource_Bow, Vector2.Zero));
                     content.Add(new RbText(DssRef.lang.UnitType_City));
                     ////FletcherPractice
                     //TwoBools fletcherPractice_buildWorkBench_sound = TwoBools.False;
@@ -704,22 +706,50 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     break;
 
 
-                case TutorialMission.FletcherPracticeWait: 
+                case TutorialMission.FletcherPracticeWait:
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbOverlapImage(new RbImage(SpriteName.warsFolder_carton), SpriteName.WarsResource_Bow, Vector2.Zero));
+                    content.Add(new RbText(DssRef.lang.UnitType_City));
                     ////FletcherPracticeWait
                     //TwoBools fletcherPracticeWait_experienceTab_sound = TwoBools.False;
-                    //TwoBools fletcherPracticeWait_skillToHud_sound = TwoBools.False;
+                    content.iconicontext(HudLib.CheckImage(fletcherPracticeWait_experienceTab_sound.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Progress));
                     //TwoBools fletcherPracticeWait_progressToHud_sound = TwoBools.False;
+                    LangLib.Technology(XP.TechnologyTreeType.catapult, out SpriteName catapultIcon, out string catapultCaption);
+                    content.iconicontext(HudLib.CheckImage(fletcherPracticeWait_progressToHud_sound.Value1), SpriteName.HudPinIcon, "Add pin:");
+                    content.Add(new RbImage(catapultIcon));
+                    content.Add(new RbText(catapultCaption));
+                    //TwoBools fletcherPracticeWait_skillToHud_sound = TwoBools.False;
+                    LangLib.ExperienceType(XP.WorkExperienceType.Fletcher, out string fletcherCaption, out SpriteName fletcherIcon);
+                    content.iconicontext(HudLib.CheckImage(fletcherPracticeWait_skillToHud_sound.Value1), SpriteName.HudPinIcon, "Add pin:");
+                    content.Add(new RbImage(fletcherIcon));
+                    content.Add(new RbText(fletcherCaption));
+
                     //TwoBools fletcherPracticeWait_fletcherLevel2_sound = TwoBools.False;
+                    content.Add(new RbImage(HudLib.CheckImage(fletcherPracticeWait_fletcherLevel2_sound.Value1)));
+                    content.Add(new RbText("Wait for a worker to reach:"));
+                    content.Add(new RbImage(SpriteName.WarsUnitLevelBasic));
+                    content.Add(new RbText(LangLib.ExperienceLevel(XP.ExperienceLevel.Practitioner_2)));
+                    HudLib.BulletSeperationPoint(content);
+                    content.Add(new RbImage(fletcherIcon));
+                    content.Add(new RbText(fletcherCaption));
+
+
                     break;
                 case TutorialMission.ProduceBow:
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbOverlapImage(new RbImage(SpriteName.warsFolder_carton), SpriteName.WarsResource_Bow, Vector2.Zero));
+                    content.Add(new RbText(DssRef.lang.UnitType_City));
                     ////ProduceBow,
                     //bool produceBow_buildLogistics = false;
-                    content.iconicontext(HudLib.CheckImage(educateBurner_buildCoalPit.Value1), SpriteName.WarsBuild_CoalPit, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.CoalPit].Label()));
+                    content.iconicontext(HudLib.CheckImage(produceBow_buildLogistics), SpriteName.WarsBuild_Logistics, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Logistics].Label()));
 
                     //TwoBools produceBow_buildCarpenter = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(educateBurner_buildCoalPit.Value1), SpriteName.WarsBuild_CoalPit, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.CoalPit].Label()));
+                    content.iconicontext(HudLib.CheckImage(produceBow_buildCarpenter.Value1), SpriteName.WarsBuild_Carpenter, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Carpenter].Label()));
 
                     //TwoBools produceBow_produceBow = TwoBools.False;
+                    content.iconicontext(HudLib.CheckImage(produceBow_produceBow.Value1), ResourceLib.Icon(ItemResourceType.Bow), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectGuardResources, DssRef.lang.Resource_TypeName_SharpStick));
                     break;
                 
                 case TutorialMission.BuildDefences:
