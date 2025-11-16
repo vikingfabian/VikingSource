@@ -422,39 +422,43 @@ namespace VikingEngine.DSSWars
                 RelationType prevRelation = GetRelationType(attacker, defender);
                 var relation = SetRelationType(attacker, defender, RelationType.RelationTypeN3_War);
 
-                if (attacker.player.IsLocalPlayer())
+                if (relation != null)
                 {
-                    int cost = DeclareWarCost(prevRelation);
-                    var player = attacker.player.GetLocalPlayer();
 
-                    player.diplomaticPoints.pay(cost, true);
-                    DssRef.state.events?.onPlayerEnterWar(player, defender, true);
-
-                    if (prevRelation >= RelationType.RelationType1_Peace)
+                    if (attacker.player.IsLocalPlayer())
                     {
-                        relation.SetWorseSpeakTerms(SpeakTermsOnWar_BadChance + 0.4, SpeakTermsOnWar_NoneChance + 0.4);
-                    }
-                    else
-                    {
-                        relation.SetWorseSpeakTerms(SpeakTermsOnWar_BadChance, SpeakTermsOnWar_NoneChance);
-                    }
+                        int cost = DeclareWarCost(prevRelation);
+                        var player = attacker.player.GetLocalPlayer();
 
-                    if (prevRelation >= RelationType.RelationType3_Ally)
-                    {
-                        DssRef.achieve.UnlockAchievement(AchievementIndex.traitor);
-                    }
+                        player.diplomaticPoints.pay(cost, true);
+                        DssRef.state.events?.onPlayerEnterWar(player, defender, true);
 
+                        if (prevRelation >= RelationType.RelationType1_Peace)
+                        {
+                            relation.SetWorseSpeakTerms(SpeakTermsOnWar_BadChance + 0.4, SpeakTermsOnWar_NoneChance + 0.4);
+                        }
+                        else
+                        {
+                            relation.SetWorseSpeakTerms(SpeakTermsOnWar_BadChance, SpeakTermsOnWar_NoneChance);
+                        }
+
+                        if (prevRelation >= RelationType.RelationType3_Ally)
+                        {
+                            DssRef.achieve.UnlockAchievement(AchievementIndex.traitor);
+                        }
+
+                        if (defender.player.IsLocalPlayer())
+                        {
+                            var otherPlayer = defender.player.GetLocalPlayer();
+                            var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
+                            PtoP.suggestingNewRelation = false;
+                        }
+                    }
                     if (defender.player.IsLocalPlayer())
                     {
-                        var otherPlayer = defender.player.GetLocalPlayer();
-                        var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
-                        PtoP.suggestingNewRelation = false;
-                    }                    
-                }
-                if (defender.player.IsLocalPlayer())
-                {
-                    var player = defender.player.GetLocalPlayer();
-                    DssRef.state.events?.onPlayerEnterWar(player, attacker, false);
+                        var player = defender.player.GetLocalPlayer();
+                        DssRef.state.events?.onPlayerEnterWar(player, attacker, false);
+                    }
                 }
             }
         }
