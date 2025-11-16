@@ -1636,5 +1636,10 @@ namespace VikingEngine
             a1 += a2;
             return a1;
         }
+
+        public static bool EqualToAny<T>(T value, T compare1, T compare2)
+        { 
+            return value.Equals(compare1) || value.Equals(compare2);
+        }
     }
 }
