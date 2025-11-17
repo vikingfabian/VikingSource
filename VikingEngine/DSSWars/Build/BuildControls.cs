@@ -549,7 +549,7 @@ namespace VikingEngine.DSSWars.Build
         {
             List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
 
-            if (player.tutorial == null)
+            if (player.tutorial == null || player.tutorial.AdvisorMode())
             { BuildLib.AvailableBuildTypes(available, city); }
             else
             { available = player.tutorial.AvailableBuildTypes(); }

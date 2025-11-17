@@ -320,7 +320,7 @@ namespace VikingEngine.DSSWars
 
                                     var startlong = new ArtButton(RbButtonStyle.Primary,
                                       new List<AbsRichBoxMember> { new RbBeginTitle(), new RbImage(SpriteName.WarsHudIconStart), new RbSpace(), new RbText(DssRef.lang.Lobby_Tutorial) },
-                                      new RbAction1Arg<bool>(startTutorial, false), null, startAvailable);
+                                      new RbAction(startTutorial), null, startAvailable);
                                     content.Add(startlong);
                                     //content.newLine();
                                     //var startshort = new ArtButton(RbButtonStyle.Secondary,
@@ -974,13 +974,13 @@ namespace VikingEngine.DSSWars
 
             if (!casual)
             {
+                DssRef.storage.runTutorial = tutorial;
                 if (tutorial)
                 {
-                    DssRef.storage.runTutorial_1short_2normal = 2;
+                    
                 }
                 else
                 {
-                    DssRef.storage.runTutorial_1short_2normal = 0;
                     SaveStateMeta meta = new SaveStateMeta();
                     meta.playmap = "demomap5";
 
@@ -990,7 +990,7 @@ namespace VikingEngine.DSSWars
             else
             {
                 //Casual
-                DssRef.storage.runTutorial_1short_2normal = 2;
+                DssRef.storage.runTutorial = true;
             }
 
             //DssRef.storage.runTutorial_1short_2normal = (casual || tutorial)? 2 : 0;
@@ -1001,7 +1001,7 @@ namespace VikingEngine.DSSWars
 
         void beginDemo()
         {
-            DssRef.storage.runTutorial_1short_2normal = 0;
+            DssRef.storage.runTutorial = false;
 
             SaveStateMeta meta = new SaveStateMeta();
             meta.playmap = "demomap5";
@@ -1497,11 +1497,11 @@ namespace VikingEngine.DSSWars
             {
                 if (set)
                 {
-                    DssRef.storage.runTutorial_1short_2normal = value ? 2 : 0;
+                    DssRef.storage.runTutorial = value;
 
                     DssRef.storage.Save(null);
                 }
-                return DssRef.storage.runTutorial_1short_2normal != 0;
+                return DssRef.storage.runTutorial;
             }
 
             //bool generateNewMapsProperty(int index, bool set, bool value)
@@ -2414,9 +2414,9 @@ namespace VikingEngine.DSSWars
           
         }
 
-        void startTutorial(bool shorter)
+        void startTutorial()
         {
-            DssRef.storage.runTutorial_1short_2normal = shorter ? 1 : 2;
+            DssRef.storage.runTutorial = true;
             startGame();
         }
 

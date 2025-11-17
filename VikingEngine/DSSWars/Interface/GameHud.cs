@@ -80,12 +80,12 @@ namespace VikingEngine.DSSWars.Interface
             
         }
 
-        public bool HasPin(ItemResourceType resourceType)
+        public bool HasPin(HudPin pinType)
         {
             var city = player.gameControls.map.selection.obj.GetCity();
             if (city != null)
             {
-                return pins.TryGet(new CityHudPinId(city.myIndex, new HudPin(resourceType)));
+                return pins.TryGet(new CityHudPinId(city.myIndex, pinType));
             }
             return false;
         }

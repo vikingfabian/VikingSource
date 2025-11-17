@@ -480,7 +480,7 @@ namespace VikingEngine.DSSWars.Players
         public void InitTutorial(bool newGame)
         {
             if ((newGame || PlatformSettings.STEAM_DEMO) && 
-                DssRef.storage.runTutorial_1short_2normal != 0 &&
+                DssRef.storage.runTutorial &&
                 DssRef.state.PlayType() == PlayStateType.Play &&
                 DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {
@@ -542,7 +542,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 return new List<MenuTab> { MenuTab.Info, MenuTab.Casual_Recruit, MenuTab.Casual_Build, MenuTab.Tag };
             }
-            return tutorial != null ? tutorial.cityTabs : CityMenu.Tabs;
+            return tutorial != null && tutorial.TutorialMode() ? tutorial.cityTabs : CityMenu.Tabs;
         }
 
         public List<MenuTab> AvailableArmyTabs()

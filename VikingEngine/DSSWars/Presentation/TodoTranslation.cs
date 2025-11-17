@@ -24,7 +24,16 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Tutorial_HighPriority => "Your men will complete high-priority tasks first";
         
+
         public string Tutorial_AdvisorMission => "Advisor mission";
+
+        public string Tutorial_AdvisorDescription => "The full game has started. The advisor will extend the tutorial with helpful missions";
+
+        public string Tutorial_EndAdvisor => "End advisor";
+
+
+        public string Tutorial_AdvisorCompleteTitle => "Advisor completed!";
+        public string Tutorial_AdvisorCompleteMessage => "May your next day be blessed!";
 
         public string Hud_Search => "Search";
 

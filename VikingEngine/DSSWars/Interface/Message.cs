@@ -180,7 +180,7 @@ namespace VikingEngine.DSSWars.Interface
         public void cityLowFoodMessage(City city)
         {   
             if (!highEconomyWarningBlock() &&
-                DssRef.storage.runTutorial_1short_2normal == 0 && 
+                DssRef.storage.runTutorial && 
                 cityLowFoodMessageCooldown.TimeOut())
             {
                 cityLowFoodMessageCooldown.start();
@@ -205,7 +205,7 @@ namespace VikingEngine.DSSWars.Interface
         public void armyLowFoodMessage(Army army)
         {
             if (!highEconomyWarningBlock() &&
-                DssRef.storage.runTutorial_1short_2normal == 0 &&
+                DssRef.storage.runTutorial == false &&
                 armyLowFoodMessageCooldown.TimeOut())
             {
                 armyLowFoodMessageCooldown.start();

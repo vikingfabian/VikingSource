@@ -91,7 +91,7 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                return DssRef.storage.runTutorial_1short_2normal == 0 ? Tabs : TutorialTabs;
+                return DssRef.storage.runTutorial ? TutorialTabs : Tabs;
             }
         }
 

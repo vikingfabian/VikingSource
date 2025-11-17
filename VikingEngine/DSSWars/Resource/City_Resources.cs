@@ -64,7 +64,8 @@ namespace VikingEngine.DSSWars.GameObject
         };
         public static readonly ItemResourceType[] MovableCityResource_WeaponMelee =
        {
-            
+            ItemResourceType.SharpStick,
+            ItemResourceType.BronzeSword,
             ItemResourceType.ShortSword,
             ItemResourceType.Sword,
             ItemResourceType.LongSword,
@@ -75,8 +76,7 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.KnightsLance,
             ItemResourceType.MithrilSword,
 
-            ItemResourceType.SharpStick,
-            ItemResourceType.BronzeSword,
+            
         };
 
         public static readonly ItemResourceType[] MovableCityResource_WeaponRanged =
@@ -1192,9 +1192,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void blackMarketPurchase(ItemResourceType resourceType, int count, int cost)
         {
+            var faction = GetFaction();
             if (GetFaction().payGold(cost * count, false, this))
             {
                 AddGroupedResource(resourceType, count);
+                faction.player.GetLocalPlayer()?.tutorial?.onBuyFromBlackMarket(resourceType);
             }
         }
     }   

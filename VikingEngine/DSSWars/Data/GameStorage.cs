@@ -29,11 +29,10 @@ namespace VikingEngine.DSSWars.Data
         DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, "DSS_gameoptions", ".sav");
         
         public bool autoSave = true;
-        public int runTutorial_1short_2normal = 2;
+        public bool runTutorial = true;
         public bool speed5x = false;
         public bool blockImportAchievements = true;
-        //public bool longerBuildQueue = false;
-
+        
         public LocalPlayerStorage[] localPlayers = null;
         public int selectedPlayer = 0;
         public ProfileStorage profileStorage;
@@ -71,12 +70,6 @@ namespace VikingEngine.DSSWars.Data
            gameRuleset.defaultGameSettings();
 #endif
         }
-
-        //public void defaultGameSettings()
-        //{
-        //    mapSize = MapSize.Medium;
-        //    centralGold = true;
-        //}
 
         void demoSetup()
         {
@@ -158,34 +151,6 @@ namespace VikingEngine.DSSWars.Data
             DataStream.BeginReadWrite.BinaryIO(true, path, write, null, callBack, true);
         }
 
-        //public double DifficultyLevelPerc()
-        //{
-        //    double levelPerc = DssLib.AiEconomyLevel[aiEconomyLevel];
-        //    int aggdiff = (int)aiAggressivity - (int)AiAggressivity.Medium;
-        //    levelPerc *= 1.0 + aggdiff * 0.25;
-
-        //    double bossTimeDiff = bossTimeSettings - BossTimeSettings.Normal;
-        //    levelPerc *= 1.0 - bossTimeDiff * 0.25;
-
-        //    double bossSizeDiff = bossSize - BossSize.Medium;
-        //    levelPerc *= 1.0 - bossSizeDiff * 0.25;
-
-        //    double diplomacyDiff = DssRef.storage.diplomacyDifficulty - 1;
-        //    levelPerc *= 1.0 + diplomacyDiff * 0.25;
-
-        //    if (!honorGuard)
-        //    {
-        //        levelPerc *= 1.25;
-        //    }
-
-        //    if (!allowPauseCommand)
-        //    {
-        //        levelPerc *= 1.5;
-        //    }
-
-        //    return levelPerc;
-        //}
-
         public void writeGameSetup(System.IO.BinaryWriter w)
         {
             w.Write(Version);
@@ -199,12 +164,7 @@ namespace VikingEngine.DSSWars.Data
             DssRef.difficulty.read(r, version);
         }
 
-        //public void write(System.IO.BinaryWriter w)
-        //{
-        //    write(w, false);
-        //}
-
-        const int Version = 31;
+        const int Version = 32;
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(Version);
@@ -224,7 +184,8 @@ namespace VikingEngine.DSSWars.Data
             w.Write(multiplayerGameSpeed);
             DssRef.difficulty.write(w);
 
-            w.Write((byte)runTutorial_1short_2normal);
+            //w.Write((byte)runTutorial_1short_2normal);
+            w.Write(runTutorial);
 
             w.Write(speed5x);
 
@@ -286,8 +247,14 @@ namespace VikingEngine.DSSWars.Data
 
                 DssRef.difficulty.read(r, version);
 
-                runTutorial_1short_2normal = r.ReadByte();
-
+                if (version < 32)
+                {
+                    runTutorial = r.ReadByte() > 0;
+                }
+                else
+                {
+                    runTutorial = r.ReadBoolean();
+                }
 
                 speed5x = r.ReadBoolean();
 
@@ -364,7 +331,7 @@ namespace VikingEngine.DSSWars.Data
 
                 if (version >= 15)
                 {
-                    runTutorial_1short_2normal = r.ReadByte();
+                    runTutorial = r.ReadByte() > 0;
                 }
 
                 if (version >= 18)
