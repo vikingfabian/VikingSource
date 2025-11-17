@@ -1042,7 +1042,15 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         void updateMouseVisible()
         {
-            Input.Mouse.Visible = menu != null;
+            if (menu == null)
+            {
+                Input.Mouse.CenterLockAndHide();
+            }
+            else
+            {
+                Input.Mouse.View();
+            }
+            //Input.Mouse.Visible = menu != null;
         }
 
         override public bool InMenu { get { return menu != null; } }

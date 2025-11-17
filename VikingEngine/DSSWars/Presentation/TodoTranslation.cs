@@ -13,6 +13,15 @@ namespace VikingEngine.DSSWars.Presentation
     class TodoTranslation
     {
         public string GraphicsOption_IngameMenuWidth => "Game menu width";
+        public string DisplayMode => "Display mode";
+        public string DisplayMode_Windowed => "Windowed";
+        public string DisplayMode_BorderlessFullscreen => "Borderless fullscreen";
+
+        public string GameSettings_RenderedMouseCursor => "Rendered cursor";
+
+        //public string Error_SoundInitFailure => "Sound initialization failed";
+
+        //public string GameMenu_ControllerDisconnected => "Controller disconnected";
 
         public string Error_SoundInitFailure => "Sound initialization failed";
           

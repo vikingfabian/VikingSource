@@ -79,7 +79,7 @@ namespace VikingEngine.LootFest.Display
 
             //SteamGamepad.SetActionSet_All(ControllerActionSetType.MenuControls);
 
-            Input.Mouse.Visible = true;
+            Input.Mouse.View();//Input.Mouse.Visible = true;
         }
 
         List<ControllerChoice> listControllers()

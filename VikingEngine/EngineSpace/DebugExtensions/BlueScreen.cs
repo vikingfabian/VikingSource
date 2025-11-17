@@ -230,7 +230,7 @@ namespace VikingEngine.DebugExtensions
 
         public static void TryCatch(Action method, TryMethodType methodType)
         {
-            if (PlatformSettings.BlueScreen || Engine.Screen.PcTargetFullScreen)
+            if (PlatformSettings.BlueScreen || Engine.Screen.PcDisplayMode == WindowDisplayMode.HardwareFullscreen)
             {
                 try
                 {

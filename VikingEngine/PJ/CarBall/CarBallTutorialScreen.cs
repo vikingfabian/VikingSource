@@ -12,7 +12,7 @@ namespace VikingEngine.PJ.CarBall
         public CarBallTutorialScreen(List2<GamerData> joinedGamers)
             :base(false)
         {
-            Input.Mouse.Visible = false;
+            Input.Mouse.Hide();//Input.Mouse.Visible = false;
 
             this.joinedLocalGamers = joinedGamers;
             Ref.draw.ClrColor = Color.Black;

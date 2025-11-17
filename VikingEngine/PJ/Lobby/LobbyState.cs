@@ -70,7 +70,7 @@ namespace VikingEngine.PJ
             searchLobbiesTimer.TimeLeft = TimeExt.SecondsToMS(3);
             PjRef.LobbySong.PlayStored();
 
-            Input.Mouse.Visible = true;
+            Input.Mouse.View();//Input.Mouse.Visible = true;
             this.joinedLocalGamers = new List2<GamerData>();
             refreshControllersInUse();
 
@@ -220,7 +220,7 @@ namespace VikingEngine.PJ
 
                 monitorOptions = new OptionsGroup();
 
-                if (Engine.Screen.PcTargetFullScreen == false &&
+                if (Engine.Screen.PcDisplayMode == Engine.WindowDisplayMode.Windowed/*PcTargetFullScreen == false*/ &&
                     Engine.Screen.MonitorCount > 1)
                 {
 
@@ -258,7 +258,7 @@ namespace VikingEngine.PJ
 
         void refreshScreenOptionsButtons()
         {
-            windowToggleButton.iconImg.SetSpriteName(Engine.Screen.PcTargetFullScreen ? SpriteName.MenuIconMonitorArrowsIn : SpriteName.MenuIconMonitorArrowsOut);
+            //windowToggleButton.iconImg.SetSpriteName(Engine.Screen.PcTargetFullScreen ? SpriteName.MenuIconMonitorArrowsIn : SpriteName.MenuIconMonitorArrowsOut);
         }
 
 
@@ -816,7 +816,7 @@ namespace VikingEngine.PJ
                 {
                     if (windowToggleButton.update())
                     {
-                        Ref.gamesett.fullscreenProperty(0, true, !Engine.Screen.PcTargetFullScreen);
+                        //Ref.gamesett.fullscreenProperty(0, true, !Engine.Screen.PcTargetFullScreen);
                     }
                     if (monitorOptions.update())
                     {

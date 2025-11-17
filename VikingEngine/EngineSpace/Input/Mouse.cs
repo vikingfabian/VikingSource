@@ -14,6 +14,10 @@ namespace VikingEngine.Input
 
         //static MainGame main;
         static bool swapLeftRightButtons = false;
+
+        static bool centerlockAndHide = false;
+        static bool hide = false;
+
         public static bool LockToScreenArea
         {
             set
@@ -35,31 +39,61 @@ namespace VikingEngine.Input
             }
         }
 
-//        public static void Init(MainGame _main)
-//        {
-//            //main = _main;
+        //        public static void Init(MainGame _main)
+        //        {
+        //            //main = _main;
 
-////#if PCGAME
-////            var key = Registry.CurrentUser.CreateSubKey("Control Panel\\Mouse\\");
-////            var newValue = key.GetValue("SwapMouseButtons");
-////            if (newValue != null)
-////            {
-////                swapLeftRightButtons = Convert.ToInt32(newValue) != 0;
-////            }
-////#endif
-//        }
+        ////#if PCGAME
+        ////            var key = Registry.CurrentUser.CreateSubKey("Control Panel\\Mouse\\");
+        ////            var newValue = key.GetValue("SwapMouseButtons");
+        ////            if (newValue != null)
+        ////            {
+        ////                swapLeftRightButtons = Convert.ToInt32(newValue) != 0;
+        ////            }
+        ////#endif
+        //        }
 
-        public static bool Visible
+        //public static bool Visible
+        //{
+        //    get {
+        //        return PlatformSettings.PC_platform && Ref.main.IsMouseVisible && !Ref.gamesett.customMouse;
+        //    }
+        //    set { 
+
+        //        if (PlatformSettings.PC_platform && (PlatformSettings.Debug_HideMouse || !PlatformSettings.DevBuild))
+        //            Ref.main.IsMouseVisible = value; 
+        //    }
+        //}
+        public static void RestoreDefault()
         {
-            get {
-                return PlatformSettings.PC_platform && Ref.main.IsMouseVisible;
-            }
-            set { 
-
-                if (PlatformSettings.PC_platform && (PlatformSettings.Debug_HideMouse || !PlatformSettings.DevBuild))
-                    Ref.main.IsMouseVisible = value; 
-            }
+            centerlockAndHide = false;
+            hide = false;
+            RefreshMouseVisible();
         }
+
+        public static void Hide()
+        { 
+            hide = true;
+            RefreshMouseVisible();
+        }
+
+        public static void View()
+        {
+            centerlockAndHide = false;
+            hide = false;
+            RefreshMouseVisible();
+        }
+        public static void CenterLockAndHide()
+        {
+            centerlockAndHide = true;
+            RefreshMouseVisible();
+        }
+
+        public static void RefreshMouseVisible()
+        {
+            Ref.main.IsMouseVisible = !centerlockAndHide && !Ref.gamesett.customCursor && !hide;
+        }
+
 
         public static Vector2 MoveDistance;
         public static Vector2 RealMoveDistance;
@@ -115,7 +149,7 @@ namespace VikingEngine.Input
 
             if (MainGame.GameIsActive)
             {
-                if (!Ref.main.IsMouseVisible)
+                if (centerlockAndHide)
                 {
                     SetPosition(Engine.Screen.MonitorCenter);
                 }
@@ -155,7 +189,7 @@ namespace VikingEngine.Input
 
         public static bool HasEdgePush()
         {
-            return Engine.Screen.PcTargetFullScreen && !Engine.Screen.MousePushEdge.IntersectPoint(Position);
+            return Engine.Screen.PcDisplayMode != Engine.WindowDisplayMode.Windowed && !Engine.Screen.MousePushEdge.IntersectPoint(Position);
         }
 
 

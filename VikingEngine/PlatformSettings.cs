@@ -81,6 +81,8 @@ namespace VikingEngine
 
         public const int SteamNetworkVersion = 101; //fungerar som nätverks spärr mellan versioner
 
+        
+
         public static readonly bool RunningWindows =
 #if PCGAME
             true;
