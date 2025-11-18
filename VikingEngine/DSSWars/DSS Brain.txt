@@ -1,4 +1,7 @@
 ﻿UPDATE
+
+x write most 64 worker statuses
+
 Change Log:
 * fixed tutorial crash
 * Improved heatmap

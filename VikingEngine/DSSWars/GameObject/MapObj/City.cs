@@ -1591,7 +1591,7 @@ namespace VikingEngine.DSSWars.GameObject
             //faction.profile.modelColorReplace
             var faction = GetFaction_NoChecks();
 
-            if (faction.player.profile.flag != null)
+            if (faction.player?.profile.flag != null)
             {
                 overviewModel?.DeleteMe();
 

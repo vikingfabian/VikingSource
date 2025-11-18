@@ -72,12 +72,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Players.AbsPlayer GetPlayer()
         {
-#if DEBUG
+
             if (factionIndex < 0)
             {
-                throw new Exception();
+                return null;//throw new Exception();
             }
-#endif
+
             return DssRef.world.factions.Array[factionIndex]?.player;
         }
 

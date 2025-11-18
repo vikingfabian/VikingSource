@@ -16,8 +16,8 @@ namespace VikingEngine.DSSWars
 {
     partial class Faction
     {
-        ConcurrentDictionary<int, Graphics.VoxelModel> models_loaded =
-           new ConcurrentDictionary<int, Graphics.VoxelModel>();
+        ConcurrentDictionary<int, Graphics.AbsVoxelObj> models_loaded =
+           new ConcurrentDictionary<int, Graphics.AbsVoxelObj>();
 
         List<int> processStarted = new List<int>(8);
 
@@ -65,14 +65,14 @@ namespace VikingEngine.DSSWars
             instance.scale.X = scale;
             instance.scale.Y = 0;
 
-            Graphics.VoxelModel master = null;
+            Graphics.AbsVoxelObj master = null;
 
             int id = modelData.GetHashCode();
             models_loaded.TryGetValue(id, out master);
 
             if (master != null)
             {
-                setMaster(instance, master);
+                setMaster(instance, master.GetMaster());
             }
             else
             {
@@ -122,7 +122,7 @@ namespace VikingEngine.DSSWars
                             await Task.Delay(100);
                         }
 
-                        setMaster(instance, master);
+                        setMaster(instance, master.GetMaster());
                     }
                     catch (Exception ex)
                     {
@@ -140,13 +140,13 @@ namespace VikingEngine.DSSWars
 
         private void getOrCreateMaster(VoxelModelName name, VoxelModelInstance instance)
         {
-            Graphics.VoxelModel master = null;
+            Graphics.AbsVoxelObj master = null;
 
             models_loaded.TryGetValue((int)name, out master);
 
             if (master != null)
             {
-                setMaster(instance, master);
+                setMaster(instance, master.GetMaster());
             }
             else
             {
@@ -170,7 +170,7 @@ namespace VikingEngine.DSSWars
                             await Task.Delay(100);
                         }
 
-                        setMaster(instance, master);
+                        setMaster(instance, master.GetMaster());
                     }
                     catch (Exception ex)
                     {

@@ -37,6 +37,7 @@ namespace VikingEngine.DSSWars.Interface
     class CityMenu
     {
         public static List<MenuTab> Tabs;
+        public static List<MenuTab> CasualTabs = new List<MenuTab> { MenuTab.Info, MenuTab.Casual_Recruit, MenuTab.Casual_Build, MenuTab.Tag };
 
         protected Players.LocalPlayer player;
         protected City city;

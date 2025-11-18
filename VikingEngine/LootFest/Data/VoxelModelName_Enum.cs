@@ -93,6 +93,7 @@ namespace VikingEngine.LootFest
         //--
         CATEGORY_WARS_1,
 #region LFWARS
+        ErrorCube,
         party_restbar,
         Arrow,
         slingstone,
