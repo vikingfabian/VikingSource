@@ -897,6 +897,7 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssWorldTiles:                    
                     DssRef.world.readNet_Tile(packet.r);//l 32 * 4 * 4
                     overviewMap.bRefreshDataRecieved = true;
+                    DssRef.world.BordersUpdated = true;
                     break;
 
                 case PacketType.DssWorldSubTiles:

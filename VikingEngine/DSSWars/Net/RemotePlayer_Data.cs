@@ -131,7 +131,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void Net_UpdateArmies(ref int maxPackets)
         {
-            const int GroupsPerPacket = 10;
+            const int GroupsPerPacket = 8;
 
             if (playerCulling.farLayer == false)
             {
