@@ -74,9 +74,10 @@ namespace VikingEngine.DSSWars
             Engine.Update.SetFrameRate(Ref.gamesett.FrameRate);
 
             if (readWorld != null)
-            {
-                initGameState_client();
+            {   
                 new LoadScene(readWorld);
+
+                initGameState_client();
             }
             else if (loadMeta == null)
             {
