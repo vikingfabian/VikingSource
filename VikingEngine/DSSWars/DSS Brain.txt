@@ -1,9 +1,6 @@
 ﻿UPDATE
 Change Log: 
-* render option for custom mouse pointer
-* fixed rare declareWar against self crash
-* fixed empty world meta save crash
-x food delivered to full city issue
+* 
 
 fixed - will update soon
 

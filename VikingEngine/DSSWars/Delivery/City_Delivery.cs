@@ -137,7 +137,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     }
 
                                     resource.amount += status.inProgress.SendAmount;
-                                    resource.deliverCount -= status.inProgress.SendAmount;
+                                    resource.deliverCount = Bound.Min(resource.deliverCount - status.inProgress.SendAmount, 0);
                                     othercity.SetGroupedResource(status.inProgress.type, resource);
                                 }
                                 status.active = DeliveryActiveStatus.Idle;
