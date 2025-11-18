@@ -871,8 +871,8 @@ namespace VikingEngine.DSSWars
                             foreach (var local in localPlayers)
                             {
                                 //TODO
-                                //int flag = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].flagDesignIndex;
-                                //DssRef.storage.flagStorage.flagDesigns[flag].write(w);
+                                var profile = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].Profile();
+                                /*DssRef.storage.flagStorage.flagDesigns[flag]*/profile.flag.write(w);
                             }
                         }
                     }

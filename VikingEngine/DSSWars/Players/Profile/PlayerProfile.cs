@@ -160,8 +160,8 @@ namespace VikingEngine.DSSWars.Players.Profile
         {
             w.Write(Version);
 
-            bool customFlag = net || flag.StorageIndex >= 0;
-            bool customCharacter = net || character.StorageIndex >= 0;
+            bool customFlag = flag.StorageIndex >= 0;
+            bool customCharacter = character.StorageIndex >= 0;
            
             EightBit bools = new EightBit(
                 customCharacter,

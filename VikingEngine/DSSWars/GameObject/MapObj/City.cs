@@ -1001,7 +1001,10 @@ namespace VikingEngine.DSSWars.GameObject
                         w.Write((ushort)myIndex);
                         w.Write((byte)part);
                         writeNet_update(w, part);
+
+                        
                     }
+                    packet.CheckPacketLength();
                     packet.EndWrite_Asynch();
                 }
                 return true;
