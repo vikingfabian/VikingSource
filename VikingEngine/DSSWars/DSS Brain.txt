@@ -1,15 +1,7 @@
 ﻿UPDATE
 Change Log: 
-* 
-
-Tutorial:
-* Compressed the display
-* Added advior mode after tutorial
-* skip_advisor added to steam stats
-
-
-x advisor beta test
-x Translate tutorial
+* Will reset setting on read crash
+* Prepared all tutorial localizations
 
 fixed - will update soon
 

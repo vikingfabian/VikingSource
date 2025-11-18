@@ -303,6 +303,7 @@ namespace VikingEngine
             catch (Exception e)
             {
                 fileCheck.exception = e;
+                new GameSettings();
                 //Debug.LogError("Loading game settings error, " + e.Message);
             }
 

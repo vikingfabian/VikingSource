@@ -31,9 +31,27 @@ namespace VikingEngine.DSSWars.Presentation
         public string Lobby_PlayerCount => "Player count";
         public string Lobby_TwoTeams => "Two teams";
 
-        public string Tutorial_HighPriority => "Your men will complete high-priority tasks first";
-        
+        public string Hud_Produce => "Produce:";
 
+        public string Tutorial_WaitForWorkerLevel => "Wait for a worker to reach:";
+
+        /// <summary>
+        /// 0: Production item, 1: School
+        /// </summary>
+        public string Tutorial_PracticeOrSchool => "Practice on {0}, or use a {1}";
+        public string Tutorial_AddTag => "Add tag:";
+        public string Tutorial_AddPin => "Add pin:";
+        public string Tutorial_SelectMostTrees => "Find your city with the most trees";
+        public string Tutorial_SelectACityWithX => "Select a city with {0}";
+
+        /// <summary>
+        /// Will continue on another sentence "Select a city"
+        /// </summary>
+        public string Tutorial_Select_NotCapital => ". Not your capital.";
+
+        public string Tutorial_HighPriority => "Your men will complete high-priority tasks first";
+
+        public string Tutorial_SetXPriorityToY => "Set {0} priority to {1}";
         public string Tutorial_AdvisorMission => "Advisor mission";
 
         public string Tutorial_AdvisorDescription => "The full game has started. The advisor will extend the tutorial with helpful missions";

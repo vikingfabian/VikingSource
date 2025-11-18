@@ -601,7 +601,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.Add(new RbText("/"));
                     content.Add(new RbImage(SpriteName.WarsCityHall));
                     content.space();
-                    content.Add(new RbText(DssRef.lang.Tutorial_SelectACity + ". Not your capital."));
+                    content.Add(new RbText(DssRef.lang.Tutorial_SelectACity + DssRef.todoLang.Tutorial_Select_NotCapital));
                    
                     //TwoBools tagCity_tagTab_sound = TwoBools.False;
                     content.iconicontext(HudLib.CheckImage(tagCity_tagTab_sound.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Tag));
@@ -653,7 +653,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //TwoBools educateBurner_educateFuel = TwoBools.False;
                     content.iconicontext(HudLib.CheckImage(educateBurner_schoolTab.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Progress) + ". " + string.Format(DssRef.lang.Tutorial_Select_SubTab, DssRef.lang.BuildingType_School_Tab));
                     
-                    content.iconicontext(HudLib.CheckImage(educateBurner_educateFuel.Value1), SpriteName.WarsBuild_School, "Produce:");
+                    content.iconicontext(HudLib.CheckImage(educateBurner_educateFuel.Value1), SpriteName.WarsBuild_School, DssRef.todoLang.Hud_Produce);
                     LangLib.ExperienceType(XP.WorkExperienceType.CraftFuel, out var xpName, out var xpIcon);
                     content.Add(new RbImage(xpIcon));
                     content.Add(new RbText(xpName));
@@ -684,7 +684,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.newLine();
                     content.Add(new RbImage(HudLib.CheckImage(findWoodCity_selectCity_sound.Value1)));
                     content.Add(new RbImage(SpriteName.WarsBuild_TreeSoft));
-                    content.Add(new RbText("Find your city with the most trees"));
+                    content.Add(new RbText(DssRef.todoLang.Tutorial_SelectMostTrees));
 
                     //TwoBools findWoodCity_selectTab_sound = TwoBools.False;
                     content.iconicontext(HudLib.CheckImage(findWoodCity_selectTab_sound.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Tag));
@@ -692,7 +692,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.newLine();
                     content.Add(new RbImage(HudLib.CheckImage(findWoodCity_bowTag_sound.Value1)));
                     content.space();
-                    content.Add(new RbText("Add tag:"));
+                    content.Add(new RbText(DssRef.todoLang.Tutorial_AddTag));
                     content.space();
                     content.Add(new RbImage(SpriteName.warsFolder_carton));
                     content.space();
@@ -710,11 +710,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.iconicontext(HudLib.CheckImage(fletcherPractice_resourceTab_sound.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources));
 
                     //TwoBools fletcherPractice_setSlingerTo3_sound = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(fletcherPractice_setSlingerTo3_sound.Value1), ResourceLib.Icon(ItemResourceType.SlingShot), string.Format("Set {0} priority to {1}", DssRef.lang.Resource_TypeName_SlingShot, 3));
+                    content.iconicontext(HudLib.CheckImage(fletcherPractice_setSlingerTo3_sound.Value1), ResourceLib.Icon(ItemResourceType.SlingShot), string.Format(DssRef.todoLang.Tutorial_SetXPriorityToY, DssRef.lang.Resource_TypeName_SlingShot, 3));
                     //TwoBools fletcherPractice_setJavelinTo3_sound = TwoBools.False;
                     //content.iconicontext(HudLib.CheckImage(fletcherPractice_setJavelinTo3_sound.Value1), ResourceLib.Icon(ItemResourceType.ThrowingSpear), string.Format("Set {0} priority to {1}", DssRef.lang.Resource_TypeName_ThrowingSpear, 3));
                     //TwoBools fletcherPractice_setBowTo4_sound = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(fletcherPractice_setBowTo4_sound.Value1), ResourceLib.Icon(ItemResourceType.Bow), string.Format("Set {0} priority to {1}", DssRef.lang.Resource_TypeName_Bow, 4));
+                    content.iconicontext(HudLib.CheckImage(fletcherPractice_setBowTo4_sound.Value1), ResourceLib.Icon(ItemResourceType.Bow), string.Format(DssRef.todoLang.Tutorial_SetXPriorityToY, DssRef.lang.Resource_TypeName_Bow, 4));
 
                     break;
 
@@ -730,12 +730,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         content.iconicontext(HudLib.CheckImage(fletcherPracticeWait_experienceTab_sound.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Progress));
                         //TwoBools fletcherPracticeWait_progressToHud_sound = TwoBools.False;
                         LangLib.Technology(XP.TechnologyTreeType.catapult, out SpriteName catapultIcon, out string catapultCaption);
-                        content.iconicontext(HudLib.CheckImage(fletcherPracticeWait_progressToHud_sound.Value1), SpriteName.HudPinIcon, "Add pin:");
+                        content.iconicontext(HudLib.CheckImage(fletcherPracticeWait_progressToHud_sound.Value1), SpriteName.HudPinIcon, DssRef.todoLang.Tutorial_AddPin);
                         content.Add(new RbImage(catapultIcon));
                         content.Add(new RbText(catapultCaption));
                         //TwoBools fletcherPracticeWait_skillToHud_sound = TwoBools.False;
                         LangLib.ExperienceType(XP.WorkExperienceType.Fletcher, out string fletcherCaption, out SpriteName fletcherIcon);
-                        content.iconicontext(HudLib.CheckImage(fletcherPracticeWait_skillToHud_sound.Value1), SpriteName.HudPinIcon, "Add pin:");
+                        content.iconicontext(HudLib.CheckImage(fletcherPracticeWait_skillToHud_sound.Value1), SpriteName.HudPinIcon, DssRef.todoLang.Tutorial_AddPin);
                         content.space();
                         content.Add(new RbText(DssRef.lang.Experience_Title));
                         HudLib.BulletSeperationPoint(content);
@@ -746,7 +746,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         content.newLine();
                         content.Add(new RbImage(HudLib.CheckImage(fletcherPracticeWait_fletcherLevel2_sound.Value1)));
                         content.space();
-                        content.Add(new RbText("Wait for a worker to reach:"));
+                        content.Add(new RbText(DssRef.todoLang.Tutorial_WaitForWorkerLevel));
                         content.Add(new RbImage(SpriteName.WarsUnitLevelBasic));
                         content.Add(new RbText(LangLib.ExperienceLevel(XP.ExperienceLevel.Practitioner_2)));
                         HudLib.BulletSeperationPoint(content);
@@ -829,7 +829,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.space();
                     content.Add(new RbImage(SpriteName.WarsResource_IronOre));
                     content.space();
-                    content.Add(new RbText(string.Format("Select a city with {0}", DssRef.lang.Resource_TypeName_IronOre)));
+                    content.Add(new RbText(string.Format(DssRef.todoLang.Tutorial_SelectACityWithX, DssRef.lang.Resource_TypeName_IronOre)));
                     content.newLine();
                     
                     HudLib.BulletPoint(content);
@@ -871,7 +871,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.newLine();
                     content.Add(new RbImage(HudLib.CheckImage(produceSword_level2smith_sound.Value1)));
                     content.space();
-                    content.Add(new RbText("Wait for a worker to reach:"));
+                    content.Add(new RbText(DssRef.todoLang.Tutorial_WaitForWorkerLevel));
                     content.Add(new RbImage(SpriteName.WarsUnitLevelBasic));
                     content.Add(new RbText(LangLib.ExperienceLevel(XP.ExperienceLevel.Practitioner_2)));
                     HudLib.BulletSeperationPoint(content);
@@ -880,7 +880,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format("Practice on {0}, or use a {1}", DssRef.lang.Resource_TypeName_SharpStick, DssRef.lang.BuildingType_School), HudLib.InfoYellow_Light));
+                    content.Add(new RbText(string.Format(DssRef.todoLang.Tutorial_PracticeOrSchool, DssRef.lang.Resource_TypeName_SharpStick, DssRef.lang.BuildingType_School), HudLib.InfoYellow_Light));
                     content.newParagraph();
 
                    
@@ -905,7 +905,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.newLine();
                     content.Add(new RbImage(HudLib.CheckImage(produceMail_level2Armorer_sound.Value1)));
                     content.space();
-                    content.Add(new RbText("Wait for a worker to reach:"));
+                    content.Add(new RbText(DssRef.todoLang.Tutorial_WaitForWorkerLevel));
                     content.Add(new RbImage(SpriteName.WarsUnitLevelBasic));
                     content.Add(new RbText(LangLib.ExperienceLevel(XP.ExperienceLevel.Practitioner_2)));
                     HudLib.BulletSeperationPoint(content);
@@ -914,7 +914,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format("Practice on {0}, or use a {1}", DssRef.lang.Resource_TypeName_PaddedArmor, DssRef.lang.BuildingType_School), HudLib.InfoYellow_Light));
+                    content.Add(new RbText(string.Format(DssRef.todoLang.Tutorial_PracticeOrSchool, DssRef.lang.Resource_TypeName_PaddedArmor, DssRef.lang.BuildingType_School), HudLib.InfoYellow_Light));
                     content.newParagraph();
 
                     //TwoBools produceMail_buildArmorer_sound = TwoBools.False;
@@ -933,7 +933,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 content.newLine();
                 content.Add(new RbImage(HudLib.CheckImage(complete)));
                 content.space();
-                content.Add(new RbText("Add pin:"));
+                content.Add(new RbText(DssRef.todoLang.Tutorial_AddPin));
                 content.space();
                 content.Add(new RbImage(SpriteName.HudPinIcon));
                 content.hspace();
