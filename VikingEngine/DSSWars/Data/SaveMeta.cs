@@ -346,6 +346,10 @@ namespace VikingEngine.DSSWars.Data
             w.Write(localPlayerCount);
             w.Write((short)difficulty);
 
+            if (worldmeta == null)
+            {
+                worldmeta = DssRef.world.metaData;
+            }
             worldmeta.write(w);
             w.Write(importedWorld);
 

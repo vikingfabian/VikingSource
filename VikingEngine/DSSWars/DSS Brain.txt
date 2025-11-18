@@ -1,9 +1,6 @@
 ﻿UPDATE
-Change Log:
-* fixed tutorial crash
-* Improved heatmap
-* Heatmap for natural resources
-* sticky hud for skill and progress
+Change Log: 
+* 
 
 Tutorial:
 * Compressed the display
