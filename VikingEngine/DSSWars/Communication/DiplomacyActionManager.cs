@@ -24,7 +24,12 @@ namespace VikingEngine.DSSWars.Communication
 
         public List<DiplomacyOption> diplomacyOptionsToBot(LocalPlayer player, Faction botFaction)
         {
-            List<DiplomacyOption> result = new List<DiplomacyOption>(); 
+            List<DiplomacyOption> result = new List<DiplomacyOption>();
+
+            if (player == null || botFaction == null)
+            {
+                return result;
+            }
 
             this.player = player;
             this.botFaction = botFaction;
