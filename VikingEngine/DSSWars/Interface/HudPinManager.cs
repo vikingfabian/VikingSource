@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.Interface
                     buttonContent.Add(new RbSpace(0.5f));
                     if (progress.points < goal)
                     {
-                        buttonContent.Add(new RbText($"{progress.points}/{goal}"));
+                        buttonContent.Add(new RbText($"{progress.points}/{goal}", Color.White));
                     }
                     content.Add(new RbButton(
                         buttonContent, null, 

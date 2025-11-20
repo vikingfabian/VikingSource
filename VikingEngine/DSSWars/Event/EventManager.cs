@@ -1119,7 +1119,9 @@ namespace VikingEngine.DSSWars.Event
                     return new StoryEvent_DarkLord();
                 case EventType.DefeatTheBoss:
                     return new StoryEvent_DefeatTheBoss();
-                
+
+                case EventType.QuickMatch:
+                    return new StoryEvent_QuickMatch();
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, "Unhandled event type.");
