@@ -1,6 +1,5 @@
 ﻿UPDATE
-
-x write most 64 worker statuses
+* patched the network  
 
 Change Log:
 * fixed tutorial crash

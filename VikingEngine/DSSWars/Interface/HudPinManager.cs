@@ -99,13 +99,14 @@ namespace VikingEngine.DSSWars.Interface
                     buttonContent.Add(new RbSpace(0.5f));
                     if (progress.points < goal)
                     {
-                        buttonContent.Add(new RbText($"{progress.points}/{goal}"));
+                        buttonContent.Add(new RbText($"{progress.points}/{goal}", Color.White));
                     }
                     content.Add(new RbButton(
                         buttonContent, null, 
                         new RbTooltip_Text(string.Format( DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Technology_Title, techname)), 
                         true, BgCol));
                     break;
+
                 case HudPinType.WorkerXp:
                     WorkExperienceType experienceType = (WorkExperienceType)id;
                     LangLib.ExperienceType(experienceType, out string xpName, out SpriteName xpIcon);
