@@ -432,11 +432,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void AddGroupedResource(int itemIndex, int add)
         {            
-            ref var resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex];
+            ref GroupedResource resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex];
             resource.amount += add;
+            resource.changeRate.onChange(add);
 
-            ref var overview = ref DssRef.world.factionResourceOverviews[itemIndex + factionIndex * CityResoureIndex.COUNT];
-            overview.onChange(add);
+            //ref var overview = ref DssRef.world.factionResourceOverviews[itemIndex + factionIndex * CityResoureIndex.COUNT];
+            //overview.onChange(add);
         }
         public GroupedResource GetGroupedResource(int cityResourceIndex)
         {
@@ -1367,6 +1368,8 @@ namespace VikingEngine.DSSWars.GameObject
         public int amount;
         public int goalBuffer;
         public int deliverCount;
+
+        public ResourceChangeRate changeRate;
 
         public void writeGameState(System.IO.BinaryWriter w)
         {

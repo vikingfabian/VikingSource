@@ -597,27 +597,32 @@ namespace VikingEngine.DSSWars
             armyUpkeep = Convert.ToInt32(totalArmiesUpkeep);
         }
 
-        public ref ResourceOverview GetRefResourceOverview(ItemResourceType item)
+        public ref ResourceFactionOverview GetRefResourceOverview(ItemResourceType item)
         {
             int itemIndex = ItemPropertyColl.CityIndex(item);
             return ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIndex];
         }
 
-        public ResourceOverview GetResourceOverview(ItemResourceType item)
+        public ResourceFactionOverview GetResourceOverview(ItemResourceType item)
         {
             int itemIndex = ItemPropertyColl.CityIndex(item);
             return DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIndex];
         }
 
+        int resourceSecondUpdates = 0;
+
         public void resourceOverviewOneSecondUpdate()
         {
-            int end = resourceComponentStartIndex + CityResoureIndex.COUNT;
-            for (int itemIx = resourceComponentStartIndex; itemIx < end; itemIx++)
-            {
-                //ref ResourceOverview overview = ref DssRef.world.factionResourceOverviews[itemIx];
-                //overview.oneSecondUpdate();
-                DssRef.world.factionResourceOverviews[itemIx].oneSecondUpdate();
-            }
+            resourceSecondUpdates++;
+            
+
+            //int end = resourceComponentStartIndex + CityResoureIndex.COUNT;
+            //for (int itemIx = resourceComponentStartIndex; itemIx < end; itemIx++)
+            //{
+            //    //ref ResourceOverview overview = ref DssRef.world.factionResourceOverviews[itemIx];
+            //    //overview.oneSecondUpdate();
+            //    DssRef.world.factionResourceOverviews[itemIx].changeRate.oneSecondUpdate();
+            //}
             //res_wood.oneSecondUpdate();
             //res_fuel.oneSecondUpdate();
             //res_stone.oneSecondUpdate();
@@ -700,22 +705,52 @@ namespace VikingEngine.DSSWars
 
         public void updateResourceOverview_async()
         {
-            //var citiesC = cities.counter();
-
-            for (int itemIx = 0; itemIx < CityResoureIndex.COUNT; itemIx++)
+            if (resourceSecondUpdates > 0)
             {
-                ref ResourceOverview overview = ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIx];
-                overview.clearCurrent();
+                resourceSecondUpdates--;
 
-                //citiesC.Reset();
-                //while (citiesC.Next())
-                //{
-                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
+                int end = resourceComponentStartIndex + CityResoureIndex.COUNT;
+                for (int itemIx = resourceComponentStartIndex; itemIx < end; itemIx++)
                 {
-                    overview.current += DssRef.world.cityResouces[citySel.resourceComponentStartIndex + itemIx].amount;
+                    DssRef.world.factionResourceOverviews[itemIx].clear();
+                }
+
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref cities))
+                {
+                    int start = citiesC.sel * CityResoureIndex.COUNT;
+
+                    for (int index = 0; index < CityResoureIndex.COUNT; index++)
+                    {
+                        ref var cityResource = ref DssRef.world.cityResouces[start + index];
+                        cityResource.changeRate.oneSecondUpdate();
+
+                        ref var factionOverview = ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + index];
+                        factionOverview.current += cityResource.amount;
+                        factionOverview.changeRate.prevConsumed += cityResource.changeRate.prevConsumed;
+                        factionOverview.changeRate.prevProduced += cityResource.changeRate.prevProduced;
+                    }
                 }
             }
+
+            //var citiesC = cities.counter();
+
+            //for (int itemIx = 0; itemIx < CityResoureIndex.COUNT; itemIx++)
+            //{
+            //    ref ResourceFactionOverview overview = ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIx];
+            //    overview.clearCurrent();
+
+            //    //citiesC.Reset();
+            //    //while (citiesC.Next())
+            //    //{
+            //    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            //    while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
+            //    {
+            //        overview.current += DssRef.world.cityResouces[citySel.resourceComponentStartIndex + itemIx].amount;
+            //    }
+            //}
+
+
             //res_wood.clearCurrent();
             //res_fuel.clearCurrent();
             //res_stone.clearCurrent();
