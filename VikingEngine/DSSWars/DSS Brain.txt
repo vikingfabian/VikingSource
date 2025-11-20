@@ -1,6 +1,8 @@
 ﻿UPDATE
 Change Log: 
 * Turkish: full manual translation complete
+* fixed rare crash: attackTarget_soldierGroupOrCity in asyncBattleUpdate
+
 fixed - will update soon
 
 
