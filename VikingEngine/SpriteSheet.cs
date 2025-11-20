@@ -2242,6 +2242,10 @@ namespace VikingEngine
 
                 add(SpriteName.WarsHudFlapMinimize);
                 add(SpriteName.WarsHudFlapMaximize);
+
+                add(SpriteName.WarsIcon_Resources);
+                add(SpriteName.WarsMapFilterResources);
+                 
             }
 
             currentIndex = numTilesWidth * 87;

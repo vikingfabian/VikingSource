@@ -1511,41 +1511,58 @@ namespace VikingEngine.DSSWars.Interface
 
         }
 
+        void resourceTabToolTip(RichBoxContent content, object tag)
+        {
+            ResourcesSubTab tab = (ResourcesSubTab)tag;
+            IconName.Tab(tab, out SpriteName categoryIcon, out string category, out SpriteName tabIcon, out string tabName);
+
+            content.text(DssRef.lang.Work_SelectCategory, HudLib.TitleColor_Action);
+            content.newParagraph();
+            content.Add(new RbBeginTitle());
+            content.Add(new RbImage(categoryIcon));
+            content.space();
+            content.Add(new RbText(category, HudLib.TitleColor_Head));
+
+            content.icontext(tabIcon, tabName);
+        }
+
         public void resourcesToMenu(RichBoxContent content)
         {
             if (player.tutorial == null || player.tutorial.DisplayResourseSubTabs())
             {
                 for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab < ResourcesSubTab.Auto; ++resourcesSubTab)
                 {
+                    IconName.Tab(resourcesSubTab, out SpriteName categoryIcon, out string category, out SpriteName tabIcon, out string tabName);
                     var tabContent = new RichBoxContent();
+                   
                     //string text = null;
                     switch (resourcesSubTab)
                     {
-                        case ResourcesSubTab.Overview_Metals:
-                        case ResourcesSubTab.Stockpile_Metals:
-                        case ResourcesSubTab.Work_Metals:
-                            tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
-                            break;
-                        case ResourcesSubTab.Overview_Weapons:
-                        case ResourcesSubTab.Stockpile_Weapons:
-                        case ResourcesSubTab.Work_Weapons:
-                            tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
-                            break;
+                        //case ResourcesSubTab.Overview_Metals:
+                        //case ResourcesSubTab.Stockpile_Metals:
+                        //case ResourcesSubTab.Work_Metals:
+                        //    tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
+                        //    break;
+                        //case ResourcesSubTab.Overview_Weapons:
+                        //case ResourcesSubTab.Stockpile_Weapons:
+                        //case ResourcesSubTab.Work_Weapons:
+                        //    tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
+                        //    break;
 
-                        case ResourcesSubTab.Overview_Projectile:
-                        case ResourcesSubTab.Stockpile_Projectile:
-                        case ResourcesSubTab.Work_Projectile:
-                            tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
-                            break;
+                        //case ResourcesSubTab.Overview_Projectile:
+                        //case ResourcesSubTab.Stockpile_Projectile:
+                        //case ResourcesSubTab.Work_Projectile:
+                        //    tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
+                        //    break;
 
-                        case ResourcesSubTab.Overview_Armor:
-                        case ResourcesSubTab.Stockpile_Armor:
-                        case ResourcesSubTab.Work_Armor:
-                            tabContent.Add(new RbImage(SpriteName.WarsResource_IronArmor));
-                            break;
+                        //case ResourcesSubTab.Overview_Armor:
+                        //case ResourcesSubTab.Stockpile_Armor:
+                        //case ResourcesSubTab.Work_Armor:
+                        //    tabContent.Add(new RbImage(SpriteName.WarsResource_IronArmor));
+                        //    break;
 
                         case ResourcesSubTab.Work_Mint:
-                            tabContent.Add(new RbImage(SpriteName.WarsResource_SilverCoin));
+                            //tabContent.Add(new RbImage(SpriteName.WarsResource_SilverCoin));
                             if (city.buildingStructure.CoinMinter_count == 0)
                             {
                                 continue;
@@ -1556,41 +1573,35 @@ namespace VikingEngine.DSSWars.Interface
                             content.Add(new ArtButton(RbButtonStyle.HoverArea,
                                 new List<AbsRichBoxMember> { new RbImage(SpriteName.MenuPixelIconManual) },
                                 null, new RbTooltip_Text(DssRef.lang.Resource_Tab_Overview)));
-                            //content.h2(DssRef.lang.Resource_Tab_Overview);
-                            //content.newLine();
-                            //tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Overview));
-                            //tabContent.Add(new RbTab(0.25f));
-                            tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                            
+                            //tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                             break;
 
                         case ResourcesSubTab.Stockpile_Resources:
                             content.Add(new ArtButton(RbButtonStyle.HoverArea,
                                 new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsStockpileAdd) },
                                 null, new RbTooltip_Text(DssRef.lang.Resource_Tab_Stockpile)));
-                            //content.h2(DssRef.lang.Resource_Tab_Stockpile);
-                            //content.newLine();
-                            //tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Stockpile));
-                            //tabContent.Add(new RbTab(0.25f));
-                            tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                            
+                            //tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                             break;
 
                         case ResourcesSubTab.Work_Resources:
                             content.Add(new ArtButton(RbButtonStyle.HoverArea,
                                 new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHammer) },
                                 null, new RbTooltip_Text(DssRef.lang.MenuTab_Work)));
-                            //content.h2(DssRef.lang.MenuTab_Work);
-                            //content.newLine();
-                            //tabContent.Add(new RbText(DssRef.lang.MenuTab_Work));
-                            //tabContent.Add(new RbTab(0.25f));
-                            tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                           
+                            //tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                             break;
                     }
+
+                    tabContent.Add(new RbImage(tabIcon));
+
                     var subTab = new ArtButton(player.resourcesSubTab == resourcesSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
                         tabContent,
                         new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                         {
                             player.resourcesSubTab = resourcesSubTab;
-                        }, resourcesSubTab, RbSoundType.Tab), new RbTooltip_Text(DssRef.lang.Work_SelectCategory));
+                        }, resourcesSubTab, RbSoundType.Tab), new RbTooltip(resourceTabToolTip, resourcesSubTab)/*new RbTooltip_Text(DssRef.lang.Work_SelectCategory)*/);
                     //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                     content.Add(subTab);
 
@@ -1646,16 +1657,7 @@ namespace VikingEngine.DSSWars.Interface
                             
                             break;
                     }
-                    //if (resourcesSubTab == ResourcesSubTab.Overview_Armor ||
-                    //    resourcesSubTab == ResourcesSubTab.Stockpile_Armor)
-                    //    //resourcesSubTab == ResourcesSubTab.Work_Armor)
-                    //{
-                        
-                    //}
-                    //else
-                    //{
-                    //    content.space();
-                    //}
+                    
                 }
                 content.newParagraph();
             }
@@ -2102,12 +2104,13 @@ namespace VikingEngine.DSSWars.Interface
                     new List<AbsRichBoxMember>{
                         new RbImage(res.amount >= res.goalBuffer ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd),
                         new RbImage(ResourceLib.Icon(item))},null,
-                        new RbTooltip((RichBoxContent content, object tag) =>
-                        {
-                            bool buffer = false;
-                            city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);                           
-                        }
-                        )));
+                        //new RbTooltip((RichBoxContent content, object tag) =>
+                        //{
+                        //    bool buffer = false;
+                        //    city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);                           
+                        //}
+                        new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(city, item))
+                        ));
                 
                 content.space();
                

@@ -1,7 +1,7 @@
 ﻿UPDATE
 Change Log: 
-* Will reset setting on read crash
-* Prepared all tutorial localizations
+* Improved some icons
+* Improved hover pinned resource tooltip
 
 fixed - will update soon
 
@@ -16,6 +16,7 @@ x localize text
 
 
 #Spring update
+x ResourceOverview
 x cities summary tab
 -Having a tab with queued units and also a UI element to select all baracks and recruit simultaneously per city (less micromanagement)
 

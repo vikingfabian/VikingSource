@@ -16,7 +16,6 @@ namespace VikingEngine.DSSWars.Presentation
         public string DisplayMode => "Display mode";
         public string DisplayMode_Windowed => "Windowed";
         public string DisplayMode_BorderlessFullscreen => "Borderless fullscreen";
-
         public string GameSettings_RenderedMouseCursor => "Rendered cursor";
 
         //public string Error_SoundInitFailure => "Sound initialization failed";
@@ -24,7 +23,9 @@ namespace VikingEngine.DSSWars.Presentation
         //public string GameMenu_ControllerDisconnected => "Controller disconnected";
 
         public string Error_SoundInitFailure => "Sound initialization failed";
-          
+
+        public string Resource_StockpileLimit => "Stockpile limit";
+
         public string GameMode_QuickMatch => "Quick Match";
         public string GameMode_QuickMatch_Description => "A shorter game format. Enter a full-scale war against rival nations.";
 

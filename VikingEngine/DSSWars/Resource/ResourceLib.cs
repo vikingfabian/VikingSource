@@ -3,14 +3,80 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Engine;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.Gadgets;
 
 namespace VikingEngine.DSSWars.Resource
 {
-    static class ResourceLib
+    struct ResourceInfoTag
     {
-      
+        public ResourceInfoTag(City city, ItemResourceType item)
+        {
+            this.city = city;
+            this.item = item;
+        }
+        public City city;
+        public ItemResourceType item;
+    }
+
+    static class ResourceLib
+    {        
+
+        public static void FullResourceInfo(RichBoxContent content, object tag)
+        {
+            ResourceInfoTag args = (ResourceInfoTag)tag;
+            FullResourceInfo(args.city, args.item, content); 
+        }
+
+        public static void FullResourceInfo(City city, ItemResourceType item, RichBoxContent content)
+        {
+            var resources = city.GetGroupedResource(item);
+
+            content.Add(new RbImage(Icon(item)));
+            content.space();
+            content.Add(new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": " + TextLib.LargeNumber(resources.amount)));
+
+            //todo public ResourceOverview res_wood
+
+            SpriteName stockIcon;
+            if (resources.amount >= resources.goalBuffer)
+            {
+                stockIcon = SpriteName.WarsStockpileStop;
+            }
+            else
+            {
+                stockIcon = SpriteName.WarsStockpileAdd;
+            }
+            content.newLine();
+            content.Add(new RbImage(stockIcon));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Resource_StockpileLimit + ": " + TextLib.LargeNumber(resources.goalBuffer)));
+
+            var priority = city.workTemplate.GetWorkPriority(item, out bool hasPriority);
+            if (hasPriority)
+            {
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsHammer));
+                content.space();
+                content.Add(new RbText(DssRef.lang.Work_OrderPrioTitle + ": " + priority.value, priority.HasPrio() ? null : HudLib.NotAvailableColor));
+            }
+
+            ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
+            content.newLine();
+            bp1?.toMenu(content, city, false, false);
+            if (bp2 != null)
+            {
+                content.newLine();
+                content.text(DssRef.lang.Hud_RequirementOr);
+                content.newLine();
+                bp2.toMenu(content, city, false, false);
+            }
+        }
+
         public static string Name(ResourceType resource)
         {
             switch (resource)

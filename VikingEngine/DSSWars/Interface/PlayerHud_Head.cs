@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.Interface
         LocalPlayer player;
 
         public static readonly MenuTab[] CasualTabs = { MenuTab.Economy };
-        public static readonly MenuTab[] Tabs = { MenuTab.Economy, MenuTab.Resources, MenuTab.Work, /*MenuTab.Automation*/ MenuTab.Progress };
+        public static readonly MenuTab[] Tabs = { MenuTab.Economy, MenuTab.Resources, MenuTab.Work, MenuTab.Progress };
         public static readonly MenuTab[] TutorialTabs = { MenuTab.Economy };
 
         public PlayerHud_Head(LocalPlayer player)
@@ -288,14 +288,13 @@ namespace VikingEngine.DSSWars.Interface
                     case MenuTab.Economy:
                         icon = SpriteName.rtsMoney; break;
                     case MenuTab.Resources:
-                        icon = SpriteName.WarsResource_Wood; break;
+                        icon = SpriteName.WarsIcon_Resources; break;
                     case MenuTab.Work:
                         icon = SpriteName.WarsHammer; break;
                     case MenuTab.Automation:
                         icon = SpriteName.AutomationGearIcon; break;
                     case MenuTab.Progress:
                         icon = SpriteName.WarsTechnology_Unlocked; break;
-
                 }
 
                 content.Add(new ArtOption(tab == player.factionTab,
@@ -325,14 +324,15 @@ namespace VikingEngine.DSSWars.Interface
                     case FactionMapFilter.Minimap:
                         icon = SpriteName.WarsMapFilterMinimap;
                         break;
-
                     case FactionMapFilter.PopulationHeatmap:
                         icon = SpriteName.WarsMapFilterWorkers;
                         break;
                     case FactionMapFilter.StrengthHeatmap:
                         icon = SpriteName.WarsMapFilterStrength;
                         break;
-
+                    case FactionMapFilter.ResourceHeatmap:
+                        icon = SpriteName.WarsIcon_Resources;
+                        break;
                 }
 
                 content.Add(new ArtOption(filter == player.factionPixelTexture.filter,
@@ -372,9 +372,6 @@ namespace VikingEngine.DSSWars.Interface
             content.h2(DssRef.lang.FactionSettings_Titel);
             content.newLine();
             content.Add(new RbText(DssRef.lang.FactionSettings_Description, HudLib.InfoYellow_Light));
-            
-            //content.newLine();
-            //content.Add(new RbText(description, HudLib.InfoYellow_Light));
         }
 
         void nextCityTip(RichBoxContent content, object tag)
@@ -448,9 +445,6 @@ namespace VikingEngine.DSSWars.Interface
         }
         void foodTip(RichBoxContent content, object tag)
         {
-
-            //foodAdd = faction.CityFoodProduction;
-            //foodSub = faction.CityFoodSpending;
             content.Add(new RbImage(SpriteName.WarsResource_FoodAdd));
             content.space();
             content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Info_TotalFoodProduction, player.faction.CityFoodProduction),
