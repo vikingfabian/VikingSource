@@ -8,6 +8,13 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Turkish : AbsOptionsLanguage
     {
+        public override string GraphicsOption_IngameMenuWidth => "Oyun içi menü genişliği";
+        public override string DisplayMode => "Görüntü modu";
+        public override string DisplayMode_Windowed => "Pencere modu";
+        public override string DisplayMode_BorderlessFullscreen => "Çerçevesiz tam ekran";
+        public override string GameSettings_RenderedMouseCursor => "Render edilmiş imleç";
+
+        //--
         public override string GraphicsOption_FarViewDistance => "Uzun mesafe görüşü";
 
         public override string Hud_Cancel => "İptal";

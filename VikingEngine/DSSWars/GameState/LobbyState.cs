@@ -1404,12 +1404,12 @@ namespace VikingEngine.DSSWars
                 content.newLine();
                 content.Add(new RbImage(SpriteName.birdPlayerCount));
                 content.space();
-                content.Add(new RbText(DssRef.todoLang.Lobby_PlayerCount, HudLib.TitleColor_Label));
+                content.Add(new RbText(DssRef.lang.Lobby_PlayerCount, HudLib.TitleColor_Label));
                 content.space();
                 content.Add(new RbDragButton(new DragButtonSettings(2, 8, 1), quickPlayerCountProperty));
 
                 content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Lobby_TwoTeams) }, bQuickTwoTeamProperty));
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_TwoTeams) }, bQuickTwoTeamProperty));
             }
 
             content.newParagraph();
@@ -1450,7 +1450,7 @@ namespace VikingEngine.DSSWars
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsTechnology_Unlocked));
                 content.space();
-                content.Add(new RbText(DssRef.todoLang.Settings_TechMultiplier, HudLib.TitleColor_Label));
+                content.Add(new RbText(DssRef.lang.Settings_TechMultiplier, HudLib.TitleColor_Label));
                 content.space();
                 content.Add(new RbDragButton(new DragButtonSettings(1, 10, 1), DssRef.difficulty.TechMultiProperty));
 

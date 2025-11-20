@@ -344,7 +344,7 @@ namespace VikingEngine.DSSWars.Interface
                             player.factionPixelTexture.filter = filter;
                             DssRef.world.BordersUpdated = true;
                        }
-                   , filter, RbSoundType.Option), new RbTooltip_Text(DssRef.todoLang.MapFilter)));
+                   , filter, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.MapFilter)));
             }
             
         }

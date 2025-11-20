@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars.Players
                 case FactionType.AerimAngren:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_AerimAngren;
+                    name = DssRef.lang.FactionName_AerimAngren;
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.diplomaticSide = DiplomaticSide.Light;
                     break;
@@ -127,21 +127,21 @@ namespace VikingEngine.DSSWars.Players
                 case FactionType.DragonGem:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_DragonGem;
+                    name = DssRef.lang.FactionName_DragonGem;
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     break;
 
                 case FactionType.Hælfolc:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_Hælfolc;
+                    name = DssRef.lang.FactionName_Hælfolc;
                     aggressionLevel = AggressionLevel2_RandomAttacks;
                     break;
 
                 case FactionType.Tomten:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_Tomten;
+                    name = DssRef.lang.FactionName_Tomten;
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     break;
 

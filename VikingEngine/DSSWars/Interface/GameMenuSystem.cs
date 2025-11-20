@@ -224,7 +224,7 @@ namespace VikingEngine.DSSWars.Interface
             RichBoxContent content = new RichBoxContent();
 
             content.h1(DssRef.lang.Tutorial_CompleteTitle, HudLib.TitleColor_Head);
-            content.text(DssRef.todoLang.Tutorial_AdvisorDescription);
+            content.text(DssRef.lang.Tutorial_AdvisorDescription);
 
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_Resume) }, new RbAction(closeMenu))
@@ -306,7 +306,7 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_ToggleHudDetail) },
                 DssRef.state.LocalHost().hud.maxHudProperty));
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.InputActionName_MiniMap) },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_MiniMap) },
                 DssRef.state.LocalHost().hud.minimapProperty));
 
 
@@ -368,7 +368,7 @@ namespace VikingEngine.DSSWars.Interface
             }
 
             content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
-                        new RbText(inAdvisorMode? DssRef.todoLang.Tutorial_EndAdvisor : DssRef.lang.Tutorial_EndTutorial) }, new RbAction(endTutorial))
+                        new RbText(inAdvisorMode? DssRef.lang.Tutorial_EndAdvisor : DssRef.lang.Tutorial_EndTutorial) }, new RbAction(endTutorial))
             {
                 fillWidth = true
             });

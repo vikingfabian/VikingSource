@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.Presentation
         //            icon = SpriteName.WarsMapFilterWorkers;
         //            break;
         //        case FactionMapFilter.StrengthHeatmap:
-        //            caption = DssRef.todoLang.UnitType_Faction;
+        //            caption = DssRef.lang.UnitType_Faction;
         //            icon = SpriteName.WarsMapFilterStrength;
         //            break;
 
@@ -67,8 +67,8 @@ namespace VikingEngine.DSSWars.Presentation
                     desc = DssRef.lang.Settings_Mode_IncludeBoss + " " + DssRef.lang.Settings_Mode_IncludeAttacks;
                     break;
                 case GameModeMainType.QuickMatch:
-                    caption = DssRef.todoLang.GameMode_QuickMatch;
-                    desc = DssRef.todoLang.GameMode_QuickMatch_Description;
+                    caption = DssRef.lang.GameMode_QuickMatch;
+                    desc = DssRef.lang.GameMode_QuickMatch_Description;
                     break;
                 case GameModeMainType.Sandbox:
                     caption = DssRef.lang.Settings_Mode_Sandbox;
@@ -710,7 +710,7 @@ namespace VikingEngine.DSSWars.Presentation
                 case InputActionType.ToggleHudDetail:
                     return DssRef.lang.InputActionName_ToggleHudDetail;
                 case InputActionType.ToggleMiniMap:
-                    return DssRef.todoLang.InputActionName_MiniMap;
+                    return DssRef.lang.InputActionName_MiniMap;
                 case InputActionType.GameSpeed:
                     return DssRef.lang.Input_GameSpeed;
                 case InputActionType.PauseGame:

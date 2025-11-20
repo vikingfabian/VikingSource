@@ -1,10 +1,6 @@
 ﻿UPDATE
 Change Log: 
-* Improved some icons
-* Improved hover pinned resource tooltip
-* Fixed Save/Reload on quick match
-* fixed rare crash: attackTarget_soldierGroupOrCity in asyncBattleUpdate
-
+* 
 
 fixed - will update soon
 

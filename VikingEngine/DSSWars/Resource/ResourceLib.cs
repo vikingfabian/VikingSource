@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Resource
             content.newLine();
             content.Add(new RbImage(stockIcon));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Resource_StockpileLimit + ": " + TextLib.LargeNumber(resources.goalBuffer)));
+            content.Add(new RbText(DssRef.lang.Resource_StockpileLimit + ": " + TextLib.LargeNumber(resources.goalBuffer)));
 
             var priority = city.workTemplate.GetWorkPriority(item, out bool hasPriority);
             if (hasPriority)

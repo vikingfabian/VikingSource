@@ -88,7 +88,7 @@ namespace VikingEngine.DSSWars.Map
 
         public void HeatMapInfoHud(RichBoxContent content)
         {
-            content.h2(DssRef.todoLang.MapFilter, HudLib.TitleColor_Head);
+            content.h2(DssRef.lang.MapFilter, HudLib.TitleColor_Head);
 
             SpriteName icon = SpriteName.NO_IMAGE;
             string caption = null;

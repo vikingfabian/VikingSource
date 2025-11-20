@@ -621,8 +621,8 @@ namespace VikingEngine
             content.newLine();
             DropDownBuilder winmodeDropdown = new DropDownBuilder("windowMode");
             {
-                addMode(WindowDisplayMode.Windowed, DssRef.todoLang.DisplayMode_Windowed);
-                addMode(WindowDisplayMode.BorderlessFullscreen, DssRef.todoLang.DisplayMode_BorderlessFullscreen);
+                addMode(WindowDisplayMode.Windowed, Ref.langOpt.DisplayMode_Windowed);
+                addMode(WindowDisplayMode.BorderlessFullscreen, Ref.langOpt.DisplayMode_BorderlessFullscreen);
                 addMode(WindowDisplayMode.HardwareFullscreen, Ref.langOpt.GraphicsOption_Fullscreen);
 
                 void addMode(WindowDisplayMode mode, string caption)
@@ -631,7 +631,7 @@ namespace VikingEngine
                         new RbAction1Arg<WindowDisplayMode>(SetDisplayMode, mode), null);
                 }
 
-                winmodeDropdown.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.DisplayMode, menu);
+                winmodeDropdown.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.DisplayMode, menu);
             }
                         
                 //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.GraphicsOption_Fullscreen) }, Ref.gamesett.fullscreenProperty));
@@ -694,7 +694,7 @@ namespace VikingEngine
             }
 
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdPointer), new RbSpace(0.5f), new RbText(DssRef.todoLang.GameSettings_RenderedMouseCursor) },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdPointer), new RbSpace(0.5f), new RbText(Ref.langOpt.GameSettings_RenderedMouseCursor) },
                 CustomCursorProperty));
 
             content.newLine();
@@ -707,7 +707,7 @@ namespace VikingEngine
                 new RbAction(Ref.gamestate.OnResolutionChange)));
 
             content.newLine();
-            content.Add(new RbText(DssRef.todoLang.GraphicsOption_IngameMenuWidth));
+            content.Add(new RbText(Ref.langOpt.GraphicsOption_IngameMenuWidth));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.8f, 1.6f, 0.1f), IngameMenuWProperty, true));
 

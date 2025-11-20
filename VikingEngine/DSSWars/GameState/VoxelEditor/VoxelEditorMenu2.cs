@@ -1281,7 +1281,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             else
             {
                 content.Add(new RbButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdSpyglass) },
-                    new RbAction(() => { new SearchInput(this); }), new RbTooltip_Text(DssRef.todoLang.Hud_Search))
+                    new RbAction(() => { new SearchInput(this); }), new RbTooltip_Text(DssRef.lang.Hud_Search))
                 { overrideBgColor = Color.White });
 
                 if (!string.IsNullOrEmpty(modelSearchFilter))
