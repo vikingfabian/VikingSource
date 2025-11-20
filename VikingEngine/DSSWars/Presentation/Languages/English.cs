@@ -11,7 +11,76 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class English : AbsLanguage
     {
+        
+        //Winter update
+        public override string Resource_StockpileLimit => "Stockpile limit";
+        public override string GameMode_QuickMatch => "Quick Match";
+        public override string GameMode_QuickMatch_Description => "A shorter game format. Enter a full-scale war against rival nations.";
+        public override string Lobby_PlayerCount => "Player count";
+        public override string Lobby_TwoTeams => "Two teams";
+        public override string Hud_Produce => "Produce:";
+        public override string Tutorial_WaitForWorkerLevel => "Wait for a worker to reach:";
 
+        /// <summary>
+        /// 0: Production item, 1: School
+        /// </summary>
+        public override string Tutorial_PracticeOrSchool => "Practice on {0}, or use a {1}";
+        public override string Tutorial_AddTag => "Add tag:";
+        public override string Tutorial_AddPin => "Add pin:";
+        public override string Tutorial_SelectMostTrees => "Find your city with the most trees";
+        public override string Tutorial_SelectACityWithX => "Select a city with {0}";
+
+        /// <summary>
+        /// Will continue on another sentence "Select a city"
+        /// </summary>
+        public override string Tutorial_Select_NotCapital => ". Not your capital.";
+
+        public override string Tutorial_SetXPriorityToY => "Set {0} priority to {1}";
+        public override string Tutorial_AdvisorMission => "Advisor mission";
+
+        public override string Tutorial_AdvisorDescription => "The full game has started. The advisor will extend the tutorial with helpful missions";
+
+        public override string Tutorial_EndAdvisor => "End advisor";
+
+
+        public override string Tutorial_AdvisorCompleteTitle => "Advisor completed!";
+        public override string Tutorial_AdvisorCompleteMessage => "May your next day be blessed!";
+
+        public override string Hud_Search => "Search";
+
+        public override string DifficultyDescription_ExtremeAggression => "Extreme aggression";
+
+        public override string MapFilter => "Map filter";
+
+        public override string Settings_TechMultiplier => "Tech research speed";
+
+        public override string EndScreen_MatchComplete => "Match result";
+
+        /// <summary>
+        /// Theme: Four headed dragon symbol. Known for having an unpenetrable castle.
+        /// </summary>
+        public override string FactionName_DragonGem => "Dragon gem";
+
+        /// <summary>
+        /// Theme: Easter egg for december. "Tomten" is an old nordic name for father christmas
+        /// </summary>
+        public override string FactionName_Tomten => "Tomten";
+
+        /// <summary>
+        /// Theme: The blessed folk. A horde like farmers faction.
+        /// </summary>
+        public override string FactionName_Hælfolc => "Hælfolc";
+
+        /// <summary>
+        /// The Iron Saints, people who guard a mountain pass against evil.
+        /// </summary>
+        public override string FactionName_AerimAngren => "Aerim Angren";
+
+        public override string HUD_NotAvailbleInX => "Not available in {0}";
+
+        public override string InputActionName_MiniMap => "Mini-map";
+
+        //--
         public override string Error_SoundInitFailure => "Sound initialization failed";
 
         public override string GameMenu_ControllerDisconnected => "Controller disconnected";

@@ -9,6 +9,55 @@ namespace VikingEngine.DSSWars.Presentation
     partial class Spanish : AbsLanguage
     {
 
+        //Winter update
+        public override string Resource_StockpileLimit => "Límite de reservas";
+        public override string GameMode_QuickMatch => "Quick Match";
+        public override string GameMode_QuickMatch_Description =>
+            "Un formato de partida más corto. Entra en una guerra a gran escala contra naciones rivales.";
+        public override string Lobby_PlayerCount => "Cantidad de jugadores";
+        public override string Lobby_TwoTeams => "Dos equipos";
+        public override string Hud_Produce => "Producir:";
+        public override string Tutorial_WaitForWorkerLevel => "Espera a que un trabajador alcance:";
+
+        public override string Tutorial_PracticeOrSchool => "Entrena en {0}, o usa una {1}";
+        public override string Tutorial_AddTag => "Agregar tag:";
+        public override string Tutorial_AddPin => "Agregar pin:";
+        public override string Tutorial_SelectMostTrees => "Encuentra tu ciudad con más árboles";
+        public override string Tutorial_SelectACityWithX => "Selecciona una ciudad con {0}";
+
+        public override string Tutorial_Select_NotCapital => ". No tu capital.";
+
+        public override string Tutorial_SetXPriorityToY => "Configura la prioridad de {0} a {1}";
+        public override string Tutorial_AdvisorMission => "Misión del Advisor";
+
+        public override string Tutorial_AdvisorDescription =>
+            "El juego completo ha comenzado. El Advisor ampliará el tutorial con misiones útiles.";
+
+        public override string Tutorial_EndAdvisor => "Terminar Advisor";
+
+        public override string Tutorial_AdvisorCompleteTitle => "¡Advisor completado!";
+        public override string Tutorial_AdvisorCompleteMessage => "¡Que tu próximo día sea bendecido!";
+
+        public override string Hud_Search => "Buscar";
+
+        public override string DifficultyDescription_ExtremeAggression => "Agresión extrema";
+
+        public override string MapFilter => "Filtro de mapa";
+
+        public override string Settings_TechMultiplier => "Velocidad de investigación tech";
+
+        public override string EndScreen_MatchComplete => "Resultado de la partida";
+
+        public override string FactionName_DragonGem => "Dragon Gem";
+        public override string FactionName_Tomten => "Tomten";
+        public override string FactionName_Hælfolc => "Hælfolc";
+        public override string FactionName_AerimAngren => "Aerim Angren";
+
+        public override string HUD_NotAvailbleInX => "No disponible en {0}";
+
+        public override string InputActionName_MiniMap => "Mini-map";
+
+        //--
         public override string Error_SoundInitFailure => "Error al inicializar el sonido";
 
         public override string GameMenu_ControllerDisconnected => "Control desconectado";

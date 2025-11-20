@@ -1,6 +1,6 @@
 ﻿UPDATE
-Change Log:
-* 
+Change Log: 
+* Turkish: full manual translation complete
 fixed - will update soon
 
 
@@ -12,6 +12,7 @@ fixed - will update soon
 #Spring update TODO
 x start with one city
 
+x ResourceOverview
 x cities summary tab
 -Having a tab with queued units and also a UI element to select all baracks and recruit simultaneously per city (less micromanagement)
 

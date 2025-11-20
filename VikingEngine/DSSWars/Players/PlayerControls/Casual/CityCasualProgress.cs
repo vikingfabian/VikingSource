@@ -159,7 +159,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     var first = arraylib.First(recruitQueue);
                     recruitTimeSeconds = city.casualRecruitTime_sec(first.soldierType);
 
-                    if (DssRef.storage.runTutorial_1short_2normal > 0 &&
+                    if (DssRef.storage.runTutorial &&
                         city.GetFaction().armies.Count == 0)
                     {
                         recruitTimeSeconds = 5;
@@ -212,7 +212,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     var first = arraylib.First(buildQueue);
                     buildTimeSeconds = CasualBuild.Get(first.build).buildtime_sec;
 
-                    if (DssRef.storage.runTutorial_1short_2normal > 0 &&
+                    if (DssRef.storage.runTutorial &&
                         first.build == CasualBuildType.Barracks)
                     {
                         buildTimeSeconds = 5;

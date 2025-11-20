@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.Event
                     DssRef.achieve.UnlockAchievement_async(AchievementIndex.worthy_friends);
                 }
 
-                if (worldPeace && peaceStrength > warStrength)
+                if (worldPeace && peaceStrength > warStrength && p.faction.cities.Count < DssRef.world.cities.Count / 2)
                 {
                     Ref.update.AddSyncAction(new SyncAction1Arg<VictoryType>(victory, VictoryType.WorldPeace));
                     return;
@@ -948,14 +948,14 @@ namespace VikingEngine.DSSWars.Event
         {
             if (attacker != null && defender != null)
             {
-                if ((attacker.factiontype == FactionType.DefaultAi || attacker.diplomaticSide == DiplomaticSide.Dark) &&
-                    (attacker.diplomaticSide != DiplomaticSide.Light || defender.diplomaticSide == DiplomaticSide.Dark) &&
-                    attacker.armies.Count > 0)
+                if (attacker.armies.Count > 0)
                 {
                     if (defender.player.IsLocalPlayer())
                     {
-                        if (attacker.myIndex == DssRef.settings.Faction_DarkFollower)
-                        { return false; }
+                        if (!attacker.player.mayAttackPlayer)
+                        {
+                            return false;
+                        }
 
                         if (attacker.militaryStrength < Math.Min(defender.militaryStrength * 0.25f, 6) ||
                             attacker.militaryStrength > defender.militaryStrength * 3f)
@@ -1127,7 +1127,9 @@ namespace VikingEngine.DSSWars.Event
                     return new StoryEvent_DarkLord();
                 case EventType.DefeatTheBoss:
                     return new StoryEvent_DefeatTheBoss();
-                
+
+                case EventType.QuickMatch:
+                    return new StoryEvent_QuickMatch();
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, "Unhandled event type.");

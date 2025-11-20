@@ -144,7 +144,7 @@ namespace VikingEngine.DSSWars
             technologyManager.initGame(newGame);
 
             if (PlatformSettings.STEAM_DEMO &&
-               (DssRef.storage.runTutorial_1short_2normal == 0 || LocalHost().profile.casualControls))
+               (DssRef.storage.runTutorial == false || LocalHost().profile.casualControls))
             {
                 events = new Event.GameEventsDemo();
             }
@@ -336,7 +336,7 @@ namespace VikingEngine.DSSWars
                     m.onGameStart(newGame);
                 }
 
-                if (newGame && (DssRef.storage.runTutorial_1short_2normal != 2 || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator))
+                if (newGame && (DssRef.storage.runTutorial == false || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator))
                 {
                     initStartUnits();
                 }
@@ -557,7 +557,7 @@ namespace VikingEngine.DSSWars
             slowMinuteUpdate = true;
 
             if (host && DssRef.storage.autoSave && 
-                DssRef.storage.runTutorial_1short_2normal == 0 &&
+                DssRef.storage.runTutorial == false &&
                 !PlatformSettings.STEAM_DEMO &&
                 Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
             {

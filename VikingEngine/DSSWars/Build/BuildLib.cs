@@ -951,24 +951,30 @@ namespace VikingEngine.DSSWars.Build
             var subTile = DssRef.world.subTileGrid.Get(subTilePos);
             var buildingType = BuildLib.GetType(subTile.mainTerrain, subTile.subTerrain);
             if (buildingType != BuildAndExpandType.NUM_NONE)
-            {
-                
+            {                
                 var opt = BuildOptions[(int)buildingType];
-               opt.destroy_async(city, subTilePos);
+                opt.destroy_async(city, subTilePos);
                 
                 var bp = opt.blueprint;
                 foreach (var r in bp.resources)
                 {
-                    int returnAmount = r.amount / 2;
-                    if (returnAmount > 0)
+                    if (r.type == ItemResourceType.ServiceMen)
                     {
-                        DssRef.state.resources.addItem(
-                            new Resource.ItemResource(
-                              r.type,
-                              subTile.terrainQuality,
-                              0,
-                              returnAmount),
-                          ref subTile.collectionPointer);
+                        city.freeServiceMen.amount += r.amount;
+                    }
+                    else if (r.type != ItemResourceType.Water_G)
+                    {
+                        int returnAmount = r.amount / 2;
+                        if (returnAmount > 0)
+                        {
+                            DssRef.state.resources.addItem(
+                                new Resource.ItemResource(
+                                  r.type,
+                                  subTile.terrainQuality,
+                                  0,
+                                  returnAmount),
+                              ref subTile.collectionPointer);
+                        }
                     }
                 }               
 

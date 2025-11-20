@@ -191,19 +191,19 @@ namespace VikingEngine.DSSWars.Delivery
         {
             if (arraylib.InBound(DssRef.world.cities, cityIx))
             {
-                City city = DssRef.world.cities[cityIx];
+                City recievingCity = DssRef.world.cities[cityIx];
                 if (profile.type == DeliveryType_Men)
                 {
-                    recieverHasAmountPlusDeliveries = city.workForce.amount + city.workForce.deliverCount;
+                    recieverHasAmountPlusDeliveries = recievingCity.workForce.amount + recievingCity.workForce.deliverCount;
 
-                    if (recieverHasAmountPlusDeliveries + DssConst.CityDeliveryChunkSize_Level1 > city.HousingCount_Workers)
+                    if (recieverHasAmountPlusDeliveries + DssConst.CityDeliveryChunkSize_Level1 > recievingCity.HousingCount_Workers)
                     {
                         return false;
                     }
                 }
                 else
                 {
-                    recieverHasAmountPlusDeliveries = city.GetGroupedResource(sendItem).amountPlusDelivery();
+                    recieverHasAmountPlusDeliveries = recievingCity.GetGroupedResource(sendItem).amountPlusDelivery();
                 }
 
                 if (useRecieverMax)

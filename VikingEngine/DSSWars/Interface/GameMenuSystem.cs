@@ -218,6 +218,25 @@ namespace VikingEngine.DSSWars.Interface
             refreshPage(menu, false);
         }
 
+        public void TutorialCompleteMenu()
+        {
+            openMenu();
+            RichBoxContent content = new RichBoxContent();
+
+            content.h1(DssRef.lang.Tutorial_CompleteTitle, HudLib.TitleColor_Head);
+            content.text(DssRef.lang.Tutorial_AdvisorDescription);
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_Resume) }, new RbAction(closeMenu))
+            {
+                fillWidth = true
+            });
+
+            endTutorialButton(content);
+
+            completeMenu(content);
+        }
+
         public void pauseMenu()
         {
             openMenu();
@@ -235,13 +254,11 @@ namespace VikingEngine.DSSWars.Interface
             if (!PlatformSettings.STEAM_DEMO && 
                 DssRef.settings.playType == GameState.PlayStateType.Play)
             {
-                if (DssRef.storage.runTutorial_1short_2normal != 0)
+                if (DssRef.storage.runTutorial)
                 { //TODO yes no dialogue
-                    content.newLine();
-                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_EndTutorial) }, new RbAction(endTutorial))
-                    {
-                        fillWidth = true
-                    });
+                    endTutorialButton(content);
+                   
+                    
                 }
 
                 content.newLine();
@@ -289,7 +306,7 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_ToggleHudDetail) },
                 DssRef.state.LocalHost().hud.maxHudProperty));
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.InputActionName_MiniMap) },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_MiniMap) },
                 DssRef.state.LocalHost().hud.minimapProperty));
 
 
@@ -336,7 +353,26 @@ namespace VikingEngine.DSSWars.Interface
            
         }
 
+        void endTutorialButton(RichBoxContent content)
+        {
+            content.newLine();
 
+            bool inAdvisorMode = true;
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                if (p.tutorial != null)
+                {
+                    inAdvisorMode = p.tutorial.AdvisorMode();
+                    break;
+                }
+            }
+
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                        new RbText(inAdvisorMode? DssRef.lang.Tutorial_EndAdvisor : DssRef.lang.Tutorial_EndTutorial) }, new RbAction(endTutorial))
+            {
+                fillWidth = true
+            });
+        }
 
 
         public static void SettingsToMenu(RichBoxContent content, RichMenu menu, bool lobby)
@@ -600,11 +636,9 @@ namespace VikingEngine.DSSWars.Interface
 
         void endTutorial()
         {
-            DssRef.stats.skipTutorial.addOne();
-
             foreach (var p in DssRef.state.localPlayers)
             {
-                p.tutorial?.EndTutorial();
+                p.tutorial?.EndCurrentTutorialMode();
             }
             closeMenu();
         }

@@ -20,7 +20,7 @@ namespace VikingEngine.PJ.Bagatelle
             {
                 Ref.netSession.BeginWritingPacket(Network.PacketType.birdBeginLoadScreen, Network.PacketReliability.Reliable);
             }
-            Input.Mouse.Visible = false;
+            Input.Mouse.Hide();//Input.Mouse.Visible = false;
 
             this.joinedLocalGamers = joinedGamers;
            

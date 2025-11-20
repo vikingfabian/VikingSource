@@ -97,6 +97,11 @@ namespace VikingEngine//WRAPPER
         public bool Value2;
         public TwoBools(bool v1, bool v2)
         { Value1 = v1; Value2 = v2; }
+
+        public override string ToString()
+        {
+            return Value1.ToString() + ", " + Value2.ToString();
+        }
     }
 
     struct TwoSprites

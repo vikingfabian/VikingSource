@@ -472,8 +472,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             try
             {
-                w.Write(Bound.UShort(workForce.amount));
-                w.Write(Bound.UShort(HousingCount_Workers));
+                w.Write((byte)cityType);
+
+                //w.Write(Bound.UShort(workForce.amount));
+                //w.Write(Bound.UShort(HousingCount_Workers));
+                w.Write(workForce.amount);
+                w.Write(HousingCount_Workers);
                 w.Write(Bound.UShort(HousingCount_Guard));
                 w.Write(Bound.Short(freeServiceMen.amount));
                 w.Write(Bound.Short(workingAndFreeServiceMen));
@@ -578,8 +582,21 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            workForce.amount = r.ReadUInt16();
-            HousingCount_Workers = r.ReadUInt16();
+            if (subversion >= 86)
+            {
+                cityType = (CityType)r.ReadByte();
+            }
+
+            if (subversion >= 87)
+            {
+                workForce.amount = r.ReadInt32();
+                HousingCount_Workers = r.ReadInt32();
+            }
+            else
+            {//old
+                workForce.amount = r.ReadUInt16();
+                HousingCount_Workers = r.ReadUInt16();
+            }
             HousingCount_Guard = r.ReadUInt16();
             freeServiceMen.amount = r.ReadInt16();
             if (subversion >= 51)
@@ -659,7 +676,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            if (subversion >= 84)
+            if (subversion >= 85)
             {
                 experenceOrDistance = (XP.ExperienceOrDistancePrio)r.ReadByte();
             }
@@ -1546,10 +1563,10 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 refreshWorkerSubtiles();
                 int freeGuardSpace = 0;
-                if (DssRef.storage.runTutorial_1short_2normal == 1)
-                {
-                    freeGuardSpace = 10;
-                }
+                //if (DssRef.storage.runTutorial_1short_2normal == 1)
+                //{
+                //    freeGuardSpace = 10;
+                //}
                 //Place guards
                 //foreach (var post in defenceBuildings)
                 for (int i = 0;i <defenceBuildings.Count;i++) 

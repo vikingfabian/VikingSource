@@ -1042,7 +1042,15 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         void updateMouseVisible()
         {
-            Input.Mouse.Visible = menu != null;
+            if (menu == null)
+            {
+                Input.Mouse.CenterLockAndHide();
+            }
+            else
+            {
+                Input.Mouse.View();
+            }
+            //Input.Mouse.Visible = menu != null;
         }
 
         override public bool InMenu { get { return menu != null; } }
@@ -1110,13 +1118,18 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
                             if (path.Exists())
                             {
-                                using (FileStream stream = new FileStream(path.CompleteLocalPath(false), FileMode.Open))
+                                try
                                 {
-                                    var texture = Texture2D.FromStream(Draw.graphicsDeviceManager.GraphicsDevice, stream);
-                                    file.Tag = texture;
+                                    using (FileStream stream = new FileStream(path.CompleteLocalPath(false), FileMode.Open))
+                                    {
+                                        var texture = Texture2D.FromStream(Draw.graphicsDeviceManager.GraphicsDevice, stream);
+                                        file.Tag = texture;
 
-                                    menu_sp.needRefresh = true;
+                                        menu_sp.needRefresh = true;
+                                    }
                                 }
+                                catch
+                                { }
                             }
                             //VoxelObjGridDataAnimHD animationFrames = new VoxelObjGridDataAnimHD();
                             //BeginReadWrite.BinaryIO(false, path, null, animationFrames.ReadBinaryStream, null, false);
@@ -1268,7 +1281,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             else
             {
                 content.Add(new RbButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdSpyglass) },
-                    new RbAction(() => { new SearchInput(this); }), new RbTooltip_Text(DssRef.todoLang.Hud_Search))
+                    new RbAction(() => { new SearchInput(this); }), new RbTooltip_Text(DssRef.lang.Hud_Search))
                 { overrideBgColor = Color.White });
 
                 if (!string.IsNullOrEmpty(modelSearchFilter))

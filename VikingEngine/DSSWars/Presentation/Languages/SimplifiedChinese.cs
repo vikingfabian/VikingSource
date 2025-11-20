@@ -8,6 +8,56 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class SimplifiedChinese : AbsLanguage
     {
+
+        //Winter update
+        public override string Resource_StockpileLimit => "库存上限";
+        public override string GameMode_QuickMatch => "Quick Match";
+        public override string GameMode_QuickMatch_Description =>
+            "更短的游戏模式。投入与敌对国家之间的全面战争吧。";
+        public override string Lobby_PlayerCount => "玩家人数";
+        public override string Lobby_TwoTeams => "两支队伍";
+        public override string Hud_Produce => "生产:";
+        public override string Tutorial_WaitForWorkerLevel => "等待一名工人达到：";
+
+        public override string Tutorial_PracticeOrSchool => "在 {0} 上练习，或使用 {1}";
+        public override string Tutorial_AddTag => "添加标签 (tag):";
+        public override string Tutorial_AddPin => "添加图钉 (pin):";
+        public override string Tutorial_SelectMostTrees => "找到你树木最多的城市";
+        public override string Tutorial_SelectACityWithX => "选择一个拥有 {0} 的城市";
+
+        public override string Tutorial_Select_NotCapital => "。不是你的首都。";
+
+        public override string Tutorial_SetXPriorityToY => "将 {0} 的优先级设置为 {1}";
+        public override string Tutorial_AdvisorMission => "Advisor 任务";
+
+        public override string Tutorial_AdvisorDescription =>
+            "完整游戏已开始。Advisor 将通过更多有用的任务扩展教程。";
+
+        public override string Tutorial_EndAdvisor => "结束 Advisor";
+
+        public override string Tutorial_AdvisorCompleteTitle => "Advisor 完成！";
+        public override string Tutorial_AdvisorCompleteMessage => "愿你接下来的一天被祝福！";
+
+        public override string Hud_Search => "搜索";
+
+        public override string DifficultyDescription_ExtremeAggression => "极端侵略性";
+
+        public override string MapFilter => "地图过滤器";
+
+        public override string Settings_TechMultiplier => "Tech 研究速度";
+
+        public override string EndScreen_MatchComplete => "比赛结果";
+
+        public override string FactionName_DragonGem => "Dragon Gem";
+        public override string FactionName_Tomten => "Tomten";
+        public override string FactionName_Hælfolc => "Hælfolc";
+        public override string FactionName_AerimAngren => "Aerim Angren";
+
+        public override string HUD_NotAvailbleInX => "在 {0} 中不可用";
+
+        public override string InputActionName_MiniMap => "Mini-map";
+
+        //--
         public override string Error_SoundInitFailure => "声音初始化失败";
 
         public override string GameMenu_ControllerDisconnected => "控制器已断开连接";

@@ -17,23 +17,7 @@ namespace VikingEngine.DSSWars.Players
 
         const int PurchaseOrderType_None = 0;
         const int PurchaseOrderType_Army = 1;
-        //const int PurchaseOrderType_CityWorkers = 2;
-        //const int PurchaseOrderType_CityGuard = 3;
-        //const int PurchaseOrderType_MergeArmies = 4;
-
-        //const int PurchaseOrderFocus_None = 0;
-        //const int PurchaseOrderFocus_Defend = 1;
-        //const int PurchaseOrderFocus_QuickDefend = 2;
-        //const int PurchaseOrderFocus_AttackCity = 3;
-        //const int PurchaseOrderFocus_SeaTravel = 4;
-
-        //int purchaseOrder = PurchaseOrderType_None;
-        //int purchaseOrderFocus = PurchaseOrderFocus_None;
-        //int purchaseOrderIndex1 = -1;
-        //int purchaseOrderIndex2 = -1;
-        //bool purchaseIsMainArmy = false;
-
-        //int purchaseCount =-1;
+        
         string name;
 
         //Center attack focus and buy focus on the main army
@@ -57,7 +41,7 @@ namespace VikingEngine.DSSWars.Players
            //w.Write(IsPlayerNeighbor);
             w.Write((byte)aggressionLevel);
             //w.Write(protectedPlayer);  
-            var bools = new EightBit(IsPlayerNeighbor, protectedFromBotAttacks, personality_loner, protectedFromDelete);
+            var bools = new EightBit(IsPlayerNeighbor, protectedFromBotAttacks, personality_loner, protectedFromDelete, mayAttackPlayer);
             bools.write(w);
 
             w.Write(Bound.Byte(diplomacyPoints));
@@ -69,6 +53,10 @@ namespace VikingEngine.DSSWars.Players
             base.readGameState(r, subversion, pointers);
 
             readAiPlayerGameState(r, subversion);
+            if (subversion < 88)
+            {
+                mayAttackPlayer = faction.factiontype != FactionType.DarkFollower && faction.factiontype != FactionType.UnitedKingdom;
+            }
             if (subversion >= 72)
             {
                 diplomacyPoints = r.ReadByte();
@@ -131,7 +119,7 @@ namespace VikingEngine.DSSWars.Players
                 case FactionType.AerimAngren:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_AerimAngren;
+                    name = DssRef.lang.FactionName_AerimAngren;
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     faction.diplomaticSide = DiplomaticSide.Light;
                     break;
@@ -139,21 +127,21 @@ namespace VikingEngine.DSSWars.Players
                 case FactionType.DragonGem:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_Tomten;
+                    name = DssRef.lang.FactionName_DragonGem;
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     break;
 
                 case FactionType.Hælfolc:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_Hælfolc;
+                    name = DssRef.lang.FactionName_Hælfolc;
                     aggressionLevel = AggressionLevel2_RandomAttacks;
                     break;
 
                 case FactionType.Tomten:
                     defaultSetup();
                     techSetup();
-                    name = DssRef.todoLang.FactionName_Tomten;
+                    name = DssRef.lang.FactionName_Tomten;
                     aggressionLevel = AggressionLevel1_RevengeOnly;
                     break;
 
@@ -674,6 +662,8 @@ namespace VikingEngine.DSSWars.Players
                         techSetup();
                         faction.technology.blackPowder.points = TechnologyTemplate.FactionUnlock;
                     }
+
+                    mayAttackPlayer = false;
                     break;
 
                 case FactionType.Barbarians:
@@ -707,6 +697,7 @@ namespace VikingEngine.DSSWars.Players
                         faction.technology.advancedBuilding.points = TechnologyTemplate.FactionUnlock;
                         faction.technology.steel.points = TechnologyTemplate.FactionUnlock;
                     }
+                    mayAttackPlayer = false;
                     break;
 
                 case FactionType.GreenWood:
@@ -727,6 +718,8 @@ namespace VikingEngine.DSSWars.Players
                         techSetup();
                         faction.technology.steel.points = TechnologyTemplate.FactionUnlock;
                     }
+
+                    mayAttackPlayer = false;
                     break;
 
                 case FactionType.EasternEmpire:
@@ -868,6 +861,7 @@ namespace VikingEngine.DSSWars.Players
                     name = DssRef.lang.FactionName_BramblebrookHill;
                     aggressionLevel = AggressionLevel0_Passive;
                     faction.diplomaticSide = DiplomaticSide.Light;
+                    mayAttackPlayer = false;
                     break;
                 case FactionType.Tumblehill:
                     defaultSetup();
@@ -875,6 +869,7 @@ namespace VikingEngine.DSSWars.Players
                     name = DssRef.lang.FactionName_Tumblehill;
                     aggressionLevel = AggressionLevel0_Passive;
                     faction.diplomaticSide = DiplomaticSide.Light;
+                    mayAttackPlayer = false;
                     break;
 
                 default:

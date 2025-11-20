@@ -18,7 +18,7 @@ namespace VikingEngine.PJ.Joust
             : base(false)
         {
             Microsoft.Xna.Framework.Media.MediaPlayer.Stop();
-            Input.Mouse.Visible = false;
+            Input.Mouse.Hide();//Input.Mouse.Visible = false;
 
             this.joinedLocalGamers = joinedGamers;
             Ref.draw.ClrColor = PjLib.ClearColor;

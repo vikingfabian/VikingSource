@@ -811,7 +811,7 @@ namespace VikingEngine.Input
                 var ins = Input.XInput.Instance(controllerIx);
                 if (ins != null)
                 {
-                    ins.KeyDownEvent(button);
+                    return ins.KeyDownEvent(button);
                 }
                 return false;
             }
@@ -832,7 +832,7 @@ namespace VikingEngine.Input
                 var ins = Input.XInput.Instance(controllerIx);
                 if (ins != null)
                 {
-                    ins.KeyUpEvent(button);
+                    return ins.KeyUpEvent(button);
                 }
                 return false;
             }

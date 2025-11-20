@@ -152,6 +152,22 @@ namespace VikingEngine.DSSWars.Build
 
     struct TerrainStructure
     {
+        public static readonly ItemResourceType[] AllTerrainResources = {
+            ItemResourceType.Wood_Group,
+            ItemResourceType.Stone_G,
+            ItemResourceType.Coal,
+
+            ItemResourceType.BogIron,
+            ItemResourceType.IronOre_G,
+            ItemResourceType.TinOre,
+            ItemResourceType.CopperOre,
+            ItemResourceType.LeadOre,
+            ItemResourceType.SilverOre,
+            ItemResourceType.GoldOre,
+            ItemResourceType.RawMithril,
+            ItemResourceType.Sulfur,
+        };
+
         public int mineCount_bogIron;
 
         public int mineCount_iron;
@@ -198,6 +214,42 @@ namespace VikingEngine.DSSWars.Build
             
         }
 
+        
+
+        public int Get(ItemResourceType type)
+        {
+            switch (type)
+            {
+                case ItemResourceType.BogIron:
+                    return mineCount_bogIron;
+                case ItemResourceType.IronOre_G:
+                    return mineCount_iron;
+                case ItemResourceType.TinOre:
+                    return mineCount_tin;
+                case ItemResourceType.CopperOre:
+                    return mineCount_copper;
+                case ItemResourceType.LeadOre:
+                    return mineCount_lead;
+                case ItemResourceType.SilverOre:
+                    return mineCount_silver;
+                case ItemResourceType.GoldOre:
+                    return mineCount_gold;
+                case ItemResourceType.RawMithril:
+                    return mineCount_mithril;
+                case ItemResourceType.Sulfur:
+                    return mineCount_sulfur;
+                case ItemResourceType.Coal:
+                    return mineCount_coal;
+                case ItemResourceType.Stone_G:
+                    return resourceCount_stone;
+                case ItemResourceType.Wood_Group:
+                    return resourceCount_wood;
+                default:
+                    return 0;
+            }
+        }
+
+
         public void naturalResource(RichBoxContent content, int count, ItemResourceType resource, ref int totalCount)
         {
             resourceHoverButton(content, count, resource, DssRef.lang.Work_GatherXResource, SpriteName.WarsWorkCollect, ref totalCount);
@@ -205,31 +257,6 @@ namespace VikingEngine.DSSWars.Build
 
         public void mine(RichBoxContent content, int count, ItemResourceType resource, ref int totalCount)
         {
-            //totalCount += count;
-            //if (count > 0)
-            //{
-            //    SpriteName icon = ResourceLib.Icon(resource);
-            //    string resourceName = LangLib.Item(resource);
-            //    var infoContent = new RichBoxContent();
-
-            //    infoContent.Add(new RbOverlapImage(new RbImage(icon), SpriteName.WarsWorkMine, VectorExt.V2FromX(-0.2f), 0.8f));
-            //    infoContent.space();
-            //    var countText = new RbText(count.ToString());
-            //    countText.overrideColor = Color.White;
-            //    infoContent.Add(countText);
-
-            //    var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null,
-            //        new RbTooltip((RichBoxContent content, object tag) =>
-            //        {
-            //            content.Add(new RbOverlapImage(new RbImage(icon), SpriteName.WarsWorkMine, Vector2.Zero, 0.8f));
-            //            content.space();
-            //            var mineString = string.Format(DssRef.lang.BuildingType_ResourceMine, resourceName);
-            //            content.Add(new RbText(TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XCountIsY, mineString, count))));
-
-            //        }));
-
-            //    content.Add(infoButton);
-            //}
             resourceHoverButton(content, count, resource, DssRef.lang.BuildingType_ResourceMine, SpriteName.WarsWorkMine, ref totalCount);
         }
 
