@@ -176,6 +176,7 @@ namespace VikingEngine.DSSWars
 
 
             //VOXEL
+            loadVoxelModel(VoxelModelName.ErrorCube, false);
             loadVoxelModel(VoxelModelName.war_town1, false);
             loadVoxelModel(VoxelModelName.war_town2, false);
             loadVoxelModel(VoxelModelName.war_town3, false);
@@ -358,6 +359,11 @@ namespace VikingEngine.DSSWars
             Ref.draw.drawBatch.Add(instance.master.modelIndex, instance);               
             
             return instance;        
+        }
+
+        public Graphics.VoxelModelInstance ErrorModel(float scale = 1f)
+        {
+            return new Graphics.VoxelModelInstance(voxelModels[VoxelModelName.ErrorCube], false) { scale = new Vector3(scale) };
         }
 
         public Graphics.VoxelModelInstance ModelInstance(            

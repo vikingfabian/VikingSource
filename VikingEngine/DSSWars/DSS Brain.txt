@@ -1,7 +1,20 @@
 ﻿UPDATE
-Change Log: 
-* Turkish: full manual translation complete
-* fixed rare crash: attackTarget_soldierGroupOrCity in asyncBattleUpdate
+* patched the network  
+
+Change Log:
+* fixed tutorial crash
+* Improved heatmap
+* Heatmap for natural resources
+* sticky hud for skill and progress
+
+Tutorial:
+* Compressed the display
+* Added advior mode after tutorial
+* skip_advisor added to steam stats
+
+
+x advisor beta test
+x Translate tutorial
 
 fixed - will update soon
 

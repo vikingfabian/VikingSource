@@ -250,8 +250,6 @@ namespace VikingEngine.DSSWars
             return true;
         }
 
-        
-
         public List<int> collectWars(Faction aifaction)
         {
             List<int> wars = new List<int>();
@@ -270,14 +268,17 @@ namespace VikingEngine.DSSWars
         {
             if (faction1 != null && faction2 != null)
             {
-                DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
-                if (rel == null)
+                if (faction2.myIndex < faction1.diplomaticRelations.Length)
                 {
-                    return RelationType.RelationType0_Neutral;
-                }
-                else
-                {
-                    return rel.Relation;
+                    DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
+                    if (rel == null)
+                    {
+                        return RelationType.RelationType0_Neutral;
+                    }
+                    else
+                    {
+                        return rel.Relation;
+                    }
                 }
             }
             return RelationType.RelationType0_Neutral;
@@ -752,8 +753,8 @@ namespace VikingEngine.DSSWars
 
             if (f1 != null && f2 != null)
             {
-                    f1.diplomaticRelations[faction2] = this;
-                    f2.diplomaticRelations[faction1] = this;
+                f1.diplomaticRelations[faction2] = this;
+                f2.diplomaticRelations[faction1] = this;
             }
             //}
         }

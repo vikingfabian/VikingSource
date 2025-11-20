@@ -68,6 +68,7 @@ namespace VikingEngine.DSSWars
         public WorldMetaData metaData;
 
         public Rectangle2 tileBounds;
+        public Rectangle2 tileBoundsSubOne;
         public VectorRect unitBounds;
         public IntVector2 Size;
         public IntVector2 HalfSize;
@@ -233,6 +234,8 @@ namespace VikingEngine.DSSWars
             HalfSize = Size / 2;
             areaTileCount = Size.X * Size.Y;
             tileBounds = new Rectangle2(IntVector2.Zero, Size - 1);
+            tileBoundsSubOne = tileBounds; 
+            tileBoundsSubOne.AddRadius(-1);
             unitBounds = new VectorRect(Vector2.Zero, Size.Vec);
             unitBounds.AddRadius(-1f);
 
@@ -411,9 +414,11 @@ namespace VikingEngine.DSSWars
             for (int i = 0; i < factionCount; ++i)
             {
                 var faction = new Faction(i);
-                faction.initClient();
+                faction.initClient(this);
                 factions.Add(faction);
             }
+
+            
         }
 
         public void writeNet_Tile(System.IO.BinaryWriter w, IntVector2 tilePos)

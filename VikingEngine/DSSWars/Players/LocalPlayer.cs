@@ -540,7 +540,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (profile.casualControls)
             {
-                return new List<MenuTab> { MenuTab.Info, MenuTab.Casual_Recruit, MenuTab.Casual_Build, MenuTab.Tag };
+                return CityMenu.CasualTabs;
             }
             return tutorial != null && tutorial.TutorialMode() ? tutorial.cityTabs : CityMenu.Tabs;
         }

@@ -21,8 +21,12 @@ namespace VikingEngine.DSSWars
         static readonly IntVector3 ArmyShipStart = new IntVector3(8, 25, 8);
         static readonly IntVector3 CityIconStart = new IntVector3(3, 2, 3);
 
-        public Graphics.VoxelModel buildModel(Faction faction, VoxelModelName name, VoxelObjGridDataAnimHD grid)
+        public Graphics.AbsVoxelObj buildModel(Faction faction, VoxelModelName name, VoxelObjGridDataAnimHD grid)
         {
+            if (faction == null || faction.player == null || faction.player.profile.flag == null)
+            {
+                return DssRef.models.ErrorModel();//empty
+            }
             //this.faction = faction;
             //this.name = name;
 
