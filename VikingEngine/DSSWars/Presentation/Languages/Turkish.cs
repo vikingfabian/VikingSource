@@ -13,34 +13,35 @@ namespace VikingEngine.DSSWars.Presentation
     partial class Turkish : AbsLanguage
     {
         
+
         //Winter update
-        public override string Resource_StockpileLimit => "Stok limiti";
-        public override string GameMode_QuickMatch => "Quick Match";
+        public override string Resource_StockpileLimit => "Depo limiti";
+        public override string GameMode_QuickMatch => "Hızlı Eşleşme";
         public override string GameMode_QuickMatch_Description =>
-            "Daha kısa bir oyun formatı. Rakip uluslara karşı tam ölçekli bir savaşa girin.";
+            "Daha kısa süren bir oyun formatı. Rakip uluslara karşı topyekün savaşa girin.";
         public override string Lobby_PlayerCount => "Oyuncu sayısı";
         public override string Lobby_TwoTeams => "İki takım";
         public override string Hud_Produce => "Üret:";
-        public override string Tutorial_WaitForWorkerLevel => "Bir işçi şu seviyeye ulaşana kadar bekleyin:";
+        public override string Tutorial_WaitForWorkerLevel => "İşçi şu seviyeye ulaşana kadar bekle:";
 
-        public override string Tutorial_PracticeOrSchool => "{0} üzerinde pratik yapın veya bir {1} kullanın";
-        public override string Tutorial_AddTag => "Tag ekle:";
-        public override string Tutorial_AddPin => "Pin ekle:";
-        public override string Tutorial_SelectMostTrees => "En çok ağaca sahip şehrinizi bulun";
-        public override string Tutorial_SelectACityWithX => "{0} bulunan bir şehir seçin";
+        public override string Tutorial_PracticeOrSchool => "{0} üzerinde pratik yap veya bir {1} kullan";
+        public override string Tutorial_AddTag => "Etiket ekle:";
+        public override string Tutorial_AddPin => "işaret ekle:";
+        public override string Tutorial_SelectMostTrees => "En çok ağaca sahip şehrini bul";
+        public override string Tutorial_SelectACityWithX => "{0} bulunan bir şehir seç";
 
-        public override string Tutorial_Select_NotCapital => ". Başkentiniz değil.";
+        public override string Tutorial_Select_NotCapital => ". Bu senin başkentin değil.";
 
-        public override string Tutorial_SetXPriorityToY => "{0} önceliğini {1} olarak ayarlayın";
-        public override string Tutorial_AdvisorMission => "Advisor görevi";
+        public override string Tutorial_SetXPriorityToY => "{0} önceliğini {1} olarak ayarla";
+        public override string Tutorial_AdvisorMission => "Danışman görevi";
 
         public override string Tutorial_AdvisorDescription =>
-            "Tam oyun başladı. Advisor, eğitimi yararlı görevlerle genişletecek.";
+            "Esas oyun başladı. Danışman, eğitimine yararlı görevler ekleyecek.";
 
-        public override string Tutorial_EndAdvisor => "Advisor'ı bitir";
+        public override string Tutorial_EndAdvisor => "Danışman görevini bitir";
 
-        public override string Tutorial_AdvisorCompleteTitle => "Advisor tamamlandı!";
-        public override string Tutorial_AdvisorCompleteMessage => "Bir sonraki günün kutlu olsun!";
+        public override string Tutorial_AdvisorCompleteTitle => "Danışman görevi tamamlandı!";
+        public override string Tutorial_AdvisorCompleteMessage => "Güzel günler dileriz!";
 
         public override string Hud_Search => "Ara";
 
@@ -48,19 +49,19 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string MapFilter => "Harita filtresi";
 
-        public override string Settings_TechMultiplier => "Tech araştırma hızı";
+        public override string Settings_TechMultiplier => "Teknoloji araştırma hızı";
 
         public override string EndScreen_MatchComplete => "Maç sonucu";
 
-        public override string FactionName_DragonGem => "Dragon Gem";
+        public override string FactionName_DragonGem => "Ejder Mücevheri";
         public override string FactionName_Tomten => "Tomten";
         public override string FactionName_Hælfolc => "Hælfolc";
         public override string FactionName_AerimAngren => "Aerim Angren";
 
-        public override string HUD_NotAvailbleInX => "{0} içinde kullanılamaz";
+        public override string HUD_NotAvailbleInX => "{0} içerisinde kullanılamaz";
 
-        public override string InputActionName_MiniMap => "Mini-map";
-
+        public override string InputActionName_MiniMap => "Mini-harita";
+       
         //--
         public override string Error_SoundInitFailure => "Ses başlatılamadı";
 
