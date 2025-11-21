@@ -396,7 +396,7 @@ namespace VikingEngine.DSSWars.Map
         static readonly Color MiniMapCol_LargeCity = new Color(226, 11, 88);
         static readonly Color MiniMapCol_SmallCity = new Color(194, 4, 72);
         static readonly Color MiniMapCol_CampsiteCity = new Color(148, 0, 17);
-        static readonly Color MiniMapCol_UnclaimedCity = Color.LightBlue;
+        static readonly Color MiniMapCol_UnclaimedCity = Color.Blue;
 
         public bool HasBorderImage() { return BorderCount > 0; }
 
@@ -518,7 +518,6 @@ namespace VikingEngine.DSSWars.Map
         {
             float brightness = 1f - ((int)heightLevel - 2) * 0.05f;
 
-            //Tile nTile;
             City city = City();
             int faction = city.factionIndex;
 
@@ -535,19 +534,14 @@ namespace VikingEngine.DSSWars.Map
             {
                 brightness *= 0.2f;
             }
-            //Color factionCol = DssRef.world.factions.Array[faction].Color();
 
             int distance = city.tilePos.SideLength(pos);
-            //if (distance == 0)
-            //{
-            //    brightness = 1.25f;
-            //}
-            //else 
+            
             if (distance == 1)
             {
                 brightness *= 1.5f;
             }
-            else if (hasBorder(out bool sameFaction)/*BorderCount > 0*/)
+            else if (hasBorder(out bool sameFaction))
             {
                 if (sameFaction)
                 {
@@ -557,18 +551,8 @@ namespace VikingEngine.DSSWars.Map
                 {
                     brightness *= 0.6f;
                 }
-                //if (ColorExt.GetBrightNess(factionCol) > 0.3f)
-                //{
-                //    brightness -= 0.2f;
-                //}
-                //else
-                //{
-                //    factionCol = ColorExt.ChangeBrighness(factionCol, 10);
-                //    brightness += 0.1f;
-                //}
             }
 
-            //Color color = Color.Multiply(factionCol, brightness);
             return new Color(brightness, brightness, brightness);
         }
 

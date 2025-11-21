@@ -29,19 +29,6 @@ namespace VikingEngine.DSSWars.XP
         public void writeGameState(System.IO.BinaryWriter w, int unlock, bool faction)
         {
             w.Write((ushort)Bound.Max(points, unlock));
-            //if (!faction)
-            //{
-            //    new EightBit(researchCenterCount > 0, bookpressCount >= 0).write(w);
-
-            //    if (researchCenterCount >= 0)
-            //    {
-            //        w.Write((ushort)researchCenterCount);
-            //    }
-            //    if (bookpressCount > 0)
-            //    {
-            //        w.Write((ushort)bookpressCount);
-            //    }
-            //}
         }
 
         public void readGameState(System.IO.BinaryReader r, int subversion, bool faction)
@@ -54,19 +41,6 @@ namespace VikingEngine.DSSWars.XP
             { 
                 points = r.ReadUInt16();
             }
-
-            //if (!faction)
-            //{
-            //    EightBit bools = EightBit.FromStream(r);
-            //    //if (bools.Get(0))
-            //    //{
-            //    //    researchCenterCount = r.ReadUInt16();
-            //    //}
-            //    //if (bools.Get(1))
-            //    //{
-            //    //    bookpressCount = r.ReadUInt16();
-            //    //}
-            //}
         }    
     }
     struct TechnologyUnlock
@@ -179,25 +153,33 @@ namespace VikingEngine.DSSWars.XP
             }
         }
 
-        public ResearchProgress progress(TechnologyTreeType techType)
+        public ResearchProgress progress(TechnologyTreeType techType, out int goal)
         {
             switch (techType)
             {
                 case TechnologyTreeType.advancedBuilding:
+                    goal = XpLib.Unlock.AdvancedBuildingUnlock;
                     return advancedBuilding;
                 case TechnologyTreeType.advancedFarming:
+                    goal = XpLib.Unlock.AdvancedFarmingUnlock;
                     return advancedFarming;
                 case TechnologyTreeType.advancedCasting:
+                    goal = XpLib.Unlock.AdvancedCastingUnlock;
                     return advancedCasting;
                 case TechnologyTreeType.iron:
+                    goal = XpLib.Unlock.IronUnlock;
                     return iron;
                 case TechnologyTreeType.steel:
+                    goal = XpLib.Unlock.SteelUnlock;
                     return steel;
                 case TechnologyTreeType.catapult:
+                    goal = XpLib.Unlock.CatapultUnlock;
                     return catapult;
                 case TechnologyTreeType.blackPowder:
+                    goal = XpLib.Unlock.BlackPowderUnlock;
                     return blackPowder;
                 case TechnologyTreeType.gunPowder:
+                    goal = XpLib.Unlock.GunPowderUnlock;
                     return gunPowder;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(techType), $"Invalid TechnologyTreeType: {techType}");
@@ -216,15 +198,7 @@ namespace VikingEngine.DSSWars.XP
             blackPowder.writeGameState(w, XpLib.Unlock.BlackPowderUnlock, faction);
             gunPowder.writeGameState(w, XpLib.Unlock.GunPowderUnlock, faction);
 
-            //old
-            //w.Write((byte)Bound.Max(advancedBuilding, AdvancedBuildingUnlock));
-            //w.Write((byte)Bound.Max(advancedFarming, AdvancedFarmingUnlock));
-            //w.Write((byte)Bound.Max(advancedCasting, AdvancedCastingUnlock));
-            //w.Write((byte)Bound.Max(iron, IronUnlock));
-            //w.Write((byte)Bound.Max(steel, SteelUnlock));
-            //w.Write((byte)Bound.Max(catapult, CatapultUnlock));
-            //w.Write((byte)Bound.Max(blackPowder, BlackPowderUnlock));
-            //w.Write((byte)Bound.Max(gunPowder, GunPowderUnlock));
+            
         }
 
         public void readGameState(System.IO.BinaryReader r, int subversion, bool faction)

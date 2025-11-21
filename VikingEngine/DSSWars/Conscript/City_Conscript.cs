@@ -516,7 +516,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void createStartupBarracks()
         {
             if (conscriptBuildings.Count == 0 &&
-                DssRef.storage.runTutorial_1short_2normal != 2)
+                !DssRef.storage.runTutorial)
             {
                 ref var subTile = ref DssRef.world.subTileGrid.GetRef(barracksReservedSpot);
                 subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, 1);

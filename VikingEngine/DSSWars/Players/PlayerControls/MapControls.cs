@@ -1128,7 +1128,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (targetZoom != camera.CurrentZoom)
             {
-                player.hud.miniMap.OnMapZoom(zoominput, player);
+                player.hud.miniMap?.OnMapZoom(zoominput, player);
 
                 float zdiff = targetZoom - camera.CurrentZoom;
                 if (Math.Abs(zdiff) > 2)

@@ -169,13 +169,14 @@ namespace VikingEngine.DSSWars
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref aifaction.cities, DssRef.world.cities, out City city))
             {
-                foreach (var nCityIx in city.neighborCities)
+                //foreach (var nCityIx in city.neighborCities)
+                EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                while (neighbors.Next(DssRef.world.cities, out City nCity))//
                 {
-                    var ncity = DssRef.world.cities[nCityIx];
-                    if (ncity.factionIndex != aifaction.myIndex &&
-                        !aiPlayerAsynchUpdate_threats.Contains(nCityIx))
+                    if (nCity.factionIndex != aifaction.myIndex &&
+                        !aiPlayerAsynchUpdate_threats.Contains(nCity.myIndex))
                     {
-                        aiPlayerAsynchUpdate_threats.Add(nCityIx);
+                        aiPlayerAsynchUpdate_threats.Add(nCity.myIndex);
                     }
                 }
             }
@@ -249,8 +250,6 @@ namespace VikingEngine.DSSWars
             return true;
         }
 
-        
-
         public List<int> collectWars(Faction aifaction)
         {
             List<int> wars = new List<int>();
@@ -269,14 +268,17 @@ namespace VikingEngine.DSSWars
         {
             if (faction1 != null && faction2 != null)
             {
-                DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
-                if (rel == null)
+                if (faction2.myIndex < faction1.diplomaticRelations.Length)
                 {
-                    return RelationType.RelationType0_Neutral;
-                }
-                else
-                {
-                    return rel.Relation;
+                    DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
+                    if (rel == null)
+                    {
+                        return RelationType.RelationType0_Neutral;
+                    }
+                    else
+                    {
+                        return rel.Relation;
+                    }
                 }
             }
             return RelationType.RelationType0_Neutral;
@@ -434,39 +436,43 @@ namespace VikingEngine.DSSWars
                 RelationType prevRelation = GetRelationType(attacker, defender);
                 var relation = SetRelationType(attacker, defender, RelationType.RelationTypeN3_War);
 
-                if (attacker.player.IsLocalPlayer())
+                if (relation != null)
                 {
-                    int cost = DeclareWarCost(prevRelation);
-                    var player = attacker.player.GetLocalPlayer();
 
-                    player.diplomaticPoints.pay(cost, true);
-                    DssRef.state.events?.onPlayerEnterWar(player, defender, true);
-
-                    if (prevRelation >= RelationType.RelationType1_Peace)
+                    if (attacker.player.IsLocalPlayer())
                     {
-                        relation.SetWorseSpeakTerms(SpeakTermsOnWar_BadChance + 0.4, SpeakTermsOnWar_NoneChance + 0.4);
-                    }
-                    else
-                    {
-                        relation.SetWorseSpeakTerms(SpeakTermsOnWar_BadChance, SpeakTermsOnWar_NoneChance);
-                    }
+                        int cost = DeclareWarCost(prevRelation);
+                        var player = attacker.player.GetLocalPlayer();
 
-                    if (prevRelation >= RelationType.RelationType3_Ally)
-                    {
-                        DssRef.achieve.UnlockAchievement(AchievementIndex.traitor);
-                    }
+                        player.diplomaticPoints.pay(cost, true);
+                        DssRef.state.events?.onPlayerEnterWar(player, defender, true);
 
+                        if (prevRelation >= RelationType.RelationType1_Peace)
+                        {
+                            relation.SetWorseSpeakTerms(SpeakTermsOnWar_BadChance + 0.4, SpeakTermsOnWar_NoneChance + 0.4);
+                        }
+                        else
+                        {
+                            relation.SetWorseSpeakTerms(SpeakTermsOnWar_BadChance, SpeakTermsOnWar_NoneChance);
+                        }
+
+                        if (prevRelation >= RelationType.RelationType3_Ally)
+                        {
+                            DssRef.achieve.UnlockAchievement(AchievementIndex.traitor);
+                        }
+
+                        if (defender.player.IsLocalPlayer())
+                        {
+                            var otherPlayer = defender.player.GetLocalPlayer();
+                            var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
+                            PtoP.suggestingNewRelation = false;
+                        }
+                    }
                     if (defender.player.IsLocalPlayer())
                     {
-                        var otherPlayer = defender.player.GetLocalPlayer();
-                        var PtoP = player.toPlayerDiplomacies[otherPlayer.playerData.localPlayerIndex];
-                        PtoP.suggestingNewRelation = false;
-                    }                    
-                }
-                if (defender.player.IsLocalPlayer())
-                {
-                    var player = defender.player.GetLocalPlayer();
-                    DssRef.state.events?.onPlayerEnterWar(player, attacker, false);
+                        var player = defender.player.GetLocalPlayer();
+                        DssRef.state.events?.onPlayerEnterWar(player, attacker, false);
+                    }
                 }
             }
         }
@@ -747,8 +753,8 @@ namespace VikingEngine.DSSWars
 
             if (f1 != null && f2 != null)
             {
-                    f1.diplomaticRelations[faction2] = this;
-                    f2.diplomaticRelations[faction1] = this;
+                f1.diplomaticRelations[faction2] = this;
+                f2.diplomaticRelations[faction1] = this;
             }
             //}
         }

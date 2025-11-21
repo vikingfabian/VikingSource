@@ -91,7 +91,7 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                return DssRef.storage.runTutorial_1short_2normal == 0 ? Tabs : TutorialTabs;
+                return DssRef.storage.runTutorial ? TutorialTabs : Tabs;
             }
         }
 
@@ -288,7 +288,7 @@ namespace VikingEngine.DSSWars.Interface
                     case MenuTab.Economy:
                         icon = SpriteName.rtsMoney; break;
                     case MenuTab.Resources:
-                        icon = SpriteName.WarsResource_Wood; break;
+                        icon = SpriteName.WarsIcon_Resources; break;
                     case MenuTab.StockPile:
                         icon = SpriteName.WarsStockpileAdd; break;
                     case MenuTab.Work:
@@ -297,7 +297,6 @@ namespace VikingEngine.DSSWars.Interface
                         icon = SpriteName.AutomationGearIcon; break;
                     case MenuTab.Progress:
                         icon = SpriteName.WarsTechnology_Unlocked; break;
-
                 }
 
                 content.Add(new ArtOption(tab == player.factionTab,
@@ -327,14 +326,15 @@ namespace VikingEngine.DSSWars.Interface
                     case FactionMapFilter.Minimap:
                         icon = SpriteName.WarsMapFilterMinimap;
                         break;
-
                     case FactionMapFilter.PopulationHeatmap:
                         icon = SpriteName.WarsMapFilterWorkers;
                         break;
                     case FactionMapFilter.StrengthHeatmap:
                         icon = SpriteName.WarsMapFilterStrength;
                         break;
-
+                    case FactionMapFilter.ResourceHeatmap:
+                        icon = SpriteName.WarsIcon_Resources;
+                        break;
                 }
 
                 content.Add(new ArtOption(filter == player.factionPixelTexture.filter,
@@ -346,7 +346,7 @@ namespace VikingEngine.DSSWars.Interface
                             player.factionPixelTexture.filter = filter;
                             DssRef.world.BordersUpdated = true;
                        }
-                   , filter, RbSoundType.Option), new RbTooltip_Text(DssRef.todoLang.MapFilter)));
+                   , filter, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.MapFilter)));
             }
             
         }
@@ -374,9 +374,6 @@ namespace VikingEngine.DSSWars.Interface
             content.h2(DssRef.lang.FactionSettings_Titel);
             content.newLine();
             content.Add(new RbText(DssRef.lang.FactionSettings_Description, HudLib.InfoYellow_Light));
-            
-            //content.newLine();
-            //content.Add(new RbText(description, HudLib.InfoYellow_Light));
         }
 
         void nextCityTip(RichBoxContent content, object tag)
@@ -450,9 +447,6 @@ namespace VikingEngine.DSSWars.Interface
         }
         void foodTip(RichBoxContent content, object tag)
         {
-
-            //foodAdd = faction.CityFoodProduction;
-            //foodSub = faction.CityFoodSpending;
             content.Add(new RbImage(SpriteName.WarsResource_FoodAdd));
             content.space();
             content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Info_TotalFoodProduction, player.faction.CityFoodProduction),

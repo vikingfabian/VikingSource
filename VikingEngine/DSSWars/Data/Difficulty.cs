@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.Data
                 HudLib.BulletPoint(content);
                 content.Add(new RbImage(SpriteName.WarsRelationTotalWar));
                 content.hspace();
-                content.Add(new RbText(DssRef.todoLang.DifficultyDescription_ExtremeAggression));
+                content.Add(new RbText(DssRef.lang.DifficultyDescription_ExtremeAggression));
             }
         }
 

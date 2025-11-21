@@ -18,6 +18,7 @@ namespace VikingEngine.DSSWars.Map
         }
 
         static readonly Color UncoloredEdge = Color.Black;
+        static readonly Color UncoloredEdge_SharedFaction = Color.Gray;
         public void quedEvent()
         {
             
@@ -59,7 +60,8 @@ namespace VikingEngine.DSSWars.Map
                                 if (borderRegion >= 0)
                                 {
                                     var factionIx = GameObject.City.Get(borderRegion).factionIndex;
-                                    if (factionIx < 0 || GameObject.City.Get(borderRegion).factionIndex != t.City().factionIndex)
+                                    bool differentFactions = factionIx < 0 || GameObject.City.Get(borderRegion).factionIndex != t.City().factionIndex;
+                                    //if (factionIx < 0 || GameObject.City.Get(borderRegion).factionIndex != t.City().factionIndex)
                                     {
 
 
@@ -192,16 +194,19 @@ namespace VikingEngine.DSSWars.Map
                                             cornerSW,//sw,
                                             cornerSE,//se,
                                             },
-                                            tex, UncoloredEdge));
-                                        polygons.Add(new Graphics.PolygonColor(new Vector3[]
-                                            {
+                                            tex, differentFactions? UncoloredEdge : UncoloredEdge_SharedFaction));
+
+                                        if (differentFactions)
+                                        {
+                                            polygons.Add(new Graphics.PolygonColor(new Vector3[]
+                                                {
                                             innerCornerNW,//nw,
                                             innerCornerNE,//ne,  
                                             innerCornerSW,//sw,
                                             innerCornerSE,//se,
-                                            },
-                                            tex, t.FactionColor()));
-
+                                                },
+                                                tex, t.FactionColor()));
+                                        }
                                     }
 
                                 }

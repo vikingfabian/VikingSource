@@ -1,6 +1,21 @@
 ﻿UPDATE
+* patched the network  
+
 Change Log:
-* 
+* fixed tutorial crash
+* Improved heatmap
+* Heatmap for natural resources
+* sticky hud for skill and progress
+
+Tutorial:
+* Compressed the display
+* Added advior mode after tutorial
+* skip_advisor added to steam stats
+
+
+x advisor beta test
+x Translate tutorial
+
 
 fixed - will update soon
 
@@ -8,6 +23,7 @@ fixed - will update soon
 #SPRING UPDATE#
 * Performance: city resources have been moved to a Entity Component System 
 * Performance: removed faction to city pointers
+* Per city change tracking
 
 UNCLAIMED LAND
 * Settler unit in conscript
@@ -17,6 +33,7 @@ UNCLAIMED LAND
 #Spring update TODO
 x start with one city
 
+x ResourceOverview
 x cities summary tab
 -Having a tab with queued units and also a UI element to select all baracks and recruit simultaneously per city (less micromanagement)
 

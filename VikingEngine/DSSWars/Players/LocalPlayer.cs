@@ -480,7 +480,7 @@ namespace VikingEngine.DSSWars.Players
         public void InitTutorial(bool newGame)
         {
             if ((newGame || PlatformSettings.STEAM_DEMO) && 
-                DssRef.storage.runTutorial_1short_2normal != 0 &&
+                DssRef.storage.runTutorial &&
                 DssRef.state.PlayType() == PlayStateType.Play &&
                 DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {
@@ -540,9 +540,9 @@ namespace VikingEngine.DSSWars.Players
         {
             if (profile.casualControls)
             {
-                return new List<MenuTab> { MenuTab.Info, MenuTab.Casual_Recruit, MenuTab.Casual_Build, MenuTab.Tag };
+                return CityMenu.CasualTabs;
             }
-            return tutorial != null ? tutorial.cityTabs : CityMenu.Tabs;
+            return tutorial != null && tutorial.TutorialMode() ? tutorial.cityTabs : CityMenu.Tabs;
         }
 
         public List<MenuTab> AvailableArmyTabs()
@@ -659,9 +659,10 @@ namespace VikingEngine.DSSWars.Players
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    foreach (var n in citySel.neighborCities)
+                    EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in citySel.neighborCities)
                     {
-                        DssRef.world.cities[n].GetPlayer()?.onPlayerNeighborCapture(this);
+                        nCity.GetPlayer()?.onPlayerNeighborCapture(this);
                     }
                 }
             }
@@ -671,9 +672,10 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium)
             {
-                foreach (var n in city.neighborCities)
+                EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in city.neighborCities)
                 {
-                    DssRef.world.cities[n].GetPlayer().onPlayerNeighborCapture(this);
+                    nCity.GetPlayer().onPlayerNeighborCapture(this);
                 }                
             }
 

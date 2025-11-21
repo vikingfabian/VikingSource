@@ -1,13 +1,17 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.XP
@@ -62,13 +66,9 @@ namespace VikingEngine.DSSWars.XP
                         content.space();
                         content.Add(new RbText(caption));
 
-
-                        //player.hud.tooltip.create(player, content, true);
                     }));
-
-                    //infoButton.overrideBgColor = HudLib.InfoYellow_BG;
+                                        
                     content.Add(infoButton);
-                    //content.space();
                 }
             }
         }
@@ -86,6 +86,10 @@ namespace VikingEngine.DSSWars.XP
             }
             else
             {
+                if (faction == null)
+                {
+                    return;
+                }
                 technology = faction.technology;
                 cityView = false;
                 //unlockValue = 1;
@@ -272,11 +276,11 @@ namespace VikingEngine.DSSWars.XP
                 {
                     if (value >= faction.cities.Count)
                     {
-                        caption += $" ({DssRef.lang.Hud_AllCities})";
+                        caption += $"({DssRef.lang.Hud_AllCities})";
                     }
                     else
                     {
-                        caption += $" ({value}/{faction.cities.Count})";
+                        caption += $"({value}/{faction.cities.Count})";
                     }
                 }
 
@@ -297,7 +301,7 @@ namespace VikingEngine.DSSWars.XP
 
                 if (cityView && !unlocked)
                 {
-                    content.space(2f);
+                    content.space(0.5f);
                     content.Add(new RbText($"({value} / {unlock})"));
                 }
 
@@ -309,6 +313,14 @@ namespace VikingEngine.DSSWars.XP
                     content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsTechnology_Unlocked) },
                      new RbAction1Arg<TechnologyTreeType>(godPowerUnLockTech, type)));
                 }
+
+                content.Add(new RbTab(0.7f));
+                CityHudPinId pinId = new CityHudPinId(city.myIndex, new HudPin(type));
+                player.hud.pins.toggleButton(content, pinId);
+                //bool onHud = player.hud.pins.isPinnedProperty(pinId, false, false);
+                //content.Add(new ArtToggle(onHud, new List<AbsRichBoxMember> {
+                //    new RbImage(SpriteName.HudPinIcon, 1f, onHud? Color.White : Color.Gray) }, new RbAction(() => { player.hud.pins.Set(pinId, !onHud); }),
+                //    new RbTooltip_Text( DssRef.lang.HudPins)));
             }
 
             void godPowerLockTech(TechnologyTreeType type)

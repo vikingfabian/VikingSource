@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest;
@@ -79,6 +80,15 @@ namespace VikingEngine.DSSWars.Interface
             
         }
 
+        public bool HasPin(HudPin pinType)
+        {
+            var city = player.gameControls.map.selection.obj.GetCity();
+            if (city != null)
+            {
+                return pins.TryGet(new CityHudPinId(city.myIndex, pinType));
+            }
+            return false;
+        }
         public float inputHelpBottom()
         {
             if (miniMap == null)

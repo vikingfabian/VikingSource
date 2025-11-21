@@ -12,6 +12,57 @@ namespace VikingEngine.DSSWars.Presentation
     //Licenesed 2025 Sep 11, "Astro: you can remix our work freely, any platform"
     partial class Turkish : AbsLanguage
     {
+        
+
+        //Winter update
+        public override string Resource_StockpileLimit => "Depo limiti";
+        public override string GameMode_QuickMatch => "Hızlı Eşleşme";
+        public override string GameMode_QuickMatch_Description =>
+            "Daha kısa süren bir oyun formatı. Rakip uluslara karşı topyekün savaşa girin.";
+        public override string Lobby_PlayerCount => "Oyuncu sayısı";
+        public override string Lobby_TwoTeams => "İki takım";
+        public override string Hud_Produce => "Üret:";
+        public override string Tutorial_WaitForWorkerLevel => "İşçi şu seviyeye ulaşana kadar bekle:";
+
+        public override string Tutorial_PracticeOrSchool => "{0} üzerinde pratik yap veya bir {1} kullan";
+        public override string Tutorial_AddTag => "Etiket ekle:";
+        public override string Tutorial_AddPin => "işaret ekle:";
+        public override string Tutorial_SelectMostTrees => "En çok ağaca sahip şehrini bul";
+        public override string Tutorial_SelectACityWithX => "{0} bulunan bir şehir seç";
+
+        public override string Tutorial_Select_NotCapital => ". Bu senin başkentin değil.";
+
+        public override string Tutorial_SetXPriorityToY => "{0} önceliğini {1} olarak ayarla";
+        public override string Tutorial_AdvisorMission => "Danışman görevi";
+
+        public override string Tutorial_AdvisorDescription =>
+            "Esas oyun başladı. Danışman, eğitimine yararlı görevler ekleyecek.";
+
+        public override string Tutorial_EndAdvisor => "Danışman görevini bitir";
+
+        public override string Tutorial_AdvisorCompleteTitle => "Danışman görevi tamamlandı!";
+        public override string Tutorial_AdvisorCompleteMessage => "Güzel günler dileriz!";
+
+        public override string Hud_Search => "Ara";
+
+        public override string DifficultyDescription_ExtremeAggression => "Aşırı saldırganlık";
+
+        public override string MapFilter => "Harita filtresi";
+
+        public override string Settings_TechMultiplier => "Teknoloji araştırma hızı";
+
+        public override string EndScreen_MatchComplete => "Maç sonucu";
+
+        public override string FactionName_DragonGem => "Ejder Mücevheri";
+        public override string FactionName_Tomten => "Tomten";
+        public override string FactionName_Hælfolc => "Hælfolc";
+        public override string FactionName_AerimAngren => "Aerim Angren";
+
+        public override string HUD_NotAvailbleInX => "{0} içerisinde kullanılamaz";
+
+        public override string InputActionName_MiniMap => "Mini-harita";
+       
+        //--
         public override string Error_SoundInitFailure => "Ses başlatılamadı";
 
         public override string GameMenu_ControllerDisconnected => "Kontrolcü bağlantısı kesildi";

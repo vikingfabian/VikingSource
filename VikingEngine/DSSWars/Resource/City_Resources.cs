@@ -68,7 +68,8 @@ namespace VikingEngine.DSSWars.GameObject
         };
         public static readonly ItemResourceType[] MovableCityResource_WeaponMelee =
        {
-            
+            ItemResourceType.SharpStick,
+            ItemResourceType.BronzeSword,
             ItemResourceType.ShortSword,
             ItemResourceType.Sword,
             ItemResourceType.LongSword,
@@ -79,8 +80,7 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.KnightsLance,
             ItemResourceType.MithrilSword,
 
-            ItemResourceType.SharpStick,
-            ItemResourceType.BronzeSword,
+            
         };
 
         public static readonly ItemResourceType[] MovableCityResource_WeaponRanged =
@@ -447,11 +447,12 @@ namespace VikingEngine.DSSWars.GameObject
             }
 #endif
 
-            ref var resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex];
+            ref GroupedResource resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex];
             resource.amount += add;
+            resource.changeRate.onChange(add);
 
-            ref var overview = ref DssRef.world.factionResourceOverviews[itemIndex + factionIndex * CityResoureIndex.COUNT];
-            overview.onChange(add);
+            //ref var overview = ref DssRef.world.factionResourceOverviews[itemIndex + factionIndex * CityResoureIndex.COUNT];
+            //overview.onChange(add);
         }
         public GroupedResource GetGroupedResource(int cityResourceIndex)
         {
@@ -1367,9 +1368,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void blackMarketPurchase(ItemResourceType resourceType, int count, int cost)
         {
+            var faction = GetFaction();
             if (GetFaction().payGold(cost * count, false, this))
             {
                 AddGroupedResource(resourceType, count);
+                faction.player.GetLocalPlayer()?.tutorial?.onBuyFromBlackMarket(resourceType);
             }
         }
     }   
@@ -1380,6 +1383,8 @@ namespace VikingEngine.DSSWars.GameObject
         public int amount;
         public int goalBuffer;
         public int deliverCount;
+
+        public ResourceChangeRate changeRate;
 
         public void writeGameState(System.IO.BinaryWriter w)
         {

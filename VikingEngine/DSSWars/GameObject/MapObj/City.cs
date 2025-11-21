@@ -40,9 +40,12 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : AbsArmy
     {
+        const int MaxWorkerWriteCount = 64;
+
         public int areaSize = 0;
         public CityType cityType;
-        public List<int> neighborCities = new List<int>();
+        //public List<int> neighborCities = new List<int>();
+        public int neighborCitiesCount = 0;
 
         Graphics.AbsVoxelObj overviewModel;
 
@@ -428,11 +431,13 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(Debug.Byte_OrCrash(cityTileRadius));
             w.Write(Debug.Byte_OrCrash(workHutStyle));
 
-            w.Write(Debug.Byte_OrCrash(neighborCities.Count));
-            foreach (var n in neighborCities)
+            w.Write(Debug.Byte_OrCrash(neighborCitiesCount));
+            EcsStaticArrayCounter neighbors = CityNeighbors();
+            while (neighbors.Next(out int nCityIx))//each (var n in neighborCities)
             {
-                w.Write(Debug.Ushort_OrCrash(n));
+                w.Write(Debug.Ushort_OrCrash(nCityIx));
             }
+
 
 
             w.Write(Debug.Byte_OrCrash((int)Culture));
@@ -456,7 +461,8 @@ namespace VikingEngine.DSSWars.GameObject
             int neighborCitiesCount = r.ReadByte();
             for (int i = 0; i < neighborCitiesCount; i++)
             {
-                neighborCities.Add(r.ReadUInt16());
+                DssRef.world.neighborCities.Add(myIndex, ref neighborCitiesCount, r.ReadUInt16());
+                //neighborCities.Add(r.ReadUInt16());
             }
 
             Culture = (CityCulture)r.ReadByte();
@@ -473,8 +479,10 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 w.Write((byte)cityType);
 
-                w.Write(Bound.UShort(workForce.amount));
-                w.Write(Bound.UShort(HousingCount_Workers));
+                //w.Write(Bound.UShort(workForce.amount));
+                //w.Write(Bound.UShort(HousingCount_Workers));
+                w.Write(workForce.amount);
+                w.Write(HousingCount_Workers);
                 w.Write(Bound.UShort(HousingCount_Guard));
                 w.Write(Bound.Short(freeServiceMen.amount));
                 w.Write(Bound.Short(workingAndFreeServiceMen));
@@ -492,7 +500,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 writeResources(w);
 
-                writeWorkerStatuses(w, false);
+                writeWorkerStatuses(w, false, -1);
 
                 w.Write((ushort)conscriptBuildings.Count);
                 foreach (var barracks in conscriptBuildings)
@@ -584,8 +592,17 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 cityType = (CityType)r.ReadByte();
             }
-            workForce.amount = r.ReadUInt16();
-            HousingCount_Workers = r.ReadUInt16();
+
+            if (subversion >= 87)
+            {
+                workForce.amount = r.ReadInt32();
+                HousingCount_Workers = r.ReadInt32();
+            }
+            else
+            {//old
+                workForce.amount = r.ReadUInt16();
+                HousingCount_Workers = r.ReadUInt16();
+            }
             HousingCount_Guard = r.ReadUInt16();
             freeServiceMen.amount = r.ReadInt16();
             if (subversion >= 51)
@@ -615,7 +632,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             readResources(r, subversion);
             
-            readWorkerStatuses(r, false, subversion);
+            readWorkerStatuses(r, false, -1, subversion);
 
             refreshCitySize();
             conscriptBuildings.Clear();
@@ -734,28 +751,57 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.ReadCheck(r);
         }
 
-        private void writeWorkerStatuses(BinaryWriter w, bool netPacket)
+        void writeStatusesStartEnd(int part, int workerStatusesCount, out bool meta, out int start, out int end)
         {
+            if (part < 0)
+            {
+                meta = true;
+                start = 0;
+                end = workerStatusesCount;
+            }
+            else
+            {
+                meta = part == 0;
+                start = part * MaxWorkerWriteCount;
+                end = Math.Min(workerStatusesCount, start + MaxWorkerWriteCount);
+            }
+        }
+
+        private void writeWorkerStatuses(BinaryWriter w, bool netPacket, int part)
+        {
+
             w.Write((ushort)workerStatuses.Count);
-            cityHallSubtilePos.write(w);
-            for (int i = 0; i < workerStatuses.Count; i++)
+            writeStatusesStartEnd(part, workerStatuses.Count, out bool meta, out int start, out int end);
+
+            if (meta)
+            {   
+                cityHallSubtilePos.write(w);
+            }
+
+            //int start = part * MaxWorkerWriteCount;
+            //int end = Math.Min(workerStatuses.Count, start + MaxWorkerWriteCount);
+            for (int i = start; i < end; i++)
             {
                 workerStatuses[i].writeGameState(this, w, netPacket);
             }
         }
 
-        private void readWorkerStatuses(BinaryReader r, bool netPacket, int subversion)
+        private void readWorkerStatuses(BinaryReader r, bool netPacket, int part, int subversion)
         {
             IntVector2 startPos = WP.ToSubTilePos_Centered(tilePos);
 
             int workerStatusesCount = r.ReadUInt16();
-
-            if (subversion >= 65)
+            writeStatusesStartEnd(part, workerStatusesCount, out bool meta, out int start, out int end);
+            
+            if (meta)
             {
-                cityHallSubtilePos.read(r);
+                if (subversion >= 65)
+                {
+                    cityHallSubtilePos.read(r);
+                }
             }
 
-            for (int i = 0; i < workerStatusesCount; i++)
+            for (int i = start; i < end; i++)
             {
                 WorkerStatus readWorker = new WorkerStatus()
                 {
@@ -1171,14 +1217,18 @@ namespace VikingEngine.DSSWars.GameObject
             if (lastNetUpdate.secPassed(10))
             {
                 lastNetUpdate.setNow();
-                for (int part = 0; part < 2; ++part)
+
+                int count = MathExt.Div_Ceiling(workerStatuses.Count, MaxWorkerWriteCount) + 1;
+
+                for (int part = 0; part < count; ++part)
                 {
                     var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityStatus, Network.PacketReliability.Reliable, out var packet);
                     {
                         w.Write((ushort)myIndex);
                         w.Write((byte)part);
-                        writeNet_update(w, part);
+                        writeNet_update(w, part);                        
                     }
+                    packet.CheckPacketLength();
                     packet.EndWrite_Asynch();
                 }
                 return true;
@@ -1196,8 +1246,8 @@ namespace VikingEngine.DSSWars.GameObject
                     writeResources(w);
                     break;
 
-                case 1:
-                    writeWorkerStatuses(w, true);
+                default:
+                    writeWorkerStatuses(w, true, part -1);
                     break;
             }
             
@@ -1214,8 +1264,8 @@ namespace VikingEngine.DSSWars.GameObject
                     readResources(r, int.MaxValue);
                     break;
 
-                case 1:
-                    readWorkerStatuses(r, true, int.MaxValue);
+                default:
+                    readWorkerStatuses(r, true, part - 1, int.MaxValue);
                     break;
             }
             
@@ -1553,10 +1603,10 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 refreshWorkerSubtiles();
                 int freeGuardSpace = 0;
-                if (DssRef.storage.runTutorial_1short_2normal == 1)
-                {
-                    freeGuardSpace = 10;
-                }
+                //if (DssRef.storage.runTutorial_1short_2normal == 1)
+                //{
+                //    freeGuardSpace = 10;
+                //}
                 //Place guards
                 for (int i = 0;i <defenceBuildings.Count;i++) 
                 {
@@ -1710,12 +1760,14 @@ namespace VikingEngine.DSSWars.GameObject
                 setModel(faction.AutoLoadModelInstance(
                    LootFest.VoxelModelName.cityicon, IconScale()));
                 //overviewModel?.DeleteMe();
-
+            }
+            //if (faction.player?.profile.flag != null)
+            //{
                 //overviewModel = faction.AutoLoadModelInstance(
                 //   LootFest.VoxelModelName.cityicon, IconScale());
                 //overviewModel.AddToRender(DrawGame.MidLayer);
                 //overviewModel.position = position;
-            }
+            //}
 
             void setModel(Graphics.AbsVoxelObj model)
             {
@@ -3169,15 +3221,15 @@ namespace VikingEngine.DSSWars.GameObject
             content.text(DssRef.lang.CityCultureDescription, HudLib.InfoYellow_Light);
         }
 
-        public void AddNeighborCity(int nCityIndex)
+        public void AddNeighborCity(WorldData world, int nCityIndex)
         {
             if (nCityIndex >= 0)
             {
-                
-                if (!neighborCities.Contains(nCityIndex))
-                {
-                    neighborCities.Add(nCityIndex);
-                }
+                world.neighborCities.Add(myIndex, ref neighborCitiesCount, nCityIndex, true); 
+                //if (!neighborCities.Contains(nCityIndex))
+                //{
+                //    neighborCities.Add(nCityIndex);
+                //}
             }
         }
        
@@ -3190,9 +3242,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Faction faction = GetFaction();
 
-            foreach (int n in neighborCities)
+            //DssRef.world.neighborCities.LoopSpan(myIndex, neighborCitiesCount, out int nc_start, out int nc_exEnd);
+            //for (int i = nc_start; i < nc_exEnd; ++i)
+            EcsStaticArrayCounter neighbors = CityNeighbors();
+            while (neighbors.Next(DssRef.world.cities, out City nCity))//
             {
-                var cFaction = Get(n).GetFaction();
+                var cFaction = nCity.GetFaction();
                 if (cFaction != faction && cFaction.player is Players.AiPlayer)
                 {
                     cFaction.player.IsPlayerNeighbor = true;
@@ -3200,13 +3255,23 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public EcsStaticArrayCounter CityNeighbors()
+        { 
+            return new EcsStaticArrayCounter(DssRef.world.neighborCities, myIndex, neighborCitiesCount);
+        }
+
         public bool HasPlayerNeighbor()
         {
             Faction faction = GetFaction();
 
-            foreach (int n in neighborCities)
+
+            //DssRef.world.neighborCities.LoopSpan(myIndex, neighborCitiesCount, out int nc_start, out int nc_exEnd);
+            //for (int ncaIx = nc_start; ncaIx < nc_exEnd; ++ncaIx)//foreach (int n in neighborCities)
+            EcsStaticArrayCounter neighbors = CityNeighbors();
+
+            while(neighbors.Next(DssRef.world.cities, out City nCity))
             {
-                var cFaction = Get(n).GetFaction();
+                var cFaction = nCity.GetFaction();
                 if (cFaction != faction && cFaction.player.IsPlayerNeighbor)
                 {
                     return true;

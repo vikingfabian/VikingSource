@@ -90,6 +90,13 @@ namespace VikingEngine.EngineSpace.Translation
         public abstract string Settings_ImportNoAchievement { get; }
         public abstract string GraphicsOption_FarViewDistance { get; }
 
+        //Winter update
+        public abstract string GraphicsOption_IngameMenuWidth { get; }
+        public abstract string DisplayMode { get; }
+        public abstract string DisplayMode_Windowed { get; }
+        public abstract string DisplayMode_BorderlessFullscreen { get; }
+        public abstract string GameSettings_RenderedMouseCursor { get; }
+
         public string ThreeOption(ThreeOptions option)
         {
             switch (option)

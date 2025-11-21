@@ -1205,7 +1205,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         {
                             lib.DoNothing();
                         }
-                        owner.AddNeighborCity(borderCity);
+                        owner.AddNeighborCity(world, borderCity);
                     }
 
                     world.tileGrid.Set(loop.Position, t);

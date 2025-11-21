@@ -9,6 +9,13 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Japanese : AbsOptionsLanguage
     {
+        public override string GraphicsOption_IngameMenuWidth => "ゲーム内メニューの幅";
+        public override string DisplayMode => "表示モード";
+        public override string DisplayMode_Windowed => "ウィンドウモード";
+        public override string DisplayMode_BorderlessFullscreen => "ボーダーレスフルスクリーン";
+        public override string GameSettings_RenderedMouseCursor => "レンダーされたカーソル";
+
+        //--
         public override string GraphicsOption_FarViewDistance => "遠距離ビュー";
 
         public override string Hud_Cancel => "キャンセル";

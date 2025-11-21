@@ -12,50 +12,8 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
-        public string GraphicsOption_IngameMenuWidth => "Game menu width";
+        
 
-        public string Error_SoundInitFailure => "Sound initialization failed";
-          
-        public string GameMode_QuickMatch => "Quick Match";
-        public string GameMode_QuickMatch_Description => "A shorter game format. Enter a full-scale war against rival nations.";
-
-        public string Lobby_PlayerCount => "Player count";
-        public string Lobby_TwoTeams => "Two teams";
-
-        public string Tutorial_HighPriority => "Your men will complete high-priority tasks first";
-        public string Hud_Search => "Search";
-
-        public string DifficultyDescription_ExtremeAggression = "Extreme aggression";
-
-        public string MapFilter => "Map filter";
-
-        public string Settings_TechMultiplier => "Tech research speed";
-
-        public string EndScreen_MatchComplete => "Match result";
-
-        /// <summary>
-        /// Theme: Four headed dragon symbol. Known for having an unpenetrable castle.
-        /// </summary>
-        public string FactionName_DragonGem => "Dragon gem";
-
-        /// <summary>
-        /// Theme: Easter egg for december. "Tomten" is an old nordic name for father christmas
-        /// </summary>
-        public string FactionName_Tomten => "Tomten";
-
-        /// <summary>
-        /// Theme: The blessed folk. A horde like farmers faction.
-        /// </summary>
-        public string FactionName_Hælfolc => "Hælfolc";
-
-        /// <summary>
-        /// The Iron Saints, people who guard a mountain pass against evil.
-        /// </summary>
-        public string FactionName_AerimAngren => "Aerim Angren";
-
-        public string HUD_NotAvailbleInX => "No available in {0}";
-
-        public string InputActionName_MiniMap => "Mini-map";
 
 
 

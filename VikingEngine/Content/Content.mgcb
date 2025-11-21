@@ -2632,6 +2632,9 @@
 #begin VoxelModel/LfWars/decor_statue.vox
 /copy:VoxelModel/LfWars/decor_statue.vox
 
+#begin VoxelModel/LfWars/ErrorCube.vox
+/copy:VoxelModel/LfWars/ErrorCube.vox
+
 #begin VoxelModel/LfWars/fo_stone1.vox
 /copy:VoxelModel/LfWars/fo_stone1.vox
 

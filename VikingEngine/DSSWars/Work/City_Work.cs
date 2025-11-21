@@ -785,7 +785,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         foreach (var item in types)
                         {
-                            WorkPriority template = workTemplate.GetWorkPriority(item);
+                            WorkPriority template = workTemplate.GetWorkPriority(item, out _);
                             
 
                             if (template.unlocked && template.value > topPrioValue)

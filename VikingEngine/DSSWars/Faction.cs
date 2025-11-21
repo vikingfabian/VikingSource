@@ -103,9 +103,9 @@ namespace VikingEngine.DSSWars
             armies = new SpottedArray<Army>(16);
         }
 
-        public void initClient()
+        public void initClient(WorldData world)
         {
-            initDiplomacy(DssRef.world);
+            initDiplomacy(world);
         }
        
         public void onGameStart(bool newGame)
@@ -305,10 +305,21 @@ namespace VikingEngine.DSSWars
         }
 
         virtual public void readNet(System.IO.BinaryReader r)
-        {
-            
+        {            
 
             factiontype = (FactionType)r.ReadUInt16();
+
+            switch (factiontype)
+            {
+                case FactionType.DarkLord:
+                    new DarkLordPlayer(this, false);
+                    break;
+
+                default:
+                    new AiPlayer(this, false);
+                    break;
+            }
+
             player.profile.read(r);
             //FlagAndColor profile = new FlagAndColor(r);
             //SetProfile(profile);
@@ -1199,7 +1210,7 @@ namespace VikingEngine.DSSWars
 
         public Color Color()
         {
-                if (player == null)
+                if (player == null || player.profile.flag == null)
                     return tempColor;
                 return player.profile.flag.col0_Main;
             

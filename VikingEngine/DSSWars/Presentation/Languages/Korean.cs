@@ -11,6 +11,56 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Korean : AbsLanguage
     {
+        
+        //Winter update
+        public override string Resource_StockpileLimit => "비축 한도";
+        public override string GameMode_QuickMatch => "Quick Match";
+        public override string GameMode_QuickMatch_Description =>
+            "짧은 게임 형식입니다. 경쟁 국가들과의 본격적인 전쟁에 돌입하세요.";
+        public override string Lobby_PlayerCount => "플레이어 수";
+        public override string Lobby_TwoTeams => "2팀";
+        public override string Hud_Produce => "생산:";
+        public override string Tutorial_WaitForWorkerLevel => "작업자가 해당 레벨에 도달할 때까지 기다리기:";
+
+        public override string Tutorial_PracticeOrSchool => "{0}에서 연습하거나 {1}을(를) 사용하기";
+        public override string Tutorial_AddTag => "태그 추가:";
+        public override string Tutorial_AddPin => "핀 추가:";
+        public override string Tutorial_SelectMostTrees => "가장 나무가 많은 자신의 도시 찾기";
+        public override string Tutorial_SelectACityWithX => "{0}이(가) 있는 도시 선택";
+
+        public override string Tutorial_Select_NotCapital => ". 수도는 제외.";
+
+        public override string Tutorial_SetXPriorityToY => "{0}의 우선순위를 {1}(으)로 설정";
+        public override string Tutorial_AdvisorMission => "Advisor 임무";
+
+        public override string Tutorial_AdvisorDescription =>
+            "본편 게임이 시작되었습니다. Advisor가 유용한 임무로 튜토리얼을 확장합니다.";
+
+        public override string Tutorial_EndAdvisor => "Advisor 종료";
+
+        public override string Tutorial_AdvisorCompleteTitle => "Advisor 완료!";
+        public override string Tutorial_AdvisorCompleteMessage => "내일도 축복이 가득하길!";
+
+        public override string Hud_Search => "검색";
+
+        public override string DifficultyDescription_ExtremeAggression => "극도 공격성";
+
+        public override string MapFilter => "지도 필터";
+
+        public override string Settings_TechMultiplier => "Tech 연구 속도";
+
+        public override string EndScreen_MatchComplete => "매치 결과";
+
+        public override string FactionName_DragonGem => "Dragon Gem";
+        public override string FactionName_Tomten => "Tomten";
+        public override string FactionName_Hælfolc => "Hælfolc";
+        public override string FactionName_AerimAngren => "Aerim Angren";
+
+        public override string HUD_NotAvailbleInX => "{0}에서는 사용할 수 없습니다";
+
+        public override string InputActionName_MiniMap => "Mini-map";
+
+        //--
         public override string Error_SoundInitFailure => "사운드 초기화에 실패했습니다";
 
         public override string GameMenu_ControllerDisconnected => "컨트롤러가 연결 해제되었습니다";

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Net.Security;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
@@ -23,8 +24,37 @@ using VikingEngine.ToGG.MoonFall;
 namespace VikingEngine.DSSWars.Presentation
 {
     static class LangLib
-    {       
-        
+    {
+        //public static void MapFilter(FactionMapFilter filter, out SpriteName icon, out string caption)
+        //{
+        //    caption = TextLib.Error;
+
+        //    switch (filter)
+        //    {
+        //        default:                    
+        //            icon = SpriteName.MissingImage; break;
+
+        //        case FactionMapFilter.FactionCols:
+        //            icon = SpriteName.WarsMapFilterFactions;
+        //            break;
+        //        case FactionMapFilter.Terrain:
+        //            icon = SpriteName.WarsMapFilterTerrain;
+        //            break;
+        //        case FactionMapFilter.Minimap:
+        //            icon = SpriteName.WarsMapFilterMinimap;
+        //            break;
+
+        //        case FactionMapFilter.PopulationHeatmap:
+        //            caption = DssRef.lang.worker;
+        //            icon = SpriteName.WarsMapFilterWorkers;
+        //            break;
+        //        case FactionMapFilter.StrengthHeatmap:
+        //            caption = DssRef.lang.UnitType_Faction;
+        //            icon = SpriteName.WarsMapFilterStrength;
+        //            break;
+
+        //    }
+        //}
 
         public static void GameModeText(GameModeMainType mode, out string caption, out string desc)
         {
@@ -37,8 +67,8 @@ namespace VikingEngine.DSSWars.Presentation
                     desc = DssRef.lang.Settings_Mode_IncludeBoss + " " + DssRef.lang.Settings_Mode_IncludeAttacks;
                     break;
                 case GameModeMainType.QuickMatch:
-                    caption = DssRef.todoLang.GameMode_QuickMatch;
-                    desc = DssRef.todoLang.GameMode_QuickMatch_Description;
+                    caption = DssRef.lang.GameMode_QuickMatch;
+                    desc = DssRef.lang.GameMode_QuickMatch_Description;
                     break;
                 case GameModeMainType.Sandbox:
                     caption = DssRef.lang.Settings_Mode_Sandbox;
@@ -680,7 +710,7 @@ namespace VikingEngine.DSSWars.Presentation
                 case InputActionType.ToggleHudDetail:
                     return DssRef.lang.InputActionName_ToggleHudDetail;
                 case InputActionType.ToggleMiniMap:
-                    return DssRef.todoLang.InputActionName_MiniMap;
+                    return DssRef.lang.InputActionName_MiniMap;
                 case InputActionType.GameSpeed:
                     return DssRef.lang.Input_GameSpeed;
                 case InputActionType.PauseGame:

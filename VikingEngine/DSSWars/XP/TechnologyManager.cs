@@ -57,9 +57,10 @@ namespace VikingEngine.DSSWars.XP
                     {
                         lib.DoNothing();
                     }
-                    foreach (var ni in city.neighborCities)
+                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var ni in city.neighborCities)
                     {
-                        var nCity = DssRef.world.cities[ni];
+                        //var nCity = DssRef.world.cities[ni];
                         if (city.factionIndex == nCity.factionIndex)
                         {
                             TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_CitySpread, TechnologyGainReason.CityToCitySpread);

@@ -9,6 +9,14 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Spanish : AbsOptionsLanguage
     {
+
+        public override string GraphicsOption_IngameMenuWidth => "Ancho del menú del juego";
+        public override string DisplayMode => "Modo de visualización";
+        public override string DisplayMode_Windowed => "Ventana";
+        public override string DisplayMode_BorderlessFullscreen => "Pantalla completa sin bordes";
+        public override string GameSettings_RenderedMouseCursor => "Cursor renderizado";
+
+        //--
         public override string GraphicsOption_FarViewDistance => "Vista de larga distancia";
         public override string Hud_Cancel => "Cancelar";
         public override string Hud_Back => "Atrás";

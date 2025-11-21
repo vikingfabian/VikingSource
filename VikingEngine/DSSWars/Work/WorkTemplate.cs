@@ -639,8 +639,9 @@ namespace VikingEngine.DSSWars.Work
 
         
 
-        public WorkPriority GetWorkPriority(ItemResourceType item)
+        public WorkPriority GetWorkPriority(ItemResourceType item, out bool hasPriority)
         {
+            hasPriority = true;
             switch (item)
             {
                 case ItemResourceType.Fuel_G:
@@ -780,7 +781,9 @@ namespace VikingEngine.DSSWars.Work
 
 
                 default:
-                    throw new NotImplementedException();
+                    hasPriority = false;
+                    return WorkPriority.Empty;
+                    //throw new NotImplementedException();
             }
         }
 

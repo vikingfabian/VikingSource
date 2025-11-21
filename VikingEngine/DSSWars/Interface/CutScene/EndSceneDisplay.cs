@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             content.icontext(SpriteName.WarsResource_WaterAdd, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(DssRef.difficulty.setting_waterMulti)));
             content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(DssRef.difficulty.setting_childMulti)));
             content.icontext(SpriteName.WarsHammer, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(DssRef.difficulty.setting_craftMulti)));
-            content.icontext(SpriteName.WarsTechnology_Unlocked, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Settings_TechMultiplier, DssRef.difficulty.TechMultiProperty(false, 0)));
+            content.icontext(SpriteName.WarsTechnology_Unlocked, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_TechMultiplier, DssRef.difficulty.TechMultiProperty(false, 0)));
 
             var time = HudLib.TimeSpan_LongText(DssRef.time.TotalIngameTime());
             content.text(string.Format(DssRef.lang.EndGameStatistics_Time, time));
@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             {
                 bool playerWin = false;
 
-                content.h1(DssRef.todoLang.EndScreen_MatchComplete, Color.Yellow);
+                content.h1(DssRef.lang.EndScreen_MatchComplete, Color.Yellow);
                 content.h2(DssRef.lang.EndScreen_VictoryTitle, HudLib.TitleColor_Label);
                 foreach (var m in matchResult.winner)
                 {
