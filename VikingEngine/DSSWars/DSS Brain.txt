@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log: 
-* fixed rare crash: attackTarget_soldierGroupOrCity in asyncBattleUpdate
+* 
 
 fixed - will update soon
 
