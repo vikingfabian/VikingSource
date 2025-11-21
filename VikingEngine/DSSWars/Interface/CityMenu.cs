@@ -1746,7 +1746,7 @@ namespace VikingEngine.DSSWars.Interface
 
                     city.res_fuel.toMenu(content, ItemResourceType.Fuel_G, fuelSafeGuard, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
                     int totalmines = 0;
-                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_coal, ItemResourceType.Coal, ref totalmines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_coal, ItemResourceType.Coal, Map.SubTile.Empty, ref totalmines);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Fuel1, null, true);
                     content.space();
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Charcoal);
@@ -1782,23 +1782,23 @@ namespace VikingEngine.DSSWars.Interface
                     int totalMines = 0;
 
                     city.res_ironore.toMenu(content, ItemResourceType.IronOre_G, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_bogIron, ItemResourceType.BogIron, ref totalMines);
-                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_iron, ItemResourceType.Iron_G, ref totalMines);
+                    city.terrainStructure.mine(player,content, city.terrainStructure.mineCount_bogIron, ItemResourceType.BogIron, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_iron, ItemResourceType.Iron_G, Map.SubTile.Empty,ref totalMines);
 
                     city.res_TinOre.toMenu(content, ItemResourceType.TinOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_tin, ItemResourceType.Tin, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_tin, ItemResourceType.Tin, Map.SubTile.Empty, ref totalMines);
 
                     city.res_CupperOre.toMenu(content, ItemResourceType.CopperOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals); 
-                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_copper, ItemResourceType.Copper, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_copper, ItemResourceType.Copper, Map.SubTile.Empty, ref totalMines);
 
                     city.res_LeadOre.toMenu(content, ItemResourceType.LeadOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_lead, ItemResourceType.Lead, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_lead, ItemResourceType.Lead, Map.SubTile.Empty, ref totalMines);
 
                     city.res_SilverOre.toMenu(content, ItemResourceType.SilverOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_silver, ItemResourceType.Silver, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_silver, ItemResourceType.Silver, Map.SubTile.Empty, ref totalMines);
 
                     city.res_GoldOre.toMenu(content, ItemResourceType.GoldOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_gold, ItemResourceType.Gold, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_gold, ItemResourceType.Gold, Map.SubTile.Empty, ref totalMines);
                     HudLib.blueprintButton(city, player, content, Minting.ConvertGoldOre);
 
                     content.newParagraph();
@@ -1820,10 +1820,10 @@ namespace VikingEngine.DSSWars.Interface
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
 
                     city.res_RawMithril.toMenu(content, ItemResourceType.RawMithril, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_mithril, ItemResourceType.Mithril, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_mithril, ItemResourceType.Mithril, Map.SubTile.Empty, ref totalMines);
 
                     city.res_Sulfur.toMenu(content, ItemResourceType.Sulfur, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    city.terrainStructure.mine(content, city.terrainStructure.mineCount_sulfur, ItemResourceType.Sulfur, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_sulfur, ItemResourceType.Sulfur, Map.SubTile.Empty, ref totalMines);
                     content.newParagraph();
 
 

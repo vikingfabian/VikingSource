@@ -1,9 +1,10 @@
 ﻿UPDATE
 Change Log: 
 
-x toggle mines  
+* interact with mines in city overview 
 
 * Fixed mithril sword crafting
+Facepunch steam api
 
 fixed - will update soon
 
