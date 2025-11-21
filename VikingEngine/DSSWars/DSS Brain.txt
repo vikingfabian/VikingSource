@@ -2,6 +2,7 @@
 Change Log: 
 * Fixed mithril sword crafting
 * Neighbor city list improvements
+* interact with mines in city overview 
 
 fixed - will update soon
 

@@ -2706,7 +2706,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (!player.profile.casualControls)
                 {
-                    terrainStructure.miningOverviewHud(content);
+                    terrainStructure.miningOverviewHud(player, content);
                     new XP.TechnologyHud().technologyOverviewHud(content, player, this, faction);
                 }
                 //technologyOverviewHud(content, player);

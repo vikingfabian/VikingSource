@@ -63,6 +63,7 @@ namespace VikingEngine.DSSWars.Players
         
         float targetZoom;
         bool panDownInput = false;
+        TerrainTypeSearch TerrainTypeSearch = new TerrainTypeSearch();
 
         public MapControls(LocalPlayer player)
         {
@@ -96,7 +97,12 @@ namespace VikingEngine.DSSWars.Players
             {
                 controllerPointer = new Image(SpriteName.cmdPointer, player.playerData.view.DrawAreaF.Center, Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
             }
+        }
 
+        public void terrainSearchClick(SubTile terrain)
+        {
+           Vector3 pos = TerrainTypeSearch.FindNext(selection.obj.GetCity(), terrain);
+            cameraFocus = new EmptyPoint(pos);
         }
 
         public void battleModeCamBound()
