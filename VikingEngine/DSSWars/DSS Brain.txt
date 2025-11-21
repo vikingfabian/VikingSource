@@ -1,5 +1,8 @@
 ﻿UPDATE
 Change Log: 
+
+x toggle mines  
+
 * Fixed mithril sword crafting
 
 fixed - will update soon
