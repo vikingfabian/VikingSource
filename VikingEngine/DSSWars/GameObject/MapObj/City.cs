@@ -449,11 +449,21 @@ namespace VikingEngine.DSSWars.GameObject
             
             workHutStyle = r.ReadByte();
 
+            
+            neighborCities.Clear();
             int neighborCitiesCount = r.ReadByte();
             for (int i = 0; i < neighborCitiesCount; i++)
             {
-                neighborCities.Add(r.ReadUInt16());
+                int cityIx = r.ReadUInt16();
+#if DEBUG
+                if (neighborCities.Contains(cityIx))
+                {
+                    throw new Exception("neighborCities.Contains(cityIx)");
+                }
+#endif
+                neighborCities.Add(cityIx);
             }
+            
 
             Culture = (CityCulture)r.ReadByte();
 

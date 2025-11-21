@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log: 
 * Fixed mithril sword crafting
+* Neighbor city list improvements
 
 fixed - will update soon
 
