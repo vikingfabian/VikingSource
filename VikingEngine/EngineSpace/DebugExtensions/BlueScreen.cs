@@ -271,7 +271,7 @@ namespace VikingEngine.DebugExtensions
                 ThreadException = null;
             }
         }
-        
+
         public static string ErrorMessage(Exception e, TryMethodType methodType)
         {
             string gametypeCode = "-";
@@ -297,6 +297,10 @@ namespace VikingEngine.DebugExtensions
             if (methodType == TryMethodType.U)
             {
                 type += " N" + ((int)Network.NetLib.PacketType).ToString();
+            }
+            if (!Ref.steam.isInitialized)
+            {
+                type += "-P";
             }
 
             string stacktrace = string.Empty;

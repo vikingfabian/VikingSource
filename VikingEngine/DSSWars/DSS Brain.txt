@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log: 
-* Turkish: full manual translation complete
+* 
 
 fixed - will update soon
 
