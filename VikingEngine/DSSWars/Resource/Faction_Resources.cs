@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars
             for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
             {
                 var tabContent = new RichBoxContent();
-                //string text = null;
+                
                 switch (resourcesSubTab)
                 {
                     case ResourcesSubTab.Overview_Resources:
@@ -175,10 +175,7 @@ namespace VikingEngine.DSSWars
                     player.resourcesSubTab = ResourcesSubTab.Stockpile_Armor;
                     break;
             }
-            //if (player.resourcesSubTab > ResourcesSubTab.Overview_Armor)
-            //{
-            //    player.resourcesSubTab = 0;
-            //}
+            
 
             content.newLine();
             content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
@@ -187,7 +184,7 @@ namespace VikingEngine.DSSWars
             for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Stockpile_Resources; resourcesSubTab <= ResourcesSubTab.Stockpile_Armor; ++resourcesSubTab)
             {
                 var tabContent = new RichBoxContent();
-                //string text = null;
+                
                 switch (resourcesSubTab)
                 {
                     case ResourcesSubTab.Stockpile_Resources:
