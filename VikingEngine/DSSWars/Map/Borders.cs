@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.Map
         }
 
         static readonly Color UncoloredEdge = Color.Black;
-        static readonly Color UncoloredEdge_SharedFaction = Color.Gray;
+        static readonly Color UncoloredEdge_SharedFaction = Color.DarkGray;
         public void quedEvent()
         {
             

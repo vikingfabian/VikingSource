@@ -341,11 +341,11 @@ namespace VikingEngine.DSSWars.GameObject
             DssRef.world.InitCity(this);
         }
 
-        public City(int index, System.IO.BinaryReader r, int version)
+        public City(WorldData world, int index, System.IO.BinaryReader r, int version)
         {
             this.myIndex = index;
-            DssRef.world.InitCity(this);
-            readMapFile(r, version);
+            world.InitCity(this);
+            readMapFile(world, r, version);
         }
 
         public void generateCultureAndEconomy(WorldData world, CityCultureCollection cityCultureCollection)
@@ -443,7 +443,7 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(Debug.Byte_OrCrash((int)Culture));
         }
 
-        public void readMapFile(System.IO.BinaryReader r, int version)
+        public void readMapFile(WorldData world, System.IO.BinaryReader r, int version)
         {
             tilePos.readUshort(r);
 
@@ -458,12 +458,17 @@ namespace VikingEngine.DSSWars.GameObject
             
             workHutStyle = r.ReadByte();
 
-            int neighborCitiesCount = r.ReadByte();
-            for (int i = 0; i < neighborCitiesCount; i++)
+
+            //neighborCities.Clear();
+            neighborCitiesCount = 0;
+            int readNeighborCities = r.ReadByte();
+            for (int i = 0; i < readNeighborCities; i++)
             {
-                DssRef.world.neighborCities.Add(myIndex, ref neighborCitiesCount, r.ReadUInt16());
+                int cityIx = r.ReadUInt16();
+                world.neighborCities.Add(myIndex, ref neighborCitiesCount, cityIx);
                 //neighborCities.Add(r.ReadUInt16());
             }
+            
 
             Culture = (CityCulture)r.ReadByte();
 
@@ -1188,9 +1193,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             w.Write((byte)Tile().heightLevel);
         }
-        public void readNet_map(System.IO.BinaryReader r)
+        public void readNet_map(WorldData world, System.IO.BinaryReader r)
         {
-            readMapFile(r, int.MaxValue);
+            readMapFile(world, r, int.MaxValue);
             //guardCount = r.ReadUInt16();
             //maxGuardSize = r.ReadUInt16();
 

@@ -582,7 +582,7 @@ namespace VikingEngine.DSSWars
             for (int i = 0; i < cityCount; i++)
             {
                 int city = r.ReadUInt16();
-                this.cities[city].readNet_map(r);
+                this.cities[city].readNet_map(this, r);
                 Debug.ReadCheck(r);
 
                 Debug.ReadCheck(r);
@@ -691,7 +691,7 @@ namespace VikingEngine.DSSWars
                 Init_CityComponents(cityCount);
                 for (int cityIndex = 0; cityIndex < cityCount; ++cityIndex)
                 {
-                    City c = new City(cityIndex, r, version);
+                    City c = new City(this, cityIndex, r, version);
                     cities.Add(c);
                     unitCollAreaGrid.add(c);
                 }

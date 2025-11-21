@@ -1,7 +1,9 @@
 ﻿UPDATE
 Change Log: 
 * Fixed mithril sword crafting
+* Neighbor city list improvements
 * patched the network  
+
 
 Change Log:
 * fixed tutorial crash
