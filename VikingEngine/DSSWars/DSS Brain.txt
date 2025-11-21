@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log: 
-* 
+* Fixed mithril sword crafting
 
 fixed - will update soon
 
