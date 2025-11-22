@@ -36,11 +36,17 @@ namespace VikingEngine.DSSWars.Resource
         {
             var resources = city.GetGroupedResource(item);
 
+            content.Add(new RbBeginTitle());
+
             content.Add(new RbImage(Icon(item)));
             content.space();
-            content.Add(new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": " + TextLib.LargeNumber(resources.amount)));
+            content.Add(new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": ", HudLib.TitleColor_TypeName));
+            content.space();
+            content.Add(new RbText(TextLib.LargeNumber(resources.amount)));
 
             //todo public ResourceOverview res_wood
+            content.newLine();
+            resources.changeRate.toMenu(content);
 
             SpriteName stockIcon;
             if (resources.amount >= resources.goalBuffer)
@@ -52,28 +58,49 @@ namespace VikingEngine.DSSWars.Resource
                 stockIcon = SpriteName.WarsStockpileAdd;
             }
             content.newLine();
+            
+            content.Add(new RbText(DssRef.lang.Resource_StockpileLimit + ": ", HudLib.TitleColor_Label));
+            content.space();
             content.Add(new RbImage(stockIcon));
             content.space();
-            content.Add(new RbText(DssRef.lang.Resource_StockpileLimit + ": " + TextLib.LargeNumber(resources.goalBuffer)));
+            content.Add(new RbText(TextLib.LargeNumber(resources.goalBuffer)));
 
             var priority = city.workTemplate.GetWorkPriority(item, out bool hasPriority);
             if (hasPriority)
             {
                 content.newLine();
+                
+                content.Add(new RbText(DssRef.lang.Work_OrderPrioTitle + ": ", HudLib.TitleColor_Label));
+                content.space();
                 content.Add(new RbImage(SpriteName.WarsHammer));
                 content.space();
-                content.Add(new RbText(DssRef.lang.Work_OrderPrioTitle + ": " + priority.value, priority.HasPrio() ? null : HudLib.NotAvailableColor));
+                content.Add(new RbText(priority.value.ToString(), priority.HasPrio() ? null : HudLib.NotAvailableColor));
             }
 
             ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
-            content.newLine();
-            bp1?.toMenu(content, city, false, false);
-            if (bp2 != null)
+
+            bp(bp1);
+            bp(bp2);
+
+            //if (bp2 != null)
+            //{
+
+            //    content.newLine();
+            //    bp2.toMenu(content, city, false, false);
+            //}
+
+            void bp(CraftBlueprint blueprint)
             {
-                content.newLine();
-                content.text(DssRef.lang.Hud_RequirementOr);
-                content.newLine();
-                bp2.toMenu(content, city, false, false);
+                if (blueprint != null)
+                {
+                    content.Add(new RbSeperationLine());
+                    content.Add(new RbBeginTitle());
+                    content.Add(new RbImage(SpriteName.WarsBluePrint));
+                    content.space();
+                    content.Add(new RbText(DssRef.lang.Blueprint_Title, HudLib.TitleColor_Head2));
+                    content.newLine();
+                    blueprint.toMenu(content, city, false, false);
+                }
             }
         }
 

@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Resource
     {
         public int /*current, */produced, consumed;
         public int /*prevCurrent,*/ prevProduced, prevConsumed;
-        
+
         public void onChange(int change)
         {
             if (change > 0)
@@ -59,18 +59,28 @@ namespace VikingEngine.DSSWars.Resource
                 produced += change;
             }
             else
-            { 
+            {
                 consumed -= change;
             }
         }
 
-        
+        public void toMenu(RichBoxContent content)
+        {
+            content.Add(new RbText(DssRef.todoLang.Resource_ConsumedProduced + ":", HudLib.TitleColor_Label));
 
-        //public void clearCurrent()
-        //{
-        //    prevCurrent = current;
-        //    current = 0;
-        //}
+            content.space();
+            content.Add(new RbImage(SpriteName.WarsDecreaseArrowDown));
+            var downText = new RbText(TextLib.LargeNumber(prevConsumed));
+            downText.overrideColor = HudLib.NotAvailableColor;
+            content.Add(downText);
+
+            content.space();
+            content.Add(new RbImage(SpriteName.WarsIncreaseArrowUp));
+            var upText = new RbText(TextLib.LargeNumber(prevProduced));
+            upText.overrideColor = HudLib.AvailableColor;
+            content.Add(upText);
+
+        }
 
         public void oneSecondUpdate()
         {

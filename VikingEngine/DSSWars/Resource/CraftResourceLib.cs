@@ -328,7 +328,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint CoolingFluid = new CraftBlueprint(
                 CraftResultType.Resource,
                 (int)ItemResourceType.CoolingFluid,
-               10,
+               15,
                new UseResource[]
                {
                 new UseResource(ItemResourceType.Water_G, 5),

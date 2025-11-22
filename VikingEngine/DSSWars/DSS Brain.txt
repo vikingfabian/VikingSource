@@ -1,37 +1,18 @@
 ﻿UPDATE
-Change Log: 
-*  fixed faction progress tab crash
-* patched the network  
-
-
-Change Log:
-* fixed tutorial crash
-* Improved heatmap
-* Heatmap for natural resources
-* sticky hud for skill and progress
-
-Tutorial:
-* Compressed the display
-* Added advior mode after tutorial
-* skip_advisor added to steam stats
-
-
-x advisor beta test
-x Translate tutorial
-
 
 fixed - will update soon
 
 
 #SPRING UPDATE#
-* Performance: city resources have been moved to a Entity Component System 
-* Performance: removed faction to city pointers
-* Per city change tracking
+* cooling fluid output increase 10 > 15
 
 UNCLAIMED LAND
 * Settler unit in conscript
 
-
+ECS REFACTORING
+* Performance: city resources have been moved to a Entity Component System 
+* Performance: removed faction to city pointers
+* Resource per city change tracking, plus hud improvements
 
 #Spring update TODO
 x start with one city
@@ -46,32 +27,6 @@ x city resource in/out, + checkbox to view/(and hide text)
 
 x Improved defenses: Mounted ballistas, and spikes
 x More diplomacy: better interaction with allies
-
-
-
-MAP
-* Optimized: Diplomacy map
-* Soldiers are visible on the faction map
-* Map Filters
-* Diplomatic relation arrows
-
-x Extended diplomacy options, and be able to command allies with diplomacy points
-- end relations (chance of bad relation)
-- (maybe) submit
-x try close cores carefully before exit
-x repaint editor bg
-x option to remove the songs from the playlist
-x (maybe)better war tracking
-x (maybe)minimap
-x Also I have a sort of bug that when I try to zoom in with the mouse wheel, if my mouse is too close to the edge at some point it will refuse to zoom into where my mouse is and just zoom into a location that is more central to the camera position
-x go over tutorial
--view less resources
--advisor
--inform of resource use
-
-Open simplex noise
-https://gist.github.com/digitalshadow/134a3a02b67cecd72181
-
 
 #Todo#
 x declare war comfirm
@@ -196,7 +151,6 @@ förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
 -can cheese building over borders and using copy 
 
 
-
 #ANIMAL UPDATE#
 Soldiers +money upkeep
 Some resource ideas for next big update:
@@ -220,7 +174,9 @@ Soldier hold command
 Soldier multi-command
 Select soldiers and split/disband
 
---Efter release polish--
+#MAP 2.0#
+Open simplex noise
+https://gist.github.com/digitalshadow/134a3a02b67cecd72181
 -
 
 pilar med resurser från delivery

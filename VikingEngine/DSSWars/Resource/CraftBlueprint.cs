@@ -246,7 +246,8 @@ namespace VikingEngine.DSSWars.Resource
                     content.Add(countText);
                     content.hspace();
                     content.Add(new RbImage(sprite));
-                    content.Add(new RbText(name));
+                    content.hspace();
+                    content.Add(new RbText(TextLib.LargeFirstLetter(name)));
                 }
             }
             
@@ -261,6 +262,7 @@ namespace VikingEngine.DSSWars.Resource
                 var arrow = new RbImage(SpriteName.pjNumArrowR);
                 arrow.color = Color.CornflowerBlue;
                 content.Add(arrow);
+                content.hspace();
                 if (resultType == CraftResultType.Building)
                 {
                     if (resultAmount > 1)
@@ -271,6 +273,7 @@ namespace VikingEngine.DSSWars.Resource
                 else
                 {
                     content.Add(new RbText(resultAmount.ToString()));
+                    content.hspace();
                 }
                 content.Add(new RbImage(icon()));
                 content.space();
