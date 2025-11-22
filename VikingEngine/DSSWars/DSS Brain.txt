@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log: 
-*  
+*  fixed faction progress tab crash
 
 fixed - will update soon
 
