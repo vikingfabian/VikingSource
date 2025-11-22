@@ -260,6 +260,7 @@ namespace VikingEngine.DSSWars.GameObject
         ObjectCollection,
         DetailCollection,
         LocationPin,
+        Point,
         NONE,
         NUM,
     }

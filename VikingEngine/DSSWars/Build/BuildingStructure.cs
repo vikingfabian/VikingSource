@@ -7,6 +7,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Presentation;
@@ -183,8 +184,22 @@ namespace VikingEngine.DSSWars.Build
         public int resourceCount_stone;
         public int resourceCount_wood;
 
+        static readonly SubTile TerrainType_wood = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeSoft);
+        static readonly SubTile TerrainType_stone = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.Stones);
 
-        public void miningOverviewHud(RichBoxContent content)
+        static readonly SubTile TerrainType_bogiron = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.BogIron);
+        static readonly SubTile TerrainType_iron = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.IronOre);
+        static readonly SubTile TerrainType_tin = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.TinOre);
+        static readonly SubTile TerrainType_copper = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.CopperOre);
+        static readonly SubTile TerrainType_lead = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.LeadOre);
+        static readonly SubTile TerrainType_silver = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.SilverOre);
+        static readonly SubTile TerrainType_gold = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.GoldOre);
+        static readonly SubTile TerrainType_mithril = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Mithril);
+        static readonly SubTile TerrainType_sulfur = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Sulfur);
+        static readonly SubTile TerrainType_coal = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Coal);
+
+
+        public void miningOverviewHud(LocalPlayer player, RichBoxContent content)
         {
             content.newLine();
 
@@ -193,18 +208,18 @@ namespace VikingEngine.DSSWars.Build
 
             int totalCount = 0;
 
-            naturalResource(content, resourceCount_wood, ItemResourceType.Wood_Group, ref totalCount);
-            naturalResource(content, resourceCount_stone, ItemResourceType.Stone_G, ref totalCount);
-            mine(content, mineCount_coal, ItemResourceType.Coal, ref totalCount);
-            mine(content, mineCount_bogIron, ItemResourceType.BogIron, ref totalCount);
-            mine(content, mineCount_iron, ItemResourceType.Iron_G, ref totalCount);
-            mine(content, mineCount_tin, ItemResourceType.Tin, ref totalCount);
-            mine(content, mineCount_copper, ItemResourceType.Copper, ref totalCount);
-            mine(content, mineCount_lead, ItemResourceType.Lead, ref totalCount);
-            mine(content, mineCount_silver, ItemResourceType.Silver, ref totalCount);
-            mine(content, mineCount_gold, ItemResourceType.Gold, ref totalCount);
-            mine(content, mineCount_mithril, ItemResourceType.Mithril, ref totalCount);
-            mine(content, mineCount_sulfur, ItemResourceType.Sulfur, ref totalCount);
+            naturalResource(player, content, resourceCount_wood, ItemResourceType.Wood_Group, TerrainType_wood, ref totalCount);
+            naturalResource(player, content, resourceCount_stone, ItemResourceType.Stone_G, TerrainType_stone, ref totalCount);
+            mine(player, content, mineCount_coal, ItemResourceType.Coal, TerrainType_coal, ref totalCount);
+            mine(player, content, mineCount_bogIron, ItemResourceType.BogIron, TerrainType_bogiron, ref totalCount);
+            mine(player, content, mineCount_iron, ItemResourceType.Iron_G, TerrainType_iron, ref totalCount);
+            mine(player, content, mineCount_tin, ItemResourceType.Tin, TerrainType_tin, ref totalCount);
+            mine(player, content, mineCount_copper, ItemResourceType.Copper, TerrainType_copper, ref totalCount);
+            mine(player, content, mineCount_lead, ItemResourceType.Lead, TerrainType_lead, ref totalCount);
+            mine(player, content, mineCount_silver, ItemResourceType.Silver, TerrainType_silver, ref totalCount);
+            mine(player, content, mineCount_gold, ItemResourceType.Gold, TerrainType_gold, ref totalCount);
+            mine(player, content, mineCount_mithril, ItemResourceType.Mithril, TerrainType_mithril, ref totalCount);
+            mine(player, content, mineCount_sulfur, ItemResourceType.Sulfur, TerrainType_sulfur, ref totalCount);
 
 
             if (totalCount == 0)
@@ -250,17 +265,17 @@ namespace VikingEngine.DSSWars.Build
         }
 
 
-        public void naturalResource(RichBoxContent content, int count, ItemResourceType resource, ref int totalCount)
+        public void naturalResource(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, SubTile terrainType, ref int totalCount)
         {
-            resourceHoverButton(content, count, resource, DssRef.lang.Work_GatherXResource, SpriteName.WarsWorkCollect, ref totalCount);
+            resourceHoverButton(player, content, count, resource, DssRef.lang.Work_GatherXResource, SpriteName.WarsWorkCollect, terrainType, false, ref totalCount);
         }
 
-        public void mine(RichBoxContent content, int count, ItemResourceType resource, ref int totalCount)
+        public void mine(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, SubTile terrainType, ref int totalCount)
         {
-            resourceHoverButton(content, count, resource, DssRef.lang.BuildingType_ResourceMine, SpriteName.WarsWorkMine, ref totalCount);
+            resourceHoverButton(player, content, count, resource, DssRef.lang.BuildingType_ResourceMine, SpriteName.WarsWorkMine, terrainType, terrainType.mainTerrain != TerrainMainType.NUM, ref totalCount);
         }
 
-        public void resourceHoverButton(RichBoxContent content, int count, ItemResourceType resource, string categoryName, SpriteName workIcon, ref int totalCount)
+        public void resourceHoverButton(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, string categoryName, SpriteName workIcon, SubTile terrainType, bool clickable, ref int totalCount)
         {
             totalCount += count;
             if (count > 0)
@@ -275,7 +290,7 @@ namespace VikingEngine.DSSWars.Build
                 countText.overrideColor = Color.White;
                 infoContent.Add(countText);
 
-                var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null,
+                var infoButton = new ArtButton(clickable? RbButtonStyle.Outline : RbButtonStyle.HoverArea, infoContent, clickable? new RbAction1Arg<SubTile>( player.gameControls.map.terrainSearchClick, terrainType) : null,
                     new RbTooltip((RichBoxContent content, object tag) =>
                     {
                         content.Add(new RbOverlapImage(new RbImage(icon), workIcon, Vector2.Zero, 0.8f));

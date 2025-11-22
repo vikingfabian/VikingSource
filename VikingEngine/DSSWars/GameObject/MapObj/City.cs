@@ -2637,7 +2637,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (!player.profile.casualControls)
                     {
                         waterToHud(content, false);
-                        terrainStructure.miningOverviewHud(content);
+                        terrainStructure.miningOverviewHud(player, content);
                     }
             }
             else
@@ -2841,6 +2841,24 @@ namespace VikingEngine.DSSWars.GameObject
                             }
                         }
 
+                if (!player.profile.casualControls)
+                {
+                    terrainStructure.miningOverviewHud(player, content);
+                    new XP.TechnologyHud().technologyOverviewHud(content, player, this, faction);
+                }
+                //technologyOverviewHud(content, player);
+#if DEBUG
+                //technologyHud(content, player);
+#endif
+                //if (!player.inTutorialMode)
+                //{
+                //    //Properties
+                //    //if (nobelHouse)
+                //    //{
+                //    //    content.newLine();
+                //    //    HudLib.BulletPoint(content);
+                //    //    content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
+                //    //}
 
 
                         HudLib.ItemCount(content, SpriteName.WarsWorkerAdd, DssRef.lang.ResourceType_Children, children().ToString());
@@ -2969,7 +2987,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (!player.profile.casualControls)
                         {
-                            terrainStructure.miningOverviewHud(content);
+                            terrainStructure.miningOverviewHud(player, content);
                             new XP.TechnologyHud().technologyOverviewHud(content, player, this, faction);
 
                         }
