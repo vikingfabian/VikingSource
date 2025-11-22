@@ -27,6 +27,8 @@ namespace VikingEngine.DSSWars
 
         public static float GuardPostEnter_TimeSec = 3f;
         public static float GuardPostExit_TimeSec = 2f;
+        public static float SettlerTransform_TimeSec = 3f;
+
 
         public static float DefaultBlockChance = 0.75f;
 

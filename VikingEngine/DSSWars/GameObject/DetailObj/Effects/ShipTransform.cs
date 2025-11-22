@@ -162,11 +162,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (lookingForTerrain)
             {
-                //if (DssRef.world.tileGrid.TryGet(group.tilePos, out Tile tile) &&
-                //    tile.IsWater() == toGuard)
-                //{
-                    begin();
-                //}
+                begin();
             }
             else
             {
@@ -188,6 +184,44 @@ namespace VikingEngine.DSSWars.GameObject
         protected override void completeTransform()
         {
             group.completeTransform(toGuard ? SoldierTransformType.EnterGuard : SoldierTransformType.ExitGuard, postIdAndPosition);
+        }
+    }
+
+    class SettlerTransform : AbsSoldierStateTransform
+    {
+        IntVector2 subTile;
+        public SettlerTransform(SoldierGroup group, IntVector2 subTile)
+            : base(group, true)
+        {
+            this.subTile = subTile;
+        }
+
+        protected override void init(out float timeSec)
+        {            
+            timeSec = DssConst.SettlerTransform_TimeSec;
+        }
+
+        public override void Time_Update(float time_ms)
+        {
+            
+            if (transformTimer.CountDownGameTime())
+            {
+                DeleteMe();
+                return;
+            }
+            
+            base.Time_Update(time_ms);
+        }
+
+        override protected int modelFrame()
+        {
+            return 0;
+        }
+
+        protected override void completeTransform()
+        {
+            //group.completeTransform(toGuard ? SoldierTransformType.EnterGuard : SoldierTransformType.ExitGuard, postIdAndPosition);
+
         }
     }
 }
