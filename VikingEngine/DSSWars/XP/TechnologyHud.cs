@@ -18,7 +18,15 @@ namespace VikingEngine.DSSWars.XP
 {
     class TechnologyHud
     {
-        public void technologyOverviewHud(RichBoxContent content, LocalPlayer player, City city, Faction faction)
+        LocalPlayer player; City city;
+        public TechnologyHud(LocalPlayer player, City city)
+        {
+            this.player = player;
+            this.city = city;
+        }
+
+
+        public void technologyOverviewHud(RichBoxContent content, Faction faction)
         {
             TechnologyTemplate technology;
             if (city != null)
@@ -73,7 +81,7 @@ namespace VikingEngine.DSSWars.XP
             }
         }
 
-        public void technologyHud(RichBoxContent content, LocalPlayer player, City city, Faction faction)
+        public void technologyHud(RichBoxContent content, Faction faction)
         {
             bool cityView;
             TechnologyTemplate technology;
@@ -314,9 +322,12 @@ namespace VikingEngine.DSSWars.XP
                      new RbAction1Arg<TechnologyTreeType>(godPowerUnLockTech, type)));
                 }
 
-                content.Add(new RbTab(0.7f));
-                CityHudPinId pinId = new CityHudPinId(city.myIndex, new HudPin(type));
-                player.hud.pins.toggleButton(content, pinId);
+                if (city != null)
+                {
+                    content.Add(new RbTab(0.7f));
+                    CityHudPinId pinId = new CityHudPinId(city.myIndex, new HudPin(type));
+                    player.hud.pins.toggleButton(content, pinId);
+                }
                 //bool onHud = player.hud.pins.isPinnedProperty(pinId, false, false);
                 //content.Add(new ArtToggle(onHud, new List<AbsRichBoxMember> {
                 //    new RbImage(SpriteName.HudPinIcon, 1f, onHud? Color.White : Color.Gray) }, new RbAction(() => { player.hud.pins.Set(pinId, !onHud); }),

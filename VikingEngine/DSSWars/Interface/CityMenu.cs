@@ -534,7 +534,7 @@ namespace VikingEngine.DSSWars.Interface
             switch (player.progressSubTab)
             {
                 default:
-                    new TechnologyHud().technologyHud(content, player, city, city.GetFaction());
+                    new TechnologyHud(player, city).technologyHud(content, city.GetFaction());
                     break;
 
                 case ProgressSubTab.Experience:

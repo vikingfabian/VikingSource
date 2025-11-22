@@ -2844,7 +2844,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (!player.profile.casualControls)
                 {
                     terrainStructure.miningOverviewHud(player, content);
-                    new XP.TechnologyHud().technologyOverviewHud(content, player, this, faction);
+                    new XP.TechnologyHud(player, this).technologyOverviewHud(content, faction);
                 }
                 //technologyOverviewHud(content, player);
 #if DEBUG
@@ -2988,7 +2988,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if (!player.profile.casualControls)
                         {
                             terrainStructure.miningOverviewHud(player, content);
-                            new XP.TechnologyHud().technologyOverviewHud(content, player, this, faction);
+                            new XP.TechnologyHud(player, this).technologyOverviewHud(content, faction);
 
                         }
 

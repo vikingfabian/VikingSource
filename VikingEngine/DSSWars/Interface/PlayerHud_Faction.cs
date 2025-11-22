@@ -339,7 +339,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void progressTab(Players.LocalPlayer player)
         {
-            new XP.TechnologyHud().technologyHud(content, player, null, player.faction);
+            new XP.TechnologyHud(player, null).technologyHud(content, player.faction);
         }
         public bool updateMouseInput(ref bool mouseOver)
         {
