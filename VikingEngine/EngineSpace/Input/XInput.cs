@@ -181,11 +181,8 @@ namespace VikingEngine.Input
 
         public static XController Instance(int index)
         {
-            if (controllers == null)
-            {
-                return null;
-            }
-            return controllers[index];
+            arraylib.TryGet(controllers, index, out var instance);
+            return instance;
         }
 
         public static int MaxIndex()

@@ -587,19 +587,22 @@ namespace VikingEngine
 
         public void monitorOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
         {
-            var resoutionPercOptions = Engine.Screen.ResoutionPercOptions();
-            DropDownBuilder dropdown = new DropDownBuilder("resolution%");
+            if (Screen.PcDisplayMode == WindowDisplayMode.Windowed)
             {
-                foreach (var m in resoutionPercOptions)
+                var resoutionPercOptions = Engine.Screen.ResoutionPercOptions();
+                DropDownBuilder dropdown = new DropDownBuilder("resolution%");
                 {
-                    dropdown.AddOption(string.Format(Ref.langOpt.GraphicsOption_Resolution_PercentageOption, m),
-                        Engine.Screen.UseRecordingPreset == RecordingPresets.NumNon &&
-                        m == Engine.Screen.WindowScalePerc,
-                        m == 100,
-                        new RbAction1Arg<int>(setResolutionPercProperty, m), null);
-                }
+                    foreach (var m in resoutionPercOptions)
+                    {
+                        dropdown.AddOption(string.Format(Ref.langOpt.GraphicsOption_Resolution_PercentageOption, m),
+                            Engine.Screen.UseRecordingPreset == RecordingPresets.NumNon &&
+                            m == Engine.Screen.WindowScalePerc,
+                            m == 100,
+                            new RbAction1Arg<int>(setResolutionPercProperty, m), null);
+                    }
 
-                dropdown.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_Resolution, menu);
+                    dropdown.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_Resolution, menu);
+                }
             }
 
             content.newLine();

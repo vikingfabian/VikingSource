@@ -2,6 +2,8 @@
 Change Log: 
 * Fixed mithril sword crafting
 * Neighbor city list improvements
+* Removed screen scaling on fullscreen
+* Fixed controller instance crash
 
 fixed - will update soon
 
