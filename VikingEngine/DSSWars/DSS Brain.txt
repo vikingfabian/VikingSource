@@ -1,6 +1,8 @@
 ﻿UPDATE
 Change Log: 
 *  fixed faction progress tab crash
+* Removed screen scaling on fullscreen
+* Fixed controller instance crash
 
 fixed - will update soon
 
