@@ -3,7 +3,9 @@ Change Log:
 
 * Fixed ship strength value
 
+x testa attackera medan man deklarer fred
 x neutral unit attacking same city
+x tooltip resource crafted what building info
 
 fixed - will update soon
 

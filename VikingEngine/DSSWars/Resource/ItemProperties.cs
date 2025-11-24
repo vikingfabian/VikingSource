@@ -8,6 +8,7 @@ using Valve.Steamworks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.Resource
@@ -1031,6 +1032,9 @@ namespace VikingEngine.DSSWars.Resource
         public SoldierData soldierData = new SoldierData();
         public bool Filter_IsSiegeWeapon = false;
 
+        public ItemComesFrom comesFrom = ItemComesFrom.NONE;
+        public int comesFromId1 = -1, comesFromId2 = -1;
+
         public ItemProperties(ItemResourceType type, float weight, CraftBlueprint bp1, CraftBlueprint bp2)
         {   
             this.weight = weight;
@@ -1039,5 +1043,21 @@ namespace VikingEngine.DSSWars.Resource
 
             ItemPropertyColl.items[(int)type] = this;
         }
+
+        public void SetComesFrom(TerrainMineType mineType)
+        {
+            comesFrom = ItemComesFrom.Mine;
+            comesFromId1 = (int)mineType;
+        }
+    }
+
+    enum ItemComesFrom
+    { 
+        NONE,
+        Terrain,
+        Mine,
+        Farm,
+        Crafting,
+        NUM
     }
 }
