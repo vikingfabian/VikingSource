@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
+using VikingEngine.LootFest.GO.Characters;
 using VikingEngine.ToGG.Commander.UnitsData;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -13,7 +15,45 @@ namespace VikingEngine.DSSWars.GameObject
     partial class City
     {        
         IntVector2 barracksReservedSpot;
-        public IntVector2 cityStorageCenter;
+        public IntVector2 citySquareSubtilePos;
+
+
+        public void createCampSite(IntVector2 subtilepos)
+        {
+            cityHallSubtilePos = subtilepos;
+            EditSubTile edit = new EditSubTile(subtilepos, new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false);
+            edit.Submit();
+
+            Span<Dir4> testDirs = stackalloc Dir4[] { Dir4.S, Dir4.E, Dir4.W, Dir4.N };
+
+            foreach (var dir in testDirs)
+            {
+                IntVector2 pos = cityHallSubtilePos + IntVector2.Dir4Array[(int)dir];
+                if (DssRef.world.subTileGrid.TryGet(pos, out var tile))
+                {
+                    if (!tile.IsWater())
+                    {
+                        citySquareSubtilePos = pos;
+                        new EditSubTile(pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.CitySquare].terrainType, true, true, false).Submit();
+                        break;
+                    }
+                }
+            }
+
+            foreach (var dir in IntVector2.Dir8Array)
+            {
+                IntVector2 pos = cityHallSubtilePos + dir * 2;
+                if (DssRef.world.subTileGrid.TryGet(pos, out var tile))
+                {
+                    if (!tile.IsWater())
+                    {
+                        new EditSubTile(pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.WorkerTent].terrainType, true, true, false).Submit();
+                        break;
+                    }
+                }
+            }
+        }
+
         public void createBuildingSubtiles(WorldData world, CityTemplateCollection templateCollection)
         {
             if (cityType == CityType.UnClaimed)
@@ -202,7 +242,7 @@ namespace VikingEngine.DSSWars.GameObject
                         case CityTemplateCellType.CityCenterSquare:
                             main = TerrainMainType.Decor;
                             sub = (int)TerrainDecorType.Square;
-                            cityStorageCenter = pos;
+                            citySquareSubtilePos = pos;
                             break;
                     }
 

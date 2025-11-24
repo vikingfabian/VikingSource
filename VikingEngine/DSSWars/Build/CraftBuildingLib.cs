@@ -188,14 +188,25 @@ namespace VikingEngine.DSSWars.Build
             CraftRequirement.Logistics2
         );
 
+        public static readonly CraftBlueprint WorkerTent = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.WorkerTent,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.WorkerTent, 1),
+            },
+            XP.WorkExperienceType.Transport
+        );
+
         public static readonly CraftBlueprint WorkerHut = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.WorkerHut,
             1,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Wood_Group, 200),
-        new UseResource(ItemResourceType.Stone_G, 40)
+                new UseResource(ItemResourceType.Wood_Group, 200),
+                new UseResource(ItemResourceType.Stone_G, 40)
             },
             XP.WorkExperienceType.HouseBuilding
         );

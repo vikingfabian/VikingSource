@@ -231,6 +231,7 @@ namespace VikingEngine.DSSWars
         public static float WorkTime_Craft = 10;
 
         public static float WorkTime_Building_Palisade = 10;
+        public static float WorkTime_Building_WorkerTent = 15;
         public static float WorkTime_Building_Small = 30;
         public static float WorkTime_Building_Default = 50;
         public static float WorkTime_Building_Large = 100;

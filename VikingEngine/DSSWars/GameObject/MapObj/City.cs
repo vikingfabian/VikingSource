@@ -118,11 +118,6 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        //public int MaxBuildQueue()
-        //{
-        //    return LevelToMaxBuildQueue(buildingStructure.buildingLevel_logistics);
-        //}
-
         public int MaxBuildPrio()
         { 
             return LevelToMaxBuildPrio(buildingStructure.buildingLevel_logistics);
@@ -130,8 +125,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         public IntVector2 ArmySpawnTilePos()
         {
-            //    public IntVector2 GetFreeTile(IntVector2 center)
-            //{
             if (armySpawnTilePos.HasValue())
             {
                 return armySpawnTilePos;
@@ -153,50 +146,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             Debug.LogError("GetFreeTile" + tilePos.ToString());
             return tilePos;
-            //foreach (IntVector2 dir in IntVector2.Dir8Array)
-            //{
-            //    IntVector2 pos = center + dir;
-            //    Tile t = tileGrid.Get(pos);
-            //    if (t.IsLand())
-            //    {
-            //        return pos;
-            //    }
-            //}
-            //Debug.LogError("GetFreeTile" + center.ToString());
-            //return center;
-            //}
         }
 
-        //public void onCityStructureUpdate_async()
-        //{
-        //    //if (needServiceMenRefresh)
-        //    //{
-        //    //    int used = (buildingStructure.SoldierBarracks_count + buildingStructure.ArcherBarracks_count + buildingStructure.;
-        //    //    int housing = buildingStructure.ServiceMenHouse_count * DssConst.HousingCount_ServiceHouse_Small + 
-        //    //        buildingStructure.ServiceMenHouse_Large_count * DssConst.HousingCount_ServiceHouse_Large;
-
-        //    //    needServiceMenRefresh = false;
-        //    //}
-        //}
-
-        //public static int LevelToMaxBuildQueue(int level)
-        //{
-        //    int queue = int.MaxValue;
-        //    switch (level)
-        //    {
-        //        default: return queue;
-        //        case 0: queue = DssConst.WorkQueue_Start; break;
-        //        case 1: queue = DssConst.WorkQueue_LogisticsLevel1; break;
-        //    }
-
-        //    if (DssRef.storage.longerBuildQueue)
-        //    {
-        //        queue *= 2;
-        //    }
-
-        //    return queue;
-        //}
-
+       
         public static int LevelToMaxBuildPrio(int level)
         {
             int max = WorkTemplate.MaxPrio;
@@ -207,11 +159,6 @@ namespace VikingEngine.DSSWars.GameObject
                 case 0: max = DssConst.BuildPrio_Start; break;
                 case 1: max = DssConst.BuildPrio_LogisticsLevel1; break;
             }
-
-            //if (DssRef.storage.longerBuildQueue)
-            //{
-            //    queue *= 2;
-            //}
 
             return max;
         }
@@ -492,7 +439,7 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write(Bound.Short(freeServiceMen.amount));
                 w.Write(Bound.Short(workingAndFreeServiceMen));
                 cityHallSubtilePos.writeUshort(w);
-                cityStorageCenter.writeUshort(w);
+                citySquareSubtilePos.writeUshort(w);
 
                 childrenAge0.write16bit(w);
                 w.Write(Bound.UShort(childrenAge1));
@@ -585,7 +532,7 @@ namespace VikingEngine.DSSWars.GameObject
             catch (Exception e)
             {
                 BlueScreen.AttachMessage =
-                   $"workforce {workForce.amount}, HousingCount_Workers {HousingCount_Workers}, HousingCount_Guard {HousingCount_Guard}, cityHallSubtilePos {cityHallSubtilePos}, cityStorageCenter {cityStorageCenter}, childrenAge0 {childrenAge0}, childrenAge1 {childrenAge1}, immigrants {immigrants}, ";
+                   $"workforce {workForce.amount}, HousingCount_Workers {HousingCount_Workers}, HousingCount_Guard {HousingCount_Guard}, cityHallSubtilePos {cityHallSubtilePos}, cityStorageCenter {citySquareSubtilePos}, childrenAge0 {childrenAge0}, childrenAge1 {childrenAge1}, immigrants {immigrants}, ";
 
                 BlueScreen.ThreadException = e;
             }
@@ -617,12 +564,12 @@ namespace VikingEngine.DSSWars.GameObject
             if (subversion >= 50)
             {
                 cityHallSubtilePos.readUshort(r);
-                cityStorageCenter.readUshort(r);
+                citySquareSubtilePos.readUshort(r);
             }
             else
             {
                 cityHallSubtilePos = WP.ToSubTilePos_Centered(tilePos);
-                cityStorageCenter = VectorExt.AddY(cityHallSubtilePos, 1);
+                citySquareSubtilePos = VectorExt.AddY(cityHallSubtilePos, 1);
             }
             childrenAge0.read16bit(r);
             childrenAge1 = r.ReadUInt16();
@@ -1688,6 +1635,16 @@ namespace VikingEngine.DSSWars.GameObject
                 casualCityProfile.maxHuts = maxWaterTotal / 3;
 
                 defaultResourceBuffer(world);
+            }
+        }
+
+        public void claimCity(Faction faction, IntVector2 subtile)
+        {
+            if (cityType == CityType.UnClaimed && faction != null)
+            {
+                cityType = CityType.Campsite;
+                refreshCitySize();
+                createCampSite(subtile);
             }
         }
 

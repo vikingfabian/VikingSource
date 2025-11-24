@@ -38,6 +38,7 @@ namespace VikingEngine.DSSWars.Map
         {
             this.mainTerrain = type;
             this.subTerrain = subType;
+            terrainAmount = 1;
         }
 
         public SubTile(TerrainMainType type, int subType, Color color, float groundY)
@@ -188,7 +189,11 @@ namespace VikingEngine.DSSWars.Map
             return mainTerrain == other.mainTerrain &&
                 subTerrain == other.subTerrain;
         }
-
+        public bool EqualTerrain(TerrainMainType main, int sub)
+        {
+            return mainTerrain == main &&
+                subTerrain == sub;
+        }
         public bool EqualSaveData(ref SubTile other)
         {
             return  terrainAmount == other.terrainAmount && 
