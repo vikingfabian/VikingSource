@@ -1,9 +1,13 @@
 ﻿UPDATE
 
+
+
 fixed - will update soon
 
 
 #SPRING UPDATE#
+* controller vibrate on message
+* controller vibration setting
 * cooling fluid output increase 10 > 15
 
 UNCLAIMED LAND

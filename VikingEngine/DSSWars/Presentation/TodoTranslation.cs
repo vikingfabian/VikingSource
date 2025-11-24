@@ -12,7 +12,8 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
-        
+        //##SPRING - settings##
+        public string Settings_ControllerVibration = "Controller vibration";
 
 
 

@@ -246,12 +246,16 @@ namespace VikingEngine.DSSWars.Interface
             Add(content);
         }
 
-        public void Add(RichBoxContent content)
+        public void Add(RichBoxContent content, bool vibrate = true)
         {
             if (StartupSettings.BlockMessages)
                 return;
 
             SoundLib.message.Play(Pan.Right);
+            if (vibrate)
+            {
+                player.gameControls.input.Vibrate(300, 0, 1);
+            }
 
             if (player.hud.maximizedHud)
             {
