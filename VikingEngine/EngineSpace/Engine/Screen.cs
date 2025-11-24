@@ -71,6 +71,11 @@ namespace VikingEngine.Engine
        
         public static void ApplyScreenSettings(bool refreshUi = true)
         {
+            if (PcDisplayMode != WindowDisplayMode.Windowed)
+            {
+                WindowScalePerc = 100;
+            }
+
             bool goToWindowed = Engine.Draw.graphicsDeviceManager.IsFullScreen && PcDisplayMode == WindowDisplayMode.Windowed;
 
             Vector2 SafeBorderPerc;            
