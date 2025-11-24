@@ -221,7 +221,13 @@ namespace VikingEngine.DSSWars.GameObject
         protected override void completeTransform()
         {
             //group.completeTransform(toGuard ? SoldierTransformType.EnterGuard : SoldierTransformType.ExitGuard, postIdAndPosition);
+            var city = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTile)).City();
 
+            if (group.soldierCount > 0 &&
+                city.cityType == CityType.UnClaimed)
+            { 
+                
+            }
         }
     }
 }

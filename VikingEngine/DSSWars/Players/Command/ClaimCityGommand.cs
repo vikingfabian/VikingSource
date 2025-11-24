@@ -27,5 +27,11 @@ namespace VikingEngine.DSSWars.Players.Command
         {
             return CommandType.ClaimCity;
         }
+
+        public override bool hasPathCommand(out bool pathTowardsUnit)
+        {
+            pathTowardsUnit = false;
+            return false;
+        }
     }
 }
