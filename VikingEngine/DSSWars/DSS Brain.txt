@@ -1,9 +1,9 @@
 ﻿UPDATE
 Change Log: 
-* Fixed mithril sword crafting
-* Neighbor city list improvements
-* Removed screen scaling on fullscreen
-* Fixed controller instance crash
+
+* Fixed ship strength value
+
+x neutral unit attacking same city
 
 fixed - will update soon
 

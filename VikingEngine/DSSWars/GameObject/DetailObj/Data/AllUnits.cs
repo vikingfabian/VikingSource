@@ -64,7 +64,19 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static float GroupStrengh(int soldierCount, ref SoldierData data, bool land)
         {
+            //int damage;
+            //if (land)
+            //{ 
+            
+            //}
+            //else
+            //{
+            //    crewCount = MathExt.Div_Ceiling(this.health, data.basehealth);
+
+            //}
+
             var raw = GroupStrengh_Raw(soldierCount, DPS(land? data.attackDamage : data.attackDamageSea, data.attackTimePlusCoolDown), data.basehealth);
+            
             return raw / AverageGroupStrength;
         }
 
