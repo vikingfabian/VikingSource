@@ -1635,7 +1635,7 @@ namespace VikingEngine.DSSWars.Interface
                             content.newLine();
                             break;
                         
-                        case ResourcesSubTab.Work_Armor:
+                        case ResourcesSubTab.Work_Mint:
                             HudLib.InfoButton(content,
                                new RbTooltip((RichBoxContent content, object tag) =>
                                {

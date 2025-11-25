@@ -1,22 +1,9 @@
 ﻿UPDATE
-Change Log: 
-
-* Fixed ship strength value
-
-x more hidden buildings before logistics
-x "This will take a while, come back later" (miss 7)
-x tab icon for each build
-x hmm mission 2 shouldnt end until the logistics is built
-x school produce: (add space)
-x you clicked paste and the delivery stopped, that is a bug
-x i should hide Paste is its not fully setup
-x add pin catapult - lägg in "technology"
-x in mission 7 you dont notice the stockpile is full, i will add a red triangle 
 
 
 x testa attackera medan man deklarer fred
 x neutral unit attacking same city
-x tooltip resource crafted what building info
+
 
 fixed - will update soon
 
@@ -31,6 +18,7 @@ x localize text
 
 
 #Spring update
+x tooltip resource crafted what building info
 x ResourceOverview
 x cities summary tab
 -Having a tab with queued units and also a UI element to select all baracks and recruit simultaneously per city (less micromanagement)
