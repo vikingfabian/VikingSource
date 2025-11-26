@@ -1,6 +1,9 @@
 ﻿UPDATE
 * fixed: pixels being drawn outside the minimap bounds
 
+* Fixed ship strength value
+* Fixed rare empty faction get gold crash
+
 x testa attackera medan man deklarer fred
 x neutral unit attacking same city
 
