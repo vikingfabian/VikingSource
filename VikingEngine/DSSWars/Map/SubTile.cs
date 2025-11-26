@@ -316,7 +316,8 @@ namespace VikingEngine.DSSWars.Map
 
         public string TypeToString()
         {
-            return LangLib.TerrainName(mainTerrain, subTerrain);
+            IconName.Terrain(mainTerrain, subTerrain, out _, out string name);
+            return name;
         }
 
         public bool IsWater()

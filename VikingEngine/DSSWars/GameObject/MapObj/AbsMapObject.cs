@@ -45,7 +45,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (DssRef.storage.gameRuleset.centralGold)
             {
-                return GetFaction().payGold(cost, false, null);
+                var faction = GetFaction();
+                if (faction == null)
+                {
+                    return false;
+                }
+                return faction.payGold(cost, false, null);
             }
             else
             {
@@ -57,7 +62,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (DssRef.storage.gameRuleset.centralGold)
             {
-                return GetFaction().payGold(cost, allowDept, null);
+                var faction = GetFaction();
+                if (faction == null)
+                {
+                    return false;
+                }
+                return faction.payGold(cost, allowDept, null);
             }
             else
             {
@@ -144,7 +154,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool LocalMember
         {
-            get { return GetFaction().player.IsLocal; }
+            get { return GetPlayer().IsLocal; }
         }
 
         //abstract public Faction Faction();

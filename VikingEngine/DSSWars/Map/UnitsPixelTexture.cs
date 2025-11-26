@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Map
                         groupsCounter.sel.position.X - 0.5f,
                         groupsCounter.sel.position.Z - 0.5f);
 
-                    if (DssRef.world.tileBoundsSubOne.IntersectTilePoint(topleft))
+                    if (texture.InBound(topleft))
                     {
                         if (lib.IsEven(topleft.X + topleft.Y))
                         {

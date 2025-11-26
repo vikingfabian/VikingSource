@@ -853,44 +853,45 @@ namespace VikingEngine.DSSWars.Build
 
             foreach (var tab in buildCategories)
             {
-                string category;
-                SpriteName tabIcon;
-                switch (tab)
-                {
-                    case BuildCategoryTab.Filter:
-                        tabIcon = SpriteName.warsBuildCategorySearch;
-                        category = DssRef.lang.HUD_Filter;
-                        break;
-                    case BuildCategoryTab.General:
-                        tabIcon = SpriteName.warsBuildCategoryHouse;
-                        category = DssRef.lang.BuildCategory_General;
-                        break;
-                    case BuildCategoryTab.Advanced:
-                        tabIcon = SpriteName.warsBuildCategoryAdvanced;
-                        category = DssRef.lang.Hud_Advanced;
-                        break;
-                    case BuildCategoryTab.Military:
-                        tabIcon = SpriteName.warsBuildCategoryMilitaryWall;
-                        category = DssRef.lang.BuildCategory_Military;
-                        break;
-                    case BuildCategoryTab.Decor:
-                        tabIcon = SpriteName.warsBuildCategoryDecorTree;
-                        category = DssRef.lang.BuildCategory_Decoration;
-                        break;
-                    case BuildCategoryTab.Upgrade:
-                        tabIcon = SpriteName.warsBuildCategoryUpgrades;
-                        category = DssRef.lang.BuildCategory_Upgrade;
-                        break;
-                    case BuildCategoryTab.GodPower:
-                        tabIcon = SpriteName.WarsGodPowerIcon;
-                        category = DssRef.lang.GodPower;
-                        break;
-                    default:
-                        tabIcon = SpriteName.warsBuildCategoryAutomation;
-                        category = DssRef.lang.Automation_Title;
-                        break;
+                IconName.BuildCategory(tab, out SpriteName tabIcon, out string category);
+                //string category;
+                //SpriteName tabIcon;
+                //switch (tab)
+                //{
+                //    case BuildCategoryTab.Filter:
+                //        tabIcon = SpriteName.warsBuildCategorySearch;
+                //        category = DssRef.lang.HUD_Filter;
+                //        break;
+                //    case BuildCategoryTab.General:
+                //        tabIcon = SpriteName.warsBuildCategoryHouse;
+                //        category = DssRef.lang.BuildCategory_General;
+                //        break;
+                //    case BuildCategoryTab.Advanced:
+                //        tabIcon = SpriteName.warsBuildCategoryAdvanced;
+                //        category = DssRef.lang.Hud_Advanced;
+                //        break;
+                //    case BuildCategoryTab.Military:
+                //        tabIcon = SpriteName.warsBuildCategoryMilitaryWall;
+                //        category = DssRef.lang.BuildCategory_Military;
+                //        break;
+                //    case BuildCategoryTab.Decor:
+                //        tabIcon = SpriteName.warsBuildCategoryDecorTree;
+                //        category = DssRef.lang.BuildCategory_Decoration;
+                //        break;
+                //    case BuildCategoryTab.Upgrade:
+                //        tabIcon = SpriteName.warsBuildCategoryUpgrades;
+                //        category = DssRef.lang.BuildCategory_Upgrade;
+                //        break;
+                //    case BuildCategoryTab.GodPower:
+                //        tabIcon = SpriteName.WarsGodPowerIcon;
+                //        category = DssRef.lang.GodPower;
+                //        break;
+                //    default:
+                //        tabIcon = SpriteName.warsBuildCategoryAutomation;
+                //        category = DssRef.lang.Automation_Title;
+                //        break;
 
-                }
+                //}
                 var tabButton = new ArtButton(tab == player.buildCategoryTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
                     new List<AbsRichBoxMember> { new RbImage(tabIcon) },
                     new RbAction1Arg<BuildCategoryTab>((BuildCategoryTab selectTab) => { player.buildCategoryTab = selectTab; }, tab, RbSoundType.Tab),
@@ -1250,32 +1251,32 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.Carpenter:
-                    mayCraftList(content, city, CraftBuildingLib.CarpenterCraftTypes);
+                    mayCraftList(content, city, BuildingCraftList.CarpenterCraftTypes);
 
                     break;
 
                 case BuildAndExpandType.WorkBench:
-                    mayCraftList(content, city, CraftBuildingLib.BenchCraftTypes);
+                    mayCraftList(content, city, BuildingCraftList.BenchCraftTypes);
                     break;
 
                 case BuildAndExpandType.Smelter:
-                    mayCraftList(content, city, CraftBuildingLib.SmelterCraftTypes);
+                    mayCraftList(content, city, BuildingCraftList.SmelterCraftTypes);
                     break;
 
                 case BuildAndExpandType.Foundry:
-                    mayCraftList(content, city, CraftBuildingLib.FoundryCraftTypes);
+                    mayCraftList(content, city, BuildingCraftList.FoundryCraftTypes);
                     break;
 
                 case BuildAndExpandType.Armory:
-                    mayCraftList(content, city, CraftBuildingLib.ArmoryCraftTypes);
+                    mayCraftList(content, city, BuildingCraftList.ArmoryCraftTypes);
                     break;
 
                 case BuildAndExpandType.Smith:
-                    mayCraftList(content, city, CraftBuildingLib.SmithCraftTypes);
+                    mayCraftList(content, city, BuildingCraftList.SmithCraftTypes);
                     break;
 
                 case BuildAndExpandType.Gunmaker:
-                    mayCraftList(content, city, CraftBuildingLib.GunmakerCraftTypes);
+                    mayCraftList(content, city, BuildingCraftList.GunmakerCraftTypes);
                     break;
 
                 case BuildAndExpandType.CoalPit:

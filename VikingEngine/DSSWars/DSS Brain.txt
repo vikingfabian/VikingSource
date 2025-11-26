@@ -1,9 +1,19 @@
 ﻿UPDATE
 
+* Fixed ship strength value
+* Fixed rare empty faction get gold crash
+
+x testa attackera medan man deklarer fred
+x neutral unit attacking same city
+x tooltip resource crafted what building info
+
+
 fixed - will update soon
 
 
 #SPRING UPDATE#
+* controller vibrate on message
+* controller vibration setting
 * cooling fluid output increase 10 > 15
 
 UNCLAIMED LAND
@@ -17,6 +27,7 @@ ECS REFACTORING
 #Spring update TODO
 x start with one city
 
+x tooltip resource crafted what building info
 x ResourceOverview
 x cities summary tab
 -Having a tab with queued units and also a UI element to select all baracks and recruit simultaneously per city (less micromanagement)

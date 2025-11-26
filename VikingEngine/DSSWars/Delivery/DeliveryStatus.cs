@@ -35,7 +35,6 @@ namespace VikingEngine.DSSWars.Delivery
         public DeliveryProfile profile;
         public DeliveryProfile inProgress;
 
-        //public Resource.ItemResource nextDelivery;
         public TimeInGameCountdown countdown;
 
         public void halt()
@@ -45,13 +44,21 @@ namespace VikingEngine.DSSWars.Delivery
 
         public void useSetup(DeliveryStatus setup, LocalPlayer player)
         {
-            useSenderMin = setup.useSenderMin;
-            senderMin = setup.senderMin;
-            useRecieverMax = setup.useRecieverMax;
-            recieverMax = setup.recieverMax;
-            profile = setup.profile;
+            if (setup.fullSetup())
+            {
+                useSenderMin = setup.useSenderMin;
+                senderMin = setup.senderMin;
+                useRecieverMax = setup.useRecieverMax;
+                recieverMax = setup.recieverMax;
+                profile = setup.profile;
 
-            checkCity(player);
+                checkCity(player);
+            }
+        }
+
+        public bool fullSetup()
+        {
+            return profile.fullSetup();
         }
 
         public bool IsGold()
@@ -87,7 +94,8 @@ namespace VikingEngine.DSSWars.Delivery
 
         public void checkCity(LocalPlayer player)
         {
-            if (profile.toCity == DeliveryProfile.ToCityAuto)
+            if (profile.toCity < 0 ||
+                profile.toCity == DeliveryProfile.ToCityAuto)
             {
                 return;
             }
@@ -350,6 +358,12 @@ namespace VikingEngine.DSSWars.Delivery
         public int autoCity;
         public ItemResourceType type;
 
+        public bool fullSetup()
+        {
+            return type != ItemResourceType.NONE && type != ItemResourceType.RESOURCES &&
+                toCity >= 0;
+        }
+
         public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write((short)toCity);
@@ -370,8 +384,7 @@ namespace VikingEngine.DSSWars.Delivery
             if (toCity == ToCityAuto)
             {
                 autoCity = r.ReadInt16();
-            }
-            
+            }            
         }
 
         public int ToCity()

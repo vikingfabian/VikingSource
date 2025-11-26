@@ -392,9 +392,20 @@ namespace VikingEngine.DSSWars.Conscript
 
                         void SubTab(BuildAndExpandType filter)
                         {
-                            var subTab = new ArtButton(player.conscriptSubTab == filter ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, new List<AbsRichBoxMember> 
-                            { 
-                                new RbText(filter == BuildAndExpandType.ALL? DssRef.lang.Hud_All : LangLib.BuildingName(filter))
+                            string filterName;
+                            if (filter == BuildAndExpandType.ALL)
+                            {
+                                filterName = DssRef.lang.Hud_All;
+                            }
+                            else
+                            {
+                                IconName.Building(filter, out _, out filterName);
+                            }
+
+
+                            var subTab = new ArtButton(player.conscriptSubTab == filter ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, new List<AbsRichBoxMember>
+                            {
+                                new RbText(filterName)
                             },
                                new RbAction1Arg<BuildAndExpandType>((BuildAndExpandType filter) =>
                                {

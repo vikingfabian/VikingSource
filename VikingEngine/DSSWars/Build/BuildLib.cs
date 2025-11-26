@@ -154,13 +154,16 @@ namespace VikingEngine.DSSWars.Build
     {
         public static List<BuildAndExpandType> LogisticsUnlockBuildings = new List<BuildAndExpandType>
         {
+            BuildAndExpandType.CoalPit,
+            BuildAndExpandType.Brewery,
 
             BuildAndExpandType.ImmigrationTent,
-            BuildAndExpandType.Nobelhouse,
             BuildAndExpandType.Recruitment,
             BuildAndExpandType.Storehouse,
             BuildAndExpandType.Tavern,
-            BuildAndExpandType.Brewery,
+
+            BuildAndExpandType.WoodWall,
+
             BuildAndExpandType.School,
             BuildAndExpandType.ResearchCenter,
         };
@@ -176,51 +179,43 @@ namespace VikingEngine.DSSWars.Build
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
         public static void AvailableBuildTypes(List<BuildAndExpandType> list, City city)
         {
-            //if (StartupSettings.UnlockAllProgress)
-            //{
-            //    unlocks.unlockAll();
-            //}
             bool unlockAll = DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator ||
                 StartupSettings.UnlockAllProgress;
 
             var unlocks = city.technology.GetUnlocks(false);
 
-            
+            bool logistics1 = city.buildingStructure.buildingLevel_logistics >= 1 ||
+                unlockAll;
+            bool logistics2 = city.buildingStructure.buildingLevel_logistics >= 2 ||
+                unlockAll;
 
-            list.Add(BuildAndExpandType.Palisade);
-
-            if (city.buildingStructure.buildingLevel_logistics == 0 ||
-                unlockAll)
+            if (city.buildingStructure.buildingLevel_logistics == 0)
             {
                 list.Add(BuildAndExpandType.Logistics);
             }
-            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
-                unlockAll)
+
+            if (logistics1)
             {
                 list.Add(BuildAndExpandType.School);
 
                 list.Add(BuildAndExpandType.ResearchCenter);
                 list.Add(BuildAndExpandType.BookPress);
-
             }
 
             list.Add(BuildAndExpandType.WorkerHut);
-            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
-                unlockAll)
+            if (logistics1)
             {
                 list.Add(BuildAndExpandType.WorkerHutLarge);
             }
 
             list.Add(BuildAndExpandType.ServiceHouse_Small);
-            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
-                unlockAll)
+            if (logistics1)
             {                
                 list.Add(BuildAndExpandType.ServiceHouse_Large);
             }
 
             list.Add(BuildAndExpandType.GuardHouse_Small);
-            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
-               unlockAll)
+            if (logistics1)
             {
                 list.Add(BuildAndExpandType.GuardHouse_Large);
 
@@ -254,7 +249,10 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.PigPen);
             }
 
-            list.Add(BuildAndExpandType.HenPen);
+            if (logistics1)
+            {
+                list.Add(BuildAndExpandType.HenPen);
+            }
 
             if (city.buildingStructure.WoodCutter_count > 0 ||
                 unlockAll)
@@ -283,8 +281,7 @@ namespace VikingEngine.DSSWars.Build
 
             list.Add(BuildAndExpandType.Postal);
 
-            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
-                unlockAll)
+            if (logistics1)
             {
                 list.Add(BuildAndExpandType.PostalLevel2);
                 list.Add(BuildAndExpandType.PostalLevel3);
@@ -303,9 +300,11 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.Tavern);
                 list.Add(BuildAndExpandType.Brewery);
                 list.Add(BuildAndExpandType.WaterResovoir);
+
+                list.Add(BuildAndExpandType.CoalPit);
             }
             
-            list.Add(BuildAndExpandType.CoalPit);
+            
             list.Add(BuildAndExpandType.WorkBench);
             list.Add(BuildAndExpandType.Cook);
             list.Add(BuildAndExpandType.Smelter);
@@ -319,12 +318,15 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.Gunmaker);
             }
 
-            list.Add(BuildAndExpandType.Armory);
-
-           
+            list.Add(BuildAndExpandType.Armory);    
+            
             list.Add(BuildAndExpandType.SoldierBarracks);
             list.Add(BuildAndExpandType.ArcherBarracks);
-            list.Add(BuildAndExpandType.WarmachineBarracks);
+
+            if (logistics1)
+            {
+                list.Add(BuildAndExpandType.WarmachineBarracks);
+            }
             if (unlocks.building_gunBarrack || unlockAll)
             {
                 list.Add(BuildAndExpandType.GunBarracks);
@@ -335,26 +337,21 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.CannonBarracks);
             }
 
-            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
-                unlockAll)
+            if (logistics1)
             {
                 if (city.buildingStructure.Nobelhouse_count > 0 ||
                     unlockAll)
                 {
                     list.Add(BuildAndExpandType.KnightsBarracks);
                 }
-            }
-
-            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
-                unlockAll)
-            {                
+                    
                 list.Add(BuildAndExpandType.WoodCutter);
                 list.Add(BuildAndExpandType.StoneCutter);
             }
 
             list.Add(BuildAndExpandType.DirtRoad);
-            if (city.buildingStructure.buildingLevel_logistics >= 2 ||
-                unlockAll)
+
+            if (logistics2)
             {
                 list.Add(BuildAndExpandType.Pavement);
                 list.Add(BuildAndExpandType.PavementFlower);
@@ -379,15 +376,19 @@ namespace VikingEngine.DSSWars.Build
             {
                 list.Add(BuildAndExpandType.Statue_ThePlayer);
             }
-            
-            list.Add(BuildAndExpandType.DirtWall);
-            list.Add(BuildAndExpandType.DirtTower);
-            list.Add(BuildAndExpandType.WoodWall);
-            list.Add(BuildAndExpandType.WoodTower);
 
-            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
-                unlockAll)
+            if (city.GetGroupedResource(ItemResourceType.Palisade).amount > 0)
             {
+                list.Add(BuildAndExpandType.Palisade);
+            }
+
+            list.Add(BuildAndExpandType.DirtWall);
+            list.Add(BuildAndExpandType.DirtTower);            
+
+            if (logistics1)
+            {
+                list.Add(BuildAndExpandType.WoodWall);
+                list.Add(BuildAndExpandType.WoodTower);
                 list.Add(BuildAndExpandType.StoneWall);
                 list.Add(BuildAndExpandType.StoneTower);
                 list.Add(BuildAndExpandType.StoneWallGreen);
@@ -395,17 +396,13 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.StoneWallWoodHouse);
                 list.Add(BuildAndExpandType.StoneGate);
                 list.Add(BuildAndExpandType.StoneHouse);
+                list.Add(BuildAndExpandType.CitySquare);
             }
            
-           
-            list.Add(BuildAndExpandType.CitySquare);
             list.Add(BuildAndExpandType.CobbleStones);
-
             list.Add(BuildAndExpandType.GardenMemoryStone);
 
-
-            if (city.buildingStructure.buildingLevel_logistics >= 1 ||
-                unlockAll)
+            if (logistics1)
             {
                 list.Add(BuildAndExpandType.FlagPole_LongBanner);
                 list.Add(BuildAndExpandType.FlagPole_Banner);
@@ -422,10 +419,7 @@ namespace VikingEngine.DSSWars.Build
             {
                 list.Add(BuildAndExpandType.TreeSoft);
                 list.Add(BuildAndExpandType.TreeHard);
-
-                //list.Add(BuildAndExpandType.StonesMine);
                 list.Add(BuildAndExpandType.CoalMine);
-                //list.Add(BuildAndExpandType.StoneBlockMine);
                 list.Add(BuildAndExpandType.IronOreMine);
                 list.Add(BuildAndExpandType.TinOreMine);
                 list.Add(BuildAndExpandType.CopperOreMine);

@@ -263,22 +263,85 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void copyDelivery(LocalPlayer player, int index)
         {
+            //if (arraylib.InBound(deliveryServices, index))
+            //{
+            //    DeliveryStatus currentStatus = deliveryServices[index];
+
+            //    switch (currentStatus.profile.type)
+            //    {
+            //        default:
+            //            player.itemDeliveryCopy = currentStatus;
+            //            break;
+            //        case DeliveryStatus.DeliveryType_Men:
+            //            player.menDeliveryCopy = currentStatus;
+            //            break;
+            //        case DeliveryStatus.DeliveryType_Gold:
+            //            player.goldDeliveryCopy = currentStatus;
+            //            break;
+            //    }
+            //}
+            CopyPasteDelivery(player, true, index);
+        }
+        public void pasteDelivery(LocalPlayer player, int index)
+        {
+            //if (arraylib.InBound(deliveryServices, index))
+            //{
+            //    DeliveryStatus currentStatus = deliveryServices[index];
+
+            //    switch (currentStatus.profile.type)
+            //    { 
+            //        default:
+            //            currentStatus.useSetup(player.itemDeliveryCopy, player);
+            //            break;
+            //        case DeliveryStatus.DeliveryType_Men:
+            //            currentStatus.useSetup(player.menDeliveryCopy, player);
+            //            break;
+            //        case DeliveryStatus.DeliveryType_Gold:
+            //            currentStatus.useSetup(player.goldDeliveryCopy, player);
+            //            break;
+            //    }
+
+            //    deliveryServices[index] = currentStatus;
+            //}
+            CopyPasteDelivery(player, false, index);
+        }
+
+        public DeliveryStatus CopyPasteDelivery(LocalPlayer player, bool copy, int index)
+        {
             if (arraylib.InBound(deliveryServices, index))
             {
                 DeliveryStatus currentStatus = deliveryServices[index];
+                ref var playerCopy = ref getDeliveryCopyRef(player, currentStatus.profile.type);
 
-                switch (currentStatus.profile.type)
+                if (copy)
                 {
-                    default:
-                        player.itemDeliveryCopy = currentStatus;
-                        break;
-                    case DeliveryStatus.DeliveryType_Men:
-                        player.menDeliveryCopy = currentStatus;
-                        break;
-                    case DeliveryStatus.DeliveryType_Gold:
-                        player.goldDeliveryCopy = currentStatus;
-                        break;
+                    playerCopy = currentStatus;
                 }
+                else
+                { 
+                    currentStatus.useSetup(playerCopy, player);
+                    deliveryServices[index] = currentStatus;
+                }
+
+                return playerCopy;
+            }
+
+            return new DeliveryStatus();
+        }
+
+        public ref DeliveryStatus getDeliveryCopyRef(LocalPlayer player, ItemResourceType type)
+        {
+            switch (type)
+            {
+                default:
+                    //player.itemDeliveryCopy = currentStatus;
+                    return ref player.itemDeliveryCopy;
+                case DeliveryStatus.DeliveryType_Men:
+                    //player.menDeliveryCopy = currentStatus;
+                    return ref player.menDeliveryCopy;
+                case DeliveryStatus.DeliveryType_Gold:
+                    //player.goldDeliveryCopy = currentStatus;
+                    return ref player.goldDeliveryCopy;
             }
         }
 
@@ -294,28 +357,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void pasteDelivery(LocalPlayer player, int index)
-        {
-            if (arraylib.InBound(deliveryServices, index))
-            {
-                DeliveryStatus currentStatus = deliveryServices[index];
-
-                switch (currentStatus.profile.type)
-                { 
-                    default:
-                        currentStatus.useSetup(player.itemDeliveryCopy, player);
-                        break;
-                    case DeliveryStatus.DeliveryType_Men:
-                        currentStatus.useSetup(player.menDeliveryCopy, player);
-                        break;
-                    case DeliveryStatus.DeliveryType_Gold:
-                        currentStatus.useSetup(player.goldDeliveryCopy, player);
-                        break;
-                }
-               
-                deliveryServices[index] = currentStatus;
-            }
-        }
+       
 
         public void pasteDeliveryToAll(LocalPlayer player)
         {

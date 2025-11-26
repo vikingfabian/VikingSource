@@ -377,26 +377,9 @@ namespace VikingEngine.DSSWars.Delivery
 
                 HudLib.copyPaste(content, player,
                     new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, RbSoundType.Copy),
-                    new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, RbSoundType.Paste));
-                //content.Add(new RbImage(player.gameControls.input.Copy.Icon));
-                //content.hspace();
-                //content.Add(new ArtButton(  RbButtonStyle.Primary,new List<AbsRichBoxMember> {
-                //    new RbImage(SpriteName.WarsHudIconCopy),
-                //    new RbSpace(),
-                //    new RbText(DssRef.lang.Hud_CopySetup) },
-                //    new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, RbSoundType.Copy)));
-
-                //content.space();
-                //content.Add(new RbImage(player.gameControls.input.Paste.Icon));
-                //content.hspace();
-                //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                //    new RbImage(SpriteName.WarsHudIconPaste),
-                //    new RbSpace(),
-                //    new RbText(DssRef.lang.Hud_Paste)
-                //},
-                //new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, RbSoundType.Paste)));
-
-
+                    new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, RbSoundType.Paste),
+                    city.getDeliveryCopyRef(player, currentStatus.profile.type).fullSetup());
+                
             }
             else
             {
