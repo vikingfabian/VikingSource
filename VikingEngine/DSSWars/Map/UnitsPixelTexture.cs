@@ -85,17 +85,20 @@ namespace VikingEngine.DSSWars.Map
                         groupsCounter.sel.position.X - 0.5f,
                         groupsCounter.sel.position.Z - 0.5f);
 
-                    if (lib.IsEven(topleft.X + topleft.Y))
+                    if (texture.InBound(topleft))
                     {
-                        texture.SetTwoPixels(topleft, colorProfile1, colorProfile2);
-                        topleft.Y++;
-                        texture.SetTwoPixels(topleft, colorProfile2, colorProfile1);
-                    }
-                    else
-                    {
-                        texture.SetTwoPixels(topleft, colorProfile2, colorProfile1);
-                        topleft.Y++;
-                        texture.SetTwoPixels(topleft, colorProfile1, colorProfile2);
+                        if (lib.IsEven(topleft.X + topleft.Y))
+                        {
+                            texture.SetTwoPixels(topleft, colorProfile1, colorProfile2);
+                            topleft.Y++;
+                            texture.SetTwoPixels(topleft, colorProfile2, colorProfile1);
+                        }
+                        else
+                        {
+                            texture.SetTwoPixels(topleft, colorProfile2, colorProfile1);
+                            topleft.Y++;
+                            texture.SetTwoPixels(topleft, colorProfile1, colorProfile2);
+                        }
                     }
                 }
                 

@@ -1,5 +1,5 @@
 ﻿UPDATE
-
+* fixed: pixels being drawn outside the minimap bounds
 
 x testa attackera medan man deklarer fred
 x neutral unit attacking same city
