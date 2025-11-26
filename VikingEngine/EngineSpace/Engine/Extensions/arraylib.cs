@@ -504,7 +504,7 @@ namespace VikingEngine
             }
             else
             {
-                value = default(T);
+                value = default;
                 return false;
             }
         }

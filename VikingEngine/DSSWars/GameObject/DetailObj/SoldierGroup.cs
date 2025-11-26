@@ -2194,9 +2194,11 @@ namespace VikingEngine.DSSWars.GameObject
         //    return false;
         //}
 
+        
+
         public float strengthValue()
         {
-            return AllUnits.GroupStrengh(soldierCount, ref soldierData, true);
+            return AllUnits.GroupStrengh(soldierData.UnitCount(), ref soldierData, !isShip);
             
         }
 

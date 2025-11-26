@@ -77,11 +77,19 @@ namespace VikingEngine.DSSWars.Resource
                 content.Add(new RbText(priority.value.ToString(), priority.HasPrio() ? null : HudLib.NotAvailableColor));
             }
 
-            ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
+            var properties = ItemPropertyColl.Get(item);
+            //ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
 
-            bp(bp1);
-            bp(bp2);
+            content.Add(new RbSeperationLine());
 
+            content.h1("Item source", HudLib.TitleColor_Head2);
+            content.newLine();
+            properties.ItemSourceToHud(content);
+
+            bp(properties.bp1);
+            bp(properties.bp2);
+
+            
             //if (bp2 != null)
             //{
 
