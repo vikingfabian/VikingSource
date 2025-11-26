@@ -686,11 +686,11 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
 
                             case TerrainBuildingType.Work_Bench:
-                                craftBench(pos, distanceValue, CraftBuildingLib.BenchCraftTypes, -5);
+                                craftBench(pos, distanceValue, BuildingCraftList.BenchCraftTypes, -5);
                                 break;
                             case TerrainBuildingType.Work_Smith:
 
-                                craftBench(pos, distanceValue, CraftBuildingLib.SmithCraftTypes);
+                                craftBench(pos, distanceValue, BuildingCraftList.SmithCraftTypes);
                                 break;
 
                             case TerrainBuildingType.Work_CoalPit:
@@ -714,26 +714,26 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
 
                             case TerrainBuildingType.Carpenter:
-                                craftBench(pos, distanceValue, CraftBuildingLib.CarpenterCraftTypes);
+                                craftBench(pos, distanceValue, BuildingCraftList.CarpenterCraftTypes);
                                 break;
                             case TerrainBuildingType.Armory:
-                                craftBench(pos, distanceValue, CraftBuildingLib.ArmoryCraftTypes);
+                                craftBench(pos, distanceValue, BuildingCraftList.ArmoryCraftTypes);
                                 break;
                             case TerrainBuildingType.Smelter:
-                                craftBench(pos, distanceValue, CraftBuildingLib.SmelterCraftTypes);
+                                craftBench(pos, distanceValue, BuildingCraftList.SmelterCraftTypes);
                                 break;
                             case TerrainBuildingType.Foundry:
-                                craftBench(pos, distanceValue, CraftBuildingLib.FoundryCraftTypes);
+                                craftBench(pos, distanceValue, BuildingCraftList.FoundryCraftTypes);
                                 break;
                             case TerrainBuildingType.Chemist:
-                                craftBench(pos, distanceValue, CraftBuildingLib.ChemistCraftTypes);
+                                craftBench(pos, distanceValue, BuildingCraftList.ChemistCraftTypes);
                                 break;
                             case TerrainBuildingType.Gunmaker:
                                 //if (myIndex == 153)
                                 //{
                                 //    lib.DoNothing();
                                 //}
-                                craftBench(pos, distanceValue, CraftBuildingLib.GunmakerCraftTypes);
+                                craftBench(pos, distanceValue, BuildingCraftList.GunmakerCraftTypes);
                                 break;
                             case TerrainBuildingType.CoinMinter:
                                 coinMint(pos, distanceValue);

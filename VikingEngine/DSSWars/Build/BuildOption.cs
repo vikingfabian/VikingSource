@@ -68,7 +68,8 @@ namespace VikingEngine.DSSWars.Build
         }
         public string Label()
         {
-            return LangLib.TerrainName(mainType, subType);
+            IconName.Building(buildType, out _, out string name);//LangLib.TerrainName(mainType, subType);
+            return name;
         }
         public string Description()
         {
