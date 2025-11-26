@@ -12,9 +12,14 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
+        public string Tutorial_WillTakeAWhile => "This will take a while, come back later.";
+        
         //##SPRING - settings##
         public string Settings_ControllerVibration = "Controller vibration";
-
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public string Tutorial_WaitFor => "Wait for {0} to complete";
 
 
 

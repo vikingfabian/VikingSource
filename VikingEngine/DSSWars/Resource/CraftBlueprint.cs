@@ -272,6 +272,7 @@ namespace VikingEngine.DSSWars.Resource
                 }
                 else
                 {
+                    content.hspace();
                     content.Add(new RbText(resultAmount.ToString()));
                     content.hspace();
                 }

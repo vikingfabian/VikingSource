@@ -237,7 +237,7 @@ namespace VikingEngine.DSSWars
             };
         }
 
-        public static void copyPaste(RichBoxContent content, LocalPlayer player, AbsRbAction copy, AbsRbAction paste)
+        public static void copyPaste(RichBoxContent content, LocalPlayer player, AbsRbAction copy, AbsRbAction paste, bool pasteAvailable = true)
         {
             player.gameControls.input.Copy.ToRichContent(content);
             content.hspace();
@@ -254,7 +254,7 @@ namespace VikingEngine.DSSWars
                     new RbImage(SpriteName.WarsHudIconPaste, WarHudIcons_DefaultScale),
                     new RbSpace(),
                     new RbText(DssRef.lang.Hud_Paste)
-                }, paste));
+                }, paste, null, pasteAvailable));
         }
         public static void buildingMenuTitle(RichBoxContent content, SpriteName icon, string caption, int id, int index, int buildingCount, Action closeAction, Action<int> nextAction)
         {

@@ -16,6 +16,47 @@ namespace VikingEngine.DSSWars
 {
     static class IconName
     {
+        public static void BuildCategory(BuildCategoryTab tab, out SpriteName tabIcon, out string category)
+        {
+            //string category;
+            //SpriteName tabIcon;
+            switch (tab)
+            {
+                case BuildCategoryTab.Filter:
+                    tabIcon = SpriteName.warsBuildCategorySearch;
+                    category = DssRef.lang.HUD_Filter;
+                    break;
+                case BuildCategoryTab.General:
+                    tabIcon = SpriteName.warsBuildCategoryHouse;
+                    category = DssRef.lang.BuildCategory_General;
+                    break;
+                case BuildCategoryTab.Advanced:
+                    tabIcon = SpriteName.warsBuildCategoryAdvanced;
+                    category = DssRef.lang.Hud_Advanced;
+                    break;
+                case BuildCategoryTab.Military:
+                    tabIcon = SpriteName.warsBuildCategoryMilitaryWall;
+                    category = DssRef.lang.BuildCategory_Military;
+                    break;
+                case BuildCategoryTab.Decor:
+                    tabIcon = SpriteName.warsBuildCategoryDecorTree;
+                    category = DssRef.lang.BuildCategory_Decoration;
+                    break;
+                case BuildCategoryTab.Upgrade:
+                    tabIcon = SpriteName.warsBuildCategoryUpgrades;
+                    category = DssRef.lang.BuildCategory_Upgrade;
+                    break;
+                case BuildCategoryTab.GodPower:
+                    tabIcon = SpriteName.WarsGodPowerIcon;
+                    category = DssRef.lang.GodPower;
+                    break;
+                default:
+                    tabIcon = SpriteName.warsBuildCategoryAutomation;
+                    category = DssRef.lang.Automation_Title;
+                    break;
+            }
+        }
+
         public static void Tab(ResourcesSubTab tab, out SpriteName categoryIcon, out string category, out SpriteName tabIcon, out string tabName)
         {
             switch (tab)

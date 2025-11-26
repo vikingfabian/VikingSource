@@ -155,6 +155,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         //bool logisticsUpgrade_selectTab = false;
         TwoBools logisticsUpgrade_collectFood_sound = TwoBools.False;
         TwoBools logisticsUpgrade_build_sound = TwoBools.False;
+        bool logisticsUpgrade_buildComplete = false;
 
         //EducateBurner,
         TwoBools educateBurner_buildSchool = TwoBools.False;
@@ -495,7 +496,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                
                 case TutorialMission.Linen:
                     content.iconicontext(HudLib.CheckImage(linen_selectTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Build));
-                    content.iconicontext(HudLib.CheckImage(linen_build), SpriteName.WarsBuild_LinenFarms, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.LinenFarm].Label()));
+                    //content.iconicontext(HudLib.CheckImage(linen_build), SpriteName.WarsBuild_LinenFarms, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.LinenFarm].Label()));
+                    buildOrder(linen_build, BuildAndExpandType.LinenFarm);
                     //content.icontext(HudLib.CheckImage(linen_armorWork), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_LightArmor));
                     content.iconicontext(HudLib.CheckImage(linen_collect), SpriteName.WarsResource_LinenCloth, string.Format(DssRef.lang.Tutorial_CollectXAmountOfY, CollectLinenAmount, DssRef.lang.Resource_TypeName_Linen));
                     break;
@@ -519,15 +521,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(DssRef.lang.Tutorial_HighPriority, HudLib.InfoYellow_Light));
-                    
+                    content.Add(new RbText(DssRef.lang.Tutorial_HighPriority, HudLib.InfoYellow_Light));                    
                     break;
 
-
-               
-
                 case TutorialMission.ConscriptArmy:
-                    content.iconicontext(HudLib.CheckImage(conscriptArmy_build), SpriteName.WarsBuild_Barracks, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.SoldierBarracks].Label()));
+                    //content.iconicontext(HudLib.CheckImage(conscriptArmy_build), SpriteName.WarsBuild_Barracks, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.SoldierBarracks].Label()));
+                    buildOrder(conscriptArmy_build, BuildAndExpandType.SoldierBarracks);
                     content.iconicontext(HudLib.CheckImage(conscriptArmy_selectTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title));
                     content.iconicontext(HudLib.CheckImage(conscriptArmy_createArmy), SpriteName.WarsUnitIcon_Folkman, string.Format(DssRef.lang.Tutorial_CreateSoldiers, DssRef.lang.Resource_TypeName_SharpStick, DssRef.lang.Resource_TypeName_PaddedArmor));
                     break;
@@ -627,10 +626,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     addResourcePin(tagCity_rawFoodToHud_sound.Value1, ItemResourceType.RawFood_Group);
                     addResourcePin(tagCity_fuelToHud_sound.Value1, ItemResourceType.Fuel_G);
                     addResourcePin(tagCity_foodToHud_sound.Value1, ItemResourceType.Food_G);
-
-                    
-
                     break;
+
                 case TutorialMission.LogisticsUpgrade:
                     content.newLine();
                     HudLib.BulletPoint(content);
@@ -641,8 +638,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //TwoBools logisticsUpgrade_collectFood_sound = TwoBools.False;
                     content.iconicontext(HudLib.CheckImage(logisticsUpgrade_collectFood_sound.Value1), SpriteName.WarsStockpileStop, string.Format(DssRef.lang.Tutorial_CollectItemStockpile, DssConst.Logistics1FoodStorage, DssRef.lang.Resource_TypeName_Food));
                     //TwoBools logisticsUpgrade_build_sound = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(logisticsUpgrade_build_sound.Value1), SpriteName.WarsBuild_Logistics, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Logistics].Label()));
+                    //content.iconicontext(HudLib.CheckImage(logisticsUpgrade_build_sound.Value1), SpriteName.WarsBuild_Logistics, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Logistics].Label()));
+                    buildOrder(logisticsUpgrade_build_sound.Value1, BuildAndExpandType.Logistics);
+
+                    content.iconicontext(HudLib.CheckImage(logisticsUpgrade_buildComplete), SpriteName.WarsBuild_Logistics, string.Format(DssRef.todoLang.Tutorial_WaitFor, DssRef.lang.BuildingType_Logistics));
                     break;
+
                 case TutorialMission.EducateBurner:
                     content.newLine();
                     HudLib.BulletPoint(content);
@@ -650,21 +651,27 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.Add(new RbText(DssRef.lang.UnitType_City));
                     ////EducateBurner,
                     //TwoBools educateBurner_buildSchool = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(educateBurner_buildCoalPit.Value1), SpriteName.WarsBuild_CoalPit, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.CoalPit].Label()));
-                    content.iconicontext(HudLib.CheckImage(educateBurner_buildSchool.Value1), SpriteName.WarsBuild_School, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.School].Label()));
-                    
+                    //content.iconicontext(HudLib.CheckImage(educateBurner_buildCoalPit.Value1), SpriteName.WarsBuild_CoalPit, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.CoalPit].Label()));
+                    //content.iconicontext(HudLib.CheckImage(educateBurner_buildSchool.Value1), SpriteName.WarsBuild_School, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.School].Label()));
+                    buildOrder(educateBurner_buildCoalPit.Value1, BuildAndExpandType.CoalPit);
+                    buildOrder(educateBurner_buildSchool.Value1, BuildAndExpandType.School);
+
                     //TwoBools educateBurner_educateFuel = TwoBools.False;
                     content.iconicontext(HudLib.CheckImage(educateBurner_schoolTab.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Progress) + ". " + string.Format(DssRef.lang.Tutorial_Select_SubTab, DssRef.lang.BuildingType_School_Tab));
                     
                     content.iconicontext(HudLib.CheckImage(educateBurner_educateFuel.Value1), SpriteName.WarsBuild_School, DssRef.lang.Hud_Produce);
+                    content.space();
                     LangLib.ExperienceType(XP.WorkExperienceType.CraftFuel, out var xpName, out var xpIcon);
                     content.Add(new RbImage(xpIcon));
                     content.Add(new RbText(xpName));
                     HudLib.BulletSeperationPoint(content);
                     content.Add(new RbImage(SpriteName.WarsUnitLevelBasic));
                     content.Add(new RbText(LangLib.ExperienceLevel(XP.ExperienceLevel.Practitioner_2)));
-
+                    
+                    content.newLine();
+                    HudLib.BulletPoint(content); content.Add(new RbText(DssRef.todoLang.Tutorial_WillTakeAWhile));
                     break;
+
                 case TutorialMission.SendFood:
                     content.newLine();
                     HudLib.BulletPoint(content);
@@ -673,7 +680,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     ////SendFood,
                     //TwoBools sendFood_buildPostal = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(sendFood_buildPostal.Value1), SpriteName.WarsBuild_Postal, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Postal].Label()));
+                    //content.iconicontext(HudLib.CheckImage(sendFood_buildPostal.Value1), SpriteName.WarsBuild_Postal, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Postal].Label()));
+                    buildOrder(sendFood_buildPostal.Value1, BuildAndExpandType.Postal);
                     //TwoBools sendFood_selectTab = TwoBools.False;
                     content.iconicontext(HudLib.CheckImage(sendFood_selectTab.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Delivery));
                     //TwoBools sendFood_postalQueue = TwoBools.False;
@@ -701,6 +709,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.space();
                     content.Add(new RbImage(SpriteName.WarsResource_Bow));
                     break;
+
                 case TutorialMission.FletcherPractice:
                     content.newLine();
                     HudLib.BulletPoint(content);
@@ -708,8 +717,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.Add(new RbText(DssRef.lang.UnitType_City));
                     ////FletcherPractice
                     //TwoBools fletcherPractice_buildWorkBench_sound = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(fletcherPractice_buildWorkBench_sound.Value1), SpriteName.WarsBuild_WorkBench, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.WorkBench].Label()));
-
+                    //content.iconicontext(HudLib.CheckImage(fletcherPractice_buildWorkBench_sound.Value1), SpriteName.WarsBuild_WorkBench, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.WorkBench].Label()));
+                    buildOrder(fletcherPractice_buildWorkBench_sound.Value1, BuildAndExpandType.WorkBench);
                     content.iconicontext(HudLib.CheckImage(fletcherPractice_resourceTab_sound.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources));
 
                     //TwoBools fletcherPractice_setSlingerTo3_sound = TwoBools.False;
@@ -734,9 +743,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         //TwoBools fletcherPracticeWait_progressToHud_sound = TwoBools.False;
                         LangLib.Technology(XP.TechnologyTreeType.catapult, out SpriteName catapultIcon, out string catapultCaption);
                         content.iconicontext(HudLib.CheckImage(fletcherPracticeWait_progressToHud_sound.Value1), SpriteName.HudPinIcon, DssRef.lang.Tutorial_AddPin);
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.Technology_Title));
+                        HudLib.BulletSeperationPoint(content);
                         content.Add(new RbImage(catapultIcon));
                         content.Add(new RbText(catapultCaption));
                         //TwoBools fletcherPracticeWait_skillToHud_sound = TwoBools.False;
+
                         LangLib.ExperienceType(XP.WorkExperienceType.Fletcher, out string fletcherCaption, out SpriteName fletcherIcon);
                         content.iconicontext(HudLib.CheckImage(fletcherPracticeWait_skillToHud_sound.Value1), SpriteName.HudPinIcon, DssRef.lang.Tutorial_AddPin);
                         content.space();
@@ -756,6 +769,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         content.Add(new RbImage(fletcherIcon));
                         content.Add(new RbText(fletcherCaption));
 
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(DssRef.todoLang.Tutorial_WillTakeAWhile, HudLib.InfoYellow_Light));
+
                         content.newParagraph();
                         City city = player.gameControls.map.selection.obj as City;
                         content.Add(new RbImage(SpriteName.WarsBluePrint));
@@ -765,14 +782,28 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         if (city != null)
                         {
                             var sligshot = city.GetGroupedResource(ItemResourceType.SlingShot);
+                            bool reachedBuffer = sligshot.reachedBuffer();
                             content.newLine();
+                            if (reachedBuffer)
+                            {
+                                content.Add(new RbImage(SpriteName.cmdWarningTriangle));
+                                content.hspace();
+                            }
                             content.Add(new RbImage(SpriteName.WarsResource_Slingshot));
                             content.space();
                             content.Add(new RbImage(sligshot.amount >= sligshot.goalBuffer ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd));
                             content.hspace();
                             content.Add(new RbText(DssRef.lang.Resource_Tab_Stockpile + ":"));
                             content.space();
-                            content.Add(new RbText(string.Format("{0}/{1}", sligshot.amount, sligshot.goalBuffer), HudLib.InfoYellow_Light));
+
+                           
+                            
+                            content.Add(new RbText(string.Format("{0}/{1}", sligshot.amount, sligshot.goalBuffer), reachedBuffer? HudLib.NotAvailableColor : HudLib.InfoYellow_Light));
+                            if (reachedBuffer)
+                            {
+                                content.hspace();
+                                content.Add(new RbImage(SpriteName.cmdWarningTriangle));
+                            }
                         }
                     }
                     break;
@@ -783,11 +814,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.Add(new RbText(DssRef.lang.UnitType_City));
                     ////ProduceBow,
                     //bool produceBow_buildLogistics = false;
-                    content.iconicontext(HudLib.CheckImage(produceBow_buildLogistics), SpriteName.WarsBuild_Logistics, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Logistics].Label()));
-
+                    //content.iconicontext(HudLib.CheckImage(produceBow_buildLogistics), SpriteName.WarsBuild_Logistics, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Logistics].Label()));
+                    buildOrder(produceBow_buildLogistics, BuildAndExpandType.Logistics);
                     //TwoBools produceBow_buildCarpenter = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(produceBow_buildCarpenter.Value1), SpriteName.WarsBuild_Carpenter, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Carpenter].Label()));
-
+                    //content.iconicontext(HudLib.CheckImage(produceBow_buildCarpenter.Value1), SpriteName.WarsBuild_Carpenter, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Carpenter].Label()));
+                    buildOrder(produceBow_buildCarpenter.Value1, BuildAndExpandType.Carpenter);
                     content.iconicontext(HudLib.CheckImage(produceBow_blackmarketTab.Value1 || produceBow_buyIron.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Hud_BlackMarket));
 
                     content.iconicontext(HudLib.CheckImage(produceBow_buyIron.Value1), SpriteName.WarsResource_Iron, string.Format(DssRef.lang.HudAction_BuyItem, DssRef.lang.Resource_TypeName_Iron));
@@ -817,8 +848,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //content.Add(new RbText(DssRef.lang.Tutorial_SelectACity));
                     ////content.icontext(HudLib.CheckImage(recruitGuard_selectCity), DssRef.lang.Tutorial_SelectACity);
                     //content.iconicontext(HudLib.CheckImage(recruitGuard_zoomIn), SpriteName.WarsWorker, DssRef.lang.Tutorial_ZoomInWorkers);
-                    content.iconicontext(HudLib.CheckImage(recruitGuard_buildBarracks.Value1), SpriteName.WarsBuild_ArcherBarracks, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.ArcherBarracks].Label()));
-
+                    //content.iconicontext(HudLib.CheckImage(recruitGuard_buildBarracks.Value1), SpriteName.WarsBuild_ArcherBarracks, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.ArcherBarracks].Label()));
+                    buildOrder(recruitGuard_buildBarracks.Value1, BuildAndExpandType.ArcherBarracks);
                     content.iconicontext(HudLib.CheckImage(recruitGuard_selectConscriptTab), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title));
                     content.iconicontext(HudLib.CheckImage(recruitGuard_selectGuardTab), SpriteName.WarsGuard, string.Format(DssRef.lang.Tutorial_OpenGuardSubTab, DssRef.lang.Conscript_Soldiers_GuardType));
                     content.iconicontext(HudLib.CheckImage(recruitGuard_createGuard), SpriteName.WarsUnitIcon_Archer, string.Format(DssRef.lang.Tutorial_CreateSoldiers, DssRef.lang.Resource_TypeName_Bow, DssRef.lang.Resource_TypeName_PaddedArmor));
@@ -856,7 +887,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //TwoBools findIronCity_Tag_sound = TwoBools.False;
                     addResourcePin(findIronCity_Tag_sound.Value1, ItemResourceType.Iron_G);
                     //TwoBools findIronCity_buildSmelter_sound = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(findIronCity_buildSmelter_sound.Value1), SpriteName.WarsBuild_Smelter, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Smelter].Label()));
+                    //content.iconicontext(HudLib.CheckImage(findIronCity_buildSmelter_sound.Value1), SpriteName.WarsBuild_Smelter, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Smelter].Label()));
+                    buildOrder(findIronCity_buildSmelter_sound.Value1, BuildAndExpandType.Smelter);
                     //TwoBools findIronCity_produceIron_sound = TwoBools.False;
                     content.iconicontext(HudLib.CheckImage(findIronCity_produceIron_sound.Value1), ResourceLib.Icon(ItemResourceType.Iron_G), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, ProduceIronAmount, DssRef.lang.Resource_TypeName_Iron));
 
@@ -886,10 +918,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.Add(new RbText(string.Format(DssRef.lang.Tutorial_PracticeOrSchool, DssRef.lang.Resource_TypeName_SharpStick, DssRef.lang.BuildingType_School), HudLib.InfoYellow_Light));
                     content.newParagraph();
 
-                   
+
                     ////    ProduceSword,
                     //TwoBools produceSword_buildSmith_sound = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(produceSword_buildSmith_sound.Value1), SpriteName.WarsBuild_Smith, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Smith].Label()));
+                    //content.iconicontext(HudLib.CheckImage(produceSword_buildSmith_sound.Value1), SpriteName.WarsBuild_Smith, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Smith].Label()));
+                    buildOrder(produceSword_buildSmith_sound.Value1, BuildAndExpandType.Smith);
                     //TwoBools produceSword_swordPriority_sound = TwoBools.False;
                     content.iconiconicontext(HudLib.CheckImage(produceSword_swordPriority_sound.Value1), SpriteName.WarsHammer, ResourceLib.Icon(ItemResourceType.ShortSword), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_ShortSword));
                     //TwoBools produceSword_produceSword_sound = TwoBools.False;
@@ -921,7 +954,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.newParagraph();
 
                     //TwoBools produceMail_buildArmorer_sound = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(produceMail_buildArmorer_sound.Value1), SpriteName.WarsBuild_Armory, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Armory].Label()));
+                    //content.iconicontext(HudLib.CheckImage(produceMail_buildArmorer_sound.Value1), SpriteName.WarsBuild_Armory, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Armory].Label()));
+                    buildOrder(produceMail_buildArmorer_sound.Value1, BuildAndExpandType.Armory);
                     //TwoBools produceMail_mailPriority_sound = TwoBools.False;
                     content.iconiconicontext(HudLib.CheckImage(produceMail_mailPriority_sound.Value1), SpriteName.WarsHammer, ResourceLib.Icon(ItemResourceType.IronArmor), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_IronArmor));
                     //TwoBools produceMail_produceMail_sound = TwoBools.False;
@@ -943,6 +977,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 content.Add(new RbImage(ResourceLib.Icon(resourceType)));
                 content.space();
                 content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Resource, LangLib.Item(resourceType))));
+            }
+
+            void buildOrder(bool complete, BuildAndExpandType build)
+            {
+                var option = Build.BuildLib.BuildOptions[(int)build];
+                IconName.BuildCategory(option.buildCategory, out SpriteName tabIcon, out string category);
+                content.iconiconicontext(HudLib.CheckImage(complete), tabIcon, option.sprite, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, option.Label()));
             }
             //content.newParagraph();
             //content.icontext(player.gameControls.input.mouseSelect.Icon, DssRef.lang.Tutorial_SelectInput);            
@@ -1837,10 +1878,16 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                 }
                             }
 
-
                             if (!logisticsUpgrade_build_sound.Value1 && hasBuildOrder(BuildAndExpandType.Logistics))
                             {
                                 logisticsUpgrade_build_sound.Value1 = true;
+                                onPartSuccess();
+                            }
+
+                            if (!logisticsUpgrade_buildComplete && 
+                                city.buildingStructure.buildingLevel_logistics > 0)
+                            {
+                                logisticsUpgrade_buildComplete = true;
                                 onPartSuccess();
                             }
                         }
@@ -2029,7 +2076,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                 onPartSuccess();
                             }
                             //TwoBools fletcherPractice_resourceTab_sound = TwoBools.False;
-                            if (player.cityTab == MenuTab.Resources && player.resourcesSubTab == ResourcesSubTab.Work_Projectile)
+                            if (player.cityTab == MenuTab.Resources /*&& player.resourcesSubTab == ResourcesSubTab.Work_Projectile*/)
                             {
                                 if (!fletcherPractice_resourceTab_sound.Value1)
                                 {
@@ -2661,7 +2708,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     break;
 
                 case TutorialMission.LogisticsUpgrade:
-                    missionComplete = logisticsUpgrade_build_sound.Value1;
+                    missionComplete = logisticsUpgrade_buildComplete;
                     break;
 
                 case TutorialMission.EducateBurner:
