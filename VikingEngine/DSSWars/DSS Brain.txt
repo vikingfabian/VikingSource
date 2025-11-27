@@ -4,6 +4,9 @@
 * Fixed ship strength value
 * Fixed rare empty faction get gold crash
 
+x custom map ends in main menu (some times)
+x crash on split screen
+x adv farm, is it better?
 x testa attackera medan man deklarer fred
 x neutral unit attacking same city
 
