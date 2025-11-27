@@ -1,7 +1,5 @@
 ﻿UPDATE
 * fixed: pixels being drawn outside the minimap bounds
-
-* Fixed ship strength value
 * Fixed rare empty faction get gold crash
 
 x custom map ends in main menu (some times)
