@@ -1670,7 +1670,8 @@ namespace VikingEngine.DSSWars.Players
 
         public MapDetailLayerType mapLayer()
         {
-            if (Map.MapLayerManager.CameraIndexToView == null)
+            if (Map.MapLayerManager.CameraIndexToView == null ||
+                Map.MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex] == null)
             {
                 return MapDetailLayerType.TerrainOverview2;
             }

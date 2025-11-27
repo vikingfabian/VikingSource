@@ -1,10 +1,8 @@
 ﻿UPDATE
 Change Log: 
 
-* 
 
 
-x winter update: crash on split screen
 x custom map ends in main menu (some times)
 x adv farm, is it better?
 x testa attackera medan man deklarer fred

@@ -302,15 +302,21 @@ namespace VikingEngine.DSSWars.Interface
             });
 
             //SettingsToMenu(content, menu, false);
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_ToggleHudDetail) },
-                DssRef.state.LocalHost().hud.maxHudProperty));
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_MiniMap) },
-                DssRef.state.LocalHost().hud.minimapProperty));
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                if (DssRef.state.localPlayers.Count > 1)
+                {
+                    content.h2(p.Name, HudLib.TitleColor_Name);
+                }
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_ToggleHudDetail) },
+                    p.hud.maxHudProperty));
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_MiniMap) },
+                    p.hud.minimapProperty));
+            }
 
-
-            content.newLine();
+            content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                 new RbImage(SpriteName.InterfaceIconCamera),
                 new RbSpace(),
