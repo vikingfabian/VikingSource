@@ -1,7 +1,12 @@
 ﻿UPDATE
 Change Log: 
 
+* casual: fixed income tooltip on farm upgrade
+* reduced armor effect on strength value by 25%
 
+CONTROLLER
+* added a mute disconnect option
+* fixed soldier/guard popup
 
 x custom map ends in main menu (some times)
 x adv farm, is it better?

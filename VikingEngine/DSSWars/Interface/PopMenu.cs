@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -25,60 +27,67 @@ namespace VikingEngine.DSSWars.Interface
 
         public PopMenu(Players.LocalPlayer player, DetailObjectCollection collection)
         {
-            
-
             player.hud.popMenu = this;
             float defaultWidth = Engine.Screen.IconSize * 3f;
             float defaultHeight = Engine.Screen.TextBreadHeight * 1.6f;
             nextarea = new VectorRect(Vector2.Zero, new Vector2(defaultWidth, defaultHeight));
-            addButton(SpriteName.WarsArmy, DssRef.lang.Conscript_Soldiers_ArmyType, 
+            addButton(player, SpriteName.WarsArmy, DssRef.lang.Conscript_Soldiers_ArmyType, 
                 new RbAction1Arg<List<SoldierGroup>>(player.gameControls.map.selectCollection, collection.armyGroups));
-            addButton(SpriteName.WarsGuard, DssRef.lang.Conscript_Soldiers_GuardType,
+            addButton(player, SpriteName.WarsGuard, DssRef.lang.Conscript_Soldiers_GuardType,
                 new RbAction1Arg<List<SoldierGroup>>(player.gameControls.map.selectCollection, collection.guardGroups));
 
-            complete();
+            complete(player);
         }
 
         public bool update(Players.LocalPlayer player, out bool overHud)
         {
             player.hud.tooltip.clear();
 
-            foreach (var b in buttons)
+            if (player.gameControls.input.inputSource.IsController)
             {
-                if (b.area.IntersectPoint(Input.Mouse.Position))
+                overHud = true;
+
+                if (player.gameControls.input.mouseSelect.DownEvent)
                 {
-                    if (b != sel)
-                    {
-                        sel = b;
-                        refreshSelectOutline();
-                    }
-
-                    overHud = true;
-                    if (player.gameControls.input.menuInput.click.DownEvent)
-                    {
-                        b.link.actionTrigger();
-                        return true;
-                    }
-                    return false;
+                    buttons[0].link.actionTrigger();
+                    return true;
                 }
+                else if (player.gameControls.input.CancelKey.DownEvent)
+                {
+                    buttons[1].link.actionTrigger();
+                    return true;
+                }
+
+                return false;
             }
+            else
+            {
+                foreach (var b in buttons)
+                {
+                    if (b.area.IntersectPoint(Input.Mouse.Position))
+                    {
+                        if (b != sel)
+                        {
+                            sel = b;
+                            refreshSelectOutline();
+                        }
 
-            //Auto select if leaving the menu
-            overHud = false;
-            buttons.First().link.actionTrigger();
-            return true;
+                        overHud = true;
+                        if (player.gameControls.input.menuInput.click.DownEvent)
+                        {
+                            b.link.actionTrigger();
+                            return true;
+                        }
+                        return false;
+                    }
+                }
 
-            //if (sel != null)
-            //{
-            //    sel = null;
-            //    refreshSelectOutline();
-            //}
-            //o
-            //if (player.gameControls.input.anyActionKeyDown(true))
-            //{
-            //    return true;
-            //}
-            //return false;
+                //Auto select if leaving the menu
+                overHud = false;
+                buttons.First().link.actionTrigger();
+                return true;
+            }
+            
         }
 
         public void refreshSelectOutline()
@@ -91,22 +100,35 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        void addButton(SpriteName icon, string textString, AbsRbAction link)
+        void addButton(Players.LocalPlayer player, SpriteName icon, string textString, AbsRbAction link)
         {
             float w = nextarea.Width;
             PopMenuButton button = new PopMenuButton(nextarea, icon, textString, link, ref w);
             nextarea.Width = w;
             nextarea.Y += nextarea.Height;
 
+            if (player.gameControls.input.inputSource.IsController)
+            {
+                int optionIndex = buttons.Count;
+                SpriteName input = SpriteName.NO_IMAGE;
+                switch (optionIndex)
+                {
+                    case 0: input = player.gameControls.input.mouseSelect.Icon; break;
+                    case 1: input = player.gameControls.input.CancelKey.Icon; break;
+                }
+
+                button.addInput(input);
+            }
+
             buttons.Add(button);
         }
 
-        void complete()
+        void complete(LocalPlayer player)
         {
-            VectorRect centerArea =  buttons.First().area;
+            VectorRect centerArea = buttons.First().area;
             centerArea.Width = nextarea.Width;
 
-            Vector2 target = Input.Mouse.Position;
+            Vector2 target = player.gameControls.map.pointerPos(); //Input.Mouse.Position;
             Vector2 move  = target - centerArea.Center;
 
             foreach (var m in buttons)
@@ -132,6 +154,7 @@ namespace VikingEngine.DSSWars.Interface
         Graphics.Image image = null;
         Graphics.TextG text;
         NineSplitAreaTexture background;
+        Graphics.Image input = null;
         public PopMenuButton(VectorRect area, SpriteName icon, string textString, AbsRbAction link, ref float maxWidth)
         {
             this.link = link;
@@ -149,6 +172,14 @@ namespace VikingEngine.DSSWars.Interface
             maxWidth = lib.LargestValue(maxWidth, text.MeasureText().X);
         }
 
+        public void addInput(SpriteName sprite)
+        {
+            Vector2 size = Screen.SmallIconSizeV2;
+            Vector2 pos = area.LeftCenter;
+            pos.X -= size.X * 0.6f;
+            input = new Image(sprite, pos, size, HudLib.PopMenuLayer, true);
+        }
+
         public void complete(Vector2 move, float maxWidth)
         {
             area.Width = maxWidth;
@@ -160,6 +191,7 @@ namespace VikingEngine.DSSWars.Interface
         void Move(Vector2 move)
         {
             image?.AddXY(move);
+            input?.AddXY(move);
             text.AddXY(move);
             background?.Move(move);
         }
@@ -167,6 +199,7 @@ namespace VikingEngine.DSSWars.Interface
         public void DeleteMe()
         {
             image?.DeleteMe();
+            input?.DeleteMe();
             text.DeleteMe();
             background.DeleteMe();
         }

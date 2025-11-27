@@ -611,7 +611,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                         HudLib.BulletPoint(content);
                         content.Add(new RbImage(SpriteName.rtsIncomeTime));
                         content.space();
-                        content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, "+" + TextLib.TwoDecimal(DssConst.Casual_Farm2TaxIncreasePercUnits_copp))));
+                        content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, "+" + TextLib.TwoDecimal(Money.CopperToGold * DssConst.Casual_Farm2TaxIncreasePercUnits_copp))));
                         break;
 
                     case CasualBuildType.UnlockFarming3:
@@ -620,7 +620,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                         HudLib.BulletPoint(content);
                         content.Add(new RbImage(SpriteName.rtsIncomeTime));
                         content.space();
-                        content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, "+" + TextLib.TwoDecimal(DssConst.Casual_Farm3TaxIncreasePercUnits_copp))));
+                        content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, "+" + TextLib.TwoDecimal(Money.CopperToGold * DssConst.Casual_Farm3TaxIncreasePercUnits_copp))));
                         break;
 
                 }
