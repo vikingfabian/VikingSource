@@ -26,7 +26,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 29;
+        const int Version = 30;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -39,6 +39,7 @@ namespace VikingEngine
         public int DetailLevel = 1;
         public bool AutoJoinToCoopLevel = true;
         public int VibrationLevel = 100;
+        public bool muteControllerDisconnect = false;
         public const int MaxBlood = 100;
         public int Blood = 100;
         public float UiScale = 1f;
@@ -148,6 +149,7 @@ namespace VikingEngine
             w.Write(farViewDistance);
 
             w.Write(customCursor);
+            w.Write(muteControllerDisconnect);
 
             Debug.WriteCheck(w);
         }
@@ -246,6 +248,10 @@ namespace VikingEngine
             if (version >= 29)
             {
                 customCursor = r.ReadBoolean();
+            }
+            if (version >= 30)
+            {
+                muteControllerDisconnect = r.ReadBoolean();
             }
 
             Debug.ReadCheck(r);
@@ -354,6 +360,16 @@ namespace VikingEngine
                 }
             }
             return farViewDistance;
+        }
+
+        public bool muteControllerDisconnectProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                muteControllerDisconnect = value;
+                settingsHasChanged = true;
+            }
+            return muteControllerDisconnect;
         }
         //public bool fullscreenProperty(object tag, bool set, bool value)
         //{

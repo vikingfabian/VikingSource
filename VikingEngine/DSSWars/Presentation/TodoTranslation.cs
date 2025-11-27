@@ -17,6 +17,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string DisplayMode_BorderlessFullscreen => "Borderless fullscreen";
 
         public string GameSettings_RenderedMouseCursor => "Rendered cursor";
+        public string GameSettings_MuteControllerDisconnect => "Mute disconnect messages";
 
         //public string Error_SoundInitFailure => "Sound initialization failed";
 
