@@ -773,25 +773,30 @@ namespace VikingEngine.DSSWars.Players
                 ||
                 otherFaction.player.IsLocalPlayer())
             {
-                string title;
+                
                 if (rel.Relation >= RelationType.RelationType2_Good)
                 {
-                    title = DssRef.lang.Diplomacy_RelationType;
+                    message(DssRef.lang.Diplomacy_RelationType);
                 }
-                else if (previousRelation == RelationType.RelationTypeN2_Truce)
+                else if (rel.Relation <= RelationType.RelationTypeN3_War)
                 {
-                    title = DssRef.lang.Diplomacy_TruceEndTitle;
+                    if (previousRelation == RelationType.RelationTypeN2_Truce)
+                    {
+                        message(DssRef.lang.Diplomacy_TruceEndTitle);
+                    }
+                    else
+                    {
+                        message(DssRef.lang.Diplomacy_WarDeclarationTitle);
+                        Ref.music.OnGameEvent();
+                    }
                 }
-                else
+                void message(string title)
                 {
-                    title = DssRef.lang.Diplomacy_WarDeclarationTitle;
-                    Ref.music.OnGameEvent();
+                    RichBoxContent content = new RichBoxContent();
+                    MessageGroup_Ingame.Title(content, title);
+                    DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content);
+                    Ref.update.AddSyncAction(new SyncAction1Arg<RichBoxContent>(hud.messages.Add, content));
                 }
-
-                RichBoxContent content = new RichBoxContent();
-                MessageGroup_Ingame.Title(content, title);
-                DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content);
-                Ref.update.AddSyncAction(new SyncAction1Arg<RichBoxContent>(hud.messages.Add, content));
             }
         }
 
@@ -829,7 +834,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Z))
                 {
-                    DssRef.state.events.victory(Event.VictoryType.WorldPeace);
+                    //DssRef.state.events.victory(Event.VictoryType.WorldPeace);
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.TestNextEvent();
                     //hud.objMenu.diplomacy?.makeServant();
@@ -846,7 +851,7 @@ namespace VikingEngine.DSSWars.Players
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
                     //battleLineUpTest3_friendly_only();
-                    //battleLineUpTest2(false);
+                    battleLineUpTest2(false);
 
                     //var tile = DssRef.world.tileGrid.Get(gameControls.mapControls.tilePosition);
                     //Debug.Log(tile.ToString());

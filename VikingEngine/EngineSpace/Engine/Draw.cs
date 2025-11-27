@@ -102,21 +102,26 @@ namespace VikingEngine.Engine
             return TextureEffects[(int)type]; 
         }
 
+        const int MinWidth = 800;
+        const int MinHeigth = 600;
+
         public static void ApplyScreenResolution()
         {
-            const int MinWidth = 800;
-            const int MinHeigth = 600;
-
             graphicsDeviceManager.PreferredBackBufferWidth = Bound.Min(Screen.MonitorTargetResolution.X, MinWidth); //Screen.RenderingResolution.X;
             graphicsDeviceManager.PreferredBackBufferHeight = Bound.Min(Screen.MonitorTargetResolution.Y, MinHeigth);//Screen.RenderingResolution.Y;
             graphicsDeviceManager.ApplyChanges();
             defaultViewport = Engine.Draw.graphicsDeviceManager.GraphicsDevice.Viewport;
 
+            CreateMainTarget(false);
+        }
+
+        protected static void CreateMainTarget(bool splitscreen)
+        {
             MainRenderTarget?.Dispose();
             MainRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice,
                  Bound.Min(Screen.RenderingResolution.X, MinWidth),
-                 Bound.Min(Screen.RenderingResolution.Y, MinHeigth), 
-                false, SurfaceFormat.Color, DepthFormat.Depth24);
+                 Bound.Min(Screen.RenderingResolution.Y, MinHeigth),
+                false, SurfaceFormat.Color, DepthFormat.Depth24, 0, splitscreen ? RenderTargetUsage.PreserveContents : RenderTargetUsage.DiscardContents);
         }
 
         /* Properties */

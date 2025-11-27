@@ -35,6 +35,10 @@ namespace VikingEngine.DSSWars.Communication
             this.botFaction = botFaction;
             
             selectedRelation = player.faction.diplomaticRelations[botFaction.myIndex];
+            if (selectedRelation == null)
+            {
+                return result;
+            }
             againstDark = botFaction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
 
             if (selectedRelation.SpeakTerms > SpeakTerms.SpeakTermsN2_None &&

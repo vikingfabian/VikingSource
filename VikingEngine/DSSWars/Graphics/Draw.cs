@@ -55,6 +55,11 @@ namespace VikingEngine.DSSWars
             overviewMapTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, MainRenderTarget.Width, MainRenderTarget.Height, false, SurfaceFormat.Color, DepthFormat.Depth24);
 
             drawBatch = new DrawBatchCollection();
+
+            if (DssRef.storage.playerCount > 1)
+            {
+                CreateMainTarget(true);
+            }
         }
 
         public void initMapShaders()
@@ -80,7 +85,7 @@ namespace VikingEngine.DSSWars
        
         protected override void drawEvent()
         {
-            Viewport saveView = graphicsDeviceManager.GraphicsDevice.Viewport;
+            //Viewport saveView = graphicsDeviceManager.GraphicsDevice.Viewport;
             bool hasFadingLayer = false;
 
             Engine.Draw.graphicsDeviceManager.GraphicsDevice.BlendState = BlendState.AlphaBlend;
@@ -161,7 +166,7 @@ namespace VikingEngine.DSSWars
             //}
 
 
-            graphicsDeviceManager.GraphicsDevice.Viewport = saveView;
+            graphicsDeviceManager.GraphicsDevice.Viewport = defaultViewport;
             Draw2d(0);
 
             //shadowProcessor.DrawDebug();
