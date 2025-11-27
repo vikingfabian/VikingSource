@@ -330,7 +330,7 @@ namespace VikingEngine.DSSWars.Communication
 
                     hoverArea.AddRadius(4);
                     box.Area = hoverArea;
-                    box.Visible = true;
+                    box.Visible = relation.bg != null && relation.bg.Visible;
                 }
             }
             else

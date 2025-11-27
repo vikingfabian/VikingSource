@@ -164,6 +164,10 @@ namespace VikingEngine.DSSWars.Interface
         public void onGameStart()
         { 
             screenAreaBottom = player.playerData.view.DrawArea.Bottom + Engine.Screen.SmallIconSize;
+            //if (player.hud.head.Right > player.playerData.view.DrawArea.Width / 2)
+            //{
+                
+            //}
         }
 
         

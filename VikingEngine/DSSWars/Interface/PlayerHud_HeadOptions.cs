@@ -36,8 +36,7 @@ namespace VikingEngine.DSSWars.Interface
                 NineSplitAreaTexture bg = new NineSplitAreaTexture(new NineSplitSettings(SpriteName.WarsHudHeadBarSecondaryBg, 1, 11, 1f, true, true), menu.backgroundArea, HudLib.GUILayer + 4);
             }
 
-            player.hud.MessageStart.Y =/* new Vector2(player.playerData.view.safeScreenArea.Right - (RichMenu.DefaultRenderEdge.X + HudLib.MessageDisplayWidth),*/
-                menu.backgroundArea.Bottom + Engine.Screen.IconSize * 0.5f;
+            player.hud.MessageStart.Y = Math.Max( menu.backgroundArea.Bottom + Engine.Screen.IconSize * 0.5f, player.hud.MessageStart.Y);
         }
 
         public void refreshUpdate()
