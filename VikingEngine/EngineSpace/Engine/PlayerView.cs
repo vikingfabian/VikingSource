@@ -55,88 +55,451 @@ namespace VikingEngine.Engine
             return c;
         }
 
-        public Rectangle GetDrawArea(int numplayers, int myScreenIx, bool bHorizontalSplit, 
-            out float zoom)
+        /// <summary>
+        /// For split screen play
+        /// </summary>
+        public Rectangle GetDrawArea(int numplayers, int myScreenIx, out float zoom)
         {
             ScreenIndex = myScreenIx;
-            verticalSplit = false; horizontalSplit = false;
+            verticalSplit = false;
+            horizontalSplit = false;
 
             zoom = 38 * LootFest.LfLib.ModelsScaleUp;
+
+            float screenW = Engine.Screen.Width;
+            float screenH = Engine.Screen.Height;
+
+            SplitScreenOptions splitOption = Engine.Screen.splitScreenOptions;
+
+            bool horizontalFirst = splitOption == SplitScreenOptions.HorizontalFirst;
+            bool verticalFirst = splitOption == SplitScreenOptions.VerticalFirst;
+            bool horizontalOnly = splitOption == SplitScreenOptions.HorizontalOnly;
+            bool verticalOnly = splitOption == SplitScreenOptions.VerticalOnly;
+
+            // Fallback if something weird is passed in
+            if (!horizontalFirst && !verticalFirst && !horizontalOnly && !verticalOnly)
+                horizontalFirst = true;
+
+            // All adjustments use this size so movement feels consistent
+            float adjustmenSize = screenH * 0.1f;
+
             switch (numplayers)
             {
                 default:
-                    DrawArea = new Rectangle(0, 0, Engine.Screen.Width, Engine.Screen.Height);
+                    DrawArea = new Rectangle(0, 0, (int)screenW, (int)screenH);
                     break;
-                case 2:
 
-                    if (bHorizontalSplit)
+                case 2:
+                    if (horizontalFirst || horizontalOnly)
                     {
                         horizontalSplit = true;
                         zoom *= 0.95f;
-                        int height = (int)(Engine.Screen.Height * PublicConstants.Half);
-                        DrawArea = new Rectangle(0, height * myScreenIx, Engine.Screen.Width, height);
+
+                        float adjustMenInPixels = Engine.Screen.splitScreenDivideAdjustment1 * adjustmenSize;
+                        float topHeight = screenH * 0.5f + adjustMenInPixels;
+
+                        float minH = screenH * 0.1f;
+                        float maxH = screenH * 0.9f;
+                        if (topHeight < minH) topHeight = minH;
+                        else if (topHeight > maxH) topHeight = maxH;
+
+                        float bottomHeight = screenH - topHeight;
+
+                        int y = (myScreenIx == 0) ? 0 : (int)topHeight;
+                        int h = (myScreenIx == 0) ? (int)topHeight : (int)bottomHeight;
+
+                        DrawArea = new Rectangle(0, y, (int)screenW, h);
                     }
-                    else
+                    else // verticalFirst or verticalOnly
                     {
                         verticalSplit = true;
                         zoom *= 1.6f;
 
-                        int width = (int)(Engine.Screen.Width * PublicConstants.Half);
-                        DrawArea = new Rectangle(width * myScreenIx, 0, width, Engine.Screen.Height);
+                        float adjustMenInPixels = Engine.Screen.splitScreenDivideAdjustment1 * adjustmenSize;
+                        float leftWidth = screenW * 0.5f + adjustMenInPixels;
+
+                        float minW = screenW * 0.1f;
+                        float maxW = screenW * 0.9f;
+                        if (leftWidth < minW) leftWidth = minW;
+                        else if (leftWidth > maxW) leftWidth = maxW;
+
+                        float rightWidth = screenW - leftWidth;
+
+                        int x = (myScreenIx == 0) ? 0 : (int)leftWidth;
+                        int w = (myScreenIx == 0) ? (int)leftWidth : (int)rightWidth;
+
+                        DrawArea = new Rectangle(x, 0, w, (int)screenH);
                     }
                     break;
+
                 case 3:
-                    if (bHorizontalSplit)
+
+                    // HorizontalOnly: 3 horizontal stripes (factor ~0.33) + adjustable splits
+                    if (horizontalOnly)
+                    {
+                        horizontalSplit = true;
+
+                        int split1 = Convert.ToInt32(screenH * 0.33f + Engine.Screen.splitScreenDivideAdjustment1 * adjustmenSize);
+                        int split2 = Convert.ToInt32(screenH * 0.66f + Engine.Screen.splitScreenDivideAdjustment2 * adjustmenSize);
+
+                        int y, h;
+                        switch (myScreenIx)
+                        {
+                            default:
+                                y = 0;
+                                h = split1;
+                                break;
+                            case 1:
+                                y = split1;
+                                h = split2 - split1;
+                                break;
+                            case 2:
+                                y = split2;
+                                h = (int)screenH - split2;
+                                break;
+                        }
+
+                        DrawArea = new Rectangle(0, y, (int)screenW, h);
+                        break;
+                    }
+
+                    if (verticalOnly)
+                    {
+                        // Follow this solution on all
+                        verticalSplit = true;
+
+                        int split1 = Convert.ToInt32(screenW * 0.33f + Engine.Screen.splitScreenDivideAdjustment1 * adjustmenSize);
+                        int split2 = Convert.ToInt32(screenW * 0.66f + Engine.Screen.splitScreenDivideAdjustment2 * adjustmenSize);
+
+                        int x, w;
+                        switch (myScreenIx)
+                        {
+                            default:
+                                x = 0;
+                                w = split1;
+                                break;
+                            case 1:
+                                x = split1;
+                                w = split2 - split1;
+                                break;
+                            case 2:
+                                x = split2;
+                                w = (int)screenW - split2;
+                                break;
+                        }
+
+                        DrawArea = new Rectangle(x, 0, w, (int)screenH);
+                        break;
+                    }
+
+                    // Original mixed layout with adjustments
+                    if (horizontalFirst)
                     {
                         DrawArea = Rectangle.Empty;
                         horizontalSplit = true;
-                        DrawArea.Height = (int)(Engine.Screen.Height * PublicConstants.Half);
+
+                        // Main horizontal split with adjustment1
+                        float adjustMenInPixels = Engine.Screen.splitScreenDivideAdjustment1 * adjustmenSize;
+                        float topHeight = screenH * 0.5f + adjustMenInPixels;
+
+                        float minH = screenH * 0.1f;
+                        float maxH = screenH * 0.9f;
+                        if (topHeight < minH) topHeight = minH;
+                        else if (topHeight > maxH) topHeight = maxH;
+
+                        float bottomHeight = screenH - topHeight;
+
                         if (myScreenIx == 0)
                         {
-                            DrawArea.Width = Engine.Screen.Width;
+                            DrawArea.X = 0;
+                            DrawArea.Y = 0;
+                            DrawArea.Width = (int)screenW;
+                            DrawArea.Height = (int)topHeight;
                             zoom *= 0.95f;
                         }
                         else
                         {
+                            // Bottom half: vertical split with adjustment3
                             verticalSplit = true;
-                            DrawArea.Width = (int)(Engine.Screen.Width * PublicConstants.Half);
-                            DrawArea.X = (myScreenIx - 1) * DrawArea.Width;
-                            DrawArea.Y = DrawArea.Height;
+
+                            float adjustMenInPixels3 = Engine.Screen.splitScreenDivideAdjustment3 * adjustmenSize;
+                            float leftWidth = screenW * 0.5f + adjustMenInPixels3;
+
+                            float minW = screenW * 0.1f;
+                            float maxW = screenW * 0.9f;
+                            if (leftWidth < minW) leftWidth = minW;
+                            else if (leftWidth > maxW) leftWidth = maxW;
+
+                            float rightWidth = screenW - leftWidth;
+
+                            DrawArea.Y = (int)topHeight;
+                            DrawArea.Height = (int)bottomHeight;
+
+                            if (myScreenIx == 1)
+                            {
+                                DrawArea.X = 0;
+                                DrawArea.Width = (int)leftWidth;
+                            }
+                            else // myScreenIx == 2
+                            {
+                                DrawArea.X = (int)leftWidth;
+                                DrawArea.Width = (int)rightWidth;
+                            }
                         }
                     }
-                    else
+                    else // verticalFirst
                     {
                         verticalSplit = true;
                         DrawArea = Rectangle.Empty;
 
-                        DrawArea.Width = (int)(Engine.Screen.Width * PublicConstants.Half);
+                        // Main vertical split with adjustment1
+                        float adjustMenInPixels = Engine.Screen.splitScreenDivideAdjustment1 * adjustmenSize;
+                        float leftWidth = screenW * 0.5f + adjustMenInPixels;
+
+                        float minW = screenW * 0.1f;
+                        float maxW = screenW * 0.9f;
+                        if (leftWidth < minW) leftWidth = minW;
+                        else if (leftWidth > maxW) leftWidth = maxW;
+
+                        float rightWidth = screenW - leftWidth;
+
                         if (myScreenIx == 0)
                         {
-                            DrawArea.Height = Engine.Screen.Height;
+                            DrawArea.X = 0;
+                            DrawArea.Y = 0;
+                            DrawArea.Width = (int)leftWidth;
+                            DrawArea.Height = (int)screenH;
                             zoom *= 1.1f;
                         }
                         else
                         {
+                            // Right half: horizontal split with adjustment3
                             horizontalSplit = true;
-                            DrawArea.X = DrawArea.Width;
-                            DrawArea.Height = (int)(Engine.Screen.Height * PublicConstants.Half);
-                            DrawArea.Y = (myScreenIx - 1) * DrawArea.Height;
+
+                            float adjustMenInPixels3 = Engine.Screen.splitScreenDivideAdjustment3 * adjustmenSize;
+                            float topHeight = screenH * 0.5f + adjustMenInPixels3;
+
+                            float minH = screenH * 0.1f;
+                            float maxH = screenH * 0.9f;
+                            if (topHeight < minH) topHeight = minH;
+                            else if (topHeight > maxH) topHeight = maxH;
+
+                            float bottomHeight = screenH - topHeight;
+
+                            DrawArea.X = (int)leftWidth;
+                            DrawArea.Width = (int)rightWidth;
+
+                            if (myScreenIx == 1)
+                            {
+                                DrawArea.Y = 0;
+                                DrawArea.Height = (int)topHeight;
+                            }
+                            else // myScreenIx == 2
+                            {
+                                DrawArea.Y = (int)topHeight;
+                                DrawArea.Height = (int)bottomHeight;
+                            }
                         }
                     }
                     break;
+
                 case 4:
-                    verticalSplit = true; horizontalSplit = true;
-                    int height2 = (int)(Engine.Screen.Height * PublicConstants.Half);
-                    int width2 = (int)(Engine.Screen.Width * PublicConstants.Half);
-                    DrawArea = new Rectangle(
-                        (myScreenIx == 1 || myScreenIx == 3) ? width2 : 0, //x
-                        myScreenIx >= 2 ? height2 : 0, //y
-                        width2, height2);
+
+                    // HorizontalOnly: 4 horizontal stripes (factor 0.25) + adjustable splits
+                    if (horizontalOnly)
+                    {
+                        horizontalSplit = true;
+
+                        int split1 = Convert.ToInt32(screenH * 0.25f + Engine.Screen.splitScreenDivideAdjustment1 * adjustmenSize);
+                        int split2 = Convert.ToInt32(screenH * 0.50f + Engine.Screen.splitScreenDivideAdjustment2 * adjustmenSize);
+                        int split3 = Convert.ToInt32(screenH * 0.75f + Engine.Screen.splitScreenDivideAdjustment3 * adjustmenSize);
+
+                        int y, h;
+                        switch (myScreenIx)
+                        {
+                            default:
+                                y = 0;
+                                h = split1;
+                                break;
+                            case 1:
+                                y = split1;
+                                h = split2 - split1;
+                                break;
+                            case 2:
+                                y = split2;
+                                h = split3 - split2;
+                                break;
+                            case 3:
+                                y = split3;
+                                h = (int)screenH - split3;
+                                break;
+                        }
+
+                        DrawArea = new Rectangle(0, y, (int)screenW, h);
+                        break;
+                    }
+
+                    // VerticalOnly: 4 vertical stripes (factor 0.25) + adjustable splits
+                    if (verticalOnly)
+                    {
+                        verticalSplit = true;
+
+                        int split1 = Convert.ToInt32(screenW * 0.25f + Engine.Screen.splitScreenDivideAdjustment1 * adjustmenSize);
+                        int split2 = Convert.ToInt32(screenW * 0.50f + Engine.Screen.splitScreenDivideAdjustment2 * adjustmenSize);
+                        int split3 = Convert.ToInt32(screenW * 0.75f + Engine.Screen.splitScreenDivideAdjustment3 * adjustmenSize);
+
+                        int x, w;
+                        switch (myScreenIx)
+                        {
+                            default:
+                                x = 0;
+                                w = split1;
+                                break;
+                            case 1:
+                                x = split1;
+                                w = split2 - split1;
+                                break;
+                            case 2:
+                                x = split2;
+                                w = split3 - split2;
+                                break;
+                            case 3:
+                                x = split3;
+                                w = (int)screenW - split3;
+                                break;
+                        }
+
+                        DrawArea = new Rectangle(x, 0, w, (int)screenH);
+                        break;
+                    }
+
+                    // Original 2x2 grid with adjustable dividers
+                    verticalSplit = true;
+                    horizontalSplit = true;
+
+                    // Horizontal divider with adjustment1
+                    float adjustMenInPixelsH = Engine.Screen.splitScreenDivideAdjustment1 * adjustmenSize;
+                    float topHeight4 = screenH * 0.5f + adjustMenInPixelsH;
+
+                    float minH4 = screenH * 0.1f;
+                    float maxH4 = screenH * 0.9f;
+                    if (topHeight4 < minH4) topHeight4 = minH4;
+                    else if (topHeight4 > maxH4) topHeight4 = maxH4;
+
+                    float bottomHeight4 = screenH - topHeight4;
+
+                    // Vertical divider with adjustment2
+                    float adjustMenInPixelsW = Engine.Screen.splitScreenDivideAdjustment2 * adjustmenSize;
+                    float leftWidth4 = screenW * 0.5f + adjustMenInPixelsW;
+
+                    float minW4 = screenW * 0.1f;
+                    float maxW4 = screenW * 0.9f;
+                    if (leftWidth4 < minW4) leftWidth4 = minW4;
+                    else if (leftWidth4 > maxW4) leftWidth4 = maxW4;
+
+                    float rightWidth4 = screenW - leftWidth4;
+
+                    bool rightSide = (myScreenIx == 1 || myScreenIx == 3);
+                    bool bottom = (myScreenIx >= 2);
+
+                    int x4 = rightSide ? (int)leftWidth4 : 0;
+                    int y4 = bottom ? (int)topHeight4 : 0;
+                    int w4 = rightSide ? (int)rightWidth4 : (int)leftWidth4;
+                    int h4 = bottom ? (int)bottomHeight4 : (int)topHeight4;
+
+                    DrawArea = new Rectangle(x4, y4, w4, h4);
                     break;
             }
 
             return DrawArea;
         }
+
+
+
+        ///// <summary>
+        ///// For split screen play
+        ///// </summary>
+        //public Rectangle GetDrawArea(int numplayers, int myScreenIx, bool bHorizontalSplit, out float zoom)
+        //{
+        //    ScreenIndex = myScreenIx;
+        //    verticalSplit = false; horizontalSplit = false;
+
+        //    zoom = 38 * LootFest.LfLib.ModelsScaleUp;
+        //    switch (numplayers)
+        //    {
+        //        default:
+        //            DrawArea = new Rectangle(0, 0, Engine.Screen.Width, Engine.Screen.Height);
+        //            break;
+        //        case 2:
+
+        //            if (bHorizontalSplit)
+        //            {
+        //                horizontalSplit = true;
+        //                zoom *= 0.95f;
+        //                int height = (int)(Engine.Screen.Height * PublicConstants.Half);
+        //                DrawArea = new Rectangle(0, height * myScreenIx, Engine.Screen.Width, height);
+        //            }
+        //            else
+        //            {
+        //                verticalSplit = true;
+        //                zoom *= 1.6f;
+
+        //                int width = (int)(Engine.Screen.Width * PublicConstants.Half);
+        //                DrawArea = new Rectangle(width * myScreenIx, 0, width, Engine.Screen.Height);
+        //            }
+        //            break;
+        //        case 3:
+        //            if (bHorizontalSplit)
+        //            {
+        //                DrawArea = Rectangle.Empty;
+        //                horizontalSplit = true;
+        //                DrawArea.Height = (int)(Engine.Screen.Height * PublicConstants.Half);
+        //                if (myScreenIx == 0)
+        //                {
+        //                    DrawArea.Width = Engine.Screen.Width;
+        //                    zoom *= 0.95f;
+        //                }
+        //                else
+        //                {
+        //                    verticalSplit = true;
+        //                    DrawArea.Width = (int)(Engine.Screen.Width * PublicConstants.Half);
+        //                    DrawArea.X = (myScreenIx - 1) * DrawArea.Width;
+        //                    DrawArea.Y = DrawArea.Height;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                verticalSplit = true;
+        //                DrawArea = Rectangle.Empty;
+
+        //                DrawArea.Width = (int)(Engine.Screen.Width * PublicConstants.Half);
+        //                if (myScreenIx == 0)
+        //                {
+        //                    DrawArea.Height = Engine.Screen.Height;
+        //                    zoom *= 1.1f;
+        //                }
+        //                else
+        //                {
+        //                    horizontalSplit = true;
+        //                    DrawArea.X = DrawArea.Width;
+        //                    DrawArea.Height = (int)(Engine.Screen.Height * PublicConstants.Half);
+        //                    DrawArea.Y = (myScreenIx - 1) * DrawArea.Height;
+        //                }
+        //            }
+        //            break;
+        //        case 4:
+        //            verticalSplit = true; horizontalSplit = true;
+        //            int height2 = (int)(Engine.Screen.Height * PublicConstants.Half);
+        //            int width2 = (int)(Engine.Screen.Width * PublicConstants.Half);
+        //            DrawArea = new Rectangle(
+        //                (myScreenIx == 1 || myScreenIx == 3) ? width2 : 0, //x
+        //                myScreenIx >= 2 ? height2 : 0, //y
+        //                width2, height2);
+        //            break;
+        //    }
+
+        //    return DrawArea;
+        //}
 
         public void FullScreenSetup()
         {
@@ -146,7 +509,7 @@ namespace VikingEngine.Engine
         public void SetDrawArea(int numplayers, int myScreenIx, bool updateCam, Player player)
         {
             float zoom;
-            GetDrawArea(numplayers, myScreenIx, Engine.Draw.horizontalSplit, out zoom);
+            GetDrawArea(numplayers, myScreenIx, out zoom);
            
             //Add camera
             if (updateCam)

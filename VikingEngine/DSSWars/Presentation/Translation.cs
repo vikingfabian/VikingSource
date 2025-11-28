@@ -36,6 +36,10 @@ namespace VikingEngine.DSSWars.Presentation
         {
             switch (language)
             {
+                default:
+#if DEBUG
+                    throw new NotImplementedException();
+#endif
                 case LanguageType.English:
                     return SpriteName.LangButton_English;
 
@@ -69,8 +73,8 @@ namespace VikingEngine.DSSWars.Presentation
                 case LanguageType.Turkish:
                     return SpriteName.LangButton_Turkish;
 
-                default:
-                    throw new NotImplementedException();
+                //default:
+                //    throw new NotImplementedException();
             }
         }
 

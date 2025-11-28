@@ -919,8 +919,8 @@ namespace VikingEngine.LootFest
 
                 new GuiSectionSeparator(layout);
 
-                if (LfRef.LocalHeroes.Count > 1)
-                    new GuiCheckbox("Horizontal split", null, horiSplitProperty, layout);
+                //if (LfRef.LocalHeroes.Count > 1)
+                //    new GuiCheckbox("Horizontal split", null, horiSplitProperty, layout);
                 // other graphics
                 new GuiTextButton("Camera", null, cameraSettings, true, layout);
                 //new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Frame rate", new List<GuiOption<int>>
@@ -1155,15 +1155,15 @@ namespace VikingEngine.LootFest
         //{
         //    return GetSet.Do<float>(set, ref Engine.Sound.SoundVolume, value);
         //}
-        bool horiSplitProperty(int index, bool set, bool value)
-        {
-            if (set)
-            {
-                Engine.Draw.horizontalSplit = value;
-                LfRef.gamestate.UpdateSplitScreen();
-            }
-            return Engine.Draw.horizontalSplit;
-        }
+        //bool horiSplitProperty(int index, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        Engine.Draw.horizontalSplit = value;
+        //        LfRef.gamestate.UpdateSplitScreen();
+        //    }
+        //    return Engine.Draw.horizontalSplit;
+        //}
         bool invertCamYProperty(int index, bool set, bool value)
         {
             if (set)

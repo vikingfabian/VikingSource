@@ -110,10 +110,8 @@ namespace VikingEngine
 
         public void writeSettings(System.IO.BinaryWriter w)
         {
-            w.Write(Engine.Screen.WindowScalePerc);
-            Engine.Screen.PcTargetResolution.write(w);
-            w.Write((byte)Engine.Screen.PcDisplayMode);//Engine.Screen.PcTargetFullScreen);
-            w.Write((byte)Engine.Screen.UseRecordingPreset);
+            Engine.Screen.WriteSettings(w);
+
             w.Write(MusicMasterVolume);
             w.Write(SoundVolume);
             w.Write((byte)VibrationLevel);
@@ -166,21 +164,9 @@ namespace VikingEngine
 
         public void readSettings(System.IO.BinaryReader r, int version)
         {
-            if (version <= Version)
-            {
-                Engine.Screen.WindowScalePerc = r.ReadInt32();
-                Engine.Screen.PcTargetResolution.read(r);
-                //Engine.Screen.PcTargetFullScreen = r.ReadBoolean();
-                if (version >= 28)
-                {
-                    Engine.Screen.PcDisplayMode = (WindowDisplayMode)r.ReadByte();
-                }
-                else
-                {
-                    var PcTargetFullScreen = r.ReadBoolean();
-                }
-                Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
+            if (version > Version) return;
 
+            Engine.Screen.ReadSettings(r, version);
                 MusicMasterVolume = r.ReadSingle();
                 if (version == 23)
                 {
@@ -280,7 +266,7 @@ namespace VikingEngine
                 Engine.Update.SetFrameRate(FrameRate);
                 setSoundLevelsOnError();
                 //MusicMasterVolume = 0;
-            }
+            
         }
 
         public void setSoundLevelsOnError()
@@ -672,7 +658,7 @@ namespace VikingEngine
                 OversizeHeight.AddOption(Ref.langOpt.GraphicsOption_Oversize_None, Engine.Screen.oversizeHeightPerc == 0, false,
                     new RbAction1Arg<int>(setOversizeHeightProperty, 0), null);
 
-                int[] oversizes = new int[] { 150, 175, 200, 250, 300 };
+                int[] oversizes = new int[] { 150, 175, 200, 225, 250, 275, 300 };
 
                 foreach (var ov in oversizes)
                 {

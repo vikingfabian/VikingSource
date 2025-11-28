@@ -1565,7 +1565,8 @@ namespace VikingEngine.DSSWars.Interface
                             //tabContent.Add(new RbImage(SpriteName.WarsResource_SilverCoin));
                             if (city.buildingStructure.CoinMinter_count == 0)
                             {
-                                continue;
+                                //continue;
+                                goto skipTab;
                             }
                             break;
 
@@ -1605,6 +1606,7 @@ namespace VikingEngine.DSSWars.Interface
                     //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                     content.Add(subTab);
 
+                skipTab:
                     switch (resourcesSubTab)
                     {
                         case ResourcesSubTab.Overview_Armor:
@@ -1634,7 +1636,7 @@ namespace VikingEngine.DSSWars.Interface
                                }));
                             content.newLine();
                             break;
-                        
+
                         case ResourcesSubTab.Work_Mint:
                             HudLib.InfoButton(content,
                                new RbTooltip((RichBoxContent content, object tag) =>
@@ -1654,7 +1656,7 @@ namespace VikingEngine.DSSWars.Interface
                                    HudLib.BulletPoint(content);
                                    content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
                                }));
-                            
+
                             break;
                     }
                     

@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars.Data
     {
         public const int MaxLocalPlayerCount = 4;
         public int playerCount = 1;
-        public bool verticalScreenSplit = true;
+        //public bool verticalScreenSplit = true;
 
         DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, "DSS_gameoptions", ".sav");
         
@@ -172,7 +172,7 @@ namespace VikingEngine.DSSWars.Data
             metaProgression.write(w);
             writeGameSetup(w);
 
-            w.Write(verticalScreenSplit);
+            //w.Write(verticalScreenSplit);
             for (int i = 0; i < MaxLocalPlayerCount; ++i)
             {
                 localPlayers[i].write(w);
@@ -232,7 +232,10 @@ namespace VikingEngine.DSSWars.Data
 
                 if (!gamestate)
                 {
-                    verticalScreenSplit = r.ReadBoolean();
+                    if (version < 31)
+                    {
+                        bool verticalScreenSplit = r.ReadBoolean();
+                    }
 
                     for (int i = 0; i < MaxLocalPlayerCount; ++i)
                     {
@@ -314,7 +317,7 @@ namespace VikingEngine.DSSWars.Data
 
                 if (!gamestate || version < 16)
                 {
-                    verticalScreenSplit = r.ReadBoolean();
+                    bool verticalScreenSplit = r.ReadBoolean();
 
                     for (int i = 0; i < MaxLocalPlayerCount; ++i)
                     {

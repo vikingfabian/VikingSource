@@ -1,19 +1,17 @@
 ﻿UPDATE
 * fixed load settings 
+* fixed: on no mint, the resource menu bugs out
+* fixed: out of food message with no city mentioned
+* tweak: removed 5 seconds from upgraded farm work, + improved tooltip
 
-x on no mint, the menu bugs out
-x resource prio not saved? (tutorial miss 7)
-x bow mission dont need logistics
-x buy iron mission, no sound
-x iron mission need dynamic goal (because of the black market)
-
-x out of food message with no city mentioned
+TUTORIAL
+* bow mission dont need logistics
+* buy iron mission, no sound
+* iron mission need dynamic goal (because of the black market)
 
 
 x custom map ends in main menu (some times)
-x adv farm, is it better?
 x testa attackera medan man deklarer fred
-x neutral unit attacking same city
 
 
 fixed - will update soon

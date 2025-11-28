@@ -1413,6 +1413,9 @@ namespace VikingEngine.DSSWars.Build
                 if (upgrade)
                 {
                     workTimeText.overrideColor = HudLib.AvailableColor;
+
+                    content.Add(new RbImage(HudLib.AvailableIcon));
+                    content.hspace();
                 }
                 content.Add(workTimeText);
 

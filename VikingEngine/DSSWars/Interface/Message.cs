@@ -184,7 +184,7 @@ namespace VikingEngine.DSSWars.Interface
         public void cityLowFoodMessage(City city)
         {   
             if (!highEconomyWarningBlock() &&
-                DssRef.storage.runTutorial && 
+                DssRef.storage.runTutorial == false && 
                 cityLowFoodMessageCooldown.TimeOut())
             {
                 cityLowFoodMessageCooldown.start();
@@ -257,7 +257,7 @@ namespace VikingEngine.DSSWars.Interface
 
             SoundLib.message.Play(Pan.Right);
 
-            if (player.hud.maximizedHud)
+            if (player.hud.maximizedHud == false)
             {
                 RichBoxContent compact = new RichBoxContent();
                 foreach (var m in content)
