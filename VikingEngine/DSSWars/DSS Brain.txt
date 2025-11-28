@@ -1,19 +1,8 @@
 ﻿UPDATE
 Change Log: 
+* fixed crash on map change
 
-MAP EDITOR
-* Repaired start game
-* Incread min size 16 > 160 (and wont crash anymore)
-
-SPLIT SCREEN
-* More oversize % options
-* Vertical only option
-* Split size adjustments
-
-CONTROLLER
-* removed multiselect on slow click
-* moved the pointer slightly to the right
-
+x auto postal should respect reciever stockpile 
 x testa attackera medan man deklarer fred
 
 fixed - will update soon
