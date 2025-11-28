@@ -26,7 +26,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 30;
+        const int Version = 31;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -109,10 +109,8 @@ namespace VikingEngine
 
         public void writeSettings(System.IO.BinaryWriter w)
         {
-            w.Write(Engine.Screen.WindowScalePerc);
-            Engine.Screen.PcTargetResolution.write(w);
-            w.Write((byte)Engine.Screen.PcDisplayMode);//Engine.Screen.PcTargetFullScreen);
-            w.Write((byte)Engine.Screen.UseRecordingPreset);
+            Engine.Screen.WriteSettings(w);
+
             w.Write(MusicMasterVolume);
             w.Write(SoundVolume);
             w.Write((byte)VibrationLevel);
@@ -164,18 +162,7 @@ namespace VikingEngine
         {
             if (version > Version) return;
 
-            Engine.Screen.WindowScalePerc = r.ReadInt32();
-            Engine.Screen.PcTargetResolution.read(r);
-            if (version >= 28)
-            {
-                Engine.Screen.PcDisplayMode = (WindowDisplayMode)r.ReadByte();
-            }
-            else
-            {
-                var PcTargetFullScreen = r.ReadBoolean();
-            }
-            Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
-
+            Engine.Screen.ReadSettings(r, version);
             MusicMasterVolume = r.ReadSingle();
             if (version == 23)
             {
@@ -649,7 +636,7 @@ namespace VikingEngine
                 OversizeHeight.AddOption(Ref.langOpt.GraphicsOption_Oversize_None, Engine.Screen.oversizeHeightPerc == 0, false,
                     new RbAction1Arg<int>(setOversizeHeightProperty, 0), null);
 
-                int[] oversizes = new int[] { 150, 175, 200, 250, 300 };
+                int[] oversizes = new int[] { 150, 175, 200, 225, 250, 275, 300 };
 
                 foreach (var ov in oversizes)
                 {

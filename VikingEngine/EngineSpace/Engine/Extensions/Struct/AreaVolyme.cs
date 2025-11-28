@@ -1495,6 +1495,11 @@ namespace VikingEngine //AreaVolyme
             Size.X = -Size.X;
         }
 
+        public float SideLength()
+        {
+            return Size.X > Size.Y ? Size.X : Size.Y;
+        }
+
         public float Side(Dir4 side)
         {
             switch (side)

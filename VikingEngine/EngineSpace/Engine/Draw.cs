@@ -37,7 +37,7 @@ namespace VikingEngine.Engine
         public static GraphicsDeviceManager graphicsDeviceManager;
         //public static GraphicsDevice GraphicsDevice;
         public static Viewport defaultViewport;
-        public static bool horizontalSplit = true;
+        //public static bool horizontalSplit = true;
         public static Effect effectBR, effectFlag, effectWaveXz, shadowEffect/*, oceanEffect*/;//effectSeaNoise;
         //public static Effect PixelShader;
         public static Graphics.CustomEffect[] TextureEffects;

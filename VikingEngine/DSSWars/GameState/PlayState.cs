@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars
             }
 
             localPlayers = new List<Players.LocalPlayer>(playerCount);
-            Engine.Screen.SetupSplitScreen(playerCount, !DssRef.storage.verticalScreenSplit);
+            Engine.Screen.SetupSplitScreen(playerCount);
 
 
             var factionsCounter = DssRef.world.factions.counter();

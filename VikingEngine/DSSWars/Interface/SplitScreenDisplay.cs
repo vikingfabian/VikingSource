@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.Interface
                     var player = DssRef.storage.PlayerFromScreenIndex(i);
                     PlayerView view = new PlayerView();
                     
-                    var area = view.GetDrawArea(DssRef.storage.playerCount, i, !DssRef.storage.verticalScreenSplit, out _);
+                    var area = view.GetDrawArea(DssRef.storage.playerCount, i, out _);
                     VectorRect area2 = new VectorRect(area);
                     //convert to percent
                     area2.Position /= Engine.Screen.Area.Size;

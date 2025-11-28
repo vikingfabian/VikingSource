@@ -1,8 +1,15 @@
 ﻿UPDATE
 Change Log: 
 
-* casual: fixed income tooltip on farm upgrade
-* reduced armor effect on strength value by 25%
+SPLIT SCREEN
+* More oversize % options
+* Vertical only option
+* Split size adjustments
+
+CONTROLLER
+* removed multiselect on slow click
+* moved the pointer slightly to the right
+
 
 CONTROLLER
 * added a mute disconnect option

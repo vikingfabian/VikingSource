@@ -94,7 +94,8 @@ namespace VikingEngine.DSSWars.Players
 
             if (controllerInput)
             {
-                controllerPointer = new Image(SpriteName.cmdPointer, player.playerData.view.DrawAreaF.Center, Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
+                controllerPointer = new Image(SpriteName.cmdPointer, player.playerData.view.DrawAreaF.PercentToPosition(0.6f, 0.5f), Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
+
             }
 
         }
@@ -422,7 +423,14 @@ namespace VikingEngine.DSSWars.Players
             }
             else
             {
-                multiSelectMoveLenght += Input.Mouse.MoveDistance.Length();
+                if (controllerInput)
+                {
+                    multiSelectMoveLenght += movePanLength.Length();
+                }
+                else
+                {
+                    multiSelectMoveLenght += Input.Mouse.MoveDistance.Length();
+                }
                 multiSelectHoldTime += Ref.DeltaTimeMs;
 
                 //Must start dragging to start multiselect
@@ -437,28 +445,36 @@ namespace VikingEngine.DSSWars.Players
                     {
                         case MapDetailLayerType.TerrainOverview2:
                             {
-                                
-                                var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.faction.myIndex);
 
-                                if (Input.Keyboard.Ctrl)
+                                if (rectangleBound.vectorRect.SideLength() > 1f)
                                 {
-                                    lib.DoNothing();
-                                }
+                                    var nearMapObjects = DssRef.world.unitCollAreaGrid.MapControlsMultiselectMapObjects(WP.ToTilePos(topLeft), WP.ToTilePos(bottomRight), player.faction.myIndex);
 
-                                for (int i = nearMapObjects.Count - 1; i >= 0; i--)
-                                {
-                                    if (!nearMapObjects[i].rectangleCollision(rectangleBound))
+                                    if (Input.Keyboard.Ctrl)
                                     {
-                                        nearMapObjects.RemoveAt(i);
+                                        lib.DoNothing();
                                     }
-                                }
 
-                                if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.ObjectCollection)
+                                    if (hover.obj == null || hover.obj.gameobjectType() != GameObjectType.ObjectCollection)
+                                    {
+                                        hover.obj = new ArmyCollection(player.faction);
+                                    }
+
+                                    for (int i = nearMapObjects.Count - 1; i >= 0; i--)
+                                    {
+                                        if (!nearMapObjects[i].rectangleCollision(rectangleBound))
+                                        {
+                                            nearMapObjects.RemoveAt(i);
+                                        }
+                                    }
+
+                                    hover.obj.GetMapCollection().set(nearMapObjects);
+                                }
+                                else
                                 {
-                                    hover.obj = new ArmyCollection(player.faction);
+                                    hover.obj = null;
                                 }
-
-                                hover.obj.GetMapCollection().set(nearMapObjects);
+                                
                             }
                             break;
 
@@ -1280,6 +1296,8 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        Vector2 movePanLength = Vector2.Zero;
+
         private void keypPanInput()
         {
             if (player.gameControls.controllerPointer != null)
@@ -1290,8 +1308,9 @@ namespace VikingEngine.DSSWars.Players
             {
                 return;
             }
-            
-            panCamera(-player.gameControls.input.move.directionAndTime * PanSpeed(), true);
+
+            movePanLength = -player.gameControls.input.move.directionAndTime * PanSpeed();
+            panCamera(movePanLength, true);
         }
 
         void mousePanInput()
