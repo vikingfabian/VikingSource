@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         WorldDataStorage storage;
         protected LoadingState loadingState = 0;
         bool abort = false;
-        GenerateMap dataGenerate = null;
+        public GenerateMap dataGenerate = null;
         GenerateMap postGenerate;
         int failCount = 0;
         bool generateSuccess =false;
