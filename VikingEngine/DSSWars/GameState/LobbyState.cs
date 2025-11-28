@@ -33,6 +33,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest;
+using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.Characters.Monster3;
 using VikingEngine.LootFest.GO.WeaponAttack;
 using VikingEngine.Network;
@@ -1350,9 +1351,10 @@ namespace VikingEngine.DSSWars
 
             GameStorage defaultOptions = new GameStorage();
 
-            var loadingMeta = mapBackgroundLoading.WorldData()?.metaData;
+            //var loadingMeta = mapBackgroundLoading.WorldData()?.metaData;
+            var customWorld = mapBackgroundLoading.dataGenerate.world;
 
-            bool continueCustomMap = loadingMeta != null && loadingMeta.customEditorMap;
+            bool continueCustomMap = customWorld !=null && customWorld.metaData.customEditorMap;
             if (continueCustomMap)
             {
                 content.newLine();

@@ -1,16 +1,8 @@
-﻿UPDATE
-* fixed load settings 
-* fixed: on no mint, the resource menu bugs out
-* fixed: out of food message with no city mentioned
-* tweak: removed 5 seconds from upgraded farm work, + improved tooltip
+﻿
 
-TUTORIAL
-* bow mission dont need logistics
-* buy iron mission, no sound
-* iron mission need dynamic goal (because of the black market)
+x Diplomacy: to expensive peace on large nations (set max at 10)
+x Casual: Queue all button
 
-
-x custom map ends in main menu (some times)
 x testa attackera medan man deklarer fred
 
 
