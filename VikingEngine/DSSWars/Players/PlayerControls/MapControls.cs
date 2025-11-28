@@ -405,16 +405,16 @@ namespace VikingEngine.DSSWars.Players
 
             if (rectangleLines == null)
             {   
-                bool select;
+                //bool select;
                 //if (controllerInput)
                 //{
                 //    select = player.gameControls.input.ControllerSelect.DownEvent;//&& hover.obj == null;
                 //}
                 //else
                 //{
-                    select = player.gameControls.input.mouseSelect.DownEvent;
-                //}
-                if (select)
+                    //select = player.gameControls.input.mouseSelect.DownEvent;
+                
+                if (player.gameControls.input.mouseSelect.DownEvent)
                 {
                     multiSelectMoveLenght = 0;
                     multiSelectHoldTime = 0;
@@ -481,14 +481,9 @@ namespace VikingEngine.DSSWars.Players
                 }
 
                 bool keyUp;
-                //if (controllerInput)
-                //{
-                //    keyUp = !player.gameControls.input.ControllerSelect.IsDown;
-                //}
-                //else
-                //{
-                    keyUp = !player.gameControls.input.mouseSelect.IsDown;//Input.Mouse.IsButtonDown(MouseButton.Left);
-                //}
+               
+                keyUp = !player.gameControls.input.mouseSelect.IsDown;
+                
 
                 if (keyUp)
                 {
@@ -545,25 +540,7 @@ namespace VikingEngine.DSSWars.Players
                                 }
                                 break;
                         }
-                    //    if (hover.obj.gameobjectType() == GameObjectType.ObjectCollection)
-                    //    {
-                    //        var coll = hover.obj.GetCollection();
-                    //        if (coll.objects.Count > 0)
-                    //        {
-                    //            SoundLib.click.Play();
-
-                    //            if (coll.objects.Count == 1)
-                    //            {
-                    //                selection.obj = coll.objects[0];
-                    //                player.gameControls.armyControls = new ArmyControls(player, coll.objects);
-                    //            }
-                    //            else
-                    //            {
-                    //                selection.obj = coll;
-                    //                player.gameControls.armyControls = new ArmyControls(player, coll.objects);
-                    //            }
-                    //        }
-                    //    }
+                   
                     }
                 }
             }

@@ -26,7 +26,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 30;
+        const int Version = 32;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -123,7 +123,7 @@ namespace VikingEngine
             w.Write(dyslexiaFont);
             controllerMap.write(w);
             keyboardMap.write(w);
-
+            
             bannedPeers.write(w);
             w.Write(ModelLightShaderEffect);
 
@@ -139,6 +139,8 @@ namespace VikingEngine
             w.Write(keyPanSpeed);
             w.Write(BattleMelodyVolume);
             w.Write(ParticlesEffect);
+
+            Debug.WriteCheck(w);
 
             w.Write(lowLatencyGarbageCollecting);
 
@@ -233,17 +235,17 @@ namespace VikingEngine
                 BattleMelodyVolume = r.ReadSingle();
 
                 ParticlesEffect = r.ReadBoolean();
+                if (version >= 32)
+                {
+                    Debug.ReadCheck(r);
+                }
 
-
-                if (version >= 23)
+                    if (version >= 23)
                 {
                     lowLatencyGarbageCollecting = r.ReadBoolean();
                 }
 
-            if (version >= 30)
-            {
-                muteControllerDisconnect = r.ReadBoolean();
-            }
+           
 
                 if (version >= 25)
                 {
@@ -266,6 +268,11 @@ namespace VikingEngine
                 if (version >= 29)
                 {
                     customCursor = r.ReadBoolean();
+                }
+
+                if (version >= 30)
+                {
+                    muteControllerDisconnect = r.ReadBoolean();
                 }
 
                 Debug.ReadCheck(r);
@@ -748,7 +755,7 @@ namespace VikingEngine
 
         }
 
-public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
+        public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
         {
             content.newLine();
             
