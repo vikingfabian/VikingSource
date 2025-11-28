@@ -1352,7 +1352,7 @@ namespace VikingEngine.DSSWars
             GameStorage defaultOptions = new GameStorage();
 
             //var loadingMeta = mapBackgroundLoading.WorldData()?.metaData;
-            var customWorld = mapBackgroundLoading.dataGenerate.world;
+            WorldData customWorld = mapBackgroundLoading?.dataGenerate?.world;
 
             bool continueCustomMap = customWorld !=null && customWorld.metaData.customEditorMap;
             if (continueCustomMap)
