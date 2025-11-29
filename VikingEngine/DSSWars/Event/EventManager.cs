@@ -854,7 +854,7 @@ namespace VikingEngine.DSSWars.Event
                     foreach (var cindex in city.neighborCities)
                     {
                         var otherfaction = DssRef.world.cities[cindex].GetFaction();
-                        if (factionMayStartWar(otherfaction, defender))
+                        if (factionMayStartWar(otherfaction, defender) && otherfaction.player.IsBot())
                         {
                             return otherfaction;
                         }

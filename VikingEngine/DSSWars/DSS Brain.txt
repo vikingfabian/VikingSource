@@ -1,8 +1,10 @@
 ﻿
+* Added max cost for truce: 6, and peace: 8
+* Casual: Queue all buttons
+* Casual: Doubled max huts
+* fixed: crash on war manager creates war between local players
 
-x Diplomacy: to expensive peace on large nations (set max at 10)
-x Casual: Queue all button
-
+x bots dont make guards
 x testa attackera medan man deklarer fred
 
 

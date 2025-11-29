@@ -386,6 +386,25 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 }
             }
 
+            content.newParagraph();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember>
+                    {
+                        new RbImage( SpriteName.AutomationGearIcon),
+                        new RbSpace(0.5f),
+                        new RbImage( SpriteName.WarsConstructBuildingIcon),
+                        new RbSpace(),
+                        new RbText(".Queue all buildings") },
+                        new RbAction(queueAllCasualBuildings), null));
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember>
+                    {
+                        new RbImage( SpriteName.AutomationGearIcon),
+                        new RbSpace(0.5f),
+                        new RbImage( SpriteName.WarsTechnology_Unlocked),
+                        new RbSpace(),
+                        new RbText(".Queue all tech") },
+                        new RbAction(queueAllCasualProgress), null));
+
             //CURRENT PROGRESS
             city.GetCasualProgress().BuildToHud(player, city, content);
 
@@ -476,6 +495,68 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     }
                 }
             }
+
+            void queueAllCasualProgress()
+            {
+                /*
+                Tent,
+                WorkerHut,
+                Barracks,
+                GuardTower_Wood,
+                GuardTower_Stone,
+                StartUpBarracks,
+                Logistics,
+                ResearchCenter,
+        
+                UnlockIronArmor,
+                UnlockSteelArmor,
+                UnlockSword,
+                UnlockSteelSword,
+                UnlockCatapult,
+                UnlockBlackPower,
+                UnlockGunPower,
+                UnlockFarming2,
+                UnlockFarming3,
+                Embassy,
+                NUM
+                 */
+                List<CasualBuildType> allProgress = [
+                    CasualBuildType.Logistics,
+                    CasualBuildType.ResearchCenter,
+                    CasualBuildType.UnlockIronArmor,
+                    CasualBuildType.UnlockSword,
+                    CasualBuildType.UnlockCatapult,
+                    CasualBuildType.UnlockFarming2,
+                    CasualBuildType.UnlockSteelArmor,
+                    CasualBuildType.UnlockSteelSword,
+                    CasualBuildType.UnlockBlackPower,
+                    CasualBuildType.UnlockGunPower,
+                    CasualBuildType.UnlockFarming3,
+                ];
+
+                city.CasualBuild(allProgress);
+            }
+            void queueAllCasualBuildings()
+            {
+                List< CasualBuildType> allBuildings = new List< CasualBuildType >(64);
+
+                allBuildings.Add(CasualBuildType.Logistics);
+                for (int i = 0; i < 8; i++)
+                {
+                    allBuildings.Add(CasualBuildType.WorkerHut);
+                    allBuildings.Add(CasualBuildType.WorkerHut);
+                    allBuildings.Add(CasualBuildType.Barracks);
+                    //allBuildings.Add(CasualBuildType.Tent);
+                    allBuildings.Add(CasualBuildType.GuardTower_Stone);
+                    if (i == 2)
+                    {
+                        allBuildings.Add(CasualBuildType.Embassy);
+                    }
+                }
+                city.CasualBuild(allBuildings);
+            }
+
+            
 
             void buildTooltip(RichBoxContent content, object tag)
             {
