@@ -1,4 +1,5 @@
-﻿
+﻿*split-screen: fixed more war manager crashes involving player against player
+
 CASUAL
 * tax is reduced by 20%
 * tax upgrades are reduced to half

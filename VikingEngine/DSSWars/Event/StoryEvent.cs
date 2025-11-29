@@ -897,7 +897,7 @@ namespace VikingEngine.DSSWars.Event
                     bool bHasSearched = has_searched.Contains(faction);
 
                     if (!bHasSearched &&
-                        DssRef.state.events.factionMayStartWar(faction, player.faction) &&
+                        DssRef.state.events.botMayStartWar(faction, player.faction) &&
                         !attackers.Contains(faction))
                     {
                         attackers.Add(faction);

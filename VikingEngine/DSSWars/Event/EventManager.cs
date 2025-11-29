@@ -854,7 +854,7 @@ namespace VikingEngine.DSSWars.Event
                     foreach (var cindex in city.neighborCities)
                     {
                         var otherfaction = DssRef.world.cities[cindex].GetFaction();
-                        if (factionMayStartWar(otherfaction, defender) && otherfaction.player.IsBot())
+                        if (botMayStartWar(otherfaction, defender))
                         {
                             return otherfaction;
                         }
@@ -919,7 +919,7 @@ namespace VikingEngine.DSSWars.Event
                                 !factionsChecked[otherfactionIx])
                             {
                                 var otherfaction = DssRef.world.faction(otherfactionIx);
-                                if (factionMayStartWar(otherfaction, defender))
+                                if (botMayStartWar(otherfaction, defender))
                                 {
                                     return otherfaction;
                                 }
@@ -936,12 +936,16 @@ namespace VikingEngine.DSSWars.Event
             return null;
         }
 
-        public bool factionMayStartWar(Faction attacker, Faction defender)
+        public bool botMayStartWar(Faction attacker, Faction defender)
         {
             if (attacker != null && defender != null)
             {
                 if (attacker.armies.Count > 0)
                 {
+                    if (attacker.player.IsLocalPlayer())
+                    {
+                        return false;
+                    }
                     if (defender.player.IsLocalPlayer())
                     {
                         if (!attacker.player.mayAttackPlayer)
