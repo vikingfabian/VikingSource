@@ -303,8 +303,9 @@ namespace VikingEngine.DSSWars
         public static int GoldDeliveryChunkSize_Level2 = 2000;
         public static int GoldDeliveryChunkSize_Level3 = 5000;
 
-        public static int Casual_Farm2TaxIncreasePercUnits_copp = 5;
-        public static int Casual_Farm3TaxIncreasePercUnits_copp = 10;
+        public static int Casual_TaxPerWorker_copp = 8;
+        public static int Casual_Farm2TaxIncreasePercUnits_copp = 2;
+        public static int Casual_Farm3TaxIncreasePercUnits_copp = 4;
         
         //EVENTS
         public static Range DominationSizeIncrease = new Range(5, 7);

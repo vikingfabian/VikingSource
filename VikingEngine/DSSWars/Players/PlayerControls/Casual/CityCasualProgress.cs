@@ -22,7 +22,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
     {
         public int cityIndex;
        
-
         bool payedRecruitCost = false;
         int recruitTimeSeconds = -1;
         List<CasualRecruitQueueItem> recruitQueue = new List<CasualRecruitQueueItem>(16);

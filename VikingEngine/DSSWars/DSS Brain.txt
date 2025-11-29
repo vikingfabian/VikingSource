@@ -1,8 +1,9 @@
 ﻿
-* Added max cost for truce: 6, and peace: 8
-* Casual: Queue all buttons
-* Casual: Doubled max huts
-* fixed: crash on war manager creates war between local players
+x delivery: "max delivery distance:" on the tooltip
+
+CASUAL
+* tax is reduced by 20%
+* tax upgrades are reduced to half
 
 x bots dont make guards
 x testa attackera medan man deklarer fred
