@@ -591,6 +591,10 @@ namespace VikingEngine.DSSWars.GameObject
             army.refreshPositions(false);
             army.onArmyMerge();
         }
+        public void disbandArmyAction()
+        {
+            DeleteMe(DeleteReason.Disband, true);
+        }
 
         public void disbandSoldiersAction(UnitFilterType type, int count)
         {
@@ -647,10 +651,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
 
-        public void disbandArmyAction()
-        {
-            DeleteMe( DeleteReason.Disband, true);
-        }
+        
 
         public override void remove(SoldierGroup group)
         {
@@ -1229,7 +1230,7 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        public override void OnNewOwner(Faction newFaction)
+        public override void OnNewOwner(Faction newFaction, bool convert)
         {
             if (inRender_detailLayer)
             {

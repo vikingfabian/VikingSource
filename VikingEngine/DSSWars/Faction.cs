@@ -372,7 +372,7 @@ namespace VikingEngine.DSSWars
             var citiesC = cities.counter();
             while (citiesC.Next())
             {
-                citiesC.sel.OnNewOwner(newFaction);
+                citiesC.sel.OnNewOwner(newFaction, false);
             }
         }
         

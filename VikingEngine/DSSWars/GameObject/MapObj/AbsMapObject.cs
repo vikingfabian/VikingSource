@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.factionIndex = newFaction.myIndex;
             
-            OnNewOwner(newFaction);
+            OnNewOwner(newFaction, convert);
         }
 
         //override public Faction GetFaction()
@@ -171,7 +171,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    return faction;
         //}
 
-        abstract public void OnNewOwner(Faction newFaction);
+        abstract public void OnNewOwner(Faction newFaction, bool convert);
 
         public override AbsMapObject RelatedMapObject()
         {

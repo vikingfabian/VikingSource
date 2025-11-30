@@ -288,11 +288,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void haltConscriptAndDelivery()
         {
-            for (int i = 0; i < conscriptBuildings.Count; i++)
+            lock (conscriptBuildings)
             {
-                BarracksStatus status = conscriptBuildings[i];
-                status.halt(this);
-                conscriptBuildings[i] = status;
+                for (int i = 0; i < conscriptBuildings.Count; i++)
+                {
+                    BarracksStatus status = conscriptBuildings[i];
+                    status.halt(this);
+                    conscriptBuildings[i] = status;
+                }
             }
 
             for (int i = 0; i < deliveryServices.Count; i++)
@@ -300,6 +303,12 @@ namespace VikingEngine.DSSWars.GameObject
                 var delivery = deliveryServices[i];
                 delivery.halt();
                 deliveryServices[i] = delivery;
+            }
+
+            if (casualProgress != null)
+            {
+                casualProgress.clearBuildQueue();
+                casualProgress.clearRecruitQueue();
             }
         }
 
@@ -3030,6 +3039,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void setFaction(Faction newFaction, bool duringStartup, bool convert)
         {
+
             if (newFaction == null)
                 return;
 
@@ -3054,155 +3064,52 @@ namespace VikingEngine.DSSWars.GameObject
                     EditSubTile.OntileChange(tilePos);
                 }
 
-                OnNewOwner(newFaction);
+                OnNewOwner(newFaction, convert);
 
-                if (convert)
-                {
-                    convertSoldiersToFaction(newFaction);
-                }
-                else
-                {
-                    var counter = groups.counter();
-                    while (counter.Next())
-                    {
-                        counter.sel.DeleteMe(DeleteReason.Disband, false);
-                    }
-                }
+                
             }
         }
 
-        override public void OnNewOwner(Faction newFaction)
+        override public void OnNewOwner(Faction newFaction, bool convert)
         {
+
             if (DssRef.world != null)
             {
-                //var faction = GetFaction_Safe();
                 DssRef.world.BordersUpdated = true;
-
-                //detailObj?.onNewOwner();
-
-                //if (cityType == CityType.Factory && newFaction.factiontype != FactionType.DarkLord)
-                //{
-                //    setFactoryType(false);
-                //}
-                //else 
-                if (overviewModel != null)
+                
+                haltConscriptAndDelivery();
+                
+                Ref.update.AddSyncAction(new SyncAction(() =>
                 {
-                    Ref.update.AddSyncAction(new SyncAction(createOverViewModel));
-                    //createOverViewModel();
-                }
+                    if (overviewModel != null)
+                    {
+                        createOverViewModel();
+                    }
+
+                    if (convert)
+                    {
+                        convertSoldiersToFaction(newFaction);
+                    }
+                    else
+                    {
+                        var counter = groups.counter();
+                        while (counter.Next())
+                        {
+                            counter.sel.DeleteMe(DeleteReason.Disband, false);
+                        }
+                        groups.Clear();
+                    }
+                }));
+                
 
                 workTemplate.onFactionChange(this, newFaction.workTemplate);
                 tradeTemplate.onFactionValueChange(newFaction.tradeTemplate);
                 technology.addFactionUnlocked(newFaction.technology, true, false);
 
-                if (casualProgress != null && !newFaction.player.profile.casualControls)
-                {
-
-                }
+                
             }
         }
 
-        //public void buySoldiersAction(UnitType type, int count, LocalPlayer player)
-        //{
-        //    Army army;
-        //    bool success = buySoldiers(type, count, true, out army);
-        //    if (success)
-        //    {
-        //        var typeData = DssRef.profile.Get(type);
-        //        if (typeData.factionUniqueType >= 0)
-        //        {
-        //            DssRef.achieve.onFactionUniquePurchase(typeData.factionUniqueType);
-        //        }
-
-        //        if (player != null)
-        //        {
-        //            player.onBuySoldier();
-        //        }
-        //    }
-        //}
-
-        //public bool buySoldiers(UnitType type, int count, bool commit, out Army army, bool ignoreCityPurchaseOptions = false)
-        //{//todo check 0 count
-        //    var typeData = DssRef.profile.Get(type);
-
-        //    int workersTotCost = typeData.workForceCount() * count;
-        //    int moneyTotCost;            
-
-        //    if (ignoreCityPurchaseOptions)
-        //    {
-        //        moneyTotCost = typeData.goldCost * count;
-        //    }
-        //    else
-        //    {
-        //        CityPurchaseOption opt = null;
-        //        foreach (var m in cityPurchaseOptions)
-        //        {
-        //            if (m.unitType == type)
-        //            {
-        //                opt = m;
-        //                break;
-        //            }
-        //        }
-
-        //        if (opt == null)
-        //        {
-        //            army = null;
-        //            return false;
-        //        }
-
-        //        moneyTotCost = opt.goldCost * count;
-        //    }
-
-        //    army = null;
-
-        //    bool success = spendMenForDrafting(workersTotCost, false) &&//workForce.value >= workersTotCost &&
-        //       faction.gold >= moneyTotCost;
-
-
-        //    if (success && commit)
-        //    {
-        //        faction.payMoney(moneyTotCost, true);
-        //        //workForce.pay(workersTotCost, true);
-        //        spendMenForDrafting(workersTotCost, true);
-
-        //        army = recruitToClosestArmy();
-
-        //        if (army == null)
-        //        {
-        //            IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
-
-        //            army = faction.NewArmy(onTile);//new Army(faction, onTile);
-        //        }
-
-        //        for (int i = 0; i < count; i++)
-        //        {
-        //            new SoldierGroup(army, type, !StartupSettings.SkipRecruitTime);
-        //        }
-
-        //        army?.OnSoldierPurchaseCompleted();
-
-        //    }
-        //    return success;
-        //}
-
-        bool spendMenForDrafting(int menCount, bool commit)
-        { 
-            bool success = mercenaries + workForce.amount >= menCount;
-
-            if (success && commit)
-            {
-                int mercUse = Math.Min(mercenaries, menCount);
-                mercenaries -= mercUse;
-                menCount -= mercUse;
-
-                workForce.amount -= menCount;
-               
-            }
-
-            return success;
-        }
-
-        
         public void upgradeCityHallTooltip(RichBoxContent content, object tag)
         {
             bool available = canUpgradeCityHall(out CraftBlueprint blueprint, out int currentStaff, out int serviceHouses_required, out int serviceHouses_available);
