@@ -290,21 +290,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        //public void toggleConscriptStop()
-        //{
-        //    toggleConscriptStop(selectedConscript);
-        //}
-
-        //public void toggleConscriptStop(int index)
-        //{
-        //    if (arraylib.InBound(deliveryServices, index))
-        //    {
-        //        DeliveryStatus currentStatus = deliveryServices[index];
-        //        currentStatus.que = currentStatus.que > 0 ? 0 : 100;
-        //        deliveryServices[index] = currentStatus;
-        //    }
-        //}
-
         public Vector3 defaultConscriptPos()
         {
             Vector3 startPos;
@@ -516,12 +501,6 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 idAndPosition = conv.IntVector2ToInt(subPos),
             };
-
-            //consriptProfile.profile.defaultSetup(type);
-            //if (nobelmen)
-            //{
-            //    consriptProfile.profile.training = TrainingLevel.Basic;
-            //}
 
             lock (conscriptBuildings)
             {
