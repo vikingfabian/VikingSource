@@ -838,6 +838,14 @@ namespace VikingEngine.DSSWars.Players
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.TestNextEvent();
                     //hud.objMenu.diplomacy?.makeServant();
+                    //if (gameControls.map.hover.obj is City)
+                    //{ 
+                    //    gameControls.map.hover.obj.GetCity().setFaction(faction, false, false);
+                    //}
+                    if (gameControls.map.hover.obj is Army)
+                    {
+                        gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);
+                    }
                 }
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
@@ -851,7 +859,7 @@ namespace VikingEngine.DSSWars.Players
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
                     //battleLineUpTest3_friendly_only();
-                    battleLineUpTest2(false);
+                    //battleLineUpTest2(false);
 
                     //var tile = DssRef.world.tileGrid.Get(gameControls.mapControls.tilePosition);
                     //Debug.Log(tile.ToString());

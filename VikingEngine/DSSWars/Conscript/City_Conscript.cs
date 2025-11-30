@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
@@ -201,6 +202,19 @@ namespace VikingEngine.DSSWars.GameObject
         public void copyConscript(LocalPlayer player)
         {
             copyConscript(player, selectedConscript);
+        }
+
+        void haltAllConscriptProgress()
+        {
+            lock (conscriptBuildings)
+            {
+                for (int i = 0; i < conscriptBuildings.Count; i++)
+                {
+                    BarracksStatus currentStatus = conscriptBuildings[i];
+                    currentStatus.que = currentStatus.que > 0 ? 0 : 100;
+                    conscriptBuildings[i] = currentStatus;
+                }
+            }
         }
 
         public void copyConscript(LocalPlayer player, int index)
@@ -557,5 +571,14 @@ namespace VikingEngine.DSSWars.GameObject
             status = new BarracksStatus();
             return false;
         }
+
+        //protected void DispandGuards()
+        //{
+        //    var counter = groups.counter();
+        //    while (counter.Next())
+        //    {
+        //        counter.sel.DeleteMe(DeleteReason.Disband, false);
+        //    }
+        //}
     }   
 }
