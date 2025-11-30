@@ -943,20 +943,21 @@ namespace VikingEngine.DSSWars.Event
             {
                 if (attacker.armies.Count > 0)
                 {
+                    if (!attacker.player.mayAttackPlayer && 
+                        (defender.player.IsLocalPlayer() || DssRef.diplomacy.InplayerAlliance(defender)))
+                    {
+                        return false;
+                    }
+
                     if (defender.player.IsLocalPlayer())
                     {
-                        if (!attacker.player.mayAttackPlayer)
-                        {
-                            return false;
-                        }
-
                         if (attacker.militaryStrength < Math.Min(defender.militaryStrength * 0.25f, 6) ||
                             attacker.militaryStrength > defender.militaryStrength * 3f)
                         {
                             return false;
                         }
                     }
-
+                    
                     var rel = DssRef.diplomacy.GetRelationType(defender, attacker);
                     if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)
                     {

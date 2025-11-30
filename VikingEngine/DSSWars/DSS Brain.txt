@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log: 
 * fixed crash on map change
+* the attack restriction from the huge nations also protects player allies
 
 IMMORTAL CITY GUARD
 * cities will stop all conscript and deliveries on hostile takeover
