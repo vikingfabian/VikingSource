@@ -1,12 +1,8 @@
 ﻿UPDATE
 Change Log: 
-* fixed crash on map change
-* the attack restriction from the huge nations also protects player allies
+* 
 
-IMMORTAL CITY GUARD
-* cities will stop all conscript and deliveries on hostile takeover
-* improved multi-core safety on: cities will disband all guards on hostile takeover + fixed a clear data bug
-* cities will stop all casual build queues on hostile takeover
+
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
