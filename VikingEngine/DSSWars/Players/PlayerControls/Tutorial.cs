@@ -2691,9 +2691,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         void EndTutorial()
         {
             missions.SelectItem(TutorialMission.EndTutorial);
-            nextMission(missions.selIndex + 1);
-            refreshLimits();
+            bool endAll = player.profile.casualControls || PlatformSettings.STEAM_DEMO;
 
+            if (!endAll)
+            {
+                nextMission(missions.selIndex + 1);
+                refreshLimits();
+            }
             player.gameControls.map.setCameraBounds(false, cityarea);
             bool createStartUnits = missions.sel < TutorialMission.AttackBarbarian;
             
@@ -2716,7 +2720,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.hud.messages.blockFoodWarning(false);
             DssRef.state.events.onTutorialEnd();
 
-            if (player.profile.casualControls || PlatformSettings.STEAM_DEMO)
+            if (endAll)
             {
                 EndAdvisor();
             }
