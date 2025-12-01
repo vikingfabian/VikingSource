@@ -2589,7 +2589,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     missionComplete = produceSword_produceSword_sound.Value1;
                     break;
                 case TutorialMission.ProduceMail:
-                    missionComplete = produceMail_produceMail_sound.Value1;
+                    missionComplete = produceMail_mailPriority_sound.Value1 && produceMail_produceMail_sound.Value1;
                     break;
             }
 
@@ -2606,6 +2606,15 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void nextMission(int nextIx)
         {
+            switch (missions.sel)
+            { 
+                case TutorialMission.CollectFood:
+                case TutorialMission.ProduceBow:
+                case TutorialMission.ProduceMail:
+                    ((PlayState)DssRef.state).AutoSave();
+                    break;
+            }
+
             if (missions.selIndex < nextIx)
             {
                 missions.SelectIndex(nextIx);

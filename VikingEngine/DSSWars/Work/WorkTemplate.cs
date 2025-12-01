@@ -1826,30 +1826,12 @@ namespace VikingEngine.DSSWars.Work
 
                 for (int prio = min; prio <= max; prio++)
                 {
-                    //content.space();
-
-                    string prioText = null;
-                    switch (prio)
-                    {
-                        case WorkTemplate.NoPrio:
-                            prioText = DssRef.lang.Work_OrderPrio_No;
-                            break;
-
-                        case WorkTemplate.MinPrio:
-                            prioText = DssRef.lang.Work_OrderPrio_Min;
-                            break;
-
-                        case WorkTemplate.MaxPrio:
-                            prioText = DssRef.lang.Work_OrderPrio_Max;
-                            break;
-                    }
-
                     var button = new ArtToggle(prio == value, new List<AbsRichBoxMember> {
                                 new RbText(prio.ToString())
                             },
                         new RbAction3Arg<int, WorkPriorityType, City>(faction.setWorkPrio, prio, priorityType, city, RbSoundType.Option),
-                        prioText == null ? null : new RbTooltip_Text(prioText));
-                    //button.setGroupSelectionColor(HudLib.RbSettings, prio == value);
+                        Bound.IsWithin( prio, WorkTemplate.MinPrio +1, WorkTemplate.MaxPrio -1) ? null : new RbTooltip(prioTooltip, prio));
+                    
                     content.Add(button);
                     if (prio == 0)
                     {
@@ -1861,6 +1843,31 @@ namespace VikingEngine.DSSWars.Work
             {
                 content.Add(new RbImage(SpriteName.birdLock));
             }
+        }
+
+        void prioTooltip(RichBoxContent content, object tag)
+        {
+            SpriteName icon = SpriteName.NO_IMAGE;
+            string prioText = null;
+            switch ((int)tag)
+            {
+                case WorkTemplate.NoPrio:
+                    icon = SpriteName.WarsHudIconSpeed_Pause;
+                    prioText = DssRef.lang.Work_OrderPrio_No;
+                    break;
+
+                case WorkTemplate.MinPrio:
+                    icon = SpriteName.WarsHudIconSpeed_Low;
+                    prioText = DssRef.lang.Work_OrderPrio_Min;
+                    break;
+
+                case WorkTemplate.MaxPrio:
+                    icon = SpriteName.WarsHudIconSpeed_High;
+                    prioText = DssRef.lang.Work_OrderPrio_Max;
+                    break;
+            }
+
+            content.icontext(icon, prioText);
         }
 
         public void writeGameState(System.IO.BinaryWriter w, bool isCity)

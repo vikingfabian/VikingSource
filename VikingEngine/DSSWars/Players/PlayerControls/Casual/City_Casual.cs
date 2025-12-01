@@ -30,8 +30,6 @@ namespace VikingEngine.DSSWars.GameObject
             GetCasualProgress().AddBuild(this, new CasualBuildQueueItem() { build = type, count = count });
         }
 
-
-
         public void FinishCasualBuild(CasualBuildType casualBuildType)
         {
             switch (casualBuildType)

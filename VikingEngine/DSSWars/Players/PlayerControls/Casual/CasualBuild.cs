@@ -266,116 +266,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
         //static readonly int[] BuildCountOptions = [4, 8, 20];
 
+
+
         public static void ToHud(LocalPlayer player, RichBoxContent content, City city)
         {
-            List<CasualBuildType> available = new List<CasualBuildType>(8);
-            List<CasualBuildType> complete = new List<CasualBuildType>(8);
-
             var profile = city.casualCityProfile;
             var progress = city.GetCasualProgress();
-
-            if (profile.unlock_logistics)
-            {
-                available.Add(CasualBuildType.Tent);
-            }
-            available.Add(CasualBuildType.WorkerHut);
-            available.Add(CasualBuildType.Barracks);
-
-            available.Add(CasualBuildType.GuardTower_Wood);
-
-            if (profile.unlock_logistics)
-            {
-                complete.Add(CasualBuildType.Logistics);
-                available.Add(CasualBuildType.GuardTower_Stone);
-
-                if (city.buildingStructure.Embassy_count == 0)
-                {
-                    available.Add(CasualBuildType.Embassy);
-                }
-                else
-                {
-                    complete.Add(CasualBuildType.Embassy);
-                }
-
-                if (profile.unlock_research)
-                {
-                    complete.Add(CasualBuildType.ResearchCenter);
-
-                    switch (profile.unlock_armor)
-                    {
-                        case 0:
-                            available.Add(CasualBuildType.UnlockIronArmor);
-                            break;
-                        case 1:
-                            complete.Add(CasualBuildType.UnlockIronArmor);
-                            available.Add(CasualBuildType.UnlockSteelArmor);
-                            break;
-                        default:
-                            complete.Add(CasualBuildType.UnlockIronArmor);
-                            complete.Add(CasualBuildType.UnlockSteelArmor);
-                            break;
-                    }
-
-                    switch (profile.unlock_sword)
-                    {
-                        case 0:
-                            available.Add(CasualBuildType.UnlockSword);
-                            break;
-                        case 1:
-                            complete.Add(CasualBuildType.UnlockSword);
-                            available.Add(CasualBuildType.UnlockSteelSword);
-                            break;
-                        default:
-                            complete.Add(CasualBuildType.UnlockSword);
-                            complete.Add(CasualBuildType.UnlockSteelSword);
-                            break;
-                    }
-
-                    switch (profile.unlock_projectile)
-                    {
-                        case 0:
-                            available.Add(CasualBuildType.UnlockCatapult);
-                            break;
-                        case 1:
-                            complete.Add(CasualBuildType.UnlockCatapult);
-                            available.Add(CasualBuildType.UnlockBlackPower);
-                            break;
-                        case 2:
-                            complete.Add(CasualBuildType.UnlockCatapult);
-                            complete.Add(CasualBuildType.UnlockBlackPower);
-                            available.Add(CasualBuildType.UnlockGunPower);
-                            break;
-                        default:
-                            complete.Add(CasualBuildType.UnlockCatapult);
-                            complete.Add(CasualBuildType.UnlockBlackPower);
-                            complete.Add(CasualBuildType.UnlockGunPower);
-                            break;
-                    }
-
-                    switch (profile.unlock_farming)
-                    {
-                        case 0:
-                            available.Add(CasualBuildType.UnlockFarming2);
-                            break;
-                        case 1:
-                            complete.Add(CasualBuildType.UnlockFarming2);
-                            available.Add(CasualBuildType.UnlockFarming3);
-                            break;
-                        default:
-                            complete.Add(CasualBuildType.UnlockFarming2);
-                            complete.Add(CasualBuildType.UnlockFarming3);
-                            break;
-                    }
-                }
-                else
-                {
-                    available.Add(CasualBuildType.ResearchCenter);
-                }
-            }
-            else
-            {
-                available.Add(CasualBuildType.Logistics);
-            }
+            profile.availableBuildings(city, out List<CasualBuildType> available, out List<CasualBuildType> complete);
 
             foreach (var buildType in available)
             {

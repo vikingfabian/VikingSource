@@ -1,13 +1,4 @@
-﻿* split-screen: fixed more war manager crashes involving player against player
-* added steam stats for 300%
-
-CASUAL
-* tax is reduced by 20%
-* tax upgrades are reduced to half
-
-VICTORY/DEFEAT TRACKER
-* Each end screen will print the result into a file
-* You can browse them from the main menu
+﻿* 
 
 
 #Event timers (are slightly random)#

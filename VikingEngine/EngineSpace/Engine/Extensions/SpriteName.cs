@@ -2425,7 +2425,7 @@ namespace VikingEngine
         WarsHudTutorialBg,
         WarsHudFlapMinimize,
         WarsHudFlapMaximize,
-
+       
 
         WarsHudDropDownArrow,
         WarsHudYellowDot,
@@ -2459,6 +2459,10 @@ namespace VikingEngine
         WarsHudIconNext,
         WarsHudIconPrevious,
         WarsHudIconProgress,
+        WarsHudIconSpeed_Pause,
+        WarsHudIconSpeed_Low,
+        WarsHudIconSpeed_High,
+
 
         DSS2MainMenu,
         SteamIcon,

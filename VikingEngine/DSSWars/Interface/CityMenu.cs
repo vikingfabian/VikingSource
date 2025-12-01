@@ -287,24 +287,8 @@ namespace VikingEngine.DSSWars.Interface
             {
                 if (option.Available)
                 {
-                    //SoldierConscriptProfile soldierConscript = new SoldierConscriptProfile()
-                    //{
-                    //    conscript = new ConscriptProfile() { weapon = option.weapon },
-                    //};
                     content.newLine();
 
-                    //SpriteName icon;
-                    //string caption;
-                    //if (soldierType == CasualSoldierType.Guard)
-                    //{
-                    //    icon = SpriteName.WarsGuard;
-                    //    caption = DssRef.lang.Conscript_Soldiers_GuardType;
-                    //}
-                    //else
-                    //{
-                    //    icon = soldierConscript.Icon();
-                    //    caption = soldierConscript.conscript.TypeName();
-                    //}
                     option.ButtonVisuals(soldierType, out SpriteName icon, out string caption);
 
                     var recruitOption = new CasualRecruitQueueItem(soldierType, option, 1);
