@@ -93,6 +93,8 @@ namespace VikingEngine.DSSWars
         const string UnderMenu_Options = "options";
         const string UnderMenu_DemoModes = "demo_modes";
         const string UnderMenu_Options_Language = "lang";
+        const string UnderMenu_GameOverResults = "gameresults";
+        const string UnderMenu_GameOverResults_View = "gameresults_view";
 
 
         const float MoreArrowTabbing = 0.9f;
@@ -171,16 +173,20 @@ namespace VikingEngine.DSSWars
                 case GameMenuSystem.UnderMenu_Options_Keyboard:
                 case GameMenuSystem.UnderMenu_Options_Keyboard_Key:
                     GameMenuSystem.refreshPage(underMenu, true);
-                    //    GameMenuSystem.mouseOptions(underMenu);
-                    //    break;
-
-                    //case GameMenuSystem.UnderMenu_Options_Keyboard:
-                    //    GameMenuSystem.keyboardOptions(underMenu);
-                    //    break;
-
-                    //case GameMenuSystem.UnderMenu_Options_Keyboard_Key:
-                    //    GameMenuSystem.listMapOptions(underMenu);
                     break;
+
+                case UnderMenu_GameOverResults:
+                    if (DssRef.storage.meta.gameOverResultCollection == null)
+                    {
+                        DssRef.storage.meta.gameOverResultCollection = new GameOverResultCollection(refreshUnderMenu);
+                    }
+
+                    listGameOverResults();
+                    break;
+                case UnderMenu_GameOverResults_View:
+
+                    break;
+
 
                 case UnderMenu_Options_Language:
                     selectLanguageMenu();
@@ -251,6 +257,12 @@ namespace VikingEngine.DSSWars
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_Mode_BattleLab) }),
                             new RbAction(startBattleLab), new RbTooltip_Text(DssRef.lang.Lobby_Mode_BattleLab_Description), !PlatformSettings.STEAM_DEMO));
+
+                        content.newLine();
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.GameOverResults) }),
+                            new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_GameOverResults, StackOption.Stack), null, !PlatformSettings.STEAM_DEMO));
+
 
                         content.newLine();
 
@@ -2596,6 +2608,45 @@ namespace VikingEngine.DSSWars
         void startGame_nochecks()
         {
             new StartGame(true, netLobby, null, mapBackgroundLoading);
+        }
+
+        void listGameOverResults()
+        {
+            RichBoxContent content = new RichBoxContent();
+            HudLib.returnButton(content, underMenu, true, null);
+
+            if (DssRef.storage.meta.gameOverResultCollection.allFiles == null)
+            {
+               
+                content.Add(new RbText(DssRef.lang.Hud_Loading, HudLib.InfoYellow_Light));
+            }
+            else
+            {
+                foreach (var file in DssRef.storage.meta.gameOverResultCollection.allFiles.Files)
+                {
+                    var goResult = file.Tag as GameOverResult;
+                    if (goResult != null)
+                    {
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Primary,
+                            goResult.ButtonContent(), new RbAction1Arg<GameOverResult>(openGameOverResult, goResult),
+                            new RbTooltip(goResult.tooltipContent))
+                        { fillWidth = true });
+                } }
+            }
+
+            underMenu.Refresh(content);
+        }
+
+        void openGameOverResult(GameOverResult result)
+        {
+            RichBoxContent content = new RichBoxContent();
+            HudLib.returnButton(content, underMenu, true, null);
+
+            content.newParagraph();
+            result.ToHud(content, false);
+
+            underMenu.OpenMenu(content, UnderMenu_GameOverResults_View);
         }
 
         void listSaves2()

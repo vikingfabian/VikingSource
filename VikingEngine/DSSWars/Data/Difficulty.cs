@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
+using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD;
@@ -450,6 +451,20 @@ namespace VikingEngine.DSSWars.Data
             }
 
             refreshSettings();
+        }
+
+        public Difficulty Clone()
+        {
+            Difficulty clone = new Difficulty();
+
+            MemoryStreamHandler memoryStream = new MemoryStreamHandler();
+            var w = memoryStream.GetWriter();
+            write(w);
+
+            var r = memoryStream.GetReader();
+            clone.read(r, int.MaxValue);
+
+            return clone;
         }
 
         public int QuickMatchPlayerStartSize()

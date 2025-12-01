@@ -1063,6 +1063,8 @@ namespace VikingEngine.DSSWars.Event
         {
             new EndScene(endReason, vType, matchResult);
 
+            new GameOverResult(endReason, vType, matchResult);
+
             if (!PlatformSettings.STEAM_DEMO &&
                 (endReason == GameEndReason.Victory || DssRef.time.TotalIngameTime().TotalHours > 10))
             {

@@ -164,7 +164,7 @@ namespace VikingEngine.DSSWars.Data
             DssRef.difficulty.read(r, version);
         }
 
-        const int Version = 32;
+        public const int Version = 32;
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(Version);
