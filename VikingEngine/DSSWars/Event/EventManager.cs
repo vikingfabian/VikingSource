@@ -855,7 +855,7 @@ namespace VikingEngine.DSSWars.Event
                     foreach (var cindex in city.neighborCities)
                     {
                         var otherfaction = DssRef.world.cities[cindex].GetFaction();
-                        if (factionMayStartWar(otherfaction, defender))
+                        if (DssRef.diplomacy.botMayStartWar(otherfaction, defender))
                         {
                             return otherfaction;
                         }
@@ -920,7 +920,7 @@ namespace VikingEngine.DSSWars.Event
                                 !factionsChecked[otherfactionIx])
                             {
                                 var otherfaction = DssRef.world.faction(otherfactionIx);
-                                if (factionMayStartWar(otherfaction, defender))
+                                if (DssRef.diplomacy.botMayStartWar(otherfaction, defender))
                                 {
                                     return otherfaction;
                                 }
@@ -937,36 +937,7 @@ namespace VikingEngine.DSSWars.Event
             return null;
         }
 
-        public bool factionMayStartWar(Faction attacker, Faction defender)
-        {
-            if (attacker != null && defender != null)
-            {
-                if (attacker.armies.Count > 0)
-                {
-                    if (!attacker.player.mayAttackPlayer && 
-                        (defender.player.IsLocalPlayer() || DssRef.diplomacy.InplayerAlliance(defender)))
-                    {
-                        return false;
-                    }
-
-                    if (defender.player.IsLocalPlayer())
-                    {
-                        if (attacker.militaryStrength < Math.Min(defender.militaryStrength * 0.25f, 6) ||
-                            attacker.militaryStrength > defender.militaryStrength * 3f)
-                        {
-                            return false;
-                        }
-                    }
-                    
-                    var rel = DssRef.diplomacy.GetRelationType(defender, attacker);
-                    if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
+        
 
         public void onAllDarkCitiesDestroyed()
         {
