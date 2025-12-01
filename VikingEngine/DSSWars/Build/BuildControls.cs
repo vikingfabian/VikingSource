@@ -35,15 +35,15 @@ namespace VikingEngine.DSSWars.Build
     class BuildControls
     {
         static readonly Build.BuildAndExpandType[] AutoBuildOptions =
-           {
-                Build.BuildAndExpandType.WheatFarm,
-                Build.BuildAndExpandType.LinenFarm,
-                Build.BuildAndExpandType.RapeSeedFarm,
-                Build.BuildAndExpandType.HempFarm,
+        {
+            Build.BuildAndExpandType.WheatFarm,
+            Build.BuildAndExpandType.LinenFarm,
+            Build.BuildAndExpandType.RapeSeedFarm,
+            Build.BuildAndExpandType.HempFarm,
 
-                Build.BuildAndExpandType.PigPen,
-                Build.BuildAndExpandType.HenPen,
-            };
+            Build.BuildAndExpandType.PigPen,
+            Build.BuildAndExpandType.HenPen,
+        };
 
         public static readonly MapPaintToolShape[] AvailableToolShapes = { MapPaintToolShape.Free, MapPaintToolShape.Line, MapPaintToolShape.LShape, MapPaintToolShape.Area };
 
@@ -75,8 +75,6 @@ namespace VikingEngine.DSSWars.Build
 
                     if (commit)
                     {
-                        //SoundLib.start_build_contruct.Play();
-
                         if (DssRef.difficulty.GodPowers())
                         {
                             var build = BuildLib.BuildOptions[(int)placeBuildingType];
@@ -117,8 +115,6 @@ namespace VikingEngine.DSSWars.Build
                 {
                     if (commit)
                     {
-                        //SoundLib.start_destroy_contruct.Play();
-
                         if (DssRef.difficulty.GodPowers())
                         {
                             BuildLib.Demolish(city, subTilePos);
@@ -128,10 +124,6 @@ namespace VikingEngine.DSSWars.Build
                         {
                             player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.buildOrder.value, true, city, subTilePos), ActionOnConflict.Toggle);
                         }
-                    }
-                    else
-                    {
-                        //SoundLib.woodcut.Play();
                     }
 
                     return true;
@@ -162,8 +154,6 @@ namespace VikingEngine.DSSWars.Build
 
         public void updateBuildMode()
         {
-            
-
             if (player.gameControls.input.mouseSelect.DownEvent)
             {
                 deleteSelection();
@@ -1388,6 +1378,11 @@ namespace VikingEngine.DSSWars.Build
                 content.newLine();
                 HudLib.BulletPoint(content);
                 content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Delivery_SendChunk, maxAmount)));
+
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(string.Format(DssRef.todoLang.Delivery_MaxDistance, DssConst.DeliveryMaxDistance)));
+
                 if (speedBonus > 0)
                 {
                     content.newLine();

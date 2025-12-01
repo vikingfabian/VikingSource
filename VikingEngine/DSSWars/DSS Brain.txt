@@ -1,8 +1,6 @@
 ﻿UPDATE
 Change Log: 
-* Casual: fixed the cities that were locked to automated
-* Fixed: bot random attacks did not care about protected factions
-* Improved bot restrictions for declaring war 
+* 
 
 
 #Event timers (are slightly random)#
