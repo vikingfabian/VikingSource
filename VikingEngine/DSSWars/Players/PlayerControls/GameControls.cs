@@ -165,6 +165,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                 if (commandTarget != null)
                 {
+                    inputHelpState = InputHelpState.CommandTarget;
                     if (commandTarget.update(player))
                     {
                         commandTarget.DeleteMe();

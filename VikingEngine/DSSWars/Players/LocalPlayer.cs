@@ -675,7 +675,7 @@ namespace VikingEngine.DSSWars.Players
                 EcsStaticArrayCounter neighbors = city.CityNeighbors();
                 while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in city.neighborCities)
                 {
-                    nCity.GetPlayer().onPlayerNeighborCapture(this);
+                    nCity.GetPlayer()?.onPlayerNeighborCapture(this);
                 }                
             }
 

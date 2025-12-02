@@ -29,6 +29,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string UnitType_Settler => "Settler";
         public string UnitType_Settler_Description => "Found a new city";
         public string Resource_ConsumedProduced => "Consumed/Produced";
+        public string InputActionName_PlaceTarget => "Place target";
     }
 
 

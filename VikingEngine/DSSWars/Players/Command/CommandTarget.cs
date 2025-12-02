@@ -23,17 +23,18 @@ namespace VikingEngine.DSSWars.Players.Command
 
         /// <returns>complete</returns>
         virtual public bool update(LocalPlayer player) 
-        {            
-            if (player.gameControls.input.mouseSelect.DownEvent)
+        {
+            if (player.gameControls.input.cancelDownEvent())
+            {
+                return true;
+            }
+            else if (player.gameControls.input.mouseSelect.DownEvent ||
+                player.gameControls.input.mouseOrder.DownEvent)
             {
                 OnClick(player, out bool complete);
                 return complete;
             }
-            else if (player.gameControls.input.cancelDownEvent())
-            {
-                return true;
-            }
-
+            
             return false;
         }
 

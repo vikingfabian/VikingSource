@@ -100,6 +100,7 @@ namespace VikingEngine.DSSWars.Players
                                     case TerrainMainType.Building:
                                         switch ((TerrainBuildingType)subTile.subTerrain)
                                         {
+                                            case Map.TerrainBuildingType.CityHall_Tent:
                                             case Map.TerrainBuildingType.CityHall_Village:
                                             case Map.TerrainBuildingType.CityHall_Town:
                                             case Map.TerrainBuildingType.CityHall_Capital:

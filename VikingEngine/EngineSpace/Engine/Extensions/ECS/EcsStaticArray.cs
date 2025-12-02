@@ -28,10 +28,11 @@ namespace VikingEngine
 
          public bool Next(out int value)
         {
-            index++;
+            
             if (index < end)
             {
                 value = array.array[index];
+                index++;
                 return true;
             }
 
