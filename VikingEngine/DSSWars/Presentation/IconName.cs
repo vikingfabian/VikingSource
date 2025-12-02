@@ -175,7 +175,7 @@ namespace VikingEngine.DSSWars
         {
             var build = BuildLib.BuildOptions[(int)buildingType];
             icon = build.sprite;
-            Terrain(build.mainType, build.subType, out _, out name);
+            Terrain(build.terrainType.mainTerrain, build.terrainType.subTerrain, out _, out name);
         }
 
         public static void Terrain(TerrainMainType mainType, int subType, out SpriteName icon, out string name)

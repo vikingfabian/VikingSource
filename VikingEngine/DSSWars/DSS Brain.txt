@@ -14,7 +14,6 @@ ECS REFACTORING
 * Resource per city change tracking, plus hud improvements
 
 
-
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
 - Bot peace time: 30 min
@@ -29,7 +28,7 @@ Plus the boss fight: about 10 hours
 (total: about 45 hours)
 
 #current
-English, Simplified Chinese, Japanese, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian
+English, Simplified Chinese, Japanese, Korean, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian
 
 Fully translate all the strings in the file to Brazilian Portuguese and save into a new file, that I can download. Translate all of them, do not stop.
 Brazilians are used to English in gaming, use a “hybrid” translation.

@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichMenu;
@@ -28,6 +29,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public SoldierControls soldier = null;
         public DiplomacyMap diplomacy = null;
         public Build.BuildControls build;
+        public AbsCommandTarget commandTarget = null;
         LocalPlayer player;
         public InputMap input;
         bool cityUpdate;
@@ -161,12 +163,19 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 inputHelpState = InputHelpState.Map;
                 map.focusedUpdate();
 
-                if ((map.hover.subTile.hasSelection && InBuildOrdersMode()) || build.buildKeyDown)
+                if (commandTarget != null)
+                {
+                    if (commandTarget.update(player))
+                    {
+                        commandTarget.DeleteMe();
+                        commandTarget = null;
+                    }
+                }
+                else if ((map.hover.subTile.hasSelection && InBuildOrdersMode()) || build.buildKeyDown)
                 {
                     inputHelpState = InputHelpState.Build;
                     map.cancelRectangleSelect();
-                    build.updateBuildMode();
-                    
+                    build.updateBuildMode();                    
                 }
                 else
                 {
@@ -815,6 +824,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             map.cameraFocus = obj;
             mapSelect(obj.GetWorldObject());
+            
             if (input.inputSource.IsController && obj.gameobjectType() != GameObjectType.City)
             {
                 setMenuFocus(false, false);

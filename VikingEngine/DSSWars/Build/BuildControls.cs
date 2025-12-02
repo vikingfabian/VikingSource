@@ -1339,7 +1339,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.StoneWallBlueRoof:
                 case BuildAndExpandType.StoneWallWoodHouse:
 
-                    DefenceMenu.WallDefenceToHud(content, (TerrainWallType)build.subType, true);
+                    DefenceMenu.WallDefenceToHud(content, (TerrainWallType)build.terrainType.subTerrain, true);
                     break;
 
             }

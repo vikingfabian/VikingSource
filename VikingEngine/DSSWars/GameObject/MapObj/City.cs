@@ -1638,14 +1638,16 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void claimCity(Faction faction, IntVector2 subtile)
+        public bool claimCity(Faction faction, IntVector2 subtile)
         {
             if (cityType == CityType.UnClaimed && faction != null)
             {
                 cityType = CityType.Campsite;
                 refreshCitySize();
                 createCampSite(subtile);
+                return true;
             }
+            return false;
         }
 
         void refreshCitySize()

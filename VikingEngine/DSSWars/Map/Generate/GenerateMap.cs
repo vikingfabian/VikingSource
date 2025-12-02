@@ -984,10 +984,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         }
         void generateCityType(CityType type, int amount, float neededSpace, MapGenerateSettings generateSettings)
         {
-            if (world.rnd.Chance(generateSettings.percentageUnclaimed))
-            {
-                type = CityType.UnClaimed;
-            }
+            
 
             ConcurrentStack<IntVector2> preppedTiles = new ConcurrentStack<IntVector2>();
 
@@ -1022,7 +1019,13 @@ namespace VikingEngine.DSSWars.Map.Generate
                             {
                                 if (cityHasNeededSpace(pos))
                                 {
-                                    City c = new City(world.cities.Count, pos, type, world);
+                                    var setType = type;
+                                    if (world.rnd.Chance(generateSettings.percentageUnclaimed))
+                                    {
+                                        setType = CityType.UnClaimed;
+                                    }
+
+                                    City c = new City(world.cities.Count, pos, setType, world);
                                     //c.generateCultureAndEconomy(world, cityCultureCollection);
                                     world.cities.Add(c);
 
