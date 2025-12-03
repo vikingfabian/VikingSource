@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars
         public const int EpicMapHeigth = 1024;
         public const double TileWidthInKm = 0.064;
 
-        public const int CustomMapSize_Min = 16;
+        public const int CustomMapSize_Min = 160;
         public const int CustomMapSize_Max = 4096;
 
 

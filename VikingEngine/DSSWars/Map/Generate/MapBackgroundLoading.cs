@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         WorldDataStorage storage;
         protected LoadingState loadingState = 0;
         bool abort = false;
-        GenerateMap dataGenerate = null;
+        public GenerateMap dataGenerate = null;
         GenerateMap postGenerate;
         int failCount = 0;
         bool generateSuccess =false;
@@ -218,9 +218,13 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 if (loadingState <= LoadingState.StorageDone)
                 {
-                    loadingState = LoadingState.Post1Started;
-                    postGenerate = new Map.Generate.GenerateMap();
-                    postGenerate.postLoadGenerate_Part1(dataGenerate.world);
+                    //TODO WHY NULL
+                    if (dataGenerate != null)
+                    {
+                        loadingState = LoadingState.Post1Started;
+                        postGenerate = new Map.Generate.GenerateMap();
+                        postGenerate.postLoadGenerate_Part1(dataGenerate.world);
+                    }
                 }
                 else if (loadingState == LoadingState.Post1Started)
                 {

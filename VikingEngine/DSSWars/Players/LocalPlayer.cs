@@ -719,25 +719,31 @@ namespace VikingEngine.DSSWars.Players
                 ||
                 otherFaction.player.IsLocalPlayer())
             {
-                string title;
+                
                 if (rel.Relation >= RelationType.RelationType2_Good)
                 {
-                    title = DssRef.lang.Diplomacy_RelationType;
+                    message(DssRef.lang.Diplomacy_RelationType);
                 }
-                else if (previousRelation == RelationType.RelationTypeN2_Truce)
+                else if (rel.Relation <= RelationType.RelationTypeN3_War)
                 {
-                    title = DssRef.lang.Diplomacy_TruceEndTitle;
+                    if (previousRelation == RelationType.RelationTypeN2_Truce)
+                    {
+                        message(DssRef.lang.Diplomacy_TruceEndTitle);
+                    }
+                    else
+                    {
+                        message(DssRef.lang.Diplomacy_WarDeclarationTitle);
+                        Ref.music.OnGameEvent();
+                    }
                 }
-                else
+                void message(string title)
                 {
-                    title = DssRef.lang.Diplomacy_WarDeclarationTitle;
-                    Ref.music.OnGameEvent();
+                    RichBoxContent content = new RichBoxContent();
+                    MessageGroup_Ingame.Title(content, title);
+                    DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content);
+                    Ref.update.AddSyncAction(new SyncAction2Arg<RichBoxContent, bool>(hud.messages.Add, content, true));
                 }
 
-                RichBoxContent content = new RichBoxContent();
-                MessageGroup_Ingame.Title(content, title);
-                DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content);
-                Ref.update.AddSyncAction(new SyncAction2Arg<RichBoxContent, bool>(hud.messages.Add, content, true));
             }
         }
 
@@ -775,15 +781,23 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Z))
                 {
-                    DssRef.state.events.victory(Event.VictoryType.WorldPeace);
+                    //DssRef.state.events.victory(Event.VictoryType.WorldPeace);
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.TestNextEvent();
                     //hud.objMenu.diplomacy?.makeServant();
+                    //if (gameControls.map.hover.obj is City)
+                    //{ 
+                    //    gameControls.map.hover.obj.GetCity().setFaction(faction, false, false);
+                    //}
+                    if (gameControls.map.hover.obj is Army)
+                    {
+                        gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);
+                    }
                 }
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
-                    //DssRef.state.events.victory(Event.VictoryType.DefeatBoss);
-                    DssRef.state.events.TestNextEvent();
+                    DssRef.state.events.victory(Event.VictoryType.DefeatBoss);
+                    //DssRef.state.events.TestNextEvent();
                     //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
                     //battleLineUpTest2(true);
                     //DssRef.state.events.TestNextEvent();
@@ -1676,7 +1690,8 @@ namespace VikingEngine.DSSWars.Players
 
         public MapDetailLayerType mapLayer()
         {
-            if (Map.MapLayerManager.CameraIndexToView == null)
+            if (Map.MapLayerManager.CameraIndexToView == null ||
+                Map.MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex] == null)
             {
                 return MapDetailLayerType.TerrainOverview2;
             }

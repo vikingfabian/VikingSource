@@ -240,11 +240,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void haltConscriptAndDelivery()
         {
-            for (int i = 0; i < conscriptBuildings.Count; i++)
+            lock (conscriptBuildings)
             {
-                BarracksStatus status = conscriptBuildings[i];
-                status.halt(this);
-                conscriptBuildings[i] = status;
+                for (int i = 0; i < conscriptBuildings.Count; i++)
+                {
+                    BarracksStatus status = conscriptBuildings[i];
+                    status.halt(this);
+                    conscriptBuildings[i] = status;
+                }
             }
 
             for (int i = 0; i < deliveryServices.Count; i++)
@@ -252,6 +255,12 @@ namespace VikingEngine.DSSWars.GameObject
                 var delivery = deliveryServices[i];
                 delivery.halt();
                 deliveryServices[i] = delivery;
+            }
+
+            if (casualProgress != null)
+            {
+                casualProgress.clearBuildQueue();
+                casualProgress.clearRecruitQueue();
             }
         }
 
@@ -1615,7 +1624,7 @@ namespace VikingEngine.DSSWars.GameObject
                 waterAddPerSec *= DssRef.difficulty.setting_waterMulti;
                 maxWaterBase = Convert.ToInt32( DssConst.Maxwater * DssRef.difficulty.setting_waterMulti);
                 maxWaterTotal = maxWaterBase;
-                casualCityProfile.maxHuts = maxWaterTotal / 3;
+                casualCityProfile.maxHuts = MathExt.MultiplyInt(maxWaterTotal, 0.66);
 
                 defaultResourceBuffer(world);
             }
@@ -3297,6 +3306,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void setFaction(Faction newFaction, bool duringStartup, bool convert)
         {
+
             if (newFaction == null)
                 return;
 
@@ -3322,29 +3332,43 @@ namespace VikingEngine.DSSWars.GameObject
                     EditSubTile.OntileChange(tilePos);
                 }
 
-                OnNewOwner(newFaction);
+                OnNewOwner(newFaction, convert);
 
-                if (convert)
-                {
-                    convertSoldiersToFaction(newFaction);
-                }
-                else
-                {
-                    var counter = groups.counter();
-                    while (counter.Next())
-                    {
-                        counter.sel.DeleteMe(DeleteReason.Disband, false);
-                    }
-                }
+                
             }
         }
 
-        override public void OnNewOwner(Faction newFaction)
+        override public void OnNewOwner(Faction newFaction, bool convert)
         {
+
             if (DssRef.world != null)
             {
-                //var faction = GetFaction_Safe();
                 DssRef.world.BordersUpdated = true;
+                
+                haltConscriptAndDelivery();
+                
+                Ref.update.AddSyncAction(new SyncAction(() =>
+                {
+                    if (overviewModel != null)
+                    {
+                        createOverViewModel();
+                    }
+
+                    if (convert)
+                    {
+                        convertSoldiersToFaction(newFaction);
+                    }
+                    else
+                    {
+                        var counter = groups.counter();
+                        while (counter.Next())
+                        {
+                            counter.sel.DeleteMe(DeleteReason.Disband, false);
+                        }
+                        groups.Clear();
+                    }
+                }));
+                
 
                 if (overviewModel != null)
                 {
@@ -3355,31 +3379,10 @@ namespace VikingEngine.DSSWars.GameObject
                 tradeTemplate.onFactionValueChange(newFaction.tradeTemplate);
                 technology.addFactionUnlocked(newFaction.technology, true, false);
 
-                if (casualProgress != null && !newFaction.player.profile.casualControls)
-                {
-
-                }
+                
             }
         }
 
-        bool spendMenForDrafting(int menCount, bool commit)
-        { 
-            bool success = mercenaries + workForce.amount >= menCount;
-
-            if (success && commit)
-            {
-                int mercUse = Math.Min(mercenaries, menCount);
-                mercenaries -= mercUse;
-                menCount -= mercUse;
-
-                workForce.amount -= menCount;
-               
-            }
-
-            return success;
-        }
-
-        
         public void upgradeCityHallTooltip(RichBoxContent content, object tag)
         {
             bool available = canUpgradeCityHall(out CraftBlueprint blueprint, out int currentStaff, out int serviceHouses_required, out int serviceHouses_available);

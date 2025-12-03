@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
@@ -224,6 +225,19 @@ namespace VikingEngine.DSSWars.GameObject
             copyConscript(player, selectedConscript);
         }
 
+        void haltAllConscriptProgress()
+        {
+            lock (conscriptBuildings)
+            {
+                for (int i = 0; i < conscriptBuildings.Count; i++)
+                {
+                    BarracksStatus currentStatus = conscriptBuildings[i];
+                    currentStatus.que = currentStatus.que > 0 ? 0 : 100;
+                    conscriptBuildings[i] = currentStatus;
+                }
+            }
+        }
+
         public void copyConscript(LocalPlayer player, int index)
         {
             if (arraylib.InBound(conscriptBuildings, index))
@@ -310,21 +324,6 @@ namespace VikingEngine.DSSWars.GameObject
                 conscriptBuildings[index] = currentStatus;
             }
         }
-
-        //public void toggleConscriptStop()
-        //{
-        //    toggleConscriptStop(selectedConscript);
-        //}
-
-        //public void toggleConscriptStop(int index)
-        //{
-        //    if (arraylib.InBound(deliveryServices, index))
-        //    {
-        //        DeliveryStatus currentStatus = deliveryServices[index];
-        //        currentStatus.que = currentStatus.que > 0 ? 0 : 100;
-        //        deliveryServices[index] = currentStatus;
-        //    }
-        //}
 
         public Vector3 defaultConscriptPos()
         {
@@ -538,12 +537,6 @@ namespace VikingEngine.DSSWars.GameObject
                 idAndPosition = conv.IntVector2ToInt(subPos),
             };
 
-            //consriptProfile.profile.defaultSetup(type);
-            //if (nobelmen)
-            //{
-            //    consriptProfile.profile.training = TrainingLevel.Basic;
-            //}
-
             lock (conscriptBuildings)
             {
                 conscriptBuildings.Add(consriptProfile);
@@ -599,5 +592,14 @@ namespace VikingEngine.DSSWars.GameObject
             status = new BarracksStatus();
             return false;
         }
+
+        //protected void DispandGuards()
+        //{
+        //    var counter = groups.counter();
+        //    while (counter.Next())
+        //    {
+        //        counter.sel.DeleteMe(DeleteReason.Disband, false);
+        //    }
+        //}
     }   
 }

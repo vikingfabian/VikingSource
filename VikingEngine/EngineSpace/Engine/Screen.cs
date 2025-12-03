@@ -68,7 +68,43 @@ namespace VikingEngine.Engine
         public static int oversizeWidthPerc = 0;
         public static int oversizeHeightPerc = 0;
 
-       
+        public static SplitScreenOptions splitScreenOptions = 0;
+        public static float splitScreenDivideAdjustment1 = 0, splitScreenDivideAdjustment2 = 0, splitScreenDivideAdjustment3 = 0;
+
+        public static void WriteSettings(System.IO.BinaryWriter w)
+        {
+            w.Write(Engine.Screen.WindowScalePerc);
+            Engine.Screen.PcTargetResolution.write(w);
+            w.Write((byte)Engine.Screen.PcDisplayMode);//Engine.Screen.PcTargetFullScreen);
+            w.Write((byte)Engine.Screen.UseRecordingPreset);
+
+            w.Write((byte)splitScreenOptions);
+            w.Write(splitScreenDivideAdjustment1);
+            w.Write(splitScreenDivideAdjustment2);
+            w.Write(splitScreenDivideAdjustment3);
+        }
+        public static void ReadSettings(System.IO.BinaryReader r, int version)
+        {
+            Engine.Screen.WindowScalePerc = r.ReadInt32();
+            Engine.Screen.PcTargetResolution.read(r);
+            if (version >= 28)
+            {
+                Engine.Screen.PcDisplayMode = (WindowDisplayMode)r.ReadByte();
+            }
+            else
+            {
+                var PcTargetFullScreen = r.ReadBoolean();
+            }
+            Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
+
+            if (version >= 31)
+            {
+                splitScreenOptions = (SplitScreenOptions)r.ReadByte();
+                splitScreenDivideAdjustment1 = r.ReadSingle();
+                splitScreenDivideAdjustment2 = r.ReadSingle();
+                splitScreenDivideAdjustment3 = r.ReadSingle();
+            }
+        }
         public static void ApplyScreenSettings(bool refreshUi = true)
         {
             if (PcDisplayMode != WindowDisplayMode.Windowed)
@@ -202,9 +238,9 @@ namespace VikingEngine.Engine
             }
         }
 
-        public static void SetupSplitScreen(int numPlayers, bool horizontalSplit)
+        public static void SetupSplitScreen(int numPlayers)
         {
-            Engine.Draw.horizontalSplit = horizontalSplit;
+            //Engine.Draw.horizontalSplit = horizontalSplit;
             int screenIx = 0;
             for (int i = 0; i < numPlayers; ++i)
             {
@@ -385,5 +421,16 @@ namespace VikingEngine.Engine
         ScaleDown2x,
         ScaleDown4x,
         NUM
+    }
+
+    enum SplitScreenOptions
+    {
+        
+        VerticalFirst,//old bHorizontalSplit = false
+        HorizontalFirst,//old bHorizontalSplit = true
+        VerticalOnly,
+        HorizontalOnly,
+        
+        NUM,
     }
 }

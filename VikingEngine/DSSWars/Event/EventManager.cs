@@ -858,7 +858,7 @@ namespace VikingEngine.DSSWars.Event
                     while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var cindex in city.neighborCities)
                     {
                         var otherfaction = nCity.GetFaction();
-                        if (factionMayStartWar(otherfaction, defender))
+                        if (DssRef.diplomacy.botMayStartWar(otherfaction, defender))
                         {
                             return otherfaction;
                         }
@@ -927,7 +927,7 @@ namespace VikingEngine.DSSWars.Event
                                 !factionsChecked[otherfactionIx])
                             {
                                 var otherfaction = DssRef.world.faction(otherfactionIx);
-                                if (factionMayStartWar(otherfaction, defender))
+                                if (DssRef.diplomacy.botMayStartWar(otherfaction, defender))
                                 {
                                     return otherfaction;
                                 }
@@ -944,26 +944,31 @@ namespace VikingEngine.DSSWars.Event
             return null;
         }
 
-        public bool factionMayStartWar(Faction attacker, Faction defender)
+        public bool botMayStartWar(Faction attacker, Faction defender)
         {
             if (attacker != null && defender != null)
             {
                 if (attacker.armies.Count > 0)
                 {
+                    if (!attacker.player.mayAttackPlayer && 
+                        (defender.player.IsLocalPlayer() || DssRef.diplomacy.InplayerAlliance(defender)))
+                    {
+                        return false;
+                    }
+
+                    if (attacker.player.IsLocalPlayer())
+                    {
+                        return false;
+                    }
                     if (defender.player.IsLocalPlayer())
                     {
-                        if (!attacker.player.mayAttackPlayer)
-                        {
-                            return false;
-                        }
-
                         if (attacker.militaryStrength < Math.Min(defender.militaryStrength * 0.25f, 6) ||
                             attacker.militaryStrength > defender.militaryStrength * 3f)
                         {
                             return false;
                         }
                     }
-
+                    
                     var rel = DssRef.diplomacy.GetRelationType(defender, attacker);
                     if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)
                     {
@@ -1065,6 +1070,8 @@ namespace VikingEngine.DSSWars.Event
         public void triggerGameEnd(GameEndReason endReason, VictoryType vType, MatchResult matchResult)
         {
             new EndScene(endReason, vType, matchResult);
+
+            new GameOverResult(endReason, vType, matchResult);
 
             if (!PlatformSettings.STEAM_DEMO &&
                 (endReason == GameEndReason.Victory || DssRef.time.TotalIngameTime().TotalHours > 10))

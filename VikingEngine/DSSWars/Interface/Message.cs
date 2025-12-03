@@ -164,6 +164,10 @@ namespace VikingEngine.DSSWars.Interface
         public void onGameStart()
         { 
             screenAreaBottom = player.playerData.view.DrawArea.Bottom + Engine.Screen.SmallIconSize;
+            //if (player.hud.head.Right > player.playerData.view.DrawArea.Width / 2)
+            //{
+                
+            //}
         }
 
         
@@ -180,7 +184,7 @@ namespace VikingEngine.DSSWars.Interface
         public void cityLowFoodMessage(City city)
         {   
             if (!highEconomyWarningBlock() &&
-                DssRef.storage.runTutorial && 
+                DssRef.storage.runTutorial == false && 
                 cityLowFoodMessageCooldown.TimeOut())
             {
                 cityLowFoodMessageCooldown.start();
@@ -257,7 +261,7 @@ namespace VikingEngine.DSSWars.Interface
                 player.gameControls.input.Vibrate(300, 0, 1);
             }
 
-            if (player.hud.maximizedHud)
+            if (player.hud.maximizedHud == false)
             {
                 RichBoxContent compact = new RichBoxContent();
                 foreach (var m in content)

@@ -86,7 +86,7 @@ namespace VikingEngine.DSSWars.Interface
 
             content.newLine();
 
-            if (city.automateCity)
+            if (city.automateCity && !player.profile.casualControls) 
             {
                 city.CityDetailsHud(false, player, content);
             }
@@ -289,24 +289,8 @@ namespace VikingEngine.DSSWars.Interface
             {
                 if (option.Available)
                 {
-                    //SoldierConscriptProfile soldierConscript = new SoldierConscriptProfile()
-                    //{
-                    //    conscript = new ConscriptProfile() { weapon = option.weapon },
-                    //};
                     content.newLine();
 
-                    //SpriteName icon;
-                    //string caption;
-                    //if (soldierType == CasualSoldierType.Guard)
-                    //{
-                    //    icon = SpriteName.WarsGuard;
-                    //    caption = DssRef.lang.Conscript_Soldiers_GuardType;
-                    //}
-                    //else
-                    //{
-                    //    icon = soldierConscript.Icon();
-                    //    caption = soldierConscript.conscript.TypeName();
-                    //}
                     option.ButtonVisuals(soldierType, out SpriteName icon, out string caption);
 
                     var recruitOption = new CasualRecruitQueueItem(soldierType, option, 1);
@@ -1567,7 +1551,8 @@ namespace VikingEngine.DSSWars.Interface
                             //tabContent.Add(new RbImage(SpriteName.WarsResource_SilverCoin));
                             if (city.buildingStructure.CoinMinter_count == 0)
                             {
-                                continue;
+                                //continue;
+                                goto skipTab;
                             }
                             break;
 
@@ -1607,6 +1592,7 @@ namespace VikingEngine.DSSWars.Interface
                     //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                     content.Add(subTab);
 
+                skipTab:
                     switch (resourcesSubTab)
                     {
                         case ResourcesSubTab.Overview_Armor:
@@ -1636,7 +1622,7 @@ namespace VikingEngine.DSSWars.Interface
                                }));
                             content.newLine();
                             break;
-                        
+
                         case ResourcesSubTab.Work_Mint:
                             HudLib.InfoButton(content,
                                new RbTooltip((RichBoxContent content, object tag) =>
@@ -1656,7 +1642,7 @@ namespace VikingEngine.DSSWars.Interface
                                    HudLib.BulletPoint(content);
                                    content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
                                }));
-                            
+
                             break;
                     }
                     

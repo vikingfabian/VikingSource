@@ -57,6 +57,11 @@ namespace VikingEngine.DSSWars.Interface
 
                 var headBgTex = menu.addBackground(new NineSplitSettings(SpriteName.WarsHudHeadBarBg, 1, 16, 1f, true, true), HudLib.GUILayer + 4);
                 headBgTex.SetOpacity(0.95f);
+
+                if (player.hud.MessageStart.X < menu.backgroundArea.Right)
+                {
+                    player.hud.MessageStart.Y = Math.Max(menu.backgroundArea.Bottom + Engine.Screen.IconSize * 0.5f, player.hud.MessageStart.Y);
+                }
             }
                        
 

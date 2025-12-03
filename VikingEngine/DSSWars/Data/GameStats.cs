@@ -58,6 +58,7 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt startNew150perc = new StatsInt("startnew_150perc");
         public StatsInt startNew175perc = new StatsInt("startnew_175perc");
         public StatsInt startNew200perc = new StatsInt("startnew_200perc");
+        public StatsInt startNew300perc = new StatsInt("startnew_300perc");
 
         public StatsInt startNew_MapSmall = new StatsInt("startnew_map_small");
         public StatsInt startNew_MapLarge = new StatsInt("startnew_map_large");

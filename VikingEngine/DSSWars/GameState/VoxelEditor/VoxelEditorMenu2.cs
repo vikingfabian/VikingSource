@@ -1087,7 +1087,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             //--
             new Timer.AsynchActionTrigger(() => {
-                fileIndex = new FileIndex(DesignerStorage.VoxelProjectFolder,
+                fileIndex = new FileIndex(DesignerStorage.VoxelProjectFolder, false,
                     "*" + VoxelLib.VoxelProjectEnding, true, designer.Settings.SortSettings)
                 { 
                     projectType = true,
@@ -1184,7 +1184,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             //--
             new Timer.AsynchActionTrigger(()=> {
-                fileIndex = new FileIndex(userModels? DesignerStorage.VoxelModelFolder : LfLib.ModelsCategoryWars, 
+                fileIndex = new FileIndex(userModels? DesignerStorage.VoxelModelFolder : LfLib.ModelsCategoryWars, false, 
                     VoxelDesigner.searchPattern(false), userModels, designer.Settings.SortSettings);
                 
                 Ref.update.AddSyncAction(new SyncAction1Arg<bool>((userModels) =>

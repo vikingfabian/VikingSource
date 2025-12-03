@@ -207,7 +207,7 @@ namespace VikingEngine.DSSWars
             }
 
             localPlayers = new List<Players.LocalPlayer>(playerCount);
-            Engine.Screen.SetupSplitScreen(playerCount, !DssRef.storage.verticalScreenSplit);
+            Engine.Screen.SetupSplitScreen(playerCount);
 
 
             var factionsCounter = DssRef.world.factions.counter();
@@ -565,15 +565,22 @@ namespace VikingEngine.DSSWars
 
             if (host && DssRef.storage.autoSave && 
                 DssRef.storage.runTutorial == false &&
-                !PlatformSettings.STEAM_DEMO &&
                 Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
+            {
+                AutoSave();
+            }            
+        }
+
+        public void AutoSave()
+        {
+            if (!PlatformSettings.STEAM_DEMO)
             {
                 if (cutScene == null)
                 {
                     new SaveScene(true);
                 }
-                LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
-            }            
+            }
+            LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
         }
                 
 

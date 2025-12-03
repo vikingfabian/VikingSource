@@ -866,6 +866,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (!army.TryGetTarget(out var tArmy))
             {
+                DeleteMe(DeleteReason.EmptyGroup, false);
                 return;
             }
 

@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.GameObject
     class AllUnits
     {
         public static float AverageGroupStrength;
-        public const float HealthToStrengthConvertion = 0.5f;
+        public const float HealthToStrengthConvertion = 0.36f;
 
         AbsSoldierBuilder[] profiles = new AbsSoldierBuilder[(int)UnitType.NUM];
         //public CityDetailProfile city;

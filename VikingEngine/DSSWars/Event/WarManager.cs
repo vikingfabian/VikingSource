@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     case StartGear:
                         maxCityCount = random.Int(7, 9);
-                        checkTimeHours = new IntervalF(0.5f, 3.5f);
+                        checkTimeHours = new IntervalF(0.8f, 4f);
                         tooPeacefulPercentageMulti = 1f;
                         allyChance = 0.05f;
 
@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Players
 
                     case 2:
                         maxCityCount = random.Int(16, 21);
-                        checkTimeHours = new IntervalF(0.4f, 2.5f);
+                        checkTimeHours = new IntervalF(0.6f, 3.5f);
                         tooPeacefulPercentageMulti = 1.4f;
                         allyChance = 0.25f;
 
@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.Players
 
                     case MaxGear:
                         maxCityCount = int.MaxValue;
-                        checkTimeHours = new IntervalF(0.2f, 1.5f);
+                        checkTimeHours = new IntervalF(0.5f, 3f);
                         tooPeacefulPercentageMulti = 2f;
                         allyChance = 0.75f;
 

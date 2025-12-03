@@ -222,16 +222,14 @@ namespace VikingEngine.DSSWars.Map
                     if (grid.TryGet(x, y, out area))
                     {
                         lock (area.armies)
-                        {
-                            
-                                foreach (AbsMapObject obj in area.armies)
-                                {
+                        {                            
+                            foreach (AbsMapObject obj in area.armies)
+                            {
                                 if (obj.factionIndex == faction)
                                 {
                                     playerNearMapObjects.Add(obj);
                                 }
-                                }
-                            
+                            }                            
                         }
                     }
                 }

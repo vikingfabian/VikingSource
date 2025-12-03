@@ -132,6 +132,9 @@ namespace VikingEngine.DSSWars.Interface
 
                         content.h1(DssRef.lang.GameMenu_ControllerDisconnected, HudLib.TitleColor_Head);
 
+                        content.newLine();
+                        muteDisconnect(content);
+
                         menu.Refresh(content);
                     }
                     break;
@@ -302,15 +305,21 @@ namespace VikingEngine.DSSWars.Interface
             });
 
             //SettingsToMenu(content, menu, false);
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_ToggleHudDetail) },
-                DssRef.state.LocalHost().hud.maxHudProperty));
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_MiniMap) },
-                DssRef.state.LocalHost().hud.minimapProperty));
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                if (DssRef.state.localPlayers.Count > 1)
+                {
+                    content.h2(p.Name, HudLib.TitleColor_Name);
+                }
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_ToggleHudDetail) },
+                    p.hud.maxHudProperty));
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_MiniMap) },
+                    p.hud.minimapProperty));
+            }
 
-
-            content.newLine();
+            content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                 new RbImage(SpriteName.InterfaceIconCamera),
                 new RbSpace(),
@@ -432,13 +441,17 @@ namespace VikingEngine.DSSWars.Interface
             {
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_AutoSave) }, autoSaveProperty));
-                if (lobby && DssRef.storage.metaProgression.totalGameTimeMinutes >= 15)
+
+                if (lobby)
                 {
+                    if (DssRef.storage.metaProgression.totalGameTimeMinutes >= 15)
+                    {
+                        content.newLine();
+                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, DssConst.MaxSpeedOption)) }, speed5Property));
+                    }
                     content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, DssConst.MaxSpeedOption)) }, speed5Property));
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_BlockImportAchievements) }, blockImportAchievementsProperty));
                 }
-                content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_BlockImportAchievements) }, blockImportAchievementsProperty));
             }
             //content.newLine();
             //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Low memory garbarge collecting") }, Ref.gamesett.lowGCProperty));
@@ -446,6 +459,9 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new RbText(DssRef.lang.Settings_Blood + ":", HudLib.TitleColor_Label));
             content.space();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty, false);
+
+            content.newLine();
+            muteDisconnect(content);
 
             content.newLine();
             content.Add(new RbText(DssRef.todoLang.Settings_ControllerVibration + ":", HudLib.TitleColor_Label));
@@ -496,6 +512,16 @@ namespace VikingEngine.DSSWars.Interface
             //    return DssRef.storage.longerBuildQueue;
             //}
         }
+
+        static void muteDisconnect(RichBoxContent content)
+        {
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember>{
+                new RbImage(SpriteName.PixController1),
+                new RbSpace(0.5f),
+                new RbText(DssRef.todoLang.GameSettings_MuteControllerDisconnect)
+            }, Ref.gamesett.muteControllerDisconnectProperty));
+        }
+
 
         static InputActionType CurrentEditInput;
 

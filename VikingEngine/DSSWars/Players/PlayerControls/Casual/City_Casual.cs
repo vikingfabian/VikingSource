@@ -17,10 +17,19 @@ namespace VikingEngine.DSSWars.GameObject
         public CasualCityProfile casualCityProfile = new CasualCityProfile();
         CityCasualProgress casualProgress = null;
 
+        public void CasualBuild(List<CasualBuildType> list)
+        {
+            foreach (var build in list)
+            {
+                CasualBuild(build, 1);
+            }
+        }
+
         public void CasualBuild(CasualBuildType type, int count)
         {
             GetCasualProgress().AddBuild(this, new CasualBuildQueueItem() { build = type, count = count });
         }
+
         public void FinishCasualBuild(CasualBuildType casualBuildType)
         {
             switch (casualBuildType)

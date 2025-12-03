@@ -31,6 +31,8 @@ namespace VikingEngine.DSSWars.Resource
             {
                 if (city.GetCasual())
                 {
+                    taxPerWorker_copp = DssConst.Casual_TaxPerWorker_copp;
+
                     switch (city.casualCityProfile.unlock_farming)
                     {
                         case 1:

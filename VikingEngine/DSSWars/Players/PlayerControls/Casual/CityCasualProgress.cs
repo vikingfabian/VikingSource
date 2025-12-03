@@ -22,7 +22,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
     {
         public int cityIndex;
        
-
         bool payedRecruitCost = false;
         int recruitTimeSeconds = -1;
         List<CasualRecruitQueueItem> recruitQueue = new List<CasualRecruitQueueItem>(16);
@@ -117,7 +116,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             }
         }
 
-        void clearRecruitQueue()
+        public void clearRecruitQueue()
         {
             cancelCurrentRecruit();
             recruitQueue.Clear();
@@ -378,8 +377,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 content.newLine();
                 {
                     var option = CasualBuild.Get(first.build);
-                    //option.ButtonVisuals(first.build, out SpriteName icon, out string caption);
-
+                    
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                         new RbText(string.Format(DssRef.lang.Hud_XTimes, first.count)),
                         new RbImage(option.icon),
@@ -456,7 +454,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             }
         }
 
-        void clearBuildQueue()
+        public void clearBuildQueue()
         {
             cancelCurrentBuild();
             buildQueue.Clear();
@@ -512,7 +510,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 }
             }
 
-            return true;
+            var profile = city.casualCityProfile;
+            profile.availableBuildings(city, out List<CasualBuildType> available, out List<CasualBuildType> complete);
+           
+            return available.Contains(build);
         }
     }
 } 

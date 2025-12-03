@@ -79,7 +79,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         const int CollectLinenAmount = 15;
         static int CollectWeaponArmorAmount = DssConst.SoldierGroup_DefaultCount * 2;
         const int CollectGuardResources = 10;
-        static int ProduceIronAmount = 40;
+        static int ProduceIronAddAmount = 40;
+        int ProduceIronAmount = 100000;
 
         bool collectResources_zoomIn = false;
         bool collectResources_zoomIn_sound = false;
@@ -190,7 +191,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         TwoBools fletcherPracticeWait_fletcherLevel2_sound = TwoBools.False;
 
         //ProduceBow,
-        bool produceBow_buildLogistics = false;
+        //bool produceBow_buildLogistics = false;
         TwoBools produceBow_buildCarpenter = TwoBools.False;
         TwoBools produceBow_blackmarketTab = TwoBools.False;
         TwoBools produceBow_buyIron = TwoBools.False;
@@ -813,11 +814,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.Add(new RbOverlapImage(new RbImage(SpriteName.warsFolder_carton), SpriteName.WarsResource_Bow, Vector2.Zero));
                     content.Add(new RbText(DssRef.lang.UnitType_City));
                     ////ProduceBow,
-                    //bool produceBow_buildLogistics = false;
-                    //content.iconicontext(HudLib.CheckImage(produceBow_buildLogistics), SpriteName.WarsBuild_Logistics, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Logistics].Label()));
-                    buildOrder(produceBow_buildLogistics, BuildAndExpandType.Logistics);
-                    //TwoBools produceBow_buildCarpenter = TwoBools.False;
-                    //content.iconicontext(HudLib.CheckImage(produceBow_buildCarpenter.Value1), SpriteName.WarsBuild_Carpenter, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Carpenter].Label()));
+                    //buildOrder(produceBow_buildLogistics, BuildAndExpandType.Logistics);
                     buildOrder(produceBow_buildCarpenter.Value1, BuildAndExpandType.Carpenter);
                     content.iconicontext(HudLib.CheckImage(produceBow_blackmarketTab.Value1 || produceBow_buyIron.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Hud_BlackMarket));
 
@@ -890,8 +887,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //content.iconicontext(HudLib.CheckImage(findIronCity_buildSmelter_sound.Value1), SpriteName.WarsBuild_Smelter, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Smelter].Label()));
                     buildOrder(findIronCity_buildSmelter_sound.Value1, BuildAndExpandType.Smelter);
                     //TwoBools findIronCity_produceIron_sound = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(findIronCity_produceIron_sound.Value1), ResourceLib.Icon(ItemResourceType.Iron_G), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, ProduceIronAmount, DssRef.lang.Resource_TypeName_Iron));
-
+                    if (findIronCity_buildSmelter_sound.Value1)
+                    {
+                        content.iconicontext(HudLib.CheckImage(findIronCity_produceIron_sound.Value1), ResourceLib.Icon(ItemResourceType.Iron_G), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, ProduceIronAmount, DssRef.lang.Resource_TypeName_Iron));
+                    }
                     break;
                 case TutorialMission.ProduceSword:
 
@@ -2210,21 +2209,21 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         {
                             ////ProduceBow,
                             //bool produceBow_buildLogistics = false;
-                            if (city.buildingStructure.buildingLevel_logistics >= 1 || hasBuildOrder(BuildAndExpandType.Logistics))
-                            {
-                                if (!produceBow_buildLogistics)
-                                {
-                                    produceBow_buildLogistics = true;
-                                }
-                            }
-                            else
-                            {
-                                if (produceBow_buildLogistics)
-                                {
-                                    produceBow_buildLogistics = false;
-                                    display.refresh = true;
-                                }
-                            }
+                            //if (city.buildingStructure.buildingLevel_logistics >= 1 || hasBuildOrder(BuildAndExpandType.Logistics))
+                            //{
+                            //    if (!produceBow_buildLogistics)
+                            //    {
+                            //        produceBow_buildLogistics = true;
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    if (produceBow_buildLogistics)
+                            //    {
+                            //        produceBow_buildLogistics = false;
+                            //        display.refresh = true;
+                            //    }
+                            //}
                             //TwoBools produceBow_buildCarpenter = TwoBools.False;
                             if (!produceBow_buildCarpenter.Value1 &&
                                (hasBuildOrder(BuildAndExpandType.Carpenter) || city.buildingStructure.Carpenter_count >= 1))
@@ -2465,6 +2464,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                 if (!findIronCity_buildSmelter_sound.Value1 &&
                                     (hasBuildOrder(BuildAndExpandType.Smelter) || city.buildingStructure.Smelter_count >= 1))
                                 {
+                                    ProduceIronAmount = city.GetGroupedResource(ItemResourceType.Iron_G).amount + ProduceIronAddAmount;
                                     findIronCity_buildSmelter_sound.Value1 = true;
                                     onPartSuccess();
                                 }
@@ -2746,7 +2746,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     missionComplete = produceSword_produceSword_sound.Value1;
                     break;
                 case TutorialMission.ProduceMail:
-                    missionComplete = produceMail_produceMail_sound.Value1;
+                    missionComplete = produceMail_mailPriority_sound.Value1 && produceMail_produceMail_sound.Value1;
                     break;
             }
 
@@ -2763,6 +2763,15 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void nextMission(int nextIx)
         {
+            switch (missions.sel)
+            { 
+                case TutorialMission.CollectFood:
+                case TutorialMission.ProduceBow:
+                case TutorialMission.ProduceMail:
+                    ((PlayState)DssRef.state).AutoSave();
+                    break;
+            }
+
             if (missions.selIndex < nextIx)
             {
                 missions.SelectIndex(nextIx);
@@ -2839,9 +2848,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         void EndTutorial()
         {
             missions.SelectItem(TutorialMission.EndTutorial);
-            nextMission(missions.selIndex + 1);
-            refreshLimits();
+            bool endAll = player.profile.casualControls || PlatformSettings.STEAM_DEMO;
 
+            if (!endAll)
+            {
+                nextMission(missions.selIndex + 1);
+                refreshLimits();
+            }
             player.gameControls.map.setCameraBounds(false, cityarea);
             bool createStartUnits = missions.sel < TutorialMission.AttackBarbarian;
             
@@ -2864,7 +2877,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.hud.messages.blockFoodWarning(false);
             DssRef.state.events.onTutorialEnd();
 
-            if (player.profile.casualControls || PlatformSettings.STEAM_DEMO)
+            if (endAll)
             {
                 EndAdvisor();
             }
@@ -2891,7 +2904,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 if (!produceBow_buyIron.Value1)
                 {
                     produceBow_buyIron.Value1 = true;
-                    onPartSuccess(true);
+                    onPartSuccess();
                 }
             }
         }

@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars
         public static int DeliveryMaxDistance = 80;
 
         //CITY
-        public static int TaxPerWorker_copp = 10;
+        public static int TaxPerWorker_copp = 8;
         public static int UpkeepPerServiceMan_copp = 10;
         public static int UpkeepPerGuard_copp = 10;
         public static int CampsiteCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 2);
@@ -227,7 +227,7 @@ namespace VikingEngine.DSSWars
         //public static float WorkTime_Till = 34;
         //public static float WorkTime_Till_Upgraded = 24;
         public static float WorkTime_Plant = 25;
-        public static float WorkTime_Plant_Upgraded = 20;
+        public static float WorkTime_Plant_Upgraded = 15;
         public static float WorkTime_Mine = 35;
         public static float WorkTime_BogIron = WorkTime_Mine * 4;
         public static float WorkTime_Craft = 10;
@@ -269,7 +269,7 @@ namespace VikingEngine.DSSWars
         public static int FoodEnergy = 100;
         public static int PlantWaterCost = 1;
 
-        public static float CasualSoldierDefaultCost_Copp = 3f * TaxPerWorker_copp / SoldierGroup_DefaultCount;
+        public static float CasualSoldierDefaultCost_Copp = 4f * TaxPerWorker_copp / SoldierGroup_DefaultCount;
         //public static int PlantFoodCost = 6;
 
         public static int WorkSafeGuardAmount = 10;
@@ -305,14 +305,15 @@ namespace VikingEngine.DSSWars
 
         //BANK
         public static float GoldDeliveryFeePerc = 10;
-        public static int BankTaxIncreasePercUnits_copp = 5;
+        public static int BankTaxIncreasePercUnits_copp = 4;
         public static int GoldDeliveryChunkSize_Mini = 100;
         public static int GoldDeliveryChunkSize_Level1 = 500;
         public static int GoldDeliveryChunkSize_Level2 = 2000;
         public static int GoldDeliveryChunkSize_Level3 = 5000;
 
-        public static int Casual_Farm2TaxIncreasePercUnits_copp = 5;
-        public static int Casual_Farm3TaxIncreasePercUnits_copp = 10;
+        public static int Casual_TaxPerWorker_copp = 6;
+        public static int Casual_Farm2TaxIncreasePercUnits_copp = 2;
+        public static int Casual_Farm3TaxIncreasePercUnits_copp = 3;
         
         //EVENTS
         public static Range DominationSizeIncrease = new Range(5, 7);

@@ -33,6 +33,8 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest;
+using VikingEngine.LootFest.Data;
+using VikingEngine.LootFest.GO.Characters.Monster3;
 using VikingEngine.LootFest.GO.WeaponAttack;
 using VikingEngine.Network;
 using VikingEngine.PJ;
@@ -91,6 +93,8 @@ namespace VikingEngine.DSSWars
         const string UnderMenu_Options = "options";
         const string UnderMenu_DemoModes = "demo_modes";
         const string UnderMenu_Options_Language = "lang";
+        const string UnderMenu_GameOverResults = "gameresults";
+        const string UnderMenu_GameOverResults_View = "gameresults_view";
 
 
         const float MoreArrowTabbing = 0.9f;
@@ -104,7 +108,7 @@ namespace VikingEngine.DSSWars
             DssRef.storage.profileStorage.refreshProfiles();
             HudLib.Init();
             Ref.isPaused = false;
-            Engine.Screen.SetupSplitScreen(1, true);
+            Engine.Screen.SetupSplitScreen(1);
             if (startLoadingMap && !StartupSettings.BlockBackgroundLoading)
             {
                 //if (PlatformSettings.STEAM_DEMO)
@@ -169,16 +173,20 @@ namespace VikingEngine.DSSWars
                 case GameMenuSystem.UnderMenu_Options_Keyboard:
                 case GameMenuSystem.UnderMenu_Options_Keyboard_Key:
                     GameMenuSystem.refreshPage(underMenu, true);
-                    //    GameMenuSystem.mouseOptions(underMenu);
-                    //    break;
-
-                    //case GameMenuSystem.UnderMenu_Options_Keyboard:
-                    //    GameMenuSystem.keyboardOptions(underMenu);
-                    //    break;
-
-                    //case GameMenuSystem.UnderMenu_Options_Keyboard_Key:
-                    //    GameMenuSystem.listMapOptions(underMenu);
                     break;
+
+                case UnderMenu_GameOverResults:
+                    if (DssRef.storage.meta.gameOverResultCollection == null)
+                    {
+                        DssRef.storage.meta.gameOverResultCollection = new GameOverResultCollection(refreshUnderMenu);
+                    }
+
+                    listGameOverResults();
+                    break;
+                case UnderMenu_GameOverResults_View:
+
+                    break;
+
 
                 case UnderMenu_Options_Language:
                     selectLanguageMenu();
@@ -249,6 +257,12 @@ namespace VikingEngine.DSSWars
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Lobby_Mode_BattleLab) }),
                             new RbAction(startBattleLab), new RbTooltip_Text(DssRef.lang.Lobby_Mode_BattleLab_Description), !PlatformSettings.STEAM_DEMO));
+
+                        content.newLine();
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.GameOverResults) }),
+                            new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_GameOverResults, StackOption.Stack), null, !PlatformSettings.STEAM_DEMO));
+
 
                         content.newLine();
 
@@ -1349,9 +1363,10 @@ namespace VikingEngine.DSSWars
 
             GameStorage defaultOptions = new GameStorage();
 
-            var loadingMeta = mapBackgroundLoading.WorldData()?.metaData;
+            //var loadingMeta = mapBackgroundLoading.WorldData()?.metaData;
+            WorldData customWorld = mapBackgroundLoading?.dataGenerate?.world;
 
-            bool continueCustomMap = loadingMeta != null && loadingMeta.customEditorMap;
+            bool continueCustomMap = customWorld !=null && customWorld.metaData.customEditorMap;
             if (continueCustomMap)
             {
                 content.newLine();
@@ -1570,6 +1585,83 @@ namespace VikingEngine.DSSWars
 
             content.h1(DssRef.lang.Lobby_PlayerSetup, HudLib.TitleColor_Head);
 
+            if (DssRef.storage.playerCount > 1)
+            {
+                DropDownBuilder splitOptions = new DropDownBuilder("split type");
+                {
+                    for (Engine.SplitScreenOptions opt = 0; opt < SplitScreenOptions.NUM; opt++)
+                    {
+                        string caption = null;
+                        switch (opt)
+                        {
+                            case SplitScreenOptions.HorizontalFirst:
+                                caption = ".Horizontal first";
+                                break;
+                            case SplitScreenOptions.VerticalFirst:
+                                caption = ".Vertical first";
+                                break;
+                            case SplitScreenOptions.HorizontalOnly:
+                                caption = ".Horizontal only";
+                                break;
+                            case SplitScreenOptions.VerticalOnly:
+                                caption = ".Vertical only";
+                                break;
+                        }
+                        splitOptions.AddOption(caption, opt == Engine.Screen.splitScreenOptions, opt == SplitScreenOptions.HorizontalOnly,
+                            new RbAction1Arg<Engine.SplitScreenOptions>((Engine.SplitScreenOptions option) =>
+                            {
+                                Engine.Screen.splitScreenOptions = option;
+                                refreshSplitScreen();
+                            }, opt), null);
+                    }
+                }   splitOptions.Build(content, SpriteName.MenuIconScreenResolution, ".Split-screen", underMenu);
+
+                int adjustCount = 0;
+                if (Engine.Screen.splitScreenOptions <= SplitScreenOptions.HorizontalFirst)
+                {
+                    adjustCount = DssRef.storage.playerCount < 3 ? 1 : 2;
+                }
+                else
+                {
+                    adjustCount = DssRef.storage.playerCount - 1;
+                }
+
+                const float MaxAdjust = 1f;
+                if (adjustCount >= 1)
+                {
+                    content.newLine();
+                    content.Add(new RbText(string.Format(".Adjust split {0}", 1), HudLib.TitleColor_Label));
+                    
+                    content.space();
+                    content.Add(new RbDragButton(new DragButtonSettings(-MaxAdjust, MaxAdjust, 0.1f), splitAdj1Property, true, null));
+
+                    content.space(2);
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("= 0") },
+                        new RbAction(() => { splitAdj1Property(true, 0); })));
+                }
+                if (adjustCount >= 2)
+                {
+                    content.newLine();
+                    content.Add(new RbText(string.Format(".Adjust split {0}", 2), HudLib.TitleColor_Label));
+                    content.space();
+                    content.Add(new RbDragButton(new DragButtonSettings(-MaxAdjust, MaxAdjust, 0.1f), splitAdj2Property, true, null));
+                    content.space(2);
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("= 0") },
+                        new RbAction(() => { splitAdj2Property(true, 0); })));
+                }
+                if (adjustCount >= 3)
+                {
+                    content.newLine();
+                    content.Add(new RbText(string.Format(".Adjust split {0}", 3), HudLib.TitleColor_Label));
+                    content.space();
+                    content.Add(new RbDragButton(new DragButtonSettings(-MaxAdjust, MaxAdjust, 0.1f), splitAdj3Property, true, null));
+                    content.space(2);
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("= 0") },
+                        new RbAction(() => { splitAdj3Property(true, 0); })));
+                }
+            }
+
+
             for (int playerNum = 1; playerNum <= DssRef.storage.playerCount; ++playerNum)
             {                
                 var playerData = DssRef.storage.localPlayers[playerNum - 1];
@@ -1618,6 +1710,34 @@ namespace VikingEngine.DSSWars
                 content.Add(new RbImage(SpriteName.cmdWarningTriangle));
                 content.space();
                 content.Add(new RbText(DssRef.lang.MustTurnOffSteamInput, HudLib.InfoYellow_Light));
+            }
+
+            float splitAdj1Property(bool set, float value)
+            {
+                if (set)
+                {
+                    Screen.splitScreenDivideAdjustment1 = value;
+                    refreshSplitScreen();
+                }
+                return Screen.splitScreenDivideAdjustment1;
+            }
+            float splitAdj2Property(bool set, float value)
+            {
+                if (set)
+                {
+                    Screen.splitScreenDivideAdjustment2 = value;
+                    refreshSplitScreen();
+                }
+                return Screen.splitScreenDivideAdjustment2;
+            }
+            float splitAdj3Property(bool set, float value)
+            {
+                if (set)
+                {
+                    Screen.splitScreenDivideAdjustment3 = value;
+                    refreshSplitScreen();
+                }
+                return Screen.splitScreenDivideAdjustment3;
             }
         }
 
@@ -2057,16 +2177,16 @@ namespace VikingEngine.DSSWars
             refreshSplitScreen();
         }
 
-        public bool verticalSplitProperty(object tag, bool set, bool value)
-        {
-            if (set)
-            {
-                DssRef.storage.verticalScreenSplit = value;
-                refreshSplitScreen();
-                DssRef.storage.Save(null);
-            }
-            return DssRef.storage.verticalScreenSplit;
-        }
+        //public bool verticalSplitProperty(object tag, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.verticalScreenSplit = value;
+        //        refreshSplitScreen();
+        //        DssRef.storage.Save(null);
+        //    }
+        //    return DssRef.storage.verticalScreenSplit;
+        //}
 
        
         //public bool longerBuildQueueProperty(int index, bool set, bool value)
@@ -2488,6 +2608,45 @@ namespace VikingEngine.DSSWars
         void startGame_nochecks()
         {
             new StartGame(true, netLobby, null, mapBackgroundLoading);
+        }
+
+        void listGameOverResults()
+        {
+            RichBoxContent content = new RichBoxContent();
+            HudLib.returnButton(content, underMenu, true, null);
+
+            if (DssRef.storage.meta.gameOverResultCollection.allFiles == null)
+            {
+               
+                content.Add(new RbText(DssRef.lang.Hud_Loading, HudLib.InfoYellow_Light));
+            }
+            else
+            {
+                foreach (var file in DssRef.storage.meta.gameOverResultCollection.allFiles.Files)
+                {
+                    var goResult = file.Tag as GameOverResult;
+                    if (goResult != null)
+                    {
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Primary,
+                            goResult.ButtonContent(), new RbAction1Arg<GameOverResult>(openGameOverResult, goResult),
+                            new RbTooltip(goResult.tooltipContent))
+                        { fillWidth = true });
+                } }
+            }
+
+            underMenu.Refresh(content);
+        }
+
+        void openGameOverResult(GameOverResult result)
+        {
+            RichBoxContent content = new RichBoxContent();
+            HudLib.returnButton(content, underMenu, true, null);
+
+            content.newParagraph();
+            result.ToHud(content, false);
+
+            underMenu.OpenMenu(content, UnderMenu_GameOverResults_View);
         }
 
         void listSaves2()

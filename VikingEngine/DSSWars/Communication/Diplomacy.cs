@@ -428,6 +428,70 @@ namespace VikingEngine.DSSWars
             return null;    
         }
 
+        public bool botMayStartWar(Faction attacker, Faction defender)
+        {
+            if (attacker != null && defender != null &&
+                attacker.armies.Count > 0)
+            {
+                var rel = DssRef.diplomacy.GetRelationType(defender, attacker);
+                if (rel <= RelationType.RelationTypeN3_War)
+                {
+                    return true;
+                }
+
+                bool mayAttackPlayer = !DssRef.difficulty.peaceful && DssRef.state.events.MayAttackPlayer() && attacker.player.mayAttackPlayer;
+
+
+                if (!mayAttackPlayer &&
+                    (defender.player.IsLocalPlayer() || DssRef.diplomacy.InplayerAlliance(defender)))
+                {
+                    return false;
+                }
+
+                if (defender.player.IsLocalPlayer())
+                {
+                    if (attacker.militaryStrength < Math.Min(defender.militaryStrength * 0.25f, 6) ||
+                        attacker.militaryStrength > defender.militaryStrength * 3f)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (defender.player.protectedFromBotAttacks)
+                    {
+                        if (defender.Size() >= FactionSize.Big && Ref.peRnd.Chance(0.25))
+                        {
+                            
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                    
+                if (rel >= RelationType.RelationTypeN1_Enemies && rel < RelationType.RelationType1_Peace)
+                {
+                    return true;
+                }
+                else if (rel == RelationType.RelationType1_Peace ||
+                    rel == RelationType.RelationType2_Good)
+                {
+                    var relation = DssRef.diplomacy.GetOrCreateRelation(defender, attacker);
+                    if (relation.RelationEnd_GameTimeSec.HasTime())
+                    {
+                        return false;
+                    }
+                    return Ref.peRnd.Chance(0.05);
+                }
+
+
+            }
+            return false;
+        }
+
         public void declareWar(Faction attacker, Faction defender)
         {
             if (attacker != null && defender != null &&
@@ -616,9 +680,11 @@ namespace VikingEngine.DSSWars
             cost -= (int)relation; //2 or 3
             cost -= (int)speakterms;//0
 
+            int max = 6;
             if (peace_notTruce)
             {
                 cost *= 2;
+                max = 8;
             }
 
             cost += toFaction.WorkForceInCityCount() / 5;
@@ -628,7 +694,7 @@ namespace VikingEngine.DSSWars
                 cost -= 1;
             }
 
-            cost = Bound.Min(cost, 1);
+            cost = Bound.Set(cost, 1, max);
 
             return cost;
         }

@@ -34,6 +34,8 @@ namespace VikingEngine.DSSWars
             Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
 
             new PlaySettings();
+
+            DssRef.storage.meta.gameOverResultCollection = null;
         }
 
         public override void Time_Update(float time)
@@ -134,6 +136,9 @@ namespace VikingEngine.DSSWars
                         break;
                     case 200:
                         DssRef.stats.startNew200perc.addOne();
+                        break;
+                    case 300:
+                        DssRef.stats.startNew300perc.addOne();
                         break;
 
                 }
