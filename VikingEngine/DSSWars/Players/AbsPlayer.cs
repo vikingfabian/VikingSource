@@ -211,11 +211,11 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        protected bool quickMatchUnits()
+        protected bool quickMatchUnits(bool checkIfParticipant)
         {
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
             {
-                if (IsLocalPlayer() || DssRef.world.quickMatchFactions.Contains(faction.myIndex))
+                if (!checkIfParticipant || IsLocalPlayer() || DssRef.world.quickMatchFactions.Contains(faction.myIndex))
                 {
                     IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
                     Army mainArmy = faction.NewArmy(onTile);

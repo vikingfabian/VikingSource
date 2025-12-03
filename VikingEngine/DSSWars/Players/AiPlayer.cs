@@ -1190,7 +1190,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (faction.cities.Count > 0)
             {
-                if (quickMatchUnits())
+                if (quickMatchUnits(false))
                 {
                     return;
                 }

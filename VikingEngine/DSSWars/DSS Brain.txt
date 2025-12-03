@@ -1,4 +1,6 @@
 ﻿
+* All factions have small armies in quick match
+
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
