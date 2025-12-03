@@ -1,9 +1,9 @@
 ﻿!Tutorial is broken
+!Start with one settler is not complete
 
 #SPRING UPDATE#
 * controller vibrate on message
 * controller vibration setting
-
 
 UNCLAIMED LAND
 * The map generates with unclaimed land
@@ -11,6 +11,7 @@ UNCLAIMED LAND
 * Settler unit in conscript
 * A place command system
 * A campsite city with worker tents
+* Faction start size options
 
 ECS REFACTORING
 * Performance: city resources have been moved to a Entity Component System 

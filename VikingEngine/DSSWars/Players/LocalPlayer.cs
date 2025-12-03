@@ -607,14 +607,14 @@ namespace VikingEngine.DSSWars.Players
                 mainArmy.tagBack = CityTagBack.Blue;
                 mainArmy.tagArt = ArmyTagArt.Specialize_Tradition;
 
-                for (int i = 0; i < 5; ++i)
+                for (int i = 0; i < MathExt.MultiplyInt(5, unitCountMulti); ++i)
                 {
                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
                 }
 
                 if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
                 {
-                    int guardCount = 12;
+                    int guardCount = MathExt.MultiplyInt( 12, unitCountMulti);
 
                     //var citiesC = faction.cities.counter();
                     //while (citiesC.Next())
@@ -626,7 +626,7 @@ namespace VikingEngine.DSSWars.Players
                         {
                             onTile = citySel.ArmySpawnTilePos();
                             var army = faction.NewArmy(onTile);
-                            for (int i = 0; i < 4; ++i)
+                            for (int i = 0; i < MathExt.MultiplyInt(4, unitCountMulti); ++i)
                             {
                                 new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);
                                 --guardCount;

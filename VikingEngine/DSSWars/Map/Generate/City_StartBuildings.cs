@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             cityHallSubtilePos = subtilepos;
             EditSubTile edit = new EditSubTile(subtilepos, new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false);
-            edit.Submit();
+           edit.SubmitOrExecute();
 
             Span<Dir4> testDirs = stackalloc Dir4[] { Dir4.S, Dir4.E, Dir4.W, Dir4.N };
 
@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (!tile.IsWater())
                     {
                         citySquareSubtilePos = pos;
-                        new EditSubTile(pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.CitySquare].terrainType, true, true, false).Submit();
+                        new EditSubTile(pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.CitySquare].terrainType, true, true, false).SubmitOrExecute();
                         break;
                     }
                 }
@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (!tile.IsWater())
                     {
-                        new EditSubTile(pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.WorkerTent].terrainType, true, true, false).Submit();
+                        new EditSubTile(pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.WorkerTent].terrainType, true, true, false).SubmitOrExecute();
                         break;
                     }
                 }
@@ -60,8 +60,18 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 var pos = WP.ToSubTilePos_Centered(tilePos);
                 var subTile = world.subTileGrid.Get(pos);
-                subTile.SetType( TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Unclaimed, 1);
+                subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Unclaimed, 1);
                 world.subTileGrid.Set(pos, subTile);
+            }
+            else if (cityType == CityType.Campsite)
+            {
+                PcgRandom rnd = new PcgRandom(world.metaData.seed * myIndex);
+
+                var subtile = WP.ToSubTilePos_Centered(tilePos);
+                subtile.X += rnd.Plus_Minus(3);
+                subtile.Y += rnd.Plus_Minus(3);
+
+                createCampSite(subtile);
             }
             else
             {
@@ -73,7 +83,7 @@ namespace VikingEngine.DSSWars.GameObject
                 IntVector2 topleft = WP.ToSubTilePos_TopLeft(tilePos) + startSubTilePos;
 
                 int tower;
-                int gate = (int)TerrainWallType.StoneGate;
+                //int gate = (int)TerrainWallType.StoneGate;
                 int wall;
                 int lowWall;
                 int servicehouse;
@@ -144,11 +154,6 @@ namespace VikingEngine.DSSWars.GameObject
                 var templateLoop = template.LoopInstance();
                 while (templateLoop.Next())
                 {
-                    //for (templatePos.Y = 0; templatePos.Y < template.Length; templatePos.Y++)
-                    //{ 
-                    //    string row = template[templatePos.Y];
-                    //    for (templatePos.X = 0; templatePos.X < row.Length; templatePos.X++)
-                    //    {
                     TerrainMainType main = TerrainMainType.Building;
                     int sub = -1;
                     IntVector2 pos = topleft + templateLoop.Position;

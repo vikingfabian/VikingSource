@@ -1657,11 +1657,23 @@ namespace VikingEngine.DSSWars.GameObject
                 HousingCount_Workers = DssConst.HousingCount_WorkerTent;
                 HousingCount_Guard = DssConst.CampHall_GuardHousing;
 
+                bool newTile = cityHallSubtilePos != subtile;
                 cityType = CityType.Campsite;
-                createCampSite(subtile);
+                
+                if (newTile)
+                {
+                    IntVector2 prevTilePos = tilePos;
+                    tilePos = WP.SubtileToTilePos(subtile);
 
-                IntVector2 prevTilePos = tilePos;
-                tilePos = WP.SubtileToTilePos(subtile);
+                    ref var prevTile = ref DssRef.world.tileGrid.GetRef(prevTilePos);
+                    ref var tile = ref DssRef.world.tileGrid.GetRef(tilePos);
+
+                    prevTile.tileContent = TileContent.NONE;
+                    tile.tileContent = TileContent.City;
+                    position = WP.ToWorldPos(tilePos, tile.ModelGroundY());
+                }
+
+                createCampSite(subtile);
 
                 Task.Run(() =>
                 {
@@ -1685,12 +1697,7 @@ namespace VikingEngine.DSSWars.GameObject
                     cityTileRadius = radius;
                 });
 
-                ref var prevTile = ref DssRef.world.tileGrid.GetRef(prevTilePos);
-                ref var tile = ref DssRef.world.tileGrid.GetRef(tilePos);
-
-                prevTile.tileContent = TileContent.NONE;
-                tile.tileContent = TileContent.City;
-                position = WP.ToWorldPos(tilePos, tile.ModelGroundY());
+                
                 setFaction(faction, false, false);
                 refreshCitySize();
 
@@ -1698,8 +1705,6 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     name.name = Data.NameGenerator.CityName(tilePos);
                 }
-
-                
 
                 return true;
             }
