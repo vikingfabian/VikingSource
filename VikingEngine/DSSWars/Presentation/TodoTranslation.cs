@@ -19,6 +19,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string GameSettings_RenderedMouseCursor => "Rendered cursor";
         public string GameSettings_MuteControllerDisconnect => "Mute disconnect messages";
 
+        public string Delivery_MaxDistance => "Delivery max distance: {0}";
+        //public string Error_SoundInitFailure => "Sound initialization failed";
         public string Tutorial_WillTakeAWhile => "This will take a while, come back later.";
         
         /// <summary>

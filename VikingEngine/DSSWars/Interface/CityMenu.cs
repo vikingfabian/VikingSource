@@ -84,7 +84,7 @@ namespace VikingEngine.DSSWars.Interface
 
             content.newLine();
 
-            if (city.automateCity)
+            if (city.automateCity && !player.profile.casualControls) 
             {
                 city.CityDetailsHud(false, player, content);
             }
