@@ -17,7 +17,117 @@ using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.Resource
 {
-    
+    struct ItemSource
+    {
+        public static readonly ItemSource None = new ItemSource() { source = ItemSourceType.NONE, sourceId = -1, };
+
+        public ItemSourceType source/* = ItemSourceType.NONE*/;
+        public int sourceId/* = -1*/;
+
+
+        //public ItemSource()
+        //{ }
+
+        public ItemSource(TerrainSubFoilType terrain)
+        {
+            source = ItemSourceType.Terrain;
+            sourceId = (int)terrain;
+        }
+
+        public ItemSource(TerrainMineType mineType)
+        {
+            source = ItemSourceType.Mine;
+            sourceId = (int)mineType;
+        }
+
+        public ItemSource(ItemSourceType source, BuildAndExpandType buiding1)
+        {
+            this.source = source;
+            sourceId = (int)buiding1;
+        }
+
+        public ItemSource(BuildAndExpandType buiding1)
+        {
+            this.source =  ItemSourceType.Crafting;
+            sourceId = (int)buiding1;
+        }
+
+        public void ToHud(RichBoxContent content)
+        {
+            if (sourceId >= 0)
+            {
+                content.newLine();
+                switch (source)
+                {
+                    case ItemSourceType.Terrain:
+                        label(".Terrain");
+                        terrain(sourceId);
+
+                        void terrain(int terrainType)
+                        {
+                            if (terrainType >= 0)
+                            {
+                                IconName.Terrain(TerrainMainType.Foil, terrainType, out var icon, out var name);
+                                content.Add(new RbImage(icon));
+                                content.hspace();
+                                content.Add(new RbText(name));
+                            }
+                        }
+
+                        break;
+
+                    case ItemSourceType.Farm:
+                        label(".Farm");
+                        addBuilding(sourceId);
+                        //if (sourceId2 >= 0)
+                        //{
+                        //    HudLib.BulletSeperationPoint(content);
+                        //    addBuilding(sourceId2);
+                        //}
+                        //if (sourceId3 >= 0)
+                        //{
+                        //    HudLib.BulletSeperationPoint(content);
+                        //    addBuilding(sourceId3);
+                        //}
+                        break;
+
+                    case ItemSourceType.Crafting:
+
+                        label(".Craft station");
+                        addBuilding(sourceId);
+                        //if (sourceId2 >= 0)
+                        //{
+                        //    HudLib.BulletSeperationPoint(content);
+                        //    addBuilding(sourceId2);
+                        //}
+                        break;
+
+                    case ItemSourceType.Mine:
+                        label(".Gathering");
+                        IconName.Terrain(TerrainMainType.Mine, sourceId, out var icon, out var name);
+                        content.Add(new RbImage(icon));
+                        content.hspace();
+                        content.Add(new RbText(name));
+                        break;
+
+                }
+
+                void label(string typeName)
+                {
+                    content.Add(new RbText(typeName + ":", HudLib.TitleColor_Label));
+                    content.space();
+                }
+
+                void addBuilding(int building)
+                {
+                    IconName.Building((BuildAndExpandType)building, out var icon, out var name);
+                    content.Add(new RbImage(icon));
+                    content.hspace();
+                    content.Add(new RbText(TextLib.LargeFirstLetter(name)));
+                }
+            }
+        }
+    }
 
     class ItemProperties
     {
@@ -32,9 +142,10 @@ namespace VikingEngine.DSSWars.Resource
         public bool Filter_IsSiegeWeapon = false;
         public int cityResourceIndex;
         public int defaultStockPile = 100;
-        
-        public ItemSource source = ItemSource.NONE;
-        public int sourceId1 = -1, sourceId2 = -1, sourceId3 = -1;
+
+        public ItemSource itemSource1 = ItemSource.None, itemSource2 = ItemSource.None, itemSource3 = ItemSource.None;
+        //public ItemSourceType source = ItemSourceType.NONE;
+        //public int sourceId1 = -1, sourceId2 = -1, sourceId3 = -1;
 
         public ItemProperties(ItemResourceType type, int cityResourceIndex, float weight, CraftBlueprint bp1, CraftBlueprint bp2)
         {   
@@ -46,117 +157,149 @@ namespace VikingEngine.DSSWars.Resource
             ItemPropertyColl.items[(int)type] = this;
         }
 
-        public void SetItemSource(TerrainSubFoilType terrain)
-        {
-            source = ItemSource.Terrain;
-            sourceId1 = (int)terrain;
-        }
+        //public void SetItemSource(TerrainSubFoilType terrain)
+        //{
+        //    source = ItemSourceType.Terrain;
+        //    sourceId1 = (int)terrain;
+        //}
 
-        public void SetItemSource(TerrainMineType mineType)
-        {
-            source = ItemSource.Mine;
-            sourceId1 = (int)mineType;
-        }
+        //public void SetItemSource(TerrainMineType mineType)
+        //{
+        //    source = ItemSourceType.Mine;
+        //    sourceId1 = (int)mineType;
+        //}
+
+        //public void SetItemSource(ItemSourceType source, BuildAndExpandType buiding1, BuildAndExpandType buiding2 = BuildAndExpandType.NUM_NONE, BuildAndExpandType buiding3 = BuildAndExpandType.NUM_NONE)
+        //{
+        //    this.source = source;
+        //    sourceId1 = (int)buiding1;
+        //    if (buiding2 != BuildAndExpandType.NUM_NONE)
+        //    { 
+        //        sourceId2 = (int)buiding2;
+        //    }
+        //    if (buiding3 != BuildAndExpandType.NUM_NONE)
+        //    {
+        //        sourceId3 = (int)buiding3;
+        //    }
+        //}
         
-        public void SetItemSource(ItemSource source, BuildAndExpandType buiding1, BuildAndExpandType buiding2 = BuildAndExpandType.NUM_NONE, BuildAndExpandType buiding3 = BuildAndExpandType.NUM_NONE)
+        public void AddItemSource(ItemSource source)
         {
-            this.source = source;
-            sourceId1 = (int)buiding1;
-            if (buiding2 != BuildAndExpandType.NUM_NONE)
-            { 
-                sourceId2 = (int)buiding2;
-            }
-            if (buiding3 != BuildAndExpandType.NUM_NONE)
+            if (itemSource1.sourceId < 0)
             {
-                sourceId3 = (int)buiding3;
+                itemSource1 = source;
+            }
+            else if (itemSource2.sourceId < 0)
+            {
+                itemSource2 = source;
+            }
+            else if (itemSource3.sourceId < 0)
+            {
+                itemSource3 = source;
             }
         }
 
-        public void AddCraftSource(BuildAndExpandType buiding)
+        public void AddItemSource(ItemSource source1, ItemSource source2)
         {
-            source = ItemSource.Crafting;
-            if (sourceId1 < 0)
-            {
-                sourceId1 = (int)buiding;
-            }
-            else if (sourceId2 < 0)
-            {
-                sourceId2 = (int)buiding;
-            }
-            else
-            {
-                throw new Exception("AddCraftSource");
-            }
+            AddItemSource(source1);
+            AddItemSource(source2);
         }
+
+        public void AddItemSource(ItemSource source1, ItemSource source2, ItemSource source3)
+        {
+            AddItemSource(source1);
+            AddItemSource(source2);
+            AddItemSource(source3);
+        }
+
+        //public void AddCraftSource(BuildAndExpandType buiding)
+        //{
+        //    source = ItemSourceType.Crafting;
+        //    if (sourceId1 < 0)
+        //    {
+        //        sourceId1 = (int)buiding;
+        //    }
+        //    else if (sourceId2 < 0)
+        //    {
+        //        sourceId2 = (int)buiding;
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("AddCraftSource");
+        //    }
+        //}
 
         public void ItemSourceToHud(RichBoxContent content)
         {
-            
-            switch (source) 
-            {
-                case ItemSource.Terrain:
-                    label(".Terrain");
-                    terrain(sourceId1);
-                    terrain(sourceId2);
+            itemSource1.ToHud(content);
+            itemSource2.ToHud(content);
+            itemSource3.ToHud(content);
 
-                    void terrain(int terrainType)
-                    {
-                        if (terrainType >= 0)
-                        {
-                            IconName.Terrain(TerrainMainType.Foil, terrainType, out var icon, out var name);
-                            content.Add(new RbImage(icon));
-                            content.hspace();
-                            content.Add(new RbText(name));
-                        }
-                    }
+            //switch (source) 
+            //{
+            //    case ItemSourceType.Terrain:
+            //        label(".Terrain");
+            //        terrain(sourceId1);
+            //        terrain(sourceId2);
 
-                    break;
+            //        void terrain(int terrainType)
+            //        {
+            //            if (terrainType >= 0)
+            //            {
+            //                IconName.Terrain(TerrainMainType.Foil, terrainType, out var icon, out var name);
+            //                content.Add(new RbImage(icon));
+            //                content.hspace();
+            //                content.Add(new RbText(name));
+            //            }
+            //        }
 
-                case ItemSource.Farm:
-                    label(".Farm");
-                    addBuilding(sourceId1);
-                    if (sourceId2 >= 0)
-                    {
-                        HudLib.BulletSeperationPoint(content);
-                        addBuilding(sourceId2);
-                    }
-                    if (sourceId3 >= 0)
-                    {
-                        HudLib.BulletSeperationPoint(content);
-                        addBuilding(sourceId3);
-                    }
-                    break;
+            //        break;
 
-                case ItemSource.Crafting:
+            //    case ItemSourceType.Farm:
+            //        label(".Farm");
+            //        addBuilding(sourceId1);
+            //        if (sourceId2 >= 0)
+            //        {
+            //            HudLib.BulletSeperationPoint(content);
+            //            addBuilding(sourceId2);
+            //        }
+            //        if (sourceId3 >= 0)
+            //        {
+            //            HudLib.BulletSeperationPoint(content);
+            //            addBuilding(sourceId3);
+            //        }
+            //        break;
 
-                    label(".Craft station");
-                    addBuilding(sourceId1);
-                    if (sourceId2 >= 0)
-                    {
-                        HudLib.BulletSeperationPoint(content);
-                        addBuilding(sourceId2);
-                    }
-                    break;
-                   
-            }
+            //    case ItemSourceType.Crafting:
 
-            void label(string typeName)
-            {
-                content.Add(new RbText(typeName + ":", HudLib.TitleColor_Label));
-                content.space();
-            }
+            //        label(".Craft station");
+            //        addBuilding(sourceId1);
+            //        if (sourceId2 >= 0)
+            //        {
+            //            HudLib.BulletSeperationPoint(content);
+            //            addBuilding(sourceId2);
+            //        }
+            //        break;
 
-            void addBuilding(int building)
-            {
-                IconName.Building((BuildAndExpandType)building, out var icon, out var name);
-                content.Add(new RbImage(icon));
-                content.hspace();
-                content.Add(new RbText(TextLib.LargeFirstLetter( name)));
-            }
+            //}
+
+            //void label(string typeName)
+            //{
+            //    content.Add(new RbText(typeName + ":", HudLib.TitleColor_Label));
+            //    content.space();
+            //}
+
+            //void addBuilding(int building)
+            //{
+            //    IconName.Building((BuildAndExpandType)building, out var icon, out var name);
+            //    content.Add(new RbImage(icon));
+            //    content.hspace();
+            //    content.Add(new RbText(TextLib.LargeFirstLetter( name)));
+            //}
         }
     }
 
-    enum ItemSource
+    enum ItemSourceType
     { 
         NONE,
         Terrain,

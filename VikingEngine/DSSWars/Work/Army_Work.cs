@@ -35,6 +35,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             float energy = DssConst.ManDefaultEnergyCost / DssRef.difficulty.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
             float bufferGoalFood = friendlyAreaFoodBuffer_minutes * TimeExt.MinuteInSeconds * energy;
+#if DEBUG
+            if (Debug.CorruptValue(food))
+            {
+                lib.DoNothing();
+            }
+#endif
             food = bufferGoalFood;
         }
 

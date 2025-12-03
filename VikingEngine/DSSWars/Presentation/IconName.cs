@@ -402,6 +402,7 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case TerrainMainType.Mine:
+                    icon = SpriteName.WarsWorkMine;
                     switch ((TerrainMineType)subType)
                     {
                         case TerrainMineType.IronOre:

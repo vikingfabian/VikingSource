@@ -524,6 +524,13 @@ namespace VikingEngine.DSSWars
             //cityIncome = newCitiesEconomy.total();
             //nobelHouseCount = nobel;
 
+#if DEBUG
+            if (Debug.CorruptValue(citiesFoodSpend))
+            {
+                lib.DoNothing();
+            }
+#endif
+
             CityFoodProduction = Convert.ToInt32(citiesFoodProduce);
             CityFoodSpending = Convert.ToInt32(citiesFoodSpend);
             CitySoldResources = Convert.ToInt32(soldResources);

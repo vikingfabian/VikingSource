@@ -1485,14 +1485,15 @@ namespace VikingEngine.DSSWars.GameObject
         public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer, LocalPlayer player, City city, ResourcesSubTab stockpileLink)
         {
             content.newLine();
-
-            content.Add(new RbImage(ResourceLib.Icon(item)));
-            content.space();
-            content.Add(new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": " + TextLib.LargeNumber(amount)));
+            content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember>{
+                new RbImage(ResourceLib.Icon(item)),
+                new RbSpace(),
+                new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": " + TextLib.LargeNumber(amount))
+            }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(city, item))));
 
             if (item != ItemResourceType.Water_G &&
-                    item != ItemResourceType.Gold &&
-                    item != ItemResourceType.Men)
+                item != ItemResourceType.Gold &&
+                item != ItemResourceType.Men)
             {
                 bool reached = amount >= goalBuffer;
                 reachedBuffer |= reached;
@@ -1530,19 +1531,14 @@ namespace VikingEngine.DSSWars.GameObject
                         }),                        
                         new RbTooltip((RichBoxContent content, object tag) =>
                         {
-                            //RichBoxContent content = new RichBoxContent();
                             HudLib.Label(content, DssRef.lang.Resource_Tab_Stockpile);
                             content.newLine();
                             content.Add(new RbImage(stockIcon));
                             content.space();
                             content.Add(new RbText(city.GetGroupedResource(item).goalBuffer.ToString()));
-                        
-
-                            //player.hud.tooltip.create(player, content, true);
                         }));
 
-                    //infoButton.overrideBgColor = HudLib.InfoYellow_BG;
-                    content.space();
+                    //content.space();
                     content.Add(infoButton);
                 }
                 

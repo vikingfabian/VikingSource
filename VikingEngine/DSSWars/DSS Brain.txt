@@ -6,6 +6,7 @@
 
 
 UNCLAIMED LAND
+* The map generates with unclaimed land
 * Be able to place new cities with settler units
 * Settler unit in conscript
 * A place command system
@@ -19,6 +20,10 @@ ECS REFACTORING
 BALANCING
 * Removed the starting sharp sticks and padded armor
 * cooling fluid output increase 10 > 15
+
+UI
+* Item source is displayed on tooltip, like where it is crafted
+* Extended resource menu info
 
 
 #Event timers (are slightly random)#

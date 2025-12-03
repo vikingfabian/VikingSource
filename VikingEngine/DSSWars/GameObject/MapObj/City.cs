@@ -2842,11 +2842,11 @@ namespace VikingEngine.DSSWars.GameObject
                             }
                         }
 
-                if (!player.profile.casualControls)
-                {
-                    terrainStructure.miningOverviewHud(player, content);
-                    new XP.TechnologyHud(player, this).technologyOverviewHud(content, faction);
-                }
+                //if (!player.profile.casualControls)
+                //{
+                //    terrainStructure.miningOverviewHud(player, content);
+                //    new XP.TechnologyHud(player, this).technologyOverviewHud(content, faction);
+                //}
                 //technologyOverviewHud(content, player);
 #if DEBUG
                 //technologyHud(content, player);
