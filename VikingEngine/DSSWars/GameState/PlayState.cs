@@ -385,7 +385,7 @@ namespace VikingEngine.DSSWars
 
        
 
-        void initStartUnits()
+        public void initStartUnits(bool barracks = false)
         {
             if (StartupSettings.SpawnStartingArmies)
             {
@@ -396,6 +396,7 @@ namespace VikingEngine.DSSWars
                 {
                     case FactionStartSize.OneCity:
                         unitCountMulti = 0.4;
+                        settlerGuard = DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch;
                         break;
                     case FactionStartSize.Settler:
                         unitCountMulti = 0.25;
@@ -404,11 +405,13 @@ namespace VikingEngine.DSSWars
 
                 }
 
-                settlerGuard |= DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch;
-
                 var factionsCounter = DssRef.world.factions.counter();
                 while (factionsCounter.Next())
                 {
+                    if (barracks)
+                    {
+                        factionsCounter.sel.player.createStartupBarracks();
+                    }
                     factionsCounter.sel.player.createStartUnits(unitCountMulti, settlerGuard);
                 }
             }

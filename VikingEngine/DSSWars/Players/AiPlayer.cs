@@ -1195,7 +1195,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (faction.cities.Count > 0)
             {
-                if (quickMatchUnits()) // todo check contains
+                if (quickMatchUnits(faction.cities.Count > 1))
                 {
                     return;
                 }

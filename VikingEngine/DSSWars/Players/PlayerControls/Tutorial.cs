@@ -2920,12 +2920,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void startUnits()
         {
-            var factionC = DssRef.world.factions.counter();
-            while (factionC.Next())
-            {
-                factionC.sel.player.createStartupBarracks();
-                factionC.sel.player.createStartUnits();
-            }
+            ((PlayState)DssRef.state).initStartUnits(true);
         }
-    }
+            //    var factionC = DssRef.world.factions.counter();
+            //    while (factionC.Next())
+            //    {
+            //        factionC.sel.player.createStartupBarracks();
+            //        factionC.sel.player.createStartUnits();
+            //    }
+            //}
+        }
 }

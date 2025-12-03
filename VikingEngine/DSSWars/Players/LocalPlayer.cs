@@ -592,17 +592,15 @@ namespace VikingEngine.DSSWars.Players
         {
             if (faction.cities.Count > 0)
             {
+                if (quickMatchUnits(false))
+                {
+                    return;
+                }
                 if (settlerGuard)
                 {
                     settlerGuardUnits();
                     return;
                 }
-                if (quickMatchUnits())
-                {
-                    return;
-                }
-
-
 
                 IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
                 var mainArmy = faction.NewArmy(onTile);
