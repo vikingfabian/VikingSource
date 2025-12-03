@@ -32,7 +32,19 @@ namespace VikingEngine.DSSWars.Map.Generate
                 {
                     var nCity = world.cities[n];
 
-                    double chance = (city.cityType == CityType.Capital || nCity.cityType == CityType.Capital) ? 0.6 : 0.2f;
+                    double chance= 0.2f;
+
+                    if (lib.EqualToAny(CityType.UnClaimed, city.cityType, nCity.cityType))
+                    {
+                        chance = 0.02f;
+                    }
+                    else if (lib.EqualToAny(CityType.Capital, city.cityType, nCity.cityType))
+                    {
+                        chance = 0.6f;
+                    }
+                    //= (city.cityType == CityType.Capital || nCity.cityType == CityType.Capital) ? 0.6 : 0.2f;
+
+
 
                     if (rnd.Chance(chance) &&
                        (nCity.factionIndex == city.factionIndex || rnd.Chance(0.1)))

@@ -1654,7 +1654,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     var city = world.cities[tile.CityIndex];
                     var cityPos = city.tilePos;
                     float distanceToCity = VectorExt.SideLength(cityPos.X - loopx, cityPos.Y - loopy);
-                    IntervalF mudRadius = new IntervalF(1, 2);
+                    IntervalF mudRadius = city.cityType == CityType.UnClaimed ? new IntervalF(0, 1) : new IntervalF(1, 2);
 
                     Height heightSett = DssRef.map.heigts[tile.heightLevel];
                     Biom biom = DssRef.map.bioms.bioms[(int)tile.biom];

@@ -1,9 +1,9 @@
-﻿//TODO WHY NULL
+﻿!Tutorial is broken
 
 #SPRING UPDATE#
 * controller vibrate on message
 * controller vibration setting
-* cooling fluid output increase 10 > 15
+
 
 UNCLAIMED LAND
 * Be able to place new cities with settler units
@@ -18,6 +18,7 @@ ECS REFACTORING
 
 BALANCING
 * Removed the starting sharp sticks and padded armor
+* cooling fluid output increase 10 > 15
 
 
 #Event timers (are slightly random)#
