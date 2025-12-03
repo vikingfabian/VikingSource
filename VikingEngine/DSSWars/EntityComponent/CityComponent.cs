@@ -24,10 +24,7 @@ namespace VikingEngine.DSSWars
             int ex_end = city.resourceComponentStartIndex + CityResoureIndex.COUNT;
             for (int i = city.resourceComponentStartIndex; i < ex_end; i++)
             {
-                cityResouces[i].amount = 20;
                 cityResouces[i].amount = 0;
-
-
             }
         }
 

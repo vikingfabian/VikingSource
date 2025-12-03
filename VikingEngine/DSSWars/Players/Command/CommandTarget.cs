@@ -28,8 +28,8 @@ namespace VikingEngine.DSSWars.Players.Command
             {
                 return true;
             }
-            else if (player.gameControls.input.mouseSelect.DownEvent ||
-                player.gameControls.input.mouseOrder.DownEvent)
+            else if (player.gameControls.input.mouseSelect.DownEvent 
+                /*player.gameControls.input.mouseOrder.DownEvent*/)
             {
                 OnClick(player, out bool complete);
                 return complete;

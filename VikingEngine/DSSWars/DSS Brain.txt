@@ -7,7 +7,10 @@
 * cooling fluid output increase 10 > 15
 
 UNCLAIMED LAND
+* Be able to place new cities with settler units
 * Settler unit in conscript
+* A place command system
+* A campsite city with worker tents
 
 ECS REFACTORING
 * Performance: city resources have been moved to a Entity Component System 

@@ -497,6 +497,17 @@ namespace VikingEngine.DSSWars.GameObject
             DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex] = resource;
         }
 
+        public void SetGroupedResource(ItemResourceType type, int amount)
+        {
+            int itemIndex = ItemPropertyColl.CityIndex(type);
+            if (itemIndex < 0)
+            {
+                return;
+            }
+
+            DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex].amount = amount;
+        }
+
         //public void AddGroupedResource(ItemResourceType type, int add)
         //{
         //    //if (add == 0)
@@ -812,7 +823,7 @@ namespace VikingEngine.DSSWars.GameObject
         //        case ItemResourceType.ElfCoin:
         //            faction.addGold(add, this);
         //            break;
-                
+
 
         //        case ItemResourceType.NONE:
         //            return;
@@ -1432,10 +1443,10 @@ namespace VikingEngine.DSSWars.GameObject
             amount += item.amount * multiply;
         }
 
-        public void clearAmount()
-        {
-            amount = 0;
-        }
+        //public void clearAmount()
+        //{
+        //    amount = 0;
+        //}
 
         public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer)
         {

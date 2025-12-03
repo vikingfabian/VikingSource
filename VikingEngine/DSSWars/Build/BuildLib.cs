@@ -189,7 +189,9 @@ namespace VikingEngine.DSSWars.Build
             bool logistics2 = city.buildingStructure.buildingLevel_logistics >= 2 ||
                 unlockAll;
 
-            if (city.buildingStructure.buildingLevel_logistics == 0)
+            bool campSite = city.cityType == CityType.Campsite;
+
+            if (!campSite && city.buildingStructure.buildingLevel_logistics == 0)
             {
                 list.Add(BuildAndExpandType.Logistics);
             }
@@ -202,10 +204,17 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.BookPress);
             }
 
-            list.Add(BuildAndExpandType.WorkerHut);
-            if (logistics1)
+            if (campSite)
             {
-                list.Add(BuildAndExpandType.WorkerHutLarge);
+                list.Add(BuildAndExpandType.WorkerTent);
+            }
+            else
+            {
+                list.Add(BuildAndExpandType.WorkerHut);
+                if (logistics1)
+                {
+                    list.Add(BuildAndExpandType.WorkerHutLarge);
+                }
             }
 
             list.Add(BuildAndExpandType.ServiceHouse_Small);
@@ -261,7 +270,7 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.TreeSeedlingHard);
             }
 
-            if (unlocks.building_stoneBuildings)
+            if (!campSite && unlocks.building_stoneBuildings)
             {
                 list.Add(BuildAndExpandType.Nobelhouse);
 

@@ -1625,6 +1625,25 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (cityType == CityType.UnClaimed && faction != null)
             {
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        DssRef.world.clearCityResources(this);
+
+                        const int TentCount = 2;
+                        foreach (var item in Build.CraftBuildingLib.WorkerTent.resources)
+                        {
+                            SetGroupedResource(item.type, TentCount * item.amount);
+                        }
+                        SetGroupedResource(ItemResourceType.Food_G, ConscriptDataLib.CraftSettlerFood / 2);
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                });
+
                 workForce.amount = DssConst.HousingCount_WorkerTent;
                 HousingCount_Workers = DssConst.HousingCount_WorkerTent;
                 HousingCount_Guard = DssConst.CampHall_GuardHousing;
@@ -1671,14 +1690,7 @@ namespace VikingEngine.DSSWars.GameObject
                     name.name = Data.NameGenerator.CityName(tilePos);
                 }
 
-                DssRef.world.clearCityResources(this);
-
-                const int TentCount = 2;
-                foreach (var item in Build.CraftBuildingLib.WorkerHut.resources)
-                {
-                    AddGroupedResource(item.type, TentCount * item.amount);
-                }
-                AddGroupedResource( ItemResourceType.Food_G, ConscriptDataLib.CraftSettlerFood / 2);
+                
 
                 return true;
             }
