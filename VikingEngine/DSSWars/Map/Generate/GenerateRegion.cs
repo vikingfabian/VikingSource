@@ -9,12 +9,17 @@ namespace VikingEngine.DSSWars.Map.Generate
     {
         public List<City> cities = new List<City>(16);
         
-        public int GetStartFactionRegion(int goalWorkForce, City startCity, WorldData world, Faction faction)
+        public int GetStartFactionRegion(int goalWorkForce, bool oneCity, City startCity, WorldData world, Faction faction)
         {
             cities.Clear();
 
             int currentWorkforce = 0;
             addCity(startCity);
+
+            if (oneCity)
+            {
+                return currentWorkforce;
+            }
 
             int checkStartIx = 0;
             int checkEndIx = 0;            

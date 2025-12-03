@@ -389,10 +389,27 @@ namespace VikingEngine.DSSWars
         {
             if (StartupSettings.SpawnStartingArmies)
             {
+                double unitCountMulti = 1;
+                bool settlerGuard = false;
+
+                switch (DssRef.storage.gameRuleset.factionStartSize)
+                {
+                    case FactionStartSize.OneCity:
+                        unitCountMulti = 0.4;
+                        break;
+                    case FactionStartSize.Settler:
+                        unitCountMulti = 0.25;
+                        settlerGuard = true;
+                        break;
+
+                }
+
+                settlerGuard |= DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch;
+
                 var factionsCounter = DssRef.world.factions.counter();
                 while (factionsCounter.Next())
                 {
-                    factionsCounter.sel.player.createStartUnits();
+                    factionsCounter.sel.player.createStartUnits(unitCountMulti, settlerGuard);
                 }
             }
         }

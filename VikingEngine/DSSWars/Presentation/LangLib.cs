@@ -56,6 +56,19 @@ namespace VikingEngine.DSSWars.Presentation
         //    }
         //}
 
+        public static string FactionStartSizeName(FactionStartSize size)
+        {
+            switch (size)
+            {
+                default:
+                    return DssRef.todoLang.FactionStartSize_Full;
+                case FactionStartSize.OneCity:
+                    return DssRef.todoLang.FactionStartSize_OneCity;
+                case FactionStartSize.Settler:
+                    return DssRef.todoLang.FactionStartSize_Settler;
+            }
+        }
+
         public static void GameModeText(GameModeMainType mode, out string caption, out string desc)
         {
             caption = null;

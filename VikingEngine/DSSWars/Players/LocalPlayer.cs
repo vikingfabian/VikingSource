@@ -588,14 +588,21 @@ namespace VikingEngine.DSSWars.Players
             pin?.DeleteMe(DeleteReason.Disband, false);            
         }
 
-        public override void createStartUnits()
+        public override void createStartUnits(double unitCountMulti, bool settlerGuard)
         {
             if (faction.cities.Count > 0)
             {
+                if (settlerGuard)
+                {
+                    settlerGuardUnits();
+                    return;
+                }
                 if (quickMatchUnits())
                 {
                     return;
                 }
+
+
 
                 IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
                 var mainArmy = faction.NewArmy(onTile);

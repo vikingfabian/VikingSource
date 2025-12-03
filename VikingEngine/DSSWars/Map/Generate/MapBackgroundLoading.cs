@@ -67,6 +67,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             if (GenerateNewMap())
             {
+
                 loadingState = LoadingState.StorageDone;
                 generateLoopUntilSuccess(loadMeta, GenerateMapPass.All, false);
             }

@@ -1322,7 +1322,6 @@ namespace VikingEngine.DSSWars
             var prev = DssRef.difficulty.setting_gameMode;
             DssRef.difficulty.setting_gameMode = mode;
             DssRef.storage.Save(null);
-            //refreshDifficultyLevel();
             underMenu.CloseDropDown();
 
             bool mapChange = (prev == GameModeMainType.QuickMatch) != (mode == GameModeMainType.QuickMatch);
@@ -1425,6 +1424,27 @@ namespace VikingEngine.DSSWars
 
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_TwoTeams) }, bQuickTwoTeamProperty));
+            }
+
+            DropDownBuilder factionSizeOptions = new DropDownBuilder("faction sz");
+            {
+                for (FactionStartSize sz = 0; sz < FactionStartSize.NUM; sz++)
+                {
+                    factionSizeOptions.AddOption(LangLib.FactionStartSizeName(sz), DssRef.storage.gameRuleset.factionStartSize == sz, FactionStartSize.Full == sz,
+                        new RbAction1Arg<FactionStartSize>((FactionStartSize size) =>
+                        {
+                            if (DssRef.storage.gameRuleset.factionStartSize != size)
+                            {
+                                DssRef.storage.gameRuleset.factionStartSize = size;
+                                DssRef.storage.Save(null);
+                                underMenu.CloseDropDown();
+
+                                restartBackgroundLoading();
+                            }
+                        }, sz), null);
+                }
+
+                factionSizeOptions.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.FactionStartSize, underMenu);
             }
 
             content.newParagraph();

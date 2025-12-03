@@ -319,6 +319,15 @@ namespace VikingEngine.DSSWars
         NUM
     }
 
+    enum FactionStartSize
+    { 
+        Full,
+        OneCity,
+        Settler,
+
+        NUM
+    }
+
     enum CityCulture
     { 
         LargeFamilies,//

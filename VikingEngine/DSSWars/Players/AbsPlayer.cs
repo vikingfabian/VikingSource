@@ -245,8 +245,25 @@ namespace VikingEngine.DSSWars.Players
             return false;
         }
 
+        protected void settlerGuardUnits()
+        {
+            IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
+            Army mainArmy = faction.NewArmy(onTile);
 
-        virtual public void createStartUnits()
+            if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
+            {
+                new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
+            }
+            else
+            {
+                new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
+            }
+
+            mainArmy.setAsStartArmy();
+        }
+
+
+        virtual public void createStartUnits(double unitCountMulti, bool settlerGuard)
         {   
         }
 

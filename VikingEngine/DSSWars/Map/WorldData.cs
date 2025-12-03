@@ -821,22 +821,14 @@ namespace VikingEngine.DSSWars
             int radius = GenerateMap.HeadCityNeededFreeRadius * (DssRef.difficulty.setting_QuickMatch_PlayerCount < 6? 4 : 5);
             radius = Bound.Max(radius, Size.Y / 2 - 5);
             Rectangle2 centerArea = Rectangle2.FromCenterTileAndRadius(Size / 2, radius);//new Rectangle2(IntVector2.Zero, world.Size);
-            ///// centerArea.
-            //centerArea.AddWidthRadius(-world.Size.X / 4);
-            //centerArea.AddHeightRadius(-world.Size.Y / 4);
+            
             return centerArea;
         }
-
-
 
         public Faction getPlayerAvailableFaction(bool firstPlayer, List<Players.LocalPlayer> players)
         {
             const int MultiPlayerDistance = GenerateMap.HeadCityNeededFreeRadius * 8;
 
-            //Rectangle2 centerArea = new Rectangle2(IntVector2.Zero, Size);
-            ///// centerArea.
-            //centerArea.AddWidthRadius(-Size.X / 4);
-            //centerArea.AddHeightRadius(-Size.Y / 4);
             Rectangle2 centerArea = CenterArea();
 
             int loops = 0;
@@ -869,8 +861,6 @@ namespace VikingEngine.DSSWars
                     centerArea.AddRadius(20);
                 }
             }
-
-            //return null;
         }
        
         public City closestCity(IntVector2 pos, out float dist)
