@@ -480,7 +480,7 @@ namespace VikingEngine.DSSWars.GameObject
                     case ItemResourceType.Water_G: return res_water;
                     case ItemResourceType.NONE: return Res_Nothing;
 
-                    default: throw new ArgumentOutOfRangeException("AddGroupedResource " + type.ToString());
+                    //default: throw new ArgumentOutOfRangeException("AddGroupedResource " + type.ToString());
                 }
             }
 
@@ -1430,6 +1430,11 @@ namespace VikingEngine.DSSWars.GameObject
         public void add(ItemResource item, int multiply = 1)
         {
             amount += item.amount * multiply;
+        }
+
+        public void clearAmount()
+        {
+            amount = 0;
         }
 
         public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer)

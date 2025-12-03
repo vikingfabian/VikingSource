@@ -192,7 +192,8 @@ namespace VikingEngine.DSSWars.Resource
         ServiceMen,
 
         Palisade,
-        WorkerTent,
+        UNUSED,
+        //WorkerTent,
         Settler,
 
         NUM,

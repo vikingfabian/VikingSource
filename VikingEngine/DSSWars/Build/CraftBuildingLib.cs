@@ -155,7 +155,8 @@ namespace VikingEngine.DSSWars.Build
             1,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.WorkerTent, 1),
+                new UseResource(ItemResourceType.Wood_Group, 100),
+                new UseResource(ItemResourceType.SkinLinen_Group, 100),
             },
             XP.WorkExperienceType.Transport
         );

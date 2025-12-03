@@ -14,6 +14,7 @@ namespace VikingEngine.DSSWars
         public const int TruceTimeSec = 180;
         public static IntervalF PeaceSafeTimeSec = new IntervalF(10, 60) * TimeExt.MinuteInSeconds;
         public static float DiplomacyExtraCostPerAlly = 0.5f;
+
         //SOLDIER
         public static int Soldier_DefaultHealth = 400;
         public static float Soldier_StandardAttackAndCoolDownTime = 1600;
@@ -164,6 +165,7 @@ namespace VikingEngine.DSSWars
         //public const int ExpandGuardSizeCost = 12000;
         //public const int ReleaseGuardSizeGain = ExpandGuardSizeCost / 2;
 
+        public const int HousingCount_WorkerTent = 20;
         public const int HousingCount_WorkerHut = 30;
         public const int HousingCount_WorkerHutLarge = 50;
         public const int HousingCount_GuardsOffice_Small = 30;
@@ -177,7 +179,7 @@ namespace VikingEngine.DSSWars
         public static int TownHall_MaxWorkForce = 500;
 
 
-        public static int CampHall_GuardHousing = 4;
+        public static int CampHall_GuardHousing = 5;
         public static int VillageHall_GuardHousing = 10;
         public static int TownHall_GuardHousing = 20;
         public static int CapitalHall_GuardHousing = 40;
@@ -300,7 +302,6 @@ namespace VikingEngine.DSSWars
 
         public static float DeliveryLevel2TimeReducePerc = 5;
         public static float DeliveryLevel3TimeReducePerc = 10;
-
 
         //BANK
         public static float GoldDeliveryFeePerc = 10;

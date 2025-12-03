@@ -1,5 +1,6 @@
 ﻿UPDATE
 
+
 #SPRING UPDATE#
 * controller vibrate on message
 * controller vibration setting
@@ -12,6 +13,9 @@ ECS REFACTORING
 * Performance: city resources have been moved to a Entity Component System 
 * Performance: removed faction to city pointers
 * Resource per city change tracking, plus hud improvements
+
+BALANCING
+* Removed the starting sharp sticks and padded armor
 
 
 #Event timers (are slightly random)#

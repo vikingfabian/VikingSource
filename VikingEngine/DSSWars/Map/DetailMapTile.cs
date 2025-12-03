@@ -609,7 +609,7 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.WorkerTent:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 0.5f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_tenthut, rnd, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.WorkerHut:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.0f));

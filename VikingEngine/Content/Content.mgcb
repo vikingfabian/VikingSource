@@ -2599,6 +2599,9 @@
 #begin VoxelModel/LfWars/city_tent.vox
 /copy:VoxelModel/LfWars/city_tent.vox
 
+#begin VoxelModel/LfWars/city_tenthut.vox
+/copy:VoxelModel/LfWars/city_tenthut.vox
+
 #begin VoxelModel/LfWars/city_tower24.vox
 /copy:VoxelModel/LfWars/city_tower24.vox
 

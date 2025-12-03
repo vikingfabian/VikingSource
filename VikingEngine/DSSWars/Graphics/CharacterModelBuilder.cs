@@ -57,8 +57,6 @@ namespace VikingEngine.DSSWars
             WeaponLeftArmType weaponLeftArmType = WeaponLeftArmType.None;
             WeaponRightArmType weaponRightArmType = WeaponRightArmType.Sword;
            
-
-
             switch (modelData.weapon)
             {
                 case Resource.ItemResourceType.Settler:

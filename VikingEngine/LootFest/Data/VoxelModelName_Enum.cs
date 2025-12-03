@@ -229,6 +229,7 @@ namespace VikingEngine.LootFest
         //city_tower24,
         city_flagpole,
         city_pen,
+        city_tenthut,
         city_workerhut,
         city_workerhut_long,
         city_guard_house,

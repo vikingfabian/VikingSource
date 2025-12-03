@@ -14,10 +14,21 @@ namespace VikingEngine.DSSWars
         public EcsStaticArray neighborCities;
         public GroupedResource[] cityResouces;
 
-
         public void InitCity(City city)
         { 
             city.resourceComponentStartIndex = CityResoureIndex.COUNT * city.myIndex;
+        }
+
+        public void clearCityResources(City city)
+        {
+            int ex_end = city.resourceComponentStartIndex + CityResoureIndex.COUNT;
+            for (int i = city.resourceComponentStartIndex; i < ex_end; i++)
+            {
+                cityResouces[i].amount = 20;
+                cityResouces[i].amount = 0;
+
+
+            }
         }
 
         public void Init_CityComponents(int cityCount)
@@ -29,7 +40,7 @@ namespace VikingEngine.DSSWars
             for (int cityIx = 0; cityIx < cityCount; cityIx++)
             {
                 //cities[cityIx].resourceComponentStartIndex = startIndex;
-
+                //int multiplyDefault = cities[cityIx].cityType == CityType.UnClaimed ? 0 : 1;
                 // Basics
                 cityResouces[startIndex + CityResoureIndex.wood] = new GroupedResource { amount = 20, goalBuffer = 300 };
                 cityResouces[startIndex + CityResoureIndex.fuel] = new GroupedResource { amount = 100, goalBuffer = 400 };
@@ -73,7 +84,7 @@ namespace VikingEngine.DSSWars
                 cityResouces[startIndex + CityResoureIndex.BlackPowder] = new GroupedResource { goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.GunPowder] = new GroupedResource { goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.LedBullet] = new GroupedResource { goalBuffer = 100 };
-                cityResouces[startIndex + CityResoureIndex.sharpstick] = new GroupedResource { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
+                cityResouces[startIndex + CityResoureIndex.sharpstick] = new GroupedResource { amount = 0, goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.BronzeSword] = new GroupedResource { goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.shortsword] = new GroupedResource { amount = 0, goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.Sword] = new GroupedResource { goalBuffer = 100 };
@@ -109,10 +120,10 @@ namespace VikingEngine.DSSWars
                 cityResouces[startIndex + CityResoureIndex.ManCannonIron] = new GroupedResource { goalBuffer = 100 };
 
                 // Armor
-                cityResouces[startIndex + CityResoureIndex.paddedArmor] = new GroupedResource { amount = DssConst.SoldierGroup_DefaultCount * 2, goalBuffer = 100 };
+                cityResouces[startIndex + CityResoureIndex.paddedArmor] = new GroupedResource { amount = 0, goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.HeavyPaddedArmor] = new GroupedResource { goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.BronzeArmor] = new GroupedResource { goalBuffer = 100 };
-                cityResouces[startIndex + CityResoureIndex.mailArmor] = new GroupedResource { amount = 2, goalBuffer = 100 };
+                cityResouces[startIndex + CityResoureIndex.mailArmor] = new GroupedResource { amount = 0, goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.heavyMailArmor] = new GroupedResource { amount = 0, goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.LightPlateArmor] = new GroupedResource { goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.FullPlateArmor] = new GroupedResource { goalBuffer = 100 };

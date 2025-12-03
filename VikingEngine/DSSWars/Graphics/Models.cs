@@ -196,6 +196,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.city_stonetower, false);
 
             loadVoxelModel(VoxelModelName.city_stonehall, false);
+            loadVoxelModel(VoxelModelName.city_tenthut, false);
             loadVoxelModel(VoxelModelName.city_workerhut, false);
             loadVoxelModel(VoxelModelName.city_workerhut_long, false);
             loadVoxelModel(VoxelModelName.city_guard_house, false);

@@ -30,6 +30,8 @@ namespace VikingEngine.DSSWars.Conscript
             }
         }
 
+        public const int CraftSettlerFood = 400;
+
         public static readonly CraftBlueprint CraftSettler = new CraftBlueprint(
             CraftResultType.NoSet,
             0,
@@ -38,7 +40,7 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 new UseResource(ItemResourceType.Men, 60),
                 new UseResource(ItemResourceType.SharpStick, 30),
-                new UseResource(ItemResourceType.Food_G, 400),
+                new UseResource(ItemResourceType.Food_G, CraftSettlerFood),
                 new UseResource(ItemResourceType.Wood_Group, 300),
                 new UseResource(ItemResourceType.SkinLinen_Group, 500)
             },
