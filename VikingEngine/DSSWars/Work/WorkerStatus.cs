@@ -558,11 +558,11 @@ namespace VikingEngine.DSSWars.Work
                         int add = 0;
                         if (bp2 != null)
                         { //Secondary blueprint has priority
-                            add = bp2.tryPayResources(city);
+                            add = bp2.payResources(city);//tryPayResources(city);
                         }
                         if (add == 0)
                         {
-                            add = bp1.tryPayResources(city);
+                            add = bp1.payResources(city);
                         }
                         gainXp = bp1.experienceType;
                         

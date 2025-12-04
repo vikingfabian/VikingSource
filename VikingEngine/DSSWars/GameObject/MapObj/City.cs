@@ -3096,8 +3096,8 @@ namespace VikingEngine.DSSWars.GameObject
                         groups.Clear();
                     }
                 }));
-                
 
+                nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
                 workTemplate.onFactionChange(this, newFaction.workTemplate);
                 tradeTemplate.onFactionValueChange(newFaction.tradeTemplate);
                 technology.addFactionUnlocked(newFaction.technology, true, false);

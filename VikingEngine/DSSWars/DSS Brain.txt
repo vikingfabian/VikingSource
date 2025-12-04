@@ -1,6 +1,5 @@
 ﻿UPDATE
 Change Log: 
-* 
 
 
 #Event timers (are slightly random)#
