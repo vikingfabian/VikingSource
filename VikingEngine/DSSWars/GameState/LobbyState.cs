@@ -736,7 +736,7 @@ namespace VikingEngine.DSSWars
             content.Button("Character creator", new RbAction(characterCreator), null, true);
             content.Button("Shader lab", new RbAction(shaderLab), null, true);
             content.Button("Dev setup", new RbAction(()=> {
-                DssRef.storage.runTutorial_1short_2normal = 0;
+                DssRef.storage.runTutorial = false;
                 Screen.WindowScalePerc = 90;
                 Screen.PcDisplayMode = WindowDisplayMode.Windowed;
                 Ref.gamesett.masterVolProperty(true, 0.1f);
