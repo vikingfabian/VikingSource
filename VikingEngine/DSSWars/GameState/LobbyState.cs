@@ -602,10 +602,7 @@ namespace VikingEngine.DSSWars
                 reportsMenu.OpenMenu(content, string.Empty);
             }
         }
-              
-
-        
-
+          
         void closingOptionsMenuEvent()
         {
             if (Ref.gamesett.settingsHasChanged)
@@ -719,7 +716,17 @@ namespace VikingEngine.DSSWars
 
             content.Button("Character creator", new RbAction(characterCreator), null, true);
             content.Button("Shader lab", new RbAction(shaderLab), null, true);
+            content.Button("Dev setup", new RbAction(()=> {
+                DssRef.storage.runTutorial_1short_2normal = 0;
+                Screen.WindowScalePerc = 90;
+                Screen.PcDisplayMode = WindowDisplayMode.Windowed;
+                Ref.gamesett.masterVolProperty(true, 0.1f);
+                Screen.ApplyScreenSettings();
 
+                Ref.gamesett.graphicsHasChanged = true;
+                Ref.gamesett.settingsHasChanged = true;
+
+            }), null, true);
 #endif
 
 #if DEMO
