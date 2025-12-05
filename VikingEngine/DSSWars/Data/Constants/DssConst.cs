@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars
         public static int WeaponDamage_MithrilSword = 600;
 
         public static int WeaponDamage_Slingshot = 5;
-        public static int WeaponDamage_Throwingspear = 30;
+        public static int WeaponDamage_Throwingspear = 20;
         public static int WeaponDamage_Bow = 50;
         public static int WeaponDamage_Longbow = 80;
         public static int WeaponDamage_CrossBow = 120;

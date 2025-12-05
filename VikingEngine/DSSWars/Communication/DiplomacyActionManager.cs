@@ -41,8 +41,7 @@ namespace VikingEngine.DSSWars.Communication
             }
             againstDark = botFaction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
 
-            if (selectedRelation.SpeakTerms > SpeakTerms.SpeakTermsN2_None &&
-                botFaction.player.IsBot())
+            if (selectedRelation.SpeakTerms > SpeakTerms.SpeakTermsN2_None)
             {
                 if (selectedRelation.Relation <= RelationType.RelationTypeN3_War)
                 {
@@ -118,6 +117,17 @@ namespace VikingEngine.DSSWars.Communication
                         result.Add(servant);
                     }
                 }
+            }
+
+            if (selectedRelation.Relation > RelationType.RelationTypeN3_War)
+            {
+                DiplomacyOption declareWar = new DiplomacyOption()
+                {
+                    toRelation = RelationType.RelationTypeN3_War,
+                    available = true,
+                    cost = Diplomacy.DeclareWarCost(selectedRelation.Relation)
+                };
+                result.Add(declareWar);
             }
 
             return result;

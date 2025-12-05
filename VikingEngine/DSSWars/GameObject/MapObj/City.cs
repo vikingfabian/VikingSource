@@ -2420,9 +2420,12 @@ namespace VikingEngine.DSSWars.GameObject
                         content.newLine();
                     }
 
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
-                        new RbText(DssRef.lang.Automation_AutomateCity)
-                    }, AutomateCityProperty));
+                    if (automateCity || player.tutorial == null || player.tutorial.AdvisorMode())
+                    {
+                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                            new RbText(DssRef.lang.Automation_AutomateCity)
+                            }, AutomateCityProperty));
+                    }
 
                     if (automateCity)
                     {

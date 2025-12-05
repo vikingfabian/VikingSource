@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public static void ToHud(LocalPlayer player, RichBoxContent content, City city)
         {
-            if (city.Culture == CityCulture.Lawbiding)
+            if (city.Culture == CityCulture.Lawbiding && player.tutorial == null)
             {
                 city.cultureToHud(player, content, false);
                 return;

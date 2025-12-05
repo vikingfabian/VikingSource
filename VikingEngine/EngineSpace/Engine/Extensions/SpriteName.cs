@@ -2461,6 +2461,7 @@ namespace VikingEngine
         WarsHudIconProgress,
         WarsHudIconSpeed_Pause,
         WarsHudIconSpeed_Low,
+        WarsHudIconSpeed_Medium,
         WarsHudIconSpeed_High,
 
 
@@ -2487,6 +2488,7 @@ namespace VikingEngine
         warsWorkerPromoHammer,
         warsWorkerPromoBox,
         warsWorkerPromoCannon,
+        UpdatePromo_SnowFlake,
 
         warsCheckYes,
         warsCheckNo,

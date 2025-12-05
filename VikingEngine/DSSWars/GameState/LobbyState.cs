@@ -678,10 +678,17 @@ namespace VikingEngine.DSSWars
 
             bgimage2.SetFullTextureSource();
             bgimage2.Color = ColorExt.GrayScale(0.9f);
-            //Vector2 promoworkerSz = new Vector2(9, 6) * new Vector2(h * 0.02f);
 
-            //var worker1 = new Graphics.Image(SpriteName.warsWorkerPromoCannon, VectorExt.AddY(Engine.Screen.Area.PercentToPosition(0.7f, 1f), -promoworkerSz.Y * 0.9f), promoworkerSz, ImageLayers.Background5);
-            //worker1.LayerAbove(bgImage);
+            createUpdateBackground(area);
+        }
+
+        void createUpdateBackground(VectorRect bgArea)
+        { 
+            Graphics.Image snowflake = new Image( SpriteName.UpdatePromo_SnowFlake, bgArea.PercentToPosition(new Vector2(0.03f)),
+                Screen.IconSizeV2 * 1.5f, ImageLayers.Background4 );
+            snowflake.Rotation = 0.05f;
+            snowflake.Color = Color.Gray;
+            snowflake.Opacity = 0.2f;
         }
 
         void playMusic()
