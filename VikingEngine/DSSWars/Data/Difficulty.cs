@@ -434,7 +434,7 @@ namespace VikingEngine.DSSWars.Data
                     setting_childMulti = r.ReadSingle();
                     setting_craftMulti = r.ReadSingle();
                 }
-                if (storageversion >= 31)
+                if (storageversion >= 33)
                 {
                     setting_techMulti = r.ReadInt32();
                     setting_techMulti_QuickMatch = r.ReadInt32();
@@ -445,7 +445,7 @@ namespace VikingEngine.DSSWars.Data
             difficulty = r.ReadInt32();
             Bound.SetToArray(ref difficulty, options.Length);
 
-            if (storageversion >= 31)
+            if (storageversion >= 32)
             {
                 Debug.ReadCheck(r);
             }
