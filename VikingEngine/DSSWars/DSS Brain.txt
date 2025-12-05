@@ -1,8 +1,4 @@
-﻿
-
-
-
-
+﻿* Fixed: The craft check update made the beer go into massive negative
 
 
 #Event timers (are slightly random)#
