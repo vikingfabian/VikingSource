@@ -31,6 +31,7 @@ using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG.MoonFall;
+using static System.Net.WebRequestMethods;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 //
 
@@ -324,11 +325,15 @@ namespace VikingEngine.DSSWars
                 DssRef.difficulty.refreshSettings();
                 events.onGameStart(newGame);
 
-
                 var factionsCounter = DssRef.world.factions.counter();
                 while (factionsCounter.Next())
                 {
                     factionsCounter.sel.onGameStart(newGame);
+                }
+
+                if (LocalHost().faction.player.IsBot())
+                {
+                    LocalHost().baseOnGameStart();
                 }
 
                 foreach (var m in DssRef.world.cities)

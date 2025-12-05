@@ -1,4 +1,4 @@
-﻿* Fixed: The craft check update made the beer go into massive negative
+﻿* Fixed: The mini map crashes spectator mode on load
 
 
 #Event timers (are slightly random)#

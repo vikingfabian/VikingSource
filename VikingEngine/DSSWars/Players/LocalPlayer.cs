@@ -1613,15 +1613,20 @@ namespace VikingEngine.DSSWars.Players
             orders.cullingUpdate(bStateA, playerData.localPlayerIndex);
         }
 
-        public override void onGameStart(bool newGame)
-        {
-            base.onGameStart(newGame);
-
+        public void baseOnGameStart()
+        { 
             factionPixelTexture = new FactionPixelTexture(faction, true,
                 (DssRef.settings.playType == GameState.PlayStateType.Play || DssRef.settings.playType == GameState.PlayStateType.MapEditor) ?
                 FactionMapFilter.FactionCols : FactionMapFilter.Terrain);
             minimapPixelTexture = new FactionPixelTexture(faction, true, FactionMapFilter.Minimap);
             unitsPixelTexture = new UnitsPixelTexture(faction);
+        }
+
+        public override void onGameStart(bool newGame)
+        {
+            base.onGameStart(newGame);
+
+            baseOnGameStart();
 
             hud.messages.onGameStart();
             oneSecUpdate();
