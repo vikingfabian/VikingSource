@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.Interface
             objMenu = new PlayerHud_Object(player);
             factionMenu = new PlayerHud_Faction();
 
-            if (numPlayers <= 1)
+            if (numPlayers <= 1 && DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
             {
                 miniMap = new MiniMap(player, false);
             }
