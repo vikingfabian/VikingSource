@@ -492,6 +492,25 @@ namespace VikingEngine.DSSWars
             return false;
         }
 
+        public void endRelations(Faction actingFaction, Faction otherFaction)
+        {
+            if (actingFaction != null && otherFaction != null)
+            {
+                RelationType prevRelation = GetRelationType(actingFaction, otherFaction);
+                if (prevRelation > RelationType.RelationType0_Neutral)
+                {
+                    SetRelationType(actingFaction, otherFaction, RelationType.RelationType0_Neutral);
+                    if (actingFaction.player.IsLocalPlayer())
+                    {
+                        int cost = EndRelationCost(prevRelation);
+                        var player = actingFaction.player.GetLocalPlayer();
+
+                        player.diplomaticPoints.pay(cost, true);
+                    }
+                }
+            }
+        }
+
         public void declareWar(Faction attacker, Faction defender)
         {
             if (attacker != null && defender != null &&
@@ -749,6 +768,10 @@ namespace VikingEngine.DSSWars
             return cost;
         }
 
+        public static int EndRelationCost(RelationType relation)
+        {
+            return DeclareWarCost(relation) -1;
+        }
         public static int DeclareWarCost(RelationType relation)
         {
             if (relation == RelationType.RelationTypeN2_Truce || 

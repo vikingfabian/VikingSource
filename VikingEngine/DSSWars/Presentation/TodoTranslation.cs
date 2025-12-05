@@ -16,7 +16,11 @@ namespace VikingEngine.DSSWars.Presentation
         /// How much of a resource that will be used, "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
         public string Hud_Purchase_ResourceCost => "{1} {0}";
-
+        
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public string Diplomacy_EndRelations => "End relations";
         public string DisplayMode => "Display mode";
         public string DisplayMode_Windowed => "Windowed";
         public string DisplayMode_BorderlessFullscreen => "Borderless fullscreen";
