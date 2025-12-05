@@ -122,7 +122,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     else
                                     {
                                         Vector3 startPos = WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition));
-                                        Ref.update.AddSyncAction(new SyncAction3Arg<ConscriptProfile, Vector3, int>(conscriptArmy, status.inProgress, startPos, 1));
+                                        Ref.update.AddSyncAction(new SyncAction3Arg<ConscriptProfile, Vector3, int>(conscriptArmyLink, status.inProgress, startPos, 1));
 
                                         status.active = ConscriptActiveStatus.Idle;
 
@@ -365,7 +365,40 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void conscriptArmy(ConscriptProfile profile, Vector3 startPos, int count)
+        public void conscriptSettlerLink()
+        {
+            conscriptSettler(null);
+        }
+
+        public Army conscriptSettler(City settleArea)
+        {
+            Army army = null;
+
+            if (ConscriptDataLib.CraftSettler.tryPayResources(this) > 0)
+            {
+                army = conscriptArmy(new ConscriptProfile()
+                {
+                    weapon = ItemResourceType.Settler,
+                    armorLevel = ItemResourceType.NONE,
+                    specialization = SpecializationType.None,
+                    training = TrainingLevel.Minimal,
+                }, defaultConscriptPos(), 1) as Army;
+
+                if (settleArea != null)
+                {
+                    army.Ai_Order_MoveTo(settleArea.tilePos);
+                }
+            }
+
+            return army;
+        }
+
+        public void conscriptArmyLink(ConscriptProfile profile, Vector3 startPos, int count)
+        {
+            conscriptArmy(profile, startPos, count);
+        }
+
+        public AbsArmy conscriptArmy(ConscriptProfile profile, Vector3 startPos, int count)
         {
             AbsArmy army = null;
 
@@ -441,7 +474,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 army?.GetArmy().OnSoldierPurchaseCompleted();
             }
-            
+
+            return army;
         }
 
         public void debugConscript(ItemResourceType weapon)

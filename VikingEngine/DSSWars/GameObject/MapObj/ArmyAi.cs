@@ -343,7 +343,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             waitForRegroup = true;
             stateTime = 0;
-            //refreshNextWalkingNode();
+            
         }
 
         public void Ai_Order_MoveTo(IntVector2 goalTilePos)

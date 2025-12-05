@@ -794,15 +794,15 @@ namespace VikingEngine.DSSWars.Players
                     //{ 
                     //    gameControls.map.hover.obj.GetCity().setFaction(faction, false, false);
                     //}
-                    if (gameControls.map.hover.obj is Army)
-                    {
-                        gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);
-                    }
+                    //if (gameControls.map.hover.obj is Army)
+                    //{
+                    //    gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);
+                    //}
                 }
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
-                    DssRef.state.events.victory(Event.VictoryType.DefeatBoss);
-                    //DssRef.state.events.TestNextEvent();
+                    //DssRef.state.events.victory(Event.VictoryType.DefeatBoss);
+                    DssRef.state.events.TestNextEvent();
                     //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
                     //battleLineUpTest2(true);
                     //DssRef.state.events.TestNextEvent();
