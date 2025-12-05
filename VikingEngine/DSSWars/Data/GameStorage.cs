@@ -150,7 +150,7 @@ namespace VikingEngine.DSSWars.Data
             }
             DataStream.BeginReadWrite.BinaryIO(true, path, write, null, callBack, true);
         }
-
+        public const int Version = 33;
         public void writeGameSetup(System.IO.BinaryWriter w)
         {
             w.Write(Version);
@@ -164,7 +164,7 @@ namespace VikingEngine.DSSWars.Data
             DssRef.difficulty.read(r, version);
         }
 
-        public const int Version = 32;
+        
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(Version);
@@ -182,7 +182,7 @@ namespace VikingEngine.DSSWars.Data
             w.Write(generateNewMaps);
             w.Write(autoSave);
             w.Write(multiplayerGameSpeed);
-            DssRef.difficulty.write(w);
+            //DssRef.difficulty.write(w);
 
             //w.Write((byte)runTutorial_1short_2normal);
             w.Write(runTutorial);
@@ -213,6 +213,13 @@ namespace VikingEngine.DSSWars.Data
             try
             {
                 int version = r.ReadInt32();
+
+                if (version > Version || version == 32)
+                {
+                    return;
+                }
+
+
                 fileCheck.start(version, Version);
 
                 if (version <= 27)
@@ -248,10 +255,12 @@ namespace VikingEngine.DSSWars.Data
 
                 multiplayerGameSpeed = r.ReadSingle();
 
-                DssRef.difficulty.read(r, version);
+                
+                
 
-                if (version < 32)
+                if (version < 33)
                 {
+                    DssRef.difficulty.read(r, version);
                     runTutorial = r.ReadByte() > 0;
                 }
                 else

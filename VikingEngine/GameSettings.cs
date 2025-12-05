@@ -26,7 +26,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 32;
+        const int Version = 33;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -164,7 +164,7 @@ namespace VikingEngine
 
         public void readSettings(System.IO.BinaryReader r, int version)
         {
-            if (version > Version) return;
+            if (version > Version || version == 32) return;
 
             Engine.Screen.ReadSettings(r, version);
                 MusicMasterVolume = r.ReadSingle();
@@ -185,7 +185,7 @@ namespace VikingEngine
                     UiScale = 1f;
                 }
 
-                if (version >= 28)
+                if (version >= 33)
                 {
                     IngameMenuWidth = r.ReadSingle();
                 }
@@ -303,7 +303,6 @@ namespace VikingEngine
             {
                 fileCheck.exception = e;
                 new GameSettings();
-                //Debug.LogError("Loading game settings error, " + e.Message);
             }
 
             FileCheck = fileCheck;
