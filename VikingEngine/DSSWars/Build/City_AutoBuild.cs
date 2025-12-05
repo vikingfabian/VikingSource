@@ -253,11 +253,17 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 switch (buildType)
                 {
+                    case BuildAndExpandType.WorkerTent:
+                        bBuild = WorkersMaxLimit > HousingCount_Workers;
+                        maxCount = 20;
+                        chance = automationFocus == AutomationFocus.Grow ? 4000 : 200;
+                        repeat = 4;
+                        break;
+
                     case BuildAndExpandType.WorkerHutLarge:
                     case BuildAndExpandType.WorkerHut:
                         bBuild = WorkersMaxLimit > HousingCount_Workers;
                         maxCount = 100;
-                        //chance = 200;
                         chance = automationFocus == AutomationFocus.Grow ? 4000 : 200;
                         repeat = 4;
                         break;

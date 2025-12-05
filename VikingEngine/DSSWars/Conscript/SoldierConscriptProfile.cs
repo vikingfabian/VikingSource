@@ -861,6 +861,7 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 switch (conscript.weapon)
                 {
+                    case ItemResourceType.Settler:
                     case ItemResourceType.SharpStick:
                     case ItemResourceType.UN_BatteringRam:
 

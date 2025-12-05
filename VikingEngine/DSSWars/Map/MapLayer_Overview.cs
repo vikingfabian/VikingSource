@@ -321,8 +321,7 @@ namespace VikingEngine.DSSWars.Map
                 state_Processing_Sych_Complete = 0;
 
                 borders?.quedEvent();
-                if (DssRef.state.PlayType() == GameState.PlayStateType.Play &&
-                    DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
+                if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
                 {
                     factionsMap.asyncTask();
                 }
