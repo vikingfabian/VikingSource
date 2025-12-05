@@ -558,7 +558,7 @@ namespace VikingEngine.DSSWars.Work
                         int add = 0;
                         if (bp2 != null)
                         { //Secondary blueprint has priority
-                            add = bp2.payResources(city);//tryPayResources(city);
+                            add = bp2.tryPayResources(city);
                         }
                         if (add == 0)
                         {
