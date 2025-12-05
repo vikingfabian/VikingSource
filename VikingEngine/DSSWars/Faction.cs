@@ -741,10 +741,11 @@ namespace VikingEngine.DSSWars
 
         public IntVector2 landAreaCenter(out bool cityPosition)
         {
-            if (mainCity != null)
+            var mainCity_sp = mainCity;
+            if (mainCity_sp != null)
             {
                 cityPosition = true;
-                return mainCity.tilePos - IntVector2.One;
+                return mainCity_sp.tilePos - IntVector2.One;
             }
             else if (armies.Count > 0)
             {

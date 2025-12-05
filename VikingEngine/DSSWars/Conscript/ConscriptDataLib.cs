@@ -31,6 +31,8 @@ namespace VikingEngine.DSSWars.Conscript
         }
 
         public const int CraftSettlerFood = 400;
+        public const int CraftSettlerWood = 300;
+        public const int CraftSettlerSkinLinen = 500;
 
         public static readonly CraftBlueprint CraftSettler = new CraftBlueprint(
             CraftResultType.NoSet,
@@ -39,10 +41,10 @@ namespace VikingEngine.DSSWars.Conscript
             new UseResource[]
             {
                 new UseResource(ItemResourceType.Men, 60),
-                new UseResource(ItemResourceType.SharpStick, 30),
+                //new UseResource(ItemResourceType.SharpStick, 30),
                 new UseResource(ItemResourceType.Food_G, CraftSettlerFood),
-                new UseResource(ItemResourceType.Wood_Group, 300),
-                new UseResource(ItemResourceType.SkinLinen_Group, 500)
+                new UseResource(ItemResourceType.Wood_Group, CraftSettlerWood),
+                new UseResource(ItemResourceType.SkinLinen_Group, CraftSettlerSkinLinen)
             },
             XP.WorkExperienceType.NONE,
             XP.ExperienceLevel.Beginner_1,

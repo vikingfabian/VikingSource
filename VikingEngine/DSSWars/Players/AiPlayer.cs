@@ -1670,20 +1670,22 @@ namespace VikingEngine.DSSWars.Players
             {
                 City city = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
 
-                if (city != null && 
-                    city.cityType > CityType.Campsite && 
-                    city.homesUnused() < 20 &&
-                     ConscriptDataLib.CraftSettler.canCraftCount(city) >= 1)
+                if (city != null &&
+                    city.cityType > CityType.Campsite &&
+                    city.homesUnused() < 20)
                 {
-                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
-                    while (neighbors.Next(DssRef.world.cities, out City nCity))
+                    if (ConscriptDataLib.CraftSettler.canCraftCount(city) >= 1)
                     {
-                        if (nCity.cityType == CityType.UnClaimed && Ref.peRnd.ChanceF(0.5f))
+                        EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                        while (neighbors.Next(DssRef.world.cities, out City nCity))
                         {
-                            city.conscriptSettler(nCity);
-                            return;
+                            if (nCity.cityType == CityType.UnClaimed && Ref.peRnd.ChanceF(0.5f))
+                            {
+                                city.conscriptSettler(nCity);
+                                return;
+                            }
                         }
-                    }   
+                    }
                 }
             }
         }
@@ -2536,8 +2538,6 @@ namespace VikingEngine.DSSWars.Players
                 DssRef.world.unitCollAreaGrid.collectCitiesAndArmies(areaPos, 2, army.strengthValue * 0.8f, DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate,
                     -1, opponent.myIndex);
                 if (DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate.Count > 0)
-                    //&&
-                    //DssRef.diplomacy.botMayStartWar(faction, opponent))
                 {
                     AbsMapObject result = arraylib.RandomListMember(DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate);
                     army.Ai_Order_Attack(result);
@@ -2562,7 +2562,7 @@ namespace VikingEngine.DSSWars.Players
                 //TODO pick random city
                 foreach (var city in DssRef.world.unitCollAreaGrid.cities_aiUpdate)
                 {
-                    if (army.strengthValue > city.strengthValue + city.ai_armyDefenceValue)
+                    if (city.cityType > CityType.UnClaimed && army.strengthValue > city.strengthValue + city.ai_armyDefenceValue)
                     {
                         if (DssRef.diplomacy.botMayStartWar(faction, city.GetFaction()))//mayAttackFaction(city.GetFaction()))
                         {
