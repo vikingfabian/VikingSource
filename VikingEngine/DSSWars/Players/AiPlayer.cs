@@ -1698,7 +1698,9 @@ namespace VikingEngine.DSSWars.Players
                 if (DssRef.world.tileGrid.TryGet(armiesC.sel.tilePos, out var tile))
                 {
                     var city = tile.City();
-                    if (city.cityType == CityType.UnClaimed && armiesC.sel.HasSettler(out var settler))
+                    if (city.cityType == CityType.UnClaimed &&
+                        city.tilePos.SideLength(armiesC.sel.tilePos) <= 2 &&
+                        armiesC.sel.HasSettler(out var settler))
                     {
                         SettlerCommandTarget.OrderSettler(settler, city.cityHallSubtilePos);
                     }

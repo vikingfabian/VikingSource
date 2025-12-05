@@ -649,9 +649,12 @@ namespace VikingEngine.DSSWars
 
         public void asynchCullingUpdate(float time, bool bStateA)
         {
-            foreach (var p in DssRef.state.localPlayers)
+            if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {
-                p.unitsPixelTexture.updateColorProfile(this);
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.unitsPixelTexture.updateColorProfile(this);
+                }
             }
 
             var armiesC = armies.counter();

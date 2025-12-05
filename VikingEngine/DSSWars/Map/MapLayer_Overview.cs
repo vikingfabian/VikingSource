@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Graphics;
 
@@ -320,7 +321,8 @@ namespace VikingEngine.DSSWars.Map
                 state_Processing_Sych_Complete = 0;
 
                 borders?.quedEvent();
-                if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
+                if (DssRef.state.PlayType() == GameState.PlayStateType.Play &&
+                    DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
                 {
                     factionsMap.asyncTask();
                 }

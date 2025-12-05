@@ -61,10 +61,14 @@ namespace VikingEngine.DSSWars
 
         public void asynch_update(float time)
         {
+            
             asynch_updateTiles();
-            foreach (var p in DssRef.state.localPlayers)
+            if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {
-                p.unitsPixelTexture.asynch_Begin();
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.unitsPixelTexture.asynch_Begin();
+                }
             }
 
             var factions = DssRef.world.factions.counter();
@@ -83,9 +87,12 @@ namespace VikingEngine.DSSWars
                 lp.asynchCullingUpdate(time, cullingStateA);
             }
 
-            foreach (var p in DssRef.state.localPlayers)
+            if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {
-                p.unitsPixelTexture.complete();
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.unitsPixelTexture.complete();
+                }
             }
         }
 
