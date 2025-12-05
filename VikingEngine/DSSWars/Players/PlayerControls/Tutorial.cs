@@ -283,8 +283,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 list.Add(BuildAndExpandType.RapeSeedFarm);
             }
 
-
-
             return list;
         }
 
@@ -453,7 +451,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 content.h1(DssRef.lang.Tutorial_AdvisorMission);
             }
 
-            content.h2(string.Format(DssRef.lang.Tutorial_MissionX, missionIndex + 1), HudLib.InfoYellow_Light);
+            content.h2(string.Format(DssRef.lang.Tutorial_MissionX, missionIndex + 1), HudLib.InfoYellow_VeryLight);
 
             switch (missions.sel)
             {
@@ -522,7 +520,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(DssRef.lang.Tutorial_HighPriority, HudLib.InfoYellow_Light));                    
+                    content.Add(new RbText(DssRef.lang.Tutorial_HighPriority, HudLib.InfoYellow_VeryLight));                    
                     break;
 
                 case TutorialMission.ConscriptArmy:
@@ -550,18 +548,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         content.newLine();
                         HudLib.BulletPoint(content);
                         var info0 = new RbText(DssRef.lang.Tutorial_CollectFood_Info0);
-                        info0.overrideColor = HudLib.InfoYellow_Light;
+                        info0.overrideColor = HudLib.InfoYellow_VeryLight;
                         content.Add(info0);
 
                         content.newLine();
                         HudLib.BulletPoint(content);
                         var info1 = new RbText(DssRef.lang.Tutorial_CollectFood_Info1);
-                        info1.overrideColor = HudLib.InfoYellow_Light;
+                        info1.overrideColor = HudLib.InfoYellow_VeryLight;
                         content.Add(info1);
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(DssRef.lang.Tutorial_CollectFood_Info2, HudLib.InfoYellow_Light));
+                        content.Add(new RbText(DssRef.lang.Tutorial_CollectFood_Info2, HudLib.InfoYellow_VeryLight));
 
                         content.newLine();
                         HudLib.BulletPoint(content);
@@ -772,7 +770,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(DssRef.todoLang.Tutorial_WillTakeAWhile, HudLib.InfoYellow_Light));
+                        content.Add(new RbText(DssRef.todoLang.Tutorial_WillTakeAWhile, HudLib.InfoYellow_VeryLight));
 
                         content.newParagraph();
                         City city = player.gameControls.map.selection.obj as City;
@@ -799,7 +797,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                            
                             
-                            content.Add(new RbText(string.Format("{0}/{1}", sligshot.amount, sligshot.goalBuffer), reachedBuffer? HudLib.NotAvailableColor : HudLib.InfoYellow_Light));
+                            content.Add(new RbText(string.Format("{0}/{1}", sligshot.amount, sligshot.goalBuffer), reachedBuffer? HudLib.NotAvailableColor : HudLib.InfoYellow_VeryLight));
                             if (reachedBuffer)
                             {
                                 content.hspace();
@@ -914,7 +912,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format(DssRef.lang.Tutorial_PracticeOrSchool, DssRef.lang.Resource_TypeName_SharpStick, DssRef.lang.BuildingType_School), HudLib.InfoYellow_Light));
+                    content.Add(new RbText(string.Format(DssRef.lang.Tutorial_PracticeOrSchool, DssRef.lang.Resource_TypeName_SharpStick, DssRef.lang.BuildingType_School), HudLib.InfoYellow_VeryLight));
                     content.newParagraph();
 
 
@@ -949,7 +947,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format(DssRef.lang.Tutorial_PracticeOrSchool, DssRef.lang.Resource_TypeName_PaddedArmor, DssRef.lang.BuildingType_School), HudLib.InfoYellow_Light));
+                    content.Add(new RbText(string.Format(DssRef.lang.Tutorial_PracticeOrSchool, DssRef.lang.Resource_TypeName_PaddedArmor, DssRef.lang.BuildingType_School), HudLib.InfoYellow_VeryLight));
                     content.newParagraph();
 
                     //TwoBools produceMail_buildArmorer_sound = TwoBools.False;
@@ -2797,7 +2795,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     refreshLimits();
 
                     RichBoxContent content = new RichBoxContent();
-                    content.h1(DssRef.lang.Tutorial_MissionComplete_Title).overrideColor = HudLib.InfoYellow_Light;
+                    content.h1(DssRef.lang.Tutorial_MissionComplete_Title).overrideColor = HudLib.InfoYellow_VeryLight;
                     content.text(DssRef.lang.Tutorial_MissionComplete_Unlocks);
                     player.hud.messages.Add(content);
                 }

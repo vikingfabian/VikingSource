@@ -2251,6 +2251,9 @@ namespace VikingEngine
                 add(SpriteName.WarsHudIconSpeed_Pause);
                 add(SpriteName.WarsHudIconSpeed_Low);
                 add(SpriteName.WarsHudIconSpeed_High);
+                add(SpriteName.WarsHudIconSpeed_Medium);
+                add(SpriteName.UpdatePromo_SnowFlake);
+
 
             }
 

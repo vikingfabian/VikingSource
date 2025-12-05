@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars.Players
 
        
 
-        int setupConscriptAi_async(City city, bool aggresive, out ConscriptProfile profile, out int manCount, out int unitCount)
+        void setupConscriptAi_async(City city, bool aggresive, out ConscriptProfile profile, out BuildAndExpandType barracksType, out int barracksCount, out int manCount, out int unitCount)
         {
             //if (city.myIndex == 500)
             //{
@@ -84,13 +84,16 @@ namespace VikingEngine.DSSWars.Players
             //}
 
             bool guard = false;
-            if (!aggresive && city.AvailableGuardHousing() >= DssConst.SoldierGroup_GuardCount)
+
+            int minGuardCount = 2 + (int)city.cityType * 2;
+
+            if ((!aggresive || city.groups.Count < minGuardCount) && city.AvailableGuardHousing() >= DssConst.SoldierGroup_GuardCount)
             {
                 lock (city.defenceBuildings.array)
                 {
                     for (int i = 0; i < city.defenceBuildings.Count; i++)
                     {
-                        if (city.defenceBuildings[i].AvailableForAutoAssign())
+                        if (city.defenceBuildings[i].AvailableForAutoAssign(city, IsBot()))
                         {
                             guard = true;
                             break;
@@ -101,8 +104,10 @@ namespace VikingEngine.DSSWars.Players
 
             manCount = 0;
             unitCount = 0;
+            barracksCount = 0;
+            barracksType = BuildAndExpandType.NUM_NONE;
 
-            if (AutoConscriptLib.HasEnoughFood(city) &&
+            if ((AutoConscriptLib.HasEnoughFood(city) || guard) &&
                 city.conscriptBuildings.Count > 0)
             {
                 AutoWeaponOption weapon = new AutoWeaponOption(ItemResourceType.NONE, false, BuildAndExpandType.SoldierBarracks);
@@ -139,7 +144,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     //Item is too low quality
                     profile = ConscriptProfile.Empty;
-                    return 0;
+                    return;
                 }
 
                 profile = new ConscriptProfile()
@@ -150,14 +155,15 @@ namespace VikingEngine.DSSWars.Players
                     specialization = guard? SpecializationType.CityGuard : SpecializationType.None,
                 };
 
-                
+                barracksType = weapon.barracks;
+
                 lock (city.conscriptBuildings)
                 {
-                    for (int i = 0; i < city.conscriptBuildings.Count; ++i)//each (var c in city.conscriptBuildings)
+                    for (int i = 0; i < city.conscriptBuildings.Count; ++i)
                     {
                         if (city.conscriptBuildings[i].type == weapon.barracks)
                         {
-                            ++manCount;
+                            ++barracksCount;
                             var conscript = city.conscriptBuildings[i];
                             conscript.profile = profile;
                             city.conscriptBuildings[i] = conscript;
@@ -170,8 +176,6 @@ namespace VikingEngine.DSSWars.Players
             {
                 profile = new ConscriptProfile();
             }
-
-            return manCount;
         }
 
         protected bool buySoldiersBalanceCheck_asynch(City city, bool aggresive, double overrideChance, out bool guardOnly)
@@ -225,7 +229,12 @@ namespace VikingEngine.DSSWars.Players
                 return false;
             }
 
-            int barracksCount = setupConscriptAi_async(city, aggresive, out ConscriptProfile profile, out int manCount, out int unitCount);
+            if (city.factionIndex != faction.myIndex)
+            {
+                return false;
+            }
+
+            setupConscriptAi_async(city, aggresive, out ConscriptProfile profile, out BuildAndExpandType barracksType, out int barracksCount, out int manCount, out int unitCount);
 
             if (guardOnly && profile.specialization != SpecializationType.CityGuard)
             {
@@ -295,7 +304,7 @@ namespace VikingEngine.DSSWars.Players
                 
                 city.conscriptArmy(profile, city.defaultConscriptPos(), get);
 
-                city.nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic / barracksCount);
+                city.nextAutoConscriptTime.setTimeFromNow(ConscriptProfile.TrainingTime(profile.training, barracksType) / barracksCount);
             }
 
             return get > 0;

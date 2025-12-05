@@ -2632,6 +2632,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return workingAndFreeServiceMen;
         }
+
         public void CityDetailsHud(bool minimal, LocalPlayer player, RichBoxContent content)
         {
             Faction faction = GetFaction();
@@ -2639,496 +2640,472 @@ namespace VikingEngine.DSSWars.GameObject
             if (faction == null)
             {
                 //Unclaimed view
-                
-                    if (!player.profile.casualControls)
-                    {
-                        waterToHud(content, false);
-                        terrainStructure.miningOverviewHud(player, content);
-                    }
+
+                if (!player.profile.casualControls)
+                {
+                    waterToHud(content, false);
+                    terrainStructure.miningOverviewHud(player, content);
+                }
+            }
+            else if (minimal)
+            {
+                content.Add(new RbImage(SpriteName.WarsWorker));
+                content.space(0.5f);
+                content.Add(new RbText(TextLib.LargeNumber(workForce.amount)));
+                //content.space();
+                HudLib.BulletSeperationPoint(content);
+                //content.space();
+                content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+                content.space(0.5f);
+                content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
             }
             else
             {
-                
-                
+                bool interactive = player.faction == faction;
+
+                if (interactive && !player.profile.casualControls)
                 {
-                    if (minimal)
+                    if (automateCity)
                     {
-                        content.Add(new RbImage(SpriteName.WarsWorker));
-                        content.space(0.5f);
-                        content.Add(new RbText(TextLib.LargeNumber(workForce.amount)));
-                        //content.space();
-                        HudLib.BulletSeperationPoint(content);
-                        //content.space();
-                        content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-                        content.space(0.5f);
-                        content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
+                        content.newParagraph();
                     }
                     else
                     {
-                        bool interactive = player.faction == faction;
+                        content.newLine();
+                    }
 
-                        if (interactive && !player.profile.casualControls)
+                    if (automateCity || player.tutorial == null || player.tutorial.AdvisorMode())
+                    {
+                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                            new RbText(DssRef.lang.Automation_AutomateCity)
+                            }, AutomateCityProperty));
+                    }
+
+                    if (automateCity)
+                    {
+                        content.newLine();
+                        HudLib.Label(content, DssRef.lang.Automation_AutomationFocus);
+
+                        content.newLine();
+                        foreach (var focus in CityMenu.AvailableAutomationFocuses)
                         {
-                            if (automateCity)
+                            string caption = null;
+                            switch (focus)
                             {
-                                content.newParagraph();
+                                case AutomationFocus.NoFocus:
+                                    caption = DssRef.lang.Hud_None;
+                                    break;
+                                case AutomationFocus.Food:
+                                    caption = TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food);
+                                    break;
+                                case AutomationFocus.Grow:
+                                    caption = DssRef.lang.Automation_AutomationFocus_Grow;
+                                    break;
+                                case AutomationFocus.Export:
+                                    caption = DssRef.lang.Automation_AutomationFocus_Export;
+                                    break;
+                                case AutomationFocus.Military:
+                                    caption = DssRef.lang.Automation_AutomationFocus_War;
+                                    break;
                             }
-                            else
-                            {
-                                content.newLine();
-                            }
 
-                            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
-                        new RbText(DssRef.lang.Automation_AutomateCity)
-                    }, AutomateCityProperty));
-
-                            if (automateCity)
-                            {
-                                content.newLine();
-                                HudLib.Label(content, DssRef.lang.Automation_AutomationFocus);
-
-                                content.newLine();
-                                foreach (var focus in CityMenu.AvailableAutomationFocuses)
+                            var button = new ArtOption(automationFocus == focus,
+                                new List<AbsRichBoxMember>
                                 {
-                                    string caption = null;
-                                    switch (focus)
+                                    new RbText(caption),
+                                },
+                                new RbAction(() =>
+                                {
+                                    automationFocus = focus;
+                                    nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
+                                }, RbSoundType.Option),
+                                new RbTooltip(automationToolTip, focus));
+
+                            content.Add(button);
+                        }
+
+                        switch (automationFocus)
+                        {
+                            case AutomationFocus.Export:
+                                content.newParagraph();
+                                HudLib.Label(content, DssRef.lang.Automation_AutomationFocus_Export);
+                                content.newLine();
+                                for (ExportAutoType type = 0; type < ExportAutoType.NUM; type++)
+                                {
+
+                                    var optionContent = new List<AbsRichBoxMember>(4);
+                                    if (type == ExportAutoType.Resources)
                                     {
-                                        case AutomationFocus.NoFocus:
-                                            caption = DssRef.lang.Hud_None;
+                                        optionContent.Add(new RbImage(SpriteName.WarsResource_RawFood));
+                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Stone));
+                                        optionContent.Add(new RbSpace());
+                                        optionContent.Add(new RbText(DssRef.lang.WarsResourceGroup_Resources, HudLib.SubOptionTextColor));
+                                    }
+                                    else
+                                    {
+                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Bow));
+                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Sword));
+                                        optionContent.Add(new RbImage(SpriteName.WarsResource_PaddedArmor));
+                                        optionContent.Add(new RbSpace());
+                                        optionContent.Add(new RbText(DssRef.lang.WarsResourceGroup_Weapons, HudLib.SubOptionTextColor));
+                                    }
+
+                                    var button = new ArtOption(type == exportAutoType,
+                                       optionContent,
+                                       new RbAction1Arg<ExportAutoType>((ExportAutoType type) =>
+                                       {
+                                           exportAutoType = type;
+                                       }, type, RbSoundType.Option), null);
+
+                                    content.Add(button);
+                                }
+                                break;
+                            case AutomationFocus.Military:
+                                content.newParagraph();
+                                HudLib.Label(content, DssRef.lang.CityAutomation_SoldierQuality);
+                                content.newLine();
+                                for (WarAutoQuality quality = 0; quality < WarAutoQuality.NUM; quality++)
+                                {
+                                    string caption;
+                                    switch (quality)
+                                    {
+                                        default:
+                                            caption = DssRef.lang.Hud_Low;
                                             break;
-                                        case AutomationFocus.Food:
-                                            caption = TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food);
+                                        case WarAutoQuality.Medium:
+                                            caption = DssRef.lang.Hud_Medium;
                                             break;
-                                        case AutomationFocus.Grow:
-                                            caption = DssRef.lang.Automation_AutomationFocus_Grow;
-                                            break;
-                                        case AutomationFocus.Export:
-                                            caption = DssRef.lang.Automation_AutomationFocus_Export;
-                                            break;
-                                        case AutomationFocus.Military:
-                                            caption = DssRef.lang.Automation_AutomationFocus_War;
+                                        case WarAutoQuality.High:
+                                            caption = DssRef.lang.Hud_High;
                                             break;
                                     }
 
-                                    var button = new ArtOption(automationFocus == focus,
-                                        new List<AbsRichBoxMember>
-                                        {
-                                    new RbText(caption),
-                                        },
-                                        new RbAction(() =>
-                                        {
-                                            automationFocus = focus;
-                                            nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
-                                        }, RbSoundType.Option),
-                                        new RbTooltip(automationToolTip, focus));
+                                    var button = new ArtOption(quality == warAutoQuality,
+                                       new List<AbsRichBoxMember>
+                                       {
+                                            new RbText(caption, HudLib.SubOptionTextColor),
+                                       },
+                                       new RbAction1Arg<WarAutoQuality>((WarAutoQuality quality) =>
+                                       {
+                                           warAutoQuality = quality;
+                                       }, quality, RbSoundType.Option), new RbTooltip(AutoConscriptLib.autoWarQualityToolTip, quality));
+
+                                    content.Add(button);
+                                }
+                                content.newParagraph();
+                                HudLib.Label(content, DssRef.lang.CityAutomation_SoldierWeaponType);
+                                content.newLine();
+                                for (WarAutoWeaponType weaponType = 0; weaponType < WarAutoWeaponType.NUM; weaponType++)
+                                {
+                                    string caption;
+                                    SpriteName icon;
+                                    switch (weaponType)
+                                    {
+                                        default:
+                                            icon = SpriteName.NO_IMAGE;
+                                            caption = DssRef.lang.WarsResourceGroup_AllWeaponTypes;
+                                            break;
+                                        case WarAutoWeaponType.Melee:
+                                            icon = SpriteName.WarsResource_Sword;
+                                            caption = DssRef.lang.WarsResourceGroup_MeleeHandWeapons;
+                                            break;
+                                        case WarAutoWeaponType.Ranged:
+                                            icon = SpriteName.WarsResource_Bow;
+                                            caption = DssRef.lang.WarsResourceGroup_RangedHandWeapons;
+                                            break;
+                                        case WarAutoWeaponType.Warmachine:
+                                            icon = SpriteName.WarsResource_Ballista;
+                                            caption = DssRef.lang.WarsResourceGroup_Warmachines;
+                                            break;
+                                    }
+
+                                    List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(3);
+                                    if (icon != SpriteName.NO_IMAGE)
+                                    {
+                                        buttonContent.Add(new RbImage(icon));
+                                        buttonContent.Add(new RbSpace());
+                                    }
+                                    buttonContent.Add(new RbText(caption, HudLib.SubOptionTextColor));
+
+                                    var button = new ArtOption(weaponType == warAutoWeaponType,
+                                       buttonContent,
+                                       new RbAction1Arg<WarAutoWeaponType>((WarAutoWeaponType weaponType) =>
+                                       {
+                                           warAutoWeaponType = weaponType;
+                                       }, weaponType, RbSoundType.Option));
 
                                     content.Add(button);
                                 }
 
-                                switch (automationFocus)
-                                {
-                                    case AutomationFocus.Export:
-                                        content.newParagraph();
-                                        HudLib.Label(content, DssRef.lang.Automation_AutomationFocus_Export);
-                                        content.newLine();
-                                        for (ExportAutoType type = 0; type < ExportAutoType.NUM; type++)
-                                        {
-
-                                            var optionContent = new List<AbsRichBoxMember>(4);
-                                            if (type == ExportAutoType.Resources)
-                                            {
-                                                optionContent.Add(new RbImage(SpriteName.WarsResource_RawFood));
-                                                optionContent.Add(new RbImage(SpriteName.WarsResource_Wood));
-                                                optionContent.Add(new RbImage(SpriteName.WarsResource_Stone));
-                                                optionContent.Add(new RbSpace());
-                                                optionContent.Add(new RbText(DssRef.lang.WarsResourceGroup_Resources, HudLib.SubOptionTextColor));
-                                            }
-                                            else
-                                            {
-                                                optionContent.Add(new RbImage(SpriteName.WarsResource_Bow));
-                                                optionContent.Add(new RbImage(SpriteName.WarsResource_Sword));
-                                                optionContent.Add(new RbImage(SpriteName.WarsResource_PaddedArmor));
-                                                optionContent.Add(new RbSpace());
-                                                optionContent.Add(new RbText(DssRef.lang.WarsResourceGroup_Weapons, HudLib.SubOptionTextColor));
-                                            }
-
-                                            var button = new ArtOption(type == exportAutoType,
-                                               optionContent,
-                                               new RbAction1Arg<ExportAutoType>((ExportAutoType type) =>
-                                               {
-                                                   exportAutoType = type;
-                                               }, type, RbSoundType.Option), null);
-
-                                            content.Add(button);
-                                        }
-                                        break;
-                                    case AutomationFocus.Military:
-                                        content.newParagraph();
-                                        HudLib.Label(content, DssRef.lang.CityAutomation_SoldierQuality);
-                                        content.newLine();
-                                        for (WarAutoQuality quality = 0; quality < WarAutoQuality.NUM; quality++)
-                                        {
-                                            string caption;
-                                            switch (quality)
-                                            {
-                                                default:
-                                                    caption = DssRef.lang.Hud_Low;
-                                                    break;
-                                                case WarAutoQuality.Medium:
-                                                    caption = DssRef.lang.Hud_Medium;
-                                                    break;
-                                                case WarAutoQuality.High:
-                                                    caption = DssRef.lang.Hud_High;
-                                                    break;
-                                            }
-
-                                            var button = new ArtOption(quality == warAutoQuality,
-                                               new List<AbsRichBoxMember>
-                                               {
-                                            new RbText(caption, HudLib.SubOptionTextColor),
-                                               },
-                                               new RbAction1Arg<WarAutoQuality>((WarAutoQuality quality) =>
-                                               {
-                                                   warAutoQuality = quality;
-                                               }, quality, RbSoundType.Option), new RbTooltip(AutoConscriptLib.autoWarQualityToolTip, quality));
-
-                                            content.Add(button);
-                                        }
-                                        content.newParagraph();
-                                        HudLib.Label(content, DssRef.lang.CityAutomation_SoldierWeaponType);
-                                        content.newLine();
-                                        for (WarAutoWeaponType weaponType = 0; weaponType < WarAutoWeaponType.NUM; weaponType++)
-                                        {
-                                            string caption;
-                                            SpriteName icon;
-                                            switch (weaponType)
-                                            {
-                                                default:
-                                                    icon = SpriteName.NO_IMAGE;
-                                                    caption = DssRef.lang.WarsResourceGroup_AllWeaponTypes;
-                                                    break;
-                                                case WarAutoWeaponType.Melee:
-                                                    icon = SpriteName.WarsResource_Sword;
-                                                    caption = DssRef.lang.WarsResourceGroup_MeleeHandWeapons;
-                                                    break;
-                                                case WarAutoWeaponType.Ranged:
-                                                    icon = SpriteName.WarsResource_Bow;
-                                                    caption = DssRef.lang.WarsResourceGroup_RangedHandWeapons;
-                                                    break;
-                                                case WarAutoWeaponType.Warmachine:
-                                                    icon = SpriteName.WarsResource_Ballista;
-                                                    caption = DssRef.lang.WarsResourceGroup_Warmachines;
-                                                    break;
-                                            }
-
-                                            List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(3);
-                                            if (icon != SpriteName.NO_IMAGE)
-                                            {
-                                                buttonContent.Add(new RbImage(icon));
-                                                buttonContent.Add(new RbSpace());
-                                            }
-                                            buttonContent.Add(new RbText(caption, HudLib.SubOptionTextColor));
-
-                                            var button = new ArtOption(weaponType == warAutoWeaponType,
-                                               buttonContent,
-                                               new RbAction1Arg<WarAutoWeaponType>((WarAutoWeaponType weaponType) =>
-                                               {
-                                                   warAutoWeaponType = weaponType;
-                                               }, weaponType, RbSoundType.Option));
-
-                                            content.Add(button);
-                                        }
-
-                                        break;
-                                }
-
-                                content.Add(new RbSeperationLine());
-
-                            }
+                                break;
                         }
 
-                //if (!player.profile.casualControls)
-                //{
-                //    terrainStructure.miningOverviewHud(player, content);
-                //    new XP.TechnologyHud(player, this).technologyOverviewHud(content, faction);
-                //}
-                //technologyOverviewHud(content, player);
-#if DEBUG
-                //technologyHud(content, player);
-#endif
-                //if (!player.inTutorialMode)
-                //{
-                //    //Properties
-                //    //if (nobelHouse)
-                //    //{
-                //    //    content.newLine();
-                //    //    HudLib.BulletPoint(content);
-                //    //    content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
-                //    //}
+                        content.Add(new RbSeperationLine());
 
+                    }
+                }
 
-                        HudLib.ItemCount(content, SpriteName.WarsWorkerAdd, DssRef.lang.ResourceType_Children, children().ToString());
+                HudLib.ItemCount(content, SpriteName.WarsWorkerAdd, DssRef.lang.ResourceType_Children, children().ToString());
+                content.space();
+                if (interactive)
+                {
+                    HudLib.InfoButton(content, new RbTooltip(childrenTooltip, this));
+                }
+
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsUnitIcon_Immigrant));
+                content.space();
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Immigrants, immigrants.Int())));
+                content.Add(new RbTab(0.4f));
+                content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                content.space();
+                content.Add(new RbImage(SpriteName.WarsBuild_Tent));
+                content.space();
+                content.Add(new RbText(buildingStructure.ImmigrationTent_count.ToString()));
+                content.space();
+                if (interactive)
+                {
+                    HudLib.InfoButton(content, new RbTooltip(immigrantsTooltip, this));
+                }
+
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsWorker));
+                content.space();
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Workers, workForce.amount)));
+                content.Add(new RbTab(0.4f));
+                content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                content.space();
+                content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
+                content.space();
+                content.Add(new RbText(HousingCount_Workers.ToString()));
+
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsGuard));
+                content.space();
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_GuardCount, soldiersCount)));
+
+                if (!player.profile.casualControls)
+                {
+                    content.Add(new RbTab(0.4f));
+                    content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsBuild_GuardOffice));
+                    content.space();
+                    content.Add(new RbText(HousingCount_Guard.ToString()));
+                }
+
+                if (!player.profile.casualControls)
+                {
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.WarsServiceMen));
+                    content.space();
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_ServiceMen, freeServiceMen.amount)));
+                    content.Add(new RbTab(0.4f));
+                    content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsServiceMenTotal));
+                    content.space();
+                    content.Add(new RbText(TotalServiceMen().ToString()));
+                }
+                //HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
+                //HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
+
+                CityEconomyData cityEconomy = new CityEconomyData(this);
+
+                content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
+                content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, Money.CopperToGoldString_Large(cityEconomy.IncomeAndUpkeep_Total())));
+                //content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
+
+                {
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.rtsIncomeTime));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsWorker));
+                    content.space();
+                    var textCont = new RbText(string.Format(DssRef.lang.Economy_TaxIncome, Money.CopperToGoldString_Large(cityEconomy.taxIncome_copp)));
+                    content.Add(textCont);
+                    if (interactive)
+                    {
                         content.space();
-                        if (interactive)
-                        {
-                            HudLib.InfoButton(content, new RbTooltip(childrenTooltip, this));
-                        }
+                        HudLib.InfoButton(content, new RbTooltip(HudLib.taxInfo, this));
+                    }
+                }
+                if (!player.profile.casualControls)
+                {
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.rtsUpkeepTime));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsServiceMen));
+                    content.space();
+                    var textCont = new RbText(string.Format(DssRef.lang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.servicemenUpkeep_copp)));
+                    content.Add(textCont);
+                    if (interactive)
+                    {
+                        content.space();
+                        HudLib.InfoButton(content, new RbTooltip(HudLib.servicemenUpkeepInfo));
+                    }
+                }
+                {
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.rtsUpkeepTime));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsGuard));
+                    content.space();
+                    var textCont = new RbText(string.Format(DssRef.lang.Economy_GuardUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.cityGuardUpkeep_copp)));
+                    content.Add(textCont);
+                    if (interactive)
+                    {
+                        content.space();
+                        HudLib.InfoButton(content, new RbTooltip(HudLib.guardUpkeepInfo));
+                    }
+                }
 
+                if (!player.profile.casualControls)
+                {
+                    cultureToHud(player, content, interactive);
+                }
+                if (immigrants.HasValue())
+                {
+                    content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
+                }
+
+                if (!player.profile.casualControls)
+                {
+                    terrainStructure.miningOverviewHud(player, content);
+                    //new XP.TechnologyHud().technologyOverviewHud(content, player, this, faction);
+                    new XP.TechnologyHud(player, this).technologyOverviewHud(content, faction);
+                }
+                
+            }
+
+
+
+            void automationToolTip(RichBoxContent content, object tag)
+            {
+                AutomationFocus focus = (AutomationFocus)tag;
+                switch (focus)
+                {
+                    case AutomationFocus.NoFocus:
+                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_NoFocus_Description, HudLib.InfoYellow_Light));
+                        break;
+
+                    case AutomationFocus.Food:
+                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+
+                        //
                         content.newLine();
-                        content.Add(new RbImage(SpriteName.WarsUnitIcon_Immigrant));
+                        HudLib.BulletPoint(content);
                         content.space();
-                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Immigrants, immigrants.Int())));
-                        content.Add(new RbTab(0.4f));
-                        content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                        content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
                         content.space();
-                        content.Add(new RbImage(SpriteName.WarsBuild_Tent));
-                        content.space();
-                        content.Add(new RbText(buildingStructure.ImmigrationTent_count.ToString()));
-                        content.space();
-                        if (interactive)
-                        {
-                            HudLib.InfoButton(content, new RbTooltip(immigrantsTooltip, this));
-                        }
-
+                        content.Add(new RbText(string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat)));
+                        //
                         content.newLine();
-                        content.Add(new RbImage(SpriteName.WarsWorker));
+                        HudLib.BulletPoint(content);
                         content.space();
-                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Workers, workForce.amount)));
-                        content.Add(new RbTab(0.4f));
-                        content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                        content.Add(new RbImage(SpriteName.WarsBuild_Cook));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.BuildingType_Cook));
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsBuild_CoalPit));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.BuildingType_CoalPit));
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsResource_Food));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsBuild_Postal));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.BuildingType_Postal));
+                        break;
+
+                    case AutomationFocus.Export:
+                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsBuild_Postal));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.BuildingType_Postal));
+                        //
+                        //content.newLine();
+                        //HudLib.BulletPoint(content);
+                        //content.space();
+                        //content.Add(new RbImage(SpriteName.WarsResource_Wood));
+                        //content.space();
+                        //content.Add(new RbText(DssRef.lang.Resource_TypeName_Wood));
+                        ////
+                        //content.newLine();
+                        //HudLib.BulletPoint(content);
+                        //content.space();
+                        //content.Add(new RbImage(SpriteName.WarsResource_Stone));
+                        //content.space();
+                        //content.Add(new RbText(DssRef.lang.Resource_TypeName_Stone));
+                        ////
+                        //content.newLine();
+                        //HudLib.BulletPoint(content);
+                        //content.space();
+                        //content.Add(new RbImage(SpriteName.));
+                        //content.space();
+                        //content.Add(new RbText(DssRef.lang.BuildingType_Postal));
+
+
+                        break;
+
+                    case AutomationFocus.Military:
+                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsBuild_SoldierBarracks));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.BuildingType_SoldierBarracks));
+
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsSoldierIcon));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.UnitType_Soldier));
+
+                        break;
+
+                    case AutomationFocus.Grow:
+                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+
+                        //
+                        content.newLine();
+                        HudLib.BulletPoint(content);
                         content.space();
                         content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
                         content.space();
-                        content.Add(new RbText(HousingCount_Workers.ToString()));
+                        content.Add(new RbText(DssRef.lang.BuildingType_WorkerHut));
 
+                        //
                         content.newLine();
-                        content.Add(new RbImage(SpriteName.WarsGuard));
+                        HudLib.BulletPoint(content);
                         content.space();
-                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_GuardCount, soldiersCount)));
+                        content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
+                        content.space();
+                        content.Add(new RbText(DssRef.lang.Resource_TypeName_Wheat));
 
-                        if (!player.profile.casualControls)
-                        {
-                            content.Add(new RbTab(0.4f));
-                            content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
-                            content.space();
-                            content.Add(new RbImage(SpriteName.WarsBuild_GuardOffice));
-                            content.space();
-                            content.Add(new RbText(HousingCount_Guard.ToString()));
-                        }
-
-                        if (!player.profile.casualControls)
-                        {
-                            content.newLine();
-                            content.Add(new RbImage(SpriteName.WarsServiceMen));
-                            content.space();
-                            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_ServiceMen, freeServiceMen.amount)));
-                            content.Add(new RbTab(0.4f));
-                            content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
-                            content.space();
-                            content.Add(new RbImage(SpriteName.WarsServiceMenTotal));
-                            content.space();
-                            content.Add(new RbText(TotalServiceMen().ToString()));
-                        }
-                        //HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
-                        //HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
-
-                        CityEconomyData cityEconomy = new CityEconomyData(this);
-
-                        content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
-                        content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, Money.CopperToGoldString_Large(cityEconomy.IncomeAndUpkeep_Total())));
-                        //content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
-
-                        {
-                            content.newLine();
-                            content.Add(new RbImage(SpriteName.rtsIncomeTime));
-                            content.space();
-                            content.Add(new RbImage(SpriteName.WarsWorker));
-                            content.space();
-                            var textCont = new RbText(string.Format(DssRef.lang.Economy_TaxIncome, Money.CopperToGoldString_Large(cityEconomy.taxIncome_copp)));
-                            content.Add(textCont);
-                            if (interactive)
-                            {
-                                content.space();
-                                HudLib.InfoButton(content, new RbTooltip(HudLib.taxInfo, this));
-                            }
-                        }
-                        if (!player.profile.casualControls)
-                        {
-                            content.newLine();
-                            content.Add(new RbImage(SpriteName.rtsUpkeepTime));
-                            content.space();
-                            content.Add(new RbImage(SpriteName.WarsServiceMen));
-                            content.space();
-                            var textCont = new RbText(string.Format(DssRef.lang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.servicemenUpkeep_copp)));
-                            content.Add(textCont);
-                            if (interactive)
-                            {
-                                content.space();
-                                HudLib.InfoButton(content, new RbTooltip(HudLib.servicemenUpkeepInfo));
-                            }
-                        }
-                        {
-                            content.newLine();
-                            content.Add(new RbImage(SpriteName.rtsUpkeepTime));
-                            content.space();
-                            content.Add(new RbImage(SpriteName.WarsGuard));
-                            content.space();
-                            var textCont = new RbText(string.Format(DssRef.lang.Economy_GuardUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.cityGuardUpkeep_copp)));
-                            content.Add(textCont);
-                            if (interactive)
-                            {
-                                content.space();
-                                HudLib.InfoButton(content, new RbTooltip(HudLib.guardUpkeepInfo));
-                            }
-                        }
-
-                        if (!player.profile.casualControls)
-                        {
-                            cultureToHud(player, content, interactive);
-                        }
-                        if (immigrants.HasValue())
-                        {
-                            content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
-                        }
-
-                        if (!player.profile.casualControls)
-                        {
-                            terrainStructure.miningOverviewHud(player, content);
-                            new XP.TechnologyHud(player, this).technologyOverviewHud(content, faction);
-
-                        }
-
-                    }
-
-
-
-                    void automationToolTip(RichBoxContent content, object tag)
-                    {
-                        AutomationFocus focus = (AutomationFocus)tag;
-                        switch (focus)
-                        {
-                            case AutomationFocus.NoFocus:
-                                content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_NoFocus_Description, HudLib.InfoYellow_Light));
-                                break;
-
-                            case AutomationFocus.Food:
-                                content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
-
-                                //
-                                content.newLine();
-                                HudLib.BulletPoint(content);
-                                content.space();
-                                content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
-                                content.space();
-                                content.Add(new RbText(string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat)));
-                                //
-                                content.newLine();
-                                HudLib.BulletPoint(content);
-                                content.space();
-                                content.Add(new RbImage(SpriteName.WarsBuild_Cook));
-                                content.space();
-                                content.Add(new RbText(DssRef.lang.BuildingType_Cook));
-                                //
-                                content.newLine();
-                                HudLib.BulletPoint(content);
-                                content.space();
-                                content.Add(new RbImage(SpriteName.WarsBuild_CoalPit));
-                                content.space();
-                                content.Add(new RbText(DssRef.lang.BuildingType_CoalPit));
-                                //
-                                content.newLine();
-                                HudLib.BulletPoint(content);
-                                content.space();
-                                content.Add(new RbImage(SpriteName.WarsResource_Food));
-                                content.space();
-                                content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
-                                //
-                                content.newLine();
-                                HudLib.BulletPoint(content);
-                                content.space();
-                                content.Add(new RbImage(SpriteName.WarsBuild_Postal));
-                                content.space();
-                                content.Add(new RbText(DssRef.lang.BuildingType_Postal));
-                                break;
-
-                            case AutomationFocus.Export:
-                                content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
-
-                                //
-                                content.newLine();
-                                HudLib.BulletPoint(content);
-                                content.space();
-                                content.Add(new RbImage(SpriteName.WarsBuild_Postal));
-                                content.space();
-                                content.Add(new RbText(DssRef.lang.BuildingType_Postal));
-                                //
-                                //content.newLine();
-                                //HudLib.BulletPoint(content);
-                                //content.space();
-                                //content.Add(new RbImage(SpriteName.WarsResource_Wood));
-                                //content.space();
-                                //content.Add(new RbText(DssRef.lang.Resource_TypeName_Wood));
-                                ////
-                                //content.newLine();
-                                //HudLib.BulletPoint(content);
-                                //content.space();
-                                //content.Add(new RbImage(SpriteName.WarsResource_Stone));
-                                //content.space();
-                                //content.Add(new RbText(DssRef.lang.Resource_TypeName_Stone));
-                                ////
-                                //content.newLine();
-                                //HudLib.BulletPoint(content);
-                                //content.space();
-                                //content.Add(new RbImage(SpriteName.));
-                                //content.space();
-                                //content.Add(new RbText(DssRef.lang.BuildingType_Postal));
-
-
-                                break;
-
-                            case AutomationFocus.Military:
-                                content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
-
-                                //
-                                content.newLine();
-                                HudLib.BulletPoint(content);
-                                content.space();
-                                content.Add(new RbImage(SpriteName.WarsBuild_SoldierBarracks));
-                                content.space();
-                                content.Add(new RbText(DssRef.lang.BuildingType_SoldierBarracks));
-
-                                //
-                                content.newLine();
-                                HudLib.BulletPoint(content);
-                                content.space();
-                                content.Add(new RbImage(SpriteName.WarsSoldierIcon));
-                                content.space();
-                                content.Add(new RbText(DssRef.lang.UnitType_Soldier));
-
-                                break;
-
-                            case AutomationFocus.Grow:
-                                content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
-
-                                //
-                                content.newLine();
-                                HudLib.BulletPoint(content);
-                                content.space();
-                                content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
-                                content.space();
-                                content.Add(new RbText(DssRef.lang.BuildingType_WorkerHut));
-
-                                //
-                                content.newLine();
-                                HudLib.BulletPoint(content);
-                                content.space();
-                                content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
-                                content.space();
-                                content.Add(new RbText(DssRef.lang.Resource_TypeName_Wheat));
-
-                                break;
-                        }
-                    }
+                        break;
                 }
             }
         }
@@ -3164,7 +3141,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.space();
             content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.BuildingType_ImmigrationTent, buildingStructure.ImmigrationTent_count), HudLib.TitleColor_TypeName));
             content.newLine();
-            content.Add(new RbText(string.Format( DssRef.lang.BuildingType_ImmigrationTent_Description, DssConst.ImmigrantionTent_Capacity), HudLib.InfoYellow_Light));
+            content.Add(new RbText(string.Format(DssRef.lang.BuildingType_ImmigrationTent_Description, DssConst.ImmigrantionTent_Capacity), HudLib.InfoYellow_Light));
 
         }
         public void childrenTooltip(RichBoxContent content, object tag)
@@ -3195,7 +3172,7 @@ namespace VikingEngine.DSSWars.GameObject
                 content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
                 content.hspace();
                 content.Add(new RbText(string.Format(DssRef.lang.WorkForce_AvailableHomes, city.homesUnused()), HudLib.ResourceCostColor(available)));
-               
+
             }
 
             if (!city.GetCasual())
@@ -3226,6 +3203,594 @@ namespace VikingEngine.DSSWars.GameObject
 
             }
         }
+        //        public void CityDetailsHud(bool minimal, LocalPlayer player, RichBoxContent content)
+        //        {
+        //            Faction faction = GetFaction();
+
+        //            //if (minimal)
+        //            //{
+        //            //    content.Add(new RbImage(SpriteName.WarsWorker));
+        //            //    content.space(0.5f);
+        //            //    content.Add(new RbText(TextLib.LargeNumber(workForce.amount)));
+        //            //    //content.space();
+        //            //    HudLib.BulletSeperationPoint(content);
+        //            //    //content.space();
+        //            //    content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+        //            //    content.space(0.5f);
+        //            //    content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
+        //            //}
+        //            if (faction == null)
+        //            {
+        //                //Unclaimed view
+
+        //                if (!player.profile.casualControls)
+        //                {
+        //                    waterToHud(content, false);
+        //                    terrainStructure.miningOverviewHud(player, content);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                bool interactive = player.faction == faction;
+
+        //                if (interactive && !player.profile.casualControls)
+        //                {
+        //                    if (automateCity)
+        //                    {
+        //                        content.newParagraph();
+        //                    }
+        //                    else
+        //                    {
+        //                        content.newLine();
+        //                    }
+
+        //                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+        //                        new RbText(DssRef.lang.Automation_AutomateCity)
+        //                    }, AutomateCityProperty));
+
+        //                    if (automateCity)
+        //                    {
+        //                        content.newLine();
+        //                        HudLib.Label(content, DssRef.lang.Automation_AutomationFocus);
+
+        //                        content.newLine();
+        //                        foreach (var focus in CityMenu.AvailableAutomationFocuses)
+        //                        {
+        //                            string caption = null;
+        //                            switch (focus)
+        //                            {
+        //                                case AutomationFocus.NoFocus:
+        //                                    caption = DssRef.lang.Hud_None;
+        //                                    break;
+        //                                case AutomationFocus.Food:
+        //                                    caption = TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food);
+        //                                    break;
+        //                                case AutomationFocus.Grow:
+        //                                    caption = DssRef.lang.Automation_AutomationFocus_Grow;
+        //                                    break;
+        //                                case AutomationFocus.Export:
+        //                                    caption = DssRef.lang.Automation_AutomationFocus_Export;
+        //                                    break;
+        //                                case AutomationFocus.Military:
+        //                                    caption = DssRef.lang.Automation_AutomationFocus_War;
+        //                                    break;
+        //                            }
+
+        //                            var button = new ArtOption(automationFocus == focus,
+        //                                new List<AbsRichBoxMember>
+        //                                {
+        //                                    new RbText(caption),
+        //                                },
+        //                                new RbAction(() =>
+        //                                {
+        //                                    automationFocus = focus;
+        //                                    nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
+        //                                }, RbSoundType.Option),
+        //                                new RbTooltip(automationToolTip, focus));
+
+        //                            content.Add(button);
+        //                        }
+
+        //                        switch (automationFocus)
+        //                        {
+        //                            case AutomationFocus.Export:
+        //                                content.newParagraph();
+        //                                HudLib.Label(content, DssRef.lang.Automation_AutomationFocus_Export);
+        //                                content.newLine();
+        //                                for (ExportAutoType type = 0; type < ExportAutoType.NUM; type++)
+        //                                {
+
+        //                                    var optionContent = new List<AbsRichBoxMember>(4);
+        //                                    if (type == ExportAutoType.Resources)
+        //                                    {
+        //                                        optionContent.Add(new RbImage(SpriteName.WarsResource_RawFood));
+        //                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+        //                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Stone));
+        //                                        optionContent.Add(new RbSpace());
+        //                                        optionContent.Add(new RbText(DssRef.lang.WarsResourceGroup_Resources, HudLib.SubOptionTextColor));
+        //                                    }
+        //                                    else
+        //                                    {
+        //                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Bow));
+        //                                        optionContent.Add(new RbImage(SpriteName.WarsResource_Sword));
+        //                                        optionContent.Add(new RbImage(SpriteName.WarsResource_PaddedArmor));
+        //                                        optionContent.Add(new RbSpace());
+        //                                        optionContent.Add(new RbText(DssRef.lang.WarsResourceGroup_Weapons, HudLib.SubOptionTextColor));
+        //                                    }
+
+        //                                    var button = new ArtOption(type == exportAutoType,
+        //                                       optionContent,
+        //                                       new RbAction1Arg<ExportAutoType>((ExportAutoType type) =>
+        //                                       {
+        //                                           exportAutoType = type;
+        //                                       }, type, RbSoundType.Option), null);
+
+        //                                    content.Add(button);
+        //                                }
+        //                                break;
+        //                            case AutomationFocus.Military:
+        //                                content.newParagraph();
+        //                                HudLib.Label(content, DssRef.lang.CityAutomation_SoldierQuality);
+        //                                content.newLine();
+        //                                for (WarAutoQuality quality = 0; quality < WarAutoQuality.NUM; quality++)
+        //                                {
+        //                                    string caption;
+        //                                    switch (quality)
+        //                                    {
+        //                                        default:
+        //                                            caption = DssRef.lang.Hud_Low;
+        //                                            break;
+        //                                        case WarAutoQuality.Medium:
+        //                                            caption = DssRef.lang.Hud_Medium;
+        //                                            break;
+        //                                        case WarAutoQuality.High:
+        //                                            caption = DssRef.lang.Hud_High;
+        //                                            break;
+        //                                    }
+
+        //                                    var button = new ArtOption(quality == warAutoQuality,
+        //                                       new List<AbsRichBoxMember>
+        //                                       {
+        //                                            new RbText(caption, HudLib.SubOptionTextColor),
+        //                                       },
+        //                                       new RbAction1Arg<WarAutoQuality>((WarAutoQuality quality) =>
+        //                                       {
+        //                                           warAutoQuality = quality;
+        //                                       }, quality, RbSoundType.Option), new RbTooltip(AutoConscriptLib.autoWarQualityToolTip, quality));
+
+        //                                    content.Add(button);
+        //                                }
+        //                                content.newParagraph();
+        //                                HudLib.Label(content, DssRef.lang.CityAutomation_SoldierWeaponType);
+        //                                content.newLine();
+        //                                for (WarAutoWeaponType weaponType = 0; weaponType < WarAutoWeaponType.NUM; weaponType++)
+        //                                {
+        //                                    string caption;
+        //                                    SpriteName icon;
+        //                                    switch (weaponType)
+        //                                    {
+        //                                        default:
+        //                                            icon = SpriteName.NO_IMAGE;
+        //                                            caption = DssRef.lang.WarsResourceGroup_AllWeaponTypes;
+        //                                            break;
+        //                                        case WarAutoWeaponType.Melee:
+        //                                            icon = SpriteName.WarsResource_Sword;
+        //                                            caption = DssRef.lang.WarsResourceGroup_MeleeHandWeapons;
+        //                                            break;
+        //                                        case WarAutoWeaponType.Ranged:
+        //                                            icon = SpriteName.WarsResource_Bow;
+        //                                            caption = DssRef.lang.WarsResourceGroup_RangedHandWeapons;
+        //                                            break;
+        //                                        case WarAutoWeaponType.Warmachine:
+        //                                            icon = SpriteName.WarsResource_Ballista;
+        //                                            caption = DssRef.lang.WarsResourceGroup_Warmachines;
+        //                                            break;
+        //                                    }
+
+        //                                    List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(3);
+        //                                    if (icon != SpriteName.NO_IMAGE)
+        //                                    {
+        //                                        buttonContent.Add(new RbImage(icon));
+        //                                        buttonContent.Add(new RbSpace());
+        //                                    }
+        //                                    buttonContent.Add(new RbText(caption, HudLib.SubOptionTextColor));
+
+        //                                    var button = new ArtOption(weaponType == warAutoWeaponType,
+        //                                       buttonContent,
+        //                                       new RbAction1Arg<WarAutoWeaponType>((WarAutoWeaponType weaponType) =>
+        //                                       {
+        //                                           warAutoWeaponType = weaponType;
+        //                                       }, weaponType, RbSoundType.Option));
+
+        //                                    content.Add(button);
+        //                                }
+
+        //                                break;
+        //                        }
+
+        //                        content.Add(new RbSeperationLine());
+
+        //                    }
+        //                }
+
+
+        //                //if (!player.profile.casualControls)
+        //                //{
+        //                //    terrainStructure.miningOverviewHud(player, content);
+        //                //    new XP.TechnologyHud(player, this).technologyOverviewHud(content, faction);
+        //                //}
+        //                //technologyOverviewHud(content, player);
+        //#if DEBUG
+        //                //technologyHud(content, player);
+        //#endif
+        //                //if (!player.inTutorialMode)
+        //                //{
+        //                //    //Properties
+        //                //    //if (nobelHouse)
+        //                //    //{
+        //                //    //    content.newLine();
+        //                //    //    HudLib.BulletPoint(content);
+        //                //    //    content.Add(new RichBoxText(DssRef.lang.Building_NobleHouse));
+        //                //    //}
+
+
+        //                HudLib.ItemCount(content, SpriteName.WarsWorkerAdd, DssRef.lang.ResourceType_Children, children().ToString());
+        //                        content.space();
+        //                        if (interactive)
+        //                        {
+        //                            HudLib.InfoButton(content, new RbTooltip(childrenTooltip, this));
+        //                        }
+
+        //                        content.newLine();
+        //                        content.Add(new RbImage(SpriteName.WarsUnitIcon_Immigrant));
+        //                        content.space();
+        //                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Immigrants, immigrants.Int())));
+        //                        content.Add(new RbTab(0.4f));
+        //                        content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+        //                        content.space();
+        //                        content.Add(new RbImage(SpriteName.WarsBuild_Tent));
+        //                        content.space();
+        //                        content.Add(new RbText(buildingStructure.ImmigrationTent_count.ToString()));
+        //                        content.space();
+        //                        if (interactive)
+        //                        {
+        //                            HudLib.InfoButton(content, new RbTooltip(immigrantsTooltip, this));
+        //                        }
+
+        //                        content.newLine();
+        //                        content.Add(new RbImage(SpriteName.WarsWorker));
+        //                        content.space();
+        //                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Workers, workForce.amount)));
+        //                        content.Add(new RbTab(0.4f));
+        //                        content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+        //                        content.space();
+        //                        content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
+        //                        content.space();
+        //                        content.Add(new RbText(HousingCount_Workers.ToString()));
+
+        //                        content.newLine();
+        //                        content.Add(new RbImage(SpriteName.WarsGuard));
+        //                        content.space();
+        //                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_GuardCount, soldiersCount)));
+
+        //                        if (!player.profile.casualControls)
+        //                        {
+        //                            content.Add(new RbTab(0.4f));
+        //                            content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+        //                            content.space();
+        //                            content.Add(new RbImage(SpriteName.WarsBuild_GuardOffice));
+        //                            content.space();
+        //                            content.Add(new RbText(HousingCount_Guard.ToString()));
+        //                        }
+
+        //                        if (!player.profile.casualControls)
+        //                        {
+        //                            content.newLine();
+        //                            content.Add(new RbImage(SpriteName.WarsServiceMen));
+        //                            content.space();
+        //                            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_ServiceMen, freeServiceMen.amount)));
+        //                            content.Add(new RbTab(0.4f));
+        //                            content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+        //                            content.space();
+        //                            content.Add(new RbImage(SpriteName.WarsServiceMenTotal));
+        //                            content.space();
+        //                            content.Add(new RbText(TotalServiceMen().ToString()));
+        //                        }
+        //                        //HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
+        //                        //HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
+
+        //                        CityEconomyData cityEconomy = new CityEconomyData(this);
+
+        //                        content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
+        //                        content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, Money.CopperToGoldString_Large(cityEconomy.IncomeAndUpkeep_Total())));
+        //                        //content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
+
+        //                        {
+        //                            content.newLine();
+        //                            content.Add(new RbImage(SpriteName.rtsIncomeTime));
+        //                            content.space();
+        //                            content.Add(new RbImage(SpriteName.WarsWorker));
+        //                            content.space();
+        //                            var textCont = new RbText(string.Format(DssRef.lang.Economy_TaxIncome, Money.CopperToGoldString_Large(cityEconomy.taxIncome_copp)));
+        //                            content.Add(textCont);
+        //                            if (interactive)
+        //                            {
+        //                                content.space();
+        //                                HudLib.InfoButton(content, new RbTooltip(HudLib.taxInfo, this));
+        //                            }
+        //                        }
+        //                        if (!player.profile.casualControls)
+        //                        {
+        //                            content.newLine();
+        //                            content.Add(new RbImage(SpriteName.rtsUpkeepTime));
+        //                            content.space();
+        //                            content.Add(new RbImage(SpriteName.WarsServiceMen));
+        //                            content.space();
+        //                            var textCont = new RbText(string.Format(DssRef.lang.Economy_ServicemenUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.servicemenUpkeep_copp)));
+        //                            content.Add(textCont);
+        //                            if (interactive)
+        //                            {
+        //                                content.space();
+        //                                HudLib.InfoButton(content, new RbTooltip(HudLib.servicemenUpkeepInfo));
+        //                            }
+        //                        }
+        //                        {
+        //                            content.newLine();
+        //                            content.Add(new RbImage(SpriteName.rtsUpkeepTime));
+        //                            content.space();
+        //                            content.Add(new RbImage(SpriteName.WarsGuard));
+        //                            content.space();
+        //                            var textCont = new RbText(string.Format(DssRef.lang.Economy_GuardUpkeep, Money.CopperToGoldString_Dynamic(cityEconomy.cityGuardUpkeep_copp)));
+        //                            content.Add(textCont);
+        //                            if (interactive)
+        //                            {
+        //                                content.space();
+        //                                HudLib.InfoButton(content, new RbTooltip(HudLib.guardUpkeepInfo));
+        //                            }
+        //                        }
+
+        //                        if (!player.profile.casualControls)
+        //                        {
+        //                            cultureToHud(player, content, interactive);
+        //                        }
+        //                        if (immigrants.HasValue())
+        //                        {
+        //                            content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
+        //                        }
+
+        //                        if (!player.profile.casualControls)
+        //                        {
+        //                            terrainStructure.miningOverviewHud(player, content);
+        //                            new XP.TechnologyHud(player, this).technologyOverviewHud(content, faction);
+
+        //                        }
+
+        //                    }
+
+
+
+        //                    void automationToolTip(RichBoxContent content, object tag)
+        //                    {
+        //                        AutomationFocus focus = (AutomationFocus)tag;
+        //                switch (focus)
+        //                {
+        //                    case AutomationFocus.NoFocus:
+        //                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_NoFocus_Description, HudLib.InfoYellow_Light));
+        //                        break;
+
+        //                    case AutomationFocus.Food:
+        //                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+
+        //                        //
+        //                        content.newLine();
+        //                        HudLib.BulletPoint(content);
+        //                        content.space();
+        //                        content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
+        //                        content.space();
+        //                        content.Add(new RbText(string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat)));
+        //                        //
+        //                        content.newLine();
+        //                        HudLib.BulletPoint(content);
+        //                        content.space();
+        //                        content.Add(new RbImage(SpriteName.WarsBuild_Cook));
+        //                        content.space();
+        //                        content.Add(new RbText(DssRef.lang.BuildingType_Cook));
+        //                        //
+        //                        content.newLine();
+        //                        HudLib.BulletPoint(content);
+        //                        content.space();
+        //                        content.Add(new RbImage(SpriteName.WarsBuild_CoalPit));
+        //                        content.space();
+        //                        content.Add(new RbText(DssRef.lang.BuildingType_CoalPit));
+        //                        //
+        //                        content.newLine();
+        //                        HudLib.BulletPoint(content);
+        //                        content.space();
+        //                        content.Add(new RbImage(SpriteName.WarsResource_Food));
+        //                        content.space();
+        //                        content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
+        //                        //
+        //                        content.newLine();
+        //                        HudLib.BulletPoint(content);
+        //                        content.space();
+        //                        content.Add(new RbImage(SpriteName.WarsBuild_Postal));
+        //                        content.space();
+        //                        content.Add(new RbText(DssRef.lang.BuildingType_Postal));
+        //                        break;
+
+        //                    case AutomationFocus.Export:
+        //                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+
+        //                        //
+        //                        content.newLine();
+        //                        HudLib.BulletPoint(content);
+        //                        content.space();
+        //                        content.Add(new RbImage(SpriteName.WarsBuild_Postal));
+        //                        content.space();
+        //                        content.Add(new RbText(DssRef.lang.BuildingType_Postal));
+        //                        //
+        //                        //content.newLine();
+        //                        //HudLib.BulletPoint(content);
+        //                        //content.space();
+        //                        //content.Add(new RbImage(SpriteName.WarsResource_Wood));
+        //                        //content.space();
+        //                        //content.Add(new RbText(DssRef.lang.Resource_TypeName_Wood));
+        //                        ////
+        //                        //content.newLine();
+        //                        //HudLib.BulletPoint(content);
+        //                        //content.space();
+        //                        //content.Add(new RbImage(SpriteName.WarsResource_Stone));
+        //                        //content.space();
+        //                        //content.Add(new RbText(DssRef.lang.Resource_TypeName_Stone));
+        //                        ////
+        //                        //content.newLine();
+        //                        //HudLib.BulletPoint(content);
+        //                        //content.space();
+        //                        //content.Add(new RbImage(SpriteName.));
+        //                        //content.space();
+        //                        //content.Add(new RbText(DssRef.lang.BuildingType_Postal));
+
+
+        //                        break;
+
+        //                    case AutomationFocus.Military:
+        //                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+
+        //                        //
+        //                        content.newLine();
+        //                        HudLib.BulletPoint(content);
+        //                        content.space();
+        //                        content.Add(new RbImage(SpriteName.WarsBuild_SoldierBarracks));
+        //                        content.space();
+        //                        content.Add(new RbText(DssRef.lang.BuildingType_SoldierBarracks));
+
+        //                        //
+        //                        content.newLine();
+        //                        HudLib.BulletPoint(content);
+        //                        content.space();
+        //                        content.Add(new RbImage(SpriteName.WarsSoldierIcon));
+        //                        content.space();
+        //                        content.Add(new RbText(DssRef.lang.UnitType_Soldier));
+
+        //                        break;
+
+        //                    case AutomationFocus.Grow:
+        //                        content.Add(new RbText(DssRef.lang.Automation_AutomationFocus_WillProduce, HudLib.TitleColor_Label));
+
+        //                        //
+        //                        content.newLine();
+        //                        HudLib.BulletPoint(content);
+        //                        content.space();
+        //                        content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
+        //                        content.space();
+        //                        content.Add(new RbText(DssRef.lang.BuildingType_WorkerHut));
+
+        //                        //
+        //                        content.newLine();
+        //                        HudLib.BulletPoint(content);
+        //                        content.space();
+        //                        content.Add(new RbImage(SpriteName.WarsBuild_WheatFarms));
+        //                        content.space();
+        //                        content.Add(new RbText(DssRef.lang.Resource_TypeName_Wheat));
+
+        //                        break;
+        //                }
+        //            }
+        //        }
+
+
+        //public void immigrantsTooltip(RichBoxContent content, object tag)
+        //{
+        //    content.h2(DssRef.lang.Hud_Immigrants, HudLib.TitleColor_Head);
+
+        //    content.newLine();
+        //    HudLib.BulletPoint(content);
+        //    content.space();
+        //    content.Add(new RbImage(SpriteName.WarsUnitIcon_Soldier));
+        //    content.space();
+        //    content.Add(new RbText(DssRef.lang.Immigrants_DisbandedSoldiers));
+
+        //    content.newLine();
+        //    HudLib.BulletPoint(content);
+        //    content.space();
+        //    content.Add(new RbImage(SpriteName.WarsWorkerAdd));
+        //    content.space();
+        //    content.Add(new RbText(DssRef.lang.Immigrants_RefillWorkers));
+
+        //    content.newLine();
+        //    HudLib.BulletPoint(content);
+        //    content.space();
+        //    content.Add(new RbImage(SpriteName.WarsUnitIcon_Immigrant_RemoveTime));
+        //    content.space();
+        //    content.Add(new RbText(DssRef.lang.Immigrants_UnhousedAreLost));
+
+        //    content.newParagraph();
+        //    content.Add(new RbImage(SpriteName.WarsBuild_Tent));
+        //    content.space();
+        //    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.BuildingType_ImmigrationTent, buildingStructure.ImmigrationTent_count), HudLib.TitleColor_TypeName));
+        //    content.newLine();
+        //    content.Add(new RbText(string.Format( DssRef.lang.BuildingType_ImmigrationTent_Description, DssConst.ImmigrantionTent_Capacity), HudLib.InfoYellow_Light));
+
+        //}
+        //public void childrenTooltip(RichBoxContent content, object tag)
+        //{
+        //    City city = (City)tag;
+        //    content.text(string.Format(DssRef.lang.WorkForce_ChildToManTime, 2));
+
+        //    content.newParagraph();
+        //    content.h2(DssRef.lang.WorkForce_ChildBirthRequirements, HudLib.TitleColor_Head);
+
+        //    {
+        //        bool available = inBattle == false;
+        //        content.newLine();
+        //        HudLib.BulletPoint(content);
+        //        content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+        //        content.hspace();
+        //        content.Add(new RbImage(SpriteName.WarsRelationPeace));
+        //        content.hspace();
+        //        content.Add(new RbText(DssRef.lang.WorkForce_Peace, HudLib.ResourceCostColor(available)));
+
+        //    }
+        //    {
+        //        bool available = city.homesUnused() > 0;
+        //        content.newLine();
+        //        HudLib.BulletPoint(content);
+        //        content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+        //        content.hspace();
+        //        content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
+        //        content.hspace();
+        //        content.Add(new RbText(string.Format(DssRef.lang.WorkForce_AvailableHomes, city.homesUnused()), HudLib.ResourceCostColor(available)));
+
+        //    }
+
+        //    if (!city.GetCasual())
+        //    {
+
+        //        {
+        //            bool available = city.resourceAmount(CityResoureIndex.food) /*.res_food.amount*/ > 0;
+        //            content.newLine();
+        //            HudLib.BulletPoint(content);
+        //            content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+        //            content.hspace();
+        //            content.Add(new RbImage(SpriteName.WarsResource_Food));
+        //            content.hspace();
+        //            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Resource_TypeName_Food, city.resourceAmount(CityResoureIndex.food)/*city.res_food.amount*/), HudLib.ResourceCostColor(available)));
+        //            //HudLib.ItemCount(content, DssRef.lang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
+        //        }
+        //        if (cityType < CityType.Capital)
+        //        {
+        //            bool available = homeUsers() < WorkersMaxLimit;
+        //            content.newLine();
+        //            HudLib.BulletPoint(content);
+        //            content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+        //            content.hspace();
+        //            content.Add(new RbImage(SpriteName.WarsCityHall));
+        //            content.hspace();
+        //            content.Add(new RbText(string.Format(DssRef.lang.CityHall_MaxSupportedWorkers, WorkersMaxLimit), HudLib.ResourceCostColor(available)));
+        //        }
+
+        //    }
+        //}
         public void cultureToHud(LocalPlayer player, RichBoxContent content, bool interactive)
         {
             content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, LangLib.CityCulture(Culture, true)));
@@ -3373,13 +3938,13 @@ namespace VikingEngine.DSSWars.GameObject
                         groups.Clear();
                     }
                 }));
-                
 
                 if (overviewModel != null)
                 {
                     Ref.update.AddSyncAction(new SyncAction(createOverViewModel));
                 }
 
+                nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
                 workTemplate.onFactionChange(this, newFaction.workTemplate);
                 tradeTemplate.onFactionValueChange(newFaction.tradeTemplate);
                 technology.addFactionUnlocked(newFaction.technology, true, false);

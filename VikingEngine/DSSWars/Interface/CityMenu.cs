@@ -160,8 +160,12 @@ namespace VikingEngine.DSSWars.Interface
                         city.CityDetailsHud(false, player, content);
                         break;
 
-                    case MenuTab.Tag:
-                        tagsToMenu(content);
+                    case MenuTab.Resources:
+                        resourcesToMenu(content);
+                        break;
+
+                    case MenuTab.BlackMarket:
+                        BlackMarketResources.ToHud(player, content, city);
                         break;
 
                     case MenuTab.Conscript:
@@ -172,18 +176,10 @@ namespace VikingEngine.DSSWars.Interface
                         defenceTab(content);
                         break;
 
-                    case MenuTab.BlackMarket:
-                        BlackMarketResources.ToHud(player, content, city);
-                        break;
-
                     case MenuTab.Delivery:
                         deliveryTab(content);
                         break;
-
-                    case MenuTab.Resources:
-                        resourcesToMenu(content);
-                        break;
-
+                                           
                     case MenuTab.Trade:
                         tradeTab(content);
                         break;
@@ -196,8 +192,12 @@ namespace VikingEngine.DSSWars.Interface
                         progressTab(content);
                         break;
 
-                    case MenuTab.Mix:
-                        mixTab(content);
+                    //case MenuTab.Mix:
+                    //    mixTab(content);
+                    //    break;
+
+                    case MenuTab.Tag:
+                        tagsToMenu(content);
                         break;
 
                     case MenuTab.Help:

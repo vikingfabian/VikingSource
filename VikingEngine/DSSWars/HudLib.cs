@@ -57,6 +57,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color OffStandardOrange = new Color(200, 128, 0);
         public static readonly Color InfoYellow_Dark = new Color(160, 128, 0);
         public static readonly Color InfoYellow_Light = new Color(255, 255, 150);
+        public static readonly Color InfoYellow_VeryLight = new Color(255, 255, 200);
         public static readonly Color InfoYellow_BG = new Color(40, 32, 0);
         public const ImageLayers StoryContentLayer = ImageLayers.Lay1_Front;
         public const ImageLayers StoryBgLayer = ImageLayers.Lay1_Back;
@@ -237,7 +238,7 @@ namespace VikingEngine.DSSWars
             };
         }
 
-        public static void copyPaste(RichBoxContent content, LocalPlayer player, AbsRbAction copy, AbsRbAction paste, bool pasteAvailable = true)
+        public static void copyPaste(RichBoxContent content, LocalPlayer player, AbsRbAction copy, AbsRbAction paste, bool copyAvailable = true, bool pasteAvailable = true)
         {
             player.gameControls.input.Copy.ToRichContent(content);
             content.hspace();
@@ -245,7 +246,7 @@ namespace VikingEngine.DSSWars
                     new RbImage(SpriteName.WarsHudIconCopy, WarHudIcons_DefaultScale),
                     new RbSpace(),
                     new RbText(DssRef.lang.Hud_CopySetup) 
-                }, copy));
+                }, copy, null, copyAvailable));
 
             content.space();
             player.gameControls.input.Paste.ToRichContent(content);

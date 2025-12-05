@@ -89,6 +89,13 @@ namespace VikingEngine.DSSWars.Defence
             return autoAssign && soldierGroupId == NoSoldiers;
         }
 
+        public bool AvailableForAutoAssign(City city, bool autoTurnOn)
+        {
+            autoAssign |= autoTurnOn;
+            checkSoldierAssignment(city);
+            return autoAssign && soldierGroupId == NoSoldiers;
+        }
+
         public Vector3 WorldPos()
         {
             var subPos = conv.IntToIntVector2(idAndPosition);

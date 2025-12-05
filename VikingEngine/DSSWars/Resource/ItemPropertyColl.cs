@@ -530,10 +530,10 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.3f;
                 soldier.mainAttack = AttackType.Javelin;
                 soldier.defaultArmyPlacement = ArmyPlacementGrid.Row_Behind;
-                soldier.attackRange = 0.5f;
+                soldier.attackRange = 0.4f;
                 soldier.modelName = LootFest.VoxelModelName.wars_javelin;
                 soldier.icon = SpriteName.WarsUnitIcon_Javelin;
-                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 6f;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 9f;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.ThrowingSpear;
                 soldier.modelData.modelType = ModelType.Soldier;

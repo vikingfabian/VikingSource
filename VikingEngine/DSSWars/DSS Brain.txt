@@ -4,6 +4,15 @@
 #SPRING UPDATE#
 * controller vibrate on message
 * controller vibration setting
+* Tutorial: brighter info text
+* Tutorial: hide automate city
+* Fixed: Law abiding blocks get bow tutorial
+* Javelin nurf: reduced production speed, higher cost, lower range, and reduced attack speed
+* Will hide delivery option below "select city" until city is selected
+* Farming is higher up on the work priories list
+* Declare war button
+Game options file go corrupt when going from retail
+* snowflake
 
 UNCLAIMED LAND
 * The map generates with unclaimed land

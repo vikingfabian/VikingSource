@@ -12,6 +12,11 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
+        /// <summary>
+        /// How much of a resource that will be used, "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public string Hud_Purchase_ResourceCost => "{1} {0}";
+
         public string DisplayMode => "Display mode";
         public string DisplayMode_Windowed => "Windowed";
         public string DisplayMode_BorderlessFullscreen => "Borderless fullscreen";

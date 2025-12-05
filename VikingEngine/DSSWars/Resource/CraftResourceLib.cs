@@ -624,13 +624,15 @@ namespace VikingEngine.DSSWars.Resource
            XP.WorkExperienceType.Fletcher
        );
 
+        const int ThrowingSpearResultCount = 2;
+
         public static readonly CraftBlueprint ThrowingSpear1 = new CraftBlueprint(
           CraftResultType.Resource,
           (int)ItemResourceType.ThrowingSpear,
-          4,
+          ThrowingSpearResultCount,
           new UseResource[]
           {
-                 new UseResource(ItemResourceType.Wood_Group, 8),
+                 new UseResource(ItemResourceType.Wood_Group, 6),
                 new UseResource(ItemResourceType.Iron_G, 1),
           },
           XP.WorkExperienceType.Fletcher
@@ -638,10 +640,10 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint ThrowingSpear2 = new CraftBlueprint(
           CraftResultType.Resource,
           (int)ItemResourceType.ThrowingSpear,
-          4,
+          ThrowingSpearResultCount,
           new UseResource[]
           {
-                 new UseResource(ItemResourceType.Wood_Group, 8),
+                 new UseResource(ItemResourceType.Wood_Group, 6),
                 new UseResource(ItemResourceType.Bronze, 1),
           },
           XP.WorkExperienceType.Fletcher
