@@ -538,7 +538,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 w.Write((byte)experenceOrDistance);
 
-                writeGroups(w);
+                writeSoldierGroups(w);
 
                 w.Write((ushort)defenceBuildings.Count);
                 for (int i = 0; i < defenceBuildings.Count; ++i)//each (var defence in defenceBuildings)
@@ -692,7 +692,7 @@ namespace VikingEngine.DSSWars.GameObject
                 experenceOrDistance = (XP.ExperienceOrDistancePrio)r.ReadByte();
             }
 
-            readGroups(r, subversion, pointers);
+            readSoldierGroups(r, subversion, pointers);
      
             defenceBuildings.Clear();
             int defenceBuildingsCount = r.ReadUInt16();
@@ -3082,19 +3082,28 @@ namespace VikingEngine.DSSWars.GameObject
                         createOverViewModel();
                     }
 
+
                     if (convert)
                     {
                         convertSoldiersToFaction(newFaction);
                     }
                     else
                     {
-                        var counter = groups.counter();
-                        while (counter.Next())
+                        var first = groups.First();
+                        if (first != null && first.factionIndex != newFaction.myIndex)
                         {
-                            counter.sel.DeleteMe(DeleteReason.Disband, false);
+                            var counter = groups.counter();
+
+                            while (counter.Next())
+                            {
+
+                                counter.sel.DeleteMe(DeleteReason.Disband, false);
+
+                            }
+                            groups.Clear();
                         }
-                        groups.Clear();
                     }
+                    
                 }));
 
                 nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
