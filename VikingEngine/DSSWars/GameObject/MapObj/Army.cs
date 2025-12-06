@@ -224,7 +224,7 @@ namespace VikingEngine.DSSWars.GameObject
             name.write(w);
             WP.WritePosXZPercentU16(w, position);
 
-            writeGroups(w);
+            writeSoldierGroups(w);
 
             writeAiState(w);
 
@@ -261,7 +261,7 @@ namespace VikingEngine.DSSWars.GameObject
                 WP.ReadPosXZPercentU16(r, out position, out tilePos);
             }
 
-            readGroups(r, subVersion, pointers);
+            readSoldierGroups(r, subVersion, pointers);
 
             init(faction);
             refreshPositions(true);
