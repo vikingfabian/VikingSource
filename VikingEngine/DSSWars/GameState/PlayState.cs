@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars
     {
         public int nextGroupId = 0;
        
-        bool isReady= false;
+        
         public bool PartyMode = false;   
         
         TechnologyManager technologyManager = new TechnologyManager();

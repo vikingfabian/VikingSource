@@ -157,7 +157,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         
 
-        protected void writeGroups(System.IO.BinaryWriter w)
+        protected void writeSoldierGroups(System.IO.BinaryWriter w)
         {
             w.Write((ushort)groups.Count);
             var groupsC = groups.counter();
@@ -168,7 +168,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             Debug.WriteCheck(w);
         }
-        public void readGroups(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        public void readSoldierGroups(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             int groupsCount = r.ReadUInt16();
 
