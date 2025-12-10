@@ -29,6 +29,59 @@ UI
 * Extended resource menu info
 
 
+#MOUNTED RESOURCES
+
+Animal pen / War mount pen / Wagon pen
+Animal cage / War cage
+- Assign two breeding animals, the training require servicemen and time
+- Food upkeep (raw food or meat)
+- Pen menu for assignment (or simplify with crafting)
+
+Butcher/Meat grill
+- Turn animal to meat + skin
+- Butcher priorities menu
+
+Conserved food (high storage)
+- Extra storage capacity for armies
+- craft 1: raw food + salt + beer
+- craft 2: storage box + food
+- craft 3: smoker meat
+- craft 4: drying meat (desert area)
+
+Storage box
+- craft 1: clay at pottery
+- craft 2: wood at carpenter
+
+Food-, Material-, Weapon-, Armor-, Animal- storage
+Building crafted out of storage boxes. Increases max storage capacity. 
+(maybe) All crafted items must be moved to a storage, or be in range. 
+
+Base mounts, use breeding to go from pony to warhorse:
+- Pony
+- Horse
+- WarHorse (cavalry bonus)
+- DraftHorse (wagon pulling bonus)
+
+(Maybe) Breeding tech tree skill (Allowes more reliable animal upgrades)
+(Maybe) War mount tech tree skill (Allowes training of cavalry)
+
+New resources:
+Oxen
+Dogs/Hounds (for soldiers)
+Mounts (for soldiers or improved transport)
+Nobelmen (conscript higher skilled warriors)
+Armor for mounts (padded to plate)
+Salt (salt mines or desert drying pans)
+Clay (collected in clay pits)
+Bricks (Burn clay or mine sand stone)
+BucklerShield, RoundShield, HeaterShield, TowerShield,
+
+Bioms:
+Frozen (Extra food storage, extra skin production)
+Mountain (Hog breeding)
+Desert (Elephant breeding, drying meat, drying salt)
+
+
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
 - Bot peace time: 30 min

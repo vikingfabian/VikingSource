@@ -71,7 +71,6 @@ namespace VikingEngine.DSSWars.Resource
 
         Hen,
         Pig,
-        UN_Ox,
         Egg,
         Meat,
 
@@ -86,8 +85,8 @@ namespace VikingEngine.DSSWars.Resource
 
         UN_StoneBlock,
         Stone_G,
-        UN_Clay,
-        UN_Brick,
+        Clay,
+        Brick,
 
         SoftWood,
         HardWood,
@@ -130,6 +129,9 @@ namespace VikingEngine.DSSWars.Resource
         Sword,
         Pike,
 
+        BucklerShield, RoundShield, HeaterShield, TowerShield,
+
+
         BronzeArmor,
         PaddedArmor,
         HeavyPaddedArmor,
@@ -138,6 +140,15 @@ namespace VikingEngine.DSSWars.Resource
         LightPlateArmor,
         FullPlateArmor,
         MithrilArmor,
+
+        MountBronzeArmor,
+        MountPaddedArmor,
+        MountHeavyPaddedArmor,
+        MountIronArmor,
+        MountHeavyIronArmor,
+        MountLightPlateArmor,
+        MountFullPlateArmor,
+        MountMithrilArmor,
 
         Ballista,
         KnightsLance,
@@ -189,7 +200,33 @@ namespace VikingEngine.DSSWars.Resource
         RoseWarrior_dog,
 
         Men,
+        NobelMen,
         ServiceMen,
+        
+        Oxen,
+        KineOxen,
+        
+        Pony,
+        Horse,
+        WarHorse,
+        DraftHorse,
+
+        WildPig,
+        WildHog,
+        WarHog,
+        StagHog,
+
+        Wolf,
+        Warg,
+        AlphaWarg,
+
+        WildCat,
+        Lion,
+        WarLion,
+
+        Elephant,
+        WarElephant,
+        Oliphant,
 
         Palisade,
         UNUSED,

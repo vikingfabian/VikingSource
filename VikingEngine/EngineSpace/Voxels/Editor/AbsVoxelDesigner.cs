@@ -951,8 +951,7 @@ namespace VikingEngine.Voxels
                     npos.AddDimension(d, lib.BoolToLeftRight(dir == 0));
 
                     //bool nMateriel = GetVoxel(npos) != BlockHD.EmptyBlock;
-                    if (voxelProject.drawLimits.pointInBounds(npos) &&
-                        GetVoxel(CurrentFrame, npos) != BlockHD.EmptyBlock)//wp.GetNeighborPos(pos).BlockHasMaterial())
+                    if (GetSafe(npos) != BlockHD.EmptyBlock)//wp.GetNeighborPos(pos).BlockHasMaterial())
                     {
 
                         return true;
