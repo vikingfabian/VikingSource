@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log: 
-* 
+* Cohalition story event keeps searching outward for attackers
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

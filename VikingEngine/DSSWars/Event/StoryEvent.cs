@@ -865,7 +865,7 @@ namespace VikingEngine.DSSWars.Event
         {
             player.cohalitionEvent = true;
 
-            var neighbor = DssRef.state.events.findAttackingNeighborFaction(player.faction);
+            Faction neighbor = DssRef.state.events.findAttackingNeighborFaction_keepExpanding(player.faction);
 
             if (neighbor == null)
             {
@@ -907,7 +907,7 @@ namespace VikingEngine.DSSWars.Event
                 }
             }
 
-            Faction attackLeader = null;
+            Faction attackLeader = neighbor;
             //Create an alliance
             foreach (var faction in attackers)
             {
@@ -967,8 +967,6 @@ namespace VikingEngine.DSSWars.Event
                     };
                     city.conscriptArmy(cannonProfile, city.defaultConscriptPos(), 1 + (int)DssRef.difficulty.bossSize);
                 }
-
-                //player.hud.messages.Add(DssRef.lang.EventMessage_EnemyAlliance_Title, DssRef.lang.EventMessage_EnemyAlliance);
             }));
 
             new Timer.TimedAction2ArgTrigger_InGame<List<Faction>, LocalPlayer>((attackers, player) =>
