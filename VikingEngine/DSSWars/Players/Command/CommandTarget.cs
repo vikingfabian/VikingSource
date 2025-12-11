@@ -78,10 +78,15 @@ namespace VikingEngine.DSSWars.Players.Command
         {
             if (!soldierGroup.isDeleted)
             {
-                new MoveCommand(soldierGroup, WP.SubtileToWorldPosXZ(player.gameControls.map.hover.subTile.subTilePos), float.MinValue, false);
-                new ClaimCityGommand(soldierGroup, player.gameControls.map.hover.subTile.subTilePos, true);
+                OrderSettler(soldierGroup, player.gameControls.map.hover.subTile.subTilePos);
             }
             complete = true;
+        }
+
+        public static void OrderSettler(SoldierGroup soldierGroup, IntVector2 subTilePos)
+        {
+            new MoveCommand(soldierGroup, WP.SubtileToWorldPosXZ(subTilePos), float.MinValue, false);
+            new ClaimCityGommand(soldierGroup, subTilePos, true);
         }
 
         public override void DeleteMe()

@@ -13,6 +13,7 @@ UNCLAIMED LAND
 * A place command system
 * A campsite city with worker tents
 * Faction start size options
+* bot ai for claiming land
 
 ECS REFACTORING
 * Performance: city resources have been moved to a Entity Component System 

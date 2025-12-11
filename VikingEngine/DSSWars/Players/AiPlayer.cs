@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.LootFest.Players;
 
@@ -1655,6 +1657,54 @@ namespace VikingEngine.DSSWars.Players
                 decisionTimerSizeCheck();
 
                 diplomacyCheck(wars);
+
+                armiesWithSettlerUpdate();
+
+                settlerCheck();
+            }
+        }
+
+        void settlerCheck()
+        {
+            if (faction.cities.Count > 0)
+            {
+                City city = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
+
+                if (city != null &&
+                    city.cityType > CityType.Campsite &&
+                    city.homesUnused() < 20)
+                {
+                    if (ConscriptDataLib.CraftSettler.canCraftCount(city) >= 1)
+                    {
+                        EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                        while (neighbors.Next(DssRef.world.cities, out City nCity))
+                        {
+                            if (nCity.cityType == CityType.UnClaimed && Ref.peRnd.ChanceF(0.5f))
+                            {
+                                city.conscriptSettler(nCity);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        void armiesWithSettlerUpdate()
+        {
+            var armiesC = faction.armies.counter();
+            while (armiesC.Next())
+            {
+                if (DssRef.world.tileGrid.TryGet(armiesC.sel.tilePos, out var tile))
+                {
+                    var city = tile.City();
+                    if (city.cityType == CityType.UnClaimed &&
+                        city.tilePos.SideLength(armiesC.sel.tilePos) <= 2 &&
+                        armiesC.sel.HasSettler(out var settler))
+                    {
+                        SettlerCommandTarget.OrderSettler(settler, city.cityHallSubtilePos);
+                    }
+                }
             }
         }
 
@@ -2490,8 +2540,6 @@ namespace VikingEngine.DSSWars.Players
                 DssRef.world.unitCollAreaGrid.collectCitiesAndArmies(areaPos, 2, army.strengthValue * 0.8f, DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate,
                     -1, opponent.myIndex);
                 if (DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate.Count > 0)
-                    //&&
-                    //DssRef.diplomacy.botMayStartWar(faction, opponent))
                 {
                     AbsMapObject result = arraylib.RandomListMember(DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate);
                     army.Ai_Order_Attack(result);
@@ -2516,7 +2564,7 @@ namespace VikingEngine.DSSWars.Players
                 //TODO pick random city
                 foreach (var city in DssRef.world.unitCollAreaGrid.cities_aiUpdate)
                 {
-                    if (army.strengthValue > city.strengthValue + city.ai_armyDefenceValue)
+                    if (city.cityType > CityType.UnClaimed && army.strengthValue > city.strengthValue + city.ai_armyDefenceValue)
                     {
                         if (DssRef.diplomacy.botMayStartWar(faction, city.GetFaction()))//mayAttackFaction(city.GetFaction()))
                         {

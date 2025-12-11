@@ -461,15 +461,7 @@ namespace VikingEngine.DSSWars.Conscript
                 //settler
                 content.Add(new RbSeperationLine());
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.UnitType_Settler) },
-                    new RbAction(() => {
-                        city.conscriptArmy(new ConscriptProfile()
-                        {
-                            weapon = ItemResourceType.Settler,
-                            armorLevel = ItemResourceType.NONE,
-                            specialization = SpecializationType.None,
-                            training = TrainingLevel.Minimal,
-                        }, city.defaultConscriptPos(), 1);
-                    }),
+                    new RbAction(city.conscriptSettlerLink),
                     new RbTooltip(settlerTooltip),
                      ConscriptDataLib.CraftSettler.available(city)));
             }

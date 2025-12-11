@@ -923,7 +923,8 @@ namespace VikingEngine.DSSWars.Event
                         while (neighbors.Next(DssRef.world.cities, out City nCity))//
                         {
                             var otherfactionIx = nCity.factionIndex;
-                            if (otherfactionIx != city.factionIndex &&
+                            if (otherfactionIx >= 0 &&
+                                otherfactionIx != city.factionIndex &&
                                 !factionsChecked[otherfactionIx])
                             {
                                 var otherfaction = DssRef.world.faction(otherfactionIx);

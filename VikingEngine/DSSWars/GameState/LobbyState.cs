@@ -719,7 +719,7 @@ namespace VikingEngine.DSSWars
 
             content.Button("battle lab", new RbAction(startBattleLab), null, true);
             content.Button("trial", new RbAction(startTrial), null, true);
-            content.Button("cresh reports", new RbAction(Ref.steam.downloadCrashReports), null, true);
+            content.Button("crash reports", new RbAction(Ref.steam.downloadCrashReports), null, true);
             if (Ref.steam.isInitialized)
             {
                 content.Button("wish", new RbAction(() =>
@@ -737,6 +737,7 @@ namespace VikingEngine.DSSWars
             content.Button("Shader lab", new RbAction(shaderLab), null, true);
             content.Button("Dev setup", new RbAction(()=> {
                 DssRef.storage.runTutorial = false;
+                DssRef.storage.speed5x = true;
                 Screen.WindowScalePerc = 90;
                 Screen.PcDisplayMode = WindowDisplayMode.Windowed;
                 Ref.gamesett.masterVolProperty(true, 0.1f);

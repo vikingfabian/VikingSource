@@ -32,11 +32,18 @@ namespace VikingEngine.DSSWars.Players
 
                 if (city != null)
                 {
+                    bool prepareSettle = false;
+                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))
+                    {
+                        if (nCity.cityType == CityType.UnClaimed)
+                        {
+                            prepareSettle = true;
+                            break;
+                        }
+                    }
 
-                    city.autoAdjustResourcesToCitySize();
-                    //city.res_food.goalBuffer = Bound.Min(city.workForce.amount / 100 * 100 + 200, DssConst.Logistics1FoodStorage);
-                    //city.res_rawFood.goalBuffer = city.workForce.amount / 300 * 100 + 100;
-
+                    city.autoAdjustResourcesToCitySize(prepareSettle);
 
                     //DOES NOT WORK - will reset in auto_updateWorkPrio()
                     adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.stone/*ref city.res_stone*/, ref city.workTemplate.stone);

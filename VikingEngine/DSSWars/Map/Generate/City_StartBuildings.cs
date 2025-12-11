@@ -58,10 +58,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (cityType == CityType.UnClaimed)
             {
-                var pos = WP.ToSubTilePos_Centered(tilePos);
-                var subTile = world.subTileGrid.Get(pos);
+                cityHallSubtilePos = WP.ToSubTilePos_Centered(tilePos);
+                var subTile = world.subTileGrid.Get(cityHallSubtilePos);
                 subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Unclaimed, 1);
-                world.subTileGrid.Set(pos, subTile);
+                world.subTileGrid.Set(cityHallSubtilePos, subTile);
             }
             else if (cityType == CityType.Campsite)
             {

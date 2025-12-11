@@ -28,6 +28,9 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public const int DefaultBuffer_Wood = 300;
+        public const int DefaultBuffer_SkinLinnen = 300;
+
         public void Init_CityComponents(int cityCount)
         {
             cityResouces = new GroupedResource[CityResoureIndex.COUNT * cityCount];
@@ -39,15 +42,15 @@ namespace VikingEngine.DSSWars
                 //cities[cityIx].resourceComponentStartIndex = startIndex;
                 //int multiplyDefault = cities[cityIx].cityType == CityType.UnClaimed ? 0 : 1;
                 // Basics
-                cityResouces[startIndex + CityResoureIndex.wood] = new GroupedResource { amount = 20, goalBuffer = 300 };
+                cityResouces[startIndex + CityResoureIndex.wood] = new GroupedResource { amount = 20, goalBuffer = DefaultBuffer_Wood };
                 cityResouces[startIndex + CityResoureIndex.fuel] = new GroupedResource { amount = 100, goalBuffer = 400 };
                 cityResouces[startIndex + CityResoureIndex.water] = new GroupedResource { goalBuffer = 0 }; // (no default given)
-                cityResouces[startIndex + CityResoureIndex.stone] = new GroupedResource { amount = 20, goalBuffer = 100 };
+                cityResouces[startIndex + CityResoureIndex.stone] = new GroupedResource { amount = 20, goalBuffer = 300 };
                 cityResouces[startIndex + CityResoureIndex.rawFood] = new GroupedResource { amount = 50, goalBuffer = 200 };
                 cityResouces[startIndex + CityResoureIndex.food] = new GroupedResource { amount = 200, goalBuffer = 500 };
                 cityResouces[startIndex + CityResoureIndex.beer] = new GroupedResource { amount = 0, goalBuffer = 200 };
                 cityResouces[startIndex + CityResoureIndex.coolingfluid] = new GroupedResource { amount = 0, goalBuffer = 200 };
-                cityResouces[startIndex + CityResoureIndex.skinLinnen] = new GroupedResource { goalBuffer = 100 };
+                cityResouces[startIndex + CityResoureIndex.skinLinnen] = new GroupedResource { goalBuffer = DefaultBuffer_SkinLinnen };
 
                 // Ores
                 cityResouces[startIndex + CityResoureIndex.ironore] = new GroupedResource { goalBuffer = 100 };
