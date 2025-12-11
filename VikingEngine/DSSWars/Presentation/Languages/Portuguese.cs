@@ -1109,7 +1109,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_FertileGround_Description => "Lavouras rendem mais";
         public override string CityCulture_Archers_Description => "Produz arqueiros habilidosos";
         public override string CityCulture_Warriors_Description => "Produz lutadores corpo a corpo";
-        public override string CityCulture_AnimalBreeder_Description => "Animais dão mais recursos";
+        //public override string CityCulture_AnimalBreeder_Description => "Animais dão mais recursos";
         public override string CityCulture_Miners_Description => "Minera mais minério";
         public override string CityCulture_Woodcutters_Description => "Árvores rendem mais madeira";
         public override string CityCulture_Builders_Description => "Rapidez na construção";

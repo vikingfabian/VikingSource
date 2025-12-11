@@ -1540,7 +1540,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_FertileGround_Description => "Урожайность выше";
         public override string CityCulture_Archers_Description => "Производит опытных лучников";
         public override string CityCulture_Warriors_Description => "Производит опытных бойцов ближнего боя";
-        public override string CityCulture_AnimalBreeder_Description => "Животные дают больше ресурсов";
+        //public override string CityCulture_AnimalBreeder_Description => "Животные дают больше ресурсов";
         public override string CityCulture_Miners_Description => "Больше добычи руды";
         public override string CityCulture_Woodcutters_Description => "Больше древесины";
         public override string CityCulture_Builders_Description => "Быстрее строят";

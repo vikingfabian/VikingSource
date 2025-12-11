@@ -27,13 +27,13 @@ namespace VikingEngine.DSSWars.Build
             XP.WorkExperienceType.Farm
         );
 
-        public static readonly CraftBlueprint StonesMine = new CraftBlueprint(
-            CraftResultType.Building,
-            (int)Build.BuildAndExpandType.StonesMine,
-            1,
-            new UseResource[] { },
-            XP.WorkExperienceType.Farm
-        );
+        //public static readonly CraftBlueprint StonesMine = new CraftBlueprint(
+        //    CraftResultType.Building,
+        //    (int)Build.BuildAndExpandType.StonesMine,
+        //    1,
+        //    new UseResource[] { },
+        //    XP.WorkExperienceType.Farm
+        //);
 
         public static readonly CraftBlueprint CoalMine = new CraftBlueprint(
             CraftResultType.Building,
@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars.Build
             },
             XP.WorkExperienceType.HouseBuilding,
              XP.ExperienceLevel.Beginner_1,
-            CraftRequirement.Logistics1
+             BuildAndExpandType.Logistics
         );
         public static readonly CraftBlueprint CraftLogisticsLevel2 = new CraftBlueprint(
             CraftResultType.Building,

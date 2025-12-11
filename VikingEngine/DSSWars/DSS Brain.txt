@@ -29,7 +29,29 @@ UI
 * Extended resource menu info
 
 
-#MOUNTED RESOURCES
+
+# SUMMER UPDATE #
+
+RESOURCES
+* 5 New basic resources
+* 3 new wagon types
+* 4 shield types
+* 21 new animals
+* Animal armor
+
+CITY CULTURES
+* Butchers, //Larger meat production
+* AnimalBreeder2, //Higher chance of successful breeding (replaces the old culture)
+* Potters, //Higher pottery production
+* Wainwright, //High wagon production
+* Wheelwright, //Speed bonus to conscripted carts
+* ShieldMaker, //High shield production
+* Nomads, //Low settler cost
+* Coopers, //High storage box production
+* Salters, //High conserved food production
+
+
+#MOUNTED RESOURCES TODO
 
 Animal pen / War mount pen / Wagon pen
 Animal cage / War cage
@@ -75,6 +97,8 @@ Salt (salt mines or desert drying pans)
 Clay (collected in clay pits)
 Bricks (Burn clay or mine sand stone)
 BucklerShield, RoundShield, HeaterShield, TowerShield,
+
+Transport-weight
 
 Bioms:
 Frozen (Extra food storage, extra skin production)

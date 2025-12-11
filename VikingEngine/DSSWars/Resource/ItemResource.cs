@@ -77,13 +77,12 @@ namespace VikingEngine.DSSWars.Resource
         Wheat,
         Beer,
         Food_G,
+        ConservedFood,
 
         Water_G,
         Fuel_G,
 
         Leather,
-
-        UN_StoneBlock,
         Stone_G,
         Clay,
         Brick,
@@ -91,8 +90,12 @@ namespace VikingEngine.DSSWars.Resource
         SoftWood,
         HardWood,
         DryWood,
+        StorageBox,
         Wagon2Wheel,
         Wagon4Wheel,
+        WagonClosed,
+        WagonIron,
+        WagonSteel,
         Toolkit,
         CoolingFluid,
 
@@ -104,6 +107,7 @@ namespace VikingEngine.DSSWars.Resource
         Hemp,
         Linen,
 
+        Salt,
         Coal,
         BogIron,
         IronOre_G,
@@ -151,7 +155,7 @@ namespace VikingEngine.DSSWars.Resource
         MountMithrilArmor,
 
         Ballista,
-        KnightsLance,
+        //KnightsLance,
         TwoHandSword,
 
         BronzeSword,
@@ -205,7 +209,10 @@ namespace VikingEngine.DSSWars.Resource
         
         Oxen,
         KineOxen,
-        
+
+        Dog,
+        Hound,
+
         Pony,
         Horse,
         WarHorse,

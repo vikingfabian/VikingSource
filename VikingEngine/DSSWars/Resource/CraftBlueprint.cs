@@ -26,7 +26,7 @@ namespace VikingEngine.DSSWars.Resource
         int resultSubType;
         int resultAmount;
 
-        public CraftRequirement requirement;
+        public BuildAndExpandType requirement;
         public int tooltipId = -1;
         public WorkExperienceType experienceType;
         public ExperienceLevel levelRequirement;
@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public int workTag = -1;
 
-        public CraftBlueprint(CraftResultType resultType, int resultSubType, int resultAmount, UseResource[] resources, XP.WorkExperienceType experienceType, ExperienceLevel levelRequirement = ExperienceLevel.Beginner_1, CraftRequirement requirement = CraftRequirement.None)
+        public CraftBlueprint(CraftResultType resultType, int resultSubType, int resultAmount, UseResource[] resources, XP.WorkExperienceType experienceType, ExperienceLevel levelRequirement = ExperienceLevel.Beginner_1, BuildAndExpandType requirement = BuildAndExpandType.NUM_NONE)
         {
             //this.icon = icon;
             this.experienceType = experienceType;
@@ -327,7 +327,7 @@ namespace VikingEngine.DSSWars.Resource
         {
             available = true;
 
-            if (requirement != CraftRequirement.None)
+            if (requirement != BuildAndExpandType.NUM_NONE)
             {
                 if (content != null)
                 {
@@ -336,74 +336,75 @@ namespace VikingEngine.DSSWars.Resource
                     content.newLine();
                     HudLib.BulletPoint(content);
                 }
-                string reqText;
-                SpriteName icon;
-                switch (requirement)
-                {
-                    case CraftRequirement.Carpenter:
-                        icon = SpriteName.WarsBuild_Carpenter;
-                        reqText = DssRef.lang.BuildingType_Carpenter;
-                        available = city.buildingStructure.Carpenter_count>0;
-                        break;
-                    case CraftRequirement.Brewery:
-                        icon = SpriteName.WarsBuild_Brewery;
-                        reqText = DssRef.lang.BuildingType_Brewery;
-                        available = city.buildingStructure.Brewery_count>0;
-                        break;
-                    case CraftRequirement.Smelter:
-                        icon = SpriteName.WarsBuild_Smelter;
-                        reqText = DssRef.lang.BuildingType_SmeltingFurnace;
-                        available = city.buildingStructure.Smelter_count > 0;
-                        break;
-                    case CraftRequirement.Minter:
-                        icon = SpriteName.WarsBuild_Coinminter;
-                        reqText = DssRef.lang.BuildingType_CoinMaker;
-                        available = city.buildingStructure.CoinMinter_count > 0;
-                        break;
-                    case CraftRequirement.Chemist:
-                        icon = SpriteName.WarsBuild_Chemist;
-                        reqText = DssRef.lang.BuildingType_Chemist;
-                        available = city.buildingStructure.Chemist_count > 0;
-                        break;
-                    case CraftRequirement.Gunmaker:
-                        icon = SpriteName.WarsBuild_Gunmaker;
-                        reqText = DssRef.lang.BuildingType_Gunmaker;
-                        available = city.buildingStructure.Gunmaker_count > 0;
-                        break;
-                    case CraftRequirement.CoinMaker:
-                        icon = SpriteName.WarsBuild_Coinminter;
-                        reqText = DssRef.lang.BuildingType_CoinMaker;
-                        available = city.buildingStructure.CoinMinter_count > 0;
-                        break;
-                    case CraftRequirement.Foundry:
-                        icon = SpriteName.WarsBuild_Foundry;
-                        reqText = DssRef.lang.BuildingType_Foundry;
-                        available = city.buildingStructure.Foundry_count > 0;
-                        break;
-                    case CraftRequirement.Smith:
-                        icon = SpriteName.WarsBuild_Smith;
-                        reqText = DssRef.lang.BuildingType_Smith;
-                        available = city.buildingStructure.Smith_count > 0;
-                        break;
-                    case CraftRequirement.ArmorSmith:
-                        icon = SpriteName.WarsBuild_Armory;
-                        reqText = DssRef.lang.BuildingType_Armory;
-                        available = city.buildingStructure.Armory_count > 0;
-                        break;
-                    case CraftRequirement.CoalPit:
-                        icon = SpriteName.WarsBuild_CoalPit;
-                        reqText = DssRef.lang.BuildingType_CoalPit;
-                        available = city.buildingStructure.CoalPit_count > 0;
-                        break;
-                    case CraftRequirement.Logistics1:
-                        icon = SpriteName.WarsBuild_Logistics;
-                        reqText = string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, DssConst.Logistics1FoodStorage);
-                        available = city.resourceAmount(EntityComponent.CityResoureIndex.food)/*res_food.amount*/ >= DssConst.Logistics1FoodStorage;
-                        break;
+                
+                IconName.Building(requirement, out SpriteName icon, out string reqText);
+                available = city.buildingStructure.getCount(requirement) > 0;
+                //switch (requirement)
+                //{
+                //    case CraftRequirement.Carpenter:
+                //        icon = SpriteName.WarsBuild_Carpenter;
+                //        reqText = DssRef.lang.BuildingType_Carpenter;
+                //        available = city.buildingStructure.Carpenter_count>0;
+                //        break;
+                //    case CraftRequirement.Brewery:
+                //        icon = SpriteName.WarsBuild_Brewery;
+                //        reqText = DssRef.lang.BuildingType_Brewery;
+                //        available = city.buildingStructure.Brewery_count>0;
+                //        break;
+                //    case CraftRequirement.Smelter:
+                //        icon = SpriteName.WarsBuild_Smelter;
+                //        reqText = DssRef.lang.BuildingType_SmeltingFurnace;
+                //        available = city.buildingStructure.Smelter_count > 0;
+                //        break;
+                //    case CraftRequirement.Minter:
+                //        icon = SpriteName.WarsBuild_Coinminter;
+                //        reqText = DssRef.lang.BuildingType_CoinMaker;
+                //        available = city.buildingStructure.CoinMinter_count > 0;
+                //        break;
+                //    case CraftRequirement.Chemist:
+                //        icon = SpriteName.WarsBuild_Chemist;
+                //        reqText = DssRef.lang.BuildingType_Chemist;
+                //        available = city.buildingStructure.Chemist_count > 0;
+                //        break;
+                //    case CraftRequirement.Gunmaker:
+                //        icon = SpriteName.WarsBuild_Gunmaker;
+                //        reqText = DssRef.lang.BuildingType_Gunmaker;
+                //        available = city.buildingStructure.Gunmaker_count > 0;
+                //        break;
+                //    case CraftRequirement.CoinMaker:
+                //        icon = SpriteName.WarsBuild_Coinminter;
+                //        reqText = DssRef.lang.BuildingType_CoinMaker;
+                //        available = city.buildingStructure.CoinMinter_count > 0;
+                //        break;
+                //    case CraftRequirement.Foundry:
+                //        icon = SpriteName.WarsBuild_Foundry;
+                //        reqText = DssRef.lang.BuildingType_Foundry;
+                //        available = city.buildingStructure.Foundry_count > 0;
+                //        break;
+                //    case CraftRequirement.Smith:
+                //        icon = SpriteName.WarsBuild_Smith;
+                //        reqText = DssRef.lang.BuildingType_Smith;
+                //        available = city.buildingStructure.Smith_count > 0;
+                //        break;
+                //    case CraftRequirement.ArmorSmith:
+                //        icon = SpriteName.WarsBuild_Armory;
+                //        reqText = DssRef.lang.BuildingType_Armory;
+                //        available = city.buildingStructure.Armory_count > 0;
+                //        break;
+                //    case CraftRequirement.CoalPit:
+                //        icon = SpriteName.WarsBuild_CoalPit;
+                //        reqText = DssRef.lang.BuildingType_CoalPit;
+                //        available = city.buildingStructure.CoalPit_count > 0;
+                //        break;
+                //    case CraftRequirement.Logistics1:
+                //        icon = SpriteName.WarsBuild_Logistics;
+                //        reqText = string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, DssConst.Logistics1FoodStorage);
+                //        available = city.resourceAmount(EntityComponent.CityResoureIndex.food)/*res_food.amount*/ >= DssConst.Logistics1FoodStorage;
+                //        break;
 
-                    default:
-                        throw new NotImplementedException();
-                }
+                //    default:
+                //        throw new NotImplementedException();
+                //}
 
                 if (content != null)
                 {
@@ -461,23 +462,23 @@ namespace VikingEngine.DSSWars.Resource
         }
     }
 
-    enum CraftRequirement
-    {
-        None = 0,
-        Carpenter,
-        Brewery,
-        Smelter,
-        Smith,
-        ArmorSmith,
-        Foundry,
-        CoalPit,
-        CoinMaker,
-        Chemist,
-        Gunmaker,
-        Logistics1,
-        Logistics2,
-        Minter
-    }
+    //enum CraftRequirement
+    //{
+    //    None = 0,
+    //    Carpenter,
+    //    Brewery,
+    //    Smelter,
+    //    Smith,
+    //    ArmorSmith,
+    //    Foundry,
+    //    CoalPit,
+    //    CoinMaker,
+    //    Chemist,
+    //    Gunmaker,
+    //    Logistics1,
+    //    Logistics2,
+    //    Minter
+    //}
 
     enum CraftResultType
     {

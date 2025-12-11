@@ -1657,54 +1657,7 @@ namespace VikingEngine.DSSWars.Presentation
             }
         }
 
-        public static string CityCulture(CityCulture cityCulture, bool title)
-        {
-            switch (cityCulture)
-            {
-                case DSSWars.CityCulture.AnimalBreeder: return title ? DssRef.lang.CityCulture_AnimalBreeder : DssRef.lang.CityCulture_AnimalBreeder_Description;
-                case DSSWars.CityCulture.Archers: return title ? DssRef.lang.CityCulture_Archers : DssRef.lang.CityCulture_Archers_Description;
-                case DSSWars.CityCulture.Builders: return title ? DssRef.lang.CityCulture_Builders : DssRef.lang.CityCulture_Builders_Description;
-                case DSSWars.CityCulture.CrabMentality: return title ? DssRef.lang.CityCulture_CrabMentality : DssRef.lang.CityCulture_CrabMentality_Description;
-                case DSSWars.CityCulture.DeepWell: return title ? DssRef.lang.CityCulture_DeepWell : DssRef.lang.CityCulture_DeepWell_Description;
-                case DSSWars.CityCulture.FertileGround: return title ? DssRef.lang.CityCulture_FertileGround : DssRef.lang.CityCulture_FertileGround_Description;
-                case DSSWars.CityCulture.LargeFamilies: return title ? DssRef.lang.CityCulture_LargeFamilies : DssRef.lang.CityCulture_LargeFamilies_Description;
-                case DSSWars.CityCulture.Miners: return title ? DssRef.lang.CityCulture_Miners : DssRef.lang.CityCulture_Miners_Description;
-                case DSSWars.CityCulture.Warriors: return title ? DssRef.lang.CityCulture_Warriors : DssRef.lang.CityCulture_Warriors_Description;
-                case DSSWars.CityCulture.Woodcutters: return title ? DssRef.lang.CityCulture_Woodcutters : DssRef.lang.CityCulture_Woodcutters_Description;
-                case DSSWars.CityCulture.Networker: return title ? DssRef.lang.CityCulture_Networker : DssRef.lang.CityCulture_Networker_Description;
-                case DSSWars.CityCulture.PitMasters: return title ? DssRef.lang.CityCulture_PitMasters : DssRef.lang.CityCulture_PitMasters_Description;
-
-
-                case DSSWars.CityCulture.Stonemason:
-                    return title ? DssRef.lang.CityCulture_Stonemason : DssRef.lang.CityCulture_Stonemason_Description;
-                case DSSWars.CityCulture.Brewmaster:
-                    return title ? DssRef.lang.CityCulture_Brewmaster : DssRef.lang.CityCulture_Brewmaster_Description;
-                case DSSWars.CityCulture.Weavers:
-                    return title ? DssRef.lang.CityCulture_Weavers : DssRef.lang.CityCulture_Weavers_Description;
-                case DSSWars.CityCulture.SiegeEngineer:
-                    return title ? DssRef.lang.CityCulture_SiegeEngineer : DssRef.lang.CityCulture_SiegeEngineer_Description;
-                case DSSWars.CityCulture.Armorsmith:
-                    return title ? DssRef.lang.CityCulture_Armorsmith : DssRef.lang.CityCulture_Armorsmith_Description;
-                case DSSWars.CityCulture.Noblemen:
-                    return title ? DssRef.lang.CityCulture_Noblemen : DssRef.lang.CityCulture_Noblemen_Description;
-                case DSSWars.CityCulture.Seafaring:
-                    return title ? DssRef.lang.CityCulture_Seafaring : DssRef.lang.CityCulture_Seafaring_Description;
-                case DSSWars.CityCulture.Backtrader:
-                    return title ? DssRef.lang.CityCulture_Backtrader : DssRef.lang.CityCulture_Backtrader_Description;
-                case DSSWars.CityCulture.Lawbiding:
-                    return title ? DssRef.lang.CityCulture_LawAbiding : DssRef.lang.CityCulture_LawAbiding_Description;
-
-
-                case DSSWars.CityCulture.Smelters:
-                    return title ? DssRef.lang.CityCulture_Smelters : DssRef.lang.CityCulture_Smelters_Description;
-                case DSSWars.CityCulture.BronzeCasters:
-                    return title ? DssRef.lang.CityCulture_BronzeCasters : DssRef.lang.CityCulture_BronzeCasters_Description;
-                case DSSWars.CityCulture.Apprentices:
-                    return title ? DssRef.lang.CityCulture_Apprentices : DssRef.lang.CityCulture_Apprentices_Description;
-
-                default: return TextLib.Error;
-            }
-        }
+        
 
         public static string UnitFilterName(UnitFilterType filterType)
         {

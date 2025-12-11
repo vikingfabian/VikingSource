@@ -134,6 +134,7 @@ namespace VikingEngine.DSSWars.Build
         TreeSoft,
         TreeHard,
 
+        
         StonesMine,
         CoalMine,
         StoneBlockMine,
@@ -147,8 +148,46 @@ namespace VikingEngine.DSSWars.Build
         SulfurMine,
         WorkerTent,
 
+        //New
+        Pottery,
+        SaltMine,
+        DryingPan,
+        Butcher,
+        Smoker,
+        Dryer,
+
+        MaterialStorage, FoodStorage,  WeaponStorage, ArmorStorage, AnimalStorage,
+
+        OxenPen,
+        KineOxenPen,
+
+        DogCage, //kennel
+        HoundCage,
+
+        PonyPen, //stables
+        HorsePen,
+        WarHorsePen,
+        DraftHorsePen,
+        WildPigPen,
+        WildHogPen,
+        WarHogPen,
+        StagHogPen,
+        WolfCage,
+        WargCage,
+        AlphaWargCage,
+        WildCatCage,
+        LionCage,
+        WarLionCage,
+        ElephantCage,
+        WarElephantCage,
+        OliphantCage,
+
         NUM_NONE,
         ALL,
+
+        LogisticsLevel1,
+        LogisticsLevel2,
+
     }
     static class BuildLib
     {
@@ -859,9 +898,9 @@ namespace VikingEngine.DSSWars.Build
               MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             // Mines
-            new BuildOption(BuildAndExpandType.StonesMine, TerrainMainType.Mine, (int)TerrainMineType.Stones, SpriteName.WarsResource_Stone, CraftBuildingLib.StonesMine, false,
-              BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
-              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            //new BuildOption(BuildAndExpandType.StonesMine, TerrainMainType.Mine, (int)TerrainMineType.Stones, SpriteName.WarsResource_Stone, CraftBuildingLib.StonesMine, false,
+            //  BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+            //  MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.CoalMine, TerrainMainType.Mine, (int)TerrainMineType.Coal, SpriteName.WarsResource_Fuel, CraftBuildingLib.CoalMine, false,
               BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,

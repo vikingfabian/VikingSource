@@ -42,8 +42,6 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string GameOverResults => "Game history log";
 
-
-
         //##SPRING##
 
         public string UnitType_UnclaimedLand => "Unclaimed land";
@@ -58,6 +56,84 @@ namespace VikingEngine.DSSWars.Presentation
         public string FactionStartSize_Settler => "One settler";
 
 
+        //## Mounted update ##
+
+        public string Resource_TypeName_ConservedFood => "conserved food";
+        public string Resource_TypeName_Clay => "clay";
+        public string Resource_TypeName_StorageBox => "storage box";
+        public string Resource_TypeName_Meat => "meat";
+        public string Resource_TypeName_Salt => "salt";
+        public string Resource_TypeName_Wagon=> "wagon";
+        public string Resource_TypeName_WagonClosed => "closed wagon";
+        public string Resource_TypeName_WagonIron => "Iron wagon";
+        public string Resource_TypeName_WagonSteel => "Steel wagon";
+        public string Resource_TypeName_Shield => "shield";
+        public string Resource_TypeName_BucklerShield => "buckler shield";
+        public string Resource_TypeName_RoundShield => "round shield";
+        public string Resource_TypeName_HeaterShield => "heater shield";
+        public string Resource_TypeName_TowerShield => "tower shield";
+
+        public string Resource_TypeName_Mount => "mount";
+        public string Resource_TypeName_Animal => "animal";
+
+        public string Resource_TypeName_Oxen => "oxen";
+        public string Resource_TypeName_KineOxen => "kine oxen";
+
+        public string Resource_TypeName_Dog => "dog";
+        public string Resource_TypeName_Hound => "hound";
+
+        public string Resource_TypeName_Pony => "pony";
+        public string Resource_TypeName_Horse => "horse";
+        public string Resource_TypeName_WarHorse => "war horse";
+        public string Resource_TypeName_DraftHorse => "draft horse";
+
+        public string Resource_TypeName_WildPig => "wild pig";
+        public string Resource_TypeName_WildHog => "wild hog";
+        public string Resource_TypeName_WarHog => "war hog";
+        public string Resource_TypeName_StagHog => "stag hog";
+
+        public string Resource_TypeName_Wolf => "wolf";
+        public string Resource_TypeName_Warg => "warg";
+        public string Resource_TypeName_AlphaWarg => "alpha warg";
+
+        public string Resource_TypeName_WildCat => "wild cat";
+        public string Resource_TypeName_Lion => "lion";
+        public string Resource_TypeName_WarLion => "war lion";
+
+        public string Resource_TypeName_Elephant => "elephant";
+        public string Resource_TypeName_WarElephant => "war elephant";
+        public string Resource_TypeName_Oliphant => "oliphant";
+
+        public string BuildingType_Butcher => "";
+        public string BuildingType_Pottery => "";
+        public string BuildingType_MeatGrill => "";
+        public string BuildingType_Smoker => "";
+        public string BuildingType_Dryer => "";
+        public string BuildingType_ => "";
+        public string BuildingType_ => "";
+
+
+        public string CityCulture_AnimalBreeder2_Description => "Higher chance of successful breeding";
+        
+        public string CityCulture_EnhancedProduction => "Enhanced {0} production";
+
+        public string CityCulture_Butchers => "Butchers";
+
+        public string CityCulture_Potters => "Potters";
+
+        public string CityCulture_Wainwright => "Wainwright";
+
+        public string CityCulture_Wheelwright => "Wheelwright";
+        public string CityCulture_Wheelwright_Description => "Speed bonus to conscripted carts";
+
+        public string CityCulture_ShieldMaker => "Shield Maker";
+
+        public string CityCulture_Nomads => "Nomads";
+        public string CityCulture_Nomads_Description => "Low settler cost";
+
+        public string CityCulture_Coopers => "Coopers";
+
+        public string CityCulture_Salters => "Salters";
     }
 
 

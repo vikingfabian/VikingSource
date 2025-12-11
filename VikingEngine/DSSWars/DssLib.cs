@@ -334,7 +334,7 @@ namespace VikingEngine.DSSWars
         FertileGround,//
         Archers,//
         Warriors,//
-        AnimalBreeder,//
+        
         Miners,//
         Woodcutters,//
         Builders,//
@@ -348,7 +348,7 @@ namespace VikingEngine.DSSWars
         Weavers,//.
         SiegeEngineer,//.
         Armorsmith,//.
-        Noblemen,//.
+        
         Seafaring,//.
         Backtrader,//.
         Lawbiding,//.
@@ -356,6 +356,19 @@ namespace VikingEngine.DSSWars
         Smelters,//
         BronzeCasters,//
         Apprentices,//
+
+        Noblemen, 
+
+        Butchers, //Larger meat production
+        AnimalBreeder2, //Higher chance of successful breeding
+        Potters, //Higher pottery production
+        Wainwright, //High wagon production
+        Wheelwright, //Speed bonus to conscripted carts
+        ShieldMaker, //High shield production
+        Nomads, //Low settler cost
+        Coopers, //High storage box production
+        Salters, //High conserved food production
+
 
         NUM_NONE
     }

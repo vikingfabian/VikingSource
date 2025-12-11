@@ -658,14 +658,14 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         ItemResourceType item = ItemResourceType.Wagon2Wheel;
                         mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.WagonLight);
+                        HudLib.blueprint(content, CraftResourceLib.Wagon2Wheel);
                         work(item, WorkPriorityType.craftWagonLight);
                         end(item);
                     }
                     {
                         ItemResourceType item = ItemResourceType.Wagon4Wheel;
                         mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.WagonHeavy);
+                        HudLib.blueprint(content, CraftResourceLib.Wagon4Wheel);
                         work(item, WorkPriorityType.craftWagonHeavy);
                         end(item);
                     }
@@ -1708,10 +1708,10 @@ namespace VikingEngine.DSSWars.Interface
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Toolkit);
 
                     city.GetGroupedResource(CityResoureIndex.Wagon2Wheel).toMenu(content, ItemResourceType.Wagon2Wheel, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.WagonLight);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Wagon2Wheel);
 
                     city.GetGroupedResource(CityResoureIndex.Wagon4Wheel).toMenu(content, ItemResourceType.Wagon4Wheel, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.WagonHeavy);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Wagon4Wheel);
 
                     city.GetGroupedResource(CityResoureIndex.BlackPowder).toMenu(content, ItemResourceType.BlackPowder, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.BlackPowder);

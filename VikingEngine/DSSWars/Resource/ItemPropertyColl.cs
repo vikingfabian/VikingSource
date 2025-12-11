@@ -12,10 +12,13 @@ namespace VikingEngine.DSSWars.Resource
     static class ItemPropertyColl
     {
         public const int CarryStones = 5;
+        public const int CarryBricks = 10;
         public const int CarryFood = 20;
+        public const int CarryConservedFood = CarryFood * 2;
         public static ItemProperties[] items;
 
-        static float DefaultWeight = 1f / 30;
+        public const int DefaultCarry = 30;
+        static float DefaultWeight = 1f / DefaultCarry;
 
         public static float ArmyFoodOrderSize;
 
@@ -32,14 +35,16 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.DryWood, CityResoureIndex.wood, 1f / 60, null, null);
 
             new ItemProperties(ItemResourceType.Wood_Group, CityResoureIndex.wood, DefaultWeight, null, null) { defaultStockPile = 300 }.AddItemSource(new ItemSource(Map.TerrainSubFoilType.TreeSoft));
+            new ItemProperties(ItemResourceType.Clay, CityResoureIndex.Clay, DefaultWeight, null, null) { defaultStockPile = 200 }.AddItemSource(new ItemSource(Map.TerrainSubFoilType.ClayPit));
 
 
             // basic resources
             new ItemProperties(ItemResourceType.Stone_G, CityResoureIndex.stone, 1f / CarryStones, null, null) { defaultStockPile = 200 }.AddItemSource(new ItemSource(Map.TerrainSubFoilType.Stones));
+            new ItemProperties(ItemResourceType.Brick, CityResoureIndex.Brick, 1f / CarryStones, null, null) { defaultStockPile = 200 }.AddItemSource(new ItemSource(Map.TerrainMineType.StoneBlock));
             new ItemProperties(ItemResourceType.Egg, CityResoureIndex.rawFood, 1f / 60, null, null);
-            new ItemProperties(ItemResourceType.Pig, NoCityResource, 1f, null, null); // (leave untracked or map to rawFood)
-            new ItemProperties(ItemResourceType.Hen, NoCityResource, 1f / 4, null, null); // (leave untracked or map to rawFood)
             new ItemProperties(ItemResourceType.Wheat, CityResoureIndex.rawFood, 1f / 10, null, null);
+            new ItemProperties(ItemResourceType.Meat, CityResoureIndex.Meat, DefaultWeight, null, null) { defaultStockPile = 200 };
+               
             new ItemProperties(ItemResourceType.RawFood_Group, CityResoureIndex.rawFood, DefaultWeight, null, null) { defaultStockPile = 200 }.AddItemSource(
                 new ItemSource( ItemSourceType.Farm, Build.BuildAndExpandType.WheatFarm), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HenPen), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
             
@@ -50,7 +55,9 @@ namespace VikingEngine.DSSWars.Resource
             // fuel & food
             new ItemProperties(ItemResourceType.Fuel_G, CityResoureIndex.fuel, DefaultWeight, CraftResourceLib.Fuel1, null) { defaultStockPile = 400 }.AddItemSource(new ItemSource(Map.TerrainMineType.Coal));
             new ItemProperties(ItemResourceType.Coal, CityResoureIndex.fuel, DefaultWeight, CraftResourceLib.Charcoal, null);
+            new ItemProperties(ItemResourceType.Salt, CityResoureIndex.Salt, DefaultWeight, null, null).AddItemSource(new ItemSource( Map.TerrainMineType.Salt), new ItemSource(  ItemSourceType.Crafting, Build.BuildAndExpandType.DryingPan));
             new ItemProperties(ItemResourceType.Food_G, CityResoureIndex.food, 1f / CarryFood, CraftResourceLib.Food1, CraftResourceLib.Food2) { defaultStockPile = City.DefaultFoodBuffer };
+            new ItemProperties(ItemResourceType.ConservedFood, CityResoureIndex.ConservedFood, 1f / CarryConservedFood, CraftResourceLib.ConservedFood1, CraftResourceLib.ConservedFood2) { defaultStockPile = City.DefaultFoodBuffer };
             new ItemProperties(ItemResourceType.Beer, CityResoureIndex.beer, DefaultWeight, CraftResourceLib.Beer, null) { defaultStockPile = 200 };
             new ItemProperties(ItemResourceType.CoolingFluid, CityResoureIndex.coolingfluid, DefaultWeight, CraftResourceLib.CoolingFluid, null);
 
@@ -88,11 +95,29 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.FullPlateArmor, CityResoureIndex.FullPlateArmor, DefaultWeight, CraftResourceLib.FullPlateArmor, null);
             new ItemProperties(ItemResourceType.MithrilArmor, CityResoureIndex.MithrilArmor, DefaultWeight, CraftResourceLib.MithrilArmor, null);
 
+            new ItemProperties(ItemResourceType.MountPaddedArmor, CityResoureIndex.MountPaddedArmor, DefaultWeight, CraftResourceLib.PaddedArmor, null);
+            new ItemProperties(ItemResourceType.MountHeavyPaddedArmor, CityResoureIndex.MountHeavyPaddedArmor, DefaultWeight, CraftResourceLib.HeavyPaddedArmor, null);
+            new ItemProperties(ItemResourceType.MountBronzeArmor, CityResoureIndex.MountBronzeArmor, DefaultWeight, CraftResourceLib.BronzeArmor, null);
+            new ItemProperties(ItemResourceType.MountIronArmor, CityResoureIndex.MountIronArmor, DefaultWeight, CraftResourceLib.MailArmor, null);
+            new ItemProperties(ItemResourceType.MountHeavyIronArmor, CityResoureIndex.MountHeavyIronArmor, DefaultWeight, CraftResourceLib.HeavyMailArmor, null);
+            new ItemProperties(ItemResourceType.MountLightPlateArmor, CityResoureIndex.MountLightPlateArmor, DefaultWeight, CraftResourceLib.PlateArmor, null);
+            new ItemProperties(ItemResourceType.MountFullPlateArmor, CityResoureIndex.MountFullPlateArmor, DefaultWeight, CraftResourceLib.FullPlateArmor, null);
+            new ItemProperties(ItemResourceType.MountMithrilArmor, CityResoureIndex.MountMithrilArmor, DefaultWeight, CraftResourceLib.MithrilArmor, null);
+
+            //Shields
+            new ItemProperties(ItemResourceType.BucklerShield, CityResoureIndex.BucklerShield, DefaultWeight, CraftResourceLib.BucklerShield, null);
+            new ItemProperties(ItemResourceType.RoundShield, CityResoureIndex.RoundShield, DefaultWeight, CraftResourceLib.RoundShield, null);
+            new ItemProperties(ItemResourceType.HeaterShield, CityResoureIndex.HeaterShield, DefaultWeight, CraftResourceLib.HeaterShield, null);
+            new ItemProperties(ItemResourceType.TowerShield, CityResoureIndex.TowerShield, DefaultWeight, CraftResourceLib.TowerShield, null);
+
             // buildings & tools
             new ItemProperties(ItemResourceType.Palisade, CityResoureIndex.Palisade, DefaultWeight, CraftResourceLib.Palisade, null);
             new ItemProperties(ItemResourceType.Toolkit, CityResoureIndex.Toolkit, DefaultWeight, CraftResourceLib.Toolkit, null);
-            new ItemProperties(ItemResourceType.Wagon2Wheel, CityResoureIndex.Wagon2Wheel, DefaultWeight, CraftResourceLib.WagonLight, null);
-            new ItemProperties(ItemResourceType.Wagon4Wheel, CityResoureIndex.Wagon4Wheel, DefaultWeight, CraftResourceLib.WagonHeavy, null);
+            new ItemProperties(ItemResourceType.Wagon2Wheel, CityResoureIndex.Wagon2Wheel, DefaultWeight, CraftResourceLib.Wagon2Wheel, null);
+            new ItemProperties(ItemResourceType.Wagon4Wheel, CityResoureIndex.Wagon4Wheel, DefaultWeight, CraftResourceLib.Wagon4Wheel, null);
+            new ItemProperties(ItemResourceType.WagonClosed, CityResoureIndex.WagonClosed, DefaultWeight, CraftResourceLib.WagonClosed, null);
+            new ItemProperties(ItemResourceType.WagonIron, CityResoureIndex.WagonIron, DefaultWeight, CraftResourceLib.WagonIron, null);
+            new ItemProperties(ItemResourceType.WagonSteel, CityResoureIndex.WagonSteel, DefaultWeight, CraftResourceLib.WagonSteel, null);
 
             // gunpowder & ballistics
             new ItemProperties(ItemResourceType.BlackPowder, CityResoureIndex.BlackPowder, DefaultWeight, CraftResourceLib.BlackPowder, null);
@@ -109,7 +134,7 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.MithrilSword, CityResoureIndex.MithrilSword, DefaultWeight, CraftResourceLib.MithrilSword, null);
             new ItemProperties(ItemResourceType.Warhammer, CityResoureIndex.Warhammer, DefaultWeight, CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
             new ItemProperties(ItemResourceType.TwoHandSword, CityResoureIndex.twohandsword, DefaultWeight, CraftResourceLib.TwoHandSword, null);
-            new ItemProperties(ItemResourceType.KnightsLance, CityResoureIndex.knightslance, DefaultWeight, CraftResourceLib.KnightsLance, null);
+            //new ItemProperties(ItemResourceType.KnightsLance, CityResoureIndex.knightslance, DefaultWeight, CraftResourceLib.KnightsLance, null);
 
             // ranged weapons
             new ItemProperties(ItemResourceType.SlingShot, CityResoureIndex.SlingShot, DefaultWeight, CraftResourceLib.Slingshot, null);
@@ -139,6 +164,79 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.BronzeCoin, NoCityResource, DefaultWeight, Minting.BronzeCoin, null);
             new ItemProperties(ItemResourceType.SilverCoin, NoCityResource, DefaultWeight, Minting.SilverCoin, null);
             new ItemProperties(ItemResourceType.ElfCoin, NoCityResource, DefaultWeight, Minting.ElfCoin, null);
+
+
+            new ItemProperties(ItemResourceType.Pig, CityResoureIndex.Pig, DefaultWeight, null, null).AddItemSource(new ItemSource( ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
+            new ItemProperties(ItemResourceType.Hen, CityResoureIndex.Hen, DefaultWeight, null, null).AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HenPen));
+            // --- Oxen ---
+            new ItemProperties(ItemResourceType.Oxen, CityResoureIndex.Oxen, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OxenPen));
+
+            new ItemProperties(ItemResourceType.KineOxen, CityResoureIndex.KineOxen, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OxenPen));
+
+            // --- Dogs ---
+            new ItemProperties(ItemResourceType.Dog, CityResoureIndex.Dog, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.DogCage));
+
+            new ItemProperties(ItemResourceType.Hound, CityResoureIndex.Hound, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HoundCage));
+
+            // --- Horses ---
+            new ItemProperties(ItemResourceType.Pony, CityResoureIndex.Pony, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PonyPen));
+
+            new ItemProperties(ItemResourceType.Horse, CityResoureIndex.Horse, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HorsePen));
+
+            new ItemProperties(ItemResourceType.WarHorse, CityResoureIndex.WarHorse, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarHorsePen));
+
+            new ItemProperties(ItemResourceType.DraftHorse, CityResoureIndex.DraftHorse, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.DraftHorsePen));
+
+            // --- Pigs / Hogs ---
+            new ItemProperties(ItemResourceType.WildPig, CityResoureIndex.WildPig, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildPigPen));
+
+            new ItemProperties(ItemResourceType.WildHog, CityResoureIndex.WildHog, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildHogPen));
+
+            new ItemProperties(ItemResourceType.WarHog, CityResoureIndex.WarHog, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarHogPen));
+
+            new ItemProperties(ItemResourceType.StagHog, CityResoureIndex.StagHog, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.StagHogPen));
+
+            // --- Wolves ---
+            new ItemProperties(ItemResourceType.Wolf, CityResoureIndex.Wolf, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WolfCage));
+
+            new ItemProperties(ItemResourceType.Warg, CityResoureIndex.Warg, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WargCage));
+
+            new ItemProperties(ItemResourceType.AlphaWarg, CityResoureIndex.AlphaWarg, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.AlphaWargCage));
+
+            // --- Cats ---
+            new ItemProperties(ItemResourceType.WildCat, CityResoureIndex.WildCat, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildCatCage));
+
+            new ItemProperties(ItemResourceType.Lion, CityResoureIndex.Lion, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.LionCage));
+
+            new ItemProperties(ItemResourceType.WarLion, CityResoureIndex.WarLion, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarLionCage));
+
+            // --- Elephants ---
+            new ItemProperties(ItemResourceType.Elephant, CityResoureIndex.Elephant, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.ElephantCage));
+
+            new ItemProperties(ItemResourceType.WarElephant, CityResoureIndex.WarElephant, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarElephantCage));
+
+            new ItemProperties(ItemResourceType.Oliphant, CityResoureIndex.Oliphant, DefaultWeight, null, null)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OliphantCage));
 
             var craftList = Build.BuildingCraftList.AllBuidings();
             foreach (var building_craftItems in craftList)
@@ -439,39 +537,39 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelData.modelType = ModelType.Soldier;
             }
 
-            {
-                var weapon = Get(ItemResourceType.KnightsLance);
-                ref var soldier = ref weapon.soldierData;
+            //{
+            //    var weapon = Get(ItemResourceType.KnightsLance);
+            //    ref var soldier = ref weapon.soldierData;
 
-                soldier.attackDamage = DssConst.WeaponDamage_KnigtsLance;
-                soldier.attackSplashCount = 0;
-                soldier.attackDamageStructure = Convert.ToInt32(30);// * skillBonus); // special override
-                soldier.attackDamageSea = Convert.ToInt32(20);// * skillBonus);
+            //    soldier.attackDamage = DssConst.WeaponDamage_KnigtsLance;
+            //    soldier.attackSplashCount = 0;
+            //    soldier.attackDamageStructure = Convert.ToInt32(30);// * skillBonus); // special override
+            //    soldier.attackDamageSea = Convert.ToInt32(20);// * skillBonus);
 
-                soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 2.5f;
-                soldier.attackRange = 0.06f;
-                soldier.basehealth *= 3;
-                soldier.mainAttack = AttackType.Melee;
-                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
+            //    soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 2.5f;
+            //    soldier.attackRange = 0.06f;
+            //    soldier.basehealth *= 3;
+            //    soldier.mainAttack = AttackType.Melee;
+            //    soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
 
-                soldier.modelName = LootFest.VoxelModelName.war_knight;
-                soldier.modelVariationCount = 3;
-                soldier.modelScale *= 0.75f;
-                soldier.icon = SpriteName.WarsUnitIcon_Knight;
+            //    soldier.modelName = LootFest.VoxelModelName.war_knight;
+            //    soldier.modelVariationCount = 3;
+            //    soldier.modelScale *= 0.75f;
+            //    soldier.icon = SpriteName.WarsUnitIcon_Knight;
 
-                soldier.upkeepMultiplier = 3;//DssLib.SoldierDefaultEnergyUpkeep * 3;
-                soldier.rowWidth = 4;
-                soldier.columnsDepth = 3;
-                soldier.groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
-                soldier.workForcePerUnit = 2;
-                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
-                soldier.hasBannerMan = false;
+            //    soldier.upkeepMultiplier = 3;//DssLib.SoldierDefaultEnergyUpkeep * 3;
+            //    soldier.rowWidth = 4;
+            //    soldier.columnsDepth = 3;
+            //    soldier.groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
+            //    soldier.workForcePerUnit = 2;
+            //    soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+            //    soldier.hasBannerMan = false;
 
-                soldier.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
-                soldier.factionColoredModel = true;
-                soldier.modelData.weapon = ItemResourceType.KnightsLance;
-                soldier.modelData.modelType = ModelType.Riding;
-            }
+            //    soldier.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
+            //    soldier.factionColoredModel = true;
+            //    soldier.modelData.weapon = ItemResourceType.KnightsLance;
+            //    soldier.modelData.modelType = ModelType.Riding;
+            //}
 
             {
                 var weapon = Get(ItemResourceType.MithrilSword);

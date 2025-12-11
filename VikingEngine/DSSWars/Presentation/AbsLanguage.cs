@@ -764,7 +764,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string CityCulture_FertileGround_Description { get; }
         public abstract string CityCulture_Archers_Description { get; }
         public abstract string CityCulture_Warriors_Description { get; }
-        public abstract string CityCulture_AnimalBreeder_Description { get; }
+        //public abstract string CityCulture_AnimalBreeder_Description { get; }
         public abstract string CityCulture_Miners_Description { get; }
         public abstract string CityCulture_Woodcutters_Description { get; }
         public abstract string CityCulture_Builders_Description { get; }

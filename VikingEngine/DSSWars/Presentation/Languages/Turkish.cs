@@ -1561,7 +1561,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_FertileGround_Description => "Ekinler daha fazla hasat verir";
         public override string CityCulture_Archers_Description => "Yetenekli okçular yetiştirilir";
         public override string CityCulture_Warriors_Description => "Yetenekli savaşçılar eğitilir";
-        public override string CityCulture_AnimalBreeder_Description => "Hayvanlar daha fazla ürün sağlar";
+        //public override string CityCulture_AnimalBreeder_Description => "Hayvanlar daha fazla ürün sağlar";
         public override string CityCulture_Miners_Description => "Madenden daha fazla cevher çıkarılır";
         public override string CityCulture_Woodcutters_Description => "Ağaçlardan daha fazla odun elde edilir";
         public override string CityCulture_Builders_Description => "Yapı inşaası daha hızlıdır";
