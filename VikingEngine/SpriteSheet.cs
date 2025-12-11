@@ -2254,6 +2254,11 @@ namespace VikingEngine
                 add(SpriteName.WarsHudIconSpeed_Medium);
                 add(SpriteName.UpdatePromo_SnowFlake);
 
+                add(SpriteName.WarsResource_Brick);
+                add(SpriteName.WarsResource_Clay);
+                add(SpriteName.WarsResource_ConservedFood);
+                add(SpriteName.WarsResource_StorageBox);
+                add(SpriteName.WarsResource_Salt);
 
             }
 
