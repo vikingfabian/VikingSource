@@ -27,7 +27,7 @@ BALANCING
 UI
 * Item source is displayed on tooltip, like where it is crafted
 * Extended resource menu info
-
+* Declare war - are you sure
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
