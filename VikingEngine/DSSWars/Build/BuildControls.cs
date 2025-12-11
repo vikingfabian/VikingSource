@@ -1241,32 +1241,32 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.Carpenter:
-                    mayCraftList(content, city, CraftBuildingLib.CarpenterCraftTypes);
+                    mayCraftList(content, city, BuildingCraftList.CarpenterCraftTypes);
 
                     break;
 
                 case BuildAndExpandType.WorkBench:
-                    mayCraftList(content, city, CraftBuildingLib.BenchCraftTypes);
+                    mayCraftList(content, city, BuildingCraftList.BenchCraftTypes);
                     break;
 
                 case BuildAndExpandType.Smelter:
-                    mayCraftList(content, city, CraftBuildingLib.SmelterCraftTypes);
+                    mayCraftList(content, city, BuildingCraftList.SmelterCraftTypes);
                     break;
 
                 case BuildAndExpandType.Foundry:
-                    mayCraftList(content, city, CraftBuildingLib.FoundryCraftTypes);
+                    mayCraftList(content, city, BuildingCraftList.FoundryCraftTypes);
                     break;
 
                 case BuildAndExpandType.Armory:
-                    mayCraftList(content, city, CraftBuildingLib.ArmoryCraftTypes);
+                    mayCraftList(content, city, BuildingCraftList.ArmoryCraftTypes);
                     break;
 
                 case BuildAndExpandType.Smith:
-                    mayCraftList(content, city, CraftBuildingLib.SmithCraftTypes);
+                    mayCraftList(content, city, BuildingCraftList.SmithCraftTypes);
                     break;
 
                 case BuildAndExpandType.Gunmaker:
-                    mayCraftList(content, city, CraftBuildingLib.GunmakerCraftTypes);
+                    mayCraftList(content, city, BuildingCraftList.GunmakerCraftTypes);
                     break;
 
                 case BuildAndExpandType.CoalPit:
@@ -1329,7 +1329,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.StoneWallBlueRoof:
                 case BuildAndExpandType.StoneWallWoodHouse:
 
-                    DefenceMenu.WallDefenceToHud(content, (TerrainWallType)build.subType, true);
+                    DefenceMenu.WallDefenceToHud(content, (TerrainWallType)build.terrainType.subTerrain, true);
                     break;
 
             }
@@ -1447,7 +1447,7 @@ namespace VikingEngine.DSSWars.Build
             if (type == BuildAndExpandType.Logistics)
             {
                 bool reachedBuffer = false;
-                city.res_food.toMenu(content, ItemResourceType.Food_G, false, ref reachedBuffer);
+                city.GetGroupedResource(EntityComponent.CityResoureIndex.food)/*res_food*/.toMenu(content, ItemResourceType.Food_G, false, ref reachedBuffer);
             }
 
             if (build.blueprint.levelRequirement > XP.ExperienceLevel.Beginner_1)

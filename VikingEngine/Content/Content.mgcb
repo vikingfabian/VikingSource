@@ -2473,6 +2473,9 @@
 #begin VoxelModel/Character/modweapon_rifle.vox
 /copy:VoxelModel/Character/modweapon_rifle.vox
 
+#begin VoxelModel/Character/modweapon_settler.vox
+/copy:VoxelModel/Character/modweapon_settler.vox
+
 #begin VoxelModel/Character/modweapon_sharpstick.vox
 /copy:VoxelModel/Character/modweapon_sharpstick.vox
 
@@ -2596,6 +2599,9 @@
 #begin VoxelModel/LfWars/city_tent.vox
 /copy:VoxelModel/LfWars/city_tent.vox
 
+#begin VoxelModel/LfWars/city_tenthut.vox
+/copy:VoxelModel/LfWars/city_tenthut.vox
+
 #begin VoxelModel/LfWars/city_tower24.vox
 /copy:VoxelModel/LfWars/city_tower24.vox
 
@@ -2628,6 +2634,9 @@
 
 #begin VoxelModel/LfWars/decor_statue.vox
 /copy:VoxelModel/LfWars/decor_statue.vox
+
+#begin VoxelModel/LfWars/ErrorCube.vox
+/copy:VoxelModel/LfWars/ErrorCube.vox
 
 #begin VoxelModel/LfWars/fo_stone1.vox
 /copy:VoxelModel/LfWars/fo_stone1.vox
@@ -2721,6 +2730,9 @@
 
 #begin VoxelModel/LfWars/slingstone.vox
 /copy:VoxelModel/LfWars/slingstone.vox
+
+#begin VoxelModel/LfWars/unclaimed_icon.vox
+/copy:VoxelModel/LfWars/unclaimed_icon.vox
 
 #begin VoxelModel/LfWars/war_archer_i2.vox
 /copy:VoxelModel/LfWars/war_archer_i2.vox

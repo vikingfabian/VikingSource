@@ -124,6 +124,7 @@ namespace VikingEngine.DSSWars.Map
         BookPress,
         ImmigrationTent,
 
+        WorkerTent,
         CityHall_Unclaimed,
         CityHall_Tent,
         NUM_NONE

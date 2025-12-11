@@ -7,6 +7,7 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.MoonFall;
@@ -80,18 +81,18 @@ namespace VikingEngine.DSSWars
                         UnlockAchievement_async(AchievementIndex.gold_64bit);
                     }
 
-                    var citiesC = p.faction.cities.counter();
-                    while (citiesC.Next())
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref p.faction.cities, DssRef.world.cities, out City city))
                     {
-                        if (citiesC.sel.workForce.amount > LargePopulationCount_Tier1)
+                        if (city.workForce.amount > LargePopulationCount_Tier1)
                         {
                             UnlockAchievement_async(AchievementIndex.large_population_tier1);
 
-                            if (citiesC.sel.workForce.amount > LargePopulationCount_Tier2)
+                            if (city.workForce.amount > LargePopulationCount_Tier2)
                             {
                                 UnlockAchievement_async(AchievementIndex.large_population_tier2);
 
-                                if (citiesC.sel.workForce.amount > LargePopulationCount_Tier3)
+                                if (city.workForce.amount > LargePopulationCount_Tier3)
                                 {
                                     UnlockAchievement_async(AchievementIndex.large_population_tier3);
                                 }
@@ -102,7 +103,7 @@ namespace VikingEngine.DSSWars
                         int posted_stone = 0;
 
 
-                        var groupsC = citiesC.sel.groups.counter();
+                        var groupsC = city.groups.counter();
                         while (groupsC.Next())
                         {
                             int post = groupsC.sel.GetGuardGroup().assignedToPost_IdAndPosition;

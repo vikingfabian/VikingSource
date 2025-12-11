@@ -283,12 +283,15 @@ namespace VikingEngine.DSSWars.GameObject
                 if (buildingCount > 0)
                 {
                     //Spread 
-                    var citiesC = GetFaction().cities.counter();
-                    while (citiesC.Next())
+                    //var citiesC = GetFaction().cities.counter();
+                    //while (citiesC.Next())
+                    //{
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref GetFaction().cities, DssRef.world.cities, out City citySel))
                     {
-                        if (citiesC.sel != this && citiesC.sel.researchBuildingCount(true, techType) > 0)
+                        if (citySel != this && citySel.researchBuildingCount(true, techType) > 0)
                         {
-                            citiesC.sel.addTechPoints(techType, gain, TechnologyGainReason.BookPress);
+                            citySel.addTechPoints(techType, gain, TechnologyGainReason.BookPress);
                         }
                     }
                 }

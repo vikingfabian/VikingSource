@@ -608,6 +608,9 @@ namespace VikingEngine.DSSWars.Map
                     animals(tile, ref subTile, ref wp, AnimalType.Hen, TerrainContent.HenMaxSize);
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
+                case TerrainBuildingType.WorkerTent:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_tenthut, rnd, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
                 case TerrainBuildingType.WorkerHut:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.0f));
                     break;
@@ -683,7 +686,6 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_barracks, 6, wp, WorldData.SubTileWidth * 1f));
                     break;
 
-
                 case TerrainBuildingType.CityHall_Unclaimed:
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 0, wp, WorldData.SubTileWidth * 1.4f));
@@ -697,7 +699,7 @@ namespace VikingEngine.DSSWars.Map
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
-                            faction, 8, wp + new Vector3(0.013f, -0.020f, 0.07f), WorldData.SubTileWidth * 1.1f);
+                            faction, 8, wp + new Vector3(0.013f, -0.008f, 0.07f), WorldData.SubTileWidth * 1.1f);
                             foliageModels.Add(flag);
                         }
                     }

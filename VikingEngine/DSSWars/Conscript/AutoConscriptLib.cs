@@ -125,14 +125,16 @@ namespace VikingEngine.DSSWars.Conscript
 
         public static bool HasEnoughFood(City city)
         {
+            var res_food = city.GetRefGroupedResource(EntityComponent.CityResoureIndex.food);
+
             switch (city.warAutoQuality)
             {
                 default:
-                    return city.res_food.amount > 20;
+                    return res_food.amount > 20;
                 case WarAutoQuality.Medium:
-                    return city.res_food.amount > 50;
+                    return res_food.amount > 50;
                 case WarAutoQuality.High:
-                    return city.res_food.amount > city.res_food.goalBuffer / 2;
+                    return res_food.amount > res_food.goalBuffer / 2;
             }
         }
 

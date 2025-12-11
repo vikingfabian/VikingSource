@@ -463,6 +463,11 @@ namespace VikingEngine.DSSWars.Interface
             content.newLine();
             muteDisconnect(content);
 
+            content.newLine();
+            content.Add(new RbText(DssRef.todoLang.Settings_ControllerVibration + ":", HudLib.TitleColor_Label));
+            content.space();
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, 100, 10), Ref.gamesett.vibrationProperty, false);
+
             bool autoSaveProperty(object tag, bool set, bool value)
             {
                 if (set)

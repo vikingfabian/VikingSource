@@ -127,6 +127,7 @@ namespace VikingEngine.DSSWars.Data
             
             //WORLD
             worldData = new WorldData();
+            
             worldData.metaData = meta.worldmeta;
             worldData.readMapFile(r);
             DssRef.world = worldData;

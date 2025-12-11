@@ -18,7 +18,15 @@ namespace VikingEngine.DSSWars.XP
 {
     class TechnologyHud
     {
-        public void technologyOverviewHud(RichBoxContent content, LocalPlayer player, City city, Faction faction)
+        LocalPlayer player; City city;
+        public TechnologyHud(LocalPlayer player, City city)
+        {
+            this.player = player;
+            this.city = city;
+        }
+
+
+        public void technologyOverviewHud(RichBoxContent content, Faction faction)
         {
             TechnologyTemplate technology;
             if (city != null)
@@ -73,7 +81,7 @@ namespace VikingEngine.DSSWars.XP
             }
         }
 
-        public void technologyHud(RichBoxContent content, LocalPlayer player, City city, Faction faction)
+        public void technologyHud(RichBoxContent content, Faction faction)
         {
             bool cityView;
             TechnologyTemplate technology;
@@ -313,6 +321,7 @@ namespace VikingEngine.DSSWars.XP
                     content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsTechnology_Unlocked) },
                      new RbAction1Arg<TechnologyTreeType>(godPowerUnLockTech, type)));
                 }
+
                 if (city != null)
                 {
                     content.Add(new RbTab(0.7f));

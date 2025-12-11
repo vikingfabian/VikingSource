@@ -75,9 +75,10 @@ namespace VikingEngine.DSSWars
             Engine.Update.SetFrameRate(Ref.gamesett.FrameRate);
 
             if (readWorld != null)
-            {
-                initGameState_client();
+            {   
                 new LoadScene(readWorld);
+
+                initGameState_client();
             }
             else if (loadMeta == null)
             {
@@ -107,9 +108,11 @@ namespace VikingEngine.DSSWars
             new GameTime();
             HudLib.Init();
 
+            prePlayerInit();
+
             var playerFaction = new Faction(DssRef.world, FactionType.Player);
             DssRef.world.factions.Array[0] = playerFaction;
-            playerFaction.initClient();
+            playerFaction.initClient(DssRef.world);
             var local = new Players.LocalPlayer(playerFaction, false);
             localPlayers = new List<Players.LocalPlayer>(1);
             localPlayers.Add(local);
@@ -119,6 +122,8 @@ namespace VikingEngine.DSSWars
             technologyManager.initGame(false);
 
             events = new Event.EventManager();
+
+            local.onGameStart(false);
         }
 
         public void initGameState(bool newGame, ObjectPointerCollection pointers)
@@ -355,9 +360,11 @@ namespace VikingEngine.DSSWars
 
             startMapThreads();
             
-            new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63, System.Threading.ThreadPriority.Lowest);
+            
             if (host)
             {
+                new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63, System.Threading.ThreadPriority.Lowest);
+
                 new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58, System.Threading.ThreadPriority.Normal);
                 
                 new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60, System.Threading.ThreadPriority.Lowest);
@@ -383,14 +390,34 @@ namespace VikingEngine.DSSWars
 
        
 
-        void initStartUnits()
+        public void initStartUnits(bool barracks = false)
         {
             if (StartupSettings.SpawnStartingArmies)
             {
+                double unitCountMulti = 1;
+                bool settlerGuard = false;
+
+                switch (DssRef.storage.gameRuleset.factionStartSize)
+                {
+                    case FactionStartSize.OneCity:
+                        unitCountMulti = 0.4;
+                        settlerGuard = DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch;
+                        break;
+                    case FactionStartSize.Settler:
+                        unitCountMulti = 0.25;
+                        settlerGuard = true;
+                        break;
+
+                }
+
                 var factionsCounter = DssRef.world.factions.counter();
                 while (factionsCounter.Next())
                 {
-                    factionsCounter.sel.player.createStartUnits();
+                    if (barracks)
+                    {
+                        factionsCounter.sel.player.createStartupBarracks();
+                    }
+                    factionsCounter.sel.player.createStartUnits(unitCountMulti, settlerGuard);
                 }
             }
         }
@@ -883,8 +910,8 @@ namespace VikingEngine.DSSWars
                             foreach (var local in localPlayers)
                             {
                                 //TODO
-                                //int flag = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].flagDesignIndex;
-                                //DssRef.storage.flagStorage.flagDesigns[flag].write(w);
+                                var profile = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].Profile();
+                                /*DssRef.storage.flagStorage.flagDesigns[flag]*/profile.flag.write(w);
                             }
                         }
                     }
@@ -902,6 +929,7 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssWorldTiles:                    
                     DssRef.world.readNet_Tile(packet.r);//l 32 * 4 * 4
                     overviewMap.bRefreshDataRecieved = true;
+                    DssRef.world.BordersUpdated = true;
                     break;
 
                 case PacketType.DssWorldSubTiles:

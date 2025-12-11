@@ -246,7 +246,8 @@ namespace VikingEngine.DSSWars.Resource
                     content.Add(countText);
                     content.hspace();
                     content.Add(new RbImage(sprite));
-                    content.Add(new RbText(name));
+                    content.hspace();
+                    content.Add(new RbText(TextLib.LargeFirstLetter(name)));
                 }
             }
             
@@ -261,6 +262,7 @@ namespace VikingEngine.DSSWars.Resource
                 var arrow = new RbImage(SpriteName.pjNumArrowR);
                 arrow.color = Color.CornflowerBlue;
                 content.Add(arrow);
+                content.hspace();
                 if (resultType == CraftResultType.Building)
                 {
                     if (resultAmount > 1)
@@ -272,12 +274,13 @@ namespace VikingEngine.DSSWars.Resource
                 {
                     content.hspace();
                     content.Add(new RbText(resultAmount.ToString()));
+                    content.hspace();
                 }
                 content.Add(new RbImage(icon()));
                 content.space();
                 content.Add(new RbText(name()));
             }
-            if (includeLevel)
+            if (includeLevel && experienceType != WorkExperienceType.NONE)
             
             //if (levelRequirement > ExperienceLevel.Beginner_1)
             {
@@ -395,7 +398,7 @@ namespace VikingEngine.DSSWars.Resource
                     case CraftRequirement.Logistics1:
                         icon = SpriteName.WarsBuild_Logistics;
                         reqText = string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, DssConst.Logistics1FoodStorage);
-                        available = city.res_food.amount >= DssConst.Logistics1FoodStorage;
+                        available = city.resourceAmount(EntityComponent.CityResoureIndex.food)/*res_food.amount*/ >= DssConst.Logistics1FoodStorage;
                         break;
 
                     default:

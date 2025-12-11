@@ -423,17 +423,6 @@ namespace VikingEngine
             }
         }
 
-        //public void RemoveAt_EqualSafeCheck_OrCrash(T obj, int index)
-        //{
-        //    if (obj.Equals(Array[index]))
-        //    {
-        //        --Count;
-        //        Array[index] = default(T);
-        //        mostLeftFreePosition = lib.SmallestValue(mostLeftFreePosition, index);
-        //        updateSpottedLength();
-        //    }
-        //}
-
         public T Get(int position)
         {
             for (int i = 0; i < Array.Length; ++i)

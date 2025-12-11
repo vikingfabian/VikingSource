@@ -16,7 +16,11 @@ namespace VikingEngine.DSSWars.Presentation
         /// How much of a resource that will be used, "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
         public string Hud_Purchase_ResourceCost => "{1} {0}";
-
+        
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public string Diplomacy_EndRelations => "End relations";
         public string DisplayMode => "Display mode";
         public string DisplayMode_Windowed => "Windowed";
         public string DisplayMode_BorderlessFullscreen => "Borderless fullscreen";
@@ -28,6 +32,8 @@ namespace VikingEngine.DSSWars.Presentation
         //public string Error_SoundInitFailure => "Sound initialization failed";
         public string Tutorial_WillTakeAWhile => "This will take a while, come back later.";
         
+        //##SPRING - settings##
+        public string Settings_ControllerVibration = "Controller vibration";
         /// <summary>
         /// 0: name of building
         /// </summary>
@@ -35,6 +41,23 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         public string GameOverResults => "Game history log";
+
+
+
+        //##SPRING##
+
+        public string UnitType_UnclaimedLand => "Unclaimed land";
+        public string UnitType_Settler => "Settler";
+        public string UnitType_Settler_Description => "Found a new city";
+        public string Resource_ConsumedProduced => "Consumed/Produced";
+        public string InputActionName_PlaceTarget => "Place target";
+
+        public string FactionStartSize => "Faction start size";
+        public string FactionStartSize_Full => "Full";
+        public string FactionStartSize_OneCity => "One city";
+        public string FactionStartSize_Settler => "One settler";
+
+
     }
 
 

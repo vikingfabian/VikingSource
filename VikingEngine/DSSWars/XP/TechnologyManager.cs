@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.GameObject;
 
 namespace VikingEngine.DSSWars.XP
 {
@@ -23,10 +24,13 @@ namespace VikingEngine.DSSWars.XP
                         var factionsCounter = DssRef.world.factions.counter();
                         while (factionsCounter.Next())
                         {
-                            var citiesC = factionsCounter.sel.cities.counter();
-                            while (citiesC.Next())
+                            //var citiesC = factionsCounter.sel.cities.counter();
+                            //while (citiesC.Next())
+                            //{
+                            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                            while (citiesC.Next(ref factionsCounter.sel.cities, DssRef.world.cities, out City citySel))
                             {
-                                citiesC.sel.technology.addFactionUnlocked(factionsCounter.sel.technology, true, true);
+                                citySel.technology.addFactionUnlocked(factionsCounter.sel.technology, true, true);
                             }
                         }
 
@@ -53,9 +57,10 @@ namespace VikingEngine.DSSWars.XP
                     {
                         lib.DoNothing();
                     }
-                    foreach (var ni in city.neighborCities)
+                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var ni in city.neighborCities)
                     {
-                        var nCity = DssRef.world.cities[ni];
+                        //var nCity = DssRef.world.cities[ni];
                         if (city.factionIndex == nCity.factionIndex)
                         {
                             TechnologyTemplate.GainTechSpread(city, nCity.technology, DssConst.TechnologyGain_CitySpread, TechnologyGainReason.CityToCitySpread);
@@ -93,25 +98,32 @@ namespace VikingEngine.DSSWars.XP
 #if DEBUG
                 if (StartupSettings.UnlockAllProgress && factionsC.sel.player.IsLocalPlayer())
                 {
-                    var citiesCounter = factionsC.sel.cities.counter();
-                    while (citiesCounter.Next())
+                    //var citiesCounter = factionsC.sel.cities.counter();
+                    //while (citiesCounter.Next())
+                    //{
+                    SpottedPointerArrayCounter unlockCities = new SpottedPointerArrayCounter();
+                    while (unlockCities.Next(ref factionsC.sel.cities, DssRef.world.cities, out City citySel))
                     {
-                        citiesCounter.sel.technology.unlockAll_debug();
+                        citySel.technology.unlockAll_debug();
                     }
                 }
 #endif
-                var citiesC = factionsC.sel.cities.counter();
-                while (citiesC.Next())
+                
+                //var citiesC = factionsC.sel.cities.counter();
+                //while (citiesC.Next())
+                //{
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref factionsC.sel.cities, DssRef.world.cities, out City citySel))
                 {
-                    var unlocks = citiesC.sel.technology.GetUnlocks(false);
-                    citiesC.sel.workTemplate.applyUnlock(unlocks);
-                    factionTech.countUnlocks(citiesC.sel.technology);
+                    var unlocks = citySel.technology.GetUnlocks(false);
+                    citySel.workTemplate.applyUnlock(unlocks);
+                    factionTech.countUnlocks(citySel.technology);
                     if (unlocks.allUnlocked && factionsC.sel.player.IsLocalPlayer())
                     {
                         DssRef.achieve.UnlockAchievement_async(AchievementIndex.techtree);
                     }
                 }
-
+                
                 factionsC.sel.technology = factionTech;
                 factionsC.sel.workTemplate.applyUnlock(factionTech.GetUnlocks(true));
             }

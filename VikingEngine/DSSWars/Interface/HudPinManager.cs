@@ -106,6 +106,7 @@ namespace VikingEngine.DSSWars.Interface
                         new RbTooltip_Text(string.Format( DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Technology_Title, techname)), 
                         true, BgCol));
                     break;
+
                 case HudPinType.WorkerXp:
                     WorkExperienceType experienceType = (WorkExperienceType)id;
                     LangLib.ExperienceType(experienceType, out string xpName, out SpriteName xpIcon);

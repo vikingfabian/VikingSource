@@ -71,15 +71,6 @@ namespace VikingEngine.DSSWars.Players.Command
             }
         }
 
-        //void init(SoldierGroup group, City city)
-        //{
-
-        //    var defence = city.defenceBuildings.Array[id];
-        //    defence.soldierGroupId = group.parentArrayIndex;
-        //    city.defenceBuildings[id] = defence;
-        //}
-
-
         public override void begin(SoldierGroup group)
         {
             base.begin(group);

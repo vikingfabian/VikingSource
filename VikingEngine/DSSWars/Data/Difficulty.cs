@@ -27,6 +27,7 @@ namespace VikingEngine.DSSWars.Data
 
         public AiAggressivity aiAggressivity = AiAggressivity.Medium;
         public BossSize bossSize = BossSize.Medium;
+        
         //public BossTimeSettings bossTimeSettings = BossTimeSettings.Normal;
         
         public int aiEconomyLevel = 1;

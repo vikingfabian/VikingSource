@@ -14,6 +14,7 @@ namespace VikingEngine.DSSWars
         public const int TruceTimeSec = 180;
         public static IntervalF PeaceSafeTimeSec = new IntervalF(10, 60) * TimeExt.MinuteInSeconds;
         public static float DiplomacyExtraCostPerAlly = 0.5f;
+
         //SOLDIER
         public static int Soldier_DefaultHealth = 400;
         public static float Soldier_StandardAttackAndCoolDownTime = 1600;
@@ -27,6 +28,8 @@ namespace VikingEngine.DSSWars
 
         public static float GuardPostEnter_TimeSec = 3f;
         public static float GuardPostExit_TimeSec = 2f;
+        public static float SettlerTransform_TimeSec = 3f;
+
 
         public static float DefaultBlockChance = 0.75f;
 
@@ -126,6 +129,7 @@ namespace VikingEngine.DSSWars
         public static int TaxPerWorker_copp = 8;
         public static int UpkeepPerServiceMan_copp = 10;
         public static int UpkeepPerGuard_copp = 10;
+        public static int CampsiteCityStartMaxWorkForce = HousingCount_WorkerTent;
         public static int SmallCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 5);
         public static int LargeCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 7);
         public static int HeadCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 10);
@@ -161,6 +165,7 @@ namespace VikingEngine.DSSWars
         //public const int ExpandGuardSizeCost = 12000;
         //public const int ReleaseGuardSizeGain = ExpandGuardSizeCost / 2;
 
+        public const int HousingCount_WorkerTent = 20;
         public const int HousingCount_WorkerHut = 30;
         public const int HousingCount_WorkerHutLarge = 50;
         public const int HousingCount_GuardsOffice_Small = 30;
@@ -169,9 +174,12 @@ namespace VikingEngine.DSSWars
         public const int HousingCount_ServiceHouse_Large = 10;
         public const int HousingCount_ServiceHouse_Small = 5;
 
+        public static int CampHall_MaxWorkForce = 120;
         public static int VillageHall_MaxWorkForce = 250;
         public static int TownHall_MaxWorkForce = 500;
 
+
+        public static int CampHall_GuardHousing = 5;
         public static int VillageHall_GuardHousing = 10;
         public static int TownHall_GuardHousing = 20;
         public static int CapitalHall_GuardHousing = 40;
@@ -225,6 +233,7 @@ namespace VikingEngine.DSSWars
         public static float WorkTime_Craft = 10;
 
         public static float WorkTime_Building_Palisade = 10;
+        public static float WorkTime_Building_WorkerTent = 15;
         public static float WorkTime_Building_Small = 30;
         public static float WorkTime_Building_Default = 50;
         public static float WorkTime_Building_Large = 100;
@@ -293,7 +302,6 @@ namespace VikingEngine.DSSWars
 
         public static float DeliveryLevel2TimeReducePerc = 5;
         public static float DeliveryLevel3TimeReducePerc = 10;
-
 
         //BANK
         public static float GoldDeliveryFeePerc = 10;

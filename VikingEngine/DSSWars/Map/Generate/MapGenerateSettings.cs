@@ -55,6 +55,8 @@ namespace VikingEngine.DSSWars.Map.Generate
         public bool cleanUpSingleTiles = false;
         public bool factionsOnMap = true;
 
+        public float percentageUnclaimed = 0.25f;
+
         public MapSettingsStorage storage;
 
         public MapGenerateSettings()

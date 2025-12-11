@@ -119,6 +119,11 @@ namespace VikingEngine.DSSWars.Interface
                         input(map.ControllerFocus.Icon, DssRef.lang.InputActionName_ToggleMenu);
                     }
                     break;
+
+                case InputHelpState.CommandTarget:
+                    input(map.mouseSelect.Icon, DssRef.todoLang.InputActionName_PlaceTarget);
+                    input(map.cancelIcons().First(), DssRef.lang.Hud_Cancel);
+                    break;
             }
             input(map.ToggleHudDetail.Icon, DssRef.lang.InputActionName_ToggleHudDetail);
 
@@ -149,6 +154,7 @@ namespace VikingEngine.DSSWars.Interface
         Army,
         Menu,
         Build,
+        CommandTarget,
 
     }
 }

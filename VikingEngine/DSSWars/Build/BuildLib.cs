@@ -145,6 +145,7 @@ namespace VikingEngine.DSSWars.Build
         LeadOreMine,
         MithrilMine,
         SulfurMine,
+        WorkerTent,
 
         NUM_NONE,
         ALL,
@@ -188,7 +189,9 @@ namespace VikingEngine.DSSWars.Build
             bool logistics2 = city.buildingStructure.buildingLevel_logistics >= 2 ||
                 unlockAll;
 
-            if (city.buildingStructure.buildingLevel_logistics == 0)
+            bool campSite = city.cityType == CityType.Campsite;
+
+            if (!campSite && city.buildingStructure.buildingLevel_logistics == 0)
             {
                 list.Add(BuildAndExpandType.Logistics);
             }
@@ -201,10 +204,17 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.BookPress);
             }
 
-            list.Add(BuildAndExpandType.WorkerHut);
-            if (logistics1)
+            if (campSite)
             {
-                list.Add(BuildAndExpandType.WorkerHutLarge);
+                list.Add(BuildAndExpandType.WorkerTent);
+            }
+            else
+            {
+                list.Add(BuildAndExpandType.WorkerHut);
+                if (logistics1)
+                {
+                    list.Add(BuildAndExpandType.WorkerHutLarge);
+                }
             }
 
             list.Add(BuildAndExpandType.ServiceHouse_Small);
@@ -260,7 +270,7 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.TreeSeedlingHard);
             }
 
-            if (unlocks.building_stoneBuildings)
+            if (!campSite && unlocks.building_stoneBuildings)
             {
                 list.Add(BuildAndExpandType.Nobelhouse);
 
@@ -441,6 +451,10 @@ namespace VikingEngine.DSSWars.Build
             {
                 uniqueBuilding = true
             };
+
+            new BuildOption(BuildAndExpandType.WorkerTent, TerrainMainType.Building, (int)TerrainBuildingType.WorkerTent, SpriteName.NO_IMAGE, CraftBuildingLib.WorkerTent, true,
+                BuildCategoryTab.General, BuildFilterTag.Workers, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_WorkerTent);
 
             new BuildOption(BuildAndExpandType.WorkerHut, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, SpriteName.WarsBuild_WorkerHuts, CraftBuildingLib.WorkerHut, true, 
                 BuildCategoryTab.General, BuildFilterTag.Workers, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
@@ -897,7 +911,7 @@ namespace VikingEngine.DSSWars.Build
         { 
             foreach (BuildOption buildOption in BuildOptions)
             {
-                if (buildOption != null && buildOption.mainType == main && buildOption.subType == sub)
+                if (buildOption != null && buildOption.terrainType.EqualTerrain(main, sub))
                 { 
                     return buildOption.buildType;
                 }
@@ -991,7 +1005,7 @@ namespace VikingEngine.DSSWars.Build
 
             foreach (var opt in BuildOptions)
             {
-                if (opt.mainType == main && opt.subType == subType)
+                if (opt.terrainType.EqualTerrain(main, subType))//opt.mainType == main && opt.subType == subType)
                 { 
                     return opt.buildType;
                 }

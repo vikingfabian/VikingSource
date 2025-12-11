@@ -1,4 +1,31 @@
-﻿* Fixed: The mini map crashes spectator mode on load
+﻿!Tutorial is broken
+!Start with one settler is not complete
+
+#SPRING UPDATE#
+* controller vibrate on message
+* controller vibration setting
+* End diplomacy relations option
+
+UNCLAIMED LAND
+* The map generates with unclaimed land
+* Be able to place new cities with settler units
+* Settler unit in conscript
+* A place command system
+* A campsite city with worker tents
+* Faction start size options
+
+ECS REFACTORING
+* Performance: city resources have been moved to a Entity Component System 
+* Performance: removed faction to city pointers
+* Resource per city change tracking, plus hud improvements
+
+BALANCING
+* Removed the starting sharp sticks and padded armor
+* cooling fluid output increase 10 > 15
+
+UI
+* Item source is displayed on tooltip, like where it is crafted
+* Extended resource menu info
 
 
 #Event timers (are slightly random)#
@@ -15,7 +42,7 @@ Plus the boss fight: about 10 hours
 (total: about 45 hours)
 
 #current
-English, Simplified Chinese, Japanese, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian
+English, Simplified Chinese, Japanese, Korean, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian
 
 Fully translate all the strings in the file to Brazilian Portuguese and save into a new file, that I can download. Translate all of them, do not stop.
 Brazilians are used to English in gaming, use a “hybrid” translation.

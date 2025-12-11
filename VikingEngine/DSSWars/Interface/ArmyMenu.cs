@@ -5,6 +5,8 @@ using System.Reflection.Metadata;
 using System.Text;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -191,14 +193,41 @@ namespace VikingEngine.DSSWars.Interface
         {
             army.basicInfoHud(new ObjectHudArgs( content, player, true));
 
+            if (army.HasSettler(out var unit))
+            {
+                settlerButton(player, content, unit);
+            }
+
             var haltButton = new ArtButton( RbButtonStyle.Primary,
                         new List<AbsRichBoxMember>
                         {
                         new HUD.RichBox.RbText(DssRef.lang.ArmyOption_Halt),
                         },
                         new RbAction(halt), null);
-            //haltButton.addShortCutButton(player.input.Stop, false);
+            
             content.Add(haltButton);
+
+            
+        }
+
+        public static void settlerButton(LocalPlayer player, RichBoxContent content, SoldierGroup unit)
+        {
+            if (DssRef.world.tileGrid.TryGet(unit.tilePos, out var tile))
+            {
+                bool unclaimedLand = tile.City().cityType == CityType.UnClaimed;
+
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{
+                        new RbText(".Place Settlement") }, new RbAction(() =>
+                        {
+                            if (!unit.isDeleted)
+                            {
+                                new SettlerCommandTarget(player, unit);
+                            }
+                        }), null, unclaimedLand));
+
+                content.newLine();
+            }
         }
 
         void divideTab(RichBoxContent content)

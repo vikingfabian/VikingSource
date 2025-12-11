@@ -219,8 +219,8 @@ namespace VikingEngine.DSSWars.Map
             TerrainStructure terrainStructure = new TerrainStructure();
 
             //IntVector2 cityHall = WP.ToSubTilePos_Centered(city.tilePos);
-            FoodSpots_workupdate.Add(city.cityStorageCenter);
-            StoragePoints_workupdate.Add(city.cityStorageCenter);
+            FoodSpots_workupdate.Add(city.citySquareSubtilePos);
+            StoragePoints_workupdate.Add(city.citySquareSubtilePos);
 
             //Cirkle outward from city to find resources
             for (int radius = 0; radius <= city.cityTileRadius; ++radius)
