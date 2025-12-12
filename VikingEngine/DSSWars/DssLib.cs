@@ -328,6 +328,15 @@ namespace VikingEngine.DSSWars
         NUM
     }
 
+    enum CityBiom
+    {
+        None,
+        Frozen,// (Extra food storage, extra skin production)
+        Forest,
+        Mountain, //(Hog breeding)
+        Desolate,
+        Desert, //(Elephant breeding, drying meat, drying salt)
+    }
     enum CityCulture
     { 
         LargeFamilies,//

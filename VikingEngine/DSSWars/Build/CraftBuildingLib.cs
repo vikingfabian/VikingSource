@@ -115,7 +115,13 @@ namespace VikingEngine.DSSWars.Build
             XP.WorkExperienceType.Farm
         );
 
-        
+        public static readonly CraftBlueprint SaltMine = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.SaltMine,
+            1,
+            new UseResource[] { },
+            XP.WorkExperienceType.Farm
+        );
 
 
 
@@ -146,7 +152,7 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Stone_G, 10)
             }, XP.WorkExperienceType.HouseBuilding,
              XP.ExperienceLevel.Beginner_1,
-            CraftRequirement.Logistics2
+            Build.BuildAndExpandType.LogisticsLevel2
         );
 
         public static readonly CraftBlueprint WorkerTent = new CraftBlueprint(
@@ -363,17 +369,17 @@ namespace VikingEngine.DSSWars.Build
         );
 
         public static readonly CraftBlueprint ArcherBarracks = new CraftBlueprint(
-                    CraftResultType.Building,
-                    (int)Build.BuildAndExpandType.ArcherBarracks,
-                    1,
-                    new UseResource[]
-                    {
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.ArcherBarracks,
+            1,
+            new UseResource[]
+            {
                new UseResource(ItemResourceType.ServiceMen, 1),
         new UseResource(ItemResourceType.Wood_Group, 80),
         new UseResource(ItemResourceType.Stone_G, 20)
-                    },
+            },
                     XP.WorkExperienceType.HouseBuilding
-                );
+            );
 
         public static readonly CraftBlueprint WarmachineBarracks = new CraftBlueprint(
                     CraftResultType.Building,
@@ -426,16 +432,18 @@ namespace VikingEngine.DSSWars.Build
                   XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
             );
 
-     
+
         public static readonly CraftBlueprint PigPen = new CraftBlueprint(
            CraftResultType.Building,
            (int)Build.BuildAndExpandType.PigPen,
            1,
            new UseResource[]
            {
-                new UseResource(ItemResourceType.Water_G, 8),
+               new UseResource(ItemResourceType.ServiceMen, 1),
+               new UseResource(ItemResourceType.Pony, DssConst.PenBreedingStockCount),
+                //new UseResource(ItemResourceType.Water_G, 8),
                 new UseResource(ItemResourceType.Wood_Group, 20),
-                new UseResource(ItemResourceType.RawFood_Group, DssConst.AnimalFoodAmount)
+                //new UseResource(ItemResourceType.RawFood_Group, DssConst.AnimalFoodAmount)
            }, XP.WorkExperienceType.AnimalCare
        );
 
@@ -445,11 +453,267 @@ namespace VikingEngine.DSSWars.Build
             1,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Water_G, 4),
+               new UseResource(ItemResourceType.ServiceMen, 1),
+               new UseResource(ItemResourceType.Pony, DssConst.PenBreedingStockCount),
+                //new UseResource(ItemResourceType.Water_G, 4),
                 new UseResource(ItemResourceType.Wood_Group, 20),
-                new UseResource(ItemResourceType.RawFood_Group, DssConst.AnimalFoodAmount)
+                //new UseResource(ItemResourceType.RawFood_Group, DssConst.AnimalFoodAmount)
             }, XP.WorkExperienceType.AnimalCare
         );
+
+        public static readonly CraftBlueprint DogCage = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.DogCage,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.ServiceMen, 1),
+               new UseResource(ItemResourceType.Dog, DssConst.PenBreedingStockCount),
+                new UseResource(ItemResourceType.Iron_G, 10),
+           }, XP.WorkExperienceType.AnimalCare
+        );
+
+        public static readonly CraftBlueprint HoundCage = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.HoundCage,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.ServiceMen, 1),
+               new UseResource(ItemResourceType.Hound, DssConst.PenBreedingStockCount),
+                new UseResource(ItemResourceType.Iron_G, 20),
+           }, XP.WorkExperienceType.AnimalCare
+        );
+
+        public static readonly CraftBlueprint OxenPen = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.OxenPen,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.ServiceMen, 1),
+               new UseResource(ItemResourceType.Oxen, DssConst.PenBreedingStockCount),
+                new UseResource(ItemResourceType.Wood_Group, 20),
+           }, XP.WorkExperienceType.AnimalCare
+        );
+
+        public static readonly CraftBlueprint KineOxenPen = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.KineOxenPen,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.ServiceMen, 1),
+               new UseResource(ItemResourceType.KineOxen, DssConst.PenBreedingStockCount),
+                new UseResource(ItemResourceType.Wood_Group, 40),
+           }, XP.WorkExperienceType.AnimalCare
+        );
+
+        public static readonly CraftBlueprint PonyPen = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.PonyPen,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.ServiceMen, 1),
+               new UseResource(ItemResourceType.Pony, DssConst.PenBreedingStockCount),
+                new UseResource(ItemResourceType.Wood_Group, 20),
+           }, XP.WorkExperienceType.AnimalCare
+        );
+
+        public static readonly CraftBlueprint HorsePen = new CraftBlueprint(
+                CraftResultType.Building,
+                (int)Build.BuildAndExpandType.HorsePen,
+                1,
+                new UseResource[]
+                {
+               new UseResource(ItemResourceType.ServiceMen, 1),
+               new UseResource(ItemResourceType.Horse, DssConst.PenBreedingStockCount),
+            new UseResource(ItemResourceType.Wood_Group, 20),
+                }, XP.WorkExperienceType.AnimalCare
+            );
+
+        public static readonly CraftBlueprint WarHorsePen = new CraftBlueprint(
+                CraftResultType.Building,
+                (int)Build.BuildAndExpandType.WarHorsePen,
+                1,
+                new UseResource[]
+                {
+               new UseResource(ItemResourceType.ServiceMen, 2),
+               new UseResource(ItemResourceType.WarHorse, DssConst.PenBreedingStockCount),
+            new UseResource(ItemResourceType.Wood_Group, 20),
+                }, XP.WorkExperienceType.AnimalCare
+            );
+
+        public static readonly CraftBlueprint DraftHorsePen = new CraftBlueprint(
+                CraftResultType.Building,
+                (int)Build.BuildAndExpandType.DraftHorsePen,
+                1,
+                new UseResource[]
+                {
+               new UseResource(ItemResourceType.ServiceMen, 2),
+               new UseResource(ItemResourceType.DraftHorse, DssConst.PenBreedingStockCount),
+            new UseResource(ItemResourceType.Wood_Group, 20),
+                }, XP.WorkExperienceType.AnimalCare
+            );
+
+        public static readonly CraftBlueprint WildPigPen = new CraftBlueprint(
+                CraftResultType.Building,
+                (int)Build.BuildAndExpandType.WildPigPen,
+                1,
+                new UseResource[]
+                {
+               new UseResource(ItemResourceType.ServiceMen, 1),
+               new UseResource(ItemResourceType.WildPig, DssConst.PenBreedingStockCount),
+            new UseResource(ItemResourceType.Wood_Group, 20),
+                }, XP.WorkExperienceType.AnimalCare
+            );
+
+        public static readonly CraftBlueprint WildHogPen = new CraftBlueprint(
+                CraftResultType.Building,
+                (int)Build.BuildAndExpandType.WildHogPen,
+                1,
+                new UseResource[]
+                {
+               new UseResource(ItemResourceType.ServiceMen, 1),
+               new UseResource(ItemResourceType.WildHog, DssConst.PenBreedingStockCount),
+            new UseResource(ItemResourceType.Wood_Group, 20),
+                }, XP.WorkExperienceType.AnimalCare
+            );
+
+        public static readonly CraftBlueprint WarHogPen = new CraftBlueprint(
+                CraftResultType.Building,
+                (int)Build.BuildAndExpandType.WarHogPen,
+                1,
+                new UseResource[]
+                {
+               new UseResource(ItemResourceType.ServiceMen, 2),
+               new UseResource(ItemResourceType.WarHog, DssConst.PenBreedingStockCount),
+            new UseResource(ItemResourceType.Wood_Group, 20),
+                }, XP.WorkExperienceType.AnimalCare
+            );
+
+        public static readonly CraftBlueprint StagHogPen = new CraftBlueprint(
+                CraftResultType.Building,
+                (int)Build.BuildAndExpandType.StagHogPen,
+                1,
+                new UseResource[]
+                {
+               new UseResource(ItemResourceType.ServiceMen, 2),
+               new UseResource(ItemResourceType.StagHog, DssConst.PenBreedingStockCount),
+            new UseResource(ItemResourceType.Wood_Group, 20),
+                }, XP.WorkExperienceType.AnimalCare
+            );
+
+        public static readonly CraftBlueprint WolfCage = new CraftBlueprint(
+                CraftResultType.Building,
+                (int)Build.BuildAndExpandType.WolfCage,
+                1,
+                new UseResource[]
+                {
+                    new UseResource(ItemResourceType.ServiceMen, 1),
+                    new UseResource(ItemResourceType.Wolf, DssConst.PenBreedingStockCount),
+                    new UseResource(ItemResourceType.Iron_G, 10),
+                }, XP.WorkExperienceType.AnimalCare
+            );
+
+        public static readonly CraftBlueprint WargCage = new CraftBlueprint(
+                CraftResultType.Building,
+                (int)Build.BuildAndExpandType.WargCage,
+                1,
+                new UseResource[]
+                {
+                   new UseResource(ItemResourceType.ServiceMen, 2),
+                   new UseResource(ItemResourceType.Warg, DssConst.PenBreedingStockCount),
+                    new UseResource(ItemResourceType.Iron_G, 20),
+                }, XP.WorkExperienceType.AnimalCare
+            );
+
+        public static readonly CraftBlueprint AlphaWargCage = new CraftBlueprint(
+                CraftResultType.Building,
+                (int)Build.BuildAndExpandType.AlphaWargCage,
+                1,
+                new UseResource[]
+                {
+                   new UseResource(ItemResourceType.ServiceMen, 4),
+                   new UseResource(ItemResourceType.AlphaWarg, DssConst.PenBreedingStockCount),
+                    new UseResource(ItemResourceType.Iron_G, 40),
+                }, XP.WorkExperienceType.AnimalCare
+            );
+
+
+        public static readonly CraftBlueprint WildCatCage = new CraftBlueprint(
+                 CraftResultType.Building,
+                 (int)Build.BuildAndExpandType.WildCatCage,
+                 1,
+                 new UseResource[]
+                 {
+                    new UseResource(ItemResourceType.ServiceMen, 1),
+                    new UseResource(ItemResourceType.WildCat, DssConst.PenBreedingStockCount),
+                    new UseResource(ItemResourceType.Wood_Group, 20),
+                 }, XP.WorkExperienceType.AnimalCare
+             );
+
+        public static readonly CraftBlueprint LionCage = new CraftBlueprint(
+                 CraftResultType.Building,
+                 (int)Build.BuildAndExpandType.LionCage,
+                 1,
+                 new UseResource[]
+                 {
+                    new UseResource(ItemResourceType.ServiceMen, 2),
+                    new UseResource(ItemResourceType.Lion, DssConst.PenBreedingStockCount),
+                    new UseResource(ItemResourceType.Iron_G, 20),
+                 }, XP.WorkExperienceType.AnimalCare
+             );
+
+        public static readonly CraftBlueprint WarLionCage = new CraftBlueprint(
+                CraftResultType.Building,
+                (int)Build.BuildAndExpandType.WarLionCage,
+                1,
+                new UseResource[]
+                {
+                   new UseResource(ItemResourceType.ServiceMen, 4),
+                   new UseResource(ItemResourceType.WarLion, DssConst.PenBreedingStockCount),
+                    new UseResource(ItemResourceType.Iron_G, 40),
+                }, XP.WorkExperienceType.AnimalCare
+            );
+
+        public static readonly CraftBlueprint ElephantCage = new CraftBlueprint(
+                 CraftResultType.Building,
+                 (int)Build.BuildAndExpandType.ElephantCage,
+                 1,
+                 new UseResource[]
+                 {
+                    new UseResource(ItemResourceType.ServiceMen, 1),
+                    new UseResource(ItemResourceType.Elephant, DssConst.PenBreedingStockCount),
+                    new UseResource(ItemResourceType.Stone_G, 10),
+                 }, XP.WorkExperienceType.AnimalCare
+             );
+
+        public static readonly CraftBlueprint WarElephantCage = new CraftBlueprint(
+                 CraftResultType.Building,
+                 (int)Build.BuildAndExpandType.WarElephantCage,
+                 1,
+                 new UseResource[]
+                 {
+                    new UseResource(ItemResourceType.ServiceMen, 2),
+                    new UseResource(ItemResourceType.WarElephant, DssConst.PenBreedingStockCount),
+                    new UseResource(ItemResourceType.Stone_G, 20),
+                 }, XP.WorkExperienceType.AnimalCare
+             );
+
+        public static readonly CraftBlueprint OliphantCage = new CraftBlueprint(
+                CraftResultType.Building,
+                (int)Build.BuildAndExpandType.OliphantCage,
+                1,
+                new UseResource[]
+                {
+                   new UseResource(ItemResourceType.ServiceMen, 4),
+                   new UseResource(ItemResourceType.Oliphant, DssConst.PenBreedingStockCount),
+                    new UseResource(ItemResourceType.Stone_G, 40),
+                }, XP.WorkExperienceType.AnimalCare
+            );
+
 
         static readonly UseResource[] FarmResources = new UseResource[]
             {
@@ -638,10 +902,67 @@ namespace VikingEngine.DSSWars.Build
                    XP.WorkExperienceType.HouseBuilding
                );
 
-
         public static readonly CraftBlueprint Armory = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Armory,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.Wood_Group, 10),
+               new UseResource(ItemResourceType.Stone_G, 30),
+
+           },
+            XP.WorkExperienceType.HouseBuilding
+        );
+
+        public static readonly CraftBlueprint Pottery = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.Pottery,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Wood_Group, 20),
+               new UseResource(ItemResourceType.Stone_G, 8),
+          },
+           XP.WorkExperienceType.HouseBuilding
+       );
+        public static readonly CraftBlueprint DryingPan = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.DryingPan,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Stone_G, 20),
+          },
+           XP.WorkExperienceType.HouseBuilding
+       );
+        public static readonly CraftBlueprint Butcher = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.Butcher,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Wood_Group, 20),
+               new UseResource(ItemResourceType.Iron_G, 8),
+          },
+           XP.WorkExperienceType.HouseBuilding
+       );
+        public static readonly CraftBlueprint Smoker = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.Smoker,
+          1,
+          new UseResource[]
+          {
+               new UseResource(ItemResourceType.Wood_Group, 20),
+               new UseResource(ItemResourceType.Iron_G, 8),
+          },
+           XP.WorkExperienceType.HouseBuilding
+       );
+
+
+        public static readonly CraftBlueprint Dryer = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.Dryer,
            1,
            new UseResource[]
            {
@@ -662,9 +983,6 @@ namespace VikingEngine.DSSWars.Build
            },
             XP.WorkExperienceType.HouseBuilding
         );
-
-
-
 
         public static readonly CraftBlueprint WoodCutter = new CraftBlueprint(
                     CraftResultType.Building,
@@ -856,6 +1174,57 @@ namespace VikingEngine.DSSWars.Build
        );
 
 
+        public static readonly CraftBlueprint MaterialStorage = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.MaterialStorage,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.StorageBox, 20),
+           },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+        );
+
+        public static readonly CraftBlueprint FoodStorage = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.FoodStorage,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.StorageBox, 20),
+           },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint WeaponStorage = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.WeaponStorage,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.StorageBox, 20),
+           },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint ArmorStorage = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.ArmorStorage,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.StorageBox, 20),
+           },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint AnimalStorage = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.AnimalStorage,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.StorageBox, 20),
+           },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+        );
 
         public static readonly CraftBlueprint DirtWall = new CraftBlueprint(
            CraftResultType.Building,

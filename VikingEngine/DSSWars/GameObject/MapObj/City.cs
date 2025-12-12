@@ -90,6 +90,7 @@ namespace VikingEngine.DSSWars.GameObject
         //IntVector2 cullingTopLeft, cullingBottomRight;
         public int cityTileRadius = 0;
         public CityCulture Culture = CityCulture.NUM_NONE;
+        public CityBiom Biom = CityBiom.None;
 
         public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarm;
         bool autoBuild_Work = false;

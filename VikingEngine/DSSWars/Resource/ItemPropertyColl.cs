@@ -229,13 +229,13 @@ namespace VikingEngine.DSSWars.Resource
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarLionCage));
 
             // --- Elephants ---
-            new ItemProperties(ItemResourceType.Elephant, CityResoureIndex.Elephant, DefaultWeight, null, null)
+            new ItemProperties(ItemResourceType.Elephant, CityResoureIndex.Elephant, 1f / 2, null, null)
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.ElephantCage));
 
-            new ItemProperties(ItemResourceType.WarElephant, CityResoureIndex.WarElephant, DefaultWeight, null, null)
+            new ItemProperties(ItemResourceType.WarElephant, CityResoureIndex.WarElephant, 1f / 2, null, null)
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarElephantCage));
 
-            new ItemProperties(ItemResourceType.Oliphant, CityResoureIndex.Oliphant, DefaultWeight, null, null)
+            new ItemProperties(ItemResourceType.Oliphant, CityResoureIndex.Oliphant, 1f, null, null)
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OliphantCage));
 
             var craftList = Build.BuildingCraftList.AllBuidings();

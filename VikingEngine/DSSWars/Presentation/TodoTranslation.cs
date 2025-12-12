@@ -79,6 +79,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string Resource_TypeName_Oxen => "oxen";
         public string Resource_TypeName_KineOxen => "kine oxen";
 
+        public string Resource_TypeName_Pig => "pig";
+        public string Resource_TypeName_Hen => "hen";
         public string Resource_TypeName_Dog => "dog";
         public string Resource_TypeName_Hound => "hound";
 
@@ -104,13 +106,55 @@ namespace VikingEngine.DSSWars.Presentation
         public string Resource_TypeName_WarElephant => "war elephant";
         public string Resource_TypeName_Oliphant => "oliphant";
 
-        public string BuildingType_Butcher => "";
-        public string BuildingType_Pottery => "";
-        public string BuildingType_MeatGrill => "";
-        public string BuildingType_Smoker => "";
-        public string BuildingType_Dryer => "";
-        public string BuildingType_ => "";
-        public string BuildingType_ => "";
+        public string BuildingType_Butcher => "Butcher";
+        public string BuildingType_Pottery => "Pottery";
+        
+        public string BuildingType_Smoker => "Smoker";
+        public string BuildingType_Dryer => "Dryer";
+
+
+        // --- Storage ---
+        public string BuildingType_MaterialStorage => "Material Storage";
+        public string BuildingType_FoodStorage => "Food Storage";
+        public string BuildingType_WeaponStorage => "Weapon Storage";
+        public string BuildingType_ArmorStorage => "Armor Storage";
+        public string BuildingType_AnimalStorage => "Animal Storage";
+
+        // --- Oxen Pens ---
+        public string BuildingType_OxenPen => "Oxen Pen";
+        public string BuildingType_KineOxenPen => "Kine Oxen Pen";
+
+        // --- Dog Cages ---
+        public string BuildingType_DogCage => "Dog Cage";
+        public string BuildingType_HoundCage => "Hound Cage";
+
+        // --- Horse Pens ---
+        public string BuildingType_PonyPen => "Pony Pen";
+        public string BuildingType_HorsePen => "Horse Pen";
+        public string BuildingType_WarHorsePen => "War Horse Pen";
+        public string BuildingType_DraftHorsePen => "Draft Horse Pen";
+
+        // --- Pig/Hog Pens ---
+        public string BuildingType_WildPigPen => "Wild Pig Pen";
+        public string BuildingType_WildHogPen => "Wild Hog Pen";
+        public string BuildingType_WarHogPen => "War Hog Pen";
+        public string BuildingType_StagHogPen => "Stag Hog Pen";
+
+        // --- Wolf Cages ---
+        public string BuildingType_WolfCage => "Wolf Cage";
+        public string BuildingType_WargCage => "Warg Cage";
+        public string BuildingType_AlphaWargCage => "Alpha Warg Cage";
+
+        // --- Cat Cages ---
+        public string BuildingType_WildCatCage => "Wild Cat Cage";
+        public string BuildingType_LionCage => "Lion Cage";
+        public string BuildingType_WarLionCage => "War Lion Cage";
+
+        // --- Elephant Cages ---
+        public string BuildingType_ElephantCage => "Elephant Cage";
+        public string BuildingType_WarElephantCage => "War Elephant Cage";
+        public string BuildingType_OliphantCage => "Oliphant Cage";
+
 
 
         public string CityCulture_AnimalBreeder2_Description => "Higher chance of successful breeding";

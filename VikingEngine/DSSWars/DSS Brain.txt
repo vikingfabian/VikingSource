@@ -31,6 +31,9 @@ UI
 
 
 # SUMMER UPDATE #
+* 31 new buildings
+* Animal farming uses breeding and cost upkeep
+* Cities have a biom status
 
 RESOURCES
 * 5 New basic resources
@@ -38,6 +41,7 @@ RESOURCES
 * 4 shield types
 * 21 new animals
 * Animal armor
+* 4 new collectable terrain resources
 
 CITY CULTURES
 * Butchers, //Larger meat production
@@ -49,6 +53,7 @@ CITY CULTURES
 * Nomads, //Low settler cost
 * Coopers, //High storage box production
 * Salters, //High conserved food production
+
 
 
 #MOUNTED RESOURCES TODO

@@ -68,9 +68,7 @@ namespace VikingEngine.DSSWars.Resource
     enum ItemResourceType
     {
         NONE,
-
-        Hen,
-        Pig,
+                
         Egg,
         Meat,
 
@@ -206,7 +204,9 @@ namespace VikingEngine.DSSWars.Resource
         Men,
         NobelMen,
         ServiceMen,
-        
+
+        Hen,
+        Pig,
         Oxen,
         KineOxen,
 
