@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.ToGG;
@@ -16,6 +17,389 @@ namespace VikingEngine.DSSWars
 {
     static class IconName
     {
+        //new
+        public static void Item(ItemResourceType item, out SpriteName itemIcon, out string itemName)
+        {
+            switch (item)
+            {
+                // --- Economy & Workers ---
+                case ItemResourceType.Gold:
+                    itemIcon = SpriteName.rtsMoney;
+                    itemName = DssRef.lang.ResourceType_Gold;
+                    break;
+                case ItemResourceType.Men:
+                    itemIcon = SpriteName.WarsWorker;
+                    itemName = DssRef.lang.ResourceType_Workers;
+                    break;
+                case ItemResourceType.ServiceMen:
+                    itemIcon = SpriteName.WarsServiceMen;
+                    itemName = DssRef.lang.ResourceType_ServiceMen;
+                    break;
+                case ItemResourceType.Settler:
+                    itemIcon = SpriteName.WarsWorker; // Defaulting to worker icon
+                    itemName = DssRef.todoLang.UnitType_Settler;
+                    break;
+
+                // --- Resources & Materials ---
+                case ItemResourceType.Water_G:
+                    itemIcon = SpriteName.WarsResource_Water;
+                    itemName = DssRef.lang.Resource_TypeName_Water;
+                    break;
+                case ItemResourceType.Beer:
+                    itemIcon = SpriteName.WarsResource_Beer;
+                    itemName = DssRef.lang.Resource_TypeName_Beer;
+                    break;
+                case ItemResourceType.CoolingFluid:
+                    itemIcon = SpriteName.WarsResource_CoolingFluid;
+                    itemName = DssRef.lang.Resource_TypeName_CoolingFluid;
+                    break;
+                case ItemResourceType.Stone_G:
+                    itemIcon = SpriteName.WarsResource_Stone;
+                    itemName = DssRef.lang.Resource_TypeName_Stone;
+                    break;
+                case ItemResourceType.DryWood:
+                case ItemResourceType.SoftWood:
+                case ItemResourceType.HardWood:
+                case ItemResourceType.Wood_Group:
+                    itemIcon = SpriteName.WarsResource_Wood;
+                    itemName = DssRef.lang.Resource_TypeName_Wood;
+                    break;
+                case ItemResourceType.Coal:
+                case ItemResourceType.Fuel_G:
+                    itemIcon = SpriteName.WarsResource_Fuel;
+                    itemName = DssRef.lang.Resource_TypeName_Fuel;
+                    break;
+                case ItemResourceType.Sulfur:
+                    itemIcon = SpriteName.WarsResource_Sulfur;
+                    itemName = DssRef.lang.Resource_TypeName_Sulfur;
+                    break;
+
+                // --- Food & Agriculture ---
+                case ItemResourceType.Food_G:
+                    itemIcon = SpriteName.WarsResource_Food;
+                    itemName = DssRef.lang.Resource_TypeName_Food;
+                    break;
+                case ItemResourceType.Hen:
+                case ItemResourceType.Pig:
+                    itemIcon = SpriteName.WarsResource_RawMeat;
+                    itemName = DssRef.lang.Resource_TypeName_RawFood;
+                    break;
+                
+                case ItemResourceType.Egg:
+                case ItemResourceType.Wheat:
+                case ItemResourceType.RawFood_Group:
+                    itemIcon = SpriteName.WarsResource_RawFood;
+                    itemName = DssRef.lang.Resource_TypeName_RawFood;
+                    break;
+
+                case ItemResourceType.Rapeseed:
+                    itemIcon = SpriteName.WarsResource_Rapeseed;
+                    itemName = DssRef.lang.Resource_TypeName_Rapeseed;
+                    break;
+                case ItemResourceType.Hemp:
+                    itemIcon = SpriteName.WarsResource_Hemp;
+                    itemName = DssRef.lang.Resource_TypeName_Hemp;
+                    break;
+                case ItemResourceType.Linen:
+                case ItemResourceType.SkinLinen_Group:
+                    itemIcon = SpriteName.WarsResource_Linen;
+                    itemName = DssRef.lang.Resource_TypeName_Linen;
+                    break;
+
+                // --- Ores & Metals ---
+                case ItemResourceType.GoldOre:
+                    itemIcon = SpriteName.WarsResource_GoldOre;
+                    itemName = DssRef.lang.Resource_TypeName_GoldOre;
+                    break;
+                case ItemResourceType.IronOre_G:
+                    itemIcon = SpriteName.WarsResource_IronOre;
+                    itemName = DssRef.lang.Resource_TypeName_IronOre;
+                    break;
+                case ItemResourceType.BogIron:
+                    itemIcon = SpriteName.WarsBogIron;
+                    itemName = DssRef.lang.Resource_TypeName_BogIron;
+                    break;
+                case ItemResourceType.TinOre:
+                    itemIcon = SpriteName.WarsResource_TinOre;
+                    itemName = DssRef.lang.Resource_TypeName_TinOre;
+                    break;
+                case ItemResourceType.CopperOre:
+                    itemIcon = SpriteName.WarsResource_CopperOre;
+                    itemName = DssRef.lang.Resource_TypeName_CopperOre;
+                    break;
+                case ItemResourceType.LeadOre:
+                    itemIcon = SpriteName.WarsResource_LeadOre;
+                    itemName = DssRef.lang.Resource_TypeName_LeadOre;
+                    break;
+                case ItemResourceType.SilverOre:
+                    itemIcon = SpriteName.WarsResource_SilverOre;
+                    itemName = DssRef.lang.Resource_TypeName_SilverOre;
+                    break;
+
+                // --- Refined Metals ---
+                case ItemResourceType.Iron_G:
+                    itemIcon = SpriteName.WarsResource_Iron;
+                    itemName = DssRef.lang.Resource_TypeName_Iron;
+                    break;
+                case ItemResourceType.BloomeryIron:
+                    itemIcon = SpriteName.WarsResource_BloomeryIron;
+                    itemName = DssRef.lang.Resource_TypeName_BloomIron;
+                    break;
+                case ItemResourceType.CastIron:
+                    itemIcon = SpriteName.WarsResource_CastIron;
+                    itemName = DssRef.lang.Resource_TypeName_CastIron;
+                    break;
+                case ItemResourceType.Steel:
+                    itemIcon = SpriteName.WarsResource_Steel;
+                    itemName = DssRef.lang.Resource_TypeName_Steel;
+                    break;
+                case ItemResourceType.Tin:
+                    itemIcon = SpriteName.WarsResource_Tin;
+                    itemName = DssRef.lang.Resource_TypeName_Tin;
+                    break;
+                case ItemResourceType.Copper:
+                    itemIcon = SpriteName.WarsResource_Copper;
+                    itemName = DssRef.lang.Resource_TypeName_Copper;
+                    break;
+                case ItemResourceType.Bronze:
+                    itemIcon = SpriteName.WarsResource_Bronze;
+                    itemName = DssRef.lang.Resource_TypeName_Bronze;
+                    break;
+                case ItemResourceType.Silver:
+                    itemIcon = SpriteName.WarsResource_Silver;
+                    itemName = DssRef.lang.Resource_TypeName_Silver;
+                    break;
+                case ItemResourceType.Lead:
+                    itemIcon = SpriteName.WarsResource_Lead;
+                    itemName = DssRef.lang.Resource_TypeName_Lead;
+                    break;
+                case ItemResourceType.RawMithril:
+                    itemIcon = SpriteName.WarsResource_Mithril;
+                    itemName = DssRef.lang.Resource_TypeName_RawMithril;
+                    break;
+                case ItemResourceType.Mithril:
+                    itemIcon = SpriteName.WarsResource_MithrilAlloy;
+                    itemName = DssRef.lang.Resource_TypeName_Mithril;
+                    break;
+
+                // --- Weapons (Melee) ---
+                case ItemResourceType.SharpStick:
+                    itemIcon = SpriteName.WarsResource_Sharpstick;
+                    itemName = DssRef.lang.Resource_TypeName_SharpStick;
+                    break;
+                case ItemResourceType.Sword:
+                    itemIcon = SpriteName.WarsResource_Sword;
+                    itemName = DssRef.lang.Resource_TypeName_Sword;
+                    break;
+                case ItemResourceType.BronzeSword:
+                    itemIcon = SpriteName.WarsResource_BronzeSword;
+                    itemName = DssRef.lang.Resource_TypeName_BronzeSword;
+                    break;
+                case ItemResourceType.ShortSword:
+                    itemIcon = SpriteName.WarsResource_ShortSword;
+                    itemName = DssRef.lang.Resource_TypeName_ShortSword;
+                    break;
+                case ItemResourceType.LongSword:
+                    itemIcon = SpriteName.WarsResource_Longsword;
+                    itemName = DssRef.lang.Resource_TypeName_LongSword;
+                    break;
+                case ItemResourceType.TwoHandSword:
+                    itemIcon = SpriteName.WarsResource_TwoHandSword;
+                    itemName = DssRef.lang.Resource_TypeName_TwoHandSword;
+                    break;
+                case ItemResourceType.MithrilSword:
+                    itemIcon = SpriteName.WarsResource_MithrilSword;
+                    itemName = DssRef.lang.Resource_TypeName_MithrilSword;
+                    break;
+                case ItemResourceType.HandSpear:
+                    itemIcon = SpriteName.WarsResource_HandSpear;
+                    itemName = DssRef.lang.Resource_TypeName_HandSpear;
+                    break;
+                case ItemResourceType.Pike:
+                    itemIcon = SpriteName.WarsResource_Pike; // Assumed SpriteName
+                    itemName = DssRef.lang.Resource_TypeName_Pike;
+                    break;
+                case ItemResourceType.Warhammer:
+                    itemIcon = SpriteName.WarsResource_Warhammer;
+                    itemName = DssRef.lang.Resource_TypeName_Warhammer;
+                    break;
+                case ItemResourceType.KnightsLance:
+                    itemIcon = SpriteName.WarsResource_KnightsLance;
+                    itemName = DssRef.lang.Resource_TypeName_KnightsLance;
+                    break;
+
+                // --- Weapons (Ranged) ---
+                case ItemResourceType.SlingShot:
+                    itemIcon = SpriteName.WarsResource_Slingshot;
+                    itemName = DssRef.lang.Resource_TypeName_SlingShot;
+                    break;
+                case ItemResourceType.ThrowingSpear:
+                    itemIcon = SpriteName.WarsResource_ThrowSpear;
+                    itemName = DssRef.lang.Resource_TypeName_ThrowingSpear;
+                    break;
+                case ItemResourceType.Bow:
+                    itemIcon = SpriteName.WarsResource_Bow;
+                    itemName = DssRef.lang.Resource_TypeName_Bow;
+                    break;
+                case ItemResourceType.LongBow:
+                    itemIcon = SpriteName.WarsResource_Longbow;
+                    itemName = DssRef.lang.Resource_TypeName_Longbow;
+                    break;
+                case ItemResourceType.Crossbow:
+                    itemIcon = SpriteName.WarsResource_Crossbow;
+                    itemName = DssRef.lang.Resource_TypeName_Crossbow;
+                    break;
+                case ItemResourceType.MithrilBow:
+                    itemIcon = SpriteName.WarsResource_Mithrilbow;
+                    itemName = DssRef.lang.Resource_TypeName_MithrilBow;
+                    break;
+
+                // --- Siege & Components ---
+                case ItemResourceType.Ballista:
+                    itemIcon = SpriteName.WarsResource_Ballista;
+                    itemName = DssRef.lang.UnitType_Ballista;
+                    break;
+                case ItemResourceType.Manuballista:
+                    itemIcon = SpriteName.WarsResource_Manuballista;
+                    itemName = DssRef.lang.Resource_TypeName_Manuballista;
+                    break;
+                case ItemResourceType.Catapult:
+                    itemIcon = SpriteName.WarsResource_Catapult;
+                    itemName = DssRef.lang.Resource_TypeName_Catapult;
+                    break;
+                case ItemResourceType.SiegeCannonBronze:
+                    itemIcon = SpriteName.WarsResource_BronzeSiegeCannon;
+                    itemName = DssRef.lang.Resource_TypeName_SiegeCannonBronze;
+                    break;
+                case ItemResourceType.ManCannonBronze:
+                    itemIcon = SpriteName.WarsResource_BronzeManCannon;
+                    itemName = DssRef.lang.Resource_TypeName_ManCannonBronze;
+                    break;
+                case ItemResourceType.SiegeCannonIron:
+                    itemIcon = SpriteName.WarsResource_IronSiegeCannon;
+                    itemName = DssRef.lang.Resource_TypeName_SiegeCannonIron;
+                    break;
+                case ItemResourceType.ManCannonIron:
+                    itemIcon = SpriteName.WarsResource_IronManCannon;
+                    itemName = DssRef.lang.Resource_TypeName_ManCannonIron;
+                    break;
+                case ItemResourceType.Palisade:
+                    itemIcon = SpriteName.WarsResource_Palisade;
+                    itemName = DssRef.lang.Resource_TypeName_Palisade;
+                    break;
+                case ItemResourceType.Toolkit:
+                    itemIcon = SpriteName.WarsResource_Toolkit;
+                    itemName = DssRef.lang.Resource_TypeName_Toolkit;
+                    break;
+                case ItemResourceType.Wagon2Wheel:
+                    itemIcon = SpriteName.WarsResource_Wagon2Wheel;
+                    itemName = DssRef.lang.Resource_TypeName_Wagon2Wheel;
+                    break;
+                case ItemResourceType.Wagon4Wheel:
+                    itemIcon = SpriteName.WarsResource_Wagon4Wheel;
+                    itemName = DssRef.lang.Resource_TypeName_Wagon4Wheel;
+                    break;
+
+                // --- Firearms & Explosives ---
+                case ItemResourceType.BlackPowder:
+                    itemIcon = SpriteName.WarsResource_BlackPowder;
+                    itemName = DssRef.lang.Resource_TypeName_BlackPowder;
+                    break;
+                case ItemResourceType.GunPowder:
+                    itemIcon = SpriteName.WarsResource_GunPowder;
+                    itemName = DssRef.lang.Resource_TypeName_GunPowder;
+                    break;
+                case ItemResourceType.LedBullet:
+                    itemIcon = SpriteName.WarsResource_Bullets;
+                    itemName = DssRef.lang.Resource_TypeName_LedBullet;
+                    break;
+                case ItemResourceType.HandCannon:
+                    itemIcon = SpriteName.WarsResource_BronzeRifle;
+                    itemName = DssRef.lang.Resource_TypeName_HandCannon;
+                    break;
+                case ItemResourceType.HandCulverin:
+                    itemIcon = SpriteName.WarsResource_BronzeShotgun;
+                    itemName = DssRef.lang.Resource_TypeName_HandCulverin;
+                    break;
+                case ItemResourceType.Rifle:
+                    itemIcon = SpriteName.WarsResource_IronRifle;
+                    itemName = DssRef.lang.Resource_TypeName_Rifle;
+                    break;
+                case ItemResourceType.Blunderbuss:
+                    itemIcon = SpriteName.WarsResource_IronShotgun;
+                    itemName = DssRef.lang.Resource_TypeName_Blunderbuss;
+                    break;
+
+                // --- Armor ---
+                case ItemResourceType.PaddedArmor:
+                    itemIcon = SpriteName.WarsResource_PaddedArmor;
+                    itemName = DssRef.lang.Resource_TypeName_PaddedArmor;
+                    break;
+                case ItemResourceType.HeavyPaddedArmor:
+                    itemIcon = SpriteName.WarsResource_HeavyPaddedArmor;
+                    itemName = DssRef.lang.Resource_TypeName_HeavyPaddedArmor;
+                    break;
+                case ItemResourceType.BronzeArmor:
+                    itemIcon = SpriteName.WarsResource_BronzeArmor;
+                    itemName = DssRef.lang.Resource_TypeName_BronzeArmor;
+                    break;
+                case ItemResourceType.IronArmor:
+                    itemIcon = SpriteName.WarsResource_IronArmor;
+                    itemName = DssRef.lang.Resource_TypeName_IronArmor;
+                    break;
+                case ItemResourceType.HeavyIronArmor:
+                    itemIcon = SpriteName.WarsResource_HeavyIronArmor;
+                    itemName = DssRef.lang.Resource_TypeName_HeavyIronArmor;
+                    break;
+                case ItemResourceType.LightPlateArmor:
+                    itemIcon = SpriteName.WarsResource_LightPlateArmor;
+                    itemName = DssRef.lang.Resource_TypeName_LightPlateArmor;
+                    break;
+                case ItemResourceType.FullPlateArmor:
+                    itemIcon = SpriteName.WarsResource_FullPlateArmor;
+                    itemName = DssRef.lang.Resource_TypeName_FullPlateArmor;
+                    break;
+                case ItemResourceType.MithrilArmor:
+                    itemIcon = SpriteName.WarsResource_MithrilArmor;
+                    itemName = DssRef.lang.Resource_TypeName_MithrilArmor;
+                    break;
+
+                // --- Currency ---
+                case ItemResourceType.CopperCoin:
+                    itemIcon = SpriteName.WarsResource_CopperCoin;
+                    itemName = DssRef.lang.Resource_TypeName_Coin;
+                    break;
+                case ItemResourceType.BronzeCoin:
+                    itemIcon = SpriteName.WarsResource_BonzeCoin;
+                    itemName = DssRef.lang.Resource_TypeName_Coin;
+                    break;
+                case ItemResourceType.SilverCoin:
+                    itemIcon = SpriteName.WarsResource_SilverCoin;
+                    itemName = DssRef.lang.Resource_TypeName_Coin;
+                    break;
+                case ItemResourceType.ElfCoin:
+                    itemIcon = SpriteName.WarsResource_ElfCoin;
+                    itemName = DssRef.lang.Resource_TypeName_Coin;
+                    break;
+
+                // --- Misc ---
+                case ItemResourceType.AutomatedItem:
+                    itemIcon = SpriteName.AutomationGearIcon;
+                    itemName = TextLib.Error; // No name provided in original
+                    break;
+
+                case ItemResourceType.NONE:
+                    itemIcon = SpriteName.BluePrintSquareFull;
+                    itemName = DssRef.lang.Hud_None;
+                    break;
+
+                default:
+                    itemIcon = SpriteName.NO_IMAGE;
+                    itemName = TextLib.Error;
+                    break;
+            }
+        }
+
         public static void BuildCategory(BuildCategoryTab tab, out SpriteName tabIcon, out string category)
         {
             //string category;
