@@ -1041,7 +1041,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             if (army != null)
             {
                 army.mapExecute();
-                army.moveOrderEffect();
+                
 
                 if (input.inputSource.IsController)
                 {

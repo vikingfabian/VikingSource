@@ -1456,7 +1456,7 @@ namespace VikingEngine.DSSWars.Presentation
             //tech(technology.blackPowder.points, TechnologyTemplate.BlackPowderUnlock, SpriteName.WarsResource_BronzeRifle, XpLib.TechnologyName_BlackPowder());
             //tech(technology.gunPowder.points, TechnologyTemplate.GunPowderUnlock, SpriteName.WarsResource_IronRifle, DssRef.lang.Resource_TypeName_GunPowder);
         }
-
+        //old
         public static string Item(ItemResourceType item)
         {
             switch (item)
