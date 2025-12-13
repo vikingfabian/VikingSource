@@ -251,13 +251,9 @@ namespace VikingEngine.DSSWars.Work
                     int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssRef.difficulty.FoodEnergySett);
                     
                     city.AddGroupedResource(CityResoureIndex.food, -eatAmount);
-                    //city.res_food.amount -= eatAmount;
                     city.foodSpending.add(eatAmount);
-                    //faction.res_food.onChange(-eatAmount);
                     energy += eatAmount * DssRef.difficulty.FoodEnergySett;
                     break;
-
-                
 
                 case WorkType.GatherFoil:
                     {

@@ -313,6 +313,27 @@ namespace VikingEngine.DSSWars.GameObject
 
             workHutStyle = areaCulture.percMountain > 0.5 ? 0 : 1;
 
+            if (areaCulture.percDesolate > 0.5)
+            {
+                Biom = CityBiom.Desolate;
+            }
+            else if (areaCulture.frozenBiom > 0.5)
+            {
+                Biom = CityBiom.Frozen;
+            }
+            else if (areaCulture.percDry > 0.5)
+            {
+                Biom = CityBiom.Desert;
+            }
+            else if (areaCulture.percForest > 0.5)
+            {
+                Biom = CityBiom.Forest;
+            }
+            else if (areaCulture.percMountain > 0.5)
+            {
+                Biom = CityBiom.Mountain;
+            }
+
             if (areaCulture.percForest >= 0.7 && cityType == CityType.Capital)
             {
                 cityCultureCollection.LargeGreen.Add(this);
@@ -377,7 +398,6 @@ namespace VikingEngine.DSSWars.GameObject
 
             casualCityProfile.InitCulture(this, areaCulture);
         }
-
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {
@@ -844,7 +864,7 @@ namespace VikingEngine.DSSWars.GameObject
             // Additional melee / ranged
             write(CityResoureIndex.Warhammer);
             write(CityResoureIndex.twohandsword);
-            write(CityResoureIndex.knightslance);
+            //write(CityResoureIndex.knightslance);
             write(CityResoureIndex.SlingShot);
             write(CityResoureIndex.ThrowingSpear);
             write(CityResoureIndex.bow);
@@ -1022,7 +1042,7 @@ namespace VikingEngine.DSSWars.GameObject
             // Additional melee / ranged
             read(CityResoureIndex.Warhammer);
             read(CityResoureIndex.twohandsword);
-            read(CityResoureIndex.knightslance);
+            //read(CityResoureIndex.knightslance);
             read(CityResoureIndex.SlingShot);
             read(CityResoureIndex.ThrowingSpear);
             read(CityResoureIndex.bow);
@@ -2965,6 +2985,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (!player.profile.casualControls)
                 {
                     cultureToHud(player, content, interactive);
+                    biomToHud(player, content, interactive);
                 }
                 if (immigrants.HasValue())
                 {
@@ -3794,7 +3815,8 @@ namespace VikingEngine.DSSWars.GameObject
         //}
         public void cultureToHud(LocalPlayer player, RichBoxContent content, bool interactive)
         {
-            content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, LangLib.CityCulture(Culture, true)));
+            IconName.CityCulture(Culture, out string title, out string description);
+            content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, title));
             if (interactive)
             {
                 content.space();
@@ -3803,14 +3825,24 @@ namespace VikingEngine.DSSWars.GameObject
             else
             {
                 content.newLine();
-                HudLib.Description(content, LangLib.CityCulture(Culture, false));
+                HudLib.Description(content, description);
             }
+        }
+
+        public void biomToHud(LocalPlayer player, RichBoxContent content, bool interactive)
+        {
+            content.newLine();
+            content.Add(new RbText(".Biom:", HudLib.TitleColor_Label));
+            content.space();
+            content.Add(new RbText(Biom.ToString()));
         }
 
         void cultureToolTip(RichBoxContent content, object tag)
         {
-            content.h2(LangLib.CityCulture(Culture, true), HudLib.TitleColor_Head);
-            content.text(LangLib.CityCulture(Culture, false));
+            IconName.CityCulture(Culture, out string title, out string description);
+
+            content.h2(title, HudLib.TitleColor_Head);
+            content.text(description);
 
             content.newParagraph();
             content.text(DssRef.lang.CityCultureDescription, HudLib.InfoYellow_Light);
@@ -3821,10 +3853,6 @@ namespace VikingEngine.DSSWars.GameObject
             if (nCityIndex >= 0)
             {
                 world.neighborCities.Add(myIndex, ref neighborCitiesCount, nCityIndex, true); 
-                //if (!neighborCities.Contains(nCityIndex))
-                //{
-                //    neighborCities.Add(nCityIndex);
-                //}
             }
         }
        

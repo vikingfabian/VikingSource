@@ -6,18 +6,19 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
-using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.GO.Gadgets;
+using VikingEngine.LootFest.GO.PickUp;
 using VikingEngine.PJ.Joust;
 using VikingEngine.ToGG.MoonFall;
-using VikingEngine.LootFest.GO.PickUp;
-using VikingEngine.DSSWars.EntityComponent;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -29,16 +30,24 @@ namespace VikingEngine.DSSWars.GameObject
             ItemResourceType.Wood_Group,
             ItemResourceType.Fuel_G,
             ItemResourceType.Stone_G,
+        ItemResourceType.Clay,
+        ItemResourceType.Brick,
+
             ItemResourceType.SkinLinen_Group,
             ItemResourceType.RawFood_Group,
+        ItemResourceType.Salt,
 
-            ItemResourceType.Food_G,             
+            ItemResourceType.Food_G,
+        ItemResourceType.ConservedFood,
             ItemResourceType.Beer,
             ItemResourceType.CoolingFluid,
             ItemResourceType.Palisade,
             ItemResourceType.Toolkit,
             ItemResourceType.Wagon2Wheel,
             ItemResourceType.Wagon4Wheel,
+            ItemResourceType.WagonClosed,
+            ItemResourceType.WagonIron,
+            ItemResourceType.WagonSteel,
             ItemResourceType.BlackPowder,
             ItemResourceType.GunPowder,
             ItemResourceType.LedBullet,
@@ -76,8 +85,8 @@ namespace VikingEngine.DSSWars.GameObject
             ItemResourceType.HandSpear,
 
             ItemResourceType.Warhammer,
-             ItemResourceType.TwoHandSword,
-             ItemResourceType.KnightsLance,
+            ItemResourceType.TwoHandSword,
+             //ItemResourceType.KnightsLance,
             ItemResourceType.MithrilSword,
 
             
@@ -109,8 +118,7 @@ namespace VikingEngine.DSSWars.GameObject
         };
 
         public static readonly ItemResourceType[] MovableCityResource_Armor =
-         {
-             
+         {             
              ItemResourceType.BronzeArmor,
              ItemResourceType.PaddedArmor,
              ItemResourceType.HeavyPaddedArmor,
@@ -120,6 +128,49 @@ namespace VikingEngine.DSSWars.GameObject
              ItemResourceType.FullPlateArmor,
 
              ItemResourceType.MithrilArmor,
+
+            ItemResourceType.MountBronzeArmor,
+            ItemResourceType.MountPaddedArmor,
+            ItemResourceType.MountHeavyPaddedArmor,
+            ItemResourceType.MountIronArmor,
+            ItemResourceType.MountHeavyIronArmor,
+            ItemResourceType.MountLightPlateArmor,
+            ItemResourceType.MountFullPlateArmor,
+            ItemResourceType.MountMithrilArmor,
+        };
+
+        public static readonly ItemResourceType[] MovableCityResource_Animals =
+         {
+            ItemResourceType.Hen,
+            ItemResourceType.Pig,
+             
+            ItemResourceType.Dog,
+            ItemResourceType.Hound,
+
+            ItemResourceType.Oxen,
+            ItemResourceType.KineOxen,
+
+            ItemResourceType.Pony,
+            ItemResourceType.Horse,
+            ItemResourceType.WarHorse,
+            ItemResourceType.DraftHorse,
+
+            ItemResourceType.WildPig,
+            ItemResourceType.WildHog,
+            ItemResourceType.WarHog,
+            ItemResourceType.StagHog,
+
+            ItemResourceType.Wolf,
+            ItemResourceType.Warg,
+            ItemResourceType.AlphaWarg,
+
+            ItemResourceType.WildCat,
+            ItemResourceType.Lion,
+            ItemResourceType.WarLion,
+
+            ItemResourceType.Elephant,
+            ItemResourceType.WarElephant,
+            ItemResourceType.Oliphant,
         };
 
         MinuteStats blackMarketCosts_food = new MinuteStats();
@@ -1302,13 +1353,13 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Hen:
                     convert1.type = ItemResourceType.RawFood_Group;
                     convert1.amount = DssConst.HenRawFoodAmout;
-                    animalResourceBonus(ref item);
+                    //animalResourceBonus(ref item);
                     break;
 
                 case ItemResourceType.Pig:
                     convert1.type = ItemResourceType.RawFood_Group;
                     convert1.amount = DssConst.PigRawFoodAmout;
-                    animalResourceBonus(ref item);
+                    //animalResourceBonus(ref item);
 
                     convert2 = new ItemResource(ItemResourceType.SkinLinen_Group, 1, 1, DssConst.PigSkinAmount);
                     break;
@@ -1364,13 +1415,13 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void animalResourceBonus(ref ItemResource item)
-        {
-            if (Culture == CityCulture.AnimalBreeder)
-            {
-                item.amount *= 2;
-            }
-        }
+        //void animalResourceBonus(ref ItemResource item)
+        //{
+        //    if (Culture == CityCulture.AnimalBreeder)
+        //    {
+        //        item.amount *= 2;
+        //    }
+        //}
         
         public void tradeTab()
         { 
@@ -1482,80 +1533,82 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer, LocalPlayer player, City city, ResourcesSubTab stockpileLink)
+        public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer, LocalPlayer player, City city, bool hideOnZero = false)
         {
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember>{
-                new RbImage(ResourceLib.Icon(item)),
-                new RbSpace(),
-                new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": " + TextLib.LargeNumber(amount))
-            }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(city, item))));
-
-            if (item != ItemResourceType.Water_G &&
-                item != ItemResourceType.Gold &&
-                item != ItemResourceType.Men)
+            if (amount > 0 || !hideOnZero)
             {
-                bool reached = amount >= goalBuffer;
-                reachedBuffer |= reached;
-                SpriteName stockIcon;
-                if (safeGuard)
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd_Protected;
-                }
-                else if (reached)
-                {
-                    stockIcon = SpriteName.WarsStockpileStop;
-                }
-                else
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd;
-                }
-                var icon = new RbImage(stockIcon);
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember>{
+                    new RbImage(ResourceLib.Icon(item)),
+                    new RbSpace(),
+                    new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": " + TextLib.LargeNumber(amount))
+                }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(city, item))));
 
-                if (player == null)
+                if (item != ItemResourceType.Water_G &&
+                    item != ItemResourceType.Gold &&
+                    item != ItemResourceType.Men)
                 {
-                    content.Add(icon);
-                }
-                else
-                {
-                    var infoContent = new RichBoxContent();
-                    infoContent.Add(icon);
-                   
-                    var infoButton = new ArtButton( RbButtonStyle.HoverArea, infoContent, 
-                        new RbAction(()=> 
-                        {
-                            if (player.tutorial == null)
+                    bool reached = amount >= goalBuffer;
+                    reachedBuffer |= reached;
+                    SpriteName stockIcon;
+                    if (safeGuard)
+                    {
+                        stockIcon = SpriteName.WarsStockpileAdd_Protected;
+                    }
+                    else if (reached)
+                    {
+                        stockIcon = SpriteName.WarsStockpileStop;
+                    }
+                    else
+                    {
+                        stockIcon = SpriteName.WarsStockpileAdd;
+                    }
+                    var icon = new RbImage(stockIcon);
+
+                    if (player == null)
+                    {
+                        content.Add(icon);
+                    }
+                    else
+                    {
+                        var infoContent = new RichBoxContent();
+                        infoContent.Add(icon);
+
+                        var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent,
+                            new RbAction(() =>
                             {
-                                player.resourcesSubTab = stockpileLink;
-                            }
-                        }),                        
-                        new RbTooltip((RichBoxContent content, object tag) =>
-                        {
-                            HudLib.Label(content, DssRef.lang.Resource_Tab_Stockpile);
-                            content.newLine();
-                            content.Add(new RbImage(stockIcon));
-                            content.space();
-                            content.Add(new RbText(city.GetGroupedResource(item).goalBuffer.ToString()));
-                        }));
+                                if (player.tutorial == null)
+                                {
+                                    player.resourcesSubTab.managementType = ResourceManagementType.Stockpile;
+                                }
+                            }),
+                            new RbTooltip((RichBoxContent content, object tag) =>
+                            {
+                                HudLib.Label(content, DssRef.lang.Resource_Tab_Stockpile);
+                                content.newLine();
+                                content.Add(new RbImage(stockIcon));
+                                content.space();
+                                content.Add(new RbText(city.GetGroupedResource(item).goalBuffer.ToString()));
+                            }));
 
-                    //content.space();
-                    content.Add(infoButton);
+                        //content.space();
+                        content.Add(infoButton);
+                    }
+
                 }
-                
+
+
+                if (DssRef.difficulty.GodPowers() || StartupSettings.EndlessResources)
+                {
+                    content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText("= 0", HudLib.GodPower_Color) },
+                       new RbAction(() => { city.AddGroupedResource(item, -city.GetGroupedResource(item).amount); }),
+                       null, true));
+
+                    content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText("+100", HudLib.GodPower_Color) },
+                        new RbAction(() => { city.AddGroupedResource(item, 100); }),
+                        null, true));
+                }
             }
-
-
-            if (DssRef.difficulty.GodPowers() || StartupSettings.EndlessResources)
-            {
-                content.Add(new ArtButton( RbButtonStyle.GodPower,new List<AbsRichBoxMember> { new RbText("= 0", HudLib.GodPower_Color) },
-                   new RbAction(() => { city.AddGroupedResource(item, -city.GetGroupedResource(item).amount); }),
-                   null, true));
-
-                content.Add(new ArtButton( RbButtonStyle.GodPower,new List<AbsRichBoxMember> { new RbText("+100", HudLib.GodPower_Color) },
-                    new RbAction(() => { city.AddGroupedResource(item, 100); }), 
-                    null, true));
-            }
-
         }
 
         public static void BufferIconInfo(RichBoxContent content, bool safeguard)

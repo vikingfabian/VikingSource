@@ -148,7 +148,7 @@ namespace VikingEngine.DSSWars
 
                 case DSSWars.CityCulture.Potters:
                     title = DssRef.todoLang.CityCulture_Potters;
-                    description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.);
+                    description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.CityCulture_Potters);
                     break;
 
                 case DSSWars.CityCulture.Wainwright:
@@ -229,119 +229,199 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public static void Tab(ResourcesSubTab tab, out SpriteName categoryIcon, out string category, out SpriteName tabIcon, out string tabName)
+        //New, previously called "category"
+        public static void Tab(ResourceManagementType management, out SpriteName managementIcon, out string managementName)
         {
-            switch (tab)
+            switch (management)
             {
-                case ResourcesSubTab.Overview_Resources:
-                    categoryIcon = SpriteName.MenuPixelIconManual;
-                    tabIcon = SpriteName.WarsResource_Wood;
-                    category = DssRef.lang.Resource_Tab_Overview;
-                    tabName = DssRef.lang.WarsResourceGroup_Resources;
-                    break;
-                case ResourcesSubTab.Overview_Metals:
-                    categoryIcon = SpriteName.MenuPixelIconManual;
-                    tabIcon = SpriteName.WarsResource_Iron;
-                    category = DssRef.lang.Resource_Tab_Overview;
-                    tabName = DssRef.lang.WarsResourceGroup_Metal;
-                    break;
-                case ResourcesSubTab.Overview_Weapons:
-                    categoryIcon = SpriteName.MenuPixelIconManual;
-                    tabIcon = SpriteName.WarsResource_Sword;
-                    category = DssRef.lang.Resource_Tab_Overview;
-                    tabName = DssRef.lang.WarsResourceGroup_MeleeHandWeapons;
-                    break;
-                case ResourcesSubTab.Overview_Projectile:
-                    categoryIcon = SpriteName.MenuPixelIconManual;
-                    tabIcon = SpriteName.WarsResource_Bow;
-                    category = DssRef.lang.Resource_Tab_Overview;
-                    tabName = DssRef.lang.WarsResourceGroup_RangedHandWeapons;
-                    break;
-                case ResourcesSubTab.Overview_Armor:
-                    categoryIcon = SpriteName.WarsStockpileAdd;
-                    tabIcon = SpriteName.WarsResource_IronArmor;
-                    category = DssRef.lang.Resource_Tab_Overview;
-                    tabName = DssRef.lang.Conscript_ArmorTitle;
+                case ResourceManagementType.Overview:
+                    managementIcon = SpriteName.MenuPixelIconManual;
+                    managementName = DssRef.lang.Resource_Tab_Overview;
                     break;
 
-                case ResourcesSubTab.Stockpile_Resources:
-                    categoryIcon = SpriteName.WarsStockpileAdd;
-                    categoryIcon = SpriteName.MenuPixelIconManual;
-                    tabIcon = SpriteName.WarsResource_Wood;
-                    category = DssRef.lang.Resource_Tab_Stockpile;
-                    tabName = DssRef.lang.WarsResourceGroup_Resources;
-                    break;
-                case ResourcesSubTab.Stockpile_Metals:
-                    categoryIcon = SpriteName.WarsStockpileAdd;
-                    tabIcon = SpriteName.WarsResource_Iron;
-                    category = DssRef.lang.Resource_Tab_Stockpile;
-                    tabName = DssRef.lang.WarsResourceGroup_Metal;
-                    break;
-                case ResourcesSubTab.Stockpile_Weapons:
-                    categoryIcon = SpriteName.WarsStockpileAdd;
-                    tabIcon = SpriteName.WarsResource_Sword;
-                    category = DssRef.lang.Resource_Tab_Stockpile;
-                    tabName = DssRef.lang.WarsResourceGroup_MeleeHandWeapons;
-                    break;
-                case ResourcesSubTab.Stockpile_Projectile:
-                    categoryIcon = SpriteName.WarsStockpileAdd;
-                    tabIcon = SpriteName.WarsResource_Bow;
-                    category = DssRef.lang.Resource_Tab_Stockpile;
-                    tabName = DssRef.lang.WarsResourceGroup_RangedHandWeapons;
-                    break;
-                case ResourcesSubTab.Stockpile_Armor:
-                    categoryIcon = SpriteName.WarsStockpileAdd;
-                    tabIcon = SpriteName.WarsResource_IronArmor;
-                    category = DssRef.lang.Resource_Tab_Stockpile;
-                    tabName = DssRef.lang.Conscript_ArmorTitle;
+                case ResourceManagementType.Stockpile:
+                    managementIcon = SpriteName.WarsStockpileAdd;
+                    managementName = DssRef.lang.Resource_Tab_Stockpile;
                     break;
 
-                case ResourcesSubTab.Work_Resources:
-                    categoryIcon = SpriteName.WarsHammer;
-                    tabIcon = SpriteName.WarsResource_Wood;
-                    category = DssRef.lang.MenuTab_Work;
-                    tabName = DssRef.lang.WarsResourceGroup_Resources;
-                    break;
-                case ResourcesSubTab.Work_Metals:
-                    categoryIcon = SpriteName.WarsHammer;
-                    tabIcon = SpriteName.WarsResource_Iron;
-                    category = DssRef.lang.MenuTab_Work;
-                    tabName = DssRef.lang.WarsResourceGroup_Metal;
-                    break;
-                case ResourcesSubTab.Work_Weapons:
-                    categoryIcon = SpriteName.WarsHammer;
-                    tabIcon = SpriteName.WarsResource_Sword;
-                    category = DssRef.lang.MenuTab_Work;
-                    tabName = DssRef.lang.WarsResourceGroup_MeleeHandWeapons;
-                    break;
-                case ResourcesSubTab.Work_Projectile:
-                    categoryIcon = SpriteName.WarsHammer;
-                    tabIcon = SpriteName.WarsResource_Bow;
-                    category = DssRef.lang.MenuTab_Work;
-                    tabName = DssRef.lang.WarsResourceGroup_RangedHandWeapons;
-                    break;
-                case ResourcesSubTab.Work_Armor:
-                    categoryIcon = SpriteName.WarsHammer;
-                    tabIcon = SpriteName.WarsResource_IronArmor;
-                    category = DssRef.lang.MenuTab_Work;
-                    tabName = DssRef.lang.Conscript_ArmorTitle;
+                case ResourceManagementType.Work:
+                    managementIcon = SpriteName.WarsHammer;
+                    managementName = DssRef.lang.MenuTab_Work;
                     break;
 
-                case ResourcesSubTab.Work_Mint:
-                    categoryIcon = SpriteName.WarsHammer;
-                    tabIcon = SpriteName.WarsResource_SilverCoin;
-                    category = DssRef.lang.MenuTab_Work;
-                    tabName = DssRef.lang.BuildingType_CoinMaker;
-                    break;
+                //case ResourceManagementType.Auto:
+                //    categoryIcon = SpriteName.MissingImage; // Assumed icon for Auto
+                //    category = ".Auto"; // Placeholder or DssRef.lang.Auto
+                //    break;
 
                 default:
-                    categoryIcon = SpriteName.MissingImage;
-                    tabIcon = SpriteName.MissingImage;
-                    category = TextLib.Error;
-                    tabName = TextLib.Error;
+                    managementIcon = SpriteName.MissingImage;
+                    managementName = TextLib.Error;
                     break;
             }
         }
+
+        //New, previously called "tab"
+        public static void Tab(ResourceGroup group, out SpriteName groupIcon, out string groupName)
+        {
+            switch (group)
+            {
+                case ResourceGroup.Resources:
+                    groupIcon = SpriteName.WarsResource_Wood;
+                    groupName = DssRef.lang.WarsResourceGroup_Resources;
+                    break;
+
+                case ResourceGroup.Metals:
+                    groupIcon = SpriteName.WarsResource_Iron;
+                    groupName = DssRef.lang.WarsResourceGroup_Metal;
+                    break;
+
+                case ResourceGroup.Weapons:
+                    groupIcon = SpriteName.WarsResource_Sword;
+                    groupName = DssRef.lang.WarsResourceGroup_MeleeHandWeapons;
+                    break;
+
+                case ResourceGroup.Projectile:
+                    groupIcon = SpriteName.WarsResource_Bow;
+                    groupName = DssRef.lang.WarsResourceGroup_RangedHandWeapons;
+                    break;
+
+                case ResourceGroup.Armor:
+                    groupIcon = SpriteName.WarsResource_IronArmor;
+                    groupName = DssRef.lang.Conscript_ArmorTitle;
+                    break;
+
+                case ResourceGroup.Mint:
+                    groupIcon = SpriteName.WarsResource_SilverCoin;
+                    groupName = DssRef.lang.BuildingType_CoinMaker;
+                    break;
+
+                case ResourceGroup.Animals:
+                    groupIcon = SpriteName.WarsBuild_HenPen;
+                    groupName = ".Mounts"; // Replace with DssRef.lang.Mounts if available
+                    break;
+
+                default:
+                    groupIcon = SpriteName.MissingImage;
+                    groupName = TextLib.Error;
+                    break;
+            }
+        }
+
+        ////Old, "ResourcesSubTab" is replaced by two new enums
+        //public static void Tab(ResourcesSubTab tab, out SpriteName categoryIcon, out string category, out SpriteName tabIcon, out string tabName)
+        //{
+        //    switch (tab)
+        //    {
+        //        case ResourcesSubTab.Overview_Resources:
+        //            categoryIcon = SpriteName.MenuPixelIconManual;
+        //            tabIcon = SpriteName.WarsResource_Wood;
+        //            category = DssRef.lang.Resource_Tab_Overview;
+        //            tabName = DssRef.lang.WarsResourceGroup_Resources;
+        //            break;
+        //        case ResourcesSubTab.Overview_Metals:
+        //            categoryIcon = SpriteName.MenuPixelIconManual;
+        //            tabIcon = SpriteName.WarsResource_Iron;
+        //            category = DssRef.lang.Resource_Tab_Overview;
+        //            tabName = DssRef.lang.WarsResourceGroup_Metal;
+        //            break;
+        //        case ResourcesSubTab.Overview_Weapons:
+        //            categoryIcon = SpriteName.MenuPixelIconManual;
+        //            tabIcon = SpriteName.WarsResource_Sword;
+        //            category = DssRef.lang.Resource_Tab_Overview;
+        //            tabName = DssRef.lang.WarsResourceGroup_MeleeHandWeapons;
+        //            break;
+        //        case ResourcesSubTab.Overview_Projectile:
+        //            categoryIcon = SpriteName.MenuPixelIconManual;
+        //            tabIcon = SpriteName.WarsResource_Bow;
+        //            category = DssRef.lang.Resource_Tab_Overview;
+        //            tabName = DssRef.lang.WarsResourceGroup_RangedHandWeapons;
+        //            break;
+        //        case ResourcesSubTab.Overview_Armor:
+        //            categoryIcon = SpriteName.WarsStockpileAdd;
+        //            tabIcon = SpriteName.WarsResource_IronArmor;
+        //            category = DssRef.lang.Resource_Tab_Overview;
+        //            tabName = DssRef.lang.Conscript_ArmorTitle;
+        //            break;
+
+        //        case ResourcesSubTab.Stockpile_Resources:
+        //            categoryIcon = SpriteName.WarsStockpileAdd;
+        //            categoryIcon = SpriteName.MenuPixelIconManual;
+        //            tabIcon = SpriteName.WarsResource_Wood;
+        //            category = DssRef.lang.Resource_Tab_Stockpile;
+        //            tabName = DssRef.lang.WarsResourceGroup_Resources;
+        //            break;
+        //        case ResourcesSubTab.Stockpile_Metals:
+        //            categoryIcon = SpriteName.WarsStockpileAdd;
+        //            tabIcon = SpriteName.WarsResource_Iron;
+        //            category = DssRef.lang.Resource_Tab_Stockpile;
+        //            tabName = DssRef.lang.WarsResourceGroup_Metal;
+        //            break;
+        //        case ResourcesSubTab.Stockpile_Weapons:
+        //            categoryIcon = SpriteName.WarsStockpileAdd;
+        //            tabIcon = SpriteName.WarsResource_Sword;
+        //            category = DssRef.lang.Resource_Tab_Stockpile;
+        //            tabName = DssRef.lang.WarsResourceGroup_MeleeHandWeapons;
+        //            break;
+        //        case ResourcesSubTab.Stockpile_Projectile:
+        //            categoryIcon = SpriteName.WarsStockpileAdd;
+        //            tabIcon = SpriteName.WarsResource_Bow;
+        //            category = DssRef.lang.Resource_Tab_Stockpile;
+        //            tabName = DssRef.lang.WarsResourceGroup_RangedHandWeapons;
+        //            break;
+        //        case ResourcesSubTab.Stockpile_Armor:
+        //            categoryIcon = SpriteName.WarsStockpileAdd;
+        //            tabIcon = SpriteName.WarsResource_IronArmor;
+        //            category = DssRef.lang.Resource_Tab_Stockpile;
+        //            tabName = DssRef.lang.Conscript_ArmorTitle;
+        //            break;
+
+        //        case ResourcesSubTab.Work_Resources:
+        //            categoryIcon = SpriteName.WarsHammer;
+        //            tabIcon = SpriteName.WarsResource_Wood;
+        //            category = DssRef.lang.MenuTab_Work;
+        //            tabName = DssRef.lang.WarsResourceGroup_Resources;
+        //            break;
+        //        case ResourcesSubTab.Work_Metals:
+        //            categoryIcon = SpriteName.WarsHammer;
+        //            tabIcon = SpriteName.WarsResource_Iron;
+        //            category = DssRef.lang.MenuTab_Work;
+        //            tabName = DssRef.lang.WarsResourceGroup_Metal;
+        //            break;
+        //        case ResourcesSubTab.Work_Weapons:
+        //            categoryIcon = SpriteName.WarsHammer;
+        //            tabIcon = SpriteName.WarsResource_Sword;
+        //            category = DssRef.lang.MenuTab_Work;
+        //            tabName = DssRef.lang.WarsResourceGroup_MeleeHandWeapons;
+        //            break;
+        //        case ResourcesSubTab.Work_Projectile:
+        //            categoryIcon = SpriteName.WarsHammer;
+        //            tabIcon = SpriteName.WarsResource_Bow;
+        //            category = DssRef.lang.MenuTab_Work;
+        //            tabName = DssRef.lang.WarsResourceGroup_RangedHandWeapons;
+        //            break;
+        //        case ResourcesSubTab.Work_Armor:
+        //            categoryIcon = SpriteName.WarsHammer;
+        //            tabIcon = SpriteName.WarsResource_IronArmor;
+        //            category = DssRef.lang.MenuTab_Work;
+        //            tabName = DssRef.lang.Conscript_ArmorTitle;
+        //            break;
+
+        //        case ResourcesSubTab.Work_Mint:
+        //            categoryIcon = SpriteName.WarsHammer;
+        //            tabIcon = SpriteName.WarsResource_SilverCoin;
+        //            category = DssRef.lang.MenuTab_Work;
+        //            tabName = DssRef.lang.BuildingType_CoinMaker;
+        //            break;
+
+        //        default:
+        //            categoryIcon = SpriteName.MissingImage;
+        //            tabIcon = SpriteName.MissingImage;
+        //            category = TextLib.Error;
+        //            tabName = TextLib.Error;
+        //            break;
+        //    }
+        //}
 
         public static void Building(BuildAndExpandType buildingType, out SpriteName icon, out string name)
         {

@@ -302,6 +302,25 @@ namespace VikingEngine.DSSWars
             null, tooltip));
 
         }
+
+        public static void butcherBlueprintButton(City city, LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint)
+        {
+
+            content.Add(new RbTab(0.65f));//roomForAnotherButton? 0.65f : 0.8f));
+
+            var tooltip = new RbTooltip(blueprintTooltip, new BlueprintTooltipArgs()
+            {
+                blueprint = blueprint,
+                //optionalBp = optionalBp,
+                city = city.myIndex,
+            });
+
+            content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.MissingImage)
+            },
+            null, tooltip));
+
+        }
         class BlueprintTooltipArgs
         {
             public CraftBlueprint blueprint;

@@ -54,6 +54,9 @@ CITY CULTURES
 * Coopers, //High storage box production
 * Salters, //High conserved food production
 
+QUESTIONS
+* Do it need some type of hunter cottage to collect the first animals?
+
 
 
 #MOUNTED RESOURCES TODO

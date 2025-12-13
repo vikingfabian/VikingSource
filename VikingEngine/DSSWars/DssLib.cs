@@ -111,16 +111,16 @@ namespace VikingEngine.DSSWars
             }
         };
 
-        public static readonly SoldierConscriptProfile SoldierProfile_Knight = new SoldierConscriptProfile()
-        {
-            conscript = new ConscriptProfile()
-            {
-                weapon = Resource.ItemResourceType.KnightsLance,
-                armorLevel = Resource.ItemResourceType.FullPlateArmor,
-                training = TrainingLevel.Skillful,
-                specialization = SpecializationType.Traditional,
-            }
-        };
+        //public static readonly SoldierConscriptProfile SoldierProfile_Knight = new SoldierConscriptProfile()
+        //{
+        //    conscript = new ConscriptProfile()
+        //    {
+        //        weapon = Resource.ItemResourceType.KnightsLance,
+        //        armorLevel = Resource.ItemResourceType.FullPlateArmor,
+        //        training = TrainingLevel.Skillful,
+        //        specialization = SpecializationType.Traditional,
+        //    }
+        //};
 
         public static readonly SoldierConscriptProfile SoldierProfile_FootKnight = new SoldierConscriptProfile()
         {
