@@ -948,9 +948,9 @@ namespace VikingEngine.DSSWars.GameObject
                     case CityCulture.FertileGround:
                         cultureWork = WorkExperienceType.Farm;
                         break;
-                    case CityCulture.AnimalBreeder:
-                        cultureWork = WorkExperienceType.AnimalCare;
-                        break;
+                    //case CityCulture.:
+                    //    cultureWork = WorkExperienceType.AnimalCare;
+                    //    break;
                     case CityCulture.Armorsmith:
                         cultureWork = WorkExperienceType.CraftArmor;
                         break;

@@ -58,20 +58,23 @@ namespace VikingEngine.DSSWars.Presentation
 
         //## Mounted update ##
 
+        public string Resource_TypeName_NobelMen => "nobel men";
         public string Resource_TypeName_ConservedFood => "conserved food";
         public string Resource_TypeName_Clay => "clay";
+        public string Resource_TypeName_Brick => "brick";
         public string Resource_TypeName_StorageBox => "storage box";
         public string Resource_TypeName_Meat => "meat";
         public string Resource_TypeName_Salt => "salt";
         public string Resource_TypeName_Wagon=> "wagon";
         public string Resource_TypeName_WagonClosed => "closed wagon";
-        public string Resource_TypeName_WagonIron => "Iron wagon";
-        public string Resource_TypeName_WagonSteel => "Steel wagon";
+        public string Resource_TypeName_WagonIron => "iron coach";
+        public string Resource_TypeName_WagonSteel => "steel coach";
         public string Resource_TypeName_Shield => "shield";
         public string Resource_TypeName_BucklerShield => "buckler shield";
         public string Resource_TypeName_RoundShield => "round shield";
         public string Resource_TypeName_HeaterShield => "heater shield";
         public string Resource_TypeName_TowerShield => "tower shield";
+
 
         public string Resource_TypeName_Mount => "mount";
         public string Resource_TypeName_Animal => "animal";

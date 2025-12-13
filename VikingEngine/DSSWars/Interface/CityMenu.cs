@@ -1866,6 +1866,9 @@ namespace VikingEngine.DSSWars.Interface
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Charcoal);
 
 
+                    city.GetGroupedResource(CityResoureIndex.StorageBox).toMenu(content, ItemResourceType.StorageBox, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.StorageBox_wood, CraftResourceLib.StorageBox_clay);
+
                     city.GetGroupedResource(CityResoureIndex.Palisade).toMenu(content, ItemResourceType.Palisade, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Palisade);
 

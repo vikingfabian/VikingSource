@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.ToGG.HeroQuest.HeroStrategy;
 
 namespace VikingEngine.DSSWars.Resource
@@ -183,8 +184,7 @@ namespace VikingEngine.DSSWars.Resource
             switch (resultType)
             {
                 case CraftResultType.Resource:
-                    name = LangLib.Item((ItemResourceType)resultSubType);
-
+                    IconName.Item((ItemResourceType)resultSubType, out icon, out name);
                     break;
                 case CraftResultType.Building:
                     name = BuildLib.BuildOptions[resultSubType].Label();

@@ -2806,6 +2806,36 @@ namespace VikingEngine
         WarsResource_Hemp,
         WarsResource_Palisade,
 
+        WarsResource_Hen,
+        WarsResource_Pig,
+        WarsResource_Oxen,
+        WarsResource_KineOxen,
+
+        WarsResource_Dog,
+        WarsResource_Hound,
+
+        WarsResource_Pony,
+        WarsResource_Horse,
+        WarsResource_WarHorse,
+        WarsResource_DraftHorse,
+
+        WarsResource_WildPig,
+        WarsResource_WildHog,
+        WarsResource_WarHog,
+        WarsResource_StagHog,
+
+        WarsResource_Wolf,
+        WarsResource_Warg,
+        WarsResource_AlphaWarg,
+
+        WarsResource_WildCat,
+        WarsResource_Lion,
+        WarsResource_WarLion,
+
+        WarsResource_Elephant,
+        WarsResource_WarElephant,
+        WarsResource_Oliphant,
+
         WarsResource_Crossbow,
         WarsResource_Sulfur,
         WarsResource_BlackPowder,

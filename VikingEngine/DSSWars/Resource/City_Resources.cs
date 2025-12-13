@@ -41,6 +41,7 @@ namespace VikingEngine.DSSWars.GameObject
         ItemResourceType.ConservedFood,
             ItemResourceType.Beer,
             ItemResourceType.CoolingFluid,
+            ItemResourceType.StorageBox,
             ItemResourceType.Palisade,
             ItemResourceType.Toolkit,
             ItemResourceType.Wagon2Wheel,
@@ -1501,11 +1502,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer)
         {
+            IconName.Item(item, out SpriteName itemIcon, out string itemName);
+
             content.newLine();
             
-            content.Add(new RbImage(ResourceLib.Icon(item)));
+            content.Add(new RbImage(itemIcon));
             content.space();
-            content.Add(new RbText( LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
+            content.Add(new RbText( itemName + ": " + TextLib.LargeNumber(amount)));
 
             if (item != ItemResourceType.Water_G && 
                 item != ItemResourceType.Gold &&
@@ -1537,11 +1540,13 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (amount > 0 || !hideOnZero)
             {
+                IconName.Item(item, out SpriteName itemIcon, out string itemName);
+
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember>{
-                    new RbImage(ResourceLib.Icon(item)),
+                    new RbImage(itemIcon),
                     new RbSpace(),
-                    new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": " + TextLib.LargeNumber(amount))
+                    new RbText(TextLib.LargeFirstLetter(itemName) + ": " + TextLib.LargeNumber(amount))
                 }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(city, item))));
 
                 if (item != ItemResourceType.Water_G &&

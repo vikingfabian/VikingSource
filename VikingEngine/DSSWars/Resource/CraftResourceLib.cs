@@ -428,6 +428,34 @@ namespace VikingEngine.DSSWars.Resource
                 Build.BuildAndExpandType.Smith
            );
 
+
+        public static readonly CraftBlueprint StorageBox_wood = new CraftBlueprint(
+                CraftResultType.Resource,
+                (int)ItemResourceType.StorageBox,
+               1,
+               new UseResource[]
+               {
+                    new UseResource(ItemResourceType.Wood_Group, 10),
+               },
+               XP.WorkExperienceType.WoodWork,
+
+               XP.ExperienceLevel.Beginner_1,
+                Build.BuildAndExpandType.Carpenter
+           );
+        public static readonly CraftBlueprint StorageBox_clay = new CraftBlueprint(
+                CraftResultType.Resource,
+                (int)ItemResourceType.StorageBox,
+               1,
+               new UseResource[]
+               {
+                    new UseResource(ItemResourceType.Clay, 10),
+               },
+               XP.WorkExperienceType.Chemistry,
+
+               XP.ExperienceLevel.Beginner_1,
+                Build.BuildAndExpandType.Pottery
+           );
+
         public static readonly CraftBlueprint Wagon2Wheel = new CraftBlueprint(
                 CraftResultType.Resource,
                 (int)ItemResourceType.Wagon2Wheel,
@@ -677,21 +705,21 @@ namespace VikingEngine.DSSWars.Resource
             Build.BuildAndExpandType.Smith
         );
 
-        public static readonly CraftBlueprint KnightsLance = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.KnightsLance,
-            1,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.Gold, 60),
-                new UseResource(ItemResourceType.RawFood_Group, 20),
-                new UseResource(ItemResourceType.Wood_Group, 5),
-                new UseResource(ItemResourceType.Iron_G, 5),
-            },
-           XP.WorkExperienceType.CraftMetal,
-            XP.ExperienceLevel.Practitioner_2,
-            Build.BuildAndExpandType.Smith
-        );
+        //public static readonly CraftBlueprint KnightsLance = new CraftBlueprint(
+        //    CraftResultType.Resource,
+        //    (int)ItemResourceType.KnightsLance,
+        //    1,
+        //    new UseResource[]
+        //    {
+        //        new UseResource(ItemResourceType.Gold, 60),
+        //        new UseResource(ItemResourceType.RawFood_Group, 20),
+        //        new UseResource(ItemResourceType.Wood_Group, 5),
+        //        new UseResource(ItemResourceType.Iron_G, 5),
+        //    },
+        //   XP.WorkExperienceType.CraftMetal,
+        //    XP.ExperienceLevel.Practitioner_2,
+        //    Build.BuildAndExpandType.Smith
+        //);
 
         public static readonly CraftBlueprint TwoHandSword = new CraftBlueprint(
             CraftResultType.Resource,

@@ -2260,6 +2260,35 @@ namespace VikingEngine
                 add(SpriteName.WarsResource_StorageBox);
                 add(SpriteName.WarsResource_Salt);
 
+                add(SpriteName.WarsResource_Hen);
+                add(SpriteName.WarsResource_Pig);
+                add(SpriteName.WarsResource_Oxen);
+                add(SpriteName.WarsResource_KineOxen);
+
+                add(SpriteName.WarsResource_Dog);
+                add(SpriteName.WarsResource_Hound);
+
+                add(SpriteName.WarsResource_Pony);
+                add(SpriteName.WarsResource_Horse);
+                add(SpriteName.WarsResource_WarHorse);
+                add(SpriteName.WarsResource_DraftHorse);
+
+                add(SpriteName.WarsResource_WildPig);
+                add(SpriteName.WarsResource_WildHog);
+                add(SpriteName.WarsResource_WarHog);
+                add(SpriteName.WarsResource_StagHog);
+
+                add(SpriteName.WarsResource_Wolf);
+                add(SpriteName.WarsResource_Warg);
+                add(SpriteName.WarsResource_AlphaWarg);
+
+                add(SpriteName.WarsResource_WildCat);
+                add(SpriteName.WarsResource_Lion);
+                add(SpriteName.WarsResource_WarLion);
+
+                add(SpriteName.WarsResource_Elephant);
+                add(SpriteName.WarsResource_WarElephant);
+                add(SpriteName.WarsResource_Oliphant);
             }
 
             currentIndex = numTilesWidth * 87;

@@ -35,6 +35,10 @@ namespace VikingEngine.DSSWars
                     itemIcon = SpriteName.WarsServiceMen;
                     itemName = DssRef.lang.ResourceType_ServiceMen;
                     break;
+                case ItemResourceType.NobelMen:
+                    itemIcon = SpriteName.MissingImage;
+                    itemName = DssRef.todoLang.Resource_TypeName_NobelMen;
+                    break;
                 case ItemResourceType.Settler:
                     itemIcon = SpriteName.WarsWorker; // Defaulting to worker icon
                     itemName = DssRef.todoLang.UnitType_Settler;
@@ -74,15 +78,23 @@ namespace VikingEngine.DSSWars
                     itemName = DssRef.lang.Resource_TypeName_Sulfur;
                     break;
 
+                case ItemResourceType.Salt:
+                    itemIcon = SpriteName.WarsResource_Salt;
+                    itemName = DssRef.todoLang.Resource_TypeName_Salt;
+                    break;
+                case ItemResourceType.Clay:
+                    itemIcon = SpriteName.WarsResource_Clay;
+                    itemName = DssRef.todoLang.Resource_TypeName_Clay;
+                    break;
+                case ItemResourceType.Brick:
+                    itemIcon = SpriteName.WarsResource_Brick;
+                    itemName = DssRef.todoLang.Resource_TypeName_Brick;
+                    break;
+
                 // --- Food & Agriculture ---
                 case ItemResourceType.Food_G:
                     itemIcon = SpriteName.WarsResource_Food;
                     itemName = DssRef.lang.Resource_TypeName_Food;
-                    break;
-                case ItemResourceType.Hen:
-                case ItemResourceType.Pig:
-                    itemIcon = SpriteName.WarsResource_RawMeat;
-                    itemName = DssRef.lang.Resource_TypeName_RawFood;
                     break;
                 
                 case ItemResourceType.Egg:
@@ -105,6 +117,113 @@ namespace VikingEngine.DSSWars
                     itemIcon = SpriteName.WarsResource_Linen;
                     itemName = DssRef.lang.Resource_TypeName_Linen;
                     break;
+                // --- Animals ---
+
+                case ItemResourceType.Hen:
+                    itemIcon = SpriteName.WarsResource_Hen;
+                    itemName = DssRef.todoLang.Resource_TypeName_Hen;
+                    break;
+                case ItemResourceType.Pig:
+                    itemIcon = SpriteName.WarsResource_Pig;
+                    itemName = DssRef.todoLang.Resource_TypeName_Pig;
+                    break;
+
+                case ItemResourceType.Oxen:
+                    itemIcon = SpriteName.WarsResource_Oxen;
+                    itemName = DssRef.todoLang.Resource_TypeName_Oxen;
+                    break;
+                case ItemResourceType.KineOxen:
+                    itemIcon = SpriteName.WarsResource_KineOxen;
+                    itemName = DssRef.todoLang.Resource_TypeName_KineOxen;
+                    break;
+
+                case ItemResourceType.Dog:
+                    itemIcon = SpriteName.WarsResource_Dog;
+                    itemName = DssRef.todoLang.Resource_TypeName_Dog;
+                    break;
+                case ItemResourceType.Hound:
+                    itemIcon = SpriteName.WarsResource_Hound;
+                    itemName = DssRef.todoLang.Resource_TypeName_Hound;
+                    break;
+
+                // --- Horses ---
+                case ItemResourceType.Pony:
+                    itemIcon = SpriteName.WarsResource_Pony;
+                    itemName = DssRef.todoLang.Resource_TypeName_Pony;
+                    break;
+                case ItemResourceType.Horse:
+                    itemIcon = SpriteName.WarsResource_Horse;
+                    itemName = DssRef.todoLang.Resource_TypeName_Horse;
+                    break;
+                case ItemResourceType.WarHorse:
+                    itemIcon = SpriteName.WarsResource_WarHorse;
+                    itemName = DssRef.todoLang.Resource_TypeName_WarHorse;
+                    break;
+                case ItemResourceType.DraftHorse:
+                    itemIcon = SpriteName.WarsResource_DraftHorse;
+                    itemName = DssRef.todoLang.Resource_TypeName_DraftHorse;
+                    break;
+
+                // --- Wild Pigs / Hogs ---
+                case ItemResourceType.WildPig:
+                    itemIcon = SpriteName.WarsResource_WildPig;
+                    itemName = DssRef.todoLang.Resource_TypeName_WildPig;
+                    break;
+                case ItemResourceType.WildHog:
+                    itemIcon = SpriteName.WarsResource_WildHog;
+                    itemName = DssRef.todoLang.Resource_TypeName_WildHog;
+                    break;
+                case ItemResourceType.WarHog:
+                    itemIcon = SpriteName.WarsResource_WarHog;
+                    itemName = DssRef.todoLang.Resource_TypeName_WarHog;
+                    break;
+                case ItemResourceType.StagHog:
+                    itemIcon = SpriteName.WarsResource_StagHog;
+                    itemName = DssRef.todoLang.Resource_TypeName_StagHog;
+                    break;
+
+                // --- Wolves ---
+                case ItemResourceType.Wolf:
+                    itemIcon = SpriteName.WarsResource_Wolf;
+                    itemName = DssRef.todoLang.Resource_TypeName_Wolf;
+                    break;
+                case ItemResourceType.Warg:
+                    itemIcon = SpriteName.WarsResource_Warg;
+                    itemName = DssRef.todoLang.Resource_TypeName_Warg;
+                    break;
+                case ItemResourceType.AlphaWarg:
+                    itemIcon = SpriteName.WarsResource_AlphaWarg;
+                    itemName = DssRef.todoLang.Resource_TypeName_AlphaWarg;
+                    break;
+
+                // --- Cats ---
+                case ItemResourceType.WildCat:
+                    itemIcon = SpriteName.WarsResource_WildCat;
+                    itemName = DssRef.todoLang.Resource_TypeName_WildCat;
+                    break;
+                case ItemResourceType.Lion:
+                    itemIcon = SpriteName.WarsResource_Lion;
+                    itemName = DssRef.todoLang.Resource_TypeName_Lion;
+                    break;
+                case ItemResourceType.WarLion:
+                    itemIcon = SpriteName.WarsResource_WarLion;
+                    itemName = DssRef.todoLang.Resource_TypeName_WarLion;
+                    break;
+
+                // --- Elephants ---
+                case ItemResourceType.Elephant:
+                    itemIcon = SpriteName.WarsResource_Elephant;
+                    itemName = DssRef.todoLang.Resource_TypeName_Elephant;
+                    break;
+                case ItemResourceType.WarElephant:
+                    itemIcon = SpriteName.WarsResource_WarElephant;
+                    itemName = DssRef.todoLang.Resource_TypeName_WarElephant;
+                    break;
+                case ItemResourceType.Oliphant:
+                    itemIcon = SpriteName.WarsResource_Oliphant;
+                    itemName = DssRef.todoLang.Resource_TypeName_Oliphant;
+                    break;
+
 
                 // --- Ores & Metals ---
                 case ItemResourceType.GoldOre:
@@ -223,10 +342,10 @@ namespace VikingEngine.DSSWars
                     itemIcon = SpriteName.WarsResource_Warhammer;
                     itemName = DssRef.lang.Resource_TypeName_Warhammer;
                     break;
-                case ItemResourceType.KnightsLance:
-                    itemIcon = SpriteName.WarsResource_KnightsLance;
-                    itemName = DssRef.lang.Resource_TypeName_KnightsLance;
-                    break;
+                //case ItemResourceType.KnightsLance:
+                //    itemIcon = SpriteName.WarsResource_KnightsLance;
+                //    itemName = DssRef.lang.Resource_TypeName_KnightsLance;
+                //    break;
 
                 // --- Weapons (Ranged) ---
                 case ItemResourceType.SlingShot:
@@ -298,6 +417,18 @@ namespace VikingEngine.DSSWars
                 case ItemResourceType.Wagon4Wheel:
                     itemIcon = SpriteName.WarsResource_Wagon4Wheel;
                     itemName = DssRef.lang.Resource_TypeName_Wagon4Wheel;
+                    break;
+                case ItemResourceType.WagonClosed:
+                    itemIcon = SpriteName.MissingImage;
+                    itemName = DssRef.todoLang.Resource_TypeName_WagonClosed;
+                    break;
+                case ItemResourceType.WagonIron:
+                    itemIcon = SpriteName.MissingImage;
+                    itemName = DssRef.todoLang.Resource_TypeName_WagonIron;
+                    break;
+                case ItemResourceType.WagonSteel:
+                    itemIcon = SpriteName.MissingImage;
+                    itemName = DssRef.todoLang.Resource_TypeName_WagonSteel;
                     break;
 
                 // --- Firearms & Explosives ---
