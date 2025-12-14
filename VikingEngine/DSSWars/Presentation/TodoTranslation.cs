@@ -43,7 +43,10 @@ namespace VikingEngine.DSSWars.Presentation
         public string GameOverResults => "Game history log";
 
         //##SPRING##
-
+        /// <summary>
+        /// 0: animal type
+        /// </summary>
+        public string Work_SlaughterX => "Slaugter {0}";
         public string UnitType_UnclaimedLand => "Unclaimed land";
         public string UnitType_Settler => "Settler";
         public string UnitType_Settler_Description => "Found a new city";
@@ -62,7 +65,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Resource_TypeName_ConservedFood => "conserved food";
         public string Resource_TypeName_Clay => "clay";
         public string Resource_TypeName_Brick => "brick";
-        public string Resource_TypeName_StorageBox => "storage box";
+        public string Resource_TypeName_Container => "container";
         public string Resource_TypeName_Meat => "meat";
         public string Resource_TypeName_Salt => "salt";
         public string Resource_TypeName_Wagon=> "wagon";
@@ -77,6 +80,11 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         public string Resource_TypeName_Mount => "mount";
+
+        /// <summary>
+        /// 0: armor type
+        /// </summary>
+        public string Resource_TypeName_MountArmorX => "mount {0}";
         public string Resource_TypeName_Animal => "animal";
 
         public string Resource_TypeName_Oxen => "oxen";

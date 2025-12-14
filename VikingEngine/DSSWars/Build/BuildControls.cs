@@ -640,7 +640,7 @@ namespace VikingEngine.DSSWars.Build
 
                     content.newParagraph();
 
-                    city.workTemplate.autoBuild.toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.faction, city);
+                    city.workTemplate.Get(WorkPriorityType.autoBuild).toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.faction, city);
                 }
             }
             else
@@ -722,7 +722,7 @@ namespace VikingEngine.DSSWars.Build
                     content.newLine();
                     HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
                     content.newLine();
-                    city.workTemplate.buildOrder.toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders,
+                    city.workTemplate.Get(WorkPriorityType.buildOrders).toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders,
                         player.faction, city);
 
 
@@ -1425,8 +1425,9 @@ namespace VikingEngine.DSSWars.Build
                 content.Add(new RbText(DssRef.lang.BuildHud_Produce));
                 content.space();
                 content.Add(new RbText(produce1.amount.ToString()));
-                content.Add(new RbImage(ResourceLib.Icon(produce1.type)));//SpriteName.WarsResource_RawFood));
-                content.Add(new RbText(LangLib.Item(produce1.type)));//DssRef.lang.Resource_TypeName_RawFood));
+                IconName.Item(produce1.type, out SpriteName itemIcon, out string itemName);
+                content.Add(new RbImage(itemIcon));//SpriteName.WarsResource_RawFood));
+                content.Add(new RbText(itemName));//DssRef.lang.Resource_TypeName_RawFood));
                 if (produce2.amount > 0)
                 {
                     content.Add(new RbImage(SpriteName.pjNumPlus));

@@ -210,7 +210,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             folkmen = new SoldierPurchaseOption(1, ItemResourceType.NONE,ItemResourceType.SharpStick, TrainingLevel.Minimal);
             meleeMen = new SoldierPurchaseOption(1, ItemResourceType.HeavyPaddedArmor, ItemResourceType.ShortSword, TrainingLevel.Basic);
             rangedMen = new SoldierPurchaseOption(1, ItemResourceType.PaddedArmor, ItemResourceType.Bow, TrainingLevel.Basic);
-            riderMen = new SoldierPurchaseOption(0, ItemResourceType.IronArmor, ItemResourceType.KnightsLance, TrainingLevel.Skillful);
+            riderMen = new SoldierPurchaseOption(0, ItemResourceType.IronArmor, ItemResourceType.HandSpear, TrainingLevel.Skillful);
             siegeMen = new SoldierPurchaseOption(1, ItemResourceType.NONE, ItemResourceType.Ballista, TrainingLevel.Basic);
 
             if (city.cityType >= CityType.Capital)
@@ -258,7 +258,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
             switch (city.Culture)
             {
-                case CityCulture.AnimalBreeder:
+                //case CityCulture.AnimalBreeder:
                 case CityCulture.FertileGround:
                 case CityCulture.LargeFamilies:
                 case CityCulture.Lawbiding:

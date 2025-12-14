@@ -8,13 +8,14 @@ namespace VikingEngine.DSSWars.Build
     {
         public static readonly ItemResourceType[] SmelterCraftTypes = {
             ItemResourceType.Copper, ItemResourceType.Tin, ItemResourceType.Lead, ItemResourceType.Iron_G,
-            ItemResourceType.BloomeryIron, ItemResourceType.Silver, ItemResourceType.Gold, ItemResourceType.Mithril };
+            ItemResourceType.BloomeryIron, ItemResourceType.Silver, ItemResourceType.Gold, ItemResourceType.Mithril 
+        };
 
         public static readonly ItemResourceType[] SmithCraftTypes = {
             ItemResourceType.BronzeSword,
             ItemResourceType.ShortSword, ItemResourceType.Sword, ItemResourceType.LongSword,
             ItemResourceType.HandSpear,
-            ItemResourceType.Warhammer, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance,
+            ItemResourceType.Warhammer, ItemResourceType.TwoHandSword, /*ItemResourceType.KnightsLance,*/
             ItemResourceType.MithrilSword,
             ItemResourceType.Steel,
             ItemResourceType.Toolkit,
@@ -28,24 +29,39 @@ namespace VikingEngine.DSSWars.Build
         };
 
         public static readonly ItemResourceType[] ArmoryCraftTypes = {
-            ItemResourceType.PaddedArmor, ItemResourceType.HeavyPaddedArmor, ItemResourceType.BronzeArmor, ItemResourceType.IronArmor, ItemResourceType.HeavyIronArmor, ItemResourceType.LightPlateArmor, ItemResourceType.FullPlateArmor, ItemResourceType.MithrilArmor
+            ItemResourceType.PaddedArmor, ItemResourceType.HeavyPaddedArmor, ItemResourceType.BronzeArmor, ItemResourceType.IronArmor, ItemResourceType.HeavyIronArmor, ItemResourceType.LightPlateArmor, ItemResourceType.FullPlateArmor, ItemResourceType.MithrilArmor,
+        ItemResourceType.MountPaddedArmor, ItemResourceType.MountHeavyPaddedArmor, ItemResourceType.MountBronzeArmor, ItemResourceType.MountIronArmor, ItemResourceType.MountHeavyIronArmor, ItemResourceType.MountLightPlateArmor, ItemResourceType.MountFullPlateArmor, ItemResourceType.MountMithrilArmor,
+        };
+
+        public static readonly ItemResourceType[] ShieldCraftTypes = { 
+             ItemResourceType.BucklerShield, ItemResourceType.RoundShield, ItemResourceType.HeaterShield, ItemResourceType.TowerShield
         };
 
         public static readonly ItemResourceType[] FoundryCraftTypes = {
-            ItemResourceType.Bronze, ItemResourceType.CastIron, ItemResourceType.LedBullet, ItemResourceType.BloomeryIron, ItemResourceType.Mithril };
+            ItemResourceType.Bronze, ItemResourceType.CastIron, ItemResourceType.LedBullet, ItemResourceType.BloomeryIron, ItemResourceType.Mithril 
+        };
 
         public static readonly ItemResourceType[] BenchCraftTypes = {
-            ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear };
+            ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear 
+        };
 
         public static readonly ItemResourceType[] CarpenterCraftTypes = {
             ItemResourceType.Palisade,
             ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Crossbow,
             ItemResourceType.MithrilBow,
             ItemResourceType.Ballista, ItemResourceType.Manuballista, ItemResourceType.Catapult,
-            ItemResourceType.Wagon2Wheel, ItemResourceType.Wagon4Wheel };
+            ItemResourceType.Wagon2Wheel, ItemResourceType.Wagon4Wheel, ItemResourceType.WagonClosed, ItemResourceType.WagonIron, ItemResourceType.WagonSteel 
+        };
 
         public static readonly ItemResourceType[] ChemistCraftTypes = {
-             ItemResourceType.CoolingFluid, ItemResourceType.BlackPowder, ItemResourceType.GunPowder };
+             ItemResourceType.CoolingFluid, ItemResourceType.BlackPowder, ItemResourceType.GunPowder 
+        };
+
+        public static readonly ItemResourceType[] PotteryCraftTypes = {
+             ItemResourceType.Container, ItemResourceType.Brick 
+        };
+
+
 
         public static List<KeyValuePair<BuildAndExpandType, ItemResourceType[]>> AllBuidings()
         {

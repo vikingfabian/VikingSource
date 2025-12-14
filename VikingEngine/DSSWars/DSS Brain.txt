@@ -1,5 +1,7 @@
 ﻿!Tutorial is broken
 !Start with one settler is not complete
+!Many temporary icons
+
 
 #SPRING UPDATE#
 * controller vibrate on message
@@ -30,10 +32,11 @@ UI
 * Declare war - are you sure
 
 
-# SUMMER UPDATE #
+#### SUMMER UPDATE ####
 * 31 new buildings
 * Animal farming uses breeding and cost upkeep
 * Cities have a biom status
+* 8 new city cultures, 2 have been remade
 
 RESOURCES
 * 5 New basic resources
@@ -43,16 +46,8 @@ RESOURCES
 * Animal armor
 * 4 new collectable terrain resources
 
-CITY CULTURES
-* Butchers, //Larger meat production
-* AnimalBreeder2, //Higher chance of successful breeding (replaces the old culture)
-* Potters, //Higher pottery production
-* Wainwright, //High wagon production
-* Wheelwright, //Speed bonus to conscripted carts
-* ShieldMaker, //High shield production
-* Nomads, //Low settler cost
-* Coopers, //High storage box production
-* Salters, //High conserved food production
+PERFORMANCE
+* ESC refactoring of the work priorities
 
 QUESTIONS
 * Do it need some type of hunter cottage to collect the first animals?
@@ -67,7 +62,7 @@ Animal cage / War cage
 - Food upkeep (raw food or meat)
 - Pen menu for assignment (or simplify with crafting)
 
-Butcher/Meat grill
+Butcher
 - Turn animal to meat + skin
 - Butcher priorities menu
 
@@ -77,10 +72,6 @@ Conserved food (high storage)
 - craft 2: storage box + food
 - craft 3: smoker meat
 - craft 4: drying meat (desert area)
-
-Storage box
-- craft 1: clay at pottery
-- craft 2: wood at carpenter
 
 Food-, Material-, Weapon-, Armor-, Animal- storage
 Building crafted out of storage boxes. Increases max storage capacity. 
@@ -96,16 +87,8 @@ Base mounts, use breeding to go from pony to warhorse:
 (Maybe) War mount tech tree skill (Allowes training of cavalry)
 
 New resources:
-Oxen
-Dogs/Hounds (for soldiers)
-Mounts (for soldiers or improved transport)
 Nobelmen (conscript higher skilled warriors)
-Armor for mounts (padded to plate)
-Salt (salt mines or desert drying pans)
-Clay (collected in clay pits)
-Bricks (Burn clay or mine sand stone)
-BucklerShield, RoundShield, HeaterShield, TowerShield,
-
+Luxurious buildings, raises the nobel house cap
 Transport-weight
 
 Bioms:

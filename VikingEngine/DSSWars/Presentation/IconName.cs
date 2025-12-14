@@ -688,7 +688,7 @@ namespace VikingEngine.DSSWars
 
                 case DSSWars.CityCulture.Coopers:
                     title = DssRef.todoLang.CityCulture_Coopers;
-                    description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_StorageBox);
+                    description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_Container);
                     break;
 
                 case DSSWars.CityCulture.Salters:
@@ -1066,9 +1066,9 @@ namespace VikingEngine.DSSWars
                         case TerrainBuildingType.CannonBarracks:
                             name = DssRef.lang.BuildingType_CannonBarracks;
                             break;
-                        case TerrainBuildingType.KnightsBarracks:
-                            name = DssRef.lang.BuildingType_KnightsBarracks;
-                            break;
+                        //case TerrainBuildingType.KnightsBarracks:
+                        //    name = DssRef.lang.BuildingType_KnightsBarracks;
+                        //    break;
 
                         case TerrainBuildingType.Foundry:
                             name = DssRef.lang.BuildingType_Foundry;

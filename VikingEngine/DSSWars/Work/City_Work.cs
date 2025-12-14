@@ -598,7 +598,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 priority = workTemplate.mining_iron;
                                 break;
                             case TerrainMineType.TinOre:
-                                bNeedMore = needMore(CityResoureIndex.TinOre);//res_TinOre.needMore();
+                                bNeedMore = needMore(CityResoureIndex.TinOre);
                                 priority = workTemplate.mining_tin;
                                 break;
                             case TerrainMineType.CopperOre:
@@ -613,8 +613,12 @@ namespace VikingEngine.DSSWars.GameObject
                                 bNeedMore = needMore(CityResoureIndex.SilverOre);//res_Silver.needMore();
                                 priority = workTemplate.mining_silver;
                                 break;
+                            case TerrainMineType.Salt:
+                                bNeedMore = needMore(CityResoureIndex.Salt);
+                                priority = workTemplate.mining_salt;
+                                break;
                             case TerrainMineType.Sulfur:
-                                bNeedMore = needMore(CityResoureIndex.Sulfur);//res_Sulfur.needMore();
+                                bNeedMore = needMore(CityResoureIndex.Sulfur);
                                 priority = workTemplate.mining_sulfur;
                                 break;
                             case TerrainMineType.GoldOre:
@@ -719,6 +723,12 @@ namespace VikingEngine.DSSWars.GameObject
                             case TerrainBuildingType.Armory:
                                 craftBench(pos, distanceValue, BuildingCraftList.ArmoryCraftTypes);
                                 break;
+                            case TerrainBuildingType.ShieldMaker:
+                                craftBench(pos, distanceValue, BuildingCraftList.ShieldCraftTypes);
+                                break;
+                            case TerrainBuildingType.Pottery:
+                                craftBench(pos, distanceValue, BuildingCraftList.PotteryCraftTypes);
+                                break;
                             case TerrainBuildingType.Smelter:
                                 craftBench(pos, distanceValue, BuildingCraftList.SmelterCraftTypes);
                                 break;
@@ -729,10 +739,6 @@ namespace VikingEngine.DSSWars.GameObject
                                 craftBench(pos, distanceValue, BuildingCraftList.ChemistCraftTypes);
                                 break;
                             case TerrainBuildingType.Gunmaker:
-                                //if (myIndex == 153)
-                                //{
-                                //    lib.DoNothing();
-                                //}
                                 craftBench(pos, distanceValue, BuildingCraftList.GunmakerCraftTypes);
                                 break;
                             case TerrainBuildingType.CoinMinter:

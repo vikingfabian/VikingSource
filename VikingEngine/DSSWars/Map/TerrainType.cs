@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars.Map
         WarmachineBarracks,
         GunBarracks,
         CannonBarracks,
-        KnightsBarracks,
+        //KnightsBarracks,
 
         Carpenter,
         Nobelhouse,
@@ -136,6 +136,7 @@ namespace VikingEngine.DSSWars.Map
         Butcher,
         Smoker,
         Dryer,
+        ShieldMaker,
 
         MaterialStorage, FoodStorage, WeaponStorage, ArmorStorage, AnimalStorage,
 

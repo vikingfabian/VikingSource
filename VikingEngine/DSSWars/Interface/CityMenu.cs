@@ -1589,7 +1589,7 @@ namespace VikingEngine.DSSWars.Interface
                                    {
                                        content.newLine();
                                        content.Add(new RbText(1.ToString()));
-                                       content.Add(new RbImage(ResourceLib.Icon(ItemResourceType.Food_G)));
+                                       content.Add(new RbImage(SpriteName.WarsResource_Food));
                                        content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
                                        var arrow = new RbImage(SpriteName.pjNumArrowR);
                                        arrow.color = Color.CornflowerBlue;
@@ -1775,7 +1775,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 case ResourceManagementType.Work:
                     content.h2(DssRef.lang.Work_OrderPrioTitle, HudLib.TitleColor_Head);
-                    city.workTemplate.toHud(player, content, player.resourcesSubTab, city.GetFaction(), city);
+                    city.workTemplate.toHud(player, content, player.resourcesSubTab.resourceGroup, city.GetFaction(), city);
                     break;
 
                 case ResourceManagementType.Stockpile:
@@ -1866,7 +1866,7 @@ namespace VikingEngine.DSSWars.Interface
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Charcoal);
 
 
-                    city.GetGroupedResource(CityResoureIndex.StorageBox).toMenu(content, ItemResourceType.StorageBox, false, ref reachedBuffer, player, city);
+                    city.GetGroupedResource(CityResoureIndex.StorageBox).toMenu(content, ItemResourceType.Container, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.StorageBox_wood, CraftResourceLib.StorageBox_clay);
 
                     city.GetGroupedResource(CityResoureIndex.Palisade).toMenu(content, ItemResourceType.Palisade, false, ref reachedBuffer, player, city);
@@ -2038,7 +2038,7 @@ namespace VikingEngine.DSSWars.Interface
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Rifle);
 
                     city.GetGroupedResource(CityResoureIndex.Blunderbuss).toMenu(content, ItemResourceType.Blunderbuss, false, ref reachedBuffer, player, city);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Blunderbus);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Blunderbuss);
                     content.newParagraph();
 
                     city.GetGroupedResource(CityResoureIndex.ballista).toMenu(content, ItemResourceType.Ballista, false, ref reachedBuffer, player, city);
@@ -2834,7 +2834,8 @@ namespace VikingEngine.DSSWars.Interface
         Armor,
         Animals,
         Mint,
-        NUM
+        NUM,
+        Auto,
     }
 
     enum ResourceManagementType

@@ -2,16 +2,21 @@
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 
 namespace VikingEngine.DSSWars
 {
     partial class WorldData
     {
-        public ResourceFactionOverview[] factionResourceOverviews = new ResourceFactionOverview[64 * CityResoureIndex.COUNT];
+        const int DefaultFactionCount = 64;
+
+        public ResourceFactionOverview[] factionResourceOverviews = new ResourceFactionOverview[DefaultFactionCount * CityResoureIndex.COUNT];
+        public WorkPriority[] factionWork = new WorkPriority[DefaultFactionCount * WorkTemplate.COUNT];
 
         void init_FactionComponents()
         {
             factionResourceOverviews = new ResourceFactionOverview[factions.Array.Length * CityResoureIndex.COUNT];
+            factionWork = new WorkPriority[factions.Array.Length * WorkTemplate.COUNT];
 
             for (int i = 0; i < factions.Array.Length; i++)
             {
@@ -31,6 +36,7 @@ namespace VikingEngine.DSSWars
             {
                 int startIndex = factionResourceOverviews.Length;
                 Array.Resize(ref factionResourceOverviews, factionResourceOverviews.Length * 2);
+                Array.Resize(ref factionWork, factionWork.Length * 2);
             }
         }
 
@@ -56,6 +62,8 @@ namespace VikingEngine.DSSWars
                     }
                 }
             }
+
+            faction.workTemplate.initComponents(false, faction.myIndex * WorkTemplate.COUNT);
         }
 
     }

@@ -513,6 +513,10 @@ namespace VikingEngine.DSSWars.Map
                     manMade = false;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 3, wp, 0.14f));
                     break;
+                case TerrainSubFoilType.ClayPit:
+                    manMade = false;
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 3, wp, 0.14f));
+                    break;
                 default:
                     throw new NotImplementedException();
             }

@@ -486,7 +486,6 @@ namespace VikingEngine.DSSWars.Event
 
         public void onFactionDestroyed(Faction faction)
         {
-
             //Happens in one second update
             switch (faction.factiontype)
             { 
@@ -504,8 +503,11 @@ namespace VikingEngine.DSSWars.Event
                                 {
                                     conscript = new ConscriptProfile()
                                     {
-                                        weapon = Resource.ItemResourceType.KnightsLance,
+                                        man = Resource.ItemResourceType.NobelMen,
+                                        weapon = Resource.ItemResourceType.HandSpear,
                                         armorLevel = Resource.ItemResourceType.FullPlateArmor,
+                                        animal = Resource.ItemResourceType.WarHorse,
+                                        mountArmor = Resource.ItemResourceType.MountFullPlateArmor,
                                         training = TrainingLevel.Champion,
                                         specialization = SpecializationType.Traditional,
                                     }

@@ -24,6 +24,7 @@ namespace VikingEngine.DSSWars.Map
         //public List<IntVector2> FarmGather = new List<IntVector2>(20);
         public List<IntVector2> AnimalPens = new List<IntVector2>(20);
         public List<IntVector2> BogIron = new List<IntVector2>(20);
+        public List<IntVector2> ClayPit = new List<IntVector2>(20);
         public List<IntVector2> Mines = new List<IntVector2>(20);
         public List<IntVector2> CraftStation = new List<IntVector2>(20);
         public List<IntVector2> CoinMinting = new List<IntVector2>(2);
@@ -312,6 +313,13 @@ namespace VikingEngine.DSSWars.Map
                                                     BogIron.Add(subTileLoop.Position);
                                                 }
                                                 break;
+                                            case TerrainSubFoilType.ClayPit:
+                                                ++terrainStructure.resourceCount_clay;
+                                                if (ClayPit.Count < workerCount)
+                                                {
+                                                    ClayPit.Add(subTileLoop.Position);
+                                                }
+                                                break;
                                         }
 
                                         break;
@@ -345,6 +353,9 @@ namespace VikingEngine.DSSWars.Map
                                                 break;
                                             case TerrainMineType.GoldOre:
                                                 ++terrainStructure.mineCount_gold;
+                                                break;
+                                            case TerrainMineType.Salt:
+                                                ++terrainStructure.mineCount_salt;
                                                 break;
                                             case TerrainMineType.Mithril:
                                                 ++terrainStructure.mineCount_mithril;
@@ -437,10 +448,10 @@ namespace VikingEngine.DSSWars.Map
                                                 ++buildingStructure.WarmachineBarracks_count;
                                                 buildingPosition.WarmachineBarracks_pos = subTileLoop.Position;
                                                 break;
-                                            case TerrainBuildingType.KnightsBarracks:
-                                                ++buildingStructure.KnightsBarracks_count;
-                                                buildingPosition.KnightsBarracks_pos = subTileLoop.Position;
-                                                break;
+                                            //case TerrainBuildingType.KnightsBarracks:
+                                            //    ++buildingStructure.KnightsBarracks_count;
+                                            //    buildingPosition.KnightsBarracks_pos = subTileLoop.Position;
+                                            //    break;
                                             case TerrainBuildingType.GunBarracks:
                                                 ++buildingStructure.GunBarracks_count;
                                                 buildingPosition.GunBarracks_pos = subTileLoop.Position;
@@ -575,6 +586,171 @@ namespace VikingEngine.DSSWars.Map
                                                 CoinMinting.Add(subTileLoop.Position);
                                                 buildingPosition.CoinMinter_pos = subTileLoop.Position;
                                                 break;
+
+                                            case TerrainBuildingType.Pottery:
+                                                ++buildingStructure.Pottery_count;
+                                                buildingPosition.Pottery_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.DryingPan:
+                                                ++buildingStructure.DryingPan_count;
+                                                buildingPosition.DryingPan_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.Butcher:
+                                                ++buildingStructure.Butcher_count;
+                                                buildingPosition.Butcher_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.Smoker:
+                                                ++buildingStructure.Smoker_count;
+                                                buildingPosition.Smoker_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.Dryer:
+                                                ++buildingStructure.Dryer_count;
+                                                buildingPosition.Dryer_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.ShieldMaker:
+                                                ++buildingStructure.ShieldMaker_count;
+                                                buildingPosition.ShieldMaker_pos = subTileLoop.Position;
+                                                break;
+
+                                            // --- Storage ---
+
+                                            case TerrainBuildingType.MaterialStorage:
+                                                ++buildingStructure.MaterialStorage_count;
+                                                buildingPosition.MaterialStorage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.FoodStorage:
+                                                ++buildingStructure.FoodStorage_count;
+                                                buildingPosition.FoodStorage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WeaponStorage:
+                                                ++buildingStructure.WeaponStorage_count;
+                                                buildingPosition.WeaponStorage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.ArmorStorage:
+                                                ++buildingStructure.ArmorStorage_count;
+                                                buildingPosition.ArmorStorage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.AnimalStorage:
+                                                ++buildingStructure.AnimalStorage_count;
+                                                buildingPosition.AnimalStorage_pos = subTileLoop.Position;
+                                                break;
+
+                                            // --- Animal Pens ---
+
+                                            case TerrainBuildingType.OxenPen:
+                                                ++buildingStructure.OxenPen_count;
+                                                buildingPosition.OxenPen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.KineOxenPen:
+                                                ++buildingStructure.KineOxenPen_count;
+                                                buildingPosition.KineOxenPen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.DogCage:
+                                                ++buildingStructure.DogCage_count;
+                                                buildingPosition.DogCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.HoundCage:
+                                                ++buildingStructure.HoundCage_count;
+                                                buildingPosition.HoundCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.PonyPen:
+                                                ++buildingStructure.PonyPen_count;
+                                                buildingPosition.PonyPen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.HorsePen:
+                                                ++buildingStructure.HorsePen_count;
+                                                buildingPosition.HorsePen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WarHorsePen:
+                                                ++buildingStructure.WarHorsePen_count;
+                                                buildingPosition.WarHorsePen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.DraftHorsePen:
+                                                ++buildingStructure.DraftHorsePen_count;
+                                                buildingPosition.DraftHorsePen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WildPigPen:
+                                                ++buildingStructure.WildPigPen_count;
+                                                buildingPosition.WildPigPen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WildHogPen:
+                                                ++buildingStructure.WildHogPen_count;
+                                                buildingPosition.WildHogPen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WarHogPen:
+                                                ++buildingStructure.WarHogPen_count;
+                                                buildingPosition.WarHogPen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.StagHogPen:
+                                                ++buildingStructure.StagHogPen_count;
+                                                buildingPosition.StagHogPen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WolfCage:
+                                                ++buildingStructure.WolfCage_count;
+                                                buildingPosition.WolfCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WargCage:
+                                                ++buildingStructure.WargCage_count;
+                                                buildingPosition.WargCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.AlphaWargCage:
+                                                ++buildingStructure.AlphaWargCage_count;
+                                                buildingPosition.AlphaWargCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WildCatCage:
+                                                ++buildingStructure.WildCatCage_count;
+                                                buildingPosition.WildCatCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.LionCage:
+                                                ++buildingStructure.LionCage_count;
+                                                buildingPosition.LionCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WarLionCage:
+                                                ++buildingStructure.WarLionCage_count;
+                                                buildingPosition.WarLionCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.ElephantCage:
+                                                ++buildingStructure.ElephantCage_count;
+                                                buildingPosition.ElephantCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WarElephantCage:
+                                                ++buildingStructure.WarElephantCage_count;
+                                                buildingPosition.WarElephantCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.OliphantCage:
+                                                ++buildingStructure.OliphantCage_count;
+                                                buildingPosition.OliphantCage_pos = subTileLoop.Position;
+                                                break;
+
                                         }
                                         break;
                                     case TerrainMainType.Destroyed:

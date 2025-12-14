@@ -53,8 +53,8 @@ namespace VikingEngine.DSSWars.Conscript
                         case ItemResourceType.SiegeCannonIron:
                         case ItemResourceType.ManCannonIron:
                             return UnitType.ConscriptWarmachine;
-                        case ItemResourceType.KnightsLance:
-                            return UnitType.ConscriptCavalry;
+                        //case ItemResourceType.KnightsLance:
+                        //    return UnitType.ConscriptCavalry;
 
                         default:
                             return UnitType.Conscript;
@@ -97,8 +97,8 @@ namespace VikingEngine.DSSWars.Conscript
                             return UnitFilterType.Warhammer;
                         case ItemResourceType.TwoHandSword:
                             return UnitFilterType.TwohandSword;
-                        case ItemResourceType.KnightsLance:
-                            return UnitFilterType.Knight;
+                        //case ItemResourceType.KnightsLance:
+                        //    return UnitFilterType.Knight;
                         case ItemResourceType.MithrilSword:
                             return UnitFilterType.MithrilKnight;
 
@@ -716,7 +716,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                 case SpecializationType.Viking:
                 case SpecializationType.Sea:
-                    conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmachine);
+                    conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
 
                     soldierData.attackDamage = MathExt.SubtractPercentage(soldierData.attackDamage, DssConst.Conscript_SpecializePercentage);
                     float seaDamagePerc = conscript.specialization == SpecializationType.Sea ?
@@ -829,7 +829,7 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
 
                 case SpecializationType.Viking:
-                    conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmachine);
+                    conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
                     if (!ranged)
                     {
                         soldierData.modelName = LootFest.VoxelModelName.wars_viking_ship;
@@ -905,7 +905,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     case ItemResourceType.Warhammer:
                     case ItemResourceType.TwoHandSword:
-                    case ItemResourceType.KnightsLance:
+                    //case ItemResourceType.KnightsLance:
                     case ItemResourceType.MithrilSword:
                     case ItemResourceType.MithrilBow:
                         soldierData.modelName = LootFest.VoxelModelName.wars_knight_ship;

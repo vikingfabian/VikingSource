@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall.GO;
 
@@ -135,6 +136,7 @@ namespace VikingEngine.DSSWars.Resource
         /// Weight is measured in man-carry, 1 is a standard carry weight for a worker
         /// </summary>
         public float weight;
+        public WorkPriorityType work;
         public CraftBlueprint bp1;
         public CraftBlueprint bp2;
 
@@ -147,10 +149,11 @@ namespace VikingEngine.DSSWars.Resource
         //public ItemSourceType source = ItemSourceType.NONE;
         //public int sourceId1 = -1, sourceId2 = -1, sourceId3 = -1;
 
-        public ItemProperties(ItemResourceType type, int cityResourceIndex, float weight, CraftBlueprint bp1, CraftBlueprint bp2)
+        public ItemProperties(ItemResourceType type, int cityResourceIndex, float weight, WorkPriorityType work, CraftBlueprint bp1, CraftBlueprint bp2)
         {   
             this.cityResourceIndex = cityResourceIndex;
             this.weight = weight;
+            this.work = work;
             this.bp1 = bp1;
             this.bp2 = bp2;
 

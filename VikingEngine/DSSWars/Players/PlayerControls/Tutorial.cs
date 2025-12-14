@@ -387,9 +387,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
             }
 
-            player.faction.workTemplate.craft_sharpstick.value = 0;
-            player.faction.workTemplate.craft_bow.value = 0;
-            player.faction.workTemplate.craft_paddedarmor.value = 0;
+            player.faction.workTemplate.setWorkPrio(0, Work.WorkPriorityType.craftSharpStick);
+            player.faction.workTemplate.setWorkPrio(0, Work.WorkPriorityType.craftBow);//craft_bow.value = 0;
+            player.faction.workTemplate.setWorkPrio(0, Work.WorkPriorityType.craftPaddedArmor);//craft_paddedarmor.value = 0;
             player.faction.refreshCityWork();
             
             refreshLimits();
@@ -513,10 +513,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.space();
                     content.Add(new RbText(string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Work)));
                     
-                    content.iconicontext(HudLib.CheckImage(weaponsArmor_setWeaponPrio), ResourceLib.Icon(ItemResourceType.SharpStick), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_SharpStick));
-                    content.iconicontext(HudLib.CheckImage(weaponsArmor_setArmorPrio), ResourceLib.Icon(ItemResourceType.PaddedArmor), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_PaddedArmor));
-                    content.iconicontext(HudLib.CheckImage(weaponsArmor_produceWeapons), ResourceLib.Icon(ItemResourceType.SharpStick), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_SharpStick));
-                    content.iconicontext(HudLib.CheckImage(weaponsArmor_produceArmor), ResourceLib.Icon(ItemResourceType.PaddedArmor), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_PaddedArmor));
+                    content.iconicontext(HudLib.CheckImage(weaponsArmor_setWeaponPrio),SpriteName.WarsResource_Sharpstick, string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_SharpStick));
+                    content.iconicontext(HudLib.CheckImage(weaponsArmor_setArmorPrio),  SpriteName.WarsResource_PaddedArmor, string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_PaddedArmor));
+                    content.iconicontext(HudLib.CheckImage(weaponsArmor_produceWeapons), SpriteName.WarsResource_Sharpstick, string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_SharpStick));
+                    content.iconicontext(HudLib.CheckImage(weaponsArmor_produceArmor), SpriteName.WarsResource_PaddedArmor, string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_PaddedArmor));
 
                     content.newLine();
                     HudLib.BulletPoint(content);
@@ -684,7 +684,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //TwoBools sendFood_selectTab = TwoBools.False;
                     content.iconicontext(HudLib.CheckImage(sendFood_selectTab.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Delivery));
                     //TwoBools sendFood_postalQueue = TwoBools.False;
-                    content.iconiconicontext(HudLib.CheckImage(sendFood_postalQueue.Value1), SpriteName.WarsBuild_Postal, SpriteName.WarsResource_Food, string.Format( "Send {0}", LangLib.Item(ItemResourceType.Food_G)));
+                    content.iconiconicontext(HudLib.CheckImage(sendFood_postalQueue.Value1), SpriteName.WarsBuild_Postal, SpriteName.WarsResource_Food, string.Format( "Send {0}", DssRef.lang.Resource_TypeName_Food));
                     break;
 
                 case TutorialMission.FindWoodCity:

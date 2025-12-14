@@ -79,7 +79,6 @@ namespace VikingEngine.DSSWars.Resource
             }
 
             var properties = ItemPropertyColl.Get(item);
-            //ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
 
             content.Add(new RbSeperationLine());
 
@@ -89,14 +88,6 @@ namespace VikingEngine.DSSWars.Resource
 
             bp(properties.bp1);
             bp(properties.bp2);
-
-            
-            //if (bp2 != null)
-            //{
-
-            //    content.newLine();
-            //    bp2.toMenu(content, city, false, false);
-            //}
 
             void bp(CraftBlueprint blueprint)
             {

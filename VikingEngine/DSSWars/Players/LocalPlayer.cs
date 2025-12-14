@@ -1193,8 +1193,17 @@ namespace VikingEngine.DSSWars.Players
                     {
                         conscript = new ConscriptProfile()
                         {
-                            weapon = Resource.ItemResourceType.KnightsLance,
+                            //weapon = Resource.ItemResourceType.KnightsLance,
+                            //armorLevel = Resource.ItemResourceType.IronArmor,
+                            //training = TrainingLevel.Basic,
+                            //specialization = SpecializationType.Traditional,
+
+
+                            man = Resource.ItemResourceType.NobelMen,
+                            weapon = Resource.ItemResourceType.HandSpear,
                             armorLevel = Resource.ItemResourceType.IronArmor,
+                            animal = Resource.ItemResourceType.WarHorse,
+                            mountArmor = Resource.ItemResourceType.MountIronArmor,
                             training = TrainingLevel.Basic,
                             specialization = SpecializationType.Traditional,
                         }

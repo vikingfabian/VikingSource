@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars.GameState.BattleTrials
             manager.addSoldier(4, Resource.ItemResourceType.HandSpear, BattleSetupManager.BothPlayers);
             manager.addSoldier(4, Resource.ItemResourceType.Bow, BattleSetupManager.BothPlayers);
             manager.addSoldier(4, Resource.ItemResourceType.HandSpear, BattleSetupManager.BothPlayers);
-            manager.addSoldier(4, Resource.ItemResourceType.KnightsLance, BattleSetupManager.BothPlayers);
+            //manager.addSoldier(4, Resource.ItemResourceType.KnightsLance, BattleSetupManager.BothPlayers);
             manager.addSoldier(2, Resource.ItemResourceType.TwoHandSword, BattleSetupManager.BothPlayers);
 
             manager.addSoldier(8, Resource.ItemResourceType.Ballista, BattleSetupManager.BothPlayers);

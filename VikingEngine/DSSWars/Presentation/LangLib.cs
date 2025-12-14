@@ -149,13 +149,13 @@ namespace VikingEngine.DSSWars.Presentation
                     typeIcon = SpriteName.WarsResource_Toolkit;
                     break;
 
-                case WorkPriorityType.craftWagonLight:
+                case WorkPriorityType.craftWagon2Wheel:
                     name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Wagon2Wheel);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Wagon2Wheel;
                     break;
 
-                case WorkPriorityType.craftWagonHeavy:
+                case WorkPriorityType.craftWagon4Wheel:
                     name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Wagon4Wheel);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_Wagon4Wheel;
@@ -423,7 +423,7 @@ namespace VikingEngine.DSSWars.Presentation
                     typeIcon = SpriteName.WarsResource_IronRifle;
                     break;
 
-                case WorkPriorityType.craftBlunderbus:
+                case WorkPriorityType.craftBlunderbuss:
                     name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Blunderbuss);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_IronShotgun;

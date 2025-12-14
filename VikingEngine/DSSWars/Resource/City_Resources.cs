@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.GameObject
         ItemResourceType.ConservedFood,
             ItemResourceType.Beer,
             ItemResourceType.CoolingFluid,
-            ItemResourceType.StorageBox,
+            ItemResourceType.Container,
             ItemResourceType.Palisade,
             ItemResourceType.Toolkit,
             ItemResourceType.Wagon2Wheel,

@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.Build
         GunBarracks,
         CannonBarracks,
 
-        KnightsBarracks,
+        //KnightsBarracks,
 
         Smelter,
         Foundry,
@@ -163,6 +163,8 @@ namespace VikingEngine.DSSWars.Build
         Dryer,
 
         MaterialStorage, FoodStorage,  WeaponStorage, ArmorStorage, AnimalStorage,
+
+        ShieldMaker,
 
         OxenPen,
         KineOxenPen,
@@ -264,7 +266,7 @@ namespace VikingEngine.DSSWars.Build
 
             list.Add(BuildAndExpandType.ServiceHouse_Small);
             if (logistics1)
-            {                
+            {
                 list.Add(BuildAndExpandType.ServiceHouse_Large);
             }
 
@@ -282,7 +284,7 @@ namespace VikingEngine.DSSWars.Build
             {
                 list.Add(BuildAndExpandType.WheatFarmUpgraded);
             }
-            
+
             list.Add(BuildAndExpandType.LinenFarm);
             if (unlocks.building_upgradedFarm)
             {
@@ -374,7 +376,7 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.Bank);
                 if (city.buildingStructure.Bank_count > 0 ||
                     unlockAll)
-                {                    
+                {
                     list.Add(BuildAndExpandType.CoinMinter);
                 }
             }
@@ -393,7 +395,7 @@ namespace VikingEngine.DSSWars.Build
                 {
                     list.Add(BuildAndExpandType.GoldDeliveryLvl1);
                     list.Add(BuildAndExpandType.GoldDeliveryLvl2);
-                    list.Add(BuildAndExpandType.GoldDeliveryLvl3);                    
+                    list.Add(BuildAndExpandType.GoldDeliveryLvl3);
                 }
 
                 list.Add(BuildAndExpandType.Storehouse);
@@ -403,8 +405,8 @@ namespace VikingEngine.DSSWars.Build
 
                 list.Add(BuildAndExpandType.CoalPit);
             }
-            
-            
+
+
             list.Add(BuildAndExpandType.WorkBench);
 
             if (logistics1)
@@ -434,8 +436,12 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.Gunmaker);
             }
 
-            list.Add(BuildAndExpandType.Armory);    
-            
+            if (logistics1)
+            {
+                list.Add(BuildAndExpandType.Armory);
+                list.Add(BuildAndExpandType.ShieldMaker);
+            }
+        
             list.Add(BuildAndExpandType.SoldierBarracks);
             list.Add(BuildAndExpandType.ArcherBarracks);
 
@@ -455,11 +461,11 @@ namespace VikingEngine.DSSWars.Build
 
             if (logistics1)
             {
-                if (city.buildingStructure.Nobelhouse_count > 0 ||
-                    unlockAll)
-                {
-                    list.Add(BuildAndExpandType.KnightsBarracks);
-                }
+                //if (city.buildingStructure.Nobelhouse_count > 0 ||
+                //    unlockAll)
+                //{
+                //    list.Add(BuildAndExpandType.KnightsBarracks);
+                //}
                     
                 list.Add(BuildAndExpandType.WoodCutter);
                 list.Add(BuildAndExpandType.StoneCutter);
@@ -769,7 +775,7 @@ namespace VikingEngine.DSSWars.Build
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.Armory, TerrainMainType.Building, (int)TerrainBuildingType.Armory, SpriteName.WarsBuild_Armory, CraftBuildingLib.Armory, true, 
-                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Weapons, BuildFilterTag.NUM_NONE, 
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Weapons, BuildFilterTag.Soldiers, 
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.WoodCutter, TerrainMainType.Building, (int)TerrainBuildingType.WoodCutter, SpriteName.WarsBuild_WoodCutter, CraftBuildingLib.WoodCutter, false, 
@@ -812,9 +818,9 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, 
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.KnightsBarracks, TerrainMainType.Building, (int)TerrainBuildingType.KnightsBarracks, SpriteName.WarsBuild_KnightBarrack, CraftBuildingLib.KnightsBarracks, true, 
-                BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, 
-                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            //new BuildOption(BuildAndExpandType.KnightsBarracks, TerrainMainType.Building, (int)TerrainBuildingType.KnightsBarracks, SpriteName.WarsBuild_KnightBarrack, CraftBuildingLib.KnightsBarracks, true, 
+            //    BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, 
+            //    MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.Foundry, TerrainMainType.Building, (int)TerrainBuildingType.Foundry, SpriteName.WarsBuild_Foundry, CraftBuildingLib.Foundry, true, 
                 BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE, 
@@ -1036,6 +1042,10 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.Pottery, TerrainMainType.Building, (int)TerrainBuildingType.Pottery, SpriteName.MissingImage, CraftBuildingLib.Pottery, true,
                 BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Storage, BuildFilterTag.Resources,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.ShieldMaker, TerrainMainType.Building, (int)TerrainBuildingType.ShieldMaker, SpriteName.MissingImage, CraftBuildingLib.ShieldMaker, true,
+               BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Weapons, BuildFilterTag.Soldiers,
+               MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             //DryingPan,
             new BuildOption(BuildAndExpandType.DryingPan, TerrainMainType.Building, (int)TerrainBuildingType.DryingPan, SpriteName.MissingImage, CraftBuildingLib.DryingPan, true,
                 BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,

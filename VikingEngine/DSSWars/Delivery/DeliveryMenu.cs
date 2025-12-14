@@ -102,39 +102,40 @@ namespace VikingEngine.DSSWars.Delivery
                         city.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, false, ref reachedBuffer);
                     }
                     content.newLine();
-                    for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
+                    //for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
+                    for (ResourceGroup resourceGroup = 0; resourceGroup < ResourceGroup.NUM; resourceGroup++)
                     {
                         var tabContent = new RichBoxContent();
                         //string text = null;
-                        switch (resourcesSubTab)
+                        switch (resourceGroup)
                         {
-                            case ResourcesSubTab.Overview_Resources:
+                            case ResourceGroup.Resources:
                                 tabContent.Add(new RbText(DssRef.lang.Hud_category));
                                 tabContent.space();
                                 tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                                 break;
 
-                            case ResourcesSubTab.Overview_Metals:
+                            case ResourceGroup.Metals:
                                 tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
                                 break;
-                            case ResourcesSubTab.Overview_Weapons:
+                            case ResourceGroup.Weapons:
                                 tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
                                 break;
 
-                            case ResourcesSubTab.Overview_Projectile:
+                            case ResourceGroup.Projectile:
                                 tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
                                 break;
 
-                            case ResourcesSubTab.Overview_Armor:
+                            case ResourceGroup.Armor:
                                 tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
                                 break;
                         }
-                        var subTab = new ArtButton(player.resourcesSubTab == resourcesSubTab? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, 
+                        var subTab = new ArtButton(player.resourcesSubTab.resourceGroup == resourceGroup? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, 
                             tabContent,
-                            new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                            new RbAction1Arg<ResourceGroup>((ResourceGroup resourcesSubTab) =>
                             {
-                                player.resourcesSubTab = resourcesSubTab;
-                            }, resourcesSubTab, RbSoundType.Tab));
+                                player.resourcesSubTab.resourceGroup = resourcesSubTab;
+                            }, resourceGroup, RbSoundType.Tab));
                         
                         //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
                         content.Add(subTab);
@@ -147,12 +148,12 @@ namespace VikingEngine.DSSWars.Delivery
                         tabContent.Add(new RbImage(SpriteName.AutomationGearIcon));
 
                         var subTab = new ArtToggle(currentStatus.profile.type == ItemResourceType.AutomatedItem, tabContent,
-                            new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                            new RbAction1Arg<ResourceGroup>((ResourceGroup resourcesSubTab) =>
                             {
-                                player.resourcesSubTab = resourcesSubTab;
+                                player.resourcesSubTab.resourceGroup = resourcesSubTab;
                                 itemClick(ItemResourceType.AutomatedItem);
 
-                            }, ResourcesSubTab.Auto, RbSoundType.Tab),
+                            }, ResourceGroup.Auto, RbSoundType.Tab),
                             new RbTooltip((RichBoxContent content, object tag) =>
                             {
                                 //RichBoxContent content = new RichBoxContent();
@@ -167,26 +168,29 @@ namespace VikingEngine.DSSWars.Delivery
                         content.space();
                     }
 
-                    if (player.resourcesSubTab != ResourcesSubTab.Auto)
+                    if (player.resourcesSubTab.resourceGroup !=  ResourceGroup.Auto)
                     {
 
                         content.Add(new RichBoxScale(1.6f));
                         content.newLine();
                         ItemResourceType[] resourceTypes;
 
-                        switch (player.resourcesSubTab)
+                        switch (player.resourcesSubTab.resourceGroup)
                         {
                             default: resourceTypes = City.MovableCityResource_Misc; break;
-                            case ResourcesSubTab.Overview_Metals: resourceTypes = City.MovableCityResource_Metals; break;
-                            case ResourcesSubTab.Overview_Weapons: resourceTypes = City.MovableCityResource_WeaponMelee; break;
-                            case ResourcesSubTab.Overview_Projectile: resourceTypes = City.MovableCityResource_WeaponRanged; break;
-                            case ResourcesSubTab.Overview_Armor: resourceTypes = City.MovableCityResource_Armor; break;
+                            case ResourceGroup.Metals: resourceTypes = City.MovableCityResource_Metals; break;
+                            case ResourceGroup.Animals: resourceTypes = City.MovableCityResource_Animals; break;
+                            case ResourceGroup.Weapons: resourceTypes = City.MovableCityResource_WeaponMelee; break;
+                            case ResourceGroup.Projectile: resourceTypes = City.MovableCityResource_WeaponRanged; break;
+                            case ResourceGroup.Armor: resourceTypes = City.MovableCityResource_Armor; break;
                         }
 
                         foreach (var item in resourceTypes)
                         {
+                            IconName.Item(item, out SpriteName itemIcon, out string itemName);
+
                             var button = new ArtToggle(item == currentStatus.profile.type, new List<AbsRichBoxMember>{
-                                new RbImage(ResourceLib.Icon(item))   
+                                new RbImage(itemIcon)   
                             },
                             new RbAction1Arg<ItemResourceType>(itemClick, item, RbSoundType.Option),
                             new RbTooltip((RichBoxContent content, object tag) =>
@@ -525,7 +529,8 @@ namespace VikingEngine.DSSWars.Delivery
                         else
                         {
                             fitFilter |= player.deliverySupTab == ItemResourceType.RESOURCES;
-                            icon = ResourceLib.Icon(currentProfile.profile.type);
+                            IconName.Item(currentProfile.profile.type, out icon, out string itemName);
+                            //icon = ResourceLib.Icon(currentProfile.profile.type);
                             title = DssRef.lang.BuildingType_Postal + ": " + currentProfile.profile.type.ToString();
                         }
                         if (fitFilter)
@@ -594,10 +599,11 @@ namespace VikingEngine.DSSWars.Delivery
 
                         if (ready)
                         {
+                            IconName.Item(currentStatus.inProgress.type, out SpriteName itemIcon, out string itemName);
                             content.newLine();
-                            content.Add(new RbImage(ResourceLib.Icon(currentStatus.inProgress.type)));
+                            content.Add(new RbImage(itemIcon));
                             content.space();
-                            content.Add(new RbText(LangLib.Item(currentStatus.inProgress.type) + ": " + currentStatus.inProgress.SendAmount.ToString()));
+                            content.Add(new RbText(itemName + ": " + currentStatus.inProgress.SendAmount.ToString()));
                         }
                     }
                     {

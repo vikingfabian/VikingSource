@@ -88,7 +88,7 @@ namespace VikingEngine.DSSWars.Resource
         SoftWood,
         HardWood,
         DryWood,
-        StorageBox,
+        Container,
         Wagon2Wheel,
         Wagon4Wheel,
         WagonClosed,
@@ -236,7 +236,6 @@ namespace VikingEngine.DSSWars.Resource
         Oliphant,
 
         Palisade,
-        UNUSED,
         //WorkerTent,
         Settler,
 

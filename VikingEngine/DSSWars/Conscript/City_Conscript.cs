@@ -136,6 +136,11 @@ namespace VikingEngine.DSSWars.GameObject
                                                 DssRef.stats.guardsRecruited++;
                                             }
 
+                                            if (status.inProgress.man == ItemResourceType.NobelMen && status.inProgress.animal == ItemResourceType.WarHorse)
+                                            {
+                                                DssRef.achieve.UnlockAchievement_async(AchievementIndex.knights);
+                                            }
+
                                             switch (status.inProgress.weapon)
                                             {
                                                 case ItemResourceType.LongSword:
@@ -145,9 +150,9 @@ namespace VikingEngine.DSSWars.GameObject
                                                         DssRef.achieve.UnlockAchievement_async(AchievementIndex.men_of_steel);
                                                     }
                                                     break;
-                                                case ItemResourceType.KnightsLance:
-                                                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.knights);
-                                                    break;
+                                                //case ItemResourceType.KnightsLance:
+                                                //    DssRef.achieve.UnlockAchievement_async(AchievementIndex.knights);
+                                                //    break;
                                                 case ItemResourceType.ManCannonIron:
                                                 case ItemResourceType.SiegeCannonIron:
                                                     DssRef.achieve.UnlockAchievement_async(AchievementIndex.iron_cannon);
@@ -254,9 +259,9 @@ namespace VikingEngine.DSSWars.GameObject
                     case Build.BuildAndExpandType.WarmachineBarracks:
                         player.warmachineConscriptCopy = currentStatus;
                         break;
-                    case Build.BuildAndExpandType.KnightsBarracks:
-                        player.knightConscriptCopy = currentStatus;
-                        break;
+                    //case Build.BuildAndExpandType.KnightsBarracks:
+                    //    player.knightConscriptCopy = currentStatus;
+                    //    break;
                     case Build.BuildAndExpandType.GunBarracks:
                         player.gunConscriptCopy = currentStatus;
                         break;
@@ -309,9 +314,9 @@ namespace VikingEngine.DSSWars.GameObject
                     case Build.BuildAndExpandType.WarmachineBarracks:
                         currentStatus.paste(player.warmachineConscriptCopy) ;
                         break;
-                    case Build.BuildAndExpandType.KnightsBarracks:
-                        currentStatus.paste(player.knightConscriptCopy);
-                        break;
+                    //case Build.BuildAndExpandType.KnightsBarracks:
+                    //    currentStatus.paste(player.knightConscriptCopy);
+                    //    break;
                     case Build.BuildAndExpandType.GunBarracks:
                         currentStatus.paste(player.gunConscriptCopy);
                         break;
@@ -417,7 +422,7 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = 1,
             };
 
-            soldierProfile.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmachine);
+            soldierProfile.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
 
 
             switch (Culture)
@@ -435,12 +440,12 @@ namespace VikingEngine.DSSWars.GameObject
                         soldierProfile.skillBonus = 1.2f;
                     }
                     break;
-                case CityCulture.Noblemen:
-                    if (knight)
-                    {
-                        soldierProfile.skillBonus = 1.2f;
-                    }
-                    break;
+                //case CityCulture.Noblemen:
+                //    if (knight)
+                //    {
+                //        soldierProfile.skillBonus = 1.2f;
+                //    }
+                //    break;
                 case CityCulture.Seafaring:
                     if (soldierProfile.conscript.specialization == SpecializationType.Sea)
                     {

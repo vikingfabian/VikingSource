@@ -2257,7 +2257,7 @@ namespace VikingEngine
                 add(SpriteName.WarsResource_Brick);
                 add(SpriteName.WarsResource_Clay);
                 add(SpriteName.WarsResource_ConservedFood);
-                add(SpriteName.WarsResource_StorageBox);
+                add(SpriteName.WarsResource_Container);
                 add(SpriteName.WarsResource_Salt);
 
                 add(SpriteName.WarsResource_Hen);
@@ -2289,6 +2289,17 @@ namespace VikingEngine
                 add(SpriteName.WarsResource_Elephant);
                 add(SpriteName.WarsResource_WarElephant);
                 add(SpriteName.WarsResource_Oliphant);
+
+                add(SpriteName.WarsResource_MountPaddedArmor);
+                add(SpriteName.WarsResource_MountHeavyPaddedArmor);
+                add(SpriteName.WarsResource_MountBronzeArmor);
+                add(SpriteName.WarsResource_MountIronArmor);
+                add(SpriteName.WarsResource_MountHeavyIronArmor);
+                add(SpriteName.WarsResource_MountLightPlateArmor);
+                add(SpriteName.WarsResource_MountFullPlateArmor);
+                add(SpriteName.WarsResource_MountMithrilArmor);
+
+                add(SpriteName.WarsResource_HeaterShield);
             }
 
             currentIndex = numTilesWidth * 87;
@@ -2531,7 +2542,12 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Bow);
                     add(SpriteName.WarsResource_Longbow);
                     add(SpriteName.WarsResource_Mithrilbow);
-                    currentIndex += 5;
+                    currentIndex += 2;
+                    add(SpriteName.WarsResource_BucklerShield); 
+                    add(SpriteName.WarsResource_RoundShield); 
+                    add(SpriteName.WarsResource_TowerShield);
+
+
                     add(SpriteName.WarsResource_Pike);
                     add(SpriteName.WarsDelivery);
                     add(SpriteName.WarsTrade);

@@ -47,10 +47,12 @@ namespace VikingEngine.DSSWars.Resource
             this.requirement = requirement;
         }
 
-        public void addSecondResult(ItemResourceType item, int count)
+        public CraftBlueprint addSecondResult(ItemResourceType item, int count)
         {
             resultSubType2 = (int)item;
             resultAmount2 = count;
+
+            return this;
         }
 
         public bool available(City city)
@@ -187,43 +189,47 @@ namespace VikingEngine.DSSWars.Resource
                     IconName.Item((ItemResourceType)resultSubType, out icon, out name);
                     break;
                 case CraftResultType.Building:
-                    name = BuildLib.BuildOptions[resultSubType].Label();
-
+                    IconName.Building((BuildAndExpandType)resultSubType, out icon, out name);
+                    break;
+                default:
+                    icon = SpriteName.NO_IMAGE;
+                    name = TextLib.Error;
                     break;
             }
         }
 
-        string name()
-        {
-            switch (resultType)
-            {
-                case CraftResultType.Resource:
-                    return LangLib.Item((ItemResourceType)resultSubType1);
-                case CraftResultType.Building:
-                    return BuildLib.BuildOptions[resultSubType1].Label();
-            }
+        //string name()
+        //{
+        //    switch (resultType)
+        //    {
+        //        case CraftResultType.Resource:
+        //            return LangLib.Item((ItemResourceType)resultSubType1);
+        //        case CraftResultType.Building:
+        //            return BuildLib.BuildOptions[resultSubType1].Label();
+        //    }
 
-            return TextLib.Error;
-        }
+        //    return TextLib.Error;
+        //}
 
-        SpriteName icon()
-        {
-            switch (resultType)
-            {
-                case CraftResultType.Resource:
-                    return ResourceLib.Icon((ItemResourceType)resultSubType1);
-                case CraftResultType.Building:
-                    return BuildLib.BuildOptions[resultSubType1].sprite;
-            }
+        //SpriteName icon()
+        //{
+        //    switch (resultType)
+        //    {
+        //        case CraftResultType.Resource:
+        //            return ResourceLib.Icon((ItemResourceType)resultSubType1);
+        //        case CraftResultType.Building:
+        //            return BuildLib.BuildOptions[resultSubType1].sprite;
+        //    }
 
-            return SpriteName.NO_IMAGE;
-        }
+        //    return SpriteName.NO_IMAGE;
+        //}
 
         public void resultTypeToMenu(RichBoxContent content)
-        { 
-            content.Add(new RbImage(icon()));
+        {
+            iconName(1, out SpriteName icon, out string name);
+            content.Add(new RbImage(icon));
             content.space();
-            content.Add(new RbText(name()));
+            content.Add(new RbText(name));
         }
 
         public void toMenu(RichBoxContent content, City city, bool upgradeOnly = false, bool newLine = true, bool includeAvailable = true, bool includeLevel = true)
@@ -247,7 +253,8 @@ namespace VikingEngine.DSSWars.Resource
                 {
                     available = city.GetGroupedResource(r.type).amount >= r.amount;
                 }
-                addResources(r.amount, ResourceLib.Icon(r.type), LangLib.Item(r.type), available);
+                IconName.Item(r.type, out SpriteName itemIcon, out string itemName);
+                addResources(r.amount, itemIcon, itemName, available);
                 first = false;
             }
 
@@ -303,9 +310,11 @@ namespace VikingEngine.DSSWars.Resource
                     content.Add(new RbText(resultAmount1.ToString()));
                     content.hspace();
                 }
-                content.Add(new RbImage(icon()));
+
+                iconName(1, out SpriteName icon, out string name);
+                content.Add(new RbImage(icon));
                 content.space();
-                content.Add(new RbText(name()));
+                content.Add(new RbText(name));
 
                 if (resultSubType2 >= 0)
                 {

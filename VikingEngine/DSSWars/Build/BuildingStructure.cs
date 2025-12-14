@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 WarmachineBarracks_pos;
         public IntVector2 GunBarracks_pos;
         public IntVector2 CannonBarracks_pos;
-        public IntVector2 KnightsBarracks_pos;
+        //public IntVector2 KnightsBarracks_pos;
         public IntVector2 Smelter_pos;
         public IntVector2 Foundry_pos;
         public IntVector2 Armory_pos;
@@ -72,6 +72,7 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 Butcher_pos;
         public IntVector2 Smoker_pos;
         public IntVector2 Dryer_pos;
+        public IntVector2 ShieldMaker_pos;
 
         // --- NEW Storage Positions ---
         public IntVector2 MaterialStorage_pos;
@@ -179,7 +180,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WarmachineBarracks: return WarmachineBarracks_pos;
                 case BuildAndExpandType.GunBarracks: return GunBarracks_pos;
                 case BuildAndExpandType.CannonBarracks: return CannonBarracks_pos;
-                case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_pos;
+                //case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_pos;
                 case BuildAndExpandType.Smelter: return Smelter_pos;
                 case BuildAndExpandType.Foundry: return Foundry_pos;
                 case BuildAndExpandType.Armory: return Armory_pos;
@@ -399,8 +400,8 @@ namespace VikingEngine.DSSWars.Build
             totalCount += count;
             if (count > 0)
             {
-                SpriteName icon = ResourceLib.Icon(resource);
-                string resourceName = LangLib.Item(resource);
+                IconName.Item(resource, out SpriteName icon, out string resourceName);
+                
                 var infoContent = new RichBoxContent();
 
                 infoContent.Add(new RbOverlapImage(new RbImage(icon), workIcon, VectorExt.V2FromX(-0.2f), 0.8f));
@@ -468,7 +469,7 @@ namespace VikingEngine.DSSWars.Build
         public int WarmachineBarracks_count;
         public int GunBarracks_count;
         public int CannonBarracks_count;
-        public int KnightsBarracks_count;
+        //public int KnightsBarracks_count;
         public int Smelter_count;
         public int Foundry_count;
         public int Armory_count;
@@ -484,6 +485,7 @@ namespace VikingEngine.DSSWars.Build
         public int Butcher_count;
         public int Smoker_count;
         public int Dryer_count;
+        public int ShieldMaker_count;
 
         // --- NEW Storage Buildings ---
         public int MaterialStorage_count;
@@ -579,7 +581,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WarmachineBarracks: return WarmachineBarracks_count;
                 case BuildAndExpandType.GunBarracks: return GunBarracks_count;
                 case BuildAndExpandType.CannonBarracks: return CannonBarracks_count;
-                case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_count;
+                //case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_count;
                 case BuildAndExpandType.Smelter: return Smelter_count;
                 case BuildAndExpandType.Foundry: return Foundry_count;
                 case BuildAndExpandType.Armory: return Armory_count;
@@ -703,7 +705,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WarmachineBarracks: WarmachineBarracks_count += add; break;
                 case BuildAndExpandType.GunBarracks: GunBarracks_count += add; break;
                 case BuildAndExpandType.CannonBarracks: CannonBarracks_count += add; break;
-                case BuildAndExpandType.KnightsBarracks: KnightsBarracks_count += add; break;
+                //case BuildAndExpandType.KnightsBarracks: KnightsBarracks_count += add; break;
                 case BuildAndExpandType.Smelter: Smelter_count += add; break;
                 case BuildAndExpandType.Foundry: Foundry_count += add; break;
                 case BuildAndExpandType.Armory: Armory_count += add; break;
@@ -770,9 +772,8 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WarmachineBarracks: return WarmachineBarracks_count;
                 case BuildAndExpandType.GunBarracks: return GunBarracks_count;
                 case BuildAndExpandType.CannonBarracks: return CannonBarracks_count;
-                case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_count;
+                //case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_count;
                
-
                 default: return 0; // Return 0 for NUM_NONE or any other undefined type
             }
         }

@@ -110,7 +110,7 @@ namespace VikingEngine.DSSWars.Defence
         public void onEnterGuard(City city, int IdAndPosition)
         {
             assignedToPost_IdAndPosition = IdAndPosition;
-            soldierConscript.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmachine);
+            soldierConscript.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
 
             if (DssRef.world.subTileGrid.TryGet(conv.IntToIntVector2(assignedToPost_IdAndPosition), out SubTile subTile))
             {
