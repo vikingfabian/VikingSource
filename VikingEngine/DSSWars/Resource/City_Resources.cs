@@ -1618,7 +1618,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static void BufferIconInfo(RichBoxContent content, bool safeguard)
         {
-            content.newLine();
+            //content.newLine();
             SpriteName sprite;
             string textstring;
             if (safeguard)
@@ -1637,7 +1637,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.Add(icon);
 
             var text = new RbText(": " + textstring);
-            text.overrideColor = HudLib.InfoYellow_Light;
+            //text.overrideColor = HudLib.InfoYellow_Light;
             content.Add(text);
         }
 

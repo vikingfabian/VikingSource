@@ -23,6 +23,11 @@ namespace VikingEngine.DSSWars.Map
             for (int i = 0; i < TypeToHeight.Length; i++)
             {
                 TypeToHeight_aboveWater[i] = Math.Max(TypeToHeight[i], 0);
+
+                if (i >= Height.MountainHeightStart)
+                { 
+                    TypeToHeight_aboveWater[i] += 0.2f;
+                }
             }
 
             TypeToWalkingMultiplier = new float[TypeToWalkingDistance.Length];

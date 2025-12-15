@@ -198,6 +198,7 @@ namespace VikingEngine.DSSWars.Interface
                 settlerButton(player, content, unit);
             }
 
+            content.newLine();
             var haltButton = new ArtButton( RbButtonStyle.Primary,
                         new List<AbsRichBoxMember>
                         {

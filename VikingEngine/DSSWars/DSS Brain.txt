@@ -1,4 +1,7 @@
-﻿!Tutorial is broken
+﻿UPDATE
+Change Log: 
+* 
+!Tutorial is broken
 !Start with one settler is not complete
 !Many temporary icons
 

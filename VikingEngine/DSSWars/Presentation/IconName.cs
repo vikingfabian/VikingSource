@@ -786,6 +786,11 @@ namespace VikingEngine.DSSWars
                     groupName = DssRef.lang.WarsResourceGroup_Resources;
                     break;
 
+                case ResourcesSubTab.Stockpile_Resources:
+                    categoryIcon = SpriteName.WarsStockpileAdd;
+                    tabIcon = SpriteName.WarsResource_Wood;
+                    category = DssRef.lang.Resource_Tab_Stockpile;
+                    tabName = DssRef.lang.WarsResourceGroup_Resources;
                 case ResourceGroup.Metals:
                     groupIcon = SpriteName.WarsResource_Iron;
                     groupName = DssRef.lang.WarsResourceGroup_Metal;
