@@ -57,6 +57,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color OffStandardOrange = new Color(200, 128, 0);
         public static readonly Color InfoYellow_Dark = new Color(160, 128, 0);
         public static readonly Color InfoYellow_Light = new Color(255, 255, 150);
+        public static readonly Color InfoYellow_VeryLight = new Color(255, 255, 200);
         public static readonly Color InfoYellow_BG = new Color(40, 32, 0);
         public const ImageLayers StoryContentLayer = ImageLayers.Lay1_Front;
         public const ImageLayers StoryBgLayer = ImageLayers.Lay1_Back;
@@ -82,6 +83,7 @@ namespace VikingEngine.DSSWars
         public const ImageLayers IngameUiLayer = ImageLayers.Lay9;
 
         public static NineSplitSettings HudMenuBackground;
+        public static NineSplitSettings MinimapBorder;
         public static NineSplitSettings HudTutorialBackground;
         public static NineSplitSettings HudMenuScollBackground;
         public static NineSplitSettings MessageBackground;
@@ -109,6 +111,7 @@ namespace VikingEngine.DSSWars
             const float TextToIconSz = 1.2f;
 
             HudMenuBackground = new HUD.NineSplitSettings(SpriteName.WarsHudMenuBg, 1, 8, 1f, true, true);
+            MinimapBorder = new HUD.NineSplitSettings(SpriteName.WarsHudMinimapBorder, 1, 4, 1f, true, false);
 
             HudMenuScollBackground = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerBg, 1, 8, 1f, true, true);
             HudMenuScollButton = new HUD.NineSplitSettings(SpriteName.WarsHudScrollerSlider, 1, 8, 1f, true, true);
@@ -208,7 +211,7 @@ namespace VikingEngine.DSSWars
             RbSettings_HeadOptions = RbSettings_Head;
             RbSettings_HeadOptions.artOptionButtonTex = RbSettings.artOptionButtonTex;
 
-            HeadDisplayWidth = (int)(Engine.Screen.IconSize * 7.4f);
+            HeadDisplayWidth = (int)(Engine.Screen.IconSize * 7.4f * Ref.gamesett.IngameMenuWidth);
             HeadDisplayEdge = Engine.Screen.BorderWidth;
             MessageDisplayWidth = (int)(Engine.Screen.IconSize * 6);
 
@@ -235,7 +238,7 @@ namespace VikingEngine.DSSWars
             };
         }
 
-        public static void copyPaste(RichBoxContent content, LocalPlayer player, AbsRbAction copy, AbsRbAction paste)
+        public static void copyPaste(RichBoxContent content, LocalPlayer player, AbsRbAction copy, AbsRbAction paste, bool copyAvailable = true, bool pasteAvailable = true)
         {
             player.gameControls.input.Copy.ToRichContent(content);
             content.hspace();
@@ -243,7 +246,7 @@ namespace VikingEngine.DSSWars
                     new RbImage(SpriteName.WarsHudIconCopy, WarHudIcons_DefaultScale),
                     new RbSpace(),
                     new RbText(DssRef.lang.Hud_CopySetup) 
-                }, copy));
+                }, copy, null, copyAvailable));
 
             content.space();
             player.gameControls.input.Paste.ToRichContent(content);
@@ -252,7 +255,7 @@ namespace VikingEngine.DSSWars
                     new RbImage(SpriteName.WarsHudIconPaste, WarHudIcons_DefaultScale),
                     new RbSpace(),
                     new RbText(DssRef.lang.Hud_Paste)
-                }, paste));
+                }, paste, null, pasteAvailable));
         }
         public static void buildingMenuTitle(RichBoxContent content, SpriteName icon, string caption, int id, int index, int buildingCount, Action closeAction, Action<int> nextAction)
         {
@@ -341,7 +344,7 @@ namespace VikingEngine.DSSWars
             {
                 content.newLine();
 
-                HudLib.Experience(content, args.blueprint.experienceType, city.GetTopSkill(args.blueprint.experienceType));
+                HudLib.Experience(content, args.blueprint.experienceType, city.cityExperienceLevels.Get(args.blueprint.experienceType).Max()/*city.GetTopSkill(args.blueprint.experienceType)*/);
             }
 
             //player.hud.tooltip.create(player, content, true, blueprint.tooltipId);

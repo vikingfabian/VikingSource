@@ -94,7 +94,6 @@ namespace VikingEngine.DSSWars.Map
                         subtile.terrainAmount < FarmCulture_MaxSize)
                     {
                         subtile.terrainAmount++;
-                        //DssRef.world.subTileGrid.Set(pos, subtile);
                     }
                     break;
             }

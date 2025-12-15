@@ -259,7 +259,8 @@ namespace VikingEngine.DSSWars
                 case Map.MapDetailLayerType.FullOverview4:
                 case Map.MapDetailLayerType.FactionColors3:
                     DssRef.state.detailMap.Update_outOfFocus();
-                    Draw3d(FarLayer, cameraIndex);
+                    DssRef.state.factionsMap.Draw(cameraIndex, localPlayer);
+                    //Draw3d(FarLayer, cameraIndex);
                     break;                    
             }
 

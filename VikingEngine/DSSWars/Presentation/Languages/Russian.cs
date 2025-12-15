@@ -8,6 +8,56 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Russian : AbsLanguage
     {
+       
+        //Winter update
+        public override string Resource_StockpileLimit => "Лимит запасов";
+        public override string GameMode_QuickMatch => "Quick Match";
+        public override string GameMode_QuickMatch_Description =>
+            "Более короткий формат игры. Вступите в полномасштабную войну против соперничающих наций.";
+        public override string Lobby_PlayerCount => "Количество игроков";
+        public override string Lobby_TwoTeams => "Две команды";
+        public override string Hud_Produce => "Производить:";
+        public override string Tutorial_WaitForWorkerLevel => "Подождите, пока рабочий достигнет:";
+
+        public override string Tutorial_PracticeOrSchool => "Тренируйтесь на {0} или используйте {1}";
+        public override string Tutorial_AddTag => "Добавить tag:";
+        public override string Tutorial_AddPin => "Добавить pin:";
+        public override string Tutorial_SelectMostTrees => "Найдите ваш город с наибольшим количеством деревьев";
+        public override string Tutorial_SelectACityWithX => "Выберите город с {0}";
+
+        public override string Tutorial_Select_NotCapital => ". Не ваша столица.";
+
+        public override string Tutorial_SetXPriorityToY => "Установите приоритет {0} на {1}";
+        public override string Tutorial_AdvisorMission => "Миссия Advisor";
+
+        public override string Tutorial_AdvisorDescription =>
+            "Полная игра началась. Advisor продолжит обучение полезными миссиями.";
+
+        public override string Tutorial_EndAdvisor => "Завершить Advisor";
+
+        public override string Tutorial_AdvisorCompleteTitle => "Advisor завершён!";
+        public override string Tutorial_AdvisorCompleteMessage => "Пусть следующий день будет благословенным!";
+
+        public override string Hud_Search => "Поиск";
+
+        public override string DifficultyDescription_ExtremeAggression => "Экстремальная агрессия";
+
+        public override string MapFilter => "Фильтр карты";
+
+        public override string Settings_TechMultiplier => "Скорость исследования tech";
+
+        public override string EndScreen_MatchComplete => "Результат матча";
+
+        public override string FactionName_DragonGem => "Dragon Gem";
+        public override string FactionName_Tomten => "Tomten";
+        public override string FactionName_Hælfolc => "Hælfolc";
+        public override string FactionName_AerimAngren => "Aerim Angren";
+
+        public override string HUD_NotAvailbleInX => "Недоступно в {0}";
+
+        public override string InputActionName_MiniMap => "Mini-map";
+
+        //--
         public override string Error_SoundInitFailure => "Не удалось инициализировать звук";
 
         public override string GameMenu_ControllerDisconnected => "Контроллер отключён";

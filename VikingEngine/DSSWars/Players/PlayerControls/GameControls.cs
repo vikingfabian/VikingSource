@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
@@ -43,8 +44,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         Vector2 controllerPointer_storedPos_faction;
         Vector2 controllerPointer_storedPos_diplomacy;
        
-
-
         public GameControls(LocalPlayer player, InputMap input)
         {
             
@@ -122,13 +121,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     player.hud.needRefresh |= menu.needRefresh;
                     
                 }
-                player.hud.update(out uiRefresh);
+                player.hud.update(out uiRefresh, true);
             }
             else
             {
-                if (!map.overridingDrag())
+                if (map.overridingDrag())
                 {
-                    player.hud.update(out uiRefresh);
+                    player.hud.update(out uiRefresh, false);
+                }
+                else
+                {
+                    player.hud.update(out uiRefresh, true);
                     hudState = player.hud.mouseOverHud;
                 }
             }
@@ -149,7 +152,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //lib.DoNothing();
                     player.hud.objMenu.diplomacy.quickSelect();
                 }
-                    //diplomacy.update();
+
+                player.hud.updateToolTip_diplomacy(uiRefresh);
+                //diplomacy.update();
             }
             else
             {

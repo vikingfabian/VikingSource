@@ -270,6 +270,7 @@ namespace VikingEngine.DSSWars.Resource
                 }
                 else
                 {
+                    content.hspace();
                     content.Add(new RbText(resultAmount.ToString()));
                 }
                 content.Add(new RbImage(icon()));
@@ -288,7 +289,7 @@ namespace VikingEngine.DSSWars.Resource
                 HudLib.Label(content, DssRef.lang.Experience_Required);
                 content.newLine();
 
-                bool gotskill = city.GetTopSkill(experienceType) >= levelRequirement;
+                bool gotskill = city.cityExperienceLevels.Get(experienceType).Max() >= levelRequirement;
                 content.Add(new RbImage(gotskill ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
 
                 LangLib.ExperienceType(experienceType, out string expName, out SpriteName expIcon);

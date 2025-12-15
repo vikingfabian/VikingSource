@@ -62,6 +62,7 @@ namespace VikingEngine.DSSWars
 
         public int lostCity_Time0 = -1;
         public int lostCity_Time1 = -1;
+        public bool quickMatchFaction = false;
 
 
         public XP.TechnologyTemplate technology;
@@ -563,7 +564,6 @@ namespace VikingEngine.DSSWars
 
                 if (cities.Count == 0 && !player.protectedFromDelete)
                 {
-
                     if (armies.Count == 0)
                     {
                         DeleteMe();
@@ -579,7 +579,6 @@ namespace VikingEngine.DSSWars
                         DeleteMe();
                     }
                 }
-
             }
         }
 
@@ -630,6 +629,11 @@ namespace VikingEngine.DSSWars
 
         public void asynchCullingUpdate(float time, bool bStateA)
         {
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                p.unitsPixelTexture.updateColorProfile(this);
+            }
+
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
@@ -1554,6 +1558,26 @@ namespace VikingEngine.DSSWars
         /// Theme: A democracy run house with focus on politics and military might. Looks down on any outsiders.
         /// </summary>
         Etheleorthe,
+
+        /// <summary>
+        /// Theme: Four headed dragon symbol. Known for having an unpenetrable castle.
+        /// </summary>
+        DragonGem,
+
+        /// <summary>
+        /// Theme: Easter egg for december. "Tomten" is an old nordic name for father christmas
+        /// </summary>
+        Tomten,
+
+        /// <summary>
+        /// Theme: The blessed folk. A horde like farmers faction.
+        /// </summary>
+        Hælfolc,
+
+        /// <summary>
+        /// The Iron Saints, people who guard a mountain pass against evil.
+        /// </summary>
+        AerimAngren,
 
         NUM
     }

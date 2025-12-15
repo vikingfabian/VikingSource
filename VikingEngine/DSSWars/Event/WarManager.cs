@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.Players
         public int gear;
         public int maxCityCount;
         public IntervalF checkTimeHours;
-        public float toPeacefulPercentageMulti;
+        public float tooPeacefulPercentageMulti;
         public float allyChance;
         public Range maxPeacefulChecks;
 
@@ -64,8 +64,8 @@ namespace VikingEngine.DSSWars.Players
                 {
                     case StartGear:
                         maxCityCount = random.Int(7, 9);
-                        checkTimeHours = new IntervalF(0.5f, 3.5f);
-                        toPeacefulPercentageMulti = 1f;
+                        checkTimeHours = new IntervalF(0.8f, 4f);
+                        tooPeacefulPercentageMulti = 1f;
                         allyChance = 0.05f;
 
                         maxPeacefulChecks = new Range(1, 4);
@@ -73,8 +73,8 @@ namespace VikingEngine.DSSWars.Players
 
                     case 2:
                         maxCityCount = random.Int(16, 21);
-                        checkTimeHours = new IntervalF(0.4f, 2.5f);
-                        toPeacefulPercentageMulti = 1.4f;
+                        checkTimeHours = new IntervalF(0.6f, 3.5f);
+                        tooPeacefulPercentageMulti = 1.4f;
                         allyChance = 0.25f;
 
                         maxPeacefulChecks = new Range(2, 6);
@@ -82,8 +82,8 @@ namespace VikingEngine.DSSWars.Players
 
                     case MaxGear:
                         maxCityCount = int.MaxValue;
-                        checkTimeHours = new IntervalF(0.2f, 1.5f);
-                        toPeacefulPercentageMulti = 2f;
+                        checkTimeHours = new IntervalF(0.5f, 3f);
+                        tooPeacefulPercentageMulti = 2f;
                         allyChance = 0.75f;
 
                         maxPeacefulChecks = new Range(8, 16);
@@ -99,6 +99,13 @@ namespace VikingEngine.DSSWars.Players
                 {
                     maxCityCount -= 2;
                     maxPeacefulChecks += 4;
+
+                    if (DssRef.difficulty.extremeAggression)
+                    {
+                        allyChance += 0.1f;
+                        maxPeacefulChecks += 2;
+                        checkTimeHours.Max *= 0.75f;
+                    }
                 }
             }
             else
@@ -113,11 +120,11 @@ namespace VikingEngine.DSSWars.Players
     {
         WarManagerGear warManagerGear;
         Time tooPeacefulCheckTimer =
-#if DEBUG
-            new Time(4, TimeUnit.Seconds);
-#else
+//#if DEBUG
+            //new Time(4, TimeUnit.Seconds);
+//#else
             new Time(Ref.rnd.Float(20, 40), TimeUnit.Minutes);
-#endif
+//#endif
         public void testToPeacefulCheck()
         {
             tooPeacefulCheckTimer.setZero();
@@ -175,7 +182,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         opposingSizePerc = opposingSize / faction.PotensialMilitaryStrength();
 
-                        toPeaceful = opposingSizePerc <= DssRef.difficulty.toPeacefulPercentage * warManagerGear.toPeacefulPercentageMulti;
+                        toPeaceful = opposingSizePerc <= DssRef.difficulty.toPeacefulPercentage * warManagerGear.tooPeacefulPercentageMulti;
                     }
                     else
                     {

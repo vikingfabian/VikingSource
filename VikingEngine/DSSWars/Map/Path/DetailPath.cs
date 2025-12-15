@@ -279,7 +279,7 @@ namespace VikingEngine.DSSWars.Map.Path
         public IntVector2 goal;
         public List<DetailPathNodeResult> nodes = new List<DetailPathNodeResult>(64);
         public bool blockedPath;
-        public int timeStamp;
+        public double timeStamp;
         public void recycle()
         { 
             nodes.Clear();

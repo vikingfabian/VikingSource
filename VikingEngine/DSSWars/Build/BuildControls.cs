@@ -539,7 +539,7 @@ namespace VikingEngine.DSSWars.Build
         {
             List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
 
-            if (player.tutorial == null)
+            if (player.tutorial == null || player.tutorial.AdvisorMode())
             { BuildLib.AvailableBuildTypes(available, city); }
             else
             { available = player.tutorial.AvailableBuildTypes(); }
@@ -843,44 +843,45 @@ namespace VikingEngine.DSSWars.Build
 
             foreach (var tab in buildCategories)
             {
-                string category;
-                SpriteName tabIcon;
-                switch (tab)
-                {
-                    case BuildCategoryTab.Filter:
-                        tabIcon = SpriteName.warsBuildCategorySearch;
-                        category = DssRef.lang.HUD_Filter;
-                        break;
-                    case BuildCategoryTab.General:
-                        tabIcon = SpriteName.warsBuildCategoryHouse;
-                        category = DssRef.lang.BuildCategory_General;
-                        break;
-                    case BuildCategoryTab.Advanced:
-                        tabIcon = SpriteName.warsBuildCategoryAdvanced;
-                        category = DssRef.lang.Hud_Advanced;
-                        break;
-                    case BuildCategoryTab.Military:
-                        tabIcon = SpriteName.warsBuildCategoryMilitaryWall;
-                        category = DssRef.lang.BuildCategory_Military;
-                        break;
-                    case BuildCategoryTab.Decor:
-                        tabIcon = SpriteName.warsBuildCategoryDecorTree;
-                        category = DssRef.lang.BuildCategory_Decoration;
-                        break;
-                    case BuildCategoryTab.Upgrade:
-                        tabIcon = SpriteName.warsBuildCategoryUpgrades;
-                        category = DssRef.lang.BuildCategory_Upgrade;
-                        break;
-                    case BuildCategoryTab.GodPower:
-                        tabIcon = SpriteName.WarsGodPowerIcon;
-                        category = DssRef.lang.GodPower;
-                        break;
-                    default:
-                        tabIcon = SpriteName.warsBuildCategoryAutomation;
-                        category = DssRef.lang.Automation_Title;
-                        break;
+                IconName.BuildCategory(tab, out SpriteName tabIcon, out string category);
+                //string category;
+                //SpriteName tabIcon;
+                //switch (tab)
+                //{
+                //    case BuildCategoryTab.Filter:
+                //        tabIcon = SpriteName.warsBuildCategorySearch;
+                //        category = DssRef.lang.HUD_Filter;
+                //        break;
+                //    case BuildCategoryTab.General:
+                //        tabIcon = SpriteName.warsBuildCategoryHouse;
+                //        category = DssRef.lang.BuildCategory_General;
+                //        break;
+                //    case BuildCategoryTab.Advanced:
+                //        tabIcon = SpriteName.warsBuildCategoryAdvanced;
+                //        category = DssRef.lang.Hud_Advanced;
+                //        break;
+                //    case BuildCategoryTab.Military:
+                //        tabIcon = SpriteName.warsBuildCategoryMilitaryWall;
+                //        category = DssRef.lang.BuildCategory_Military;
+                //        break;
+                //    case BuildCategoryTab.Decor:
+                //        tabIcon = SpriteName.warsBuildCategoryDecorTree;
+                //        category = DssRef.lang.BuildCategory_Decoration;
+                //        break;
+                //    case BuildCategoryTab.Upgrade:
+                //        tabIcon = SpriteName.warsBuildCategoryUpgrades;
+                //        category = DssRef.lang.BuildCategory_Upgrade;
+                //        break;
+                //    case BuildCategoryTab.GodPower:
+                //        tabIcon = SpriteName.WarsGodPowerIcon;
+                //        category = DssRef.lang.GodPower;
+                //        break;
+                //    default:
+                //        tabIcon = SpriteName.warsBuildCategoryAutomation;
+                //        category = DssRef.lang.Automation_Title;
+                //        break;
 
-                }
+                //}
                 var tabButton = new ArtButton(tab == player.buildCategoryTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
                     new List<AbsRichBoxMember> { new RbImage(tabIcon) },
                     new RbAction1Arg<BuildCategoryTab>((BuildCategoryTab selectTab) => { player.buildCategoryTab = selectTab; }, tab, RbSoundType.Tab),
@@ -1140,17 +1141,19 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.Embassy:
-                    int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.EmbassyAddDiplomacy * 3600);
+                    EmbassyDescription(content);
 
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
-                    content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
-                    content.newLine();
+                    //int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.EmbassyAddDiplomacy * 3600);
 
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
-                    content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.EmbassyAddMaxDiplomacy)));
-                    content.newLine();
+                    //HudLib.BulletPoint(content);
+                    //content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
+                    //content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
+                    //content.newLine();
+
+                    //HudLib.BulletPoint(content);
+                    //content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
+                    //content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.EmbassyAddMaxDiplomacy)));
+                    //content.newLine();
                     break;
 
                 case BuildAndExpandType.WheatFarm:
@@ -1405,6 +1408,9 @@ namespace VikingEngine.DSSWars.Build
                 if (upgrade)
                 {
                     workTimeText.overrideColor = HudLib.AvailableColor;
+
+                    content.Add(new RbImage(HudLib.AvailableIcon));
+                    content.hspace();
                 }
                 content.Add(workTimeText);
 
@@ -1448,10 +1454,24 @@ namespace VikingEngine.DSSWars.Build
             {
                 content.newLine();
 
-                HudLib.Experience(content, build.blueprint.experienceType, city.GetTopSkill(build.blueprint.experienceType));
+                HudLib.Experience(content, build.blueprint.experienceType, city.cityExperienceLevels.Get(build.blueprint.experienceType).Max());
             }
         }
 
+        public static void EmbassyDescription(RichBoxContent content)
+        {
+            int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.EmbassyAddDiplomacy * 3600);
+
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
+            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsAdd, diplomacydSec)));
+            content.newLine();
+
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
+            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.EmbassyAddMaxDiplomacy)));
+            content.newLine();
+        }
 
         void mayCraftList(RichBoxContent content, City city, ItemResourceType[] types)
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Valve.Steamworks;
+using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD;
@@ -20,9 +21,9 @@ namespace VikingEngine.DSSWars.Data
 
         int difficulty = DefaultOption;
 
-        static readonly int[] options = new int[] { 25, 50, 75, 100, 125, 150, 175, 200 };
-        public static readonly int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150 };
-        public static readonly GameModeMainType[] AvailableModes = [GameModeMainType.FullStory, GameModeMainType.Sandbox, GameModeMainType.Peaceful, GameModeMainType.Spectator];
+        static readonly int[] options = new int[] { 25, 50, 75, 100, 125, 150, 175, 200, 300 };
+        public static readonly int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150, 300 };
+        public static readonly GameModeMainType[] AvailableModes = [GameModeMainType.FullStory, GameModeMainType.QuickMatch, GameModeMainType.Sandbox, GameModeMainType.Peaceful, GameModeMainType.Spectator];
 
         public AiAggressivity aiAggressivity = AiAggressivity.Medium;
         public BossSize bossSize = BossSize.Medium;
@@ -43,10 +44,34 @@ namespace VikingEngine.DSSWars.Data
         public float setting_waterMulti = 1;
         public float setting_childMulti = 1;
         public float setting_craftMulti = 1;
+        public int setting_techMulti = 1;
+        public int setting_techMulti_QuickMatch = 2;
+        public int setting_QuickMatch_PlayerCount = 4;
+        public bool setting_QuickMatch_TwoTeams = false;
+
+
+        public int TechMultiProperty(bool set, int value)
+        {
+            if (set)
+            {
+                if (setting_gameMode == GameModeMainType.QuickMatch)
+                {
+                    setting_techMulti_QuickMatch = value;
+                }
+                else
+                { 
+                    setting_techMulti = value;
+                }
+
+            }
+            return setting_gameMode == GameModeMainType.QuickMatch ? setting_techMulti_QuickMatch : setting_techMulti;
+        }
+
         public const GameModeMainType DefaultMode = GameModeMainType.FullStory;
         public GameModeMainType setting_gameMode = DefaultMode;
         public bool runStory = true;
         public bool peaceful = false;
+        public bool extremeAggression = false;
         //public bool toPeacefulCheck = true;
 
         public int MercenaryPurchaseCost_Start;
@@ -147,7 +172,14 @@ namespace VikingEngine.DSSWars.Data
                 content.hspace();
                 content.Add(new RbText(string.Format(DssRef.lang.DifficultyDescription_HonorGuards, difficultyLvl.honorGuard ? Ref.langOpt.Hud_Yes : Ref.langOpt.Hud_No)));
             }
-
+            if (difficultyLvl.extremeAggression)
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(SpriteName.WarsRelationTotalWar));
+                content.hspace();
+                content.Add(new RbText(DssRef.lang.DifficultyDescription_ExtremeAggression));
+            }
         }
 
         public void set(int difficulty)
@@ -278,6 +310,7 @@ namespace VikingEngine.DSSWars.Data
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = false;
+                    aiDelayTimeSec = 0;
                     //toPeacefulCheck = true;
                     toPeacefulPercentage = 1.5f;
                     break;
@@ -292,14 +325,14 @@ namespace VikingEngine.DSSWars.Data
                     resourceMultiplyDecrease = false;
                     diplomacyDifficulty = 2;
                     honorGuard = false;
+                    aiDelayTimeSec = 0;
                     //toPeacefulCheck = true;
                     toPeacefulPercentage = 1.75f;
                     break;
 
-                case 7: //Max
+                case 7: //200%
                     aiAggressivity = AiAggressivity.High;
                     bossSize = BossSize.Huge;
-                    //bossTimeSettings = BossTimeSettings.Immediate;
                     aiEconomyLevel = 4;
 
 
@@ -307,8 +340,22 @@ namespace VikingEngine.DSSWars.Data
                     resourceMultiplyDecrease = false;
                     diplomacyDifficulty = 2;
                     honorGuard = false;
-                    //toPeacefulCheck = true;
+                    aiDelayTimeSec = 0;
                     toPeacefulPercentage = 3f;
+                    break;
+
+                case 8: // 300%
+                    aiAggressivity = AiAggressivity.High;
+                    bossSize = BossSize.Huge;
+                    aiEconomyLevel = 5;
+
+                    resourceMultiplyChance = 0.5;
+                    resourceMultiplyDecrease = false;
+                    diplomacyDifficulty = 2;
+                    honorGuard = false;
+                    aiDelayTimeSec = 0;
+                    toPeacefulPercentage = 10f;
+                    extremeAggression = true;
                     break;
             }
 
@@ -319,6 +366,11 @@ namespace VikingEngine.DSSWars.Data
                 case GameModeMainType.FullStory:
                     runStory = true;
                     peaceful = false;
+                    break;
+                case GameModeMainType.QuickMatch:
+                    runStory = false;
+                    peaceful = false;
+                    toPeacefulPercentage = 0;
                     break;
                 case GameModeMainType.Sandbox:
                 case GameModeMainType.Spectator:
@@ -348,7 +400,13 @@ namespace VikingEngine.DSSWars.Data
             w.Write(setting_waterMulti);
             w.Write(setting_childMulti);
             w.Write(setting_craftMulti);
+            w.Write(setting_techMulti);
+            w.Write(setting_techMulti_QuickMatch);
+            w.Write(setting_QuickMatch_PlayerCount);
+            w.Write(setting_QuickMatch_TwoTeams);
             w.Write(difficulty);
+
+            Debug.WriteCheck(w);
         }
 
         public void read(System.IO.BinaryReader r, int storageversion)
@@ -376,11 +434,43 @@ namespace VikingEngine.DSSWars.Data
                     setting_childMulti = r.ReadSingle();
                     setting_craftMulti = r.ReadSingle();
                 }
+                if (storageversion >= 33)
+                {
+                    setting_techMulti = r.ReadInt32();
+                    setting_techMulti_QuickMatch = r.ReadInt32();
+                    setting_QuickMatch_PlayerCount = r.ReadInt32();
+                    setting_QuickMatch_TwoTeams = r.ReadBoolean();
+                }
             }
             difficulty = r.ReadInt32();
             Bound.SetToArray(ref difficulty, options.Length);
 
+            if (storageversion >= 32)
+            {
+                Debug.ReadCheck(r);
+            }
+
             refreshSettings();
+        }
+
+        public Difficulty Clone()
+        {
+            Difficulty clone = new Difficulty();
+
+            MemoryStreamHandler memoryStream = new MemoryStreamHandler();
+            var w = memoryStream.GetWriter();
+            write(w);
+
+            var r = memoryStream.GetReader();
+            clone.read(r, int.MaxValue);
+
+            return clone;
+        }
+
+        public int QuickMatchPlayerStartSize()
+        {
+            int goalWorkForce = MathExt.MultiplyInt( DssConst.HeadCityStartMaxWorkForce, 2.5);
+            return goalWorkForce;
         }
 
     }
@@ -392,6 +482,7 @@ namespace VikingEngine.DSSWars.Data
         Sandbox,
         Peaceful,
         Spectator,
+        QuickMatch,
         NUM
     }
     //enum AiResourceMultiplyType

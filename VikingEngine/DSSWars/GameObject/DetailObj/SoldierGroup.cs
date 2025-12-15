@@ -1902,6 +1902,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             void pathTowardsPosition(Vector3 goalWp)
             {
+                
                 tilePos = WP.ToTilePos(position);
                 setGroundY();
                 groupToGroupCollsionUpate_async(pathThreadIndex);
@@ -2011,10 +2012,10 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
-        public void DrawOverviewIcon(int cameraIndex)
-        {
+        //public void DrawOverviewIcon(int cameraIndex)
+        //{
 
-        }
+        //}
 
         //public void setWalkNode(IntVector2 area,
         //    bool nextIsFootTransform, bool nextIsShipTransform)

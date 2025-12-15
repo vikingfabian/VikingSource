@@ -2420,8 +2420,12 @@ namespace VikingEngine
         WarsHudToolDownButton,
         WarsHudFlagBorder,
         WarsHudHeadBarBg,
+        WarsHudMinimapBorder,
         WarsHudToolUpButton,
         WarsHudTutorialBg,
+        WarsHudFlapMinimize,
+        WarsHudFlapMaximize,
+       
 
         WarsHudDropDownArrow,
         WarsHudYellowDot,
@@ -2455,6 +2459,11 @@ namespace VikingEngine
         WarsHudIconNext,
         WarsHudIconPrevious,
         WarsHudIconProgress,
+        WarsHudIconSpeed_Pause,
+        WarsHudIconSpeed_Low,
+        WarsHudIconSpeed_Medium,
+        WarsHudIconSpeed_High,
+
 
         DSS2MainMenu,
         SteamIcon,
@@ -2479,6 +2488,7 @@ namespace VikingEngine
         warsWorkerPromoHammer,
         warsWorkerPromoBox,
         warsWorkerPromoCannon,
+        UpdatePromo_SnowFlake,
 
         warsCheckYes,
         warsCheckNo,
@@ -2532,8 +2542,16 @@ namespace VikingEngine
         WarsRelationServant,
         WarsRelationFlagOutline,
         WarsRelationFlag,
-        
+        WarsRelationArrowWar,
+        WarsRelationArrowAlly,
+
         WarsMapIcon,
+        WarsMapFilterFactions,
+        WarsMapFilterWorkers,
+        WarsMapFilterMinimap,
+        WarsMapFilterStrength,
+        WarsMapFilterTerrain,
+        WarsMapFilterResources,
         WarsTechnology_Unlocked,
         WarsTechnology_Locked,
         WarsGovernmentIcon,
@@ -2765,6 +2783,7 @@ namespace VikingEngine
         WarsResource_FoodAdd,
         WarsResource_FoodSub,
         WarsResource_FoodEmpty,
+        WarsIcon_Resources,
         WarsResource_Wood,
         WarsResource_Fuel,
         WarsResource_Wheat,

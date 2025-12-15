@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Concurrent;
+using VikingEngine.Input;
 
 namespace VikingEngine.Engine
 {
@@ -13,11 +14,11 @@ namespace VikingEngine.Engine
 
     class Update
     {
-        const Keys DebugNormalSpeed = Keys.D1;
-        const Keys DebugSlowSpeed = Keys.D2;
-        const Keys DebugStepSpeed = Keys.D3;
+        //const Keys DebugNormalSpeed = Keys.D1;
+        //const Keys DebugSlowSpeed = Keys.D2;
+        //const Keys DebugStepSpeed = Keys.D3;
 
-        const float DebugSlowFrameTime = 1000;
+        //const float DebugSlowFrameTime = 1000;
 
 
         public LasyUpdatePart LasyUpdatePart = LasyUpdatePart.Part1;
@@ -26,7 +27,10 @@ namespace VikingEngine.Engine
         float gametime_16msCountDown = 0;
         public float TotalGameTime = 0;
         public bool exitApplication = false;
-        
+        public TextInput textInput = null;
+        //public bool blockGameInput = false;
+        //public string blockGameInputId = null;
+
         SpottedArray<IUpdateable>[] updateLists;
         SpottedArray<IUpdateable> oneTimeTriggers;
         ConcurrentStack<ISyncAction> syncQue = new ConcurrentStack<ISyncAction>();

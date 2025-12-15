@@ -313,7 +313,7 @@ namespace VikingEngine.DSSWars.GameObject
             return name.name;
         }
 
-        protected override void NameEditEvent(string result, object tag)
+        public override void NameEditEvent(string result, object tag)
         {
             name.setCustom(result);
         }
@@ -1056,10 +1056,6 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         if (money.GetGold() < goldCarryCapacity)
                         {
-                            //if (debugTagged && onCity.money.copper > 0)
-                            //{
-                            //    lib.DoNothing();
-                            //}
                             money.AddGold(onCity.money.payGold_MuchAsPossible(goldCarryCapacity - money.GetGold()));
                         }
                         else if (money.GetGold() > goldCarryCapacity)
@@ -1075,11 +1071,19 @@ namespace VikingEngine.DSSWars.GameObject
 
         override public void asynchCullingUpdate(float time, bool bStateA)
         {
-            if (this.debugTagged)
-            {
-                lib.DoNothing();
-            }
+            //if (this.debugTagged)
+            //{
+            //    lib.DoNothing();
+            //}
             DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref cullingTopLeft, ref cullingBottomRight);
+
+            if (DssRef.state.LocalHost().unitsPixelTexture != null)
+            {
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.unitsPixelTexture.asynch_AddArmy(this);
+                }
+            }
         }
 
         public void asynchSleepObjectsUpdate(float time)

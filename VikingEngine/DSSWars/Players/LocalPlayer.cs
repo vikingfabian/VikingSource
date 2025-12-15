@@ -92,6 +92,12 @@ namespace VikingEngine.DSSWars.Players
 
         public PlayerControls.Tutorial tutorial = null;
         CityBorders cityBorders = new CityBorders();
+
+        public FactionPixelTexture factionPixelTexture;
+        public FactionPixelTexture minimapPixelTexture;
+
+        public UnitsPixelTexture unitsPixelTexture;
+        
         public bool viewCityTagsOnMap = true;
         public bool viewArmyTagsOnMap = true;
         
@@ -298,11 +304,7 @@ namespace VikingEngine.DSSWars.Players
 
             w.Write((short)diplomaticPoints.Int());
 
-            //Debug.WriteCheck(w);//TEMP!
-
             statistics.writeGameState(w);
-
-            //Debug.WriteCheck(w);//TEMP!
 
             if (toPlayerDiplomacies == null)
             {
@@ -310,7 +312,7 @@ namespace VikingEngine.DSSWars.Players
             }
             else
             {
-                for (int i = 0; i < toPlayerDiplomacies.Length; ++i)//each (var tp in toPlayerDiplomacies)
+                for (int i = 0; i < toPlayerDiplomacies.Length; ++i)
                 {
                     var tp = toPlayerDiplomacies[i];
                     if (tp != null)
@@ -322,17 +324,12 @@ namespace VikingEngine.DSSWars.Players
 
                 w.Write(short.MinValue);
             }
-            //Debug.WriteCheck(w);//TEMP!
 
             automation.writeGameState(w);
-
-            //Debug.WriteCheck(w);//TEMP!
 
             w.Write(int.MinValue);//none
 
             tutorial_writeGameState(w);
-
-            //Debug.WriteCheck(w);//TEMP!
             orders.writeGameState(w);
 
             w.Write(viewCityTagsOnMap);
@@ -356,7 +353,7 @@ namespace VikingEngine.DSSWars.Players
 
             hud.pins.writeGameState(w);
 
-
+            tooPeacefulCheckTimer.write(w);
             //gameControls.build.buildPriority.writeGameState(w, false);
 
             Debug.WriteCheck(w);
@@ -468,17 +465,22 @@ namespace VikingEngine.DSSWars.Players
             {
                 hud.pins.readGameState(r, subversion);
             }
-            //if (subversion >= 70)
-            //{
-            //    gameControls.build.buildPriority.readGameState(r, subversion, false);
-            //}
-            Debug.ReadCheck(r);
+
+            if (subversion >= 85)
+            {
+                tooPeacefulCheckTimer.read(r);
+            }
+                //if (subversion >= 70)
+                //{
+                //    gameControls.build.buildPriority.readGameState(r, subversion, false);
+                //}
+                Debug.ReadCheck(r);
         }
 
         public void InitTutorial(bool newGame)
         {
             if ((newGame || PlatformSettings.STEAM_DEMO) && 
-                DssRef.storage.runTutorial_1short_2normal != 0 &&
+                DssRef.storage.runTutorial &&
                 DssRef.state.PlayType() == PlayStateType.Play &&
                 DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {
@@ -540,7 +542,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 return new List<MenuTab> { MenuTab.Info, MenuTab.Casual_Recruit, MenuTab.Casual_Build, MenuTab.Tag };
             }
-            return tutorial != null ? tutorial.cityTabs : CityMenu.Tabs;
+            return tutorial != null && tutorial.TutorialMode() ? tutorial.cityTabs : CityMenu.Tabs;
         }
 
         public List<MenuTab> AvailableArmyTabs()
@@ -590,6 +592,11 @@ namespace VikingEngine.DSSWars.Players
         {
             if (faction.cities.Count > 0)
             {
+                if (quickMatchUnits(false))
+                {
+                    return;
+                }
+
                 IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
                 var mainArmy = faction.NewArmy(onTile);
                 mainArmy.tagBack = CityTagBack.Blue;
@@ -780,6 +787,7 @@ namespace VikingEngine.DSSWars.Players
                 }
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
+                    DssRef.state.events.victory(Event.VictoryType.DefeatBoss);
                     //DssRef.state.events.TestNextEvent();
                     //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
                     //battleLineUpTest2(true);
@@ -1605,9 +1613,21 @@ namespace VikingEngine.DSSWars.Players
             orders.cullingUpdate(bStateA, playerData.localPlayerIndex);
         }
 
+        public void baseOnGameStart()
+        { 
+            factionPixelTexture = new FactionPixelTexture(faction, true,
+                (DssRef.settings.playType == GameState.PlayStateType.Play || DssRef.settings.playType == GameState.PlayStateType.MapEditor) ?
+                FactionMapFilter.FactionCols : FactionMapFilter.Terrain);
+            minimapPixelTexture = new FactionPixelTexture(faction, true, FactionMapFilter.Minimap);
+            unitsPixelTexture = new UnitsPixelTexture(faction);
+        }
+
         public override void onGameStart(bool newGame)
         {
             base.onGameStart(newGame);
+
+            baseOnGameStart();
+
             hud.messages.onGameStart();
             oneSecUpdate();
 
@@ -1661,6 +1681,16 @@ namespace VikingEngine.DSSWars.Players
             return DssRef.diplomacy.DefaultDiplomacyPerSecond + DssRef.diplomacy.EmbassyAddDiplomacy * faction.embassyCount;
         }
 
+        public MapDetailLayerType mapLayer()
+        {
+            if (Map.MapLayerManager.CameraIndexToView == null ||
+                Map.MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex] == null)
+            {
+                return MapDetailLayerType.TerrainOverview2;
+            }
+
+            return Map.MapLayerManager.CameraIndexToView[playerData.view.ScreenIndex].current.type;
+        }
         public double diplomacyAddPerSec_CapIncluded()
         {
             if (diplomaticPoints.value < diplomaticPoints_softMax)

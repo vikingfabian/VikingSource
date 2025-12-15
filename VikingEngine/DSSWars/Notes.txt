@@ -1,45 +1,61 @@
-﻿* Manual Turkish translation on the last update
-* Fixed barbarians in tutorial crash
-* Fixed completeTransform crash
-* Fixed empty controllers crash on launch
--
-* Added 69 steam stats to the full game
-* fixed another empty controller fail
-* fixed another spawn barbarian crash
-* steam overlay opens pause menu
-* hides mouse on controller only
-* handles controller disconnect
-* CONTROLLER DISCONNECTED message
-* removed quick build key in casual
-* repaired controller HUD toggle
-* fixed rare onDisband crash
+﻿* fixed: bot delay was not set by high difficulty
+* 3 new cameo factions, plus a december santa faction
+* casual mode: embassy building
+* sharp stick and slingshots are made in groups of eight, and for less resources
+* fixed minimap crash on start
+* city will track number of skilled workers
+* Fixed: Some experience types don't reach master
+* Optimized experience gain algorithm
+* Fixed rare worker unit dead faction crash
+* Fixed rare soldier group unit dead faction crash
+* Added 10 minutes to 300% story start
+* Moved the camera focal point up a bit
+* Only one worker are ordered per update
+* Fixed missing culture resource bonuses: HeavyPaddedArmor, LightPlateArmor, FullPlateArmor and BronzeArmor
+* Added wood and stone to city overview
+* will hide cam bound on overview zoom
+* worker update delay is timed to game speed
+* stops conscript queue on capture
 
-Taiwan 
-Bulgaria 
-Switzerland 
-Japan 
-Italy 
-Brazil 
-United Kingdom 
-New Zealand 
-Netherlands 
-Spain 
-France 
-Sweden 
-Austria 
-Monaco 
-Germany 
-Saudi Arabia
-Qatar 
-China 
-Liechtenstein 
-Luxembourg 
-Turkey 
-Canada
+USER INTERFACE
+* improved border colors
+* In-menu text input
+* Search bar for voxel models
+* Menu width option
+* placed work before stockpile
 
+MINI MAP
+* camera outline
+* minimap adjust zoom to map
+* pan input
+* hide minimap, toggle with M, plus key mapping
+* hide minimap/hud in pause menu
+* tutorial hide
 
+GAME OPTIONS
+* 300% difficulty
+-> no warmup period
+-> warmanager runs at double pace
+-> story is about 90 minutes shorter
+-> 300% bot economy
 
-songsofsyx
-dwarffortress
-Worldbox
-RimWorld
+* Quick match game mode
+-> start in a instant war with other nations
+-> "short" game mode, about 10hours
+-> tech research speed
+-> a much shorter peaceful start period
+-> king of the hill, or two teams
+-> players are grouped in a smaller, center area
+-> player start area is enlarged on "find start position" failure
+-> contestants can't use ally diplomacy, but can still be done between players to adjust teams
+
+WAR MANAGER
+* The manager have three gears that will tick up after the player grab land
+* Will go up around 7 and 17 cities
+* Will increase attack rate, attack size and attacker alliance ability
+* Attackers will try to end other wars to put all their focus on you
+* The players now have induvidual war managers
+
+ACHIEVEMENTS: 
+* Taste the impossible: Terminate the first faction to attack you. 300% difficulty.
+* Win a quick match

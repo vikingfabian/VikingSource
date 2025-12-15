@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.LootFest;
+using VikingEngine.LootFest.Map;
 using VikingEngine.ToGG.HeroQuest;
 
 namespace VikingEngine.DSSWars.Map
@@ -299,6 +300,40 @@ namespace VikingEngine.DSSWars.Map
             
         }
 
+        public bool hasBorder(out bool sameFaction)
+        {
+            if (BorderCount > 0)
+            {
+                int owner = DssRef.world.cities[CityIndex].factionIndex;
+                if (BorderRegion_North >= 0 && DssRef.world.cities[BorderRegion_North].factionIndex != owner)
+                {
+                    sameFaction = false;
+                    return true;
+                }
+                if (BorderRegion_East >= 0 && DssRef.world.cities[BorderRegion_East].factionIndex != owner)
+                {
+                    sameFaction = false;
+                    return true;
+                }
+                if (BorderRegion_South >= 0 && DssRef.world.cities[BorderRegion_South].factionIndex != owner)
+                {
+                    sameFaction = false;
+                    return true;
+                }
+                if (BorderRegion_West >= 0 && DssRef.world.cities[BorderRegion_West].factionIndex != owner)
+                {
+                    sameFaction = false;
+                    return true;
+                }
+
+                sameFaction = true;
+                return true;
+            }
+
+            sameFaction = false;
+            return false;
+        }
+
         public int GetBorder(int dir)
         {
             switch (dir)
@@ -351,17 +386,23 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        static readonly Color HeadCity = new Color(255,174,184);
-        static readonly Color LargeCity = new Color(253,0,30);
-        static readonly Color SmallCity = new Color(148,0,17);
+        static readonly Color MapCol_HeadCity = new Color(255,174,184);
+        static readonly Color MapCol_LargeCity = new Color(253,0,30);
+        static readonly Color MapCol_SmallCity = new Color(148,0,17);
+
+        static readonly Color MiniMapCol_HeadCity = new Color(251, 37, 114);
+        static readonly Color MiniMapCol_LargeCity = new Color(226, 11, 88);
+        static readonly Color MiniMapCol_SmallCity = new Color(194, 4, 72);
+
 
         public bool HasBorderImage() { return BorderCount > 0; }
+
 
         public Color MinimapColor_Faction(IntVector2 pos)
         {
             
             if (tileContent == TileContent.City)
-                return cityColor;
+                return cityColor();
 
             if (heightLevel <= Height.LowerWaterHeight)
             {
@@ -393,7 +434,7 @@ namespace VikingEngine.DSSWars.Map
         public Color MinimapColor_Terrain(IntVector2 pos)
         {
             if (tileContent == TileContent.City)
-                return cityColor;
+                return cityColor();
 
             if (heightLevel <= Height.LowWaterHeight)
             {
@@ -406,9 +447,30 @@ namespace VikingEngine.DSSWars.Map
                 if (secondaryBiomStrength > 0)
                 {
                     var col2 = DssRef.map.bioms.bioms[(int)secondaryBiom].TileColor(this).Color;
-                    return ColorExt.Mix(col2, col, secondaryBiomStrength * 0.25f);
+                    col = ColorExt.Mix(col2, col, secondaryBiomStrength * 0.25f);
                 }
+
+                if (hasBorder(out bool sameFaction))
+                {
+                    col = ColorExt.ChangeBrighness(col, sameFaction ? 20 : -50);
+                }   
+
                 return col;
+            }
+        }
+
+        public Color MinimapColor_Minimap(Faction playerFaction, IntVector2 pos)
+        {
+            if (tileContent == TileContent.City)
+                return cityColor_Minimap();
+
+            if (heightLevel <= Height.LowWaterHeight)
+            { 
+                return WorldData.WaterDarkCol2;
+            }
+            else
+            {
+                return heightAndMinimapCol(playerFaction, pos);
             }
         }
 
@@ -443,65 +505,99 @@ namespace VikingEngine.DSSWars.Map
             return WaterSurfaceY;
         }
 
-        Color heightAndFactionCol(IntVector2 pos)
-        {   
+        Color heightAndMinimapCol(Faction playerFaction, IntVector2 pos)
+        {
             float brightness = 1f - ((int)heightLevel - 2) * 0.05f;
 
-            Tile nTile;
-            int faction = City().factionIndex;
+            City city = City();
+            int faction = city.factionIndex;
 
-            if (faction <= 0)
+            if (faction < 0)
             {
                 return Color.Black;
             }
 
-            City nCity;
-            bool isCityAdjacent = false;
-            bool isCityAdjacentCorner = false;
-
-            foreach (var dir in IntVector2.AllDiagonalsArray)
+            if (faction == playerFaction.myIndex)
             {
-                if (DssRef.world.tileGrid.TryGet(pos + dir, out nTile))
+                brightness *= 0.5f;
+            }
+            else
+            {
+                brightness *= 0.2f;
+            }
+
+            int distance = city.tilePos.SideLength(pos);
+            
+            if (distance == 1)
+            {
+                brightness *= 1.5f;
+            }
+            else if (hasBorder(out bool sameFaction))
+            {
+                if (sameFaction)
                 {
-                    if (nTile.tileContent == TileContent.City)
-                    {
-                        isCityAdjacent = true;
-                        isCityAdjacentCorner = true;
-                        break;
-                    }
+                    brightness *= 1.25f;
+                }
+                else
+                {
+                    brightness *= 0.6f;
                 }
             }
 
-            if (!isCityAdjacent)
+            return new Color(brightness, brightness, brightness);
+        }
+
+
+        Color heightAndFactionCol(IntVector2 pos)
+        {   
+            float brightness = 1f - ((int)heightLevel - 2) * 0.05f;
+
+            City city = City();
+            int faction = city.factionIndex;
+
+            if (faction < 0)
             {
-                foreach (var dir in IntVector2.Dir4Array)
+                return Color.Black;
+            }
+            
+            Color factionCol = DssRef.world.factions.Array[faction].Color();
+
+            int distance = city.tilePos.SideLength(pos);
+            
+            if (distance == 1)
+            {
+                brightness = 1.15f;
+            }
+            else if (hasBorder(out bool sameFaction))
+            {
+                if (ColorExt.GetBrightNess(factionCol) > 0.3f)
                 {
-                    if (DssRef.world.tileGrid.TryGet(pos + dir, out nTile))
+                    if (sameFaction)
                     {
-                        if (nTile.tileContent == TileContent.City)
-                        {
-                            isCityAdjacent = true;                            
-                            break;
-                        }
-                        else
-                        {
-                            nCity = nTile.City();
-                            if (nCity != null && faction != nCity.factionIndex)
-                            {
-                                brightness -= 0.2f;
-                                break;
-                            }
-                        }
+                        brightness -= 0.1f;
                     }
+                    else
+                    {
+                        brightness -= 0.3f;
+                    }
+                }
+                else
+                {
+                    if (sameFaction)
+                    {
+                        factionCol = ColorExt.ChangeBrighness(factionCol, 5);
+                        brightness += 0.05f;
+                    }
+                    else
+                    {
+                        factionCol = ColorExt.ChangeBrighness(factionCol, 15);
+                        brightness += 0.15f;
+                    }
+                
                 }
             }
 
-            if (isCityAdjacent)
-            {
-                brightness = isCityAdjacentCorner? 1.15f : 1.25f;
-            }
-
-            Color color = new Color(DssRef.world.factions.Array[faction].Color().ToVector3() * brightness);
+            Color color = Color.Multiply(factionCol, brightness);
             return color;
         }
 
@@ -515,16 +611,22 @@ namespace VikingEngine.DSSWars.Map
             return DssRef.map.bioms.bioms[(int)biom];
         }
 
-        Color cityColor
+        public Color cityColor()
         {
-            get
+            switch (City().cityType)
             {
-                switch (City().cityType)
-                {
-                    default: return HeadCity;
-                    case CityType.Town: return LargeCity;
-                    case CityType.Village: return SmallCity;
-                }
+                default: return MapCol_HeadCity;
+                case CityType.Town: return MapCol_LargeCity;
+                case CityType.Village: return MapCol_SmallCity;
+            }           
+        }
+        public Color cityColor_Minimap()
+        {
+            switch (City().cityType)
+            {
+                default: return MiniMapCol_HeadCity;
+                case CityType.Town: return MiniMapCol_LargeCity;
+                case CityType.Village: return MiniMapCol_SmallCity;
             }
         }
         static float[] TypeToWalkingMultiplier;

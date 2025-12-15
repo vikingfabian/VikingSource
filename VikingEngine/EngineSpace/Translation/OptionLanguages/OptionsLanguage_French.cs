@@ -8,7 +8,12 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_French : AbsOptionsLanguage
     {
-
+        public override string GraphicsOption_IngameMenuWidth => "Largeur du menu en jeu";
+        public override string DisplayMode => "Mode d’affichage";
+        public override string DisplayMode_Windowed => "Fenêtré";
+        public override string DisplayMode_BorderlessFullscreen => "Plein écran sans bordure";
+        public override string GameSettings_RenderedMouseCursor => "Curseur rendu";
+        //-
         public override string GraphicsOption_FarViewDistance => "Vue longue distance";
 
         public override string Hud_Cancel => "Annuler";

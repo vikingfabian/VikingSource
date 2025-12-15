@@ -52,7 +52,6 @@ namespace VikingEngine.DSSWars.Data
             content.newParagraph();
             content.text(string.Format(DssRef.lang.EndGameStatistics_StatuesBuilt, statuesBuilt));
             content.text(string.Format(DssRef.lang.EndGameStatistics_DecorsBuilt, decorBuilt));
-
         }
 
         public void onDecorBuild_async(TerrainDecorType decorType)
@@ -114,8 +113,8 @@ namespace VikingEngine.DSSWars.Data
 
         public void readGameState(BinaryReader r, int subVersion)
         {
-             SoldiersRecruited =r.ReadInt32();
-             FriendlySoldiersLost = r.ReadInt32();
+            SoldiersRecruited =r.ReadInt32();
+            FriendlySoldiersLost = r.ReadInt32();
             EnemySoldiersKilled = r.ReadInt32();
 
             CitiesCaptured = r.ReadUInt16();

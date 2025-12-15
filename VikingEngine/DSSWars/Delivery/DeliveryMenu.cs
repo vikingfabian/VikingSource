@@ -294,73 +294,81 @@ namespace VikingEngine.DSSWars.Delivery
                 }
 
                 content.newParagraph();
-                //SEND CHUNK SIZE
-                HudLib.Label(content, DssRef.lang.Delivery_SendChunk);
-                content.newLine();
 
-                List<int> sendChunkOptions = new List<int>(4);
-                if (currentStatus.IsGold())
+                if (currentStatus.profile.toCity >= 0)
                 {
-                    sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Mini);
-                    sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Level1);
+                    //SEND CHUNK SIZE
+                    HudLib.Label(content, DssRef.lang.Delivery_SendChunk);
+                    content.newLine();
 
-                    if (currentStatus.level >= 2)
+                    List<int> sendChunkOptions = new List<int>(4);
+                    if (currentStatus.IsGold())
                     {
-                        sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Level2);
+                        sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Mini);
+                        sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Level1);
+
+                        if (currentStatus.level >= 2)
+                        {
+                            sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Level2);
+                        }
+                        if (currentStatus.level >= 3)
+                        {
+                            sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Level3);
+                        }
                     }
-                    if (currentStatus.level >= 3)
+                    else
                     {
-                        sendChunkOptions.Add(DssConst.GoldDeliveryChunkSize_Level3);
+                        sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Mini);
+                        sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level1);
+
+                        if (currentStatus.level >= 2)
+                        {
+                            sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level2);
+                        }
+                        if (currentStatus.level >= 3)
+                        {
+                            sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level3);
+                        }
                     }
+
+                    foreach (int amount in sendChunkOptions)
+                    {
+                        var button = new ArtToggle(amount == currentStatus.profile.SendAmount, new List<AbsRichBoxMember> { new RbText(amount.ToString()) },
+                            new RbAction(() =>
+                            {
+                                DeliveryStatus currentStatus = get();
+                                currentStatus.profile.SendAmount = amount;
+                                set(currentStatus);
+                            }, RbSoundType.Option));
+
+                        //button.setGroupSelectionColor(HudLib.RbSettings, amount == currentStatus.profile.SendAmount);
+
+                        content.Add(button);
+                        //content.space();
+                    }
+
+                    if (currentStatus.profile.type != ItemResourceType.AutomatedItem)
+                    {
+                        content.newParagraph();
+
+                        var minLabel = new RbText(DssRef.lang.Delivery_SenderMinimumCap + ":");
+                        minLabel.overrideColor = HudLib.TitleColor_Label_Dark;
+                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { minLabel },
+                            UseSenderMinProperty));
+                        boundsToHud(content, currentStatus, true);
+                    }
+                    content.newParagraph();
+
+                    var maxLabel = new RbText(DssRef.lang.Delivery_RecieverMaximumCap + ":");
+                    maxLabel.overrideColor = HudLib.TitleColor_Label_Dark;
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { maxLabel },
+                        UseRecieverMaxProperty));
+                    boundsToHud(content, currentStatus, false);
                 }
                 else
                 {
-                    sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Mini);
-                    sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level1);
-
-                    if (currentStatus.level >= 2)
-                    {
-                        sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level2);
-                    }
-                    if (currentStatus.level >= 3)
-                    {
-                        sendChunkOptions.Add(DssConst.CityDeliveryChunkSize_Level3);
-                    }
+                    content.Add(new RbSeperationLine());
                 }
-
-                foreach (int amount in sendChunkOptions)
-                {
-                    var button = new ArtToggle( amount == currentStatus.profile.SendAmount,new List<AbsRichBoxMember> { new RbText(amount.ToString()) },
-                        new RbAction(() =>
-                        {
-                            DeliveryStatus currentStatus = get();
-                            currentStatus.profile.SendAmount = amount;
-                            set(currentStatus);
-                        }, RbSoundType.Option));
-
-                    //button.setGroupSelectionColor(HudLib.RbSettings, amount == currentStatus.profile.SendAmount);
-
-                    content.Add(button);
-                    //content.space();
-                }
-
-                if (currentStatus.profile.type != ItemResourceType.AutomatedItem)
-                {
-                    content.newParagraph();
-
-                    var minLabel = new RbText(DssRef.lang.Delivery_SenderMinimumCap + ":");
-                    minLabel.overrideColor = HudLib.TitleColor_Label_Dark;
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { minLabel },
-                        UseSenderMinProperty));
-                    boundsToHud(content, currentStatus, true);
-                }
-                content.newParagraph();
-
-                var maxLabel = new RbText(DssRef.lang.Delivery_RecieverMaximumCap + ":");
-                maxLabel.overrideColor = HudLib.TitleColor_Label_Dark;
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { maxLabel },
-                    UseRecieverMaxProperty));
-                boundsToHud(content, currentStatus, false);
 
                 if (currentStatus.profile.toCity >= 0)
                 {
@@ -374,26 +382,9 @@ namespace VikingEngine.DSSWars.Delivery
 
                 HudLib.copyPaste(content, player,
                     new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, RbSoundType.Copy),
-                    new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, RbSoundType.Paste));
-                //content.Add(new RbImage(player.gameControls.input.Copy.Icon));
-                //content.hspace();
-                //content.Add(new ArtButton(  RbButtonStyle.Primary,new List<AbsRichBoxMember> {
-                //    new RbImage(SpriteName.WarsHudIconCopy),
-                //    new RbSpace(),
-                //    new RbText(DssRef.lang.Hud_CopySetup) },
-                //    new RbAction1Arg<LocalPlayer>(city.copyDelivery, player, RbSoundType.Copy)));
-
-                //content.space();
-                //content.Add(new RbImage(player.gameControls.input.Paste.Icon));
-                //content.hspace();
-                //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
-                //    new RbImage(SpriteName.WarsHudIconPaste),
-                //    new RbSpace(),
-                //    new RbText(DssRef.lang.Hud_Paste)
-                //},
-                //new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, RbSoundType.Paste)));
-
-
+                    new RbAction1Arg<LocalPlayer>(city.pasteDelivery, player, RbSoundType.Paste),
+                    currentStatus.fullSetup(), city.getDeliveryCopyRef(player, currentStatus.profile.type).fullSetup());
+                
             }
             else
             {
@@ -401,7 +392,7 @@ namespace VikingEngine.DSSWars.Delivery
                 if (city.deliveryServices.Count == 0)
                 {
                     //EMPTY
-                    content.text(DssRef.lang.Hud_EmptyList).overrideColor = HudLib.InfoYellow_Light;
+                    content.text(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light);
                     content.newParagraph();
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement, HudLib.TitleColor_Label);
                     content.newLine();

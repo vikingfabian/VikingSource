@@ -3,195 +3,79 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Engine;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.Gadgets;
 
 namespace VikingEngine.DSSWars.Resource
 {
-    static class ResourceLib
+    struct ResourceInfoTag
     {
-      
-        // public static readonly CraftBlueprint CraftRecruitment = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.Recruitment,
-        //     1,
-        //     new UseResource[]
-        //     {
-        // new UseResource(ItemResourceType.Wood_Group, 50),
-        // new UseResource(ItemResourceType.SkinLinen_Group, 10)
-        //     }
-        // );
+        public ResourceInfoTag(City city, ItemResourceType item)
+        {
+            this.city = city;
+            this.item = item;
+        }
+        public City city;
+        public ItemResourceType item;
+    }
 
-        // public static readonly CraftBlueprint CraftBarracks = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.Barracks,
-        //     1,
-        //     new UseResource[]
-        //     {
-        // new UseResource(ItemResourceType.Wood_Group, 100),
-        // new UseResource(ItemResourceType.Stone_G, 20)
-        //     }
-        // );
+    static class ResourceLib
+    {        
 
-        // public static readonly CraftBlueprint CraftPigPen = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.PigPen,
-        //     1,
-        //     new UseResource[]
-        //     {
-        // new UseResource(ItemResourceType.Water_G, 4),
-        // new UseResource(ItemResourceType.Wood_Group, 20),
-        // new UseResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount)
-        //     }
-        // );
+        public static void FullResourceInfo(RichBoxContent content, object tag)
+        {
+            ResourceInfoTag args = (ResourceInfoTag)tag;
+            FullResourceInfo(args.city, args.item, content); 
+        }
 
-        // public static readonly CraftBlueprint CraftHenPen = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.HenPen,
-        //     1,
-        //     new UseResource[]
-        //     {
-        // new UseResource(ItemResourceType.Water_G, 2),
-        // new UseResource(ItemResourceType.Wood_Group, 20),
-        // new UseResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount)
-        //     }
-        // );
+        public static void FullResourceInfo(City city, ItemResourceType item, RichBoxContent content)
+        {
+            var resources = city.GetGroupedResource(item);
 
-        // static readonly UseResource[] FarmResources = new UseResource[]
-        //     {
-        //         new UseResource(ItemResourceType.RawFood_Group, 4),
-        //         new UseResource(ItemResourceType.Water_G, 2),
-        //     };
+            content.Add(new RbImage(Icon(item)));
+            content.space();
+            content.Add(new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": " + TextLib.LargeNumber(resources.amount)));
 
-        // public static readonly CraftBlueprint CraftWheatFarm = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.WheatFarm,
-        //     1,
-        //     FarmResources
-        // );
+            //todo public ResourceOverview res_wood
 
-        // public static readonly CraftBlueprint CraftLinenFarm = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.LinenFarm,
-        //     1,
-        //     FarmResources
-        // );
+            SpriteName stockIcon;
+            if (resources.amount >= resources.goalBuffer)
+            {
+                stockIcon = SpriteName.WarsStockpileStop;
+            }
+            else
+            {
+                stockIcon = SpriteName.WarsStockpileAdd;
+            }
+            content.newLine();
+            content.Add(new RbImage(stockIcon));
+            content.space();
+            content.Add(new RbText(DssRef.lang.Resource_StockpileLimit + ": " + TextLib.LargeNumber(resources.goalBuffer)));
 
-        // public static readonly CraftBlueprint CraftHempFarm = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.HempFarm,
-        //     1,
-        //     FarmResources
-        // );
+            var priority = city.workTemplate.GetWorkPriority(item, out bool hasPriority);
+            if (hasPriority)
+            {
+                content.newLine();
+                content.Add(new RbImage(SpriteName.WarsHammer));
+                content.space();
+                content.Add(new RbText(DssRef.lang.Work_OrderPrioTitle + ": " + priority.value, priority.HasPrio() ? null : HudLib.NotAvailableColor));
+            }
 
-        // public static readonly CraftBlueprint CraftRapeseedFarm = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.RapeSeedFarm,
-        //     1,
-        //     FarmResources
-        // );
-
-        // public const int CraftSmith_IronUse = 10;
-        // public static readonly CraftBlueprint CraftSmith = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.Smith,
-        //    1,
-        //    new UseResource[]
-        //    {
-        //        new UseResource(ItemResourceType.Wood_Group, 10),
-        //        new UseResource(ItemResourceType.Iron_G, CraftSmith_IronUse),
-        //    }
-        //);
-
-        // public static readonly CraftBlueprint CraftCook = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.Cook,
-        //    1,
-        //    new UseResource[]
-        //    {
-        //        new UseResource(ItemResourceType.Wood_Group, 10),
-        //        new UseResource(ItemResourceType.Stone_G, 10),
-        //        new UseResource(ItemResourceType.Iron_G, 5),
-        //    }
-        // );
-
-        // public static readonly CraftBlueprint CraftWorkBench = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.WorkBench,
-        //    1,
-        //    new UseResource[]
-        //    {
-        //        new UseResource(ItemResourceType.Wood_Group, 10),
-        //        new UseResource(ItemResourceType.Iron_G, 2),
-        //    }
-        // );
-
-        // public static readonly CraftBlueprint CraftCoalPit = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.CoalPit,
-        //    1,
-        //    new UseResource[]
-        //    {
-        //        new UseResource(ItemResourceType.Stone_G, 30),
-        //    }
-        // );
-
-        // public static readonly CraftBlueprint CraftCarpenter = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.Carpenter,
-        //    1,
-        //    new UseResource[]
-        //    {
-        //        new UseResource(ItemResourceType.Wood_Group, 20),
-        //        new UseResource(ItemResourceType.Iron_G, 8),
-        //    }
-        // );
-
-        // public static readonly CraftBlueprint CraftNobelHouse = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.Nobelhouse,
-        //     1,
-        //     new UseResource[]
-        //     {
-        //         new UseResource(ItemResourceType.Gold, 5000),
-        //         new UseResource(ItemResourceType.Wood_Group, 100),
-        //         new UseResource(ItemResourceType.Stone_G, 200)
-        //     }
-        // );
-
-        // public static readonly CraftBlueprint CraftPavement = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.Pavement,
-        //    1,
-        //    new UseResource[]
-        //    {
-        //        new UseResource(ItemResourceType.Stone_G, 20),
-        //    }
-        //);
-        // public static readonly CraftBlueprint CraftPavementFlower = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.PavementFlower,
-        //    1,
-        //    new UseResource[]
-        //    {
-        //         new UseResource(ItemResourceType.RawFood_Group, 5),
-        //        new UseResource(ItemResourceType.Stone_G, 20),
-        //    }
-        //);
-
-        // public static readonly CraftBlueprint CraftStatue = new CraftBlueprint(
-        //     CraftResultType.Building,
-        //     (int)Build.BuildAndExpandType.Statue_ThePlayer,
-        //    1,
-        //    new UseResource[]
-        //    {
-        //        new UseResource(ItemResourceType.Stone_G, 500),
-        //        new UseResource(ItemResourceType.Iron_G, 50),
-        //    }
-        //);
-
-
-
+            ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
+            content.newLine();
+            bp1?.toMenu(content, city, false, false);
+            if (bp2 != null)
+            {
+                content.newLine();
+                content.text(DssRef.lang.Hud_RequirementOr);
+                content.newLine();
+                bp2.toMenu(content, city, false, false);
+            }
+        }
 
         public static string Name(ResourceType resource)
         {
@@ -208,7 +92,6 @@ namespace VikingEngine.DSSWars.Resource
 
                 case ResourceType.MercenaryOnMarket:
                     return DssRef.lang.Hud_MercenaryMarket;
-
 
                 default:
                     return "Unknown resource";

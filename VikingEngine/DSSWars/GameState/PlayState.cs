@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.GameState.BattleLab;
@@ -30,6 +31,7 @@ using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG.MoonFall;
+using static System.Net.WebRequestMethods;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 //
 
@@ -143,7 +145,7 @@ namespace VikingEngine.DSSWars
             technologyManager.initGame(newGame);
 
             if (PlatformSettings.STEAM_DEMO &&
-               (DssRef.storage.runTutorial_1short_2normal == 0 || LocalHost().profile.casualControls))
+               (DssRef.storage.runTutorial == false || LocalHost().profile.casualControls))
             {
                 events = new Event.GameEventsDemo();
             }
@@ -288,7 +290,29 @@ namespace VikingEngine.DSSWars
                 localPlayers[i].initPlayerToPlayer(i, playerCount);
             }
 
+            if (newGame && DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
+            {
+                initQuickMatch();
+            }
+        }
 
+        void initQuickMatch()
+        {
+            List<Faction> matchFactions = StoryEvent_QuickMatch.Factions();
+                        
+            int team1Count = (int)Math.Ceiling(matchFactions.Count / 2.0);
+            for (var i = 0; i < matchFactions.Count; ++i)
+            {
+                for (var j = i + 1; j < matchFactions.Count; ++j)
+                {
+                    bool ally = DssRef.difficulty.setting_QuickMatch_TwoTeams && (i < team1Count == j < team1Count);
+                    var relation = DssRef.diplomacy.GetOrCreateRelation(matchFactions[i], matchFactions[j]);
+
+                    relation.Relation = ally ? RelationType.RelationType3_Ally : RelationType.RelationTypeN4_TotalWar;
+                    relation.SpeakTerms = SpeakTerms.SpeakTermsN2_None;
+                }
+            }
+            
         }
 
         void onGameStart(bool newGame)
@@ -301,11 +325,15 @@ namespace VikingEngine.DSSWars
                 DssRef.difficulty.refreshSettings();
                 events.onGameStart(newGame);
 
-
                 var factionsCounter = DssRef.world.factions.counter();
                 while (factionsCounter.Next())
                 {
                     factionsCounter.sel.onGameStart(newGame);
+                }
+
+                if (LocalHost().faction.player.IsBot())
+                {
+                    LocalHost().baseOnGameStart();
                 }
 
                 foreach (var m in DssRef.world.cities)
@@ -313,23 +341,20 @@ namespace VikingEngine.DSSWars
                     m.onGameStart(newGame);
                 }
 
-                if (newGame && (DssRef.storage.runTutorial_1short_2normal != 2 || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator))
+                if (newGame && (DssRef.storage.runTutorial == false || DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator))
                 {
                     initStartUnits();
                 }
 
-                //System.Threading.Thread.CurrentThread.Priority = System.Threading.ThreadPriority.Highest;
                 new AsynchUpdateable_TryCatch(asynchGameObjectsUpdate, "DSS gameobjects update", 51, System.Threading.ThreadPriority.BelowNormal);
                 new AsynchUpdateable_TryCatch(asynchAiPlayersUpdate, "DSS ai player update", 52, System.Threading.ThreadPriority.BelowNormal);
                 new AsynchUpdateable_TryCatch(asynchArmyAiUpdate, "DSS army ai update", 53, System.Threading.ThreadPriority.BelowNormal);
-                //new AsynchUpdateable_TryCatch(asynchCullingUpdate, "DSS culling update", 54, System.Threading.ThreadPriority.BelowNormal);
                 new AsynchUpdateable_TryCatch(asynchSleepObjectsUpdate, "DSS sleep objects update", 55, System.Threading.ThreadPriority.BelowNormal);
                 new AsynchUpdateable_TryCatch(asynchNearObjectsUpdate, "DSS near objects update", 56, System.Threading.ThreadPriority.BelowNormal);
             }
 
             startMapThreads();
-            //new AsynchUpdateable_TryCatch(asynchMapGenerating, "DSS map gen", 57, System.Threading.ThreadPriority.Normal);
-            //new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59, System.Threading.ThreadPriority.Lowest);
+            
             new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63, System.Threading.ThreadPriority.Lowest);
             if (host)
             {
@@ -343,31 +368,11 @@ namespace VikingEngine.DSSWars
                 
                 new AsynchUpdateable_TryCatch(asynchHostNetUpdate, "DSS host net update", 62, System.Threading.ThreadPriority.Lowest);
 
-                //new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63);
-                //new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
-
-
                 if (localPlayers.Count > 1)
                 {
                     Ref.SetGameSpeed(DssRef.storage.multiplayerGameSpeed);
                 }
 
-                //pathUpdates = new PathUpdateThread[PathThreadCount + 1];
-                //int startIx = 0;
-                //int factionLength = DssRef.world.factions.Count / PathThreadCount;
-                //for (int i = 0; i < PathThreadCount; i++)
-                //{
-                //    int end = startIx + factionLength;
-                //    if (i == PathThreadCount - 1)
-                //    {
-                //        //last
-                //        end = DssRef.world.factions.Count - 1;
-                //    }
-                //    pathUpdates[i] = new PathUpdateThread(i, startIx, end);
-                //    startIx = end + 1;
-                //}
-                //pathUpdates[PathThreadCount] = new PathUpdateThread_Player(PathThreadCount);
-                
                 initPathFindingThreads();
             }
 
@@ -557,16 +562,23 @@ namespace VikingEngine.DSSWars
             slowMinuteUpdate = true;
 
             if (host && DssRef.storage.autoSave && 
-                DssRef.storage.runTutorial_1short_2normal == 0 &&
-                !PlatformSettings.STEAM_DEMO &&
+                DssRef.storage.runTutorial == false &&
                 Ref.TotalTimeSec > LastAutoSaveTime_TotalSec + AutoSaveTimeSec)
+            {
+                AutoSave();
+            }            
+        }
+
+        public void AutoSave()
+        {
+            if (!PlatformSettings.STEAM_DEMO)
             {
                 if (cutScene == null)
                 {
                     new SaveScene(true);
                 }
-                LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
-            }            
+            }
+            LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
         }
                 
 
@@ -629,7 +641,7 @@ namespace VikingEngine.DSSWars
                 {
                     foreach (var m in DssRef.world.cities)
                     {
-                        m.async_workUpdate();
+                        m.async_workUpdate((int)Ref.TargetGameTimeSpeed);
                         m.async_conscriptUpdate(time);
                         m.async_deliveryUpdate();
                     }

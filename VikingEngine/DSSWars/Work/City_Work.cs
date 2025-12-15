@@ -17,7 +17,8 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
     {
-        static byte[] MaxSkill = new byte[(int)WorkExperienceType.NUM];
+        //static byte[] MaxSkill = new byte[(int)WorkExperienceType.NUM];
+        static WorkerSkillCollector SkillCollector = new WorkerSkillCollector();
 
         public WorkTemplate workTemplate = new WorkTemplate();
 
@@ -67,7 +68,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void async_workUpdate()
+        public void async_workUpdate(int updateSpeed)
         {
             if (factionIndex < 0)
             { return; }
@@ -94,27 +95,27 @@ namespace VikingEngine.DSSWars.GameObject
                 //IntVector2 maxpos = minpos;
                 Intvector2MinMax minMax = new Intvector2MinMax(WP.ToSubTilePos_Centered(tilePos));
 
-                for (int i = 0; i < MaxSkill.Length; ++i)
-                {
-                    MaxSkill[i] = 0;
-                }
+                //for (int i = 0; i < MaxSkill.Length; ++i)
+                //{
+                //    MaxSkill[i] = 0;
+                //}
 
                 for (int i = 0; i < workerStatuses.Count; i++)
                 {
                     var status = workerStatuses[i];
-
-                    if (status.xp1 > MaxSkill[(int)status.xpType1])
-                    {
-                        MaxSkill[(int)status.xpType1] = status.xp1;
-                    }
-                    if (status.xp2 > MaxSkill[(int)status.xpType2])
-                    {
-                        MaxSkill[(int)status.xpType2] = status.xp2;
-                    }
-                    if (status.xp3 > MaxSkill[(int)status.xpType3])
-                    {
-                        MaxSkill[(int)status.xpType3] = status.xp3;
-                    }
+                    SkillCollector.Add(ref status);
+                    //if (status.xp1 > MaxSkill[(int)status.xpType1])
+                    //{
+                    //    MaxSkill[(int)status.xpType1] = status.xp1;
+                    //}
+                    //if (status.xp2 > MaxSkill[(int)status.xpType2])
+                    //{
+                    //    MaxSkill[(int)status.xpType2] = status.xp2;
+                    //}
+                    //if (status.xp3 > MaxSkill[(int)status.xpType3])
+                    //{
+                    //    MaxSkill[(int)status.xpType3] = status.xp3;
+                    //}
 
 
                     switch (status.work)
@@ -141,22 +142,23 @@ namespace VikingEngine.DSSWars.GameObject
                  
                 }
 
-                topskill_Farm = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Farm]);
-                topskill_AnimalCare = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.AnimalCare]);
-                topskill_HouseBuilding = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.HouseBuilding]);
-                topskill_WoodCutter = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.WoodWork]);
-                topskill_StoneCutter = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.StoneCutter]);
-                topskill_Mining = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Mining]);
-                topskill_Transport = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Transport]);
-                topskill_Cook = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Cook]);
-                topskill_Fletcher = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Fletcher]);
-                topskill_Smelting = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Smelting]);
-                topskill_Casting = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CastMetal]);
-                topskill_CraftMetal = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftMetal]);
-                topskill_CraftArmor = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftArmor]);
-                //topskill_CraftWeapon = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftWeapon]);
-                topskill_CraftFuel = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftFuel]);
-                topskill_Chemistry = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Chemistry]);
+                cityExperienceLevels = SkillCollector.ExportData();
+                //topskill_Farm = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Farm]);
+                //topskill_AnimalCare = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.AnimalCare]);
+                //topskill_HouseBuilding = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.HouseBuilding]);
+                //topskill_WoodCutter = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.WoodWork]);
+                //topskill_StoneCutter = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.StoneCutter]);
+                //topskill_Mining = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Mining]);
+                //topskill_Transport = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Transport]);
+                //topskill_Cook = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Cook]);
+                //topskill_Fletcher = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Fletcher]);
+                //topskill_Smelting = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Smelting]);
+                //topskill_Casting = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CastMetal]);
+                //topskill_CraftMetal = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftMetal]);
+                //topskill_CraftArmor = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftArmor]);
+                ////topskill_CraftWeapon = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftWeapon]);
+                //topskill_CraftFuel = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftFuel]);
+                //topskill_Chemistry = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Chemistry]);
 
                 //cullingTopLeft = WP.SubtileToTilePos(minMax.min);
                 //cullingBottomRight = WP.SubtileToTilePos(minMax.max);
@@ -189,7 +191,7 @@ namespace VikingEngine.DSSWars.GameObject
                             for (int xpIx = 0; xpIx <= 1; ++xpIx)
                             {
                                 var exp = arraylib.RandomListMember(XpLib.ExperienceTypes);
-                                var lvl = XpLib.ToLevel(MaxSkill[(int)exp]);
+                                var lvl = (ExperienceLevel)cityExperienceLevels.Get(exp).maxLevel;//XpLib.ToLevel(MaxSkill[(int)exp]);
                                 if (lvl >= ExperienceLevel.Expert_3)
                                 {
                                     if (xpIx == 0)
@@ -248,6 +250,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 idleWorkers.Clear();
+                int maxWorkerOrderCount = (1 + workerStatuses.Count / 100) * updateSpeed;
 
                 //Collect idle workers
                 for (int i = 0; i < workerStatuses.Count; i++)
@@ -259,45 +262,30 @@ namespace VikingEngine.DSSWars.GameObject
                         if (workerStatusActiveCount > workForce.amount)
                         {
                             --workerStatusActiveCount;
-                            //ref WorkerStatus status = ref workerStatuses.array[i];
+                            
                             status.createWorkOrder(WorkType.Exit, -1, 0, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
-                            //workerStatuses[i] = status;
                         }
                         else if (status.carry.amount > 0)
                         {
                             CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
-                            //ref WorkerStatus status = ref workerStatuses.array[i];
-                            //status.createWorkOrder(WorkType.DropOff, -1, -1, CityStructure.WorkInstance.storePosition(status.subTileEnd), this);
                             status.createWorkOrder(WorkType.DropOff, -1, 0, WorkExperienceType.Transport, -1, CityStructure.WorkInstance.storePosition(status.subTileEnd), this);
-                            //workerStatuses[i] = status;
                         }
                         else if (status.energy < 0 && (res_food.amount > 0 || faction.hasGold(1, this)))
                         {
                             CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
-                            //ref WorkerStatus status = ref workerStatuses.array[i];
-                            //status.createWorkOrder(WorkType.Eat, -1, -1, CityStructure.WorkInstance.eatPosition(status.subTileEnd), this);
                             status.createWorkOrder(WorkType.Eat, -1, 0, WorkExperienceType.NONE, -1, CityStructure.WorkInstance.eatPosition(status.subTileEnd), this);
-                            //workerStatuses[i] = status;
                         }
                         else if (status.energy <= DssConst.Worker_Starvation)
                         {
                             --workerStatusActiveCount;
                             --workForce.amount;
-                            //ref WorkerStatus status = ref workerStatuses.array[i];
+
                             status.createWorkOrder(WorkType.Starving, -1, 0, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
-                            //workerStatuses[i] = status;
                         }
-                        else//else if (workQue.Count > 0)
+                        else
                         {
                             idleWorkers.Add(i);
-                            //var status = workerStatuses[i];
                         }
-                        //else
-                        //{
-                        //    var worker = workerStatuses[i];
-                        //    worker.energy -= (Ref.TotalGameTimeSec - worker.processTimeStartStampSec) * DssConst.WorkTeamEnergyCost_WhenIdle;
-                        //    worker.processTimeStartStampSec = Ref.TotalGameTimeSec;
-                        //}
                     }
                 }
 
@@ -323,7 +311,7 @@ namespace VikingEngine.DSSWars.GameObject
                         throw new NotImplementedException();
                 }
 
-                while (workQue.Count > 0 && idleWorkers.Count > 0)
+                while (workQue.Count > 0 && idleWorkers.Count > 0 && maxWorkerOrderCount > 0)
                 {
                     var work = arraylib.PullLastMember(workQue);
 
@@ -333,7 +321,7 @@ namespace VikingEngine.DSSWars.GameObject
                         WorkExperienceType experienceType = WorkLib.WorkToExperienceType(work.work, work.subWork, work.workBonus, work.subTile, this,
                            out ExperienceLevel requiredLvl, out int xpRequired, out int maxXp);
 
-                        if (requiredLvl == ExperienceLevel.Beginner_1 || requiredLvl <= GetTopSkill(experienceType))
+                        if (requiredLvl == ExperienceLevel.Beginner_1 || requiredLvl <= (ExperienceLevel)cityExperienceLevels.Get(experienceType).maxLevel/*GetTopSkill(experienceType)*/)
                         {
 
                             int bestWorkerListIx = -1;
@@ -342,7 +330,7 @@ namespace VikingEngine.DSSWars.GameObject
                             for (int i = 0; i < idleWorkers.Count; ++i)
                             {
                                 var worderIx = idleWorkers[i];
-                                var worker = workerStatuses[worderIx];
+                                var worker = workerStatuses.array[worderIx];
 
                                 var xp = worker.getXpFor(experienceType);
 
@@ -364,9 +352,10 @@ namespace VikingEngine.DSSWars.GameObject
                                 var worderIx = idleWorkers[bestWorkerListIx];
                                 idleWorkers.RemoveAt(bestWorkerListIx);
 
-                                var status = workerStatuses[worderIx];
+                                ref var status = ref workerStatuses.array[worderIx];
                                 status.createWorkOrder(work.work, work.subWork, work.workBonus, experienceType, work.orderId, work.subTile, this);
-                                workerStatuses[worderIx] = status;
+                                //workerStatuses[worderIx] = status;
+                                --maxWorkerOrderCount;
 
                                 if (work.orderId >= 0)
                                 {
@@ -389,10 +378,10 @@ namespace VikingEngine.DSSWars.GameObject
                 //Set remaning workers to wait
                 foreach (var workerIx in idleWorkers)
                 {
-                    var worker = workerStatuses[workerIx];
+                    ref var worker = ref workerStatuses.array[workerIx];
                     worker.energy -= (Ref.TotalGameTimeSec - worker.processTimeStartStampSec) * DssConst.WorkTeamEnergyCost_WhenIdle;
                     worker.processTimeStartStampSec = Ref.TotalGameTimeSec;
-                    workerStatuses[workerIx] = worker;
+                    //workerStatuses[workerIx] = worker;
                 }
 
                 if (!inRender_detailLayer)
@@ -792,7 +781,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                         foreach (var item in types)
                         {
-                            WorkPriority template = workTemplate.GetWorkPriority(item);
+                            WorkPriority template = workTemplate.GetWorkPriority(item, out _);
                             
 
                             if (template.unlocked && template.value > topPrioValue)

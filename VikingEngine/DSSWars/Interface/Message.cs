@@ -184,7 +184,7 @@ namespace VikingEngine.DSSWars.Interface
         public void cityLowFoodMessage(City city)
         {   
             if (!highEconomyWarningBlock() &&
-                DssRef.storage.runTutorial_1short_2normal == 0 && 
+                DssRef.storage.runTutorial == false && 
                 cityLowFoodMessageCooldown.TimeOut())
             {
                 cityLowFoodMessageCooldown.start();
@@ -209,7 +209,7 @@ namespace VikingEngine.DSSWars.Interface
         public void armyLowFoodMessage(Army army)
         {
             if (!highEconomyWarningBlock() &&
-                DssRef.storage.runTutorial_1short_2normal == 0 &&
+                DssRef.storage.runTutorial == false &&
                 armyLowFoodMessageCooldown.TimeOut())
             {
                 armyLowFoodMessageCooldown.start();
@@ -257,7 +257,7 @@ namespace VikingEngine.DSSWars.Interface
 
             SoundLib.message.Play(Pan.Right);
 
-            if (player.hud.detailLevel == HudDetailLevel.Minimal)
+            if (player.hud.maximizedHud == false)
             {
                 RichBoxContent compact = new RichBoxContent();
                 foreach (var m in content)

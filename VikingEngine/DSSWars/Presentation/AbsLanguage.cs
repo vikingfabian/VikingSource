@@ -9,9 +9,77 @@ namespace VikingEngine.DSSWars.Presentation
 {
     abstract partial class AbsLanguage
     {
+        //Winter update
         public abstract string Error_SoundInitFailure { get; }
-        public abstract string GameMenu_ControllerDisconnected { get; }
+        public abstract string Resource_StockpileLimit { get; }
+        public abstract string GameMode_QuickMatch { get; }
+        public abstract string GameMode_QuickMatch_Description { get; }
+        public abstract string Lobby_PlayerCount { get; }
+        public abstract string Lobby_TwoTeams { get; }
+        public abstract string Hud_Produce { get; }
+        public abstract string Tutorial_WaitForWorkerLevel { get; }
+
+        /// <summary>
+        /// 0: Production item, 1: School
+        /// </summary>
+        public abstract string Tutorial_PracticeOrSchool { get; }
+        public abstract string Tutorial_AddTag { get; }
+        public abstract string Tutorial_AddPin { get; }
+        public abstract string Tutorial_SelectMostTrees { get; }
+        public abstract string Tutorial_SelectACityWithX { get; }
+
+        /// <summary>
+        /// Will continue on another sentence "Select a city"
+        /// </summary>
+        public abstract string Tutorial_Select_NotCapital { get; }
+
         public abstract string Tutorial_HighPriority { get; }
+
+        public abstract string Tutorial_SetXPriorityToY { get; }
+        public abstract string Tutorial_AdvisorMission { get; }
+
+        public abstract string Tutorial_AdvisorDescription { get; }
+
+        public abstract string Tutorial_EndAdvisor { get; }
+
+        public abstract string Tutorial_AdvisorCompleteTitle { get; }
+        public abstract string Tutorial_AdvisorCompleteMessage { get; }
+
+        public abstract string Hud_Search { get; }
+
+        public abstract string DifficultyDescription_ExtremeAggression { get; }
+
+        public abstract string MapFilter { get; }
+
+        public abstract string Settings_TechMultiplier { get; }
+
+        public abstract string EndScreen_MatchComplete { get; }
+
+        /// <summary>
+        /// Theme: Four headed dragon symbol. Known for having an unpenetrable castle.
+        /// </summary>
+        public abstract string FactionName_DragonGem { get; }
+
+        /// <summary>
+        /// Theme: Easter egg for december. "Tomten" is an old nordic name for father christmas
+        /// </summary>
+        public abstract string FactionName_Tomten { get; }
+
+        /// <summary>
+        /// Theme: The blessed folk. A horde like farmers faction.
+        /// </summary>
+        public abstract string FactionName_Hælfolc { get; }
+
+        /// <summary>
+        /// The Iron Saints, people who guard a mountain pass against evil.
+        /// </summary>
+        public abstract string FactionName_AerimAngren { get; }
+
+        public abstract string HUD_NotAvailbleInX { get; }
+
+        public abstract string InputActionName_MiniMap { get; }
+        //-
+        public abstract string GameMenu_ControllerDisconnected { get; }
         public abstract string BuildingType_Wall_Description { get; }
         public abstract string BuildingType_Wall_Siege { get; }
         public abstract string Conscript_BlockChance { get; }

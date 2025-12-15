@@ -1,4 +1,7 @@
-﻿UPDATE
+﻿* Fixed: The mini map crashes spectator mode on load
+
+
+UPDATE
 Change Log: 
 * Cohalition story event keeps searching outward for attackers
 

@@ -9,6 +9,13 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Korean : AbsOptionsLanguage
     {
+        public override string GraphicsOption_IngameMenuWidth => "인게임 메뉴 너비";
+        public override string DisplayMode => "디스플레이 모드";
+        public override string DisplayMode_Windowed => "창 모드";
+        public override string DisplayMode_BorderlessFullscreen => "테두리 없는 전체 화면";
+        public override string GameSettings_RenderedMouseCursor => "렌더된 커서";
+
+        //--
         public override string GraphicsOption_FarViewDistance => "원거리 시야";
 
         public override string Hud_Cancel => "취소";

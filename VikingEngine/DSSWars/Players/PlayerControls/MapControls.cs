@@ -63,6 +63,7 @@ namespace VikingEngine.DSSWars.Players
         
         float targetZoom;
         bool panDownInput = false;
+        TerrainTypeSearch TerrainTypeSearch = new TerrainTypeSearch();
 
         public MapControls(LocalPlayer player)
         {
@@ -97,7 +98,12 @@ namespace VikingEngine.DSSWars.Players
                 controllerPointer = new Image(SpriteName.cmdPointer, player.playerData.view.DrawAreaF.PercentToPosition(0.6f, 0.5f), Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
 
             }
+        }
 
+        public void terrainSearchClick(SubTile terrain)
+        {
+           Vector3 pos = TerrainTypeSearch.FindNext(selection.obj.GetCity(), terrain);
+            cameraFocus = new EmptyPoint(pos);
         }
 
         public void battleModeCamBound()
@@ -125,11 +131,7 @@ namespace VikingEngine.DSSWars.Players
             return controllerPointer.position;
         }
 
-        public void setCameraPos(IntVector2 tile)
-        {
-            playerPointerPos = WP.ToWorldPos(tile);
-            camera.LookTarget = playerPointerPos;
-        }
+        
 
         public bool overridingDrag()
         { 
@@ -404,16 +406,16 @@ namespace VikingEngine.DSSWars.Players
 
             if (rectangleLines == null)
             {   
-                bool select;
+                //bool select;
                 //if (controllerInput)
                 //{
                 //    select = player.gameControls.input.ControllerSelect.DownEvent;//&& hover.obj == null;
                 //}
                 //else
                 //{
-                    select = player.gameControls.input.mouseSelect.DownEvent;
-                //}
-                if (select)
+                    //select = player.gameControls.input.mouseSelect.DownEvent;
+                
+                if (player.gameControls.input.mouseSelect.DownEvent)
                 {
                     multiSelectMoveLenght = 0;
                     multiSelectHoldTime = 0;
@@ -495,14 +497,9 @@ namespace VikingEngine.DSSWars.Players
                 }
 
                 bool keyUp;
-                //if (controllerInput)
-                //{
-                //    keyUp = !player.gameControls.input.ControllerSelect.IsDown;
-                //}
-                //else
-                //{
-                    keyUp = !player.gameControls.input.mouseSelect.IsDown;//Input.Mouse.IsButtonDown(MouseButton.Left);
-                //}
+               
+                keyUp = !player.gameControls.input.mouseSelect.IsDown;
+                
 
                 if (keyUp)
                 {
@@ -559,25 +556,7 @@ namespace VikingEngine.DSSWars.Players
                                 }
                                 break;
                         }
-                    //    if (hover.obj.gameobjectType() == GameObjectType.ObjectCollection)
-                    //    {
-                    //        var coll = hover.obj.GetCollection();
-                    //        if (coll.objects.Count > 0)
-                    //        {
-                    //            SoundLib.click.Play();
-
-                    //            if (coll.objects.Count == 1)
-                    //            {
-                    //                selection.obj = coll.objects[0];
-                    //                player.gameControls.armyControls = new ArmyControls(player, coll.objects);
-                    //            }
-                    //            else
-                    //            {
-                    //                selection.obj = coll;
-                    //                player.gameControls.armyControls = new ArmyControls(player, coll.objects);
-                    //            }
-                    //        }
-                    //    }
+                   
                     }
                 }
             }
@@ -1148,6 +1127,8 @@ namespace VikingEngine.DSSWars.Players
 
             if (targetZoom != camera.CurrentZoom)
             {
+                player.hud.miniMap?.OnMapZoom(zoominput, player);
+
                 float zdiff = targetZoom - camera.CurrentZoom;
                 if (Math.Abs(zdiff) > 2)
                 {
@@ -1169,8 +1150,6 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
             }
-
-            
         }
 
         float? targetRotation = null;
@@ -1403,17 +1382,35 @@ namespace VikingEngine.DSSWars.Players
                 {
                     pan = VectorExt.RotateVector(pan, camera.Tilt.X - CamStartRotation);
                 }
-                cameraFocus = null;
 
                 camera.MoveLookTargetXZ( - pan);
-                camera.setLookTargetXBound(panBounds.Position.X, panBounds.Right);
-                camera.setLookTargetZBound(panBounds.Position.Y, panBounds.Bottom);
-
-                playerPointerPos = camera.LookTarget;
-
-                DssRef.world.WorldBound(ref playerPointerPos.X, ref playerPointerPos.Z);
-                playerPointerPos.Y = DssRef.world.GetTile(playerPointerPos).GroundY() + 0.5f;
+                onPan();
             }
+        }
+
+        public void setCameraPosition(Vector2 worldXZ)
+        {
+            camera.LookTargetXZ = worldXZ;
+            onPan();
+        }
+
+        public void setCameraPos(IntVector2 tile)
+        {
+            playerPointerPos = WP.ToWorldPos(tile);
+            camera.LookTarget = playerPointerPos;
+        }
+
+        void onPan()
+        {
+            cameraFocus = null;
+
+            camera.setLookTargetXBound(panBounds.Position.X, panBounds.Right);
+            camera.setLookTargetZBound(panBounds.Position.Y, panBounds.Bottom);
+
+            playerPointerPos = camera.LookTarget;
+
+            DssRef.world.WorldBound(ref playerPointerPos.X, ref playerPointerPos.Z);
+            playerPointerPos.Y = DssRef.world.GetTile(playerPointerPos).GroundY() + 0.5f;
         }
 
         public void loadCamPos()
@@ -1433,7 +1430,7 @@ namespace VikingEngine.DSSWars.Players
         private void updateCamera()
         {
             Vector3 camTarget = playerPointerPos;
-            camTarget.Y = 0.6f;
+            camTarget.Y = 0.1f;
 
             if ((camTarget - camera.LookTarget).Length() < 0.5f)
             {

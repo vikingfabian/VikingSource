@@ -65,9 +65,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return HousingCount_Guard - soldiersCount;
         }
-        //public int HousingCount_ServiceMen = 0;
 
-        //public FloatingInt damages = new FloatingInt();
         public FloatingInt immigrants = new FloatingInt();
         
         public int workHutStyle = 0;
@@ -450,6 +448,11 @@ namespace VikingEngine.DSSWars.GameObject
             tilePos.readUshort(r);
 
             cityType = (CityType)r.ReadByte();
+            if (version < 82)
+            {
+                cityType += 2;
+            }
+            
             areaSize = r.ReadUInt16();
             cityTileRadius = r.ReadByte();
             
@@ -687,7 +690,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            if (subversion >= 84)
+            if (subversion >= 85)
             {
                 experenceOrDistance = (XP.ExperienceOrDistancePrio)r.ReadByte();
             }
@@ -1391,10 +1394,10 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 refreshWorkerSubtiles();
                 int freeGuardSpace = 0;
-                if (DssRef.storage.runTutorial_1short_2normal == 1)
-                {
-                    freeGuardSpace = 10;
-                }
+                //if (DssRef.storage.runTutorial_1short_2normal == 1)
+                //{
+                //    freeGuardSpace = 10;
+                //}
                 //Place guards
                 //foreach (var post in defenceBuildings)
                 for (int i = 0;i <defenceBuildings.Count;i++) 
@@ -1467,7 +1470,7 @@ namespace VikingEngine.DSSWars.GameObject
                 waterAddPerSec *= DssRef.difficulty.setting_waterMulti;
                 maxWaterBase = Convert.ToInt32( DssConst.Maxwater * DssRef.difficulty.setting_waterMulti);
                 maxWaterTotal = maxWaterBase;
-                casualCityProfile.maxHuts = maxWaterTotal / 3;
+                casualCityProfile.maxHuts = MathExt.MultiplyInt(maxWaterTotal, 0.66);
 
                 defaultResourceBuffer();
             }
@@ -2269,7 +2272,7 @@ namespace VikingEngine.DSSWars.GameObject
             return name.name;
         }
 
-        protected override void NameEditEvent(string result, object tag)
+        public override void NameEditEvent(string result, object tag)
         {
             name.setCustom(result);
         }
@@ -2417,9 +2420,12 @@ namespace VikingEngine.DSSWars.GameObject
                         content.newLine();
                     }
 
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
-                        new RbText(DssRef.lang.Automation_AutomateCity)
-                    }, AutomateCityProperty));
+                    if (automateCity || player.tutorial == null || player.tutorial.AdvisorMode())
+                    {
+                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                            new RbText(DssRef.lang.Automation_AutomateCity)
+                            }, AutomateCityProperty));
+                    }
 
                     if (automateCity)
                     {
@@ -2712,7 +2718,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (!player.profile.casualControls)
                 {
-                    terrainStructure.miningOverviewHud(content);
+                    terrainStructure.miningOverviewHud(player, content);
                     new XP.TechnologyHud().technologyOverviewHud(content, player, this, faction);
                 }
                 //technologyOverviewHud(content, player);
@@ -3053,6 +3059,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 factionIndex = newFaction.myIndex;
                 technology.destroyTechOnTakeOver();
+                queueToAllConscripts(0, null);
 
                 if (!duringStartup)
                 {
@@ -3288,6 +3295,8 @@ namespace VikingEngine.DSSWars.GameObject
 
     enum CityType
     {
+        UnClaimed,
+        Campsite,
         Village,
         Town,
         Capital,

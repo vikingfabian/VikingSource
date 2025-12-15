@@ -9,6 +9,14 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_English : AbsOptionsLanguage
     {
+        //Winter update settings
+        public override string GraphicsOption_IngameMenuWidth => "Game menu width";
+        public override string DisplayMode => "Display mode";
+        public override string DisplayMode_Windowed => "Windowed";
+        public override string DisplayMode_BorderlessFullscreen => "Borderless fullscreen";
+        public override string GameSettings_RenderedMouseCursor => "Rendered cursor";
+
+        //--
         public override string GraphicsOption_FarViewDistance => "Long-distance view";
 
         public override string Hud_Cancel => "Cancel";

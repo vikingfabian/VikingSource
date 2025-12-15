@@ -41,8 +41,7 @@ namespace VikingEngine.DSSWars.Communication
             }
             againstDark = botFaction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
 
-            if (selectedRelation.SpeakTerms > SpeakTerms.SpeakTermsN2_None &&
-                botFaction.player.IsBot())
+            if (selectedRelation.SpeakTerms > SpeakTerms.SpeakTermsN2_None)
             {
                 if (selectedRelation.Relation <= RelationType.RelationTypeN3_War)
                 {
@@ -92,29 +91,43 @@ namespace VikingEngine.DSSWars.Communication
                     result.Add(friendly);
                 }
 
-                if (selectedRelation.Relation == RelationType.RelationType2_Good)
+                if (!player.faction.quickMatchFaction)
                 {
-                    bool available = canForgeAlliance(true, out int cost);
-                    DiplomacyOption ally = new DiplomacyOption()
+                    if (selectedRelation.Relation == RelationType.RelationType2_Good)
                     {
-                        toRelation = RelationType.RelationType3_Ally,
-                        available = available,
-                        cost = cost,
-                    };
-                    result.Add(ally);
-                }
+                        bool available = canForgeAlliance(true, out int cost);
+                        DiplomacyOption ally = new DiplomacyOption()
+                        {
+                            toRelation = RelationType.RelationType3_Ally,
+                            available = available,
+                            cost = cost,
+                        };
+                        result.Add(ally);
+                    }
 
-                if (selectedRelation.Relation == RelationType.RelationType3_Ally)
-                {
-                    bool available = canMakeServant(out int cost);
-                    DiplomacyOption servant = new DiplomacyOption()
+                    if (selectedRelation.Relation == RelationType.RelationType3_Ally)
                     {
-                        toRelation = RelationType.RelationType4_Servant,
-                        available = available,
-                        cost = cost,
-                    };
-                    result.Add(servant);
+                        bool available = canMakeServant(out int cost);
+                        DiplomacyOption servant = new DiplomacyOption()
+                        {
+                            toRelation = RelationType.RelationType4_Servant,
+                            available = available,
+                            cost = cost,
+                        };
+                        result.Add(servant);
+                    }
                 }
+            }
+
+            if (selectedRelation.Relation > RelationType.RelationTypeN3_War)
+            {
+                DiplomacyOption declareWar = new DiplomacyOption()
+                {
+                    toRelation = RelationType.RelationTypeN3_War,
+                    available = true,
+                    cost = Diplomacy.DeclareWarCost(selectedRelation.Relation)
+                };
+                result.Add(declareWar);
             }
 
             return result;

@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Interface
             if (player.gameControls.diplomacy.previousFactionsLookedAt.Count > 1)
             {
                 content.newParagraph();
-                content.h2(DssRef.lang.Diplomacy_RelationWithOthers).overrideColor = HudLib.TitleColor_Label;
+                content.h2(DssRef.lang.Diplomacy_RelationWithOthers, HudLib.TitleColor_Label);
 
                 for (int i = 1; i < player.gameControls.diplomacy.previousFactionsLookedAt.Count; i++)
                 {
@@ -86,6 +86,7 @@ namespace VikingEngine.DSSWars.Interface
                     var relation = DssRef.diplomacy.GetRelationType(otherfaction, thirdPartFaction);
 
                     content.Add(thirdPartFaction.FlagTextureToHud());
+                    content.hspace();
                     content.Add(new RbText(thirdPartFaction.PlayerName));
 
                     content.Add(new RbText(": "));
@@ -111,8 +112,8 @@ namespace VikingEngine.DSSWars.Interface
                 
                 content.Add(new RbImage(SpriteName.WarsDiplomaticSub));
                 content.hspace();
-                content.Add(new RbText(cost.ToString()/*, player.diplomaticPoints.Int() >= cost? HudLib.AvailableColor : HudLib.NotAvailableColor*/));
-                content.space(2);//Add(//new RbTab(0.14f));
+                content.Add(new RbText(cost.ToString()));
+                content.space(2);
             }
 
             void playerToAi()
@@ -122,41 +123,44 @@ namespace VikingEngine.DSSWars.Interface
 
                 if (selectedRelation.Relation == RelationType.RelationTypeN2_Truce)
                 {
-                    int sec = Convert.ToInt32(selectedRelation.RelationEnd_GameTimeSec.Seconds);//selectedRelation.RelationEnd_GameTimeSec - Ref.TotalGameTimeSec);
+                    int sec = Convert.ToInt32(selectedRelation.RelationEnd_GameTimeSec.Seconds);
                     content.text(string.Format(DssRef.lang.Diplomacy_TruceTimeLength, sec));
                 }
 
                 content.text(string.Format(DssRef.lang.Diplomacy_SpeakTermIs, Diplomacy.SpeakTermsString(selectedRelation.SpeakTerms)));
-                //content.newLine();
-
-                for (int i = 0; i < options.Count; ++i)//foreach (var opt in options)
+               
+                for (int i = 0; i < options.Count; ++i)
                 {
-
                     var opt = options[i];
-                    //switch (opt.toRelation)
-                    //{
-                    //    case RelationType.RelationTypeN2_Truce:
-
-                    //        break;
-
-                    //}
+                   
                     content.newLine();
                     if (i == 0)
                     {
                         player.gameControls.input.QuickSelect.ToRichContent(content);
-                        content.hspace();
+                        
                     }
+                    content.Add(new RbTab(0.075f));
                     CostDisplay(content, opt.cost);
+
+                    string forgeRelationString;
+
+                    if (opt.toRelation == RelationType.RelationTypeN3_War)
+                    {
+                        forgeRelationString = DssRef.lang.Hud_WardeclarationTitle;
+                    }
+                    else
+                    {
+                        forgeRelationString = string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, Diplomacy.RelationString(opt.toRelation));
+                    }
+
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
                         {
                             new RbImage( Diplomacy.RelationSprite(opt.toRelation)),
-                            new RbSpace(),
-                            new RbText(string.Format( DssRef.lang.Diplomacy_ForgeNewRelationTo, Diplomacy.RelationString(opt.toRelation))),//"Forge truce"),
+                            new RbSpace(), 
+                            new RbText(forgeRelationString),
                         },
                        new RbAction1Arg<RelationType>(commitDiplomacyAction, opt.toRelation, RbSoundType.Buy),
-                       new RbTooltip(relationTooltip, opt.toRelation), opt.available));
-
-                    
+                       new RbTooltip(relationTooltip, opt.toRelation), opt.available));                    
                 }
 
 #if DEBUG
@@ -170,107 +174,7 @@ namespace VikingEngine.DSSWars.Interface
                       new RbAction(makeServant)));
                 }
 #endif
-                //if (selectedRelation.SpeakTerms > SpeakTerms.SpeakTermsN2_None &&
-                //    botFaction.player.IsBot())
-                //{
-                //    content.newParagraph();
-                //    if (selectedRelation.Relation <= RelationType.RelationTypeN3_War)
-                //    {
-                //        bool available = canForgePeace(false, out int cost);
-
-                //        CostDisplay(content, cost);
-
-                //        content.Add(new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember>()
-                //        {
-                //            new RbImage(SpriteName.WarsRelationTruce),
-                //            new RbText(string.Format( DssRef.lang.Diplomacy_ForgeNewRelationTo, DssRef.lang.Diplomacy_RelationType_Truce)),//"Forge truce"),
-                //        },
-                //        new RbAction1Arg<bool>(peaceAction, false, RbSoundType.Buy),
-                //        new RbTooltip(peaceTooltip, false), available));
-
-                //    }
-                //    else if (selectedRelation.Relation == RelationType.RelationTypeN2_Truce)
-                //    {
-                //        content.newLine();
-                //        bool available = canExtendTruce(out int cost);
-
-                //        CostDisplay(content, cost);
-
-                //        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
-                //        {
-                //            new RbImage(SpriteName.WarsRelationTruce),
-                //            new RbText(DssRef.lang.Diplomacy_ExtendTruceAction),
-                //        },
-                //        new RbAction(extendTruceAction, RbSoundType.Buy),
-                //        new RbTooltip(extendTruceTooltip),
-                //        available));
-                //    }
-
-                //    if (selectedRelation.Relation <= RelationType.RelationTypeN2_Truce)
-                //    {
-                //        content.newLine();
-                //        bool available = canForgePeace(true, out int cost);
-                //        CostDisplay(content, cost);
-
-                //        content.Add(new ArtButton(RbButtonStyle.Primary,new List<AbsRichBoxMember>()
-                //        {
-                //            new RbImage(SpriteName.WarsRelationPeace),
-                //            new RbText(string.Format( DssRef.lang.Diplomacy_ForgeNewRelationTo, DssRef.lang.Diplomacy_RelationType_Peace)),//"Forge peace"),
-                //        },
-                //            new RbAction1Arg<bool>(peaceAction, true, RbSoundType.Buy),
-                //            new RbTooltip(peaceTooltip, true),
-                //            available));
-                //    }
-
-                //    if (selectedRelation.Relation == RelationType.RelationType0_Neutral ||
-                //        selectedRelation.Relation == RelationType.RelationType1_Peace)
-                //    {
-                //        content.newLine();
-                //        bool available = canForgeAlliance(false, out int cost);
-                //        CostDisplay(content, cost);
-
-                //        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
-                //        {
-                //            new RbImage(SpriteName.WarsRelationGood),
-                //            new RbText(string.Format( DssRef.lang.Diplomacy_ForgeNewRelationTo, DssRef.lang.Diplomacy_RelationType_Good)),//"Forge good relations"),
-                //        },
-                //            new RbAction1Arg<bool>(allianceAction, false, RbSoundType.Buy),
-                //            new RbTooltip(allianceTooltip, false),
-                //            available));
-                //    }
-
-                //    if (selectedRelation.Relation == RelationType.RelationType2_Good)
-                //    {
-                //        content.newLine();
-                //        bool available = canForgeAlliance(true, out int cost);
-                //        CostDisplay(content, cost);
-
-                //        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
-                //            {
-                //                new RbImage(SpriteName.WarsRelationAlly),
-                //                new RbText(string.Format( DssRef.lang.Diplomacy_ForgeNewRelationTo, DssRef.lang.Diplomacy_RelationType_Ally)),//"Forge alliance"),
-                //            },
-                //            new RbAction1Arg<bool>(allianceAction, true, RbSoundType.Buy),
-                //            new RbTooltip(allianceTooltip, true),
-                //            available));
-                //    }
-
-                //    if (selectedRelation.Relation == RelationType.RelationType3_Ally)
-                //    {
-                //        content.newLine();
-                //        bool available = canMakeServant(out int cost);
-                //        CostDisplay(content, cost);
-
-                //        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>()
-                //            {
-                //                new RbText(DssRef.lang.Diplomacy_AbsorbServant),//"Absorb as servant"),
-                //            },
-                //            new RbAction(servantAction, RbSoundType.Buy),
-                //            new RbTooltip(servantTooltip),
-                //            available));
-                //    }
-                //}
-
+               
                 if (againstDark)
                 {
                     content.newLine();
@@ -343,7 +247,6 @@ namespace VikingEngine.DSSWars.Interface
 
             if (PtoP.suggestingNewRelation)
             {
-                //content.Add(new RichBoxText("New relation offered: "));
                 content.Add(new RbImage(Diplomacy.RelationSprite(PtoP.suggestedRelation)));
                 content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_NewRelationOffered, Diplomacy.RelationString(PtoP.suggestedRelation))));
                 content.newLine();
@@ -352,7 +255,6 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     content.Add(new ArtButton(RbButtonStyle.Primary,new List<AbsRichBoxMember>()
                         {
-                            //new RichBoxImage(SpriteName.WarsRelationPeace),
                             new RbText(Ref.langOpt.Hud_Cancel),
                         },
                         new RbAction(cancelToPlayerRelation, RbSoundType.Buy)));
@@ -361,7 +263,6 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     content.Add(new ArtButton(RbButtonStyle.Primary,new List<AbsRichBoxMember>()
                         {
-                            //new RichBoxImage(SpriteName.WarsRelationPeace),
                             new RbText(DssRef.lang.Diplomacy_AcceptRelationOffer),
                         },
                        new RbAction(acceptToPlayerRelation, RbSoundType.Buy)));
@@ -463,13 +364,8 @@ namespace VikingEngine.DSSWars.Interface
         {
             int cost = Diplomacy.ExtendTruceCost();
 
-            //RichBoxContent content = new RichBoxContent();
-
             diplomacyCostToHud(cost, content);
-            //string truceDesc = "Extends truce by {0} seconds";
             content.text(string.Format(DssRef.lang.Diplomacy_TruceExtendTimeLength, DssConst.TruceTimeSec));
-
-            //player.hud.tooltip.create(player, content, true);
         }
 
         bool canExtendTruce(out int cost)
@@ -499,6 +395,9 @@ namespace VikingEngine.DSSWars.Interface
                     break;
                 case RelationType.RelationType4_Servant:
                     servantAction();
+                    break;
+                case RelationType.RelationTypeN3_War:
+                    DssRef.diplomacy.declareWar(player.faction, otherfaction);
                     break;
             }
         }
@@ -549,12 +448,6 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        bool canForgePeace(bool peace_notTruce, out int cost)
-        {
-            cost = Diplomacy.EndWarCost(otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, peace_notTruce);
-            return player.diplomaticPoints.Int() >= cost;
-        }
-
         void relationTooltip( RichBoxContent content, object tag)
         {
             RelationType relationType = (RelationType)tag;
@@ -578,7 +471,24 @@ namespace VikingEngine.DSSWars.Interface
                 case RelationType.RelationType4_Servant:
                     servantTooltip(content, null);
                     break;
+
+                case RelationType.RelationTypeN3_War:
+                    declareWarTooltip(content, null);
+                    break;
             }
+        }
+
+        void declareWarTooltip(RichBoxContent content, object tag)
+        {
+            int cost = Diplomacy.DeclareWarCost(selectedRelation.Relation);
+            
+            diplomacyCostToHud(cost, content, true);
+
+            content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
+            content.newLine();
+            content.Add(new RbImage(Diplomacy.RelationSprite( RelationType.RelationTypeN3_War)));
+            content.space();
+            content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, Diplomacy.RelationString( RelationType.RelationTypeN3_War))));
         }
 
         void peaceTooltip(RichBoxContent content, object tag)
@@ -586,15 +496,11 @@ namespace VikingEngine.DSSWars.Interface
             bool peace_notTruce = (bool)tag;
             int cost = Diplomacy.EndWarCost(otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, peace_notTruce);
             RelationType toRelation = peace_notTruce ? RelationType.RelationType1_Peace : RelationType.RelationTypeN2_Truce;
-            //RichBoxContent content = new RichBoxContent();
-
+            
             diplomacyCostToHud(cost, content);
 
             content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
-            //string newRelationString = "New relation: ";
-
-            //content.Add(new RichBoxText(newRelationString));
             content.Add(new RbImage(Diplomacy.RelationSprite(toRelation)));
             content.space();
             content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, Diplomacy.RelationString(toRelation))));
@@ -618,7 +524,6 @@ namespace VikingEngine.DSSWars.Interface
 
         void allianceAction(bool ally_notFriend)
         {
-            //Faction otherfaction = selectedRelation.opponent(player.faction);
             int cost = Diplomacy.AllianceCost(player, otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend, out _);
 
             if (player.diplomaticPoints.pay(cost, false))
@@ -637,12 +542,6 @@ namespace VikingEngine.DSSWars.Interface
 
                 player.hud.needRefresh = true;
             }
-        }
-
-        bool canForgeAlliance(bool ally_notFriend, out int cost)
-        {
-            cost = Diplomacy.AllianceCost(player, otherfaction, selectedRelation.Relation, selectedRelation.SpeakTerms, againstDark, ally_notFriend, out _);
-            return player.diplomaticPoints.Int() >= cost;
         }
 
         void allianceTooltip(RichBoxContent content, object tag)
@@ -701,22 +600,14 @@ namespace VikingEngine.DSSWars.Interface
                 content.newLine();
                 content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Diplomacy_AllyCount, player.allyCount), HudLib.InfoYellow_Light));
             }
-            //content.newLine();
-            //HudLib.BulletPoint(content);
-            //content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_BreakingRelationCost, Diplomacy.DeclareWarCost(toRelation))));
-
         }
 
         void servantAction()
         {
-            //Faction otherfaction = selectedRelation.opponent(player.faction);
-            //int cost = Diplomacy.MakeServantCost(player, againstDark);
-
             if (canMakeServant(out int cost) &&
                 player.diplomaticPoints.pay(cost, false))
             {
                 makeServant();
-                //player.hud.needRefresh = true;
             }
         }
 
@@ -724,7 +615,7 @@ namespace VikingEngine.DSSWars.Interface
         { 
             ++player.statistics.ServantFactions;
             otherfaction.mergeTo(player.faction);
-            player.gameControls.diplomacy.cancel();
+            player.gameControls.diplomacy?.cancel();
         }
 
         bool canMakeServant(out int cost)
@@ -755,24 +646,17 @@ namespace VikingEngine.DSSWars.Interface
         void servantTooltip(RichBoxContent content, object tag)
         {
             int cost = Diplomacy.MakeServantCost(player, againstDark);
-            
-            //RichBoxContent content = new RichBoxContent();
 
             content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
             
             HudLib.BulletPoint(content);
             {
-               //string militaryStrength = "{0}x stronger military power";
                 content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_ServantRequirement_XStrongerMilitary, Diplomacy.MiltitaryStrengthXServant)));
                 content.newLine();
-                //string militaryStrengthCompare = "Strength: Your {0} - Their {1}";
-                //content.title("Military strength");
-                //string 
-                //content.newLine();
                 content.Add(new RbText(string.Format(DssRef.lang.Hud_CompareMilitaryStrength_YourToOther, Convert.ToInt32(player.faction.militaryStrength), Convert.ToInt32(otherfaction.militaryStrength)), 
                     HudLib.ResourceCostColor(player.faction.militaryStrength >= otherfaction.militaryStrength * Diplomacy.MiltitaryStrengthXServant)));
-                //content.text(faction.player.Name + ": " + Convert.ToInt32(faction.militaryStrength));
+                
                 content.newLine();
             }
             HudLib.BulletPoint(content);
@@ -788,7 +672,6 @@ namespace VikingEngine.DSSWars.Interface
                 content.newLine();
             }
 
-            //content.Add(HudLib.ResourceCost("Military strength", Convert.ToInt32(faction.militaryStrength * Diplomacy.MiltitaryStrengthXServant), Convert.ToInt32(player.faction.militaryStrength)));
             content.newLine();
 
             diplomacyCostToHud(cost, content);
@@ -797,15 +680,23 @@ namespace VikingEngine.DSSWars.Interface
             content.h2(DssRef.lang.Hud_PurchaseTitle_Gain).overrideColor = HudLib.TitleColor_Label;
             
             content.text(DssRef.lang.Diplomacy_ServantGainAbsorbFaction);
-
-            //player.hud.tooltip.create(player, content, true);
         }
 
-        void diplomacyCostToHud(int cost, RichBoxContent content)
+        void diplomacyCostToHud(int cost, RichBoxContent content, bool allowNegative = false)
         {
             content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
             content.newLine();
-            HudLib.ResourceCost(content, ResourceType.DiplomaticPoint, cost, player.diplomaticPoints.Int());
+            if (allowNegative)
+            {
+                content.Add(new RbImage(SpriteName.WarsDiplomaticSub));
+                content.space(0.5f);
+                content.Add(new RbText(string.Format(DssRef.todoLang.Hud_Purchase_ResourceCost, DssRef.lang.ResourceType_DiplomacyPoints, cost)));
+         
+            }
+            else
+            {
+                HudLib.ResourceCost(content, ResourceType.DiplomaticPoint, cost, player.diplomaticPoints.Int());
+            }
             content.newLine();
         }
     }

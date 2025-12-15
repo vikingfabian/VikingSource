@@ -8,6 +8,56 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Japanese : AbsLanguage
     {
+        
+        //Winter update
+        public override string Resource_StockpileLimit => "備蓄上限";
+        public override string GameMode_QuickMatch => "Quick Match";
+        public override string GameMode_QuickMatch_Description =>
+            "短めのゲームモードです。ライバル国家との本格的な戦争に突入しましょう。";
+        public override string Lobby_PlayerCount => "プレイヤー数";
+        public override string Lobby_TwoTeams => "2チーム";
+        public override string Hud_Produce => "生産:";
+        public override string Tutorial_WaitForWorkerLevel => "作業者が到達するまで待機:";
+
+        public override string Tutorial_PracticeOrSchool => "{0}で練習する、または{1}を使う";
+        public override string Tutorial_AddTag => "タグを追加:";
+        public override string Tutorial_AddPin => "ピンを追加:";
+        public override string Tutorial_SelectMostTrees => "最も木が多い自分の都市を探す";
+        public override string Tutorial_SelectACityWithX => "{0}を持つ都市を選択";
+
+        public override string Tutorial_Select_NotCapital => "。首都以外で。";
+
+        public override string Tutorial_SetXPriorityToY => "{0}の優先度を{1}に設定";
+        public override string Tutorial_AdvisorMission => "Advisorミッション";
+
+        public override string Tutorial_AdvisorDescription =>
+            "本編が始まりました。Advisorが役立つミッションでチュートリアルを拡張します。";
+
+        public override string Tutorial_EndAdvisor => "Advisorを終了";
+
+        public override string Tutorial_AdvisorCompleteTitle => "Advisor完了！";
+        public override string Tutorial_AdvisorCompleteMessage => "次の日が祝福されますように！";
+
+        public override string Hud_Search => "検索";
+
+        public override string DifficultyDescription_ExtremeAggression => "極端な攻撃性";
+
+        public override string MapFilter => "マップフィルター";
+
+        public override string Settings_TechMultiplier => "Tech研究速度";
+
+        public override string EndScreen_MatchComplete => "マッチ結果";
+
+        public override string FactionName_DragonGem => "Dragon Gem";
+        public override string FactionName_Tomten => "Tomten";
+        public override string FactionName_Hælfolc => "Hælfolc";
+        public override string FactionName_AerimAngren => "Aerim Angren";
+
+        public override string HUD_NotAvailbleInX => "{0}では利用できません";
+
+        public override string InputActionName_MiniMap => "Mini-map";
+
+        //--
         public override string Error_SoundInitFailure => "サウンドの初期化に失敗しました";
 
         public override string GameMenu_ControllerDisconnected => "コントローラーが切断されました";

@@ -34,6 +34,8 @@ namespace VikingEngine.DSSWars
             Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
 
             new PlaySettings();
+
+            DssRef.storage.meta.gameOverResultCollection = null;
         }
 
         public override void Time_Update(float time)
@@ -95,6 +97,9 @@ namespace VikingEngine.DSSWars
                     case GameModeMainType.FullStory:
                         DssRef.stats.startNewStory.addOne();
                         break;
+                    case GameModeMainType.QuickMatch:
+                        DssRef.stats.startQuickMatch.addOne();
+                        break;
                     case GameModeMainType.Sandbox:
                         DssRef.stats.startNewSandbox.addOne();
                         break;
@@ -132,28 +137,40 @@ namespace VikingEngine.DSSWars
                     case 200:
                         DssRef.stats.startNew200perc.addOne();
                         break;
+                    case 300:
+                        DssRef.stats.startNew300perc.addOne();
+                        break;
 
                 }
 
                 if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
                 {
-                    switch (DssRef.storage.runTutorial_1short_2normal)
+                    //switch (DssRef.storage.runTutorial_1short_2normal)
+                    //{
+                    //    case 0:
+                    //        if (PlatformSettings.STEAM_DEMO)
+                    //        {
+                    //            DssRef.stats.startNewDemo.addOne();
+                    //        }
+                    //        break;
+
+                    //    case 1:
+                    //        //DssRef.stats.startShortTutorial.addOne();
+                    //        break;
+
+                    //    case 2:
+                    //        DssRef.stats.startTutorial.addOne();
+                    //        break;
+
+                    //}
+
+                    if (DssRef.storage.runTutorial)
+                    { 
+                        DssRef.stats.startTutorial.addOne();
+                    }
+                    else if (PlatformSettings.STEAM_DEMO)
                     {
-                        case 0:
-                            if (PlatformSettings.STEAM_DEMO)
-                            {
-                                DssRef.stats.startNewDemo.addOne();
-                            }
-                            break;
-
-                        case 1:
-                            //DssRef.stats.startShortTutorial.addOne();
-                            break;
-
-                        case 2:
-                            DssRef.stats.startTutorial.addOne();
-                            break;
-
+                        DssRef.stats.startNewDemo.addOne();
                     }
                 }
 

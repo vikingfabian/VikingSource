@@ -2229,6 +2229,32 @@ namespace VikingEngine
                 add(SpriteName.WarsHudIconNext);
                 add(SpriteName.WarsHudIconProgress);
                 add(SpriteName.WarsRelationServant);
+                                
+                add(SpriteName.WarsMapFilterFactions);
+                add(SpriteName.WarsMapFilterWorkers);
+                add(SpriteName.WarsMapFilterMinimap);
+                add(SpriteName.WarsMapFilterStrength);
+                add(SpriteName.WarsMapFilterTerrain);
+
+                add(SpriteName.WarsRelationArrowAlly);
+                add(SpriteName.WarsRelationArrowWar);
+                add(SpriteName.WarsHudMinimapBorder);
+
+                add(SpriteName.WarsHudFlapMinimize);
+                add(SpriteName.WarsHudFlapMaximize);
+
+                add(SpriteName.WarsIcon_Resources);
+                add(SpriteName.WarsMapFilterResources);
+
+                add(SpriteName.WarsBluePrint);
+
+                add(SpriteName.WarsHudIconSpeed_Pause);
+                add(SpriteName.WarsHudIconSpeed_Low);
+                add(SpriteName.WarsHudIconSpeed_High);
+                add(SpriteName.WarsHudIconSpeed_Medium);
+                add(SpriteName.UpdatePromo_SnowFlake);
+
+
             }
 
             currentIndex = numTilesWidth * 87;
@@ -2426,7 +2452,8 @@ namespace VikingEngine
                     add(SpriteName.LangButton_Japanese, 8, 2);
                     add(SpriteName.LangButton_Frensh, 8, 2);
                     add(SpriteName.LangButton_Chinese, 8, 2);
-                    add(SpriteName.WarsBluePrint, 2, 2);
+                    //add(SpriteName.WarsBluePrint_old, 2, 2);
+                    currentIndex += 2;
                     add(SpriteName.WarsUnitIcon_TwoHand, 2, 2);
                     add(SpriteName.WarsBattleIcon, 2, 2);
                     add(SpriteName.WarsWorker, 2, 2);

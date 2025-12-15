@@ -38,8 +38,10 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt startTutorial = new StatsInt("start_tutorial");
         public StatsInt completeTutorial = new StatsInt("complete_tutorial");
         public StatsInt skipTutorial = new StatsInt("skip_tutorial");
+        public StatsInt skip_advisor = new StatsInt("skip_advisor");
 
         public StatsInt startNewStory = new StatsInt("startnew_story");
+        public StatsInt startQuickMatch = new StatsInt("startnew_quickmatch");
         public StatsInt startnew_casual = new StatsInt("startnew_casual");
         public StatsInt startNewSandbox = new StatsInt("startnew_sandbox");
         public StatsInt startNewPeaceful = new StatsInt("startnew_peaceful");
@@ -56,6 +58,7 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt startNew150perc = new StatsInt("startnew_150perc");
         public StatsInt startNew175perc = new StatsInt("startnew_175perc");
         public StatsInt startNew200perc = new StatsInt("startnew_200perc");
+        public StatsInt startNew300perc = new StatsInt("startnew_300perc");
 
         public StatsInt startNew_MapSmall = new StatsInt("startnew_map_small");
         public StatsInt startNew_MapLarge = new StatsInt("startnew_map_large");
@@ -142,6 +145,7 @@ namespace VikingEngine.DSSWars.Data
                 //completeBattleDemo,
 #else
                 startNewStory,
+                startQuickMatch,
                 startNewSandbox,
                 startNewPeaceful,            
 

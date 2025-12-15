@@ -12,6 +12,11 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
+        /// <summary>
+        /// How much of a resource that will be used, "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public string Hud_Purchase_ResourceCost => "{1} {0}";
+
         public string DisplayMode => "Display mode";
         public string DisplayMode_Windowed => "Windowed";
         public string DisplayMode_BorderlessFullscreen => "Borderless fullscreen";
@@ -21,18 +26,15 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Delivery_MaxDistance => "Delivery max distance: {0}";
         //public string Error_SoundInitFailure => "Sound initialization failed";
+        public string Tutorial_WillTakeAWhile => "This will take a while, come back later.";
+        
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public string Tutorial_WaitFor => "Wait for {0} to complete";
 
-        //public string GameMenu_ControllerDisconnected => "Controller disconnected";
 
-        //public string Tutorial_HighPriority => "Your men will complete high-priority tasks first";
-
-        //public string BuildingType_Wall_Description => "Walls protect men from attacks, and gives a slight attack boost";
-
-        //public string BuildingType_Wall_Siege => "Siege weapons reduce wall defences";
-
-        //public string Conscript_BlockChance => "{0}% chance to block an attack";
-
-        //public string Battle_DeclarWarReminder => "Must declare war to attack";
+        public string GameOverResults => "Game history log";
     }
 
 

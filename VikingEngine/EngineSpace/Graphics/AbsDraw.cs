@@ -46,7 +46,8 @@ namespace VikingEngine.Graphics
         protected bool visible = true;
         protected bool inRenderList = false;
         public int inRenderLayer = 0;
-        
+
+        public int idOrIndex = int.MinValue;
         private int spottedArrayMemberIndex;
         private int inSpottedArray = 0;
 

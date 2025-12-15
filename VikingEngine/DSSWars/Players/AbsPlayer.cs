@@ -211,6 +211,41 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        protected bool quickMatchUnits(bool checkIfParticipant)
+        {
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
+            {
+                if (!checkIfParticipant || IsLocalPlayer() || DssRef.world.quickMatchFactions.Contains(faction.myIndex))
+                {
+                    IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
+                    Army mainArmy = faction.NewArmy(onTile);
+
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        new SoldierGroup(mainArmy, DssLib.SoldierProfile_StandardArcher, mainArmy.position);
+                    }
+                    for (int i = 0; i < 1; ++i)
+                    {
+                        new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
+                    }
+
+                    if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
+                    {
+                        for (int i = 0; i < 1; ++i)
+                        {
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
+                        }
+                    }
+
+                    mainArmy.setAsStartArmy();
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
         virtual public void createStartUnits()
         {   
         }
@@ -257,6 +292,11 @@ namespace VikingEngine.DSSWars.Players
             {
                 setAggression(minAgg);
             }
+        }
+
+        public override string ToString()
+        {
+            return "Player (" + Name + ")";
         }
     }
 

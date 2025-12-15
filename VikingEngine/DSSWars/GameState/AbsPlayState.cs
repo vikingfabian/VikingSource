@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.Input;
@@ -86,6 +87,7 @@ namespace VikingEngine.DSSWars.GameState
 
         protected void prePlayerInit()
         {
+            XpLib.Unlock = new TechnologyUnlock(DssRef.difficulty.setting_techMulti);
             DssRef.storage.profileStorage.refreshProfiles();
             CityMenu.InitGame();
         }

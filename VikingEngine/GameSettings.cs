@@ -26,7 +26,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 31;
+        const int Version = 33;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -43,6 +43,7 @@ namespace VikingEngine
         public const int MaxBlood = 100;
         public int Blood = 100;
         public float UiScale = 1f;
+        public float IngameMenuWidth = 1f;
         public bool customCursor = false;
         public float reversedStereoValue = 1f;
         public bool dyslexiaFont = false;
@@ -115,11 +116,12 @@ namespace VikingEngine
             w.Write(SoundVolume);
             w.Write((byte)VibrationLevel);
             w.Write(UiScale);
+            w.Write(IngameMenuWidth);
             w.Write((byte)language);
             w.Write(dyslexiaFont);
             controllerMap.write(w);
             keyboardMap.write(w);
-
+            
             bannedPeers.write(w);
             w.Write(ModelLightShaderEffect);
 
@@ -135,6 +137,8 @@ namespace VikingEngine
             w.Write(keyPanSpeed);
             w.Write(BattleMelodyVolume);
             w.Write(ParticlesEffect);
+
+            Debug.WriteCheck(w);
 
             w.Write(lowLatencyGarbageCollecting);
 
@@ -160,92 +164,109 @@ namespace VikingEngine
 
         public void readSettings(System.IO.BinaryReader r, int version)
         {
-            if (version > Version) return;
+            if (version > Version || version == 32) return;
 
             Engine.Screen.ReadSettings(r, version);
-            MusicMasterVolume = r.ReadSingle();
-            if (version == 23)
-            {
-                MusicMasterVolume = 1f;
-            }
-            SoundVolume = r.ReadSingle();
-            VibrationLevel = r.ReadByte();
+                MusicMasterVolume = r.ReadSingle();
+                if (version == 23)
+                {
+                    MusicMasterVolume = 1f;
+                }
+                SoundVolume = r.ReadSingle();
+                VibrationLevel = r.ReadByte();
+                //Engine.Screen.WindowScalePerc = r.ReadInt32();
+                //Engine.Screen.PcTargetResolution.read(r);
+                
+                //Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
 
-            UiScale = r.ReadSingle();
-            if (UiScale < 0.5f)
-            {
-                UiScale = 1f;
-            }
-            language = (LanguageType)r.ReadByte();
+                UiScale = r.ReadSingle();
+                if (UiScale < 0.5f)
+                {
+                    UiScale = 1f;
+                }
 
-            dyslexiaFont = r.ReadBoolean();
+                if (version >= 33)
+                {
+                    IngameMenuWidth = r.ReadSingle();
+                }
 
-            controllerMap.read(r);
-            keyboardMap.read(r);
+                language = (LanguageType)r.ReadByte();
 
+                dyslexiaFont = r.ReadBoolean();
 
-            bannedPeers.read(r, version);
-
-            ModelLightShaderEffect = r.ReadBoolean();
-
-            MasterVolume = r.ReadSingle();
-            AmbientVolume = r.ReadSingle();
-
-            MapLoadingSpeed = (ThreeOptions)r.ReadByte();
-            Blood = r.ReadInt32();
-
-            panOnZoom = r.ReadBoolean();
-            controlLayout = r.ReadInt32();
-            scrollWheelSensitivity_menu = r.ReadSingle();
-            scrollWheelSensitivity_game = r.ReadSingle();
-            if (version >= 22)
-            {
-                keyPanSpeed = r.ReadSingle();
-            }
+                controllerMap.read(r);
+                keyboardMap.read(r);
 
 
-            BattleMelodyVolume = r.ReadSingle();
+                bannedPeers.read(r, version);
 
-            ParticlesEffect = r.ReadBoolean();
+                ModelLightShaderEffect = r.ReadBoolean();
+
+                MasterVolume = r.ReadSingle();
+                AmbientVolume = r.ReadSingle();
+
+                MapLoadingSpeed = (ThreeOptions)r.ReadByte();
+                Blood = r.ReadInt32();
+
+                panOnZoom = r.ReadBoolean();
+                controlLayout = r.ReadInt32();
+                scrollWheelSensitivity_menu = r.ReadSingle();
+                scrollWheelSensitivity_game = r.ReadSingle();
+                if (version >= 22)
+                {
+                    keyPanSpeed = r.ReadSingle();
+                }
 
 
-            if (version >= 23)
-            {
-                lowLatencyGarbageCollecting = r.ReadBoolean();
-            }
+                BattleMelodyVolume = r.ReadSingle();
 
-            if (version >= 25)
-            {
-                shadowResolution = (ShadowResolution)r.ReadByte();
-                modelShadow = r.ReadBoolean();
-                waterFoam = r.ReadBoolean();
-                modelBrightness = r.ReadSingle();
-            }
+                ParticlesEffect = r.ReadBoolean();
+                if (version >= 32)
+                {
+                    Debug.ReadCheck(r);
+                }
 
-            if (version >= 26)
-            {
-                FrameRate = r.ReadInt32();               
-            }
+                    if (version >= 23)
+                {
+                    lowLatencyGarbageCollecting = r.ReadBoolean();
+                }
+
+           
+
+                if (version >= 25)
+                {
+                    shadowResolution = (ShadowResolution)r.ReadByte();
+                    modelShadow = r.ReadBoolean();
+                    waterFoam = r.ReadBoolean();
+                    modelBrightness = r.ReadSingle();
+                }
+
+                if (version >= 26)
+                {
+                    FrameRate = r.ReadInt32();
+                }
+
+                if (version >= 27)
+                {
+                    farViewDistance = r.ReadBoolean();
+                }
+
+                if (version >= 29)
+                {
+                    customCursor = r.ReadBoolean();
+                }
+
+                if (version >= 30)
+                {
+                    muteControllerDisconnect = r.ReadBoolean();
+                }
+
+                Debug.ReadCheck(r);
+
+                Engine.Update.SetFrameRate(FrameRate);
+                setSoundLevelsOnError();
+                //MusicMasterVolume = 0;
             
-            if (version >= 27)
-            {
-                farViewDistance = r.ReadBoolean();               
-            }
-
-            if (version >= 29)
-            {
-                customCursor = r.ReadBoolean();
-            }
-            if (version >= 30)
-            {
-                muteControllerDisconnect = r.ReadBoolean();
-            }
-
-            Debug.ReadCheck(r);
-
-            Engine.Update.SetFrameRate(FrameRate);
-            setSoundLevelsOnError();
-            //MusicMasterVolume = 0;
         }
 
         public void setSoundLevelsOnError()
@@ -281,7 +302,7 @@ namespace VikingEngine
             catch (Exception e)
             {
                 fileCheck.exception = e;
-                //Debug.LogError("Loading game settings error, " + e.Message);
+                new GameSettings();
             }
 
             FileCheck = fileCheck;
@@ -611,8 +632,8 @@ namespace VikingEngine
             content.newLine();
             DropDownBuilder winmodeDropdown = new DropDownBuilder("windowMode");
             {
-                addMode(WindowDisplayMode.Windowed, DssRef.todoLang.DisplayMode_Windowed);
-                addMode(WindowDisplayMode.BorderlessFullscreen, DssRef.todoLang.DisplayMode_BorderlessFullscreen);
+                addMode(WindowDisplayMode.Windowed, Ref.langOpt.DisplayMode_Windowed);
+                addMode(WindowDisplayMode.BorderlessFullscreen, Ref.langOpt.DisplayMode_BorderlessFullscreen);
                 addMode(WindowDisplayMode.HardwareFullscreen, Ref.langOpt.GraphicsOption_Fullscreen);
 
                 void addMode(WindowDisplayMode mode, string caption)
@@ -621,7 +642,7 @@ namespace VikingEngine
                         new RbAction1Arg<WindowDisplayMode>(SetDisplayMode, mode), null);
                 }
 
-                winmodeDropdown.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.DisplayMode, menu);
+                winmodeDropdown.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.DisplayMode, menu);
             }
                         
                 //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.GraphicsOption_Fullscreen) }, Ref.gamesett.fullscreenProperty));
@@ -684,7 +705,7 @@ namespace VikingEngine
             }
 
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdPointer), new RbSpace(0.5f), new RbText(DssRef.todoLang.GameSettings_RenderedMouseCursor) },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdPointer), new RbSpace(0.5f), new RbText(Ref.langOpt.GameSettings_RenderedMouseCursor) },
                 CustomCursorProperty));
 
             content.newLine();
@@ -692,10 +713,16 @@ namespace VikingEngine
             content.Add(new RbText( Ref.langOpt.GraphicsOption_UiScale));
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.5f, 2f, 0.1f), uiScaleProperty, true));
-            
-            content.newLine();
+            content.space();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Apply) },
                 new RbAction(Ref.gamestate.OnResolutionChange)));
+
+            content.newLine();
+            content.Add(new RbText(Ref.langOpt.GraphicsOption_IngameMenuWidth));
+            content.space();
+            content.Add(new RbDragButton(new DragButtonSettings(0.8f, 1.6f, 0.1f), IngameMenuWProperty, true));
+
+            
             //new GuiFloatSlider(SpriteName.LFIconLetter, Ref.langOpt.GraphicsOption_UiScale, uiScaleProperty, new IntervalF(0.5f, 2f), false, layout);
         }
 
@@ -713,7 +740,7 @@ namespace VikingEngine
 
         }
 
-public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
+        public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
         {
             content.newLine();
             
@@ -1064,6 +1091,17 @@ public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
                 Screen.RefreshUiSize();
             }
             return UiScale;
+        }
+
+        public float IngameMenuWProperty(bool set, float value)
+        {
+            if (set)
+            {
+                IngameMenuWidth = value;
+                HudLib.Init();
+                settingsHasChanged = true;
+            }
+            return IngameMenuWidth;
         }
 
         public int vibrationProperty(bool set, int value)

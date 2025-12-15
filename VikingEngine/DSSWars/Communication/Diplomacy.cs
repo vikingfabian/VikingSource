@@ -674,9 +674,11 @@ namespace VikingEngine.DSSWars
             cost -= (int)relation; //2 or 3
             cost -= (int)speakterms;//0
 
+            int max = 6;
             if (peace_notTruce)
             {
                 cost *= 2;
+                max = 8;
             }
 
             cost += toFaction.WorkForceInCityCount() / 5;
@@ -686,7 +688,7 @@ namespace VikingEngine.DSSWars
                 cost -= 1;
             }
 
-            cost = Bound.Min(cost, 1);
+            cost = Bound.Set(cost, 1, max);
 
             return cost;
         }
