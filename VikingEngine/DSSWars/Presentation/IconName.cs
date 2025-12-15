@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars
                     tabName = DssRef.lang.WarsResourceGroup_RangedHandWeapons;
                     break;
                 case ResourcesSubTab.Overview_Armor:
-                    categoryIcon = SpriteName.WarsStockpileAdd;
+                    categoryIcon = SpriteName.MenuPixelIconManual;
                     tabIcon = SpriteName.WarsResource_IronArmor;
                     category = DssRef.lang.Resource_Tab_Overview;
                     tabName = DssRef.lang.Conscript_ArmorTitle;
@@ -93,7 +93,6 @@ namespace VikingEngine.DSSWars
 
                 case ResourcesSubTab.Stockpile_Resources:
                     categoryIcon = SpriteName.WarsStockpileAdd;
-                    categoryIcon = SpriteName.MenuPixelIconManual;
                     tabIcon = SpriteName.WarsResource_Wood;
                     category = DssRef.lang.Resource_Tab_Stockpile;
                     tabName = DssRef.lang.WarsResourceGroup_Resources;

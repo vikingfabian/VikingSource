@@ -191,6 +191,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             army.basicInfoHud(new ObjectHudArgs( content, player, true));
 
+            content.newLine();
             var haltButton = new ArtButton( RbButtonStyle.Primary,
                         new List<AbsRichBoxMember>
                         {

@@ -162,6 +162,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         TwoBools educateBurner_buildSchool = TwoBools.False;
         TwoBools educateBurner_buildCoalPit = TwoBools.False;
         TwoBools educateBurner_schoolTab = TwoBools.False;
+        int educateBurner_level2Count = 0;
         TwoBools educateBurner_educateFuel = TwoBools.False;
         
         
@@ -1749,6 +1750,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             //TwoBools educateBurner_buildSchool = TwoBools.False;
                             if (!educateBurner_buildSchool.Value1 && hasBuildOrder(BuildAndExpandType.School))
                             {
+                                educateBurner_level2Count = city.cityExperienceLevels.levels_CraftFuel.Practitioner_2_count;
                                 educateBurner_buildSchool.Value1 = true;
                                 onPartSuccess();
                             }
@@ -1778,7 +1780,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             }
                             //TwoBools educateBurner_educateFuel = TwoBools.False;
                             if (!educateBurner_educateFuel.Value1 &&
-                                city.cityExperienceLevels.levels_CraftFuel.Max() >= XP.ExperienceLevel.Practitioner_2)
+                                //city.cityExperienceLevels.levels_CraftFuel.Max() >= XP.ExperienceLevel.Practitioner_2 &&
+                                city.cityExperienceLevels.levels_CraftFuel.Practitioner_2_count > educateBurner_level2Count)
                             {
                                 educateBurner_educateFuel.Value1 = true;
                                 onPartSuccess();
@@ -2248,6 +2251,15 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                 }
                             }
 
+
+                            if (arraylib.TryGet(city.conscriptBuildings, city.selectedConscript, out BarracksStatus barracks))
+                            {
+                                if (barracks.profile.specialization == SpecializationType.CityGuard)
+                                {
+                                    guardTab = true;
+                                }
+                            }
+
                             if (guardTab)
                             {
                                 if (!recruitGuard_selectGuardTab)
@@ -2553,7 +2565,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     break;
 
                 case TutorialMission.EducateBurner:
-                    missionComplete = educateBurner_educateFuel.Value1 && educateBurner_buildCoalPit.Value1;
+                    missionComplete = educateBurner_buildSchool.Value1 && educateBurner_educateFuel.Value1 && educateBurner_buildCoalPit.Value1;
                     break;
                 case TutorialMission.SendFood:
                     missionComplete = sendFood_postalQueue.Value1;
@@ -2688,6 +2700,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void EndTutorial()
         {
+            bool createStartUnits = missions.sel < TutorialMission.AttackBarbarian;
+
             missions.SelectItem(TutorialMission.EndTutorial);
             bool endAll = player.profile.casualControls || PlatformSettings.STEAM_DEMO;
 
@@ -2697,7 +2711,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 refreshLimits();
             }
             player.gameControls.map.setCameraBounds(false, cityarea);
-            bool createStartUnits = missions.sel < TutorialMission.AttackBarbarian;
+            
             
             if (!PlatformSettings.STEAM_DEMO)
             {

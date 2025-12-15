@@ -413,12 +413,12 @@ namespace VikingEngine.DSSWars.Conscript
                     content.Add(new RbImage(SpriteName.WarsBuild_Barracks));
                     content.space();
                     content.Add(new RbText(DssRef.lang.BuildingType_Barracks));
-                    content.newLine();
-                    content.text(DssRef.lang.Hud_RequirementOr);
-                    content.newLine();
-                    content.Add(new RbImage(SpriteName.WarsBuild_Nobelhouse));
-                    content.space();
-                    content.Add(new RbText(DssRef.lang.Building_NobleHouse));
+                    //content.newLine();
+                    //content.text(DssRef.lang.Hud_RequirementOr);
+                    //content.newLine();
+                    //content.Add(new RbImage(SpriteName.WarsBuild_Nobelhouse));
+                    //content.space();
+                    //content.Add(new RbText(DssRef.lang.Building_NobleHouse));
                 }
                 else
                 {

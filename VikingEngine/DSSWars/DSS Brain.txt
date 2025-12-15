@@ -1,9 +1,22 @@
-﻿* Fixed: The mini map crashes spectator mode on load
-
-
-UPDATE
+﻿UPDATE
 Change Log: 
 * Cohalition story event keeps searching outward for attackers
+* Fixed: The mini map crashes spectator mode on load
+* Improved hud on resource tab info
+* Fixed: move path ui ended up below mountains
+* Cleaned up some hud errors
+
+WORKER XP
+* Reduced worker xp gain by -20%, except for the first level up
+* Expert levels cannot be replaced with low priority skills (skills that are never required like animal care)
+* Extra protection for building skill (since that dont run on a loop)
+* Random worker experts are one level lower
+
+TUTORIAL
+* fixed end tutorial didnt create start armies
+* fixed guard tab checkbox
+* fixed skipping of advisor - mission 3
+
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

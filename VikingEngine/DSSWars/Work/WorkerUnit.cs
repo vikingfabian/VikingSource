@@ -569,7 +569,7 @@ namespace VikingEngine.DSSWars.Work
 
                         if (maxAdd > 0)
                         {
-                            status.addExperience(xp, args.player.gameControls.map.selection.obj.GetCity(), (byte)Bound.Max(DssConst.WorkLevel_Expert, maxAdd));
+                            status.addExperience(xp, args.player.gameControls.map.selection.obj.GetCity(), (byte)Bound.Max(DssConst.WorkLevel_Master, maxAdd));
                         }
                     }, exp)));
                     args.content.space();
