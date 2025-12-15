@@ -22,23 +22,23 @@ namespace VikingEngine.Voxels
         public const string VoxelProjectFolder = "Voxel Project";
         public static bool[] HasChatergory;
 
-        public static void InitFolderStructure()
-        {
-            HasChatergory = new bool[(int)SaveCategory.NUM];
+        //public static void InitFolderStructure()
+        //{
+        //    HasChatergory = new bool[(int)SaveCategory.NUM];
 
-            for (int i = 0; i < HasChatergory.Length; ++i)
-            {
-                var path = TemplatePath(i, null);
-                if (DataLib.SaveLoad.FolderExistAndHaveFilesInit(path.LocalDirectoryPath))
-                {
-                    HasChatergory[i] = true;
-                }
-                else
-                {
-                    FilePath.CreateStorageFolder(TemplateFolder(i));
-                }
-            }
-        }
+        //    for (int i = 0; i < HasChatergory.Length; ++i)
+        //    {
+        //        var path = TemplatePath(i, null);
+        //        if (DataLib.SaveLoad.FolderExistAndHaveFilesInit(path.LocalDirectoryPath))
+        //        {
+        //            HasChatergory[i] = true;
+        //        }
+        //        else
+        //        {
+        //            FilePath.CreateStorageFolder(TemplateFolder(i));
+        //        }
+        //    }
+        //}
 
         static string randomName()
         {

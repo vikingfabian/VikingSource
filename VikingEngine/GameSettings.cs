@@ -26,7 +26,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 27;
+        const int Version = 31;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -39,9 +39,11 @@ namespace VikingEngine
         public int DetailLevel = 1;
         public bool AutoJoinToCoopLevel = true;
         public int VibrationLevel = 100;
+        public bool muteControllerDisconnect = false;
         public const int MaxBlood = 100;
         public int Blood = 100;
         public float UiScale = 1f;
+        public bool customCursor = false;
         public float reversedStereoValue = 1f;
         public bool dyslexiaFont = false;
         public Network.BannedPeers bannedPeers = new Network.BannedPeers();
@@ -107,10 +109,8 @@ namespace VikingEngine
 
         public void writeSettings(System.IO.BinaryWriter w)
         {
-            w.Write(Engine.Screen.WindowScalePerc);
-            Engine.Screen.PcTargetResolution.write(w);
-            w.Write(Engine.Screen.PcTargetFullScreen);
-            w.Write((byte)Engine.Screen.UseRecordingPreset);
+            Engine.Screen.WriteSettings(w);
+
             w.Write(MusicMasterVolume);
             w.Write(SoundVolume);
             w.Write((byte)VibrationLevel);
@@ -146,6 +146,9 @@ namespace VikingEngine
             w.Write(FrameRate);
             w.Write(farViewDistance);
 
+            w.Write(customCursor);
+            w.Write(muteControllerDisconnect);
+
             Debug.WriteCheck(w);
         }
 
@@ -159,11 +162,7 @@ namespace VikingEngine
         {
             if (version > Version) return;
 
-            Engine.Screen.WindowScalePerc = r.ReadInt32();
-            Engine.Screen.PcTargetResolution.read(r);
-            Engine.Screen.PcTargetFullScreen = r.ReadBoolean();
-            Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
-
+            Engine.Screen.ReadSettings(r, version);
             MusicMasterVolume = r.ReadSingle();
             if (version == 23)
             {
@@ -225,15 +224,23 @@ namespace VikingEngine
 
             if (version >= 26)
             {
-                FrameRate = r.ReadInt32();
-               
+                FrameRate = r.ReadInt32();               
             }
             
             if (version >= 27)
             {
-                farViewDistance = r.ReadBoolean();
-               
+                farViewDistance = r.ReadBoolean();               
             }
+
+            if (version >= 29)
+            {
+                customCursor = r.ReadBoolean();
+            }
+            if (version >= 30)
+            {
+                muteControllerDisconnect = r.ReadBoolean();
+            }
+
             Debug.ReadCheck(r);
 
             Engine.Update.SetFrameRate(FrameRate);
@@ -280,47 +287,47 @@ namespace VikingEngine
             FileCheck = fileCheck;
         }
 
-        public void oldread(System.IO.BinaryReader r, int version)
-        {
+//        public void oldread(System.IO.BinaryReader r, int version)
+//        {
             
 
-            if (version >= 2)
-            {
-                Engine.Screen.WindowScalePerc = r.ReadInt32();
-            }
-            Engine.Screen.PcTargetResolution.read(r);
-            Engine.Screen.PcTargetFullScreen = r.ReadBoolean();
+//            if (version >= 2)
+//            {
+//                Engine.Screen.WindowScalePerc = r.ReadInt32();
+//            }
+//            Engine.Screen.PcTargetResolution.read(r);
+//            Engine.Screen.PcTargetFullScreen = r.ReadBoolean();
 
-            ChunkLoadRadius = r.ReadInt32();
+//            ChunkLoadRadius = r.ReadInt32();
 
 
-            int ReadFrameRate = r.ReadInt32();
-#if !PJ
-            FrameRate = ReadFrameRate;
-#endif
+//            int ReadFrameRate = r.ReadInt32();
+//#if !PJ
+//            FrameRate = ReadFrameRate;
+//#endif
 
-            DetailLevel = r.ReadInt32();
+//            DetailLevel = r.ReadInt32();
 
-            MusicMasterVolume = r.ReadSingle();
-            SoundVolume = r.ReadSingle();
+//            MusicMasterVolume = r.ReadSingle();
+//            SoundVolume = r.ReadSingle();
 
-            if (version >= 1)
-            {
-                AutoJoinToCoopLevel = r.ReadBoolean();
-            }
-            if (version >= 3)
-            {
-                Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
-            }
-            if (version >= 4 && version < 9)
-            {
-                string screenName = StreamLib.ReadString_safe(r);
-            }
-            if (version >= 7)
-            {
-                bannedPeers.read(r, version);
-            }
-        }
+//            if (version >= 1)
+//            {
+//                AutoJoinToCoopLevel = r.ReadBoolean();
+//            }
+//            if (version >= 3)
+//            {
+//                Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
+//            }
+//            if (version >= 4 && version < 9)
+//            {
+//                string screenName = StreamLib.ReadString_safe(r);
+//            }
+//            if (version >= 7)
+//            {
+//                bannedPeers.read(r, version);
+//            }
+//        }
 
         public bool farViewDistanceProperty(object tag, bool set, bool value)
         {
@@ -341,21 +348,41 @@ namespace VikingEngine
             }
             return farViewDistance;
         }
-        public bool fullscreenProperty(object tag, bool set, bool value)
+
+        public bool muteControllerDisconnectProperty(object tag, bool set, bool value)
         {
             if (set)
             {
-                if (value)
-                {
-                    Engine.Screen.WindowScalePerc = 100;
-                }
-                Engine.Screen.UseRecordingPreset = RecordingPresets.NumNon;
-                Engine.Screen.PcTargetFullScreen = value;
-                Engine.Screen.ApplyScreenSettings();
-                graphicsHasChanged = true;
+                muteControllerDisconnect = value;
                 settingsHasChanged = true;
             }
-            return Engine.Screen.PcTargetFullScreen;
+            return muteControllerDisconnect;
+        }
+        //public bool fullscreenProperty(object tag, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        if (value)
+        //        {
+        //            Engine.Screen.WindowScalePerc = 100;
+        //        }
+        //        Engine.Screen.UseRecordingPreset = RecordingPresets.NumNon;
+        //        Engine.Screen.PcTargetFullScreen = value;
+        //        Engine.Screen.ApplyScreenSettings();
+        //        graphicsHasChanged = true;
+        //        settingsHasChanged = true;
+        //    }
+        //    return Engine.Screen.PcTargetFullScreen;
+        //}
+        public bool CustomCursorProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                customCursor = value;
+                Ref.draw.refreshCursor();
+                settingsHasChanged = true;
+            }
+            return customCursor;
         }
 
         public bool AddSomePixelsProperty(object tag, bool set, bool value)
@@ -457,12 +484,12 @@ namespace VikingEngine
             return ParticlesEffect;
         }
 
-        public void optionsMenu(GuiLayout layout)
-        {
-            soundOptions(layout);
-            new GuiSectionSeparator(layout);
-            graphicsOptions(layout);
-        }
+        //public void optionsMenu(GuiLayout layout)
+        //{
+        //    soundOptions(layout);
+        //    new GuiSectionSeparator(layout);
+        //    graphicsOptions(layout);
+        //}
         
 
         public void quickOptionsMenu(GuiLayout layout)
@@ -563,25 +590,43 @@ namespace VikingEngine
 
         public void monitorOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
         {
-            var resoutionPercOptions = Engine.Screen.ResoutionPercOptions();
-            DropDownBuilder dropdown = new DropDownBuilder("resolution%");
+            if (Screen.PcDisplayMode == WindowDisplayMode.Windowed)
             {
-                foreach (var m in resoutionPercOptions)
+                var resoutionPercOptions = Engine.Screen.ResoutionPercOptions();
+                DropDownBuilder dropdown = new DropDownBuilder("resolution%");
                 {
-                    dropdown.AddOption(string.Format(Ref.langOpt.GraphicsOption_Resolution_PercentageOption, m),
-                        Engine.Screen.UseRecordingPreset == RecordingPresets.NumNon &&
-                        m == Engine.Screen.WindowScalePerc,
-                        m == 100,
-                        new RbAction1Arg<int>(setResolutionPercProperty, m), null);
-                }
+                    foreach (var m in resoutionPercOptions)
+                    {
+                        dropdown.AddOption(string.Format(Ref.langOpt.GraphicsOption_Resolution_PercentageOption, m),
+                            Engine.Screen.UseRecordingPreset == RecordingPresets.NumNon &&
+                            m == Engine.Screen.WindowScalePerc,
+                            m == 100,
+                            new RbAction1Arg<int>(setResolutionPercProperty, m), null);
+                    }
 
-                dropdown.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_Resolution, menu);
+                    dropdown.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_Resolution, menu);
+                }
             }
 
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.GraphicsOption_Fullscreen) }, Ref.gamesett.fullscreenProperty));
+            DropDownBuilder winmodeDropdown = new DropDownBuilder("windowMode");
+            {
+                addMode(WindowDisplayMode.Windowed, DssRef.todoLang.DisplayMode_Windowed);
+                addMode(WindowDisplayMode.BorderlessFullscreen, DssRef.todoLang.DisplayMode_BorderlessFullscreen);
+                addMode(WindowDisplayMode.HardwareFullscreen, Ref.langOpt.GraphicsOption_Fullscreen);
 
-            if (!Screen.PcTargetFullScreen)
+                void addMode(WindowDisplayMode mode, string caption)
+                {
+                    winmodeDropdown.AddOption(caption, mode == Screen.PcDisplayMode, mode == WindowDisplayMode.BorderlessFullscreen,
+                        new RbAction1Arg<WindowDisplayMode>(SetDisplayMode, mode), null);
+                }
+
+                winmodeDropdown.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.DisplayMode, menu);
+            }
+                        
+                //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.GraphicsOption_Fullscreen) }, Ref.gamesett.fullscreenProperty));
+
+            if (Screen.PcDisplayMode != WindowDisplayMode.HardwareFullscreen)//if (!Screen.PcTargetFullScreen)
             {
                 DropDownBuilder OversizeWidth = new DropDownBuilder("OversizeWidth");
                 DropDownBuilder OversizeHeight = new DropDownBuilder("OversizeHeight");                
@@ -591,7 +636,7 @@ namespace VikingEngine
                 OversizeHeight.AddOption(Ref.langOpt.GraphicsOption_Oversize_None, Engine.Screen.oversizeHeightPerc == 0, false,
                     new RbAction1Arg<int>(setOversizeHeightProperty, 0), null);
 
-                int[] oversizes = new int[] { 150, 175, 200, 250, 300 };
+                int[] oversizes = new int[] { 150, 175, 200, 225, 250, 275, 300 };
 
                 foreach (var ov in oversizes)
                 {
@@ -639,6 +684,10 @@ namespace VikingEngine
             }
 
             content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdPointer), new RbSpace(0.5f), new RbText(DssRef.todoLang.GameSettings_RenderedMouseCursor) },
+                CustomCursorProperty));
+
+            content.newLine();
             //content.Add(new RbImage(SpriteName.LFIconLetter));
             content.Add(new RbText( Ref.langOpt.GraphicsOption_UiScale));
             content.space();
@@ -650,7 +699,21 @@ namespace VikingEngine
             //new GuiFloatSlider(SpriteName.LFIconLetter, Ref.langOpt.GraphicsOption_UiScale, uiScaleProperty, new IntervalF(0.5f, 2f), false, layout);
         }
 
-        public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
+        public void SetDisplayMode(WindowDisplayMode mode)
+        {
+            if (mode != WindowDisplayMode.Windowed)
+            {
+                Engine.Screen.WindowScalePerc = 100;
+            }
+            Engine.Screen.UseRecordingPreset = RecordingPresets.NumNon;
+            Screen.PcDisplayMode = mode;
+            Engine.Screen.ApplyScreenSettings();
+            graphicsHasChanged = true;
+            settingsHasChanged = true;
+
+        }
+
+public void graphicsOptions(RichBoxContent content, HUD.RichMenu.RichMenu menu)
         {
             content.newLine();
             
@@ -821,42 +884,42 @@ namespace VikingEngine
             return Engine.Screen.WindowScalePerc;
         }
 
-        public void graphicsOptions(GuiLayout layout)
-        {
-            //listMonitors(layout);
+        //public void graphicsOptions(GuiLayout layout)
+        //{
+        //    //listMonitors(layout);
 
-            var resoutionPercOptions = Engine.Screen.ResoutionPercOptions();
+        //    var resoutionPercOptions = Engine.Screen.ResoutionPercOptions();
 
-            List<GuiOption<int>> optionsList = new List<GuiOption<int>>();
-            foreach (var m in resoutionPercOptions)
-            {
-                optionsList.Add(new GuiOption<int>(string.Format(Ref.langOpt.GraphicsOption_Resolution_PercentageOption, m), m));
-            }
+        //    List<GuiOption<int>> optionsList = new List<GuiOption<int>>();
+        //    foreach (var m in resoutionPercOptions)
+        //    {
+        //        optionsList.Add(new GuiOption<int>(string.Format(Ref.langOpt.GraphicsOption_Resolution_PercentageOption, m), m));
+        //    }
 
-            new GuiOptionsList<int>(SpriteName.MenuIconScreenResolution, Ref.langOpt.GraphicsOption_Resolution, optionsList, windowScaleProperty, layout);
-            fullScreenBox(layout);//new GuiCheckbox("Fullscreen", null, Ref.pc_gamesett.fullscreenProperty, layout);
+        //    new GuiOptionsList<int>(SpriteName.MenuIconScreenResolution, Ref.langOpt.GraphicsOption_Resolution, optionsList, windowScaleProperty, layout);
+        //    fullScreenBox(layout);//new GuiCheckbox("Fullscreen", null, Ref.pc_gamesett.fullscreenProperty, layout);
 
-            if (!Screen.PcTargetFullScreen)
-            {
-                int[] oversizes = new int[] { 150, 175, 200, 250, 300 };
-                List<GuiOption<int>> oversizeWidthList = new List<GuiOption<int>>();
-                List<GuiOption<int>> oversizeHeightList = new List<GuiOption<int>>();
-                oversizeWidthList.Add(new GuiOption<int>(Ref.langOpt.GraphicsOption_Oversize_None, 0));
-                oversizeHeightList.Add(new GuiOption<int>(Ref.langOpt.GraphicsOption_Oversize_None, 0));
-                foreach (var ov in oversizes)
-                {
-                    oversizeWidthList.Add(new GuiOption<int>(string.Format(Ref.langOpt.GraphicsOption_PercentageOversizeWidth, ov), ov));
-                    oversizeHeightList.Add(new GuiOption<int>(string.Format(Ref.langOpt.GraphicsOption_PercentageOversizeHeight, ov), ov));
-                }
-                new GuiOptionsList<int>(SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_OversizeWidth, oversizeWidthList, oversizeWidthProperty, layout);
-                new GuiOptionsList<int>(SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_OversizeHeight, oversizeHeightList, oversizeHeightProperty, layout);
+        //    if (Screen.PcDisplayMode != WindowDisplayMode.HardwareFullscreen)//!Screen.PcTargetFullScreen)
+        //    {
+        //        int[] oversizes = new int[] { 150, 175, 200, 250, 300 };
+        //        List<GuiOption<int>> oversizeWidthList = new List<GuiOption<int>>();
+        //        List<GuiOption<int>> oversizeHeightList = new List<GuiOption<int>>();
+        //        oversizeWidthList.Add(new GuiOption<int>(Ref.langOpt.GraphicsOption_Oversize_None, 0));
+        //        oversizeHeightList.Add(new GuiOption<int>(Ref.langOpt.GraphicsOption_Oversize_None, 0));
+        //        foreach (var ov in oversizes)
+        //        {
+        //            oversizeWidthList.Add(new GuiOption<int>(string.Format(Ref.langOpt.GraphicsOption_PercentageOversizeWidth, ov), ov));
+        //            oversizeHeightList.Add(new GuiOption<int>(string.Format(Ref.langOpt.GraphicsOption_PercentageOversizeHeight, ov), ov));
+        //        }
+        //        new GuiOptionsList<int>(SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_OversizeWidth, oversizeWidthList, oversizeWidthProperty, layout);
+        //        new GuiOptionsList<int>(SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_OversizeHeight, oversizeHeightList, oversizeHeightProperty, layout);
 
-            }
+        //    }
 
-            new GuiTextButton(Ref.langOpt.GraphicsOption_RecordingPresets, null, new GuiAction1Arg<Gui>(recordingResolutionOptions, layout.gui), true, layout);
+        //    new GuiTextButton(Ref.langOpt.GraphicsOption_RecordingPresets, null, new GuiAction1Arg<Gui>(recordingResolutionOptions, layout.gui), true, layout);
 
-            new GuiFloatSlider(SpriteName.LFIconLetter, Ref.langOpt.GraphicsOption_UiScale, uiScaleProperty, new IntervalF(0.5f, 2f), false, layout);
-        }
+        //    new GuiFloatSlider(SpriteName.LFIconLetter, Ref.langOpt.GraphicsOption_UiScale, uiScaleProperty, new IntervalF(0.5f, 2f), false, layout);
+        //}
 
         void fullScreenBox(GuiLayout layout)
         {

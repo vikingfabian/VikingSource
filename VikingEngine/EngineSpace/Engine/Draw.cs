@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using HardwareInstancing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
 using VikingEngine.Graphics;
-using HardwareInstancing;
+using VikingEngine.Input;
 using VikingEngine.LootFest;
 
 namespace VikingEngine.Engine
@@ -36,7 +37,7 @@ namespace VikingEngine.Engine
         public static GraphicsDeviceManager graphicsDeviceManager;
         //public static GraphicsDevice GraphicsDevice;
         public static Viewport defaultViewport;
-        public static bool horizontalSplit = true;
+        //public static bool horizontalSplit = true;
         public static Effect effectBR, effectFlag, effectWaveXz, shadowEffect/*, oceanEffect*/;//effectSeaNoise;
         //public static Effect PixelShader;
         public static Graphics.CustomEffect[] TextureEffects;
@@ -47,6 +48,7 @@ namespace VikingEngine.Engine
         public static int MaxScreenSplit = 4;
 
         public DrawBatchCollection drawBatch;
+        Graphics.Image customMousePointer  = null;
 
         public static void Init()
         {
@@ -100,21 +102,26 @@ namespace VikingEngine.Engine
             return TextureEffects[(int)type]; 
         }
 
+        const int MinWidth = 800;
+        const int MinHeigth = 600;
+
         public static void ApplyScreenResolution()
         {
-            const int MinWidth = 800;
-            const int MinHeigth = 600;
-
             graphicsDeviceManager.PreferredBackBufferWidth = Bound.Min(Screen.MonitorTargetResolution.X, MinWidth); //Screen.RenderingResolution.X;
             graphicsDeviceManager.PreferredBackBufferHeight = Bound.Min(Screen.MonitorTargetResolution.Y, MinHeigth);//Screen.RenderingResolution.Y;
             graphicsDeviceManager.ApplyChanges();
             defaultViewport = Engine.Draw.graphicsDeviceManager.GraphicsDevice.Viewport;
 
+            CreateMainTarget(false);
+        }
+
+        protected static void CreateMainTarget(bool splitscreen)
+        {
             MainRenderTarget?.Dispose();
             MainRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice,
                  Bound.Min(Screen.RenderingResolution.X, MinWidth),
-                 Bound.Min(Screen.RenderingResolution.Y, MinHeigth), 
-                false, SurfaceFormat.Color, DepthFormat.Depth24);
+                 Bound.Min(Screen.RenderingResolution.Y, MinHeigth),
+                false, SurfaceFormat.Color, DepthFormat.Depth24, 0, splitscreen ? RenderTargetUsage.PreserveContents : RenderTargetUsage.DiscardContents);
         }
 
         /* Properties */
@@ -155,18 +162,27 @@ namespace VikingEngine.Engine
             }
             Camera = new VikingEngine.Graphics.TopViewCamera();
             spriteBatch = new SpriteBatch(graphicsDeviceManager.GraphicsDevice);
-            //spriteBatch.GraphicsDevice.DeviceLost = null;
             spriteBatch.GraphicsDevice.DeviceLost += this.onLostSpiteBatch;
 
+            //// TODO(Martin): This is test code
+            //if (DebugSett.Debug3DParticles)
+            //{
+            //    instancing = new ParticleSystem2(new ParticleSystem2Data(Vector3.Zero, 6000, 0.5f, 500f));
+            //    instancing.Initialize(graphicsDeviceManager.GraphicsDevice);
+            //    instancing.Load();
+            //}
+            refreshCursor();
+        }
 
-            // TODO(Martin): This is test code
-            if (DebugSett.Debug3DParticles)
+        public void refreshCursor()
+        {
+            customMousePointer = null;
+
+            if (Ref.gamesett.customCursor)
             {
-                instancing = new ParticleSystem2(new ParticleSystem2Data(Vector3.Zero, 6000, 0.5f, 500f));
-                instancing.Initialize(graphicsDeviceManager.GraphicsDevice);
-                instancing.Load();
+                customMousePointer = new Image(SpriteName.cmdPointer, Vector2.Zero, Engine.Screen.IconSizeV2, ImageLayers.AbsoluteTopLayer, true, false);
             }
-            // NOTE(Martin): Ends here
+            Input.Mouse.RefreshMouseVisible();// = !Ref.gamesett.customMouse;
         }
 
         virtual public void DeleteMe()
@@ -480,8 +496,13 @@ namespace VikingEngine.Engine
 
                 graphicsDeviceManager.GraphicsDevice.SetRenderTarget(null);
 
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Immediate);
                 spriteBatch.Draw(MainRenderTarget, Screen.MonitorTargetRect, Color.White);
+                if (customMousePointer != null)
+                {
+                    customMousePointer.position = Input.Mouse.Position;
+                    customMousePointer.Draw(0);
+                }
                 spriteBatch.End();
             }
             else

@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Work
             factionIndex = mapObject.factionIndex;
             this.status = status;
             myIndex = statusIndex;
-            model = mapObject.GetFaction().AutoLoadModelInstance_batched(
+            model = mapObject.GetFaction_NoChecks().AutoLoadModelInstance_batched(
                  DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f);
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);

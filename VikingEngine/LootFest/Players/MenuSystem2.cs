@@ -45,7 +45,7 @@ namespace VikingEngine.LootFest
 
             menu = new Gui(GuiStyle(), player.SafeScreenArea, 0f, LfLib.Layer_GuiMenu, Input.InputSource.DefaultPC);//player.PlayerIndex);
 
-            Input.Mouse.Visible = true;
+            Input.Mouse.CenterLockAndHide();//Input.Mouse.Visible = true;
 
             //inputOverview = new Display.InputOverview(player.SafeScreenArea, player.inputMap);
         }
@@ -906,7 +906,7 @@ namespace VikingEngine.LootFest
             GuiLayout layout = new GuiLayout("Options", menu);
             {
                 // Controls
-                Ref.gamesett.optionsMenu(layout);
+                //Ref.gamesett.optionsMenu(layout);
 
                 new GuiSectionSeparator(layout);
 
@@ -919,8 +919,8 @@ namespace VikingEngine.LootFest
 
                 new GuiSectionSeparator(layout);
 
-                if (LfRef.LocalHeroes.Count > 1)
-                    new GuiCheckbox("Horizontal split", null, horiSplitProperty, layout);
+                //if (LfRef.LocalHeroes.Count > 1)
+                //    new GuiCheckbox("Horizontal split", null, horiSplitProperty, layout);
                 // other graphics
                 new GuiTextButton("Camera", null, cameraSettings, true, layout);
                 //new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Frame rate", new List<GuiOption<int>>
@@ -1155,15 +1155,15 @@ namespace VikingEngine.LootFest
         //{
         //    return GetSet.Do<float>(set, ref Engine.Sound.SoundVolume, value);
         //}
-        bool horiSplitProperty(int index, bool set, bool value)
-        {
-            if (set)
-            {
-                Engine.Draw.horizontalSplit = value;
-                LfRef.gamestate.UpdateSplitScreen();
-            }
-            return Engine.Draw.horizontalSplit;
-        }
+        //bool horiSplitProperty(int index, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        Engine.Draw.horizontalSplit = value;
+        //        LfRef.gamestate.UpdateSplitScreen();
+        //    }
+        //    return Engine.Draw.horizontalSplit;
+        //}
         bool invertCamYProperty(int index, bool set, bool value)
         {
             if (set)
@@ -1934,7 +1934,7 @@ namespace VikingEngine.LootFest
         public void DeleteMe()
         {
             menu.DeleteMe();
-            Input.Mouse.Visible = false;
+            Input.Mouse.CenterLockAndHide();//Input.Mouse.Visible = false;
 
             //inputOverview.DeleteMe();
         }

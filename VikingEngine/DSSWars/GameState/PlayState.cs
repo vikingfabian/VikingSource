@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars
     {
         public int nextGroupId = 0;
        
-        bool isReady= false;
+        
         public bool PartyMode = false;   
         
         TechnologyManager technologyManager = new TechnologyManager();
@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars
             }
 
             localPlayers = new List<Players.LocalPlayer>(playerCount);
-            Engine.Screen.SetupSplitScreen(playerCount, !DssRef.storage.verticalScreenSplit);
+            Engine.Screen.SetupSplitScreen(playerCount);
 
 
             var factionsCounter = DssRef.world.factions.counter();

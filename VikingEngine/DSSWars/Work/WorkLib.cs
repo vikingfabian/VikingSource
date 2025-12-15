@@ -19,6 +19,7 @@ namespace VikingEngine.DSSWars.Work
         {
             
             WorkToXPTable = new byte[(int)WorkExperienceType.NUM];
+            WorkToXPTable[(int)WorkExperienceType.NONE] = byte.MaxValue;
             WorkToXPTable[(int)WorkExperienceType.Farm] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.AnimalCare] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.HouseBuilding] = (byte)(DssConst.DefaultWorkXpGain * 2);
@@ -28,12 +29,24 @@ namespace VikingEngine.DSSWars.Work
             WorkToXPTable[(int)WorkExperienceType.Transport] = 2;
             WorkToXPTable[(int)WorkExperienceType.Cook] = 2;
             WorkToXPTable[(int)WorkExperienceType.Fletcher] = DssConst.DefaultWorkXpGain;
+            WorkToXPTable[(int)WorkExperienceType.Smelting] = DssConst.DefaultWorkXpGain;
+            WorkToXPTable[(int)WorkExperienceType.CastMetal] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.CraftMetal] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.CraftArmor] = DssConst.DefaultWorkXpGain;
             //WorkToXPTable[(int)WorkExperienceType.CraftWeapon] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.CraftFuel] = 1;
+            WorkToXPTable[(int)WorkExperienceType.Chemistry] = DssConst.DefaultWorkXpGain;
 
-            //WorkToXPTable[(int)WorkExperienceType.GodPower] = (byte)DssConst.WorkLevel_Expert;
+
+#if DEBUG
+            foreach (var xp in WorkToXPTable)
+            {
+                if (xp == 0)
+                {
+                    throw new Exception();
+                }
+            }
+#endif
         }
 
         public static WorkExperienceType WorkToExperienceType(WorkType work, int workSubType, byte bonus, IntVector2 subTileEnd, City city, 

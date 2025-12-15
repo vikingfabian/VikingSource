@@ -117,7 +117,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             }
         }
 
-        void clearRecruitQueue()
+        public void clearRecruitQueue()
         {
             cancelCurrentRecruit();
             recruitQueue.Clear();
@@ -456,7 +456,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             }
         }
 
-        void clearBuildQueue()
+        public void clearBuildQueue()
         {
             cancelCurrentBuild();
             buildQueue.Clear();

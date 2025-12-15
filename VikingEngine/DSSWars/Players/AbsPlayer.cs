@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars.Players
         protected bool ignorePlayerCapture = false;
         public bool personality_loner = false;
         public bool protectedFromDelete = false;
+        public bool mayAttackPlayer = true;
 
         public Orders.Orders orders;
         abstract public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType buildType, out bool intelligent);
@@ -96,7 +97,8 @@ namespace VikingEngine.DSSWars.Players
             {
                 aggressionLevel = r.ReadByte();
                 var bools = new EightBit(r);
-                bools.Get(out IsPlayerNeighbor, out protectedFromBotAttacks, out personality_loner, out protectedFromDelete);
+                bools.Get(out IsPlayerNeighbor, out protectedFromBotAttacks, out personality_loner, out protectedFromDelete, out mayAttackPlayer);
+                
             }
         }
 

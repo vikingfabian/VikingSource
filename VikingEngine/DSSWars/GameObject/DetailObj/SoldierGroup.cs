@@ -127,9 +127,9 @@ namespace VikingEngine.DSSWars.GameObject
                 setDetailLevel(true);
             }
 
-            if (tArmy.GetFaction().player.IsLocalPlayer())
+            if (tArmy.GetFaction_NoChecks().player.IsLocalPlayer())
             {
-                tArmy.GetFaction().player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
+                tArmy.GetFaction_NoChecks().player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
             }
         }
 
@@ -866,6 +866,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (!army.TryGetTarget(out var tArmy))
             {
+                DeleteMe(DeleteReason.EmptyGroup, false);
                 return;
             }
 
@@ -1793,7 +1794,8 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 battles.groupsInBattle++;
 
-                if (attackTarget_soldierGroupOrCity != null && attackTarget_soldierGroupOrCity.TryGetTarget(out var tMapObj))
+                var target_sp = attackTarget_soldierGroupOrCity;
+                if (target_sp != null && target_sp.TryGetTarget(out var tMapObj))
                 {
                     battles.add(tMapObj.factionIndex);
                     battles.attackingCity |= tMapObj.IsGuardGroup();
@@ -2192,9 +2194,11 @@ namespace VikingEngine.DSSWars.GameObject
         //    return false;
         //}
 
+        
+
         public float strengthValue()
         {
-            return AllUnits.GroupStrengh(soldierCount, ref soldierData, true);
+            return AllUnits.GroupStrengh(soldierData.UnitCount(), ref soldierData, !isShip);
             
         }
 
@@ -2354,13 +2358,15 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 //state = GroupState.Idle;
 
-                bool waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();
-                if (waterNode != isShip)
+                if (DssRef.world.tileGrid.TryGet(tilePos, out Tile tile))
                 {
-                    Ref.update.AddSyncAction(new SyncAction2Arg<SoldierTransformType, int>(completeTransform, waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1));
-                    //completeTransform(waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1);
+                    bool waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();
+                    if (waterNode != isShip)
+                    {
+                        Ref.update.AddSyncAction(new SyncAction2Arg<SoldierTransformType, int>(completeTransform, waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1));
+                        //completeTransform(waterNode ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1);
+                    }
                 }
-
                 teleportSoldiers();
             }
             else

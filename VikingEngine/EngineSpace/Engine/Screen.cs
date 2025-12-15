@@ -1,7 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.ToGG;
 
 namespace VikingEngine.Engine
 {
@@ -41,8 +44,9 @@ namespace VikingEngine.Engine
         public static GraphicsAdapter Monitor = Microsoft.Xna.Framework.Graphics.GraphicsAdapter.DefaultAdapter;
 
         public static IntVector2 PcTargetResolution = new IntVector2(1280, 720);
-        public static bool PcTargetFullScreen = false;
-        public static bool BorderLessFullScreen = false;
+        public static WindowDisplayMode PcDisplayMode = WindowDisplayMode.Windowed;
+        //public static bool PcTargetFullScreen = false;
+        //public static bool BorderLessFullScreen = true;
         public static int WindowScalePerc = 100;
         public static RecordingPresets UseRecordingPreset = RecordingPresets.NumNon;
         public const int RecordingPresetAddPixelsCount = 8;
@@ -64,9 +68,51 @@ namespace VikingEngine.Engine
         public static int oversizeWidthPerc = 0;
         public static int oversizeHeightPerc = 0;
 
-       
+        public static SplitScreenOptions splitScreenOptions = 0;
+        public static float splitScreenDivideAdjustment1 = 0, splitScreenDivideAdjustment2 = 0, splitScreenDivideAdjustment3 = 0;
+
+        public static void WriteSettings(System.IO.BinaryWriter w)
+        {
+            w.Write(Engine.Screen.WindowScalePerc);
+            Engine.Screen.PcTargetResolution.write(w);
+            w.Write((byte)Engine.Screen.PcDisplayMode);//Engine.Screen.PcTargetFullScreen);
+            w.Write((byte)Engine.Screen.UseRecordingPreset);
+
+            w.Write((byte)splitScreenOptions);
+            w.Write(splitScreenDivideAdjustment1);
+            w.Write(splitScreenDivideAdjustment2);
+            w.Write(splitScreenDivideAdjustment3);
+        }
+        public static void ReadSettings(System.IO.BinaryReader r, int version)
+        {
+            Engine.Screen.WindowScalePerc = r.ReadInt32();
+            Engine.Screen.PcTargetResolution.read(r);
+            if (version >= 28)
+            {
+                Engine.Screen.PcDisplayMode = (WindowDisplayMode)r.ReadByte();
+            }
+            else
+            {
+                var PcTargetFullScreen = r.ReadBoolean();
+            }
+            Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
+
+            if (version >= 31)
+            {
+                splitScreenOptions = (SplitScreenOptions)r.ReadByte();
+                splitScreenDivideAdjustment1 = r.ReadSingle();
+                splitScreenDivideAdjustment2 = r.ReadSingle();
+                splitScreenDivideAdjustment3 = r.ReadSingle();
+            }
+        }
         public static void ApplyScreenSettings(bool refreshUi = true)
         {
+            if (PcDisplayMode != WindowDisplayMode.Windowed)
+            {
+                WindowScalePerc = 100;
+            }
+
+            bool goToWindowed = Engine.Draw.graphicsDeviceManager.IsFullScreen && PcDisplayMode == WindowDisplayMode.Windowed;
 
             Vector2 SafeBorderPerc;            
 
@@ -87,7 +133,7 @@ namespace VikingEngine.Engine
 
                 double renderScaleW = WindowScalePerc / 100.0;
                 double renderScaleH = renderScaleW;
-                if (!PcTargetFullScreen)
+                if (PcDisplayMode == WindowDisplayMode.Windowed)//!PcTargetFullScreen)
                 {
                     renderScaleH = Math.Min(renderScaleH, 0.94);
                     renderScaleW = Math.Min(renderScaleW, 0.99);
@@ -97,7 +143,7 @@ namespace VikingEngine.Engine
                 RenderingResolution.X = Convert.ToInt32(monitorResolution.X * renderScaleW);
                 RenderingResolution.Y = Convert.ToInt32(monitorResolution.Y * renderScaleH);
 
-                if (PcTargetFullScreen)
+                if (PcDisplayMode != WindowDisplayMode.Windowed)//PcTargetFullScreen)
                 {
                     MonitorTargetResolution = monitorResolution;
                     WindowScaleF = (float)renderScaleH;
@@ -108,7 +154,7 @@ namespace VikingEngine.Engine
                     WindowScaleF = 1f;
                 }
 
-                applyFullScreen(PcTargetFullScreen);
+                applyFullScreen(PcDisplayMode != WindowDisplayMode.Windowed, PcDisplayMode == WindowDisplayMode.BorderlessFullscreen);//PcTargetFullScreen);
             }
             else
             { //Recording presets
@@ -133,10 +179,10 @@ namespace VikingEngine.Engine
                 }
                 RenderingResolution = MonitorTargetResolution;
 
-                applyFullScreen(fullScreen);
+                applyFullScreen(fullScreen, true);
             }
 
-            if (!PcTargetFullScreen)
+            if (PcDisplayMode != WindowDisplayMode.HardwareFullscreen)//!PcTargetFullScreen)
             {
                 if (oversizeWidthPerc != 0)
                 {
@@ -186,11 +232,15 @@ namespace VikingEngine.Engine
             Ref.gamestate?.OnResolutionChange();
 
             Engine.Draw.graphicsDeviceManager.ApplyChanges();
+            if (goToWindowed)
+            {
+                ApplyScreenSettings(refreshUi);
+            }
         }
 
-        public static void SetupSplitScreen(int numPlayers, bool horizontalSplit)
+        public static void SetupSplitScreen(int numPlayers)
         {
-            Engine.Draw.horizontalSplit = horizontalSplit;
+            //Engine.Draw.horizontalSplit = horizontalSplit;
             int screenIx = 0;
             for (int i = 0; i < numPlayers; ++i)
             {
@@ -227,24 +277,32 @@ namespace VikingEngine.Engine
             TextTitleScale = Graphics.AbsText.HeightToScale(TextTitleHeight, LoadedFont.Bold);
         }
 
-        static void applyFullScreen(bool fullScreen)
+        static void applyFullScreen(bool fullScreen, bool borderLess)
         {
-            //Ref.main.Window.IsBorderless = fullScreen;
-            if (BorderLessFullScreen)
-            {
-                Engine.Draw.graphicsDeviceManager.IsFullScreen = false;
-                Ref.main.Window.IsBorderless = fullScreen;
-            }
-            else
-            {
-                Engine.Draw.graphicsDeviceManager.HardwareModeSwitch = false;
-                Engine.Draw.graphicsDeviceManager.IsFullScreen = fullScreen;
-            }
-            
+            Engine.Draw.graphicsDeviceManager.IsFullScreen = fullScreen;
+            Ref.main.Window.IsBorderless = fullScreen && borderLess;
+            Engine.Draw.graphicsDeviceManager.HardwareModeSwitch = fullScreen && !borderLess;
+
+            //if (BorderLessFullScreen)
+            //{
+            //    Engine.Draw.graphicsDeviceManager.IsFullScreen = fullScreen;
+            //    Ref.main.Window.IsBorderless = fullScreen;
+            //    Engine.Draw.graphicsDeviceManager.HardwareModeSwitch = false;
+            //}
+            //else
+            //{
+            //    Engine.Draw.graphicsDeviceManager.HardwareModeSwitch = true;
+            //    Engine.Draw.graphicsDeviceManager.IsFullScreen = fullScreen;
+            //}
+
             if (!fullScreen)
             {
 #if PCGAME
-                //var loc = FormScreen.WorkingArea.Location;
+                //Ref.main.Window.IsBorderless = false;
+                //Engine.Draw.graphicsDeviceManager.HardwareModeSwitch = false;
+                //Engine.Draw.graphicsDeviceManager.IsFullScreen = false;
+
+                //Engine.Draw.graphicsDeviceManager.ApplyChanges();
 
                 IntVector2 center = new IntVector2(
                     (Monitor.CurrentDisplayMode.Width - MonitorTargetResolution.X) / 2, 
@@ -337,6 +395,14 @@ namespace VikingEngine.Engine
         }
     }
 
+    enum WindowDisplayMode
+    { 
+        Windowed,
+        BorderlessFullscreen,
+        HardwareFullscreen,
+        NUM
+    }
+
     enum RecordingPresets
     {
         YouTube720p,
@@ -355,5 +421,16 @@ namespace VikingEngine.Engine
         ScaleDown2x,
         ScaleDown4x,
         NUM
+    }
+
+    enum SplitScreenOptions
+    {
+        
+        VerticalFirst,//old bHorizontalSplit = false
+        HorizontalFirst,//old bHorizontalSplit = true
+        VerticalOnly,
+        HorizontalOnly,
+        
+        NUM,
     }
 }

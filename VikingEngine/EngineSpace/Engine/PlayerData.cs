@@ -181,7 +181,7 @@ namespace VikingEngine.Engine
                 //if (PlatformSettings.RunningWindows)
                 //    return false;
 
-                if (IsActive)
+                if (IsActive && !Ref.gamesett.muteControllerDisconnect)
                 {
                     if (!inputMap.Connected)
                     {

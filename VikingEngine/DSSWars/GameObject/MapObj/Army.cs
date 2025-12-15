@@ -224,7 +224,7 @@ namespace VikingEngine.DSSWars.GameObject
             name.write(w);
             WP.WritePosXZPercentU16(w, position);
 
-            writeGroups(w);
+            writeSoldierGroups(w);
 
             writeAiState(w);
 
@@ -261,7 +261,7 @@ namespace VikingEngine.DSSWars.GameObject
                 WP.ReadPosXZPercentU16(r, out position, out tilePos);
             }
 
-            readGroups(r, subVersion, pointers);
+            readSoldierGroups(r, subVersion, pointers);
 
             init(faction);
             refreshPositions(true);
@@ -591,6 +591,10 @@ namespace VikingEngine.DSSWars.GameObject
             army.refreshPositions(false);
             army.onArmyMerge();
         }
+        public void disbandArmyAction()
+        {
+            DeleteMe(DeleteReason.Disband, true);
+        }
 
         public void disbandSoldiersAction(UnitFilterType type, int count)
         {
@@ -647,10 +651,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
 
-        public void disbandArmyAction()
-        {
-            DeleteMe( DeleteReason.Disband, true);
-        }
+        
 
         public override void remove(SoldierGroup group)
         {
@@ -1002,7 +1003,7 @@ namespace VikingEngine.DSSWars.GameObject
                         maxpos.Y = groupsC.sel.position.Z;
                     }
 
-                    totalStrength += AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip);//(dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
+                    totalStrength += groupsC.sel.strengthValue();/*AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip)*/;//(dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
 
                 }
 
@@ -1225,7 +1226,7 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        public override void OnNewOwner(Faction newFaction)
+        public override void OnNewOwner(Faction newFaction, bool convert)
         {
             if (inRender_detailLayer)
             {

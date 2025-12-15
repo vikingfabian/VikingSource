@@ -24,12 +24,21 @@ namespace VikingEngine.DSSWars.Communication
 
         public List<DiplomacyOption> diplomacyOptionsToBot(LocalPlayer player, Faction botFaction)
         {
-            List<DiplomacyOption> result = new List<DiplomacyOption>(); 
+            List<DiplomacyOption> result = new List<DiplomacyOption>();
+
+            if (player == null || botFaction == null)
+            {
+                return result;
+            }
 
             this.player = player;
             this.botFaction = botFaction;
             
             selectedRelation = player.faction.diplomaticRelations[botFaction.myIndex];
+            if (selectedRelation == null)
+            {
+                return result;
+            }
             againstDark = botFaction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
 
             if (selectedRelation.SpeakTerms > SpeakTerms.SpeakTermsN2_None &&

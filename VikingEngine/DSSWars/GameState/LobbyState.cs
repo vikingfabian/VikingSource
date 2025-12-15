@@ -33,6 +33,8 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest;
+using VikingEngine.LootFest.Data;
+using VikingEngine.LootFest.GO.Characters.Monster3;
 using VikingEngine.LootFest.GO.WeaponAttack;
 using VikingEngine.Network;
 using VikingEngine.PJ;
@@ -104,7 +106,7 @@ namespace VikingEngine.DSSWars
             DssRef.storage.profileStorage.refreshProfiles();
             HudLib.Init();
             Ref.isPaused = false;
-            Engine.Screen.SetupSplitScreen(1, true);
+            Engine.Screen.SetupSplitScreen(1);
             if (startLoadingMap && !StartupSettings.BlockBackgroundLoading)
             {
                 //if (PlatformSettings.STEAM_DEMO)
@@ -600,10 +602,7 @@ namespace VikingEngine.DSSWars
                 reportsMenu.OpenMenu(content, string.Empty);
             }
         }
-              
-
-        
-
+          
         void closingOptionsMenuEvent()
         {
             if (Ref.gamesett.settingsHasChanged)
@@ -717,7 +716,17 @@ namespace VikingEngine.DSSWars
 
             content.Button("Character creator", new RbAction(characterCreator), null, true);
             content.Button("Shader lab", new RbAction(shaderLab), null, true);
+            content.Button("Dev setup", new RbAction(()=> {
+                DssRef.storage.runTutorial_1short_2normal = 0;
+                Screen.WindowScalePerc = 90;
+                Screen.PcDisplayMode = WindowDisplayMode.Windowed;
+                Ref.gamesett.masterVolProperty(true, 0.1f);
+                Screen.ApplyScreenSettings();
 
+                Ref.gamesett.graphicsHasChanged = true;
+                Ref.gamesett.settingsHasChanged = true;
+
+            }), null, true);
 #endif
 
 #if DEMO
@@ -1342,9 +1351,10 @@ namespace VikingEngine.DSSWars
 
             GameStorage defaultOptions = new GameStorage();
 
-            var loadingMeta = mapBackgroundLoading.WorldData()?.metaData;
+            //var loadingMeta = mapBackgroundLoading.WorldData()?.metaData;
+            WorldData customWorld = mapBackgroundLoading?.dataGenerate?.world;
 
-            bool continueCustomMap = loadingMeta != null && loadingMeta.customEditorMap;
+            bool continueCustomMap = customWorld !=null && customWorld.metaData.customEditorMap;
             if (continueCustomMap)
             {
                 content.newLine();
@@ -1518,6 +1528,83 @@ namespace VikingEngine.DSSWars
 
             content.h1(DssRef.lang.Lobby_PlayerSetup, HudLib.TitleColor_Head);
 
+            if (DssRef.storage.playerCount > 1)
+            {
+                DropDownBuilder splitOptions = new DropDownBuilder("split type");
+                {
+                    for (Engine.SplitScreenOptions opt = 0; opt < SplitScreenOptions.NUM; opt++)
+                    {
+                        string caption = null;
+                        switch (opt)
+                        {
+                            case SplitScreenOptions.HorizontalFirst:
+                                caption = ".Horizontal first";
+                                break;
+                            case SplitScreenOptions.VerticalFirst:
+                                caption = ".Vertical first";
+                                break;
+                            case SplitScreenOptions.HorizontalOnly:
+                                caption = ".Horizontal only";
+                                break;
+                            case SplitScreenOptions.VerticalOnly:
+                                caption = ".Vertical only";
+                                break;
+                        }
+                        splitOptions.AddOption(caption, opt == Engine.Screen.splitScreenOptions, opt == SplitScreenOptions.HorizontalOnly,
+                            new RbAction1Arg<Engine.SplitScreenOptions>((Engine.SplitScreenOptions option) =>
+                            {
+                                Engine.Screen.splitScreenOptions = option;
+                                refreshSplitScreen();
+                            }, opt), null);
+                    }
+                }   splitOptions.Build(content, SpriteName.MenuIconScreenResolution, ".Split-screen", underMenu);
+
+                int adjustCount = 0;
+                if (Engine.Screen.splitScreenOptions <= SplitScreenOptions.HorizontalFirst)
+                {
+                    adjustCount = DssRef.storage.playerCount < 3 ? 1 : 2;
+                }
+                else
+                {
+                    adjustCount = DssRef.storage.playerCount - 1;
+                }
+
+                const float MaxAdjust = 1f;
+                if (adjustCount >= 1)
+                {
+                    content.newLine();
+                    content.Add(new RbText(string.Format(".Adjust split {0}", 1), HudLib.TitleColor_Label));
+                    
+                    content.space();
+                    content.Add(new RbDragButton(new DragButtonSettings(-MaxAdjust, MaxAdjust, 0.1f), splitAdj1Property, true, null));
+
+                    content.space(2);
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("= 0") },
+                        new RbAction(() => { splitAdj1Property(true, 0); })));
+                }
+                if (adjustCount >= 2)
+                {
+                    content.newLine();
+                    content.Add(new RbText(string.Format(".Adjust split {0}", 2), HudLib.TitleColor_Label));
+                    content.space();
+                    content.Add(new RbDragButton(new DragButtonSettings(-MaxAdjust, MaxAdjust, 0.1f), splitAdj2Property, true, null));
+                    content.space(2);
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("= 0") },
+                        new RbAction(() => { splitAdj2Property(true, 0); })));
+                }
+                if (adjustCount >= 3)
+                {
+                    content.newLine();
+                    content.Add(new RbText(string.Format(".Adjust split {0}", 3), HudLib.TitleColor_Label));
+                    content.space();
+                    content.Add(new RbDragButton(new DragButtonSettings(-MaxAdjust, MaxAdjust, 0.1f), splitAdj3Property, true, null));
+                    content.space(2);
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("= 0") },
+                        new RbAction(() => { splitAdj3Property(true, 0); })));
+                }
+            }
+
+
             for (int playerNum = 1; playerNum <= DssRef.storage.playerCount; ++playerNum)
             {                
                 var playerData = DssRef.storage.localPlayers[playerNum - 1];
@@ -1566,6 +1653,34 @@ namespace VikingEngine.DSSWars
                 content.Add(new RbImage(SpriteName.cmdWarningTriangle));
                 content.space();
                 content.Add(new RbText(DssRef.lang.MustTurnOffSteamInput, HudLib.InfoYellow_Light));
+            }
+
+            float splitAdj1Property(bool set, float value)
+            {
+                if (set)
+                {
+                    Screen.splitScreenDivideAdjustment1 = value;
+                    refreshSplitScreen();
+                }
+                return Screen.splitScreenDivideAdjustment1;
+            }
+            float splitAdj2Property(bool set, float value)
+            {
+                if (set)
+                {
+                    Screen.splitScreenDivideAdjustment2 = value;
+                    refreshSplitScreen();
+                }
+                return Screen.splitScreenDivideAdjustment2;
+            }
+            float splitAdj3Property(bool set, float value)
+            {
+                if (set)
+                {
+                    Screen.splitScreenDivideAdjustment3 = value;
+                    refreshSplitScreen();
+                }
+                return Screen.splitScreenDivideAdjustment3;
             }
         }
 
@@ -1997,16 +2112,16 @@ namespace VikingEngine.DSSWars
             refreshSplitScreen();
         }
 
-        public bool verticalSplitProperty(object tag, bool set, bool value)
-        {
-            if (set)
-            {
-                DssRef.storage.verticalScreenSplit = value;
-                refreshSplitScreen();
-                DssRef.storage.Save(null);
-            }
-            return DssRef.storage.verticalScreenSplit;
-        }
+        //public bool verticalSplitProperty(object tag, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        DssRef.storage.verticalScreenSplit = value;
+        //        refreshSplitScreen();
+        //        DssRef.storage.Save(null);
+        //    }
+        //    return DssRef.storage.verticalScreenSplit;
+        //}
 
        
         //public bool longerBuildQueueProperty(int index, bool set, bool value)

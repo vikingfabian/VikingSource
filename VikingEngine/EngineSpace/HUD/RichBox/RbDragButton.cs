@@ -192,17 +192,26 @@ namespace VikingEngine.HUD.RichBox
 
         public void refreshValueDisplay()
         {
-            if (valueType == DragValueType.Int)
+            if (textPointer != null && textPointer.pointer != null)
             {
-                int value = intValue.Invoke(false, 0);
+                if (valueType == DragValueType.Int)
+                {
+                    if (intValue != null)
+                    {
+                        int value = intValue.Invoke(false, 0);
 
-                textPointer.pointer.TextString = TextLib.LargeNumber(value);
-            }
-            else
-            {
-                float value = floatValue.Invoke(false, 0);
+                        textPointer.pointer.TextString = TextLib.LargeNumber(value);
+                    }
+                }
+                else
+                {
+                    if (floatValue != null)
+                    {
+                        float value = floatValue.Invoke(false, 0);
 
-                textPointer.pointer.TextString = valueType == DragValueType.Float_1Dec ? TextLib.OneDecimal(value) : TextLib.TwoDecimal(value);
+                        textPointer.pointer.TextString = valueType == DragValueType.Float_1Dec ? TextLib.OneDecimal(value) : TextLib.TwoDecimal(value);
+                    }
+                }
             }
         }
 

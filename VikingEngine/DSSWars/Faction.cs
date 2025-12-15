@@ -251,6 +251,12 @@ namespace VikingEngine.DSSWars
             }
 
             workTemplate.readGameState(r, subVersion, false);
+
+            var cities_c = cities.counter();
+            while (cities_c.Next())
+            {
+                cities_c.sel.workTemplate.onFactionChange(cities_c.sel, workTemplate);
+            }
         }
 
         void writeRelations(System.IO.BinaryWriter w)
@@ -365,7 +371,7 @@ namespace VikingEngine.DSSWars
             var citiesC = cities.counter();
             while (citiesC.Next())
             {
-                citiesC.sel.OnNewOwner(newFaction);
+                citiesC.sel.OnNewOwner(newFaction, false);
             }
         }
         
@@ -562,7 +568,7 @@ namespace VikingEngine.DSSWars
                     {
                         DeleteMe();
                     }
-                    else if (militaryStrength < 1)
+                    else if (militaryStrength < 0.4f)
                     {
                         var armiesC = armies.counter();
                         while (armiesC.Next())

@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars
         public IButtonMap zoomInKey, zoomOutKey;
 
         //public IButtonMap ControllerSelect;
-        IButtonMap CancelKey;
+        public IButtonMap CancelKey;
         public IButtonMap QuickSelect;
         public IButtonMap ControllerFocus;
         public IButtonMap ControllerFaction;

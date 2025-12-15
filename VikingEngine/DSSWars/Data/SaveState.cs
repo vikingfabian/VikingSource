@@ -10,19 +10,14 @@ using VikingEngine.DataStream;
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
-using VikingEngine.DSSWars.Players;
-using VikingEngine.LootFest.Data;
-using VikingEngine.PJ.Strategy;
-using VikingEngine.ToGG;
-using VikingEngine.ToGG.MoonFall;
-using static Sentry.MeasurementUnit;
+
 
 namespace VikingEngine.DSSWars.Data
 {
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 12;
-        public const int SubVersion = 84; 
+        public const int SubVersion = 88; 
 
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
