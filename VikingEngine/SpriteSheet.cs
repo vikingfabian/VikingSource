@@ -2298,8 +2298,10 @@ namespace VikingEngine
                 add(SpriteName.WarsResource_MountLightPlateArmor);
                 add(SpriteName.WarsResource_MountFullPlateArmor);
                 add(SpriteName.WarsResource_MountMithrilArmor);
-
                 add(SpriteName.WarsResource_HeaterShield);
+                add(SpriteName.WarsResource_WagonClosed);
+                add(SpriteName.WarsResource_WagonIron);
+                add(SpriteName.WarsResource_WagonSteel);
             }
 
             currentIndex = numTilesWidth * 87;
