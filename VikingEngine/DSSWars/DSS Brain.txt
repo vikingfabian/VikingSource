@@ -5,7 +5,7 @@ Change Log:
 * Fixed: rendered cursor dont hide on center lock
 * Army Column Width is saved
 * Army Column Width is displayed on armies
-
+* Translated all new strings
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
