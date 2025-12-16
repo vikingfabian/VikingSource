@@ -9,6 +9,40 @@ namespace VikingEngine.DSSWars.Presentation
 {
     abstract partial class AbsLanguage
     {
+        //Winter update patch + spring
+              
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public abstract string Hud_Purchase_ResourceCost { get; }
+
+        public abstract string DisplayMode { get; }
+        public abstract string DisplayMode_Windowed { get; }
+        public abstract string DisplayMode_BorderlessFullscreen { get; }
+
+        public abstract string GameSettings_RenderedMouseCursor { get; }
+        public abstract string GameSettings_MuteControllerDisconnect { get; }
+
+        public abstract string Delivery_MaxDistance { get; }
+        public abstract string Tutorial_WillTakeAWhile { get; }
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public abstract string Tutorial_WaitFor { get; }
+        public abstract string GameOverResults { get; }
+
+        public abstract string UnitType_UnclaimedLand { get; }
+        public abstract string UnitType_Settler { get; }
+        public abstract string UnitType_Settler_Description { get; }
+        public abstract string Resource_ConsumedProduced { get; }
+        public abstract string InputActionName_PlaceTarget { get; }
+
+        public abstract string FactionStartSize { get; }
+        public abstract string FactionStartSize_Full { get; }
+        public abstract string FactionStartSize_OneCity { get; }
+        public abstract string FactionStartSize_Settler { get; }
+
         //Winter update
         public abstract string Error_SoundInitFailure { get; }
         public abstract string Resource_StockpileLimit { get; }

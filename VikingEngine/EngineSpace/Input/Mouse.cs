@@ -94,6 +94,10 @@ namespace VikingEngine.Input
             Ref.main.IsMouseVisible = !centerlockAndHide && !Ref.gamesett.customCursor && !hide;
         }
 
+        public static bool RenderMouseCursor()
+        { 
+            return !centerlockAndHide && !hide;
+        }
 
         public static Vector2 MoveDistance;
         public static Vector2 RealMoveDistance;
@@ -127,7 +131,7 @@ namespace VikingEngine.Input
             RealPosition = new Vector2(currentMouseState.X, currentMouseState.Y);
             Position = RealPosition * Engine.Screen.WindowScaleF;
 
-            if (Ref.main.IsMouseVisible)
+            if (!centerlockAndHide)//Ref.main.IsMouseVisible)
             {
                 hiddenFramesCount = 0;
                 RealMoveDistance = RealPosition - PrevRealPosition;

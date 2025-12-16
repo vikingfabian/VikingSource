@@ -9,6 +9,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Japanese : AbsOptionsLanguage
     {
+        public override string Settings_ControllerVibration => "コントローラーの振動";
         public override string GraphicsOption_IngameMenuWidth => "ゲーム内メニューの幅";
         public override string DisplayMode => "表示モード";
         public override string DisplayMode_Windowed => "ウィンドウモード";

@@ -8,7 +8,39 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class German : AbsLanguage
     {
-        
+        //Winter update patch + spring
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+
+        public override string DisplayMode => "Anzeigemodus";
+        public override string DisplayMode_Windowed => "Fenstermodus";
+        public override string DisplayMode_BorderlessFullscreen => "Rahmenloses Fenster";
+
+        public override string GameSettings_RenderedMouseCursor => "Gerenderter Mauszeiger";
+        public override string GameSettings_MuteControllerDisconnect => "Controller-Warnungen stummschalten";
+
+        public override string Delivery_MaxDistance => "Max. Lieferdistanz: {0}";
+        public override string Tutorial_WillTakeAWhile => "Das wird eine Weile dauern, komm später wieder.";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "Warte auf Fertigstellung von: {0}";
+        public override string GameOverResults => "Spielverlauf";
+
+        public override string UnitType_UnclaimedLand => "Niemandsland";
+        public override string UnitType_Settler => "Siedler";
+        public override string UnitType_Settler_Description => "Eine neue Stadt gründen";
+        public override string Resource_ConsumedProduced => "Verbraucht/Produziert";
+        public override string InputActionName_PlaceTarget => "Ziel platzieren";
+
+        public override string FactionStartSize => "Startgröße der Fraktion";
+        public override string FactionStartSize_Full => "Vollständig";
+        public override string FactionStartSize_OneCity => "Eine Stadt";
+        public override string FactionStartSize_Settler => "Ein Siedler";
+
         //Winter update
         public override string Resource_StockpileLimit => "Lagerlimit";
         public override string GameMode_QuickMatch => "Quick Match";

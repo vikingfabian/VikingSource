@@ -193,6 +193,10 @@ namespace VikingEngine.DSSWars.Interface
         {
             army.basicInfoHud(new ObjectHudArgs( content, player, true));
 
+            content.newLine();
+            ColumnWidth(content, army);
+
+            content.newLine();
             if (army.HasSettler(out var unit))
             {
                 settlerButton(player, content, unit);
@@ -208,6 +212,20 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(haltButton);
 
             
+        }
+
+        public static void ColumnWidth(RichBoxContent content, AbsArmy army)
+        {
+            HudLib.Label(content, DssRef.lang.ArmyStructure_ColumnWidth);
+            content.newLine();
+            for (int w = Army.MinColumnWidth; w <= Army.MaxColumnWidth; w += 2)
+            {
+                var button = new ArtOption(w == army.armyColumnWidth,
+                    new List<AbsRichBoxMember> { new RbText(w.ToString()) },
+                    new RbAction1Arg<int>(army.armyColumnWidthClick, w, RbSoundType.Option));
+
+                content.Add(button);
+            }
         }
 
         public static void settlerButton(LocalPlayer player, RichBoxContent content, SoldierGroup unit)

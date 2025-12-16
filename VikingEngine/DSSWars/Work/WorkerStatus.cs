@@ -777,20 +777,73 @@ namespace VikingEngine.DSSWars.Work
                     switch (lowIx)
                     {
                         case 0:
-                            xpType1 = type;
-                            xp1 = 0;
-                            addTo(ref type, ref xp1, add);
+                            if (shouldReplace(xpType1, xp1, type))
+                            {
+                                xpType1 = type;
+                                xp1 = 0;
+                                addTo(ref type, ref xp1, add);
+                            }
                             break;
                         case 1:
-                            xpType2 = type;
-                            xp2 = 0;
-                            addTo(ref type, ref xp2, add); 
+                            if (shouldReplace(xpType1, xp2, type))
+                            {
+                                xpType2 = type;
+                                xp2 = 0;
+                                addTo(ref type, ref xp2, add);
+                            }
                             break;
                         case 2:
-                            xpType3 = type;
-                            xp3 = 0;
-                            addTo(ref type, ref xp3, add); 
+                            if (shouldReplace(xpType1, xp3, type))
+                            {
+                                xpType3 = type;
+                                xp3 = 0;
+                                addTo(ref type, ref xp3, add);
+                            }
                             break;
+                    }
+
+                    bool shouldReplace(WorkExperienceType previous, byte previousXp, WorkExperienceType newXp)
+                    {
+                        if (previous == WorkExperienceType.NONE)
+                        {
+                            return true;
+                        }
+                        if (newXp == WorkExperienceType.Transport)
+                        {
+                            return false;
+                        }
+
+                        if (previous == WorkExperienceType.HouseBuilding &&
+                            skillPriority(newXp) <= 1)
+                        {
+                            //Extra protection for building skill
+                            return false;
+                        }
+
+                        //Expert levels cannot be replaced with low priority skills (skills that are never required like animal care)
+                        return previousXp < DssConst.WorkLevel_Expert || skillPriority(newXp) >= skillPriority(previous);
+                    }
+
+                    int skillPriority(WorkExperienceType experienceType)
+                    {
+                        switch (experienceType)
+                        {
+                            case WorkExperienceType.Transport:
+                                return 0;
+
+                            case WorkExperienceType.AnimalCare:
+                            case WorkExperienceType.Cook:
+                            case WorkExperienceType.Farm:
+                            case WorkExperienceType.Mining:
+                            case WorkExperienceType.StoneCutter:
+                                return 1;
+
+                            default: 
+                                return 2;
+
+                            case WorkExperienceType.HouseBuilding:
+                                return 3;
+                        }
                     }
                 }
             }
@@ -809,7 +862,7 @@ namespace VikingEngine.DSSWars.Work
                     {
                         case ExperienceLevel.Beginner_1:
                             add = WorkLib.WorkToXPTable[(int)type];
-                            add += 1;
+                            add += 2;
                             break;
                         case ExperienceLevel.Practitioner_2:
                             add = WorkLib.WorkToXPTable[(int)type];
@@ -849,16 +902,6 @@ namespace VikingEngine.DSSWars.Work
                         level>= ExperienceLevel.Master_4 ? DssConst.TechnologyGain_MasterLevelUp : DssConst.TechnologyGain_AnyLevelUp, 
                         TechnologyGainReason.WorkerLevel);
                 }
-                //if (xp >= DssConst.WorkLevel_Expert &&
-                //    !expert)
-                //{
-                //    city.onLevelUp(type, DssConst.TechnologyGain_Expert);
-                //}
-                //else if (xp >= DssConst.WorkLevel_Master &&
-                //    !master)
-                //{
-                //    city.onLevelUp(type, DssConst.TechnologyGain_Master);
-                //}
             }
         }
 

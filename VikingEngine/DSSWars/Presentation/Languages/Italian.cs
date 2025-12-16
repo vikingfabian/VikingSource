@@ -11,7 +11,39 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Italian : AbsLanguage
     {
-       
+        //Winter update patch + spring
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+
+        public override string DisplayMode => "Modalità visualizzazione";
+        public override string DisplayMode_Windowed => "In finestra";
+        public override string DisplayMode_BorderlessFullscreen => "Schermo intero senza bordi";
+
+        public override string GameSettings_RenderedMouseCursor => "Cursore renderizzato";
+        public override string GameSettings_MuteControllerDisconnect => "Silenzia disconnessione controller";
+
+        public override string Delivery_MaxDistance => "Distanza max consegna: {0}";
+        public override string Tutorial_WillTakeAWhile => "Richiederà del tempo, torna più tardi.";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "Attendi il completamento di {0}";
+        public override string GameOverResults => "Cronologia partita";
+
+        public override string UnitType_UnclaimedLand => "Territorio non reclamato";
+        public override string UnitType_Settler => "Colono";
+        public override string UnitType_Settler_Description => "Fonda una nuova città";
+        public override string Resource_ConsumedProduced => "Consumate/Prodotte";
+        public override string InputActionName_PlaceTarget => "Posiziona bersaglio";
+
+        public override string FactionStartSize => "Dimensione iniziale fazione";
+        public override string FactionStartSize_Full => "Completa";
+        public override string FactionStartSize_OneCity => "Una città";
+        public override string FactionStartSize_Settler => "Un colono";
+
         //Winter update
         public override string Resource_StockpileLimit => "Limite scorte";
         public override string GameMode_QuickMatch => "Quick Match";

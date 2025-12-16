@@ -518,7 +518,7 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember>{
                 new RbImage(SpriteName.PixController1),
                 new RbSpace(0.5f),
-                new RbText(DssRef.todoLang.GameSettings_MuteControllerDisconnect)
+                new RbText(DssRef.lang.GameSettings_MuteControllerDisconnect)
             }, Ref.gamesett.muteControllerDisconnectProperty));
         }
 

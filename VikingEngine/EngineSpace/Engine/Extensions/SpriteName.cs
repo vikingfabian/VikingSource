@@ -2813,6 +2813,10 @@ namespace VikingEngine
 
         WarsResource_Wagon2Wheel,
         WarsResource_Wagon4Wheel,
+        WarsResource_WagonClosed,
+        WarsResource_WagonIron,
+        WarsResource_WagonSteel,
+
         WarsResource_ShortSword,
         WarsResource_HandSpear,
         WarsResource_Longsword,

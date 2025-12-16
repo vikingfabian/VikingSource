@@ -11,7 +11,43 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class English : AbsLanguage
     {
-        
+
+        //Winter update patch + spring
+
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+
+        public override string DisplayMode => "Display mode";
+        public override string DisplayMode_Windowed => "Windowed";
+        public override string DisplayMode_BorderlessFullscreen => "Borderless fullscreen";
+
+        public override string GameSettings_RenderedMouseCursor => "Rendered cursor";
+        public override string GameSettings_MuteControllerDisconnect => "Mute disconnect messages";
+
+        public override string Delivery_MaxDistance => "Delivery max distance: {0}";
+        public override string Tutorial_WillTakeAWhile => "This will take a while, come back later.";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "Wait for {0} to complete";
+        public override string GameOverResults => "Game history log";
+
+        public override string UnitType_UnclaimedLand => "Unclaimed land";
+        public override string UnitType_Settler => "Settler";
+        public override string UnitType_Settler_Description => "Found a new city";
+        public override string Resource_ConsumedProduced => "Consumed/Produced";
+        public override string InputActionName_PlaceTarget => "Place target";
+
+        public override string FactionStartSize => "Faction start size";
+        public override string FactionStartSize_Full => "Full";
+        public override string FactionStartSize_OneCity => "One city";
+        public override string FactionStartSize_Settler => "One settler";
+
+
+
         //Winter update
         public override string Resource_StockpileLimit => "Stockpile limit";
         public override string GameMode_QuickMatch => "Quick Match";
