@@ -1,6 +1,10 @@
 ﻿UPDATE
 Change Log: 
-* 
+* Fixed rare landAreaCenter crash
+* Fixed: there are some bugs with the rendered cursor. Right-clicking to move causes the screen window to drift.
+* Fixed: rendered cursor dont hide on center lock
+* Army Column Width is saved
+* Army Column Width is displayed on armies
 
 
 #Event timers (are slightly random)#
@@ -17,7 +21,7 @@ Plus the boss fight: about 10 hours
 (total: about 45 hours)
 
 #current
-English, Simplified Chinese, Japanese, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian
+English, Simplified Chinese, Korean, Japanese, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian
 
 Fully translate all the strings in the file to Brazilian Portuguese and save into a new file, that I can download. Translate all of them, do not stop.
 Brazilians are used to English in gaming, use a “hybrid” translation.
@@ -26,6 +30,12 @@ The game is a strategy wargame, with medieval and low fantasy theme.
 
 Where English is used in gaming, use a “hybrid” translation.
 
+
+##
+Translate all strings to French.
+Use an accessable language, that doesnt use very niche words, so the translation feels natural and player-friendly.
+The game is a strategy wargame, with medieval and low fantasy theme.
+Where English is used in gaming, use a “hybrid” translation.
 
 https://discord.com/verification
 

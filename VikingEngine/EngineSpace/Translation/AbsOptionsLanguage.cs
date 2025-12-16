@@ -9,6 +9,8 @@ namespace VikingEngine.EngineSpace.Translation
 {
     abstract class AbsOptionsLanguage
     {
+        public abstract string Settings_ControllerVibration { get; }
+        //
         public abstract string Hud_Cancel { get; }
         public abstract string Hud_Back { get; }
         public abstract string Hud_AreYouSure { get; }

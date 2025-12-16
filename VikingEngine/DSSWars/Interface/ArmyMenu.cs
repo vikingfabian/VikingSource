@@ -192,6 +192,9 @@ namespace VikingEngine.DSSWars.Interface
             army.basicInfoHud(new ObjectHudArgs( content, player, true));
 
             content.newLine();
+            ColumnWidth(content, army);
+
+            content.newLine();
             var haltButton = new ArtButton( RbButtonStyle.Primary,
                         new List<AbsRichBoxMember>
                         {
@@ -200,6 +203,20 @@ namespace VikingEngine.DSSWars.Interface
                         new RbAction(halt), null);
             //haltButton.addShortCutButton(player.input.Stop, false);
             content.Add(haltButton);
+        }
+
+        public static void ColumnWidth(RichBoxContent content, AbsArmy army)
+        {
+            HudLib.Label(content, DssRef.lang.ArmyStructure_ColumnWidth);
+            content.newLine();
+            for (int w = Army.MinColumnWidth; w <= Army.MaxColumnWidth; w += 2)
+            {
+                var button = new ArtOption(w == army.armyColumnWidth,
+                    new List<AbsRichBoxMember> { new RbText(w.ToString()) },
+                    new RbAction1Arg<int>(army.armyColumnWidthClick, w, RbSoundType.Option));
+
+                content.Add(button);
+            }
         }
 
         void divideTab(RichBoxContent content)

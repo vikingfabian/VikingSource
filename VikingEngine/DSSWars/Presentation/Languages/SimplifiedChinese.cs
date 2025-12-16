@@ -8,6 +8,38 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class SimplifiedChinese : AbsLanguage
     {
+        //Winter update patch + spring
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+
+        public override string DisplayMode => "显示模式";
+        public override string DisplayMode_Windowed => "窗口模式";
+        public override string DisplayMode_BorderlessFullscreen => "无边框窗口";
+
+        public override string GameSettings_RenderedMouseCursor => "游戏内光标"; // Implies a cursor rendered by the game
+        public override string GameSettings_MuteControllerDisconnect => "屏蔽手柄断开提示";
+
+        public override string Delivery_MaxDistance => "最大运输距离：{0}";
+        public override string Tutorial_WillTakeAWhile => "这需要一些时间，请稍后再来。";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "等待 {0} 完成";
+        public override string GameOverResults => "游戏历史记录";
+
+        public override string UnitType_UnclaimedLand => "无主之地"; // "Land without a master" - standard gaming term
+        public override string UnitType_Settler => "开拓者"; // The standard term in Civ 6 for Settler
+        public override string UnitType_Settler_Description => "建立新城市";
+        public override string Resource_ConsumedProduced => "消耗 / 产出";
+        public override string InputActionName_PlaceTarget => "放置目标";
+
+        public override string FactionStartSize => "势力初始规模";
+        public override string FactionStartSize_Full => "完整";
+        public override string FactionStartSize_OneCity => "一座城市";
+        public override string FactionStartSize_Settler => "一个开拓者";
 
         //Winter update
         public override string Resource_StockpileLimit => "库存上限";

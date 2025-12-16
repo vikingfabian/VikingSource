@@ -260,7 +260,7 @@ namespace VikingEngine.DSSWars
 
                         content.newLine();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.GameOverResults) }),
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.GameOverResults) }),
                             new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_GameOverResults, StackOption.Stack), null, !PlatformSettings.STEAM_DEMO));
 
 

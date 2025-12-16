@@ -1384,7 +1384,7 @@ namespace VikingEngine.DSSWars.Build
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(string.Format(DssRef.todoLang.Delivery_MaxDistance, DssConst.DeliveryMaxDistance)));
+                content.Add(new RbText(string.Format(DssRef.lang.Delivery_MaxDistance, DssConst.DeliveryMaxDistance)));
 
                 if (speedBonus > 0)
                 {

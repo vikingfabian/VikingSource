@@ -8,6 +8,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_French : AbsOptionsLanguage
     {
+        public override string Settings_ControllerVibration => "Vibration de la manette";
         public override string GraphicsOption_IngameMenuWidth => "Largeur du menu en jeu";
         public override string DisplayMode => "Mode d’affichage";
         public override string DisplayMode_Windowed => "Fenêtré";

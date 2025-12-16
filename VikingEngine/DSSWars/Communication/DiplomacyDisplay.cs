@@ -690,7 +690,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 content.Add(new RbImage(SpriteName.WarsDiplomaticSub));
                 content.space(0.5f);
-                content.Add(new RbText(string.Format(DssRef.todoLang.Hud_Purchase_ResourceCost, DssRef.lang.ResourceType_DiplomacyPoints, cost)));
+                content.Add(new RbText(string.Format(DssRef.lang.Hud_Purchase_ResourceCost, DssRef.lang.ResourceType_DiplomacyPoints, cost)));
          
             }
             else

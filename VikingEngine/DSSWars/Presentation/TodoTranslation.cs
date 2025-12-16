@@ -12,34 +12,6 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
-        /// <summary>
-        /// How much of a resource that will be used, "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
-        /// </summary>
-        public string Hud_Purchase_ResourceCost => "{1} {0}";
-
-        public string DisplayMode => "Display mode";
-        public string DisplayMode_Windowed => "Windowed";
-        public string DisplayMode_BorderlessFullscreen => "Borderless fullscreen";
-
-        public string GameSettings_RenderedMouseCursor => "Rendered cursor";
-        public string GameSettings_MuteControllerDisconnect => "Mute disconnect messages";
-
-        public string Delivery_MaxDistance => "Delivery max distance: {0}";
-        //public string Error_SoundInitFailure => "Sound initialization failed";
-        public string Tutorial_WillTakeAWhile => "This will take a while, come back later.";
         
-        /// <summary>
-        /// 0: name of building
-        /// </summary>
-        public string Tutorial_WaitFor => "Wait for {0} to complete";
-
-
-        public string GameOverResults => "Game history log";
     }
-
-
-    //Not in use
-    //public string Settings_Render3dScale_Title => "3D render scale";
-    //public string Settings_Render3dScale_UpX => "Upscale {0}X";
-    //public string Settings_Render3dScale_DownX => "Downscale {0}X";
 }

@@ -9,6 +9,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_SimplifiedChinese : AbsOptionsLanguage
     {
+        public override string Settings_ControllerVibration => "手柄震动";
         public override string GraphicsOption_IngameMenuWidth => "游戏内菜单宽度";
         public override string DisplayMode => "显示模式";
         public override string DisplayMode_Windowed => "窗口模式";

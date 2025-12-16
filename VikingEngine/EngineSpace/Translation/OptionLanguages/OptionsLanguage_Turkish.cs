@@ -8,6 +8,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Turkish : AbsOptionsLanguage
     {
+        public override string Settings_ControllerVibration => "Gamepad titreşimi";
         //Winter update settings
         public override string GraphicsOption_IngameMenuWidth => "Oyun menüsü genişliği";
         public override string DisplayMode => "Görüntüleme moud";

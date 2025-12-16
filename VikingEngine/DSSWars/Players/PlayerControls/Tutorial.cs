@@ -638,7 +638,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //content.iconicontext(HudLib.CheckImage(logisticsUpgrade_build_sound.Value1), SpriteName.WarsBuild_Logistics, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Logistics].Label()));
                     buildOrder(logisticsUpgrade_build_sound.Value1, BuildAndExpandType.Logistics);
 
-                    content.iconicontext(HudLib.CheckImage(logisticsUpgrade_buildComplete), SpriteName.WarsBuild_Logistics, string.Format(DssRef.todoLang.Tutorial_WaitFor, DssRef.lang.BuildingType_Logistics));
+                    content.iconicontext(HudLib.CheckImage(logisticsUpgrade_buildComplete), SpriteName.WarsBuild_Logistics, string.Format(DssRef.lang.Tutorial_WaitFor, DssRef.lang.BuildingType_Logistics));
                     break;
 
                 case TutorialMission.EducateBurner:
@@ -666,7 +666,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.Add(new RbText(LangLib.ExperienceLevel(XP.ExperienceLevel.Practitioner_2)));
                     
                     content.newLine();
-                    HudLib.BulletPoint(content); content.Add(new RbText(DssRef.todoLang.Tutorial_WillTakeAWhile));
+                    HudLib.BulletPoint(content); content.Add(new RbText(DssRef.lang.Tutorial_WillTakeAWhile));
                     break;
 
                 case TutorialMission.SendFood:
@@ -768,7 +768,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(DssRef.todoLang.Tutorial_WillTakeAWhile, HudLib.InfoYellow_VeryLight));
+                        content.Add(new RbText(DssRef.lang.Tutorial_WillTakeAWhile, HudLib.InfoYellow_VeryLight));
 
                         content.newParagraph();
                         City city = player.gameControls.map.selection.obj as City;

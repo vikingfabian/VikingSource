@@ -9,6 +9,8 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_English : AbsOptionsLanguage
     {
+        public override string Settings_ControllerVibration => "Controller vibration";
+
         //Winter update settings
         public override string GraphicsOption_IngameMenuWidth => "Game menu width";
         public override string DisplayMode => "Display mode";
