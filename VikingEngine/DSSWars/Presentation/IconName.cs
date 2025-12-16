@@ -37,7 +37,7 @@ namespace VikingEngine.DSSWars
                     break;
                 case ItemResourceType.Settler:
                     itemIcon = SpriteName.WarsWorker; // Defaulting to worker icon
-                    itemName = DssRef.todoLang.UnitType_Settler;
+                    itemName = DssRef.lang.UnitType_Settler;
                     break;
 
                 // --- Resources & Materials ---

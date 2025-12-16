@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public void toMenu(RichBoxContent content)
         {
-            content.Add(new RbText(DssRef.todoLang.Resource_ConsumedProduced + ":", HudLib.TitleColor_Label));
+            content.Add(new RbText(DssRef.lang.Resource_ConsumedProduced + ":", HudLib.TitleColor_Label));
 
             content.space();
             content.Add(new RbImage(SpriteName.WarsDecreaseArrowDown));

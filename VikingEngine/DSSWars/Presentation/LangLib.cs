@@ -61,11 +61,11 @@ namespace VikingEngine.DSSWars.Presentation
             switch (size)
             {
                 default:
-                    return DssRef.todoLang.FactionStartSize_Full;
+                    return DssRef.lang.FactionStartSize_Full;
                 case FactionStartSize.OneCity:
-                    return DssRef.todoLang.FactionStartSize_OneCity;
+                    return DssRef.lang.FactionStartSize_OneCity;
                 case FactionStartSize.Settler:
-                    return DssRef.todoLang.FactionStartSize_Settler;
+                    return DssRef.lang.FactionStartSize_Settler;
             }
         }
 
@@ -1643,7 +1643,7 @@ namespace VikingEngine.DSSWars.Presentation
                 case ItemResourceType.ServiceMen:
                     return DssRef.lang.ResourceType_ServiceMen;
                 case ItemResourceType.Settler:
-                    return DssRef.todoLang.UnitType_Settler;
+                    return DssRef.lang.UnitType_Settler;
 
 
                 case ItemResourceType.CopperCoin:
@@ -1711,7 +1711,7 @@ namespace VikingEngine.DSSWars.Presentation
             switch (filterType)
             {
                 case UnitFilterType.Settler:
-                    return DssRef.todoLang.UnitType_Settler;
+                    return DssRef.lang.UnitType_Settler;
                 case UnitFilterType.SharpStick:
                     return DssRef.lang.UnitType_Folkman;
 

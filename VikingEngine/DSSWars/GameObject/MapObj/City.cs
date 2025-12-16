@@ -2480,7 +2480,7 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.Add(new RbBeginTitle(tooltip ? 2 : 1));
                 args.content.Add(new RbImage(SpriteName.WarsRelationFlag));
                 args.content.space(0.5f);
-                args.content.Add(new RbText(DssRef.todoLang.UnitType_UnclaimedLand, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
+                args.content.Add(new RbText(DssRef.lang.UnitType_UnclaimedLand, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
                 args.content.space(1);
                 args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));

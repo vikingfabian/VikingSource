@@ -1459,7 +1459,7 @@ namespace VikingEngine.DSSWars
                         }, sz), null);
                 }
 
-                factionSizeOptions.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.FactionStartSize, underMenu);
+                factionSizeOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.FactionStartSize, underMenu);
             }
 
             content.newParagraph();

@@ -195,7 +195,7 @@ namespace VikingEngine.DSSWars.Conscript
                     switch (weapon)
                     {
                         case ItemResourceType.Settler:
-                            return DssRef.todoLang.UnitType_Settler;
+                            return DssRef.lang.UnitType_Settler;
 
                         case ItemResourceType.SharpStick:
                             return DssRef.lang.UnitType_Folkman;
