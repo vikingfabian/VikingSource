@@ -9,6 +9,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Russian : AbsOptionsLanguage
     {
+        public override string Settings_ControllerVibration => "Вибрация геймпада";
         public override string GraphicsOption_IngameMenuWidth => "Ширина игрового меню";
         public override string DisplayMode => "Режим отображения";
         public override string DisplayMode_Windowed => "Оконный режим";

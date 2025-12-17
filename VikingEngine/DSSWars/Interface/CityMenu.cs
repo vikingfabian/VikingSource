@@ -1538,7 +1538,8 @@ namespace VikingEngine.DSSWars.Interface
 
         void resourceTabsInfo(RichBoxContent content, object tag)
         {
-            IconName.Tab((ResourcesSubTab)tag, out SpriteName categoryIcon, out string category, out SpriteName tabIcon, out string tabName);
+            ResourceManagementType tab = (ResourceManagementType)tag;
+            IconName.Tab(tab, out SpriteName categoryIcon, out string category);
 
             content.Add(new RbBeginTitle());
             content.Add(new RbImage(categoryIcon));
@@ -1547,10 +1548,9 @@ namespace VikingEngine.DSSWars.Interface
 
             content.newLine();
 
-            switch ((ResourcesSubTab)tag)
+            switch (tab)
             {
-
-                case ResourcesSubTab.Overview_Armor:
+                case ResourceManagementType.Overview:
                     HudLib.BulletPoint(content);
                     GroupedResource.BufferIconInfo(content, false);
                     bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
@@ -1558,12 +1558,10 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         GroupedResource.BufferIconInfo(content, true);
                     }
-
-                    
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbText(1.ToString()));
-                    content.Add(new RbImage(ResourceLib.Icon(ItemResourceType.Food_G)));
+                    content.Add(new RbImage( SpriteName.WarsResource_Food));
                     content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
                     var arrow = new RbImage(SpriteName.pjNumArrowR);
                     arrow.color = Color.CornflowerBlue;
@@ -1577,13 +1575,11 @@ namespace VikingEngine.DSSWars.Interface
 
                     break;
 
-                case ResourcesSubTab.Work_Mint:
-
+                case ResourceManagementType.Work:
                     content.text( string.Format(DssRef.lang.Work_OrderPrioDescription, WorkTemplate.MaxPrio));
-
                     break;
 
-                case ResourcesSubTab.Stockpile_Armor:
+                case ResourceManagementType.Stockpile:
 
                     HudLib.BulletPoint(content);
                     content.Add(new RbText(DssRef.lang.Resource_StockPile_Info));
@@ -1613,9 +1609,9 @@ namespace VikingEngine.DSSWars.Interface
                         new List<AbsRichBoxMember> { new RbImage(managementIcon) },
                         null, new RbTooltip_Text(managementName)));
 
-                    for (ResourceGroup group = 0; group < ResourceGroup.NUM; group++)
+                    for (ResourceGroupType group = 0; group < ResourceGroupType.NUM; group++)
                     {
-                        if (group == ResourceGroup.Mint)
+                        if (group == ResourceGroupType.Mint)
                         {
                             bool includeMint = managementType == ResourceManagementType.Work && city.buildingStructure.CoinMinter_count > 0;
                             if (!includeMint)
@@ -1636,95 +1632,97 @@ namespace VikingEngine.DSSWars.Interface
                         content.space();
                     }
 
+                    HudLib.InfoButton(content, new RbTooltip(resourceTabsInfo, managementType));
+
                     //Info buttons
-                    switch (managementType)
-                    {
-                        case ResourceManagementType.Overview:
-                            HudLib.InfoButton(content,
-                               new RbTooltip((RichBoxContent content, object tag) =>
-                               {
-                                   GroupedResource.BufferIconInfo(content, false);
-                                   bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
-                                   if (foodSafeGuard)
-                                   {
-                                       GroupedResource.BufferIconInfo(content, true);
-                                   }
-                                   //Minting.ConvertGoldOre.toMenu(content, city, false, true, false, false);
-                                   {
-                                       content.newLine();
-                                       content.Add(new RbText(1.ToString()));
-                                       content.Add(new RbImage(SpriteName.WarsResource_Food));
-                                       content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
-                                       var arrow = new RbImage(SpriteName.pjNumArrowR);
-                                       arrow.color = Color.CornflowerBlue;
-                                       content.Add(arrow);
-                                       content.Add(new RbText(string.Format(DssRef.lang.Hud_EnergyAmount, DssRef.difficulty.FoodEnergySett)));
-                                   }
-                                   content.newLine();
-                                   HudLib.BulletPoint(content);
-                                   content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
-                               }));
-                            content.newLine();
-                            break;
+                    //switch (managementType)
+                    //{
+                    //    case ResourceManagementType.Overview:
+                    //        HudLib.InfoButton(content,
+                    //           new RbTooltip((RichBoxContent content, object tag) =>
+                    //           {
+                    //               GroupedResource.BufferIconInfo(content, false);
+                    //               bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
+                    //               if (foodSafeGuard)
+                    //               {
+                    //                   GroupedResource.BufferIconInfo(content, true);
+                    //               }
+                    //               //Minting.ConvertGoldOre.toMenu(content, city, false, true, false, false);
+                    //               {
+                    //                   content.newLine();
+                    //                   content.Add(new RbText(1.ToString()));
+                    //                   content.Add(new RbImage(SpriteName.WarsResource_Food));
+                    //                   content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
+                    //                   var arrow = new RbImage(SpriteName.pjNumArrowR);
+                    //                   arrow.color = Color.CornflowerBlue;
+                    //                   content.Add(arrow);
+                    //                   content.Add(new RbText(string.Format(DssRef.lang.Hud_EnergyAmount, DssRef.difficulty.FoodEnergySett)));
+                    //               }
+                    //               content.newLine();
+                    //               HudLib.BulletPoint(content);
+                    //               content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
+                    //           }));
+                    //        content.newLine();
+                    //        break;
 
-                        case ResourceManagementType.Work:
-                        case ResourcesSubTab.Stockpile_Armor:
-                            HudLib.InfoButton(content,
-                               new RbTooltip(resourceTabsInfo, resourcesSubTab));
-                            content.newLine();
-                            break;
-                        //case ResourcesSubTab.Overview_Armor:
-                        //    HudLib.InfoButton(content,
-                        //       new RbTooltip((RichBoxContent content, object tag) =>
-                        //       {
-                        //           GroupedResource.BufferIconInfo(content, false);
-                        //           bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
-                        //           if (foodSafeGuard)
-                        //           {
-                        //               GroupedResource.BufferIconInfo(content, true);
-                        //           }
-                                   
-                        //           {
-                        //               content.newLine();
-                        //               content.Add(new RbText(1.ToString()));
-                        //               content.Add(new RbImage(ResourceLib.Icon(ItemResourceType.Food_G)));
-                        //               content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
-                        //               var arrow = new RbImage(SpriteName.pjNumArrowR);
-                        //               arrow.color = Color.CornflowerBlue;
-                        //               content.Add(arrow);
-                        //               content.Add(new RbText(string.Format(DssRef.lang.Hud_EnergyAmount, DssRef.difficulty.FoodEnergySett)));
-                        //           }
-                        //           content.newLine();
-                        //           HudLib.BulletPoint(content);
-                        //           content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
-                        //       }));
-                        //    content.newLine();
-                        //    break;
+                    //    case ResourceManagementType.Work:
+                    //    case ResourcesSubTab.Stockpile_Armor:
+                    //        HudLib.InfoButton(content,
+                    //           new RbTooltip(resourceTabsInfo, resourcesSubTab));
+                    //        content.newLine();
+                    //        break;
+                    //case ResourcesSubTab.Overview_Armor:
+                    //    HudLib.InfoButton(content,
+                    //       new RbTooltip((RichBoxContent content, object tag) =>
+                    //       {
+                    //           GroupedResource.BufferIconInfo(content, false);
+                    //           bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
+                    //           if (foodSafeGuard)
+                    //           {
+                    //               GroupedResource.BufferIconInfo(content, true);
+                    //           }
 
-                        //case ResourcesSubTab.Work_Mint:
-                        //    HudLib.InfoButton(content,
-                        //       new RbTooltip((RichBoxContent content, object tag) =>
-                        //       {
-                        //           HudLib.Description(content, string.Format(DssRef.lang.Work_OrderPrioDescription, WorkTemplate.MaxPrio));
-                        //       }));
-                        //    content.newLine();
-                        //    break;
+                    //           {
+                    //               content.newLine();
+                    //               content.Add(new RbText(1.ToString()));
+                    //               content.Add(new RbImage(ResourceLib.Icon(ItemResourceType.Food_G)));
+                    //               content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
+                    //               var arrow = new RbImage(SpriteName.pjNumArrowR);
+                    //               arrow.color = Color.CornflowerBlue;
+                    //               content.Add(arrow);
+                    //               content.Add(new RbText(string.Format(DssRef.lang.Hud_EnergyAmount, DssRef.difficulty.FoodEnergySett)));
+                    //           }
+                    //           content.newLine();
+                    //           HudLib.BulletPoint(content);
+                    //           content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
+                    //       }));
+                    //    content.newLine();
+                    //    break;
 
-                        //case ResourcesSubTab.Stockpile_Armor:
-                        //    HudLib.InfoButton(content,
-                        //       new RbTooltip((RichBoxContent content, object tag) =>
-                        //       {
-                        //           HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
-                        //           GroupedResource.BufferIconInfo(content, false);
-                        //           content.newLine();
-                        //           HudLib.BulletPoint(content);
-                        //           content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
-                        //       }));
+                    //case ResourcesSubTab.Work_Mint:
+                    //    HudLib.InfoButton(content,
+                    //       new RbTooltip((RichBoxContent content, object tag) =>
+                    //       {
+                    //           HudLib.Description(content, string.Format(DssRef.lang.Work_OrderPrioDescription, WorkTemplate.MaxPrio));
+                    //       }));
+                    //    content.newLine();
+                    //    break;
 
-                        //    break;
-                    }
+                    //case ResourcesSubTab.Stockpile_Armor:
+                    //    HudLib.InfoButton(content,
+                    //       new RbTooltip((RichBoxContent content, object tag) =>
+                    //       {
+                    //           HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
+                    //           GroupedResource.BufferIconInfo(content, false);
+                    //           content.newLine();
+                    //           HudLib.BulletPoint(content);
+                    //           content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
+                    //       }));
+
+                    //    break;
                 }
             }
+        //}
 
 
                 //OLD
@@ -1878,7 +1876,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 case ResourceManagementType.Stockpile:
                     content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-                    new StockPileMenu(content, city, null).toHud(player.resourcesSubTab);
+                    new StockPileMenu(content, city, null).toHud(player.resourcesSubTab.resourceGroup);
                     break;
             }
 
@@ -1906,13 +1904,13 @@ namespace VikingEngine.DSSWars.Interface
             //}
         }
 
-        void resourceOverview(RichBoxContent content, ResourceGroup resourceGroup)
+        void resourceOverview(RichBoxContent content, ResourceGroupType resourceGroup)
         {
             bool reachedBuffer = false;
 
             switch (resourceGroup)
             {
-                case ResourceGroup.Resources:
+                case ResourceGroupType.Resources:
 
                     city.waterToHud(content, true);
 
@@ -1997,11 +1995,11 @@ namespace VikingEngine.DSSWars.Interface
                     city.GetGroupedResource(CityResoureIndex.LedBullet).toMenu(content, ItemResourceType.LedBullet, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.LedBullets);
 
-                    godPowerSetAllResources(content, City.MovableCityResource_Misc);
+                    godPowerSetAllResources(content, ResourceLib.MovableCityResource_Misc);
 
                     break;
 
-                case ResourceGroup.Metals:
+                case ResourceGroupType.Metals:
 
                     int totalMines = 0;
 
@@ -2067,10 +2065,10 @@ namespace VikingEngine.DSSWars.Interface
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Mithril);
 
 
-                    godPowerSetAllResources(content, City.MovableCityResource_Metals);
+                    godPowerSetAllResources(content, ResourceLib.MovableCityResource_Metals);
                     break;
 
-                case ResourceGroup.Weapons:
+                case ResourceGroupType.Weapons:
 
                     city.GetGroupedResource(CityResoureIndex.sharpstick).toMenu(content, ItemResourceType.SharpStick, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.SharpStick);
@@ -2101,11 +2099,11 @@ namespace VikingEngine.DSSWars.Interface
                     city.GetGroupedResource(CityResoureIndex.MithrilSword).toMenu(content, ItemResourceType.MithrilSword, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.MithrilSword);
 
-                    godPowerSetAllResources(content, City.MovableCityResource_WeaponMelee);
+                    godPowerSetAllResources(content, ResourceLib.MovableCityResource_WeaponMelee);
 
                     break;
 
-                case ResourceGroup.Projectile:
+                case ResourceGroupType.Projectile:
 
                     city.GetGroupedResource(CityResoureIndex.SlingShot).toMenu(content, ItemResourceType.SlingShot, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Slingshot);
@@ -2161,11 +2159,11 @@ namespace VikingEngine.DSSWars.Interface
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.ManCannonIron);
 
 
-                    godPowerSetAllResources(content, City.MovableCityResource_WeaponRanged);
+                    godPowerSetAllResources(content, ResourceLib.MovableCityResource_WeaponRanged);
 
                     break;
 
-                case ResourceGroup.Armor:
+                case ResourceGroupType.Armor:
 
                     city.GetGroupedResource(CityResoureIndex.paddedArmor).toMenu(content, ItemResourceType.PaddedArmor, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.PaddedArmor);
@@ -2225,10 +2223,10 @@ namespace VikingEngine.DSSWars.Interface
                     city.GetGroupedResource(CityResoureIndex.MountMithrilArmor).toMenu(content, ItemResourceType.MountMithrilArmor, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.MountMithrilArmor);
 
-                    godPowerSetAllResources(content, City.MovableCityResource_Armor);
+                    godPowerSetAllResources(content, ResourceLib.MovableCityResource_Armor);
                     break;
 
-                case ResourceGroup.Animals:
+                case ResourceGroupType.Animals:
 
                     // --- Farm ---
                     city.GetGroupedResource(CityResoureIndex.Hen).toMenu(content, ItemResourceType.Hen, false, ref reachedBuffer, player, city);
@@ -2908,10 +2906,10 @@ namespace VikingEngine.DSSWars.Interface
 
     struct ResourcesSubTab
     {
-        public ResourceGroup resourceGroup;
+        public ResourceGroupType resourceGroup;
         public ResourceManagementType managementType;
 
-        public ResourcesSubTab(ResourceManagementType managementType, ResourceGroup resourceGroup)
+        public ResourcesSubTab(ResourceManagementType managementType, ResourceGroupType resourceGroup)
         { 
             this.managementType = managementType;
             this.resourceGroup = resourceGroup;
@@ -2923,7 +2921,7 @@ namespace VikingEngine.DSSWars.Interface
         }
     }
 
-    enum ResourceGroup
+    enum ResourceGroupType
     {
         Resources,
         Metals,

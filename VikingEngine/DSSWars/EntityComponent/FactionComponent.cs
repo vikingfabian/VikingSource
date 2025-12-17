@@ -44,11 +44,11 @@ namespace VikingEngine.DSSWars
         {
             faction.resourceComponentStartIndex = faction.myIndex * CityResoureIndex.COUNT;
 
-            runList(City.MovableCityResource_Misc);
-            runList(City.MovableCityResource_Metals);
-            runList(City.MovableCityResource_WeaponMelee);
-            runList(City.MovableCityResource_WeaponRanged);
-            runList(City.MovableCityResource_Armor);
+            runList(ResourceLib.MovableCityResource_Misc);
+            runList(ResourceLib.MovableCityResource_Metals);
+            runList(ResourceLib.MovableCityResource_WeaponMelee);
+            runList(ResourceLib.MovableCityResource_WeaponRanged);
+            runList(ResourceLib.MovableCityResource_Armor);
 
             void runList(ItemResourceType[] items)
             {
@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            faction.workTemplate.initComponents(false, faction.myIndex * WorkTemplate.COUNT);
+            faction.workTemplate.initComponents(false, factionWork, faction.myIndex * WorkTemplate.COUNT);
         }
 
     }

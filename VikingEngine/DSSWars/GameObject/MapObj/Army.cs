@@ -237,6 +237,8 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write((ushort)tagArt);
             }
 
+            w.Write((byte)armyColumnWidth);
+
             Debug.WriteCheck(w);
         }
 
@@ -280,6 +282,11 @@ namespace VikingEngine.DSSWars.GameObject
             if (tagBack != CityTagBack.NONE)
             {
                 tagArt = (ArmyTagArt)r.ReadUInt16();
+            }
+
+            if (subVersion >= 89)
+            { 
+                armyColumnWidth = r.ReadByte();
             }
 
             if (subVersion >= 62)

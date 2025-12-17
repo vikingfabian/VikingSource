@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars
                     break;
                 case ItemResourceType.Settler:
                     itemIcon = SpriteName.WarsWorker; // Defaulting to worker icon
-                    itemName = DssRef.todoLang.UnitType_Settler;
+                    itemName = DssRef.lang.UnitType_Settler;
                     break;
 
                 // --- Resources & Materials ---
@@ -777,46 +777,41 @@ namespace VikingEngine.DSSWars
         }
 
         //New, previously called "tab"
-        public static void Tab(ResourceGroup group, out SpriteName groupIcon, out string groupName)
+        public static void Tab(ResourceGroupType group, out SpriteName groupIcon, out string groupName)
         {
             switch (group)
             {
-                case ResourceGroup.Resources:
+                case ResourceGroupType.Resources:
                     groupIcon = SpriteName.WarsResource_Wood;
                     groupName = DssRef.lang.WarsResourceGroup_Resources;
                     break;
-
-                case ResourcesSubTab.Stockpile_Resources:
-                    categoryIcon = SpriteName.WarsStockpileAdd;
-                    tabIcon = SpriteName.WarsResource_Wood;
-                    category = DssRef.lang.Resource_Tab_Stockpile;
-                    tabName = DssRef.lang.WarsResourceGroup_Resources;
-                case ResourceGroup.Metals:
+                                   
+                case ResourceGroupType.Metals:
                     groupIcon = SpriteName.WarsResource_Iron;
                     groupName = DssRef.lang.WarsResourceGroup_Metal;
                     break;
 
-                case ResourceGroup.Weapons:
+                case ResourceGroupType.Weapons:
                     groupIcon = SpriteName.WarsResource_Sword;
                     groupName = DssRef.lang.WarsResourceGroup_MeleeHandWeapons;
                     break;
 
-                case ResourceGroup.Projectile:
+                case ResourceGroupType.Projectile:
                     groupIcon = SpriteName.WarsResource_Bow;
                     groupName = DssRef.lang.WarsResourceGroup_RangedHandWeapons;
                     break;
 
-                case ResourceGroup.Armor:
+                case ResourceGroupType.Armor:
                     groupIcon = SpriteName.WarsResource_IronArmor;
                     groupName = DssRef.lang.Conscript_ArmorTitle;
                     break;
 
-                case ResourceGroup.Mint:
+                case ResourceGroupType.Mint:
                     groupIcon = SpriteName.WarsResource_SilverCoin;
                     groupName = DssRef.lang.BuildingType_CoinMaker;
                     break;
 
-                case ResourceGroup.Animals:
+                case ResourceGroupType.Animals:
                     groupIcon = SpriteName.WarsBuild_HenPen;
                     groupName = ".Mounts"; // Replace with DssRef.lang.Mounts if available
                     break;

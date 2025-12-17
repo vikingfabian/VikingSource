@@ -162,7 +162,8 @@ namespace VikingEngine.DSSWars.Work
                     return DssRef.lang.Upgrade_Order;
 
                 case WorkType.Craft:
-                    return string.Format(DssRef.lang.Work_CraftX, LangLib.Item((ItemResourceType)workSubType));
+                    IconName.Item((ItemResourceType)workSubType, out var icon, out var name);
+                    return string.Format(DssRef.lang.Work_CraftX, name);
 
                 case WorkType.DropOff:
                     return DssRef.lang.WorkerStatus_DropOff;

@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.Build
                         }
                         else if (placeBuildingOption().blueprint.meetsRequirements(city))
                         {
-                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.buildOrder.value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
+                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
                         }
                         else
                         {
@@ -122,7 +122,7 @@ namespace VikingEngine.DSSWars.Build
                         }
                         else
                         {
-                            player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.buildOrder.value, true, city, subTilePos), ActionOnConflict.Toggle);
+                            player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos), ActionOnConflict.Toggle);
                         }
                     }
 
@@ -1384,7 +1384,7 @@ namespace VikingEngine.DSSWars.Build
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(string.Format(DssRef.todoLang.Delivery_MaxDistance, DssConst.DeliveryMaxDistance)));
+                content.Add(new RbText(string.Format(DssRef.lang.Delivery_MaxDistance, DssConst.DeliveryMaxDistance)));
 
                 if (speedBonus > 0)
                 {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.LootFest.Display;
 
@@ -16,11 +17,13 @@ namespace VikingEngine.DSSWars
         public EcsStaticArray neighborCities;
         public GroupedResource[] cityResouces;
         public WorkPriority[] cityWork;
+        public StorageSize[] cityStorage;
 
         public void InitCity(City city)
         { 
             city.resourceComponentStartIndex = CityResoureIndex.COUNT * city.myIndex;
-            city.workTemplate.initComponents(true, WorkTemplate.COUNT * city.myIndex);
+           
+
         }
 
         public void clearCityResources(City city)
@@ -40,6 +43,7 @@ namespace VikingEngine.DSSWars
             cityResouces = new GroupedResource[CityResoureIndex.COUNT * cityCount];
             neighborCities = new EcsStaticArray(14, cityCount);
             cityWork = new WorkPriority[WorkTemplate.COUNT * cityCount];
+            cityStorage = new StorageSize[StorageSize.COUNT * cityCount];
 
             int resourceStart = 0;
             //int workStart = 0;
@@ -138,7 +142,15 @@ namespace VikingEngine.DSSWars
 
                 resourceStart += CityResoureIndex.COUNT;
                 //workStart += WorkTemplate.COUNT;
+
+                cities[cityIx].workTemplate.initComponents(true, cityWork, WorkTemplate.COUNT * cityIx);
             }
+
+            for (int i = 0; i < cityStorage.Length; i++)
+            {
+                cityStorage[i] = new StorageSize();
+            }
+
         }
 
     }

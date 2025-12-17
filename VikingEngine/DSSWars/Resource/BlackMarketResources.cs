@@ -125,7 +125,8 @@ namespace VikingEngine.DSSWars.Resource
             void Resource(int cost, ItemResourceType resourceType, string name)
             {
                 int count = 1;
-                int non = 0;
+                //int non = 0;
+                IconName.Item(resourceType, out SpriteName itemIcon, out string itemName);
 
                 content.newLine();
 
@@ -135,7 +136,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 ArtButton button = new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember>
                     {
-                        new RbImage(ResourceLib.Icon(resourceType)),
+                        new RbImage(itemIcon),
                         new RbText(name),
                     },
                 new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, RbSoundType.Buy),

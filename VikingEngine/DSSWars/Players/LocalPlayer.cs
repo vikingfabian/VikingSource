@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Players
         public MenuTab factionTab = MenuTab.NUM_NONE;
         public MenuTab cityTab;
         public MenuTab armyTab = ArmyMenu.Tabs[0];
-        public ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources;
+        public ResourcesSubTab resourcesSubTab = new ResourcesSubTab();
 
         public ProgressSubTab progressSubTab = 0;
         public TagSubTab tagSubTab = 0;
@@ -262,7 +262,7 @@ namespace VikingEngine.DSSWars.Players
 
             warmachineConscriptCopy = new BarracksStatus(BuildAndExpandType.WarmachineBarracks);
 
-            knightConscriptCopy = new BarracksStatus(BuildAndExpandType.KnightsBarracks);
+            //knightConscriptCopy = new BarracksStatus(BuildAndExpandType.KnightsBarracks);
 
             gunConscriptCopy = new BarracksStatus(BuildAndExpandType.GunBarracks);
 
@@ -1521,23 +1521,23 @@ namespace VikingEngine.DSSWars.Players
                         new SoldierGroup(army, SoldierProfile, army.position);
                     }
                 }
-                {
-                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
-                    {
-                        conscript = new ConscriptProfile()
-                        {
-                            weapon = Resource.ItemResourceType.KnightsLance,
-                            armorLevel = Resource.ItemResourceType.IronArmor,
-                            training = TrainingLevel.Basic,
-                            specialization = SpecializationType.Traditional,
-                        }
-                    };
+                //{
+                //    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                //    {
+                //        conscript = new ConscriptProfile()
+                //        {
+                //            weapon = Resource.ItemResourceType.KnightsLance,
+                //            armorLevel = Resource.ItemResourceType.IronArmor,
+                //            training = TrainingLevel.Basic,
+                //            specialization = SpecializationType.Traditional,
+                //        }
+                //    };
 
-                    for (int i = 0; i < 8; ++i)
-                    {
-                        new SoldierGroup(army, SoldierProfile, army.position);
-                    }
-                }
+                //    for (int i = 0; i < 8; ++i)
+                //    {
+                //        new SoldierGroup(army, SoldierProfile, army.position);
+                //    }
+                //}
                 {
                     SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                     {

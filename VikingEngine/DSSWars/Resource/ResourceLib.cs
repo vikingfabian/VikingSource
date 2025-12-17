@@ -24,8 +24,168 @@ namespace VikingEngine.DSSWars.Resource
     }
 
     static class ResourceLib
-    {        
+    {
+        public static readonly ItemResourceType[] MovableCityResource_Misc =
+        {
+            ItemResourceType.Wood_Group,
+            ItemResourceType.Fuel_G,
+            ItemResourceType.Stone_G,
+        ItemResourceType.Clay,
+        ItemResourceType.Brick,
 
+            ItemResourceType.SkinLinen_Group,
+            ItemResourceType.RawFood_Group,
+        ItemResourceType.Salt,
+
+            ItemResourceType.Food_G,
+        ItemResourceType.ConservedFood,
+            ItemResourceType.Beer,
+            ItemResourceType.CoolingFluid,
+            ItemResourceType.Container,
+            ItemResourceType.Palisade,
+            ItemResourceType.Toolkit,
+            ItemResourceType.Wagon2Wheel,
+            ItemResourceType.Wagon4Wheel,
+            ItemResourceType.WagonClosed,
+            ItemResourceType.WagonIron,
+            ItemResourceType.WagonSteel,
+            ItemResourceType.BlackPowder,
+            ItemResourceType.GunPowder,
+            ItemResourceType.LedBullet,
+        };
+        public static readonly ItemResourceType[] MovableCityResource_Metals =
+       {
+             ItemResourceType.IronOre_G,
+             ItemResourceType.TinOre,
+             ItemResourceType.CopperOre,
+             ItemResourceType.LeadOre,
+             ItemResourceType.SilverOre,
+             ItemResourceType.GoldOre,
+
+             ItemResourceType.Iron_G,
+             ItemResourceType.Tin,
+            ItemResourceType.Copper,
+            ItemResourceType.Lead,
+            ItemResourceType.Silver,
+            ItemResourceType.RawMithril,
+            ItemResourceType.Sulfur,
+
+            ItemResourceType.Bronze,
+            ItemResourceType.CastIron,
+            ItemResourceType.BloomeryIron,
+            ItemResourceType.Steel,
+            ItemResourceType.Mithril,
+        };
+        public static readonly ItemResourceType[] MovableCityResource_WeaponMelee =
+       {
+            ItemResourceType.SharpStick,
+            ItemResourceType.BronzeSword,
+            ItemResourceType.ShortSword,
+            ItemResourceType.Sword,
+            ItemResourceType.LongSword,
+            ItemResourceType.HandSpear,
+
+            ItemResourceType.Warhammer,
+            ItemResourceType.TwoHandSword,
+             //ItemResourceType.KnightsLance,
+            ItemResourceType.MithrilSword,
+
+
+        };
+
+        public static readonly ItemResourceType[] MovableCityResource_WeaponRanged =
+         {
+            ItemResourceType.SlingShot,
+             ItemResourceType.ThrowingSpear,
+
+             ItemResourceType.Bow,
+             ItemResourceType.LongBow,
+            ItemResourceType.Crossbow,
+                ItemResourceType.MithrilBow,
+
+            ItemResourceType.HandCannon,
+            ItemResourceType.HandCulverin,
+            ItemResourceType.Rifle,
+            ItemResourceType.Blunderbuss,
+
+            ItemResourceType.Ballista,
+            ItemResourceType.Manuballista,
+            ItemResourceType.Catapult,
+            ItemResourceType.SiegeCannonBronze,
+            ItemResourceType.ManCannonBronze,
+            ItemResourceType.SiegeCannonIron,
+            ItemResourceType.ManCannonIron,
+
+        };
+
+        public static readonly ItemResourceType[] MovableCityResource_Armor =
+         {
+             ItemResourceType.BronzeArmor,
+             ItemResourceType.PaddedArmor,
+             ItemResourceType.HeavyPaddedArmor,
+             ItemResourceType.IronArmor,
+             ItemResourceType.HeavyIronArmor,
+             ItemResourceType.LightPlateArmor,
+             ItemResourceType.FullPlateArmor,
+
+             ItemResourceType.MithrilArmor,
+
+            ItemResourceType.MountBronzeArmor,
+            ItemResourceType.MountPaddedArmor,
+            ItemResourceType.MountHeavyPaddedArmor,
+            ItemResourceType.MountIronArmor,
+            ItemResourceType.MountHeavyIronArmor,
+            ItemResourceType.MountLightPlateArmor,
+            ItemResourceType.MountFullPlateArmor,
+            ItemResourceType.MountMithrilArmor,
+        };
+
+        public static readonly ItemResourceType[] MovableCityResource_Animals =
+         {
+            ItemResourceType.Hen,
+            ItemResourceType.Pig,
+
+            ItemResourceType.Dog,
+            ItemResourceType.Hound,
+
+            ItemResourceType.Oxen,
+            ItemResourceType.KineOxen,
+
+            ItemResourceType.Pony,
+            ItemResourceType.Horse,
+            ItemResourceType.WarHorse,
+            ItemResourceType.DraftHorse,
+
+            ItemResourceType.WildPig,
+            ItemResourceType.WildHog,
+            ItemResourceType.WarHog,
+            ItemResourceType.StagHog,
+
+            ItemResourceType.Wolf,
+            ItemResourceType.Warg,
+            ItemResourceType.AlphaWarg,
+
+            ItemResourceType.WildCat,
+            ItemResourceType.Lion,
+            ItemResourceType.WarLion,
+
+            ItemResourceType.Elephant,
+            ItemResourceType.WarElephant,
+            ItemResourceType.Oliphant,
+        };
+
+        public static ItemResourceType[] ResourceGroupList(ResourceGroupType group)
+        {
+            switch (group)
+            {
+                default: return MovableCityResource_Misc;
+                case ResourceGroupType.Metals: return MovableCityResource_Metals; 
+                case ResourceGroupType.Animals: return MovableCityResource_Animals; 
+                case ResourceGroupType.Weapons: return MovableCityResource_WeaponMelee;
+                case ResourceGroupType.Projectile: return MovableCityResource_WeaponRanged;
+                case ResourceGroupType.Armor: return MovableCityResource_Armor;
+            }
+        }
         public static void FullResourceInfo(RichBoxContent content, object tag)
         {
             ResourceInfoTag args = (ResourceInfoTag)tag;

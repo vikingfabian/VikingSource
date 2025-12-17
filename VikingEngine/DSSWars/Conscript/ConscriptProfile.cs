@@ -264,7 +264,7 @@ namespace VikingEngine.DSSWars.Conscript
                     switch (weapon)
                     {
                         case ItemResourceType.Settler:
-                            name = DssRef.todoLang.UnitType_Settler; break;
+                            name = DssRef.lang.UnitType_Settler; break;
 
                         case ItemResourceType.SharpStick:
                             name = DssRef.lang.UnitType_Folkman; break;
@@ -646,9 +646,9 @@ namespace VikingEngine.DSSWars.Conscript
 
             switch (type)
             { 
-                case BuildAndExpandType.KnightsBarracks:
-                    result += DssConst.TrainingTimeSec_NobelmenAdd;
-                    break;
+                //case BuildAndExpandType.KnightsBarracks:
+                //    result += DssConst.TrainingTimeSec_NobelmenAdd;
+                //    break;
                 case BuildAndExpandType.GunBarracks:
                 case BuildAndExpandType.CannonBarracks:
                     result /= 2;

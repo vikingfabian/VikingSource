@@ -22,6 +22,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.Input;
 using VikingEngine.LootFest.GO.Characters.Monsters;
+using VikingEngine.LootFest.Players;
 using VikingEngine.PJ;
 using VikingEngine.Timer;
 using VikingEngine.ToGG;
@@ -388,9 +389,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
             }
 
-            player.faction.workTemplate.setWorkPrio(0, Work.WorkPriorityType.craftSharpStick);
-            player.faction.workTemplate.setWorkPrio(0, Work.WorkPriorityType.craftBow);//craft_bow.value = 0;
-            player.faction.workTemplate.setWorkPrio(0, Work.WorkPriorityType.craftPaddedArmor);//craft_paddedarmor.value = 0;
+            player.faction.workTemplate.setWorkPrio(Work.WorkPriorityType.craftSharpStick,0);
+            player.faction.workTemplate.setWorkPrio(Work.WorkPriorityType.craftBow,0);//craft_bow.value = 0;
+            player.faction.workTemplate.setWorkPrio(Work.WorkPriorityType.craftPaddedArmor,0);//craft_paddedarmor.value = 0;
             player.faction.refreshCityWork();
             
             refreshLimits();
@@ -641,7 +642,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //content.iconicontext(HudLib.CheckImage(logisticsUpgrade_build_sound.Value1), SpriteName.WarsBuild_Logistics, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Logistics].Label()));
                     buildOrder(logisticsUpgrade_build_sound.Value1, BuildAndExpandType.Logistics);
 
-                    content.iconicontext(HudLib.CheckImage(logisticsUpgrade_buildComplete), SpriteName.WarsBuild_Logistics, string.Format(DssRef.todoLang.Tutorial_WaitFor, DssRef.lang.BuildingType_Logistics));
+                    content.iconicontext(HudLib.CheckImage(logisticsUpgrade_buildComplete), SpriteName.WarsBuild_Logistics, string.Format(DssRef.lang.Tutorial_WaitFor, DssRef.lang.BuildingType_Logistics));
                     break;
 
                 case TutorialMission.EducateBurner:
@@ -669,7 +670,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.Add(new RbText(LangLib.ExperienceLevel(XP.ExperienceLevel.Practitioner_2)));
                     
                     content.newLine();
-                    HudLib.BulletPoint(content); content.Add(new RbText(DssRef.todoLang.Tutorial_WillTakeAWhile));
+                    HudLib.BulletPoint(content); content.Add(new RbText(DssRef.lang.Tutorial_WillTakeAWhile));
                     break;
 
                 case TutorialMission.SendFood:
@@ -722,11 +723,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.iconicontext(HudLib.CheckImage(fletcherPractice_resourceTab_sound.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources));
 
                     //TwoBools fletcherPractice_setSlingerTo3_sound = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(fletcherPractice_setSlingerTo3_sound.Value1), ResourceLib.Icon(ItemResourceType.SlingShot), string.Format(DssRef.lang.Tutorial_SetXPriorityToY, DssRef.lang.Resource_TypeName_SlingShot, 3));
+                    content.iconicontext(HudLib.CheckImage(fletcherPractice_setSlingerTo3_sound.Value1),  SpriteName.WarsResource_Slingshot, string.Format(DssRef.lang.Tutorial_SetXPriorityToY, DssRef.lang.Resource_TypeName_SlingShot, 3));
                     //TwoBools fletcherPractice_setJavelinTo3_sound = TwoBools.False;
                     //content.iconicontext(HudLib.CheckImage(fletcherPractice_setJavelinTo3_sound.Value1), ResourceLib.Icon(ItemResourceType.ThrowingSpear), string.Format("Set {0} priority to {1}", DssRef.lang.Resource_TypeName_ThrowingSpear, 3));
                     //TwoBools fletcherPractice_setBowTo4_sound = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(fletcherPractice_setBowTo4_sound.Value1), ResourceLib.Icon(ItemResourceType.Bow), string.Format(DssRef.lang.Tutorial_SetXPriorityToY, DssRef.lang.Resource_TypeName_Bow, 4));
+                    content.iconicontext(HudLib.CheckImage(fletcherPractice_setBowTo4_sound.Value1), SpriteName.WarsResource_Bow, string.Format(DssRef.lang.Tutorial_SetXPriorityToY, DssRef.lang.Resource_TypeName_Bow, 4));
 
                     break;
 
@@ -771,7 +772,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(DssRef.todoLang.Tutorial_WillTakeAWhile, HudLib.InfoYellow_VeryLight));
+                        content.Add(new RbText(DssRef.lang.Tutorial_WillTakeAWhile, HudLib.InfoYellow_VeryLight));
 
                         content.newParagraph();
                         City city = player.gameControls.map.selection.obj as City;
@@ -819,7 +820,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     content.iconicontext(HudLib.CheckImage(produceBow_buyIron.Value1), SpriteName.WarsResource_Iron, string.Format(DssRef.lang.HudAction_BuyItem, DssRef.lang.Resource_TypeName_Iron));
                     //TwoBools produceBow_produceBow = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(produceBow_produceBow.Value1), ResourceLib.Icon(ItemResourceType.Bow), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectGuardResources, DssRef.lang.Resource_TypeName_Bow));
+                    content.iconicontext(HudLib.CheckImage(produceBow_produceBow.Value1), SpriteName.WarsResource_Bow, string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectGuardResources, DssRef.lang.Resource_TypeName_Bow));
                     break;
                 
                 case TutorialMission.BuildDefences:
@@ -888,7 +889,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //TwoBools findIronCity_produceIron_sound = TwoBools.False;
                     if (findIronCity_buildSmelter_sound.Value1)
                     {
-                        content.iconicontext(HudLib.CheckImage(findIronCity_produceIron_sound.Value1), ResourceLib.Icon(ItemResourceType.Iron_G), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, ProduceIronAmount, DssRef.lang.Resource_TypeName_Iron));
+                        content.iconicontext(HudLib.CheckImage(findIronCity_produceIron_sound.Value1), SpriteName.WarsResource_Iron, string.Format(DssRef.lang.Tutorial_CollectItemStockpile, ProduceIronAmount, DssRef.lang.Resource_TypeName_Iron));
                     }
                     break;
                 case TutorialMission.ProduceSword:
@@ -922,9 +923,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //content.iconicontext(HudLib.CheckImage(produceSword_buildSmith_sound.Value1), SpriteName.WarsBuild_Smith, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Smith].Label()));
                     buildOrder(produceSword_buildSmith_sound.Value1, BuildAndExpandType.Smith);
                     //TwoBools produceSword_swordPriority_sound = TwoBools.False;
-                    content.iconiconicontext(HudLib.CheckImage(produceSword_swordPriority_sound.Value1), SpriteName.WarsHammer, ResourceLib.Icon(ItemResourceType.ShortSword), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_ShortSword));
+                    content.iconiconicontext(HudLib.CheckImage(produceSword_swordPriority_sound.Value1), SpriteName.WarsHammer, SpriteName.WarsResource_ShortSword, string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_ShortSword));
                     //TwoBools produceSword_produceSword_sound = TwoBools.False;
-                    content.iconiconicontext(HudLib.CheckImage(produceSword_produceSword_sound.Value1), SpriteName.WarsStockpileAdd, ResourceLib.Icon(ItemResourceType.ShortSword), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_ShortSword));
+                    content.iconiconicontext(HudLib.CheckImage(produceSword_produceSword_sound.Value1), SpriteName.WarsStockpileAdd, SpriteName.WarsResource_ShortSword, string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_ShortSword));
                     break;
                 case TutorialMission.ProduceMail:
                     
@@ -955,9 +956,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //content.iconicontext(HudLib.CheckImage(produceMail_buildArmorer_sound.Value1), SpriteName.WarsBuild_Armory, string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, Build.BuildLib.BuildOptions[(int)Build.BuildAndExpandType.Armory].Label()));
                     buildOrder(produceMail_buildArmorer_sound.Value1, BuildAndExpandType.Armory);
                     //TwoBools produceMail_mailPriority_sound = TwoBools.False;
-                    content.iconiconicontext(HudLib.CheckImage(produceMail_mailPriority_sound.Value1), SpriteName.WarsHammer, ResourceLib.Icon(ItemResourceType.IronArmor), string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_IronArmor));
+                    content.iconiconicontext(HudLib.CheckImage(produceMail_mailPriority_sound.Value1), SpriteName.WarsHammer, SpriteName.WarsResource_IronArmor, string.Format(DssRef.lang.Tutorial_IncreasePriorityOnX, DssRef.lang.Resource_TypeName_IronArmor));
                     //TwoBools produceMail_produceMail_sound = TwoBools.False;
-                    content.iconicontext(HudLib.CheckImage(produceMail_produceMail_sound.Value1), ResourceLib.Icon(ItemResourceType.IronArmor), string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_IronArmor));
+                    content.iconicontext(HudLib.CheckImage(produceMail_produceMail_sound.Value1), SpriteName.WarsResource_IronArmor, string.Format(DssRef.lang.Tutorial_CollectItemStockpile, CollectWeaponArmorAmount, DssRef.lang.Resource_TypeName_IronArmor));
 
                     break;
 
@@ -965,6 +966,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             void addResourcePin(bool complete, ItemResourceType resourceType)
             {
+                IconName.Item(resourceType, out SpriteName itemIcon, out string itemName);
+
                 content.newLine();
                 content.Add(new RbImage(HudLib.CheckImage(complete)));
                 content.space();
@@ -972,9 +975,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 content.space();
                 content.Add(new RbImage(SpriteName.HudPinIcon));
                 content.hspace();
-                content.Add(new RbImage(ResourceLib.Icon(resourceType)));
+                content.Add(new RbImage(itemIcon));
                 content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Resource, LangLib.Item(resourceType))));
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Resource, itemName)));
             }
 
             void buildOrder(bool complete, BuildAndExpandType build)
@@ -1150,9 +1153,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         {
                             if (player.gameControls.map.selection.obj.GetCity().GetGroupedResource(ItemResourceType.Wood_Group).amount >= CollectWoodStoneAmount)
                             {
-                                player.faction.workTemplate.move.value = 2;
-                                player.faction.workTemplate.wood.value = 2;
-                                player.faction.workTemplate.stone.value = 4;
+                                //player.faction.workTemplate.move.value = 2;
+                                //player.faction.workTemplate.wood.value = 2;
+                                //player.faction.workTemplate.stone.value = 4;
+
+                                player.faction.workTemplate.setWorkPrio(Work.WorkPriorityType.move, 2);
+                                player.faction.workTemplate.setWorkPrio(Work.WorkPriorityType.wood, 2);
+                                player.faction.workTemplate.setWorkPrio(Work.WorkPriorityType.stone, 4);
+
 
                                 player.faction.refreshCityWork();
 
@@ -1244,7 +1252,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     //{ 
 
                     //}
-                    if (player.resourcesSubTab == ResourcesSubTab.Work_Weapons)
+                    if (player.resourcesSubTab.EqualTab(new ResourcesSubTab(ResourceManagementType.Work, ResourceGroupType.Weapons))) //== ResourcesSubTab.Work_Weapons)
                     {
                         if (!weaponsArmor_selectSubTab)
                         {
@@ -1265,7 +1273,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!weaponsArmor_setWeaponPrio)
                     {
                         if (player.gameControls.map.selection.obj is City &&
-                            player.gameControls.map.selection.obj.GetCity().workTemplate.craft_sharpstick.value > 0)
+                            player.gameControls.map.selection.obj.GetCity().workTemplate.Get( Work.WorkPriorityType.craftSharpStick).value > 0)
                         {
                             weaponsArmor_setWeaponPrio = true;
                             onPartSuccess();
@@ -1275,7 +1283,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!weaponsArmor_setArmorPrio)
                     {
                         if (player.gameControls.map.selection.obj is City &&
-                            player.gameControls.map.selection.obj.GetCity().workTemplate.craft_paddedarmor.value > 0)
+                            player.gameControls.map.selection.obj.GetCity().workTemplate.Get(Work.WorkPriorityType.craftPaddedArmor).value > 0)
                         {
                             weaponsArmor_setArmorPrio = true;
                             onPartSuccess();
@@ -1593,7 +1601,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         if (player.gameControls.map.selection.obj is City &&
                             player.cityTab == Interface.MenuTab.Resources &&
-                            player.resourcesSubTab == ResourcesSubTab.Stockpile_Resources)
+                            player.resourcesSubTab.EqualTab(new ResourcesSubTab(ResourceManagementType.Stockpile, ResourceGroupType.Resources))) //== ResourcesSubTab.Stockpile_Resources)
                         {
                             CollectFood_selectStockPile = true;
 
@@ -2094,7 +2102,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                 }
                             }
                             //TwoBools fletcherPractice_setSlingerTo3_sound = TwoBools.False;
-                            if (city.workTemplate.craft_slingshot.value == 3)
+                            if (city.workTemplate.Get(Work.WorkPriorityType.craftSlingshot).value == 3)
                             {
                                 if (!fletcherPractice_setSlingerTo3_sound.Value1)
                                 {
@@ -2130,7 +2138,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             //    }
                             //}
                             //TwoBools fletcherPractice_setBowTo4_sound = TwoBools.False;
-                            if (city.workTemplate.craft_bow.value == 4)
+                            if (city.workTemplate.Get(Work.WorkPriorityType.craftBow).value == 4)
                             {
                                 if (!fletcherPractice_setBowTo4_sound.Value1)
                                 {
@@ -2540,7 +2548,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             }
                             //TwoBools produceSword_swordPriority_sound = TwoBools.False;
                             if (!produceSword_swordPriority_sound.Value1 &&
-                                city.workTemplate.craft_shortsword.value > 1)
+                                city.workTemplate.Get(Work.WorkPriorityType.craftShortSword).value > 1)
                             {
                                 produceSword_swordPriority_sound.Value1 = true;
                                 onPartSuccess();
@@ -2588,7 +2596,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                                 onPartSuccess();
                             }
                             //TwoBools produceMail_mailPriority_sound = TwoBools.False;
-                            if (city.workTemplate.craft_mailarmor.value > 1)
+                            if (city.workTemplate.Get(Work.WorkPriorityType.craftMailArmor).value > 1)
                             {
                                 if (!produceMail_mailPriority_sound.Value1)
                                 {

@@ -11,7 +11,39 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Korean : AbsLanguage
     {
-        
+        //Winter update patch + spring
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+
+        public override string DisplayMode => "화면 모드";
+        public override string DisplayMode_Windowed => "창 모드";
+        public override string DisplayMode_BorderlessFullscreen => "테두리 없는 전체 화면";
+
+        public override string GameSettings_RenderedMouseCursor => "소프트웨어 커서";
+        public override string GameSettings_MuteControllerDisconnect => "컨트롤러 연결 해제 알림 끄기";
+
+        public override string Delivery_MaxDistance => "최대 배송 거리: {0}";
+        public override string Tutorial_WillTakeAWhile => "시간이 좀 걸립니다. 나중에 다시 확인해 주세요.";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "{0} 완료 대기 중";
+        public override string GameOverResults => "게임 기록";
+
+        public override string UnitType_UnclaimedLand => "미점령지";
+        public override string UnitType_Settler => "개척자";
+        public override string UnitType_Settler_Description => "새 도시 건설";
+        public override string Resource_ConsumedProduced => "소비 / 생산";
+        public override string InputActionName_PlaceTarget => "목표 지점 설정";
+
+        public override string FactionStartSize => "세력 시작 규모";
+        public override string FactionStartSize_Full => "최대";
+        public override string FactionStartSize_OneCity => "도시 1개";
+        public override string FactionStartSize_Settler => "개척자 1기";
+
         //Winter update
         public override string Resource_StockpileLimit => "비축 한도";
         public override string GameMode_QuickMatch => "Quick Match";

@@ -498,7 +498,7 @@ namespace VikingEngine.Engine
 
                 spriteBatch.Begin(SpriteSortMode.Immediate);
                 spriteBatch.Draw(MainRenderTarget, Screen.MonitorTargetRect, Color.White);
-                if (customMousePointer != null)
+                if (customMousePointer != null && Input.Mouse.RenderMouseCursor())
                 {
                     customMousePointer.position = Input.Mouse.Position;
                     customMousePointer.Draw(0);

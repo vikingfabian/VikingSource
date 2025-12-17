@@ -11,7 +11,42 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class French : AbsLanguage
     {
-        
+        //Winter update patch + spring
+
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+
+        public override string DisplayMode => "Mode d'affichage";
+        public override string DisplayMode_Windowed => "Fenêtré";
+        public override string DisplayMode_BorderlessFullscreen => "Plein écran sans bordure";
+
+        // "Curseur logiciel" implies the game renders it, as opposed to the OS (Hardware cursor)
+        public override string GameSettings_RenderedMouseCursor => "Curseur logiciel";
+        public override string GameSettings_MuteControllerDisconnect => "Masquer alertes manette";
+
+        public override string Delivery_MaxDistance => "Distance de livraison max : {0}";
+        public override string Tutorial_WillTakeAWhile => "Ça va prendre un moment, revenez plus tard.";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "Attendre la fin de : {0}";
+        public override string GameOverResults => "Historique de la partie";
+
+        public override string UnitType_UnclaimedLand => "Terres non revendiquées";
+        // "Colon" is the standard term for Settler in French Civ games
+        public override string UnitType_Settler => "Colon";
+        public override string UnitType_Settler_Description => "Fonder une nouvelle ville";
+        public override string Resource_ConsumedProduced => "Consommé/Produit";
+        public override string InputActionName_PlaceTarget => "Placer la cible";
+
+        public override string FactionStartSize => "Taille de départ";
+        public override string FactionStartSize_Full => "Complète";
+        public override string FactionStartSize_OneCity => "Une ville";
+        public override string FactionStartSize_Settler => "Un colon";
+
 
         //Winter update
         public override string Resource_StockpileLimit => "Limite de stock";

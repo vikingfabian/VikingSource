@@ -746,8 +746,13 @@ namespace VikingEngine.DSSWars
             }
             else if (armies.Count > 0)
             {
-                cityPosition = false;
-                return armies.First().tilePos;
+                var first = armies.First();
+
+                if (first != null)
+                {
+                    cityPosition = false;
+                    return first.tilePos;
+                }
             }
 
             cityPosition = false;

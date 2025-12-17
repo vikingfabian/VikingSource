@@ -680,9 +680,9 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.WarmachineBarracks:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_barracks, 3, wp, WorldData.SubTileWidth * 1f));
                     break;
-                case TerrainBuildingType.KnightsBarracks:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_barracks, 4, wp, WorldData.SubTileWidth * 1f));
-                    break;
+                //case TerrainBuildingType.KnightsBarracks:
+                //    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_barracks, 4, wp, WorldData.SubTileWidth * 1f));
+                //    break;
                 case TerrainBuildingType.GunBarracks:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_barracks, 5, wp, WorldData.SubTileWidth * 1f));
                     break;
@@ -1104,12 +1104,10 @@ namespace VikingEngine.DSSWars.Map
                     break;
                 case TerrainMineType.TinOre:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 6, wp, scale));
-                    break;
-                
+                    break;                
                 case TerrainMineType.CopperOre:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 9, wp, scale));
-                    break;
-                
+                    break;                
                 case TerrainMineType.LeadOre:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 7, wp, scale));
                     break;
@@ -1121,6 +1119,9 @@ namespace VikingEngine.DSSWars.Map
                     break;
                 case TerrainMineType.Mithril:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 8, wp, scale));
+                    break;
+                case TerrainMineType.Salt:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 5, wp, scale));
                     break;
                 case TerrainMineType.Sulfur:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 5, wp, scale));

@@ -8,6 +8,38 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Spanish : AbsLanguage
     {
+        //Winter update patch + spring
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+
+        public override string DisplayMode => "Modo de visualización";
+        public override string DisplayMode_Windowed => "Modo ventana";
+        public override string DisplayMode_BorderlessFullscreen => "Pantalla completa sin bordes";
+
+        public override string GameSettings_RenderedMouseCursor => "Cursor renderizado";
+        public override string GameSettings_MuteControllerDisconnect => "Silenciar desconexión del mando";
+
+        public override string Delivery_MaxDistance => "Distancia máx. de entrega: {0}";
+        public override string Tutorial_WillTakeAWhile => "Esto llevará un tiempo, vuelve más tarde.";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "Espera a que se complete: {0}";
+        public override string GameOverResults => "Historial de la partida";
+
+        public override string UnitType_UnclaimedLand => "Tierra de nadie";
+        public override string UnitType_Settler => "Colono";
+        public override string UnitType_Settler_Description => "Fundar una nueva ciudad";
+        public override string Resource_ConsumedProduced => "Consumido/Producido";
+        public override string InputActionName_PlaceTarget => "Colocar objetivo";
+
+        public override string FactionStartSize => "Tamaño inicial de la facción";
+        public override string FactionStartSize_Full => "Completo";
+        public override string FactionStartSize_OneCity => "Una ciudad";
+        public override string FactionStartSize_Settler => "Un colono";
 
         //Winter update
         public override string Resource_StockpileLimit => "Límite de reservas";

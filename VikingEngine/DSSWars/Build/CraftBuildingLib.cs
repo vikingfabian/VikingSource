@@ -420,18 +420,18 @@ namespace VikingEngine.DSSWars.Build
                             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
                         );
 
-        public static readonly CraftBlueprint KnightsBarracks = new CraftBlueprint(
-                  CraftResultType.Building,
-                  (int)Build.BuildAndExpandType.KnightsBarracks,
-                 1,
-                 new UseResource[]
-                 {
-               new UseResource(ItemResourceType.ServiceMen, 1),
-                    new UseResource(ItemResourceType.Wood_Group, 20),
-                    new UseResource(ItemResourceType.Stone_G, 100)
-                 },
-                  XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
-            );
+        //public static readonly CraftBlueprint KnightsBarracks = new CraftBlueprint(
+        //          CraftResultType.Building,
+        //          (int)Build.BuildAndExpandType.KnightsBarracks,
+        //         1,
+        //         new UseResource[]
+        //         {
+        //       new UseResource(ItemResourceType.ServiceMen, 1),
+        //            new UseResource(ItemResourceType.Wood_Group, 20),
+        //            new UseResource(ItemResourceType.Stone_G, 100)
+        //         },
+        //          XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
+        //    );
 
 
         public static readonly CraftBlueprint PigPen = new CraftBlueprint(

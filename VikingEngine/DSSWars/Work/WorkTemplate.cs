@@ -59,18 +59,15 @@ namespace VikingEngine.DSSWars.Work
 
         bool isCity;
         public int resourceComponentStartIndex;
-        public void initComponents(bool isCity, int startIndex)
+        public void initComponents(bool isCity, WorkPriority[] work, int startIndex)
         {
             this.isCity = isCity;
             resourceComponentStartIndex = startIndex;
             int exEnd = resourceComponentStartIndex + COUNT;
 
-
-            WorkPriority[] work = Work();
-
             for (int i = resourceComponentStartIndex; i < exEnd; i++)
             {
-                work[i] = new WorkPriority(0);
+                 work[i] = new WorkPriority(0);
             }
 
             work[startIndex + (int)WorkPriorityType.move].value = 3;
@@ -515,12 +512,19 @@ namespace VikingEngine.DSSWars.Work
             }
         }
 
-        public void setWorkPrio(byte set, WorkPriorityType priorityType)
+        public void setWorkPrio(WorkPriorityType priorityType, byte set)
         {
             ref var work = ref GetRefWorkPriority(priorityType);
-            work.value = set;//Bound.Set(work.value + set, NoPrio, MaxPrio);
+            work.value = set;
             work.followFaction = false;
-            //SetWorkPriority(priorityType, work);
+        }
+
+        public void setWorkPrio(WorkPriorityType priorityType, byte set, bool fullStock)
+        {
+            ref var work = ref GetRefWorkPriority(priorityType);
+            work.value = set;
+            work.followFaction = false;
+            work.waitForStockpile = fullStock;
         }
         //public void setWorkPrioSafeGuard(bool set, WorkPriorityType priorityType)
         //{
@@ -1489,11 +1493,11 @@ namespace VikingEngine.DSSWars.Work
             //        throw new NotImplementedException();
             //}
         }
-        public void toHud(Players.LocalPlayer player, RichBoxContent content, ResourceGroup tab, Faction faction, City city)
+        public void toHud(Players.LocalPlayer player, RichBoxContent content, ResourceGroupType tab, Faction faction, City city)
         {
             switch (tab)
             {
-                case ResourceGroup.Resources:
+                case ResourceGroupType.Resources:
                     Get(WorkPriorityType.move).toHud(player, content, DssRef.lang.Work_Move, SpriteName.WarsWorkMove, SpriteName.WarsBuild_Storehouse, WorkPriorityType.move, faction, city);
                     Get(WorkPriorityType.wood).toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Wood.ToLowerInvariant()), SpriteName.WarsWorkCollect, SpriteName.WarsResource_Wood, WorkPriorityType.wood, faction, city);
                     Get(WorkPriorityType.stone).toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Stone.ToLowerInvariant()), SpriteName.WarsWorkCollect, SpriteName.WarsResource_Stone, WorkPriorityType.stone, faction, city);
@@ -1525,7 +1529,7 @@ namespace VikingEngine.DSSWars.Work
                     Get(WorkPriorityType.buildOrders).toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders, faction, city);
                     break;
 
-                case ResourceGroup.Metals:
+                case ResourceGroupType.Metals:
                     Get(WorkPriorityType.bogiron).toHud(player, content, DssRef.lang.Resource_TypeName_BogIron, SpriteName.WarsWorkCollect, SpriteName.WarsResource_IronOre, WorkPriorityType.bogiron, faction, city);
                     content.space();
                     HudLib.InfoButton(content, new RbTooltip_Text(DssRef.lang.Resource_BogIronDescription));
@@ -1564,7 +1568,7 @@ namespace VikingEngine.DSSWars.Work
                     Get(WorkPriorityType.craftMithril).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Mithril.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_MithrilAlloy, WorkPriorityType.craftMithril, faction, city);
                     break;
 
-                case ResourceGroup.Weapons:
+                case ResourceGroupType.Weapons:
                     Get(WorkPriorityType.craftSharpStick).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SharpStick.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Sharpstick, WorkPriorityType.craftSharpStick, faction, city);
                     Get(WorkPriorityType.craftBronzeSword).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_BronzeSword.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeSword, WorkPriorityType.craftBronzeSword, faction, city);
                     Get(WorkPriorityType.craftShortSword).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ShortSword.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_ShortSword, WorkPriorityType.craftShortSword, faction, city);
@@ -1578,7 +1582,7 @@ namespace VikingEngine.DSSWars.Work
                     Get(WorkPriorityType.craftMithrilSword).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MithrilSword.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_MithrilSword, WorkPriorityType.craftMithrilSword, faction, city);
                     break;
 
-                case ResourceGroup.Projectile:
+                case ResourceGroupType.Projectile:
                     Get(WorkPriorityType.craftSlingshot).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SlingShot.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Slingshot, WorkPriorityType.craftSlingshot, faction, city);
                     Get(WorkPriorityType.craftThrowingspear).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ThrowingSpear.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_ThrowSpear, WorkPriorityType.craftThrowingspear, faction, city);
                     Get(WorkPriorityType.craftBow).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Bow.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Bow, WorkPriorityType.craftBow, faction, city);
@@ -1601,7 +1605,7 @@ namespace VikingEngine.DSSWars.Work
                     Get(WorkPriorityType.craftManCannonIron).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ManCannonIron.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_IronManCannon, WorkPriorityType.craftManCannonIron, faction, city);
                     break;
 
-                case ResourceGroup.Armor:
+                case ResourceGroupType.Armor:
                     // --- Human Armor ---
                     Get(WorkPriorityType.craftPaddedArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_PaddedArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_PaddedArmor, WorkPriorityType.craftPaddedArmor, faction, city);
                     Get(WorkPriorityType.craftHeavyPaddedArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HeavyPaddedArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_HeavyPaddedArmor, WorkPriorityType.craftHeavyPaddedArmor, faction, city);
@@ -1634,7 +1638,7 @@ namespace VikingEngine.DSSWars.Work
 
                     break;
 
-                case ResourceGroup.Animals:
+                case ResourceGroupType.Animals:
                     Get(WorkPriorityType.SlaughterHen).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Hen), SpriteName.WarsHammer, SpriteName.WarsResource_Hen, WorkPriorityType.SlaughterHen, faction, city);
                     content.space(2);
                     waitForFullStock(WorkPriorityType.SlaughterHen);
@@ -1673,7 +1677,7 @@ namespace VikingEngine.DSSWars.Work
                     Get(WorkPriorityType.SlaughterOliphant).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Oliphant), SpriteName.WarsHammer, SpriteName.WarsResource_Oliphant, WorkPriorityType.SlaughterOliphant, faction, city);
                     break;
 
-                case ResourceGroup.Mint:
+                case ResourceGroupType.Mint:
                     const string CraftCoinCaption = "{0} - {1}";
 
                     {

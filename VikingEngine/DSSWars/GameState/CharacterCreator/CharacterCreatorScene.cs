@@ -187,9 +187,10 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             {
                 foreach (var weapon in wepArray)
                 {
+                    IconName.Item(weapon, out var weaponIcon, out var weaponName);
                     var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
                         {
-                            new RbImage(ResourceLib.Icon(weapon))
+                            new RbImage(weaponIcon)
                         },
                     new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, RbSoundType.Option)
                     );

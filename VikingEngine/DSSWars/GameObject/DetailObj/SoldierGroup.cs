@@ -1166,16 +1166,17 @@ namespace VikingEngine.DSSWars.GameObject
 #endif
             if (tArmy.IsArmy())
             {
-                HudLib.Label(args.content, DssRef.lang.ArmyStructure_ColumnWidth);
-                args.content.newLine();
-                for (int w = Army.MinColumnWidth; w <= Army.MaxColumnWidth; w += 2)
-                {
-                    var button = new ArtOption(w == tArmy.armyColumnWidth, 
-                        new List<AbsRichBoxMember> { new RbText(w.ToString()) },
-                        new RbAction1Arg<int>(tArmy.armyColumnWidthClick, w, RbSoundType.Option));
-                    
-                    args.content.Add(button);
-                }
+                //HudLib.Label(args.content, DssRef.lang.ArmyStructure_ColumnWidth);
+                //args.content.newLine();
+                //for (int w = Army.MinColumnWidth; w <= Army.MaxColumnWidth; w += 2)
+                //{
+                //    var button = new ArtOption(w == tArmy.armyColumnWidth, 
+                //        new List<AbsRichBoxMember> { new RbText(w.ToString()) },
+                //        new RbAction1Arg<int>(tArmy.armyColumnWidthClick, w, RbSoundType.Option));
+
+                //    args.content.Add(button);
+                //}
+                ArmyMenu.ColumnWidth(args.content, tArmy);
 
                 args.content.newParagraph();
 

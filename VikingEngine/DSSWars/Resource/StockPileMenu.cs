@@ -26,11 +26,11 @@ namespace VikingEngine.DSSWars.Resource
             this.faction = faction;
         }
 
-        public void toHud(ResourcesSubTab tab)
+        public void toHud(ResourceGroupType tab)
         {
             switch (tab)
             {
-                case ResourcesSubTab.Stockpile_Resources:
+                case ResourceGroupType.Resources:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
 
                     stockpile(ItemResourceType.Wood_Group);
@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.Resource
                     //GroupedResource.BufferIconInfo(content, false);
                     break;
 
-                case ResourcesSubTab.Stockpile_Metals:
+                case ResourceGroupType.Metals:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
 
                     stockpile(ItemResourceType.IronOre_G);
@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Resource
                     stockpile(ItemResourceType.Mithril);
 
                     break;
-                case ResourcesSubTab.Stockpile_Weapons:
+                case ResourceGroupType.Weapons:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
                     stockpile(ItemResourceType.SharpStick);
                     stockpile(ItemResourceType.BronzeSword);
@@ -97,12 +97,12 @@ namespace VikingEngine.DSSWars.Resource
 
                     stockpile(ItemResourceType.Warhammer);
                     stockpile(ItemResourceType.TwoHandSword);
-                    stockpile(ItemResourceType.KnightsLance);
+                    //stockpile(ItemResourceType.KnightsLance);
                     stockpile(ItemResourceType.MithrilSword);
 
                     break;
 
-                case ResourcesSubTab.Stockpile_Projectile:
+                case ResourceGroupType.Projectile:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
 
                     stockpile(ItemResourceType.SlingShot);
@@ -131,7 +131,7 @@ namespace VikingEngine.DSSWars.Resource
 
                     break;
 
-                case ResourcesSubTab.Stockpile_Armor:
+                case ResourceGroupType.Armor:
                     
                     stockpile(ItemResourceType.HeavyPaddedArmor);
                     stockpile(ItemResourceType.PaddedArmor);
@@ -151,6 +151,7 @@ namespace VikingEngine.DSSWars.Resource
         void stockpile(ItemResourceType item)
         {
             GroupedResource res;
+            IconName.Item(item, out SpriteName itemIcon, out string itemName);
 
             if (city != null)
             {
@@ -168,7 +169,7 @@ namespace VikingEngine.DSSWars.Resource
             content.Add(new ArtButton(RbButtonStyle.HoverArea,
                 new List<AbsRichBoxMember>{
                         new RbImage(res.amount >= res.goalBuffer ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd),
-                        new RbImage(ResourceLib.Icon(item))}, null,
+                        new RbImage(itemIcon)}, null,
                     new RbTooltip((RichBoxContent content, object tag) =>
                     {
                         if (city != null)
@@ -178,9 +179,9 @@ namespace VikingEngine.DSSWars.Resource
                         }
                         else
                         {
-                            content.Add(new RbImage(ResourceLib.Icon(item)));
+                            content.Add(new RbImage(itemIcon));
                             content.space();
-                            content.Add(new RbText(LangLib.Item(item)));
+                            content.Add(new RbText(itemName));
                         }
                     }
                     )));

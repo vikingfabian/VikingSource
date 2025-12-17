@@ -625,8 +625,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(SpriteName.birdUnLock));
-                    content.Add(new RbImage(ResourceLib.Icon(item)));
-                    content.Add(new RbText(LangLib.Item(item)));
+                    IconName.Item(item, out SpriteName itemIcon, out string itemName);
+                    content.Add(new RbImage(itemIcon));
+                    content.Add(new RbText(itemName));
                 }
             
             }

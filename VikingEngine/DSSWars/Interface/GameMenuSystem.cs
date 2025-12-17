@@ -464,7 +464,7 @@ namespace VikingEngine.DSSWars.Interface
             muteDisconnect(content);
 
             content.newLine();
-            content.Add(new RbText(DssRef.todoLang.Settings_ControllerVibration + ":", HudLib.TitleColor_Label));
+            content.Add(new RbText(Ref.langOpt.Settings_ControllerVibration + ":", HudLib.TitleColor_Label));
             content.space();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, 100, 10), Ref.gamesett.vibrationProperty, false);
 
@@ -518,7 +518,7 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember>{
                 new RbImage(SpriteName.PixController1),
                 new RbSpace(0.5f),
-                new RbText(DssRef.todoLang.GameSettings_MuteControllerDisconnect)
+                new RbText(DssRef.lang.GameSettings_MuteControllerDisconnect)
             }, Ref.gamesett.muteControllerDisconnectProperty));
         }
 

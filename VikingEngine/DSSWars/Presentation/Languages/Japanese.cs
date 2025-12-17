@@ -8,7 +8,39 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Japanese : AbsLanguage
     {
-        
+        //Winter update patch + spring
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+
+        public override string DisplayMode => "画面モード";
+        public override string DisplayMode_Windowed => "ウィンドウ";
+        public override string DisplayMode_BorderlessFullscreen => "ボーダーレスウィンドウ";
+
+        public override string GameSettings_RenderedMouseCursor => "カーソル描画";
+        public override string GameSettings_MuteControllerDisconnect => "コントローラー切断通知をミュート";
+
+        public override string Delivery_MaxDistance => "最大配送距離: {0}";
+        public override string Tutorial_WillTakeAWhile => "時間がかかります。後で戻ってきてください。";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "{0}の完了を待機中";
+        public override string GameOverResults => "ゲーム履歴";
+
+        public override string UnitType_UnclaimedLand => "未開拓地";
+        public override string UnitType_Settler => "開拓者";
+        public override string UnitType_Settler_Description => "新しい都市を建設する";
+        public override string Resource_ConsumedProduced => "消費 / 生産";
+        public override string InputActionName_PlaceTarget => "ターゲットを配置";
+
+        public override string FactionStartSize => "勢力の初期規模";
+        public override string FactionStartSize_Full => "最大";
+        public override string FactionStartSize_OneCity => "１都市";
+        public override string FactionStartSize_Settler => "開拓者１人";
+
         //Winter update
         public override string Resource_StockpileLimit => "備蓄上限";
         public override string GameMode_QuickMatch => "Quick Match";

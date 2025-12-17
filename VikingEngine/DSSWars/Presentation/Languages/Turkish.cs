@@ -12,7 +12,39 @@ namespace VikingEngine.DSSWars.Presentation
     //Licenesed 2025 Sep 11, "Astro: you can remix our work freely, any platform"
     partial class Turkish : AbsLanguage
     {
-        
+        //Winter update patch + spring
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+
+        public override string DisplayMode => "Görüntü Modu";
+        public override string DisplayMode_Windowed => "Pencere";
+        public override string DisplayMode_BorderlessFullscreen => "Çerçevesiz Tam Ekran";
+
+        public override string GameSettings_RenderedMouseCursor => "Yazılımsal İmleç"; // "Software cursor" - standard tech term
+        public override string GameSettings_MuteControllerDisconnect => "Gamepad kopma uyarısını sustur";
+
+        public override string Delivery_MaxDistance => "Maks. teslimat mesafesi: {0}";
+        public override string Tutorial_WillTakeAWhile => "Bu biraz sürecek, daha sonra tekrar gel.";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "{0} tamamlanmasını bekle";
+        public override string GameOverResults => "Oyun Geçmişi";
+
+        public override string UnitType_UnclaimedLand => "Sahipsiz Topraklar";
+        public override string UnitType_Settler => "Yerleşimci";
+        public override string UnitType_Settler_Description => "Yeni bir şehir kur";
+        public override string Resource_ConsumedProduced => "Tüketilen/Üretilen";
+        public override string InputActionName_PlaceTarget => "Hedef yerleştir";
+
+        public override string FactionStartSize => "Fraksiyon başlangıç boyutu";
+        public override string FactionStartSize_Full => "Tam";
+        public override string FactionStartSize_OneCity => "Tek şehir";
+        public override string FactionStartSize_Settler => "Tek yerleşimci";
+
 
         //Winter update
         public override string Resource_StockpileLimit => "Depo limiti";

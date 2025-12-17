@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -17,11 +18,11 @@ namespace VikingEngine.DSSWars.Players
 
         protected void refreshWorkPriority_async(bool inWar)
         {
-
-            faction.workTemplate.autoBuild.value = 4 - aggressionLevel;
-            if (inWar && faction.workTemplate.autoBuild.value > 1)
+            ref var autoBuild = ref faction.workTemplate.GetRefWorkPriority(WorkPriorityType.autoBuild);
+            autoBuild.value = (byte)(4 - aggressionLevel);
+            if (inWar && autoBuild.value > 1)
             {
-                faction.workTemplate.autoBuild.value -= 1;
+                autoBuild.value -= 1;
             }
             faction.refreshCityWork();
 
@@ -46,15 +47,15 @@ namespace VikingEngine.DSSWars.Players
                     city.autoAdjustResourcesToCitySize(prepareSettle);
 
                     //DOES NOT WORK - will reset in auto_updateWorkPrio()
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.stone/*ref city.res_stone*/, ref city.workTemplate.stone);
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.stone/*ref city.res_stone*/, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.stone));
 
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.food/*ref city.res_food*/, ref city.workTemplate.craft_food);
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.food/*ref city.res_food*/, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftFood));
 
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.fuel/*ref city.res_fuel*/, ref city.workTemplate.craft_fuel);
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.fuel/*ref city.res_fuel*/, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftFuel));
 
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.iron/*ref city.res_iron*/, ref city.workTemplate.craft_iron);
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.iron/*ref city.res_iron*/, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.smeltIron));
 
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.rawFood/*ref city.res_rawFood*/, ref city.workTemplate.farm_food);
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.rawFood/*ref city.res_rawFood*/, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.farmfood));
 
                     
 
@@ -62,8 +63,8 @@ namespace VikingEngine.DSSWars.Players
 
                     if (city.resourceAmount(CityResoureIndex.food)/*city.res_food.amount*/ <= 0)
                     {
-                        city.workTemplate.craft_food.value = 5;
-                        city.workTemplate.farm_food.value = 4;
+                        city.workTemplate.setWorkPrio(WorkPriorityType.craftFood, 5);// .craft_food.value = 5;
+                        city.workTemplate.setWorkPrio(WorkPriorityType.farmfood, 4);// .farm_food.value = 4;
                     }
                     if (city.resourceAmount(CityResoureIndex.wood)/*city.res_wood.amount*/ <= 0)
                     {

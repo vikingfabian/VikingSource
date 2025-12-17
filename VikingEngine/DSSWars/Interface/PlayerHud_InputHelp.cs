@@ -121,7 +121,7 @@ namespace VikingEngine.DSSWars.Interface
                     break;
 
                 case InputHelpState.CommandTarget:
-                    input(map.mouseSelect.Icon, DssRef.todoLang.InputActionName_PlaceTarget);
+                    input(map.mouseSelect.Icon, DssRef.lang.InputActionName_PlaceTarget);
                     input(map.cancelIcons().First(), DssRef.lang.Hud_Cancel);
                     break;
             }

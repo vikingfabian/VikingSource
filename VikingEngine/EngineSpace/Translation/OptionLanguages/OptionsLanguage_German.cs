@@ -9,6 +9,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_German : AbsOptionsLanguage
     {
+        public override string Settings_ControllerVibration => "Controller-Vibration";
         public override string GraphicsOption_IngameMenuWidth => "Breite des Ingame-Menüs";
         public override string DisplayMode => "Anzeigemodus";
         public override string DisplayMode_Windowed => "Fenstermodus";

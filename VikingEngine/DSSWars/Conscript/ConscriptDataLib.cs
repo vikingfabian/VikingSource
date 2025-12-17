@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.Conscript
                 BuildAndExpandType.WarmachineBarracks,
                 BuildAndExpandType.GunBarracks,
                 BuildAndExpandType.CannonBarracks,
-                BuildAndExpandType.KnightsBarracks,
+                //BuildAndExpandType.KnightsBarracks,
             };
         public static Dictionary<BuildAndExpandType, int> TypeToBarrackTypeIx;
 
@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.Conscript
             },
             XP.WorkExperienceType.NONE,
             XP.ExperienceLevel.Beginner_1,
-            CraftRequirement.None
+             BuildAndExpandType.NUM_NONE
         );
     }
 

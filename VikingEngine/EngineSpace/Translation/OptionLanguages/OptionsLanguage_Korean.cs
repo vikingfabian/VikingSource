@@ -9,6 +9,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Korean : AbsOptionsLanguage
     {
+        public override string Settings_ControllerVibration => "컨트롤러 진동";
         public override string GraphicsOption_IngameMenuWidth => "인게임 메뉴 너비";
         public override string DisplayMode => "디스플레이 모드";
         public override string DisplayMode_Windowed => "창 모드";

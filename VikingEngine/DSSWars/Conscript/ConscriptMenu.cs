@@ -469,7 +469,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                 //settler
                 content.Add(new RbSeperationLine());
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.UnitType_Settler) },
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.UnitType_Settler) },
                     new RbAction(city.conscriptSettlerLink),
                     new RbTooltip(settlerTooltip),
                      ConscriptDataLib.CraftSettler.available(city)));
@@ -539,8 +539,8 @@ namespace VikingEngine.DSSWars.Conscript
 
         void settlerTooltip(RichBoxContent content, object tag)
         {
-            content.h2(DssRef.todoLang.UnitType_Settler, HudLib.TitleColor_TypeName);
-            content.text(DssRef.todoLang.UnitType_Settler_Description, HudLib.InfoYellow_Light);
+            content.h2(DssRef.lang.UnitType_Settler, HudLib.TitleColor_TypeName);
+            content.text(DssRef.lang.UnitType_Settler_Description, HudLib.InfoYellow_Light);
             ConscriptDataLib.CraftSettler.toMenu(content, city);
         }
 
