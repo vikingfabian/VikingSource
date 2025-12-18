@@ -2322,6 +2322,30 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_TreeSeedlingHard, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_TreeSeedlingSoft, currentIndex, 3, 3);
 
+                add(SpriteName.WarsBuild_MaterialStorage, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_FoodStorage, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_WeaponStorage, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_ArmorStorage, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_AnimalStorage, currentIndex, 3, 3);
+
+                add(SpriteName.WarsBuild_Smoker, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Pottery, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Butcher, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_DryingPan, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Shieldmaker, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Dryer, currentIndex, 3, 3);
+
+                add(SpriteName.WarsBuild_OxenPen, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_KineOxenPen, currentIndex, 3, 3);
+
+                add(SpriteName.WarsBuild_DogCage, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_HoundCage, currentIndex, 3, 3);
+
+                add(SpriteName.WarsBuild_PonyPen, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_HorsePen, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_WarHorsePen, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_DraftHorsePen, currentIndex, 3, 3);
+
             }
             currentIndex = numTilesWidth * 90;
             {

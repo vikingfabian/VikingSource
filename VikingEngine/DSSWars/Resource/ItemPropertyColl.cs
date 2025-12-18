@@ -51,6 +51,7 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.Linen, CityResoureIndex.skinLinnen, 1f / 10, Work.WorkPriorityType.farmlinen, null, null, StorageType.MaterialStorage);
             new ItemProperties(ItemResourceType.SkinLinen_Group, CityResoureIndex.skinLinnen, 1f / 10, Work.WorkPriorityType.farmlinen, null, null, StorageType.MaterialStorage) { defaultStockPile = 200 }.AddItemSource(
                 new ItemSource( ItemSourceType.Farm, Build.BuildAndExpandType.LinenFarm), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
+            new ItemProperties(ItemResourceType.Container, CityResoureIndex.Container, DefaultWeight, Work.WorkPriorityType.craftContainer, null, null, StorageType.MaterialStorage);
 
             // fuel & food
             new ItemProperties(ItemResourceType.Fuel_G, CityResoureIndex.fuel, DefaultWeight, Work.WorkPriorityType.craftFuel, CraftResourceLib.Fuel1, null, StorageType.MaterialStorage) { defaultStockPile = 400 }.AddItemSource(new ItemSource(Map.TerrainMineType.Coal));

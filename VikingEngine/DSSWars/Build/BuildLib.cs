@@ -305,54 +305,57 @@ namespace VikingEngine.DSSWars.Build
                 //list.Add(BuildAndExpandType.PigPen);
             }
 
-            // --- Existing ---
-            addAnimalPen(BuildAndExpandType.HenPen, CityResoureIndex.Hen, city.buildingStructure.HenPen_count);
-            addAnimalPen(BuildAndExpandType.PigPen, CityResoureIndex.Pig, city.buildingStructure.PigPen_count);
-
-            // --- Oxen ---
-            addAnimalPen(BuildAndExpandType.OxenPen, CityResoureIndex.Oxen, city.buildingStructure.OxenPen_count);
-            addAnimalPen(BuildAndExpandType.KineOxenPen, CityResoureIndex.KineOxen, city.buildingStructure.KineOxenPen_count);
-
-            // --- Dogs ---
-            addAnimalPen(BuildAndExpandType.DogCage, CityResoureIndex.Dog, city.buildingStructure.DogCage_count);
-            addAnimalPen(BuildAndExpandType.HoundCage, CityResoureIndex.Hound, city.buildingStructure.HoundCage_count);
-
-            // --- Horses ---
-            addAnimalPen(BuildAndExpandType.PonyPen, CityResoureIndex.Pony, city.buildingStructure.PonyPen_count);
-            addAnimalPen(BuildAndExpandType.HorsePen, CityResoureIndex.Horse, city.buildingStructure.HorsePen_count);
-            addAnimalPen(BuildAndExpandType.WarHorsePen, CityResoureIndex.WarHorse, city.buildingStructure.WarHorsePen_count);
-            addAnimalPen(BuildAndExpandType.DraftHorsePen, CityResoureIndex.DraftHorse, city.buildingStructure.DraftHorsePen_count);
-
-            // --- Wild Pigs / Hogs ---
-            if (biomRequirement(CityBiom.Mountain))
+            if (logistics1)
             {
-                addAnimalPen(BuildAndExpandType.WildPigPen, CityResoureIndex.WildPig, city.buildingStructure.WildPigPen_count);
-                addAnimalPen(BuildAndExpandType.WildHogPen, CityResoureIndex.WildHog, city.buildingStructure.WildHogPen_count);
-                addAnimalPen(BuildAndExpandType.WarHogPen, CityResoureIndex.WarHog, city.buildingStructure.WarHogPen_count);
-                addAnimalPen(BuildAndExpandType.StagHogPen, CityResoureIndex.StagHog, city.buildingStructure.StagHogPen_count);
-            }
+                // --- Existing ---
+                addAnimalPen(BuildAndExpandType.HenPen, CityResoureIndex.Hen, city.buildingStructure.HenPen_count);
+                addAnimalPen(BuildAndExpandType.PigPen, CityResoureIndex.Pig, city.buildingStructure.PigPen_count);
 
-            // --- Wolves ---
-            if (biomRequirement(CityBiom.Desolate))
-            {
-                addAnimalPen(BuildAndExpandType.WolfCage, CityResoureIndex.Wolf, city.buildingStructure.WolfCage_count);
-                addAnimalPen(BuildAndExpandType.WargCage, CityResoureIndex.Warg, city.buildingStructure.WargCage_count);
-                addAnimalPen(BuildAndExpandType.AlphaWargCage, CityResoureIndex.AlphaWarg, city.buildingStructure.AlphaWargCage_count);
-            }
+                // --- Oxen ---
+                addAnimalPen(BuildAndExpandType.OxenPen, CityResoureIndex.Oxen, city.buildingStructure.OxenPen_count);
+                addAnimalPen(BuildAndExpandType.KineOxenPen, CityResoureIndex.KineOxen, city.buildingStructure.KineOxenPen_count);
 
-            // --- Cats ---
-            if (biomRequirement(CityBiom.Forest))
-            {
-                addAnimalPen(BuildAndExpandType.WildCatCage, CityResoureIndex.WildCat, city.buildingStructure.WildCatCage_count);
-                addAnimalPen(BuildAndExpandType.LionCage, CityResoureIndex.Lion, city.buildingStructure.LionCage_count);
-                addAnimalPen(BuildAndExpandType.WarLionCage, CityResoureIndex.WarLion, city.buildingStructure.WarLionCage_count);
-            }
-            // --- Elephants ---
-            if (biomRequirement(CityBiom.Desert))
-            {
-                addAnimalPen(BuildAndExpandType.ElephantCage, CityResoureIndex.Elephant, city.buildingStructure.ElephantCage_count);
-                addAnimalPen(BuildAndExpandType.WarElephantCage, CityResoureIndex.WarElephant, city.buildingStructure.WarElephantCage_count);
-                addAnimalPen(BuildAndExpandType.OliphantCage, CityResoureIndex.Oliphant, city.buildingStructure.OliphantCage_count);
+                // --- Dogs ---
+                addAnimalPen(BuildAndExpandType.DogCage, CityResoureIndex.Dog, city.buildingStructure.DogCage_count);
+                addAnimalPen(BuildAndExpandType.HoundCage, CityResoureIndex.Hound, city.buildingStructure.HoundCage_count);
+
+                // --- Horses ---
+                addAnimalPen(BuildAndExpandType.PonyPen, CityResoureIndex.Pony, city.buildingStructure.PonyPen_count);
+                addAnimalPen(BuildAndExpandType.HorsePen, CityResoureIndex.Horse, city.buildingStructure.HorsePen_count);
+                addAnimalPen(BuildAndExpandType.WarHorsePen, CityResoureIndex.WarHorse, city.buildingStructure.WarHorsePen_count);
+                addAnimalPen(BuildAndExpandType.DraftHorsePen, CityResoureIndex.DraftHorse, city.buildingStructure.DraftHorsePen_count);
+
+                // --- Wild Pigs / Hogs ---
+                if (biomRequirement(CityBiom.Mountain))
+                {
+                    addAnimalPen(BuildAndExpandType.WildPigPen, CityResoureIndex.WildPig, city.buildingStructure.WildPigPen_count);
+                    addAnimalPen(BuildAndExpandType.WildHogPen, CityResoureIndex.WildHog, city.buildingStructure.WildHogPen_count);
+                    addAnimalPen(BuildAndExpandType.WarHogPen, CityResoureIndex.WarHog, city.buildingStructure.WarHogPen_count);
+                    addAnimalPen(BuildAndExpandType.StagHogPen, CityResoureIndex.StagHog, city.buildingStructure.StagHogPen_count);
+                }
+
+                // --- Wolves ---
+                if (biomRequirement(CityBiom.Desolate))
+                {
+                    addAnimalPen(BuildAndExpandType.WolfCage, CityResoureIndex.Wolf, city.buildingStructure.WolfCage_count);
+                    addAnimalPen(BuildAndExpandType.WargCage, CityResoureIndex.Warg, city.buildingStructure.WargCage_count);
+                    addAnimalPen(BuildAndExpandType.AlphaWargCage, CityResoureIndex.AlphaWarg, city.buildingStructure.AlphaWargCage_count);
+                }
+
+                // --- Cats ---
+                if (biomRequirement(CityBiom.Forest))
+                {
+                    addAnimalPen(BuildAndExpandType.WildCatCage, CityResoureIndex.WildCat, city.buildingStructure.WildCatCage_count);
+                    addAnimalPen(BuildAndExpandType.LionCage, CityResoureIndex.Lion, city.buildingStructure.LionCage_count);
+                    addAnimalPen(BuildAndExpandType.WarLionCage, CityResoureIndex.WarLion, city.buildingStructure.WarLionCage_count);
+                }
+                // --- Elephants ---
+                if (biomRequirement(CityBiom.Desert))
+                {
+                    addAnimalPen(BuildAndExpandType.ElephantCage, CityResoureIndex.Elephant, city.buildingStructure.ElephantCage_count);
+                    addAnimalPen(BuildAndExpandType.WarElephantCage, CityResoureIndex.WarElephant, city.buildingStructure.WarElephantCage_count);
+                    addAnimalPen(BuildAndExpandType.OliphantCage, CityResoureIndex.Oliphant, city.buildingStructure.OliphantCage_count);
+                }
             }
 
 
@@ -1039,53 +1042,52 @@ namespace VikingEngine.DSSWars.Build
               BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
               MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             //    Pottery,
-            new BuildOption(BuildAndExpandType.Pottery, TerrainMainType.Building, (int)TerrainBuildingType.Pottery, SpriteName.MissingImage, CraftBuildingLib.Pottery, true,
+            new BuildOption(BuildAndExpandType.Pottery, TerrainMainType.Building, (int)TerrainBuildingType.Pottery, SpriteName.WarsBuild_Pottery, CraftBuildingLib.Pottery, true,
                 BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Storage, BuildFilterTag.Resources,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.ShieldMaker, TerrainMainType.Building, (int)TerrainBuildingType.ShieldMaker, SpriteName.MissingImage, CraftBuildingLib.ShieldMaker, true,
+            new BuildOption(BuildAndExpandType.ShieldMaker, TerrainMainType.Building, (int)TerrainBuildingType.ShieldMaker, SpriteName.WarsBuild_Shieldmaker, CraftBuildingLib.ShieldMaker, true,
                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Weapons, BuildFilterTag.Soldiers,
                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             //DryingPan,
-            new BuildOption(BuildAndExpandType.DryingPan, TerrainMainType.Building, (int)TerrainBuildingType.DryingPan, SpriteName.MissingImage, CraftBuildingLib.DryingPan, true,
+            new BuildOption(BuildAndExpandType.DryingPan, TerrainMainType.Building, (int)TerrainBuildingType.DryingPan, SpriteName.WarsBuild_DryingPan, CraftBuildingLib.DryingPan, true,
                 BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             //Butcher,
-            new BuildOption(BuildAndExpandType.Smelter, TerrainMainType.Building, (int)TerrainBuildingType.Smelter, SpriteName.MissingImage, CraftBuildingLib.Smelter, true,
+            new BuildOption(BuildAndExpandType.Butcher, TerrainMainType.Building, (int)TerrainBuildingType.Butcher, SpriteName.WarsBuild_Butcher, CraftBuildingLib.Butcher, true,
                 BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             //Smoker,
-            new BuildOption(BuildAndExpandType.Smelter, TerrainMainType.Building, (int)TerrainBuildingType.Smelter, SpriteName.MissingImage, CraftBuildingLib.Smelter, true,
+            new BuildOption(BuildAndExpandType.Smoker, TerrainMainType.Building, (int)TerrainBuildingType.Smoker, SpriteName.WarsBuild_Smoker, CraftBuildingLib.Smoker, true,
                 BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             //Dryer,
-            new BuildOption(BuildAndExpandType.Smelter, TerrainMainType.Building, (int)TerrainBuildingType.Smelter, SpriteName.MissingImage, CraftBuildingLib.Smelter, true,
+            new BuildOption(BuildAndExpandType.Dryer, TerrainMainType.Building, (int)TerrainBuildingType.Dryer, SpriteName.WarsBuild_Dryer, CraftBuildingLib.Dryer, true,
                 BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            
-            //MaterialStorage, FoodStorage,  WeaponStorage, ArmorStorage, AnimalStorage,
-            new BuildOption(BuildAndExpandType.MaterialStorage, TerrainMainType.Building, (int)TerrainBuildingType.MaterialStorage, SpriteName.MissingImage, CraftBuildingLib.MaterialStorage, true,
+
+            new BuildOption(BuildAndExpandType.MaterialStorage, TerrainMainType.Building, (int)TerrainBuildingType.MaterialStorage, SpriteName.WarsBuild_MaterialStorage, CraftBuildingLib.MaterialStorage, true,
                 BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             //FoodStorage
-            new BuildOption(BuildAndExpandType.FoodStorage, TerrainMainType.Building, (int)TerrainBuildingType.FoodStorage, SpriteName.MissingImage, CraftBuildingLib.FoodStorage, true,
+            new BuildOption(BuildAndExpandType.FoodStorage, TerrainMainType.Building, (int)TerrainBuildingType.FoodStorage, SpriteName.WarsBuild_FoodStorage, CraftBuildingLib.FoodStorage, true,
                 BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             //WeaponStorage
-            new BuildOption(BuildAndExpandType.WeaponStorage, TerrainMainType.Building, (int)TerrainBuildingType.WeaponStorage, SpriteName.MissingImage, CraftBuildingLib.WeaponStorage, true,
+            new BuildOption(BuildAndExpandType.WeaponStorage, TerrainMainType.Building, (int)TerrainBuildingType.WeaponStorage, SpriteName.WarsBuild_WeaponStorage, CraftBuildingLib.WeaponStorage, true,
                 BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             //ArmorStorage
-            new BuildOption(BuildAndExpandType.ArmorStorage, TerrainMainType.Building, (int)TerrainBuildingType.ArmorStorage, SpriteName.MissingImage, CraftBuildingLib.ArmorStorage, true,
+            new BuildOption(BuildAndExpandType.ArmorStorage, TerrainMainType.Building, (int)TerrainBuildingType.ArmorStorage, SpriteName.WarsBuild_ArmorStorage, CraftBuildingLib.ArmorStorage, true,
                 BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             //AnimalStorage
-            new BuildOption(BuildAndExpandType.AnimalStorage, TerrainMainType.Building, (int)TerrainBuildingType.AnimalStorage, SpriteName.MissingImage, CraftBuildingLib.AnimalStorage, true,
+            new BuildOption(BuildAndExpandType.AnimalStorage, TerrainMainType.Building, (int)TerrainBuildingType.AnimalStorage, SpriteName.WarsBuild_AnimalStorage, CraftBuildingLib.AnimalStorage, true,
                 BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 

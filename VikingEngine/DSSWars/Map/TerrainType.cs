@@ -46,6 +46,7 @@ namespace VikingEngine.DSSWars.Map
 
         BogIron,
         ClayPit,
+        SaltPit,
        
         NUM_NONE
     }

@@ -2551,6 +2551,9 @@
 #begin VoxelModel/LfWars/city_logistic.vox
 /copy:VoxelModel/LfWars/city_logistic.vox
 
+#begin VoxelModel/LfWars/city_meatstation.vox
+/copy:VoxelModel/LfWars/city_meatstation.vox
+
 #begin VoxelModel/LfWars/city_mine.vox
 /copy:VoxelModel/LfWars/city_mine.vox
 
@@ -2589,6 +2592,9 @@
 
 #begin VoxelModel/LfWars/city_stonewall.vox
 /copy:VoxelModel/LfWars/city_stonewall.vox
+
+#begin VoxelModel/LfWars/city_storage.vox
+/copy:VoxelModel/LfWars/city_storage.vox
 
 #begin VoxelModel/LfWars/city_storehouse.vox
 /copy:VoxelModel/LfWars/city_storehouse.vox

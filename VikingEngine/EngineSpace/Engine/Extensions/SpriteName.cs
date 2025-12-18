@@ -2681,6 +2681,18 @@ namespace VikingEngine
         WarsBuild_HempFarms,
         WarsBuild_PigPen,
         WarsBuild_HenPen,
+
+        WarsBuild_OxenPen,
+        WarsBuild_KineOxenPen,
+
+        WarsBuild_DogCage,
+        WarsBuild_HoundCage,
+
+        WarsBuild_PonyPen,
+        WarsBuild_HorsePen,
+        WarsBuild_WarHorsePen,
+        WarsBuild_DraftHorsePen,
+
         WarsBuild_Statue,
         WarsBuild_Carpenter,
         WarsBuild_Nobelhouse,
@@ -2737,6 +2749,19 @@ namespace VikingEngine
         //WarsBuild_CobbleStoneRoad,
         WarsBuild_GuardOffice,
         WarsBuild_GuardOfficeLarge,
+
+        WarsBuild_MaterialStorage,
+        WarsBuild_FoodStorage,
+        WarsBuild_WeaponStorage,
+        WarsBuild_ArmorStorage,
+        WarsBuild_AnimalStorage,
+
+        WarsBuild_Smoker,
+        WarsBuild_Pottery,
+        WarsBuild_Butcher,
+        WarsBuild_DryingPan,
+        WarsBuild_Shieldmaker,
+        WarsBuild_Dryer,
 
         WarsBuild_Tent,
         WarsBuild_ResearchCenter,

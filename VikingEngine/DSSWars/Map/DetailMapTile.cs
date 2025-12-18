@@ -9,6 +9,7 @@ using VikingEngine.EngineSpace;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Map.Terrain;
+using VikingEngine.ToGG.HeroQuest.GO;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -515,7 +516,11 @@ namespace VikingEngine.DSSWars.Map
                     break;
                 case TerrainSubFoilType.ClayPit:
                     manMade = false;
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 3, wp, 0.14f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 10, wp, 0.14f));
+                    break;
+                case TerrainSubFoilType.SaltPit:
+                    manMade = true;
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 12, wp, 0.14f));
                     break;
                 default:
                     throw new NotImplementedException();
@@ -841,6 +846,38 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_research, 0, wp, WorldData.SubTileWidth * 0.9f));
                     break;
 
+                case TerrainBuildingType.Smoker:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_meatstation, 2, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
+                case TerrainBuildingType.Pottery:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workstation, 10, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
+                case TerrainBuildingType.Butcher:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_meatstation, 0, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
+                case TerrainBuildingType.ShieldMaker:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workstation, 11, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
+                case TerrainBuildingType.Dryer:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_meatstation, 3, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
+
+                case TerrainBuildingType.MaterialStorage:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_storage, 0, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
+                case TerrainBuildingType.FoodStorage:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_storage, 1, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
+                case TerrainBuildingType.WeaponStorage:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_storage, 2, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
+                case TerrainBuildingType.ArmorStorage:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_storage, 3, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
+                case TerrainBuildingType.AnimalStorage:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_storage, 4, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
+
 
                 default:
                     throw new NotImplementedException();
@@ -1121,7 +1158,7 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 8, wp, scale));
                     break;
                 case TerrainMineType.Salt:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 5, wp, scale));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 11, wp, scale));
                     break;
                 case TerrainMineType.Sulfur:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 5, wp, scale));

@@ -160,7 +160,7 @@ namespace VikingEngine.DSSWars.EntityComponent
         public const int Dog = 109;
         public const int Hound = 110;
         
-        public const int StorageBox = 111;
+        public const int Container = 111;
 
         public const int Pig = 112;
         public const int Hen = 113;

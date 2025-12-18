@@ -83,7 +83,8 @@ namespace VikingEngine.DSSWars.Presentation
         
         public string BuildingType_Smoker => "Smoker";
         public string BuildingType_Dryer => "Dryer";
-
+        public string BuildingType_Shieldmaker => "Shield maker";
+        public string BuildingType_DryingPan => "Drying pan";
 
         // --- Storage ---
         public string BuildingType_MaterialStorage => "Material Storage";
