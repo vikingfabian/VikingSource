@@ -325,7 +325,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 Biom = CityBiom.Desert;
             }
-            else if (areaCulture.percForest > 0.5)
+            else if (areaCulture.percForest > 0.75)
             {
                 Biom = CityBiom.Forest;
             }

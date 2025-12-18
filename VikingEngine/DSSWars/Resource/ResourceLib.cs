@@ -210,7 +210,7 @@ namespace VikingEngine.DSSWars.Resource
             resources.changeRate.toMenu(content);
 
             SpriteName stockIcon;
-            if (resources.amount >= resources.goalBuffer)
+            if (resources.amount >= resources.stockPileLimit)
             {
                 stockIcon = SpriteName.WarsStockpileStop;
             }
@@ -224,7 +224,7 @@ namespace VikingEngine.DSSWars.Resource
             content.space();
             content.Add(new RbImage(stockIcon));
             content.space();
-            content.Add(new RbText(TextLib.LargeNumber(resources.goalBuffer)));
+            content.Add(new RbText(TextLib.LargeNumber(resources.stockPileLimit)));
 
             var priority = city.workTemplate.GetWorkPriority(item, out bool hasPriority);
             if (hasPriority)
@@ -302,6 +302,21 @@ namespace VikingEngine.DSSWars.Resource
 
                 default:
                     return SpriteName.NO_IMAGE;
+            }
+        }
+
+        public static int Limit(StockpileLimitOption limitOption)
+        {
+            switch (limitOption)
+            {
+                case StockpileLimitOption.NoLimit:
+                    return int.MaxValue;
+
+                case StockpileLimitOption.Value100: return 100;
+                case StockpileLimitOption.Value500: return 500;
+                case StockpileLimitOption.Value2000: return 2000;
+
+                default: return -1;
             }
         }
 
@@ -479,7 +494,7 @@ namespace VikingEngine.DSSWars.Resource
         //        case ItemResourceType.HeavyPaddedArmor:
         //            return SpriteName.WarsResource_HeavyPaddedArmor;
 
-               
+
         //        case ItemResourceType.BronzeArmor:
         //            return SpriteName.WarsResource_BronzeArmor;
 
@@ -510,7 +525,7 @@ namespace VikingEngine.DSSWars.Resource
         //    }
         //}
 
-        
+
     }
 
     enum ResourceType

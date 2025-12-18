@@ -792,14 +792,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             }
                             content.Add(new RbImage(SpriteName.WarsResource_Slingshot));
                             content.space();
-                            content.Add(new RbImage(sligshot.amount >= sligshot.goalBuffer ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd));
+                            content.Add(new RbImage(sligshot.amount >= sligshot.stockPileLimit ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd));
                             content.hspace();
                             content.Add(new RbText(DssRef.lang.Resource_Tab_Stockpile + ":"));
                             content.space();
 
                            
                             
-                            content.Add(new RbText(string.Format("{0}/{1}", sligshot.amount, sligshot.goalBuffer), reachedBuffer? HudLib.NotAvailableColor : HudLib.InfoYellow_VeryLight));
+                            content.Add(new RbText(string.Format("{0}/{1}", sligshot.amount, sligshot.stockPileLimit), reachedBuffer? HudLib.NotAvailableColor : HudLib.InfoYellow_VeryLight));
                             if (reachedBuffer)
                             {
                                 content.hspace();
@@ -1612,7 +1612,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!CollectFood_increasefoodbuffer)
                     {
                         if (player.gameControls.map.selection.obj is City &&
-                            player.gameControls.map.selection.obj.GetCity().GetGroupedResource(EntityComponent.CityResoureIndex.food).goalBuffer/*res_food.goalBuffer*/ > City.DefaultFoodBuffer)
+                            player.gameControls.map.selection.obj.GetCity().GetGroupedResource(EntityComponent.CityResoureIndex.food).stockPileLimit/*res_food.goalBuffer*/ > City.DefaultFoodBuffer)
                         {
                             CollectFood_increasefoodbuffer = true;
 
