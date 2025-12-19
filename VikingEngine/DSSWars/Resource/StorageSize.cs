@@ -25,6 +25,12 @@ namespace VikingEngine.DSSWars.Resource
 
         //const int SaveDiv = 100;
 
+        public void addStorage(City city, StorageType storageType, bool add)
+        {
+            storageCount += lib.BoolToLeftRight(add);
+            refreshCapacity(city, storageType);
+        }
+
         public void refreshCapacity(City city, StorageType storageType)
         {
             int capacity = StartSize + storageCount * BuildingSizeAdd;

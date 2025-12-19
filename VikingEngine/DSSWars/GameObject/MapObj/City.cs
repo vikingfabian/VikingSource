@@ -64,8 +64,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int HousingCount_Workers = 0;
         public int WorkersMaxLimit;
-
         public int HousingCount_Guard = 0;
+
+        public GroupedResource freeServiceMen = new GroupedResource();
+
         public int AvailableGuardHousing()
         {
             return HousingCount_Guard - soldiersCount;
@@ -1445,6 +1447,19 @@ namespace VikingEngine.DSSWars.GameObject
                 HousingCount_Guard -= count;
             }
         }
+
+        public void onNobelHouseBuild(bool build_notDestroy, int size)
+        {
+            int count = large ? DssConst.HousingCount_GuardsOffice_Large : DssConst.HousingCount_GuardsOffice_Small;
+            if (build_notDestroy)
+            {
+                HousingCount_Guard += count;
+            }
+            else
+            {
+                HousingCount_Guard -= count;
+            }
+        }
         //public void useServiceMen(int useInServiceCount)
         //{ 
         //    freeServiceMen.amount -= useInServiceCount;
@@ -1649,7 +1664,14 @@ namespace VikingEngine.DSSWars.GameObject
 
                 defaultResourceBuffer(world);
             }
+
+            for (StorageType storageType = 0; storageType < StorageType.NUM_NONE; storageType++)
+            {
+                refreshStorageSize(storageType);
+            }
         }
+
+        
 
         public bool claimCity(Faction faction, IntVector2 subtile)
         {

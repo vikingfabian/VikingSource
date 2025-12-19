@@ -345,6 +345,16 @@ namespace VikingEngine.DSSWars.GameObject
             return ref DssRef.world.cityStorage[StorageSize.COUNT * myIndex + (int)storageType];
         }
 
+        void refreshStorageSize(StorageType storageType)
+        {
+            DssRef.world.cityStorage[StorageSize.COUNT * myIndex + (int)storageType].refreshCapacity(this, storageType);
+        }
+
+        void addStorageBuilding(StorageType storageType, bool add)
+        {
+            DssRef.world.cityStorage[StorageSize.COUNT * myIndex + (int)storageType].addStorage(this, storageType, add);
+        }
+
 
         public void AddGroupedResource(int itemIndex, int add)
         {

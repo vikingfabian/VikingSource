@@ -531,7 +531,21 @@ namespace VikingEngine.DSSWars.GameObject
                                 onGuardHouseBuild(build, true);
                                 break;
 
-
+                            case TerrainBuildingType.MaterialStorage:
+                                addStorageBuilding(StorageType.MaterialStorage, build);
+                                break;
+                            case TerrainBuildingType.FoodStorage:
+                                addStorageBuilding(StorageType.FoodStorage, build);
+                                break;
+                            case TerrainBuildingType.WeaponStorage:
+                                addStorageBuilding(StorageType.WeaponStorage, build);
+                                break;
+                            case TerrainBuildingType.ArmorStorage:
+                                addStorageBuilding(StorageType.ArmorStorage, build);
+                                break;
+                            case TerrainBuildingType.AnimalStorage:
+                                addStorageBuilding(StorageType.ArmorStorage, build);
+                                break;
 
                             case TerrainBuildingType.SoldierBarracks:
                                 if (build)
@@ -719,6 +733,8 @@ namespace VikingEngine.DSSWars.GameObject
                                     destroyResearchBuilding(subPos);
                                 }
                                 break;
+
+                            
 
                         }
                     }
