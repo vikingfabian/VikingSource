@@ -1,11 +1,8 @@
 ﻿UPDATE
 Change Log: 
-* Fixed rare landAreaCenter crash
-* Fixed: there are some bugs with the rendered cursor. Right-clicking to move causes the screen window to drift.
-* Fixed: rendered cursor dont hide on center lock
-* Army Column Width is saved
-* Army Column Width is displayed on armies
-* Translated all new strings
+* (maybe) fixed rare warmanager peaceful check
+* fixed rare waramanager gear up crash
+
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

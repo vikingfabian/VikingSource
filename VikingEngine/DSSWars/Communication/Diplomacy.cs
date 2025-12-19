@@ -424,8 +424,11 @@ namespace VikingEngine.DSSWars
 
         public bool botMayStartWar(Faction attacker, Faction defender)
         {
-            if (attacker != null && defender != null &&
-                attacker.armies.Count > 0)
+            if (attacker != null && 
+                defender != null &&
+                attacker.armies.Count > 0 &&
+                attacker != defender &&
+                attacker.player.IsBot())
             {
                 var rel = DssRef.diplomacy.GetRelationType(defender, attacker);
                 if (rel <= RelationType.RelationTypeN3_War)
