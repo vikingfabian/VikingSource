@@ -1,8 +1,6 @@
 ﻿UPDATE
 Change Log: 
-* (maybe) fixed rare warmanager peaceful check
-* fixed rare waramanager gear up crash
-
+* fixed: cannons are locked behind "black powder" but it should be adv casting
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

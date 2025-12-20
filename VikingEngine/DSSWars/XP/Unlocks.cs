@@ -38,6 +38,7 @@ namespace VikingEngine.DSSWars.XP
 
         public bool item_blackPowder;
         public bool building_gunBarrack;
+        public bool building_gunmaker;
         public bool building_chemist;
 
         public bool item_gunPowder;
@@ -63,6 +64,7 @@ namespace VikingEngine.DSSWars.XP
             item_crossbow = true;
             building_chemist = true;
             building_gunBarrack = true;
+            building_gunmaker = true;
             item_blackPowder = true;
             item_gunPowder = true;
         }
@@ -86,6 +88,7 @@ namespace VikingEngine.DSSWars.XP
             item_castMithril = true;
             item_cannon = true;
             building_cannonBarrack = true;
+            building_gunmaker = true;
         }
 
         public void UnlockIron()
@@ -147,6 +150,11 @@ namespace VikingEngine.DSSWars.XP
             if (building_chemist)
             {
                 builds.Add(BuildAndExpandType.Chemist);
+            }
+
+            if (building_gunmaker)
+            {
+                builds.Add(BuildAndExpandType.Gunmaker);
             }
 
             return builds;
