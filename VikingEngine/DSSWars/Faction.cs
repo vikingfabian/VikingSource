@@ -511,7 +511,7 @@ namespace VikingEngine.DSSWars
         }
 
         
-        public void oneSecUpdate()
+        public void oneSecUpdate(bool minute)
         {
             if (isAlive)
             {
@@ -551,7 +551,7 @@ namespace VikingEngine.DSSWars
                 {
                     if (city.factionIndex == myIndex)
                     {
-                        city.oneSecUpdate();
+                        city.oneSecUpdate(minute);
                         embassyCount += city.buildingStructure.Embassy_count;
 
                         income += city.income_oneSecUpdate(incomeMultiplier);

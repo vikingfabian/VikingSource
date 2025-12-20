@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Work_SlaughterX => "Slaughter {0}";
 
-        public string Resource_TypeName_NobelMen => "nobel men";
+        public string Resource_TypeName_NobelMen => "nobelmen";
         public string Resource_TypeName_ConservedFood => "conserved food";
         public string Resource_TypeName_Clay => "clay";
         public string Resource_TypeName_Brick => "brick";
@@ -38,7 +38,6 @@ namespace VikingEngine.DSSWars.Presentation
         public string Resource_TypeName_RoundShield => "round shield";
         public string Resource_TypeName_HeaterShield => "heater shield";
         public string Resource_TypeName_TowerShield => "tower shield";
-
 
         public string Resource_TypeName_Mount => "mount";
 

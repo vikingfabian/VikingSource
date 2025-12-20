@@ -477,7 +477,7 @@ namespace VikingEngine.DSSWars
 
                             if (DssRef.time.oneSecond)
                             {
-                                factionsC.sel.oneSecUpdate();
+                                factionsC.sel.oneSecUpdate(DssRef.time.oneMinute);
                             }
                         }
                     }

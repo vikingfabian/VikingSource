@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.Component;
 using VikingEngine.DSSWars.Players;
@@ -16,6 +17,8 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Data;
+using VikingEngine.LootFest.GO.Characters;
+using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.ToGG.ToggEngine.QueAction;
 
@@ -78,6 +81,51 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.ManCannonBronze,
             ItemResourceType.SiegeCannonIron,
             ItemResourceType.ManCannonIron,
+        };
+
+        static readonly ItemResourceType[] MenTypes = {
+            ItemResourceType.Men,
+            ItemResourceType.NobelMen,
+        };
+
+        static readonly ItemResourceType[] AnimalTypes = {
+
+            ItemResourceType.Pig,
+            ItemResourceType.Oxen,
+            ItemResourceType.KineOxen,
+
+            ItemResourceType.Dog,
+            ItemResourceType.Hound,
+
+            ItemResourceType.Pony,
+            ItemResourceType.Horse,
+            ItemResourceType.WarHorse,
+            ItemResourceType.DraftHorse,
+
+            ItemResourceType.WildPig,
+            ItemResourceType.WildHog,
+            ItemResourceType.WarHog,
+            ItemResourceType.StagHog,
+
+            ItemResourceType.Wolf,
+            ItemResourceType.Warg,
+            ItemResourceType.AlphaWarg,
+
+            ItemResourceType.WildCat,
+            ItemResourceType.Lion,
+            ItemResourceType.WarLion,
+
+            ItemResourceType.Elephant,
+            ItemResourceType.WarElephant,
+            ItemResourceType.Oliphant,
+        };
+
+        static readonly ItemResourceType[] WagonTypes = {
+            ItemResourceType.Wagon2Wheel,
+            ItemResourceType.Wagon4Wheel,
+            ItemResourceType.WagonClosed,
+            ItemResourceType.WagonIron,
+            ItemResourceType.WagonSteel,
         };
 
         public static List<ItemResourceType[]> AllConstriptWeapons()

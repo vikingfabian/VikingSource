@@ -66,7 +66,9 @@ namespace VikingEngine.DSSWars.GameObject
         public int WorkersMaxLimit;
         public int HousingCount_Guard = 0;
 
-        public GroupedResource freeServiceMen = new GroupedResource();
+
+        public GroupedResource freeNobelMen = new GroupedResource();
+        public int HousingCount_NobelMen = 0;
 
         public int AvailableGuardHousing()
         {
@@ -309,7 +311,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void generateCultureAndEconomy(WorldData world, CityCultureCollection cityCultureCollection)
         {
-            initEconomy(true, world);
+            initEconomy(/*true,*/ world);
 
             CityAreaCulture areaCulture = new CityAreaCulture(this, world);
 
@@ -1448,16 +1450,15 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void onNobelHouseBuild(bool build_notDestroy, int size)
+        public void onNobelHouseBuild(bool build_notDestroy, int count)
         {
-            int count = large ? DssConst.HousingCount_GuardsOffice_Large : DssConst.HousingCount_GuardsOffice_Small;
             if (build_notDestroy)
             {
-                HousingCount_Guard += count;
+                HousingCount_NobelMen += count;
             }
             else
             {
-                HousingCount_Guard -= count;
+                HousingCount_NobelMen -= count;
             }
         }
         //public void useServiceMen(int useInServiceCount)
@@ -1581,7 +1582,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             groupRadius = 0.6f;
 
-            initEconomy(newGame, DssRef.world);
+            //initEconomy(newGame, DssRef.world);
+            for (StorageType storageType = 0; storageType < StorageType.NUM_NONE; storageType++)
+            {
+                refreshStorageSize(storageType);
+            }
+
             CalcRecruitToTile();
             armyGoalRotation = rotation.radians;
 
@@ -1620,9 +1626,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         
 
-        void initEconomy(bool newGame, WorldData world)
+        void initEconomy(/*bool newGame,*/ WorldData world)
         {
-            if (newGame)
+            //if (newGame)
             {
                 money.AddCopper(500);
 
@@ -1665,10 +1671,7 @@ namespace VikingEngine.DSSWars.GameObject
                 defaultResourceBuffer(world);
             }
 
-            for (StorageType storageType = 0; storageType < StorageType.NUM_NONE; storageType++)
-            {
-                refreshStorageSize(storageType);
-            }
+            
         }
 
         
@@ -1973,14 +1976,9 @@ namespace VikingEngine.DSSWars.GameObject
             return childrenAge0.Int() + childrenAge1;
         }
 
-        public void oneSecUpdate()
+        public void oneSecUpdate(bool minute)
         {
             const int MinWorkforce = 8;
-
-            //if (myIndex == 35 || debugTagged)
-            //{
-            //    lib.DoNothing();
-            //}
 
             int addWorkers = 0;
 
@@ -2052,7 +2050,12 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             casualProgress?.oneSecondUpdate(this);
-            //capturePoints = Bound.Min(capturePoints - 10, 0);
+
+            if (minute)
+            { 
+                float addNobel = HousingCount_NobelMen * DssConst.NobelHouseMenAddSpeed_PerManHouse;
+                freeNobelMen.amount = Bound.Max(freeNobelMen.amount + Convert.ToInt32(addNobel), HousingCount_NobelMen);
+            }
         }
 
         void cityCaptureCheck()
@@ -2950,6 +2953,17 @@ namespace VikingEngine.DSSWars.GameObject
                     content.Add(new RbImage(SpriteName.WarsServiceMenTotal));
                     content.space();
                     content.Add(new RbText(TotalServiceMen().ToString()));
+
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.MissingImage));
+                    content.space();
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_NobelMen), freeNobelMen.amount)));
+                    content.Add(new RbTab(0.4f));
+                    content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsBuild_Nobelhouse));
+                    content.space();
+                    content.Add(new RbText(HousingCount_NobelMen.ToString()));
                 }
                 //HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
                 //HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
