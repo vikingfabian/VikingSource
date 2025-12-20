@@ -1190,14 +1190,16 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.HenPen:
-                    content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.HenReady - 1))));
+                    //content.h2(DssRef.lang.BuildHud_PerCycle, HudLib.TitleColor_Label);
+                    //content.newLine();
+                    //HudLib.BulletPoint(content);
+                    //content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.HenGrowth.harvestReady - 1))));
 
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce + DssConst.WorkTime_PickUpResource))));
+                    //content.newLine();
+                    //HudLib.BulletPoint(content);
+                    //content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce + DssConst.WorkTime_PickUpResource))));
+
+                    pen(TerrainContent.HenGrowth, ItemResourceType.Hen);
 
                     content.newLine();
                     HudLib.BulletPoint(content);
@@ -1209,26 +1211,102 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.PigPen:
-                    content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.PigReady - 1))));
+                    pen(TerrainContent.PigGrowth, ItemResourceType.Pig);                                    
+                    break;
 
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce))));
+                //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                //content.newLine();
+                //HudLib.BulletPoint(content);
+                //content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.PigGrowth.harvestReady - 1))));
 
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbText(DssRef.lang.BuildHud_Produce));
-                    content.space();
-                    content.Add(new RbText(DssConst.PigRawFoodAmout.ToString()));
-                    content.Add(new RbImage(SpriteName.WarsResource_RawFood));
-                    content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
-                    content.Add(new RbImage(SpriteName.pjNumPlus));
-                    content.Add(new RbText(DssConst.PigSkinAmount.ToString()));
-                    content.Add(new RbImage(SpriteName.WarsResource_LinenCloth));
-                    content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
+                //content.newLine();
+                //HudLib.BulletPoint(content);
+                //content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce))));
+
+                //content.newLine();
+                //HudLib.BulletPoint(content);
+                //content.Add(new RbText(DssRef.lang.BuildHud_Produce));
+                //content.space();
+                //IconName.Item(ItemResourceType.Pig, out SpriteName itemIcon, out string itemName);
+                //content.Add(new RbImage(itemIcon));
+                //content.hspace();
+                //content.Add(new RbText(itemName));    
+                //content.Add(new RbText(DssConst.PigRawFoodAmout.ToString()));
+                //content.Add(new RbImage(SpriteName.WarsResource_RawFood));
+                //content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
+                //content.Add(new RbImage(SpriteName.pjNumPlus));
+                //content.Add(new RbText(DssConst.PigSkinAmount.ToString()));
+                //content.Add(new RbImage(SpriteName.WarsResource_LinenCloth));
+                //content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
+
+                case BuildAndExpandType.OxenPen:
+                    pen(TerrainContent.OxenGrowth, ItemResourceType.Oxen);
+                    break;
+                case BuildAndExpandType.KineOxenPen:
+                    pen(TerrainContent.KineOxenGrowth, ItemResourceType.KineOxen);
+                    break;
+
+                case BuildAndExpandType.DogCage:
+                    pen(TerrainContent.DogGrowth, ItemResourceType.Dog);
+                    break;
+                case BuildAndExpandType.HoundCage:
+                    pen(TerrainContent.HoundGrowth, ItemResourceType.Hound);
+                    break;
+
+                case BuildAndExpandType.PonyPen:
+                    pen(TerrainContent.PonyGrowth, ItemResourceType.Pony);
+                    break;
+                case BuildAndExpandType.HorsePen:
+                    pen(TerrainContent.HorseGrowth, ItemResourceType.Horse);
+                    break;
+                case BuildAndExpandType.WarHorsePen:
+                    pen(TerrainContent.WarHorseGrowth, ItemResourceType.WarHorse);
+                    break;
+                case BuildAndExpandType.DraftHorsePen:
+                    pen(TerrainContent.DraftHorseGrowth, ItemResourceType.DraftHorse);
+                    break;
+
+                case BuildAndExpandType.WildPigPen:
+                    pen(TerrainContent.WildPigGrowth, ItemResourceType.WildPig);
+                    break;
+                case BuildAndExpandType.WildHogPen:
+                    pen(TerrainContent.WildHogGrowth, ItemResourceType.WildHog);
+                    break;
+                case BuildAndExpandType.WarHogPen:
+                    pen(TerrainContent.WarHogGrowth, ItemResourceType.WarHog);
+                    break;
+                case BuildAndExpandType.StagHogPen:
+                    pen(TerrainContent.StagHogGrowth, ItemResourceType.StagHog);
+                    break;
+
+                case BuildAndExpandType.WolfCage:
+                    pen(TerrainContent.WolfGrowth, ItemResourceType.Wolf);
+                    break;
+                case BuildAndExpandType.WargCage:
+                    pen(TerrainContent.WargGrowth, ItemResourceType.Warg);
+                    break;
+                case BuildAndExpandType.AlphaWargCage:
+                    pen(TerrainContent.AlphaWargGrowth, ItemResourceType.AlphaWarg);
+                    break;
+
+                case BuildAndExpandType.WildCatCage:
+                    pen(TerrainContent.WildCatGrowth, ItemResourceType.WildCat);
+                    break;
+                case BuildAndExpandType.LionCage:
+                    pen(TerrainContent.LionGrowth, ItemResourceType.Lion);
+                    break;
+                case BuildAndExpandType.WarLionCage:
+                    pen(TerrainContent.WarLionGrowth, ItemResourceType.WarLion);
+                    break;
+
+                case BuildAndExpandType.ElephantCage:
+                    pen(TerrainContent.ElephantGrowth, ItemResourceType.Elephant);
+                    break;
+                case BuildAndExpandType.WarElephantCage:
+                    pen(TerrainContent.WarElephantGrowth, ItemResourceType.WarElephant);
+                    break;
+                case BuildAndExpandType.OliphantCage:
+                    pen(TerrainContent.OliphantGrowth, ItemResourceType.Oliphant);
                     break;
 
                 case BuildAndExpandType.Brewery:
@@ -1435,6 +1513,27 @@ namespace VikingEngine.DSSWars.Build
                     content.Add(new RbImage(SpriteName.WarsResource_LinenCloth));
                     content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
                 }
+            }
+
+            void pen(AnimalPenGrowth penGrowth, ItemResourceType resourceType)
+            {
+                content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, penGrowth.harvestReady - 1))));
+
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce))));
+
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(DssRef.lang.BuildHud_Produce));
+                content.space();
+                IconName.Item(resourceType, out SpriteName itemIcon, out string itemName);
+                content.Add(new RbImage(itemIcon));
+                content.hspace();
+                content.Add(new RbText(itemName));
             }
         }
 

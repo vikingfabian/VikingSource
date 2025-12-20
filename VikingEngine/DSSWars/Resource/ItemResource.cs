@@ -240,8 +240,9 @@ namespace VikingEngine.DSSWars.Resource
         Settler,
 
         NUM,
-
         RESOURCES,
+
+        Pheasant,
     }
 
 }

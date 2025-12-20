@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.GameObject.Animal
 {
     struct AnimalData
     {
         public Vector3 wp;
-        public AnimalType animal;
+        public ItemResourceType animal;
 
-        public AnimalData(Vector3 wp, AnimalType animal)
+        public AnimalData(Vector3 wp, ItemResourceType animal)
         {
             this.wp = wp;
             this.animal = animal;
@@ -22,13 +23,16 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         {
             switch (animal)
             {
-                case AnimalType.Pig:
+                default:
+                    new TempAnimal(tilepos, wp);
+                    break;
+                case ItemResourceType.Pig:
                     new Pig(tilepos, wp);
                     break;
-                case AnimalType.Hen:
+                case ItemResourceType.Hen:
                     new Hen(tilepos, wp);
                     break;
-                case AnimalType.Pheasant:
+                case ItemResourceType.Pheasant:
                     new Pheasant(tilepos, wp);
                     break;
             }

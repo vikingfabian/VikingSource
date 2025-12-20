@@ -1305,7 +1305,14 @@ namespace VikingEngine.DSSWars.Build
             }
         }
 
-        
+        public static BuildOption Get(BuildAndExpandType option)
+        {
+            return BuildOptions[(int)option];
+        }
+        public static BuildOption Get(TerrainMainType main, int subType)
+        {
+            return BuildOptions[(int)GetType(main, subType)];
+        }
 
         public static BuildAndExpandType GetType(TerrainMainType main, int subType)
         {

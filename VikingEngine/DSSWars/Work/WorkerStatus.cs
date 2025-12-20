@@ -412,25 +412,131 @@ namespace VikingEngine.DSSWars.Work
                     {
                         var building = (TerrainBuildingType)subTile.subTerrain;
 
-                        int min, size;
+                        AnimalPenGrowth size;
                         Resource.ItemResourceType resourceType;
 
-                        if (building == TerrainBuildingType.PigPen)
+
+                        switch (building)
                         {
-                            resourceType = Resource.ItemResourceType.Pig;
-                            min = TerrainContent.PigReady;
-                            size = TerrainContent.PigMaxSize;
-                        }
-                        else
-                        {
-                            resourceType = Resource.ItemResourceType.Hen;
-                            min = TerrainContent.HenReady;
-                            size = TerrainContent.HenMaxSize;
+                            default:
+                            case TerrainBuildingType.HenPen:
+                                resourceType = Resource.ItemResourceType.Hen;
+                                size = TerrainContent.HenGrowth;
+                                break;
+
+                            case TerrainBuildingType.PigPen:
+                                resourceType = Resource.ItemResourceType.Pig;
+                                size = TerrainContent.PigGrowth;
+                                break;
+
+                            case TerrainBuildingType.OxenPen:
+                                resourceType = Resource.ItemResourceType.Oxen;
+                                size = TerrainContent.OxenGrowth;
+                                break;
+                            case TerrainBuildingType.KineOxenPen:
+                                resourceType = Resource.ItemResourceType.KineOxen;
+                                size = TerrainContent.KineOxenGrowth;
+                                break;
+
+                            case TerrainBuildingType.DogCage:
+                                resourceType = Resource.ItemResourceType.Dog;
+                                size = TerrainContent.DogGrowth;
+                                break;
+                            case TerrainBuildingType.HoundCage:
+                                resourceType = Resource.ItemResourceType.Hound;
+                                size = TerrainContent.HoundGrowth;
+                                break;
+
+                            case TerrainBuildingType.PonyPen:
+                                resourceType = Resource.ItemResourceType.Pony;
+                                size = TerrainContent.PonyGrowth;
+                                break;
+                            case TerrainBuildingType.HorsePen:
+                                resourceType = Resource.ItemResourceType.Horse;
+                                size = TerrainContent.HorseGrowth;
+                                break;
+                            case TerrainBuildingType.WarHorsePen:
+                                resourceType = Resource.ItemResourceType.WarHorse;
+                                size = TerrainContent.WarHorseGrowth;
+                                break;
+                            case TerrainBuildingType.DraftHorsePen:
+                                resourceType = Resource.ItemResourceType.DraftHorse;
+                                size = TerrainContent.DraftHorseGrowth;
+                                break;
+
+                            case TerrainBuildingType.WildPigPen:
+                                resourceType = Resource.ItemResourceType.WildPig;
+                                size = TerrainContent.WildPigGrowth;
+                                break;
+                            case TerrainBuildingType.WildHogPen:
+                                resourceType = Resource.ItemResourceType.WildHog;
+                                size = TerrainContent.WildHogGrowth;
+                                break;
+                            case TerrainBuildingType.WarHogPen:
+                                resourceType = Resource.ItemResourceType.WarHog;
+                                size = TerrainContent.WarHogGrowth;
+                                break;
+                            case TerrainBuildingType.StagHogPen:
+                                resourceType = Resource.ItemResourceType.StagHog;
+                                size = TerrainContent.StagHogGrowth;
+                                break;
+
+                            case TerrainBuildingType.WolfCage:
+                                resourceType = Resource.ItemResourceType.Wolf;
+                                size = TerrainContent.WolfGrowth;
+                                break;
+                            case TerrainBuildingType.WargCage:
+                                resourceType = Resource.ItemResourceType.Warg;
+                                size = TerrainContent.WargGrowth;
+                                break;
+                            case TerrainBuildingType.AlphaWargCage:
+                                resourceType = Resource.ItemResourceType.AlphaWarg;
+                                size = TerrainContent.AlphaWargGrowth;
+                                break;
+
+                            case TerrainBuildingType.WildCatCage:
+                                resourceType = Resource.ItemResourceType.WildCat;
+                                size = TerrainContent.WildCatGrowth;
+                                break;
+                            case TerrainBuildingType.LionCage:
+                                resourceType = Resource.ItemResourceType.Lion;
+                                size = TerrainContent.LionGrowth;
+                                break;
+                            case TerrainBuildingType.WarLionCage:
+                                resourceType = Resource.ItemResourceType.WarLion;
+                                size = TerrainContent.WarLionGrowth;
+                                break;
+
+                            case TerrainBuildingType.ElephantCage:
+                                resourceType = Resource.ItemResourceType.Elephant;
+                                size = TerrainContent.ElephantGrowth;
+                                break;
+                            case TerrainBuildingType.WarElephantCage:
+                                resourceType = Resource.ItemResourceType.WarElephant;
+                                size = TerrainContent.WarElephantGrowth;
+                                break;
+                            case TerrainBuildingType.OliphantCage:
+                                resourceType = Resource.ItemResourceType.Oliphant;
+                                size = TerrainContent.OliphantGrowth;
+                                break;
                         }
 
-                        if (subTile.terrainAmount >= min)
+                        //if (building == TerrainBuildingType.PigPen)
+                        //{
+                        //    resourceType = Resource.ItemResourceType.Pig;
+                        //    min = TerrainContent.PigReady;
+                        //    size = TerrainContent.PigMaxSize;
+                        //}
+                        //else
+                        //{
+                        //    resourceType = Resource.ItemResourceType.Hen;
+                        //    min = TerrainContent.HenReady;
+                        //    size = TerrainContent.HenMaxSize;
+                        //}
+
+                        if (subTile.terrainAmount >= size.harvestReady)
                         {
-                            subTile.terrainAmount -= size;
+                            subTile.terrainAmount -= size.maxSize;
 
                             EditSubTile editTile = new EditSubTile(subTileEnd, subTile, false, true, false);
                             editTile.Submit();

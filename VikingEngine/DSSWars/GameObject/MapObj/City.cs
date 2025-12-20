@@ -66,9 +66,10 @@ namespace VikingEngine.DSSWars.GameObject
         public int WorkersMaxLimit;
         public int HousingCount_Guard = 0;
 
-
         public GroupedResource freeNobelMen = new GroupedResource();
         public int HousingCount_NobelMen = 0;
+
+        public int PenFoodUpkeep = 0;
 
         public int AvailableGuardHousing()
         {
@@ -472,6 +473,9 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write(Bound.UShort(HousingCount_Guard));
                 w.Write(Bound.Short(freeServiceMen.amount));
                 w.Write(Bound.Short(workingAndFreeServiceMen));
+                w.Write(Bound.UShort(HousingCount_NobelMen));
+                w.Write(Bound.Short(freeNobelMen.amount));
+                w.Write(Bound.UShort(PenFoodUpkeep));
                 cityHallSubtilePos.writeUshort(w);
                 citySquareSubtilePos.writeUshort(w);
 
@@ -1338,16 +1342,16 @@ namespace VikingEngine.DSSWars.GameObject
                                                     else
                                                     {
                                                         terrain = TerrainMainType.Building;
-                                                        if (Ref.peRnd.Chance(0.4))
-                                                        {
-                                                            sub = (int)TerrainBuildingType.PigPen;
-                                                            maxAmount = TerrainContent.PigMaxSize;
-                                                        }
-                                                        else
-                                                        {
+                                                        //if (Ref.peRnd.Chance(0.4))
+                                                        //{
+                                                        //    sub = (int)TerrainBuildingType.PigPen;
+                                                        //    maxAmount = TerrainContent.PigMaxSize;
+                                                        //}
+                                                        //else
+                                                        //{
                                                             sub = (int)TerrainBuildingType.HenPen;
-                                                            maxAmount = TerrainContent.HenMaxSize;
-                                                        }
+                                                            maxAmount = TerrainContent.HenGrowth.maxSize;
+                                                        //}
                                                     }
 
                                                     if (Build.BuildLib.TryAutoBuild(farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))

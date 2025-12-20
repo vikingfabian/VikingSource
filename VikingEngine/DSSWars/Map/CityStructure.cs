@@ -399,22 +399,221 @@ namespace VikingEngine.DSSWars.Map
                                             case TerrainBuildingType.HenPen:
                                                 ++buildingStructure.HenPen_count;
                                                 ++foodspots;
-                                                if (subTile.terrainAmount > TerrainContent.HenReady)
+                                                if (subTile.terrainAmount > TerrainContent.HenGrowth.harvestReady)
                                                 {
                                                     AnimalPens.Add(subTileLoop.Position);
                                                 }
-
                                                 buildingPosition.HenPen_pos = subTileLoop.Position;
                                                 break;
+
                                             case TerrainBuildingType.PigPen:
                                                 ++buildingStructure.PigPen_count;
                                                 ++foodspots;
-                                                if (subTile.terrainAmount > TerrainContent.PigReady)
+                                                if (subTile.terrainAmount > TerrainContent.PigGrowth.harvestReady)
                                                 {
                                                     AnimalPens.Add(subTileLoop.Position);
                                                 }
-
                                                 buildingPosition.PigPen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.OxenPen:
+                                                ++buildingStructure.OxenPen_count;
+                                                ++foodspots;
+                                                if (subTile.terrainAmount > TerrainContent.OxenGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.OxenPen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.KineOxenPen:
+                                                ++buildingStructure.KineOxenPen_count;
+                                                ++foodspots;
+                                                if (subTile.terrainAmount > TerrainContent.KineOxenGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.KineOxenPen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.DogCage:
+                                                ++buildingStructure.DogCage_count;
+                                                if (subTile.terrainAmount > TerrainContent.DogGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.DogCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.HoundCage:
+                                                ++buildingStructure.HoundCage_count;
+                                                if (subTile.terrainAmount > TerrainContent.HoundGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.HoundCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.PonyPen:
+                                                ++buildingStructure.PonyPen_count;
+                                                if (subTile.terrainAmount > TerrainContent.PonyGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.PonyPen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.HorsePen:
+                                                ++buildingStructure.HorsePen_count;
+                                                ++foodspots;
+                                                if (subTile.terrainAmount > TerrainContent.HorseGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.HorsePen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WarHorsePen:
+                                                ++buildingStructure.WarHorsePen_count;
+                                                ++foodspots;
+                                                if (subTile.terrainAmount > TerrainContent.WarHorseGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.WarHorsePen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.DraftHorsePen:
+                                                ++buildingStructure.DraftHorsePen_count;
+                                                ++foodspots;
+                                                if (subTile.terrainAmount > TerrainContent.DraftHorseGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.DraftHorsePen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WildPigPen:
+                                                ++buildingStructure.WildPigPen_count;
+                                                if (subTile.terrainAmount > TerrainContent.WildPigGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.WildPigPen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WildHogPen:
+                                                ++buildingStructure.WildHogPen_count;
+                                                ++foodspots;
+                                                if (subTile.terrainAmount > TerrainContent.WildHogGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.WildHogPen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WarHogPen:
+                                                ++buildingStructure.WarHogPen_count;
+                                                ++foodspots;
+                                                if (subTile.terrainAmount > TerrainContent.WarHogGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.WarHogPen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.StagHogPen:
+                                                ++buildingStructure.StagHogPen_count;
+                                                ++foodspots;
+                                                if (subTile.terrainAmount > TerrainContent.StagHogGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.StagHogPen_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WolfCage:
+                                                ++buildingStructure.WolfCage_count;
+                                                if (subTile.terrainAmount > TerrainContent.WolfGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.WolfCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WargCage:
+                                                ++buildingStructure.WargCage_count;
+                                                if (subTile.terrainAmount > TerrainContent.WargGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.WargCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.AlphaWargCage:
+                                                ++buildingStructure.AlphaWargCage_count;
+                                                if (subTile.terrainAmount > TerrainContent.AlphaWargGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.AlphaWargCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WildCatCage:
+                                                ++buildingStructure.WildCatCage_count;
+                                                if (subTile.terrainAmount > TerrainContent.WildCatGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.WildCatCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.LionCage:
+                                                ++buildingStructure.LionCage_count;
+                                                if (subTile.terrainAmount > TerrainContent.LionGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.LionCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WarLionCage:
+                                                ++buildingStructure.WarLionCage_count;
+                                                if (subTile.terrainAmount > TerrainContent.WarLionGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.WarLionCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.ElephantCage:
+                                                ++buildingStructure.ElephantCage_count;
+                                                ++foodspots;
+                                                if (subTile.terrainAmount > TerrainContent.ElephantGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.ElephantCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.WarElephantCage:
+                                                ++buildingStructure.WarElephantCage_count;
+                                                ++foodspots;
+                                                if (subTile.terrainAmount > TerrainContent.WarElephantGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.WarElephantCage_pos = subTileLoop.Position;
+                                                break;
+
+                                            case TerrainBuildingType.OliphantCage:
+                                                ++buildingStructure.OliphantCage_count;
+                                                ++foodspots;
+                                                if (subTile.terrainAmount > TerrainContent.OliphantGrowth.harvestReady)
+                                                {
+                                                    AnimalPens.Add(subTileLoop.Position);
+                                                }
+                                                buildingPosition.OliphantCage_pos = subTileLoop.Position;
                                                 break;
 
                                             case TerrainBuildingType.Postal:
@@ -644,112 +843,6 @@ namespace VikingEngine.DSSWars.Map
                                                 buildingPosition.AnimalStorage_pos = subTileLoop.Position;
                                                 break;
 
-                                            // --- Animal Pens ---
-
-                                            case TerrainBuildingType.OxenPen:
-                                                ++buildingStructure.OxenPen_count;
-                                                buildingPosition.OxenPen_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.KineOxenPen:
-                                                ++buildingStructure.KineOxenPen_count;
-                                                buildingPosition.KineOxenPen_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.DogCage:
-                                                ++buildingStructure.DogCage_count;
-                                                buildingPosition.DogCage_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.HoundCage:
-                                                ++buildingStructure.HoundCage_count;
-                                                buildingPosition.HoundCage_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.PonyPen:
-                                                ++buildingStructure.PonyPen_count;
-                                                buildingPosition.PonyPen_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.HorsePen:
-                                                ++buildingStructure.HorsePen_count;
-                                                buildingPosition.HorsePen_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.WarHorsePen:
-                                                ++buildingStructure.WarHorsePen_count;
-                                                buildingPosition.WarHorsePen_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.DraftHorsePen:
-                                                ++buildingStructure.DraftHorsePen_count;
-                                                buildingPosition.DraftHorsePen_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.WildPigPen:
-                                                ++buildingStructure.WildPigPen_count;
-                                                buildingPosition.WildPigPen_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.WildHogPen:
-                                                ++buildingStructure.WildHogPen_count;
-                                                buildingPosition.WildHogPen_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.WarHogPen:
-                                                ++buildingStructure.WarHogPen_count;
-                                                buildingPosition.WarHogPen_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.StagHogPen:
-                                                ++buildingStructure.StagHogPen_count;
-                                                buildingPosition.StagHogPen_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.WolfCage:
-                                                ++buildingStructure.WolfCage_count;
-                                                buildingPosition.WolfCage_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.WargCage:
-                                                ++buildingStructure.WargCage_count;
-                                                buildingPosition.WargCage_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.AlphaWargCage:
-                                                ++buildingStructure.AlphaWargCage_count;
-                                                buildingPosition.AlphaWargCage_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.WildCatCage:
-                                                ++buildingStructure.WildCatCage_count;
-                                                buildingPosition.WildCatCage_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.LionCage:
-                                                ++buildingStructure.LionCage_count;
-                                                buildingPosition.LionCage_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.WarLionCage:
-                                                ++buildingStructure.WarLionCage_count;
-                                                buildingPosition.WarLionCage_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.ElephantCage:
-                                                ++buildingStructure.ElephantCage_count;
-                                                buildingPosition.ElephantCage_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.WarElephantCage:
-                                                ++buildingStructure.WarElephantCage_count;
-                                                buildingPosition.WarElephantCage_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.OliphantCage:
-                                                ++buildingStructure.OliphantCage_count;
-                                                buildingPosition.OliphantCage_pos = subTileLoop.Position;
-                                                break;
 
                                         }
                                         break;

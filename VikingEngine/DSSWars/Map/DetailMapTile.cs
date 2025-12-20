@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.EngineSpace;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -610,13 +611,105 @@ namespace VikingEngine.DSSWars.Map
             switch (buildingType)
             {
                 case TerrainBuildingType.PigPen:
-                    animals(tile, ref subTile, ref wp, AnimalType.Pig, TerrainContent.PigMaxSize);
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Pig, TerrainContent.PigGrowth);
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
                 case TerrainBuildingType.HenPen:
-                    animals(tile, ref subTile, ref wp, AnimalType.Hen, TerrainContent.HenMaxSize);
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Hen, TerrainContent.HenGrowth);
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
+
+                case TerrainBuildingType.OxenPen:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Oxen, TerrainContent.OxenGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.KineOxenPen:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.KineOxen, TerrainContent.KineOxenGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+
+                case TerrainBuildingType.DogCage:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Dog, TerrainContent.DogGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.HoundCage:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Hound, TerrainContent.HoundGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+
+                case TerrainBuildingType.PonyPen:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Pony, TerrainContent.PonyGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.HorsePen:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Horse, TerrainContent.HorseGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.WarHorsePen:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.WarHorse, TerrainContent.WarHorseGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.DraftHorsePen:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.DraftHorse, TerrainContent.DraftHorseGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+
+                case TerrainBuildingType.WildPigPen:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.WildPig, TerrainContent.WildPigGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.WildHogPen:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.WildHog, TerrainContent.WildHogGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.WarHogPen:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.WarHog, TerrainContent.WarHogGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.StagHogPen:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.StagHog, TerrainContent.StagHogGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+
+                case TerrainBuildingType.WolfCage:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Wolf, TerrainContent.WolfGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.WargCage:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Warg, TerrainContent.WargGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.AlphaWargCage:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.AlphaWarg, TerrainContent.AlphaWargGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+
+                case TerrainBuildingType.WildCatCage:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.WildCat, TerrainContent.WildCatGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.LionCage:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Lion, TerrainContent.LionGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.WarLionCage:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.WarLion, TerrainContent.WarLionGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+
+                case TerrainBuildingType.ElephantCage:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Elephant, TerrainContent.ElephantGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.WarElephantCage:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.WarElephant, TerrainContent.WarElephantGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+                case TerrainBuildingType.OliphantCage:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Oliphant, TerrainContent.OliphantGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+
                 case TerrainBuildingType.WorkerTent:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_tenthut, rnd, wp, WorldData.SubTileWidth * 0.9f));
                     break;
@@ -961,7 +1054,7 @@ namespace VikingEngine.DSSWars.Map
                     bSurfacePolygonTexture = true;
                     surfaceColor = GardenGrassCol;
                     surfacePolygonTexture = SurfaceTextureType.Grass;
-                    animals(tile, ref subTile, ref wp, AnimalType.Pheasant, 1);
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Pheasant, TerrainContent.Pheasant);//1);
                     break;
 
                 case TerrainDecorType.GardenMemoryStone:
@@ -1106,7 +1199,7 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        void animals(Tile tile, ref SubTile subTile, ref Vector3 wp, AnimalType animalType, int animalSize)
+        void animals(Tile tile, ref SubTile subTile, ref Vector3 wp, ItemResourceType animalType, AnimalPenGrowth penGrowth)
         {
             if (tile.OutOfRenderTimeOut())
             {
@@ -1115,7 +1208,7 @@ namespace VikingEngine.DSSWars.Map
                     animalData = new List<AnimalData>(8);
                 }
 
-                int count = (subTile.terrainAmount + animalSize - 1) / animalSize;
+                int count = penGrowth.visualCount(subTile.terrainAmount);//(subTile.terrainAmount + penGrowth.maxSize - 1) / penGrowth.maxSize;
                 var animal = new AnimalData(wp, animalType);
                 for (int i = 0; i < count; i++)
                 {

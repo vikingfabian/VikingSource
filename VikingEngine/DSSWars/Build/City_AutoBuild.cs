@@ -17,6 +17,7 @@ using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.PJ.GameState;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -734,7 +735,36 @@ namespace VikingEngine.DSSWars.GameObject
                                 }
                                 break;
 
-                            
+                            case TerrainBuildingType.PigPen:
+                            case TerrainBuildingType.OxenPen:
+                            case TerrainBuildingType.KineOxenPen:
+
+                            case TerrainBuildingType.DogCage:
+                            case TerrainBuildingType.HoundCage:
+
+                            case TerrainBuildingType.PonyPen:
+                            case TerrainBuildingType.HorsePen:
+                            case TerrainBuildingType.WarHorsePen:
+                            case TerrainBuildingType.DraftHorsePen:
+                            case TerrainBuildingType.WildPigPen:
+                            case TerrainBuildingType.WildHogPen:
+                            case TerrainBuildingType.WarHogPen:
+                            case TerrainBuildingType.StagHogPen:
+                            case TerrainBuildingType.WolfCage:
+                            case TerrainBuildingType.WargCage:
+                            case TerrainBuildingType.AlphaWargCage:
+                            case TerrainBuildingType.WildCatCage:
+                            case TerrainBuildingType.LionCage:
+                            case TerrainBuildingType.WarLionCage:
+                            case TerrainBuildingType.ElephantCage:
+                            case TerrainBuildingType.WarElephantCage:
+                            case TerrainBuildingType.OliphantCage:
+                                var upkeep = Build.BuildLib.Get(mainType, subType).upkeep;
+                                if (upkeep.type == ItemResourceType.RawFood_Group)
+                                {
+                                    PenFoodUpkeep += lib.BoolToLeftRight(build) * upkeep.amount;
+                                }
+                                break;
 
                         }
                     }
