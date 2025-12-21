@@ -1622,14 +1622,14 @@ namespace VikingEngine.DSSWars.Interface
 
                         IconName.Tab(group, out SpriteName groupIcon, out string groupName);
                         var tab = new ResourcesSubTab(managementType, group);
-                        content.Add(new ArtOption(player.resourcesSubTab.EqualTab(tab),
+                        content.Add(new ArtButton(player.resourcesSubTab.EqualTab(tab)? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
                             new List<AbsRichBoxMember> { new RbImage(groupIcon) },
                             new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
                             {
                                 player.resourcesSubTab = resourcesSubTab;
                             }, tab, RbSoundType.Option),
                             new RbTooltip(resourceTabToolTip, tab)));
-                        content.space();
+                        //content.space();
                     }
 
                     HudLib.InfoButton(content, new RbTooltip(resourceTabsInfo, managementType));

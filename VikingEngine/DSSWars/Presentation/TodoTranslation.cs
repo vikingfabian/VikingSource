@@ -78,6 +78,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Resource_TypeName_WarElephant => "war elephant";
         public string Resource_TypeName_Oliphant => "oliphant";
 
+        public string BuildingType_ClayPit => "Clay pit";
         public string BuildingType_Butcher => "Butcher";
         public string BuildingType_Pottery => "Pottery";
         

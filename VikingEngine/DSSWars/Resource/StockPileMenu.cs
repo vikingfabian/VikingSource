@@ -5,10 +5,13 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.GO.Characters;
+using VikingEngine.LootFest.GO.Characters.Monsters;
 
 namespace VikingEngine.DSSWars.Resource
 {
@@ -144,6 +147,38 @@ namespace VikingEngine.DSSWars.Resource
                     stockpile(ItemResourceType.LightPlateArmor);
                     stockpile(ItemResourceType.FullPlateArmor);
                     stockpile(ItemResourceType.MithrilArmor);
+                    break;
+
+                case ResourceGroupType.Animals:
+                    stockpile(ItemResourceType.Hen);
+                    stockpile(ItemResourceType.Pig);
+                    stockpile(ItemResourceType.Oxen);
+                    stockpile(ItemResourceType.KineOxen);
+                    content.newParagraph();
+                    stockpile(ItemResourceType.Dog);
+                    stockpile(ItemResourceType.Hound);
+                    content.newParagraph();
+                    stockpile(ItemResourceType.Pony);
+                    stockpile(ItemResourceType.Horse);
+                    stockpile(ItemResourceType.WarHorse);
+                    stockpile(ItemResourceType.DraftHorse);
+                    content.newParagraph();
+                    stockpile(ItemResourceType.WildPig);
+                    stockpile(ItemResourceType.WildHog);
+                    stockpile(ItemResourceType.WarHog);
+                    stockpile(ItemResourceType.StagHog);
+                    content.newParagraph();
+                    stockpile(ItemResourceType.Wolf);
+                    stockpile(ItemResourceType.Warg);
+                    stockpile(ItemResourceType.AlphaWarg);
+                    content.newParagraph();
+                    stockpile(ItemResourceType.WildCat);
+                    stockpile(ItemResourceType.Lion);
+                    stockpile(ItemResourceType.WarLion);
+                    content.newParagraph();
+                    stockpile(ItemResourceType.Elephant);
+                    stockpile(ItemResourceType.WarElephant);
+                    stockpile(ItemResourceType.Oliphant);
                     break;
             }
         }

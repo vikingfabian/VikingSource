@@ -858,7 +858,7 @@ namespace VikingEngine.DSSWars
 
                 case ResourceGroupType.Animals:
                     groupIcon = SpriteName.WarsResource_Horse;
-                    groupName = ".Mounts"; // Replace with DssRef.lang.Mounts if available
+                    groupName = TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_Animal); // Replace with DssRef.lang.Mounts if available
                     break;
 
                 default:
@@ -1346,6 +1346,10 @@ namespace VikingEngine.DSSWars
                         case TerrainSubFoilType.BogIron:
                             name = DssRef.lang.Resource_TypeName_BogIron;
                             break;
+
+                        case TerrainSubFoilType.ClayPit:
+                            name = DssRef.todoLang.BuildingType_ClayPit;
+                            break;
                     }
                     break;
 
@@ -1377,6 +1381,9 @@ namespace VikingEngine.DSSWars
                             break;
                         case TerrainMineType.Mithril:
                             name = string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Mithril);
+                            break;
+                        case TerrainMineType.Salt:
+                            name = TextLib.LargeFirstLetter( string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Salt));
                             break;
                         case TerrainMineType.Sulfur:
                             name = string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Sulfur);
