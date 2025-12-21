@@ -19,7 +19,8 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         //## Mounted update ##
-
+     
+        public string Economy_AnimalPenUpkeep => "Pen upkeep: {0}";
         public string Work_SlaughterX => "Slaughter {0}";
 
         public string Resource_TypeName_NobelMen => "nobelmen";

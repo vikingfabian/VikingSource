@@ -1727,8 +1727,10 @@ namespace VikingEngine.DSSWars.Work
 
                     void waitForFullStock(WorkPriorityType priorityType)
                     {
+                        BoolGetSet_Tag property = city == null ? faction.craftOnFullStockProperty : city.craftOnFullStockProperty;
+
                         content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsStockpileStop) },
-                            city.mintOnFullStockProperty, new RbTooltip_Text(DssRef.lang.Work_OnlyCraftOnFullStock))
+                            property, new RbTooltip_Text(DssRef.lang.Work_OnlyCraftOnFullStock))
                         { propertyTag = priorityType, });
 
                     }

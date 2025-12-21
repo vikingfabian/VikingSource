@@ -15,12 +15,14 @@ namespace VikingEngine.DSSWars.Resource
         public int servicemenUpkeep_copp;
         public int cityGuardUpkeep_copp;
         public float blackMarketCosts_Food_gold;
+        public float animalPenUpkeep;
         //public int nobelMenCosts_copp;
         public CityEconomyData(City city)
         {
             taxIncome_copp = (int)tax(city, out _);
             servicemenUpkeep_copp = city.workingAndFreeServiceMen * DssConst.UpkeepPerServiceMan_copp;
             cityGuardUpkeep_copp = city.soldiersCount * DssConst.UpkeepPerGuard_copp;
+            animalPenUpkeep = (float)city.PenFoodUpkeep_minute / TimeExt.MinuteInSeconds;
             //nobelMenCosts_copp = DssConst.NobleHouseUpkeep_copp * city.buildingStructure.Nobelhouse_count;
         }
 

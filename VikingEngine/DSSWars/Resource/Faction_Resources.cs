@@ -41,6 +41,18 @@ namespace VikingEngine.DSSWars
         { 
             return totalWorkForce / DssConst.HeadCityStartMaxWorkForce;
         }
+        public bool craftOnFullStockProperty(object tag, bool set, bool value)
+        {
+            WorkPriorityType work = (WorkPriorityType)tag;
+
+            ref var prio = ref workTemplate.GetRefWorkPriority(work);
+
+            if (set)
+            {
+                prio.waitForStockpile = value;
+            }
+            return prio.waitForStockpile;
+        }
 
         /// <summary>
         /// To measure the strength a faction could muster
@@ -65,38 +77,41 @@ namespace VikingEngine.DSSWars
             player.resourcesSubTab.managementType = ResourceManagementType.Overview;
 
             content.newLine();
-            for (ResourceGroupType resourceGroup = 0; resourceGroup < ResourceGroupType.NUM; resourceGroup++)//ResourcesSubTab resourcesSubTab = 0; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
+            for (ResourceGroupType resourceGroup = 0; resourceGroup < ResourceGroupType.Mint; resourceGroup++)//ResourcesSubTab resourcesSubTab = 0; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
             {
-                var tabContent = new RichBoxContent();
-                
-                switch (resourceGroup)
-                {
-                    case ResourceGroupType.Resources:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
-                        break;
 
-                    case ResourceGroupType.Metals:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
-                        break;
-                    case ResourceGroupType.Weapons:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
-                        break;
+                //var tabContent = new RichBoxContent();
 
-                    case ResourceGroupType.Projectile:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
-                        break;
+                //switch (resourceGroup)
+                //{
+                //    case ResourceGroupType.Resources:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                //        break;
 
-                    case ResourceGroupType.Armor:
-                        tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
-                        break;
+                //    case ResourceGroupType.Metals:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
+                //        break;
+                //    case ResourceGroupType.Weapons:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
+                //        break;
 
-                    //case ResourcesSubTab.Stockpile_Resources:
-                    //    tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Stockpile));
-                    //    tabContent.space();
-                    //    tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
-                    //    break;
-                }
-                var subTab = new ArtButton(player.resourcesSubTab.resourceGroup == resourceGroup? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, tabContent,
+                //    case ResourceGroupType.Projectile:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
+                //        break;
+
+                //    case ResourceGroupType.Armor:
+                //        tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
+                //        break;
+
+                //    //case ResourcesSubTab.Stockpile_Resources:
+                //    //    tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Stockpile));
+                //    //    tabContent.space();
+                //    //    tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                //    //    break;
+                //}
+                IconName.Tab(resourceGroup, out SpriteName groupIcon, out string groupName);
+                var subTab = new ArtButton(player.resourcesSubTab.resourceGroup == resourceGroup? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, 
+                    new List<AbsRichBoxMember> { new RbImage(groupIcon) },
                     new RbAction1Arg<ResourceGroupType>((ResourceGroupType resourceGroup) =>
                     {
                         player.resourcesSubTab.resourceGroup = resourceGroup;

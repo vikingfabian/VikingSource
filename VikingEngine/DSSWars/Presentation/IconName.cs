@@ -857,7 +857,7 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case ResourceGroupType.Animals:
-                    groupIcon = SpriteName.WarsBuild_HenPen;
+                    groupIcon = SpriteName.WarsResource_Horse;
                     groupName = ".Mounts"; // Replace with DssRef.lang.Mounts if available
                     break;
 

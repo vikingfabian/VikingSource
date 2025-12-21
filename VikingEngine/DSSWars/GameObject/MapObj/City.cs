@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource freeNobelMen = new GroupedResource();
         public int HousingCount_NobelMen = 0;
 
-        public int PenFoodUpkeep = 0;
+        public int PenFoodUpkeep_minute = 0;
 
         public int AvailableGuardHousing()
         {
@@ -475,7 +475,7 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write(Bound.Short(workingAndFreeServiceMen));
                 w.Write(Bound.UShort(HousingCount_NobelMen));
                 w.Write(Bound.Short(freeNobelMen.amount));
-                w.Write(Bound.UShort(PenFoodUpkeep));
+                w.Write(Bound.UShort(PenFoodUpkeep_minute));
                 cityHallSubtilePos.writeUshort(w);
                 citySquareSubtilePos.writeUshort(w);
 
@@ -2059,6 +2059,8 @@ namespace VikingEngine.DSSWars.GameObject
             { 
                 float addNobel = HousingCount_NobelMen * DssConst.NobelHouseMenAddSpeed_PerManHouse;
                 freeNobelMen.amount = Bound.Max(freeNobelMen.amount + Convert.ToInt32(addNobel), HousingCount_NobelMen);
+
+                AddGroupedResource(ItemResourceType.RawFood_Group, -PenFoodUpkeep_minute);
             }
         }
 
@@ -3020,6 +3022,15 @@ namespace VikingEngine.DSSWars.GameObject
                         content.space();
                         HudLib.InfoButton(content, new RbTooltip(HudLib.guardUpkeepInfo));
                     }
+                }
+                {
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.WarsResource_RawFood));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsBuild_PigPen));
+                    content.space();
+                    content.Add(new RbText(string.Format(DssRef.todoLang.Economy_AnimalPenUpkeep, TextLib.OneDecimal(cityEconomy.animalPenUpkeep))));
+
                 }
 
                 if (!player.profile.casualControls)

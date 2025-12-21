@@ -31,7 +31,7 @@ namespace VikingEngine.DSSWars.GameObject
         bool starving = false;
         static List<int> idleWorkers = new List<int>(64);
 
-        public bool mintOnFullStockProperty(object tag, bool set, bool value)
+        public bool craftOnFullStockProperty(object tag, bool set, bool value)
         {
             WorkPriorityType work = (WorkPriorityType)tag;
 
@@ -40,36 +40,8 @@ namespace VikingEngine.DSSWars.GameObject
             if (set)
             {
                 prio.waitForStockpile = value;
-                //switch (work)
-                //{
-                //    case WorkPriorityType.coinmaker_copper:
-                //        workTemplate.coinmaker_copper_fullStock = value;
-                //        break;
-                //    case WorkPriorityType.coinmaker_bronze:
-                //        workTemplate.coinmaker_bronze_fullStock = value;
-                //        break;
-                //    case WorkPriorityType.coinmaker_silver:
-                //        workTemplate.coinmaker_silver_fullStock = value;
-                //        break;
-                //    case WorkPriorityType.coinmaker_mithril:
-                //        workTemplate.coinmaker_mithril_fullStock = value;
-                //        break;
-                //}
             }
             return prio.waitForStockpile;
-            //switch (work)
-            //{
-            //    case WorkPriorityType.coinmaker_copper:
-            //        return workTemplate.coinmaker_copper_fullStock;
-            //    case WorkPriorityType.coinmaker_bronze:
-            //        return workTemplate.coinmaker_bronze_fullStock;
-            //    case WorkPriorityType.coinmaker_silver:
-            //        return workTemplate.coinmaker_silver_fullStock;
-            //    case WorkPriorityType.coinmaker_mithril:
-            //        return workTemplate.coinmaker_mithril_fullStock;
-            //    default:
-            //        return false; // fallback if tag doesn't match any known type
-            //}
         }
 
         public void async_workUpdate(int updateSpeed)

@@ -762,7 +762,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 var upkeep = Build.BuildLib.Get(mainType, subType).upkeep;
                                 if (upkeep.type == ItemResourceType.RawFood_Group)
                                 {
-                                    PenFoodUpkeep += lib.BoolToLeftRight(build) * upkeep.amount;
+                                    PenFoodUpkeep_minute += lib.BoolToLeftRight(build) * upkeep.amount;
                                 }
                                 break;
 
