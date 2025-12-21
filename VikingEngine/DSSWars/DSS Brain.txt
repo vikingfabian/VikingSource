@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log: 
-* fixed: cannons are locked behind "black powder" but it should be adv casting
+* 
+
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
