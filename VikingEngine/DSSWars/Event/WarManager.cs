@@ -54,64 +54,71 @@ namespace VikingEngine.DSSWars.Players
 
         public WarManagerGear(int gear)
         {
+#if DEBUG
+            if (!Bound.IsWithin(gear, 1, MaxGear))
+            {
+                throw new ArgumentException();
+            }
+#endif 
+
+            gear = Bound.Set(gear, 1, MaxGear);
             this.gear = gear;
+                        
+            
+            PcgRandom random = new PcgRandom(DssRef.world.metaData.seed + gear * 11);
 
-            if (Bound.IsWithin(gear, 1, MaxGear))
+            switch (gear)
             {
-                PcgRandom random = new PcgRandom(DssRef.world.metaData.seed + gear * 11);
+                case StartGear:
+                    maxCityCount = random.Int(7, 9);
+                    checkTimeHours = new IntervalF(0.8f, 4f);
+                    tooPeacefulPercentageMulti = 1f;
+                    allyChance = 0.05f;
 
-                switch (gear)
+                    maxPeacefulChecks = new Range(1, 4);
+                    break;
+
+                case 2:
+                    maxCityCount = random.Int(16, 21);
+                    checkTimeHours = new IntervalF(0.6f, 3.5f);
+                    tooPeacefulPercentageMulti = 1.4f;
+                    allyChance = 0.25f;
+
+                    maxPeacefulChecks = new Range(2, 6);
+                    break;
+
+                case MaxGear:
+                    maxCityCount = int.MaxValue;
+                    checkTimeHours = new IntervalF(0.5f, 3f);
+                    tooPeacefulPercentageMulti = 2f;
+                    allyChance = 0.75f;
+
+                    maxPeacefulChecks = new Range(8, 16);
+                    break;
+
+            }
+
+            if (DssRef.difficulty.aiAggressivity <= AiAggressivity.Low)
+            {
+                maxCityCount += 5;
+            }
+            else if (DssRef.difficulty.aiAggressivity >= AiAggressivity.High)
+            {
+                maxCityCount -= 2;
+                maxPeacefulChecks += 4;
+
+                if (DssRef.difficulty.extremeAggression)
                 {
-                    case StartGear:
-                        maxCityCount = random.Int(7, 9);
-                        checkTimeHours = new IntervalF(0.8f, 4f);
-                        tooPeacefulPercentageMulti = 1f;
-                        allyChance = 0.05f;
-
-                        maxPeacefulChecks = new Range(1, 4);
-                        break;
-
-                    case 2:
-                        maxCityCount = random.Int(16, 21);
-                        checkTimeHours = new IntervalF(0.6f, 3.5f);
-                        tooPeacefulPercentageMulti = 1.4f;
-                        allyChance = 0.25f;
-
-                        maxPeacefulChecks = new Range(2, 6);
-                        break;
-
-                    case MaxGear:
-                        maxCityCount = int.MaxValue;
-                        checkTimeHours = new IntervalF(0.5f, 3f);
-                        tooPeacefulPercentageMulti = 2f;
-                        allyChance = 0.75f;
-
-                        maxPeacefulChecks = new Range(8, 16);
-                        break;
-
-                }
-
-                if (DssRef.difficulty.aiAggressivity <= AiAggressivity.Low)
-                {
-                    maxCityCount += 5;
-                }
-                else if (DssRef.difficulty.aiAggressivity >= AiAggressivity.High)
-                {
-                    maxCityCount -= 2;
-                    maxPeacefulChecks += 4;
-
-                    if (DssRef.difficulty.extremeAggression)
-                    {
-                        allyChance += 0.1f;
-                        maxPeacefulChecks += 2;
-                        checkTimeHours.Max *= 0.75f;
-                    }
+                    allyChance += 0.1f;
+                    maxPeacefulChecks += 2;
+                    checkTimeHours.Max *= 0.75f;
                 }
             }
-            else
-            {
-                throw new ArgumentOutOfRangeException("WarManagerGear " + gear);
-            }
+            //}
+            //else
+            //{
+            //    throw new ArgumentOutOfRangeException("WarManagerGear " + gear);
+            //}
 
         }
     }
@@ -228,7 +235,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     Faction firstAttacker = DssRef.world.faction(attackers[0]);
 
-                    if (firstAttacker != null)
+                    if (firstAttacker != null )
                     {
                         //Try ally the attackers
                         for (int otherIx = 1; otherIx < attackersCount; otherIx++)
