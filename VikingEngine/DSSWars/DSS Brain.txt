@@ -1,4 +1,6 @@
-﻿
+﻿Change log:
+* Updated unit icons
+* 
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

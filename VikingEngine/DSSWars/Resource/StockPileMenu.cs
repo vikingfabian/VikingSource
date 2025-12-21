@@ -173,8 +173,9 @@ namespace VikingEngine.DSSWars.Resource
                     {
                         if (city != null)
                         {
-                            bool buffer = false;
-                            city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);
+                            ResourceLib.FullResourceInfo(city, item, content);
+                            //bool buffer = false;
+                            //city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);
                         }
                         else
                         {

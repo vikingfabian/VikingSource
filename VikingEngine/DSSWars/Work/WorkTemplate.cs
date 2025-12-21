@@ -1850,23 +1850,24 @@ namespace VikingEngine.DSSWars.Work
         {
             SpriteName icon = SpriteName.NO_IMAGE;
             string prioText = null;
-            switch ((int)tag)
-            {
-                case WorkTemplate.NoPrio:
-                    icon = SpriteName.WarsHudIconSpeed_Pause;
-                    prioText = DssRef.lang.Work_OrderPrio_No;
-                    break;
+            //switch ((int)tag)
+            //{
+            //    case WorkTemplate.NoPrio:
+            //        icon = SpriteName.WarsHudIconSpeed_Pause;
+            //        prioText = DssRef.lang.Work_OrderPrio_No;
+            //        break;
 
-                case WorkTemplate.MinPrio:
-                    icon = SpriteName.WarsHudIconSpeed_Low;
-                    prioText = DssRef.lang.Work_OrderPrio_Min;
-                    break;
+            //    case WorkTemplate.MinPrio:
+            //        icon = SpriteName.WarsHudIconSpeed_Low;
+            //        prioText = DssRef.lang.Work_OrderPrio_Min;
+            //        break;
 
-                case WorkTemplate.MaxPrio:
-                    icon = SpriteName.WarsHudIconSpeed_High;
-                    prioText = DssRef.lang.Work_OrderPrio_Max;
-                    break;
-            }
+            //    case WorkTemplate.MaxPrio:
+            //        icon = SpriteName.WarsHudIconSpeed_High;
+            //        prioText = DssRef.lang.Work_OrderPrio_Max;
+            //        break;
+            //}
+            IconName.Priority((int)tag, out icon, out prioText);
 
             content.icontext(icon, prioText);
         }
