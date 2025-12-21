@@ -640,8 +640,8 @@ namespace VikingEngine.DSSWars.Build
 
                     content.newParagraph();
 
-                    city.workTemplate.autoBuild.toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.faction, city, ItemResourceType.NONE);
-                    city.workTemplate.Get(WorkPriorityType.autoBuild).toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.faction, city);
+                    city.workTemplate.Get(WorkPriorityType.autoBuild).toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.faction, city, ItemResourceType.NONE);
+                    
                 }
             }
             else

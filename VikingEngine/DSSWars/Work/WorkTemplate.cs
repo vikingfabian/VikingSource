@@ -3,19 +3,18 @@ using Microsoft.Xna.Framework;
 using Sentry;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Net;
-using System.Reflection.Metadata;
-using System.Security.AccessControl;
-using VikingEngine.DSSWars.Data;
+using VikingEngine;
+using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+
 
 namespace VikingEngine.DSSWars.Work
 {
@@ -1498,183 +1497,195 @@ namespace VikingEngine.DSSWars.Work
             switch (tab)
             {
                 case ResourceGroupType.Resources:
-                    Get(WorkPriorityType.move).toHud(player, content, DssRef.lang.Work_Move, SpriteName.WarsWorkMove, SpriteName.WarsBuild_Storehouse, WorkPriorityType.move, faction, city);
-                    Get(WorkPriorityType.wood).toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Wood.ToLowerInvariant()), SpriteName.WarsWorkCollect, SpriteName.WarsResource_Wood, WorkPriorityType.wood, faction, city);
-                    Get(WorkPriorityType.stone).toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Stone.ToLowerInvariant()), SpriteName.WarsWorkCollect, SpriteName.WarsResource_Stone, WorkPriorityType.stone, faction, city);
+                    Get(WorkPriorityType.move).toHud(player, content, DssRef.lang.Work_Move, SpriteName.WarsWorkMove, SpriteName.WarsBuild_Storehouse, WorkPriorityType.move, faction, city, ItemResourceType.NONE);
+                    Get(WorkPriorityType.wood).toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Wood.ToLowerInvariant()), SpriteName.WarsWorkCollect, SpriteName.WarsResource_Wood, WorkPriorityType.wood, faction, city, ItemResourceType.Wood_Group);
+                    Get(WorkPriorityType.stone).toHud(player, content, string.Format(DssRef.lang.Work_GatherXResource, DssRef.lang.Resource_TypeName_Stone.ToLowerInvariant()), SpriteName.WarsWorkCollect, SpriteName.WarsResource_Stone, WorkPriorityType.stone, faction, city, ItemResourceType.Stone_G);
 
-                    Get(WorkPriorityType.farmfood).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Food.ToLowerInvariant(), SpriteName.WarsWorkFarm, SpriteName.WarsResource_RawFood, WorkPriorityType.farmfood, faction, city);
-                    Get(WorkPriorityType.farmfuel).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Fuel.ToLowerInvariant(), SpriteName.WarsWorkFarm, SpriteName.WarsResource_Fuel, WorkPriorityType.farmfuel, faction, city);
-                    Get(WorkPriorityType.farmlinen).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Linen.ToLowerInvariant(), SpriteName.WarsWorkFarm, SpriteName.WarsResource_LinenCloth, WorkPriorityType.farmlinen, faction, city);
+                    Get(WorkPriorityType.farmfood).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Food.ToLowerInvariant(), SpriteName.WarsWorkFarm, SpriteName.WarsResource_RawFood, WorkPriorityType.farmfood, faction, city, ItemResourceType.RawFood_Group);
+                    Get(WorkPriorityType.farmfuel).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Fuel.ToLowerInvariant(), SpriteName.WarsWorkFarm, SpriteName.WarsResource_Fuel, WorkPriorityType.farmfuel, faction, city, ItemResourceType.Fuel_G);
+                    Get(WorkPriorityType.farmlinen).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Linen.ToLowerInvariant(), SpriteName.WarsWorkFarm, SpriteName.WarsResource_LinenCloth, WorkPriorityType.farmlinen, faction, city, ItemResourceType.SkinLinen_Group);
 
-                    Get(WorkPriorityType.craftFood).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Food.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Food, WorkPriorityType.craftFood, faction, city);
-                    Get(WorkPriorityType.craftConservedFood).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_ConservedFood.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_ConservedFood, WorkPriorityType.craftConservedFood, faction, city);
-                    Get(WorkPriorityType.craftFuel).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Fuel.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Fuel, WorkPriorityType.craftFuel, faction, city);
-                    Get(WorkPriorityType.craftBeer).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Beer.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Beer, WorkPriorityType.craftBeer, faction, city);
-                    Get(WorkPriorityType.craftCoolingFluid).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_CoolingFluid.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_CoolingFluid, WorkPriorityType.craftCoolingFluid, faction, city);
+                    Get(WorkPriorityType.craftFood).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Food.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Food, WorkPriorityType.craftFood, faction, city, ItemResourceType.Food_G);
+                    Get(WorkPriorityType.craftConservedFood).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_ConservedFood.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_ConservedFood, WorkPriorityType.craftConservedFood, faction, city, ItemResourceType.ConservedFood);
+                    Get(WorkPriorityType.craftFuel).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Fuel.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Fuel, WorkPriorityType.craftFuel, faction, city, ItemResourceType.Fuel_G);
+                    Get(WorkPriorityType.craftBeer).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Beer.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Beer, WorkPriorityType.craftBeer, faction, city, ItemResourceType.Beer);
+                    Get(WorkPriorityType.craftCoolingFluid).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_CoolingFluid.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_CoolingFluid, WorkPriorityType.craftCoolingFluid, faction, city, ItemResourceType.CoolingFluid);
 
-                    Get(WorkPriorityType.craftContainer).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Container.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Container, WorkPriorityType.craftContainer, faction, city);
-                    Get(WorkPriorityType.craftPalisade).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Palisade.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Palisade, WorkPriorityType.craftPalisade, faction, city);
-                    Get(WorkPriorityType.craftToolkit).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Toolkit.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Toolkit, WorkPriorityType.craftToolkit, faction, city);
-                    Get(WorkPriorityType.craftWagon2Wheel).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Wagon2Wheel.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Wagon2Wheel, WorkPriorityType.craftWagon2Wheel, faction, city);
-                    Get(WorkPriorityType.craftWagon4Wheel).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Wagon4Wheel.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Wagon4Wheel, WorkPriorityType.craftWagon4Wheel, faction, city);
-                    Get(WorkPriorityType.craftWagonClosed).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_WagonClosed.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.MissingImage, WorkPriorityType.craftWagonClosed, faction, city);
-                    Get(WorkPriorityType.craftWagonIron).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_WagonIron.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.MissingImage, WorkPriorityType.craftWagonIron, faction, city);
-                    Get(WorkPriorityType.craftWagonSteel).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_WagonSteel.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.MissingImage, WorkPriorityType.craftWagonSteel, faction, city);
-                    Get(WorkPriorityType.craftBlackPowder).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_BlackPowder.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BlackPowder, WorkPriorityType.craftBlackPowder, faction, city);
-                    Get(WorkPriorityType.craftGunPowder).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_GunPowder.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_GunPowder, WorkPriorityType.craftGunPowder, faction, city);
-                    Get(WorkPriorityType.craftBullet).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_LedBullet.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Bullets, WorkPriorityType.craftBullet, faction, city);
+                    Get(WorkPriorityType.craftContainer).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Container.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Container, WorkPriorityType.craftContainer, faction, city, ItemResourceType.Container);
+                    Get(WorkPriorityType.craftPalisade).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Palisade.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Palisade, WorkPriorityType.craftPalisade, faction, city, ItemResourceType.Palisade);
+                    Get(WorkPriorityType.craftToolkit).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Toolkit.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Toolkit, WorkPriorityType.craftToolkit, faction, city, ItemResourceType.Toolkit);
+                    Get(WorkPriorityType.craftWagon2Wheel).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Wagon2Wheel.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Wagon2Wheel, WorkPriorityType.craftWagon2Wheel, faction, city, ItemResourceType.Wagon2Wheel);
+                    Get(WorkPriorityType.craftWagon4Wheel).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Wagon4Wheel.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Wagon4Wheel, WorkPriorityType.craftWagon4Wheel, faction, city, ItemResourceType.Wagon4Wheel);
+
+                    // New Wagon types (Assumed types based on naming convention)
+                    Get(WorkPriorityType.craftWagonClosed).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_WagonClosed.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.MissingImage, WorkPriorityType.craftWagonClosed, faction, city, ItemResourceType.WagonClosed);
+                    Get(WorkPriorityType.craftWagonIron).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_WagonIron.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.MissingImage, WorkPriorityType.craftWagonIron, faction, city, ItemResourceType.WagonIron);
+                    Get(WorkPriorityType.craftWagonSteel).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_WagonSteel.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.MissingImage, WorkPriorityType.craftWagonSteel, faction, city, ItemResourceType.WagonSteel);
+
+                    Get(WorkPriorityType.craftBlackPowder).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_BlackPowder.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BlackPowder, WorkPriorityType.craftBlackPowder, faction, city, ItemResourceType.BlackPowder);
+                    Get(WorkPriorityType.craftGunPowder).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_GunPowder.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_GunPowder, WorkPriorityType.craftGunPowder, faction, city, ItemResourceType.GunPowder);
+                    Get(WorkPriorityType.craftBullet).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_LedBullet.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Bullets, WorkPriorityType.craftBullet, faction, city, ItemResourceType.LedBullet);
 
                     content.newParagraph();
-                    Get(WorkPriorityType.autoBuild).toHud(player, content, DssRef.lang.Work_AutoBuild, SpriteName.AutomationGearIcon, SpriteName.warsBuildCategoryHouse, WorkPriorityType.autoBuild, faction, city);
-                    Get(WorkPriorityType.buildOrders).toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders, faction, city);
+                    Get(WorkPriorityType.autoBuild).toHud(player, content, DssRef.lang.Work_AutoBuild, SpriteName.AutomationGearIcon, SpriteName.warsBuildCategoryHouse, WorkPriorityType.autoBuild, faction, city, ItemResourceType.NONE);
+                    Get(WorkPriorityType.buildOrders).toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders, faction, city, ItemResourceType.NONE);
                     break;
 
                 case ResourceGroupType.Metals:
-                    Get(WorkPriorityType.bogiron).toHud(player, content, DssRef.lang.Resource_TypeName_BogIron, SpriteName.WarsWorkCollect, SpriteName.WarsResource_IronOre, WorkPriorityType.bogiron, faction, city);
+                    Get(WorkPriorityType.bogiron).toHud(player, content, DssRef.lang.Resource_TypeName_BogIron, SpriteName.WarsWorkCollect, SpriteName.WarsResource_IronOre, WorkPriorityType.bogiron, faction, city, ItemResourceType.IronOre_G);
                     content.space();
                     HudLib.InfoButton(content, new RbTooltip_Text(DssRef.lang.Resource_BogIronDescription));
 
-                    Get(WorkPriorityType.miningIron).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Iron.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Iron, WorkPriorityType.miningIron, faction, city,
+                    Get(WorkPriorityType.miningIron).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Iron.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Iron, WorkPriorityType.miningIron, faction, city, ItemResourceType.IronOre_G,
                         city == null ? 0 : city.terrainStructure.mineCount_bogIron + city.terrainStructure.mineCount_iron);
-                    Get(WorkPriorityType.miningTin).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Tin.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Tin, WorkPriorityType.miningTin, faction, city,
+
+                    Get(WorkPriorityType.miningTin).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Tin.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Tin, WorkPriorityType.miningTin, faction, city, ItemResourceType.TinOre,
                         city == null ? 0 : city.terrainStructure.mineCount_tin);
-                    Get(WorkPriorityType.miningCopper).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Copper.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Copper, WorkPriorityType.miningCopper, faction, city,
+
+                    Get(WorkPriorityType.miningCopper).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Copper.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Copper, WorkPriorityType.miningCopper, faction, city, ItemResourceType.CopperOre,
                          city == null ? 0 : city.terrainStructure.mineCount_copper);
-                    Get(WorkPriorityType.miningLead).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Lead.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Lead, WorkPriorityType.miningLead, faction, city,
+
+                    Get(WorkPriorityType.miningLead).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Lead.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Lead, WorkPriorityType.miningLead, faction, city, ItemResourceType.LeadOre,
                          city == null ? 0 : city.terrainStructure.mineCount_lead);
-                    Get(WorkPriorityType.miningSilver).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Silver.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Silver, WorkPriorityType.miningSilver, faction, city,
+
+                    Get(WorkPriorityType.miningSilver).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Silver.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Silver, WorkPriorityType.miningSilver, faction, city, ItemResourceType.SilverOre,
                          city == null ? 0 : city.terrainStructure.mineCount_silver);
-                    Get(WorkPriorityType.miningGold).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.ResourceType_Gold.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Gold, WorkPriorityType.miningGold, faction, city,
+
+                    Get(WorkPriorityType.miningGold).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.ResourceType_Gold.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Gold, WorkPriorityType.miningGold, faction, city, ItemResourceType.GoldOre,
                          city == null ? 0 : city.terrainStructure.mineCount_gold);
-                    Get(WorkPriorityType.miningMithril).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Mithril.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Mithril, WorkPriorityType.miningMithril, faction, city,
+
+                    Get(WorkPriorityType.miningMithril).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Mithril.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Mithril, WorkPriorityType.miningMithril, faction, city, ItemResourceType.RawMithril,
                          city == null ? 0 : city.terrainStructure.mineCount_mithril);
-                    Get(WorkPriorityType.miningSulfur).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Sulfur.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Sulfur, WorkPriorityType.miningSulfur, faction, city,
+
+                    Get(WorkPriorityType.miningSulfur).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Sulfur.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Sulfur, WorkPriorityType.miningSulfur, faction, city, ItemResourceType.Sulfur,
                          city == null ? 0 : city.terrainStructure.mineCount_sulfur);
-                    Get(WorkPriorityType.miningCoal).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Coal.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Fuel, WorkPriorityType.miningCoal, faction, city,
+
+                    Get(WorkPriorityType.miningCoal).toHud(player, content, string.Format(DssRef.lang.Work_MiningResource, DssRef.lang.Resource_TypeName_Coal.ToLowerInvariant()), SpriteName.WarsWorkMine, SpriteName.WarsResource_Fuel, WorkPriorityType.miningCoal, faction, city, ItemResourceType.Fuel_G,
                          city == null ? 0 : city.terrainStructure.mineCount_coal);
                     content.newParagraph();
 
-                    Get(WorkPriorityType.smeltIron).toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Iron.ToLowerInvariant()), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Iron, WorkPriorityType.smeltIron, faction, city);
-                    Get(WorkPriorityType.smeltTin).toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Tin.ToLowerInvariant()), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Tin, WorkPriorityType.smeltTin, faction, city);
-                    Get(WorkPriorityType.smeltCopper).toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Copper.ToLowerInvariant()), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Copper, WorkPriorityType.smeltCopper, faction, city);
-                    Get(WorkPriorityType.smeltLead).toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Lead.ToLowerInvariant()), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Lead, WorkPriorityType.smeltLead, faction, city);
-                    Get(WorkPriorityType.smeltSilver).toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Silver.ToLowerInvariant()), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Silver, WorkPriorityType.smeltSilver, faction, city);
-                    Get(WorkPriorityType.smeltGold).toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.ResourceType_Gold.ToLowerInvariant()), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Gold, WorkPriorityType.smeltGold, faction, city);
+                    Get(WorkPriorityType.smeltIron).toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Iron.ToLowerInvariant()), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Iron, WorkPriorityType.smeltIron, faction, city, ItemResourceType.Iron_G);
+                    Get(WorkPriorityType.smeltTin).toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Tin.ToLowerInvariant()), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Tin, WorkPriorityType.smeltTin, faction, city, ItemResourceType.Tin);
+                    Get(WorkPriorityType.smeltCopper).toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Copper.ToLowerInvariant()), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Copper, WorkPriorityType.smeltCopper, faction, city, ItemResourceType.Copper);
+                    Get(WorkPriorityType.smeltLead).toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Lead.ToLowerInvariant()), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Lead, WorkPriorityType.smeltLead, faction, city, ItemResourceType.Lead);
+                    Get(WorkPriorityType.smeltSilver).toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.Resource_TypeName_Silver.ToLowerInvariant()), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Silver, WorkPriorityType.smeltSilver, faction, city, ItemResourceType.Silver);
+                    Get(WorkPriorityType.smeltGold).toHud(player, content, string.Format(DssRef.lang.Work_SmeltX, DssRef.lang.ResourceType_Gold.ToLowerInvariant()), SpriteName.WarsWorkSmelting, SpriteName.WarsResource_Gold, WorkPriorityType.smeltGold, faction, city, ItemResourceType.Gold);
 
-                    Get(WorkPriorityType.craftBronze).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Bronze.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Bronze, WorkPriorityType.craftBronze, faction, city);
-                    Get(WorkPriorityType.craftCastIron).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_CastIron.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_CastIron, WorkPriorityType.craftCastIron, faction, city);
-                    Get(WorkPriorityType.craftBloomeryIron).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_BloomIron.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BloomeryIron, WorkPriorityType.craftBloomeryIron, faction, city);
-                    Get(WorkPriorityType.craftSteel).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Steel.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Steel, WorkPriorityType.craftSteel, faction, city);
-                    Get(WorkPriorityType.craftMithril).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Mithril.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_MithrilAlloy, WorkPriorityType.craftMithril, faction, city);
+                    Get(WorkPriorityType.craftBronze).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Bronze.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Bronze, WorkPriorityType.craftBronze, faction, city, ItemResourceType.Bronze);
+                    Get(WorkPriorityType.craftCastIron).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_CastIron.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_CastIron, WorkPriorityType.craftCastIron, faction, city, ItemResourceType.CastIron);
+                    Get(WorkPriorityType.craftBloomeryIron).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_BloomIron.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BloomeryIron, WorkPriorityType.craftBloomeryIron, faction, city, ItemResourceType.BloomeryIron);
+                    Get(WorkPriorityType.craftSteel).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Steel.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Steel, WorkPriorityType.craftSteel, faction, city, ItemResourceType.Steel);
+                    Get(WorkPriorityType.craftMithril).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Mithril.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_MithrilAlloy, WorkPriorityType.craftMithril, faction, city, ItemResourceType.Mithril);
                     break;
 
                 case ResourceGroupType.Weapons:
-                    Get(WorkPriorityType.craftSharpStick).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SharpStick.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Sharpstick, WorkPriorityType.craftSharpStick, faction, city);
-                    Get(WorkPriorityType.craftBronzeSword).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_BronzeSword.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeSword, WorkPriorityType.craftBronzeSword, faction, city);
-                    Get(WorkPriorityType.craftShortSword).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ShortSword.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_ShortSword, WorkPriorityType.craftShortSword, faction, city);
-                    Get(WorkPriorityType.craftSword).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Sword.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Sword, WorkPriorityType.craftSword, faction, city);
-                    Get(WorkPriorityType.craftLongSword).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_LongSword.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Longsword, WorkPriorityType.craftLongSword, faction, city);
-                    Get(WorkPriorityType.craftHandSpear).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HandSpear.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_HandSpear, WorkPriorityType.craftHandSpear, faction, city);
+                    Get(WorkPriorityType.craftSharpStick).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SharpStick.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Sharpstick, WorkPriorityType.craftSharpStick, faction, city, ItemResourceType.SharpStick);
+                    Get(WorkPriorityType.craftBronzeSword).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_BronzeSword.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeSword, WorkPriorityType.craftBronzeSword, faction, city, ItemResourceType.BronzeSword);
+                    Get(WorkPriorityType.craftShortSword).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ShortSword.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_ShortSword, WorkPriorityType.craftShortSword, faction, city, ItemResourceType.ShortSword);
+                    Get(WorkPriorityType.craftSword).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Sword.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Sword, WorkPriorityType.craftSword, faction, city, ItemResourceType.Sword);
+                    Get(WorkPriorityType.craftLongSword).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_LongSword.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Longsword, WorkPriorityType.craftLongSword, faction, city, ItemResourceType.LongSword);
+                    Get(WorkPriorityType.craftHandSpear).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HandSpear.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_HandSpear, WorkPriorityType.craftHandSpear, faction, city, ItemResourceType.HandSpear);
 
-                    Get(WorkPriorityType.craftWarhammer).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Warhammer.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Warhammer, WorkPriorityType.craftWarhammer, faction, city);
-                    Get(WorkPriorityType.craftTwoHandSword).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_TwoHandSword.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_TwoHandSword, WorkPriorityType.craftTwoHandSword, faction, city);
-                    //Get(WorkPriorityType.craftKnightsLance).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_KnightsLance.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_KnightsLance, WorkPriorityType.craftKnightsLance, faction, city);
-                    Get(WorkPriorityType.craftMithrilSword).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MithrilSword.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_MithrilSword, WorkPriorityType.craftMithrilSword, faction, city);
+                    Get(WorkPriorityType.craftWarhammer).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Warhammer.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Warhammer, WorkPriorityType.craftWarhammer, faction, city, ItemResourceType.Warhammer);
+                    Get(WorkPriorityType.craftTwoHandSword).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_TwoHandSword.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_TwoHandSword, WorkPriorityType.craftTwoHandSword, faction, city, ItemResourceType.TwoHandSword);
+                    //Get(WorkPriorityType.craftKnightsLance).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_KnightsLance.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_KnightsLance, WorkPriorityType.craftKnightsLance, faction, city, ItemResourceType.KnightsLance);
+                    Get(WorkPriorityType.craftMithrilSword).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MithrilSword.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_MithrilSword, WorkPriorityType.craftMithrilSword, faction, city, ItemResourceType.MithrilSword);
                     break;
 
                 case ResourceGroupType.Projectile:
-                    Get(WorkPriorityType.craftSlingshot).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SlingShot.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Slingshot, WorkPriorityType.craftSlingshot, faction, city);
-                    Get(WorkPriorityType.craftThrowingspear).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ThrowingSpear.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_ThrowSpear, WorkPriorityType.craftThrowingspear, faction, city);
-                    Get(WorkPriorityType.craftBow).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Bow.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Bow, WorkPriorityType.craftBow, faction, city);
-                    Get(WorkPriorityType.craftLongbow).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Longbow.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Longbow, WorkPriorityType.craftLongbow, faction, city);
-                    Get(WorkPriorityType.craftCrossbow).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Crossbow.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Crossbow, WorkPriorityType.craftCrossbow, faction, city);
-                    Get(WorkPriorityType.craftMithrilbow).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MithrilBow.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Mithrilbow, WorkPriorityType.craftMithrilbow, faction, city);
+                    Get(WorkPriorityType.craftSlingshot).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SlingShot.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Slingshot, WorkPriorityType.craftSlingshot, faction, city, ItemResourceType.SlingShot);
+                    Get(WorkPriorityType.craftThrowingspear).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ThrowingSpear.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_ThrowSpear, WorkPriorityType.craftThrowingspear, faction, city, ItemResourceType.ThrowingSpear);
+                    Get(WorkPriorityType.craftBow).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Bow.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Bow, WorkPriorityType.craftBow, faction, city, ItemResourceType.Bow);
+                    Get(WorkPriorityType.craftLongbow).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Longbow.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Longbow, WorkPriorityType.craftLongbow, faction, city, ItemResourceType.LongBow);
+                    Get(WorkPriorityType.craftCrossbow).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Crossbow.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Crossbow, WorkPriorityType.craftCrossbow, faction, city, ItemResourceType.Crossbow);
+                    Get(WorkPriorityType.craftMithrilbow).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MithrilBow.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Mithrilbow, WorkPriorityType.craftMithrilbow, faction, city, ItemResourceType.MithrilBow);
 
-                    Get(WorkPriorityType.craftHandCannon).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HandCannon.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeRifle, WorkPriorityType.craftHandCannon, faction, city);
-                    Get(WorkPriorityType.craftHandCulverin).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HandCulverin.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeShotgun, WorkPriorityType.craftHandCulverin, faction, city);
-                    Get(WorkPriorityType.craftRifle).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Rifle.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_IronRifle, WorkPriorityType.craftRifle, faction, city);
-                    Get(WorkPriorityType.craftBlunderbuss).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Blunderbuss.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_IronShotgun, WorkPriorityType.craftBlunderbuss, faction, city);
+                    Get(WorkPriorityType.craftHandCannon).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HandCannon.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeRifle, WorkPriorityType.craftHandCannon, faction, city, ItemResourceType.HandCannon);
+                    Get(WorkPriorityType.craftHandCulverin).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HandCulverin.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeShotgun, WorkPriorityType.craftHandCulverin, faction, city, ItemResourceType.HandCulverin);
+                    Get(WorkPriorityType.craftRifle).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Rifle.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_IronRifle, WorkPriorityType.craftRifle, faction, city, ItemResourceType.Rifle);
+                    Get(WorkPriorityType.craftBlunderbuss).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Blunderbuss.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_IronShotgun, WorkPriorityType.craftBlunderbuss, faction, city, ItemResourceType.Blunderbuss);
 
-                    Get(WorkPriorityType.craftBallista).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.UnitType_Ballista.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Ballista, WorkPriorityType.craftBallista, faction, city);
-                    Get(WorkPriorityType.craftManuBallista).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Manuballista.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Manuballista, WorkPriorityType.craftManuBallista, faction, city);
-                    Get(WorkPriorityType.craftCatapult).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Catapult.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Catapult, WorkPriorityType.craftCatapult, faction, city);
+                    Get(WorkPriorityType.craftBallista).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.UnitType_Ballista.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Ballista, WorkPriorityType.craftBallista, faction, city, ItemResourceType.Ballista);
+                    Get(WorkPriorityType.craftManuBallista).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Manuballista.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Manuballista, WorkPriorityType.craftManuBallista, faction, city, ItemResourceType.Manuballista);
+                    Get(WorkPriorityType.craftCatapult).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Catapult.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_Catapult, WorkPriorityType.craftCatapult, faction, city, ItemResourceType.Catapult);
 
-                    Get(WorkPriorityType.craftSiegeCannonBronze).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SiegeCannonBronze.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeSiegeCannon, WorkPriorityType.craftSiegeCannonBronze, faction, city);
-                    Get(WorkPriorityType.craftManCannonBronze).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ManCannonBronze.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeManCannon, WorkPriorityType.craftManCannonBronze, faction, city);
-                    Get(WorkPriorityType.craftSiegeCannonIron).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SiegeCannonIron.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_IronSiegeCannon, WorkPriorityType.craftSiegeCannonIron, faction, city);
-                    Get(WorkPriorityType.craftManCannonIron).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ManCannonIron.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_IronManCannon, WorkPriorityType.craftManCannonIron, faction, city);
+                    Get(WorkPriorityType.craftSiegeCannonBronze).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SiegeCannonBronze.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeSiegeCannon, WorkPriorityType.craftSiegeCannonBronze, faction, city, ItemResourceType.SiegeCannonBronze);
+                    Get(WorkPriorityType.craftManCannonBronze).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ManCannonBronze.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeManCannon, WorkPriorityType.craftManCannonBronze, faction, city, ItemResourceType.ManCannonBronze);
+                    Get(WorkPriorityType.craftSiegeCannonIron).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_SiegeCannonIron.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_IronSiegeCannon, WorkPriorityType.craftSiegeCannonIron, faction, city, ItemResourceType.SiegeCannonIron);
+                    Get(WorkPriorityType.craftManCannonIron).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_ManCannonIron.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_IronManCannon, WorkPriorityType.craftManCannonIron, faction, city, ItemResourceType.ManCannonIron);
                     break;
 
                 case ResourceGroupType.Armor:
                     // --- Human Armor ---
-                    Get(WorkPriorityType.craftPaddedArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_PaddedArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_PaddedArmor, WorkPriorityType.craftPaddedArmor, faction, city);
-                    Get(WorkPriorityType.craftHeavyPaddedArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HeavyPaddedArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_HeavyPaddedArmor, WorkPriorityType.craftHeavyPaddedArmor, faction, city);
-                    Get(WorkPriorityType.craftBronzeArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_BronzeArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeArmor, WorkPriorityType.craftBronzeArmor, faction, city);
-                    Get(WorkPriorityType.craftMailArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_IronArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_IronArmor, WorkPriorityType.craftMailArmor, faction, city);
-                    Get(WorkPriorityType.craftHeavyMailArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HeavyIronArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_HeavyIronArmor, WorkPriorityType.craftHeavyMailArmor, faction, city);
-                    Get(WorkPriorityType.craftPlateArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_LightPlateArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_LightPlateArmor, WorkPriorityType.craftPlateArmor, faction, city);
-                    Get(WorkPriorityType.craftFullPlateArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_FullPlateArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_FullPlateArmor, WorkPriorityType.craftFullPlateArmor, faction, city);
-                    Get(WorkPriorityType.craftMithrilArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MithrilArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_MithrilArmor, WorkPriorityType.craftMithrilArmor, faction, city);
+                    Get(WorkPriorityType.craftPaddedArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_PaddedArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_PaddedArmor, WorkPriorityType.craftPaddedArmor, faction, city, ItemResourceType.PaddedArmor);
+                    Get(WorkPriorityType.craftHeavyPaddedArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HeavyPaddedArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_HeavyPaddedArmor, WorkPriorityType.craftHeavyPaddedArmor, faction, city, ItemResourceType.HeavyPaddedArmor);
+                    Get(WorkPriorityType.craftBronzeArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_BronzeArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BronzeArmor, WorkPriorityType.craftBronzeArmor, faction, city, ItemResourceType.BronzeArmor);
+                    Get(WorkPriorityType.craftMailArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_IronArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_IronArmor, WorkPriorityType.craftMailArmor, faction, city, ItemResourceType.IronArmor);
+                    Get(WorkPriorityType.craftHeavyMailArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_HeavyIronArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_HeavyIronArmor, WorkPriorityType.craftHeavyMailArmor, faction, city, ItemResourceType.HeavyIronArmor);
+                    Get(WorkPriorityType.craftPlateArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_LightPlateArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_LightPlateArmor, WorkPriorityType.craftPlateArmor, faction, city, ItemResourceType.LightPlateArmor);
+                    Get(WorkPriorityType.craftFullPlateArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_FullPlateArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_FullPlateArmor, WorkPriorityType.craftFullPlateArmor, faction, city, ItemResourceType.FullPlateArmor);
+                    Get(WorkPriorityType.craftMithrilArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_MithrilArmor.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_MithrilArmor, WorkPriorityType.craftMithrilArmor, faction, city, ItemResourceType.MithrilArmor);
 
                     content.newParagraph();
 
-                    // --- Mount Armor ---
-                    Get(WorkPriorityType.craftMountPaddedArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_PaddedArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountPaddedArmor, WorkPriorityType.craftMountPaddedArmor, faction, city);
-                    Get(WorkPriorityType.craftMountHeavyPaddedArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_HeavyPaddedArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountHeavyPaddedArmor, WorkPriorityType.craftMountHeavyPaddedArmor, faction, city);
-                    Get(WorkPriorityType.craftMountBronzeArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_BronzeArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountBronzeArmor, WorkPriorityType.craftMountBronzeArmor, faction, city);
-                    Get(WorkPriorityType.craftMountMailArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_IronArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountIronArmor, WorkPriorityType.craftMountMailArmor, faction, city);
-                    Get(WorkPriorityType.craftMountHeavyMailArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_HeavyIronArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountHeavyIronArmor, WorkPriorityType.craftMountHeavyMailArmor, faction, city);
-                    Get(WorkPriorityType.craftMountPlateArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_LightPlateArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountLightPlateArmor, WorkPriorityType.craftMountPlateArmor, faction, city);
-                    Get(WorkPriorityType.craftMountFullPlateArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_FullPlateArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountFullPlateArmor, WorkPriorityType.craftMountFullPlateArmor, faction, city);
-                    Get(WorkPriorityType.craftMountMithrilArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_MithrilArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountMithrilArmor, WorkPriorityType.craftMountMithrilArmor, faction, city);
+                    // --- Mount Armor (Assumed types based on naming convention) ---
+                    Get(WorkPriorityType.craftMountPaddedArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_PaddedArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountPaddedArmor, WorkPriorityType.craftMountPaddedArmor, faction, city, ItemResourceType.MountPaddedArmor);
+                    Get(WorkPriorityType.craftMountHeavyPaddedArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_HeavyPaddedArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountHeavyPaddedArmor, WorkPriorityType.craftMountHeavyPaddedArmor, faction, city, ItemResourceType.MountHeavyPaddedArmor);
+                    Get(WorkPriorityType.craftMountBronzeArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_BronzeArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountBronzeArmor, WorkPriorityType.craftMountBronzeArmor, faction, city, ItemResourceType.MountBronzeArmor);
+                    Get(WorkPriorityType.craftMountMailArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_IronArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountIronArmor, WorkPriorityType.craftMountMailArmor, faction, city, ItemResourceType.MountIronArmor);
+                    Get(WorkPriorityType.craftMountHeavyMailArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_HeavyIronArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountHeavyIronArmor, WorkPriorityType.craftMountHeavyMailArmor, faction, city, ItemResourceType.MountHeavyIronArmor);
+                    Get(WorkPriorityType.craftMountPlateArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_LightPlateArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountLightPlateArmor, WorkPriorityType.craftMountPlateArmor, faction, city, ItemResourceType.MountLightPlateArmor);
+                    Get(WorkPriorityType.craftMountFullPlateArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_FullPlateArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountFullPlateArmor, WorkPriorityType.craftMountFullPlateArmor, faction, city, ItemResourceType.MountFullPlateArmor);
+                    Get(WorkPriorityType.craftMountMithrilArmor).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_MithrilArmor.ToLowerInvariant())), SpriteName.WarsHammer, SpriteName.WarsResource_MountMithrilArmor, WorkPriorityType.craftMountMithrilArmor, faction, city, ItemResourceType.MountMithrilArmor);
 
                     content.newParagraph();
 
-                    // --- Shields ---
-                    Get(WorkPriorityType.craftBucklerShield).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_BucklerShield.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BucklerShield, WorkPriorityType.craftBucklerShield, faction, city);
-                    Get(WorkPriorityType.craftRoundShield).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_RoundShield.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_RoundShield, WorkPriorityType.craftRoundShield, faction, city);
-                    Get(WorkPriorityType.craftHeaterShield).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HeaterShield.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_HeaterShield, WorkPriorityType.craftHeaterShield, faction, city);
-                    Get(WorkPriorityType.craftTowerShield).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_TowerShield.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_TowerShield, WorkPriorityType.craftTowerShield, faction, city);
-
+                    // --- Shields (Assumed types based on naming convention) ---
+                    Get(WorkPriorityType.craftBucklerShield).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_BucklerShield.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_BucklerShield, WorkPriorityType.craftBucklerShield, faction, city, ItemResourceType.BucklerShield);
+                    Get(WorkPriorityType.craftRoundShield).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_RoundShield.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_RoundShield, WorkPriorityType.craftRoundShield, faction, city, ItemResourceType.RoundShield);
+                    Get(WorkPriorityType.craftHeaterShield).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_HeaterShield.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_HeaterShield, WorkPriorityType.craftHeaterShield, faction, city, ItemResourceType.HeaterShield);
+                    Get(WorkPriorityType.craftTowerShield).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_TowerShield.ToLowerInvariant()), SpriteName.WarsHammer, SpriteName.WarsResource_TowerShield, WorkPriorityType.craftTowerShield, faction, city, ItemResourceType.TowerShield);
                     break;
 
+
+
                 case ResourceGroupType.Animals:
-                    Get(WorkPriorityType.SlaughterHen).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Hen), SpriteName.WarsHammer, SpriteName.WarsResource_Hen, WorkPriorityType.SlaughterHen, faction, city);
+                    Get(WorkPriorityType.SlaughterHen).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Hen), SpriteName.WarsHammer, SpriteName.WarsResource_Hen, WorkPriorityType.SlaughterHen, faction, city, ItemResourceType.Hen);
                     content.space(2);
                     waitForFullStock(WorkPriorityType.SlaughterHen);
 
-                    Get(WorkPriorityType.SlaughterPig).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Pig), SpriteName.WarsHammer, SpriteName.WarsResource_Pig, WorkPriorityType.SlaughterPig, faction, city);
+                    Get(WorkPriorityType.SlaughterPig).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Pig), SpriteName.WarsHammer, SpriteName.WarsResource_Pig, WorkPriorityType.SlaughterPig, faction, city, ItemResourceType.Pig);
 
                     // --- Oxen ---
-                    Get(WorkPriorityType.SlaughterOxen).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Oxen), SpriteName.WarsHammer, SpriteName.WarsResource_Oxen, WorkPriorityType.SlaughterOxen, faction, city);
-                    Get(WorkPriorityType.SlaughterKineOxen).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_KineOxen), SpriteName.WarsHammer, SpriteName.WarsResource_KineOxen, WorkPriorityType.SlaughterKineOxen, faction, city);
+                    Get(WorkPriorityType.SlaughterOxen).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Oxen), SpriteName.WarsHammer, SpriteName.WarsResource_Oxen, WorkPriorityType.SlaughterOxen, faction, city, ItemResourceType.Oxen);
+                    Get(WorkPriorityType.SlaughterKineOxen).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_KineOxen), SpriteName.WarsHammer, SpriteName.WarsResource_KineOxen, WorkPriorityType.SlaughterKineOxen, faction, city, ItemResourceType.KineOxen);
 
                     // --- Horses ---
-                    Get(WorkPriorityType.SlaughterPony).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Pony), SpriteName.WarsHammer, SpriteName.WarsResource_Pony, WorkPriorityType.SlaughterPony, faction, city);
-                    Get(WorkPriorityType.SlaughterHorse).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Horse), SpriteName.WarsHammer, SpriteName.WarsResource_Horse, WorkPriorityType.SlaughterHorse, faction, city);
-                    Get(WorkPriorityType.SlaughterWarHorse).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WarHorse), SpriteName.WarsHammer, SpriteName.WarsResource_WarHorse, WorkPriorityType.SlaughterWarHorse, faction, city);
-                    Get(WorkPriorityType.SlaughterDraftHorse).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_DraftHorse), SpriteName.WarsHammer, SpriteName.WarsResource_DraftHorse, WorkPriorityType.SlaughterDraftHorse, faction, city);
+                    Get(WorkPriorityType.SlaughterPony).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Pony), SpriteName.WarsHammer, SpriteName.WarsResource_Pony, WorkPriorityType.SlaughterPony, faction, city, ItemResourceType.Pony);
+                    Get(WorkPriorityType.SlaughterHorse).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Horse), SpriteName.WarsHammer, SpriteName.WarsResource_Horse, WorkPriorityType.SlaughterHorse, faction, city, ItemResourceType.Horse);
+                    Get(WorkPriorityType.SlaughterWarHorse).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WarHorse), SpriteName.WarsHammer, SpriteName.WarsResource_WarHorse, WorkPriorityType.SlaughterWarHorse, faction, city, ItemResourceType.WarHorse);
+                    Get(WorkPriorityType.SlaughterDraftHorse).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_DraftHorse), SpriteName.WarsHammer, SpriteName.WarsResource_DraftHorse, WorkPriorityType.SlaughterDraftHorse, faction, city, ItemResourceType.DraftHorse);
 
                     // --- Wild Pigs ---
-                    Get(WorkPriorityType.SlaughterWildPig).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WildPig), SpriteName.WarsHammer, SpriteName.WarsResource_WildPig, WorkPriorityType.SlaughterWildPig, faction, city);
-                    Get(WorkPriorityType.SlaughterWildHog).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WildHog), SpriteName.WarsHammer, SpriteName.WarsResource_WildHog, WorkPriorityType.SlaughterWildHog, faction, city);
-                    Get(WorkPriorityType.SlaughterWarHog).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WarHog), SpriteName.WarsHammer, SpriteName.WarsResource_WarHog, WorkPriorityType.SlaughterWarHog, faction, city);
-                    Get(WorkPriorityType.SlaughterStagHog).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_StagHog), SpriteName.WarsHammer, SpriteName.WarsResource_StagHog, WorkPriorityType.SlaughterStagHog, faction, city);
+                    Get(WorkPriorityType.SlaughterWildPig).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WildPig), SpriteName.WarsHammer, SpriteName.WarsResource_WildPig, WorkPriorityType.SlaughterWildPig, faction, city, ItemResourceType.WildPig);
+                    Get(WorkPriorityType.SlaughterWildHog).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WildHog), SpriteName.WarsHammer, SpriteName.WarsResource_WildHog, WorkPriorityType.SlaughterWildHog, faction, city, ItemResourceType.WildHog);
+                    Get(WorkPriorityType.SlaughterWarHog).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WarHog), SpriteName.WarsHammer, SpriteName.WarsResource_WarHog, WorkPriorityType.SlaughterWarHog, faction, city, ItemResourceType.WarHog);
+                    Get(WorkPriorityType.SlaughterStagHog).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_StagHog), SpriteName.WarsHammer, SpriteName.WarsResource_StagHog, WorkPriorityType.SlaughterStagHog, faction, city, ItemResourceType.StagHog);
 
                     // --- Wolves ---
-                    Get(WorkPriorityType.SlaughterWolf).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Wolf), SpriteName.WarsHammer, SpriteName.WarsResource_Wolf, WorkPriorityType.SlaughterWolf, faction, city);
-                    Get(WorkPriorityType.SlaughterWarg).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Warg), SpriteName.WarsHammer, SpriteName.WarsResource_Warg, WorkPriorityType.SlaughterWarg, faction, city);
-                    Get(WorkPriorityType.SlaughterAlphaWarg).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_AlphaWarg), SpriteName.WarsHammer, SpriteName.WarsResource_AlphaWarg, WorkPriorityType.SlaughterAlphaWarg, faction, city);
+                    Get(WorkPriorityType.SlaughterWolf).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Wolf), SpriteName.WarsHammer, SpriteName.WarsResource_Wolf, WorkPriorityType.SlaughterWolf, faction, city, ItemResourceType.Wolf);
+                    Get(WorkPriorityType.SlaughterWarg).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Warg), SpriteName.WarsHammer, SpriteName.WarsResource_Warg, WorkPriorityType.SlaughterWarg, faction, city, ItemResourceType.Warg);
+                    Get(WorkPriorityType.SlaughterAlphaWarg).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_AlphaWarg), SpriteName.WarsHammer, SpriteName.WarsResource_AlphaWarg, WorkPriorityType.SlaughterAlphaWarg, faction, city, ItemResourceType.AlphaWarg);
 
                     // --- Cats ---
-                    Get(WorkPriorityType.SlaughterWildCat).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WildCat), SpriteName.WarsHammer, SpriteName.WarsResource_WildCat, WorkPriorityType.SlaughterWildCat, faction, city);
-                    Get(WorkPriorityType.SlaughterLion).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Lion), SpriteName.WarsHammer, SpriteName.WarsResource_Lion, WorkPriorityType.SlaughterLion, faction, city);
-                    Get(WorkPriorityType.SlaughterWarLion).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WarLion), SpriteName.WarsHammer, SpriteName.WarsResource_WarLion, WorkPriorityType.SlaughterWarLion, faction, city);
+                    Get(WorkPriorityType.SlaughterWildCat).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WildCat), SpriteName.WarsHammer, SpriteName.WarsResource_WildCat, WorkPriorityType.SlaughterWildCat, faction, city, ItemResourceType.WildCat);
+                    Get(WorkPriorityType.SlaughterLion).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Lion), SpriteName.WarsHammer, SpriteName.WarsResource_Lion, WorkPriorityType.SlaughterLion, faction, city, ItemResourceType.Lion);
+                    Get(WorkPriorityType.SlaughterWarLion).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WarLion), SpriteName.WarsHammer, SpriteName.WarsResource_WarLion, WorkPriorityType.SlaughterWarLion, faction, city, ItemResourceType.WarLion);
 
                     // --- Elephants ---
-                    Get(WorkPriorityType.SlaughterElephant).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Elephant), SpriteName.WarsHammer, SpriteName.WarsResource_Elephant, WorkPriorityType.SlaughterElephant, faction, city);
-                    Get(WorkPriorityType.SlaughterWarElephant).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WarElephant), SpriteName.WarsHammer, SpriteName.WarsResource_WarElephant, WorkPriorityType.SlaughterWarElephant, faction, city);
-                    Get(WorkPriorityType.SlaughterOliphant).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Oliphant), SpriteName.WarsHammer, SpriteName.WarsResource_Oliphant, WorkPriorityType.SlaughterOliphant, faction, city);
+                    Get(WorkPriorityType.SlaughterElephant).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Elephant), SpriteName.WarsHammer, SpriteName.WarsResource_Elephant, WorkPriorityType.SlaughterElephant, faction, city, ItemResourceType.Elephant);
+                    Get(WorkPriorityType.SlaughterWarElephant).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WarElephant), SpriteName.WarsHammer, SpriteName.WarsResource_WarElephant, WorkPriorityType.SlaughterWarElephant, faction, city, ItemResourceType.WarElephant);
+                    Get(WorkPriorityType.SlaughterOliphant).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Oliphant), SpriteName.WarsHammer, SpriteName.WarsResource_Oliphant, WorkPriorityType.SlaughterOliphant, faction, city, ItemResourceType.Oliphant);
                     break;
 
                 case ResourceGroupType.Mint:
@@ -1782,7 +1793,8 @@ namespace VikingEngine.DSSWars.Work
 
 
         }
-        public void toHud(Players.LocalPlayer player, RichBoxContent content, string name, SpriteName sprite1, SpriteName sprite2, WorkPriorityType priorityType, Faction faction, City city, int mineCount = 1)
+        public void toHud(LocalPlayer player, RichBoxContent content, string name, SpriteName sprite1, SpriteName sprite2, WorkPriorityType priorityType, Faction faction, City city,
+            ItemResourceType resourceInfo, int? mineCount = null)
         {
             content.newLine();
             var infoContent = new List<AbsRichBoxMember>(2);
@@ -1791,19 +1803,49 @@ namespace VikingEngine.DSSWars.Work
             {
                 infoContent.Add(new RbImage(sprite2));
             }
-            var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null, new RbTooltip_Text(name));
-               
+            var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null, new RbTooltip(workTooltip, new WorkTooltipArgs() { City = city, Name = name, resourceInfo = resourceInfo, mineCount = mineCount }));
+
 
             content.Add(infoButton);
             content.Add(new RbTab(0.2f));
 
-            if (mineCount <= 0 && city != null)
+            if (mineCount.HasValue && mineCount <= 0 && city != null)
             {
                 content.Add(new RbText(DssRef.lang.Work_NoMines, HudLib.NotAvailableColor));
             }
-            else 
+            else
             {
                 priorityToHud(player, content, priorityType, faction, city);
+            }
+        }
+
+        struct WorkTooltipArgs
+        {
+            public City City;
+            public string Name;
+
+            public ItemResourceType resourceInfo;
+            public int? mineCount;
+        }
+
+        void workTooltip(RichBoxContent content, object tag)
+        {
+            WorkTooltipArgs args = (WorkTooltipArgs)tag;
+            content.h1(args.Name, HudLib.TitleColor_Head);
+
+            if (args.resourceInfo != ItemResourceType.NONE)
+            {
+
+
+                if (args.mineCount != null)
+                {
+                    IconName.Item(args.resourceInfo, out SpriteName itemIcon, out string itemName);
+                    content.icontext(SpriteName.WarsWorkMine, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XCountIsY, string.Format(DssRef.lang.BuildingType_ResourceMine, itemName), args.mineCount.Value)));
+
+                    content.newLine();
+                }
+                content.Add(new RbSeperationLine());
+                ResourceLib.FullResourceInfo(args.City, args.resourceInfo, content);
             }
         }
 

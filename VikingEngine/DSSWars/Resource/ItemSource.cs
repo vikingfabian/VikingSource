@@ -13,12 +13,8 @@ namespace VikingEngine.DSSWars.Resource
     {
         public static readonly ItemSource None = new ItemSource() { source = ItemSourceType.NONE, sourceId = -1, };
 
-        public ItemSourceType source/* = ItemSourceType.NONE*/;
-        public int sourceId/* = -1*/;
-
-
-        //public ItemSource()
-        //{ }
+        public ItemSourceType source;
+        public int sourceId;
 
         public ItemSource(TerrainSubFoilType terrain)
         {
@@ -52,7 +48,7 @@ namespace VikingEngine.DSSWars.Resource
                 switch (source)
                 {
                     case ItemSourceType.Terrain:
-                        label(".Terrain");
+                        label(DssRef.todoLang.ItemSource_Terrain);
                         terrain(sourceId);
 
                         void terrain(int terrainType)
@@ -69,33 +65,18 @@ namespace VikingEngine.DSSWars.Resource
                         break;
 
                     case ItemSourceType.Farm:
-                        label(".Farm");
+                        label(DssRef.todoLang.ItemSource_Farm);
                         addBuilding(sourceId);
-                        //if (sourceId2 >= 0)
-                        //{
-                        //    HudLib.BulletSeperationPoint(content);
-                        //    addBuilding(sourceId2);
-                        //}
-                        //if (sourceId3 >= 0)
-                        //{
-                        //    HudLib.BulletSeperationPoint(content);
-                        //    addBuilding(sourceId3);
-                        //}
                         break;
 
                     case ItemSourceType.Crafting:
 
-                        label(".Craft station");
+                        label(DssRef.todoLang.ItemSource_CraftStation);
                         addBuilding(sourceId);
-                        //if (sourceId2 >= 0)
-                        //{
-                        //    HudLib.BulletSeperationPoint(content);
-                        //    addBuilding(sourceId2);
-                        //}
                         break;
 
                     case ItemSourceType.Mine:
-                        label(".Gathering");
+                        label(DssRef.todoLang.ItemSource_Gathering);
                         IconName.Terrain(TerrainMainType.Mine, sourceId, out var icon, out var name);
                         content.Add(new RbImage(icon));
                         content.hspace();
