@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Xml.Linq;
-using Valve.Steamworks;
-using VikingEngine.DSSWars.Build;
-//using VikingEngine.DSSWars.Battle;
+
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
@@ -25,13 +20,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.LootFest.Data;
-using VikingEngine.LootFest.GO.Gadgets;
-using VikingEngine.LootFest.Map;
-using VikingEngine.PJ;
-using VikingEngine.ToGG;
-using VikingEngine.ToGG.MoonFall;
-using static System.Net.Mime.MediaTypeNames;
+
 
 namespace VikingEngine.DSSWars.Interface
 {

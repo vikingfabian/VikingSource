@@ -435,7 +435,10 @@ namespace VikingEngine.DSSWars.Build
             }
             if (unlocks.building_chemist)
             {
-                list.Add(BuildAndExpandType.Chemist);
+                list.Add(BuildAndExpandType.Chemist);                
+            }
+            if (unlocks.building_gunmaker)
+            {
                 list.Add(BuildAndExpandType.Gunmaker);
             }
 

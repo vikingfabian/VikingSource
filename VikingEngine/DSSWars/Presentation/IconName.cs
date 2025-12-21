@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -20,6 +21,32 @@ namespace VikingEngine.DSSWars
 {
     static class IconName
     {
+        public static void Priority(int priority, out SpriteName prioIcon, out string prioText)
+        {
+            switch (priority)
+            {
+                case WorkTemplate.NoPrio:
+                    prioIcon = SpriteName.WarsHudIconSpeed_Pause;
+                    prioText = DssRef.lang.Work_OrderPrio_No;
+                    break;
+
+                case WorkTemplate.MinPrio:
+                    prioIcon = SpriteName.WarsHudIconSpeed_Low;
+                    prioText = DssRef.lang.Work_OrderPrio_Min;
+                    break;
+
+                default:
+                    prioIcon = SpriteName.WarsHudIconSpeed_Medium;
+                    prioText = null;
+                    break;
+
+                case WorkTemplate.MaxPrio:
+                    prioIcon = SpriteName.WarsHudIconSpeed_High;
+                    prioText = DssRef.lang.Work_OrderPrio_Max;
+                    break;
+            }
+        }
+
         //new
         public static void Item(ItemResourceType item, out SpriteName itemIcon, out string itemName)
         {

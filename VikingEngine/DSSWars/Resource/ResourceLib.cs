@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -233,8 +234,11 @@ namespace VikingEngine.DSSWars.Resource
                 
                 content.Add(new RbText(DssRef.lang.Work_OrderPrioTitle + ": ", HudLib.TitleColor_Label));
                 content.space();
-                content.Add(new RbImage(SpriteName.WarsHammer));
+               
                 content.space();
+                IconName.Priority(priority.value, out SpriteName prioIcon, out _);
+                content.Add(new RbOverlapImage(new RbImage(SpriteName.WarsHammer), prioIcon, new Vector2(0.4f, 0.1f), 0.75f));
+                content.space(1.5f);
                 content.Add(new RbText(priority.value.ToString(), priority.HasPrio() ? null : HudLib.NotAvailableColor));
             }
 
@@ -242,7 +246,7 @@ namespace VikingEngine.DSSWars.Resource
 
             content.Add(new RbSeperationLine());
 
-            content.h1("Item source", HudLib.TitleColor_Head2);
+            content.h1(DssRef.todoLang.ItemSource, HudLib.TitleColor_Head2);
             content.newLine();
             properties.ItemSourceToHud(content);
 
