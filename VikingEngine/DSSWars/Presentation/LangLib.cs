@@ -423,7 +423,7 @@ namespace VikingEngine.DSSWars.Presentation
                     typeIcon = SpriteName.WarsResource_IronRifle;
                     break;
 
-                case WorkPriorityType.craftBlunderbus:
+                case WorkPriorityType.craftBlunderbuss:
                     name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Blunderbuss);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_IronShotgun;

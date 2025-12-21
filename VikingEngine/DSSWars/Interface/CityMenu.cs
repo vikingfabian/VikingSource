@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Xml.Linq;
-using Valve.Steamworks;
-using VikingEngine.DSSWars.Build;
-//using VikingEngine.DSSWars.Battle;
+
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
@@ -25,13 +20,7 @@ using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.LootFest.Data;
-using VikingEngine.LootFest.GO.Gadgets;
-using VikingEngine.LootFest.Map;
-using VikingEngine.PJ;
-using VikingEngine.ToGG;
-using VikingEngine.ToGG.MoonFall;
-using static System.Net.Mime.MediaTypeNames;
+
 
 namespace VikingEngine.DSSWars.Interface
 {
@@ -950,7 +939,7 @@ namespace VikingEngine.DSSWars.Interface
                         ItemResourceType item = ItemResourceType.Blunderbuss;
                         mixResource(item, false);
                         HudLib.blueprint(content, CraftResourceLib.Blunderbus);
-                        work(item, WorkPriorityType.craftBlunderbus);
+                        work(item, WorkPriorityType.craftBlunderbuss);
                         end(item);
                     }
                     content.newParagraph();
@@ -1205,7 +1194,7 @@ namespace VikingEngine.DSSWars.Interface
                             break;
                         case MixTabEditType.WorkPrio:
                             LangLib.WorkNameIcon(player.mixWorkType, out string name, out SpriteName workIcon, out SpriteName typeIcon);
-                            city.workTemplate.GetWorkPriority(player.mixWorkType).toHud(player, content, name, workIcon, typeIcon, player.mixWorkType, player.faction, city);
+                            city.workTemplate.GetWorkPriority(player.mixWorkType).toHud(player, content, name, workIcon, typeIcon, player.mixWorkType, player.faction, city, item);
                             break;
                         case MixTabEditType.BlackMarket:
                             BlackMarketResources.ResourceToHud(item, player, content, city);

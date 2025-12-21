@@ -1,6 +1,7 @@
 ﻿Change log:
 * Updated unit icons
-* 
+* Improved resource hud
+
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
