@@ -140,6 +140,7 @@ namespace VikingEngine.DSSWars.Map
         ShieldMaker,
 
         MaterialStorage, FoodStorage, WeaponStorage, ArmorStorage, AnimalStorage,
+        Cesspit,
 
         OxenPen,
         KineOxenPen,

@@ -1906,14 +1906,22 @@ namespace VikingEngine.DSSWars.Interface
                     bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
 
                     city.GetGroupedResource(CityResoureIndex.wood).toMenu(content, ItemResourceType.Wood_Group, woodSafeGuard, ref reachedBuffer, player, city);//New solution
+                    
+                    city.GetGroupedResource(CityResoureIndex.fuel).toMenu(content, ItemResourceType.Fuel_G, fuelSafeGuard, ref reachedBuffer, player, city);
+                    int totalmines = 0;
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_coal, ItemResourceType.Coal, Map.SubTile.Empty, ref totalmines);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Fuel1, null, true);
+                    content.space();
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Charcoal);
+
                     city.GetGroupedResource(CityResoureIndex.stone).toMenu(content, ItemResourceType.Stone_G, false, ref reachedBuffer, player, city);// Replace "res_stone", and continue with the rest
                     city.GetGroupedResource(CityResoureIndex.Clay).toMenu(content, ItemResourceType.Clay, false, ref reachedBuffer, player, city);// Replace "res_stone", and continue with the rest
                     city.GetGroupedResource(CityResoureIndex.Brick).toMenu(content, ItemResourceType.Brick, false, ref reachedBuffer, player, city);// Replace "res_stone", and continue with the rest
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.ClayBrick);
 
+                    city.GetGroupedResource(CityResoureIndex.skinLinnen).toMenu(content, ItemResourceType.SkinLinen_Group, false, ref reachedBuffer, player, city);
                     city.GetGroupedResource(CityResoureIndex.rawFood).toMenu(content, ItemResourceType.RawFood_Group, rawFoodSafeGuard, ref reachedBuffer, player, city);
                     city.GetGroupedResource(CityResoureIndex.Salt).toMenu(content, ItemResourceType.Salt, false, ref reachedBuffer, player, city);
-                    city.GetGroupedResource(CityResoureIndex.skinLinnen).toMenu(content, ItemResourceType.SkinLinen_Group, false, ref reachedBuffer, player, city);
                     content.newParagraph();
 
                     city.GetGroupedResource(CityResoureIndex.food).toMenu(content, ItemResourceType.Food_G, foodSafeGuard, ref reachedBuffer, player, city);
@@ -1943,12 +1951,7 @@ namespace VikingEngine.DSSWars.Interface
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.CoolingFluid);
                     content.newParagraph();
 
-                    city.GetGroupedResource(CityResoureIndex.fuel).toMenu(content, ItemResourceType.Fuel_G, fuelSafeGuard, ref reachedBuffer, player, city);
-                    int totalmines = 0;
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_coal, ItemResourceType.Coal, Map.SubTile.Empty, ref totalmines);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Fuel1, null, true);
-                    content.space();
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Charcoal);
+                    
 
 
                     city.GetGroupedResource(CityResoureIndex.Container).toMenu(content, ItemResourceType.Container, false, ref reachedBuffer, player, city);

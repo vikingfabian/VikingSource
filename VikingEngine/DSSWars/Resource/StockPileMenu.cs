@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Interface;
@@ -12,6 +14,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Characters;
 using VikingEngine.LootFest.GO.Characters.Monsters;
+using VikingEngine.ToGG.Commander.UnitsData;
 
 namespace VikingEngine.DSSWars.Resource
 {
@@ -211,7 +214,7 @@ namespace VikingEngine.DSSWars.Resource
             else
             {
                 res = new GroupedResource() {
-                    stockPileLimit = faction.GetResourceOverview(item).goalBuffer
+                    stockPileLimit = faction.GetResourceOverview(item).stockPileLimit
                 };
             }
 
@@ -247,6 +250,13 @@ namespace VikingEngine.DSSWars.Resource
 
                 List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(2);
                 SpriteName storage;
+
+                Color? numberCol = null;
+                if (ResourceLib.Limit(limit) >= res.stockPileLimit)
+                {
+                    numberCol = HudLib.SecondaryTextColor;
+                }
+
                 switch (limit)
                 {                    
                     case StockpileLimitOption.NoLimit:
@@ -256,6 +266,19 @@ namespace VikingEngine.DSSWars.Resource
                             case StorageType.MaterialStorage:
                                 storage = SpriteName.WarsBuild_MaterialStorage;
                                 break;
+                            case StorageType.FoodStorage:
+                                storage = SpriteName.WarsBuild_FoodStorage;
+                                break;
+                            case StorageType.WeaponStorage:
+                                storage = SpriteName.WarsBuild_WeaponStorage;
+                                break;
+                            case StorageType.ArmorStorage:
+                                storage = SpriteName.WarsBuild_ArmorStorage;
+                                break;
+                            case StorageType.AnimalStorage:
+                                storage = SpriteName.WarsBuild_AnimalStorage;
+                                break;
+
                         }
                         buttonContent.Add(new RbImage(storage));
                         buttonContent.Add(new RbSpace());
@@ -269,35 +292,59 @@ namespace VikingEngine.DSSWars.Resource
                         }
                         break;
                     case StockpileLimitOption.Value100:
-                        buttonContent.Add(new RbText(DssRef.lang.EngineHud_SymbolFor100));
+                        buttonContent.Add(new RbText(DssRef.lang.EngineHud_SymbolFor100, numberCol));
                         break;
                     case StockpileLimitOption.Value500:
-                        buttonContent.Add(new RbText("5" + DssRef.lang.EngineHud_SymbolFor100));
+                        buttonContent.Add(new RbText("5" + DssRef.lang.EngineHud_SymbolFor100, numberCol));
                         break;
                     case StockpileLimitOption.Value2000:
-                        buttonContent.Add(new RbText("2" + DssRef.lang.EngineHud_SymbolFor1000));
+                        buttonContent.Add(new RbText("2" + DssRef.lang.EngineHud_SymbolFor1000, numberCol));
                         break;
 
                 }
 
-                content.Add(new ArtOption(limit == res.stockPileLimit, buttonContent, 
+                content.Add(new ArtOption(limit == res.limitOption, buttonContent, 
                     new RbAction1Arg<StockpileLimitOption>((StockpileLimitOption limit) => {
 
-                        
                         if (city != null)
                         {
-                            ref var res = ref city.GetRefGroupedResource(item);
-                            res.stockPileLimit = limit;
+                            ref GroupedResource res = ref city.GetRefGroupedResource(item);
+                            res.limitOption = limit;
+
                         }
                         else
                         {
-                            ref var res = ref faction.GetRefResourceOverview(item);
-                            res.stockPileLimit = limit;
+                            ref GroupedResource res = ref faction.GetRefResourceOverview(item);
+                            res.limitOption = limit;
                         }
-                    }
+
+                        
+                    }, limit), 
+                    new RbTooltip(limitTooltip, new LimitTooltipArgs() { limit = limit, res = res })));
             }
 
             //stockPileEdit(content, item, res);
+        }
+
+        struct LimitTooltipArgs
+        {
+            public StockpileLimitOption limit;
+            public GroupedResource res;
+        }
+
+        void limitTooltip(RichBoxContent content, object tag)
+        {
+            LimitTooltipArgs args = (LimitTooltipArgs)tag;
+            if (args.limit == StockpileLimitOption.NoLimit)
+            {
+                content.h1(".No limit", HudLib.TitleColor_Head);
+                content.text("Will stockpile up to the storage size");
+            }
+            else
+            {
+                content.h1(string.Format( ".Limit stockpile to {0}", ResourceLib.Limit(args.limit)), HudLib.TitleColor_Head);
+                content.text(DssRef.lang.Resource_StockPile_Info);
+            }
         }
 
         //void stockPileEdit(RichBoxContent content, ItemResourceType item, GroupedResource res)

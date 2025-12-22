@@ -441,7 +441,7 @@ namespace VikingEngine.DSSWars.Build
            new UseResource[]
            {
                new UseResource(ItemResourceType.ServiceMen, 1),
-               new UseResource(ItemResourceType.Pony, DssConst.PenBreedingStockCount),
+               new UseResource(ItemResourceType.Pig, DssConst.PenBreedingStockCount),
                 //new UseResource(ItemResourceType.Water_G, 8),
                 new UseResource(ItemResourceType.Wood_Group, 20),
                 //new UseResource(ItemResourceType.RawFood_Group, DssConst.AnimalFoodAmount)
@@ -455,7 +455,7 @@ namespace VikingEngine.DSSWars.Build
             new UseResource[]
             {
                new UseResource(ItemResourceType.ServiceMen, 1),
-               new UseResource(ItemResourceType.Pony, DssConst.PenBreedingStockCount),
+               new UseResource(ItemResourceType.Hen, DssConst.PenBreedingStockCount),
                 //new UseResource(ItemResourceType.Water_G, 4),
                 new UseResource(ItemResourceType.Wood_Group, 20),
                 //new UseResource(ItemResourceType.RawFood_Group, DssConst.AnimalFoodAmount)
@@ -1241,6 +1241,16 @@ namespace VikingEngine.DSSWars.Build
                new UseResource(ItemResourceType.RawFood_Group, 20),
            },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+        );
+        public static readonly CraftBlueprint Cesspit = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.Cesspit,
+          1,
+          new UseResource[]
+          {
+                new UseResource(ItemResourceType.Stone_G, 10),
+          },
+           XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
         );
 
         public static readonly CraftBlueprint DirtWall = new CraftBlueprint(

@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.Graphics;
@@ -378,6 +379,25 @@ namespace VikingEngine.DSSWars
                     itemIcon = SpriteName.WarsResource_Warhammer;
                     itemName = DssRef.lang.Resource_TypeName_Warhammer;
                     break;
+
+                // --- Shields ---
+                case ItemResourceType.BucklerShield:
+                    itemIcon = SpriteName.WarsResource_BucklerShield;
+                    itemName = DssRef.todoLang.Resource_TypeName_BucklerShield;
+                    break;
+                case ItemResourceType.RoundShield:
+                    itemIcon = SpriteName.WarsResource_RoundShield;
+                    itemName = DssRef.todoLang.Resource_TypeName_RoundShield;
+                    break;
+                case ItemResourceType.HeaterShield:
+                    itemIcon = SpriteName.WarsResource_HeaterShield;
+                    itemName = DssRef.todoLang.Resource_TypeName_HeaterShield;
+                    break;
+                case ItemResourceType.TowerShield:
+                    itemIcon = SpriteName.WarsResource_TowerShield;
+                    itemName = DssRef.todoLang.Resource_TypeName_TowerShield;
+                    break;
+
                 //case ItemResourceType.KnightsLance:
                 //    itemIcon = SpriteName.WarsResource_KnightsLance;
                 //    itemName = DssRef.lang.Resource_TypeName_KnightsLance;
@@ -1212,6 +1232,11 @@ namespace VikingEngine.DSSWars
                         case TerrainBuildingType.AnimalStorage:
                             icon = SpriteName.WarsBuild_AnimalStorage;
                             name = DssRef.todoLang.BuildingType_AnimalStorage;
+                            break;
+
+                        case TerrainBuildingType.Cesspit:
+                            icon = SpriteName.MissingImage;
+                            name = DssRef.todoLang.BuildingType_Cesspit;
                             break;
 
                         case TerrainBuildingType.ShieldMaker:

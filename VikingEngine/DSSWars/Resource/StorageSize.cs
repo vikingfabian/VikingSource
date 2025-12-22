@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.Resource
       
         public StorageSize()
         {
-            storageCount = StartSize;
+            storageCount = 0;
         }
 
         //const int SaveDiv = 100;

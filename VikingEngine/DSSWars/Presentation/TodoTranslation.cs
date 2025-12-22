@@ -103,6 +103,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string BuildingType_ArmorStorage => "Armor Storage";
         public string BuildingType_AnimalStorage => "Animal Storage";
 
+        public string BuildingType_Cesspit => "Cesspit";
+
         // --- Oxen Pens ---
         public string BuildingType_OxenPen => "Oxen Pen";
         public string BuildingType_KineOxenPen => "Kine Oxen Pen";

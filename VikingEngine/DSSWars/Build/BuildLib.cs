@@ -163,6 +163,7 @@ namespace VikingEngine.DSSWars.Build
         Dryer,
 
         MaterialStorage, FoodStorage,  WeaponStorage, ArmorStorage, AnimalStorage,
+        Cesspit,
 
         ShieldMaker,
 
@@ -1093,6 +1094,10 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.AnimalStorage, TerrainMainType.Building, (int)TerrainBuildingType.AnimalStorage, SpriteName.WarsBuild_AnimalStorage, CraftBuildingLib.AnimalStorage, true,
                 BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            
+            new BuildOption(BuildAndExpandType.Cesspit, TerrainMainType.Building, (int)TerrainBuildingType.Cesspit, SpriteName.MissingImage, CraftBuildingLib., true,
+                            BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
+                            MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
 
             //OxenPen
             new BuildOption(BuildAndExpandType.OxenPen, TerrainMainType.Building, (int)TerrainBuildingType.OxenPen, SpriteName.MissingImage, CraftBuildingLib.OxenPen, true,

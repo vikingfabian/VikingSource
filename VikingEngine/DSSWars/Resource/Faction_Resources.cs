@@ -157,7 +157,7 @@ namespace VikingEngine.DSSWars
                 int itemIndex = ItemPropertyColl.CityIndex(item);
                 var resource = DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIndex];
 
-                resource.toFactionViewMenu(content, item);
+                resource.toFactionOverViewMenu(content, item);
             }
         }
 
@@ -629,13 +629,13 @@ namespace VikingEngine.DSSWars
             armyUpkeep = Convert.ToInt32(totalArmiesUpkeep);
         }
 
-        public ref ResourceFactionOverview GetRefResourceOverview(ItemResourceType item)
+        public ref GroupedResource GetRefResourceOverview(ItemResourceType item)
         {
             int itemIndex = ItemPropertyColl.CityIndex(item);
             return ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIndex];
         }
 
-        public ResourceFactionOverview GetResourceOverview(ItemResourceType item)
+        public GroupedResource GetResourceOverview(ItemResourceType item)
         {
             int itemIndex = ItemPropertyColl.CityIndex(item);
             return DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIndex];
@@ -744,7 +744,7 @@ namespace VikingEngine.DSSWars
                 int end = resourceComponentStartIndex + CityResoureIndex.COUNT;
                 for (int itemIx = resourceComponentStartIndex; itemIx < end; itemIx++)
                 {
-                    DssRef.world.factionResourceOverviews[itemIx].clearOverview();
+                    DssRef.world.factionResourceOverviews[itemIx].clearFactionOverView();
                 }
 
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
@@ -758,7 +758,7 @@ namespace VikingEngine.DSSWars
                         cityResource.changeRate.oneSecondUpdate();
 
                         ref var factionOverview = ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + index];
-                        factionOverview.current += cityResource.amount;
+                        factionOverview.amount += cityResource.amount;
                         factionOverview.changeRate.prevConsumed += cityResource.changeRate.prevConsumed;
                         factionOverview.changeRate.prevProduced += cityResource.changeRate.prevProduced;
                     }

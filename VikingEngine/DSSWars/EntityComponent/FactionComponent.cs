@@ -9,13 +9,14 @@ namespace VikingEngine.DSSWars
     partial class WorldData
     {
         const int DefaultFactionCount = 64;
+        public GroupedResource[] factionResourceOverviews = new GroupedResource[DefaultFactionCount * CityResoureIndex.COUNT];
 
-        public ResourceFactionOverview[] factionResourceOverviews = new ResourceFactionOverview[DefaultFactionCount * CityResoureIndex.COUNT];
+       // public ResourceFactionOverview[] factionResourceOverviews = new ResourceFactionOverview[DefaultFactionCount * CityResoureIndex.COUNT];
         public WorkPriority[] factionWork = new WorkPriority[DefaultFactionCount * WorkTemplate.COUNT];
 
         void init_FactionComponents()
         {
-            factionResourceOverviews = new ResourceFactionOverview[factions.Array.Length * CityResoureIndex.COUNT];
+            factionResourceOverviews = new GroupedResource[factions.Array.Length * CityResoureIndex.COUNT];
             factionWork = new WorkPriority[factions.Array.Length * WorkTemplate.COUNT];
 
             for (int i = 0; i < factions.Array.Length; i++)
@@ -57,8 +58,8 @@ namespace VikingEngine.DSSWars
                     var properties = ItemPropertyColl.Get(item);
                     if (properties.cityResourceIndex >= 0)
                     {
-                        ref ResourceFactionOverview resource = ref factionResourceOverviews[faction.resourceComponentStartIndex + properties.cityResourceIndex];
-                        resource.goalBuffer = properties.defaultStockPile;
+                        ref GroupedResource resource = ref factionResourceOverviews[faction.resourceComponentStartIndex + properties.cityResourceIndex];
+                        resource.stockPileLimit = properties.defaultStockPile;
                     }
                 }
             }
