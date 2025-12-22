@@ -1079,7 +1079,7 @@ namespace VikingEngine.DSSWars.Resource
             1,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.SkinLinen_Group, 4),
+        new UseResource(ItemResourceType.PaddedArmor, 1),
         new UseResource(ItemResourceType.Steel, 2),
             },
            XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Practitioner_2,
@@ -1092,8 +1092,8 @@ namespace VikingEngine.DSSWars.Resource
             1,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.SkinLinen_Group, 2),
-        new UseResource(ItemResourceType.Steel, 6),
+                new UseResource(ItemResourceType.IronArmor, 1),
+                new UseResource(ItemResourceType.Steel, 6),
             },
            XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Expert_3,
             Build.BuildAndExpandType.Armory

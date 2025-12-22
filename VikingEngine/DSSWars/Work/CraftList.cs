@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Resource;
 
-namespace VikingEngine.DSSWars.Build
+namespace VikingEngine.DSSWars.Work
 {
-    static class BuildingCraftList
+    static class CraftList
     {
         public static readonly ItemResourceType[] SmelterCraftTypes = {
             ItemResourceType.Copper, ItemResourceType.Tin, ItemResourceType.Lead, ItemResourceType.Iron_G,
@@ -47,6 +48,7 @@ namespace VikingEngine.DSSWars.Build
 
         public static readonly ItemResourceType[] CarpenterCraftTypes = {
             ItemResourceType.Palisade,
+            ItemResourceType.Container,
             ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Crossbow,
             ItemResourceType.MithrilBow,
             ItemResourceType.Ballista, ItemResourceType.Manuballista, ItemResourceType.Catapult,
@@ -61,6 +63,9 @@ namespace VikingEngine.DSSWars.Build
              ItemResourceType.Container, ItemResourceType.Brick 
         };
 
+        public static readonly ItemResourceType[] ShieldMakerCraftTypes = {
+             ItemResourceType.BucklerShield, ItemResourceType.RoundShield, ItemResourceType.HeaterShield, ItemResourceType.TowerShield
+        };
 
 
         public static List<KeyValuePair<BuildAndExpandType, ItemResourceType[]>> AllBuidings()
@@ -71,10 +76,12 @@ namespace VikingEngine.DSSWars.Build
 
                 new KeyValuePair<BuildAndExpandType, ItemResourceType[]>( BuildAndExpandType.Smelter, SmelterCraftTypes ),
                 new KeyValuePair<BuildAndExpandType, ItemResourceType[]>( BuildAndExpandType.Smith, SmithCraftTypes ),
+                new KeyValuePair<BuildAndExpandType, ItemResourceType[]>( BuildAndExpandType.ShieldMaker, ShieldMakerCraftTypes ),
                 new KeyValuePair<BuildAndExpandType, ItemResourceType[]>( BuildAndExpandType.Gunmaker, GunmakerCraftTypes ),
                 new KeyValuePair<BuildAndExpandType, ItemResourceType[]>( BuildAndExpandType.Armory, ArmoryCraftTypes ),
                 new KeyValuePair<BuildAndExpandType, ItemResourceType[]>( BuildAndExpandType.Foundry, FoundryCraftTypes ),
                 new KeyValuePair<BuildAndExpandType, ItemResourceType[]>( BuildAndExpandType.WorkBench, BenchCraftTypes ),
+                new KeyValuePair<BuildAndExpandType, ItemResourceType[]>( BuildAndExpandType.Pottery, PotteryCraftTypes ),
                 new KeyValuePair<BuildAndExpandType, ItemResourceType[]>( BuildAndExpandType.Carpenter, CarpenterCraftTypes ),
                 new KeyValuePair<BuildAndExpandType, ItemResourceType[]>( BuildAndExpandType.Chemist, ChemistCraftTypes ),
             };

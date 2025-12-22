@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using VikingEngine;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars;
-using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
@@ -1320,32 +1319,32 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.Carpenter:
-                    mayCraftList(content, city, BuildingCraftList.CarpenterCraftTypes);
+                    mayCraftList(content, city, CraftList.CarpenterCraftTypes);
 
                     break;
 
                 case BuildAndExpandType.WorkBench:
-                    mayCraftList(content, city, BuildingCraftList.BenchCraftTypes);
+                    mayCraftList(content, city, CraftList.BenchCraftTypes);
                     break;
 
                 case BuildAndExpandType.Smelter:
-                    mayCraftList(content, city, BuildingCraftList.SmelterCraftTypes);
+                    mayCraftList(content, city, CraftList.SmelterCraftTypes);
                     break;
 
                 case BuildAndExpandType.Foundry:
-                    mayCraftList(content, city, BuildingCraftList.FoundryCraftTypes);
+                    mayCraftList(content, city, CraftList.FoundryCraftTypes);
                     break;
 
                 case BuildAndExpandType.Armory:
-                    mayCraftList(content, city, BuildingCraftList.ArmoryCraftTypes);
+                    mayCraftList(content, city, CraftList.ArmoryCraftTypes);
                     break;
 
                 case BuildAndExpandType.Smith:
-                    mayCraftList(content, city, BuildingCraftList.SmithCraftTypes);
+                    mayCraftList(content, city, CraftList.SmithCraftTypes);
                     break;
 
                 case BuildAndExpandType.Gunmaker:
-                    mayCraftList(content, city, BuildingCraftList.GunmakerCraftTypes);
+                    mayCraftList(content, city, CraftList.GunmakerCraftTypes);
                     break;
 
                 case BuildAndExpandType.CoalPit:

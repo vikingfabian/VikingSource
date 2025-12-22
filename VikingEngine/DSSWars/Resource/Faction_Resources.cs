@@ -157,7 +157,7 @@ namespace VikingEngine.DSSWars
                 int itemIndex = ItemPropertyColl.CityIndex(item);
                 var resource = DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIndex];
 
-                resource.toMenu(content, item);
+                resource.toFactionViewMenu(content, item);
             }
         }
 
@@ -744,7 +744,7 @@ namespace VikingEngine.DSSWars
                 int end = resourceComponentStartIndex + CityResoureIndex.COUNT;
                 for (int itemIx = resourceComponentStartIndex; itemIx < end; itemIx++)
                 {
-                    DssRef.world.factionResourceOverviews[itemIx].clear();
+                    DssRef.world.factionResourceOverviews[itemIx].clearOverview();
                 }
 
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();

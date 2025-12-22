@@ -12,11 +12,12 @@ using VikingEngine.HUD.RichBox.Artistic;
 namespace VikingEngine.DSSWars.Resource
 {
     enum StockpileLimitOption
-    { 
+    {   
         Value100,
         Value500,
         Value2000,
         NoLimit,
+        NUM
     }
 
     struct GroupedResource

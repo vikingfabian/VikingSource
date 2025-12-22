@@ -1385,6 +1385,9 @@ namespace VikingEngine.DSSWars
                     icon = SpriteName.WarsWorkMine;
                     switch ((TerrainMineType)subType)
                     {
+                        case TerrainMineType.StoneBlock:
+                            name = string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Stone);
+                            break;
                         case TerrainMineType.IronOre:
                             name = string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Iron);
                             break;

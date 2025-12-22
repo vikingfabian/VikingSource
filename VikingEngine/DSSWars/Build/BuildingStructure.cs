@@ -278,7 +278,7 @@ namespace VikingEngine.DSSWars.Build
         public int resourceCount_wood;
 
         // --- New Resource Counts ---
-        public int resourceCount_stoneblock;
+        public int mineCount_stoneblock;
         public int resourceCount_clay;
 
         static readonly SubTile TerrainType_wood = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeSoft);
@@ -313,7 +313,7 @@ namespace VikingEngine.DSSWars.Build
             naturalResource(player, content, resourceCount_stone, ItemResourceType.Stone_G, TerrainType_stone, ref totalCount);
 
             // Added StoneBlock (Brick) and Clay to natural resources
-            naturalResource(player, content, resourceCount_stoneblock, ItemResourceType.Brick, TerrainType_stoneblock, ref totalCount);
+            naturalResource(player, content, mineCount_stoneblock, ItemResourceType.Brick, TerrainType_stoneblock, ref totalCount);
             naturalResource(player, content, resourceCount_clay, ItemResourceType.Clay, TerrainType_clay, ref totalCount);
 
             mine(player, content, mineCount_coal, ItemResourceType.Coal, TerrainType_coal, ref totalCount);
@@ -376,7 +376,7 @@ namespace VikingEngine.DSSWars.Build
                 case ItemResourceType.Clay:
                     return resourceCount_clay;
                 case ItemResourceType.Brick:
-                    return resourceCount_stoneblock;
+                    return mineCount_stoneblock;
 
                 default:
                     return 0;

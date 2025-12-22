@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Work;
 
 namespace VikingEngine.DSSWars.Resource
 {
@@ -242,7 +243,7 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.Oliphant, CityResoureIndex.Oliphant, 1f, Work.WorkPriorityType.SlaughterOliphant, null, null, StorageType.AnimalStorage)
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OliphantCage));
 
-            var craftList = Build.BuildingCraftList.AllBuidings();
+            var craftList = CraftList.AllBuidings();
             foreach (var building_craftItems in craftList)
             {
                 foreach (var item in building_craftItems.Value)

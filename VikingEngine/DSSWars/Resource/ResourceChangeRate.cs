@@ -14,14 +14,14 @@ namespace VikingEngine.DSSWars.Resource
         public int current;
         public int goalBuffer;
 
-        public void clear()
+        public void clearOverview()
         {
             current = 0;
             changeRate.prevProduced = 0;
             changeRate.prevConsumed = 0;
         }
 
-        public void toMenu(RichBoxContent content, ItemResourceType item)
+        public void toFactionViewMenu(RichBoxContent content, ItemResourceType item)
         {
             content.newLine();
 
