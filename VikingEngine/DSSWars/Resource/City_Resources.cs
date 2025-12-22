@@ -1389,211 +1389,211 @@ namespace VikingEngine.DSSWars.GameObject
     }   
 
 
-    struct GroupedResource
-    {
-        public int amount;
-        public int goalBuffer;
-        public int deliverCount;
+    //struct GroupedResource
+    //{
+    //    public int amount;
+    //    public int goalBuffer;
+    //    public int deliverCount;
 
-        public ResourceChangeRate changeRate;
+    //    public ResourceChangeRate changeRate;
 
-        public void writeGameState(System.IO.BinaryWriter w)
-        {
-            w.Write(amount);
-            w.Write((ushort)goalBuffer);
-        }
-        public void readGameState(System.IO.BinaryReader r, int subversion)
-        {
-            amount = r.ReadInt32();
-            goalBuffer = r.ReadUInt16();
-        }
+    //    public void writeGameState(System.IO.BinaryWriter w)
+    //    {
+    //        w.Write(amount);
+    //        w.Write((ushort)goalBuffer);
+    //    }
+    //    public void readGameState(System.IO.BinaryReader r, int subversion)
+    //    {
+    //        amount = r.ReadInt32();
+    //        goalBuffer = r.ReadUInt16();
+    //    }
 
-        public bool needMore()
-        {
-            return amount < goalBuffer;
-        }
+    //    public bool needMore()
+    //    {
+    //        return amount < goalBuffer;
+    //    }
 
-        public bool reachedBuffer()
-        {
-            return amount >= goalBuffer;
-        }
+    //    public bool reachedBuffer()
+    //    {
+    //        return amount >= goalBuffer;
+    //    }
 
-        public bool almostReachedBuffer()
-        {
-            return amount >= goalBuffer - 50;
-        }
+    //    public bool almostReachedBuffer()
+    //    {
+    //        return amount >= goalBuffer - 50;
+    //    }
 
-        public bool needToImport()
-        {
-            return amount < goalBuffer;
-        }
+    //    public bool needToImport()
+    //    {
+    //        return amount < goalBuffer;
+    //    }
 
-        public bool canTradeAway()
-        {
-            return amount >= goalBuffer;
-        }
+    //    public bool canTradeAway()
+    //    {
+    //        return amount >= goalBuffer;
+    //    }
 
-        public int amountPlusDelivery()
-        {
-            return amount + deliverCount;
-        }
+    //    public int amountPlusDelivery()
+    //    {
+    //        return amount + deliverCount;
+    //    }
 
-        public void add(ItemResource item, int multiply = 1)
-        {
-            amount += item.amount * multiply;
-        }
+    //    public void add(ItemResource item, int multiply = 1)
+    //    {
+    //        amount += item.amount * multiply;
+    //    }
 
-        //public void clearAmount()
-        //{
-        //    amount = 0;
-        //}
+    //    //public void clearAmount()
+    //    //{
+    //    //    amount = 0;
+    //    //}
 
-        public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer)
-        {
-            content.newLine();
+    //    public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer)
+    //    {
+    //        content.newLine();
             
-            content.Add(new RbImage(ResourceLib.Icon(item)));
-            content.space();
-            content.Add(new RbText( LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
+    //        content.Add(new RbImage(ResourceLib.Icon(item)));
+    //        content.space();
+    //        content.Add(new RbText( LangLib.Item(item) + ": " + TextLib.LargeNumber(amount)));
 
-            if (item != ItemResourceType.Water_G && 
-                item != ItemResourceType.Gold &&
-                item != ItemResourceType.Men &&
-                item != ItemResourceType.ServiceMen)
-            {
-                bool reached = amount >= goalBuffer;
-                reachedBuffer |= reached;
-                SpriteName stockIcon;
-                if (safeGuard)
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd_Protected;
-                }
-                else if (reached)
-                {
-                    stockIcon = SpriteName.WarsStockpileStop;
-                }
-                else
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd;
-                }
-                var icon = new RbImage(stockIcon);
-                content.Add(icon);
-            }
+    //        if (item != ItemResourceType.Water_G && 
+    //            item != ItemResourceType.Gold &&
+    //            item != ItemResourceType.Men &&
+    //            item != ItemResourceType.ServiceMen)
+    //        {
+    //            bool reached = amount >= goalBuffer;
+    //            reachedBuffer |= reached;
+    //            SpriteName stockIcon;
+    //            if (safeGuard)
+    //            {
+    //                stockIcon = SpriteName.WarsStockpileAdd_Protected;
+    //            }
+    //            else if (reached)
+    //            {
+    //                stockIcon = SpriteName.WarsStockpileStop;
+    //            }
+    //            else
+    //            {
+    //                stockIcon = SpriteName.WarsStockpileAdd;
+    //            }
+    //            var icon = new RbImage(stockIcon);
+    //            content.Add(icon);
+    //        }
             
-        }
+    //    }
 
-        public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer, LocalPlayer player, City city, ResourcesSubTab stockpileLink)
-        {
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember>{
-                new RbImage(ResourceLib.Icon(item)),
-                new RbSpace(),
-                new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": " + TextLib.LargeNumber(amount))
-            }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(city, item))));
+    //    public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer, LocalPlayer player, City city, ResourcesSubTab stockpileLink)
+    //    {
+    //        content.newLine();
+    //        content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember>{
+    //            new RbImage(ResourceLib.Icon(item)),
+    //            new RbSpace(),
+    //            new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": " + TextLib.LargeNumber(amount))
+    //        }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(city, item))));
 
-            if (item != ItemResourceType.Water_G &&
-                item != ItemResourceType.Gold &&
-                item != ItemResourceType.Men)
-            {
-                bool reached = amount >= goalBuffer;
-                reachedBuffer |= reached;
-                SpriteName stockIcon;
-                if (safeGuard)
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd_Protected;
-                }
-                else if (reached)
-                {
-                    stockIcon = SpriteName.WarsStockpileStop;
-                }
-                else
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd;
-                }
-                var icon = new RbImage(stockIcon);
+    //        if (item != ItemResourceType.Water_G &&
+    //            item != ItemResourceType.Gold &&
+    //            item != ItemResourceType.Men)
+    //        {
+    //            bool reached = amount >= goalBuffer;
+    //            reachedBuffer |= reached;
+    //            SpriteName stockIcon;
+    //            if (safeGuard)
+    //            {
+    //                stockIcon = SpriteName.WarsStockpileAdd_Protected;
+    //            }
+    //            else if (reached)
+    //            {
+    //                stockIcon = SpriteName.WarsStockpileStop;
+    //            }
+    //            else
+    //            {
+    //                stockIcon = SpriteName.WarsStockpileAdd;
+    //            }
+    //            var icon = new RbImage(stockIcon);
 
-                if (player == null)
-                {
-                    content.Add(icon);
-                }
-                else
-                {
-                    var infoContent = new RichBoxContent();
-                    infoContent.Add(icon);
+    //            if (player == null)
+    //            {
+    //                content.Add(icon);
+    //            }
+    //            else
+    //            {
+    //                var infoContent = new RichBoxContent();
+    //                infoContent.Add(icon);
                    
-                    var infoButton = new ArtButton( RbButtonStyle.HoverArea, infoContent, 
-                        new RbAction(()=> 
-                        {
-                            if (player.tutorial == null)
-                            {
-                                player.resourcesSubTab = stockpileLink;
-                            }
-                        }),                        
-                        new RbTooltip((RichBoxContent content, object tag) =>
-                        {
-                            HudLib.Label(content, DssRef.lang.Resource_Tab_Stockpile);
-                            content.newLine();
-                            content.Add(new RbImage(stockIcon));
-                            content.space();
-                            content.Add(new RbText(city.GetGroupedResource(item).goalBuffer.ToString()));
-                        }));
+    //                var infoButton = new ArtButton( RbButtonStyle.HoverArea, infoContent, 
+    //                    new RbAction(()=> 
+    //                    {
+    //                        if (player.tutorial == null)
+    //                        {
+    //                            player.resourcesSubTab = stockpileLink;
+    //                        }
+    //                    }),                        
+    //                    new RbTooltip((RichBoxContent content, object tag) =>
+    //                    {
+    //                        HudLib.Label(content, DssRef.lang.Resource_Tab_Stockpile);
+    //                        content.newLine();
+    //                        content.Add(new RbImage(stockIcon));
+    //                        content.space();
+    //                        content.Add(new RbText(city.GetGroupedResource(item).goalBuffer.ToString()));
+    //                    }));
 
-                    //content.space();
-                    content.Add(infoButton);
-                }
+    //                //content.space();
+    //                content.Add(infoButton);
+    //            }
                 
-            }
+    //        }
 
 
-            if (DssRef.difficulty.GodPowers() || StartupSettings.EndlessResources)
-            {
-                content.Add(new ArtButton( RbButtonStyle.GodPower,new List<AbsRichBoxMember> { new RbText("= 0", HudLib.GodPower_Color) },
-                   new RbAction(() => { city.AddGroupedResource(item, -city.GetGroupedResource(item).amount); }),
-                   null, true));
+    //        if (DssRef.difficulty.GodPowers() || StartupSettings.EndlessResources)
+    //        {
+    //            content.Add(new ArtButton( RbButtonStyle.GodPower,new List<AbsRichBoxMember> { new RbText("= 0", HudLib.GodPower_Color) },
+    //               new RbAction(() => { city.AddGroupedResource(item, -city.GetGroupedResource(item).amount); }),
+    //               null, true));
 
-                content.Add(new ArtButton( RbButtonStyle.GodPower,new List<AbsRichBoxMember> { new RbText("+100", HudLib.GodPower_Color) },
-                    new RbAction(() => { city.AddGroupedResource(item, 100); }), 
-                    null, true));
-            }
+    //            content.Add(new ArtButton( RbButtonStyle.GodPower,new List<AbsRichBoxMember> { new RbText("+100", HudLib.GodPower_Color) },
+    //                new RbAction(() => { city.AddGroupedResource(item, 100); }), 
+    //                null, true));
+    //        }
 
-        }
+    //    }
 
-        public static void BufferIconInfo(RichBoxContent content, bool safeguard)
-        {
-            //content.newLine();
-            SpriteName sprite;
-            string textstring;
-            if (safeguard)
-            {
-                sprite = SpriteName.WarsStockpileAdd_Protected;
-                textstring = DssRef.lang.Resource_FoodSafeGuard_Active;
-            }
-            else
-            {
-                sprite = SpriteName.WarsStockpileStop;
-                textstring = DssRef.lang.Resource_ReachedStockpile;
-            }
+    //    public static void BufferIconInfo(RichBoxContent content, bool safeguard)
+    //    {
+    //        //content.newLine();
+    //        SpriteName sprite;
+    //        string textstring;
+    //        if (safeguard)
+    //        {
+    //            sprite = SpriteName.WarsStockpileAdd_Protected;
+    //            textstring = DssRef.lang.Resource_FoodSafeGuard_Active;
+    //        }
+    //        else
+    //        {
+    //            sprite = SpriteName.WarsStockpileStop;
+    //            textstring = DssRef.lang.Resource_ReachedStockpile;
+    //        }
 
 
-            var icon = new RbImage(sprite);
-            content.Add(icon);
+    //        var icon = new RbImage(sprite);
+    //        content.Add(icon);
 
-            var text = new RbText(": " + textstring);
-            //text.overrideColor = HudLib.InfoYellow_Light;
-            content.Add(text);
-        }
+    //        var text = new RbText(": " + textstring);
+    //        //text.overrideColor = HudLib.InfoYellow_Light;
+    //        content.Add(text);
+    //    }
 
-        //public void clearOrders()
-        //{ 
-        //    backOrder = 0;
-        //    //orderQueCount = 0;
-        //}
+    //    //public void clearOrders()
+    //    //{ 
+    //    //    backOrder = 0;
+    //    //    //orderQueCount = 0;
+    //    //}
 
-        public override string ToString()
-        {
-            return $"Grouped resource {amount}/{goalBuffer}";
-        }
-    }
+    //    public override string ToString()
+    //    {
+    //        return $"Grouped resource {amount}/{goalBuffer}";
+    //    }
+    //}
 
     
 }
