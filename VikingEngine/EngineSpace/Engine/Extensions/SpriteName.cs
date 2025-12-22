@@ -2600,6 +2600,11 @@ namespace VikingEngine
         WarsWorkerSub,
         WarsServiceMen,
         WarsServiceMenTotal,
+
+        WarsSoldierMan,
+        WarsSoldierGroup,
+        WarsNobelman,
+
         WarsGuardPostIcon,
         WarsHammer,
         WarsHammerAdd,
@@ -2821,6 +2826,7 @@ namespace VikingEngine
         WarsResource_IronOre,
         WarsResource_GoldOre,
         WarsResource_RawFood,
+        WarsResource_RawFoodRemove,
         WarsResource_Food,
         WarsResource_FoodAdd,
         WarsResource_FoodSub,

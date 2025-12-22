@@ -836,7 +836,7 @@ namespace VikingEngine.DSSWars
             {
                 Faction result = factions.GetRandom(Ref.rnd);
                 
-                if (result.availableForPlayer &&
+                if (result.availableForPlayer && result.mainCity != null &&
                     (centerArea.IntersectPoint(result.mainCity.tilePos) || loops >= 1000))
                 {
                     if (firstPlayer || loops >= 1000)

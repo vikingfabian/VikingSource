@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars
                     itemName = DssRef.lang.ResourceType_ServiceMen;
                     break;
                 case ItemResourceType.NobelMen:
-                    itemIcon = SpriteName.MissingImage;
+                    itemIcon = SpriteName.WarsNobelman;
                     itemName = DssRef.todoLang.Resource_TypeName_NobelMen;
                     break;
                 case ItemResourceType.Settler:
@@ -158,6 +158,7 @@ namespace VikingEngine.DSSWars
                     itemIcon = SpriteName.WarsResource_Hen;
                     itemName = DssRef.todoLang.Resource_TypeName_Hen;
                     break;
+
                 case ItemResourceType.Pig:
                     itemIcon = SpriteName.WarsResource_Pig;
                     itemName = DssRef.todoLang.Resource_TypeName_Pig;

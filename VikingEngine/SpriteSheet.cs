@@ -2165,6 +2165,20 @@ namespace VikingEngine
                 //    add(SpriteName.rtsCardBg, currentIndex, DSSCardSz.X, DSSCardSz.Y);
                 //}
             }
+
+            currentIndex = numTilesWidth * 85;
+            {
+                currentIndex += 5;
+                add(SpriteName.WarsWorker);
+                add(SpriteName.WarsWorkerAdd);
+                add(SpriteName.WarsWorkerSub);
+                add(SpriteName.WarsSoldierMan);
+                add(SpriteName.WarsSoldierGroup);
+                add(SpriteName.WarsNobelman);
+                add(SpriteName.WarsResource_RawFoodRemove);
+
+            }
+
             currentIndex = numTilesWidth * 86;
             {
                 add(SpriteName.WarsHudPopUpButton);
