@@ -30,6 +30,7 @@ namespace VikingEngine.DSSWars.EntityComponent
         public int capacity;
         public int stockPileLimit;
         public int deliverCount;
+        public bool hasCesspit;
         public StockpileLimitOption limitOption;
 
         public ResourceChangeRate changeRate;
@@ -126,11 +127,6 @@ namespace VikingEngine.DSSWars.EntityComponent
         {
             amount += item.amount * multiply;
         }
-
-        //public void clearAmount()
-        //{
-        //    amount = 0;
-        //}
 
         public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer)
         {

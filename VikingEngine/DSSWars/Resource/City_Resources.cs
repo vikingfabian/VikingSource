@@ -789,7 +789,7 @@ namespace VikingEngine.DSSWars.GameObject
                         usesSafeGuard = true;
                         return true;
                     }
-                    return needMore(CityResoureIndex.rawFood);//res_rawFood.needMore();
+                    return needMore(CityResoureIndex.rawFood);
 
                 case ItemResourceType.Pig:
                     if (rawfoodSafeGuard)
@@ -797,7 +797,7 @@ namespace VikingEngine.DSSWars.GameObject
                         usesSafeGuard = true;
                         return true;
                     }
-                    return needMore(CityResoureIndex.food) || needMore(CityResoureIndex.skinLinnen);//res_food.needMore() || res_skinLinnen.needMore();
+                    return needMore(CityResoureIndex.food) || needMore(CityResoureIndex.skinLinnen);
 
                 case ItemResourceType.Wood_Group:
                 case ItemResourceType.DryWood:
@@ -808,18 +808,13 @@ namespace VikingEngine.DSSWars.GameObject
                         usesSafeGuard = true;
                         return true;
                     }
-                    return needMore(CityResoureIndex.wood);//res_wood.needMore();
+                    return needMore(CityResoureIndex.wood);
 
                 case ItemResourceType.NONE:
                     return false;
 
                 default:
-//#if DEBUG
                     return GetGroupedResource(type).needMore();
-                    //throw new NotImplementedException();
-//#else
-//                    return false;
-//#endif
             }
 
             

@@ -20,6 +20,7 @@ using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Stockpile;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Engine;
@@ -89,6 +90,7 @@ namespace VikingEngine.DSSWars.Players
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy, goldDeliveryCopy;
         public BarracksStatus soldierConscriptCopy, archerConscriptCopy, warmachineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;
         public SchoolStatus schoolCopy;
+        public List<CesspitStatus> cesspitsCopy = new List<CesspitStatus>();
 
         public PlayerControls.Tutorial tutorial = null;
         CityBorders cityBorders = new CityBorders();

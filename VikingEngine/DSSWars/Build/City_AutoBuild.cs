@@ -766,6 +766,17 @@ namespace VikingEngine.DSSWars.GameObject
                                 }
                                 break;
 
+                            case TerrainBuildingType.Cesspit:
+                                if (build)
+                                {
+                                    addCesspit(subPos);
+                                }
+                                else
+                                {
+                                    destroyCesspit(subPos);
+                                }
+                                break;
+
                         }
                     }
                     break;

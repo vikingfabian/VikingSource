@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Stockpile;
+using VikingEngine.EngineSpace;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.GO.Gadgets;
+using VikingEngine.PJ.Joust;
 
 namespace VikingEngine.DSSWars.Stockpile
 {
@@ -14,6 +20,16 @@ namespace VikingEngine.DSSWars.Stockpile
     {
         public int idAndPosition;
         public ItemResourceType type;
+
+        public void writeGameState(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)type);
+        }
+
+        public void readGameState(System.IO.BinaryReader r, int subVersion)
+        {
+            type = (ItemResourceType)r.ReadByte();
+        }
     }
 
 }
@@ -24,27 +40,147 @@ namespace VikingEngine.DSSWars.GameObject
     partial class City
     {
         int selectedCessPit = -1;
-        List<CesspitStatus> cesspits = null;
+        StructList<CesspitStatus> cesspits = new StructList<CesspitStatus>(0);
 
         public void cesspitToHud(LocalPlayer player, RichBoxContent content)
         {
-            if (arraylib.HasMembers(cesspits))
+            if (cesspits.Count > 0)
             {
-                if (arraylib.InBound(cesspits, selectedCessPit))
+                lock (cesspits.array)
                 {
-                    //selected view
+                    if (cesspits.InBound(selectedCessPit))
+                    {
+                        CesspitStatus currentStatus = cesspits.array[selectedCessPit];
+                        //selected view
 
-                }
-                else
-                {
-                    //list all
+                        option(ItemResourceType.NONE);
 
+                        for (ResourceGroupType group = 0; group < ResourceGroupType.NUM; group++)
+                        {
+                            content.newParagraph();
+                            var list = ResourceLib.ResourceGroupList(group);
+                            foreach (var item in list)
+                            {
+                                option(item);
+                            }
+                        }
+
+                        void option(ItemResourceType item)
+                        {
+                            IconName.Item(item, out var icon, out _);
+                            content.Add(new ArtOption(item == currentStatus.type,
+                                new List<AbsRichBoxMember> { new RbImage(icon) },
+                                new RbAction1Arg<ItemResourceType>((ItemResourceType item) =>
+                                {
+                                    lock (cesspits.array)
+                                    {
+                                        if (cesspits.InBound(selectedCessPit))
+                                        {
+                                            cesspits.array[selectedCessPit].type = item;
+                                        }
+                                    }
+                                }, item), 
+                                new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(this, item))));
+                        }
+                    }
+                    else
+                    {
+                        bool hasAnySelected = false;
+                        //list all
+                        for (int i = 0; i < cesspits.Count; ++i)
+                        {
+                            ItemResourceType item = cesspits.array[i].type;
+                            hasAnySelected |= item != ItemResourceType.NONE;
+                            IconName.Item(item, out var icon, out var name);
+
+                            content.newLine();
+                            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                                new RbImage(icon), new RbSpace(), new RbText(name),
+                            }, new RbAction1Arg<int>((int selectIndex)=> { selectedCessPit = selectIndex; }, i),
+                            null));
+                        }
+
+                        content.newParagraph();
+                        HudLib.copyPaste(content, player, new RbAction(() =>
+                            {
+                                player.cesspitsCopy.Clear();
+                                player.cesspitsCopy.AddRange(cesspits.array);
+                            }),
+                            new RbAction(() =>
+                            {
+                                lock (cesspits.array)
+                                {
+                                    int count = Math.Min(cesspits.Count, player.cesspitsCopy.Count);
+                                    for (int i = 0; i < count; ++i)
+                                    {
+                                        cesspits.array[i].type = player.cesspitsCopy[i].type;
+                                    }
+                                }
+                                refreshResourceCesspits();
+                            }),
+                            hasAnySelected, player.cesspitsCopy.Count > 0);
+
+                        content.newLine();
+                        content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                            new RbText(DssRef.lang.FlagEditor_ClearAll)
+                            },
+                            new RbAction(() =>
+                            {
+                                for (int i = 0; i < cesspits.Count; ++i)
+                                {
+                                    cesspits.array[i].type = ItemResourceType.NONE;
+                                }
+                                refreshResourceCesspits();
+                            })));
+                        
+                    }                
                 }
             }
             else
-            { 
+            {
                 //No cesspits
+                content.text(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light);
+                content.newParagraph();
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement, HudLib.TitleColor_Label);
+                content.newLine();
+                content.Add(new RbImage(SpriteName.MissingImage));
+                content.space();
+                content.Add(new RbText(DssRef.todoLang.BuildingType_Cesspit));
             }
+        }
+
+        void refreshResourceCesspits()
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    if (cesspits.array != null)
+                    {
+                        Span<bool> span = stackalloc bool[EntityComponent.CityResoureIndex.COUNT];
+
+                        lock (cesspits.array)
+                        {
+                            foreach (var cp in cesspits.array)
+                            {
+                                if (cp.type != ItemResourceType.NONE)
+                                {
+                                    span[Resource.ItemPropertyColl.Get(cp.type).cityResourceIndex] = true;
+                                }
+                            }
+                        }
+
+                        for (int i = 0; i < EntityComponent.CityResoureIndex.COUNT; ++i)
+                        {
+                            DssRef.world.cityResouces[resourceComponentStartIndex + i].hasCesspit = span[i];
+                        }
+                    }
+                }
+                catch (Exception ex)
+                { 
+                    BlueScreen.ThreadException = ex;
+                }
+            });
         }
 
         public void addCesspit(IntVector2 subPos)
@@ -55,15 +191,40 @@ namespace VikingEngine.DSSWars.GameObject
                 type = ItemResourceType.NONE,
             };
 
-            if (cesspits == null)
+            if (cesspits.array == null)
             {
-                cesspits = new List<CesspitStatus>(4);
+                cesspits.Init(4);
             }
 
-            lock (cesspits)
+            lock (cesspits.array)
             {
                 cesspits.Add(status);
             }
+        }
+
+        public void destroyCesspit(IntVector2 subPos)
+        {
+            lock (cesspits.array)
+            {
+                int index = deliveryIxFromSubTile(subPos);
+                
+                cesspits.RemoveAt(index);
+            }
+        }
+
+
+        public int cesspitIxFromSubTile(IntVector2 subTilePos)
+        {
+            int id = conv.IntVector2ToInt(subTilePos);
+            for (int i = 0; i < cesspits.Count; ++i)
+            {
+                if (cesspits.array[i].idAndPosition == id)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
     }
 }

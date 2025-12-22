@@ -76,8 +76,6 @@ namespace VikingEngine.EngineSpace
             Count = 0;
         }
 
-        //public T[] RawArray => _array;
-
         private void Resize(int newSize)
         {
             Array.Resize(ref array, newSize);
@@ -91,6 +89,22 @@ namespace VikingEngine.EngineSpace
             if (index < 0 || index >= Count) return;
             Count--;
             array[index] = array[Count];
+        }
+
+        /// <summary>
+        /// Removes the element at the index and shifts subsequent elements down.
+        /// Preserves order.
+        /// </summary>
+        public void RemoveAt(int index)
+        {
+            if (index < 0 || index >= Count) return; // Or throw ArgumentOutOfRangeException
+
+            for (int i = index; i < Count - 1; i++)
+            {
+                array[i] = array[i + 1];
+            }
+
+            Count--;
         }
 
         public static bool Example1_FindNextAlive(StructList<ExampleStruct1> array, ref int index)
@@ -122,8 +136,5 @@ namespace VikingEngine.EngineSpace
         {
             return index >= 0 && index < Count;
         }
-    }
-
-
-    
+    }    
 }
