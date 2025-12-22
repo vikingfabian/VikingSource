@@ -291,7 +291,7 @@ namespace VikingEngine.EngineSpace.Sound
                 int exceptionCount = 0;
 
                 // Fill buffers if needed
-                while (_dsei != null && _dsei.PendingBufferCount < QueueTarget && _run)
+                while (_dsei != null && !_dsei.IsDisposed && _dsei.PendingBufferCount < QueueTarget && _run)
                 {
                     try
                     {
