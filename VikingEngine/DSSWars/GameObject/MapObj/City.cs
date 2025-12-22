@@ -1677,24 +1677,31 @@ namespace VikingEngine.DSSWars.GameObject
 
                 Task.Run(() =>
                 {
-                    int radius = 3;
-                    bool foundTile = true;
-                    Map.Tile checkTile;
-                    while (foundTile)
+                    try
                     {
-                        radius++;
-                        ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, radius));
-                        while (loop.Next())
+                        int radius = 3;
+                        bool foundTile = true;
+                        Map.Tile checkTile;
+                        while (foundTile)
                         {
-                            if (DssRef.world.tileGrid.TryGet(loop.Position, out checkTile) && checkTile.CityIndex == this.myIndex)
+                            radius++;
+                            ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, radius));
+                            while (loop.Next())
                             {
-                                foundTile = true;
-                                break;
+                                if (DssRef.world.tileGrid.TryGet(loop.Position, out checkTile) && checkTile.CityIndex == this.myIndex)
+                                {
+                                    foundTile = true;
+                                    break;
+                                }
                             }
                         }
-                    }
 
-                    cityTileRadius = radius;
+                        cityTileRadius = radius;
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
                 });
 
                 

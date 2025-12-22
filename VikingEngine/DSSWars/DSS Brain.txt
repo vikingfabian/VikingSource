@@ -1,7 +1,7 @@
 ﻿Change log:
 * Updated unit icons
 * Improved resource hud
-
+* increased multi core crash capture
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
