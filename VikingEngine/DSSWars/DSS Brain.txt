@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log: 
-* 
+* Added city index check on game load
+* Fixed empty diplomacy menu crash
 
 
 #Event timers (are slightly random)#

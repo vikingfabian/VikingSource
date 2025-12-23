@@ -215,12 +215,12 @@ namespace VikingEngine.DSSWars
             for (int i = 0; i < citiesCount; i++)
             {
                 int cityIx = r.ReadUInt16();
-                //if (arraylib.InBound(DssRef.world.cities, cityIx))
-                //{
+                if (arraylib.InBound(DssRef.world.cities, cityIx))
+                {
                     var city = DssRef.world.cities[cityIx];
                     //cities.Add(city);
                     city.setFaction(this, true, false);
-                //}
+                }
             }
             if (subVersion >= 76)
             { 
