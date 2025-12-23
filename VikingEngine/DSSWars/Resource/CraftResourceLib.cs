@@ -429,7 +429,7 @@ namespace VikingEngine.DSSWars.Resource
            );
 
 
-        public static readonly CraftBlueprint StorageBox_wood = new CraftBlueprint(
+        public static readonly CraftBlueprint Container_wood = new CraftBlueprint(
                 CraftResultType.Resource,
                 (int)ItemResourceType.Container,
                1,
@@ -442,7 +442,7 @@ namespace VikingEngine.DSSWars.Resource
                XP.ExperienceLevel.Beginner_1,
                 Build.BuildAndExpandType.Carpenter
            );
-        public static readonly CraftBlueprint StorageBox_clay = new CraftBlueprint(
+        public static readonly CraftBlueprint Container_clay = new CraftBlueprint(
                 CraftResultType.Resource,
                 (int)ItemResourceType.Container,
                1,

@@ -1,14 +1,51 @@
 ﻿UPDATE
 Change Log: 
-* 
+
+# SUMMER UPDATE #
+* 32 new buildings
+* Animal farming uses breeding and cost upkeep
+* Cities have a biom status
+* Redesign of the resource stockpile system
+
+RESOURCES
+* 5 New basic resources
+* 3 new wagon types
+* 4 shield types
+* 21 new animals
+* Animal armor
+* 4 new collectable terrain resources
+
+CITY CULTURES
+* Butchers, //Larger meat production
+* Skinners, //Larger skin production
+* AnimalBreeder2, //Higher chance of successful breeding (replaces the old culture)
+* Potters, //Higher pottery production
+* Wainwright, //High wagon production
+* Wheelwright, //Speed bonus to conscripted carts
+* ShieldMaker, //High shield production
+* Nomads, //Low settler cost
+* Coopers, //High storage box production
+* Salters, //High conserved food production
+
+SOLDIER RECRUITING
+x More options in soldier conscript: man type, shield, animal type and wagon.
+
+USER INTERFACE
+x Menu for cesspits
+* Limit toggle for stockpile
+
+SYSTEMS
+* Animal pens have upkeep
+* Resource collecting is limited by storage
+
+
+QUESTIONS
+* Do it need some type of hunter cottage to collect the first animals?
 
 
 
-#MOUNTED RESOURCES TODO
 
-
-- Food upkeep (raw food or meat)
-- Pen menu for assignment (or simplify with crafting)
+#MOUNTED TODO
 
 Butcher
 - Turn animal to meat + skin
@@ -21,9 +58,7 @@ Conserved food (high storage)
 - craft 3: smoker meat
 - craft 4: drying meat (desert area)
 
-Food-, Material-, Weapon-, Armor-, Animal- storage
-Building crafted out of storage boxes. Increases max storage capacity. 
-(maybe) All crafted items must be moved to a storage, or be in range. 
+
 
 Base mounts, use breeding to go from pony to warhorse:
 - Pony
@@ -35,7 +70,6 @@ Base mounts, use breeding to go from pony to warhorse:
 (Maybe) War mount tech tree skill (Allowes training of cavalry)
 
 New resources:
-Nobelmen (conscript higher skilled warriors)
 Luxurious buildings, raises the nobel house cap
 Transport-weight
 

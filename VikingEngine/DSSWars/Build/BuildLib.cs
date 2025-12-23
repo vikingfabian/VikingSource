@@ -402,6 +402,13 @@ namespace VikingEngine.DSSWars.Build
                     list.Add(BuildAndExpandType.GoldDeliveryLvl3);
                 }
 
+                list.Add(BuildAndExpandType.MaterialStorage);
+                list.Add(BuildAndExpandType.FoodStorage);
+                list.Add(BuildAndExpandType.WeaponStorage);
+                list.Add(BuildAndExpandType.ArmorStorage);
+                list.Add(BuildAndExpandType.AnimalStorage);
+                list.Add(BuildAndExpandType.Cesspit);
+
                 list.Add(BuildAndExpandType.Storehouse);
                 list.Add(BuildAndExpandType.Tavern);
                 list.Add(BuildAndExpandType.Brewery);
@@ -1095,7 +1102,7 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             
-            new BuildOption(BuildAndExpandType.Cesspit, TerrainMainType.Building, (int)TerrainBuildingType.Cesspit, SpriteName.MissingImage, CraftBuildingLib., true,
+            new BuildOption(BuildAndExpandType.Cesspit, TerrainMainType.Building, (int)TerrainBuildingType.Cesspit, SpriteName.MissingImage, CraftBuildingLib.Cesspit, true,
                             BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
                             MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
 

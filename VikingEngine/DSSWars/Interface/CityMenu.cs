@@ -1955,7 +1955,7 @@ namespace VikingEngine.DSSWars.Interface
 
 
                     city.GetGroupedResource(CityResoureIndex.Container).toMenu(content, ItemResourceType.Container, false, ref reachedBuffer, player, city);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.StorageBox_wood, CraftResourceLib.StorageBox_clay);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Container_wood, CraftResourceLib.Container_clay);
 
                     city.GetGroupedResource(CityResoureIndex.Palisade).toMenu(content, ItemResourceType.Palisade, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Palisade);
@@ -2080,8 +2080,6 @@ namespace VikingEngine.DSSWars.Interface
                     city.GetGroupedResource(CityResoureIndex.HandSpear).toMenu(content, ItemResourceType.HandSpear, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
 
-                    content.newParagraph();
-
                     city.GetGroupedResource(CityResoureIndex.Warhammer).toMenu(content, ItemResourceType.Warhammer, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
 
@@ -2090,6 +2088,20 @@ namespace VikingEngine.DSSWars.Interface
 
                     city.GetGroupedResource(CityResoureIndex.MithrilSword).toMenu(content, ItemResourceType.MithrilSword, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.MithrilSword);
+
+                    content.newParagraph();
+
+                    city.GetGroupedResource(CityResoureIndex.BucklerShield).toMenu(content, ItemResourceType.BucklerShield, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.BucklerShield);
+
+                    city.GetGroupedResource(CityResoureIndex.RoundShield).toMenu(content, ItemResourceType.RoundShield, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.RoundShield);
+
+                    city.GetGroupedResource(CityResoureIndex.HeaterShield).toMenu(content, ItemResourceType.HeaterShield, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.HeaterShield);
+
+                    city.GetGroupedResource(CityResoureIndex.TowerShield).toMenu(content, ItemResourceType.TowerShield, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.TowerShield);
 
                     godPowerSetAllResources(content, ResourceLib.MovableCityResource_WeaponMelee);
 
