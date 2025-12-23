@@ -183,18 +183,33 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
             content.newLine();
             var weapons = ConscriptMenu.AllHandWeapons();
+
+            weaponOption(ItemResourceType.Settler);
+
             foreach (var wepArray in weapons)
             {
-                foreach (var weapon in wepArray)
+                foreach (ItemResourceType weapon in wepArray)
                 {
-                    var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
+                    weaponOption(weapon);
+                    //var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
+                    //    {
+                    //        new RbImage(ResourceLib.Icon(weapon))
+                    //    },
+                    //new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, RbSoundType.Option)
+                    //);
+                    //content.Add(button);
+                }
+            }
+
+            void weaponOption(ItemResourceType weapon)
+            {
+                var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
                         {
                             new RbImage(ResourceLib.Icon(weapon))
                         },
                     new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, RbSoundType.Option)
                     );
-                    content.Add(button);
-                }
+                content.Add(button);
             }
 
             content.newLine();

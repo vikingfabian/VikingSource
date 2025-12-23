@@ -671,6 +671,7 @@ namespace VikingEngine.DSSWars
                         case TerrainBuildingType.Work_Bench:
                             name = DssRef.lang.BuildingType_WorkBench;
                             break;
+                        case TerrainBuildingType.WorkerTent:
                         case TerrainBuildingType.WorkerHut:
                         case TerrainBuildingType.WorkerHutLarge:
                             name = DssRef.lang.BuildingType_WorkerHut;

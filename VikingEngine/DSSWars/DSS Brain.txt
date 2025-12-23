@@ -1,4 +1,5 @@
 ﻿Change log:
+* Fixed tent hut UI
 * 
 
 #Event timers (are slightly random)#

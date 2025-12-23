@@ -215,6 +215,13 @@ namespace VikingEngine.DSSWars
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
+                //int cityIx = r.ReadUInt16();
+                //if (arraylib.InBound(DssRef.world.cities, cityIx))
+                //{
+                //    //var city = DssRef.world.cities[cityIx];
+                //    //cities.Add(city);
+                //    city.setFaction(this, true, false);
+                //}
                 city.setFaction(this, true, false);
             }
 

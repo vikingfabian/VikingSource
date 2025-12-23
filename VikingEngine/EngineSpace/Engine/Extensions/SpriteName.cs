@@ -2651,6 +2651,7 @@ namespace VikingEngine
         WarsSpecializeTradition,
 
         WarsCityHall,
+        WarsBuild_TentHut,
         WarsBuild_WorkerHuts,
         WarsBuild_WorkerHutLarge,
         WarsBuild_Postal,
