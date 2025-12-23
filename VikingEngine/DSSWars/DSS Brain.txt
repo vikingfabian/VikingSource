@@ -1,7 +1,7 @@
 ﻿UPDATE
 Change Log: 
-* Added city index check on game load
-* Fixed empty diplomacy menu crash
+* Fixed empty faction crash on bot attack
+* 
 
 
 #Event timers (are slightly random)#
