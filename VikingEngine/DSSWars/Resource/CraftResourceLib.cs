@@ -456,6 +456,21 @@ namespace VikingEngine.DSSWars.Resource
                 Build.BuildAndExpandType.Pottery
            );
 
+        const int BrickCount = 10;
+        public static readonly CraftBlueprint Brick = new CraftBlueprint(
+                    CraftResultType.Resource,
+                    (int)ItemResourceType.Brick,
+                   BrickCount,
+                   new UseResource[]
+                   {
+                    new UseResource(ItemResourceType.Clay, BrickCount),
+                   },
+                   XP.WorkExperienceType.Chemistry,
+
+                   XP.ExperienceLevel.Beginner_1,
+                    Build.BuildAndExpandType.Pottery
+               );
+
         public static readonly CraftBlueprint Wagon2Wheel = new CraftBlueprint(
                 CraftResultType.Resource,
                 (int)ItemResourceType.Wagon2Wheel,

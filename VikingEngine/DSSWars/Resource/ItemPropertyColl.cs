@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.Resource
 
             // basic resources
             new ItemProperties(ItemResourceType.Stone_G, CityResoureIndex.stone, 1f / CarryStones, Work.WorkPriorityType.stone, null, null, StorageType.MaterialStorage) { defaultStockPile = 200 }.AddItemSource(new ItemSource(Map.TerrainSubFoilType.Stones));
-            new ItemProperties(ItemResourceType.Brick, CityResoureIndex.Brick, 1f / CarryStones, Work.WorkPriorityType.craftBrick, null, null, StorageType.MaterialStorage) { defaultStockPile = 200 }.AddItemSource(new ItemSource(Map.TerrainMineType.StoneBlock));
+            new ItemProperties(ItemResourceType.Brick, CityResoureIndex.Brick, 1f / CarryBricks, Work.WorkPriorityType.craftBrick, CraftResourceLib.Brick, null, StorageType.MaterialStorage) { defaultStockPile = 200 }.AddItemSource(new ItemSource(Map.TerrainMineType.StoneBlock));
             new ItemProperties(ItemResourceType.Egg, CityResoureIndex.rawFood, 1f / 60, Work.WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.Wheat, CityResoureIndex.rawFood, 1f / 10, Work.WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.Meat, CityResoureIndex.Meat, DefaultWeight, Work.WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE) { defaultStockPile = 200 };

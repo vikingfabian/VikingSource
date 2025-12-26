@@ -416,11 +416,44 @@ namespace VikingEngine.DSSWars.Work
                                     alwaysNeedMore = true;
                                     if (city.Culture == CityCulture.Butchers)
                                     {
-                                        amount1 += 1;
-                                        if (amount2 > 0)
+                                        increaseMeat(ref item1, ref amount1);
+                                        increaseMeat(ref item2, ref amount2);
+
+                                        void increaseMeat(ref ItemResourceType item, ref int amount)
                                         {
-                                            amount2 += 1;
+                                            if (item == ItemResourceType.RawFood_Group)
+                                            {
+                                                amount *= 2;
+                                            }
                                         }
+                                    }
+                                    else if (city.Culture == CityCulture.Skinner)
+                                    {
+                                        increaseSkin(ref item1, ref amount1);
+                                        increaseSkin(ref item2, ref amount2);
+
+                                        void increaseSkin(ref ItemResourceType item, ref int amount)
+                                        {
+                                            if (item == ItemResourceType.SkinLinen_Group)
+                                            {
+                                                amount *= 2;
+                                            }
+                                        }
+                                    }
+                                    break;
+
+                                case ItemResourceType.PotContainer:
+                                    if (city.Culture == CityCulture.Potters &&
+                                        Ref.peRnd.ChanceF(0.25f))
+                                    {
+                                        amount1 += 1;
+                                    }
+                                    break;
+                                case ItemResourceType.WoodContainer:
+                                    if (city.Culture == CityCulture.Coopers &&
+                                        Ref.peRnd.ChanceF(0.25f))
+                                    {
+                                        amount1 += 1;
                                     }
                                     break;
                             }
@@ -467,6 +500,13 @@ namespace VikingEngine.DSSWars.Work
                                         }
                                         break;
 
+                                    case ItemResourceType.ConservedFood:
+                                        if (city.Culture == CityCulture.Salters)
+                                        {
+                                            add += add / 4;
+                                        }
+                                        break;
+
                                     case ItemResourceType.PaddedArmor:
                                     case ItemResourceType.HeavyPaddedArmor:
                                         if (city.Culture == CityCulture.Weavers)
@@ -509,6 +549,35 @@ namespace VikingEngine.DSSWars.Work
                                         alwaysNeedMore = true;
                                         break;
 
+                                    case ItemResourceType.Brick:
+                                        if (city.Culture == CityCulture.Potters)
+                                        {
+                                            amount1 += 2;
+                                        }
+                                        break;
+
+                                    case ItemResourceType.BucklerShield:
+                                    case ItemResourceType.RoundShield:
+                                    case ItemResourceType.HeaterShield:
+                                    case ItemResourceType.TowerShield:
+                                        if (city.Culture == CityCulture.ShieldMaker &&
+                                            Ref.peRnd.ChanceF(0.25f))
+                                        {
+                                            add += 1;
+                                        }
+                                        break;
+
+                                    case ItemResourceType.Wagon2Wheel:
+                                    case ItemResourceType.Wagon4Wheel:
+                                    case ItemResourceType.WagonClosed:
+                                    case ItemResourceType.WagonIron:
+                                    case ItemResourceType.WagonSteel:
+                                        if (city.Culture == CityCulture.Wainwright &&
+                                            Ref.peRnd.ChanceF(0.25f))
+                                        {
+                                            add += 1;
+                                        }
+                                        break;
                                 }
 
                                 city.AddGroupedResource(item, add);

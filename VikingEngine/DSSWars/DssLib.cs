@@ -370,15 +370,16 @@ namespace VikingEngine.DSSWars
         Apprentices,//
 
         Noblemen, 
-        Butchers, //Larger meat production
+        Butchers, //Larger meat production -implemented
+        Skinner,//Larger skin production -implemented
         AnimalBreeder2, //Higher chance of successful breeding
-        Potters, //Higher pottery production
-        Wainwright, //High wagon production
+        Potters, //Higher pottery production -implemented
+        Wainwright, //High wagon production -implemented
         Wheelwright, //Speed bonus to conscripted carts
-        ShieldMaker, //High shield production
+        ShieldMaker, //High shield production -implemented
         Nomads, //Low settler cost
-        Coopers, //High storage box production
-        Salters, //High conserved food production
+        Coopers, //High wood storage box production -implemented
+        Salters, //High conserved food production  -implemented
 
 
         NUM_NONE
