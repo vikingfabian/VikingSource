@@ -1,14 +1,16 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
+using VikingEngine.ToGG.HeroQuest.Data.UnitAction;
 
 
 namespace VikingEngine.DSSWars
@@ -261,7 +263,89 @@ namespace VikingEngine.DSSWars
             return amount.ToString() + "gold";
         }
 
-        
+        public static int CulturePercChangeFactor(CityCulture culture)
+        {
+            switch (culture)
+            {
+                case CityCulture.LargeFamilies:
+                    return 200;
+                case CityCulture.FertileGround:
+                    return 200;
+                case CityCulture.Archers:
+                    return 120;
+                case CityCulture.Warriors:
+                    return 120;
+                //case CityCulture.AnimalBreeder:
+                //    return 200;
+                case CityCulture.Miners:
+                    return 200;
+                case CityCulture.Woodcutters:
+                    return 200;
+                case CityCulture.Builders:
+                    return 50;
+                case CityCulture.CrabMentality:
+                    return 50;
+                case CityCulture.DeepWell:
+                    return 200;
+                case CityCulture.Networker:
+                    return 50;
+                case CityCulture.PitMasters:
+                    return 200;
+
+                case CityCulture.Stonemason:
+                    return 200;
+                case CityCulture.Brewmaster:
+                    return 150;
+                case CityCulture.Weavers:
+                    return 200;
+                case CityCulture.SiegeEngineer:
+                    return 120;
+                case CityCulture.Armorsmith:
+                    return 200;
+                case CityCulture.Noblemen:
+                    return 120;
+                case CityCulture.Seafaring:
+                    return 120;
+                case CityCulture.Backtrader:
+                    return 50;
+                case CityCulture.Lawbiding:
+                    return 200;
+
+                case CityCulture.Smelters:
+                    return 200;
+                case CityCulture.BronzeCasters:
+                    return 200;
+                case CityCulture.Apprentices:
+                    return -1;
+
+                case CityCulture.Nomads:
+                    return 50;
+
+                case CityCulture.Butchers:
+                    return 125;
+                case CityCulture.Skinner:
+                    return 125;
+                case CityCulture.AnimalBreeder2:
+                    return -1;
+                
+                case CityCulture.Wainwright:
+                    return 125;
+                case CityCulture.Wheelwright:
+                    return -1;
+                case CityCulture.ShieldMaker:
+                    return 125;
+                case CityCulture.Potters:
+                    return 150;
+                case CityCulture.Coopers:
+                    return 150;
+                case CityCulture.Salters:
+                    return 125;
+
+
+                default:
+                    return -1;
+            }
+        }
     }
 
     enum MapStartAs
@@ -350,7 +434,7 @@ namespace VikingEngine.DSSWars
         Miners,//
         Woodcutters,//
         Builders,//
-        CrabMentality,// //ingen vill bli expert
+        CrabMentality,// 
         DeepWell,//
         Networker,//
         PitMasters,//
@@ -369,15 +453,18 @@ namespace VikingEngine.DSSWars
         BronzeCasters,//
         Apprentices,//
 
-        Noblemen, 
+        Noblemen,
+        Nomads, //Low settler cost
+
         Butchers, //Larger meat production -implemented
         Skinner,//Larger skin production -implemented
         AnimalBreeder2, //Higher chance of successful breeding
-        Potters, //Higher pottery production -implemented
+        
         Wainwright, //High wagon production -implemented
         Wheelwright, //Speed bonus to conscripted carts
         ShieldMaker, //High shield production -implemented
-        Nomads, //Low settler cost
+
+        Potters, //Higher pottery production -implemented
         Coopers, //High wood storage box production -implemented
         Salters, //High conserved food production  -implemented
 

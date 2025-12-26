@@ -444,14 +444,14 @@ namespace VikingEngine.DSSWars.Work
 
                                 case ItemResourceType.PotContainer:
                                     if (city.Culture == CityCulture.Potters &&
-                                        Ref.peRnd.ChanceF(0.25f))
+                                        Ref.peRnd.ChanceF(0.5f))
                                     {
                                         amount1 += 1;
                                     }
                                     break;
                                 case ItemResourceType.WoodContainer:
                                     if (city.Culture == CityCulture.Coopers &&
-                                        Ref.peRnd.ChanceF(0.25f))
+                                        Ref.peRnd.ChanceF(0.5f))
                                     {
                                         amount1 += 1;
                                     }

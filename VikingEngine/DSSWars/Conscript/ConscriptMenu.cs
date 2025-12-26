@@ -520,7 +520,7 @@ namespace VikingEngine.DSSWars.Conscript
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.UnitType_Settler) },
                     new RbAction(city.conscriptSettlerLink),
                     new RbTooltip(settlerTooltip),
-                     ConscriptDataLib.CraftSettler.available(city)));
+                     city.SettlerBp().available(city)));
             }
 
             void queueToAll(int count)
@@ -589,7 +589,7 @@ namespace VikingEngine.DSSWars.Conscript
         {
             content.h2(DssRef.lang.UnitType_Settler, HudLib.TitleColor_TypeName);
             content.text(DssRef.lang.UnitType_Settler_Description, HudLib.InfoYellow_Light);
-            ConscriptDataLib.CraftSettler.toMenu(content, city);
+            city.SettlerBp().toMenu(content, city);
         }
 
         public static void resourcesToMenu(RichBoxContent content, City city, BarracksStatus currentStatus)

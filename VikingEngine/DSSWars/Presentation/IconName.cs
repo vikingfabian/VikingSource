@@ -776,10 +776,10 @@ namespace VikingEngine.DSSWars
                     description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_Shield);
                     break;
 
-                case DSSWars.CityCulture.Nomads:
-                    title = DssRef.todoLang.CityCulture_Nomads;
-                    description = DssRef.todoLang.CityCulture_Nomads_Description;
-                    break;
+                //case DSSWars.CityCulture.Nomads:
+                //    title = DssRef.todoLang.CityCulture_Nomads;
+                //    description = DssRef.todoLang.CityCulture_Nomads_Description;
+                //    break;
 
                 case DSSWars.CityCulture.Coopers:
                     title = DssRef.todoLang.CityCulture_Coopers;
@@ -789,6 +789,11 @@ namespace VikingEngine.DSSWars
                 case DSSWars.CityCulture.Salters:
                     title = DssRef.todoLang.CityCulture_Salters;
                     description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_ConservedFood);
+                    break;
+
+                case DSSWars.CityCulture.Nomads:
+                    title = DssRef.todoLang.CityCulture_Nomad;
+                    description = string.Format(DssRef.todoLang.Hud_Purchase_LowXCost, DssRef.lang.UnitType_Settler);
                     break;
 
                 default:
@@ -1123,6 +1128,7 @@ namespace VikingEngine.DSSWars
                         case TerrainBuildingType.Work_Bench:
                             name = DssRef.lang.BuildingType_WorkBench;
                             break;
+                        case TerrainBuildingType.WorkerTent:
                         case TerrainBuildingType.WorkerHut:
                         case TerrainBuildingType.WorkerHutLarge:
                             name = DssRef.lang.BuildingType_WorkerHut;

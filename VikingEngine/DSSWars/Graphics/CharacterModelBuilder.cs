@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars
                 case Resource.ItemResourceType.Settler:
                     weaponModel = VoxelModelName.modweapon_settler;
                     weaponRightArmType = WeaponRightArmType.Bow;
-                    weaponHatFrame = 13;
+                    weaponHatFrame = 15;
                     break;
                 case Resource.ItemResourceType.SharpStick:
                     weaponModel = VoxelModelName.modweapon_sharpstick;

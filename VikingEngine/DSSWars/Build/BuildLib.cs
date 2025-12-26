@@ -258,6 +258,10 @@ namespace VikingEngine.DSSWars.Build
             }
             else
             {
+                if (unlockAll)
+                {
+                    list.Add(BuildAndExpandType.WorkerTent);
+                }
                 list.Add(BuildAndExpandType.WorkerHut);
                 if (logistics1)
                 {
@@ -594,7 +598,7 @@ namespace VikingEngine.DSSWars.Build
                 uniqueBuilding = true
             };
 
-            new BuildOption(BuildAndExpandType.WorkerTent, TerrainMainType.Building, (int)TerrainBuildingType.WorkerTent, SpriteName.NO_IMAGE, CraftBuildingLib.WorkerTent, true,
+            new BuildOption(BuildAndExpandType.WorkerTent, TerrainMainType.Building, (int)TerrainBuildingType.WorkerTent, SpriteName.WarsBuild_TentHut, CraftBuildingLib.WorkerTent, true,
                 BuildCategoryTab.General, BuildFilterTag.Workers, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_WorkerTent);
 

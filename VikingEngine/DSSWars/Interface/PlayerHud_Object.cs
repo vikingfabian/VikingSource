@@ -141,11 +141,10 @@ namespace VikingEngine.DSSWars.Interface
                 return;
             }
 
+            createMenu(player);
 
             if (faction != null)
             {
-                createMenu(player);
-
                 var content = new RichBoxContent();
                 diplomacy.toHud(content, faction, selected);
                 menu.Refresh(content, player.gameControls.controllerPointer);

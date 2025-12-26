@@ -4,6 +4,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Valve.Steamworks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.ToGG.Commander.UnitsData;
@@ -26,6 +27,15 @@ namespace VikingEngine.DSSWars.Presentation
         public string ItemSource_Farm => "Farm";
         public string ItemSource_CraftStation => "Craft station";
         public string ItemSource_Gathering => "Gathering";
+
+        public string CityCulture_Nomad => "Nomads";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public string Hud_ChangeFactor => "By change factor: {0}";
+
+        public string Hud_Purchase_LowXCost => "Low {0} cost";
 
         //## Mounted update ##
      
@@ -157,8 +167,8 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string CityCulture_ShieldMaker => "Shield Maker";
 
-        public string CityCulture_Nomads => "Nomads";
-        public string CityCulture_Nomads_Description => "Low settler cost";
+        
+        //public string CityCulture_Nomads_Description => "Low settler cost";
 
         public string CityCulture_Coopers => "Coopers";
 

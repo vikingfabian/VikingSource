@@ -2079,7 +2079,9 @@ namespace VikingEngine
                     add(SpriteName.hqAlarmBell, 2, 3);
 
                     add(SpriteName.WarsRelationFlagOutline, 2, 3);
-                    add(SpriteName.WarsRelationFlag, 2, 3);                            
+                    add(SpriteName.WarsRelationFlag, 2, 3);
+
+                    add(SpriteName.WarsBuild_TentHut, 3, 3);
                 }
             }
 

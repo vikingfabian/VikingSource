@@ -6,26 +6,15 @@ Change Log:
 * Animal farming uses breeding and cost upkeep
 * Cities have a biom status
 * Redesign of the resource stockpile system
+* 10 new city cultures
 
 RESOURCES
 * 5 New basic resources
 * 3 new wagon types
 * 4 shield types
 * 21 new animals
-* Animal armor
+* 8 Animal armor types
 * 4 new collectable terrain resources
-
-CITY CULTURES
-* Butchers, //Larger meat production
-* Skinners, //Larger skin production
-* AnimalBreeder2, //Higher chance of successful breeding (replaces the old culture)
-* Potters, //Higher pottery production
-* Wainwright, //High wagon production
-* Wheelwright, //Speed bonus to conscripted carts
-* ShieldMaker, //High shield production
-* Nomads, //Low settler cost
-* Coopers, //High storage box production
-* Salters, //High conserved food production
 
 SOLDIER RECRUITING
 x More options in soldier conscript: man type, shield, animal type and wagon.
@@ -37,6 +26,7 @@ x Menu for cesspits
 SYSTEMS
 * Animal pens have upkeep
 * Resource collecting is limited by storage
+* Crafting can produce two item types
 
 QUESTIONS
 * Do it need some type of hunter cottage to collect the first animals?
@@ -46,8 +36,11 @@ QUESTIONS
 
 #MOUNTED TODO
 
+CITY CULTURES
+* AnimalBreeder2, //Higher chance of successful breeding (replaces the old culture)
+* Wheelwright, //Speed bonus to conscripted carts
+
 Butcher
-- Turn animal to meat + skin
 - Butcher priorities menu
 
 Conserved food (high storage)
@@ -76,6 +69,7 @@ Bioms:
 Frozen (Extra food storage, extra skin production)
 Mountain (Hog breeding)
 Desert (Elephant breeding, drying meat, drying salt)
+
 
 
 #Event timers (are slightly random)#

@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Data
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 13;
-        public const int SubVersion = 100; 
+        public const int SubVersion = 101; 
 
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 

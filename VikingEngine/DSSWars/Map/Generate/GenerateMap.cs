@@ -1907,6 +1907,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 CityCulture.Smelters,
                 CityCulture.BronzeCasters,
                 CityCulture.Apprentices,
+                CityCulture.Nomads,
 
                 CityCulture.Butchers, //Larger meat production
                 CityCulture.AnimalBreeder2, //Higher chance of successful breeding
