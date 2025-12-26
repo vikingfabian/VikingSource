@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -45,13 +46,12 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public bool HasFaction()
-        {
-            return factionIndex >= 0;
+        { 
+            return factionIndex >= 0 && factionIndex < DssRef.world.factions.Count;
         }
 
         virtual public Faction GetFaction_NoChecks()
         {
-
             if (factionIndex < 0)
             {
                 return null;

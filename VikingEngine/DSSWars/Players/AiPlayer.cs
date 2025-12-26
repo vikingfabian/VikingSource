@@ -2307,10 +2307,11 @@ namespace VikingEngine.DSSWars.Players
             while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var nIx in city.neighborCities)
             {
                 //var nCity = DssRef.world.cities[nIx];
-                if (nCity.HasFaction())
+                if (nCity.factionIndex != faction.myIndex
+                    && nCity.HasFaction())
                 {
-                    if (nCity.factionIndex != faction.myIndex)
-                    {
+                    //if (nCity.factionIndex != faction.myIndex)
+                    //{
                         var relation = DssRef.diplomacy.GetRelationType(nCity.GetFaction(), faction);
                         if (relation <= RelationType.RelationTypeN1_Enemies)
                         {
@@ -2322,7 +2323,7 @@ namespace VikingEngine.DSSWars.Players
                         {
                             return true;
                         }
-                    }
+                    //}
                 }
             }
 
