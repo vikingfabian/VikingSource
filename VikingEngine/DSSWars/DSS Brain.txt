@@ -38,7 +38,6 @@ SYSTEMS
 * Animal pens have upkeep
 * Resource collecting is limited by storage
 
-
 QUESTIONS
 * Do it need some type of hunter cottage to collect the first animals?
 

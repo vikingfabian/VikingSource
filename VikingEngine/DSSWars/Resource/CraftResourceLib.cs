@@ -1266,72 +1266,72 @@ namespace VikingEngine.DSSWars.Resource
         );
 
 
-        const int HenButcherCount = 4;
+        const int HenSlaughterCount = 4;
 
-        public static readonly CraftBlueprint ButcherHen = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterHen = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            8 * HenButcherCount,
+            8 * HenSlaughterCount,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Hen, HenButcherCount),
+                new UseResource(ItemResourceType.Hen, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
-        ).addSecondResult(ItemResourceType.SkinLinen_Group, 1 * HenButcherCount);
+        ).addSecondResult(ItemResourceType.SkinLinen_Group, 1 * HenSlaughterCount);
 
         // --- Pigs / Hogs ---
 
-        public static readonly CraftBlueprint ButcherPig = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterPig = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
             30,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Pig, HenButcherCount),
+        new UseResource(ItemResourceType.Pig, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         ).addSecondResult(ItemResourceType.SkinLinen_Group, 10);
 
-        public static readonly CraftBlueprint ButcherWildPig = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterWildPig = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
             30,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.WildPig, HenButcherCount),
+        new UseResource(ItemResourceType.WildPig, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         ).addSecondResult(ItemResourceType.SkinLinen_Group, 10);
 
-        public static readonly CraftBlueprint ButcherWildHog = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterWildHog = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
             50,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.WildHog, HenButcherCount),
+        new UseResource(ItemResourceType.WildHog, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         ).addSecondResult(ItemResourceType.SkinLinen_Group, 10);
 
-        public static readonly CraftBlueprint ButcherWarHog = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterWarHog = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
             30,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.WarHog, HenButcherCount),
+        new UseResource(ItemResourceType.WarHog, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         ).addSecondResult(ItemResourceType.SkinLinen_Group, 10);
 
-        public static readonly CraftBlueprint ButcherStagHog = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterStagHog = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
             80,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.StagHog, HenButcherCount),
+        new UseResource(ItemResourceType.StagHog, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         ).addSecondResult(ItemResourceType.SkinLinen_Group, 10);
@@ -1339,24 +1339,24 @@ namespace VikingEngine.DSSWars.Resource
 
         // --- Oxen ---
 
-        public static readonly CraftBlueprint ButcherOxen = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterOxen = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
             40,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Oxen, HenButcherCount),
+        new UseResource(ItemResourceType.Oxen, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         ).addSecondResult(ItemResourceType.SkinLinen_Group, 50);
 
-        public static readonly CraftBlueprint ButcherKineOxen = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterKineOxen = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
             40,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.KineOxen, HenButcherCount),
+        new UseResource(ItemResourceType.KineOxen, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         ).addSecondResult(ItemResourceType.SkinLinen_Group, 80);
@@ -1364,46 +1364,46 @@ namespace VikingEngine.DSSWars.Resource
 
         // --- Horses ---
 
-        public static readonly CraftBlueprint ButcherPony = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterPony = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
             30,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Pony, HenButcherCount),
+        new UseResource(ItemResourceType.Pony, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         ).addSecondResult(ItemResourceType.SkinLinen_Group, 10);
 
-        public static readonly CraftBlueprint ButcherHorse = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterHorse = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
             50,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Horse, HenButcherCount),
+        new UseResource(ItemResourceType.Horse, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         ).addSecondResult(ItemResourceType.SkinLinen_Group, 12);
 
-        public static readonly CraftBlueprint ButcherWarHorse = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterWarHorse = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
             30,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.WarHorse, HenButcherCount),
+        new UseResource(ItemResourceType.WarHorse, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         ).addSecondResult(ItemResourceType.SkinLinen_Group, 12);
 
-        public static readonly CraftBlueprint ButcherDraftHorse = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterDraftHorse = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
             40,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.DraftHorse, HenButcherCount),
+        new UseResource(ItemResourceType.DraftHorse, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         ).addSecondResult(ItemResourceType.SkinLinen_Group, 12);
@@ -1411,35 +1411,35 @@ namespace VikingEngine.DSSWars.Resource
 
         // --- Cats (Skin Focus) ---
 
-        public static readonly CraftBlueprint ButcherWildCat = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterWildCat = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.SkinLinen_Group,
             50,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.WildCat, HenButcherCount),
+        new UseResource(ItemResourceType.WildCat, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         );
 
-        public static readonly CraftBlueprint ButcherLion = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterLion = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.SkinLinen_Group,
             120,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Lion, HenButcherCount),
+        new UseResource(ItemResourceType.Lion, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         );
 
-        public static readonly CraftBlueprint ButcherWarLion = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterWarLion = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.SkinLinen_Group,
             120,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.WarLion, HenButcherCount),
+        new UseResource(ItemResourceType.WarLion, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         );
@@ -1447,35 +1447,35 @@ namespace VikingEngine.DSSWars.Resource
 
         // --- Wolves (Skin Focus) ---
 
-        public static readonly CraftBlueprint ButcherWolf = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterWolf = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.SkinLinen_Group,
             50,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Wolf, HenButcherCount),
+        new UseResource(ItemResourceType.Wolf, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         );
 
-        public static readonly CraftBlueprint ButcherWarg = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterWarg = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.SkinLinen_Group,
             70,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Warg, HenButcherCount),
+        new UseResource(ItemResourceType.Warg, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         );
 
-        public static readonly CraftBlueprint ButcherAlphaWarg = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterAlphaWarg = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.SkinLinen_Group,
             70,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.AlphaWarg, HenButcherCount),
+        new UseResource(ItemResourceType.AlphaWarg, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         );
@@ -1483,35 +1483,35 @@ namespace VikingEngine.DSSWars.Resource
 
         // --- Elephants ---
 
-        public static readonly CraftBlueprint ButcherElephant = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterElephant = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
             100,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Elephant, HenButcherCount),
+        new UseResource(ItemResourceType.Elephant, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         ).addSecondResult(ItemResourceType.SkinLinen_Group, 40);
 
-        public static readonly CraftBlueprint ButcherWarElephant = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterWarElephant = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
             80,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.WarElephant, HenButcherCount),
+        new UseResource(ItemResourceType.WarElephant, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         ).addSecondResult(ItemResourceType.SkinLinen_Group, 30);
 
-        public static readonly CraftBlueprint ButcherOliphant = new CraftBlueprint(
+        public static readonly CraftBlueprint SlaughterOliphant = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
             300,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Oliphant, HenButcherCount),
+        new UseResource(ItemResourceType.Oliphant, HenSlaughterCount),
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         ).addSecondResult(ItemResourceType.SkinLinen_Group, 60);

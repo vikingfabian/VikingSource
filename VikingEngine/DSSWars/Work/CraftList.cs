@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.LootFest.GO.Characters;
+using VikingEngine.LootFest.GO.Characters.Monsters;
 
 namespace VikingEngine.DSSWars.Work
 {
@@ -48,7 +51,7 @@ namespace VikingEngine.DSSWars.Work
 
         public static readonly ItemResourceType[] CarpenterCraftTypes = {
             ItemResourceType.Palisade,
-            ItemResourceType.Container,
+            ItemResourceType.WoodContainer,
             ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Crossbow,
             ItemResourceType.MithrilBow,
             ItemResourceType.Ballista, ItemResourceType.Manuballista, ItemResourceType.Catapult,
@@ -60,13 +63,40 @@ namespace VikingEngine.DSSWars.Work
         };
 
         public static readonly ItemResourceType[] PotteryCraftTypes = {
-             ItemResourceType.Container, ItemResourceType.Brick 
+             ItemResourceType.PotContainer, ItemResourceType.Brick 
         };
 
         public static readonly ItemResourceType[] ShieldMakerCraftTypes = {
              ItemResourceType.BucklerShield, ItemResourceType.RoundShield, ItemResourceType.HeaterShield, ItemResourceType.TowerShield
         };
+        public static readonly CraftBlueprint[] ButcherAnimalTypes = {
+            CraftResourceLib.SlaughterHen,
+            CraftResourceLib.SlaughterPig,
+            CraftResourceLib.SlaughterOxen,
+            CraftResourceLib.SlaughterKineOxen,
 
+            CraftResourceLib.SlaughterPony,
+            CraftResourceLib.SlaughterHorse,
+            CraftResourceLib.SlaughterWarHorse,
+            CraftResourceLib.SlaughterDraftHorse,
+
+            CraftResourceLib.SlaughterWildPig,
+            CraftResourceLib.SlaughterWildHog,
+            CraftResourceLib.SlaughterWarHog,
+            CraftResourceLib.SlaughterStagHog,
+
+            CraftResourceLib.SlaughterWolf,
+            CraftResourceLib.SlaughterWarg,
+            CraftResourceLib.SlaughterAlphaWarg,
+
+            CraftResourceLib.SlaughterWildCat,
+            CraftResourceLib.SlaughterLion,
+            CraftResourceLib.SlaughterWarLion,
+
+            CraftResourceLib.SlaughterElephant,
+            CraftResourceLib.SlaughterWarElephant,
+            CraftResourceLib.SlaughterOliphant,
+        };
 
         public static List<KeyValuePair<BuildAndExpandType, ItemResourceType[]>> AllBuidings()
         {

@@ -52,6 +52,8 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.Linen, CityResoureIndex.skinLinnen, 1f / 10, Work.WorkPriorityType.farmlinen, null, null, StorageType.MaterialStorage);
             new ItemProperties(ItemResourceType.SkinLinen_Group, CityResoureIndex.skinLinnen, 1f / 10, Work.WorkPriorityType.farmlinen, null, null, StorageType.MaterialStorage) { defaultStockPile = 200 }.AddItemSource(
                 new ItemSource( ItemSourceType.Farm, Build.BuildAndExpandType.LinenFarm), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
+            new ItemProperties(ItemResourceType.WoodContainer, CityResoureIndex.Container, DefaultWeight, Work.WorkPriorityType.craftContainer, null, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.PotContainer, CityResoureIndex.Container, DefaultWeight, Work.WorkPriorityType.craftContainer, null, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.Container, CityResoureIndex.Container, DefaultWeight, Work.WorkPriorityType.craftContainer, CraftResourceLib.Container_wood, CraftResourceLib.Container_clay, StorageType.MaterialStorage);
 
             // fuel & food
@@ -243,6 +245,35 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.Oliphant, CityResoureIndex.Oliphant, 1f, Work.WorkPriorityType.SlaughterOliphant, null, null, StorageType.AnimalStorage)
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OliphantCage));
 
+
+            new ItemProperties(ItemResourceType.SlaughterHen, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterHen, CraftResourceLib.SlaughterHen, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterPig, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterPig, CraftResourceLib.SlaughterPig, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterOxen, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterOxen, CraftResourceLib.SlaughterOxen, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterKineOxen, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterKineOxen, CraftResourceLib.SlaughterKineOxen, null, StorageType.NUM_NONE);
+
+            new ItemProperties(ItemResourceType.SlaughterPony, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterPony, CraftResourceLib.SlaughterPony, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterHorse, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterHorse, CraftResourceLib.SlaughterHorse, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterWarHorse, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWarHorse, CraftResourceLib.SlaughterWarHorse, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterDraftHorse, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterDraftHorse, CraftResourceLib.SlaughterDraftHorse, null, StorageType.NUM_NONE);
+
+            new ItemProperties(ItemResourceType.SlaughterWildPig, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWildPig, CraftResourceLib.SlaughterWildPig, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterWildHog, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWildHog, CraftResourceLib.SlaughterWildHog, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterWarHog, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWarHog, CraftResourceLib.SlaughterWarHog, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterStagHog, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterStagHog, CraftResourceLib.SlaughterStagHog, null, StorageType.NUM_NONE);
+
+            new ItemProperties(ItemResourceType.SlaughterWolf, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWolf, CraftResourceLib.SlaughterWolf, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterWarg, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWarg, CraftResourceLib.SlaughterWarg, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterAlphaWarg, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterAlphaWarg, CraftResourceLib.SlaughterAlphaWarg, null, StorageType.NUM_NONE);
+
+            new ItemProperties(ItemResourceType.SlaughterWildCat, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWildCat, CraftResourceLib.SlaughterWildCat, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterLion, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterLion, CraftResourceLib.SlaughterLion, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterWarLion, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWarLion, CraftResourceLib.SlaughterWarLion, null, StorageType.NUM_NONE);
+
+            new ItemProperties(ItemResourceType.SlaughterElephant, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterElephant, CraftResourceLib.SlaughterElephant, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterWarElephant, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWarElephant, CraftResourceLib.SlaughterWarElephant, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterOliphant, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterOliphant, CraftResourceLib.SlaughterOliphant, null, StorageType.NUM_NONE);
+            
+            
             var craftList = CraftList.AllBuidings();
             foreach (var building_craftItems in craftList)
             {

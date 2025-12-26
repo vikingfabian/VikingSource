@@ -466,6 +466,8 @@ namespace VikingEngine.DSSWars
                     itemIcon = SpriteName.WarsResource_Toolkit;
                     itemName = DssRef.lang.Resource_TypeName_Toolkit;
                     break;
+                case ItemResourceType.WoodContainer:
+                case ItemResourceType.PotContainer:
                 case ItemResourceType.Container:
                     itemIcon = SpriteName.WarsResource_Container;
                     itemName = DssRef.todoLang.Resource_TypeName_Container;

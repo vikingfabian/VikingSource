@@ -18,7 +18,6 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
     {
-        //static byte[] MaxSkill = new byte[(int)WorkExperienceType.NUM];
         static WorkerSkillCollector SkillCollector = new WorkerSkillCollector();
 
         public WorkTemplate workTemplate = new WorkTemplate();
@@ -83,19 +82,6 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     var status = workerStatuses[i];
                     SkillCollector.Add(ref status);
-                    //if (status.xp1 > MaxSkill[(int)status.xpType1])
-                    //{
-                    //    MaxSkill[(int)status.xpType1] = status.xp1;
-                    //}
-                    //if (status.xp2 > MaxSkill[(int)status.xpType2])
-                    //{
-                    //    MaxSkill[(int)status.xpType2] = status.xp2;
-                    //}
-                    //if (status.xp3 > MaxSkill[(int)status.xpType3])
-                    //{
-                    //    MaxSkill[(int)status.xpType3] = status.xp3;
-                    //}
-
 
                     switch (status.work)
                     {
@@ -710,14 +696,20 @@ namespace VikingEngine.DSSWars.GameObject
                             case TerrainBuildingType.Foundry:
                                 craftBench(pos, distanceValue, CraftList.FoundryCraftTypes);
                                 break;
+                            //case TerrainBuildingType.Butcher:
+                            //    craftBench(pos, distanceValue, CraftList.ButcherCraftTypes);
+                            //    break;
                             case TerrainBuildingType.Chemist:
                                 craftBench(pos, distanceValue, CraftList.ChemistCraftTypes);
                                 break;
                             case TerrainBuildingType.Gunmaker:
                                 craftBench(pos, distanceValue, CraftList.GunmakerCraftTypes);
                                 break;
+                            case TerrainBuildingType.Butcher:
+                                itemConvert(pos, distanceValue, false);
+                                break;
                             case TerrainBuildingType.CoinMinter:
-                                coinMint(pos, distanceValue);
+                                itemConvert(pos, distanceValue, true);
                                 break;
                         }
                     }
@@ -800,13 +792,15 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
-                    void coinMint(IntVector2 pos, int distanceValue)
+                    void itemConvert(IntVector2 pos, int distanceValue, bool coinMint)
                     {
                         int topPrioValue = WorkTemplate.NoPrio;
                         int topItem = -1;
                         WorkPriority topPrio = WorkPriority.Empty;
 
-                        foreach (var bp in Minting.CoinCraftTypes)
+                        CraftBlueprint[] crafts = coinMint ? Minting.CoinCraftTypes : CraftList.ButcherAnimalTypes;
+
+                        foreach (var bp in crafts)
                         {
                             WorkPriority template = workTemplate.GetWorkPriority((ItemResourceType)bp.workTag, out _);
                             if ((!template.waitForStockpile || bp.hasFullStock(this)) && bp.available(this))

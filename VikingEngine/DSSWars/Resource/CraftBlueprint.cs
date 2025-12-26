@@ -47,6 +47,15 @@ namespace VikingEngine.DSSWars.Resource
             this.requirement = requirement;
         }
 
+        public void craftItemResult(out int amount1, out ItemResourceType item1, out int amount2, out ItemResourceType item2)
+        {
+            amount1 = resultAmount1;
+            item1 = (ItemResourceType)resultSubType1;
+
+            amount2 = resultAmount2;
+            item2 = (ItemResourceType)resultSubType2;
+        }
+
         public CraftBlueprint addSecondResult(ItemResourceType item, int count)
         {
             resultSubType2 = (int)item;
@@ -126,14 +135,14 @@ namespace VikingEngine.DSSWars.Resource
             return true;
         }
 
-        public int payResources(City city)
+        public void payResources(City city)
         {
             foreach (var r in resources)
             {
                 city.AddGroupedResource(r.type, -r.amount);
             }
 
-            return resultAmount1;
+            //return resultAmount1;
         }
 
         public int payResources_BuildAndUpgrade(City city)
@@ -148,14 +157,14 @@ namespace VikingEngine.DSSWars.Resource
             return resultAmount1;
         }
 
-        public int tryPayResources(City city)
+        public bool tryPayResources(City city)
         {
             foreach (var r in resources)
             {
                 var res = city.GetGroupedResource(r.type);
                 if (res.amount < r.amount)
                 {
-                    return 0;
+                    return false;
                 }
             }
             foreach (var r in resources)
@@ -163,7 +172,7 @@ namespace VikingEngine.DSSWars.Resource
                 city.AddGroupedResource(r.type, -r.amount);
             }
 
-            return resultAmount1;
+            return true;
         }
 
         void iconName(int resultNumber, out SpriteName icon, out string name)

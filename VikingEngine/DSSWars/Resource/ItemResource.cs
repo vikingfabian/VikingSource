@@ -88,6 +88,8 @@ namespace VikingEngine.DSSWars.Resource
         SoftWood,
         HardWood,
         DryWood,
+        WoodContainer,
+        PotContainer,
         Container,
         Wagon2Wheel,
         Wagon4Wheel,
@@ -234,6 +236,33 @@ namespace VikingEngine.DSSWars.Resource
         Elephant,
         WarElephant,
         Oliphant,
+
+        SlaughterHen,
+        SlaughterPig,
+        SlaughterOxen,
+        SlaughterKineOxen,
+
+        SlaughterPony,
+        SlaughterHorse,
+        SlaughterWarHorse,
+        SlaughterDraftHorse,
+
+        SlaughterWildPig,
+        SlaughterWildHog,
+        SlaughterWarHog,
+        SlaughterStagHog,
+
+        SlaughterWolf,
+        SlaughterWarg,
+        SlaughterAlphaWarg,
+
+        SlaughterWildCat,
+        SlaughterLion,
+        SlaughterWarLion,
+
+        SlaughterElephant,
+        SlaughterWarElephant,
+        SlaughterOliphant,
 
         Palisade,
         //WorkerTent,
