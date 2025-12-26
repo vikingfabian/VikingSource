@@ -756,6 +756,13 @@ namespace VikingEngine.DSSWars
         quick_victory_100,
         quick_victory_150,
 
+        /// <summary>
+        /// Found 1, 3, 9 new cities
+        /// </summary>
+        colonizer_tier1,
+        colonizer_tier2,
+        colonizer_tier3,
+
         NUM_ACHIEVEMENTS
     }
 }

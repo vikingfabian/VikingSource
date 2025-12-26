@@ -41,10 +41,25 @@ namespace VikingEngine.DSSWars.Conscript
             new UseResource[]
             {
                 new UseResource(ItemResourceType.Men, 60),
-                //new UseResource(ItemResourceType.SharpStick, 30),
                 new UseResource(ItemResourceType.Food_G, CraftSettlerFood),
                 new UseResource(ItemResourceType.Wood_Group, CraftSettlerWood),
                 new UseResource(ItemResourceType.SkinLinen_Group, CraftSettlerSkinLinen)
+            },
+            XP.WorkExperienceType.NONE,
+            XP.ExperienceLevel.Beginner_1,
+            CraftRequirement.None
+        );
+
+        public static readonly CraftBlueprint CraftNomadSettler = new CraftBlueprint(
+            CraftResultType.NoSet,
+            0,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Men, 60),
+                new UseResource(ItemResourceType.Food_G, CraftSettlerFood /2),
+                new UseResource(ItemResourceType.Wood_Group, CraftSettlerWood /2),
+                new UseResource(ItemResourceType.SkinLinen_Group, CraftSettlerSkinLinen /2)
             },
             XP.WorkExperienceType.NONE,
             XP.ExperienceLevel.Beginner_1,

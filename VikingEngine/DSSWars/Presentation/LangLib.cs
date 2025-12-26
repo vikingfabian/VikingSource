@@ -1704,6 +1704,9 @@ namespace VikingEngine.DSSWars.Presentation
                 case DSSWars.CityCulture.Apprentices:
                     return title ? DssRef.lang.CityCulture_Apprentices : DssRef.lang.CityCulture_Apprentices_Description;
 
+                case DSSWars.CityCulture.Nomads:
+                    return title ? DssRef.todoLang.CityCulture_Nomad : string.Format( DssRef.todoLang.Hud_Purchase_LowXCost, DssRef.lang.UnitType_Settler);
+
                 default: return TextLib.Error;
             }
         }

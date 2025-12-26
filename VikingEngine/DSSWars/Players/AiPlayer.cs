@@ -1674,7 +1674,7 @@ namespace VikingEngine.DSSWars.Players
                     city.cityType > CityType.Campsite &&
                     city.homesUnused() < 20)
                 {
-                    if (ConscriptDataLib.CraftSettler.canCraftCount(city) >= 1)
+                    if (city.SettlerBp().canCraftCount(city) >= 1)
                     {
                         EcsStaticArrayCounter neighbors = city.CityNeighbors();
                         while (neighbors.Next(DssRef.world.cities, out City nCity))

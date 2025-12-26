@@ -1904,6 +1904,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 CityCulture.Smelters,
                 CityCulture.BronzeCasters,
                 CityCulture.Apprentices,
+                CityCulture.Nomads,
 
             };
     }
