@@ -525,684 +525,712 @@ namespace VikingEngine.DSSWars.Interface
             
         }
 
-        void mixTab(RichBoxContent content)
-        {
-            //if (player.tutorial == null || player.tutorial.DisplayStockpile())
-            {
-                for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
-                {
-                    var tabContent = new RichBoxContent();
-                    //string text = null;
-                    switch (resourcesSubTab)
-                    {
-                        case ResourcesSubTab.Overview_Resources:
-                            tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Overview));
-                            tabContent.space();
-                            tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
-                            break;
+        //void mixTab(RichBoxContent content)
+        //{
+        //    for (ResourceManagementType managementType = 0; managementType < ResourceManagementType.Auto; managementType++)
+        //    {
+        //        for (ResourceGroup group = 0; group < ResourceGroup.NUM; group++)
+        //        {
+                    
+        //            if (group == ResourceGroup.Mint)
+        //            {
+        //                bool includeMint = managementType == ResourceManagementType.Work && city.buildingStructure.CoinMinter_count > 0;
+        //                if (!includeMint)
+        //                {
+        //                    continue;
+        //                }
 
-                        case ResourcesSubTab.Overview_Metals:
-                            tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
-                            break;
+        //                IconName.Tab(group, out SpriteName groupIcon, out string groupName);
+        //                var tab = new ResourcesSubTab(managementType, group);
+        //                content.Add(new ArtOption(player.resourcesSubTab.EqualTab(tab), 
+        //                    new List<AbsRichBoxMember> { new RbImage(groupIcon) },
+        //                    new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+        //                    {
+        //                        player.resourcesSubTab = resourcesSubTab;
+        //                    }, tab, RbSoundType.Option)));
+        //                content.space();
+        //            }
 
-                        case ResourcesSubTab.Overview_Weapons:
-                            tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
-                            break;
-
-                        case ResourcesSubTab.Overview_Projectile:
-                            tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
-                            break;
-
-                        case ResourcesSubTab.Overview_Armor:
-                            tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
-                            break;
+        //        }
+        //    }
 
 
-                    }
-                    var subTab = new ArtOption(player.resourcesSubTab == resourcesSubTab,tabContent,
-                        new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
-                        {
-                            player.resourcesSubTab = resourcesSubTab;
-                        }, resourcesSubTab, RbSoundType.Option));
-                    //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
-                    content.Add(subTab);
-                    content.space();
-                }
-                content.newParagraph();
-            }
+        //    //if (player.tutorial == null || player.tutorial.DisplayStockpile())
+        //    {
+        //        for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
+        //        {
+        //            var tabContent = new RichBoxContent();
+        //            //string text = null;
+        //            switch (resourcesSubTab)
+        //            {
+        //                case ResourcesSubTab.Overview_Resources:
+        //                    tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Overview));
+        //                    tabContent.space();
+        //                    tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+        //                    break;
 
-            bool reachedBuffer = false;
+        //                case ResourcesSubTab.Overview_Metals:
+        //                    tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
+        //                    break;
 
-            switch (player.resourcesSubTab)
-            {
-                case ResourcesSubTab.Overview_Resources:
-                    {
-                        ItemResourceType item = ItemResourceType.Wood_Group;
-                        mixResource(item, false);
-                        work(item, WorkPriorityType.wood);
-                        work(item, WorkPriorityType.move);
-                        blackMarket(item);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Stone_G;
-                        mixResource(item, false);
-                        work(item, WorkPriorityType.stone);
-                        blackMarket(item);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Fuel_G;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Fuel1, CraftResourceLib.Charcoal);
-                        work(item, WorkPriorityType.farmfuel);
-                        work(item, WorkPriorityType.craftFuel);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.RawFood_Group;
-                        mixResource(item, false);
-                        work(item, WorkPriorityType.farmfood);
-                        blackMarket(item);
-                        end(item);
-                    }                    
+        //                case ResourcesSubTab.Overview_Weapons:
+        //                    tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
+        //                    break;
 
-                    {
-                        ItemResourceType item = ItemResourceType.Food_G;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Food1, CraftResourceLib.Food2);
-                        work(item, WorkPriorityType.craftFood);
-                        blackMarket(item);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Beer;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Beer);
-                        work(item, WorkPriorityType.craftBeer);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.CoolingFluid;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.CoolingFluid);
-                        work(item, WorkPriorityType.craftCoolingFluid);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.SkinLinen_Group;
-                        mixResource(item, false);
-                        work(item, WorkPriorityType.farmlinen);
-                        blackMarket(item);
-                        end(item);
-                    }
-                    content.newParagraph();
-                    {
-                        ItemResourceType item = ItemResourceType.Toolkit;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Toolkit);
-                        work(item, WorkPriorityType.craftToolkit);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Wagon2Wheel;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.WagonLight);
-                        work(item, WorkPriorityType.craftWagonLight);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Wagon4Wheel;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.WagonHeavy);
-                        work(item, WorkPriorityType.craftWagonHeavy);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.BlackPowder;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.BlackPowder);
-                        work(item, WorkPriorityType.craftBlackPowder);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.LedBullet;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.LedBullets);
-                        work(item, WorkPriorityType.craftBullet);
-                        end(item);
-                    }
+        //                case ResourcesSubTab.Overview_Projectile:
+        //                    tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
+        //                    break;
 
-                    break;
-                case ResourcesSubTab.Overview_Metals:
+        //                case ResourcesSubTab.Overview_Armor:
+        //                    tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
+        //                    break;
 
-                    {
-                        ItemResourceType item = ItemResourceType.IronOre_G;
-                        mixResource(item, false);
-                        work(item, WorkPriorityType.miningIron);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.TinOre;
-                        mixResource(item, false);
-                        work(item, WorkPriorityType.miningTin);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.CopperOre;
-                        mixResource(item, false);
-                        work(item, WorkPriorityType.miningCopper);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.LeadOre;
-                        mixResource(item, false);
-                        work(item, WorkPriorityType.miningLead);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.SilverOre;
-                        mixResource(item, false);
-                        work(item, WorkPriorityType.miningSilver);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Sulfur;
-                        mixResource(item, false);
-                        work(item, WorkPriorityType.miningSulfur);
-                        end(item);
-                    }
-                    content.newParagraph();
-                    {
-                        ItemResourceType item = ItemResourceType.Iron_G;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
-                        work(item, WorkPriorityType.smeltIron);
-                        blackMarket(item);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Tin;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Tin);
-                        work(item, WorkPriorityType.smeltTin);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Copper;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
-                        work(item, WorkPriorityType.smeltCopper);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Lead;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Lead);
-                        work(item, WorkPriorityType.smeltLead);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Silver;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
-                        work(item, WorkPriorityType.smeltSilver);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.RawMithril;
-                        mixResource(item, false);
-                        work(item, WorkPriorityType.miningMithril);
-                        end(item);
-                    }
-                    content.newParagraph();
 
-                    {
-                        ItemResourceType item = ItemResourceType.Bronze;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Bronze);
-                        work(item, WorkPriorityType.craftBronze);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.CastIron;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.CastIron);
-                        work(item, WorkPriorityType.craftCastIron);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.BloomeryIron;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.BloomeryIron);
-                        work(item, WorkPriorityType.craftBloomeryIron);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Steel;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling);
-                        work(item, WorkPriorityType.craftSteel);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Mithril;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Mithril);
-                        work(item, WorkPriorityType.craftMithril);
-                        end(item);
-                    }
-                    break;
+        //            }
+        //            var subTab = new ArtOption(player.resourcesSubTab == resourcesSubTab,tabContent,
+        //                new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+        //                {
+        //                    player.resourcesSubTab = resourcesSubTab;
+        //                }, resourcesSubTab, RbSoundType.Option));
+        //            //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
+        //            content.Add(subTab);
+        //            content.space();
+        //        }
+        //        content.newParagraph();
+        //    }
 
-                case ResourcesSubTab.Overview_Weapons:
+        //    bool reachedBuffer = false;
 
-                    {
-                        ItemResourceType item = ItemResourceType.SharpStick;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.SharpStick);
-                        work(item, WorkPriorityType.craftSharpStick);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.HandSpear;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
-                        work(item, WorkPriorityType.craftHandSpear);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.BronzeSword;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.BronzeSword);
-                        work(item, WorkPriorityType.craftBronzeSword);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.ShortSword;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.ShortSword);
-                        work(item, WorkPriorityType.craftShortSword);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Sword;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Sword);
-                        work(item, WorkPriorityType.craftSword);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.LongSword;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.LongSword);
-                        work(item, WorkPriorityType.craftLongSword);
-                        end(item);
-                    }
-                    content.newParagraph();
-                    {
-                        ItemResourceType item = ItemResourceType.Warhammer;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
-                        work(item, WorkPriorityType.craftWarhammer);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.TwoHandSword;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.TwoHandSword);
-                        work(item, WorkPriorityType.craftTwoHandSword);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.KnightsLance;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.KnightsLance);
-                        work(item, WorkPriorityType.craftKnightsLance);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.MithrilSword;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.MithrilSword);
-                        work(item, WorkPriorityType.craftMithrilSword);
-                        end(item);
-                    }
-                    break;
+        //    switch (player.resourcesSubTab)
+        //    {
+        //        case ResourcesSubTab.Overview_Resources:
+        //            {
+        //                ItemResourceType item = ItemResourceType.Wood_Group;
+        //                mixResource(item, false);
+        //                work(item, WorkPriorityType.wood);
+        //                work(item, WorkPriorityType.move);
+        //                blackMarket(item);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Stone_G;
+        //                mixResource(item, false);
+        //                work(item, WorkPriorityType.stone);
+        //                blackMarket(item);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Fuel_G;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Fuel1, CraftResourceLib.Charcoal);
+        //                work(item, WorkPriorityType.farmfuel);
+        //                work(item, WorkPriorityType.craftFuel);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.RawFood_Group;
+        //                mixResource(item, false);
+        //                work(item, WorkPriorityType.farmfood);
+        //                blackMarket(item);
+        //                end(item);
+        //            }                    
 
-                case ResourcesSubTab.Overview_Projectile:
+        //            {
+        //                ItemResourceType item = ItemResourceType.Food_G;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Food1, CraftResourceLib.Food2);
+        //                work(item, WorkPriorityType.craftFood);
+        //                blackMarket(item);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Beer;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Beer);
+        //                work(item, WorkPriorityType.craftBeer);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.CoolingFluid;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.CoolingFluid);
+        //                work(item, WorkPriorityType.craftCoolingFluid);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.SkinLinen_Group;
+        //                mixResource(item, false);
+        //                work(item, WorkPriorityType.farmlinen);
+        //                blackMarket(item);
+        //                end(item);
+        //            }
+        //            content.newParagraph();
+        //            {
+        //                ItemResourceType item = ItemResourceType.Toolkit;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Toolkit);
+        //                work(item, WorkPriorityType.craftToolkit);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Wagon2Wheel;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Wagon2Wheel);
+        //                work(item, WorkPriorityType.craftWagonLight);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Wagon4Wheel;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Wagon4Wheel);
+        //                work(item, WorkPriorityType.craftWagonHeavy);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.BlackPowder;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.BlackPowder);
+        //                work(item, WorkPriorityType.craftBlackPowder);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.LedBullet;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.LedBullets);
+        //                work(item, WorkPriorityType.craftBullet);
+        //                end(item);
+        //            }
 
-                    {
-                        ItemResourceType item = ItemResourceType.SlingShot;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Slingshot);
-                        work(item, WorkPriorityType.craftSlingshot);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.ThrowingSpear;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.ThrowingSpear1,CraftResourceLib.ThrowingSpear2);
-                        work(item, WorkPriorityType.craftThrowingspear);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Bow;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Bow);
-                        work(item, WorkPriorityType.craftBow);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.LongBow;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.LongBow);
-                        work(item, WorkPriorityType.craftLongbow);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Crossbow;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.CrossBow);
-                        work(item, WorkPriorityType.craftCrossbow);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.MithrilBow;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.MithrilBow);
-                        work(item, WorkPriorityType.craftMithrilbow);
-                        end(item);
-                    }
-                    content.newParagraph();
-                    {
-                        ItemResourceType item = ItemResourceType.HandCannon;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.BronzeHandCannon);
-                        work(item, WorkPriorityType.craftHandCannon);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.HandCulverin;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.BronzeHandCulverin);
-                        work(item, WorkPriorityType.craftHandCulverin);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Rifle;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Rifle);
-                        work(item, WorkPriorityType.craftRifle);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Blunderbuss;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Blunderbus);
-                        work(item, WorkPriorityType.craftBlunderbuss);
-                        end(item);
-                    }
-                    content.newParagraph();
-                    {
-                        ItemResourceType item = ItemResourceType.Ballista;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Ballista_Iron,CraftResourceLib.Ballista_Bronze);
-                        work(item, WorkPriorityType.craftBallista);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Manuballista;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.ManuBallista);
-                        work(item, WorkPriorityType.craftManuBallista);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.Catapult;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.Catapult);
-                        work(item, WorkPriorityType.craftCatapult);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.SiegeCannonBronze;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.SiegeCannonBronze);
-                        work(item, WorkPriorityType.craftSiegeCannonBronze);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.ManCannonBronze;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.ManCannonBronze);
-                        work(item, WorkPriorityType.craftManCannonBronze);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.SiegeCannonIron;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.SiegeCannonIron);
-                        work(item, WorkPriorityType.craftSiegeCannonIron);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.ManCannonIron;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.ManCannonIron);
-                        work(item, WorkPriorityType.craftManCannonIron);
-                        end(item);
-                    }
+        //            break;
+        //        case ResourcesSubTab.Overview_Metals:
 
-                    break;
+        //            {
+        //                ItemResourceType item = ItemResourceType.IronOre_G;
+        //                mixResource(item, false);
+        //                work(item, WorkPriorityType.miningIron);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.TinOre;
+        //                mixResource(item, false);
+        //                work(item, WorkPriorityType.miningTin);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.CopperOre;
+        //                mixResource(item, false);
+        //                work(item, WorkPriorityType.miningCopper);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.LeadOre;
+        //                mixResource(item, false);
+        //                work(item, WorkPriorityType.miningLead);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.SilverOre;
+        //                mixResource(item, false);
+        //                work(item, WorkPriorityType.miningSilver);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Sulfur;
+        //                mixResource(item, false);
+        //                work(item, WorkPriorityType.miningSulfur);
+        //                end(item);
+        //            }
+        //            content.newParagraph();
+        //            {
+        //                ItemResourceType item = ItemResourceType.Iron_G;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
+        //                work(item, WorkPriorityType.smeltIron);
+        //                blackMarket(item);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Tin;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Tin);
+        //                work(item, WorkPriorityType.smeltTin);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Copper;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
+        //                work(item, WorkPriorityType.smeltCopper);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Lead;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Lead);
+        //                work(item, WorkPriorityType.smeltLead);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Silver;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
+        //                work(item, WorkPriorityType.smeltSilver);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.RawMithril;
+        //                mixResource(item, false);
+        //                work(item, WorkPriorityType.miningMithril);
+        //                end(item);
+        //            }
+        //            content.newParagraph();
 
-                case ResourcesSubTab.Overview_Armor:
+        //            {
+        //                ItemResourceType item = ItemResourceType.Bronze;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Bronze);
+        //                work(item, WorkPriorityType.craftBronze);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.CastIron;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.CastIron);
+        //                work(item, WorkPriorityType.craftCastIron);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.BloomeryIron;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.BloomeryIron);
+        //                work(item, WorkPriorityType.craftBloomeryIron);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Steel;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling);
+        //                work(item, WorkPriorityType.craftSteel);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Mithril;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Mithril);
+        //                work(item, WorkPriorityType.craftMithril);
+        //                end(item);
+        //            }
+        //            break;
 
-                    {
-                        ItemResourceType item = ItemResourceType.PaddedArmor;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.PaddedArmor);
-                        work(item, WorkPriorityType.craftPaddedArmor);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.HeavyPaddedArmor;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.HeavyPaddedArmor);
-                        work(item, WorkPriorityType.craftHeavyPaddedArmor);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.BronzeArmor;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.BronzeArmor);
-                        work(item, WorkPriorityType.craftBronzeArmor);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.IronArmor;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.MailArmor);
-                        work(item, WorkPriorityType.craftMailArmor);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.HeavyIronArmor;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.HeavyMailArmor);
-                        work(item, WorkPriorityType.craftHeavyMailArmor);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.LightPlateArmor;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.PlateArmor);
-                        work(item, WorkPriorityType.craftPlateArmor);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.FullPlateArmor;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.FullPlateArmor);
-                        work(item, WorkPriorityType.craftFullPlateArmor);
-                        end(item);
-                    }
-                    {
-                        ItemResourceType item = ItemResourceType.MithrilArmor;
-                        mixResource(item, false);
-                        HudLib.blueprint(content, CraftResourceLib.MithrilArmor);
-                        work(item, WorkPriorityType.craftMithrilArmor);
-                        end(item);
-                    }
+        //        case ResourcesSubTab.Overview_Weapons:
 
-                    break;
-            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.SharpStick;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.SharpStick);
+        //                work(item, WorkPriorityType.craftSharpStick);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.HandSpear;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
+        //                work(item, WorkPriorityType.craftHandSpear);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.BronzeSword;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.BronzeSword);
+        //                work(item, WorkPriorityType.craftBronzeSword);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.ShortSword;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.ShortSword);
+        //                work(item, WorkPriorityType.craftShortSword);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Sword;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Sword);
+        //                work(item, WorkPriorityType.craftSword);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.LongSword;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.LongSword);
+        //                work(item, WorkPriorityType.craftLongSword);
+        //                end(item);
+        //            }
+        //            content.newParagraph();
+        //            {
+        //                ItemResourceType item = ItemResourceType.Warhammer;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
+        //                work(item, WorkPriorityType.craftWarhammer);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.TwoHandSword;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.TwoHandSword);
+        //                work(item, WorkPriorityType.craftTwoHandSword);
+        //                end(item);
+        //            }
+        //            //{
+        //            //    ItemResourceType item = ItemResourceType.KnightsLance;
+        //            //    mixResource(item, false);
+        //            //    HudLib.blueprint(content, CraftResourceLib.KnightsLance);
+        //            //    work(item, WorkPriorityType.craftKnightsLance);
+        //            //    end(item);
+        //            //}
+        //            {
+        //                ItemResourceType item = ItemResourceType.MithrilSword;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.MithrilSword);
+        //                work(item, WorkPriorityType.craftMithrilSword);
+        //                end(item);
+        //            }
+        //            break;
 
-            void mixResource(ItemResourceType item, bool safeGuard)
-            {
-                content.newLine();
+        //        case ResourcesSubTab.Overview_Projectile:
 
-                var typeIcon = ResourceLib.Icon(item);
-                var typeName = LangLib.Item(item);
-                var city_res = city.GetGroupedResource(item);
+        //            {
+        //                ItemResourceType item = ItemResourceType.SlingShot;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Slingshot);
+        //                work(item, WorkPriorityType.craftSlingshot);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.ThrowingSpear;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.ThrowingSpear1,CraftResourceLib.ThrowingSpear2);
+        //                work(item, WorkPriorityType.craftThrowingspear);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Bow;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Bow);
+        //                work(item, WorkPriorityType.craftBow);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.LongBow;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.LongBow);
+        //                work(item, WorkPriorityType.craftLongbow);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Crossbow;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.CrossBow);
+        //                work(item, WorkPriorityType.craftCrossbow);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.MithrilBow;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.MithrilBow);
+        //                work(item, WorkPriorityType.craftMithrilbow);
+        //                end(item);
+        //            }
+        //            content.newParagraph();
+        //            {
+        //                ItemResourceType item = ItemResourceType.HandCannon;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.BronzeHandCannon);
+        //                work(item, WorkPriorityType.craftHandCannon);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.HandCulverin;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.BronzeHandCulverin);
+        //                work(item, WorkPriorityType.craftHandCulverin);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Rifle;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Rifle);
+        //                work(item, WorkPriorityType.craftRifle);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Blunderbuss;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Blunderbus);
+        //                work(item, WorkPriorityType.craftBlunderbus);
+        //                end(item);
+        //            }
+        //            content.newParagraph();
+        //            {
+        //                ItemResourceType item = ItemResourceType.Ballista;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Ballista_Iron,CraftResourceLib.Ballista_Bronze);
+        //                work(item, WorkPriorityType.craftBallista);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Manuballista;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.ManuBallista);
+        //                work(item, WorkPriorityType.craftManuBallista);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.Catapult;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.Catapult);
+        //                work(item, WorkPriorityType.craftCatapult);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.SiegeCannonBronze;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.SiegeCannonBronze);
+        //                work(item, WorkPriorityType.craftSiegeCannonBronze);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.ManCannonBronze;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.ManCannonBronze);
+        //                work(item, WorkPriorityType.craftManCannonBronze);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.SiegeCannonIron;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.SiegeCannonIron);
+        //                work(item, WorkPriorityType.craftSiegeCannonIron);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.ManCannonIron;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.ManCannonIron);
+        //                work(item, WorkPriorityType.craftManCannonIron);
+        //                end(item);
+        //            }
 
-                var infoContent = new List<AbsRichBoxMember>(2);
-                infoContent.Add(new RbImage(typeIcon));
-                infoContent.Add(new RbSpace());
-                var amountText = new RbText(city_res.amount.ToString());
-                amountText.overrideColor = Color.White;
-                infoContent.Add(amountText);
+        //            break;
 
-                var infoButton = new RbButton(infoContent, null, new RbAction(() =>
-                {
-                    RichBoxContent content = new RichBoxContent();
-                    content.Add(new RbText(typeName));
-                    player.hud.tooltip.create(player, content, true);
-                }));
-                infoButton.overrideBgColor = HudLib.InfoYellow_BG;
+        //        case ResourcesSubTab.Overview_Armor:
 
-                content.Add(infoButton);
-                content.space();
+        //            {
+        //                ItemResourceType item = ItemResourceType.PaddedArmor;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.PaddedArmor);
+        //                work(item, WorkPriorityType.craftPaddedArmor);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.HeavyPaddedArmor;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.HeavyPaddedArmor);
+        //                work(item, WorkPriorityType.craftHeavyPaddedArmor);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.BronzeArmor;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.BronzeArmor);
+        //                work(item, WorkPriorityType.craftBronzeArmor);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.IronArmor;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.MailArmor);
+        //                work(item, WorkPriorityType.craftMailArmor);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.HeavyIronArmor;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.HeavyMailArmor);
+        //                work(item, WorkPriorityType.craftHeavyMailArmor);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.LightPlateArmor;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.PlateArmor);
+        //                work(item, WorkPriorityType.craftPlateArmor);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.FullPlateArmor;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.FullPlateArmor);
+        //                work(item, WorkPriorityType.craftFullPlateArmor);
+        //                end(item);
+        //            }
+        //            {
+        //                ItemResourceType item = ItemResourceType.MithrilArmor;
+        //                mixResource(item, false);
+        //                HudLib.blueprint(content, CraftResourceLib.MithrilArmor);
+        //                work(item, WorkPriorityType.craftMithrilArmor);
+        //                end(item);
+        //            }
+
+        //            break;
+        //    }
+
+        //    void mixResource(ItemResourceType item, bool safeGuard)
+        //    {
+        //        content.newLine();
+
+        //        var typeIcon = ResourceLib.Icon(item);
+        //        var typeName = LangLib.Item(item);
+        //        var city_res = city.GetGroupedResource(item);
+
+        //        var infoContent = new List<AbsRichBoxMember>(2);
+        //        infoContent.Add(new RbImage(typeIcon));
+        //        infoContent.Add(new RbSpace());
+        //        var amountText = new RbText(city_res.amount.ToString());
+        //        amountText.overrideColor = Color.White;
+        //        infoContent.Add(amountText);
+
+        //        var infoButton = new RbButton(infoContent, null, new RbAction(() =>
+        //        {
+        //            RichBoxContent content = new RichBoxContent();
+        //            content.Add(new RbText(typeName));
+        //            player.hud.tooltip.create(player, content, true);
+        //        }));
+        //        infoButton.overrideBgColor = HudLib.InfoYellow_BG;
+
+        //        content.Add(infoButton);
+        //        content.space();
                 
 
-                if (item != ItemResourceType.Water_G &&
-                   item != ItemResourceType.Gold &&
-                   item != ItemResourceType.Men)
-                {
-                    var stockpileContent = new List<AbsRichBoxMember>(2);
-                    stockpileContent.Add(new RbText(city_res.goalBuffer.ToString()));
+        //        if (item != ItemResourceType.Water_G &&
+        //           item != ItemResourceType.Gold &&
+        //           item != ItemResourceType.Men)
+        //        {
+        //            var stockpileContent = new List<AbsRichBoxMember>(2);
+        //            stockpileContent.Add(new RbText(city_res.goalBuffer.ToString()));
 
-                    bool reached = city_res.amount >= city_res.goalBuffer;
-                    reachedBuffer |= reached;
-                    SpriteName stockIcon;
-                    if (safeGuard)
-                    {
-                        stockIcon = SpriteName.WarsStockpileAdd_Protected;
-                    }
-                    else if (reached)
-                    {
-                        stockIcon = SpriteName.WarsStockpileStop;
-                    }
-                    else
-                    {
-                        stockIcon = SpriteName.WarsStockpileAdd;
-                    }
-                    var icon = new RbImage(stockIcon);
-                    stockpileContent.Add(icon);
+        //            bool reached = city_res.amount >= city_res.goalBuffer;
+        //            reachedBuffer |= reached;
+        //            SpriteName stockIcon;
+        //            if (safeGuard)
+        //            {
+        //                stockIcon = SpriteName.WarsStockpileAdd_Protected;
+        //            }
+        //            else if (reached)
+        //            {
+        //                stockIcon = SpriteName.WarsStockpileStop;
+        //            }
+        //            else
+        //            {
+        //                stockIcon = SpriteName.WarsStockpileAdd;
+        //            }
+        //            var icon = new RbImage(stockIcon);
+        //            stockpileContent.Add(icon);
 
 
-                    var stockpileButton = new ArtButton( RbButtonStyle.HoverArea, stockpileContent, 
-                        new RbAction(() =>
-                        {
-                            player.mixTabEditType = MixTabEditType.Stockpile;
-                            player.mixTabItem = item;
-                        }, RbSoundType.Default), 
-                        new RbAction(()=> {
-                            var content = new RichBoxContent();
-                            content.text(DssRef.lang.Resource_Tab_Stockpile);
-                            player.hud.tooltip.create(player, content, true);
-                        }));
+        //            var stockpileButton = new ArtButton( RbButtonStyle.HoverArea, stockpileContent, 
+        //                new RbAction(() =>
+        //                {
+        //                    player.mixTabEditType = MixTabEditType.Stockpile;
+        //                    player.mixTabItem = item;
+        //                }, RbSoundType.Default), 
+        //                new RbAction(()=> {
+        //                    var content = new RichBoxContent();
+        //                    content.text(DssRef.lang.Resource_Tab_Stockpile);
+        //                    player.hud.tooltip.create(player, content, true);
+        //                }));
 
-                    content.Add(new RbTab(0.22f));
-                    content.Add(stockpileButton);
-                    content.space();
-                }
-            }
+        //            content.Add(new RbTab(0.22f));
+        //            content.Add(stockpileButton);
+        //            content.space();
+        //        }
+        //    }
 
             
 
-            void work(ItemResourceType item, WorkPriorityType workPriorityType)
-            {
-                LangLib.WorkNameIcon(workPriorityType, out string name, out SpriteName workIcon, out SpriteName typeIcon);
-                var buttonContent = new RichBoxContent();
-                buttonContent.Add(new RbImage(workIcon));
-                var prio = city.workTemplate.GetWorkPriority(workPriorityType);
-                buttonContent.Add(new RbText(prio.value.ToString()));
+        //    void work(ItemResourceType item, WorkPriorityType workPriorityType)
+        //    {
+        //        LangLib.WorkNameIcon(workPriorityType, out string name, out SpriteName workIcon, out SpriteName typeIcon);
+        //        var buttonContent = new RichBoxContent();
+        //        buttonContent.Add(new RbImage(workIcon));
+        //        var prio = city.workTemplate.GetWorkPriority(workPriorityType);
+        //        buttonContent.Add(new RbText(prio.value.ToString()));
 
-                var button = new RbButton(buttonContent, new RbAction(() =>
-                {
-                    player.mixTabEditType = MixTabEditType.WorkPrio;
-                    player.mixWorkType = workPriorityType;
-                    player.mixTabItem = item;
-                }, RbSoundType.Default),
-                new RbAction(()=> 
-                {
-                    var content = new RichBoxContent();
-                    HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
-                    content.text(name);
-                    player.hud.tooltip.create(player, content, true);
-                }));
+        //        var button = new RbButton(buttonContent, new RbAction(() =>
+        //        {
+        //            player.mixTabEditType = MixTabEditType.WorkPrio;
+        //            player.mixWorkType = workPriorityType;
+        //            player.mixTabItem = item;
+        //        }, RbSoundType.Default),
+        //        new RbAction(()=> 
+        //        {
+        //            var content = new RichBoxContent();
+        //            HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
+        //            content.text(name);
+        //            player.hud.tooltip.create(player, content, true);
+        //        }));
 
-                //content.Add(new RichBoxTab(0.5f));
-                content.Add(button);
-                content.space();
-            }
+        //        //content.Add(new RichBoxTab(0.5f));
+        //        content.Add(button);
+        //        content.space();
+        //    }
 
-            void blackMarket(ItemResourceType item)
-            {
-                var buttonContent = new RichBoxContent();
-                buttonContent.Add(new RbText("BM"));
+        //    void blackMarket(ItemResourceType item)
+        //    {
+        //        var buttonContent = new RichBoxContent();
+        //        buttonContent.Add(new RbText("BM"));
 
-                var button = new ArtButton( RbButtonStyle.Primary,buttonContent, new RbAction(() =>
-                {
-                    player.mixTabEditType = MixTabEditType.BlackMarket;
-                    player.mixTabItem = item;
-                }, RbSoundType.Default),
-                new RbAction(() =>
-                {
-                    var content = new RichBoxContent();
-                    HudLib.Label(content, DssRef.lang.Hud_BlackMarket);
+        //        var button = new ArtButton( RbButtonStyle.Primary,buttonContent, new RbAction(() =>
+        //        {
+        //            player.mixTabEditType = MixTabEditType.BlackMarket;
+        //            player.mixTabItem = item;
+        //        }, RbSoundType.Default),
+        //        new RbAction(() =>
+        //        {
+        //            var content = new RichBoxContent();
+        //            HudLib.Label(content, DssRef.lang.Hud_BlackMarket);
                    
-                    player.hud.tooltip.create(player, content, true);
-                }));
-                //button.overrideBgColor = Color.DarkViolet;
-                content.Add(button);
-                content.space();
-            }
+        //            player.hud.tooltip.create(player, content, true);
+        //        }));
+        //        //button.overrideBgColor = Color.DarkViolet;
+        //        content.Add(button);
+        //        content.space();
+        //    }
 
-            void end(ItemResourceType item)
-            {
-                if (player.mixTabEditType != MixTabEditType.None &&
-                   item == player.mixTabItem)
-                {
-                    var city_res = city.GetGroupedResource(item);
+        //    void end(ItemResourceType item)
+        //    {
+        //        if (player.mixTabEditType != MixTabEditType.None &&
+        //           item == player.mixTabItem)
+        //        {
+        //            var city_res = city.GetGroupedResource(item);
 
-                    content.newLine();
-                    switch (player.mixTabEditType)
-                    {
-                        case MixTabEditType.Stockpile:
-                            //stockPileEdit(content, item, city_res);
-                            break;
-                        case MixTabEditType.WorkPrio:
-                            LangLib.WorkNameIcon(player.mixWorkType, out string name, out SpriteName workIcon, out SpriteName typeIcon);
-                            city.workTemplate.GetWorkPriority(player.mixWorkType).toHud(player, content, name, workIcon, typeIcon, player.mixWorkType, player.faction, city, item);
-                            break;
-                        case MixTabEditType.BlackMarket:
-                            BlackMarketResources.ResourceToHud(item, player, content, city);
-                            break;
-                    }
-                }
-            }
-        }
+        //            content.newLine();
+        //            switch (player.mixTabEditType)
+        //            {
+        //                case MixTabEditType.Stockpile:
+        //                    //stockPileEdit(content, item, city_res);
+        //                    break;
+        //                case MixTabEditType.WorkPrio:
+        //                    LangLib.WorkNameIcon(player.mixWorkType, out string name, out SpriteName workIcon, out SpriteName typeIcon);
+        //                    city.workTemplate.GetWorkPriority(player.mixWorkType).toHud(player, content, name, workIcon, typeIcon, player.mixWorkType, player.faction, city);
+        //                    break;
+        //                case MixTabEditType.BlackMarket:
+        //                    BlackMarketResources.ResourceToHud(item, player, content, city);
+        //                    break;
+        //            }
+        //        }
+        //    }
+        //}
       
         void experienceTab(RichBoxContent content)
         {
@@ -1383,102 +1411,97 @@ namespace VikingEngine.DSSWars.Interface
 
                 case TagSubTab.HudPin:
 
-                    {
-                        if (player.resourcesSubTab > ResourcesSubTab.Overview_Armor)
-                        {
-                            player.resourcesSubTab = ResourcesSubTab.Overview_Resources;
-                        }
+                    //{
+                    //    if (player.resourcesSubTab > ResourcesSubTab.Overview_Armor)
+                    //    {
+                    //        player.resourcesSubTab = ResourcesSubTab.Overview_Resources;
+                    //    }
 
-                        for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
-                        {
-                            var tabContent = new RichBoxContent();
-                            //string text = null;
-                            switch (resourcesSubTab)
-                            {
-                                case ResourcesSubTab.Overview_Metals:
-                                    tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
-                                    break;
-                                case ResourcesSubTab.Overview_Weapons:
-                                    tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
-                                    break;
+                    //    for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
+                    //    {
+                    //        var tabContent = new RichBoxContent();
+                            
+                    //        switch (resourcesSubTab)
+                    //        {
+                    //            case ResourcesSubTab.Overview_Metals:
+                    //                tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
+                    //                break;
+                    //            case ResourcesSubTab.Overview_Weapons:
+                    //                tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
+                    //                break;
 
-                                case ResourcesSubTab.Overview_Projectile:
-                                    tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
-                                    break;
+                    //            case ResourcesSubTab.Overview_Projectile:
+                    //                tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
+                    //                break;
 
-                                case ResourcesSubTab.Overview_Armor:
-                                    tabContent.Add(new RbImage(SpriteName.WarsResource_IronArmor));
-                                    break;
+                    //            case ResourcesSubTab.Overview_Armor:
+                    //                tabContent.Add(new RbImage(SpriteName.WarsResource_IronArmor));
+                    //                break;
 
-                                case ResourcesSubTab.Overview_Resources:
-                                    tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
-                                    break;
+                    //            case ResourcesSubTab.Overview_Resources:
+                    //                tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                    //                break;
 
 
-                            }
-                            var subTab = new ArtButton(player.resourcesSubTab == resourcesSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
-                                tabContent,
-                                new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
-                                {
-                                    player.resourcesSubTab = resourcesSubTab;
-                                }, resourcesSubTab, RbSoundType.Tab), new RbTooltip_Text(DssRef.lang.Work_SelectCategory));
-                            //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
-                            content.Add(subTab);
-                        }
-        //                    Overview_Resources,
-        //Overview_Metals,
-        //Overview_Weapons,
-        //Overview_Projectile,
-        //Overview_Armor,
-                        switch (player.resourcesSubTab)
-                        {
-                            case ResourcesSubTab.Overview_Resources:
-                                foreach (var item in City.MovableCityResource_Misc)
-                                {
-                                    resourcePin(item);
-                                }
-                                break;
-                            case ResourcesSubTab.Overview_Metals:
-                                foreach (var item in City.MovableCityResource_Metals)
-                                {
-                                    resourcePin(item);
-                                }
-                                break;
-                            case ResourcesSubTab.Overview_Weapons:
-                                foreach (var item in City.MovableCityResource_WeaponMelee)
-                                {
-                                    resourcePin(item);
-                                }
-                                break;
-                            case ResourcesSubTab.Overview_Projectile:
-                                foreach (var item in City.MovableCityResource_WeaponRanged)
-                                {
-                                    resourcePin(item);
-                                }
-                                break;
-                            case ResourcesSubTab.Overview_Armor:
-                                foreach (var item in City.MovableCityResource_Armor)
-                                {
-                                    resourcePin(item);
-                                }
-                                break;
+                    //        }
+                    //        var subTab = new ArtButton(player.resourcesSubTab == resourcesSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                    //            tabContent,
+                    //            new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                    //            {
+                    //                player.resourcesSubTab = resourcesSubTab;
+                    //            }, resourcesSubTab, RbSoundType.Tab), new RbTooltip_Text(DssRef.lang.Work_SelectCategory));
+                            
+                    //        content.Add(subTab);
+                    //    }
+                    //    switch (player.resourcesSubTab)
+                    //    {
+                    //        case ResourcesSubTab.Overview_Resources:
+                    //            foreach (var item in City.MovableCityResource_Misc)
+                    //            {
+                    //                resourcePin(item);
+                    //            }
+                    //            break;
+                    //        case ResourcesSubTab.Overview_Metals:
+                    //            foreach (var item in City.MovableCityResource_Metals)
+                    //            {
+                    //                resourcePin(item);
+                    //            }
+                    //            break;
+                    //        case ResourcesSubTab.Overview_Weapons:
+                    //            foreach (var item in City.MovableCityResource_WeaponMelee)
+                    //            {
+                    //                resourcePin(item);
+                    //            }
+                    //            break;
+                    //        case ResourcesSubTab.Overview_Projectile:
+                    //            foreach (var item in City.MovableCityResource_WeaponRanged)
+                    //            {
+                    //                resourcePin(item);
+                    //            }
+                    //            break;
+                    //        case ResourcesSubTab.Overview_Armor:
+                    //            foreach (var item in City.MovableCityResource_Armor)
+                    //            {
+                    //                resourcePin(item);
+                    //            }
+                    //            break;
 
-                        }
+                    //    }
 
-                        content.newParagraph();
+                    //    content.newParagraph();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_Canvas_Clear) },
-                            new RbAction(()=> { player.hud.pins.clear(city); })));
+                    //    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_Canvas_Clear) },
+                    //        new RbAction(()=> { player.hud.pins.clear(city); })));
 
-                        void resourcePin(ItemResourceType item)
-                        {
-                            content.newLine();
-                            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
-                            new RbImage(ResourceLib.Icon(item)), new RbSpace(), new RbText(TextLib.LargeFirstLetter(LangLib.Item(item))) },
-                                player.hud.pins.isPinnedProperty)
-                            { propertyTag = new CityHudPinId(city.myIndex, new HudPin(item)) });
-                        }
-                    }
+                    //    void resourcePin(ItemResourceType item)
+                    //    {
+                    //        content.newLine();
+                    //        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                    //        new RbImage(ResourceLib.Icon(item)), new RbSpace(), new RbText(TextLib.LargeFirstLetter(LangLib.Item(item))) },
+                    //            player.hud.pins.isPinnedProperty)
+                    //        { propertyTag = new CityHudPinId(city.myIndex, new HudPin(item)) });
+                    //    }
+                    //}
                     break;
 
             }
@@ -1489,7 +1512,8 @@ namespace VikingEngine.DSSWars.Interface
         void resourceTabToolTip(RichBoxContent content, object tag)
         {
             ResourcesSubTab tab = (ResourcesSubTab)tag;
-            IconName.Tab(tab, out SpriteName categoryIcon, out string category, out SpriteName tabIcon, out string tabName);
+            IconName.Tab(tab.managementType, out SpriteName categoryIcon, out string category); 
+            IconName.Tab(tab.resourceGroup,  out SpriteName tabIcon, out string tabName);
 
             content.text(DssRef.lang.Work_SelectCategory, HudLib.TitleColor_Action);
             content.newParagraph();
@@ -1503,7 +1527,8 @@ namespace VikingEngine.DSSWars.Interface
 
         void resourceTabsInfo(RichBoxContent content, object tag)
         {
-            IconName.Tab((ResourcesSubTab)tag, out SpriteName categoryIcon, out string category, out SpriteName tabIcon, out string tabName);
+            ResourceManagementType tab = (ResourceManagementType)tag;
+            IconName.Tab(tab, out SpriteName categoryIcon, out string category);
 
             content.Add(new RbBeginTitle());
             content.Add(new RbImage(categoryIcon));
@@ -1512,10 +1537,9 @@ namespace VikingEngine.DSSWars.Interface
 
             content.newLine();
 
-            switch ((ResourcesSubTab)tag)
+            switch (tab)
             {
-
-                case ResourcesSubTab.Overview_Armor:
+                case ResourceManagementType.Overview:
                     HudLib.BulletPoint(content);
                     GroupedResource.BufferIconInfo(content, false);
                     bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
@@ -1523,12 +1547,10 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         GroupedResource.BufferIconInfo(content, true);
                     }
-
-                    
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbText(1.ToString()));
-                    content.Add(new RbImage(ResourceLib.Icon(ItemResourceType.Food_G)));
+                    content.Add(new RbImage( SpriteName.WarsResource_Food));
                     content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
                     var arrow = new RbImage(SpriteName.pjNumArrowR);
                     arrow.color = Color.CornflowerBlue;
@@ -1542,13 +1564,11 @@ namespace VikingEngine.DSSWars.Interface
 
                     break;
 
-                case ResourcesSubTab.Work_Mint:
-
+                case ResourceManagementType.Work:
                     content.text( string.Format(DssRef.lang.Work_OrderPrioDescription, WorkTemplate.MaxPrio));
-
                     break;
 
-                case ResourcesSubTab.Stockpile_Armor:
+                case ResourceManagementType.Stockpile:
 
                     HudLib.BulletPoint(content);
                     content.Add(new RbText(DssRef.lang.Resource_StockPile_Info));
@@ -1569,165 +1589,342 @@ namespace VikingEngine.DSSWars.Interface
         {
             if (player.tutorial == null || player.tutorial.DisplayResourseSubTabs())
             {
-                for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab < ResourcesSubTab.Auto; ++resourcesSubTab)
+                for (ResourceManagementType managementType = 0; managementType < ResourceManagementType.Auto; managementType++)
                 {
-                    IconName.Tab(resourcesSubTab, out SpriteName categoryIcon, out string category, out SpriteName tabIcon, out string tabName);
-                    var tabContent = new RichBoxContent();
-                   
-                    //string text = null;
-                    switch (resourcesSubTab)
+                    IconName.Tab(managementType, out SpriteName managementIcon, out string managementName);
+
+                    content.newLine();
+                    content.Add(new ArtButton(RbButtonStyle.HoverArea,
+                        new List<AbsRichBoxMember> { new RbImage(managementIcon) },
+                        null, new RbTooltip_Text(managementName)));
+
+                    for (ResourceGroupType group = 0; group < ResourceGroupType.NUM; group++)
                     {
-                        //case ResourcesSubTab.Overview_Metals:
-                        //case ResourcesSubTab.Stockpile_Metals:
-                        //case ResourcesSubTab.Work_Metals:
-                        //    tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
-                        //    break;
-                        //case ResourcesSubTab.Overview_Weapons:
-                        //case ResourcesSubTab.Stockpile_Weapons:
-                        //case ResourcesSubTab.Work_Weapons:
-                        //    tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
-                        //    break;
-
-                        //case ResourcesSubTab.Overview_Projectile:
-                        //case ResourcesSubTab.Stockpile_Projectile:
-                        //case ResourcesSubTab.Work_Projectile:
-                        //    tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
-                        //    break;
-
-                        //case ResourcesSubTab.Overview_Armor:
-                        //case ResourcesSubTab.Stockpile_Armor:
-                        //case ResourcesSubTab.Work_Armor:
-                        //    tabContent.Add(new RbImage(SpriteName.WarsResource_IronArmor));
-                        //    break;
-
-                        case ResourcesSubTab.Work_Mint:
-                            //tabContent.Add(new RbImage(SpriteName.WarsResource_SilverCoin));
-                            if (city.buildingStructure.CoinMinter_count == 0)
-                            {
-                                //continue;
-                                goto skipTab;
-                            }
-                            break;
-
-                        case ResourcesSubTab.Overview_Resources:
-                            content.Add(new ArtButton(RbButtonStyle.HoverArea,
-                                new List<AbsRichBoxMember> { new RbImage(SpriteName.MenuPixelIconManual) },
-                                null, new RbTooltip_Text(DssRef.lang.Resource_Tab_Overview)));
-                            
-                            //tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
-                            break;
-
-                        case ResourcesSubTab.Stockpile_Resources:
-                            content.Add(new ArtButton(RbButtonStyle.HoverArea,
-                                new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsStockpileAdd) },
-                                null, new RbTooltip_Text(DssRef.lang.Resource_Tab_Stockpile)));
-                            
-                            //tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
-                            break;
-
-                        case ResourcesSubTab.Work_Resources:
-                            content.Add(new ArtButton(RbButtonStyle.HoverArea,
-                                new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHammer) },
-                                null, new RbTooltip_Text(DssRef.lang.MenuTab_Work)));
-                           
-                            //tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
-                            break;
-                    }
-
-                    tabContent.Add(new RbImage(tabIcon));
-
-                    var subTab = new ArtButton(player.resourcesSubTab == resourcesSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
-                        tabContent,
-                        new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                        if (group == ResourceGroupType.Mint)
                         {
-                            player.resourcesSubTab = resourcesSubTab;
-                        }, resourcesSubTab, RbSoundType.Tab), new RbTooltip(resourceTabToolTip, resourcesSubTab)/*new RbTooltip_Text(DssRef.lang.Work_SelectCategory)*/);
-                    //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
-                    content.Add(subTab);
+                            bool includeMint = managementType == ResourceManagementType.Work && city.buildingStructure.CoinMinter_count > 0;
+                            if (!includeMint)
+                            {
+                                continue;
+                            }
+                        }
 
-                skipTab:
-                    switch (resourcesSubTab)
-                    {
-                        case ResourcesSubTab.Overview_Armor:
-                        case ResourcesSubTab.Work_Mint:
-                        case ResourcesSubTab.Stockpile_Armor:
-                            HudLib.InfoButton(content,
-                               new RbTooltip(resourceTabsInfo, resourcesSubTab));
-                            content.newLine();
-                            break;
-                        //case ResourcesSubTab.Overview_Armor:
-                        //    HudLib.InfoButton(content,
-                        //       new RbTooltip((RichBoxContent content, object tag) =>
-                        //       {
-                        //           GroupedResource.BufferIconInfo(content, false);
-                        //           bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
-                        //           if (foodSafeGuard)
-                        //           {
-                        //               GroupedResource.BufferIconInfo(content, true);
-                        //           }
-                                   
-                        //           {
-                        //               content.newLine();
-                        //               content.Add(new RbText(1.ToString()));
-                        //               content.Add(new RbImage(ResourceLib.Icon(ItemResourceType.Food_G)));
-                        //               content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
-                        //               var arrow = new RbImage(SpriteName.pjNumArrowR);
-                        //               arrow.color = Color.CornflowerBlue;
-                        //               content.Add(arrow);
-                        //               content.Add(new RbText(string.Format(DssRef.lang.Hud_EnergyAmount, DssRef.difficulty.FoodEnergySett)));
-                        //           }
-                        //           content.newLine();
-                        //           HudLib.BulletPoint(content);
-                        //           content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
-                        //       }));
-                        //    content.newLine();
-                        //    break;
-
-                        //case ResourcesSubTab.Work_Mint:
-                        //    HudLib.InfoButton(content,
-                        //       new RbTooltip((RichBoxContent content, object tag) =>
-                        //       {
-                        //           HudLib.Description(content, string.Format(DssRef.lang.Work_OrderPrioDescription, WorkTemplate.MaxPrio));
-                        //       }));
-                        //    content.newLine();
-                        //    break;
-
-                        //case ResourcesSubTab.Stockpile_Armor:
-                        //    HudLib.InfoButton(content,
-                        //       new RbTooltip((RichBoxContent content, object tag) =>
-                        //       {
-                        //           HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
-                        //           GroupedResource.BufferIconInfo(content, false);
-                        //           content.newLine();
-                        //           HudLib.BulletPoint(content);
-                        //           content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
-                        //       }));
-
-                        //    break;
+                        IconName.Tab(group, out SpriteName groupIcon, out string groupName);
+                        var tab = new ResourcesSubTab(managementType, group);
+                        content.Add(new ArtButton(player.resourcesSubTab.EqualTab(tab)? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                            new List<AbsRichBoxMember> { new RbImage(groupIcon) },
+                            new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                            {
+                                player.resourcesSubTab = resourcesSubTab;
+                            }, tab, RbSoundType.Option),
+                            new RbTooltip(resourceTabToolTip, tab)));
+                        //content.space();
                     }
-                    
+
+                    HudLib.InfoButton(content, new RbTooltip(resourceTabsInfo, managementType));
+
+                    //Info buttons
+                    //switch (managementType)
+                    //{
+                    //    case ResourceManagementType.Overview:
+                    //        HudLib.InfoButton(content,
+                    //           new RbTooltip((RichBoxContent content, object tag) =>
+                    //           {
+                    //               GroupedResource.BufferIconInfo(content, false);
+                    //               bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
+                    //               if (foodSafeGuard)
+                    //               {
+                    //                   GroupedResource.BufferIconInfo(content, true);
+                    //               }
+                    //               //Minting.ConvertGoldOre.toMenu(content, city, false, true, false, false);
+                    //               {
+                    //                   content.newLine();
+                    //                   content.Add(new RbText(1.ToString()));
+                    //                   content.Add(new RbImage(SpriteName.WarsResource_Food));
+                    //                   content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
+                    //                   var arrow = new RbImage(SpriteName.pjNumArrowR);
+                    //                   arrow.color = Color.CornflowerBlue;
+                    //                   content.Add(arrow);
+                    //                   content.Add(new RbText(string.Format(DssRef.lang.Hud_EnergyAmount, DssRef.difficulty.FoodEnergySett)));
+                    //               }
+                    //               content.newLine();
+                    //               HudLib.BulletPoint(content);
+                    //               content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
+                    //           }));
+                    //        content.newLine();
+                    //        break;
+
+                    //    case ResourceManagementType.Work:
+                    //    case ResourcesSubTab.Stockpile_Armor:
+                    //        HudLib.InfoButton(content,
+                    //           new RbTooltip(resourceTabsInfo, resourcesSubTab));
+                    //        content.newLine();
+                    //        break;
+                    //case ResourcesSubTab.Overview_Armor:
+                    //    HudLib.InfoButton(content,
+                    //       new RbTooltip((RichBoxContent content, object tag) =>
+                    //       {
+                    //           GroupedResource.BufferIconInfo(content, false);
+                    //           bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
+                    //           if (foodSafeGuard)
+                    //           {
+                    //               GroupedResource.BufferIconInfo(content, true);
+                    //           }
+
+                    //           {
+                    //               content.newLine();
+                    //               content.Add(new RbText(1.ToString()));
+                    //               content.Add(new RbImage(ResourceLib.Icon(ItemResourceType.Food_G)));
+                    //               content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
+                    //               var arrow = new RbImage(SpriteName.pjNumArrowR);
+                    //               arrow.color = Color.CornflowerBlue;
+                    //               content.Add(arrow);
+                    //               content.Add(new RbText(string.Format(DssRef.lang.Hud_EnergyAmount, DssRef.difficulty.FoodEnergySett)));
+                    //           }
+                    //           content.newLine();
+                    //           HudLib.BulletPoint(content);
+                    //           content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
+                    //       }));
+                    //    content.newLine();
+                    //    break;
+
+                    //case ResourcesSubTab.Work_Mint:
+                    //    HudLib.InfoButton(content,
+                    //       new RbTooltip((RichBoxContent content, object tag) =>
+                    //       {
+                    //           HudLib.Description(content, string.Format(DssRef.lang.Work_OrderPrioDescription, WorkTemplate.MaxPrio));
+                    //       }));
+                    //    content.newLine();
+                    //    break;
+
+                    //case ResourcesSubTab.Stockpile_Armor:
+                    //    HudLib.InfoButton(content,
+                    //       new RbTooltip((RichBoxContent content, object tag) =>
+                    //       {
+                    //           HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
+                    //           GroupedResource.BufferIconInfo(content, false);
+                    //           content.newLine();
+                    //           HudLib.BulletPoint(content);
+                    //           content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
+                    //       }));
+
+                    //    break;
                 }
-                content.newParagraph();
+            }
+        //}
+
+
+                //OLD
+
+            //    for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab < ResourcesSubTab.Auto; ++resourcesSubTab)
+            //    {
+            //        IconName.Tab(resourcesSubTab, out SpriteName categoryIcon, out string category, out SpriteName tabIcon, out string tabName);
+            //        var tabContent = new RichBoxContent();
+                   
+            //        //string text = null;
+            //        switch (resourcesSubTab)
+            //        {
+            //            //case ResourcesSubTab.Overview_Metals:
+            //            //case ResourcesSubTab.Stockpile_Metals:
+            //            //case ResourcesSubTab.Work_Metals:
+            //            //    tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
+            //            //    break;
+            //            //case ResourcesSubTab.Overview_Weapons:
+            //            //case ResourcesSubTab.Stockpile_Weapons:
+            //            //case ResourcesSubTab.Work_Weapons:
+            //            //    tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
+            //            //    break;
+
+            //            //case ResourcesSubTab.Overview_Projectile:
+            //            //case ResourcesSubTab.Stockpile_Projectile:
+            //            //case ResourcesSubTab.Work_Projectile:
+            //            //    tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
+            //            //    break;
+
+            //            //case ResourcesSubTab.Overview_Armor:
+            //            //case ResourcesSubTab.Stockpile_Armor:
+            //            //case ResourcesSubTab.Work_Armor:
+            //            //    tabContent.Add(new RbImage(SpriteName.WarsResource_IronArmor));
+            //            //    break;
+
+            //            case ResourcesSubTab.Work_Mint:
+            //                //tabContent.Add(new RbImage(SpriteName.WarsResource_SilverCoin));
+            //                if (city.buildingStructure.CoinMinter_count == 0)
+            //                {
+            //                    //continue;
+            //                    goto skipTab;
+            //                }
+            //                break;
+
+            //            case ResourcesSubTab.Overview_Resources:
+            //                content.Add(new ArtButton(RbButtonStyle.HoverArea,
+            //                    new List<AbsRichBoxMember> { new RbImage(SpriteName.MenuPixelIconManual) },
+            //                    null, new RbTooltip_Text(DssRef.lang.Resource_Tab_Overview)));
+                            
+            //                //tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+            //                break;
+
+            //            case ResourcesSubTab.Stockpile_Resources:
+            //                content.Add(new ArtButton(RbButtonStyle.HoverArea,
+            //                    new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsStockpileAdd) },
+            //                    null, new RbTooltip_Text(DssRef.lang.Resource_Tab_Stockpile)));
+                            
+            //                //tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+            //                break;
+
+            //            case ResourcesSubTab.Work_Resources:
+            //                content.Add(new ArtButton(RbButtonStyle.HoverArea,
+            //                    new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHammer) },
+            //                    null, new RbTooltip_Text(DssRef.lang.MenuTab_Work)));
+                           
+            //                //tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+            //                break;
+            //        }
+
+            //        tabContent.Add(new RbImage(tabIcon));
+
+            //        var subTab = new ArtButton(player.resourcesSubTab == resourcesSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+            //            tabContent,
+            //            new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+            //            {
+            //                player.resourcesSubTab = resourcesSubTab;
+            //            }, resourcesSubTab, RbSoundType.Tab), new RbTooltip(resourceTabToolTip, resourcesSubTab)/*new RbTooltip_Text(DssRef.lang.Work_SelectCategory)*/);
+            //        //subTab.setGroupSelectionColor(HudLib.RbSettings, player.resourcesSubTab == resourcesSubTab);
+            //        content.Add(subTab);
+
+            //    skipTab:
+            //        switch (resourcesSubTab)
+            //        {
+            //            case ResourcesSubTab.Overview_Armor:
+            //                HudLib.InfoButton(content,
+            //                   new RbTooltip((RichBoxContent content, object tag) =>
+            //                   {
+            //                       GroupedResource.BufferIconInfo(content, false);
+            //                       bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
+            //                       if (foodSafeGuard)
+            //                       {
+            //                           GroupedResource.BufferIconInfo(content, true);
+            //                       }
+            //                       //Minting.ConvertGoldOre.toMenu(content, city, false, true, false, false);
+            //                       {
+            //                           content.newLine();
+            //                           content.Add(new RbText(1.ToString()));
+            //                           content.Add(new RbImage(ResourceLib.Icon(ItemResourceType.Food_G)));
+            //                           content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
+            //                           var arrow = new RbImage(SpriteName.pjNumArrowR);
+            //                           arrow.color = Color.CornflowerBlue;
+            //                           content.Add(arrow);
+            //                           content.Add(new RbText(string.Format(DssRef.lang.Hud_EnergyAmount, DssRef.difficulty.FoodEnergySett)));
+            //                       }
+            //                       content.newLine();
+            //                       HudLib.BulletPoint(content);
+            //                       content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
+            //                   }));
+            //                content.newLine();
+            //                break;
+
+            //            case ResourcesSubTab.Work_Mint:
+            //                HudLib.InfoButton(content,
+            //                   new RbTooltip((RichBoxContent content, object tag) =>
+            //                   {
+            //                       HudLib.Description(content, string.Format(DssRef.lang.Work_OrderPrioDescription, WorkTemplate.MaxPrio));
+            //                   }));
+            //                content.newLine();
+            //                break;
+
+            //            case ResourcesSubTab.Stockpile_Armor:
+            //                HudLib.InfoButton(content,
+            //                   new RbTooltip((RichBoxContent content, object tag) =>
+            //                   {
+            //                       HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
+            //                       GroupedResource.BufferIconInfo(content, false);
+            //                       content.newLine();
+            //                       HudLib.BulletPoint(content);
+            //                       content.Add(new RbText(DssRef.lang.Work_BadValueDescription, HudLib.InfoYellow_Light));
+            //                   }));
+
+            //                break;
+            //        }
+                    
+            //    }
+            //    content.newParagraph();
+            //}
+
+            //bool reachedBuffer = false;
+
+            switch (player.resourcesSubTab.managementType)
+            {
+                case ResourceManagementType.Overview:
+                    resourceOverview(content, player.resourcesSubTab.resourceGroup); 
+                    break;                
+
+                case ResourceManagementType.Work:
+                    content.h2(DssRef.lang.Work_OrderPrioTitle, HudLib.TitleColor_Head);
+                    city.workTemplate.toHud(player, content, player.resourcesSubTab.resourceGroup, city.GetFaction(), city);
+                    break;
+
+                case ResourceManagementType.Stockpile:
+                    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
+                    new StockPileMenu(content, city, null).toHud(player.resourcesSubTab.resourceGroup);
+                    break;
             }
 
+            //void stockpile(ItemResourceType item)
+            //{   
+            //    GroupedResource res = city.GetGroupedResource(item);
+
+            //    content.newLine();
+
+            //    content.Add(new ArtButton(RbButtonStyle.HoverArea, 
+            //        new List<AbsRichBoxMember>{
+            //            new RbImage(res.amount >= res.goalBuffer ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd),
+            //            new RbImage(ResourceLib.Icon(item))},null,
+            //            //new RbTooltip((RichBoxContent content, object tag) =>
+            //            //{
+            //            //    bool buffer = false;
+            //            //    city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);                           
+            //            //}
+            //            new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(city, item))
+            //            ));
+                
+            //    content.space();
+               
+            //    //stockPileEdit(content, item, res);
+            //}
+        }
+
+        void resourceOverview(RichBoxContent content, ResourceGroupType resourceGroup)
+        {
             bool reachedBuffer = false;
 
-            switch (player.resourcesSubTab)
+            switch (resourceGroup)
             {
-                case ResourcesSubTab.Overview_Resources:
-                    
+                case ResourceGroupType.Resources:
+
                     city.waterToHud(content, true);
 
                     bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
 
-                    city.GetGroupedResource(CityResoureIndex.wood).toMenu(content, ItemResourceType.Wood_Group, woodSafeGuard, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);//New solution
-                    city.GetGroupedResource(CityResoureIndex.stone).toMenu(content, ItemResourceType.Stone_G, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);// Replace "res_stone", and continue with the rest
-                    city.GetGroupedResource(CityResoureIndex.rawFood).toMenu(content, ItemResourceType.RawFood_Group, rawFoodSafeGuard, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    city.GetGroupedResource(CityResoureIndex.skinLinnen).toMenu(content, ItemResourceType.SkinLinen_Group, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
+                    city.GetGroupedResource(CityResoureIndex.wood).toMenu(content, ItemResourceType.Wood_Group, woodSafeGuard, ref reachedBuffer, player, city);//New solution
+                    
+                    city.GetGroupedResource(CityResoureIndex.fuel).toMenu(content, ItemResourceType.Fuel_G, fuelSafeGuard, ref reachedBuffer, player, city);
+                    int totalmines = 0;
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_coal, ItemResourceType.Coal, Map.SubTile.Empty, ref totalmines);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Fuel1, null, true);
+                    content.space();
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Charcoal);
+
+                    city.GetGroupedResource(CityResoureIndex.stone).toMenu(content, ItemResourceType.Stone_G, false, ref reachedBuffer, player, city);// Replace "res_stone", and continue with the rest
+                    city.GetGroupedResource(CityResoureIndex.Clay).toMenu(content, ItemResourceType.Clay, false, ref reachedBuffer, player, city);// Replace "res_stone", and continue with the rest
+                    city.GetGroupedResource(CityResoureIndex.Brick).toMenu(content, ItemResourceType.Brick, false, ref reachedBuffer, player, city);// Replace "res_stone", and continue with the rest
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.ClayBrick);
+
+                    city.GetGroupedResource(CityResoureIndex.skinLinnen).toMenu(content, ItemResourceType.SkinLinen_Group, false, ref reachedBuffer, player, city);
+                    city.GetGroupedResource(CityResoureIndex.rawFood).toMenu(content, ItemResourceType.RawFood_Group, rawFoodSafeGuard, ref reachedBuffer, player, city);
+                    city.GetGroupedResource(CityResoureIndex.Salt).toMenu(content, ItemResourceType.Salt, false, ref reachedBuffer, player, city);
                     content.newParagraph();
 
-
-                    city.GetGroupedResource(CityResoureIndex.food).toMenu(content, ItemResourceType.Food_G, foodSafeGuard, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
+                    city.GetGroupedResource(CityResoureIndex.food).toMenu(content, ItemResourceType.Food_G, foodSafeGuard, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Food1, CraftResourceLib.Food2);
                     content.space();
 
@@ -1740,402 +1937,342 @@ namespace VikingEngine.DSSWars.Interface
                     }),
                     new RbTooltip((RichBoxContent content, object tag) =>
                     {
-
                         content.text(string.Format(DssRef.lang.Resource_FoodSafeGuard_Description, DssConst.WorkSafeGuardAmount)).overrideColor = HudLib.InfoYellow_Light;
                         content.text(city.res_food_safeguard ? DssRef.lang.Hud_On : DssRef.lang.Hud_Off);
-
                     })));
 
-                    city.GetGroupedResource(CityResoureIndex.beer).toMenu(content, ItemResourceType.Beer, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
+                    city.GetGroupedResource(CityResoureIndex.ConservedFood).toMenu(content, ItemResourceType.ConservedFood, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.ConservedFood1, CraftResourceLib.ConservedFood2);
+
+                    city.GetGroupedResource(CityResoureIndex.beer).toMenu(content, ItemResourceType.Beer, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Beer);
 
-                    city.GetGroupedResource(CityResoureIndex.coolingfluid).toMenu(content, ItemResourceType.CoolingFluid, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
+                    city.GetGroupedResource(CityResoureIndex.coolingfluid).toMenu(content, ItemResourceType.CoolingFluid, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.CoolingFluid);
                     content.newParagraph();
 
-                    city.GetGroupedResource(CityResoureIndex.fuel).toMenu(content, ItemResourceType.Fuel_G, fuelSafeGuard, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    int totalmines = 0;
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_coal, ItemResourceType.Coal, Map.SubTile.Empty, ref totalmines);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Fuel1, null, true);
-                    content.space();
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Charcoal);
+                    
 
 
-                    city.GetGroupedResource(CityResoureIndex.Palisade).toMenu(content, ItemResourceType.Palisade, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
+                    city.GetGroupedResource(CityResoureIndex.Container).toMenu(content, ItemResourceType.Container, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Container_wood, CraftResourceLib.Container_clay);
+
+                    city.GetGroupedResource(CityResoureIndex.Palisade).toMenu(content, ItemResourceType.Palisade, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Palisade);
 
-                    city.GetGroupedResource(CityResoureIndex.Toolkit).toMenu(content, ItemResourceType.Toolkit, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
+                    city.GetGroupedResource(CityResoureIndex.Toolkit).toMenu(content, ItemResourceType.Toolkit, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Toolkit);
 
-                    city.GetGroupedResource(CityResoureIndex.Wagon2Wheel).toMenu(content, ItemResourceType.Wagon2Wheel, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.WagonLight);
+                    city.GetGroupedResource(CityResoureIndex.Wagon2Wheel).toMenu(content, ItemResourceType.Wagon2Wheel, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Wagon2Wheel);
 
-                    city.GetGroupedResource(CityResoureIndex.Wagon4Wheel).toMenu(content, ItemResourceType.Wagon4Wheel, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.WagonHeavy);
+                    city.GetGroupedResource(CityResoureIndex.Wagon4Wheel).toMenu(content, ItemResourceType.Wagon4Wheel, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Wagon4Wheel);
 
-                    city.GetGroupedResource(CityResoureIndex.BlackPowder).toMenu(content, ItemResourceType.BlackPowder, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
+                    city.GetGroupedResource(CityResoureIndex.WagonClosed).toMenu(content, ItemResourceType.WagonClosed, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.WagonClosed);
+
+                    city.GetGroupedResource(CityResoureIndex.WagonIron).toMenu(content, ItemResourceType.WagonIron, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.WagonIron);
+
+                    city.GetGroupedResource(CityResoureIndex.WagonSteel).toMenu(content, ItemResourceType.WagonSteel, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.WagonSteel);
+
+                    city.GetGroupedResource(CityResoureIndex.BlackPowder).toMenu(content, ItemResourceType.BlackPowder, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.BlackPowder);
 
-                    city.GetGroupedResource(CityResoureIndex.GunPowder).toMenu(content, ItemResourceType.GunPowder, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
+                    city.GetGroupedResource(CityResoureIndex.GunPowder).toMenu(content, ItemResourceType.GunPowder, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.GunPowder);
 
-                    city.GetGroupedResource(CityResoureIndex.LedBullet).toMenu(content, ItemResourceType.LedBullet, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Resources);
+                    city.GetGroupedResource(CityResoureIndex.LedBullet).toMenu(content, ItemResourceType.LedBullet, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.LedBullets);
 
-                    godPowerSetAllResources(content, City.MovableCityResource_Misc);
+                    godPowerSetAllResources(content, ResourceLib.MovableCityResource_Misc);
 
                     break;
 
-                case ResourcesSubTab.Overview_Metals:
+                case ResourceGroupType.Metals:
 
                     int totalMines = 0;
 
-                    city.GetGroupedResource(CityResoureIndex.ironore).toMenu(content, ItemResourceType.IronOre_G, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
-                    city.terrainStructure.mine(player,content, city.terrainStructure.mineCount_bogIron, ItemResourceType.BogIron, Map.SubTile.Empty, ref totalMines);
-                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_iron, ItemResourceType.Iron_G, Map.SubTile.Empty,ref totalMines);
+                    city.GetGroupedResource(CityResoureIndex.ironore).toMenu(content, ItemResourceType.IronOre_G, false, ref reachedBuffer, player, city);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_bogIron, ItemResourceType.BogIron, Map.SubTile.Empty, ref totalMines);
+                    city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_iron, ItemResourceType.Iron_G, Map.SubTile.Empty, ref totalMines);
 
-                    city.GetGroupedResource(CityResoureIndex.TinOre).toMenu(content, ItemResourceType.TinOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.TinOre).toMenu(content, ItemResourceType.TinOre, false, ref reachedBuffer, player, city);
                     city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_tin, ItemResourceType.Tin, Map.SubTile.Empty, ref totalMines);
 
-                    city.GetGroupedResource(CityResoureIndex.CopperOre).toMenu(content, ItemResourceType.CopperOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals); 
+                    city.GetGroupedResource(CityResoureIndex.CopperOre).toMenu(content, ItemResourceType.CopperOre, false, ref reachedBuffer, player, city);
                     city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_copper, ItemResourceType.Copper, Map.SubTile.Empty, ref totalMines);
 
-                    city.GetGroupedResource(CityResoureIndex.LeadOre).toMenu(content, ItemResourceType.LeadOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.LeadOre).toMenu(content, ItemResourceType.LeadOre, false, ref reachedBuffer, player, city);
                     city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_lead, ItemResourceType.Lead, Map.SubTile.Empty, ref totalMines);
 
-                    city.GetGroupedResource(CityResoureIndex.SilverOre).toMenu(content, ItemResourceType.SilverOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.SilverOre).toMenu(content, ItemResourceType.SilverOre, false, ref reachedBuffer, player, city);
                     city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_silver, ItemResourceType.Silver, Map.SubTile.Empty, ref totalMines);
 
-                    city.GetGroupedResource(CityResoureIndex.GoldOre).toMenu(content, ItemResourceType.GoldOre, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.GoldOre).toMenu(content, ItemResourceType.GoldOre, false, ref reachedBuffer, player, city);
                     city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_gold, ItemResourceType.Gold, Map.SubTile.Empty, ref totalMines);
                     HudLib.blueprintButton(city, player, content, Minting.ConvertGoldOre);
 
                     content.newParagraph();
 
 
-                    city.GetGroupedResource(CityResoureIndex.iron).toMenu(content, ItemResourceType.Iron_G, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.iron).toMenu(content, ItemResourceType.Iron_G, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
 
-                    city.GetGroupedResource(CityResoureIndex.Tin).toMenu(content, ItemResourceType.Tin, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.Tin).toMenu(content, ItemResourceType.Tin, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Tin);
 
-                    city.GetGroupedResource(CityResoureIndex.Copper).toMenu(content, ItemResourceType.Copper, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.Copper).toMenu(content, ItemResourceType.Copper, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
 
-                    city.GetGroupedResource(CityResoureIndex.Lead).toMenu(content, ItemResourceType.Lead, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.Lead).toMenu(content, ItemResourceType.Lead, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Lead);
 
-                    city.GetGroupedResource(CityResoureIndex.Silver).toMenu(content, ItemResourceType.Silver, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.Silver).toMenu(content, ItemResourceType.Silver, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
 
-                    city.GetGroupedResource(CityResoureIndex.RawMithril).toMenu(content, ItemResourceType.RawMithril, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.RawMithril).toMenu(content, ItemResourceType.RawMithril, false, ref reachedBuffer, player, city);
                     city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_mithril, ItemResourceType.Mithril, Map.SubTile.Empty, ref totalMines);
 
-                    city.GetGroupedResource(CityResoureIndex.Sulfur).toMenu(content, ItemResourceType.Sulfur, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.Sulfur).toMenu(content, ItemResourceType.Sulfur, false, ref reachedBuffer, player, city);
                     city.terrainStructure.mine(player, content, city.terrainStructure.mineCount_sulfur, ItemResourceType.Sulfur, Map.SubTile.Empty, ref totalMines);
                     content.newParagraph();
 
 
-                    city.GetGroupedResource(CityResoureIndex.Bronze).toMenu(content, ItemResourceType.Bronze, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.Bronze).toMenu(content, ItemResourceType.Bronze, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Bronze);
 
-                    city.GetGroupedResource(CityResoureIndex.CastIron).toMenu(content, ItemResourceType.CastIron, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.CastIron).toMenu(content, ItemResourceType.CastIron, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.CastIron);
 
-                    city.GetGroupedResource(CityResoureIndex.BloomeryIron).toMenu(content, ItemResourceType.BloomeryIron, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.BloomeryIron).toMenu(content, ItemResourceType.BloomeryIron, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.BloomeryIron);
-                    
-                    city.GetGroupedResource(CityResoureIndex.Steel).toMenu(content, ItemResourceType.Steel, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+
+                    city.GetGroupedResource(CityResoureIndex.Steel).toMenu(content, ItemResourceType.Steel, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling);
 
-                    city.GetGroupedResource(CityResoureIndex.Mithril).toMenu(content, ItemResourceType.Mithril, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Metals);
+                    city.GetGroupedResource(CityResoureIndex.Mithril).toMenu(content, ItemResourceType.Mithril, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Mithril);
 
 
-                    godPowerSetAllResources(content, City.MovableCityResource_Metals);
+                    godPowerSetAllResources(content, ResourceLib.MovableCityResource_Metals);
                     break;
 
-                case ResourcesSubTab.Overview_Weapons:
+                case ResourceGroupType.Weapons:
 
-                    city.GetGroupedResource(CityResoureIndex.sharpstick).toMenu(content, ItemResourceType.SharpStick, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
+                    city.GetGroupedResource(CityResoureIndex.sharpstick).toMenu(content, ItemResourceType.SharpStick, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.SharpStick);
 
-                    city.GetGroupedResource(CityResoureIndex.BronzeSword).toMenu(content, ItemResourceType.BronzeSword, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
+                    city.GetGroupedResource(CityResoureIndex.BronzeSword).toMenu(content, ItemResourceType.BronzeSword, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.BronzeSword);
 
-                    city.GetGroupedResource(CityResoureIndex.shortsword).toMenu(content, ItemResourceType.ShortSword, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
+                    city.GetGroupedResource(CityResoureIndex.shortsword).toMenu(content, ItemResourceType.ShortSword, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.ShortSword);
 
-                    city.GetGroupedResource(CityResoureIndex.Sword).toMenu(content, ItemResourceType.Sword, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
+                    city.GetGroupedResource(CityResoureIndex.Sword).toMenu(content, ItemResourceType.Sword, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Sword);
 
-                    city.GetGroupedResource(CityResoureIndex.LongSword).toMenu(content, ItemResourceType.LongSword, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
+                    city.GetGroupedResource(CityResoureIndex.LongSword).toMenu(content, ItemResourceType.LongSword, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.LongSword);
-                    
-                    city.GetGroupedResource(CityResoureIndex.HandSpear).toMenu(content, ItemResourceType.HandSpear, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
-                    
-                    content.newParagraph();
 
-                    city.GetGroupedResource(CityResoureIndex.Warhammer).toMenu(content, ItemResourceType.Warhammer, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
+                    city.GetGroupedResource(CityResoureIndex.HandSpear).toMenu(content, ItemResourceType.HandSpear, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
+
+                    city.GetGroupedResource(CityResoureIndex.Warhammer).toMenu(content, ItemResourceType.Warhammer, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
 
-                    city.GetGroupedResource(CityResoureIndex.twohandsword).toMenu(content, ItemResourceType.TwoHandSword, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
+                    city.GetGroupedResource(CityResoureIndex.twohandsword).toMenu(content, ItemResourceType.TwoHandSword, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.TwoHandSword);
 
-                    city.GetGroupedResource(CityResoureIndex.knightslance).toMenu(content, ItemResourceType.KnightsLance, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.KnightsLance);
-
-                    city.GetGroupedResource(CityResoureIndex.MithrilSword).toMenu(content, ItemResourceType.MithrilSword, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Weapons);
+                    city.GetGroupedResource(CityResoureIndex.MithrilSword).toMenu(content, ItemResourceType.MithrilSword, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.MithrilSword);
 
+                    content.newParagraph();
 
-                    godPowerSetAllResources(content, City.MovableCityResource_WeaponMelee);
+                    city.GetGroupedResource(CityResoureIndex.BucklerShield).toMenu(content, ItemResourceType.BucklerShield, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.BucklerShield);
+
+                    city.GetGroupedResource(CityResoureIndex.RoundShield).toMenu(content, ItemResourceType.RoundShield, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.RoundShield);
+
+                    city.GetGroupedResource(CityResoureIndex.HeaterShield).toMenu(content, ItemResourceType.HeaterShield, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.HeaterShield);
+
+                    city.GetGroupedResource(CityResoureIndex.TowerShield).toMenu(content, ItemResourceType.TowerShield, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.TowerShield);
+
+                    godPowerSetAllResources(content, ResourceLib.MovableCityResource_WeaponMelee);
 
                     break;
 
-                case ResourcesSubTab.Overview_Projectile:
+                case ResourceGroupType.Projectile:
 
-                    city.GetGroupedResource(CityResoureIndex.SlingShot).toMenu(content, ItemResourceType.SlingShot, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.SlingShot).toMenu(content, ItemResourceType.SlingShot, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Slingshot);
 
-                    city.GetGroupedResource(CityResoureIndex.ThrowingSpear).toMenu(content, ItemResourceType.ThrowingSpear, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.ThrowingSpear).toMenu(content, ItemResourceType.ThrowingSpear, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.ThrowingSpear1, CraftResourceLib.ThrowingSpear2);
 
-                    city.GetGroupedResource(CityResoureIndex.bow).toMenu(content, ItemResourceType.Bow, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.bow).toMenu(content, ItemResourceType.Bow, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Bow);
 
-                    city.GetGroupedResource(CityResoureIndex.longbow).toMenu(content, ItemResourceType.LongBow, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.longbow).toMenu(content, ItemResourceType.LongBow, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.LongBow);
 
-                    city.GetGroupedResource(CityResoureIndex.crossbow).toMenu(content, ItemResourceType.Crossbow, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.crossbow).toMenu(content, ItemResourceType.Crossbow, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.CrossBow);
 
-                    city.GetGroupedResource(CityResoureIndex.MithrilBow).toMenu(content, ItemResourceType.MithrilBow, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.MithrilBow).toMenu(content, ItemResourceType.MithrilBow, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.MithrilBow);
 
 
-                    city.GetGroupedResource(CityResoureIndex.HandCannon).toMenu(content, ItemResourceType.HandCannon, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.HandCannon).toMenu(content, ItemResourceType.HandCannon, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.BronzeHandCannon);
 
-                    city.GetGroupedResource(CityResoureIndex.HandCulvertin).toMenu(content, ItemResourceType.HandCulverin, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.HandCulvertin).toMenu(content, ItemResourceType.HandCulverin, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.BronzeHandCulverin);
 
-                    city.GetGroupedResource(CityResoureIndex.Rifle).toMenu(content, ItemResourceType.Rifle, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.Rifle).toMenu(content, ItemResourceType.Rifle, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Rifle);
 
-                    city.GetGroupedResource(CityResoureIndex.Blunderbuss).toMenu(content, ItemResourceType.Blunderbuss, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Blunderbus);
+                    city.GetGroupedResource(CityResoureIndex.Blunderbuss).toMenu(content, ItemResourceType.Blunderbuss, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.Blunderbuss);
                     content.newParagraph();
 
-                    city.GetGroupedResource(CityResoureIndex.ballista).toMenu(content, ItemResourceType.Ballista, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.ballista).toMenu(content, ItemResourceType.Ballista, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Ballista_Iron, CraftResourceLib.Ballista_Bronze);
 
-                    city.GetGroupedResource(CityResoureIndex.Manuballista).toMenu(content, ItemResourceType.Manuballista, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.Manuballista).toMenu(content, ItemResourceType.Manuballista, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.ManuBallista);
 
-                    city.GetGroupedResource(CityResoureIndex.Catapult).toMenu(content, ItemResourceType.Catapult, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.Catapult).toMenu(content, ItemResourceType.Catapult, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Catapult);
 
-                    city.GetGroupedResource(CityResoureIndex.SiegeCannonBronze).toMenu(content, ItemResourceType.SiegeCannonBronze, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.SiegeCannonBronze).toMenu(content, ItemResourceType.SiegeCannonBronze, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.SiegeCannonBronze);
 
-                    city.GetGroupedResource(CityResoureIndex.ManCannonBronze).toMenu(content, ItemResourceType.ManCannonBronze, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.ManCannonBronze).toMenu(content, ItemResourceType.ManCannonBronze, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.ManCannonBronze);
 
-                    city.GetGroupedResource(CityResoureIndex.SiegeCannonIron).toMenu(content, ItemResourceType.SiegeCannonIron, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.SiegeCannonIron).toMenu(content, ItemResourceType.SiegeCannonIron, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.SiegeCannonIron);
 
-                    city.GetGroupedResource(CityResoureIndex.ManCannonIron).toMenu(content, ItemResourceType.ManCannonIron, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Projectile);
+                    city.GetGroupedResource(CityResoureIndex.ManCannonIron).toMenu(content, ItemResourceType.ManCannonIron, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.ManCannonIron);
 
 
-                    godPowerSetAllResources(content, City.MovableCityResource_WeaponRanged);
+                    godPowerSetAllResources(content, ResourceLib.MovableCityResource_WeaponRanged);
 
                     break;
 
-                case ResourcesSubTab.Overview_Armor:
+                case ResourceGroupType.Armor:
 
-                    city.GetGroupedResource(CityResoureIndex.paddedArmor).toMenu(content, ItemResourceType.PaddedArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
+                    city.GetGroupedResource(CityResoureIndex.paddedArmor).toMenu(content, ItemResourceType.PaddedArmor, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.PaddedArmor);
 
-                    city.GetGroupedResource(CityResoureIndex.HeavyPaddedArmor).toMenu(content, ItemResourceType.HeavyPaddedArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
+                    city.GetGroupedResource(CityResoureIndex.HeavyPaddedArmor).toMenu(content, ItemResourceType.HeavyPaddedArmor, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.HeavyPaddedArmor);
-                    
-                    city.GetGroupedResource(CityResoureIndex.BronzeArmor).toMenu(content, ItemResourceType.BronzeArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
+
+                    city.GetGroupedResource(CityResoureIndex.BronzeArmor).toMenu(content, ItemResourceType.BronzeArmor, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.BronzeArmor);
 
-                    city.GetGroupedResource(CityResoureIndex.mailArmor).toMenu(content, ItemResourceType.IronArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
+                    city.GetGroupedResource(CityResoureIndex.mailArmor).toMenu(content, ItemResourceType.IronArmor, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.MailArmor);
 
-                    city.GetGroupedResource(CityResoureIndex.heavyMailArmor).toMenu(content, ItemResourceType.HeavyIronArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
+                    city.GetGroupedResource(CityResoureIndex.heavyMailArmor).toMenu(content, ItemResourceType.HeavyIronArmor, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.HeavyMailArmor);
 
-                    city.GetGroupedResource(CityResoureIndex.LightPlateArmor).toMenu(content, ItemResourceType.LightPlateArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
+                    city.GetGroupedResource(CityResoureIndex.LightPlateArmor).toMenu(content, ItemResourceType.LightPlateArmor, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.PlateArmor);
 
-                    city.GetGroupedResource(CityResoureIndex.FullPlateArmor).toMenu(content, ItemResourceType.FullPlateArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
+                    city.GetGroupedResource(CityResoureIndex.FullPlateArmor).toMenu(content, ItemResourceType.FullPlateArmor, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.FullPlateArmor);
 
-                    city.GetGroupedResource(CityResoureIndex.MithrilArmor).toMenu(content, ItemResourceType.MithrilArmor, false, ref reachedBuffer, player, city, ResourcesSubTab.Stockpile_Armor);
+                    city.GetGroupedResource(CityResoureIndex.MithrilArmor).toMenu(content, ItemResourceType.MithrilArmor, false, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.MithrilArmor);
 
+                    content.newParagraph();
 
-                    godPowerSetAllResources(content, City.MovableCityResource_Armor);
+                    // Mount Padded Armor
+                    city.GetGroupedResource(CityResoureIndex.MountPaddedArmor).toMenu(content, ItemResourceType.MountPaddedArmor, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.MountPaddedArmor);
+
+                    // Mount Heavy Padded Armor
+                    city.GetGroupedResource(CityResoureIndex.MountHeavyPaddedArmor).toMenu(content, ItemResourceType.MountHeavyPaddedArmor, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.MountHeavyPaddedArmor);
+
+                    // Mount Bronze Armor
+                    city.GetGroupedResource(CityResoureIndex.MountBronzeArmor).toMenu(content, ItemResourceType.MountBronzeArmor, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.MountBronzeArmor);
+
+                    // Mount Iron Armor (mapped from Mail)
+                    city.GetGroupedResource(CityResoureIndex.MountIronArmor).toMenu(content, ItemResourceType.MountIronArmor, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.MountIronArmor);
+
+                    // Mount Heavy Iron Armor (mapped from Heavy Mail)
+                    city.GetGroupedResource(CityResoureIndex.MountHeavyIronArmor).toMenu(content, ItemResourceType.MountHeavyIronArmor, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.MountHeavyIronArmor);
+
+                    // Mount Light Plate Armor
+                    city.GetGroupedResource(CityResoureIndex.MountLightPlateArmor).toMenu(content, ItemResourceType.MountLightPlateArmor, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.MountLightPlateArmor);
+
+                    // Mount Full Plate Armor
+                    city.GetGroupedResource(CityResoureIndex.MountFullPlateArmor).toMenu(content, ItemResourceType.MountFullPlateArmor, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.MountFullPlateArmor);
+
+                    // Mount Mithril Armor
+                    city.GetGroupedResource(CityResoureIndex.MountMithrilArmor).toMenu(content, ItemResourceType.MountMithrilArmor, false, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.MountMithrilArmor);
+
+                    godPowerSetAllResources(content, ResourceLib.MovableCityResource_Armor);
                     break;
 
-                case ResourcesSubTab.Stockpile_Resources:
-                case ResourcesSubTab.Stockpile_Metals:
-                case ResourcesSubTab.Stockpile_Weapons:
-                case ResourcesSubTab.Stockpile_Projectile:
-                case ResourcesSubTab.Stockpile_Armor:
-                    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-                    new StockPileMenu(content, city, null).toHud(player.resourcesSubTab);
+                case ResourceGroupType.Animals:
+
+                    // --- Farm ---
+                    city.GetGroupedResource(CityResoureIndex.Hen).toMenu(content, ItemResourceType.Hen, false, ref reachedBuffer, player, city);
+                    city.GetGroupedResource(CityResoureIndex.Pig).toMenu(content, ItemResourceType.Pig, false, ref reachedBuffer, player, city, true);
+
+                    // --- Dogs ---
+                    city.GetGroupedResource(CityResoureIndex.Dog).toMenu(content, ItemResourceType.Dog, false, ref reachedBuffer, player, city);
+                    city.GetGroupedResource(CityResoureIndex.Hound).toMenu(content, ItemResourceType.Hound, false, ref reachedBuffer, player, city, true);
+
+                    // --- Oxen ---
+                    city.GetGroupedResource(CityResoureIndex.Oxen).toMenu(content, ItemResourceType.Oxen, false, ref reachedBuffer, player, city);
+                    city.GetGroupedResource(CityResoureIndex.KineOxen).toMenu(content, ItemResourceType.KineOxen, false, ref reachedBuffer, player, city, true);
+
+                    // --- Horses ---
+                    city.GetGroupedResource(CityResoureIndex.Pony).toMenu(content, ItemResourceType.Pony, false, ref reachedBuffer, player, city);
+                    city.GetGroupedResource(CityResoureIndex.Horse).toMenu(content, ItemResourceType.Horse, false, ref reachedBuffer, player, city);
+                    city.GetGroupedResource(CityResoureIndex.WarHorse).toMenu(content, ItemResourceType.WarHorse, false, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.DraftHorse).toMenu(content, ItemResourceType.DraftHorse, false, ref reachedBuffer, player, city, true);
+
+                    // --- Wild Pigs ---
+                    city.GetGroupedResource(CityResoureIndex.WildPig).toMenu(content, ItemResourceType.WildPig, false, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.WildHog).toMenu(content, ItemResourceType.WildHog, false, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.WarHog).toMenu(content, ItemResourceType.WarHog, false, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.StagHog).toMenu(content, ItemResourceType.StagHog, false, ref reachedBuffer, player, city, true);
+
+                    // --- Wolves ---
+                    city.GetGroupedResource(CityResoureIndex.Wolf).toMenu(content, ItemResourceType.Wolf, false, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.Warg).toMenu(content, ItemResourceType.Warg, false, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.AlphaWarg).toMenu(content, ItemResourceType.AlphaWarg, false, ref reachedBuffer, player, city, true);
+
+                    // --- Cats ---
+                    city.GetGroupedResource(CityResoureIndex.WildCat).toMenu(content, ItemResourceType.WildCat, false, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.Lion).toMenu(content, ItemResourceType.Lion, false, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.WarLion).toMenu(content, ItemResourceType.WarLion, false, ref reachedBuffer, player, city, true);
+
+                    // --- Elephants ---
+                    city.GetGroupedResource(CityResoureIndex.Elephant).toMenu(content, ItemResourceType.Elephant, false, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.WarElephant).toMenu(content, ItemResourceType.WarElephant, false, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.Oliphant).toMenu(content, ItemResourceType.Oliphant, false, ref reachedBuffer, player, city, true);
                     break;
-                //case ResourcesSubTab.Stockpile_Resources:
-                //    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-
-                //    stockpile(ItemResourceType.Wood_Group);
-                //    stockpile(ItemResourceType.Stone_G);
-                //    stockpile(ItemResourceType.RawFood_Group);
-                //    stockpile(ItemResourceType.SkinLinen_Group);
-                //    content.newParagraph();
-
-                //    stockpile(ItemResourceType.Food_G);
-                //    stockpile(ItemResourceType.Fuel_G);
-                //    stockpile(ItemResourceType.Beer);
-                //    stockpile(ItemResourceType.CoolingFluid);
-                //    content.newParagraph();
-
-                //    stockpile(ItemResourceType.Palisade);
-                //    stockpile(ItemResourceType.Toolkit);
-                //    stockpile(ItemResourceType.Wagon2Wheel);
-                //    stockpile(ItemResourceType.Wagon4Wheel);
-                //    stockpile(ItemResourceType.BlackPowder);
-                //    stockpile(ItemResourceType.GunPowder);
-                //    stockpile(ItemResourceType.LedBullet);
-
-                //    //content.newParagraph();
-                //    //HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
-                //    //GroupedResource.BufferIconInfo(content, false);
-                //    break;
-
-                //case ResourcesSubTab.Stockpile_Metals:
-                //    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-
-                //    stockpile(ItemResourceType.IronOre_G);
-                //    stockpile(ItemResourceType.TinOre);
-                //    stockpile(ItemResourceType.CopperOre);
-                //    stockpile(ItemResourceType.LeadOre);
-                //    stockpile(ItemResourceType.SilverOre);
-                //    stockpile(ItemResourceType.GoldOre);
-                //    content.newParagraph();
-
-                //    stockpile(ItemResourceType.Iron_G);
-                //    stockpile(ItemResourceType.Tin);
-                //    stockpile(ItemResourceType.Copper);
-                //    stockpile(ItemResourceType.Lead);
-                //    stockpile(ItemResourceType.Silver);
-                //    stockpile(ItemResourceType.RawMithril);
-                //    stockpile(ItemResourceType.Sulfur);
-                //    content.newParagraph();
-
-                //    stockpile(ItemResourceType.Bronze);
-                //    stockpile(ItemResourceType.CastIron);
-                //    stockpile(ItemResourceType.BloomeryIron);
-                //    stockpile(ItemResourceType.Steel);
-                //    stockpile(ItemResourceType.Mithril);
-
-                //    break;
-                //case ResourcesSubTab.Stockpile_Weapons:
-                //    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-                //    stockpile(ItemResourceType.SharpStick);
-                //    stockpile(ItemResourceType.BronzeSword);
-                //    stockpile(ItemResourceType.ShortSword);
-                //    stockpile(ItemResourceType.Sword);
-                //    stockpile(ItemResourceType.LongSword);
-                //    stockpile(ItemResourceType.HandSpear);
-                //    content.newParagraph();
-
-                //    stockpile(ItemResourceType.Warhammer);
-                //    stockpile(ItemResourceType.TwoHandSword);
-                //    stockpile(ItemResourceType.KnightsLance);
-                //    stockpile(ItemResourceType.MithrilSword);
-
-                //    break;
-
-                //case ResourcesSubTab.Stockpile_Projectile:
-                //    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-
-                //    stockpile(ItemResourceType.SlingShot);
-                //    stockpile(ItemResourceType.ThrowingSpear);
-                //    stockpile(ItemResourceType.Bow);
-                //    stockpile(ItemResourceType.LongBow);
-                //    stockpile(ItemResourceType.Crossbow);
-                //    stockpile(ItemResourceType.MithrilBow);
-                //    content.newParagraph();
-
-                //    stockpile(ItemResourceType.HandCannon);
-                //    stockpile(ItemResourceType.HandCulverin);
-                //    stockpile(ItemResourceType.Rifle);
-                //    stockpile(ItemResourceType.Blunderbuss);
-
-                //    content.newParagraph();
-
-                //    stockpile(ItemResourceType.Ballista);
-                //    stockpile(ItemResourceType.Manuballista);
-                //    stockpile(ItemResourceType.Catapult);
-
-                //    stockpile(ItemResourceType.SiegeCannonBronze);
-                //    stockpile(ItemResourceType.ManCannonBronze);
-                //    stockpile(ItemResourceType.SiegeCannonIron);
-                //    stockpile(ItemResourceType.ManCannonIron);
-
-                //    break;
-
-                //case ResourcesSubTab.Stockpile_Armor:
-                //    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-                //    stockpile(ItemResourceType.HeavyPaddedArmor);
-                //    stockpile(ItemResourceType.PaddedArmor);
-                //    stockpile(ItemResourceType.BronzeArmor);
-                //    stockpile(ItemResourceType.IronArmor);
-                //    stockpile(ItemResourceType.HeavyIronArmor);
-                //    stockpile(ItemResourceType.LightPlateArmor);
-                //    stockpile(ItemResourceType.FullPlateArmor);
-                //    stockpile(ItemResourceType.MithrilArmor);
-                //    break;
-
-                default:
-                    content.h2(DssRef.lang.Work_OrderPrioTitle, HudLib.TitleColor_Head);
-                    city.workTemplate.toHud(player, content, player.resourcesSubTab, city.GetFaction(), city);
-                    break;
-            }
-
-            void stockpile(ItemResourceType item)
-            {   
-                GroupedResource res = city.GetGroupedResource(item);
-
-                content.newLine();
-
-                content.Add(new ArtButton(RbButtonStyle.HoverArea, 
-                    new List<AbsRichBoxMember>{
-                        new RbImage(res.amount >= res.goalBuffer ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd),
-                        new RbImage(ResourceLib.Icon(item))},null,
-                        //new RbTooltip((RichBoxContent content, object tag) =>
-                        //{
-                        //    bool buffer = false;
-                        //    city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);                           
-                        //}
-                        new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(city, item))
-                        ));
-                
-                content.space();
-               
-                //stockPileEdit(content, item, res);
             }
         }
-
-        
 
         private void godPowerSetAllResources(RichBoxContent content, ItemResourceType[] Resources)
         {
@@ -2746,32 +2883,68 @@ namespace VikingEngine.DSSWars.Interface
         BlackMarket,
     }
 
-    enum ResourcesSubTab
-    { 
-        Overview_Resources,
-        Overview_Metals,
-        Overview_Weapons,
-        Overview_Projectile,
-        Overview_Armor,
+    //enum ResourcesSubTab
+    //{ 
+    //    Overview_Resources,
+    //    Overview_Metals,
+    //    Overview_Weapons,
+    //    Overview_Projectile,
+    //    Overview_Armor,
 
-        Work_Resources,
-        Work_Metals,
-        Work_Weapons,
-        Work_Projectile,
-        Work_Armor,
-        Work_Mint,
+    //    Work_Resources,
+    //    Work_Metals,
+    //    Work_Weapons,
+    //    Work_Projectile,
+    //    Work_Armor,
+    //    Work_Mint,
 
-        Stockpile_Resources,
-        Stockpile_Metals,
-        Stockpile_Weapons,
-        Stockpile_Projectile,
-        Stockpile_Armor,
+    //    Stockpile_Resources,
+    //    Stockpile_Metals,
+    //    Stockpile_Weapons,
+    //    Stockpile_Projectile,
+    //    Stockpile_Armor,
 
-        Auto,
-        
+    //    Auto,
+
+    //}
+
+    struct ResourcesSubTab
+    {
+        public ResourceGroupType resourceGroup;
+        public ResourceManagementType managementType;
+
+        public ResourcesSubTab(ResourceManagementType managementType, ResourceGroupType resourceGroup)
+        { 
+            this.managementType = managementType;
+            this.resourceGroup = resourceGroup;
+        }
+
+        public bool EqualTab(ResourcesSubTab other)
+        { 
+            return resourceGroup == other.resourceGroup && managementType == other.managementType;
+        }
     }
 
-    
+    enum ResourceGroupType
+    {
+        Resources,
+        Metals,
+        Weapons,
+        Projectile,
+        Armor,
+        Animals,
+        Mint,
+        NUM,
+        Auto,
+    }
+
+    enum ResourceManagementType
+    { 
+        Overview,
+        Work,
+        Stockpile,
+        Auto,
+    }
 
     //enum WorkSubTab
     //{
@@ -2779,7 +2952,7 @@ namespace VikingEngine.DSSWars.Interface
     //    Priority_Metals,
     //    Priority_Weapons,
     //    Priority_Armor,
-        
+
     //    NUM,
     //        Experience,
     //}

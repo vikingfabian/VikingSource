@@ -17,6 +17,7 @@ using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.PJ.GameState;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -132,7 +133,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (BuildLib.BuildOptions[(int)buildType].availableBlueprintResources(this) &&
                         work_isFreeTile(pos))
                     {
-                        workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.autoBuild.value, 0, 0));
+                        workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
                     }
                     
                 }
@@ -222,22 +223,22 @@ namespace VikingEngine.DSSWars.GameObject
             ref var res_rawFood = ref GetRefGroupedResource(CityResoureIndex.rawFood);
             ref var res_fuel = ref GetRefGroupedResource(CityResoureIndex.fuel);
 
-            res_food.goalBuffer = Bound.Min(workForce.amount / 100 * 100 + 200, DssConst.Logistics1FoodStorage) * multi;
-            res_rawFood.goalBuffer = (workForce.amount / 300 * 100 + 100) * multi;
-            res_fuel.goalBuffer = res_rawFood.goalBuffer;
+            res_food.stockPileLimit = Bound.Min(workForce.amount / 100 * 100 + 200, DssConst.Logistics1FoodStorage) * multi;
+            res_rawFood.stockPileLimit = (workForce.amount / 300 * 100 + 100) * multi;
+            res_fuel.stockPileLimit = res_rawFood.stockPileLimit;
 
 
             ref var res_wood = ref GetRefGroupedResource(CityResoureIndex.wood);
             ref var res_skin = ref GetRefGroupedResource(CityResoureIndex.skinLinnen);
 
-            res_wood.goalBuffer = WorldData.DefaultBuffer_Wood;
-            res_skin.goalBuffer = WorldData.DefaultBuffer_SkinLinnen;
+            res_wood.stockPileLimit = WorldData.DefaultBuffer_Wood;
+            res_skin.stockPileLimit = WorldData.DefaultBuffer_SkinLinnen;
 
             if (prepareSettle)
             {
-                res_food.goalBuffer += Conscript.ConscriptDataLib.CraftSettlerFood;
-                res_wood.goalBuffer += Conscript.ConscriptDataLib.CraftSettlerWood;
-                res_skin.goalBuffer += Conscript.ConscriptDataLib.CraftSettlerSkinLinen;
+                res_food.stockPileLimit += Conscript.ConscriptDataLib.CraftSettlerFood;
+                res_wood.stockPileLimit += Conscript.ConscriptDataLib.CraftSettlerWood;
+                res_skin.stockPileLimit += Conscript.ConscriptDataLib.CraftSettlerSkinLinen;
             }
         }
 
@@ -275,7 +276,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     case BuildAndExpandType.SoldierBarracks:
                     case BuildAndExpandType.WarmachineBarracks:
-                    case BuildAndExpandType.KnightsBarracks:
+                    //case BuildAndExpandType.KnightsBarracks:
                     case BuildAndExpandType.GunBarracks:
                     case BuildAndExpandType.CannonBarracks:
                         maxCount = 2;
@@ -406,65 +407,72 @@ namespace VikingEngine.DSSWars.GameObject
 
         void auto_updateWorkPrio()
         {
-            
+            // Basic Resources & Movement
+            workTemplate.setWorkPrio(WorkPriorityType.move, 3);
+            workTemplate.setWorkPrio(WorkPriorityType.wood, 2);
+            workTemplate.setWorkPrio(WorkPriorityType.stone, 2);
 
-            workTemplate.move.set(3);
-            workTemplate.wood.set(2);
-            workTemplate.stone.set(2);
-            workTemplate.craft_fuel.set(4);
-            workTemplate.craft_food.set(4);
-            workTemplate.craft_beer.set(1);
-            workTemplate.craft_coolingfluid.set(1);
+            // Crafting: Consumables
+            workTemplate.setWorkPrio(WorkPriorityType.craftFuel, 4);
+            workTemplate.setWorkPrio(WorkPriorityType.craftFood, 4);
+            workTemplate.setWorkPrio(WorkPriorityType.craftBeer, 1);
+            workTemplate.setWorkPrio(WorkPriorityType.craftCoolingFluid, 1);
 
-            workTemplate.craft_iron.set(2);
-            workTemplate.craft_tin.set(1);
-            workTemplate.craft_cupper.set(1);
-            workTemplate.craft_lead.set(1);
-            workTemplate.craft_silver.set(1);
+            // Smelting: Base Metals
+            // Mapped 'craft_iron' to 'smeltIron' based on context (vs bloomery/cast iron)
+            workTemplate.setWorkPrio(WorkPriorityType.smeltIron, 2);
+            workTemplate.setWorkPrio(WorkPriorityType.smeltTin, 1);
+            workTemplate.setWorkPrio(WorkPriorityType.smeltCopper, 1); // Mapped from 'craft_cupper'
+            workTemplate.setWorkPrio(WorkPriorityType.smeltLead, 1);
+            workTemplate.setWorkPrio(WorkPriorityType.smeltSilver, 1);
 
-            workTemplate.craft_bronze.set(2);
-            workTemplate.craft_castiron.set(1);
-            workTemplate.craft_bloomeryiron.set(2);
-            workTemplate.craft_steel.set(3);
-            workTemplate.craft_mithril.set(4);
+            // Crafting: Alloys & Advanced Metals
+            workTemplate.setWorkPrio(WorkPriorityType.craftBronze, 2);
+            workTemplate.setWorkPrio(WorkPriorityType.craftCastIron, 1);
+            workTemplate.setWorkPrio(WorkPriorityType.craftBloomeryIron, 2);
+            workTemplate.setWorkPrio(WorkPriorityType.craftSteel, 3);
+            workTemplate.setWorkPrio(WorkPriorityType.craftMithril, 4);
 
-            workTemplate.craft_palisade.set(1);
-            workTemplate.craft_toolkit.set(1);
-            workTemplate.craft_wagonlight.set(1);
-            workTemplate.craft_wagonheavy.set(1);
-            workTemplate.craft_blackpowder.set(2);
-            workTemplate.craft_gunpowder.set(3);
-            workTemplate.craft_bullet.set(3);
+            // Crafting: Construction & Tools
+            workTemplate.setWorkPrio(WorkPriorityType.craftPalisade, 1);
+            workTemplate.setWorkPrio(WorkPriorityType.craftToolkit, 1);
 
+            // Crafting: Wagons
+            // Mapped 'wagonlight' -> 2Wheel, 'wagonheavy' -> 4Wheel
+            workTemplate.setWorkPrio(WorkPriorityType.craftWagon2Wheel, 1);
+            workTemplate.setWorkPrio(WorkPriorityType.craftWagon4Wheel, 1);
 
-            workTemplate.farm_food.set(4);
-            workTemplate.farm_fuel.set(3);
-            workTemplate.farm_linen.set(3);//weaponPrio);
-            workTemplate.bogiron.set(1);
-            workTemplate.mining_iron.set(3);
-            workTemplate.mining_tin.set(2);
-            workTemplate.mining_copper.set(2);
-            workTemplate.mining_lead.set(1);
-            workTemplate.mining_silver.set(2);
-            workTemplate.mining_gold.set(2);
-            workTemplate.mining_mithril.set(3);
-            workTemplate.mining_sulfur.set(1);
-            workTemplate.mining_coal.set(1);
+            // Crafting: Ammo
+            workTemplate.setWorkPrio(WorkPriorityType.craftBlackPowder, 2);
+            workTemplate.setWorkPrio(WorkPriorityType.craftGunPowder, 3);
+            workTemplate.setWorkPrio(WorkPriorityType.craftBullet, 3);
 
-            workTemplate.autoBuild.set(1);
+            // Farming & Gathering
+            workTemplate.setWorkPrio(WorkPriorityType.farmfood, 4);
+            workTemplate.setWorkPrio(WorkPriorityType.farmfuel, 3);
+            workTemplate.setWorkPrio(WorkPriorityType.farmlinen, 3);
+            workTemplate.setWorkPrio(WorkPriorityType.bogiron, 1);
 
-            workTemplate.smeltgold.set(2);
-            workTemplate.coinmaker_copper.set(1);
-            workTemplate.coinmaker_copper_fullStock = true;
-            workTemplate.coinmaker_bronze.set(1);
-            workTemplate.coinmaker_bronze_fullStock = true;
-            workTemplate.coinmaker_silver.set(1);
-            workTemplate.coinmaker_silver_fullStock = true;
-            workTemplate.coinmaker_mithril.set(1);
-            workTemplate.coinmaker_mithril_fullStock = true;
+            // Mining
+            workTemplate.setWorkPrio(WorkPriorityType.miningIron, 3);
+            workTemplate.setWorkPrio(WorkPriorityType.miningTin, 2);
+            workTemplate.setWorkPrio(WorkPriorityType.miningCopper, 2);
+            workTemplate.setWorkPrio(WorkPriorityType.miningLead, 1);
+            workTemplate.setWorkPrio(WorkPriorityType.miningSilver, 2);
+            workTemplate.setWorkPrio(WorkPriorityType.miningGold, 2);
+            workTemplate.setWorkPrio(WorkPriorityType.miningMithril, 3);
+            workTemplate.setWorkPrio(WorkPriorityType.miningSulfur, 1);
+            workTemplate.setWorkPrio(WorkPriorityType.miningCoal, 1);
 
+            // Building
+            workTemplate.setWorkPrio(WorkPriorityType.autoBuild, 1);
 
-            AutoConscriptLib.WorkPriority(this, ref workTemplate);
+            // Coinage (Using the new 3-argument overload for Full Stock)
+            workTemplate.setWorkPrio(WorkPriorityType.smeltGold, 2);
+            workTemplate.setWorkPrio(WorkPriorityType.coinmaker_copper, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.coinmaker_bronze, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.coinmaker_silver, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.coinmaker_mithril, 1, true);
         }
 
         public bool AutomateCityProperty(object tag, bool set, bool value)
@@ -524,7 +532,21 @@ namespace VikingEngine.DSSWars.GameObject
                                 onGuardHouseBuild(build, true);
                                 break;
 
-
+                            case TerrainBuildingType.MaterialStorage:
+                                addStorageBuilding(StorageType.MaterialStorage, build);
+                                break;
+                            case TerrainBuildingType.FoodStorage:
+                                addStorageBuilding(StorageType.FoodStorage, build);
+                                break;
+                            case TerrainBuildingType.WeaponStorage:
+                                addStorageBuilding(StorageType.WeaponStorage, build);
+                                break;
+                            case TerrainBuildingType.ArmorStorage:
+                                addStorageBuilding(StorageType.ArmorStorage, build);
+                                break;
+                            case TerrainBuildingType.AnimalStorage:
+                                addStorageBuilding(StorageType.ArmorStorage, build);
+                                break;
 
                             case TerrainBuildingType.SoldierBarracks:
                                 if (build)
@@ -556,16 +578,16 @@ namespace VikingEngine.DSSWars.GameObject
                                     destroyBarracks(subPos);
                                 }
                                 break;
-                            case TerrainBuildingType.KnightsBarracks:
-                                if (build)
-                                {
-                                    Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(addBarracks, subPos, Build.BuildAndExpandType.KnightsBarracks));
-                                }
-                                else
-                                {
-                                    destroyBarracks(subPos);
-                                }
-                                break;
+                            //case TerrainBuildingType.KnightsBarracks:
+                            //    if (build)
+                            //    {
+                            //        Ref.update.AddSyncAction(new SyncAction2Arg<IntVector2, Build.BuildAndExpandType>(addBarracks, subPos, Build.BuildAndExpandType.KnightsBarracks));
+                            //    }
+                            //    else
+                            //    {
+                            //        destroyBarracks(subPos);
+                            //    }
+                            //    break;
                             case TerrainBuildingType.GunBarracks:
                                 if (build)
                                 {
@@ -710,6 +732,48 @@ namespace VikingEngine.DSSWars.GameObject
                                 else
                                 {
                                     destroyResearchBuilding(subPos);
+                                }
+                                break;
+
+                            case TerrainBuildingType.PigPen:
+                            case TerrainBuildingType.OxenPen:
+                            case TerrainBuildingType.KineOxenPen:
+
+                            case TerrainBuildingType.DogCage:
+                            case TerrainBuildingType.HoundCage:
+
+                            case TerrainBuildingType.PonyPen:
+                            case TerrainBuildingType.HorsePen:
+                            case TerrainBuildingType.WarHorsePen:
+                            case TerrainBuildingType.DraftHorsePen:
+                            case TerrainBuildingType.WildPigPen:
+                            case TerrainBuildingType.WildHogPen:
+                            case TerrainBuildingType.WarHogPen:
+                            case TerrainBuildingType.StagHogPen:
+                            case TerrainBuildingType.WolfCage:
+                            case TerrainBuildingType.WargCage:
+                            case TerrainBuildingType.AlphaWargCage:
+                            case TerrainBuildingType.WildCatCage:
+                            case TerrainBuildingType.LionCage:
+                            case TerrainBuildingType.WarLionCage:
+                            case TerrainBuildingType.ElephantCage:
+                            case TerrainBuildingType.WarElephantCage:
+                            case TerrainBuildingType.OliphantCage:
+                                var upkeep = Build.BuildLib.Get(mainType, subType).upkeep;
+                                if (upkeep.type == ItemResourceType.RawFood_Group)
+                                {
+                                    PenFoodUpkeep_minute += lib.BoolToLeftRight(build) * upkeep.amount;
+                                }
+                                break;
+
+                            case TerrainBuildingType.Cesspit:
+                                if (build)
+                                {
+                                    addCesspit(subPos);
+                                }
+                                else
+                                {
+                                    destroyCesspit(subPos);
                                 }
                                 break;
 

@@ -6,6 +6,36 @@ using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.Map
 {
+    struct AnimalPenGrowth
+    {
+        public int maxSize;
+        public int maxCount;
+        public int maxTotal;
+
+        public int harvestReady;
+
+        public AnimalPenGrowth(int maxSize, int maxCount, int harvestCount)
+        { 
+            this.maxSize = maxSize;
+            this.maxCount = maxCount;
+            maxTotal = maxSize * maxCount;
+            harvestReady = maxSize * harvestCount;
+        }
+
+        public void asyncCityProduce(ref SubTile subtile)
+        {            
+            if (subtile.terrainAmount < maxTotal)
+            {
+                subtile.terrainAmount++;
+            }
+        }
+
+        public int visualCount(int terrainAmount)
+        {
+            return (terrainAmount + maxSize - 1) / maxSize;
+        }
+    }
+
     class TerrainContent
     {
         public const int SproutMaxSize = 5;
@@ -19,15 +49,100 @@ namespace VikingEngine.DSSWars.Map
         public const int FarmCulture_ReadySize = FarmCulture_MaxSize - 1;
         public const int FarmCulture_HalfSize = FarmCulture_ReadySize / 2;
 
-        public const int PigMaxSize = 4;
-        public const int PigMaxCount = 4;
-        const int PigMaxTotal = PigMaxSize * PigMaxCount;
-        public const int PigReady = PigMaxSize * 3;
+        public const int DryingSaltPanMax = 5;
+        public const int DryingSaltPanReady = DryingSaltPanMax -1;
 
-        public const int HenMaxSize = 3;
-        public const int HenMaxCount = 6;
-        const int HenMaxTotal = HenMaxSize * HenMaxCount;
-        public const int HenReady = HenMaxSize * 3;
+
+        // Birds
+        public static readonly AnimalPenGrowth HenGrowth = new AnimalPenGrowth(
+            maxSize: 3, maxCount: 6, harvestCount: 3);
+
+        // Livestock (Pigs)
+        public static readonly AnimalPenGrowth PigGrowth = new AnimalPenGrowth(
+            maxSize: 4, maxCount: 4, harvestCount: 3);
+
+        // Livestock (Cattle)
+        public static readonly AnimalPenGrowth OxenGrowth = new AnimalPenGrowth(
+            maxSize: 5, maxCount: 3, harvestCount: 2);
+
+        public static readonly AnimalPenGrowth KineOxenGrowth = new AnimalPenGrowth(
+            maxSize: 6, maxCount: 3, harvestCount: 2);
+
+        // Canines (Domestic)
+        public static readonly AnimalPenGrowth DogGrowth = new AnimalPenGrowth(
+            maxSize: 3, maxCount: 5, harvestCount: 3);
+
+        public static readonly AnimalPenGrowth HoundGrowth = new AnimalPenGrowth(
+            maxSize: 3, maxCount: 5, harvestCount: 3);
+
+        // Equines
+        public static readonly AnimalPenGrowth PonyGrowth = new AnimalPenGrowth(
+            maxSize: 4, maxCount: 4, harvestCount: 2);
+
+        public static readonly AnimalPenGrowth HorseGrowth = new AnimalPenGrowth(
+            maxSize: 5, maxCount: 3, harvestCount: 2);
+
+        public static readonly AnimalPenGrowth WarHorseGrowth = new AnimalPenGrowth(
+            maxSize: 6, maxCount: 2, harvestCount: 1);
+
+        public static readonly AnimalPenGrowth DraftHorseGrowth = new AnimalPenGrowth(
+            maxSize: 6, maxCount: 2, harvestCount: 1);
+
+        // Wild Hogs (Evolution Line)
+        public static readonly AnimalPenGrowth WildPigGrowth = new AnimalPenGrowth(
+            maxSize: 4, maxCount: 4, harvestCount: 3);
+
+        public static readonly AnimalPenGrowth WildHogGrowth = new AnimalPenGrowth(
+            maxSize: 5, maxCount: 3, harvestCount: 2);
+
+        public static readonly AnimalPenGrowth WarHogGrowth = new AnimalPenGrowth(
+            maxSize: 6, maxCount: 2, harvestCount: 1);
+
+        public static readonly AnimalPenGrowth StagHogGrowth = new AnimalPenGrowth(
+            maxSize: 7, maxCount: 2, harvestCount: 1);
+
+        // Wolves (Evolution Line)
+        public static readonly AnimalPenGrowth WolfGrowth = new AnimalPenGrowth(
+            maxSize: 4, maxCount: 4, harvestCount: 2);
+
+        public static readonly AnimalPenGrowth WargGrowth = new AnimalPenGrowth(
+            maxSize: 6, maxCount: 3, harvestCount: 1);
+
+        public static readonly AnimalPenGrowth AlphaWargGrowth = new AnimalPenGrowth(
+            maxSize: 7, maxCount: 2, harvestCount: 1);
+
+        // Felines
+        public static readonly AnimalPenGrowth WildCatGrowth = new AnimalPenGrowth(
+            maxSize: 3, maxCount: 5, harvestCount: 3);
+
+        public static readonly AnimalPenGrowth LionGrowth = new AnimalPenGrowth(
+            maxSize: 6, maxCount: 2, harvestCount: 1);
+
+        public static readonly AnimalPenGrowth WarLionGrowth = new AnimalPenGrowth(
+            maxSize: 7, maxCount: 2, harvestCount: 1);
+
+        // Heavy Animals
+        public static readonly AnimalPenGrowth ElephantGrowth = new AnimalPenGrowth(
+            maxSize: 8, maxCount: 1, harvestCount: 1);
+
+        public static readonly AnimalPenGrowth WarElephantGrowth = new AnimalPenGrowth(
+            maxSize: 9, maxCount: 1, harvestCount: 1);
+
+        public static readonly AnimalPenGrowth OliphantGrowth = new AnimalPenGrowth(
+            maxSize: 10, maxCount: 1, harvestCount: 1);
+
+        public static readonly AnimalPenGrowth Pheasant = new AnimalPenGrowth(
+           maxSize: 1, maxCount: 2, harvestCount: int.MaxValue);
+
+        //public const int PigMaxSize = 4;
+        //public const int PigMaxCount = 4;
+        //const int PigMaxTotal = PigMaxSize * PigMaxCount;
+        //public const int PigReady = PigMaxSize * 3;
+
+        //public const int HenMaxSize = 3;
+        //public const int HenMaxCount = 6;
+        //const int HenMaxTotal = HenMaxSize * HenMaxCount;
+        //public const int HenReady = HenMaxSize * 3;
 
         public const int DefaultMineAmount = 10;
         public const int MineAmount_Coal = 20;
@@ -96,6 +211,8 @@ namespace VikingEngine.DSSWars.Map
                         subtile.terrainAmount++;
                     }
                     break;
+
+               
             }
         }
 
@@ -104,13 +221,12 @@ namespace VikingEngine.DSSWars.Map
             Map.TerrainBuildingType buildingType = (Map.TerrainBuildingType)subtile.subTerrain;
             switch (buildingType)
             {
+                
+
                 case TerrainBuildingType.PigPen:
-                    if (subtile.terrainAmount < PigMaxTotal)
-                    {
-                        subtile.terrainAmount++;
-                        //DssRef.world.subTileGrid.Set(pos, subtile);
-                    }
+                    PigGrowth.asyncCityProduce(ref subtile);
                     break;
+
                 case TerrainBuildingType.HenPen:
                     const int EggGroupCount = 5;
 
@@ -127,11 +243,85 @@ namespace VikingEngine.DSSWars.Map
                                 ref subtile.collectionPointer);
                         }
                     }
-                    if (subtile.terrainAmount < HenMaxTotal)
+                    HenGrowth.asyncCityProduce(ref subtile);
+                    //DssRef.world.subTileGrid.Set(pos, subtile);
+                    break;
+
+                case TerrainBuildingType.OxenPen:
+                    OxenGrowth.asyncCityProduce(ref subtile);
+                    break;
+                case TerrainBuildingType.KineOxenPen:
+                    KineOxenGrowth.asyncCityProduce(ref subtile);
+                    break;
+
+                case TerrainBuildingType.DogCage:
+                    DogGrowth.asyncCityProduce(ref subtile);
+                    break;
+                case TerrainBuildingType.HoundCage:
+                    HoundGrowth.asyncCityProduce(ref subtile);
+                    break;
+
+                case TerrainBuildingType.PonyPen:
+                    PonyGrowth.asyncCityProduce(ref subtile);
+                    break;
+                case TerrainBuildingType.HorsePen:
+                    HorseGrowth.asyncCityProduce(ref subtile);
+                    break;
+                case TerrainBuildingType.WarHorsePen:
+                    WarHorseGrowth.asyncCityProduce(ref subtile);
+                    break;
+                case TerrainBuildingType.DraftHorsePen:
+                    DraftHorseGrowth.asyncCityProduce(ref subtile);
+                    break;
+
+                case TerrainBuildingType.WildPigPen:
+                    WildPigGrowth.asyncCityProduce(ref subtile);
+                    break;
+                case TerrainBuildingType.WildHogPen:
+                    WildHogGrowth.asyncCityProduce(ref subtile);
+                    break;
+                case TerrainBuildingType.WarHogPen:
+                    WarHogGrowth.asyncCityProduce(ref subtile);
+                    break;
+                case TerrainBuildingType.StagHogPen:
+                    StagHogGrowth.asyncCityProduce(ref subtile);
+                    break;
+
+                case TerrainBuildingType.WolfCage:
+                    WolfGrowth.asyncCityProduce(ref subtile);
+                    break;
+                case TerrainBuildingType.WargCage:
+                    WargGrowth.asyncCityProduce(ref subtile);
+                    break;
+                case TerrainBuildingType.AlphaWargCage:
+                    AlphaWargGrowth.asyncCityProduce(ref subtile);
+                    break;
+
+                case TerrainBuildingType.WildCatCage:
+                    WildCatGrowth.asyncCityProduce(ref subtile);
+                    break;
+                case TerrainBuildingType.LionCage:
+                    LionGrowth.asyncCityProduce(ref subtile);
+                    break;
+                case TerrainBuildingType.WarLionCage:
+                    WarLionGrowth.asyncCityProduce(ref subtile);
+                    break;
+
+                case TerrainBuildingType.ElephantCage:
+                    ElephantGrowth.asyncCityProduce(ref subtile);
+                    break;
+                case TerrainBuildingType.WarElephantCage:
+                    WarElephantGrowth.asyncCityProduce(ref subtile);
+                    break;
+                case TerrainBuildingType.OliphantCage:
+                    OliphantGrowth.asyncCityProduce(ref subtile);
+                    break;
+
+                case TerrainBuildingType.DryingPan:
+                    if (subtile.terrainAmount < DryingSaltPanMax)
                     {
                         subtile.terrainAmount++;
                     }
-                    //DssRef.world.subTileGrid.Set(pos, subtile);
                     break;
             }
         }

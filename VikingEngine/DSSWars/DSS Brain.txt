@@ -1,5 +1,75 @@
-﻿Change log:
-* 
+﻿UPDATE
+Change Log: 
+
+# SUMMER UPDATE #
+* 32 new buildings
+* Animal farming uses breeding and cost upkeep
+* Cities have a biom status
+* Redesign of the resource stockpile system
+* 10 new city cultures
+
+RESOURCES
+* 5 New basic resources
+* 3 new wagon types
+* 4 shield types
+* 21 new animals
+* 8 Animal armor types
+* 4 new collectable terrain resources
+
+SOLDIER RECRUITING
+x More options in soldier conscript: man type, shield, animal and wagon.
+
+USER INTERFACE
+x Menu for cesspits
+* Limit toggle for stockpile
+
+SYSTEMS
+* Animal pens have upkeep
+* Resource collecting is limited by storage
+* Crafting can produce two item types
+
+QUESTIONS
+* Do it need some type of hunter cottage to collect the first animals?
+
+
+
+
+#MOUNTED TODO
+
+CITY CULTURES
+* AnimalBreeder2, //Higher chance of successful breeding (replaces the old culture)
+* Wheelwright, //Speed bonus to conscripted carts
+
+Butcher
+- Butcher priorities menu
+
+Conserved food (high storage)
+- Extra storage capacity for armies
+- craft 1: raw food + salt + beer
+- craft 2: storage box + food
+- craft 3: smoker meat
+- craft 4: drying meat (desert area)
+
+
+
+Base mounts, use breeding to go from pony to warhorse:
+- Pony
+- Horse
+- WarHorse (cavalry bonus)
+- DraftHorse (wagon pulling bonus)
+
+(Maybe) Breeding tech tree skill (Allowes more reliable animal upgrades)
+(Maybe) War mount tech tree skill (Allowes training of cavalry)
+
+New resources:
+Luxurious buildings, raises the nobel house cap
+Transport-weight
+
+Bioms:
+Frozen (Extra food storage, extra skin production)
+Mountain (Hog breeding)
+Desert (Elephant breeding, drying meat, drying salt)
+
 
 
 #Event timers (are slightly random)#

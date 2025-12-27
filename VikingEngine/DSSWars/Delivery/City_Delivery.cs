@@ -202,23 +202,23 @@ namespace VikingEngine.DSSWars.GameObject
 
             for (int i = 0; i < 10; ++i)
             {
-                if (find(MovableCityResource_WeaponMelee))
+                if (find(ResourceLib.MovableCityResource_WeaponMelee))
                 {
                     return result;
                 }
-                if (find(MovableCityResource_WeaponRanged))
+                if (find(ResourceLib.MovableCityResource_WeaponRanged))
                 {
                     return result;
                 }
-                if (find(MovableCityResource_Armor))
+                if (find(ResourceLib.MovableCityResource_Armor))
                 {
                     return result;
                 }
-                if (find(MovableCityResource_Metals))
+                if (find(ResourceLib.MovableCityResource_Metals))
                 {
                     return result;
                 }
-                if (find(MovableCityResource_Misc))
+                if (find(ResourceLib.MovableCityResource_Misc))
                 {
                     return result;
                 }

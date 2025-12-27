@@ -100,7 +100,8 @@ namespace VikingEngine.DSSWars.Map
                     caption = string.Format(DssRef.lang.Hud_TotalStrengthRating, string.Empty);
                     break;
                 case FactionMapFilter.ResourceHeatmap:
-                    icon = ResourceLib.Icon(resourceFilter);
+                    //icon = ResourceLib.Icon(resourceFilter);
+                    IconName.Item(resourceFilter, out icon, out _);
                     caption = DssRef.lang.Resource;
                     break;
             }
@@ -153,12 +154,14 @@ namespace VikingEngine.DSSWars.Map
                 content.newParagraph();
                 foreach (var res in TerrainStructure.AllTerrainResources)
                 {
+                    IconName.Item(res, out SpriteName itemIcon, out string itemName);
+
                     content.Add(new ArtOption(res == resourceFilter,
                         new List<AbsRichBoxMember> {
                             new RbImage((res == ItemResourceType.Wood_Group || res == ItemResourceType.Stone_G)? SpriteName.WarsWorkCollect : SpriteName.WarsWorkMine),
-                            new RbImage(ResourceLib.Icon(res)),
+                            new RbImage(itemIcon),
                             new RbSpace(0.5f),
-                            new RbText(LangLib.Item(res)),
+                            new RbText(itemName),
                         },
                         new RbAction1Arg<ItemResourceType>((ItemResourceType resource) => { 
                             resourceFilter = resource;

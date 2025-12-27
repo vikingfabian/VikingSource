@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
+using VikingEngine.ToGG.HeroQuest.Data.UnitAction;
 
 
 namespace VikingEngine.DSSWars
@@ -116,8 +117,11 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = Resource.ItemResourceType.KnightsLance,
+                man = Resource.ItemResourceType.NobelMen,
+                weapon = Resource.ItemResourceType.HandSpear,
                 armorLevel = Resource.ItemResourceType.FullPlateArmor,
+                animal = Resource.ItemResourceType.WarHorse,
+                mountArmor = Resource.ItemResourceType.MountLightPlateArmor,
                 training = TrainingLevel.Skillful,
                 specialization = SpecializationType.Traditional,
             }
@@ -271,8 +275,8 @@ namespace VikingEngine.DSSWars
                     return 120;
                 case CityCulture.Warriors:
                     return 120;
-                case CityCulture.AnimalBreeder:
-                    return 200;
+                //case CityCulture.AnimalBreeder:
+                //    return 200;
                 case CityCulture.Miners:
                     return 200;
                 case CityCulture.Woodcutters:
@@ -316,6 +320,27 @@ namespace VikingEngine.DSSWars
 
                 case CityCulture.Nomads:
                     return 50;
+
+                case CityCulture.Butchers:
+                    return 125;
+                case CityCulture.Skinner:
+                    return 125;
+                case CityCulture.AnimalBreeder2:
+                    return -1;
+                
+                case CityCulture.Wainwright:
+                    return 125;
+                case CityCulture.Wheelwright:
+                    return -1;
+                case CityCulture.ShieldMaker:
+                    return 125;
+                case CityCulture.Potters:
+                    return 150;
+                case CityCulture.Coopers:
+                    return 150;
+                case CityCulture.Salters:
+                    return 125;
+
 
                 default:
                     return -1;
@@ -390,17 +415,26 @@ namespace VikingEngine.DSSWars
         NUM
     }
 
+    enum CityBiom
+    {
+        None,
+        Frozen,// (Extra food storage, extra skin production)
+        Forest,
+        Mountain, //(Hog breeding)
+        Desolate,
+        Desert, //(Elephant breeding, drying meat, drying salt)
+    }
     enum CityCulture
     { 
         LargeFamilies,//
         FertileGround,//
         Archers,//
         Warriors,//
-        AnimalBreeder,//
+        
         Miners,//
         Woodcutters,//
         Builders,//
-        CrabMentality,// //ingen vill bli expert
+        CrabMentality,// 
         DeepWell,//
         Networker,//
         PitMasters,//
@@ -410,7 +444,7 @@ namespace VikingEngine.DSSWars
         Weavers,//.
         SiegeEngineer,//.
         Armorsmith,//.
-        Noblemen,//.
+        
         Seafaring,//.
         Backtrader,//.
         Lawbiding,//.
@@ -419,7 +453,21 @@ namespace VikingEngine.DSSWars
         BronzeCasters,//
         Apprentices,//
 
+        Noblemen,
         Nomads, //Low settler cost
+
+        Butchers, //Larger meat production -implemented
+        Skinner,//Larger skin production -implemented
+        AnimalBreeder2, //Higher chance of successful breeding
+        
+        Wainwright, //High wagon production -implemented
+        Wheelwright, //Speed bonus to conscripted carts
+        ShieldMaker, //High shield production -implemented
+
+        Potters, //Higher pottery production -implemented
+        Coopers, //High wood storage box production -implemented
+        Salters, //High conserved food production  -implemented
+
 
         NUM_NONE
     }

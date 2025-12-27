@@ -6,121 +6,26 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
-using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.GO.Gadgets;
+using VikingEngine.LootFest.GO.PickUp;
 using VikingEngine.PJ.Joust;
 using VikingEngine.ToGG.MoonFall;
-using VikingEngine.LootFest.GO.PickUp;
-using VikingEngine.DSSWars.EntityComponent;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
     {
 
-        public static readonly ItemResourceType[] MovableCityResource_Misc =
-        {
-            ItemResourceType.Wood_Group,
-            ItemResourceType.Fuel_G,
-            ItemResourceType.Stone_G,
-            ItemResourceType.SkinLinen_Group,
-            ItemResourceType.RawFood_Group,
-
-            ItemResourceType.Food_G,             
-            ItemResourceType.Beer,
-            ItemResourceType.CoolingFluid,
-            ItemResourceType.Palisade,
-            ItemResourceType.Toolkit,
-            ItemResourceType.Wagon2Wheel,
-            ItemResourceType.Wagon4Wheel,
-            ItemResourceType.BlackPowder,
-            ItemResourceType.GunPowder,
-            ItemResourceType.LedBullet,
-        };
-        public static readonly ItemResourceType[] MovableCityResource_Metals =
-       {
-             ItemResourceType.IronOre_G,
-             ItemResourceType.TinOre,
-             ItemResourceType.CopperOre,
-             ItemResourceType.LeadOre,
-             ItemResourceType.SilverOre,
-             ItemResourceType.GoldOre,
-
-             ItemResourceType.Iron_G,
-             ItemResourceType.Tin,
-            ItemResourceType.Copper,
-            ItemResourceType.Lead,
-            ItemResourceType.Silver,
-            ItemResourceType.RawMithril,
-            ItemResourceType.Sulfur,
-
-            ItemResourceType.Bronze,
-            ItemResourceType.CastIron,
-            ItemResourceType.BloomeryIron,
-            ItemResourceType.Steel,
-            ItemResourceType.Mithril,
-        };
-        public static readonly ItemResourceType[] MovableCityResource_WeaponMelee =
-       {
-            ItemResourceType.SharpStick,
-            ItemResourceType.BronzeSword,
-            ItemResourceType.ShortSword,
-            ItemResourceType.Sword,
-            ItemResourceType.LongSword,
-            ItemResourceType.HandSpear,
-
-            ItemResourceType.Warhammer,
-             ItemResourceType.TwoHandSword,
-             ItemResourceType.KnightsLance,
-            ItemResourceType.MithrilSword,
-
-            
-        };
-
-        public static readonly ItemResourceType[] MovableCityResource_WeaponRanged =
-         {
-            ItemResourceType.SlingShot,
-             ItemResourceType.ThrowingSpear,
-
-             ItemResourceType.Bow,
-             ItemResourceType.LongBow,
-            ItemResourceType.Crossbow,
-                ItemResourceType.MithrilBow,
-
-            ItemResourceType.HandCannon,
-            ItemResourceType.HandCulverin,
-            ItemResourceType.Rifle,
-            ItemResourceType.Blunderbuss,
-
-            ItemResourceType.Ballista,
-            ItemResourceType.Manuballista,
-            ItemResourceType.Catapult,
-            ItemResourceType.SiegeCannonBronze,
-            ItemResourceType.ManCannonBronze,
-            ItemResourceType.SiegeCannonIron,
-            ItemResourceType.ManCannonIron,
-
-        };
-
-        public static readonly ItemResourceType[] MovableCityResource_Armor =
-         {
-             
-             ItemResourceType.BronzeArmor,
-             ItemResourceType.PaddedArmor,
-             ItemResourceType.HeavyPaddedArmor,
-             ItemResourceType.IronArmor,
-             ItemResourceType.HeavyIronArmor,
-             ItemResourceType.LightPlateArmor,
-             ItemResourceType.FullPlateArmor,
-
-             ItemResourceType.MithrilArmor,
-        };
+        
 
         MinuteStats blackMarketCosts_food = new MinuteStats();
         public MinuteStats foodProduction = new MinuteStats();
@@ -281,11 +186,11 @@ namespace VikingEngine.DSSWars.GameObject
         public void defaultResourceBuffer(WorldData world)
         {
             
-            runList(MovableCityResource_Misc);
-            runList(MovableCityResource_Metals);
-            runList(MovableCityResource_WeaponMelee);
-            runList(MovableCityResource_WeaponRanged);
-            runList(MovableCityResource_Armor);
+            runList(ResourceLib.MovableCityResource_Misc);
+            runList(ResourceLib.MovableCityResource_Metals);
+            runList(ResourceLib.MovableCityResource_WeaponMelee);
+            runList(ResourceLib.MovableCityResource_WeaponRanged);
+            runList(ResourceLib.MovableCityResource_Armor);
 
             void runList(ItemResourceType[] items)
             {
@@ -295,7 +200,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (properties.cityResourceIndex >= 0)
                     {
                         ref GroupedResource resource = ref world.cityResouces[resourceComponentStartIndex + properties.cityResourceIndex];
-                        resource.goalBuffer = properties.defaultStockPile;
+                        resource.stockPileLimit = properties.defaultStockPile;
                     }
                 }
             }
@@ -430,6 +335,27 @@ namespace VikingEngine.DSSWars.GameObject
             //overview.onChange(add);
         }
 
+        public StorageSize GetStorage(StorageType storageType)
+        {
+            return DssRef.world.cityStorage[StorageSize.COUNT * myIndex + (int)storageType];
+        }
+
+        public ref StorageSize GetRefStorage(StorageType storageType)
+        {
+            return ref DssRef.world.cityStorage[StorageSize.COUNT * myIndex + (int)storageType];
+        }
+
+        void refreshStorageSize(StorageType storageType)
+        {
+            DssRef.world.cityStorage[StorageSize.COUNT * myIndex + (int)storageType].refreshCapacity(this, storageType);
+        }
+
+        void addStorageBuilding(StorageType storageType, bool add)
+        {
+            DssRef.world.cityStorage[StorageSize.COUNT * myIndex + (int)storageType].addStorage(this, storageType, add);
+        }
+
+
         public void AddGroupedResource(int itemIndex, int add)
         {
 #if DEBUG
@@ -464,14 +390,14 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public GroupedResource GetGroupedResource(ItemResourceType type)
         {
-            int itemIndex = ItemPropertyColl.CityIndex(type);
+            int cityResourceIndex = ItemPropertyColl.CityIndex(type);
 
-            if (itemIndex < 0)
+            if (cityResourceIndex < 0)
             {
                 switch (type)
                 {
                     case ItemResourceType.Gold:
-                        return new GroupedResource() { amount = (int)(DssRef.storage.gameRuleset.centralGold ? GetFaction_NoChecks().money.GetGold() : money.GetGold()), goalBuffer = int.MaxValue };
+                        return new GroupedResource() { amount = (int)(DssRef.storage.gameRuleset.centralGold ? GetFaction_NoChecks().money.GetGold() : money.GetGold()), stockPileLimit = int.MaxValue };
                     case ItemResourceType.Men:
                         return workForce;
                     case ItemResourceType.ServiceMen:
@@ -484,8 +410,21 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            return DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex];
+            return DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
         }
+
+        public ref GroupedResource GetRefGroupedResource(ItemResourceType type)
+        {
+            int cityResourceIndex = ItemPropertyColl.CityIndex(type);
+#if DEBUG
+            if (cityResourceIndex < 0)
+            {
+                throw new NotImplementedException();
+            }
+#endif
+            return ref DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];
+        }
+
         public void SetGroupedResource(ItemResourceType type, GroupedResource resource)
         {
             int itemIndex = ItemPropertyColl.CityIndex(type);
@@ -850,7 +789,7 @@ namespace VikingEngine.DSSWars.GameObject
                         usesSafeGuard = true;
                         return true;
                     }
-                    return needMore(CityResoureIndex.rawFood);//res_rawFood.needMore();
+                    return needMore(CityResoureIndex.rawFood);
 
                 case ItemResourceType.Pig:
                     if (rawfoodSafeGuard)
@@ -858,7 +797,7 @@ namespace VikingEngine.DSSWars.GameObject
                         usesSafeGuard = true;
                         return true;
                     }
-                    return needMore(CityResoureIndex.food) || needMore(CityResoureIndex.skinLinnen);//res_food.needMore() || res_skinLinnen.needMore();
+                    return needMore(CityResoureIndex.food) || needMore(CityResoureIndex.skinLinnen);
 
                 case ItemResourceType.Wood_Group:
                 case ItemResourceType.DryWood:
@@ -869,18 +808,13 @@ namespace VikingEngine.DSSWars.GameObject
                         usesSafeGuard = true;
                         return true;
                     }
-                    return needMore(CityResoureIndex.wood);//res_wood.needMore();
+                    return needMore(CityResoureIndex.wood);
 
                 case ItemResourceType.NONE:
                     return false;
 
                 default:
-//#if DEBUG
                     return GetGroupedResource(type).needMore();
-                    //throw new NotImplementedException();
-//#else
-//                    return false;
-//#endif
             }
 
             
@@ -1302,13 +1236,13 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.Hen:
                     convert1.type = ItemResourceType.RawFood_Group;
                     convert1.amount = DssConst.HenRawFoodAmout;
-                    animalResourceBonus(ref item);
+                    //animalResourceBonus(ref item);
                     break;
 
                 case ItemResourceType.Pig:
                     convert1.type = ItemResourceType.RawFood_Group;
                     convert1.amount = DssConst.PigRawFoodAmout;
-                    animalResourceBonus(ref item);
+                    //animalResourceBonus(ref item);
 
                     convert2 = new ItemResource(ItemResourceType.SkinLinen_Group, 1, 1, DssConst.PigSkinAmount);
                     break;
@@ -1364,13 +1298,13 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        void animalResourceBonus(ref ItemResource item)
-        {
-            if (Culture == CityCulture.AnimalBreeder)
-            {
-                item.amount *= 2;
-            }
-        }
+        //void animalResourceBonus(ref ItemResource item)
+        //{
+        //    if (Culture == CityCulture.AnimalBreeder)
+        //    {
+        //        item.amount *= 2;
+        //    }
+        //}
         
         public void tradeTab()
         { 

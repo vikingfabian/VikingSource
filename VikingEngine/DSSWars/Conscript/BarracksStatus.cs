@@ -50,9 +50,9 @@ namespace VikingEngine.DSSWars.Conscript
                 case BuildAndExpandType.WarmachineBarracks:
                     profile.weapon = ItemResourceType.Ballista;
                     break;
-                case BuildAndExpandType.KnightsBarracks:
-                    profile.weapon = ItemResourceType.Warhammer;
-                    break;
+                //case BuildAndExpandType.KnightsBarracks:
+                //    profile.weapon = ItemResourceType.Warhammer;
+                //    break;
                 case BuildAndExpandType.GunBarracks:
                     profile.weapon = ItemResourceType.HandCannon;
                     break;
@@ -122,7 +122,7 @@ namespace VikingEngine.DSSWars.Conscript
             if (requireMaxFood)
             {
                 var res_food = city.GetRefGroupedResource(EntityComponent.CityResoureIndex.food);
-                food = res_food.amount >= res_food.goalBuffer - 50;
+                food = res_food.amount >= res_food.stockPileLimit - 50;
             }
             else
             {
@@ -321,12 +321,16 @@ namespace VikingEngine.DSSWars.Conscript
             content.Add(new RbImage(icon));
             content.hspace();
             //ItemResourceType weaponitem = ConscriptProfile.WeaponItem(profile.weapon);
-            content.Add(new RbImage(ResourceLib.Icon(weaponItem)));
+            IconName.Item(weaponItem, out var weaponIcon, out var weaponName);
+            
+
+            content.Add(new RbImage(weaponIcon));
 
             if (profile.armorLevel != ItemResourceType.NONE)
             {
+                IconName.Item(armorItem, out var armorIcon, out var armorName);
                 //ItemResourceType armoritem = ConscriptProfile.ArmorItem(profile.armorLevel);
-                content.Add(new RbImage(ResourceLib.Icon(armorItem)));
+                content.Add(new RbImage(armorIcon));
             }
             content.Add(new RbImage((SpriteName)((int)SpriteName.WarsUnitLevelMinimal + (int)profile.training)));
 

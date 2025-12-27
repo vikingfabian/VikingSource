@@ -1584,7 +1584,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_FertileGround_Description => "作物の収穫量が増えます";
         public override string CityCulture_Archers_Description => "熟練した弓兵を生産します";
         public override string CityCulture_Warriors_Description => "熟練した近接戦闘兵を生産します";
-        public override string CityCulture_AnimalBreeder_Description => "動物がより多くの資源を提供します";
+        //public override string CityCulture_AnimalBreeder_Description => "動物がより多くの資源を提供します";
         public override string CityCulture_Miners_Description => "鉱石の採掘量が増えます";
         public override string CityCulture_Woodcutters_Description => "木材の生産量が増えます";
         public override string CityCulture_Builders_Description => "建設が速くなります";

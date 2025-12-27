@@ -323,9 +323,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbImage(ResourceLib.Icon(resourceType)));
+                IconName.Item(resourceType, out SpriteName itemIcon, out string itemName);
+                content.Add(new RbImage(itemIcon));
                 content.hspace();
-                var text = new RbText($"{LangLib.Item(resourceType)} {has}/{need}");
+                var text = new RbText($"{itemName} {has}/{need}");
 
                 if (payedRecruitCost)
                 {
@@ -410,11 +411,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
             void progressPoint(ItemResourceType resourceType, int has, int need)
             {
+                IconName.Item(resourceType, out SpriteName itemIcon, out string itemName);
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbImage(ResourceLib.Icon(resourceType)));
+                content.Add(new RbImage(itemIcon));
                 content.hspace();
-                var text = new RbText($"{LangLib.Item(resourceType)} {has}/{need}");
+                var text = new RbText($"{itemName} {has}/{need}");
 
                 if (payedBuildCost)
                 {

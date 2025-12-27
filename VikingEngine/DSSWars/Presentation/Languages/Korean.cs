@@ -1599,7 +1599,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_FertileGround_Description => "작물 생산량이 증가합니다.";
         public override string CityCulture_Archers_Description => "숙련된 궁수를 양성합니다.";
         public override string CityCulture_Warriors_Description => "숙련된 근접 전사를 양성합니다.";
-        public override string CityCulture_AnimalBreeder_Description => "가축에서 더 많은 자원을 얻습니다.";
+        //public override string CityCulture_AnimalBreeder_Description => "가축에서 더 많은 자원을 얻습니다.";
         public override string CityCulture_Miners_Description => "광석 채굴량이 증가합니다.";
         public override string CityCulture_Woodcutters_Description => "벌목 효율이 증가합니다.";
         public override string CityCulture_Builders_Description => "건설 속도가 빨라집니다.";

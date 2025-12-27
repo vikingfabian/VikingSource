@@ -2600,6 +2600,11 @@ namespace VikingEngine
         WarsWorkerSub,
         WarsServiceMen,
         WarsServiceMenTotal,
+
+        WarsSoldierMan,
+        WarsSoldierGroup,
+        WarsNobelman,
+
         WarsGuardPostIcon,
         WarsHammer,
         WarsHammerAdd,
@@ -2682,6 +2687,18 @@ namespace VikingEngine
         WarsBuild_HempFarms,
         WarsBuild_PigPen,
         WarsBuild_HenPen,
+
+        WarsBuild_OxenPen,
+        WarsBuild_KineOxenPen,
+
+        WarsBuild_DogCage,
+        WarsBuild_HoundCage,
+
+        WarsBuild_PonyPen,
+        WarsBuild_HorsePen,
+        WarsBuild_WarHorsePen,
+        WarsBuild_DraftHorsePen,
+
         WarsBuild_Statue,
         WarsBuild_Carpenter,
         WarsBuild_Nobelhouse,
@@ -2739,6 +2756,19 @@ namespace VikingEngine
         WarsBuild_GuardOffice,
         WarsBuild_GuardOfficeLarge,
 
+        WarsBuild_MaterialStorage,
+        WarsBuild_FoodStorage,
+        WarsBuild_WeaponStorage,
+        WarsBuild_ArmorStorage,
+        WarsBuild_AnimalStorage,
+
+        WarsBuild_Smoker,
+        WarsBuild_Pottery,
+        WarsBuild_Butcher,
+        WarsBuild_DryingPan,
+        WarsBuild_Shieldmaker,
+        WarsBuild_Dryer,
+
         WarsBuild_Tent,
         WarsBuild_ResearchCenter,
         WarsBuild_Bookpress,
@@ -2757,10 +2787,27 @@ namespace VikingEngine
         WarsFlagType_Streamer,
         WarsFlagType_Triangle,
 
-        WarsResource_BronzeArmor,
         WarsResource_PaddedArmor,
+        WarsResource_HeavyPaddedArmor,
+        WarsResource_BronzeArmor,
         WarsResource_IronArmor,
+        WarsResource_HeavyIronArmor,
+        WarsResource_LightPlateArmor,
         WarsResource_FullPlateArmor,
+        WarsResource_MithrilArmor,
+
+        WarsResource_MountPaddedArmor,
+        WarsResource_MountHeavyPaddedArmor,
+        WarsResource_MountBronzeArmor,
+        WarsResource_MountIronArmor,
+        WarsResource_MountHeavyIronArmor,
+        WarsResource_MountLightPlateArmor,
+        WarsResource_MountFullPlateArmor,
+        WarsResource_MountMithrilArmor,
+
+
+        WarsResource_BucklerShield, WarsResource_RoundShield, WarsResource_HeaterShield, WarsResource_TowerShield,
+
         WarsResource_Sharpstick,
         WarsResource_Pike,
         WarsResource_Sword,
@@ -2780,18 +2827,24 @@ namespace VikingEngine
         WarsResource_IronOre,
         WarsResource_GoldOre,
         WarsResource_RawFood,
+        WarsResource_RawFoodRemove,
         WarsResource_Food,
         WarsResource_FoodAdd,
         WarsResource_FoodSub,
         WarsResource_FoodEmpty,
+        WarsResource_Salt,
+        WarsResource_ConservedFood,
+        
         WarsIcon_Resources,
         WarsResource_Wood,
         WarsResource_Fuel,
         WarsResource_Wheat,
         WarsResource_Linen,
+        WarsResource_Clay,
         WarsResource_Egg,
         WarsResource_RawMeat,
         WarsResource_Stone,
+        WarsResource_Brick,
         WarsResource_Water,
         WarsResource_WaterAdd,        
         WarsResource_SkinAndLinen,
@@ -2801,6 +2854,36 @@ namespace VikingEngine
         WarsResource_Rapeseed,
         WarsResource_Hemp,
         WarsResource_Palisade,
+
+        WarsResource_Hen,
+        WarsResource_Pig,
+        WarsResource_Oxen,
+        WarsResource_KineOxen,
+
+        WarsResource_Dog,
+        WarsResource_Hound,
+
+        WarsResource_Pony,
+        WarsResource_Horse,
+        WarsResource_WarHorse,
+        WarsResource_DraftHorse,
+
+        WarsResource_WildPig,
+        WarsResource_WildHog,
+        WarsResource_WarHog,
+        WarsResource_StagHog,
+
+        WarsResource_Wolf,
+        WarsResource_Warg,
+        WarsResource_AlphaWarg,
+
+        WarsResource_WildCat,
+        WarsResource_Lion,
+        WarsResource_WarLion,
+
+        WarsResource_Elephant,
+        WarsResource_WarElephant,
+        WarsResource_Oliphant,
 
         WarsResource_Crossbow,
         WarsResource_Sulfur,
@@ -2812,6 +2895,7 @@ namespace VikingEngine
         WarsWoodCraftIcon,
         WarsFletcherArrowIcon,
 
+        WarsResource_Container,
         WarsResource_Wagon2Wheel,
         WarsResource_Wagon4Wheel,
         WarsResource_WagonClosed,
@@ -2822,16 +2906,14 @@ namespace VikingEngine
         WarsResource_HandSpear,
         WarsResource_Longsword,
         WarsResource_Steel,
-        WarsResource_HeavyIronArmor,
-        WarsResource_LightPlateArmor,
-        WarsResource_MithrilArmor,
+        
         WarsResource_BloomeryIron,
         WarsResource_MithrilAlloy,
         WarsResource_Bronze,
         WarsResource_SilverOre,
         WarsResource_Ox,
         WarsResource_BronzeSword,
-        WarsResource_HeavyPaddedArmor,
+        
         WarsResource_ThrowSpear,
         WarsResource_Slingshot,
         WarsResource_BronzeShotgun,

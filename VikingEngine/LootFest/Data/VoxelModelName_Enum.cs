@@ -253,6 +253,8 @@ namespace VikingEngine.LootFest
         city_barracks,
         city_mine,
         city_workstation,
+        city_meatstation,
+        city_storage,
         city_carpenter,
         city_nobelhouse,
         city_tent,

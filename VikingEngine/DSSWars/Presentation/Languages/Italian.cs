@@ -1605,7 +1605,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_FertileGround_Description => "I raccolti producono di più.";
         public override string CityCulture_Archers_Description => "Forma arcieri esperti.";
         public override string CityCulture_Warriors_Description => "Forma abili combattenti corpo a corpo.";
-        public override string CityCulture_AnimalBreeder_Description => "Gli animali forniscono più risorse.";
+        //public override string CityCulture_AnimalBreeder_Description => "Gli animali forniscono più risorse.";
         public override string CityCulture_Miners_Description => "Le miniere estraggono più minerali.";
         public override string CityCulture_Woodcutters_Description => "Gli alberi forniscono più legno.";
         public override string CityCulture_Builders_Description => "Costruzioni più rapide.";

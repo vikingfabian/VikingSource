@@ -45,7 +45,8 @@ namespace VikingEngine.DSSWars.GameObject
                 text, textCol, ImageLayers.Lay0, false);
             Vector2 sz = value.MeasureText();
 
-            Graphics.Image img = new Graphics.Image(ResourceLib.Icon(item), new Vector2( sz.X, 0), new Vector2(sz.Y),
+            IconName.Item(item, out SpriteName itemIcon, out string itemName);
+            Graphics.Image img = new Graphics.Image(itemIcon, new Vector2( sz.X, 0), new Vector2(sz.Y),
                 ImageLayers.Lay0, false, false);
 
             sz.X += sz.Y;
@@ -69,10 +70,9 @@ namespace VikingEngine.DSSWars.GameObject
             }
             
             model.createTexture(sz, model.images, null);
-            model.setModelSizeFromTexWidth();
-
-            
+            model.setModelSizeFromTexWidth();            
         }
+
         public override void Time_Update(float time_ms)
         {
             stateTime -= time_ms;
@@ -90,7 +90,6 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 DeleteMe();
             }
-
         }
 
         public override void DeleteMe()

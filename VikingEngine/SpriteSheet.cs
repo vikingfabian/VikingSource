@@ -2167,6 +2167,20 @@ namespace VikingEngine
                 //    add(SpriteName.rtsCardBg, currentIndex, DSSCardSz.X, DSSCardSz.Y);
                 //}
             }
+
+            currentIndex = numTilesWidth * 85;
+            {
+                currentIndex += 5;
+                add(SpriteName.WarsWorker);
+                add(SpriteName.WarsWorkerAdd);
+                add(SpriteName.WarsWorkerSub);
+                add(SpriteName.WarsSoldierMan);
+                add(SpriteName.WarsSoldierGroup);
+                add(SpriteName.WarsNobelman);
+                add(SpriteName.WarsResource_RawFoodRemove);
+
+            }
+
             currentIndex = numTilesWidth * 86;
             {
                 add(SpriteName.WarsHudPopUpButton);
@@ -2256,7 +2270,54 @@ namespace VikingEngine
                 add(SpriteName.WarsHudIconSpeed_Medium);
                 add(SpriteName.UpdatePromo_SnowFlake);
 
+                add(SpriteName.WarsResource_Brick);
+                add(SpriteName.WarsResource_Clay);
+                add(SpriteName.WarsResource_ConservedFood);
+                add(SpriteName.WarsResource_Container);
+                add(SpriteName.WarsResource_Salt);
 
+                add(SpriteName.WarsResource_Hen);
+                add(SpriteName.WarsResource_Pig);
+                add(SpriteName.WarsResource_Oxen);
+                add(SpriteName.WarsResource_KineOxen);
+
+                add(SpriteName.WarsResource_Dog);
+                add(SpriteName.WarsResource_Hound);
+
+                add(SpriteName.WarsResource_Pony);
+                add(SpriteName.WarsResource_Horse);
+                add(SpriteName.WarsResource_WarHorse);
+                add(SpriteName.WarsResource_DraftHorse);
+
+                add(SpriteName.WarsResource_WildPig);
+                add(SpriteName.WarsResource_WildHog);
+                add(SpriteName.WarsResource_WarHog);
+                add(SpriteName.WarsResource_StagHog);
+
+                add(SpriteName.WarsResource_Wolf);
+                add(SpriteName.WarsResource_Warg);
+                add(SpriteName.WarsResource_AlphaWarg);
+
+                add(SpriteName.WarsResource_WildCat);
+                add(SpriteName.WarsResource_Lion);
+                add(SpriteName.WarsResource_WarLion);
+
+                add(SpriteName.WarsResource_Elephant);
+                add(SpriteName.WarsResource_WarElephant);
+                add(SpriteName.WarsResource_Oliphant);
+
+                add(SpriteName.WarsResource_MountPaddedArmor);
+                add(SpriteName.WarsResource_MountHeavyPaddedArmor);
+                add(SpriteName.WarsResource_MountBronzeArmor);
+                add(SpriteName.WarsResource_MountIronArmor);
+                add(SpriteName.WarsResource_MountHeavyIronArmor);
+                add(SpriteName.WarsResource_MountLightPlateArmor);
+                add(SpriteName.WarsResource_MountFullPlateArmor);
+                add(SpriteName.WarsResource_MountMithrilArmor);
+                add(SpriteName.WarsResource_HeaterShield);
+                add(SpriteName.WarsResource_WagonClosed);
+                add(SpriteName.WarsResource_WagonIron);
+                add(SpriteName.WarsResource_WagonSteel);
             }
 
             currentIndex = numTilesWidth * 87;
@@ -2276,6 +2337,30 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_TreeSoft, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_TreeSeedlingHard, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_TreeSeedlingSoft, currentIndex, 3, 3);
+
+                add(SpriteName.WarsBuild_MaterialStorage, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_FoodStorage, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_WeaponStorage, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_ArmorStorage, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_AnimalStorage, currentIndex, 3, 3);
+
+                add(SpriteName.WarsBuild_Smoker, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Pottery, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Butcher, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_DryingPan, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Shieldmaker, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Dryer, currentIndex, 3, 3);
+
+                add(SpriteName.WarsBuild_OxenPen, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_KineOxenPen, currentIndex, 3, 3);
+
+                add(SpriteName.WarsBuild_DogCage, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_HoundCage, currentIndex, 3, 3);
+
+                add(SpriteName.WarsBuild_PonyPen, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_HorsePen, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_WarHorsePen, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_DraftHorsePen, currentIndex, 3, 3);
 
             }
             currentIndex = numTilesWidth * 90;
@@ -2499,7 +2584,12 @@ namespace VikingEngine
                     add(SpriteName.WarsResource_Bow);
                     add(SpriteName.WarsResource_Longbow);
                     add(SpriteName.WarsResource_Mithrilbow);
-                    currentIndex += 5;
+                    currentIndex += 2;
+                    add(SpriteName.WarsResource_BucklerShield); 
+                    add(SpriteName.WarsResource_RoundShield); 
+                    add(SpriteName.WarsResource_TowerShield);
+
+
                     add(SpriteName.WarsResource_Pike);
                     add(SpriteName.WarsDelivery);
                     add(SpriteName.WarsTrade);

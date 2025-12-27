@@ -186,6 +186,8 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.war_workerhut, false);
             loadVoxelModel(VoxelModelName.city_mine, false);
             loadVoxelModel(VoxelModelName.city_workstation, false);
+            loadVoxelModel(VoxelModelName.city_meatstation, false);
+            loadVoxelModel(VoxelModelName.city_storage, false);
 
             loadVoxelModel(VoxelModelName.city_dirtwall, false);
             loadVoxelModel(VoxelModelName.city_dirttower, false);

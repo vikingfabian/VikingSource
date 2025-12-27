@@ -10,12 +10,15 @@ namespace VikingEngine.DSSWars.Map.Settings
 {
     class CityAreaCulture
     {
-        public double land = 0, water = 0, plain = 0, forest = 0, mountain = 0, dryBiom = 0;
+        public double land = 0, water = 0, plain = 0, forest = 0, mountain = 0, frozenBiom = 0, dryBiom = 0, desolateBiom = 0;
         public double percWater;
         public double percForest;
         public double percPlains;
         public double percMountain;
+        public double percFrozen;
         public double percDry;
+        public double percDesolate;
+
         public double worldPercX, worldPercY;
         public CityAreaCulture(City city, WorldData world)
         {
@@ -45,9 +48,19 @@ namespace VikingEngine.DSSWars.Map.Settings
                             ++mountain;
                             break;
                     }
-                    if (tile.biom == BiomType.YellowDry || tile.biom == BiomType.RedDry)
+
+                    switch (tile.biom)
                     {
-                        ++dryBiom;
+                        case BiomType.YellowDry:
+                        case BiomType.RedDry:
+                            ++dryBiom;
+                            break;
+                        case BiomType.DarkLands:
+                            ++desolateBiom;
+                            break;
+                        case BiomType.Frozen:
+                            ++frozenBiom;
+                            break;
                     }
                 }
             }
@@ -56,7 +69,9 @@ namespace VikingEngine.DSSWars.Map.Settings
             percForest = forest / land;
             percPlains = plain / land;
             percMountain = mountain / land;
+            percFrozen = frozenBiom / land;
             percDry = dryBiom / land;
+            percDesolate = desolateBiom / land;
 
             //Collect cultures
             worldPercX = city.tilePos.X / (double)world.Size.X;

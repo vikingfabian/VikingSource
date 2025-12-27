@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.Component;
 using VikingEngine.DSSWars.Players;
@@ -16,6 +17,8 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Data;
+using VikingEngine.LootFest.GO.Characters;
+using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.ToGG.ToggEngine.QueAction;
 
@@ -30,6 +33,8 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.Sword,
             ItemResourceType.LongSword,
             ItemResourceType.HandSpear,
+            ItemResourceType.Warhammer,
+            ItemResourceType.TwoHandSword,
         };
 
         static readonly ItemResourceType[] ArcherWeapons = {
@@ -38,6 +43,7 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.Bow,
             ItemResourceType.LongBow,
             ItemResourceType.Crossbow,
+            ItemResourceType.MithrilBow,
         };
 
         static readonly ItemResourceType[] ArcherGuardWeapons = {
@@ -55,13 +61,13 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.Catapult,
         };
 
-        static readonly ItemResourceType[] NobelWeapons = {
-            ItemResourceType.Warhammer,
-            ItemResourceType.TwoHandSword,
-            ItemResourceType.KnightsLance,
-            ItemResourceType.MithrilSword,
-            ItemResourceType.MithrilBow,
-        };
+        //static readonly ItemResourceType[] NobelWeapons = {
+        //    ItemResourceType.Warhammer,
+        //    ItemResourceType.TwoHandSword,
+        //    ItemResourceType.KnightsLance,
+        //    ItemResourceType.MithrilSword,
+        //    ItemResourceType.MithrilBow,
+        //};
 
         static readonly ItemResourceType[] GunWeapons = {
             ItemResourceType.HandCannon,
@@ -77,6 +83,51 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.ManCannonIron,
         };
 
+        static readonly ItemResourceType[] MenTypes = {
+            ItemResourceType.Men,
+            ItemResourceType.NobelMen,
+        };
+
+        static readonly ItemResourceType[] AnimalTypes = {
+
+            ItemResourceType.Pig,
+            ItemResourceType.Oxen,
+            ItemResourceType.KineOxen,
+
+            ItemResourceType.Dog,
+            ItemResourceType.Hound,
+
+            ItemResourceType.Pony,
+            ItemResourceType.Horse,
+            ItemResourceType.WarHorse,
+            ItemResourceType.DraftHorse,
+
+            ItemResourceType.WildPig,
+            ItemResourceType.WildHog,
+            ItemResourceType.WarHog,
+            ItemResourceType.StagHog,
+
+            ItemResourceType.Wolf,
+            ItemResourceType.Warg,
+            ItemResourceType.AlphaWarg,
+
+            ItemResourceType.WildCat,
+            ItemResourceType.Lion,
+            ItemResourceType.WarLion,
+
+            ItemResourceType.Elephant,
+            ItemResourceType.WarElephant,
+            ItemResourceType.Oliphant,
+        };
+
+        static readonly ItemResourceType[] WagonTypes = {
+            ItemResourceType.Wagon2Wheel,
+            ItemResourceType.Wagon4Wheel,
+            ItemResourceType.WagonClosed,
+            ItemResourceType.WagonIron,
+            ItemResourceType.WagonSteel,
+        };
+
         public static List<ItemResourceType[]> AllConstriptWeapons()
         {
             return new List<ItemResourceType[]>
@@ -84,7 +135,7 @@ namespace VikingEngine.DSSWars.Conscript
                 SoldierWeapons,
                 ArcherWeapons,
                 WarmachineWeapons,
-                NobelWeapons,
+                //NobelWeapons,
                 GunWeapons,
                 CannonWeapons,
             };
@@ -95,7 +146,7 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 SoldierWeapons,
                 ArcherWeapons,
-                NobelWeapons,
+                //NobelWeapons,
                 GunWeapons,
             };
         }
@@ -134,11 +185,11 @@ namespace VikingEngine.DSSWars.Conscript
                         typeName = DssRef.lang.BuildingType_WarmachineBarracks;
                         weapons = WarmachineWeapons;
                         break;
-                    case Build.BuildAndExpandType.KnightsBarracks:
-                        hasGuardOption = false;
-                        typeName = DssRef.lang.BuildingType_KnightsBarracks;
-                        weapons = NobelWeapons;
-                        break;
+                    //case Build.BuildAndExpandType.KnightsBarracks:
+                    //    hasGuardOption = false;
+                    //    typeName = DssRef.lang.BuildingType_KnightsBarracks;
+                    //    weapons = NobelWeapons;
+                    //    break;
                     case Build.BuildAndExpandType.GunBarracks:
                         typeName = DssRef.lang.BuildingType_GunBarracks;
                         weapons = GunWeapons;
@@ -183,8 +234,10 @@ namespace VikingEngine.DSSWars.Conscript
                 
                 foreach (var weapon in weapons)
                 {
+                    IconName.Item(weapon, out SpriteName weaponicon, out _);
+
                     var buttonContent = new List<AbsRichBoxMember>(3) {
-                        new RbImage(ResourceLib.Icon(weapon)),
+                        new RbImage(weaponicon),
                     };
 
                     if (city.GetGroupedResource(weapon).amount >= menCostNext)
@@ -228,7 +281,8 @@ namespace VikingEngine.DSSWars.Conscript
                     }
                     if (armorLvl != ItemResourceType.NONE)
                     {
-                        buttonContent.Add(new RbImage(ResourceLib.Icon(armorLvl)));
+                        IconName.Item(armorLvl, out SpriteName armoricon, out _);
+                        buttonContent.Add(new RbImage(armoricon));
                     }
                     
                     var button = new ArtOption(armorLvl == currentStatus.profile.armorLevel,buttonContent,
@@ -241,7 +295,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                 HudLib.Label(content, DssRef.lang.Conscript_TrainingTitle);
                 content.newLine();
-                TrainingLevel minLevel = currentStatus.type == Build.BuildAndExpandType.KnightsBarracks ? TrainingLevel.Basic : TrainingLevel.Minimal;
+                TrainingLevel minLevel = currentStatus.profile.man == ItemResourceType.NobelMen ? TrainingLevel.Basic : TrainingLevel.Minimal;
 
                 TrainingLevel maxLevel = currentStatus.maxTrainingLevel;
                 if (city.Culture == CityCulture.CrabMentality)
@@ -439,14 +493,17 @@ namespace VikingEngine.DSSWars.Conscript
                                 caption = DssRef.lang.Conscript_Soldiers_ArmyType;
                             }
 
+                            IconName.Item(currentProfile.profile.weapon, out SpriteName weaponicon, out _);
+                            IconName.Item(currentProfile.profile.armorLevel, out SpriteName armoricon, out _);
+
                             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>(){
                                 new RbImage(icon),
                                 new RbSpace(),
                                 new RbText(caption, HudLib.TitleColor_Label_Dark),
                                 new RbSpace(),
                                 new RbImage(LangLib.Training_Icon(currentProfile.profile.training)),
-                                new RbImage(ResourceLib.Icon(currentProfile.profile.weapon)),
-                                new RbImage(ResourceLib.Icon(currentProfile.profile.armorLevel)),
+                                new RbImage(weaponicon),
+                                new RbImage(armoricon),
 
                                 new RbNewLine(),
                                  new RbText(currentProfile.shortActiveString(), HudLib.InfoYellow_Dark),
@@ -584,7 +641,8 @@ namespace VikingEngine.DSSWars.Conscript
                 bool available = hasResource >= needResource;
                 content.Add(new RbImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
                 content.space();
-                SpriteName icon = ResourceLib.Icon(resource);
+                //SpriteName icon = ResourceLib.Icon(resource);
+                IconName.Item(resource, out SpriteName icon, out string name);
 
                 if (icon != SpriteName.NO_IMAGE)
                 {
@@ -593,7 +651,7 @@ namespace VikingEngine.DSSWars.Conscript
                 }
 
                 string text = string.Format(DssRef.lang.Hud_Purchase_ResourceCostOfAvailable,
-                    LangLib.Item(resource), TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
+                    name, TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
 
                 content.Add(new RbText(text, HudLib.ResourceCostColor(available)));
             }
@@ -650,7 +708,8 @@ namespace VikingEngine.DSSWars.Conscript
             
             var data = new SoldierConscriptProfile() { conscript = new ConscriptProfile() { weapon = weapon } }.init();
 
-            content.h1(LangLib.Item(weapon), HudLib.TitleColor_Head);
+            IconName.Item(weapon, out SpriteName weaponicon, out string weaponname);
+            content.h1(weaponname, HudLib.TitleColor_Head);
             content.newLine();
             content.Add(new RbImage(SpriteName.warsArmyTag_Hit));
             content.space();
@@ -702,8 +761,8 @@ namespace VikingEngine.DSSWars.Conscript
         void armorTooltip(RichBoxContent content, object tag)
         {
             ItemResourceType armor = (ItemResourceType)tag;
-
-            content.h1(LangLib.Item(armor), HudLib.TitleColor_Head);
+            IconName.Item(armor, out SpriteName armoricon, out string armorname);
+            content.h1(armorname, HudLib.TitleColor_Head);
             content.newLine();
             content.Add(new RbImage(SpriteName.warsArmyTag_Shield));
             content.Add(new RbSpace());

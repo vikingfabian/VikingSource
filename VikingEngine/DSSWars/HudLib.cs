@@ -302,6 +302,25 @@ namespace VikingEngine.DSSWars
             null, tooltip));
 
         }
+
+        public static void butcherBlueprintButton(City city, LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint)
+        {
+
+            content.Add(new RbTab(0.65f));//roomForAnotherButton? 0.65f : 0.8f));
+
+            var tooltip = new RbTooltip(blueprintTooltip, new BlueprintTooltipArgs()
+            {
+                blueprint = blueprint,
+                //optionalBp = optionalBp,
+                city = city.myIndex,
+            });
+
+            content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.MissingImage)
+            },
+            null, tooltip));
+
+        }
         class BlueprintTooltipArgs
         {
             public CraftBlueprint blueprint;
@@ -385,16 +404,17 @@ namespace VikingEngine.DSSWars
 
         public static void ResourceCost(RichBoxContent content, ItemResourceType resource, int needResource, int hasResource)
         {
-            SpriteName icon = ResourceLib.Icon( resource);
+            //SpriteName icon = ResourceLib.Icon( resource);
+            IconName.Item(resource, out SpriteName itemIcon, out string itemName);
 
-            if (icon != SpriteName.NO_IMAGE)
+            if (itemIcon != SpriteName.NO_IMAGE)
             {
-                content.Add(new RbImage(icon));
+                content.Add(new RbImage(itemIcon));
                 content.space(0.5f);
             }
 
             string text = string.Format(DssRef.lang.Hud_Purchase_ResourceCostOfAvailable,
-                LangLib.Item(resource), TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
+                itemName, TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
 
             content.Add(new RbText(text, ResourceCostColor(hasResource >= needResource)));
         }

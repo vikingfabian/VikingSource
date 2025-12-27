@@ -5,10 +5,15 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.Graphics;
+using VikingEngine.PJ.GameState;
 using VikingEngine.ToGG;
+using VikingEngine.ToGG.HeroQuest.Data.UnitAction;
+using VikingEngine.ToGG.HeroQuest.GO;
 using VikingEngine.ToGG.ToggEngine.Map;
 
 namespace VikingEngine.DSSWars.Build
@@ -59,7 +64,7 @@ namespace VikingEngine.DSSWars.Build
         GunBarracks,
         CannonBarracks,
 
-        KnightsBarracks,
+        //KnightsBarracks,
 
         Smelter,
         Foundry,
@@ -134,6 +139,7 @@ namespace VikingEngine.DSSWars.Build
         TreeSoft,
         TreeHard,
 
+        
         StonesMine,
         CoalMine,
         StoneBlockMine,
@@ -147,8 +153,50 @@ namespace VikingEngine.DSSWars.Build
         SulfurMine,
         WorkerTent,
 
+        //New
+        SaltMine,
+
+        Pottery,
+        DryingPan,
+        Butcher,
+        Smoker,
+        Dryer,
+
+        MaterialStorage, FoodStorage,  WeaponStorage, ArmorStorage, AnimalStorage,
+        Cesspit,
+
+        ShieldMaker,
+
+        OxenPen,
+        KineOxenPen,
+
+        DogCage,
+        HoundCage,
+
+        PonyPen,
+        HorsePen,
+        WarHorsePen,
+        DraftHorsePen,
+        WildPigPen,
+        WildHogPen,
+        WarHogPen,
+        StagHogPen,
+        WolfCage,
+        WargCage,
+        AlphaWargCage,
+        WildCatCage,
+        LionCage,
+        WarLionCage,
+        ElephantCage,
+        WarElephantCage,
+        OliphantCage,
+
         NUM_NONE,
         ALL,
+
+        LogisticsLevel1,
+        LogisticsLevel2,
+
     }
     static class BuildLib
     {
@@ -223,7 +271,7 @@ namespace VikingEngine.DSSWars.Build
 
             list.Add(BuildAndExpandType.ServiceHouse_Small);
             if (logistics1)
-            {                
+            {
                 list.Add(BuildAndExpandType.ServiceHouse_Large);
             }
 
@@ -241,7 +289,7 @@ namespace VikingEngine.DSSWars.Build
             {
                 list.Add(BuildAndExpandType.WheatFarmUpgraded);
             }
-            
+
             list.Add(BuildAndExpandType.LinenFarm);
             if (unlocks.building_upgradedFarm)
             {
@@ -259,13 +307,62 @@ namespace VikingEngine.DSSWars.Build
                 {
                     list.Add(BuildAndExpandType.HempFarmUpgraded);
                 }
-                list.Add(BuildAndExpandType.PigPen);
+                //list.Add(BuildAndExpandType.PigPen);
             }
 
             if (logistics1)
             {
-                list.Add(BuildAndExpandType.HenPen);
+                // --- Existing ---
+                addAnimalPen(BuildAndExpandType.HenPen, CityResoureIndex.Hen, city.buildingStructure.HenPen_count);
+                addAnimalPen(BuildAndExpandType.PigPen, CityResoureIndex.Pig, city.buildingStructure.PigPen_count);
+
+                // --- Oxen ---
+                addAnimalPen(BuildAndExpandType.OxenPen, CityResoureIndex.Oxen, city.buildingStructure.OxenPen_count);
+                addAnimalPen(BuildAndExpandType.KineOxenPen, CityResoureIndex.KineOxen, city.buildingStructure.KineOxenPen_count);
+
+                // --- Dogs ---
+                addAnimalPen(BuildAndExpandType.DogCage, CityResoureIndex.Dog, city.buildingStructure.DogCage_count);
+                addAnimalPen(BuildAndExpandType.HoundCage, CityResoureIndex.Hound, city.buildingStructure.HoundCage_count);
+
+                // --- Horses ---
+                addAnimalPen(BuildAndExpandType.PonyPen, CityResoureIndex.Pony, city.buildingStructure.PonyPen_count);
+                addAnimalPen(BuildAndExpandType.HorsePen, CityResoureIndex.Horse, city.buildingStructure.HorsePen_count);
+                addAnimalPen(BuildAndExpandType.WarHorsePen, CityResoureIndex.WarHorse, city.buildingStructure.WarHorsePen_count);
+                addAnimalPen(BuildAndExpandType.DraftHorsePen, CityResoureIndex.DraftHorse, city.buildingStructure.DraftHorsePen_count);
+
+                // --- Wild Pigs / Hogs ---
+                if (biomRequirement(CityBiom.Mountain))
+                {
+                    addAnimalPen(BuildAndExpandType.WildPigPen, CityResoureIndex.WildPig, city.buildingStructure.WildPigPen_count);
+                    addAnimalPen(BuildAndExpandType.WildHogPen, CityResoureIndex.WildHog, city.buildingStructure.WildHogPen_count);
+                    addAnimalPen(BuildAndExpandType.WarHogPen, CityResoureIndex.WarHog, city.buildingStructure.WarHogPen_count);
+                    addAnimalPen(BuildAndExpandType.StagHogPen, CityResoureIndex.StagHog, city.buildingStructure.StagHogPen_count);
+                }
+
+                // --- Wolves ---
+                if (biomRequirement(CityBiom.Desolate))
+                {
+                    addAnimalPen(BuildAndExpandType.WolfCage, CityResoureIndex.Wolf, city.buildingStructure.WolfCage_count);
+                    addAnimalPen(BuildAndExpandType.WargCage, CityResoureIndex.Warg, city.buildingStructure.WargCage_count);
+                    addAnimalPen(BuildAndExpandType.AlphaWargCage, CityResoureIndex.AlphaWarg, city.buildingStructure.AlphaWargCage_count);
+                }
+
+                // --- Cats ---
+                if (biomRequirement(CityBiom.Forest))
+                {
+                    addAnimalPen(BuildAndExpandType.WildCatCage, CityResoureIndex.WildCat, city.buildingStructure.WildCatCage_count);
+                    addAnimalPen(BuildAndExpandType.LionCage, CityResoureIndex.Lion, city.buildingStructure.LionCage_count);
+                    addAnimalPen(BuildAndExpandType.WarLionCage, CityResoureIndex.WarLion, city.buildingStructure.WarLionCage_count);
+                }
+                // --- Elephants ---
+                if (biomRequirement(CityBiom.Desert))
+                {
+                    addAnimalPen(BuildAndExpandType.ElephantCage, CityResoureIndex.Elephant, city.buildingStructure.ElephantCage_count);
+                    addAnimalPen(BuildAndExpandType.WarElephantCage, CityResoureIndex.WarElephant, city.buildingStructure.WarElephantCage_count);
+                    addAnimalPen(BuildAndExpandType.OliphantCage, CityResoureIndex.Oliphant, city.buildingStructure.OliphantCage_count);
+                }
             }
+
 
             if (city.buildingStructure.WoodCutter_count > 0 ||
                 unlockAll)
@@ -287,7 +384,7 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.Bank);
                 if (city.buildingStructure.Bank_count > 0 ||
                     unlockAll)
-                {                    
+                {
                     list.Add(BuildAndExpandType.CoinMinter);
                 }
             }
@@ -306,8 +403,15 @@ namespace VikingEngine.DSSWars.Build
                 {
                     list.Add(BuildAndExpandType.GoldDeliveryLvl1);
                     list.Add(BuildAndExpandType.GoldDeliveryLvl2);
-                    list.Add(BuildAndExpandType.GoldDeliveryLvl3);                    
+                    list.Add(BuildAndExpandType.GoldDeliveryLvl3);
                 }
+
+                list.Add(BuildAndExpandType.MaterialStorage);
+                list.Add(BuildAndExpandType.FoodStorage);
+                list.Add(BuildAndExpandType.WeaponStorage);
+                list.Add(BuildAndExpandType.ArmorStorage);
+                list.Add(BuildAndExpandType.AnimalStorage);
+                list.Add(BuildAndExpandType.Cesspit);
 
                 list.Add(BuildAndExpandType.Storehouse);
                 list.Add(BuildAndExpandType.Tavern);
@@ -316,15 +420,31 @@ namespace VikingEngine.DSSWars.Build
 
                 list.Add(BuildAndExpandType.CoalPit);
             }
-            
-            
+
+
             list.Add(BuildAndExpandType.WorkBench);
+
+            if (logistics1)
+            {
+                list.Add(BuildAndExpandType.Butcher);
+                list.Add(BuildAndExpandType.Smoker);
+
+                if (biomRequirement(CityBiom.Desert))
+                {
+                    list.Add(BuildAndExpandType.Dryer);
+                    list.Add(BuildAndExpandType.DryingPan);
+                }
+            }
             list.Add(BuildAndExpandType.Cook);
             list.Add(BuildAndExpandType.Smelter);
             list.Add(BuildAndExpandType.Foundry);
             list.Add(BuildAndExpandType.Smith);
 
             list.Add(BuildAndExpandType.Carpenter);
+            if (logistics1)
+            {
+                list.Add(BuildAndExpandType.Pottery);
+            }
             if (unlocks.building_chemist)
             {
                 list.Add(BuildAndExpandType.Chemist);                
@@ -334,8 +454,12 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.Gunmaker);
             }
 
-            list.Add(BuildAndExpandType.Armory);    
-            
+            if (logistics1)
+            {
+                list.Add(BuildAndExpandType.Armory);
+                list.Add(BuildAndExpandType.ShieldMaker);
+            }
+        
             list.Add(BuildAndExpandType.SoldierBarracks);
             list.Add(BuildAndExpandType.ArcherBarracks);
 
@@ -355,11 +479,11 @@ namespace VikingEngine.DSSWars.Build
 
             if (logistics1)
             {
-                if (city.buildingStructure.Nobelhouse_count > 0 ||
-                    unlockAll)
-                {
-                    list.Add(BuildAndExpandType.KnightsBarracks);
-                }
+                //if (city.buildingStructure.Nobelhouse_count > 0 ||
+                //    unlockAll)
+                //{
+                //    list.Add(BuildAndExpandType.KnightsBarracks);
+                //}
                     
                 list.Add(BuildAndExpandType.WoodCutter);
                 list.Add(BuildAndExpandType.StoneCutter);
@@ -446,6 +570,21 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.SulfurMine);
             }
 
+
+            void addAnimalPen(BuildAndExpandType build, int cityResourceType, int buildingCount) 
+            {
+                if (
+                    (logistics1 && (buildingCount > 0 || city.GetGroupedResource(cityResourceType).amount > 0)) || 
+                    StartupSettings.UnlockAllProgress)
+                {
+                    list.Add(build);
+                }
+            }
+
+            bool biomRequirement(CityBiom biom)
+            {
+                return biom == CityBiom.None || city.Biom == biom || StartupSettings.UnlockAllProgress;
+            }
         }
 
 
@@ -547,12 +686,14 @@ namespace VikingEngine.DSSWars.Build
                 { altBlueprint = CraftBuildingLib.Brewery_Bronze };
 
             new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, SpriteName.WarsBuild_PigPen, CraftBuildingLib.PigPen, true,
-                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.Resources,
-                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.Resources,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
 
             new BuildOption(BuildAndExpandType.HenPen, TerrainMainType.Building, (int)TerrainBuildingType.HenPen, SpriteName.WarsBuild_HenPen, CraftBuildingLib.HenPen, true,
-                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
-                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
 
             new BuildOption(BuildAndExpandType.Cook, TerrainMainType.Building, (int)TerrainBuildingType.Work_Cook, SpriteName.WarsBuild_Cook, CraftBuildingLib.Cook, true,
                 BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
@@ -576,15 +717,15 @@ namespace VikingEngine.DSSWars.Build
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default) { altBlueprint = CraftBuildingLib.Carpenter_Bronze };
 
             new BuildOption(BuildAndExpandType.WheatFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarm, true, 
-                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.WheatFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarmUpgraded, SpriteName.WarsBuild_WheatFarms, CraftBuildingLib.WheatFarmUpgrade, true, 
-                BuildCategoryTab.Upgrade, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarm, true, 
-                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, 
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, 
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.LinenFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarmUpgraded, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarmUpgrade, true, 
@@ -592,7 +733,7 @@ namespace VikingEngine.DSSWars.Build
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.HempFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarm, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarm, true, 
-                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.Fuel, 
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.Fuel, 
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.HempFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarmUpgraded, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarmUpgrade, true, 
@@ -600,19 +741,19 @@ namespace VikingEngine.DSSWars.Build
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarm, true, 
-                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Fuel, BuildFilterTag.NUM_NONE, 
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Fuel, BuildFilterTag.NUM_NONE, 
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.RapeSeedFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarmUpgraded, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarmUpgrade, true, 
-                BuildCategoryTab.Upgrade, BuildFilterTag.Farm, BuildFilterTag.Fuel, BuildFilterTag.NUM_NONE, 
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Fuel, BuildFilterTag.NUM_NONE, 
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.TreeSeedlingSoft, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeSoftSprout, SpriteName.WarsBuild_TreeSeedlingSoft, CraftBuildingLib.TreeSeedlingSoft, false,
-                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.TreeSeedlingHard, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeHardSprout, SpriteName.WarsBuild_TreeSeedlingHard, CraftBuildingLib.TreeSeedlingHard, false,
-               BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
+               BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
 
@@ -652,7 +793,7 @@ namespace VikingEngine.DSSWars.Build
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.Armory, TerrainMainType.Building, (int)TerrainBuildingType.Armory, SpriteName.WarsBuild_Armory, CraftBuildingLib.Armory, true, 
-                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Weapons, BuildFilterTag.NUM_NONE, 
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Weapons, BuildFilterTag.Soldiers, 
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.WoodCutter, TerrainMainType.Building, (int)TerrainBuildingType.WoodCutter, SpriteName.WarsBuild_WoodCutter, CraftBuildingLib.WoodCutter, false, 
@@ -695,9 +836,9 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, 
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.KnightsBarracks, TerrainMainType.Building, (int)TerrainBuildingType.KnightsBarracks, SpriteName.WarsBuild_KnightBarrack, CraftBuildingLib.KnightsBarracks, true, 
-                BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, 
-                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            //new BuildOption(BuildAndExpandType.KnightsBarracks, TerrainMainType.Building, (int)TerrainBuildingType.KnightsBarracks, SpriteName.WarsBuild_KnightBarrack, CraftBuildingLib.KnightsBarracks, true, 
+            //    BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.NUM_NONE, 
+            //    MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.Foundry, TerrainMainType.Building, (int)TerrainBuildingType.Foundry, SpriteName.WarsBuild_Foundry, CraftBuildingLib.Foundry, true, 
                 BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE, 
@@ -866,9 +1007,9 @@ namespace VikingEngine.DSSWars.Build
               MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             // Mines
-            new BuildOption(BuildAndExpandType.StonesMine, TerrainMainType.Mine, (int)TerrainMineType.Stones, SpriteName.WarsResource_Stone, CraftBuildingLib.StonesMine, false,
-              BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
-              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            //new BuildOption(BuildAndExpandType.StonesMine, TerrainMainType.Mine, (int)TerrainMineType.Stones, SpriteName.WarsResource_Stone, CraftBuildingLib.StonesMine, false,
+            //  BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+            //  MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.CoalMine, TerrainMainType.Mine, (int)TerrainMineType.Coal, SpriteName.WarsResource_Fuel, CraftBuildingLib.CoalMine, false,
               BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
@@ -911,7 +1052,189 @@ namespace VikingEngine.DSSWars.Build
               MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
 
+            // SaltMine
+            new BuildOption(BuildAndExpandType.SaltMine, TerrainMainType.Mine, (int)TerrainMineType.Salt, SpriteName.WarsResource_Salt, CraftBuildingLib.SaltMine, false,
+              BuildCategoryTab.GodPower, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
+              MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            //    Pottery,
+            new BuildOption(BuildAndExpandType.Pottery, TerrainMainType.Building, (int)TerrainBuildingType.Pottery, SpriteName.WarsBuild_Pottery, CraftBuildingLib.Pottery, true,
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Storage, BuildFilterTag.Resources,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
+            new BuildOption(BuildAndExpandType.ShieldMaker, TerrainMainType.Building, (int)TerrainBuildingType.ShieldMaker, SpriteName.WarsBuild_Shieldmaker, CraftBuildingLib.ShieldMaker, true,
+               BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Weapons, BuildFilterTag.Soldiers,
+               MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            //DryingPan,
+            new BuildOption(BuildAndExpandType.DryingPan, TerrainMainType.Building, (int)TerrainBuildingType.DryingPan, SpriteName.WarsBuild_DryingPan, CraftBuildingLib.DryingPan, true,
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            //Butcher,
+            new BuildOption(BuildAndExpandType.Butcher, TerrainMainType.Building, (int)TerrainBuildingType.Butcher, SpriteName.WarsBuild_Butcher, CraftBuildingLib.Butcher, true,
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            //Smoker,
+            new BuildOption(BuildAndExpandType.Smoker, TerrainMainType.Building, (int)TerrainBuildingType.Smoker, SpriteName.WarsBuild_Smoker, CraftBuildingLib.Smoker, true,
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            //Dryer,
+            new BuildOption(BuildAndExpandType.Dryer, TerrainMainType.Building, (int)TerrainBuildingType.Dryer, SpriteName.WarsBuild_Dryer, CraftBuildingLib.Dryer, true,
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.MaterialStorage, TerrainMainType.Building, (int)TerrainBuildingType.MaterialStorage, SpriteName.WarsBuild_MaterialStorage, CraftBuildingLib.MaterialStorage, true,
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            //FoodStorage
+            new BuildOption(BuildAndExpandType.FoodStorage, TerrainMainType.Building, (int)TerrainBuildingType.FoodStorage, SpriteName.WarsBuild_FoodStorage, CraftBuildingLib.FoodStorage, true,
+                BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            //WeaponStorage
+            new BuildOption(BuildAndExpandType.WeaponStorage, TerrainMainType.Building, (int)TerrainBuildingType.WeaponStorage, SpriteName.WarsBuild_WeaponStorage, CraftBuildingLib.WeaponStorage, true,
+                BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            //ArmorStorage
+            new BuildOption(BuildAndExpandType.ArmorStorage, TerrainMainType.Building, (int)TerrainBuildingType.ArmorStorage, SpriteName.WarsBuild_ArmorStorage, CraftBuildingLib.ArmorStorage, true,
+                BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            //AnimalStorage
+            new BuildOption(BuildAndExpandType.AnimalStorage, TerrainMainType.Building, (int)TerrainBuildingType.AnimalStorage, SpriteName.WarsBuild_AnimalStorage, CraftBuildingLib.AnimalStorage, true,
+                BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            
+            new BuildOption(BuildAndExpandType.Cesspit, TerrainMainType.Building, (int)TerrainBuildingType.Cesspit, SpriteName.MissingImage, CraftBuildingLib.Cesspit, true,
+                            BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
+                            MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
+
+            //OxenPen
+            new BuildOption(BuildAndExpandType.OxenPen, TerrainMainType.Building, (int)TerrainBuildingType.OxenPen, SpriteName.MissingImage, CraftBuildingLib.OxenPen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            //KineOxenPen
+            new BuildOption(BuildAndExpandType.KineOxenPen, TerrainMainType.Building, (int)TerrainBuildingType.KineOxenPen, SpriteName.MissingImage, CraftBuildingLib.KineOxenPen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            //DogCage
+            new BuildOption(BuildAndExpandType.DogCage, TerrainMainType.Building, (int)TerrainBuildingType.DogCage, SpriteName.MissingImage, CraftBuildingLib.DogCage, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            //HoundCage
+            new BuildOption(BuildAndExpandType.HoundCage, TerrainMainType.Building, (int)TerrainBuildingType.HoundCage, SpriteName.MissingImage, CraftBuildingLib.HoundCage, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            //PonyPen
+            new BuildOption(BuildAndExpandType.PonyPen, TerrainMainType.Building, (int)TerrainBuildingType.PonyPen, SpriteName.MissingImage, CraftBuildingLib.PonyPen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            //HorsePen
+            new BuildOption(BuildAndExpandType.HorsePen, TerrainMainType.Building, (int)TerrainBuildingType.HorsePen, SpriteName.MissingImage, CraftBuildingLib.HorsePen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            //WarHorsePen
+            new BuildOption(BuildAndExpandType.WarHorsePen, TerrainMainType.Building, (int)TerrainBuildingType.WarHorsePen, SpriteName.MissingImage, CraftBuildingLib.WarHorsePen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            //DraftHorsePen
+            new BuildOption(BuildAndExpandType.DraftHorsePen, TerrainMainType.Building, (int)TerrainBuildingType.DraftHorsePen, SpriteName.MissingImage, CraftBuildingLib.DraftHorsePen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            //WildPigPen
+            new BuildOption(BuildAndExpandType.WildPigPen, TerrainMainType.Building, (int)TerrainBuildingType.WildPigPen, SpriteName.MissingImage, CraftBuildingLib.WildPigPen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            //WildHogPen
+            new BuildOption(BuildAndExpandType.WildHogPen, TerrainMainType.Building, (int)TerrainBuildingType.WildHogPen, SpriteName.MissingImage, CraftBuildingLib.WildHogPen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            //WarHogPen
+            new BuildOption(BuildAndExpandType.WarHogPen, TerrainMainType.Building, (int)TerrainBuildingType.WarHogPen, SpriteName.MissingImage, CraftBuildingLib.WarHogPen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            //StagHogPen
+            new BuildOption(BuildAndExpandType.StagHogPen, TerrainMainType.Building, (int)TerrainBuildingType.StagHogPen, SpriteName.MissingImage, CraftBuildingLib.StagHogPen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            //WolfCage
+            new BuildOption(BuildAndExpandType.WolfCage, TerrainMainType.Building, (int)TerrainBuildingType.WolfCage, SpriteName.MissingImage, CraftBuildingLib.WolfCage, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            //WargCage
+            new BuildOption(BuildAndExpandType.WargCage, TerrainMainType.Building, (int)TerrainBuildingType.WargCage, SpriteName.MissingImage, CraftBuildingLib.WargCage, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
+
+            //AlphaWargCage
+            new BuildOption(BuildAndExpandType.AlphaWargCage, TerrainMainType.Building, (int)TerrainBuildingType.AlphaWargCage, SpriteName.MissingImage, CraftBuildingLib.AlphaWargCage, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
+
+            //WildCatCage
+            new BuildOption(BuildAndExpandType.WildCatCage, TerrainMainType.Building, (int)TerrainBuildingType.WildCatCage, SpriteName.MissingImage, CraftBuildingLib.WildCatCage, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            //LionCage
+            new BuildOption(BuildAndExpandType.LionCage, TerrainMainType.Building, (int)TerrainBuildingType.LionCage, SpriteName.MissingImage, CraftBuildingLib.LionCage, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
+
+            //WarLionCage
+            new BuildOption(BuildAndExpandType.WarLionCage, TerrainMainType.Building, (int)TerrainBuildingType.WarLionCage, SpriteName.MissingImage, CraftBuildingLib.WarLionCage, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
+
+            //ElephantCage
+            new BuildOption(BuildAndExpandType.ElephantCage, TerrainMainType.Building, (int)TerrainBuildingType.ElephantCage, SpriteName.MissingImage, CraftBuildingLib.ElephantCage, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.Food_G, 4) };
+
+            //WarElephantCage
+            new BuildOption(BuildAndExpandType.WarElephantCage, TerrainMainType.Building, (int)TerrainBuildingType.WarElephantCage, SpriteName.MissingImage, CraftBuildingLib.WarElephantCage, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.Food_G, 4) };
+
+            //OliphantCage
+            new BuildOption(BuildAndExpandType.OliphantCage, TerrainMainType.Building, (int)TerrainBuildingType.OliphantCage, SpriteName.MissingImage, CraftBuildingLib.OliphantCage, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.Food_G, 8) };
         }
 
         public static BuildAndExpandType BuildTypeFromTerrain(TerrainMainType main, int sub)
@@ -1001,7 +1324,14 @@ namespace VikingEngine.DSSWars.Build
             }
         }
 
-        
+        public static BuildOption Get(BuildAndExpandType option)
+        {
+            return BuildOptions[(int)option];
+        }
+        public static BuildOption Get(TerrainMainType main, int subType)
+        {
+            return BuildOptions[(int)GetType(main, subType)];
+        }
 
         public static BuildAndExpandType GetType(TerrainMainType main, int subType)
         {
@@ -1042,6 +1372,7 @@ namespace VikingEngine.DSSWars.Build
     enum BuildCategoryTab
     {  
         General,
+        Farming,
         Advanced,
         Military,
         Decor,
@@ -1065,6 +1396,8 @@ namespace VikingEngine.DSSWars.Build
         Metals,
         Craft,
         Farm,
+        Animals,
+        Storage,
         Transport,
 
         Weapons,

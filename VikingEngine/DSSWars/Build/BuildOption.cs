@@ -20,8 +20,7 @@ namespace VikingEngine.DSSWars.Build
         public BuildAndExpandType buildType;
         public CraftBlueprint blueprint;
         public CraftBlueprint altBlueprint = null;
-        //public TerrainMainType mainType;
-        //public int subType;
+        
         public SubTile terrainType;
         public SpriteName sprite;
         public bool uniqueBuilding = false;
@@ -34,6 +33,7 @@ namespace VikingEngine.DSSWars.Build
         public BuildFilterTag filterTag2;
         public BuildFilterTag filterTag3;
 
+        public ItemResource upkeep = ItemResource.Empty;
 
         public BuildOption(BuildAndExpandType buildType, TerrainMainType mainType, int subType, SpriteName sprite, CraftBlueprint blueprint, 
             bool canAutoBuild, BuildCategoryTab buildCategory,

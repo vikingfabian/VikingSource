@@ -6,15 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
-using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.ToGG.MoonFall;
-using VikingEngine.DSSWars.EntityComponent;
 
 namespace VikingEngine.DSSWars.Work
 {
@@ -162,7 +163,8 @@ namespace VikingEngine.DSSWars.Work
                     return DssRef.lang.Upgrade_Order;
 
                 case WorkType.Craft:
-                    return string.Format(DssRef.lang.Work_CraftX, LangLib.Item((ItemResourceType)workSubType));
+                    IconName.Item((ItemResourceType)workSubType, out var icon, out var name);
+                    return string.Format(DssRef.lang.Work_CraftX, name);
 
                 case WorkType.DropOff:
                     return DssRef.lang.WorkerStatus_DropOff;
@@ -228,11 +230,112 @@ namespace VikingEngine.DSSWars.Work
             return terrainAmount;
         }
 
+
+        //void addCraftResult(City city, CraftBlueprint blueprint, bool visualUnit, out bool alwaysNeedMore)
+        //{
+        //    alwaysNeedMore = false;
+
+        //    blueprint.craftItemResult(out int amount1, out ItemResourceType item1, out int amount2, out ItemResourceType item2);
+
+        //    void result(int add, ItemResourceType item)
+        //    {
+        //        if (add > 0)
+        //        {
+        //            switch (item)
+        //            {
+        //                case ItemResourceType.Food_G:
+        //                    city.foodProduction.add(add);
+        //                    break;
+
+        //                case ItemResourceType.Fuel_G:
+        //                case ItemResourceType.Coal:
+        //                    item = ItemResourceType.Fuel_G;
+        //                    if (city.Culture == CityCulture.PitMasters)
+        //                    {
+        //                        add *= 2;
+        //                    }
+        //                    break;
+
+
+        //                case ItemResourceType.Iron_G:
+        //                case ItemResourceType.Copper:
+        //                case ItemResourceType.Tin:
+        //                case ItemResourceType.Lead:
+        //                case ItemResourceType.Silver:
+        //                case ItemResourceType.RawMithril:
+        //                    if (city.Culture == CityCulture.Smelters)
+        //                    {
+        //                        add *= 2;
+        //                    }
+        //                    break;
+        //                case ItemResourceType.Beer:
+        //                    if (city.Culture == CityCulture.Brewmaster)
+        //                    {
+        //                        add += add / 2;
+        //                    }
+        //                    break;
+
+        //                case ItemResourceType.PaddedArmor:
+        //                case ItemResourceType.HeavyPaddedArmor:
+        //                    if (city.Culture == CityCulture.Weavers)
+        //                    {
+        //                        add += 1;
+        //                    }
+        //                    break;
+
+        //                case ItemResourceType.IronArmor:
+        //                case ItemResourceType.HeavyIronArmor:
+        //                case ItemResourceType.LightPlateArmor:
+        //                case ItemResourceType.FullPlateArmor:
+        //                    if (city.Culture == CityCulture.Armorsmith)
+        //                    {
+        //                        add += 1;
+        //                    }
+        //                    break;
+        //                case ItemResourceType.Bronze:
+        //                case ItemResourceType.BronzeSword:
+
+        //                    if (city.Culture == CityCulture.BronzeCasters)
+        //                    {
+        //                        add *= 2;
+        //                    }
+        //                    break;
+
+        //                case ItemResourceType.BronzeArmor:
+        //                    if (city.Culture == CityCulture.Armorsmith ||
+        //                        city.Culture == CityCulture.BronzeCasters)
+        //                    {
+        //                        add += 1;
+        //                    }
+        //                    break;
+
+        //                case ItemResourceType.Gold:
+        //                case ItemResourceType.CopperCoin:
+        //                case ItemResourceType.BronzeCoin:
+        //                case ItemResourceType.SilverCoin:
+        //                case ItemResourceType.ElfCoin:
+        //                    alwaysNeedMore = true;
+        //                    break;
+
+        //                case ItemResourceType.TwoHandSword:
+        //                    lib.DoNothing();
+        //                    break;
+        //            }
+
+        //            city.AddGroupedResource(item, add);
+        //            if (visualUnit)
+        //            {
+        //                new ResourceEffect(item, add, VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f), ResourceEffectType.Add);
+        //            }
+        //        }
+        //    }                
+            
+        //}
+
         void workComplete(City city, bool visualUnit)
         {
             var faction = city.GetFaction_NoChecks();
             
-
             WorkExperienceType gainXp= WorkExperienceType.NONE;
 
             float energyCost = processTimeLengthSec * DssConst.WorkTeamEnergyCost;
@@ -247,17 +350,268 @@ namespace VikingEngine.DSSWars.Work
 
             switch (work)
             {
+                case WorkType.Craft:
+                    {
+
+                        ItemResourceType workitem = (ItemResourceType)workSubType;
+                        ItemPropertyColl.Blueprint(workitem, out var bp1, out var bp2);
+
+                        bool alwaysNeedMore = false;
+                        CraftBlueprint useBlueprint;
+
+                        if (bp2 != null && bp2.tryPayResources(city))
+                        { //Secondary blueprint has priority
+                            useBlueprint = bp2;
+                        }
+                        else
+                        {
+                            bp1.payResources(city);
+                            useBlueprint = bp1;
+                            //gainXp = bp1.experienceType;
+                            //addCraftResult(bp1);
+
+                        }
+                        gainXp = useBlueprint.experienceType;
+                        var me = this;
+                                                
+                        useBlueprint.craftItemResult(out int amount1, out ItemResourceType item1, out int amount2, out ItemResourceType item2);
+
+                        if (item1 != workitem)
+                        {
+                            switch (workitem)
+                            {
+                                //case ItemResourceType.CopperCoin:
+                                //case ItemResourceType.BronzeCoin:
+                                //case ItemResourceType.SilverCoin:
+                                //case ItemResourceType.ElfCoin:
+                                //    alwaysNeedMore = true;
+                                //    break;
+
+                                case ItemResourceType.SlaughterHen:
+                                case ItemResourceType.SlaughterPig:
+                                case ItemResourceType.SlaughterOxen:
+                                case ItemResourceType.SlaughterKineOxen:
+
+                                case ItemResourceType.SlaughterPony:
+                                case ItemResourceType.SlaughterHorse:
+                                case ItemResourceType.SlaughterWarHorse:
+                                case ItemResourceType.SlaughterDraftHorse:
+
+                                case ItemResourceType.SlaughterWildPig:
+                                case ItemResourceType.SlaughterWildHog:
+                                case ItemResourceType.SlaughterWarHog:
+                                case ItemResourceType.SlaughterStagHog:
+
+                                case ItemResourceType.SlaughterWolf:
+                                case ItemResourceType.SlaughterWarg:
+                                case ItemResourceType.SlaughterAlphaWarg:
+
+                                case ItemResourceType.SlaughterWildCat:
+                                case ItemResourceType.SlaughterLion:
+                                case ItemResourceType.SlaughterWarLion:
+
+                                case ItemResourceType.SlaughterElephant:
+                                case ItemResourceType.SlaughterWarElephant:
+                                case ItemResourceType.SlaughterOliphant:
+                                    alwaysNeedMore = true;
+                                    if (city.Culture == CityCulture.Butchers)
+                                    {
+                                        increaseMeat(ref item1, ref amount1);
+                                        increaseMeat(ref item2, ref amount2);
+
+                                        void increaseMeat(ref ItemResourceType item, ref int amount)
+                                        {
+                                            if (item == ItemResourceType.RawFood_Group)
+                                            {
+                                                amount *= 2;
+                                            }
+                                        }
+                                    }
+                                    else if (city.Culture == CityCulture.Skinner)
+                                    {
+                                        increaseSkin(ref item1, ref amount1);
+                                        increaseSkin(ref item2, ref amount2);
+
+                                        void increaseSkin(ref ItemResourceType item, ref int amount)
+                                        {
+                                            if (item == ItemResourceType.SkinLinen_Group)
+                                            {
+                                                amount *= 2;
+                                            }
+                                        }
+                                    }
+                                    break;
+
+                                case ItemResourceType.PotContainer:
+                                    if (city.Culture == CityCulture.Potters &&
+                                        Ref.peRnd.ChanceF(0.5f))
+                                    {
+                                        amount1 += 1;
+                                    }
+                                    break;
+                                case ItemResourceType.WoodContainer:
+                                    if (city.Culture == CityCulture.Coopers &&
+                                        Ref.peRnd.ChanceF(0.5f))
+                                    {
+                                        amount1 += 1;
+                                    }
+                                    break;
+                            }
+                        }
+
+                        result(amount1, item1, 1);
+                        result(amount2, item2, 2);
+
+                        void result(int add, ItemResourceType item, int number)
+                        {
+                            if (add > 0)
+                            {
+                                switch (item)
+                                {
+                                    case ItemResourceType.Food_G:
+                                        city.foodProduction.add(add);
+                                        break;
+
+                                    case ItemResourceType.Fuel_G:
+                                    //case ItemResourceType.Coal:
+                                        item = ItemResourceType.Fuel_G;
+                                        if (city.Culture == CityCulture.PitMasters)
+                                        {
+                                            add *= 2;
+                                        }
+                                        break;
+
+
+                                    case ItemResourceType.Iron_G:
+                                    case ItemResourceType.Copper:
+                                    case ItemResourceType.Tin:
+                                    case ItemResourceType.Lead:
+                                    case ItemResourceType.Silver:
+                                    case ItemResourceType.RawMithril:
+                                        if (city.Culture == CityCulture.Smelters)
+                                        {
+                                            add *= 2;
+                                        }
+                                        break;
+                                    case ItemResourceType.Beer:
+                                        if (city.Culture == CityCulture.Brewmaster)
+                                        {
+                                            add += add / 2;
+                                        }
+                                        break;
+
+                                    case ItemResourceType.ConservedFood:
+                                        if (city.Culture == CityCulture.Salters)
+                                        {
+                                            add += add / 4;
+                                        }
+                                        break;
+
+                                    case ItemResourceType.PaddedArmor:
+                                    case ItemResourceType.HeavyPaddedArmor:
+                                        if (city.Culture == CityCulture.Weavers)
+                                        {
+                                            add += 1;
+                                        }
+                                        break;
+
+                                    case ItemResourceType.IronArmor:
+                                    case ItemResourceType.HeavyIronArmor:
+                                    case ItemResourceType.LightPlateArmor:
+                                    case ItemResourceType.FullPlateArmor:
+                                        if (city.Culture == CityCulture.Armorsmith)
+                                        {
+                                            add += 1;
+                                        }
+                                        break;
+                                    case ItemResourceType.Bronze:
+                                    case ItemResourceType.BronzeSword:
+
+                                        if (city.Culture == CityCulture.BronzeCasters)
+                                        {
+                                            add *= 2;
+                                        }
+                                        break;
+
+                                    case ItemResourceType.BronzeArmor:
+                                        if (city.Culture == CityCulture.Armorsmith ||
+                                            city.Culture == CityCulture.BronzeCasters)
+                                        {
+                                            add += 1;
+                                        }
+                                        break;
+
+                                    case ItemResourceType.Gold:
+                                    //case ItemResourceType.CopperCoin:
+                                    //case ItemResourceType.BronzeCoin:
+                                    //case ItemResourceType.SilverCoin:
+                                    //case ItemResourceType.ElfCoin:
+                                        alwaysNeedMore = true;
+                                        break;
+
+                                    case ItemResourceType.Brick:
+                                        if (city.Culture == CityCulture.Potters)
+                                        {
+                                            amount1 += 2;
+                                        }
+                                        break;
+
+                                    case ItemResourceType.BucklerShield:
+                                    case ItemResourceType.RoundShield:
+                                    case ItemResourceType.HeaterShield:
+                                    case ItemResourceType.TowerShield:
+                                        if (city.Culture == CityCulture.ShieldMaker &&
+                                            Ref.peRnd.ChanceF(0.25f))
+                                        {
+                                            add += 1;
+                                        }
+                                        break;
+
+                                    case ItemResourceType.Wagon2Wheel:
+                                    case ItemResourceType.Wagon4Wheel:
+                                    case ItemResourceType.WagonClosed:
+                                    case ItemResourceType.WagonIron:
+                                    case ItemResourceType.WagonSteel:
+                                        if (city.Culture == CityCulture.Wainwright &&
+                                            Ref.peRnd.ChanceF(0.25f))
+                                        {
+                                            add += 1;
+                                        }
+                                        break;
+                                }
+
+                                city.AddGroupedResource(item, add);
+                                if (visualUnit)
+                                {
+                                    new ResourceEffect(item, add, VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(me.subTileEnd), 0.08f * number), ResourceEffectType.Add);
+                                }
+                            }
+                        }
+
+                        tryRepeatWork = false;
+
+                        if (alwaysNeedMore || city.GetGroupedResource(workitem).needMore())
+                        {
+                            if (bp1.hasResources(city))
+                            {
+                                tryRepeatWork = true;
+                            }
+                            else if (bp2 != null && bp2.hasResources(city))
+                            {
+                                tryRepeatWork = true;
+                            }
+                        }                       
+
+                    }
+                    break;
+
                 case WorkType.Eat:
                     int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssRef.difficulty.FoodEnergySett);
                     
                     city.AddGroupedResource(CityResoureIndex.food, -eatAmount);
-                    //city.res_food.amount -= eatAmount;
                     city.foodSpending.add(eatAmount);
-                    //faction.res_food.onChange(-eatAmount);
                     energy += eatAmount * DssRef.difficulty.FoodEnergySett;
                     break;
-
-                
 
                 case WorkType.GatherFoil:
                     {
@@ -415,25 +769,131 @@ namespace VikingEngine.DSSWars.Work
                     {
                         var building = (TerrainBuildingType)subTile.subTerrain;
 
-                        int min, size;
+                        AnimalPenGrowth size;
                         Resource.ItemResourceType resourceType;
 
-                        if (building == TerrainBuildingType.PigPen)
+
+                        switch (building)
                         {
-                            resourceType = Resource.ItemResourceType.Pig;
-                            min = TerrainContent.PigReady;
-                            size = TerrainContent.PigMaxSize;
-                        }
-                        else
-                        {
-                            resourceType = Resource.ItemResourceType.Hen;
-                            min = TerrainContent.HenReady;
-                            size = TerrainContent.HenMaxSize;
+                            default:
+                            case TerrainBuildingType.HenPen:
+                                resourceType = Resource.ItemResourceType.Hen;
+                                size = TerrainContent.HenGrowth;
+                                break;
+
+                            case TerrainBuildingType.PigPen:
+                                resourceType = Resource.ItemResourceType.Pig;
+                                size = TerrainContent.PigGrowth;
+                                break;
+
+                            case TerrainBuildingType.OxenPen:
+                                resourceType = Resource.ItemResourceType.Oxen;
+                                size = TerrainContent.OxenGrowth;
+                                break;
+                            case TerrainBuildingType.KineOxenPen:
+                                resourceType = Resource.ItemResourceType.KineOxen;
+                                size = TerrainContent.KineOxenGrowth;
+                                break;
+
+                            case TerrainBuildingType.DogCage:
+                                resourceType = Resource.ItemResourceType.Dog;
+                                size = TerrainContent.DogGrowth;
+                                break;
+                            case TerrainBuildingType.HoundCage:
+                                resourceType = Resource.ItemResourceType.Hound;
+                                size = TerrainContent.HoundGrowth;
+                                break;
+
+                            case TerrainBuildingType.PonyPen:
+                                resourceType = Resource.ItemResourceType.Pony;
+                                size = TerrainContent.PonyGrowth;
+                                break;
+                            case TerrainBuildingType.HorsePen:
+                                resourceType = Resource.ItemResourceType.Horse;
+                                size = TerrainContent.HorseGrowth;
+                                break;
+                            case TerrainBuildingType.WarHorsePen:
+                                resourceType = Resource.ItemResourceType.WarHorse;
+                                size = TerrainContent.WarHorseGrowth;
+                                break;
+                            case TerrainBuildingType.DraftHorsePen:
+                                resourceType = Resource.ItemResourceType.DraftHorse;
+                                size = TerrainContent.DraftHorseGrowth;
+                                break;
+
+                            case TerrainBuildingType.WildPigPen:
+                                resourceType = Resource.ItemResourceType.WildPig;
+                                size = TerrainContent.WildPigGrowth;
+                                break;
+                            case TerrainBuildingType.WildHogPen:
+                                resourceType = Resource.ItemResourceType.WildHog;
+                                size = TerrainContent.WildHogGrowth;
+                                break;
+                            case TerrainBuildingType.WarHogPen:
+                                resourceType = Resource.ItemResourceType.WarHog;
+                                size = TerrainContent.WarHogGrowth;
+                                break;
+                            case TerrainBuildingType.StagHogPen:
+                                resourceType = Resource.ItemResourceType.StagHog;
+                                size = TerrainContent.StagHogGrowth;
+                                break;
+
+                            case TerrainBuildingType.WolfCage:
+                                resourceType = Resource.ItemResourceType.Wolf;
+                                size = TerrainContent.WolfGrowth;
+                                break;
+                            case TerrainBuildingType.WargCage:
+                                resourceType = Resource.ItemResourceType.Warg;
+                                size = TerrainContent.WargGrowth;
+                                break;
+                            case TerrainBuildingType.AlphaWargCage:
+                                resourceType = Resource.ItemResourceType.AlphaWarg;
+                                size = TerrainContent.AlphaWargGrowth;
+                                break;
+
+                            case TerrainBuildingType.WildCatCage:
+                                resourceType = Resource.ItemResourceType.WildCat;
+                                size = TerrainContent.WildCatGrowth;
+                                break;
+                            case TerrainBuildingType.LionCage:
+                                resourceType = Resource.ItemResourceType.Lion;
+                                size = TerrainContent.LionGrowth;
+                                break;
+                            case TerrainBuildingType.WarLionCage:
+                                resourceType = Resource.ItemResourceType.WarLion;
+                                size = TerrainContent.WarLionGrowth;
+                                break;
+
+                            case TerrainBuildingType.ElephantCage:
+                                resourceType = Resource.ItemResourceType.Elephant;
+                                size = TerrainContent.ElephantGrowth;
+                                break;
+                            case TerrainBuildingType.WarElephantCage:
+                                resourceType = Resource.ItemResourceType.WarElephant;
+                                size = TerrainContent.WarElephantGrowth;
+                                break;
+                            case TerrainBuildingType.OliphantCage:
+                                resourceType = Resource.ItemResourceType.Oliphant;
+                                size = TerrainContent.OliphantGrowth;
+                                break;
                         }
 
-                        if (subTile.terrainAmount >= min)
+                        //if (building == TerrainBuildingType.PigPen)
+                        //{
+                        //    resourceType = Resource.ItemResourceType.Pig;
+                        //    min = TerrainContent.PigReady;
+                        //    size = TerrainContent.PigMaxSize;
+                        //}
+                        //else
+                        //{
+                        //    resourceType = Resource.ItemResourceType.Hen;
+                        //    min = TerrainContent.HenReady;
+                        //    size = TerrainContent.HenMaxSize;
+                        //}
+
+                        if (subTile.terrainAmount >= size.harvestReady)
                         {
-                            subTile.terrainAmount -= size;
+                            subTile.terrainAmount -= size.maxSize;
 
                             EditSubTile editTile = new EditSubTile(subTileEnd, subTile, false, true, false);
                             editTile.Submit();
@@ -538,131 +998,7 @@ namespace VikingEngine.DSSWars.Work
                         gainXp = WorkExperienceType.Mining;
                     }
                     break;
-                case WorkType.Craft:
-                    {
-
-                        ItemResourceType item = (ItemResourceType)workSubType;
-                        ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
-
-                        bool alwaysNeedMore = false;
-                        int add = 0;
-                        if (bp2 != null)
-                        { //Secondary blueprint has priority
-                            add = bp2.tryPayResources(city);
-                        }
-                        if (add == 0)
-                        {
-                            add = bp1.payResources(city);
-                        }
-                        gainXp = bp1.experienceType;
-                        
-
-                        if (add > 0)
-                        {
-                            switch (item)
-                            {
-                                case ItemResourceType.Food_G:
-                                    city.foodProduction.add(add);
-                                    break;
-
-                                case ItemResourceType.Fuel_G:
-                                case ItemResourceType.Coal:
-                                    item = ItemResourceType.Fuel_G;
-                                    if (city.Culture == CityCulture.PitMasters)
-                                    {
-                                        add *= 2;
-                                    }
-                                    break;
-
-
-                                case ItemResourceType.Iron_G:
-                                case ItemResourceType.Copper:
-                                case ItemResourceType.Tin:
-                                case ItemResourceType.Lead:
-                                case ItemResourceType.Silver:
-                                case ItemResourceType.RawMithril:
-                                    if (city.Culture == CityCulture.Smelters)
-                                    {
-                                        add *= 2;
-                                    }
-                                    break;
-                                case ItemResourceType.Beer:
-                                    if (city.Culture == CityCulture.Brewmaster)
-                                    {
-                                        add += add / 2;
-                                    }
-                                    break;
-
-                                case ItemResourceType.PaddedArmor:
-                                case ItemResourceType.HeavyPaddedArmor:
-                                    if (city.Culture == CityCulture.Weavers)
-                                    {
-                                        add += 1;
-                                    }
-                                    break;
-
-                                case ItemResourceType.IronArmor:
-                                case ItemResourceType.HeavyIronArmor:
-                                case ItemResourceType.LightPlateArmor:
-                                case ItemResourceType.FullPlateArmor:
-                                    if (city.Culture == CityCulture.Armorsmith)
-                                    {
-                                        add += 1;
-                                    }
-                                    break;
-                                case ItemResourceType.Bronze:
-                                case ItemResourceType.BronzeSword:
-                                
-                                    if (city.Culture == CityCulture.BronzeCasters)
-                                    {
-                                        add *= 2;
-                                    }
-                                    break;
-
-                                case ItemResourceType.BronzeArmor:
-                                    if (city.Culture == CityCulture.Armorsmith ||
-                                        city.Culture == CityCulture.BronzeCasters)
-                                    {
-                                        add += 1;
-                                    }
-                                    break;
-
-                                case ItemResourceType.Gold:
-                                case ItemResourceType.CopperCoin:
-                                case ItemResourceType.BronzeCoin:
-                                case ItemResourceType.SilverCoin:
-                                case ItemResourceType.ElfCoin:
-                                    alwaysNeedMore = true;
-                                    break;
-
-                                case ItemResourceType.TwoHandSword:
-                                    lib.DoNothing();
-                                    break;
-                            }
-
-                            city.AddGroupedResource(item, add);
-
-                            tryRepeatWork = false;
-
-                            if (alwaysNeedMore || city.GetGroupedResource(item).needMore())
-                            {
-                                if (bp1.hasResources(city))
-                                {
-                                    tryRepeatWork = true;
-                                }
-                                else if (bp2 != null && bp2.hasResources(city))
-                                {
-                                    tryRepeatWork = true;
-                                }
-                            }
-
-                            if (visualUnit)
-                            {
-                                new ResourceEffect(item, add, VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f), ResourceEffectType.Add);
-                            }
-                        }
-                    }
-                    break;
+                
 
                 case WorkType.Upgrade:
                 case WorkType.Build:

@@ -29,11 +29,11 @@ namespace VikingEngine.DSSWars.Players
     {
         protected static readonly AutoWeaponOption[] ConscriptWeaponPrioOrder =
         {
-             new AutoWeaponOption(ItemResourceType.MithrilSword, true, BuildAndExpandType.KnightsBarracks),
-             new AutoWeaponOption(ItemResourceType.MithrilBow,false, BuildAndExpandType.KnightsBarracks),
-             new AutoWeaponOption(ItemResourceType.KnightsLance,true, BuildAndExpandType.KnightsBarracks),
-             new AutoWeaponOption(ItemResourceType.TwoHandSword,true, BuildAndExpandType.KnightsBarracks),
-             new AutoWeaponOption(ItemResourceType.Warhammer,true, BuildAndExpandType.KnightsBarracks),
+             new AutoWeaponOption(ItemResourceType.MithrilSword, true, BuildAndExpandType.SoldierBarracks),
+             new AutoWeaponOption(ItemResourceType.MithrilBow,false, BuildAndExpandType.ArcherBarracks),
+             //new AutoWeaponOption(ItemResourceType.KnightsLance,true, BuildAndExpandType.KnightsBarracks),
+             new AutoWeaponOption(ItemResourceType.TwoHandSword,true, BuildAndExpandType.SoldierBarracks),
+             new AutoWeaponOption(ItemResourceType.Warhammer,true, BuildAndExpandType.SoldierBarracks),
 
              new AutoWeaponOption(ItemResourceType.LongSword,true, BuildAndExpandType.SoldierBarracks),
              new AutoWeaponOption(ItemResourceType.Sword,true, BuildAndExpandType.SoldierBarracks),

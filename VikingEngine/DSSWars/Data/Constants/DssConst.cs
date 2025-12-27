@@ -42,6 +42,11 @@ namespace VikingEngine.DSSWars
         public static float MediumBlockReduceAttack_Inv = 0.5f;
         public static float SmallBlockReduceAttack_Inv = 0.75f;
 
+        //NOBEL
+        public const int NobelHouseMenCount = 15;
+        public const float NobelHouseMenAddSpeed_Minute = 5;
+        public static float NobelHouseMenAddSpeed_PerManHouse = NobelHouseMenAddSpeed_Minute / NobelHouseMenCount;
+
         //MEN
         public static float SoldierGroupStandardRotatingSpeed = 6.5f;
         public static float WarmachineRotatingSpeed_NoWheels = SoldierGroupStandardRotatingSpeed * 0.1f;
@@ -251,7 +256,8 @@ namespace VikingEngine.DSSWars
         public static int Worker_Starvation = -Worker_MaxEnergy;
 
         public static int WheatFoodAmount = 30;
-        public static int AnimalFoodAmount = 60;
+        public static int PenBreedingStockCount = 8;
+        //public static int AnimalFoodAmount = 60;
 
         //public static int DefaultItemFuelAmount = 25;
         public static int RapeSeedFuelAmount = 15;

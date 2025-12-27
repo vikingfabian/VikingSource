@@ -41,6 +41,18 @@ namespace VikingEngine.DSSWars
         { 
             return totalWorkForce / DssConst.HeadCityStartMaxWorkForce;
         }
+        public bool craftOnFullStockProperty(object tag, bool set, bool value)
+        {
+            WorkPriorityType work = (WorkPriorityType)tag;
+
+            ref var prio = ref workTemplate.GetRefWorkPriority(work);
+
+            if (set)
+            {
+                prio.waitForStockpile = value;
+            }
+            return prio.waitForStockpile;
+        }
 
         /// <summary>
         /// To measure the strength a faction could muster
@@ -58,77 +70,81 @@ namespace VikingEngine.DSSWars
 
         public void resourceTab(LocalPlayer player, RichBoxContent content)
         {
-            if (player.resourcesSubTab > ResourcesSubTab.Overview_Armor)
-            {
-                player.resourcesSubTab = 0;
-            }
+            //if (player.resourcesSubTab > ResourcesSubTab.Overview_Armor)
+            //{
+            //    player.resourcesSubTab = 0;
+            //}
+            player.resourcesSubTab.managementType = ResourceManagementType.Overview;
 
             content.newLine();
-            for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
+            for (ResourceGroupType resourceGroup = 0; resourceGroup < ResourceGroupType.Mint; resourceGroup++)//ResourcesSubTab resourcesSubTab = 0; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
             {
-                var tabContent = new RichBoxContent();
-                
-                switch (resourcesSubTab)
-                {
-                    case ResourcesSubTab.Overview_Resources:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
-                        break;
 
-                    case ResourcesSubTab.Overview_Metals:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
-                        break;
-                    case ResourcesSubTab.Overview_Weapons:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
-                        break;
+                //var tabContent = new RichBoxContent();
 
-                    case ResourcesSubTab.Overview_Projectile:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
-                        break;
+                //switch (resourceGroup)
+                //{
+                //    case ResourceGroupType.Resources:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                //        break;
 
-                    case ResourcesSubTab.Overview_Armor:
-                        tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
-                        break;
+                //    case ResourceGroupType.Metals:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
+                //        break;
+                //    case ResourceGroupType.Weapons:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
+                //        break;
 
-                    case ResourcesSubTab.Stockpile_Resources:
-                        tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Stockpile));
-                        tabContent.space();
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
-                        break;
-                }
-                var subTab = new ArtButton(player.resourcesSubTab == resourcesSubTab? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, tabContent,
-                    new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                //    case ResourceGroupType.Projectile:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
+                //        break;
+
+                //    case ResourceGroupType.Armor:
+                //        tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
+                //        break;
+
+                //    //case ResourcesSubTab.Stockpile_Resources:
+                //    //    tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Stockpile));
+                //    //    tabContent.space();
+                //    //    tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                //    //    break;
+                //}
+                IconName.Tab(resourceGroup, out SpriteName groupIcon, out string groupName);
+                var subTab = new ArtButton(player.resourcesSubTab.resourceGroup == resourceGroup? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, 
+                    new List<AbsRichBoxMember> { new RbImage(groupIcon) },
+                    new RbAction1Arg<ResourceGroupType>((ResourceGroupType resourceGroup) =>
                     {
-                        player.resourcesSubTab = resourcesSubTab;
-                    }, resourcesSubTab, RbSoundType.Tab));
+                        player.resourcesSubTab.resourceGroup = resourceGroup;
+                    }, resourceGroup, RbSoundType.Tab));
 
                 content.Add(subTab);
             }
 
-            ItemResourceType[] items = null;
+            ItemResourceType[] items = ResourceLib.ResourceGroupList(player.resourcesSubTab.resourceGroup);
 
-            switch (player.resourcesSubTab)
-            {
-                case ResourcesSubTab.Overview_Resources:
-                    items = City.MovableCityResource_Misc;
-                    break;
+            //switch (player.resourcesSubTab)
+            //{
+            //    case ResourcesSubTab.Overview_Resources:
+            //        items = City.MovableCityResource_Misc;
+            //        break;
 
-                case ResourcesSubTab.Overview_Metals:
-                    items = City.MovableCityResource_Metals;
-                    break;
+            //    case ResourcesSubTab.Overview_Metals:
+            //        items = City.MovableCityResource_Metals;
+            //        break;
 
-                case ResourcesSubTab.Overview_Weapons:
-                    items = City.MovableCityResource_WeaponMelee;
-                    break;
+            //    case ResourcesSubTab.Overview_Weapons:
+            //        items = City.MovableCityResource_WeaponMelee;
+            //        break;
 
-                case ResourcesSubTab.Overview_Projectile:
-                    items = City.MovableCityResource_WeaponRanged;
-                    break;
+            //    case ResourcesSubTab.Overview_Projectile:
+            //        items = City.MovableCityResource_WeaponRanged;
+            //        break;
 
-                case ResourcesSubTab.Overview_Armor:
-                    items = City.MovableCityResource_Armor;
-                    break;
+            //    case ResourcesSubTab.Overview_Armor:
+            //        items = City.MovableCityResource_Armor;
+            //        break;
 
-            }
+            //}
 
             
             CircleCounterUp lineCounter = new CircleCounterUp(1, 1);
@@ -147,76 +163,82 @@ namespace VikingEngine.DSSWars
 
         public void stockPileTab(LocalPlayer player, RichBoxContent content)
         {
-            switch (player.resourcesSubTab)
-            {
+            player.resourcesSubTab.managementType = ResourceManagementType.Stockpile;
+
+            //switch (player.resourcesSubTab)
+            //{
                 
-                case ResourcesSubTab.Overview_Resources:
-                case ResourcesSubTab.Work_Resources:
-                    player.resourcesSubTab = ResourcesSubTab.Stockpile_Resources;
-                    break;
+            //    case ResourcesSubTab.Overview_Resources:
+            //    case ResourcesSubTab.Work_Resources:
+            //        player.resourcesSubTab = ResourcesSubTab.Stockpile_Resources;
+            //        break;
 
-                case ResourcesSubTab.Overview_Metals:
-                case ResourcesSubTab.Work_Metals:
-                    player.resourcesSubTab = ResourcesSubTab.Stockpile_Metals;
-                    break;
+            //    case ResourcesSubTab.Overview_Metals:
+            //    case ResourcesSubTab.Work_Metals:
+            //        player.resourcesSubTab = ResourcesSubTab.Stockpile_Metals;
+            //        break;
 
-                case ResourcesSubTab.Overview_Weapons:
-                case ResourcesSubTab.Work_Weapons:
-                    player.resourcesSubTab = ResourcesSubTab.Stockpile_Weapons;
-                    break;
+            //    case ResourcesSubTab.Overview_Weapons:
+            //    case ResourcesSubTab.Work_Weapons:
+            //        player.resourcesSubTab = ResourcesSubTab.Stockpile_Weapons;
+            //        break;
 
-                case ResourcesSubTab.Overview_Projectile:
-                case ResourcesSubTab.Work_Projectile:
-                    player.resourcesSubTab = ResourcesSubTab.Stockpile_Projectile;
-                    break;
+            //    case ResourcesSubTab.Overview_Projectile:
+            //    case ResourcesSubTab.Work_Projectile:
+            //        player.resourcesSubTab = ResourcesSubTab.Stockpile_Projectile;
+            //        break;
 
-                case ResourcesSubTab.Overview_Armor:
-                case ResourcesSubTab.Work_Armor:
-                    player.resourcesSubTab = ResourcesSubTab.Stockpile_Armor;
-                    break;
-            }
+            //    case ResourcesSubTab.Overview_Armor:
+            //    case ResourcesSubTab.Work_Armor:
+            //        player.resourcesSubTab = ResourcesSubTab.Stockpile_Armor;
+            //        break;
+            //}
             
 
             content.newLine();
             content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
             content.newLine();
 
-            for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Stockpile_Resources; resourcesSubTab <= ResourcesSubTab.Stockpile_Armor; ++resourcesSubTab)
+            for (ResourceGroupType resourceGroup = 0; resourceGroup < ResourceGroupType.NUM; resourceGroup++)//ResourcesSubTab resourcesSubTab = ResourcesSubTab.Stockpile_Resources; resourcesSubTab <= ResourcesSubTab.Stockpile_Armor; ++resourcesSubTab)
             {
-                var tabContent = new RichBoxContent();
-                
-                switch (resourcesSubTab)
-                {
-                    case ResourcesSubTab.Stockpile_Resources:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
-                        break;
+                //var tabContent = new RichBoxContent();
 
-                    case ResourcesSubTab.Stockpile_Metals:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
-                        break;
-                    case ResourcesSubTab.Stockpile_Weapons:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
-                        break;
+                //switch (resourceGroup)
+                //{
+                //    case ResourceGroup.:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                //        break;
 
-                    case ResourcesSubTab.Stockpile_Projectile:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
-                        break;
+                //    case ResourcesSubTab.Stockpile_Metals:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
+                //        break;
+                //    case ResourcesSubTab.Stockpile_Weapons:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
+                //        break;
 
-                    case ResourcesSubTab.Stockpile_Armor:
-                        tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
-                        break;
+                //    case ResourcesSubTab.Stockpile_Projectile:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
+                //        break;
 
-                }
-                var subTab = new ArtButton(player.resourcesSubTab == resourcesSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, tabContent,
-                    new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                //    case ResourcesSubTab.Stockpile_Armor:
+                //        tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
+                //        break;
+
+                //}
+                IconName.Tab(resourceGroup, out var icon, out var name);
+
+
+                var subTab = new ArtButton(player.resourcesSubTab.resourceGroup == resourceGroup ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, 
+                    new List<AbsRichBoxMember> { new RbImage(icon) },
+                    new RbAction1Arg<ResourceGroupType>((ResourceGroupType resourceGroup) =>
                     {
-                        player.resourcesSubTab = resourcesSubTab;
-                    }, resourcesSubTab, RbSoundType.Tab));
+                        player.resourcesSubTab.resourceGroup = resourceGroup;
+                    }, resourceGroup, RbSoundType.Tab));
 
                 content.Add(subTab);
             }
 
-            new StockPileMenu(content, null, this).toHud(player.resourcesSubTab);
+            new StockPileMenu(content, null, this).toHud(player.resourcesSubTab.resourceGroup);
             //ItemResourceType[] items = null;
 
             //switch (player.resourcesSubTab)
@@ -262,49 +284,55 @@ namespace VikingEngine.DSSWars
         {
             var p = player.GetLocalPlayer();
 
-            if (p.resourcesSubTab < ResourcesSubTab.Work_Resources || p.resourcesSubTab > ResourcesSubTab.Work_Armor)
-            {
-                p.resourcesSubTab = ResourcesSubTab.Work_Resources;
-            }
+            //if (p.resourcesSubTab < ResourcesSubTab.Work_Resources || p.resourcesSubTab > ResourcesSubTab.Work_Armor)
+            //{
+            //    p.resourcesSubTab = ResourcesSubTab.Work_Resources;
+            //}
+            p.resourcesSubTab.managementType = ResourceManagementType.Work;
 
             content.h2(DssRef.lang.Work_OrderPrioTitle, HudLib.TitleColor_Head);
             content.newLine();
-            for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Work_Resources; resourcesSubTab <= ResourcesSubTab.Work_Armor; ++resourcesSubTab)
+            //for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Work_Resources; resourcesSubTab <= ResourcesSubTab.Work_Armor; ++resourcesSubTab)
+            //{
+            for (ResourceGroupType resourceGroup = 0; resourceGroup < ResourceGroupType.NUM; resourceGroup++)//ResourcesSubTab resourcesSubTab = ResourcesSubTab.Stockpile_Resources; resourcesSubTab <= ResourcesSubTab.Stockpile_Armor; ++resourcesSubTab)
             {
-                var tabContent = new RichBoxContent();
-                //string text = null;
-                switch (resourcesSubTab)
-                {
-                    case ResourcesSubTab.Work_Resources:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
-                        break;
+                //var tabContent = new RichBoxContent();
+                ////string text = null;
+                //switch (resourcesSubTab)
+                //{
+                //    case ResourcesSubTab.Work_Resources:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                //        break;
 
-                    case ResourcesSubTab.Work_Metals:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
-                        break;
-                    case ResourcesSubTab.Work_Weapons:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
-                        break;
-                    case ResourcesSubTab.Work_Projectile:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
-                        break;
-                    case ResourcesSubTab.Work_Armor:
-                        tabContent.Add(new RbImage(SpriteName.WarsResource_IronArmor));
-                        break;
-                }
-                var subTab = new ArtButton(p.resourcesSubTab == resourcesSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, 
-                    tabContent,
-                    new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                //    case ResourcesSubTab.Work_Metals:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
+                //        break;
+                //    case ResourcesSubTab.Work_Weapons:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
+                //        break;
+                //    case ResourcesSubTab.Work_Projectile:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
+                //        break;
+                //    case ResourcesSubTab.Work_Armor:
+                //        tabContent.Add(new RbImage(SpriteName.WarsResource_IronArmor));
+                //        break;
+                //}
+
+                IconName.Tab(resourceGroup, out var icon, out var name);
+
+                var subTab = new ArtButton(p.resourcesSubTab.resourceGroup == resourceGroup ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
+                    new List<AbsRichBoxMember> { new RbImage(icon) }, 
+                    new RbAction1Arg<ResourceGroupType>((ResourceGroupType resourceGroup) =>
                     {
-                        p.resourcesSubTab = resourcesSubTab;
-                    }, resourcesSubTab, RbSoundType.Tab));
+                        p.resourcesSubTab.resourceGroup = resourceGroup;
+                    }, resourceGroup, RbSoundType.Tab));
 
                 content.Add(subTab);
             }
             
             content.Add(new RbSeperationLine());
            
-            workTemplate.toHud(p, content, p.resourcesSubTab, this, null);
+            workTemplate.toHud(p, content, p.resourcesSubTab.resourceGroup, this, null);
         }
 
         public void tradeTab(RichBoxContent content)
@@ -335,7 +363,7 @@ namespace VikingEngine.DSSWars
         {
             if (city != null)
             {
-                city.workTemplate.setWorkPrio(set, priorityType);
+                city.workTemplate.setWorkPrio(priorityType, (byte)set);
             }
             else
             {
@@ -345,7 +373,7 @@ namespace VikingEngine.DSSWars
                 //}
                 //else
                 //{
-                    workTemplate.setWorkPrio(set, priorityType);
+                    workTemplate.setWorkPrio(priorityType, (byte)set);
                     refreshCityWork();
                 //}
             }

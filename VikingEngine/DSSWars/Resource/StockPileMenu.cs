@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -6,10 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.GO.Characters;
+using VikingEngine.LootFest.GO.Characters.Monsters;
+using VikingEngine.ToGG.Commander.UnitsData;
 
 namespace VikingEngine.DSSWars.Resource
 {
@@ -27,15 +32,16 @@ namespace VikingEngine.DSSWars.Resource
             this.faction = faction;
         }
 
-        public void toHud(ResourcesSubTab tab)
+        public void toHud(ResourceGroupType tab)
         {
             switch (tab)
             {
-                case ResourcesSubTab.Stockpile_Resources:
+                case ResourceGroupType.Resources:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
 
                     stockpile(ItemResourceType.Wood_Group);
                     stockpile(ItemResourceType.Stone_G);
+                    stockpile(ItemResourceType.Brick);
                     stockpile(ItemResourceType.RawFood_Group);
                     stockpile(ItemResourceType.SkinLinen_Group);
                     content.newParagraph();
@@ -46,10 +52,14 @@ namespace VikingEngine.DSSWars.Resource
                     stockpile(ItemResourceType.CoolingFluid);
                     content.newParagraph();
 
+                    stockpile(ItemResourceType.Container);
                     stockpile(ItemResourceType.Palisade);
                     stockpile(ItemResourceType.Toolkit);
                     stockpile(ItemResourceType.Wagon2Wheel);
                     stockpile(ItemResourceType.Wagon4Wheel);
+                    stockpile(ItemResourceType.WagonClosed);
+                    stockpile(ItemResourceType.WagonIron);
+                    stockpile(ItemResourceType.WagonSteel);
                     stockpile(ItemResourceType.BlackPowder);
                     stockpile(ItemResourceType.GunPowder);
                     stockpile(ItemResourceType.LedBullet);
@@ -59,7 +69,7 @@ namespace VikingEngine.DSSWars.Resource
                     //GroupedResource.BufferIconInfo(content, false);
                     break;
 
-                case ResourcesSubTab.Stockpile_Metals:
+                case ResourceGroupType.Metals:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
 
                     stockpile(ItemResourceType.IronOre_G);
@@ -86,7 +96,7 @@ namespace VikingEngine.DSSWars.Resource
                     stockpile(ItemResourceType.Mithril);
 
                     break;
-                case ResourcesSubTab.Stockpile_Weapons:
+                case ResourceGroupType.Weapons:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
                     stockpile(ItemResourceType.SharpStick);
                     stockpile(ItemResourceType.BronzeSword);
@@ -94,16 +104,19 @@ namespace VikingEngine.DSSWars.Resource
                     stockpile(ItemResourceType.Sword);
                     stockpile(ItemResourceType.LongSword);
                     stockpile(ItemResourceType.HandSpear);
-                    content.newParagraph();
-
                     stockpile(ItemResourceType.Warhammer);
                     stockpile(ItemResourceType.TwoHandSword);
-                    stockpile(ItemResourceType.KnightsLance);
+                    //stockpile(ItemResourceType.KnightsLance);
                     stockpile(ItemResourceType.MithrilSword);
+                    content.newParagraph();
 
+                    stockpile(ItemResourceType.BucklerShield);
+                    stockpile(ItemResourceType.RoundShield);
+                    stockpile(ItemResourceType.HeaterShield);
+                    stockpile(ItemResourceType.TowerShield);
                     break;
 
-                case ResourcesSubTab.Stockpile_Projectile:
+                case ResourceGroupType.Projectile:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
 
                     stockpile(ItemResourceType.SlingShot);
@@ -132,19 +145,59 @@ namespace VikingEngine.DSSWars.Resource
 
                     break;
 
-                case ResourcesSubTab.Stockpile_Armor:
+                case ResourceGroupType.Armor:
                     
                     stockpile(ItemResourceType.HeavyPaddedArmor);
                     stockpile(ItemResourceType.PaddedArmor);
                     stockpile(ItemResourceType.BronzeArmor);
-
-                    content.newParagraph();
-
                     stockpile(ItemResourceType.IronArmor);
                     stockpile(ItemResourceType.HeavyIronArmor);
                     stockpile(ItemResourceType.LightPlateArmor);
                     stockpile(ItemResourceType.FullPlateArmor);
                     stockpile(ItemResourceType.MithrilArmor);
+
+                    content.newParagraph();
+
+                    stockpile(ItemResourceType.MountHeavyPaddedArmor);
+                    stockpile(ItemResourceType.MountPaddedArmor);
+                    stockpile(ItemResourceType.MountBronzeArmor);
+                    stockpile(ItemResourceType.MountIronArmor);
+                    stockpile(ItemResourceType.MountHeavyIronArmor);
+                    stockpile(ItemResourceType.MountLightPlateArmor);
+                    stockpile(ItemResourceType.MountFullPlateArmor);
+                    stockpile(ItemResourceType.MountMithrilArmor);
+                    break;
+
+                case ResourceGroupType.Animals:
+                    stockpile(ItemResourceType.Hen);
+                    stockpile(ItemResourceType.Pig);
+                    stockpile(ItemResourceType.Oxen);
+                    stockpile(ItemResourceType.KineOxen);
+                    content.newParagraph();
+                    stockpile(ItemResourceType.Dog);
+                    stockpile(ItemResourceType.Hound);
+                    content.newParagraph();
+                    stockpile(ItemResourceType.Pony);
+                    stockpile(ItemResourceType.Horse);
+                    stockpile(ItemResourceType.WarHorse);
+                    stockpile(ItemResourceType.DraftHorse);
+                    content.newParagraph();
+                    stockpile(ItemResourceType.WildPig);
+                    stockpile(ItemResourceType.WildHog);
+                    stockpile(ItemResourceType.WarHog);
+                    stockpile(ItemResourceType.StagHog);
+                    content.newParagraph();
+                    stockpile(ItemResourceType.Wolf);
+                    stockpile(ItemResourceType.Warg);
+                    stockpile(ItemResourceType.AlphaWarg);
+                    content.newParagraph();
+                    stockpile(ItemResourceType.WildCat);
+                    stockpile(ItemResourceType.Lion);
+                    stockpile(ItemResourceType.WarLion);
+                    content.newParagraph();
+                    stockpile(ItemResourceType.Elephant);
+                    stockpile(ItemResourceType.WarElephant);
+                    stockpile(ItemResourceType.Oliphant);
                     break;
             }
         }
@@ -152,6 +205,7 @@ namespace VikingEngine.DSSWars.Resource
         void stockpile(ItemResourceType item)
         {
             GroupedResource res;
+            IconName.Item(item, out SpriteName itemIcon, out string itemName);
 
             if (city != null)
             {
@@ -160,7 +214,7 @@ namespace VikingEngine.DSSWars.Resource
             else
             {
                 res = new GroupedResource() {
-                    goalBuffer = faction.GetResourceOverview(item).goalBuffer
+                    stockPileLimit = faction.GetResourceOverview(item).stockPileLimit
                 };
             }
 
@@ -168,65 +222,166 @@ namespace VikingEngine.DSSWars.Resource
 
             content.Add(new ArtButton(RbButtonStyle.HoverArea,
                 new List<AbsRichBoxMember>{
-                        new RbImage(res.amount >= res.goalBuffer ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd),
-                        new RbImage(ResourceLib.Icon(item))}, null,
+                        new RbImage(res.amount >= res.stockPileLimit ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd),
+                        new RbImage(itemIcon)}, null,
                     new RbTooltip((RichBoxContent content, object tag) =>
                     {
-                        if (city != null)
-                        {
-                            ResourceLib.FullResourceInfo(city, item, content);
-                            //bool buffer = false;
-                            //city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);
-                        }
-                        else
-                        {
-                            content.Add(new RbImage(ResourceLib.Icon(item)));
-                            content.space();
-                            content.Add(new RbText(LangLib.Item(item)));
-                        }
+                        ResourceLib.FullResourceInfo(city, item, content);
+                        //if (city != null)
+                        //{
+                            
+                        //    //bool buffer = false;
+                        //    //city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);
+                        //}
+                        //else
+                        //{
+                        //    content.Add(new RbImage(itemIcon));
+                        //    content.space();
+                        //    content.Add(new RbText(itemName));
+                        //}
                     }
                     )));
 
             content.space();
 
-            stockPileEdit(content, item, res);
+            for (StockpileLimitOption limit = 0; limit < StockpileLimitOption.NUM; limit++)
+            {
+                int max = ResourceLib.Limit(limit);
+
+                List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(2);
+                SpriteName storage;
+
+                Color? numberCol = null;
+                if (ResourceLib.Limit(limit) >= res.stockPileLimit)
+                {
+                    numberCol = HudLib.SecondaryTextColor;
+                }
+
+                switch (limit)
+                {                    
+                    case StockpileLimitOption.NoLimit:
+                        switch (ItemPropertyColl.Get(item).storageType)
+                        { 
+                            default:
+                            case StorageType.MaterialStorage:
+                                storage = SpriteName.WarsBuild_MaterialStorage;
+                                break;
+                            case StorageType.FoodStorage:
+                                storage = SpriteName.WarsBuild_FoodStorage;
+                                break;
+                            case StorageType.WeaponStorage:
+                                storage = SpriteName.WarsBuild_WeaponStorage;
+                                break;
+                            case StorageType.ArmorStorage:
+                                storage = SpriteName.WarsBuild_ArmorStorage;
+                                break;
+                            case StorageType.AnimalStorage:
+                                storage = SpriteName.WarsBuild_AnimalStorage;
+                                break;
+
+                        }
+                        buttonContent.Add(new RbImage(storage));
+                        buttonContent.Add(new RbSpace());
+                        if (city == null)
+                        {
+                            buttonContent.Add(new RbText(".Max"));
+                        }
+                        else
+                        {
+                            buttonContent.Add(new RbText(res.stockPileLimit.ToString()));
+                        }
+                        break;
+                    case StockpileLimitOption.Value100:
+                        buttonContent.Add(new RbText(DssRef.lang.EngineHud_SymbolFor100, numberCol));
+                        break;
+                    case StockpileLimitOption.Value500:
+                        buttonContent.Add(new RbText("5" + DssRef.lang.EngineHud_SymbolFor100, numberCol));
+                        break;
+                    case StockpileLimitOption.Value2000:
+                        buttonContent.Add(new RbText("2" + DssRef.lang.EngineHud_SymbolFor1000, numberCol));
+                        break;
+
+                }
+
+                content.Add(new ArtOption(limit == res.limitOption, buttonContent, 
+                    new RbAction1Arg<StockpileLimitOption>((StockpileLimitOption limit) => {
+
+                        if (city != null)
+                        {
+                            ref GroupedResource res = ref city.GetRefGroupedResource(item);
+                            res.limitOption = limit;
+
+                        }
+                        else
+                        {
+                            ref GroupedResource res = ref faction.GetRefResourceOverview(item);
+                            res.limitOption = limit;
+                        }
+
+                        
+                    }, limit), 
+                    new RbTooltip(limitTooltip, new LimitTooltipArgs() { limit = limit, res = res })));
+            }
+
+            //stockPileEdit(content, item, res);
         }
 
-        void stockPileEdit(RichBoxContent content, ItemResourceType item, GroupedResource res)
+        struct LimitTooltipArgs
         {
-            IntGetSet property;
+            public StockpileLimitOption limit;
+            public GroupedResource res;
+        }
 
-            if (city != null)
+        void limitTooltip(RichBoxContent content, object tag)
+        {
+            LimitTooltipArgs args = (LimitTooltipArgs)tag;
+            if (args.limit == StockpileLimitOption.NoLimit)
             {
-                property = (bool set, int value) =>
-                {
-
-                    var res = city.GetGroupedResource(item);
-                    if (set)
-                    {
-                        res.goalBuffer = value;
-                        city.SetGroupedResource(item, res);
-                    }
-                    return res.goalBuffer;
-                };
+                content.h1(".No limit", HudLib.TitleColor_Head);
+                content.text("Will stockpile up to the storage size");
             }
             else
             {
-                property = (bool set, int value) =>
-                {
-                    ref var res = ref faction.GetRefResourceOverview(item);
-                    if (set)
-                    {
-                        res.goalBuffer = value;
-                        //todo set all cities
-                    }
-
-                    return res.goalBuffer;
-                };
+                content.h1(string.Format( ".Limit stockpile to {0}", ResourceLib.Limit(args.limit)), HudLib.TitleColor_Head);
+                content.text(DssRef.lang.Resource_StockPile_Info);
             }
-
-            RbDragButton.RbDragButtonGroup(content, StockPileControls, new DragButtonSettings(DssConst.StockPileMinBound, DssConst.StockPileMaxBound, 100),
-                property, true);
         }
+
+        //void stockPileEdit(RichBoxContent content, ItemResourceType item, GroupedResource res)
+        //{
+        //    IntGetSet property;
+
+        //    if (city != null)
+        //    {
+        //        property = (bool set, int value) =>
+        //        {
+
+        //            var res = city.GetGroupedResource(item);
+        //            if (set)
+        //            {
+        //                res.stockPileLimit = value;
+        //                city.SetGroupedResource(item, res);
+        //            }
+        //            return res.stockPileLimit;
+        //        };
+        //    }
+        //    else
+        //    {
+        //        property = (bool set, int value) =>
+        //        {
+        //            ref var res = ref faction.GetRefResourceOverview(item);
+        //            if (set)
+        //            {
+        //                res.goalBuffer = value;
+        //                //todo set all cities
+        //            }
+
+        //            return res.goalBuffer;
+        //        };
+        //    }
+
+        //    RbDragButton.RbDragButtonGroup(content, StockPileControls, new DragButtonSettings(DssConst.StockPileMinBound, DssConst.StockPileMaxBound, 100),
+        //        property, true);
+        //}
     }
 }

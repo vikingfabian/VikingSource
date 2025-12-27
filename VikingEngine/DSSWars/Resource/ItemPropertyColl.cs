@@ -6,16 +6,20 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Work;
 
 namespace VikingEngine.DSSWars.Resource
 {
     static class ItemPropertyColl
     {
         public const int CarryStones = 5;
+        public const int CarryBricks = 10;
         public const int CarryFood = 20;
+        public const int CarryConservedFood = CarryFood * 2;
         public static ItemProperties[] items;
 
-        static float DefaultWeight = 1f / 30;
+        public const int DefaultCarry = 30;
+        static float DefaultWeight = 1f / DefaultCarry;
 
         public static float ArmyFoodOrderSize;
 
@@ -27,120 +31,250 @@ namespace VikingEngine.DSSWars.Resource
             items = new ItemProperties[(int)ItemResourceType.NUM];
 
             // wood variants
-            new ItemProperties(ItemResourceType.HardWood, CityResoureIndex.wood, 1f / 20, null, null);
-            new ItemProperties(ItemResourceType.SoftWood, CityResoureIndex.wood, 1f / 30, null, null);
-            new ItemProperties(ItemResourceType.DryWood, CityResoureIndex.wood, 1f / 60, null, null);
+            new ItemProperties(ItemResourceType.HardWood, CityResoureIndex.wood, 1f / 20, Work.WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SoftWood, CityResoureIndex.wood, 1f / 30, Work.WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.DryWood, CityResoureIndex.wood, 1f / 60, Work.WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE);
 
-            new ItemProperties(ItemResourceType.Wood_Group, CityResoureIndex.wood, DefaultWeight, null, null) { defaultStockPile = 300 }.AddItemSource(new ItemSource(Map.TerrainSubFoilType.TreeSoft));
+            new ItemProperties(ItemResourceType.Wood_Group, CityResoureIndex.wood, DefaultWeight, Work.WorkPriorityType.NUM_NONE, null, null, StorageType.MaterialStorage) { defaultStockPile = 300 }.AddItemSource(new ItemSource(Map.TerrainSubFoilType.TreeSoft));
+            new ItemProperties(ItemResourceType.Clay, CityResoureIndex.Clay, DefaultWeight, Work.WorkPriorityType.collectClay, null, null, StorageType.MaterialStorage) { defaultStockPile = 200 }.AddItemSource(new ItemSource(Map.TerrainSubFoilType.ClayPit));
 
 
             // basic resources
-            new ItemProperties(ItemResourceType.Stone_G, CityResoureIndex.stone, 1f / CarryStones, null, null) { defaultStockPile = 200 }.AddItemSource(new ItemSource(Map.TerrainSubFoilType.Stones));
-            new ItemProperties(ItemResourceType.Egg, CityResoureIndex.rawFood, 1f / 60, null, null);
-            new ItemProperties(ItemResourceType.Pig, NoCityResource, 1f, null, null); // (leave untracked or map to rawFood)
-            new ItemProperties(ItemResourceType.Hen, NoCityResource, 1f / 4, null, null); // (leave untracked or map to rawFood)
-            new ItemProperties(ItemResourceType.Wheat, CityResoureIndex.rawFood, 1f / 10, null, null);
-            new ItemProperties(ItemResourceType.RawFood_Group, CityResoureIndex.rawFood, DefaultWeight, null, null) { defaultStockPile = 200 }.AddItemSource(
+            new ItemProperties(ItemResourceType.Stone_G, CityResoureIndex.stone, 1f / CarryStones, Work.WorkPriorityType.stone, null, null, StorageType.MaterialStorage) { defaultStockPile = 200 }.AddItemSource(new ItemSource(Map.TerrainSubFoilType.Stones));
+            new ItemProperties(ItemResourceType.Brick, CityResoureIndex.Brick, 1f / CarryBricks, Work.WorkPriorityType.craftBrick, CraftResourceLib.Brick, null, StorageType.MaterialStorage) { defaultStockPile = 200 }.AddItemSource(new ItemSource(Map.TerrainMineType.StoneBlock));
+            new ItemProperties(ItemResourceType.Egg, CityResoureIndex.rawFood, 1f / 60, Work.WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.Wheat, CityResoureIndex.rawFood, 1f / 10, Work.WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.Meat, CityResoureIndex.Meat, DefaultWeight, Work.WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE) { defaultStockPile = 200 };
+               
+            new ItemProperties(ItemResourceType.RawFood_Group, CityResoureIndex.rawFood, DefaultWeight, Work.WorkPriorityType.NUM_NONE, null, null, StorageType.FoodStorage) { defaultStockPile = 200 }.AddItemSource(
                 new ItemSource( ItemSourceType.Farm, Build.BuildAndExpandType.WheatFarm), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HenPen), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
             
-            new ItemProperties(ItemResourceType.Linen, CityResoureIndex.skinLinnen, 1f / 10, null, null);
-            new ItemProperties(ItemResourceType.SkinLinen_Group, CityResoureIndex.skinLinnen, 1f / 10, null, null) { defaultStockPile = 200 }.AddItemSource(
+            new ItemProperties(ItemResourceType.Linen, CityResoureIndex.skinLinnen, 1f / 10, Work.WorkPriorityType.farmlinen, null, null, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.SkinLinen_Group, CityResoureIndex.skinLinnen, 1f / 10, Work.WorkPriorityType.farmlinen, null, null, StorageType.MaterialStorage) { defaultStockPile = 200 }.AddItemSource(
                 new ItemSource( ItemSourceType.Farm, Build.BuildAndExpandType.LinenFarm), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
+            new ItemProperties(ItemResourceType.WoodContainer, CityResoureIndex.Container, DefaultWeight, Work.WorkPriorityType.craftContainer, null, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.PotContainer, CityResoureIndex.Container, DefaultWeight, Work.WorkPriorityType.craftContainer, null, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.Container, CityResoureIndex.Container, DefaultWeight, Work.WorkPriorityType.craftContainer, CraftResourceLib.Container_wood, CraftResourceLib.Container_clay, StorageType.MaterialStorage);
 
             // fuel & food
-            new ItemProperties(ItemResourceType.Fuel_G, CityResoureIndex.fuel, DefaultWeight, CraftResourceLib.Fuel1, null) { defaultStockPile = 400 }.AddItemSource(new ItemSource(Map.TerrainMineType.Coal));
-            new ItemProperties(ItemResourceType.Coal, CityResoureIndex.fuel, DefaultWeight, CraftResourceLib.Charcoal, null);
-            new ItemProperties(ItemResourceType.Food_G, CityResoureIndex.food, 1f / CarryFood, CraftResourceLib.Food1, CraftResourceLib.Food2) { defaultStockPile = City.DefaultFoodBuffer };
-            new ItemProperties(ItemResourceType.Beer, CityResoureIndex.beer, DefaultWeight, CraftResourceLib.Beer, null) { defaultStockPile = 200 };
-            new ItemProperties(ItemResourceType.CoolingFluid, CityResoureIndex.coolingfluid, DefaultWeight, CraftResourceLib.CoolingFluid, null);
+            new ItemProperties(ItemResourceType.Fuel_G, CityResoureIndex.fuel, DefaultWeight, Work.WorkPriorityType.craftFuel, CraftResourceLib.Fuel1, null, StorageType.MaterialStorage) { defaultStockPile = 400 }.AddItemSource(new ItemSource(Map.TerrainMineType.Coal));
+            new ItemProperties(ItemResourceType.Coal, CityResoureIndex.fuel, DefaultWeight, Work.WorkPriorityType.miningCoal, CraftResourceLib.Charcoal, null, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.Salt, CityResoureIndex.Salt, DefaultWeight, Work.WorkPriorityType.miningSalt, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource( Map.TerrainMineType.Salt), new ItemSource(  ItemSourceType.Crafting, Build.BuildAndExpandType.DryingPan));
+            new ItemProperties(ItemResourceType.Food_G, CityResoureIndex.food, 1f / CarryFood, Work.WorkPriorityType.craftFood, CraftResourceLib.Food1, CraftResourceLib.Food2, StorageType.FoodStorage) { defaultStockPile = City.DefaultFoodBuffer };
+            new ItemProperties(ItemResourceType.ConservedFood, CityResoureIndex.ConservedFood, 1f / CarryConservedFood, Work.WorkPriorityType.craftConservedFood, CraftResourceLib.ConservedFood1, CraftResourceLib.ConservedFood2, StorageType.FoodStorage) { defaultStockPile = City.DefaultFoodBuffer };
+            new ItemProperties(ItemResourceType.Beer, CityResoureIndex.beer, DefaultWeight, Work.WorkPriorityType.craftBeer, CraftResourceLib.Beer, null, StorageType.FoodStorage) { defaultStockPile = 200 };
+            new ItemProperties(ItemResourceType.CoolingFluid, CityResoureIndex.coolingfluid, DefaultWeight, Work.WorkPriorityType.craftCoolingFluid, CraftResourceLib.CoolingFluid, null, StorageType.MaterialStorage);
 
             // metals & alloys
-            new ItemProperties(ItemResourceType.IronOre_G, CityResoureIndex.ironore, 1f / 10, null, null).AddItemSource(new ItemSource(Map.TerrainMineType.IronOre));
-            new ItemProperties(ItemResourceType.TinOre, CityResoureIndex.TinOre, 1f / 10, null, null).AddItemSource(new ItemSource(Map.TerrainMineType.TinOre));
-            new ItemProperties(ItemResourceType.CopperOre, CityResoureIndex.CopperOre, 1f / 10, null, null).AddItemSource(new ItemSource(Map.TerrainMineType.CopperOre));
-            new ItemProperties(ItemResourceType.LeadOre, CityResoureIndex.LeadOre, 1f / 10, null, null).AddItemSource(new ItemSource(Map.TerrainMineType.LeadOre));
-            new ItemProperties(ItemResourceType.SilverOre, CityResoureIndex.SilverOre, 1f / 10, null, null).AddItemSource(new ItemSource(Map.TerrainMineType.SilverOre));
-            new ItemProperties(ItemResourceType.GoldOre, CityResoureIndex.GoldOre, 1f / 10, null, null).AddItemSource(new ItemSource(Map.TerrainMineType.GoldOre));
+            new ItemProperties(ItemResourceType.IronOre_G, CityResoureIndex.ironore, 1f / 10, Work.WorkPriorityType.miningIron, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.IronOre));
+            new ItemProperties(ItemResourceType.TinOre, CityResoureIndex.TinOre, 1f / 10, Work.WorkPriorityType.miningTin, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.TinOre));
+            new ItemProperties(ItemResourceType.CopperOre, CityResoureIndex.CopperOre, 1f / 10, Work.WorkPriorityType.miningCopper, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.CopperOre));
+            new ItemProperties(ItemResourceType.LeadOre, CityResoureIndex.LeadOre, 1f / 10, Work.WorkPriorityType.miningLead, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.LeadOre));
+            new ItemProperties(ItemResourceType.SilverOre, CityResoureIndex.SilverOre, 1f / 10, Work.WorkPriorityType.miningSilver, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.SilverOre));
+            new ItemProperties(ItemResourceType.GoldOre, CityResoureIndex.GoldOre, 1f / 10, Work.WorkPriorityType.miningGold, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.GoldOre));
 
-            new ItemProperties(ItemResourceType.Iron_G, CityResoureIndex.iron, DefaultWeight, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling);
-            new ItemProperties(ItemResourceType.Tin, CityResoureIndex.Tin, DefaultWeight, CraftResourceLib.Tin, null);
-            new ItemProperties(ItemResourceType.Copper, CityResoureIndex.Copper, DefaultWeight, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling);
-            new ItemProperties(ItemResourceType.Lead, CityResoureIndex.Lead, DefaultWeight, CraftResourceLib.Lead, null);
-            new ItemProperties(ItemResourceType.RawMithril, CityResoureIndex.RawMithril, DefaultWeight, null, null).AddItemSource(new ItemSource(Map.TerrainMineType.Mithril));
-            new ItemProperties(ItemResourceType.Sulfur, CityResoureIndex.Sulfur, DefaultWeight, null, null).AddItemSource(new ItemSource(Map.TerrainMineType.Sulfur));
+            new ItemProperties(ItemResourceType.Iron_G, CityResoureIndex.iron, DefaultWeight, Work.WorkPriorityType.smeltIron, CraftResourceLib.Iron, CraftResourceLib.Iron_AndCooling, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.Tin, CityResoureIndex.Tin, DefaultWeight, Work.WorkPriorityType.smeltTin, CraftResourceLib.Tin, null, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.Copper, CityResoureIndex.Copper, DefaultWeight, Work.WorkPriorityType.smeltCopper, CraftResourceLib.Copper, CraftResourceLib.Cupper_AndCooling, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.Lead, CityResoureIndex.Lead, DefaultWeight, Work.WorkPriorityType.smeltLead, CraftResourceLib.Lead, null, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.RawMithril, CityResoureIndex.RawMithril, DefaultWeight, Work.WorkPriorityType.miningMithril, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.Mithril));
+            new ItemProperties(ItemResourceType.Sulfur, CityResoureIndex.Sulfur, DefaultWeight, Work.WorkPriorityType.miningSulfur, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.Sulfur));
+
+            new ItemProperties(ItemResourceType.Silver, CityResoureIndex.Silver, DefaultWeight, Work.WorkPriorityType.smeltSilver, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.Gold, NoCityResource, DefaultWeight, Work.WorkPriorityType.smeltGold, Minting.ConvertGoldOre, null, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.Bronze, CityResoureIndex.Bronze, DefaultWeight, Work.WorkPriorityType.craftBronze, CraftResourceLib.Bronze, null, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.CastIron, CityResoureIndex.CastIron, DefaultWeight, Work.WorkPriorityType.craftCastIron, CraftResourceLib.CastIron, null, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.BloomeryIron, CityResoureIndex.BloomeryIron, DefaultWeight, Work.WorkPriorityType.craftBloomeryIron, CraftResourceLib.BloomeryIron, null, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.Steel, CityResoureIndex.Steel, DefaultWeight, Work.WorkPriorityType.craftSteel, CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.Mithril, CityResoureIndex.Mithril, DefaultWeight, Work.WorkPriorityType.craftMithril, CraftResourceLib.Mithril, null, StorageType.MaterialStorage);
+
+            // --- Human Armor ---
+            new ItemProperties(ItemResourceType.PaddedArmor, CityResoureIndex.paddedArmor, DefaultWeight, Work.WorkPriorityType.craftPaddedArmor, CraftResourceLib.PaddedArmor, null, StorageType.ArmorStorage);
+            new ItemProperties(ItemResourceType.HeavyPaddedArmor, CityResoureIndex.HeavyPaddedArmor, DefaultWeight, Work.WorkPriorityType.craftHeavyPaddedArmor, CraftResourceLib.HeavyPaddedArmor, null, StorageType.ArmorStorage);
+            new ItemProperties(ItemResourceType.BronzeArmor, CityResoureIndex.BronzeArmor, DefaultWeight, Work.WorkPriorityType.craftBronzeArmor, CraftResourceLib.BronzeArmor, null, StorageType.ArmorStorage);
+            new ItemProperties(ItemResourceType.IronArmor, CityResoureIndex.mailArmor, DefaultWeight, Work.WorkPriorityType.craftMailArmor, CraftResourceLib.MailArmor, null, StorageType.ArmorStorage);
+            new ItemProperties(ItemResourceType.HeavyIronArmor, CityResoureIndex.heavyMailArmor, DefaultWeight, Work.WorkPriorityType.craftHeavyMailArmor, CraftResourceLib.HeavyMailArmor, null, StorageType.ArmorStorage);
+            new ItemProperties(ItemResourceType.LightPlateArmor, CityResoureIndex.LightPlateArmor, DefaultWeight, Work.WorkPriorityType.craftPlateArmor, CraftResourceLib.PlateArmor, null, StorageType.ArmorStorage);
+            new ItemProperties(ItemResourceType.FullPlateArmor, CityResoureIndex.FullPlateArmor, DefaultWeight, Work.WorkPriorityType.craftFullPlateArmor, CraftResourceLib.FullPlateArmor, null, StorageType.ArmorStorage);
+            new ItemProperties(ItemResourceType.MithrilArmor, CityResoureIndex.MithrilArmor, DefaultWeight, Work.WorkPriorityType.craftMithrilArmor, CraftResourceLib.MithrilArmor, null, StorageType.ArmorStorage);
+
+            // --- Mount Armor ---
+            new ItemProperties(ItemResourceType.MountPaddedArmor, CityResoureIndex.MountPaddedArmor, DefaultWeight, Work.WorkPriorityType.craftMountPaddedArmor, CraftResourceLib.MountPaddedArmor, null, StorageType.ArmorStorage);
+            new ItemProperties(ItemResourceType.MountHeavyPaddedArmor, CityResoureIndex.MountHeavyPaddedArmor, DefaultWeight, Work.WorkPriorityType.craftMountHeavyPaddedArmor, CraftResourceLib.MountHeavyPaddedArmor, null, StorageType.ArmorStorage);
+            new ItemProperties(ItemResourceType.MountBronzeArmor, CityResoureIndex.MountBronzeArmor, DefaultWeight, Work.WorkPriorityType.craftMountBronzeArmor, CraftResourceLib.MountBronzeArmor, null, StorageType.ArmorStorage);
+            new ItemProperties(ItemResourceType.MountIronArmor, CityResoureIndex.MountIronArmor, DefaultWeight, Work.WorkPriorityType.craftMountMailArmor, CraftResourceLib.MountIronArmor, null, StorageType.ArmorStorage);
+            new ItemProperties(ItemResourceType.MountHeavyIronArmor, CityResoureIndex.MountHeavyIronArmor, DefaultWeight, Work.WorkPriorityType.craftMountHeavyMailArmor, CraftResourceLib.MountHeavyIronArmor, null, StorageType.ArmorStorage);
+            new ItemProperties(ItemResourceType.MountLightPlateArmor, CityResoureIndex.MountLightPlateArmor, DefaultWeight, Work.WorkPriorityType.craftMountPlateArmor, CraftResourceLib.MountLightPlateArmor, null, StorageType.ArmorStorage);
+            new ItemProperties(ItemResourceType.MountFullPlateArmor, CityResoureIndex.MountFullPlateArmor, DefaultWeight, Work.WorkPriorityType.craftMountFullPlateArmor, CraftResourceLib.MountFullPlateArmor, null, StorageType.ArmorStorage);
+            new ItemProperties(ItemResourceType.MountMithrilArmor, CityResoureIndex.MountMithrilArmor, DefaultWeight, Work.WorkPriorityType.craftMountMithrilArmor, CraftResourceLib.MountMithrilArmor, null, StorageType.ArmorStorage);
+
+            // --- Shields ---
+            new ItemProperties(ItemResourceType.BucklerShield, CityResoureIndex.BucklerShield, DefaultWeight, Work.WorkPriorityType.craftBucklerShield, CraftResourceLib.BucklerShield, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.RoundShield, CityResoureIndex.RoundShield, DefaultWeight, Work.WorkPriorityType.craftRoundShield, CraftResourceLib.RoundShield, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.HeaterShield, CityResoureIndex.HeaterShield, DefaultWeight, Work.WorkPriorityType.craftHeaterShield, CraftResourceLib.HeaterShield, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.TowerShield, CityResoureIndex.TowerShield, DefaultWeight, Work.WorkPriorityType.craftTowerShield, CraftResourceLib.TowerShield, null, StorageType.WeaponStorage);
+
+            // --- Buildings & Tools ---
+            new ItemProperties(ItemResourceType.Palisade, CityResoureIndex.Palisade, DefaultWeight, Work.WorkPriorityType.craftPalisade, CraftResourceLib.Palisade, null, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.Toolkit, CityResoureIndex.Toolkit, DefaultWeight, Work.WorkPriorityType.craftToolkit, CraftResourceLib.Toolkit, null, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.Wagon2Wheel, CityResoureIndex.Wagon2Wheel, DefaultWeight, Work.WorkPriorityType.craftWagon2Wheel, CraftResourceLib.Wagon2Wheel, null, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.Wagon4Wheel, CityResoureIndex.Wagon4Wheel, DefaultWeight, Work.WorkPriorityType.craftWagon4Wheel, CraftResourceLib.Wagon4Wheel, null, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.WagonClosed, CityResoureIndex.WagonClosed, DefaultWeight, Work.WorkPriorityType.craftWagonClosed, CraftResourceLib.WagonClosed, null, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.WagonIron, CityResoureIndex.WagonIron, DefaultWeight, Work.WorkPriorityType.craftWagonIron, CraftResourceLib.WagonIron, null, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.WagonSteel, CityResoureIndex.WagonSteel, DefaultWeight, Work.WorkPriorityType.craftWagonSteel, CraftResourceLib.WagonSteel, null, StorageType.MaterialStorage);
+
+            // --- Gunpowder & Ballistics ---
+            new ItemProperties(ItemResourceType.BlackPowder, CityResoureIndex.BlackPowder, DefaultWeight, Work.WorkPriorityType.craftBlackPowder, CraftResourceLib.BlackPowder, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.GunPowder, CityResoureIndex.GunPowder, DefaultWeight, Work.WorkPriorityType.craftGunPowder, CraftResourceLib.GunPowder, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.LedBullet, CityResoureIndex.LedBullet, DefaultWeight, Work.WorkPriorityType.craftBullet, CraftResourceLib.LedBullets, null, StorageType.WeaponStorage);
+
+            // --- Melee Weapons ---
+            new ItemProperties(ItemResourceType.SharpStick, CityResoureIndex.sharpstick, DefaultWeight, Work.WorkPriorityType.craftSharpStick, CraftResourceLib.SharpStick, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.BronzeSword, CityResoureIndex.BronzeSword, DefaultWeight, Work.WorkPriorityType.craftBronzeSword, CraftResourceLib.BronzeSword, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.ShortSword, CityResoureIndex.shortsword, DefaultWeight, Work.WorkPriorityType.craftShortSword, CraftResourceLib.ShortSword, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.Sword, CityResoureIndex.Sword, DefaultWeight, Work.WorkPriorityType.craftSword, CraftResourceLib.Sword, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.LongSword, CityResoureIndex.LongSword, DefaultWeight, Work.WorkPriorityType.craftLongSword, CraftResourceLib.LongSword, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.HandSpear, CityResoureIndex.HandSpear, DefaultWeight, Work.WorkPriorityType.craftHandSpear, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.MithrilSword, CityResoureIndex.MithrilSword, DefaultWeight, Work.WorkPriorityType.craftMithrilSword, CraftResourceLib.MithrilSword, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.Warhammer, CityResoureIndex.Warhammer, DefaultWeight, Work.WorkPriorityType.craftWarhammer, CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.TwoHandSword, CityResoureIndex.twohandsword, DefaultWeight, Work.WorkPriorityType.craftTwoHandSword, CraftResourceLib.TwoHandSword, null, StorageType.WeaponStorage);
+            //new ItemProperties(ItemResourceType.KnightsLance, CityResoureIndex.knightslance, DefaultWeight, Work.WorkPriorityType.craftKnightsLance, CraftResourceLib.KnightsLance, null);
+
+            // --- Ranged Weapons ---
+            new ItemProperties(ItemResourceType.SlingShot, CityResoureIndex.SlingShot, DefaultWeight, Work.WorkPriorityType.craftSlingshot, CraftResourceLib.Slingshot, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.ThrowingSpear, CityResoureIndex.ThrowingSpear, DefaultWeight, Work.WorkPriorityType.craftThrowingspear, CraftResourceLib.ThrowingSpear1, CraftResourceLib.ThrowingSpear2, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.Bow, CityResoureIndex.bow, DefaultWeight, Work.WorkPriorityType.craftBow, CraftResourceLib.Bow, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.LongBow, CityResoureIndex.longbow, DefaultWeight, Work.WorkPriorityType.craftLongbow, CraftResourceLib.LongBow, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.Crossbow, CityResoureIndex.crossbow, DefaultWeight, Work.WorkPriorityType.craftCrossbow, CraftResourceLib.CrossBow, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.MithrilBow, CityResoureIndex.MithrilBow, DefaultWeight, Work.WorkPriorityType.craftMithrilbow, CraftResourceLib.MithrilBow, null, StorageType.WeaponStorage);
+
+            // --- Firearms ---
+            new ItemProperties(ItemResourceType.HandCannon, CityResoureIndex.HandCannon, DefaultWeight, Work.WorkPriorityType.craftHandCannon, CraftResourceLib.BronzeHandCannon, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.HandCulverin, CityResoureIndex.HandCulvertin, DefaultWeight, Work.WorkPriorityType.craftHandCulverin, CraftResourceLib.BronzeHandCulverin, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.Rifle, CityResoureIndex.Rifle, DefaultWeight, Work.WorkPriorityType.craftRifle, CraftResourceLib.Rifle, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.Blunderbuss, CityResoureIndex.Blunderbuss, DefaultWeight, Work.WorkPriorityType.craftBlunderbuss, CraftResourceLib.Blunderbuss, null, StorageType.WeaponStorage);
+
+            // --- Siege Engines ---
+            new ItemProperties(ItemResourceType.Ballista, CityResoureIndex.ballista, DefaultWeight, Work.WorkPriorityType.craftBallista, CraftResourceLib.Ballista_Iron, CraftResourceLib.Ballista_Bronze, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.Manuballista, CityResoureIndex.Manuballista, DefaultWeight, Work.WorkPriorityType.craftManuBallista, CraftResourceLib.ManuBallista, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.Catapult, CityResoureIndex.Catapult, DefaultWeight, Work.WorkPriorityType.craftCatapult, CraftResourceLib.Catapult, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.SiegeCannonBronze, CityResoureIndex.SiegeCannonBronze, DefaultWeight, Work.WorkPriorityType.craftSiegeCannonBronze, CraftResourceLib.SiegeCannonBronze, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.ManCannonBronze, CityResoureIndex.ManCannonBronze, DefaultWeight, Work.WorkPriorityType.craftManCannonBronze, CraftResourceLib.ManCannonBronze, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.SiegeCannonIron, CityResoureIndex.SiegeCannonIron, DefaultWeight, Work.WorkPriorityType.craftSiegeCannonIron, CraftResourceLib.SiegeCannonIron, null, StorageType.WeaponStorage);
+            new ItemProperties(ItemResourceType.ManCannonIron, CityResoureIndex.ManCannonIron, DefaultWeight, Work.WorkPriorityType.craftManCannonIron, CraftResourceLib.ManCannonIron, null, StorageType.WeaponStorage);
+
+            // --- Coins ---
+            new ItemProperties(ItemResourceType.CopperCoin, NoCityResource, DefaultWeight, Work.WorkPriorityType.coinmaker_copper, Minting.CopperCoin, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.BronzeCoin, NoCityResource, DefaultWeight, Work.WorkPriorityType.coinmaker_bronze, Minting.BronzeCoin, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SilverCoin, NoCityResource, DefaultWeight, Work.WorkPriorityType.coinmaker_silver, Minting.SilverCoin, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.ElfCoin, NoCityResource, DefaultWeight, Work.WorkPriorityType.coinmaker_mithril, Minting.ElfCoin, null, StorageType.NUM_NONE);
+
+            new ItemProperties(ItemResourceType.Pig, CityResoureIndex.Pig, DefaultWeight, Work.WorkPriorityType.SlaughterPig, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
+
+            new ItemProperties(ItemResourceType.Hen, CityResoureIndex.Hen, DefaultWeight, Work.WorkPriorityType.SlaughterHen, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HenPen));
+
+            // --- Oxen ---
+            new ItemProperties(ItemResourceType.Oxen, CityResoureIndex.Oxen, DefaultWeight, Work.WorkPriorityType.SlaughterOxen, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OxenPen));
+
+            new ItemProperties(ItemResourceType.KineOxen, CityResoureIndex.KineOxen, DefaultWeight, Work.WorkPriorityType.SlaughterKineOxen, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.KineOxenPen));
+
+            // --- Dogs ---
+            new ItemProperties(ItemResourceType.Dog, CityResoureIndex.Dog, DefaultWeight, Work.WorkPriorityType.NUM_NONE, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.DogCage));
+
+            new ItemProperties(ItemResourceType.Hound, CityResoureIndex.Hound, DefaultWeight, Work.WorkPriorityType.NUM_NONE, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HoundCage));
+
+            // --- Horses ---
+            new ItemProperties(ItemResourceType.Pony, CityResoureIndex.Pony, DefaultWeight, Work.WorkPriorityType.SlaughterPony, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PonyPen));
+
+            new ItemProperties(ItemResourceType.Horse, CityResoureIndex.Horse, DefaultWeight, Work.WorkPriorityType.SlaughterHorse, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HorsePen));
+
+            new ItemProperties(ItemResourceType.WarHorse, CityResoureIndex.WarHorse, DefaultWeight, Work.WorkPriorityType.SlaughterWarHorse, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarHorsePen));
+
+            new ItemProperties(ItemResourceType.DraftHorse, CityResoureIndex.DraftHorse, DefaultWeight, Work.WorkPriorityType.SlaughterDraftHorse, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.DraftHorsePen));
+
+            // --- Pigs / Hogs ---
+            new ItemProperties(ItemResourceType.WildPig, CityResoureIndex.WildPig, DefaultWeight, Work.WorkPriorityType.SlaughterWildPig, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildPigPen));
+
+            new ItemProperties(ItemResourceType.WildHog, CityResoureIndex.WildHog, DefaultWeight, Work.WorkPriorityType.SlaughterWildHog, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildHogPen));
+
+            new ItemProperties(ItemResourceType.WarHog, CityResoureIndex.WarHog, DefaultWeight, Work.WorkPriorityType.SlaughterWarHog, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarHogPen));
+
+            new ItemProperties(ItemResourceType.StagHog, CityResoureIndex.StagHog, DefaultWeight, Work.WorkPriorityType.SlaughterStagHog, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.StagHogPen));
+
+            // --- Wolves ---
+            new ItemProperties(ItemResourceType.Wolf, CityResoureIndex.Wolf, DefaultWeight, Work.WorkPriorityType.SlaughterWolf, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WolfCage));
+
+            new ItemProperties(ItemResourceType.Warg, CityResoureIndex.Warg, DefaultWeight, Work.WorkPriorityType.SlaughterWarg, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WargCage));
+
+            new ItemProperties(ItemResourceType.AlphaWarg, CityResoureIndex.AlphaWarg, DefaultWeight, Work.WorkPriorityType.SlaughterAlphaWarg, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.AlphaWargCage));
+
+            // --- Cats ---
+            new ItemProperties(ItemResourceType.WildCat, CityResoureIndex.WildCat, DefaultWeight, Work.WorkPriorityType.SlaughterWildCat, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildCatCage));
+
+            new ItemProperties(ItemResourceType.Lion, CityResoureIndex.Lion, DefaultWeight, Work.WorkPriorityType.SlaughterLion, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.LionCage));
+
+            new ItemProperties(ItemResourceType.WarLion, CityResoureIndex.WarLion, DefaultWeight, Work.WorkPriorityType.SlaughterWarLion, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarLionCage));
+
+            // --- Elephants ---
+            new ItemProperties(ItemResourceType.Elephant, CityResoureIndex.Elephant, 1f / 2, Work.WorkPriorityType.SlaughterElephant, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.ElephantCage));
+
+            new ItemProperties(ItemResourceType.WarElephant, CityResoureIndex.WarElephant, 1f / 2, Work.WorkPriorityType.SlaughterWarElephant, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarElephantCage));
+
+            new ItemProperties(ItemResourceType.Oliphant, CityResoureIndex.Oliphant, 1f, Work.WorkPriorityType.SlaughterOliphant, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OliphantCage));
 
 
-            new ItemProperties(ItemResourceType.Silver, CityResoureIndex.Silver, DefaultWeight, CraftResourceLib.Silver, CraftResourceLib.Silver_AndCooling);
-            new ItemProperties(ItemResourceType.Gold, NoCityResource, DefaultWeight, Minting.ConvertGoldOre, null);
-            new ItemProperties(ItemResourceType.Bronze, CityResoureIndex.Bronze, DefaultWeight, CraftResourceLib.Bronze, null);
-            new ItemProperties(ItemResourceType.CastIron, CityResoureIndex.CastIron, DefaultWeight, CraftResourceLib.CastIron, null);
-            new ItemProperties(ItemResourceType.BloomeryIron, CityResoureIndex.BloomeryIron, DefaultWeight, CraftResourceLib.BloomeryIron, null);
-            new ItemProperties(ItemResourceType.Steel, CityResoureIndex.Steel, DefaultWeight, CraftResourceLib.Steel, CraftResourceLib.Steel_AndCooling);
-            new ItemProperties(ItemResourceType.Mithril, CityResoureIndex.Mithril, DefaultWeight, CraftResourceLib.Mithril, null);
+            new ItemProperties(ItemResourceType.SlaughterHen, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterHen, CraftResourceLib.SlaughterHen, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterPig, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterPig, CraftResourceLib.SlaughterPig, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterOxen, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterOxen, CraftResourceLib.SlaughterOxen, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterKineOxen, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterKineOxen, CraftResourceLib.SlaughterKineOxen, null, StorageType.NUM_NONE);
 
-            // armors
-            new ItemProperties(ItemResourceType.PaddedArmor, CityResoureIndex.paddedArmor, DefaultWeight, CraftResourceLib.PaddedArmor, null);
-            new ItemProperties(ItemResourceType.HeavyPaddedArmor, CityResoureIndex.HeavyPaddedArmor, DefaultWeight, CraftResourceLib.HeavyPaddedArmor, null);
-            new ItemProperties(ItemResourceType.BronzeArmor, CityResoureIndex.BronzeArmor, DefaultWeight, CraftResourceLib.BronzeArmor, null);
-            new ItemProperties(ItemResourceType.IronArmor, CityResoureIndex.mailArmor, DefaultWeight, CraftResourceLib.MailArmor, null);
-            new ItemProperties(ItemResourceType.HeavyIronArmor, CityResoureIndex.heavyMailArmor, DefaultWeight, CraftResourceLib.HeavyMailArmor, null);
-            new ItemProperties(ItemResourceType.LightPlateArmor, CityResoureIndex.LightPlateArmor, DefaultWeight, CraftResourceLib.PlateArmor, null);
-            new ItemProperties(ItemResourceType.FullPlateArmor, CityResoureIndex.FullPlateArmor, DefaultWeight, CraftResourceLib.FullPlateArmor, null);
-            new ItemProperties(ItemResourceType.MithrilArmor, CityResoureIndex.MithrilArmor, DefaultWeight, CraftResourceLib.MithrilArmor, null);
+            new ItemProperties(ItemResourceType.SlaughterPony, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterPony, CraftResourceLib.SlaughterPony, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterHorse, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterHorse, CraftResourceLib.SlaughterHorse, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterWarHorse, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWarHorse, CraftResourceLib.SlaughterWarHorse, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterDraftHorse, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterDraftHorse, CraftResourceLib.SlaughterDraftHorse, null, StorageType.NUM_NONE);
 
-            // buildings & tools
-            new ItemProperties(ItemResourceType.Palisade, CityResoureIndex.Palisade, DefaultWeight, CraftResourceLib.Palisade, null);
-            new ItemProperties(ItemResourceType.Toolkit, CityResoureIndex.Toolkit, DefaultWeight, CraftResourceLib.Toolkit, null);
-            new ItemProperties(ItemResourceType.Wagon2Wheel, CityResoureIndex.Wagon2Wheel, DefaultWeight, CraftResourceLib.WagonLight, null);
-            new ItemProperties(ItemResourceType.Wagon4Wheel, CityResoureIndex.Wagon4Wheel, DefaultWeight, CraftResourceLib.WagonHeavy, null);
+            new ItemProperties(ItemResourceType.SlaughterWildPig, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWildPig, CraftResourceLib.SlaughterWildPig, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterWildHog, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWildHog, CraftResourceLib.SlaughterWildHog, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterWarHog, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWarHog, CraftResourceLib.SlaughterWarHog, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterStagHog, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterStagHog, CraftResourceLib.SlaughterStagHog, null, StorageType.NUM_NONE);
 
-            // gunpowder & ballistics
-            new ItemProperties(ItemResourceType.BlackPowder, CityResoureIndex.BlackPowder, DefaultWeight, CraftResourceLib.BlackPowder, null);
-            new ItemProperties(ItemResourceType.GunPowder, CityResoureIndex.GunPowder, DefaultWeight, CraftResourceLib.GunPowder, null);
-            new ItemProperties(ItemResourceType.LedBullet, CityResoureIndex.LedBullet, DefaultWeight, CraftResourceLib.LedBullets, null);
+            new ItemProperties(ItemResourceType.SlaughterWolf, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWolf, CraftResourceLib.SlaughterWolf, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterWarg, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWarg, CraftResourceLib.SlaughterWarg, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterAlphaWarg, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterAlphaWarg, CraftResourceLib.SlaughterAlphaWarg, null, StorageType.NUM_NONE);
 
-            // melee weapons
-            new ItemProperties(ItemResourceType.SharpStick, CityResoureIndex.sharpstick, DefaultWeight, CraftResourceLib.SharpStick, null);
-            new ItemProperties(ItemResourceType.BronzeSword, CityResoureIndex.BronzeSword, DefaultWeight, CraftResourceLib.BronzeSword, null);
-            new ItemProperties(ItemResourceType.ShortSword, CityResoureIndex.shortsword, DefaultWeight, CraftResourceLib.ShortSword, null);
-            new ItemProperties(ItemResourceType.Sword, CityResoureIndex.Sword, DefaultWeight, CraftResourceLib.Sword, null);
-            new ItemProperties(ItemResourceType.LongSword, CityResoureIndex.LongSword, DefaultWeight, CraftResourceLib.LongSword, null);
-            new ItemProperties(ItemResourceType.HandSpear, CityResoureIndex.HandSpear, DefaultWeight, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
-            new ItemProperties(ItemResourceType.MithrilSword, CityResoureIndex.MithrilSword, DefaultWeight, CraftResourceLib.MithrilSword, null);
-            new ItemProperties(ItemResourceType.Warhammer, CityResoureIndex.Warhammer, DefaultWeight, CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
-            new ItemProperties(ItemResourceType.TwoHandSword, CityResoureIndex.twohandsword, DefaultWeight, CraftResourceLib.TwoHandSword, null);
-            new ItemProperties(ItemResourceType.KnightsLance, CityResoureIndex.knightslance, DefaultWeight, CraftResourceLib.KnightsLance, null);
+            new ItemProperties(ItemResourceType.SlaughterWildCat, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWildCat, CraftResourceLib.SlaughterWildCat, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterLion, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterLion, CraftResourceLib.SlaughterLion, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterWarLion, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWarLion, CraftResourceLib.SlaughterWarLion, null, StorageType.NUM_NONE);
 
-            // ranged weapons
-            new ItemProperties(ItemResourceType.SlingShot, CityResoureIndex.SlingShot, DefaultWeight, CraftResourceLib.Slingshot, null);
-            new ItemProperties(ItemResourceType.ThrowingSpear, CityResoureIndex.ThrowingSpear, DefaultWeight, CraftResourceLib.ThrowingSpear1, CraftResourceLib.ThrowingSpear2);
-            new ItemProperties(ItemResourceType.Bow, CityResoureIndex.bow, DefaultWeight, CraftResourceLib.Bow, null);
-            new ItemProperties(ItemResourceType.LongBow, CityResoureIndex.longbow, DefaultWeight, CraftResourceLib.LongBow, null);
-            new ItemProperties(ItemResourceType.Crossbow, CityResoureIndex.crossbow, DefaultWeight, CraftResourceLib.CrossBow, null);
-            new ItemProperties(ItemResourceType.MithrilBow, CityResoureIndex.MithrilBow, DefaultWeight, CraftResourceLib.MithrilBow, null);
-
-            // firearms
-            new ItemProperties(ItemResourceType.HandCannon, CityResoureIndex.HandCannon, DefaultWeight, CraftResourceLib.BronzeHandCannon, null);
-            new ItemProperties(ItemResourceType.HandCulverin, CityResoureIndex.HandCulvertin, DefaultWeight, CraftResourceLib.BronzeHandCulverin, null);
-            new ItemProperties(ItemResourceType.Rifle, CityResoureIndex.Rifle, DefaultWeight, CraftResourceLib.Rifle, null);
-            new ItemProperties(ItemResourceType.Blunderbuss, CityResoureIndex.Blunderbuss, DefaultWeight, CraftResourceLib.Blunderbus, null);
-
-            // siege engines
-            new ItemProperties(ItemResourceType.Ballista, CityResoureIndex.ballista, DefaultWeight, CraftResourceLib.Ballista_Iron, CraftResourceLib.Ballista_Bronze);
-            new ItemProperties(ItemResourceType.Manuballista, CityResoureIndex.Manuballista, DefaultWeight, CraftResourceLib.ManuBallista, null);
-            new ItemProperties(ItemResourceType.Catapult, CityResoureIndex.Catapult, DefaultWeight, CraftResourceLib.Catapult, null);
-            new ItemProperties(ItemResourceType.SiegeCannonBronze, CityResoureIndex.SiegeCannonBronze, DefaultWeight, CraftResourceLib.SiegeCannonBronze, null);
-            new ItemProperties(ItemResourceType.ManCannonBronze, CityResoureIndex.ManCannonBronze, DefaultWeight, CraftResourceLib.ManCannonBronze, null);
-            new ItemProperties(ItemResourceType.SiegeCannonIron, CityResoureIndex.SiegeCannonIron, DefaultWeight, CraftResourceLib.SiegeCannonIron, null);
-            new ItemProperties(ItemResourceType.ManCannonIron, CityResoureIndex.ManCannonIron, DefaultWeight, CraftResourceLib.ManCannonIron, null);
-
-            // coins (no city stock index by default)
-            new ItemProperties(ItemResourceType.CopperCoin, NoCityResource, DefaultWeight, Minting.CopperCoin, null);
-            new ItemProperties(ItemResourceType.BronzeCoin, NoCityResource, DefaultWeight, Minting.BronzeCoin, null);
-            new ItemProperties(ItemResourceType.SilverCoin, NoCityResource, DefaultWeight, Minting.SilverCoin, null);
-            new ItemProperties(ItemResourceType.ElfCoin, NoCityResource, DefaultWeight, Minting.ElfCoin, null);
-
-            var craftList = Build.BuildingCraftList.AllBuidings();
+            new ItemProperties(ItemResourceType.SlaughterElephant, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterElephant, CraftResourceLib.SlaughterElephant, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterWarElephant, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterWarElephant, CraftResourceLib.SlaughterWarElephant, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterOliphant, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterOliphant, CraftResourceLib.SlaughterOliphant, null, StorageType.NUM_NONE);
+            
+            
+            var craftList = CraftList.AllBuidings();
             foreach (var building_craftItems in craftList)
             {
                 foreach (var item in building_craftItems.Value)
@@ -153,7 +287,7 @@ namespace VikingEngine.DSSWars.Resource
             {
                 if (items[i] == null)
                 {
-                    new ItemProperties((ItemResourceType)i, NoCityResource, DefaultWeight, null, null);
+                    new ItemProperties((ItemResourceType)i, NoCityResource, DefaultWeight, Work.WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE);
                 }
             }
 
@@ -439,39 +573,39 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelData.modelType = ModelType.Soldier;
             }
 
-            {
-                var weapon = Get(ItemResourceType.KnightsLance);
-                ref var soldier = ref weapon.soldierData;
+            //{
+            //    var weapon = Get(ItemResourceType.KnightsLance);
+            //    ref var soldier = ref weapon.soldierData;
 
-                soldier.attackDamage = DssConst.WeaponDamage_KnigtsLance;
-                soldier.attackSplashCount = 0;
-                soldier.attackDamageStructure = Convert.ToInt32(30);// * skillBonus); // special override
-                soldier.attackDamageSea = Convert.ToInt32(20);// * skillBonus);
+            //    soldier.attackDamage = DssConst.WeaponDamage_KnigtsLance;
+            //    soldier.attackSplashCount = 0;
+            //    soldier.attackDamageStructure = Convert.ToInt32(30);// * skillBonus); // special override
+            //    soldier.attackDamageSea = Convert.ToInt32(20);// * skillBonus);
 
-                soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 2.5f;
-                soldier.attackRange = 0.06f;
-                soldier.basehealth *= 3;
-                soldier.mainAttack = AttackType.Melee;
-                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
+            //    soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 2.5f;
+            //    soldier.attackRange = 0.06f;
+            //    soldier.basehealth *= 3;
+            //    soldier.mainAttack = AttackType.Melee;
+            //    soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime * 0.8f;
 
-                soldier.modelName = LootFest.VoxelModelName.war_knight;
-                soldier.modelVariationCount = 3;
-                soldier.modelScale *= 0.75f;
-                soldier.icon = SpriteName.WarsUnitIcon_Knight;
+            //    soldier.modelName = LootFest.VoxelModelName.war_knight;
+            //    soldier.modelVariationCount = 3;
+            //    soldier.modelScale *= 0.75f;
+            //    soldier.icon = SpriteName.WarsUnitIcon_Knight;
 
-                soldier.upkeepMultiplier = 3;//DssLib.SoldierDefaultEnergyUpkeep * 3;
-                soldier.rowWidth = 4;
-                soldier.columnsDepth = 3;
-                soldier.groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
-                soldier.workForcePerUnit = 2;
-                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
-                soldier.hasBannerMan = false;
+            //    soldier.upkeepMultiplier = 3;//DssLib.SoldierDefaultEnergyUpkeep * 3;
+            //    soldier.rowWidth = 4;
+            //    soldier.columnsDepth = 3;
+            //    soldier.groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
+            //    soldier.workForcePerUnit = 2;
+            //    soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+            //    soldier.hasBannerMan = false;
 
-                soldier.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
-                soldier.factionColoredModel = true;
-                soldier.modelData.weapon = ItemResourceType.KnightsLance;
-                soldier.modelData.modelType = ModelType.Riding;
-            }
+            //    soldier.blockReducingAttack_Inv = DssConst.SmallBlockReduceAttack_Inv;
+            //    soldier.factionColoredModel = true;
+            //    soldier.modelData.weapon = ItemResourceType.KnightsLance;
+            //    soldier.modelData.modelType = ModelType.Riding;
+            //}
 
             {
                 var weapon = Get(ItemResourceType.MithrilSword);

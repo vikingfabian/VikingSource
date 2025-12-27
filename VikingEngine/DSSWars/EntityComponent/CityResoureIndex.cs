@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.EntityComponent
         // More weapons (melee/ranged)
         public const int Warhammer = 41;
         public const int twohandsword = 42;
-        public const int knightslance = 43;
+        
         public const int SlingShot = 44;
         public const int ThrowingSpear = 45;
         public const int bow = 46;
@@ -96,7 +96,76 @@ namespace VikingEngine.DSSWars.EntityComponent
         public const int FullPlateArmor = 68;
         public const int MithrilArmor = 69;
 
-        // Reserve some indices
-        public const int COUNT = 80;
+        // --- NEW ADDITIONS ---
+
+        // New Food & Materials
+        public const int Meat = 70;
+        public const int ConservedFood = 71;
+        public const int Clay = 72;
+        public const int Brick = 73;
+        public const int Salt = 74;
+
+        // New Wagons
+        public const int WagonClosed = 75;
+        public const int WagonIron = 76;
+        public const int WagonSteel = 77;
+
+        // Shields
+        public const int BucklerShield = 78;
+        public const int RoundShield = 79;
+        public const int HeaterShield = 80;
+        public const int TowerShield = 81;
+
+        // Mount Armor
+        public const int MountBronzeArmor = 82;
+        public const int MountPaddedArmor = 83;
+        public const int MountHeavyPaddedArmor = 84;
+        public const int MountIronArmor = 85;
+        public const int MountHeavyIronArmor = 86;
+        public const int MountLightPlateArmor = 87;
+        public const int MountFullPlateArmor = 88;
+        public const int MountMithrilArmor = 89;
+
+        // Mounts - Oxen
+        public const int Oxen = 90;
+        public const int KineOxen = 91;
+
+        // Mounts - Horses
+        public const int Pony = 92;
+        public const int Horse = 93;
+        public const int WarHorse = 94;
+        public const int DraftHorse = 95;
+
+        // Mounts - Pigs
+        public const int WildPig = 96;
+        public const int WildHog = 97;
+        public const int WarHog = 98;
+        public const int StagHog = 99;
+
+        // Mounts - Wolves
+        public const int Wolf = 100;
+        public const int Warg = 101;
+        public const int AlphaWarg = 102;
+
+        // Mounts - Cats
+        public const int WildCat = 103;
+        public const int Lion = 104;
+        public const int WarLion = 105;
+
+        // Mounts - Elephants
+        public const int Elephant = 106;
+        public const int WarElephant = 107;
+        public const int Oliphant = 108;
+
+        public const int Dog = 109;
+        public const int Hound = 110;
+        
+        public const int Container = 111;
+
+        public const int Pig = 112;
+        public const int Hen = 113;
+
+        // Reserve some indices (Increased from 80 to 120)
+        public const int COUNT = 120;
     }
 }

@@ -139,6 +139,28 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         }
     }
 
+    class TempAnimal : AbsLivestock
+    {
+        public TempAnimal(IntVector2 tilepos, Vector3 topCenterWp)
+            : base(tilepos, topCenterWp)
+        { }
+        protected override Graphics.VoxelModelInstance createModel()
+        {
+            walkingAnimation = new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames);
+
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.ErrorCube,
+                DssConst.Men_StandardModelScale * 0.5f);
+        }
+
+        protected override void sound()
+        {
+            if (Ref.peRnd.Chance(0.03) && SoundStackManager.RareAvailable())
+            {
+                SoundLib.pig.Play(model.position);
+            }
+        }
+    }
+
     class Pheasant : AbsLivestock
     {
         public Pheasant(IntVector2 tilepos, Vector3 topCenterWp)
@@ -161,10 +183,10 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         }
     }
 
-    enum AnimalType
-    { 
-        Pig,
-        Hen,
-        Pheasant,
-    }
+    //enum AnimalType
+    //{ 
+    //    Pig,
+    //    Hen,
+    //    Pheasant,
+    //}
 }

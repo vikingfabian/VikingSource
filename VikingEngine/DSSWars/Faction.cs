@@ -30,10 +30,7 @@ namespace VikingEngine.DSSWars
         public GameObject.City mainCity;
         public Vector3 SelectionCenter { get; private set; }
 
-
-        //public ConcurrentBag<int> cityPointers;
-        //public SpottedArray<GameObject.City> cities;
-       public SpottedPointerArray cities;
+        public SpottedPointerArray cities;
 
         public int previousWarAgainstFaction = -1;
         //public DiplomaticRelation[] diplomaticRelations = null;
@@ -69,8 +66,6 @@ namespace VikingEngine.DSSWars
             this.myIndex = index;
 
             cities = new SpottedPointerArray(8);
-            //cities = new SpottedArray<GameObject.City>(8);
-            //cityPointers = new ConcurrentBag<int>();
             armies = new SpottedArray<Army>(16);
         }
 
@@ -99,7 +94,7 @@ namespace VikingEngine.DSSWars
             addTo.factionComponentsAdd(this);
             initVisuals(addTo.metaData);
 
-            cities = new SpottedPointerArray(8);//new SpottedArray<City>(8);
+            cities = new SpottedPointerArray(8);
             armies = new SpottedArray<Army>(16);
         }
 
@@ -150,7 +145,7 @@ namespace VikingEngine.DSSWars
 
             writeRelations(w);
 
-            workTemplate.writeGameState(w, false);
+            workTemplate.writeGameState(w);
         }
         virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
@@ -523,7 +518,7 @@ namespace VikingEngine.DSSWars
         }
 
         
-        public void oneSecUpdate()
+        public void oneSecUpdate(bool minute)
         {
             if (isAlive)
             {
@@ -563,7 +558,7 @@ namespace VikingEngine.DSSWars
                 {
                     if (city.factionIndex == myIndex)
                     {
-                        city.oneSecUpdate();
+                        city.oneSecUpdate(minute);
                         embassyCount += city.buildingStructure.Embassy_count;
 
                         income += city.income_oneSecUpdate(incomeMultiplier);

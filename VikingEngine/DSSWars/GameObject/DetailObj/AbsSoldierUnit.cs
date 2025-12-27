@@ -1,17 +1,18 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.PJ.Strategy;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.ToGG.MoonFall.GO;
@@ -188,11 +189,13 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public override string Name(out bool mayEdit)
         {
+            IconName.Item(group.soldierConscript.conscript.weapon, out SpriteName weaponIcon, out string weaponName);
             mayEdit = false;
-            string name = LangLib.Item(group.soldierConscript.conscript.weapon);
+            string name = weaponName;//LangLib.Item(group.soldierConscript.conscript.weapon);
             if (group.soldierConscript.conscript.armorLevel != Resource.ItemResourceType.NONE)
-            { 
-              name  += " " + LangLib.Item(group.soldierConscript.conscript.armorLevel);
+            {
+                IconName.Item(group.soldierConscript.conscript.weapon, out SpriteName armorIcon, out string armorName);
+                name += " " + armorName;
             }
             return name;
         }

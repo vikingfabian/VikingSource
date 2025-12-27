@@ -432,13 +432,15 @@ namespace VikingEngine.DSSWars.Work
             if (status.carry.amount > 0)
             {
                 hasImage = true;
-                sprite = Resource.ResourceLib.Icon(status.carry.type);
+                IconName.Item(status.carry.type, out sprite, out var name);
+                //sprite = Resource.ResourceLib.Icon(status.carry.type);
             }
             else if (status.work == WorkType.Craft && state == WorkerUnitState.FinalizeWork)
             {
                 hasImage = true;
                 ItemResourceType item = (ItemResourceType)status.workSubType;
-                sprite = ResourceLib.Icon(item);
+                IconName.Item(item, out sprite, out var name);
+                //sprite = ResourceLib.Icon(item);
             }
             else
             {
@@ -540,7 +542,8 @@ namespace VikingEngine.DSSWars.Work
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsWorkMove));
                 args.content.space();
-                args.content.Add(new RbText(string.Format(DssRef.lang.WorkerHud_Carry, status.carry.amount, LangLib.Item(status.carry.type))));
+                IconName.Item(status.carry.type, out var icon, out var name);
+                args.content.Add(new RbText(string.Format(DssRef.lang.WorkerHud_Carry, status.carry.amount, name)));
             }
 
             args.content.text(string.Format(DssRef.lang.WorkerHud_Energy, TextLib.OneDecimal(status.energy)));

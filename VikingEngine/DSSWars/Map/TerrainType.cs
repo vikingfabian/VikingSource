@@ -34,17 +34,20 @@ namespace VikingEngine.DSSWars.Map
         TallGrass,
         Stones,
         StoneBlock,
-        WheatFarm,
-        LinenFarm,
-        BogIron,
-        HempFarm,
-        RapeSeedFarm,
 
+        WheatFarm,
         WheatFarmUpgraded,
+        LinenFarm,
         LinenFarmUpgraded,
+        HempFarm,
         HempFarmUpgraded,
+        RapeSeedFarm,
         RapeSeedFarmUpgraded,
 
+        BogIron,
+        ClayPit,
+        SaltPit,
+       
         NUM_NONE
     }
 
@@ -100,7 +103,7 @@ namespace VikingEngine.DSSWars.Map
         WarmachineBarracks,
         GunBarracks,
         CannonBarracks,
-        KnightsBarracks,
+        //KnightsBarracks,
 
         Carpenter,
         Nobelhouse,
@@ -127,6 +130,42 @@ namespace VikingEngine.DSSWars.Map
         WorkerTent,
         CityHall_Unclaimed,
         CityHall_Tent,
+
+        //NEW
+        Pottery,
+        DryingPan,
+        Butcher,
+        Smoker,
+        Dryer,
+        ShieldMaker,
+
+        MaterialStorage, FoodStorage, WeaponStorage, ArmorStorage, AnimalStorage,
+        Cesspit,
+
+        OxenPen,
+        KineOxenPen,
+
+        DogCage,
+        HoundCage,
+
+        PonyPen,
+        HorsePen,
+        WarHorsePen,
+        DraftHorsePen,
+        WildPigPen,
+        WildHogPen,
+        WarHogPen,
+        StagHogPen,
+        WolfCage,
+        WargCage,
+        AlphaWargCage,
+        WildCatCage,
+        LionCage,
+        WarLionCage,
+        ElephantCage,
+        WarElephantCage,
+        OliphantCage,
+
         NUM_NONE
     }
 
@@ -189,7 +228,7 @@ namespace VikingEngine.DSSWars.Map
 
     enum TerrainMineType
     {
-        Stones,
+        Salt,
         Coal,
         StoneBlock,
         IronOre,

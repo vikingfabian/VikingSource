@@ -64,8 +64,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int HousingCount_Workers = 0;
         public int WorkersMaxLimit;
-
         public int HousingCount_Guard = 0;
+
+        public GroupedResource freeNobelMen = new GroupedResource();
+        public int HousingCount_NobelMen = 0;
+
+        public int PenFoodUpkeep_minute = 0;
+
         public int AvailableGuardHousing()
         {
             return HousingCount_Guard - soldiersCount;
@@ -90,6 +95,7 @@ namespace VikingEngine.DSSWars.GameObject
         //IntVector2 cullingTopLeft, cullingBottomRight;
         public int cityTileRadius = 0;
         public CityCulture Culture = CityCulture.NUM_NONE;
+        public CityBiom Biom = CityBiom.None;
 
         public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarm;
         bool autoBuild_Work = false;
@@ -306,11 +312,32 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void generateCultureAndEconomy(WorldData world, CityCultureCollection cityCultureCollection)
         {
-            initEconomy(true, world);
+            initEconomy(/*true,*/ world);
 
             CityAreaCulture areaCulture = new CityAreaCulture(this, world);
 
             workHutStyle = areaCulture.percMountain > 0.5 ? 0 : 1;
+
+            if (areaCulture.percDesolate > 0.5)
+            {
+                Biom = CityBiom.Desolate;
+            }
+            else if (areaCulture.frozenBiom > 0.5)
+            {
+                Biom = CityBiom.Frozen;
+            }
+            else if (areaCulture.percDry > 0.5)
+            {
+                Biom = CityBiom.Desert;
+            }
+            else if (areaCulture.percForest > 0.75)
+            {
+                Biom = CityBiom.Forest;
+            }
+            else if (areaCulture.percMountain > 0.5)
+            {
+                Biom = CityBiom.Mountain;
+            }
 
             if (areaCulture.percForest >= 0.7 && cityType == CityType.Capital)
             {
@@ -376,7 +403,6 @@ namespace VikingEngine.DSSWars.GameObject
 
             casualCityProfile.InitCulture(this, areaCulture);
         }
-
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {
@@ -447,6 +473,9 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write(Bound.UShort(HousingCount_Guard));
                 w.Write(Bound.Short(freeServiceMen.amount));
                 w.Write(Bound.Short(workingAndFreeServiceMen));
+                w.Write(Bound.UShort(HousingCount_NobelMen));
+                w.Write(Bound.Short(freeNobelMen.amount));
+                w.Write(Bound.UShort(PenFoodUpkeep_minute));
                 cityHallSubtilePos.writeUshort(w);
                 citySquareSubtilePos.writeUshort(w);
 
@@ -457,7 +486,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 w.Write(Bound.Byte(maxWaterBase));
                 w.Write(waterAddPerSec);
-                workTemplate.writeGameState(w, true);
+                workTemplate.writeGameState(w);
 
                 writeResources(w);
 
@@ -843,7 +872,7 @@ namespace VikingEngine.DSSWars.GameObject
             // Additional melee / ranged
             write(CityResoureIndex.Warhammer);
             write(CityResoureIndex.twohandsword);
-            write(CityResoureIndex.knightslance);
+            //write(CityResoureIndex.knightslance);
             write(CityResoureIndex.SlingShot);
             write(CityResoureIndex.ThrowingSpear);
             write(CityResoureIndex.bow);
@@ -1021,7 +1050,7 @@ namespace VikingEngine.DSSWars.GameObject
             // Additional melee / ranged
             read(CityResoureIndex.Warhammer);
             read(CityResoureIndex.twohandsword);
-            read(CityResoureIndex.knightslance);
+            //read(CityResoureIndex.knightslance);
             read(CityResoureIndex.SlingShot);
             read(CityResoureIndex.ThrowingSpear);
             read(CityResoureIndex.bow);
@@ -1203,7 +1232,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (part)
             {
                 case 0:
-                    workTemplate.writeGameState(w, true);
+                    workTemplate.writeGameState(w);
                     writeResources(w);
                     break;
 
@@ -1313,16 +1342,16 @@ namespace VikingEngine.DSSWars.GameObject
                                                     else
                                                     {
                                                         terrain = TerrainMainType.Building;
-                                                        if (Ref.peRnd.Chance(0.4))
-                                                        {
-                                                            sub = (int)TerrainBuildingType.PigPen;
-                                                            maxAmount = TerrainContent.PigMaxSize;
-                                                        }
-                                                        else
-                                                        {
+                                                        //if (Ref.peRnd.Chance(0.4))
+                                                        //{
+                                                        //    sub = (int)TerrainBuildingType.PigPen;
+                                                        //    maxAmount = TerrainContent.PigMaxSize;
+                                                        //}
+                                                        //else
+                                                        //{
                                                             sub = (int)TerrainBuildingType.HenPen;
-                                                            maxAmount = TerrainContent.HenMaxSize;
-                                                        }
+                                                            maxAmount = TerrainContent.HenGrowth.maxSize;
+                                                        //}
                                                     }
 
                                                     if (Build.BuildLib.TryAutoBuild(farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))
@@ -1422,6 +1451,18 @@ namespace VikingEngine.DSSWars.GameObject
             else
             {
                 HousingCount_Guard -= count;
+            }
+        }
+
+        public void onNobelHouseBuild(bool build_notDestroy, int count)
+        {
+            if (build_notDestroy)
+            {
+                HousingCount_NobelMen += count;
+            }
+            else
+            {
+                HousingCount_NobelMen -= count;
             }
         }
         //public void useServiceMen(int useInServiceCount)
@@ -1545,7 +1586,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             groupRadius = 0.6f;
 
-            initEconomy(newGame, DssRef.world);
+            //initEconomy(newGame, DssRef.world);
+            for (StorageType storageType = 0; storageType < StorageType.NUM_NONE; storageType++)
+            {
+                refreshStorageSize(storageType);
+            }
+
             CalcRecruitToTile();
             armyGoalRotation = rotation.radians;
 
@@ -1584,9 +1630,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         
 
-        void initEconomy(bool newGame, WorldData world)
+        void initEconomy(/*bool newGame,*/ WorldData world)
         {
-            if (newGame)
+            //if (newGame)
             {
                 money.AddCopper(500);
 
@@ -1628,7 +1674,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                 defaultResourceBuffer(world);
             }
+
+            
         }
+
+        
 
         public bool claimCity(Faction faction, IntVector2 subtile)
         {
@@ -1942,14 +1992,9 @@ namespace VikingEngine.DSSWars.GameObject
             return childrenAge0.Int() + childrenAge1;
         }
 
-        public void oneSecUpdate()
+        public void oneSecUpdate(bool minute)
         {
             const int MinWorkforce = 8;
-
-            //if (myIndex == 35 || debugTagged)
-            //{
-            //    lib.DoNothing();
-            //}
 
             int addWorkers = 0;
 
@@ -2021,7 +2066,14 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             casualProgress?.oneSecondUpdate(this);
-            //capturePoints = Bound.Min(capturePoints - 10, 0);
+
+            if (minute)
+            { 
+                float addNobel = HousingCount_NobelMen * DssConst.NobelHouseMenAddSpeed_PerManHouse;
+                freeNobelMen.amount = Bound.Max(freeNobelMen.amount + Convert.ToInt32(addNobel), HousingCount_NobelMen);
+
+                AddGroupedResource(ItemResourceType.RawFood_Group, -PenFoodUpkeep_minute);
+            }
         }
 
         void cityCaptureCheck()
@@ -2919,6 +2971,17 @@ namespace VikingEngine.DSSWars.GameObject
                     content.Add(new RbImage(SpriteName.WarsServiceMenTotal));
                     content.space();
                     content.Add(new RbText(TotalServiceMen().ToString()));
+
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.MissingImage));
+                    content.space();
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_NobelMen), freeNobelMen.amount)));
+                    content.Add(new RbTab(0.4f));
+                    content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsBuild_Nobelhouse));
+                    content.space();
+                    content.Add(new RbText(HousingCount_NobelMen.ToString()));
                 }
                 //HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
                 //HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
@@ -2972,10 +3035,20 @@ namespace VikingEngine.DSSWars.GameObject
                         HudLib.InfoButton(content, new RbTooltip(HudLib.guardUpkeepInfo));
                     }
                 }
+                {
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.WarsResource_RawFoodRemove));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsBuild_PigPen));
+                    content.space();
+                    content.Add(new RbText(string.Format(DssRef.todoLang.Economy_AnimalPenUpkeep, TextLib.OneDecimal(cityEconomy.animalPenUpkeep))));
+
+                }
 
                 if (!player.profile.casualControls)
                 {
                     cultureToHud(player, content, interactive);
+                    biomToHud(player, content, interactive);
                 }
                 if (immigrants.HasValue())
                 {
@@ -3805,7 +3878,8 @@ namespace VikingEngine.DSSWars.GameObject
         //}
         public void cultureToHud(LocalPlayer player, RichBoxContent content, bool interactive)
         {
-            content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, LangLib.CityCulture(Culture, true)));
+            IconName.CityCulture(Culture, out string title, out string description);
+            content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, title));
             if (interactive)
             {
                 content.space();
@@ -3814,19 +3888,29 @@ namespace VikingEngine.DSSWars.GameObject
             else
             {
                 content.newLine();
-                HudLib.Description(content, LangLib.CityCulture(Culture, false));
+                HudLib.Description(content, description);
             }
+        }
+
+        public void biomToHud(LocalPlayer player, RichBoxContent content, bool interactive)
+        {
+            content.newLine();
+            content.Add(new RbText(".Biom:", HudLib.TitleColor_Label));
+            content.space();
+            content.Add(new RbText(Biom.ToString()));
         }
 
         void cultureToolTip(RichBoxContent content, object tag)
         {
-            content.h2(LangLib.CityCulture(Culture, true), HudLib.TitleColor_Head);
-            content.text(LangLib.CityCulture(Culture, false));
+            IconName.CityCulture(Culture, out string title, out string description);
             int factor = DssLib.CulturePercChangeFactor(Culture);
             if (factor >= 0)
             {
                 content.text(string.Format(DssRef.todoLang.Hud_ChangeFactor, factor + "%"));
             }
+            content.h2(title, HudLib.TitleColor_Head);
+            content.text(description);
+
             content.newParagraph();
             content.text(DssRef.lang.CityCultureDescription, HudLib.InfoYellow_Light);
            
