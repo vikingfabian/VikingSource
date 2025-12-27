@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             menuSystem = new GameMenuSystem();
 
             new GameObject.AllUnits();
-            new Diplomacy();
+            //new Diplomacy();
 
             new GameTime();
             HudLib.Init();

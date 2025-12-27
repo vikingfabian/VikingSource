@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
@@ -16,9 +18,12 @@ namespace VikingEngine.DSSWars
 
     class Diplomacy
     {
-
         public const float MiltitaryStrengthXServant = 2f;
-       
+
+        int factionCapacity;
+        public DiplomaticRelation[] diplomaticRelations;
+        int[] indexRegister;
+
         List<int> aiPlayerAsynchUpdate_wars = new List<int>(8);
         List<int> aiPlayerAsynchUpdate_threats = new List<int>(8);
         List<int> aiPlayerAsynchUpdate_wars_withplayer = new List<int>(2);
@@ -40,9 +45,23 @@ namespace VikingEngine.DSSWars
         public double SpeakTermsOnNeigbor_BadChance; //todo not in war with neighbor
         public double SpeakTermsOnNeigbor_NoneChance;
 
-        public Diplomacy()
+        public Diplomacy(int factionCapacity = 64)
         {
             DssRef.diplomacy = this;
+
+            this.factionCapacity = factionCapacity;
+            diplomaticRelations = new DiplomaticRelation[length()];
+            indexRegister = new int[factionCapacity - 1];
+
+            int nextLength = factionCapacity - 1;
+            int currentIndex = 0;
+
+            for (int i = 0; i < factionCapacity - 1; i++)
+            {
+                indexRegister[i] = currentIndex;
+                currentIndex += nextLength;
+                nextLength--;
+            }
 
             switch (DssRef.difficulty.diplomacyDifficulty)
             {
@@ -86,29 +105,117 @@ namespace VikingEngine.DSSWars
 
         }
 
-        
+        int length()
+        {
+            return MathExt.GaussSum(factionCapacity - 1);
+        }
 
+        public int RelationIndex(int faction1, int faction2)
+        {
+            int lowIndex, highIndex;
+            if (faction1 < faction2)
+            {
+                lowIndex = faction1;
+                highIndex = faction2;
+            }
+            else if (faction2 < faction1)
+            {
+                highIndex = faction1;
+                lowIndex = faction2;
+            }
+            else
+            {
+                return -1;
+            }
+
+            int index = indexRegister[lowIndex] + highIndex - lowIndex;
+            return index;
+        }
+
+        public DiplomaticRelation GetRelation(Faction faction1, Faction faction2)
+        {
+            if (faction1 == null || faction2 == null || faction1 == faction2)
+            {
+                return DiplomaticRelation.Empty;
+            }
+            return diplomaticRelations[RelationIndex(faction1.myIndex, faction2.myIndex)];
+        }
+
+        public DiplomaticRelation GetRelation_Safe(int faction1, int faction2)
+        {
+            if (faction1 < 0 || faction2 < 0 || faction1 == faction2)
+            {
+                return DiplomaticRelation.Empty;
+            }
+            return diplomaticRelations[RelationIndex(faction1, faction2)];
+        }
+
+        public DiplomaticRelation GetRelation(int faction1, int faction2)
+        {
+            return diplomaticRelations[RelationIndex(faction1, faction2)];
+        }
+
+        public void Set(int faction1, int faction2, DiplomaticRelation relation)
+        {
+            diplomaticRelations[RelationIndex(faction1, faction2)] = relation;
+        }
+
+        public ref DiplomaticRelation GetRefRelation(int faction1, int faction2)
+        {
+            return ref diplomaticRelations[RelationIndex(faction1, faction2)];
+        }
+
+        //public bool InWar(int faction1, int faction2)
+        //{
+        //    if (faction1 < 0 || faction2 < 0)
+        //    {
+        //        return false;
+        //    }
+
+        //    if (faction1 != faction2)
+        //    {
+        //        return InWar(DssRef.world.faction(faction1), DssRef.world.faction(faction2));
+        //    }
+        //    return false;
+        //}
 
         public void async_update()
         {
             foreach (var p in DssRef.state.localPlayers)
             {
-                for (int relIx = 0; relIx < p.faction.diplomaticRelations.Length; ++relIx)
+                RelationsLoop loop = new RelationsLoop(p.faction.myIndex);
+                while (loop.Next())
                 {
-                    var rel = p.faction.diplomaticRelations[relIx];
-                    if (rel != null)
-                    { 
-                        rel.truce_update();
-                    }
+                    diplomaticRelations[loop.RelationIndex()].truce_update();
                 }
+                //for (int otherFaction = 0; otherFaction < DssRef.world.factions.Array.Length; otherFaction++)
+                //{
+                //    if (p.faction.myIndex != otherFaction)
+                //    {
+                //        diplomaticRelations[RelationIndex(p.faction.myIndex, otherFaction)].truce_update();
+                //    }
+                //}
             }
+
+            //foreach (var p in DssRef.state.localPlayers)
+            //{
+            //    for (int relIx = 0; relIx < p.faction.diplomaticRelations.Length; ++relIx)
+            //    {
+            //        var rel = p.faction.diplomaticRelations[relIx];
+            //        if (rel != null)
+            //        {
+            //            rel.truce_update();
+            //        }
+            //    }
+            //}
         }
+    
 
         public bool InplayerAlliance(Faction aifaction)
         {
             foreach (var p in DssRef.state.localPlayers)
             {
-                if (GetRelationType(p.faction, aifaction) >= RelationType.RelationType3_Ally)
+                if (GetRelation(p.faction, aifaction).Relation >= RelationType.RelationType3_Ally)
                 { 
                     return true;
                 }
@@ -134,16 +241,28 @@ namespace VikingEngine.DSSWars
         {
             aiPlayerAsynchUpdate_wars.Clear();
             aiPlayerAsynchUpdate_wars_withplayer.Clear();
-            for (int relIx = 0; relIx < aifaction.diplomaticRelations.Length; ++relIx)
+            //for (int relIx = 0; relIx < aifaction.diplomaticRelations.Length; ++relIx)
+            //{
+            //    var otherFaction = DssRef.world.faction(relIx);
+            //    if (InWar(aifaction, otherFaction)) 
+            //    {
+            //        if (otherFaction.player.IsLocalPlayer())
+            //        {
+            //            aiPlayerAsynchUpdate_wars_withplayer.Add(relIx);
+            //        }
+            //        aiPlayerAsynchUpdate_wars.Add(relIx);
+            //    }
+            //}
+            RelationsLoop loop = new RelationsLoop(aifaction.myIndex);
+            while (loop.Next())
             {
-                var otherFaction = DssRef.world.faction(relIx);
-                if (InWar(aifaction, otherFaction)) 
+                if (loop.Relation().InWar())
                 {
-                    if (otherFaction.player.IsLocalPlayer())
+                    if (loop.OtherFaction(out var other) && other.player.IsLocalPlayer())
                     {
-                        aiPlayerAsynchUpdate_wars_withplayer.Add(relIx);
+                        aiPlayerAsynchUpdate_wars_withplayer.Add(loop.otherFactionIx);
                     }
-                    aiPlayerAsynchUpdate_wars.Add(relIx);
+                    aiPlayerAsynchUpdate_wars.Add(loop.otherFactionIx);
                 }
             }
 
@@ -266,38 +385,26 @@ namespace VikingEngine.DSSWars
             return wars;
         }
 
-        public RelationType GetRelationType(Faction faction1, Faction faction2)
-        {
-            if (faction1 != null && faction2 != null)
-            {
-                if (faction2.myIndex < faction1.diplomaticRelations.Length)
-                {
-                    DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
-                    if (rel == null)
-                    {
-                        return RelationType.RelationType0_Neutral;
-                    }
-                    else
-                    {
-                        return rel.Relation;
-                    }
-                }
-            }
-            return RelationType.RelationType0_Neutral;
-        }
-        public bool InWar(int faction1, int faction2)
-        {
-            if (faction1 < 0 || faction2 < 0)
-            {
-                return false;
-            }
-
-            if (faction1 != faction2)
-            {
-                return InWar(DssRef.world.faction(faction1), DssRef.world.faction(faction2));
-            }
-            return false;
-        }
+        //public RelationType GetRelationType(Faction faction1, Faction faction2)
+        //{
+        //    if (faction1 != null && faction2 != null)
+        //    {
+        //        if (faction2.myIndex < faction1.diplomaticRelations.Length)
+        //        {
+        //            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
+        //            if (rel == null)
+        //            {
+        //                return RelationType.RelationType0_Neutral;
+        //            }
+        //            else
+        //            {
+        //                return rel.Relation;
+        //            }
+        //        }
+        //    }
+        //    return RelationType.RelationType0_Neutral;
+        //}
+        
 
         public bool InWarWithPlayer(Faction faction)
         {
@@ -311,124 +418,131 @@ namespace VikingEngine.DSSWars
             return false;
         }
 
-        public bool InWar(Faction faction1, Faction faction2)
-        {
-            if (faction1 == null || faction2 == null)
-            {
-                return false;
-            }
+        //public DiplomaticRelation GetRelation(int faction1, int faction2)
+        //{
+        //    if (faction1 < 0 || faction2 < 0 || faction1 == faction2)
+        //    {
+        //        return DiplomaticRelation.Empty;
+        //    }
+        //    return DssRef.world.relationSystem.Get(faction1, faction2);
+        //}
 
-            if (faction1 == faction2)
-            {
-                return false;
-            }
+        //public bool InWar(int faction1, int faction2)
+        //{
+        //    if (faction1 < 0 || faction2 < 0 || faction1 == faction2)
+        //    {
+        //        return false;
+        //    }
 
-            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
-            if (rel == null)
-            {
-                return false;
-            }
-            else
-            {
-                return rel.Relation <=  RelationType.RelationTypeN3_War;
-            }
-        }
+        //    DssRef.world.relationSystem.Get(faction1, faction2).Relation <= 
 
-        public bool MayTrade(Faction faction1, Faction faction2, out RelationType relation)
-        {
-            relation = RelationType.RelationType0_Neutral;
 
-            if (faction1 == null || faction2 == null)
-            {
-                return false;
-            }
+        //    DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
+        //    if (rel == null)
+        //    {
+        //        return false;
+        //    }
+        //    else
+        //    {
+        //        return rel.Relation <=  RelationType.RelationTypeN3_War;
+        //    }
+        //}
 
-            if (faction1 == faction2)
-            {
-                return false;
-            }
+        //public bool MayTrade(Faction faction1, Faction faction2, out RelationType relation)
+        //{
+        //    relation = RelationType.RelationType0_Neutral;
 
-            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];           
-            if (rel == null)
-            {
-                return true;
-            }
-            else
-            {
-                relation = rel.Relation;
-                return rel.Relation >= RelationType.RelationType0_Neutral;
-            }
-        }
+        //    if (faction1 == null || faction2 == null)
+        //    {
+        //        return false;
+        //    }
 
-        public RelationType GetRelationType(int faction1, int faction2)
-        {
-            var faction1_pointer = DssRef.world.faction(faction1);
-            if (faction1_pointer != null)
-            {
-                DiplomaticRelation rel = faction1_pointer.diplomaticRelations[faction2];
-                if (rel == null)
-                {
-                    return RelationType.RelationType0_Neutral;
-                }
-                else
-                {
-                    return rel.Relation;
-                }
-            }
-            return RelationType.RelationType0_Neutral;
-        }
+        //    if (faction1 == faction2)
+        //    {
+        //        return false;
+        //    }
 
-        public DiplomaticRelation GetOrCreateRelation(Faction faction1, Faction faction2)
-        {
-            DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
-            if (rel == null)
-            {
-                rel = NewRelation(faction1, faction2, RelationType.RelationType0_Neutral);
-            }
-            return rel;
-        }
+        //    DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];           
+        //    if (rel == null)
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        relation = rel.Relation;
+        //        return rel.Relation >= RelationType.RelationType0_Neutral;
+        //    }
+        //}
 
-        public DiplomaticRelation SetRelationType(Faction faction1, Faction faction2, RelationType newRelation, bool createOnNeutral = false)
-        {
-            if (faction1 != null && faction1 != faction2)
-            {
-                DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
-                if (rel != null)
-                {
-                    if (rel.Relation != newRelation)
-                    { 
-                        RelationType previous = rel.Relation;
-                        rel.Relation = newRelation;
-                        faction1.player.onNewRelation(faction2, rel, previous);
-                        faction2.player.onNewRelation(faction1, rel, previous);
+        //public RelationType GetRelationType(int faction1, int faction2)
+        //{
+        //    var faction1_pointer = DssRef.world.faction(faction1);
+        //    if (faction1_pointer != null)
+        //    {
+        //        DiplomaticRelation rel = faction1_pointer.diplomaticRelations[faction2];
+        //        if (rel == null)
+        //        {
+        //            return RelationType.RelationType0_Neutral;
+        //        }
+        //        else
+        //        {
+        //            return rel.Relation;
+        //        }
+        //    }
+        //    return RelationType.RelationType0_Neutral;
+        //}
 
-                    }
-                }
-                else if (newRelation != RelationType.RelationType0_Neutral || createOnNeutral)
-                {
-                    rel = NewRelation(faction1, faction2, newRelation);
-                }
+        //public DiplomaticRelation GetOrCreateRelation(Faction faction1, Faction faction2)
+        //{
+        //    DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
+        //    if (rel == null)
+        //    {
+        //        rel = NewRelation(faction1, faction2, RelationType.RelationType0_Neutral);
+        //    }
+        //    return rel;
+        //}
 
-                return rel;
-            }
+        //public DiplomaticRelation SetRelationType(Faction faction1, Faction faction2, RelationType newRelation, bool createOnNeutral = false)
+        //{
+        //    if (faction1 != null && faction1 != faction2)
+        //    {
+        //        DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
+        //        if (rel != null)
+        //        {
+        //            if (rel.Relation != newRelation)
+        //            { 
+        //                RelationType previous = rel.Relation;
+        //                rel.Relation = newRelation;
+        //                faction1.player.onNewRelation(faction2, rel, previous);
+        //                faction2.player.onNewRelation(faction1, rel, previous);
 
-            return null;
-        }
+        //            }
+        //        }
+        //        else if (newRelation != RelationType.RelationType0_Neutral || createOnNeutral)
+        //        {
+        //            rel = NewRelation(faction1, faction2, newRelation);
+        //        }
 
-        DiplomaticRelation NewRelation(Faction faction1, Faction faction2, RelationType newRelation)
-        {
-            if (faction1 != faction2)
-            {
-                DiplomaticRelation rel;
-                SpeakTerms speakterms = (SpeakTerms)Math.Min((int)faction1.DefaultSpeakingTerms(), (int)faction2.DefaultSpeakingTerms());
-                rel = new DiplomaticRelation(faction1.myIndex, faction2.myIndex, newRelation, speakterms);
+        //        return rel;
+        //    }
 
-                faction1.player.onNewRelation(faction2, rel, RelationType.RelationType0_Neutral);
-                faction2.player.onNewRelation(faction1, rel, RelationType.RelationType0_Neutral);
-                return rel;
-            }
-            return null;    
-        }
+        //    return null;
+        //}
+
+        //DiplomaticRelation NewRelation(Faction faction1, Faction faction2, RelationType newRelation)
+        //{
+        //    if (faction1 != faction2)
+        //    {
+        //        DiplomaticRelation rel;
+        //        SpeakTerms speakterms = (SpeakTerms)Math.Min((int)faction1.DefaultSpeakingTerms(), (int)faction2.DefaultSpeakingTerms());
+        //        rel = new DiplomaticRelation(faction1.myIndex, faction2.myIndex, newRelation, speakterms);
+
+        //        faction1.player.onNewRelation(faction2, rel, RelationType.RelationType0_Neutral);
+        //        faction2.player.onNewRelation(faction1, rel, RelationType.RelationType0_Neutral);
+        //        return rel;
+        //    }
+        //    return null;    
+        //}
 
         public bool botMayStartWar(Faction attacker, Faction defender)
         {

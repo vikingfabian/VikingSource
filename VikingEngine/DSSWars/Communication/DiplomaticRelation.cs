@@ -8,6 +8,8 @@ namespace VikingEngine.DSSWars.Communication
 {
     struct DiplomaticRelation
     {
+        public static readonly DiplomaticRelation Empty = new DiplomaticRelation();
+
         //int faction1, faction2;
         public RelationType Relation;
         public SpeakTerms SpeakTerms;
@@ -21,6 +23,21 @@ namespace VikingEngine.DSSWars.Communication
             SpeakTerms = SpeakTerms.SpeakTerms0_Normal;
         }
 
+        public bool InWar()
+        {
+            return Relation <= RelationType.RelationTypeN3_War;
+        }
+
+        public void SetRelation(RelationType newRelation)
+        {
+            Relation = newRelation;
+        }
+
+        public void OnDeath()
+        {
+            Relation = RelationType.RelationType0_Neutral;
+            SpeakTerms = SpeakTerms.SpeakTermsN2_None;
+        }
         //public DiplomaticRelation(int faction1, int faction2, RelationType Relation, SpeakTerms speakterms)
         //{
         //    this.Relation = Relation;
@@ -98,18 +115,18 @@ namespace VikingEngine.DSSWars.Communication
 
         public bool read(System.IO.BinaryReader r, int subVersion)
         {
-            faction1 = r.ReadInt16();
-            if (faction1 >= 0)
-            {
-                faction2 = r.ReadInt16();
-                if (subVersion < 58)
-                {
-                    Relation = (RelationType)r.ReadSByte();
-                    SpeakTerms = (SpeakTerms)r.ReadSByte();
-                    RelationEnd_GameTimeSec.read_ushort(r);
-                }
-                else
-                {
+            //faction1 = r.ReadInt16();
+            //if (faction1 >= 0)
+            //{
+            //    faction2 = r.ReadInt16();
+            //    if (subVersion < 58)
+            //    {
+            //        Relation = (RelationType)r.ReadSByte();
+            //        SpeakTerms = (SpeakTerms)r.ReadSByte();
+            //        RelationEnd_GameTimeSec.read_ushort(r);
+            //    }
+            //    else
+            //    {
                     EightBit bools = EightBit.FromStream(r);
                     bools.Get(out bool hasRelation, out bool hasSpeakTerms, out bool hasEndTime, out bool hasCommonEnemy);
                     if (hasRelation)
@@ -136,17 +153,17 @@ namespace VikingEngine.DSSWars.Communication
                             allyAgainst = -1;
                         }
                     }
-                }
+                //}
                 return true;
-            }
+            //}
 
-            return false;
+            //return false;
         }
 
-        public bool opponentIsPlayer(Faction faction)
-        {
-            return !opponent(faction).player.IsBot();
-        }
+        //public bool opponentIsPlayer(Faction faction)
+        //{
+        //    return !opponent(faction).player.IsBot();
+        //}
 
         public void SetWorseSpeakTerms(double subOneChance, double subTwoChance)
         {
@@ -166,17 +183,17 @@ namespace VikingEngine.DSSWars.Communication
             SpeakTerms = (SpeakTerms)Bound.Set((int)SpeakTerms + change, (int)SpeakTerms.SpeakTermsN2_None, (int)SpeakTerms.SpeakTerms1_Good);
         }
 
-        public Faction opponent(Faction faction)
-        {
-            if (faction.myIndex == faction1)
-            {
-                return DssRef.world.faction(faction2);
-            }
-            else
-            {
-                return DssRef.world.faction(faction1);
-            }
-        }
+        //public Faction opponent(Faction faction)
+        //{
+        //    if (faction.myIndex == faction1)
+        //    {
+        //        return DssRef.world.faction(faction2);
+        //    }
+        //    else
+        //    {
+        //        return DssRef.world.faction(faction1);
+        //    }
+        //}
 
         public void truce_update()
         {
@@ -187,9 +204,9 @@ namespace VikingEngine.DSSWars.Communication
             }
         }
 
-        public bool IsFactionOne(Faction faction)
-        {
-            return faction.myIndex == faction1;
-        }
+        //public bool IsFactionOne(Faction faction)
+        //{
+        //    return faction.myIndex == faction1;
+        //}
     }
 }

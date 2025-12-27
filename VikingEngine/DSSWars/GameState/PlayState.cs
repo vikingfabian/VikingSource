@@ -103,7 +103,7 @@ namespace VikingEngine.DSSWars
             menuSystem = new GameMenuSystem();
 
             new GameObject.AllUnits();
-            new Diplomacy();
+            //new Diplomacy();
             new Achievements();
             new GameTime();
             HudLib.Init();
@@ -132,7 +132,7 @@ namespace VikingEngine.DSSWars
             menuSystem = new GameMenuSystem();
 
             new GameObject.AllUnits();
-            new Diplomacy();
+            //new Diplomacy();
             
             new GameTime();
             HudLib.Init();
