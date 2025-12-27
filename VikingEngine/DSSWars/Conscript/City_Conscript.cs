@@ -384,7 +384,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Army army = null;
 
-            if (SettlerBp().tryPayResources(this) > 0)
+            if (SettlerBp().tryPayResources(this))
             {
                 army = conscriptArmy(new ConscriptProfile()
                 {

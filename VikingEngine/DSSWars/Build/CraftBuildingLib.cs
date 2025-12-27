@@ -1248,7 +1248,7 @@ namespace VikingEngine.DSSWars.Build
           1,
           new UseResource[]
           {
-                new UseResource(ItemResourceType.Stone_G, 10),
+                new UseResource(ItemResourceType.Brick, 10),
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
         );

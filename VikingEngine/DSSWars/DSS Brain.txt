@@ -17,7 +17,7 @@ RESOURCES
 * 4 new collectable terrain resources
 
 SOLDIER RECRUITING
-x More options in soldier conscript: man type, shield, animal type and wagon.
+x More options in soldier conscript: man type, shield, animal and wagon.
 
 USER INTERFACE
 x Menu for cesspits

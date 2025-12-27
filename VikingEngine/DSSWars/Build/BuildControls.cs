@@ -1584,7 +1584,7 @@ namespace VikingEngine.DSSWars.Build
                 content.space();
                 ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
                 //bp1.toMenu(content, city, false);
-                bp1.resultTypeToMenu(content);
+                bp1?.resultTypeToMenu(content);
             }
         }
         void mayCraftList(RichBoxContent content, CraftBlueprint bp1)

@@ -203,6 +203,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
             void weaponOption(ItemResourceType weapon)
             {
+                IconName.Item(weapon, out var weaponIcon, out _);
                 var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
                         {
                             new RbImage(weaponIcon)
