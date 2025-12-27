@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars
        public SpottedPointerArray cities;
 
         public int previousWarAgainstFaction = -1;
-        public DiplomaticRelation[] diplomaticRelations = null;
+        //public DiplomaticRelation[] diplomaticRelations = null;
         public DiplomaticSide diplomaticSide = DiplomaticSide.None;
 
         public bool textureLoaded = false;

@@ -488,5 +488,14 @@ namespace VikingEngine
         {
             return Convert.ToInt32(perc * 100);
         }
+
+        /// <summary>
+        /// 5 will return 5+4+3+2+1
+        /// </summary>
+        /// <returns>Sum of all lower numbers</returns>
+        public static int GaussSum(int n)
+        {
+            return (n * (n + 1)) / 2;
+        }
     }
 }
