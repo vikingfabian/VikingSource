@@ -21,48 +21,48 @@ namespace VikingEngine.DSSWars.Communication
             SpeakTerms = SpeakTerms.SpeakTerms0_Normal;
         }
 
-        public DiplomaticRelation(int faction1, int faction2, RelationType Relation, SpeakTerms speakterms)
-        {
-            this.Relation = Relation;
-            this.SpeakTerms = speakterms;
+        //public DiplomaticRelation(int faction1, int faction2, RelationType Relation, SpeakTerms speakterms)
+        //{
+        //    this.Relation = Relation;
+        //    this.SpeakTerms = speakterms;
 
-            if (faction1 < faction2)
-            {
-                this.faction1 = faction1;
-                this.faction2 = faction2;
-            }
-            else
-            {
-                this.faction1 = faction2;
-                this.faction2 = faction1;
-            }
+        //    if (faction1 < faction2)
+        //    {
+        //        this.faction1 = faction1;
+        //        this.faction2 = faction2;
+        //    }
+        //    else
+        //    {
+        //        this.faction1 = faction2;
+        //        this.faction2 = faction1;
+        //    }
 
-            addToFactions();
-        }
+        //    addToFactions();
+        //}
 
-        public void addToFactions()
-        {
-            //if (arraylib.InBound(DssRef.world.factions.Array, faction1, faction2))
-            ////{
-            //    if (DssRef.world.factions.Array[faction1] != null &&
-            //        DssRef.world.factions.Array[faction2] != null)
-            //    {
+        //public void addToFactions()
+        //{
+        //    //if (arraylib.InBound(DssRef.world.factions.Array, faction1, faction2))
+        //    ////{
+        //    //    if (DssRef.world.factions.Array[faction1] != null &&
+        //    //        DssRef.world.factions.Array[faction2] != null)
+        //    //    {
 
-            var f1 = DssRef.world.faction(faction1);
-            var f2 = DssRef.world.faction(faction2);
+        //    var f1 = DssRef.world.faction(faction1);
+        //    var f2 = DssRef.world.faction(faction2);
 
-            if (f1 != null && f2 != null)
-            {
-                f1.diplomaticRelations[faction2] = this;
-                f2.diplomaticRelations[faction1] = this;
-            }
-            //}
-        }
+        //    if (f1 != null && f2 != null)
+        //    {
+        //        f1.diplomaticRelations[faction2] = this;
+        //        f2.diplomaticRelations[faction1] = this;
+        //    }
+        //    //}
+        //}
 
         public void write(System.IO.BinaryWriter w)
         {
-            w.Write((short)faction1);
-            w.Write((short)faction2);
+            //w.Write((short)faction1);
+            //w.Write((short)faction2);
 
 
             bool hasRelation = Relation != RelationType.RelationType0_Neutral;

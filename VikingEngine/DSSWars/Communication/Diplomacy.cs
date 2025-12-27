@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace VikingEngine.DSSWars
 
     class Diplomacy
     {
+
         public const float MiltitaryStrengthXServant = 2f;
        
         List<int> aiPlayerAsynchUpdate_wars = new List<int>(8);

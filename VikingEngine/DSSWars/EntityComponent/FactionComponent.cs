@@ -9,11 +9,12 @@ namespace VikingEngine.DSSWars
     partial class WorldData
     {
         public GroupedResource[] factionResourceOverviews = new GroupedResource[64 * CityResoureIndex.COUNT];
-        public DiplomaticRelation[] diplomaticRelations = new DiplomaticRelation[MathExt.GaussSum(64)];
+        public RelationSystem relationSystem = new RelationSystem(64);
         void init_FactionComponents()
         {
             factionResourceOverviews = new GroupedResource[factions.Array.Length * CityResoureIndex.COUNT];
-            diplomaticRelations = new DiplomaticRelation[MathExt.GaussSum(factions.Array.Length)];
+            //diplomaticRelations = new DiplomaticRelation[MathExt.GaussSum(factions.Array.Length)];
+            relationSystem = new RelationSystem(factions.Array.Length);
 
             for (int i = 0; i < factions.Array.Length; i++)
             {
@@ -33,7 +34,8 @@ namespace VikingEngine.DSSWars
             {
                 int startIndex = factionResourceOverviews.Length;
                 Array.Resize(ref factionResourceOverviews, factionResourceOverviews.Length * 2);
-                Array.Resize(ref diplomaticRelations, MathExt.GaussSum((factions.Array.Length -1) * 2));
+                //Array.Resize(ref diplomaticRelations, MathExt.GaussSum((factions.Array.Length -1) * 2));
+                relationSystem = new RelationSystem((factions.Array.Length - 1) * 2);
             }
         }
 
