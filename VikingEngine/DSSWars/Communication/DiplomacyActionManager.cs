@@ -33,12 +33,12 @@ namespace VikingEngine.DSSWars.Communication
 
             this.player = player;
             this.botFaction = botFaction;
-            
-            selectedRelation = player.faction.diplomaticRelations[botFaction.myIndex];
-            if (selectedRelation == null)
-            {
-                return result;
-            }
+
+            selectedRelation = DssRef.diplomacy.GetRelation(player.faction.myIndex, botFaction.myIndex);//player.faction.diplomaticRelations[botFaction.myIndex];
+            //if (selectedRelation == null)
+            //{
+            //    return result;
+            //}
             againstDark = botFaction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
 
             if (selectedRelation.SpeakTerms > SpeakTerms.SpeakTermsN2_None)
@@ -170,7 +170,8 @@ namespace VikingEngine.DSSWars.Communication
         }
         bool hasStrongerFoe()
         {
-            var wars = DssRef.diplomacy.collectWars(botFaction);
+            List<int> wars = new List<int>(8);
+            DssRef.diplomacy.collectWars(botFaction, wars);
 
             foreach (var w in wars)
             {

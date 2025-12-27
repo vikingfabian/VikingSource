@@ -594,7 +594,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
                     HudLib.BulletPoint(content);
                    
-                    var relation = DssRef.diplomacy.GetRelationType(otherfaction, m);
+                    var relation = DssRef.diplomacy.GetRelation(otherfaction, m).Relation;
                     content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
                     content.space();
                     content.Add(m.FlagTextureToHud());
@@ -652,7 +652,8 @@ namespace VikingEngine.DSSWars.Interface
 
         bool hasStrongerFoe()
         {
-            var wars = DssRef.diplomacy.collectWars(otherfaction);
+            List<int> wars = new List<int>(8);
+            DssRef.diplomacy.collectWars(otherfaction, wars);
 
             foreach (var w in wars)
             {

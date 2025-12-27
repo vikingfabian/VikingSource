@@ -11,25 +11,29 @@ namespace VikingEngine.DSSWars.Communication
         public static readonly DiplomaticRelation Empty = new DiplomaticRelation();
 
         //int faction1, faction2;
-        public RelationType Relation;
-        public SpeakTerms SpeakTerms;
+        public RelationType Relation = RelationType.RelationType0_Neutral;
+        public SpeakTerms SpeakTerms = SpeakTerms.SpeakTerms0_Normal;
         public GameTimeStamp RelationEnd_GameTimeSec;
         public bool secret = false;
         public int allyAgainst = -1;
 
         public DiplomaticRelation()
+        {   
+        }
+
+        public bool HasValue()
         { 
-            Relation = RelationType.RelationType0_Neutral;
-            SpeakTerms = SpeakTerms.SpeakTerms0_Normal;
+            return Relation != RelationType.RelationType0_Neutral || SpeakTerms != SpeakTerms.SpeakTerms0_Normal;
         }
 
         public bool InWar()
         {
-            return Relation <= RelationType.RelationTypeN3_War;
+            return Diplomacy.IsWar(Relation);
         }
 
-        public void SetRelation(RelationType newRelation)
+        public void SetRelation(RelationType newRelation, out RelationType previousRelation)
         {
+            previousRelation = Relation;
             Relation = newRelation;
         }
 
@@ -113,7 +117,7 @@ namespace VikingEngine.DSSWars.Communication
             //w.Write(Convert.ToUInt16(RelationEnd_GameTimeSec));
         }
 
-        public bool read(System.IO.BinaryReader r, int subVersion)
+        public void read(System.IO.BinaryReader r, int subVersion)
         {
             //faction1 = r.ReadInt16();
             //if (faction1 >= 0)
@@ -127,34 +131,33 @@ namespace VikingEngine.DSSWars.Communication
             //    }
             //    else
             //    {
-                    EightBit bools = EightBit.FromStream(r);
-                    bools.Get(out bool hasRelation, out bool hasSpeakTerms, out bool hasEndTime, out bool hasCommonEnemy);
-                    if (hasRelation)
-                    {
-                        Relation = (RelationType)r.ReadSByte();
-                    }
-                    if (hasSpeakTerms)
-                    {
-                        SpeakTerms = (SpeakTerms)r.ReadSByte();
-                    }
-                    if (hasEndTime)
-                    {
-                        RelationEnd_GameTimeSec.read(r);
-                    }
+            EightBit bools = EightBit.FromStream(r);
+            bools.Get(out bool hasRelation, out bool hasSpeakTerms, out bool hasEndTime, out bool hasCommonEnemy);
+            if (hasRelation)
+            {
+                Relation = (RelationType)r.ReadSByte();
+            }
+            if (hasSpeakTerms)
+            {
+                SpeakTerms = (SpeakTerms)r.ReadSByte();
+            }
+            if (hasEndTime)
+            {
+                RelationEnd_GameTimeSec.read(r);
+            }
 
-                    if (subVersion >= 72)
-                    {
-                        if (hasCommonEnemy)
-                        {
-                            allyAgainst = r.ReadUInt16();
-                        }
-                        else
-                        {
-                            allyAgainst = -1;
-                        }
-                    }
+                    
+            if (hasCommonEnemy)
+            {
+                allyAgainst = r.ReadUInt16();
+            }
+            else
+            {
+                allyAgainst = -1;
+            }
+                    
                 //}
-                return true;
+                //return true;
             //}
 
             //return false;

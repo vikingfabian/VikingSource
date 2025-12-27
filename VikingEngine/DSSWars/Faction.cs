@@ -1,14 +1,20 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Presentation;
-using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.Profile;
+using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -16,11 +22,6 @@ using VikingEngine.LootFest.Data;
 using VikingEngine.Network;
 using VikingEngine.ToGG.MoonFall;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
-using VikingEngine.DSSWars.Resource;
-using VikingEngine.DebugExtensions;
-using VikingEngine.DSSWars.Event;
-using VikingEngine.DSSWars.Players.Profile;
-using System.Collections.Concurrent;
 
 namespace VikingEngine.DSSWars
 {
@@ -98,20 +99,20 @@ namespace VikingEngine.DSSWars
             armies = new SpottedArray<Army>(16);
         }
 
-        public void initClient(WorldData world)
-        {
-            initDiplomacy(world);
-        }
+        //public void initClient(WorldData world)
+        //{
+        //    initDiplomacy(world);
+        //}
        
         public void onGameStart(bool newGame)
         {
             player?.onGameStart(newGame);
         }
 
-        public void initDiplomacy(WorldData world)
-        {
-            diplomaticRelations = new DiplomaticRelation[world.factions.Array.Length];
-        }
+        //public void initDiplomacy(WorldData world)
+        //{
+        //    diplomaticRelations = new DiplomaticRelation[world.factions.Array.Length];
+        //}
 
         public void initVisuals(WorldMetaData worldMeta)
         {
@@ -143,7 +144,7 @@ namespace VikingEngine.DSSWars
                 Debug.WriteCheck(w);
             }
 
-            writeRelations(w);
+            //writeRelations(w);
 
             workTemplate.writeGameState(w);
         }
@@ -155,8 +156,7 @@ namespace VikingEngine.DSSWars
                 factiontype = FactionType.Player;
             }
 
-            if (subVersion >= 81)
-            {
+            
                 switch (factiontype)
                 {
                     case FactionType.Player:
@@ -177,25 +177,14 @@ namespace VikingEngine.DSSWars
 
                 player.readGameState(r, subVersion, pointers);
 
-            }
+            
 
-            if (subVersion < 53)
-            {
-                int gold = r.ReadInt32();
-                money.copper = gold * 100;
-            }
-            else if (subVersion < 67)
-            {
-                money.copper = r.ReadInt32();
-            }
-            else
-            {
+            
                 money.copper = r.ReadInt64();
-            }
-            if (subVersion >= 77)
-            {
+            
+            
                 Debug.ReadCheck(r);
-            }
+            
 
             //int citiesCount = r.ReadUInt16();
             //for (int i = 0; i < citiesCount; i++)
@@ -220,10 +209,8 @@ namespace VikingEngine.DSSWars
                 city.setFaction(this, true, false);
             }
 
-            if (subVersion >= 76)
-            { 
-                Debug.ReadCheck(r);
-            }
+            Debug.ReadCheck(r);
+            
 
             int armiesCount = r.ReadUInt16();
             for (int i = 0; i < armiesCount; i++)
@@ -231,23 +218,11 @@ namespace VikingEngine.DSSWars
                 var army = new Army();
                 army.readGameState(this, r, subVersion, pointers);
                 
-                if (subVersion >= 76)
-                {
-                    Debug.ReadCheck(r);
-                }
+                Debug.ReadCheck(r);
+                
             }
 
-            readRelations(r, subVersion);
-
-            if (subVersion < 81)
-            {
-                if ((factiontype == FactionType.Player) != player.IsLocalPlayer())
-                {
-                    throw new Exception();
-                }
-
-                player.readGameState(r, subVersion, pointers);
-            }
+            //readRelations(r, subVersion);
 
             workTemplate.readGameState(r, subVersion, false);
 
@@ -263,34 +238,34 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        void writeRelations(System.IO.BinaryWriter w)
-        {
-            for (int i = 0; i < diplomaticRelations.Length; ++i)
-            {
-                if (diplomaticRelations[i] != null &&
-                    diplomaticRelations[i].IsFactionOne(this))
-                {
-                    diplomaticRelations[i].write(w);
-                }
-            }
-            w.Write(short.MinValue);
-        }
+        //void writeRelations(System.IO.BinaryWriter w)
+        //{
+        //    for (int i = 0; i < diplomaticRelations.Length; ++i)
+        //    {
+        //        if (diplomaticRelations[i] != null &&
+        //            diplomaticRelations[i].IsFactionOne(this))
+        //        {
+        //            diplomaticRelations[i].write(w);
+        //        }
+        //    }
+        //    w.Write(short.MinValue);
+        //}
 
-        void readRelations(System.IO.BinaryReader r, int subVersion)
-        {
-            while (true)
-            {
-                DiplomaticRelation relation = new DiplomaticRelation();
-                if (relation.read(r, subVersion))
-                {
-                    relation.addToFactions();
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
+        //void readRelations(System.IO.BinaryReader r, int subVersion)
+        //{
+        //    while (true)
+        //    {
+        //        DiplomaticRelation relation = new DiplomaticRelation();
+        //        if (relation.read(r, subVersion))
+        //        {
+        //            relation.addToFactions();
+        //        }
+        //        else
+        //        {
+        //            break;
+        //        }
+        //    }
+        //}
 
         virtual public void writeNet(System.IO.BinaryWriter w)
         {
@@ -298,7 +273,7 @@ namespace VikingEngine.DSSWars
             //player.profile.flag.write(w);
             player.profile.write(w, true);
 
-            writeRelations(w);
+            //writeRelations(w);
 
             if (factiontype == FactionType.Player)
             {
@@ -326,7 +301,7 @@ namespace VikingEngine.DSSWars
             //FlagAndColor profile = new FlagAndColor(r);
             //SetProfile(profile);
 
-            readRelations(r, int.MaxValue);
+            //readRelations(r, int.MaxValue);
 
             if (factiontype == FactionType.Player)
             {
@@ -990,26 +965,29 @@ namespace VikingEngine.DSSWars
                 {
                     try
                     {
-                        foreach (var m in otherFaction.diplomaticRelations)
+                        //foreach (var m in otherFaction.diplomaticRelations)
+                        //{
+                        //    if (m != null)
+                        //    {
+                        RelationsLoop loop = new RelationsLoop(otherFaction.myIndex);
+                        while (loop.Next())
                         {
-                            if (m != null)
+                            if (loop.Relation().InWar())//m.Relation <= RelationType.RelationTypeN3_War)
                             {
-                                if (m.Relation <= RelationType.RelationTypeN3_War)
+                                if (loop.OtherFaction(out var thirdFaction))//m.opponent(otherFaction);
                                 {
-                                    var thirdFaction = m.opponent(otherFaction);
-
-                                    var thisAndThirdRelation = diplomaticRelations[thirdFaction.myIndex];
-                                    if (thisAndThirdRelation == null)
-                                    {
-                                        //Gain bad relation
-                                        DssRef.diplomacy.SetRelationType(this, thirdFaction, m.Relation);
-                                    }
-                                    else
-                                    {
+                                    var thisAndThirdRelation = DssRef.diplomacy.GetRelation(myIndex, thirdFaction.myIndex);//diplomaticRelations[thirdFaction.myIndex];
+                                    //if (thisAndThirdRelation == null)
+                                    //{
+                                    //    //Gain bad relation
+                                    //    DssRef.diplomacy.SetRelationType(this, thirdFaction, m.Relation);
+                                    //}
+                                    //else
+                                    //{
                                         if (thisAndThirdRelation.Relation < RelationType.RelationType3_Ally)
                                         {
                                             //share worst relation
-                                            RelationType worst = (RelationType)Math.Min((int)m.Relation, (int)thisAndThirdRelation.Relation);
+                                            RelationType worst = (RelationType)Math.Min((int)loop.Relation().Relation, (int)thisAndThirdRelation.Relation);
                                             if (worst <= RelationType.RelationTypeN3_War)
                                             {
                                                 DssRef.diplomacy.declareWar(this, thirdFaction);
@@ -1019,10 +997,11 @@ namespace VikingEngine.DSSWars
                                                 DssRef.diplomacy.SetRelationType(this, thirdFaction, worst);
                                             }
                                         }
-                                    }
+                                    //}
                                 }
                             }
                         }
+
                     }
                     catch (Exception ex)
                     {
