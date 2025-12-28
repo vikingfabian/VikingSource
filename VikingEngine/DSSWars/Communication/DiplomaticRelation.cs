@@ -31,10 +31,19 @@ namespace VikingEngine.DSSWars.Communication
             return Diplomacy.IsWar(Relation);
         }
 
+        public bool InAlliance()
+        {
+            return Relation >= RelationType.RelationType3_Ally;
+        }
+
         public void SetRelation(RelationType newRelation, out RelationType previousRelation)
         {
             previousRelation = Relation;
             Relation = newRelation;
+            if (Relation == RelationType.RelationTypeN4_TotalWar)
+            {
+                SpeakTerms = SpeakTerms.SpeakTermsN2_None;
+            }
         }
 
         public void OnDeath()

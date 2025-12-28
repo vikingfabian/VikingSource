@@ -39,11 +39,11 @@ namespace VikingEngine.DSSWars.GameState.BattleTrials
             local.assignPlayer(0, playerCount, true);
             localPlayers.Add(local);
 
-            var factionsCounter = DssRef.world.factions.counter();
-            while (factionsCounter.Next())
-            {
-                factionsCounter.sel.initDiplomacy(DssRef.world);
-            }
+            //var factionsCounter = DssRef.world.factions.counter();
+            //while (factionsCounter.Next())
+            //{
+            //    factionsCounter.sel.initDiplomacy(DssRef.world);
+            //}
         }
 
         protected override void initScenario()

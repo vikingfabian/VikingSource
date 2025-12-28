@@ -10,6 +10,7 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
@@ -1702,21 +1703,24 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             display.refresh = true;
                         }
                     }
-                    
+
                     if (!diplomatics_goodRelation)
                     {
-                        foreach (var rel in player.faction.diplomaticRelations)
+                        //foreach (var rel in player.faction.diplomaticRelations)
+                        //{
+                        //    if (rel != null)
+                        //    {
+                        RelationsLoop loop = new RelationsLoop(player.faction.myIndex);
+                        while (loop.Next())
                         {
-                            if (rel != null)
+                            if (loop.Relation().Relation >= RelationType.RelationType2_Good)
                             {
-                                if (rel.Relation >= RelationType.RelationType2_Good)
-                                {
-                                    diplomatics_goodRelation = true;
-                                    onPartSuccess();
-                                    break;
-                                }
+                                diplomatics_goodRelation = true;
+                                onPartSuccess();
+                                break;
                             }
-                        }                       
+                        }
+                        //}                       
                     }
                     break;
 

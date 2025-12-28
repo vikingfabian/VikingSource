@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
 
                     Faction thirdPartFaction = DssRef.world.faction(player.gameControls.diplomacy.relationArrowHover);
-                    var relation = DssRef.diplomacy.GetRelationType(player.gameControls.diplomacy.mainSelection(out _), thirdPartFaction);
+                    var relation = DssRef.diplomacy.GetRelation(player.gameControls.diplomacy.mainSelection(out _), thirdPartFaction).Relation;
 
                     content.Add(thirdPartFaction.FlagTextureToHud());
                     content.hspace();
@@ -403,11 +403,11 @@ namespace VikingEngine.DSSWars.Interface
             
             if (attackTarget)
             {
-                if (!DssRef.diplomacy.InWar(player.faction, obj.GetFaction()))
+                if (!DssRef.diplomacy.GetRelation(player.faction, obj.GetFaction()).InWar())
                 {
                     content.Add(new RbSeperationLine());
 
-                    RelationType rel = DssRef.diplomacy.GetRelationType(player.faction, obj.GetFaction());
+                    RelationType rel = DssRef.diplomacy.GetRelation(player.faction, obj.GetFaction()).Relation;
                     
                     content.h1(DssRef.lang.Hud_WardeclarationTitle);
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);

@@ -108,16 +108,16 @@ namespace VikingEngine.DSSWars.Players
            
             foreach (var ally in darkLordAllies)
             {
-               var relation = DssRef.diplomacy.SetRelationType(faction, ally, RelationType.RelationType3_Ally);//.secret = false;
+                DssRef.diplomacy.SetRelationType(faction, ally, RelationType.RelationType3_Ally);//.secret = false;
 
-                if (relation != null)
-                {
-                    relation.secret = false;
-                }
+                //if (relation != null)
+                //{
+                //    relation.secret = false;
+                //}
 
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    DssRef.diplomacy.SetRelationType(p.faction, ally, RelationType.RelationTypeN4_TotalWar).SpeakTerms = SpeakTerms.SpeakTermsN2_None;
+                    DssRef.diplomacy.SetRelationType(p.faction, ally, RelationType.RelationTypeN4_TotalWar);
                 }
 
                 if (greenwood != null)

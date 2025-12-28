@@ -201,7 +201,7 @@ namespace VikingEngine.DSSWars.Players
 
                 //player.GetAiPlayer().refreshAggression();
 
-                var relation = DssRef.diplomacy.GetOrCreateRelation(faction, player.faction);
+                ref var relation = ref DssRef.diplomacy.GetRefRelation(faction.myIndex, player.faction.myIndex);
                 relation.SetWorseSpeakTerms(DssRef.diplomacy.SpeakTermsOnNeigbor_BadChance, DssRef.diplomacy.SpeakTermsOnNeigbor_NoneChance);
 
                 if (faction.Size() >= FactionSize.Big)

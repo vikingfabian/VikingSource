@@ -387,7 +387,7 @@ namespace VikingEngine.DSSWars.Communication
                     rel.tilePos = faction.landAreaCenter(out cityPos);
 
                     rel.inCullingView = tileBound.IntersectTilePoint(rel.tilePos);
-                    rel.relation = DssRef.diplomacy.GetRelationType(player.faction.myIndex, rel.faction); 
+                    rel.relation = DssRef.diplomacy.GetRelation(player.faction.myIndex, rel.faction).Relation; 
                 }
             }
 

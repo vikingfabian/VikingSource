@@ -22,6 +22,7 @@ namespace VikingEngine.DSSWars
 
         int factionCapacity;
         public DiplomaticRelation[] diplomaticRelations;
+        DiplomaticRelation empty = DiplomaticRelation.Empty;
         int[] indexRegister;
 
         List<int> aiPlayerAsynchUpdate_wars1 = new List<int>(8);
@@ -163,6 +164,15 @@ namespace VikingEngine.DSSWars
 
         public ref DiplomaticRelation GetRefRelation(int faction1, int faction2)
         {
+            return ref diplomaticRelations[RelationIndex(faction1, faction2)];
+        }
+
+        public ref DiplomaticRelation GetRefRelation_Safe(int faction1, int faction2)
+        {
+            if (faction1 < 0 || faction2 < 0 || faction1 == faction2)
+            {
+                return ref empty;
+            }
             return ref diplomaticRelations[RelationIndex(faction1, faction2)];
         }
 
@@ -559,36 +569,23 @@ namespace VikingEngine.DSSWars
         //    return rel;
         //}
 
-        public void SetRelationType(Faction faction1, Faction faction2, RelationType newRelation)
+        public void SetRelationType(Faction faction1, Faction faction2, RelationType? newRelation, SpeakTerms? speakTerms = null, bool secret = false)
         {
             if (faction1 != null && faction2 != null && faction1 != faction2)
             {
-                //DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
-                //if (rel != null)
-                //{
-                //    if (rel.Relation != newRelation)
-                //    {
-                //        RelationType previous = rel.Relation;
-                //        rel.Relation = newRelation;
-                //        faction1.player.onNewRelation(faction2, rel, previous);
-                //        faction2.player.onNewRelation(faction1, rel, previous);
-
-                //    }
-                //}
-                //else if (newRelation != RelationType.RelationType0_Neutral || createOnNeutral)
-                //{
-                //    rel = NewRelation(faction1, faction2, newRelation);
-                //}
-
-                //return rel;
-
                 ref var relation = ref GetRefRelation(faction1.myIndex, faction2.myIndex);
-                relation.SetRelation(newRelation, out RelationType previous);
-                faction1.player.onNewRelation(faction2, relation, previous);
-                faction2.player.onNewRelation(faction1, relation, previous);
+                if (newRelation.HasValue)
+                {
+                    relation.SetRelation(newRelation.Value, out RelationType previous);               
+                    faction1.player.onNewRelation(faction2, relation, previous);
+                    faction2.player.onNewRelation(faction1, relation, previous);
+                }
+                if (speakTerms.HasValue)
+                {
+                    relation.SpeakTerms = speakTerms.Value;
+                }
+                relation.secret = secret;
             }
-
-            //return null;
         }
 
         //DiplomaticRelation NewRelation(Faction faction1, Faction faction2, RelationType newRelation)

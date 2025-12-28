@@ -112,7 +112,7 @@ namespace VikingEngine.DSSWars
 
             var playerFaction = new Faction(DssRef.world, FactionType.Player);
             DssRef.world.factions.Array[0] = playerFaction;
-            playerFaction.initClient(DssRef.world);
+            //playerFaction.initClient(DssRef.world);
             var local = new Players.LocalPlayer(playerFaction, false);
             localPlayers = new List<Players.LocalPlayer>(1);
             localPlayers.Add(local);
@@ -214,7 +214,7 @@ namespace VikingEngine.DSSWars
             var factionsCounter = DssRef.world.factions.counter();
             while (factionsCounter.Next())
             {
-                factionsCounter.sel.initDiplomacy(DssRef.world);
+                //factionsCounter.sel.initDiplomacy(DssRef.world);
 
                 switch (factionsCounter.sel.factiontype)
                 {
@@ -311,10 +311,16 @@ namespace VikingEngine.DSSWars
                 for (var j = i + 1; j < matchFactions.Count; ++j)
                 {
                     bool ally = DssRef.difficulty.setting_QuickMatch_TwoTeams && (i < team1Count == j < team1Count);
-                    var relation = DssRef.diplomacy.GetOrCreateRelation(matchFactions[i], matchFactions[j]);
 
-                    relation.Relation = ally ? RelationType.RelationType3_Ally : RelationType.RelationTypeN4_TotalWar;
-                    relation.SpeakTerms = SpeakTerms.SpeakTermsN2_None;
+
+                    DssRef.diplomacy.SetRelationType(matchFactions[i], matchFactions[j], 
+                        ally ? RelationType.RelationType3_Ally : RelationType.RelationTypeN4_TotalWar, 
+                        SpeakTerms.SpeakTermsN2_None);
+
+                    //var relation = DssRef.diplomacy.GetOrCreateRelation(matchFactions[i], matchFactions[j]);
+
+                    //relation.Relation = ally ? RelationType.RelationType3_Ally : RelationType.RelationTypeN4_TotalWar;
+                    //relation.SpeakTerms = SpeakTerms.SpeakTermsN2_None;
                 }
             }
             

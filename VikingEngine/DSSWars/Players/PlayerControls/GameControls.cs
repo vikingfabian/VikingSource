@@ -946,7 +946,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public void nextWar(bool forward)
         {
             tabWarFaction++;
-            for (int i = tabWarFaction; i < player.faction.diplomaticRelations.Length; i++)
+            
+            for (int i = tabWarFaction; i < DssRef.world.factions.Array.Length; i++)
             {
                 if (checkRelation(i))
                 {
@@ -988,8 +989,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             bool checkRelation(int i)
             {
-                var rel = player.faction.diplomaticRelations[i];
-                if (rel != null && rel.Relation <= RelationType.RelationTypeN3_War)
+                var rel = DssRef.diplomacy.GetRelation(player.faction.myIndex, i);//player.faction.diplomaticRelations[i];
+                if (rel.Relation <= RelationType.RelationTypeN3_War)
                 {
                     var enemy = DssRef.world.faction(i);
                     if (enemy != null)

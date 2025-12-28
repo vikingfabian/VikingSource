@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars.GameObject
             var faction = GetFaction();
             if (args.player != null && faction != null && faction != args.player.faction)
             {
-                var relation = DssRef.diplomacy.GetRelationType(args.player.faction, faction);
+                var relation = DssRef.diplomacy.GetRelation(args.player.faction, faction).Relation;
 
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
@@ -228,7 +228,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 if (GetFaction() != args.player.faction)
                 {
-                    var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
+                    var relation = DssRef.diplomacy.GetRelation(args.player.faction, GetFaction()).Relation;
 
                     args.content.newLine();
                     args.content.Add(new RbText(GetFaction().PlayerName, Color.LightYellow));

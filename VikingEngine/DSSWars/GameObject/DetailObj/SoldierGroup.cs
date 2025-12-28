@@ -948,7 +948,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
                                 {
                                     var city = tile.City();
-                                    if (DssRef.diplomacy.InWar(tArmy.factionIndex, city.factionIndex))
+                                    if (DssRef.diplomacy.GetRelation(tArmy.factionIndex, city.factionIndex).InWar())
                                     {
                                         if (city.tilePos.SideLength(tilePos) <= 2 || tArmy.GetArmy().attackTarget == city)
                                         {
@@ -973,7 +973,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
                                 {
                                     var city = tile.City();
-                                    if (DssRef.diplomacy.InWar(tArmy.factionIndex, city.factionIndex))
+                                    if (DssRef.diplomacy.GetRelation(tArmy.factionIndex, city.factionIndex).InWar())
                                     {
                                         goalWp = WP.ToWorldPos(city.tilePos);
 
@@ -1123,7 +1123,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (faction != args.player.faction)
             {
-                args.content.Add(new RbImage(Diplomacy.RelationSprite(DssRef.diplomacy.GetRelationType(faction, args.player.faction))));
+                args.content.Add(new RbImage(Diplomacy.RelationSprite(DssRef.diplomacy.GetRelation(faction, args.player.faction).Relation)));
                 args.content.space();
             }
 
@@ -1604,7 +1604,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (attackTarget_soldierGroupOrCity != null && attackTarget_soldierGroupOrCity.TryGetTarget(out var target) &&                    
 
                     (target.defeated() || 
-                    !DssRef.diplomacy.InWar(factionIndex, target.factionIndex) ||
+                    !DssRef.diplomacy.GetRelation(factionIndex, target.factionIndex).InWar() ||
                     distance(target) > 4)
                )
             {

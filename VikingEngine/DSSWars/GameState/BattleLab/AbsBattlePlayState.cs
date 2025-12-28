@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             var factionsCounter = DssRef.world.factions.counter();
             while (factionsCounter.Next())
             {
-                factionsCounter.sel.initDiplomacy(DssRef.world);
+                //factionsCounter.sel.initDiplomacy(DssRef.world);
                 if (factionsCounter.sel.factiontype == FactionType.DarkLord)
                 {
                     DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(factionsCounter.sel, true);

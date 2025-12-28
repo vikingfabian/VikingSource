@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Conscript;
 
 namespace VikingEngine.DSSWars.Event
@@ -160,17 +161,24 @@ namespace VikingEngine.DSSWars.Players
                 int warCount = 0;
                 float opposingSize = 0;
 
-                for (int relIx = 0; relIx < faction.diplomaticRelations.Length; ++relIx)
+                RelationsLoop loop = new RelationsLoop(faction.myIndex);
+                while (loop.Next())
                 {
-                    if (faction.diplomaticRelations[relIx] != null &&
-                        faction.diplomaticRelations[relIx].Relation <= RelationType.RelationTypeN2_Truce)
+                //    for (int relIx = 0; relIx < faction.diplomaticRelations.Length; ++relIx)
+                //{
+                //    if (faction.diplomaticRelations[relIx] != null &&
+                //        faction.diplomaticRelations[relIx].Relation <= RelationType.RelationTypeN2_Truce)
+                //    {
+                    if (loop.Relation().Relation <= RelationType.RelationTypeN2_Truce &&
+                        loop.OtherFaction(out var opponent) &&
+                        opponent.player.IsBot())
                     {
-                        var opponent = faction.diplomaticRelations[relIx].opponent(faction);
-                        if (opponent.player.IsBot())
-                        {
+                        //var opponent = faction.diplomaticRelations[relIx].opponent(faction);
+                        //if (opponent.player.IsBot())
+                        //{
                             ++warCount;
                             opposingSize += opponent.PotensialMilitaryStrength();
-                        }
+                        //}
                     }
                 }
 
@@ -241,7 +249,7 @@ namespace VikingEngine.DSSWars.Players
                         for (int otherIx = 1; otherIx < attackersCount; otherIx++)
                         {
                             var otherFaction = DssRef.world.faction(attackers[otherIx]);
-                            var relation = DssRef.diplomacy.GetRelationType(firstAttacker, otherFaction);
+                            var relation = DssRef.diplomacy.GetRelation(firstAttacker, otherFaction).Relation;
 
                             if (relation <= RelationType.RelationTypeN3_War)
                             {

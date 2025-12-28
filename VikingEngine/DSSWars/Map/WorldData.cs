@@ -158,7 +158,7 @@ namespace VikingEngine.DSSWars
                         
             var newFaction = new Faction(DssRef.world, factionType, firstEmpty);
             new Players.AiPlayer(newFaction, true);
-            newFaction.initDiplomacy(DssRef.world);
+            //newFaction.initDiplomacy(DssRef.world);
             return newFaction;            
         }
 
@@ -415,7 +415,7 @@ namespace VikingEngine.DSSWars
             for (int i = 0; i < factionCount; ++i)
             {
                 var faction = new Faction(i);
-                faction.initClient(this);
+                //faction.initClient(this);
                 factions.Add(faction);
             }
 

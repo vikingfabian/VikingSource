@@ -1019,20 +1019,22 @@ namespace VikingEngine.DSSWars
                 {
                     DssRef.diplomacy.SetRelationType(this, relationTo, relationType);
 
-                    for (int relIndex = 0; relIndex < diplomaticRelations.Length; relIndex++)//each (var m in diplomaticRelations)
+                    //for (int relIndex = 0; relIndex < diplomaticRelations.Length; relIndex++)//each (var m in diplomaticRelations)
+                    //{
+                    RelationsLoop loop = new RelationsLoop(myIndex);
+                    while (loop.Next())
                     {
-                        if (diplomaticRelations[relIndex] != null)
-                        {
-                            if (diplomaticRelations[relIndex].Relation >= RelationType.RelationType3_Ally && relIndex != this.factionIndex)
+                        
+                            if (loop.Relation().Relation >= RelationType.RelationType3_Ally)//diplomaticRelations[relIndex].Relation >= RelationType.RelationType3_Ally && relIndex != this.factionIndex)
                             {
-                                Faction ally = DssRef.world.faction(relIndex);
+                                //Faction ally = DssRef.world.faction(relIndex);
 
-                                if (ally != null)
+                                if (loop.OtherFaction(out var ally))//ally != null)
                                 {
                                     DssRef.diplomacy.SetRelationType(ally, relationTo, relationType);
                                 }
                             }
-                        }
+                        
                     }
                 }
                 catch (Exception ex)
@@ -1233,13 +1235,14 @@ namespace VikingEngine.DSSWars
         public List<Faction> CollectWars()
         {
             List<Faction> opponents = new List<Faction>();
-            for (int relIx = 0; relIx < diplomaticRelations.Length; ++relIx)
-            {
-                if (diplomaticRelations[relIx] != null &&
-                    relIx != myIndex &&
-                   diplomaticRelations[relIx].Relation <= RelationType.RelationTypeN3_War)
+            //for (int relIx = 0; relIx < diplomaticRelations.Length; ++relIx)
+            //{
+            RelationsLoop loop = new RelationsLoop(myIndex);
+            while (loop.Next())
+            {   
+                if (loop.Relation().InWar() && loop.OtherFaction(out var opponent))
                 {
-                    opponents.Add(DssRef.world.faction(relIx));
+                    opponents.Add(opponent);
                 }
             }
 
@@ -1249,11 +1252,15 @@ namespace VikingEngine.DSSWars
         public int CountWars()
         {
             int count = 0;
-            for (int relIx = 0; relIx < diplomaticRelations.Length; ++relIx)
+            //for (int relIx = 0; relIx < diplomaticRelations.Length; ++relIx)
+            //{
+            RelationsLoop loop = new RelationsLoop(myIndex);
+            while (loop.Next())
             {
-                if (diplomaticRelations[relIx] != null &&
-                    relIx != myIndex &&
-                   diplomaticRelations[relIx].Relation <= RelationType.RelationTypeN3_War)
+                //if (diplomaticRelations[relIx] != null &&
+                //    relIx != myIndex &&
+                //   diplomaticRelations[relIx].Relation <= RelationType.RelationTypeN3_War)
+                if (loop.Relation().InWar())
                 {
                     ++count;
                 }
@@ -1268,19 +1275,27 @@ namespace VikingEngine.DSSWars
         {
             float result = 0;
 
-            for (int relIx = 0; relIx < diplomaticRelations.Length; ++relIx)
+            RelationsLoop loop = new RelationsLoop(myIndex);
+            while (loop.Next())
             {
-                if (diplomaticRelations[relIx] != null &&
-                    relIx != myIndex &&
-                   diplomaticRelations[relIx].Relation >= RelationType.RelationType3_Ally)
+                if (loop.Relation().InAlliance() && loop.OtherFaction(out var ally))
                 {
-                    var ally = DssRef.world.faction(relIx);
-                    if (ally != null)
-                    {
-                        result += ally.militaryStrength;
-                    }
+                    result += ally.militaryStrength;
                 }
             }
+            //for (int relIx = 0; relIx < diplomaticRelations.Length; ++relIx)
+            //{
+            //    if (diplomaticRelations[relIx] != null &&
+            //        relIx != myIndex &&
+            //       diplomaticRelations[relIx].Relation >= RelationType.RelationType3_Ally)
+            //    {
+            //        var ally = DssRef.world.faction(relIx);
+            //        if (ally != null)
+            //        {
+            //            result += ally.militaryStrength;
+            //        }
+            //    }
+            //}
 
             return result;
         }

@@ -48,16 +48,16 @@ namespace VikingEngine.DSSWars.Interface
         public void toHud(RichBoxContent content, Faction botFaction, bool selection)
         {
             otherfaction = botFaction;
-                        
-            selectedRelation = player.faction.diplomaticRelations[botFaction.myIndex];
-            againstDark = botFaction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
-            if (selectedRelation == null)
-            {
-                selectedRelation = DssRef.diplomacy.SetRelationType(player.faction, botFaction, RelationType.RelationType0_Neutral, true);
-            }
 
-            if (selectedRelation != null)
-            {
+            selectedRelation = DssRef.diplomacy.GetRelation(player.faction, botFaction);//player.faction.diplomaticRelations[botFaction.myIndex];
+            againstDark = botFaction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
+            //if (selectedRelation == null)
+            //{
+            //    selectedRelation = DssRef.diplomacy.SetRelationType(player.faction, botFaction, RelationType.RelationType0_Neutral, true);
+            //}
+
+            //if (selectedRelation != null)
+            //{
                 FactionRelationDisplay(botFaction, selectedRelation.Relation, content);
 
                 content.newLine();
@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars.Interface
                         playerToPlayer(content);
                     }
                 }
-            }
+            //}
             
             if (player.gameControls.diplomacy.previousFactionsLookedAt.Count > 1)
             {
@@ -83,7 +83,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     content.newLine();
                     var thirdPartFaction = player.gameControls.diplomacy.previousFactionsLookedAt[i];
-                    var relation = DssRef.diplomacy.GetRelationType(otherfaction, thirdPartFaction);
+                    var relation = DssRef.diplomacy.GetRelation(otherfaction, thirdPartFaction).Relation;
 
                     content.Add(thirdPartFaction.FlagTextureToHud());
                     content.hspace();
@@ -440,7 +440,7 @@ namespace VikingEngine.DSSWars.Interface
                     }
                     else
                     {
-                        var relation = DssRef.diplomacy.GetOrCreateRelation(player.faction, otherfaction);
+                        ref var relation = ref DssRef.diplomacy.GetRefRelation(player.faction.myIndex, otherfaction.myIndex);
                         relation.SpeakTerms--;
                         if (relation.SpeakTerms < SpeakTerms.SpeakTermsN2_None)
                         {

@@ -434,7 +434,7 @@ namespace VikingEngine.DSSWars.Event
                         if (player.IsBot() &&
                             player.faction.diplomaticSide != DiplomaticSide.Dark &&
                             check.cityType < CityType.Capital &&
-                            DssRef.diplomacy.GetRelationType(check.GetFaction(), p.faction) >= RelationType.RelationType0_Neutral)
+                            DssRef.diplomacy.GetRelation(check.GetFaction(), p.faction).Relation >= RelationType.RelationType0_Neutral)
                         {
                             attackCities.Add(check.myIndex);
                             found++;
@@ -950,7 +950,7 @@ namespace VikingEngine.DSSWars.Event
             //Prepare leader
             attackers.Remove(attackLeader);
             attackers.Insert(0, attackLeader);
-            DssRef.diplomacy.GetOrCreateRelation(attackLeader, player.faction).SpeakTerms = SpeakTerms.SpeakTermsN2_None;
+            DssRef.diplomacy.SetRelationType(attackLeader, player.faction, null, SpeakTerms.SpeakTermsN2_None);
             attackLeader.player.setAggression(Players.AbsPlayer.AggressionLevel1_RevengeOnly);
 
             Ref.update.AddSyncAction(new SyncAction(() =>
@@ -1178,9 +1178,9 @@ namespace VikingEngine.DSSWars.Event
                     {
                         p.hud.messages.Add(DssRef.lang.EventMessage_FinalBossEnterTitle, DssRef.lang.EventMessage_FinalBossEnterText);
 
-                        if (greenwood != null && !DssRef.diplomacy.InWar(p.faction, greenwood))
+                        if (greenwood != null && !DssRef.diplomacy.GetRelation(p.faction, greenwood).InWar())
                         {
-                            DssRef.diplomacy.GetOrCreateRelation(p.faction, greenwood).SpeakTerms = SpeakTerms.SpeakTerms1_Good;
+                            DssRef.diplomacy.SetRelationType(p.faction, greenwood, null, SpeakTerms.SpeakTerms1_Good);
                         }
                     }
                 //}
@@ -1327,7 +1327,7 @@ namespace VikingEngine.DSSWars.Event
                         for (var j = i + 1; j < matchFactions.Count; ++j)
                         {
                             var faction2 = matchFactions[j];
-                            if (faction2.isAlive && DssRef.diplomacy.GetRelationType(faction1, faction2) <= RelationType.RelationTypeN3_War)
+                            if (faction2.isAlive && DssRef.diplomacy.GetRelation(faction1, faction2).Relation <= RelationType.RelationTypeN3_War)
                             {
                                 return false;
                             }
@@ -1339,7 +1339,7 @@ namespace VikingEngine.DSSWars.Event
                         foreach (var participant in matchFactions)
                         {
                             if (participant == faction1 ||
-                                DssRef.diplomacy.GetRelationType(faction1, participant) >= RelationType.RelationType3_Ally)
+                                DssRef.diplomacy.GetRelation(faction1, participant).Relation >= RelationType.RelationType3_Ally)
                             {
                                 matchResult.winner.Add(participant);
                             }
