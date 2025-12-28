@@ -976,7 +976,7 @@ namespace VikingEngine.DSSWars
                             {
                                 if (loop.OtherFaction(out var thirdFaction))//m.opponent(otherFaction);
                                 {
-                                    var thisAndThirdRelation = DssRef.diplomacy.GetRelation(myIndex, thirdFaction.myIndex);//diplomaticRelations[thirdFaction.myIndex];
+                                    var thisAndThirdRelation = DssRef.diplomacy.GetRelation_Safe(myIndex, thirdFaction.myIndex);//diplomaticRelations[thirdFaction.myIndex];
                                     //if (thisAndThirdRelation == null)
                                     //{
                                     //    //Gain bad relation

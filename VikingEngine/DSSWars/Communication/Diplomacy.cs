@@ -131,6 +131,14 @@ namespace VikingEngine.DSSWars
             }
 
             int index = indexRegister[lowIndex] + highIndex - lowIndex;
+
+#if DEBUG
+            if (index < 0 || index >= diplomaticRelations.Length)
+            {
+                throw new Exception();
+            }
+#endif
+
             return index;
         }
 
@@ -140,6 +148,7 @@ namespace VikingEngine.DSSWars
             {
                 return DiplomaticRelation.Empty;
             }
+
             return diplomaticRelations[RelationIndex(faction1.myIndex, faction2.myIndex)];
         }
 
@@ -693,7 +702,9 @@ namespace VikingEngine.DSSWars
 
         public void declareWar(Faction attacker, Faction defender)
         {
-            if (attacker != null && defender != null &&
+            if (attacker != null && 
+                defender != null &&
+                attacker != defender &&
                 !GetRelation(attacker, defender).InWar())
             {
                 ref var relation = ref GetRefRelation(attacker.myIndex, defender.myIndex);
