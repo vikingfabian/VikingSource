@@ -28,6 +28,9 @@ SYSTEMS
 * Resource collecting is limited by storage
 * Crafting can produce two item types
 
+PERFORMANCE
+* Diplomacy is converted to a component system, removing around a 1000 references
+
 QUESTIONS
 * Do it need some type of hunter cottage to collect the first animals?
 
