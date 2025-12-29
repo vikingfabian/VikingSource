@@ -1307,8 +1307,10 @@ namespace VikingEngine.DSSWars.GameObject
                                                     if (Ref.peRnd.Chance(0.75))
                                                     {
                                                         terrain = TerrainMainType.Foil;
-                                                        sub = (int)TerrainSubFoilType.WheatFarm;
-                                                        maxAmount = TerrainContent.FarmCulture_MaxSize;
+                                                        sub = (int)TerrainSubFoilType.TreeApple;
+                                                        maxAmount = TerrainContent.OrchardReady;
+                                                        //sub = (int)TerrainSubFoilType.WheatFarm;
+                                                        //maxAmount = TerrainContent.FarmCulture_MaxSize;
                                                     }
                                                     else
                                                     {

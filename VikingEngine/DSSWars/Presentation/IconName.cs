@@ -782,6 +782,15 @@ namespace VikingEngine.DSSWars
                                 string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen));
                             break;
 
+                        case TerrainSubFoilType.TreeApple:
+                            icon = SpriteName.WarsBuild_TreeApple;
+                            name = DssRef.todoLang.Building_Orchard;
+                            break;
+                        case TerrainSubFoilType.TreeBanana:
+                            icon = SpriteName.WarsBuild_TreeBanana;
+                            name = DssRef.todoLang.Building_Orchard;
+                            break;
+
                         case TerrainSubFoilType.WheatFarm:
                             name = string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat);
                             break;

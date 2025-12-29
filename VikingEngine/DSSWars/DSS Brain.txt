@@ -1,5 +1,7 @@
 ﻿Change log:
-* 
+? Do orchids need their own work priority?
+
+* Fixed: auto build replacing farms
 
 
 #Event timers (are slightly random)#

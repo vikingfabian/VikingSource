@@ -35,6 +35,7 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 WorkBench_pos;
         public IntVector2 Smith_pos;
         public IntVector2 Carpenter_pos;
+        public IntVector2 Orchard_pos;
         public IntVector2 WheatFarm_pos;
         public IntVector2 LinenFarm_pos;
         public IntVector2 HempFarm_pos;
@@ -97,6 +98,10 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WorkBench: return WorkBench_pos;
                 case BuildAndExpandType.Smith: return Smith_pos;
                 case BuildAndExpandType.Carpenter: return Carpenter_pos;
+
+                case BuildAndExpandType.OrchidApple:
+                case BuildAndExpandType.OrchidBanana:
+                    return Orchard_pos;
 
                 case BuildAndExpandType.WheatFarm:
                 case BuildAndExpandType.WheatFarmUpgraded:
@@ -329,6 +334,7 @@ namespace VikingEngine.DSSWars.Build
         public int WorkBench_count;
         public int Smith_count;
         public int Carpenter_count;
+        public int Orchard_count;
         public int WheatFarm_count;
         public int LinenFarm_count;
         public int HempFarm_count;
@@ -389,6 +395,8 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Smith: return Smith_count;
                 case BuildAndExpandType.Carpenter: return Carpenter_count;
 
+                case BuildAndExpandType.OrchidApple: return Orchard_count;
+                case BuildAndExpandType.OrchidBanana: return Orchard_count;
                 case BuildAndExpandType.WheatFarm: return WheatFarm_count;
                 case BuildAndExpandType.WheatFarmUpgraded: return WheatFarm_count;
                 case BuildAndExpandType.LinenFarm: return LinenFarm_count;
@@ -461,6 +469,10 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WorkBench: WorkBench_count += add; break;
                 case BuildAndExpandType.Smith: Smith_count += add; break;
                 case BuildAndExpandType.Carpenter: Carpenter_count += add; break;
+
+                case BuildAndExpandType.OrchidApple:
+                case BuildAndExpandType.OrchidBanana:
+                    Orchard_count += add; break;
 
                 case BuildAndExpandType.WheatFarm:
                 case BuildAndExpandType.WheatFarmUpgraded:

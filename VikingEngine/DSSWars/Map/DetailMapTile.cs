@@ -37,7 +37,9 @@ namespace VikingEngine.DSSWars.Map
                 LootFest.VoxelModelName.fol_tree_hard,
                 LootFest.VoxelModelName.fol_tree_soft,
                 LootFest.VoxelModelName.fol_tree_dry,
-                 LootFest.VoxelModelName.fol_tree_hard_lava,
+                LootFest.VoxelModelName.tree_apple,
+                LootFest.VoxelModelName.tree_banana,
+                LootFest.VoxelModelName.fol_tree_hard_lava,
                 LootFest.VoxelModelName.fol_tree_soft_lava,
                 LootFest.VoxelModelName.fol_tree_hard_snow,
                 LootFest.VoxelModelName.fol_tree_soft_snow,
@@ -464,11 +466,22 @@ namespace VikingEngine.DSSWars.Map
                     surfaceSprite = SpriteName.warsFoliageRoundShadow;
                     foliageModels.Add(new FoliageModel(biom.treeHard, rnd, wp, 0.03f + 0.0012f * sizeValue));
                     break;
+
+                case TerrainSubFoilType.TreeApple:
+                    manMade = true;
+                    orchid(LootFest.VoxelModelName.tree_apple);
+                    break;
+                case TerrainSubFoilType.TreeBanana:
+                    manMade = false;
+                    orchid(LootFest.VoxelModelName.tree_banana);
+                    break;
+
                 case TerrainSubFoilType.DryWood:
                     manMade = false;
                     surfaceSprite = SpriteName.warsFoliageRoundShadow;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.fol_tree_dry, rnd, wp, 0.12f));
                     break;
+
                 case TerrainSubFoilType.TreeSoftSprout:
                 case TerrainSubFoilType.TreeHardSprout:
                     manMade = false;
@@ -517,6 +530,28 @@ namespace VikingEngine.DSSWars.Map
                     throw new NotImplementedException();
             }
 
+            void orchid(LootFest.VoxelModelName model)
+            {
+                int frame = 0;
+
+                if (sizeValue >= TerrainContent.OrchardReady)
+                {
+                    frame = 5;
+                }
+                else if (sizeValue == TerrainContent.OrchardPlucked)
+                {
+                    frame = 3;
+                }
+                else if (sizeValue < TerrainContent.OrchardPlucked)
+                {
+                    frame = MathExt.MultiplyInt((double)sizeValue / TerrainContent.OrchardPlucked, 3.0);
+                }
+                else
+                {
+                    frame = 4;
+                }
+                foliageModels.Add(new FoliageModel(model, frame, wp, 0.1f));
+            }
 
             void farm(int readyFrame, bool upgraded)
             {

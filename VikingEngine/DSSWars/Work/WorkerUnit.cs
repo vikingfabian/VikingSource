@@ -151,6 +151,8 @@ namespace VikingEngine.DSSWars.Work
                                     case TerrainSubFoilType.TreeHard:
                                         SoundLib.woodcut.Play(model.position);
                                         break;
+                                    case TerrainSubFoilType.TreeApple:
+                                    case TerrainSubFoilType.TreeBanana:
                                     case TerrainSubFoilType.WheatFarm:
                                     case TerrainSubFoilType.WheatFarmUpgraded:
                                     case TerrainSubFoilType.LinenFarm:

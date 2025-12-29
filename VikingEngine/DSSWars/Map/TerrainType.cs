@@ -45,6 +45,12 @@ namespace VikingEngine.DSSWars.Map
         HempFarmUpgraded,
         RapeSeedFarmUpgraded,
 
+        
+        TreeApple,
+        TreeBanana,
+        //TreeAppleSprout,
+        //TreeBananaSprout,
+
         NUM_NONE
     }
 

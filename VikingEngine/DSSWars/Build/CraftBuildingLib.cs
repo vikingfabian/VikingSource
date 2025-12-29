@@ -540,7 +540,16 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Water_G, 50),
             }, XP.WorkExperienceType.Farm
         );
-
+        public static readonly CraftBlueprint Orchid = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.OrchidApple,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Food_G, 4),
+                new UseResource(ItemResourceType.Water_G, 20),
+            }, XP.WorkExperienceType.Farm
+        );
 
         public static readonly CraftBlueprint Smith = new CraftBlueprint(
             CraftResultType.Building,

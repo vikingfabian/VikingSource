@@ -2731,6 +2731,12 @@
 #begin VoxelModel/LfWars/slingstone.vox
 /copy:VoxelModel/LfWars/slingstone.vox
 
+#begin VoxelModel/LfWars/tree_apple.vox
+/copy:VoxelModel/LfWars/tree_apple.vox
+
+#begin VoxelModel/LfWars/tree_banana.vox
+/copy:VoxelModel/LfWars/tree_banana.vox
+
 #begin VoxelModel/LfWars/unclaimed_icon.vox
 /copy:VoxelModel/LfWars/unclaimed_icon.vox
 

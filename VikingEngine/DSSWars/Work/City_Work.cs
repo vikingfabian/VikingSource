@@ -519,6 +519,13 @@ namespace VikingEngine.DSSWars.GameObject
                         byte bonus = 0;
                         switch (subTile.GetFoilType())
                         {
+                            case TerrainSubFoilType.TreeApple:
+                            case TerrainSubFoilType.TreeBanana:
+                                safeGuard = rawFoodSafeGuard;
+                                bNeedMore = needMore(CityResoureIndex.food);
+                                prio = workTemplate.farm_food.value;
+                                break;
+
                             case TerrainSubFoilType.LinenFarm:
                                 bNeedMore = needMore(CityResoureIndex.skinLinnen);//res_skinLinnen.needMore();
                                 prio = workTemplate.farm_linen.value;
@@ -530,7 +537,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
                             case TerrainSubFoilType.WheatFarm:
                                 safeGuard = rawFoodSafeGuard;
-                                bNeedMore = needMore(CityResoureIndex.rawFood);//res_rawFood.needMore();
+                                bNeedMore = needMore(CityResoureIndex.rawFood);
                                 prio = workTemplate.farm_food.value;
                                 break;
                             case TerrainSubFoilType.WheatFarmUpgraded:

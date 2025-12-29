@@ -13,6 +13,8 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
+        public string Building_Orchard => "Orchard";
+
         /// <summary>
         /// Will end diplomatic relations like alliance
         /// </summary>
