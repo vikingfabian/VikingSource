@@ -1,5 +1,6 @@
 ﻿Change log:
-* 
+* Fixed: war is not shared among allies
+
 
 
 #Event timers (are slightly random)#

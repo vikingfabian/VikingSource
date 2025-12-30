@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.Players
         virtual public void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation)
         {
             //On peace, stop all attacking armies
-            bool fromWar = Diplomacy.IsWar(rel.Relation);
+            bool fromWar = Diplomacy.IsWar(previousRelation);
             bool toWar = Diplomacy.IsWar(rel.Relation);
 
             if (fromWar != toWar)
