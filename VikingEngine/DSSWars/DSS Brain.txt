@@ -1,8 +1,11 @@
 ﻿Change log:
 ? Do orchids need their own work priority?
 
+* Simplified food system. Orchards farms will produce food.
+* New building: Manor lord
+* The bot factions will keep to simple orchard farming if the player does.
 * Fixed: auto build replacing farms
-
+x start lvl 3 builder
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

@@ -312,6 +312,8 @@ namespace VikingEngine.DSSWars.Build
 
     struct BuildingStructure
     {
+        
+        public bool manorLord;
         public int buildingLevel_logistics;
         public int WorkerHuts_count;
         public int WorkerHuts_Large_count;

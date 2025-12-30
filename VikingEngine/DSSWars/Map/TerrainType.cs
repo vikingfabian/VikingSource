@@ -133,6 +133,7 @@ namespace VikingEngine.DSSWars.Map
         WorkerTent,
         CityHall_Unclaimed,
         CityHall_Tent,
+        ManorLord,
         NUM_NONE
     }
 

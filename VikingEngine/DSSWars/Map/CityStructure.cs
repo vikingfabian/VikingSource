@@ -571,6 +571,10 @@ namespace VikingEngine.DSSWars.Map
                                             case TerrainBuildingType.Logistics:
                                                 buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
                                                 break;
+                                            case TerrainBuildingType.ManorLord:
+                                                buildingStructure.manorLord = true;
+                                                DssRef.state.hasManorLords = true;
+                                                break;
                                             case TerrainBuildingType.WaterResovoir:
                                                 ++buildingStructure.WaterResovoir_count;
                                                 buildingPosition.WaterResovoir_pos = subTileLoop.Position;

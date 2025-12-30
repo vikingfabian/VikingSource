@@ -179,8 +179,21 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-        new UseResource(ItemResourceType.Wood_Group, 300),
-        new UseResource(ItemResourceType.Stone_G, 60)
+            new UseResource(ItemResourceType.Wood_Group, 300),
+            new UseResource(ItemResourceType.Stone_G, 60)
+           },
+           XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
+       );
+
+        public static readonly CraftBlueprint ManorLord = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.ManorLord,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Wood_Group, 60),
+                new UseResource(ItemResourceType.Stone_G, 60),
+                new UseResource(ItemResourceType.Iron_G, 10)
            },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
        );

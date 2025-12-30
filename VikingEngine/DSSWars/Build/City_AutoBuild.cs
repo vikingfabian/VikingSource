@@ -311,6 +311,8 @@ namespace VikingEngine.DSSWars.GameObject
                         chance = 200;
                         break;
 
+                    case BuildAndExpandType.OrchidApple:
+                    case BuildAndExpandType.OrchidBanana:
                     case BuildAndExpandType.WheatFarm:
                     case BuildAndExpandType.LinenFarm:
                     case BuildAndExpandType.HenPen:
@@ -358,6 +360,19 @@ namespace VikingEngine.DSSWars.GameObject
                     case BuildAndExpandType.Logistics:
                         chance = automationFocus == AutomationFocus.Grow ? 300 : 150;
                         maxCount = 1;
+                        break;
+                    case BuildAndExpandType.ManorLord:
+                        if (DssRef.state.hasManorLords)
+                        {
+                            chance = 100;
+                            maxCount = 1;
+                        }
+                        else
+                        {
+                            chance = 0;
+                            maxCount = 0;
+                        }
+                        
                         break;
 
                     case BuildAndExpandType.School:
@@ -501,7 +516,17 @@ namespace VikingEngine.DSSWars.GameObject
                                     buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
                                 }
                                 break;
-
+                            case TerrainBuildingType.ManorLord:
+                                if (build)
+                                {
+                                    if (buildingStructure.manorLord)
+                                    {
+                                        //Already built
+                                        return false;
+                                    }
+                                    buildingStructure.manorLord = true;
+                                }
+                                break;
 
                             case TerrainBuildingType.WorkerHut:
                                 onWorkHutBuild(build, false);

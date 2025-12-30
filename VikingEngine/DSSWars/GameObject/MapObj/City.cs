@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Text;
+﻿
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -24,17 +24,8 @@ using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.Input;
-using VikingEngine.LootFest;
-using VikingEngine.LootFest.GO.Gadgets;
-using VikingEngine.LootFest.Map;
-using VikingEngine.PJ.MiniGolf;
-using VikingEngine.ToGG;
-using VikingEngine.ToGG.MoonFall;
-using VikingEngine.ToGG.ToggEngine.Map;
-using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.EntityComponent;
-using Microsoft.CodeAnalysis;
+using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -1304,28 +1295,28 @@ namespace VikingEngine.DSSWars.GameObject
                                                     TerrainMainType terrain;
                                                     int sub;
                                                     int maxAmount;
-                                                    if (Ref.peRnd.Chance(0.75))
-                                                    {
+                                                    //if (Ref.peRnd.Chance(0.75))
+                                                    //{
                                                         terrain = TerrainMainType.Foil;
                                                         sub = (int)TerrainSubFoilType.TreeApple;
                                                         maxAmount = TerrainContent.OrchardReady;
                                                         //sub = (int)TerrainSubFoilType.WheatFarm;
                                                         //maxAmount = TerrainContent.FarmCulture_MaxSize;
-                                                    }
-                                                    else
-                                                    {
-                                                        terrain = TerrainMainType.Building;
-                                                        if (Ref.peRnd.Chance(0.4))
-                                                        {
-                                                            sub = (int)TerrainBuildingType.PigPen;
-                                                            maxAmount = TerrainContent.PigMaxSize;
-                                                        }
-                                                        else
-                                                        {
-                                                            sub = (int)TerrainBuildingType.HenPen;
-                                                            maxAmount = TerrainContent.HenMaxSize;
-                                                        }
-                                                    }
+                                                    //}
+                                                    //else
+                                                    //{
+                                                    //    terrain = TerrainMainType.Building;
+                                                    //    if (Ref.peRnd.Chance(0.4))
+                                                    //    {
+                                                    //        sub = (int)TerrainBuildingType.PigPen;
+                                                    //        maxAmount = TerrainContent.PigMaxSize;
+                                                    //    }
+                                                    //    else
+                                                    //    {
+                                                    //        sub = (int)TerrainBuildingType.HenPen;
+                                                    //        maxAmount = TerrainContent.HenMaxSize;
+                                                    //    }
+                                                    //}
 
                                                     if (Build.BuildLib.TryAutoBuild(farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))
                                                     {

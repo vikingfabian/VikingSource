@@ -841,7 +841,9 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.Logistics:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_logistic, subTile.terrainAmount - 1, wp, WorldData.SubTileWidth * 1.0f));
                     break;
-
+                case TerrainBuildingType.ManorLord:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workerhut_long, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
                 case TerrainBuildingType.Bank:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_bank, 0, wp, WorldData.SubTileWidth * 1.0f));
                     break;

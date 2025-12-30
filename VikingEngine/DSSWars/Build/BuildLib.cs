@@ -101,8 +101,7 @@ namespace VikingEngine.DSSWars.Build
         GardenFourBushes,
         GardenLongTree,
         GardenWalledBush,
-        //ServiceHouse_Small,
-        //BigCityHouse,
+        
         CitySquare,
         CobbleStones,
         GardenBird,
@@ -147,6 +146,8 @@ namespace VikingEngine.DSSWars.Build
         SulfurMine,
         WorkerTent,
 
+        ManorLord,
+
         OrchidApple,
         OrchidBanana,
 
@@ -173,7 +174,6 @@ namespace VikingEngine.DSSWars.Build
 
         public static List<BuildAndExpandType> LogisticsUnlockBuildings_Level2 = new List<BuildAndExpandType>
         {
-
             BuildAndExpandType.GardenGrass,
             BuildAndExpandType.PavemenFountain,
             BuildAndExpandType.Statue_Leader,
@@ -192,11 +192,18 @@ namespace VikingEngine.DSSWars.Build
             bool logistics2 = city.buildingStructure.buildingLevel_logistics >= 2 ||
                 unlockAll;
 
+            bool manor = city.buildingStructure.manorLord;
+
             bool campSite = city.cityType == CityType.Campsite;
 
             if (!campSite && city.buildingStructure.buildingLevel_logistics == 0)
             {
                 list.Add(BuildAndExpandType.Logistics);
+            }
+
+            if (!manor)
+            { 
+                list.Add(BuildAndExpandType.ManorLord);
             }
 
             if (logistics1)
@@ -239,28 +246,31 @@ namespace VikingEngine.DSSWars.Build
 
             }
 
-
             list.Add(BuildAndExpandType.OrchidApple);
 
-
-            if (logistics1)
+            if (manor)
             {
                 list.Add(BuildAndExpandType.WheatFarm);
                 if (unlocks.building_upgradedFarm || unlockAll)
                 {
                     list.Add(BuildAndExpandType.WheatFarmUpgraded);
                 }
-            
-                list.Add(BuildAndExpandType.LinenFarm);
-                if (unlocks.building_upgradedFarm)
-                {
-                    list.Add(BuildAndExpandType.LinenFarmUpgraded);
-                }
-                list.Add(BuildAndExpandType.RapeSeedFarm);
-                if (unlocks.building_upgradedFarm)
-                {
-                    list.Add(BuildAndExpandType.RapeSeedFarmUpgraded);
-                }
+            }
+
+            list.Add(BuildAndExpandType.LinenFarm);
+            if (unlocks.building_upgradedFarm)
+            {
+                list.Add(BuildAndExpandType.LinenFarmUpgraded);
+            }
+
+            list.Add(BuildAndExpandType.RapeSeedFarm);
+            if (unlocks.building_upgradedFarm)
+            {
+                list.Add(BuildAndExpandType.RapeSeedFarmUpgraded);
+            }
+
+            if (manor)
+            {
                 if (unlocks.building_mixedFarms)
                 {
                     list.Add(BuildAndExpandType.HempFarm);
@@ -269,7 +279,7 @@ namespace VikingEngine.DSSWars.Build
                         list.Add(BuildAndExpandType.HempFarmUpgraded);
                     }
                     list.Add(BuildAndExpandType.PigPen);
-                }            
+                }
                 list.Add(BuildAndExpandType.HenPen);
             }
 
@@ -317,7 +327,10 @@ namespace VikingEngine.DSSWars.Build
 
                 list.Add(BuildAndExpandType.Storehouse);
                 list.Add(BuildAndExpandType.Tavern);
-                list.Add(BuildAndExpandType.Brewery);
+                if (manor)
+                {
+                    list.Add(BuildAndExpandType.Brewery);
+                }
                 list.Add(BuildAndExpandType.WaterResovoir);
 
                 list.Add(BuildAndExpandType.CoalPit);
@@ -325,7 +338,10 @@ namespace VikingEngine.DSSWars.Build
             
             
             list.Add(BuildAndExpandType.WorkBench);
-            list.Add(BuildAndExpandType.Cook);
+            if (manor)
+            {
+                list.Add(BuildAndExpandType.Cook);
+            }
             list.Add(BuildAndExpandType.Smelter);
             list.Add(BuildAndExpandType.Foundry);
             list.Add(BuildAndExpandType.Smith);
@@ -459,7 +475,14 @@ namespace VikingEngine.DSSWars.Build
         public static void Init()
         {
             new BuildOption(BuildAndExpandType.Logistics, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, SpriteName.WarsBuild_Logistics, CraftBuildingLib.CraftLogistics, true, 
-                BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
+                BuildCategoryTab.Upgrade, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)
+            {
+                uniqueBuilding = true
+            };
+
+            new BuildOption(BuildAndExpandType.ManorLord, TerrainMainType.Building, (int)TerrainBuildingType.ManorLord, SpriteName.WarsBuild_WorkerHutLarge, CraftBuildingLib.ManorLord, true,
+                BuildCategoryTab.Upgrade, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)
             {
                 uniqueBuilding = true
