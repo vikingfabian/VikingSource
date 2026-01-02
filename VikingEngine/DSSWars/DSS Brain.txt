@@ -1,5 +1,4 @@
 ﻿Change log:
-? Do orchids need their own work priority?
 
 * Simplified food system. Orchards farms will produce food.
 * New building: Manor lord
