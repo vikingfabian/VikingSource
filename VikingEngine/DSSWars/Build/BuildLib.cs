@@ -179,6 +179,14 @@ namespace VikingEngine.DSSWars.Build
             BuildAndExpandType.Statue_Leader,
         };
 
+        public static List<BuildAndExpandType> ManorUnlockBuildings = new List<BuildAndExpandType>
+        {
+            BuildAndExpandType.WheatFarm,
+            BuildAndExpandType.HenPen,
+
+            BuildAndExpandType.Cook,
+        };
+
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
         public static void AvailableBuildTypes(List<BuildAndExpandType> list, City city)
         {

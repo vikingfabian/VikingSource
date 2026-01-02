@@ -1258,6 +1258,8 @@ namespace VikingEngine.DSSWars.Presentation
             {
                 case TerrainBuildingType.Logistics:
                     return DssRef.lang.BuildingType_Logistics_Description;
+                case TerrainBuildingType.ManorLord:
+                    return DssRef.todoLang.BuildingType_ManorLord_Description;
                 case TerrainBuildingType.Tavern:
                     return DssRef.lang.BuildingType_Tavern_Description;
                 case TerrainBuildingType.Storehouse:

@@ -15,6 +15,7 @@ namespace VikingEngine.DSSWars.Presentation
     {
         public string BuildingType_Orchard => "Orchard";
         public string BuildingType_ManorLord => "Manor lord";
+        public string BuildingType_ManorLord_Description => "Unlock food processing";
         /// <summary>
         /// Will end diplomatic relations like alliance
         /// </summary>
