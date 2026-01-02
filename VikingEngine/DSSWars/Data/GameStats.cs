@@ -85,6 +85,7 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt won150perc = new StatsInt("won_150perc");
         public StatsInt won175perc = new StatsInt("won_175perc");
         public StatsInt won200perc = new StatsInt("won_200perc");
+        public StatsInt won300perc = new StatsInt("won_300perc");
 
         public StatsInt lost25perc = new StatsInt("lost_25perc");
         public StatsInt lost50perc = new StatsInt("lost_50perc");
@@ -94,8 +95,9 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt lost150perc = new StatsInt("lost_150perc");
         public StatsInt lost175perc = new StatsInt("lost_175perc");
         public StatsInt lost200perc = new StatsInt("lost_200perc");
+        public StatsInt lost300perc = new StatsInt("lost_300perc");
 
-        
+
         StatsInt gameLength_passed5min = new StatsInt("lenght_5min");
         StatsInt gameLength_passed15min = new StatsInt("lenght_15min");
         StatsInt gameLength_passed30min = new StatsInt("lenght_30min");
@@ -181,6 +183,7 @@ namespace VikingEngine.DSSWars.Data
                     won150perc,
                     won175perc,
                     won200perc,
+                    won300perc,
 
                     lost25perc,
                     lost50perc,
@@ -190,6 +193,7 @@ namespace VikingEngine.DSSWars.Data
                     lost150perc,
                     lost175perc,
                     lost200perc,
+                    lost300perc,
             #endif
                     gameLength_passed5min,
                     gameLength_passed15min,
