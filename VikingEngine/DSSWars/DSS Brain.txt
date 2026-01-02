@@ -3,6 +3,7 @@ Change Log:
 * Fixed empty faction crash on bot attack
 * Fixed empty faction crash on alliance war sharing
 * Fixed empty main city crash
+* Added missing translations for casual build ui
 
 
 #Event timers (are slightly random)#

@@ -8,6 +8,10 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class SimplifiedChinese : AbsLanguage
     {
+        //Winter patch 3
+        public override string Hud_Purchase_AllBuildings => "所有建筑加入队列";
+        public override string Hud_Purchase_AllTech => "所有科技加入队列";
+        public override string BuildingType_CasualBarracks_Description => "士兵招募时间由所有兵营分摊";
         //Winter update patch + spring
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
