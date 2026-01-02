@@ -1,10 +1,8 @@
 ﻿UPDATE
 Change Log: 
-* Fixed empty faction crash on bot attack
-* Fixed empty faction crash on alliance war sharing
-* Fixed empty main city crash
-* Added missing translations for casual build ui
-
+* Fixed: delivery respects reciever stockpile
+* Fixed: delivery auto item will send non existing items
+* Fixed attack animation crash
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
