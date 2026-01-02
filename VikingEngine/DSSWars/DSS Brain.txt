@@ -1,7 +1,8 @@
 ﻿UPDATE
 Change Log: 
 * Fixed empty faction crash on bot attack
-* 
+* Fixed empty faction crash on alliance war sharing
+
 
 
 #Event timers (are slightly random)#
