@@ -1481,7 +1481,7 @@ namespace VikingEngine.DSSWars
                 content.space();
                 content.Add(new RbText(DssRef.lang.Settings_TechMultiplier, HudLib.TitleColor_Label));
                 content.space();
-                content.Add(new RbDragButton(new DragButtonSettings(1, 10, 1), DssRef.difficulty.TechMultiProperty));
+                content.Add(new RbDragButton(new DragButtonSettings(Difficulty.TechMultiBound, 1), DssRef.difficulty.TechMultiProperty));
 
             }
 
@@ -1492,14 +1492,14 @@ namespace VikingEngine.DSSWars
                 content.space();
                 content.Add(new RbText(DssRef.lang.Settings_FoodMultiplier, HudLib.TitleColor_Label));
                 content.space();
-                content.Add(new RbDragButton(new DragButtonSettings(0.5f, 10f, 0.1f), FoodMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_FoodMultiplier_Description)));
+                content.Add(new RbDragButton(new DragButtonSettings(Difficulty.FoodMultiBound, 0.1f), FoodMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_FoodMultiplier_Description)));
 
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsResource_WaterAdd));
                 content.space();
                 content.Add(new RbText(DssRef.lang.Settings_WaterMultiplier, HudLib.TitleColor_Label));
                 content.space();
-                content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), WaterMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_WaterMultiplier_Description)));
+                content.Add(new RbDragButton(new DragButtonSettings(Difficulty.WaterMultiBound, 0.1f), WaterMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_WaterMultiplier_Description)));
 
 
                 content.newLine();
@@ -1507,14 +1507,14 @@ namespace VikingEngine.DSSWars
                 content.space();
                 content.Add(new RbText(DssRef.lang.Settings_ChildMultiplier, HudLib.TitleColor_Label));
                 content.space();
-                content.Add(new RbDragButton(new DragButtonSettings(0.2f, 10f, 0.1f), ChildMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_ChildMultiplier_Description)));
+                content.Add(new RbDragButton(new DragButtonSettings(Difficulty.ChildMultiBound, 0.1f), ChildMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_ChildMultiplier_Description)));
 
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsHammer));
                 content.space();
                 content.Add(new RbText(DssRef.lang.Settings_CraftMultiplier, HudLib.TitleColor_Label));
                 content.space();
-                content.Add(new RbDragButton(new DragButtonSettings(0.1f, 4f, 0.1f), CraftMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_CraftMultiplier_Description)));
+                content.Add(new RbDragButton(new DragButtonSettings(Difficulty.CraftMultiBound, 0.1f), CraftMultiProperty, true, new RbTooltip_Text(DssRef.lang.Settings_CraftMultiplier_Description)));
             }
 
             content.newParagraph();

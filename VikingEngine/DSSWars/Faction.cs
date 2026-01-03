@@ -669,11 +669,12 @@ namespace VikingEngine.DSSWars
             }
 
             if (player != null && player.IsLocalPlayer())
-            {
-                player.orders.refreshAvailable(this);
+            {  
 
                 Ref.update.AddSyncAction(new SyncAction(() =>
                 {
+                    player.orders.refreshAvailable(this);
+
                     RichBoxContent content = new RichBoxContent();
                     var localplayer = player.GetLocalPlayer();
                     if (localplayer.battleMessageCheck(city.tilePos))

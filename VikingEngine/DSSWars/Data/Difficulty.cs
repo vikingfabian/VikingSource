@@ -17,6 +17,12 @@ namespace VikingEngine.DSSWars.Data
 {
     class Difficulty
     {
+        public static readonly IntervalF FoodMultiBound = new IntervalF(0.5f, 10f);
+        public static readonly IntervalF WaterMultiBound = new IntervalF(0.2f, 10f);
+        public static readonly IntervalF ChildMultiBound = new IntervalF(0.2f, 10f);
+        public static readonly IntervalF CraftMultiBound = new IntervalF(0.1f, 4f);
+        public static readonly Range TechMultiBound = new Range(1, 10);
+
         public const int DefaultOption = 2;
 
         int difficulty = DefaultOption;
@@ -45,6 +51,7 @@ namespace VikingEngine.DSSWars.Data
         public float setting_childMulti = 1;
         public float setting_craftMulti = 1;
         public int setting_techMulti = 1;
+
         public int setting_techMulti_QuickMatch = 2;
         public int setting_QuickMatch_PlayerCount = 4;
         public bool setting_QuickMatch_TwoTeams = false;
@@ -424,19 +431,19 @@ namespace VikingEngine.DSSWars.Data
             {
                 //NEW
                 setting_gameMode = (GameModeMainType)r.ReadByte();
-                setting_foodMulti = r.ReadSingle();
+                setting_foodMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, FoodMultiBound);
                 if (storageversion >= 24)
                 {
-                    setting_waterMulti = r.ReadSingle();
+                    setting_waterMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, WaterMultiBound);
                 }
                 if (storageversion >= 25)
                 {
-                    setting_childMulti = r.ReadSingle();
-                    setting_craftMulti = r.ReadSingle();
+                    setting_childMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, ChildMultiBound);
+                    setting_craftMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, CraftMultiBound);
                 }
                 if (storageversion >= 33)
                 {
-                    setting_techMulti = r.ReadInt32();
+                    setting_techMulti = Bound.ResetOffBounds(r.ReadInt32(), 1, TechMultiBound);
                     setting_techMulti_QuickMatch = r.ReadInt32();
                     setting_QuickMatch_PlayerCount = r.ReadInt32();
                     setting_QuickMatch_TwoTeams = r.ReadBoolean();
