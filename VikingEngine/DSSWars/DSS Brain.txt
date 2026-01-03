@@ -1,10 +1,6 @@
 ﻿UPDATE
 Change Log: 
-* Fixed: delivery respects reciever stockpile
-* Fixed: delivery auto item will send non existing items
-* Fixed attack animation crash
-* Fixed: build order crash on lost city
-* Fixed: terrain search button goes out of map bounds
+* 
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
