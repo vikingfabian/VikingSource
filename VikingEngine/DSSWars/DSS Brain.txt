@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log: 
-* 
+* collectOpponentGroups test fix
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
