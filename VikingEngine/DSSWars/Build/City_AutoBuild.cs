@@ -10,6 +10,7 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Delivery;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
@@ -42,6 +43,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void workAutoBuild(bool fuelSafeGuard, bool rawFoodSafeGuard)
         {
+
             var player = GetPlayer();
 
             //EMPTY
@@ -85,7 +87,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else if (automateCity)
                 {
-                    autoAdjustResourcesToCitySize();
+                    autoAdjustResourcesToCitySize(false);
                     commit_automateCityBuilding();
                 }
                 else //Player default
@@ -212,15 +214,31 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void autoAdjustResourcesToCitySize()
+        public void autoAdjustResourcesToCitySize(bool prepareSettle)
         {
             int multi = automationFocus == AutomationFocus.Food ? 5 : 1;
+
+            ref var res_food = ref GetRefGroupedResource(CityResoureIndex.food);
+            ref var res_rawFood = ref GetRefGroupedResource(CityResoureIndex.rawFood);
+            ref var res_fuel = ref GetRefGroupedResource(CityResoureIndex.fuel);
 
             res_food.goalBuffer = Bound.Min(workForce.amount / 100 * 100 + 200, DssConst.Logistics1FoodStorage) * multi;
             res_rawFood.goalBuffer = (workForce.amount / 300 * 100 + 100) * multi;
             res_fuel.goalBuffer = res_rawFood.goalBuffer;
 
 
+            ref var res_wood = ref GetRefGroupedResource(CityResoureIndex.wood);
+            ref var res_skin = ref GetRefGroupedResource(CityResoureIndex.skinLinnen);
+
+            res_wood.goalBuffer = WorldData.DefaultBuffer_Wood;
+            res_skin.goalBuffer = WorldData.DefaultBuffer_SkinLinnen;
+
+            if (prepareSettle)
+            {
+                res_food.goalBuffer += Conscript.ConscriptDataLib.CraftSettlerFood;
+                res_wood.goalBuffer += Conscript.ConscriptDataLib.CraftSettlerWood;
+                res_skin.goalBuffer += Conscript.ConscriptDataLib.CraftSettlerSkinLinen;
+            }
         }
 
         private void auto_addBuildingType(BuildAndExpandType buildType)
@@ -235,11 +253,17 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 switch (buildType)
                 {
+                    case BuildAndExpandType.WorkerTent:
+                        bBuild = WorkersMaxLimit > HousingCount_Workers;
+                        maxCount = 20;
+                        chance = automationFocus == AutomationFocus.Grow ? 4000 : 200;
+                        repeat = 4;
+                        break;
+
                     case BuildAndExpandType.WorkerHutLarge:
                     case BuildAndExpandType.WorkerHut:
                         bBuild = WorkersMaxLimit > HousingCount_Workers;
                         maxCount = 100;
-                        //chance = 200;
                         chance = automationFocus == AutomationFocus.Grow ? 4000 : 200;
                         repeat = 4;
                         break;
@@ -278,18 +302,24 @@ namespace VikingEngine.DSSWars.GameObject
                         bBuild = freeServiceMen.amount < goalNumber;
                         break;
 
+                    case BuildAndExpandType.Cook:
+                        maxCount = 8;
+                        break;
+
                     case BuildAndExpandType.CoalPit:
                     case BuildAndExpandType.WorkBench:
                         chance = 200;
                         break;
 
+                    case BuildAndExpandType.OrchidApple:
+                    case BuildAndExpandType.OrchidBanana:
                     case BuildAndExpandType.WheatFarm:
                     case BuildAndExpandType.LinenFarm:
                     case BuildAndExpandType.HenPen:
                     case BuildAndExpandType.PigPen:
                     case BuildAndExpandType.RapeSeedFarm:
                     case BuildAndExpandType.HempFarm:
-                        chance = automationFocus == AutomationFocus.Grow ? 300 : 150;
+                        chance = automationFocus == AutomationFocus.Grow ? 2000 : 1000;
                         maxCount = 24;
                         break;
 
@@ -330,6 +360,19 @@ namespace VikingEngine.DSSWars.GameObject
                     case BuildAndExpandType.Logistics:
                         chance = automationFocus == AutomationFocus.Grow ? 300 : 150;
                         maxCount = 1;
+                        break;
+                    case BuildAndExpandType.ManorLord:
+                        if (DssRef.state.hasManorLords)
+                        {
+                            chance = 100;
+                            maxCount = 1;
+                        }
+                        else
+                        {
+                            chance = 0;
+                            maxCount = 0;
+                        }
+                        
                         break;
 
                     case BuildAndExpandType.School:
@@ -473,7 +516,17 @@ namespace VikingEngine.DSSWars.GameObject
                                     buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
                                 }
                                 break;
-
+                            case TerrainBuildingType.ManorLord:
+                                if (build)
+                                {
+                                    if (buildingStructure.manorLord)
+                                    {
+                                        //Already built
+                                        return false;
+                                    }
+                                    buildingStructure.manorLord = true;
+                                }
+                                break;
 
                             case TerrainBuildingType.WorkerHut:
                                 onWorkHutBuild(build, false);

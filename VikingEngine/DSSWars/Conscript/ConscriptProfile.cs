@@ -43,6 +43,7 @@ namespace VikingEngine.DSSWars.Conscript
         {
             switch (weapon)
             {
+                case ItemResourceType.Settler:
                 case ItemResourceType.SharpStick:
                 case ItemResourceType.BronzeSword:
                 case ItemResourceType.ShortSword:
@@ -193,6 +194,9 @@ namespace VikingEngine.DSSWars.Conscript
                 default:
                     switch (weapon)
                     {
+                        case ItemResourceType.Settler:
+                            return DssRef.lang.UnitType_Settler;
+
                         case ItemResourceType.SharpStick:
                             return DssRef.lang.UnitType_Folkman;
                         case ItemResourceType.Pike:

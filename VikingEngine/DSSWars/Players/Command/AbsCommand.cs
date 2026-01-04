@@ -13,6 +13,7 @@ namespace VikingEngine.DSSWars.Players.Command
         Move,
         Attack,
         EnterPost,
+        ClaimCity,
     }
 
     abstract class AbsCommand

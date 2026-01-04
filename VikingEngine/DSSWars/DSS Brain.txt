@@ -1,6 +1,11 @@
-﻿UPDATE
-Change Log: 
-* 
+﻿Change log:
+* Simplified food system. Orchards farms will produce food.
+* New building: Manor lord
+* The bot factions will keep to simple orchard farming if the player does.
+* Fixed: auto build replacing farms
+* start with a lvl 3 builder on your main city
+* Terrain refresh faster on farming
+* Reduced city water income by 20% 
 
 
 #Event timers (are slightly random)#
@@ -17,7 +22,7 @@ Plus the boss fight: about 10 hours
 (total: about 45 hours)
 
 #current
-English, Simplified Chinese, Korean, Japanese, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian
+English, Simplified Chinese, Japanese, Korean, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian
 
 Fully translate all the strings in the file to Brazilian Portuguese and save into a new file, that I can download. Translate all of them, do not stop.
 Brazilians are used to English in gaming, use a “hybrid” translation.

@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 var army = player.faction.NewArmy(VectorExt.AddX(center, -2));
                 friendlyArmy = army;
                 army.rotation = playerRot;
-                army.food = float.MaxValue;
+                army.food = float.MaxValue / 8;
 
                 army.armyColumnWidth = 6;
             }
@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 var army = enemyFac.NewArmy(VectorExt.AddX(center, 2));
                 enemyArmy = army;
                 army.rotation = enemyRot;
-                army.food = float.MaxValue;
+                army.food = float.MaxValue / 8;
 
                 army.armyColumnWidth = 6;
             }

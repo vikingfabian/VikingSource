@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichMenu;
@@ -28,6 +29,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public SoldierControls soldier = null;
         public DiplomacyMap diplomacy = null;
         public Build.BuildControls build;
+        public AbsCommandTarget commandTarget = null;
         LocalPlayer player;
         public InputMap input;
         bool cityUpdate;
@@ -161,12 +163,20 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 inputHelpState = InputHelpState.Map;
                 map.focusedUpdate();
 
-                if ((map.hover.subTile.hasSelection && InBuildOrdersMode()) || build.buildKeyDown)
+                if (commandTarget != null)
+                {
+                    inputHelpState = InputHelpState.CommandTarget;
+                    if (commandTarget.update(player))
+                    {
+                        commandTarget.DeleteMe();
+                        commandTarget = null;
+                    }
+                }
+                else if ((map.hover.subTile.hasSelection && InBuildOrdersMode()) || build.buildKeyDown)
                 {
                     inputHelpState = InputHelpState.Build;
                     map.cancelRectangleSelect();
-                    build.updateBuildMode();
-                    
+                    build.updateBuildMode();                    
                 }
                 else
                 {
@@ -815,6 +825,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             map.cameraFocus = obj;
             mapSelect(obj.GetWorldObject());
+            
             if (input.inputSource.IsController && obj.gameobjectType() != GameObjectType.City)
             {
                 setMenuFocus(false, false);
@@ -888,14 +899,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
 
             int current = 0;
-            var citiesC = player.faction.cities.counter();
-            while (citiesC.Next())
+            //var citiesC = player.faction.cities.counter();
+            //while (citiesC.Next())
+            //{
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
             {
                 if (current == tabCity)
                 {
                     //focus on city
-                    map.cameraFocus = citiesC.sel;
-                    mapSelect(citiesC.sel);
+                    map.cameraFocus = citySel;
+                    mapSelect(citySel);
 
                     return;
                 }
@@ -1027,7 +1041,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             if (army != null)
             {
                 army.mapExecute();
-                army.moveOrderEffect();
+                
 
                 if (input.inputSource.IsController)
                 {

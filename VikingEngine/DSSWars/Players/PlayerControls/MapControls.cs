@@ -1152,6 +1152,14 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
+        public void SetTargetZoom(MapDetailLayerType layerType)
+        {
+            if (player.mapLayersManager.current.type != layerType)
+            {
+                targetZoom = player.mapLayersManager.GetLayer(layerType).zoom.Center;
+            }
+        }
+
         float? targetRotation = null;
         void rotateCameraInput()
         {

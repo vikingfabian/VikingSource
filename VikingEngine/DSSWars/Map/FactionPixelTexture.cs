@@ -35,9 +35,6 @@ namespace VikingEngine.DSSWars.Map
         protected Faction playerFaction;
         public Graphics.PixelTexture texture;
 
-
-
-
         public AbsMapPixelTexture(Faction faction)
         {
             this.playerFaction = faction;
@@ -215,40 +212,27 @@ namespace VikingEngine.DSSWars.Map
                 case FactionMapFilter.StrengthHeatmap:
                 case FactionMapFilter.ResourceHeatmap:
 
-                    max = 0;                    
+                    float max = 0;
+
+                    var factionsC = DssRef.world.factions.counter();
                     switch (filter)
                     {
                         case FactionMapFilter.PopulationHeatmap:
+                            while (factionsC.Next())
                             {
-                                var factionsC = DssRef.world.factions.counter();
-                                while (factionsC.Next())
+                                if (factionsC.sel.isAlive)
                                 {
-                                    if (factionsC.sel.isAlive)
-                                    {
-                                        max = Math.Max(max, factionsC.sel.totalWorkForce);
-                                    }
+                                    max = Math.Max(max, factionsC.sel.totalWorkForce);
                                 }
                             }
                             break;
 
                         case FactionMapFilter.StrengthHeatmap:
+                            while (factionsC.Next())
                             {
-                                var factionsC = DssRef.world.factions.counter();
-                                while (factionsC.Next())
+                                if (factionsC.sel.isAlive)
                                 {
-                                    if (factionsC.sel.isAlive)
-                                    {
-                                        max = Math.Max(max, factionsC.sel.militaryStrength);
-                                    }
-                                }
-                            }
-                            break;
-
-                        case FactionMapFilter.ResourceHeatmap:
-                            {
-                                foreach (var city in DssRef.world.cities)
-                                {
-                                    max = Math.Max(max, city.terrainStructure.Get(resourceFilter));
+                                    max = Math.Max(max, factionsC.sel.militaryStrength);
                                 }
                             }
                             break;
@@ -263,61 +247,46 @@ namespace VikingEngine.DSSWars.Map
                         t = DssRef.world.tileGrid.Get(loop.Position);
 
                         if (t.tileContent == TileContent.City)
-                        {
-                            color = Color.DarkBlue;//t.cityColor();
-                        }
-                        else if (t.heightLevel <= Height.LowWaterHeight)
+                            color = t.cityColor();
+
+                        if (t.heightLevel <= Height.LowerWaterHeight)
                         {
                             color = Color.CornflowerBlue;
                         }
                         else if (t.CityIndex == prevCity)
                         {
                             color = prevColor;
-                            if (t.hasBorder(out _))
-                            {
-                                color = ColorExt.ChangeBrighness(color, -20);
-                            }
                         }
                         else
                         {
-                            City city = t.City();
-                            Faction faction = city.GetFaction();
+                            Faction faction = t.Faction();
 
-                            float value = 0;
-
-                            switch (filter)
+                            if (faction != null)
                             {
-                                case FactionMapFilter.PopulationHeatmap:
-                                    if (faction != null)
-                                    {
+                                float value = 0;
+                                switch (filter)
+                                {
+                                    case FactionMapFilter.PopulationHeatmap:
                                         value = faction.totalWorkForce;
-                                    }
-                                    break;
+                                        break;
 
-                                case FactionMapFilter.StrengthHeatmap:
-                                    if (faction != null)
-                                    {
+                                    case FactionMapFilter.StrengthHeatmap:
                                         value = faction.militaryStrength;
-                                    }
-                                    break;
+                                        break;
+                                }
 
-                                case FactionMapFilter.ResourceHeatmap:
-                                    value = city.terrainStructure.Get(resourceFilter);
-                                    break;
+                                color = ColorExt.HeatColor_Inferno(value / max);
+                                prevCity = t.CityIndex;
+                                prevColor = color;
                             }
-
-                            color = ColorExt.HeatColor_Inferno(value / max);
-                            prevColor = color;
-                            if (t.hasBorder(out _))
+                            else
                             {
-                                color = ColorExt.ChangeBrighness(color, -20);
+                                color = Color.Gray;
                             }
-                            prevCity = t.CityIndex;
-                            
                         }
 
                         texture.SetPixel(loop.Position, color);
-                    }
+                    }                    
                     break;
             }
 

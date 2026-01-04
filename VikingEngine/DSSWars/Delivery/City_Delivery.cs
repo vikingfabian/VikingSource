@@ -154,29 +154,32 @@ namespace VikingEngine.DSSWars.GameObject
                 if (status.profile.toCity == DeliveryProfile.ToCityAuto)
                 {
                     int minAmount = int.MaxValue;
-                    City city = null;
+                    City foundcity = null;
 
-                    var citiesC = GetFaction().cities.counter();
-                    while (citiesC.Next())
+                    //var citiesC = GetFaction().cities.counter();
+                    //while (citiesC.Next())
+                    //{
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref GetFaction().cities, DssRef.world.cities, out City citySel))
                     {
-                        if (citiesC.sel != this && tilePos.SideLength(citiesC.sel.tilePos) <= DssConst.DeliveryMaxDistance)
+                        if (citySel != this && tilePos.SideLength(citySel.tilePos) <= DssConst.DeliveryMaxDistance)
                         {
-                            if (status.CanRecieve(sendItem, citiesC.sel.myIndex, out int hasAmount))
+                            if (status.CanRecieve(sendItem, citySel.myIndex, out int hasAmount))
                             {
                                 if (hasAmount < minAmount)
                                 {
                                     minAmount = hasAmount;
-                                    city = citiesC.sel;
+                                    foundcity = citySel;// = citiesC.sel;
                                 }
                             }
                         }
                     }
 
-                    if (city != null)
+                    if (foundcity != null)
                     {
-                        status.profile.autoCity = city.myIndex;
+                        status.profile.autoCity = foundcity.myIndex;
                     }
-                    return city;
+                    return foundcity;
                 }
                 else
                 {

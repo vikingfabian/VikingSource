@@ -10,6 +10,7 @@ using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.Interface
@@ -24,19 +25,36 @@ namespace VikingEngine.DSSWars.Interface
       
         VectorRect nextarea;
         Graphics.RectangleLines selectionOutline = null;
+        public PopMenu(Players.LocalPlayer player, RbAction1Arg<AbsMapObject> attackLink)
+        {
+            setup(player);
 
+            addButton(player, SpriteName.WarsHudIconReturn, DssRef.lang.Hud_Cancel, 
+                null);
+            addButton(player, SpriteName.WarsRelationWar, DssRef.lang.Hud_WardeclarationTitle,
+                attackLink);
+
+            complete(player);
+        }
         public PopMenu(Players.LocalPlayer player, DetailObjectCollection collection)
         {
-            player.hud.popMenu = this;
-            float defaultWidth = Engine.Screen.IconSize * 3f;
-            float defaultHeight = Engine.Screen.TextBreadHeight * 1.6f;
-            nextarea = new VectorRect(Vector2.Zero, new Vector2(defaultWidth, defaultHeight));
+            setup(player);
+            
             addButton(player, SpriteName.WarsArmy, DssRef.lang.Conscript_Soldiers_ArmyType, 
                 new RbAction1Arg<List<SoldierGroup>>(player.gameControls.map.selectCollection, collection.armyGroups));
             addButton(player, SpriteName.WarsGuard, DssRef.lang.Conscript_Soldiers_GuardType,
                 new RbAction1Arg<List<SoldierGroup>>(player.gameControls.map.selectCollection, collection.guardGroups));
 
             complete(player);
+        }
+
+        void setup(Players.LocalPlayer player)
+        {
+            player.hud.popMenu = this;
+            float defaultWidth = Engine.Screen.IconSize * 3f;
+            float defaultHeight = Engine.Screen.TextBreadHeight * 1.6f;
+
+            nextarea = new VectorRect(Vector2.Zero, new Vector2(defaultWidth, defaultHeight));
         }
 
         public bool update(Players.LocalPlayer player, out bool overHud)
@@ -49,7 +67,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 if (player.gameControls.input.mouseSelect.DownEvent)
                 {
-                    buttons[0].link.actionTrigger();
+                    buttons[0].link?.actionTrigger();
                     return true;
                 }
                 else if (player.gameControls.input.CancelKey.DownEvent)
@@ -75,7 +93,7 @@ namespace VikingEngine.DSSWars.Interface
                         overHud = true;
                         if (player.gameControls.input.menuInput.click.DownEvent)
                         {
-                            b.link.actionTrigger();
+                            b.link?.actionTrigger();
                             return true;
                         }
                         return false;
@@ -83,8 +101,8 @@ namespace VikingEngine.DSSWars.Interface
                 }
 
                 //Auto select if leaving the menu
-                overHud = false;
-                buttons.First().link.actionTrigger();
+                    overHud = false;
+                    buttons.First().link?.actionTrigger();
                 return true;
             }
             

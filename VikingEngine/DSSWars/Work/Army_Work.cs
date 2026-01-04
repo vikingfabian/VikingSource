@@ -35,6 +35,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             float energy = DssConst.ManDefaultEnergyCost / DssRef.difficulty.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
             float bufferGoalFood = friendlyAreaFoodBuffer_minutes * TimeExt.MinuteInSeconds * energy;
+#if DEBUG
+            if (Debug.CorruptValue(food))
+            {
+                lib.DoNothing();
+            }
+#endif
             food = bufferGoalFood;
         }
 
@@ -95,7 +101,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 //Order new food
                 City city = DssRef.world.tileGrid.Get(tilePos).City();
-                if (city != null)
+                if (city != null && city.HasFaction())
                 {
                     float bufferGoal_minutes = -1;
                     if (city.factionIndex == factionIndex)
@@ -109,9 +115,13 @@ namespace VikingEngine.DSSWars.GameObject
 
                     float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * foodUpkeep;
 
-                    if (bufferGoal_minutes > 0 && food < bufferGoalFood && 
-                        city.res_food.amount >= ItemPropertyColl.CarryFood &&
-                         faction.hasGold(city.SellCost(ItemResourceType.Food_G) * ItemPropertyColl.CarryFood, this))
+                    //if (bufferGoal_minutes > 0 && food < bufferGoalFood && 
+                    //    city.res_food.amount >= ItemPropertyColl.CarryFood &&
+                    //     faction.hasGold(city.SellCost(ItemResourceType.Food_G) * ItemPropertyColl.CarryFood, this))
+                    if (bufferGoal_minutes > 0 && 
+                        food < bufferGoalFood && 
+                        city.resourceAmount(EntityComponent.CityResoureIndex.food) >= ItemPropertyColl.CarryFood &&                            
+                        faction.hasGold(city.SellCost(ItemResourceType.Food_G) * ItemPropertyColl.CarryFood, this))
                     {
                         int statusIx = getOrCreateFreeWorker();
                         var status = workerStatuses[statusIx];
@@ -123,7 +133,6 @@ namespace VikingEngine.DSSWars.GameObject
                         workerStatuses[statusIx] = status;
 
                         //Calc backorder 
-                        //float foodOrderSize = ItemPropertyColl.CarryFood * DssConst.Worker_TrossWorkerCarryWeight;
                         float perc = (ItemPropertyColl.ArmyFoodOrderSize + food) / bufferGoalFood;
 
                         if (perc > 0)

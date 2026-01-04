@@ -57,10 +57,13 @@ namespace VikingEngine.DSSWars
             WeaponLeftArmType weaponLeftArmType = WeaponLeftArmType.None;
             WeaponRightArmType weaponRightArmType = WeaponRightArmType.Sword;
            
-
-
             switch (modelData.weapon)
             {
+                case Resource.ItemResourceType.Settler:
+                    weaponModel = VoxelModelName.modweapon_settler;
+                    weaponRightArmType = WeaponRightArmType.Bow;
+                    weaponHatFrame = 15;
+                    break;
                 case Resource.ItemResourceType.SharpStick:
                     weaponModel = VoxelModelName.modweapon_sharpstick;
                     weaponRightArmType = WeaponRightArmType.Bow;

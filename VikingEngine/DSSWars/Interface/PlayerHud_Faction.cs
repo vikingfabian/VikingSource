@@ -71,6 +71,11 @@ namespace VikingEngine.DSSWars.Interface
                         player.faction.resourceTab(player, content);
                         break;
 
+                    case MenuTab.StockPile:
+
+                        player.faction.stockPileTab(player, content);
+                        break;
+
                     case MenuTab.Work:
                         player.faction.workTab(content);
                         break;
@@ -334,7 +339,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void progressTab(Players.LocalPlayer player)
         {
-            new XP.TechnologyHud().technologyHud(content, player, null, player.faction);
+            new XP.TechnologyHud(player, null).technologyHud(content, player.faction);
         }
         public bool updateMouseInput(ref bool mouseOver)
         {

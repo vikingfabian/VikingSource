@@ -198,6 +198,11 @@ namespace VikingEngine.DSSWars.Map
         {
             return $"Current: {current}, prev {prevLayer}";
         }
+
+        public MapLayer GetLayer(MapDetailLayerType layerType)
+        {
+            return layers[(int)layerType];
+        }
     }
 
     class MapLayer

@@ -1228,6 +1228,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
             
             args.content.newLine();
+
+            if (soldierConscript.conscript.weapon == ItemResourceType.Settler)
+            {
+                ArmyMenu.settlerButton(args.player, args.content, this);
+            }
         }
 
         void setNewArmyPlacement(int colX, int rowY)

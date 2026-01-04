@@ -20,32 +20,30 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.Players.Profile;
+using System.Collections.Concurrent;
 
 namespace VikingEngine.DSSWars
 {
     partial class Faction : AbsGameObject
     {
-        //public int index;
         public Players.AbsPlayer player = null;
-        //public FlagAndColor flagProfile;
-
         public GameObject.City mainCity;
         public Vector3 SelectionCenter { get; private set; }
 
 
-        public SpottedArray<GameObject.City> cities;
+        //public ConcurrentBag<int> cityPointers;
+        //public SpottedArray<GameObject.City> cities;
+       public SpottedPointerArray cities;
 
-       
         public int previousWarAgainstFaction = -1;
         public DiplomaticRelation[] diplomaticRelations = null;
         public DiplomaticSide diplomaticSide = DiplomaticSide.None;
 
         public bool textureLoaded = false;
-        //public Vector2 FlagTextureTargetSheetPos;
+
         public ModelTextureSettings FlagTexture = ModelTextureSettings.Default;
 
         public SpottedArray<Army> armies;
-        //public SpottedArrayCounter<Army> armiesCounter;
 
         ushort nextUnitId = 0;
         public int nextArmyId = 1;
@@ -64,33 +62,25 @@ namespace VikingEngine.DSSWars
         public int lostCity_Time1 = -1;
         public bool quickMatchFaction = false;
 
-
         public XP.TechnologyTemplate technology;
 
         public Faction(int index)
         {
             this.myIndex = index;
 
-            cities = new SpottedArray<GameObject.City>(8);
+            cities = new SpottedPointerArray(8);
+            //cities = new SpottedArray<GameObject.City>(8);
+            //cityPointers = new ConcurrentBag<int>();
             armies = new SpottedArray<Army>(16);
         }
 
         public Faction(WorldData addTo, FactionType factiontype, int arrayIndex = -1)
         {
-            //if (factiontype == FactionType.SkaeldraHaim)
-            //{
-            //    lib.DoNothing();
-            //}
-
             if (factiontype == FactionType.DefaultAi)
             {
                 if (addTo.availableGenericAiTypes.Count > 0)
                 {
                     factiontype = arraylib.RandomListMemberPop(addTo.availableGenericAiTypes, addTo.metaData.objRnd);
-                    //if (addTo.availableGenericAiTypes.Count == 1)
-                    //{
-                    //    lib.DoNothing();
-                    //}
                 }
             }
 
@@ -106,15 +96,16 @@ namespace VikingEngine.DSSWars
                 this.myIndex = addTo.factions.Add(this);
             }
             factionIndex = myIndex;
+            addTo.factionComponentsAdd(this);
             initVisuals(addTo.metaData);
 
-            cities = new SpottedArray<GameObject.City>(8);
+            cities = new SpottedPointerArray(8);//new SpottedArray<City>(8);
             armies = new SpottedArray<Army>(16);
         }
 
-        public void initClient()
+        public void initClient(WorldData world)
         {
-            initDiplomacy(DssRef.world);
+            initDiplomacy(world);
         }
        
         public void onGameStart(bool newGame)
@@ -130,7 +121,6 @@ namespace VikingEngine.DSSWars
         public void initVisuals(WorldMetaData worldMeta)
         {
             worldMeta.setObjSeed(myIndex);
-           //player.SetProfile(new PlayerProfile(factiontype, worldMeta));
         }
 
         virtual public void writeGameState(System.IO.BinaryWriter w)
@@ -141,12 +131,13 @@ namespace VikingEngine.DSSWars
             w.Write(money.copper);
             Debug.WriteCheck(w);
 
-            var cityList = cities.toList();
-            w.Write((ushort)cityList.Count);
-            foreach(var city in cityList)
-            {
-                w.Write((ushort)city.myIndex);
-            }
+            cities.write_ushort(w);
+            //var cityList = cities.toList(DssRef.world.cities);
+            //w.Write((ushort)cityList.Count);
+            //foreach(var city in cityList)
+            //{
+            //    w.Write((ushort)city.myIndex);
+            //}
             Debug.WriteCheck(w);
 
             var armyList = armies.toList();
@@ -211,17 +202,29 @@ namespace VikingEngine.DSSWars
                 Debug.ReadCheck(r);
             }
 
-            int citiesCount = r.ReadUInt16();
-            for (int i = 0; i < citiesCount; i++)
+            //int citiesCount = r.ReadUInt16();
+            //for (int i = 0; i < citiesCount; i++)
+            //{
+            //    int cityIx = r.ReadUInt16();
+            //    var city = DssRef.world.cities[cityIx];
+                    
+            //    city.setFaction(this, true, false);
+                
+            //}
+            cities.read_ushort(r);
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
-                int cityIx = r.ReadUInt16();
-                if (arraylib.InBound(DssRef.world.cities, cityIx))
-                {
-                    var city = DssRef.world.cities[cityIx];
-                    //cities.Add(city);
-                    city.setFaction(this, true, false);
-                }
+                //int cityIx = r.ReadUInt16();
+                //if (arraylib.InBound(DssRef.world.cities, cityIx))
+                //{
+                //    //var city = DssRef.world.cities[cityIx];
+                //    //cities.Add(city);
+                //    city.setFaction(this, true, false);
+                //}
+                city.setFaction(this, true, false);
             }
+
             if (subVersion >= 76)
             { 
                 Debug.ReadCheck(r);
@@ -253,10 +256,15 @@ namespace VikingEngine.DSSWars
 
             workTemplate.readGameState(r, subVersion, false);
 
-            var cities_c = cities.counter();
-            while (cities_c.Next())
+            //var cities_c = cities.counter();
+            //while (cities_c.Next())
+            //{
+            //    cities_c.sel.workTemplate.onFactionChange(cities_c.sel, workTemplate);
+            //}
+            citiesC.Reset();
+            while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
-                cities_c.sel.workTemplate.onFactionChange(cities_c.sel, workTemplate);
+                city.workTemplate.onFactionChange(city, workTemplate);
             }
         }
 
@@ -304,10 +312,21 @@ namespace VikingEngine.DSSWars
         }
 
         virtual public void readNet(System.IO.BinaryReader r)
-        {
-            
+        {            
 
             factiontype = (FactionType)r.ReadUInt16();
+
+            switch (factiontype)
+            {
+                case FactionType.DarkLord:
+                    new DarkLordPlayer(this, false);
+                    break;
+
+                default:
+                    new AiPlayer(this, false);
+                    break;
+            }
+
             player.profile.read(r);
             //FlagAndColor profile = new FlagAndColor(r);
             //SetProfile(profile);
@@ -329,14 +348,15 @@ namespace VikingEngine.DSSWars
 
         public void writeMapFile(System.IO.BinaryWriter w)
         {
-            var cityList = cities.toList();
+            //var cityList = cities.toList();
 
-            w.Write((ushort)Debug.Ushort_OrCrash(cityList.Count));
-            
-            foreach(var c in cityList)
-            {
-                w.Write((ushort)c.myIndex);
-            }
+            //w.Write((ushort)Debug.Ushort_OrCrash(cityList.Count));
+
+            //foreach(var c in cityList)
+            //{
+            //    w.Write((ushort)c.myIndex);
+            //}
+            cities.write_ushort(w);
 
             w.Write(availableForPlayer);
         }
@@ -369,10 +389,15 @@ namespace VikingEngine.DSSWars
             if (!textureLoaded)
                 FlagTexture.ColorAndAlpha = player.profile.flag.col0_Main.ToVector4();
 
-            var citiesC = cities.counter();
-            while (citiesC.Next())
+            //var citiesC = cities.counter();
+            //while (citiesC.Next())
+            //{
+            //    citiesC.sel.OnNewOwner(newFaction);
+            //}
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
-                citiesC.sel.OnNewOwner(newFaction, false);
+                city.OnNewOwner(newFaction, false);
             }
         }
         
@@ -415,15 +440,15 @@ namespace VikingEngine.DSSWars
                 {//larger city
                     mainCity = city;
                 }
-                cities.Add(city);
+                cities.Add(city.myIndex);
                 city.setFaction(this, duringStartUp, false);
             }
             else
             {
 
-                if (!cities.Contains(city))
+                if (!cities.Contains(city.myIndex))
                 {
-                    cities.Add(city);
+                    cities.Add(city.myIndex);
                     city.setFaction(this, duringStartUp, false);
                     if (!duringStartUp)
                     {
@@ -431,7 +456,7 @@ namespace VikingEngine.DSSWars
 
                         city.workTemplate.setAllToFollowFaction();
                         city.workTemplate.onFactionChange(city, workTemplate);
-                        city.defaultResourceBuffer();
+                        city.defaultResourceBuffer(DssRef.world);
 
                         if (mainCity == null || mainCity.factionIndex != myIndex)
                         {
@@ -531,20 +556,22 @@ namespace VikingEngine.DSSWars
                 player.oneSecUpdate();
 
                 embassyCount = 0;
-                var citiesC = cities.counter();
-                while (citiesC.Next())
+                //var citiesC = cities.counter();
+                //while (citiesC.Next())
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
                 {
-                    if (citiesC.sel.factionIndex == myIndex)
+                    if (city.factionIndex == myIndex)
                     {
-                        citiesC.sel.oneSecUpdate();
-                        embassyCount += citiesC.sel.buildingStructure.Embassy_count;
+                        city.oneSecUpdate();
+                        embassyCount += city.buildingStructure.Embassy_count;
 
-                        income += citiesC.sel.income_oneSecUpdate(incomeMultiplier);
-                        citiesTotalCopper.copper += citiesC.sel.money.copper;
+                        income += city.income_oneSecUpdate(incomeMultiplier);
+                        citiesTotalCopper.copper += city.money.copper;
                     }
                     else
                     {
-                        citiesC.RemoveAtCurrent();
+                        citiesC.RemoveAtCurrent(ref cities);
                         refreshMainCity();
                     }
                 }
@@ -620,19 +647,21 @@ namespace VikingEngine.DSSWars
                 armiesC.sel.asyncPathUpdate(pathThreadIndex);
             }
 
-            var citiesC = cities.counter();
-            while (citiesC.Next())
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
-                citiesC.sel.asyncPathUpdate(pathThreadIndex);
+                city.asyncPathUpdate(pathThreadIndex);
             }
         }
 
         public void asynchCullingUpdate(float time, bool bStateA)
         {
-            foreach (var p in DssRef.state.localPlayers)
-            {
-                p.unitsPixelTexture.updateColorProfile(this);
-            }
+            
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.unitsPixelTexture.updateColorProfile(this);
+                }
+            
 
             var armiesC = armies.counter();
             while (armiesC.Next())
@@ -661,7 +690,7 @@ namespace VikingEngine.DSSWars
 
         public void remove(City city)
         {   
-            cities.Remove(city);
+            cities.Remove(city.myIndex);
             if (city == mainCity ||
                mainCity == null || mainCity.factionIndex != myIndex)
             {
@@ -705,13 +734,13 @@ namespace VikingEngine.DSSWars
             {
                 City largest = null;
 
-                var citiesC = cities.counter();
-
-                while (citiesC.Next())
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
                 {
-                    if (largest == null || citiesC.sel.HousingCount_Workers > largest.HousingCount_Workers)
+                    
+                    if (largest == null || city.HousingCount_Workers > largest.HousingCount_Workers)
                     {
-                        largest = citiesC.sel;
+                        largest = city;
                     }
                 }
 
@@ -1075,10 +1104,10 @@ namespace VikingEngine.DSSWars
 
             armies.Clear();
 
-            var citiesC = cities.counter();
-            while (citiesC.Next())
-            { 
-                citiesC.sel.setFaction(masterFaction, false, true);                
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
+            {
+                citySel.setFaction(masterFaction, false, true);                
             }
 
             cities.Clear();
@@ -1088,20 +1117,19 @@ namespace VikingEngine.DSSWars
 
         public void SetNeighborToPlayer()
         {
-            var citiesC = cities.counter();
-
-            while (citiesC.Next())
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
-                citiesC.sel.SetNeighborToPlayer();
+                
+                city.SetNeighborToPlayer();
             }
         }
         public bool HasPlayerNeighbor()
         {
-            var citiesC = cities.counter();
-
-            while (citiesC.Next())
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
-                if (citiesC.sel.HasPlayerNeighbor())
+                if (city.HasPlayerNeighbor())
                 {
                     return true;
                 }
@@ -1201,7 +1229,7 @@ namespace VikingEngine.DSSWars
 
         public Color Color()
         {
-                if (player == null)
+                if (player == null || player.profile.flag == null)
                     return tempColor;
                 return player.profile.flag.col0_Main;
             

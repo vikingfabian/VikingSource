@@ -45,6 +45,12 @@ namespace VikingEngine.DSSWars.Map
         HempFarmUpgraded,
         RapeSeedFarmUpgraded,
 
+        
+        TreeApple,
+        TreeBanana,
+        //TreeAppleSprout,
+        //TreeBananaSprout,
+
         NUM_NONE
     }
 
@@ -124,8 +130,10 @@ namespace VikingEngine.DSSWars.Map
         BookPress,
         ImmigrationTent,
 
+        WorkerTent,
         CityHall_Unclaimed,
         CityHall_Tent,
+        ManorLord,
         NUM_NONE
     }
 

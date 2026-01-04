@@ -76,6 +76,8 @@ namespace VikingEngine.DSSWars.Conscript
                 default:
                     switch (conscript.weapon)
                     {
+                        case ItemResourceType.Settler:
+                            return UnitFilterType.Settler;
                         case ItemResourceType.SharpStick:
                             return UnitFilterType.SharpStick;
 
@@ -859,6 +861,7 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 switch (conscript.weapon)
                 {
+                    case ItemResourceType.Settler:
                     case ItemResourceType.SharpStick:
                     case ItemResourceType.UN_BatteringRam:
 

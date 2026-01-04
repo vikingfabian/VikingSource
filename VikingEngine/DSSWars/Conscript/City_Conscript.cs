@@ -122,7 +122,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     else
                                     {
                                         Vector3 startPos = WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition));
-                                        Ref.update.AddSyncAction(new SyncAction3Arg<ConscriptProfile, Vector3, int>(conscriptArmy, status.inProgress, startPos, 1));
+                                        Ref.update.AddSyncAction(new SyncAction3Arg<ConscriptProfile, Vector3, int>(conscriptArmyLink, status.inProgress, startPos, 1));
 
                                         status.active = ConscriptActiveStatus.Idle;
 
@@ -153,13 +153,13 @@ namespace VikingEngine.DSSWars.GameObject
                                                     DssRef.achieve.UnlockAchievement_async(AchievementIndex.iron_cannon);
                                                     break;
                                             }
-                                            if (status.inProgress.weapon == ItemResourceType.KnightsLance)
-                                                //&&
-                                                //(status.inProgress.armorLevel == ItemResourceType.FullPlateArmor || status.inProgress.armorLevel == ItemResourceType.MithrilArmor) &&
-                                                //status.inProgress.training == TrainingLevel.Professional)
-                                            {
+                                            //if (status.inProgress.weapon == ItemResourceType.KnightsLance)
+                                            //    //&&
+                                            //    //(status.inProgress.armorLevel == ItemResourceType.FullPlateArmor || status.inProgress.armorLevel == ItemResourceType.MithrilArmor) &&
+                                            //    //status.inProgress.training == TrainingLevel.Professional)
+                                            //{
                                                 
-                                            }
+                                            //}
 
                                             //switch (Culture)
                                             //{
@@ -365,7 +365,45 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void conscriptArmy(ConscriptProfile profile, Vector3 startPos, int count)
+        public void conscriptSettlerLink()
+        {
+            conscriptSettler(null);
+        }
+
+        public CraftBlueprint SettlerBp()
+        {
+            return Culture == CityCulture.Nomads ? ConscriptDataLib.CraftNomadSettler : ConscriptDataLib.CraftSettler;
+        }
+
+        public Army conscriptSettler(City settleArea)
+        {
+            Army army = null;
+
+            if (SettlerBp().tryPayResources(this) > 0)
+            {
+                army = conscriptArmy(new ConscriptProfile()
+                {
+                    weapon = ItemResourceType.Settler,
+                    armorLevel = ItemResourceType.NONE,
+                    specialization = SpecializationType.None,
+                    training = TrainingLevel.Minimal,
+                }, defaultConscriptPos(), 1) as Army;
+
+                if (settleArea != null)
+                {
+                    army.Ai_Order_MoveTo(settleArea.tilePos);
+                }
+            }
+
+            return army;
+        }
+
+        public void conscriptArmyLink(ConscriptProfile profile, Vector3 startPos, int count)
+        {
+            conscriptArmy(profile, startPos, count);
+        }
+
+        public AbsArmy conscriptArmy(ConscriptProfile profile, Vector3 startPos, int count)
         {
             AbsArmy army = null;
 
@@ -441,7 +479,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 army?.GetArmy().OnSoldierPurchaseCompleted();
             }
-            
+
+            return army;
         }
 
         public void debugConscript(ItemResourceType weapon)

@@ -521,7 +521,22 @@ namespace VikingEngine.DSSWars.GameObject
             return status;
         }
 
-        
+        public bool HasSettler(out SoldierGroup settlerUnit)
+        {
+            settlerUnit = null;
+            var groupsCounter = groups.counter();
+
+            while (groupsCounter.Next())
+            {
+                if (groupsCounter.sel.soldierConscript.conscript.weapon == ItemResourceType.Settler)
+                {
+                    settlerUnit = groupsCounter.sel;
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         public void mergeArmies(AbsArmy otherArmy)
         {

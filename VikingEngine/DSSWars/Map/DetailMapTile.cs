@@ -37,7 +37,9 @@ namespace VikingEngine.DSSWars.Map
                 LootFest.VoxelModelName.fol_tree_hard,
                 LootFest.VoxelModelName.fol_tree_soft,
                 LootFest.VoxelModelName.fol_tree_dry,
-                 LootFest.VoxelModelName.fol_tree_hard_lava,
+                LootFest.VoxelModelName.tree_apple,
+                LootFest.VoxelModelName.tree_banana,
+                LootFest.VoxelModelName.fol_tree_hard_lava,
                 LootFest.VoxelModelName.fol_tree_soft_lava,
                 LootFest.VoxelModelName.fol_tree_hard_snow,
                 LootFest.VoxelModelName.fol_tree_soft_snow,
@@ -464,11 +466,22 @@ namespace VikingEngine.DSSWars.Map
                     surfaceSprite = SpriteName.warsFoliageRoundShadow;
                     foliageModels.Add(new FoliageModel(biom.treeHard, rnd, wp, 0.03f + 0.0012f * sizeValue));
                     break;
+
+                case TerrainSubFoilType.TreeApple:
+                    manMade = true;
+                    orchid(LootFest.VoxelModelName.tree_apple);
+                    break;
+                case TerrainSubFoilType.TreeBanana:
+                    manMade = false;
+                    orchid(LootFest.VoxelModelName.tree_banana);
+                    break;
+
                 case TerrainSubFoilType.DryWood:
                     manMade = false;
                     surfaceSprite = SpriteName.warsFoliageRoundShadow;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.fol_tree_dry, rnd, wp, 0.12f));
                     break;
+
                 case TerrainSubFoilType.TreeSoftSprout:
                 case TerrainSubFoilType.TreeHardSprout:
                     manMade = false;
@@ -517,6 +530,28 @@ namespace VikingEngine.DSSWars.Map
                     throw new NotImplementedException();
             }
 
+            void orchid(LootFest.VoxelModelName model)
+            {
+                int frame = 0;
+
+                if (sizeValue >= TerrainContent.OrchardReady)
+                {
+                    frame = 5;
+                }
+                else if (sizeValue == TerrainContent.OrchardPlucked)
+                {
+                    frame = 3;
+                }
+                else if (sizeValue < TerrainContent.OrchardPlucked)
+                {
+                    frame = MathExt.MultiplyInt((double)sizeValue / TerrainContent.OrchardPlucked, 3.0);
+                }
+                else
+                {
+                    frame = 4;
+                }
+                foliageModels.Add(new FoliageModel(model, frame, wp, 0.1f));
+            }
 
             void farm(int readyFrame, bool upgraded)
             {
@@ -608,6 +643,9 @@ namespace VikingEngine.DSSWars.Map
                     animals(tile, ref subTile, ref wp, AnimalType.Hen, TerrainContent.HenMaxSize);
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
+                case TerrainBuildingType.WorkerTent:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_tenthut, rnd, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
                 case TerrainBuildingType.WorkerHut:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.0f));
                     break;
@@ -683,7 +721,6 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_barracks, 6, wp, WorldData.SubTileWidth * 1f));
                     break;
 
-
                 case TerrainBuildingType.CityHall_Unclaimed:
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 0, wp, WorldData.SubTileWidth * 1.4f));
@@ -697,7 +734,7 @@ namespace VikingEngine.DSSWars.Map
                         if (faction != null)
                         {
                             var flag = new FoliageModel(
-                            faction, 8, wp + new Vector3(0.013f, -0.020f, 0.07f), WorldData.SubTileWidth * 1.1f);
+                            faction, 8, wp + new Vector3(0.013f, -0.008f, 0.07f), WorldData.SubTileWidth * 1.1f);
                             foliageModels.Add(flag);
                         }
                     }
@@ -804,7 +841,9 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.Logistics:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_logistic, subTile.terrainAmount - 1, wp, WorldData.SubTileWidth * 1.0f));
                     break;
-
+                case TerrainBuildingType.ManorLord:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workerhut_long, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
                 case TerrainBuildingType.Bank:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_bank, 0, wp, WorldData.SubTileWidth * 1.0f));
                     break;

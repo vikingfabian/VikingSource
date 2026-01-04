@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Text;
@@ -258,7 +259,68 @@ namespace VikingEngine.DSSWars
             return amount.ToString() + "gold";
         }
 
-        
+        public static int CulturePercChangeFactor(CityCulture culture)
+        {
+            switch (culture)
+            {
+                case CityCulture.LargeFamilies:
+                    return 200;
+                case CityCulture.FertileGround:
+                    return 200;
+                case CityCulture.Archers:
+                    return 120;
+                case CityCulture.Warriors:
+                    return 120;
+                case CityCulture.AnimalBreeder:
+                    return 200;
+                case CityCulture.Miners:
+                    return 200;
+                case CityCulture.Woodcutters:
+                    return 200;
+                case CityCulture.Builders:
+                    return 50;
+                case CityCulture.CrabMentality:
+                    return 50;
+                case CityCulture.DeepWell:
+                    return 200;
+                case CityCulture.Networker:
+                    return 50;
+                case CityCulture.PitMasters:
+                    return 200;
+
+                case CityCulture.Stonemason:
+                    return 200;
+                case CityCulture.Brewmaster:
+                    return 150;
+                case CityCulture.Weavers:
+                    return 200;
+                case CityCulture.SiegeEngineer:
+                    return 120;
+                case CityCulture.Armorsmith:
+                    return 200;
+                case CityCulture.Noblemen:
+                    return 120;
+                case CityCulture.Seafaring:
+                    return 120;
+                case CityCulture.Backtrader:
+                    return 50;
+                case CityCulture.Lawbiding:
+                    return 200;
+
+                case CityCulture.Smelters:
+                    return 200;
+                case CityCulture.BronzeCasters:
+                    return 200;
+                case CityCulture.Apprentices:
+                    return -1;
+
+                case CityCulture.Nomads:
+                    return 50;
+
+                default:
+                    return -1;
+            }
+        }
     }
 
     enum MapStartAs
@@ -319,6 +381,15 @@ namespace VikingEngine.DSSWars
         NUM
     }
 
+    enum FactionStartSize
+    { 
+        Full,
+        OneCity,
+        Settler,
+
+        NUM
+    }
+
     enum CityCulture
     { 
         LargeFamilies,//
@@ -347,6 +418,8 @@ namespace VikingEngine.DSSWars
         Smelters,//
         BronzeCasters,//
         Apprentices,//
+
+        Nomads, //Low settler cost
 
         NUM_NONE
     }

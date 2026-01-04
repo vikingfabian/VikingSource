@@ -355,15 +355,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.hud.minimapProperty(null, true, false);
             display = new Interface.TutorialDisplay(player);
             initMissions();
-            
+
 
             //Setup resources and map
-            var cityCounter = player.faction.cities.counter();
-            while (cityCounter.Next())
+            //var cityCounter = player.faction.cities.counter();
+            //while (cityCounter.Next())
+            //{
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
             {
-                cityCounter.sel.res_wood.amount = 0;
-                cityCounter.sel.res_sharpstick.amount = CollectWeaponArmorAmount - 6;//30;
-                cityCounter.sel.res_paddedArmor.amount = CollectWeaponArmorAmount - 6;
+                citySel.resourceAmountSet(EntityComponent.CityResoureIndex.wood, 0);
+                citySel.resourceAmountSet(EntityComponent.CityResoureIndex.sharpstick, CollectWeaponArmorAmount - 6);
+                citySel.resourceAmountSet(EntityComponent.CityResoureIndex.paddedArmor, CollectWeaponArmorAmount - 6);
 
                 //if (DssRef.storage.runTutorial_1short_2normal == 1)
                 //{
@@ -372,16 +375,16 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 //}
 
 
-                CityStructure.WorkInstance.setupTutorialMap(cityCounter.sel);
+                CityStructure.WorkInstance.setupTutorialMap(citySel);
 
                 if (cityarea.X == 0)
                 {
-                    cityarea.pos = cityCounter.sel.tilePos;
+                    cityarea.pos = citySel.tilePos;
                     cityarea.size = IntVector2.One;
                 }
                 else
                 {
-                    cityarea.includeTile(cityCounter.sel.tilePos);
+                    cityarea.includeTile(citySel.tilePos);
                 }
             }
 
@@ -1282,7 +1285,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!weaponsArmor_produceWeapons)
                     {
                         if (player.gameControls.map.selection.obj is City &&
-                            player.gameControls.map.selection.obj.GetCity().res_sharpstick.amount >= CollectWeaponArmorAmount)
+                            player.gameControls.map.selection.obj.GetCity().resourceAmount(EntityComponent.CityResoureIndex.sharpstick)/*res_sharpstick.amount*/ >= CollectWeaponArmorAmount)
                         {
                             weaponsArmor_produceWeapons = true;
 
@@ -1293,7 +1296,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!weaponsArmor_produceArmor)
                     {
                         if (player.gameControls.map.selection.obj is City &&
-                            player.gameControls.map.selection.obj.GetCity().res_paddedArmor.amount >= CollectWeaponArmorAmount)
+                            player.gameControls.map.selection.obj.GetCity().resourceAmount(EntityComponent.CityResoureIndex.paddedArmor)/*res_paddedArmor.amount*/ >= CollectWeaponArmorAmount)
                         {
                             weaponsArmor_produceArmor = true;
 
@@ -1305,6 +1308,154 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
               
 
                
+
+                    //    //if (!recruitGuard_selectGuardTab)
+                    //    {
+                    //        var city = player.gameControls.map.selection.obj.GetCity();
+                    //        if (arraylib.TryGet(city.conscriptBuildings, city.selectedConscript, out BarracksStatus barracks))
+                    //        {
+                    //            if (barracks.profile.specialization == SpecializationType.CityGuard)
+                    //            {
+                    //                guardTab = true;
+                    //            }
+                    //        }
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    if (recruitGuard_selectCity)
+                    //    {
+                    //        recruitGuard_selectCity = false;
+                    //        display.refresh = true;
+                    //    }
+                    //}
+
+                    //if (player.mapLayersManager.current.DrawDetailLayer)
+                    //{
+                    //    if (!recruitGuard_zoomIn)
+                    //    {
+                    //        recruitGuard_zoomIn = true;
+                    //        onPartSuccess_goback(ref recruitGuard_zoomIn_sound);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    if (recruitGuard_zoomIn)
+                    //    {
+                    //        recruitGuard_zoomIn = false;
+                    //        display.refresh = true;
+                    //    }
+                    //}
+
+                    //if (player.cityTab == Interface.MenuTab.Conscript)
+                    //{
+                    //    if (!recruitGuard_selectConscriptTab)
+                    //    {
+                    //        recruitGuard_selectConscriptTab = true;
+                    //        onPartSuccess_goback(ref recruitGuard_selectConscriptTab_sound);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    if (recruitGuard_selectConscriptTab)
+                    //    {
+                    //        recruitGuard_selectConscriptTab = false;
+                    //        display.refresh = true;
+                    //    }
+                    //}
+
+                    //if (guardTab)
+                    //{
+                    //    if (!recruitGuard_selectGuardTab)
+                    //    {
+                    //        recruitGuard_selectGuardTab = true;
+                    //        onPartSuccess_goback(ref recruitGuard_selectGuardTab_sound);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    if (recruitGuard_selectGuardTab)
+                    //    {
+                    //        recruitGuard_selectGuardTab = false;
+                    //        display.refresh = true;
+                    //    }
+                    //}
+
+                    //if (!recruitGuard_createGuard)
+                    //{
+                    //    if (DssRef.stats.guardsRecruited >= 2)
+                    //    {
+                    //        recruitGuard_createGuard = true;
+                    //        onPartSuccess();
+                    //    }
+                    //}
+                    //break;
+
+                //case TutorialMission.BuildDefences:
+
+                //    if (player.cityTab == Interface.MenuTab.Build)
+                //    {
+                //        if (!buildDefences_selectBuildTab)
+                //        {
+                //            buildDefences_selectBuildTab = true;
+                //            onPartSuccess_goback(ref buildDefences_selectBuildTab_sound);
+                //        }
+                //    }
+                //    else
+                //    {
+                //        if (buildDefences_selectBuildTab)
+                //        {
+                //            buildDefences_selectBuildTab = false;
+                //            display.refresh = true;
+                //        }
+                //    }
+
+                //    if (!buildDefences_buildPalisade)
+                //    {
+                //        lock (player.orders.orders)
+                //        {
+                //            for (int i = player.orders.orders.Count - 1; i >= 0; --i)
+                //            {
+                //                var order = player.orders.orders[i];
+                //                if (order is BuildOrder)
+                //                {
+                //                    switch (((BuildOrder)order).buildingType)
+                //                    {
+                //                        case Build.BuildAndExpandType.Palisade:
+
+                //                            buildDefences_buildPalisade = true;
+                //                            onPartSuccess();
+                //                            break;
+                //                    }
+                //                    break;
+                //                }
+                //            }
+                //        }
+                //    }
+
+                //    if (!buildDefences_moveGuard)
+                //    {
+                //        //var citiesC = player.faction.cities.counter();
+
+                //        //while (citiesC.Next())
+                //        //{
+                //        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                //        while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
+                //        {
+                //            var soldierGroupsC = citySel.groups.counter();
+                //            while (soldierGroupsC.Next())
+                //            {
+                //                var cmd = soldierGroupsC.sel.command;
+                //                if (cmd != null && cmd.HasCommand(Command.CommandType.EnterPost))
+                //                {
+                //                    buildDefences_moveGuard = true;
+                //                    onPartSuccess();
+                //                    return;
+                //                }
+                //            }
+                //        }
+                //    }
+                //    break;
 
                 case TutorialMission.ConscriptArmy:
                     if (!conscriptArmy_build)
@@ -1453,7 +1604,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!CollectFood_increasefoodbuffer)
                     {
                         if (player.gameControls.map.selection.obj is City &&
-                            player.gameControls.map.selection.obj.GetCity().res_food.goalBuffer > City.DefaultFoodBuffer)
+                            player.gameControls.map.selection.obj.GetCity().GetGroupedResource(EntityComponent.CityResoureIndex.food).goalBuffer/*res_food.goalBuffer*/ > City.DefaultFoodBuffer)
                         {
                             CollectFood_increasefoodbuffer = true;
 
@@ -1464,7 +1615,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (!CollectFood_reachfoodamount)
                     {
                         if (player.gameControls.map.selection.obj is City &&
-                            player.gameControls.map.selection.obj.GetCity().res_food.amount >= ReachFoodBuffer)
+                            player.gameControls.map.selection.obj.GetCity().resourceAmount(EntityComponent.CityResoureIndex.food)/*.res_food.amount*/ >= ReachFoodBuffer)
                         {
                             CollectFood_reachfoodamount = true;
 
@@ -1849,13 +2000,16 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         {
                             int mostWood = 0;
                             City mostWoodCity = null;
-                            var citiesC = player.faction.cities.counter();
-                            while (citiesC.Next())
+                            //var citiesC = player.faction.cities.counter();
+                            //while (citiesC.Next())
+                            //{
+                            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                            while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
                             {
-                                if (citiesC.sel.terrainStructure.resourceCount_wood > mostWood)
+                                if (citySel.terrainStructure.resourceCount_wood > mostWood)
                                 {
-                                    mostWood = citiesC.sel.terrainStructure.resourceCount_wood;
-                                    mostWoodCity = citiesC.sel;
+                                    mostWood = citySel.terrainStructure.resourceCount_wood;
+                                    mostWoodCity = citySel;
                                 }
                             }
 
@@ -2154,11 +2308,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     if (!buildDefences_moveGuard)
                     {
-                        var citiesC = player.faction.cities.counter();
+                        //var citiesC = player.faction.cities.counter();
 
-                        while (citiesC.Next())
+                        //while (citiesC.Next())
+                        //{
+                        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                        while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City city))
                         {
-                            var soldierGroupsC = citiesC.sel.groups.counter();
+                            var soldierGroupsC = city.groups.counter();
                             while (soldierGroupsC.Next())
                             {
                                 var cmd = soldierGroupsC.sel.command;
@@ -2775,12 +2932,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         void startUnits()
         {
-            var factionC = DssRef.world.factions.counter();
-            while (factionC.Next())
-            {
-                factionC.sel.player.createStartupBarracks();
-                factionC.sel.player.createStartUnits();
-            }
+            ((PlayState)DssRef.state).initStartUnits(true);
         }
-    }
+            //    var factionC = DssRef.world.factions.counter();
+            //    while (factionC.Next())
+            //    {
+            //        factionC.sel.player.createStartupBarracks();
+            //        factionC.sel.player.createStartUnits();
+            //    }
+            //}
+     }
 }

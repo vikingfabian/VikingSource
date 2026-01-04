@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.ToGG.MoonFall;
 
@@ -161,17 +162,21 @@ namespace VikingEngine.DSSWars
         public List<int> aiPlayerAsynchUpdate_collectThreats(Faction aifaction, float threatFactor = 1.6f)
         { 
             aiPlayerAsynchUpdate_threats.Clear();
-            
-            var cities_c = aifaction.cities.counter();
-            while (cities_c.Next())
+
+            //var cities_c = aifaction.cities.counter();
+            //while (cities_c.Next())
+            //{
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref aifaction.cities, DssRef.world.cities, out City city))
             {
-                foreach (var nCityIx in cities_c.sel.neighborCities)
+                //foreach (var nCityIx in city.neighborCities)
+                EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                while (neighbors.Next(DssRef.world.cities, out City nCity))//
                 {
-                    var ncity = DssRef.world.cities[nCityIx];
-                    if (ncity.factionIndex != aifaction.myIndex &&
-                        !aiPlayerAsynchUpdate_threats.Contains(nCityIx))
+                    if (nCity.factionIndex != aifaction.myIndex &&
+                        !aiPlayerAsynchUpdate_threats.Contains(nCity.myIndex))
                     {
-                        aiPlayerAsynchUpdate_threats.Add(nCityIx);
+                        aiPlayerAsynchUpdate_threats.Add(nCity.myIndex);
                     }
                 }
             }
@@ -245,8 +250,6 @@ namespace VikingEngine.DSSWars
             return true;
         }
 
-        
-
         public List<int> collectWars(Faction aifaction)
         {
             List<int> wars = new List<int>();
@@ -265,14 +268,17 @@ namespace VikingEngine.DSSWars
         {
             if (faction1 != null && faction2 != null)
             {
-                DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
-                if (rel == null)
+                if (faction2.myIndex < faction1.diplomaticRelations.Length)
                 {
-                    return RelationType.RelationType0_Neutral;
-                }
-                else
-                {
-                    return rel.Relation;
+                    DiplomaticRelation rel = faction1.diplomaticRelations[faction2.myIndex];
+                    if (rel == null)
+                    {
+                        return RelationType.RelationType0_Neutral;
+                    }
+                    else
+                    {
+                        return rel.Relation;
+                    }
                 }
             }
             return RelationType.RelationType0_Neutral;
@@ -487,6 +493,25 @@ namespace VikingEngine.DSSWars
 
             }
             return false;
+        }
+
+        public void endRelations(Faction actingFaction, Faction otherFaction)
+        {
+            if (actingFaction != null && otherFaction != null)
+            {
+                RelationType prevRelation = GetRelationType(actingFaction, otherFaction);
+                if (prevRelation > RelationType.RelationType0_Neutral)
+                {
+                    SetRelationType(actingFaction, otherFaction, RelationType.RelationType0_Neutral);
+                    if (actingFaction.player.IsLocalPlayer())
+                    {
+                        int cost = EndRelationCost(prevRelation);
+                        var player = actingFaction.player.GetLocalPlayer();
+
+                        player.diplomaticPoints.pay(cost, true);
+                    }
+                }
+            }
         }
 
         public void declareWar(Faction attacker, Faction defender)
@@ -746,6 +771,10 @@ namespace VikingEngine.DSSWars
             return cost;
         }
 
+        public static int EndRelationCost(RelationType relation)
+        {
+            return DeclareWarCost(relation) -1;
+        }
         public static int DeclareWarCost(RelationType relation)
         {
             if (relation == RelationType.RelationTypeN2_Truce || 
@@ -816,8 +845,8 @@ namespace VikingEngine.DSSWars
 
             if (f1 != null && f2 != null)
             {
-                    f1.diplomaticRelations[faction2] = this;
-                    f2.diplomaticRelations[faction1] = this;
+                f1.diplomaticRelations[faction2] = this;
+                f2.diplomaticRelations[faction1] = this;
             }
             //}
         }

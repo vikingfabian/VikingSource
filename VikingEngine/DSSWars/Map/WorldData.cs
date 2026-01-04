@@ -10,6 +10,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.Map;
 using VikingEngine.Network;
@@ -20,7 +21,7 @@ using VikingEngine.ToGG.MoonFall;
 namespace VikingEngine.DSSWars
 {   
 
-    class WorldData
+    partial class WorldData
     {  
         public static WorldData LoadingWorld = null;
 
@@ -68,6 +69,7 @@ namespace VikingEngine.DSSWars
         public WorldMetaData metaData;
 
         public Rectangle2 tileBounds;
+        public Rectangle2 tileBoundsSubOne;
         public VectorRect unitBounds;
         public IntVector2 Size;
         public IntVector2 HalfSize;
@@ -233,6 +235,8 @@ namespace VikingEngine.DSSWars
             HalfSize = Size / 2;
             areaTileCount = Size.X * Size.Y;
             tileBounds = new Rectangle2(IntVector2.Zero, Size - 1);
+            tileBoundsSubOne = tileBounds; 
+            tileBoundsSubOne.AddRadius(-1);
             unitBounds = new VectorRect(Vector2.Zero, Size.Vec);
             unitBounds.AddRadius(-1f);
 
@@ -398,6 +402,7 @@ namespace VikingEngine.DSSWars
 
             int cityCount = r.ReadInt32();
             cities = new List<City>(cityCount);
+            Init_CityComponents(cityCount);
             for (int cityIndex = 0; cityIndex < cityCount; ++cityIndex)
             {
                 City c = new City(cityIndex);
@@ -406,12 +411,15 @@ namespace VikingEngine.DSSWars
 
             int factionCount = r.ReadInt32();
             factions = new SpottedArray<Faction>(factionCount);
+            init_FactionComponents();
             for (int i = 0; i < factionCount; ++i)
             {
                 var faction = new Faction(i);
-                faction.initClient();
+                faction.initClient(this);
                 factions.Add(faction);
             }
+
+            
         }
 
         public void writeNet_Tile(System.IO.BinaryWriter w, IntVector2 tilePos)
@@ -574,7 +582,7 @@ namespace VikingEngine.DSSWars
             for (int i = 0; i < cityCount; i++)
             {
                 int city = r.ReadUInt16();
-                this.cities[city].readNet_map(r);
+                this.cities[city].readNet_map(this, r);
                 Debug.ReadCheck(r);
 
                 Debug.ReadCheck(r);
@@ -589,7 +597,7 @@ namespace VikingEngine.DSSWars
             //DebugWriteSize citiesSz = new DebugWriteSize();
             //DebugWriteSize factionsSz = new DebugWriteSize();
 
-            const int SaveMapVersion = 8;
+            const int SaveMapVersion = 9;
             w.Write(SaveMapVersion);
 
             w.Write(metaData.seed);
@@ -680,9 +688,10 @@ namespace VikingEngine.DSSWars
             if (cityCount > 0)
             {
                 cities = new List<City>(cityCount);
+                Init_CityComponents(cityCount);
                 for (int cityIndex = 0; cityIndex < cityCount; ++cityIndex)
                 {
-                    City c = new City(cityIndex, r, version);
+                    City c = new City(this, cityIndex, r, version);
                     cities.Add(c);
                     unitCollAreaGrid.add(c);
                 }
@@ -704,6 +713,7 @@ namespace VikingEngine.DSSWars
                 {
                     int factionLength = r.ReadInt32();
                     factions = new SpottedArray<Faction>(factionLength);
+                    init_FactionComponents();
 
                     for (int i = 0; i < factionLength; ++i)
                     {
@@ -811,22 +821,14 @@ namespace VikingEngine.DSSWars
             int radius = GenerateMap.HeadCityNeededFreeRadius * (DssRef.difficulty.setting_QuickMatch_PlayerCount < 6? 4 : 5);
             radius = Bound.Max(radius, Size.Y / 2 - 5);
             Rectangle2 centerArea = Rectangle2.FromCenterTileAndRadius(Size / 2, radius);//new Rectangle2(IntVector2.Zero, world.Size);
-            ///// centerArea.
-            //centerArea.AddWidthRadius(-world.Size.X / 4);
-            //centerArea.AddHeightRadius(-world.Size.Y / 4);
+            
             return centerArea;
         }
-
-
 
         public Faction getPlayerAvailableFaction(bool firstPlayer, List<Players.LocalPlayer> players)
         {
             const int MultiPlayerDistance = GenerateMap.HeadCityNeededFreeRadius * 8;
 
-            //Rectangle2 centerArea = new Rectangle2(IntVector2.Zero, Size);
-            ///// centerArea.
-            //centerArea.AddWidthRadius(-Size.X / 4);
-            //centerArea.AddHeightRadius(-Size.Y / 4);
             Rectangle2 centerArea = CenterArea();
 
             int loops = 0;
@@ -854,13 +856,11 @@ namespace VikingEngine.DSSWars
                     throw new EndlessLoopException("getPlayerAvailableFaction");
                 }
 
-                if (loops == 100 || loops == 200 || loops == 300)
+                if (loops == 100 || loops == 200 || loops == 300 || loops == 400 || loops == 500)
                 {
-                    centerArea.AddRadius(10);
+                    centerArea.AddRadius(20);
                 }
             }
-
-            //return null;
         }
        
         public City closestCity(IntVector2 pos, out float dist)

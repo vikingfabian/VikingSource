@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.Data
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 12;
-        public const int SubVersion = 89; 
+        public const int SubVersion = 101; 
 
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
@@ -127,6 +127,7 @@ namespace VikingEngine.DSSWars.Data
             
             //WORLD
             worldData = new WorldData();
+            
             worldData.metaData = meta.worldmeta;
             worldData.readMapFile(r);
             DssRef.world = worldData;

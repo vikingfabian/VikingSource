@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VikingEngine.Network;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.SteamWrapping
 {
@@ -25,6 +26,14 @@ namespace VikingEngine.SteamWrapping
 
         public SteamWriter()
         { }
+
+        public void CheckPacketLength()
+        {
+            if (memoryLength > SteamWrapping.SteamP2PManager.SteamPackageByteLimit)
+            {
+                throw new Exception("Passed steam package limit");
+            }
+        }
 
         public void EndWrite_Asynch()
         {

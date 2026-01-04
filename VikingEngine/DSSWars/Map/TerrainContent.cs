@@ -8,6 +8,13 @@ namespace VikingEngine.DSSWars.Map
 {
     class TerrainContent
     {
+        public const int OrchardSproutMaxSize = 6;
+        public const int OrchardPlucked = OrchardSproutMaxSize + 1;
+        public const int OrchardWatered = OrchardPlucked + 1;
+        public const int OrchardReady = OrchardPlucked + 6;
+        public const int OrchardMax = OrchardReady + 1;
+
+
         public const int SproutMaxSize = 5;
         public const int TreeMaxSize = 100;
         public const int TreeReadySize = 50;
@@ -70,15 +77,20 @@ namespace VikingEngine.DSSWars.Map
                         }
                     }
                     break;
-
+                case TerrainSubFoilType.TreeApple:
+                case TerrainSubFoilType.TreeBanana:
+                    if (subtile.terrainAmount < OrchardMax &&
+                        subtile.terrainAmount != OrchardPlucked)
+                    {
+                        subtile.terrainAmount++;
+                    }
+                    break;
                 case Map.TerrainSubFoilType.TreeHardSprout:
                     {
                         if (++subtile.terrainAmount > SproutMaxSize)
                         {
                             subtile.SetType(Map.TerrainMainType.Foil, (int)Map.TerrainSubFoilType.TreeHard, 1);
                         }
-
-                        //DssRef.world.subTileGrid.Set(pos, subtile);
                     }
                     break;
 

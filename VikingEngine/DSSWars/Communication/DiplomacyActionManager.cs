@@ -119,6 +119,16 @@ namespace VikingEngine.DSSWars.Communication
                 }
             }
 
+            if (selectedRelation.Relation >= RelationType.RelationType2_Good)
+            {
+                DiplomacyOption endRelation = new DiplomacyOption()
+                {
+                    toRelation = RelationType.RelationType0_Neutral,
+                    available = true,
+                    cost = Diplomacy.EndRelationCost(selectedRelation.Relation)
+                };
+                result.Add(endRelation);
+            }
             if (selectedRelation.Relation > RelationType.RelationTypeN3_War)
             {
                 DiplomacyOption declareWar = new DiplomacyOption()

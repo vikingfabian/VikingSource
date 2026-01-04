@@ -681,11 +681,11 @@ namespace VikingEngine.DSSWars
 
         void createUpdateBackground(VectorRect bgArea)
         { 
-            Graphics.Image snowflake = new Image( SpriteName.UpdatePromo_SnowFlake, bgArea.PercentToPosition(new Vector2(0.03f)),
+            Graphics.Image snowflake = new Image( SpriteName.WarsBuild_TreeApple, bgArea.PercentToPosition(new Vector2(0.03f)),
                 Screen.IconSizeV2 * 1.5f, ImageLayers.Background4 );
             snowflake.Rotation = 0.05f;
             snowflake.Color = Color.Gray;
-            snowflake.Opacity = 0.2f;
+            snowflake.Opacity = 0.6f;
         }
 
         void playMusic()
@@ -719,7 +719,7 @@ namespace VikingEngine.DSSWars
 
             content.Button("battle lab", new RbAction(startBattleLab), null, true);
             content.Button("trial", new RbAction(startTrial), null, true);
-            content.Button("cresh reports", new RbAction(Ref.steam.downloadCrashReports), null, true);
+            content.Button("crash reports", new RbAction(Ref.steam.downloadCrashReports), null, true);
             if (Ref.steam.isInitialized)
             {
                 content.Button("wish", new RbAction(() =>
@@ -737,6 +737,7 @@ namespace VikingEngine.DSSWars
             content.Button("Shader lab", new RbAction(shaderLab), null, true);
             content.Button("Dev setup", new RbAction(()=> {
                 DssRef.storage.runTutorial = false;
+                DssRef.storage.speed5x = true;
                 Screen.WindowScalePerc = 90;
                 Screen.PcDisplayMode = WindowDisplayMode.Windowed;
                 Ref.gamesett.masterVolProperty(true, 0.1f);
@@ -1336,7 +1337,6 @@ namespace VikingEngine.DSSWars
             var prev = DssRef.difficulty.setting_gameMode;
             DssRef.difficulty.setting_gameMode = mode;
             DssRef.storage.Save(null);
-            //refreshDifficultyLevel();
             underMenu.CloseDropDown();
 
             bool mapChange = (prev == GameModeMainType.QuickMatch) != (mode == GameModeMainType.QuickMatch);
@@ -1439,6 +1439,27 @@ namespace VikingEngine.DSSWars
 
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_TwoTeams) }, bQuickTwoTeamProperty));
+            }
+
+            DropDownBuilder factionSizeOptions = new DropDownBuilder("faction sz");
+            {
+                for (FactionStartSize sz = 0; sz < FactionStartSize.NUM; sz++)
+                {
+                    factionSizeOptions.AddOption(LangLib.FactionStartSizeName(sz), DssRef.storage.gameRuleset.factionStartSize == sz, FactionStartSize.Full == sz,
+                        new RbAction1Arg<FactionStartSize>((FactionStartSize size) =>
+                        {
+                            if (DssRef.storage.gameRuleset.factionStartSize != size)
+                            {
+                                DssRef.storage.gameRuleset.factionStartSize = size;
+                                DssRef.storage.Save(null);
+                                underMenu.CloseDropDown();
+
+                                restartBackgroundLoading();
+                            }
+                        }, sz), null);
+                }
+
+                factionSizeOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.FactionStartSize, underMenu);
             }
 
             content.newParagraph();

@@ -540,7 +540,7 @@ namespace VikingEngine.DSSWars.Players
         {
             if (profile.casualControls)
             {
-                return new List<MenuTab> { MenuTab.Info, MenuTab.Casual_Recruit, MenuTab.Casual_Build, MenuTab.Tag };
+                return CityMenu.CasualTabs;
             }
             return tutorial != null && tutorial.TutorialMode() ? tutorial.cityTabs : CityMenu.Tabs;
         }
@@ -588,12 +588,17 @@ namespace VikingEngine.DSSWars.Players
             pin?.DeleteMe(DeleteReason.Disband, false);            
         }
 
-        public override void createStartUnits()
+        public override void createStartUnits(double unitCountMulti, bool settlerGuard)
         {
             if (faction.cities.Count > 0)
             {
                 if (quickMatchUnits(false))
                 {
+                    return;
+                }
+                if (settlerGuard)
+                {
+                    settlerGuardUnits();
                     return;
                 }
 
@@ -602,23 +607,26 @@ namespace VikingEngine.DSSWars.Players
                 mainArmy.tagBack = CityTagBack.Blue;
                 mainArmy.tagArt = ArmyTagArt.Specialize_Tradition;
 
-                for (int i = 0; i < 5; ++i)
+                for (int i = 0; i < MathExt.MultiplyInt(5, unitCountMulti); ++i)
                 {
                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
                 }
 
                 if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
                 {
-                    int guardCount = 12;
+                    int guardCount = MathExt.MultiplyInt( 12, unitCountMulti);
 
-                    var citiesC = faction.cities.counter();
-                    while (citiesC.Next())
+                    //var citiesC = faction.cities.counter();
+                    //while (citiesC.Next())
+                    //{
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                     {
-                        if (citiesC.sel != faction.mainCity)
+                        if (citySel != faction.mainCity)
                         {
-                            onTile = citiesC.sel.ArmySpawnTilePos();
+                            onTile = citySel.ArmySpawnTilePos();
                             var army = faction.NewArmy(onTile);
-                            for (int i = 0; i < 4; ++i)
+                            for (int i = 0; i < MathExt.MultiplyInt(4, unitCountMulti); ++i)
                             {
                                 new SoldierGroup(army, DssLib.SoldierProfile_HonorGuard, army.position);
                                 --guardCount;
@@ -650,12 +658,16 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium)
             {
-                var citiesC = faction.cities.counter();
-                while (citiesC.Next())
+                //var citiesC = faction.cities.counter();
+                //while (citiesC.Next())
+                //{
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    foreach (var n in citiesC.sel.neighborCities)
+                    EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in citySel.neighborCities)
                     {
-                        DssRef.world.cities[n].GetPlayer().onPlayerNeighborCapture(this);
+                        nCity.GetPlayer()?.onPlayerNeighborCapture(this);
                     }
                 }
             }
@@ -665,9 +677,10 @@ namespace VikingEngine.DSSWars.Players
         {
             if (DssRef.difficulty.aiAggressivity >= AiAggressivity.Medium)
             {
-                foreach (var n in city.neighborCities)
+                EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in city.neighborCities)
                 {
-                    DssRef.world.cities[n].GetPlayer().onPlayerNeighborCapture(this);
+                    nCity.GetPlayer()?.onPlayerNeighborCapture(this);
                 }                
             }
 
@@ -733,8 +746,9 @@ namespace VikingEngine.DSSWars.Players
                     RichBoxContent content = new RichBoxContent();
                     MessageGroup_Ingame.Title(content, title);
                     DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content);
-                    Ref.update.AddSyncAction(new SyncAction1Arg<RichBoxContent>(hud.messages.Add, content));
+                    Ref.update.AddSyncAction(new SyncAction2Arg<RichBoxContent, bool>(hud.messages.Add, content, true));
                 }
+
             }
         }
 
@@ -776,10 +790,14 @@ namespace VikingEngine.DSSWars.Players
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.TestNextEvent();
                     //hud.objMenu.diplomacy?.makeServant();
-                    if (gameControls.map.hover.obj is City)
-                    {
-                        gameControls.map.hover.obj.GetCity().setFaction(faction, false, false);
-                    }
+                    //if (gameControls.map.hover.obj is City)
+                    //{ 
+                    //    gameControls.map.hover.obj.GetCity().setFaction(faction, false, false);
+                    //}
+                    //if (gameControls.map.hover.obj is Army)
+                    //{
+                    //    gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);
+                    //}
                     //if (gameControls.map.hover.obj is Army)
                     //{
                     //    gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);
@@ -788,7 +806,7 @@ namespace VikingEngine.DSSWars.Players
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
                     //DssRef.state.events.victory(Event.VictoryType.DefeatBoss);
-                    //DssRef.state.events.TestNextEvent();
+                    DssRef.state.events.TestNextEvent();
                     //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
                     //battleLineUpTest2(true);
                     //DssRef.state.events.TestNextEvent();
@@ -935,7 +953,7 @@ namespace VikingEngine.DSSWars.Players
 
             automation.asyncUpdate();
 
-            var city = faction.cities.GetRandomUnsafe(Ref.rnd);
+            var city = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
             if (city != null && 
                 city.automateCity && 
                 city.automationFocus == AutomationFocus.Military)
@@ -1643,10 +1661,13 @@ namespace VikingEngine.DSSWars.Players
                 {
                     try
                     {
-                        var citiesC = faction.cities.counter();
-                        while (citiesC.Next())
+                        //var citiesC = faction.cities.counter();
+                        //while (citiesC.Next())
+                        //{
+                        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                        while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                         {
-                            citiesC.sel.checkPlayerFuelAccess_OnGamestart_async();
+                            citySel.checkPlayerFuelAccess_OnGamestart_async();
                         }
                     }
                     catch (Exception ex)

@@ -219,8 +219,8 @@ namespace VikingEngine.DSSWars.Map
             TerrainStructure terrainStructure = new TerrainStructure();
 
             //IntVector2 cityHall = WP.ToSubTilePos_Centered(city.tilePos);
-            FoodSpots_workupdate.Add(city.cityStorageCenter);
-            StoragePoints_workupdate.Add(city.cityStorageCenter);
+            FoodSpots_workupdate.Add(city.citySquareSubtilePos);
+            StoragePoints_workupdate.Add(city.citySquareSubtilePos);
 
             //Cirkle outward from city to find resources
             for (int radius = 0; radius <= city.cityTileRadius; ++radius)
@@ -272,6 +272,21 @@ namespace VikingEngine.DSSWars.Map
                                             case Map.TerrainSubFoilType.Stones:
                                                 ++terrainStructure.resourceCount_stone;
                                                 Stones.Add(subTileLoop.Position);
+                                                break;
+
+                                            case TerrainSubFoilType.TreeApple:
+                                            case TerrainSubFoilType.TreeBanana:
+                                                ++buildingStructure.Orchard_count;
+                                                ++foodspots;
+                                                if (subTile.terrainAmount == TerrainContent.OrchardPlucked)
+                                                {
+                                                    Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.Plant));
+                                                }
+                                                else if (subTile.terrainAmount >= TerrainContent.OrchardReady)
+                                                {
+                                                    Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.GatherFoil));
+                                                }
+                                                buildingPosition.Orchard_pos = subTileLoop.Position;
                                                 break;
 
                                             case TerrainSubFoilType.WheatFarm:
@@ -555,6 +570,10 @@ namespace VikingEngine.DSSWars.Map
                                                 break;
                                             case TerrainBuildingType.Logistics:
                                                 buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
+                                                break;
+                                            case TerrainBuildingType.ManorLord:
+                                                buildingStructure.manorLord = true;
+                                                DssRef.state.hasManorLords = true;
                                                 break;
                                             case TerrainBuildingType.WaterResovoir:
                                                 ++buildingStructure.WaterResovoir_count;
