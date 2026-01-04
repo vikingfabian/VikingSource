@@ -2,6 +2,8 @@
 Change Log: 
 * collectOpponentGroups test fix
 * fixed empty faction on get gold crash
+* fixed map pixels out of bounds crash
+* Removed unity pixels flickering on zoom
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
