@@ -87,13 +87,15 @@ namespace VikingEngine.DSSWars.EntityComponent
 
         public bool canTradeAway()
         {
-            return amount >= goalBuffer;
+            return amount >= 30 && amount >= goalBuffer;
         }
 
         public int amountPlusDelivery()
         {
             return amount + deliverCount;
         }
+
+        
 
         public void add(ItemResource item, int multiply = 1)
         {

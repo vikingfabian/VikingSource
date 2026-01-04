@@ -147,7 +147,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 (large? TerrainBuildingType.GuardHouse_Large: TerrainBuildingType.GuardHouse_Small),
                 TerrainBuildingType.Work_Bench,
-                TerrainBuildingType.Work_Cook,
+                //TerrainBuildingType.Work_Cook,
             };
 
                 //IntVector2 templatePos = IntVector2.Zero;

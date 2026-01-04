@@ -2276,7 +2276,8 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_TreeSoft, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_TreeSeedlingHard, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_TreeSeedlingSoft, currentIndex, 3, 3);
-
+                add(SpriteName.WarsBuild_TreeApple, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_TreeBanana, currentIndex, 3, 3);
             }
             currentIndex = numTilesWidth * 90;
             {

@@ -18,7 +18,6 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
     {
-        //static byte[] MaxSkill = new byte[(int)WorkExperienceType.NUM];
         static WorkerSkillCollector SkillCollector = new WorkerSkillCollector();
 
         public WorkTemplate workTemplate = new WorkTemplate();
@@ -519,6 +518,13 @@ namespace VikingEngine.DSSWars.GameObject
                         byte bonus = 0;
                         switch (subTile.GetFoilType())
                         {
+                            case TerrainSubFoilType.TreeApple:
+                            case TerrainSubFoilType.TreeBanana:
+                                safeGuard = rawFoodSafeGuard;
+                                bNeedMore = needMore(CityResoureIndex.food);
+                                prio = workTemplate.farm_food.value;
+                                break;
+
                             case TerrainSubFoilType.LinenFarm:
                                 bNeedMore = needMore(CityResoureIndex.skinLinnen);//res_skinLinnen.needMore();
                                 prio = workTemplate.farm_linen.value;
@@ -530,7 +536,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
                             case TerrainSubFoilType.WheatFarm:
                                 safeGuard = rawFoodSafeGuard;
-                                bNeedMore = needMore(CityResoureIndex.rawFood);//res_rawFood.needMore();
+                                bNeedMore = needMore(CityResoureIndex.rawFood);
                                 prio = workTemplate.farm_food.value;
                                 break;
                             case TerrainSubFoilType.WheatFarmUpgraded:
@@ -940,7 +946,12 @@ namespace VikingEngine.DSSWars.GameObject
                     newWorker.xp2 = DssConst.WorkXpToLevel;
                 }
             }
-            else if (workerStatuses.Count == 3)
+            else if (workerStatuses.Count == 3 && TryGetFaction(out var f) && f.mainCity == this)
+            {
+                newWorker.xpType2 = WorkExperienceType.HouseBuilding;
+                newWorker.xp2 = (byte)DssConst.WorkLevel_Expert;
+            }
+            else if (workerStatuses.Count == 4)
             {
                 WorkExperienceType cultureWork = WorkExperienceType.NONE;
                 switch (Culture)

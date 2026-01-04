@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Map
 
             mapPlane = new MapTexturePlane();
             unitPlane = new MapTexturePlane();
-            unitPlane.Y += 0.06f;
+            unitPlane.Y += 0.14f;//0.06f;
             //factionPixelTex = new FactionPixelTexture(true,
             //    (DssRef.settings.playType == GameState.PlayStateType.Play || DssRef.settings.playType == GameState.PlayStateType.MapEditor)? 
             //    FactionMapFilter.FactionCols : FactionMapFilter.Terrain);           

@@ -9,8 +9,15 @@ namespace VikingEngine.DSSWars.Presentation
 {
     abstract partial class AbsLanguage
     {
+
+        //Winter patch 3
+        public abstract string Hud_Purchase_AllBuildings { get; }
+        public abstract string Hud_Purchase_AllTech { get; }
+        public abstract string BuildingType_CasualBarracks_Description { get; }
+
+
         //Winter update patch + spring
-              
+
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>

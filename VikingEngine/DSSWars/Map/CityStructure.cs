@@ -274,6 +274,21 @@ namespace VikingEngine.DSSWars.Map
                                                 Stones.Add(subTileLoop.Position);
                                                 break;
 
+                                            case TerrainSubFoilType.TreeApple:
+                                            case TerrainSubFoilType.TreeBanana:
+                                                ++buildingStructure.Orchard_count;
+                                                ++foodspots;
+                                                if (subTile.terrainAmount == TerrainContent.OrchardPlucked)
+                                                {
+                                                    Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.Plant));
+                                                }
+                                                else if (subTile.terrainAmount >= TerrainContent.OrchardReady)
+                                                {
+                                                    Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.GatherFoil));
+                                                }
+                                                buildingPosition.Orchard_pos = subTileLoop.Position;
+                                                break;
+
                                             case TerrainSubFoilType.WheatFarm:
                                             case TerrainSubFoilType.WheatFarmUpgraded:
                                                 ++buildingStructure.WheatFarm_count;
@@ -555,6 +570,10 @@ namespace VikingEngine.DSSWars.Map
                                                 break;
                                             case TerrainBuildingType.Logistics:
                                                 buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
+                                                break;
+                                            case TerrainBuildingType.ManorLord:
+                                                buildingStructure.manorLord = true;
+                                                DssRef.state.hasManorLords = true;
                                                 break;
                                             case TerrainBuildingType.WaterResovoir:
                                                 ++buildingStructure.WaterResovoir_count;

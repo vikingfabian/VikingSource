@@ -601,6 +601,9 @@ namespace VikingEngine.DSSWars
                         case TerrainBuildingType.Logistics:
                             name = DssRef.lang.BuildingType_Logistics;
                             break;
+                        case TerrainBuildingType.ManorLord:
+                            name = DssRef.todoLang.BuildingType_ManorLord;
+                            break;
                         case TerrainBuildingType.SoldierBarracks:
                             name = DssRef.lang.BuildingType_SoldierBarracks;
                             break;
@@ -780,6 +783,15 @@ namespace VikingEngine.DSSWars
                         case TerrainSubFoilType.LinenFarmUpgraded:
                             name = string.Format(DssRef.lang.BuildingType_IsUpgraded,
                                 string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen));
+                            break;
+
+                        case TerrainSubFoilType.TreeApple:
+                            icon = SpriteName.WarsBuild_TreeApple;
+                            name = DssRef.todoLang.BuildingType_Orchard;
+                            break;
+                        case TerrainSubFoilType.TreeBanana:
+                            icon = SpriteName.WarsBuild_TreeBanana;
+                            name = DssRef.todoLang.BuildingType_Orchard;
                             break;
 
                         case TerrainSubFoilType.WheatFarm:

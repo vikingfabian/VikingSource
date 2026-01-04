@@ -361,6 +361,8 @@ namespace VikingEngine.LootFest
         fol_tree_hard,
         fol_tree_soft,
         fol_tree_dry,
+        tree_apple,
+        tree_banana,
         fol_tree_hard_lava,
         fol_tree_soft_lava,
         fol_tree_hard_snow,

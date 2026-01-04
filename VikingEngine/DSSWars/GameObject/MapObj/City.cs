@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Text;
+﻿
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -24,17 +24,8 @@ using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.Input;
-using VikingEngine.LootFest;
-using VikingEngine.LootFest.GO.Gadgets;
-using VikingEngine.LootFest.Map;
-using VikingEngine.PJ.MiniGolf;
-using VikingEngine.ToGG;
-using VikingEngine.ToGG.MoonFall;
-using VikingEngine.ToGG.ToggEngine.Map;
-using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.EntityComponent;
-using Microsoft.CodeAnalysis;
+using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -1290,7 +1281,7 @@ namespace VikingEngine.DSSWars.GameObject
                                             ++totalWorkerHutAndLevelCount;
 
                                             //Place farm curlutures
-                                            const int CulturesPerFarm = 8;
+                                            const int CulturesPerFarm = 12;
                                             int cultureCount = 0;
 
                                             ForXYEdgeLoop farmLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(subPos, 1));
@@ -1304,26 +1295,28 @@ namespace VikingEngine.DSSWars.GameObject
                                                     TerrainMainType terrain;
                                                     int sub;
                                                     int maxAmount;
-                                                    if (Ref.peRnd.Chance(0.75))
-                                                    {
+                                                    //if (Ref.peRnd.Chance(0.75))
+                                                    //{
                                                         terrain = TerrainMainType.Foil;
-                                                        sub = (int)TerrainSubFoilType.WheatFarm;
-                                                        maxAmount = TerrainContent.FarmCulture_MaxSize;
-                                                    }
-                                                    else
-                                                    {
-                                                        terrain = TerrainMainType.Building;
-                                                        if (Ref.peRnd.Chance(0.4))
-                                                        {
-                                                            sub = (int)TerrainBuildingType.PigPen;
-                                                            maxAmount = TerrainContent.PigMaxSize;
-                                                        }
-                                                        else
-                                                        {
-                                                            sub = (int)TerrainBuildingType.HenPen;
-                                                            maxAmount = TerrainContent.HenMaxSize;
-                                                        }
-                                                    }
+                                                        sub = (int)TerrainSubFoilType.TreeApple;
+                                                        maxAmount = TerrainContent.OrchardReady;
+                                                        //sub = (int)TerrainSubFoilType.WheatFarm;
+                                                        //maxAmount = TerrainContent.FarmCulture_MaxSize;
+                                                    //}
+                                                    //else
+                                                    //{
+                                                    //    terrain = TerrainMainType.Building;
+                                                    //    if (Ref.peRnd.Chance(0.4))
+                                                    //    {
+                                                    //        sub = (int)TerrainBuildingType.PigPen;
+                                                    //        maxAmount = TerrainContent.PigMaxSize;
+                                                    //    }
+                                                    //    else
+                                                    //    {
+                                                    //        sub = (int)TerrainBuildingType.HenPen;
+                                                    //        maxAmount = TerrainContent.HenMaxSize;
+                                                    //    }
+                                                    //}
 
                                                     if (Build.BuildLib.TryAutoBuild(farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))
                                                     {
@@ -2182,10 +2175,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override void asyncNearObjectsUpdate()
         {
             base.asyncNearObjectsUpdate();
-        //} 
-
-        ////public void asynchNearObjectsUpdate()
-        //{
+       
             float armyDefence = 0;
             const int DominanceTileRadius = 4;
 
@@ -2387,8 +2377,6 @@ namespace VikingEngine.DSSWars.GameObject
             pos.Y += 0.1f;
             Vector3 scale;
 
-            //selection.frameModel.Position = position;
-            //selection.frameModel.position.Y += 0.1f;
             switch (cityType)
             {
                 case CityType.UnClaimed:
@@ -2409,38 +2397,19 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             selection.groupModels_terrian.OneFrameModel(pos, scale, hover, true);
-            //frameModel.Scale = new Vector3(1.2f);
-            //frameModel.SetSpriteName(SpriteName.WhiteArea_LFtiles);
-            //selection.frameModel.LoadedMeshType = hover ? LoadedMesh.SelectSquareDotted : LoadedMesh.SelectSquareSolid;
         }
 
-        //public void respawnGuard()
+        //bool spendWorker(int count)
         //{
-        //    if (guardCount < maxGuardSize && 
-        //        guardCount > 0 && //Zero when waiting for domination
-        //        //!InBattle() &&
-        //        spendWorker(1))
-        //    {
-        //        guardCount += 1;
+        //    if (workForce.amount >= count)
+        //    { 
+        //        workForce.amount -= count;
+        //        return true;
         //    }
+
+        //    return false;
         //}
-
-        bool spendWorker(int count)
-        {
-            if (workForce.amount >= count)
-            { 
-                workForce.amount -= count;
-                return true;
-            }
-
-            return false;
-        }
        
-        //public int GetWeekIncome()
-        //{
-        //    return income;
-        //}
-
         public override bool Equals(object obj)
         {
             return obj is City && ((City)obj).myIndex == myIndex;

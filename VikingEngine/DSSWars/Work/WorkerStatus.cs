@@ -249,7 +249,7 @@ namespace VikingEngine.DSSWars.Work
             {
                 case WorkType.Eat:
                     int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssRef.difficulty.FoodEnergySett);
-                    
+
                     city.AddGroupedResource(CityResoureIndex.food, -eatAmount);
                     //city.res_food.amount -= eatAmount;
                     city.foodSpending.add(eatAmount);
@@ -257,7 +257,7 @@ namespace VikingEngine.DSSWars.Work
                     energy += eatAmount * DssRef.difficulty.FoodEnergySett;
                     break;
 
-                
+
 
                 case WorkType.GatherFoil:
                     {
@@ -280,6 +280,19 @@ namespace VikingEngine.DSSWars.Work
                                 gainXp = WorkExperienceType.WoodWork;
                                 break;
 
+                            case TerrainSubFoilType.TreeApple:
+                            case TerrainSubFoilType.TreeBanana:
+                                carry = new Resource.ItemResource(
+                                        ItemResourceType.Food_G,
+                                        subTile.terrainQuality,
+                                        Convert.ToInt32(processTimeLengthSec),
+                                        farmGrowthMultiplier(DssConst.OrchidFoodAmount, city, false));
+
+                                subTile.terrainAmount = TerrainContent.OrchardPlucked;
+
+                                gainXp = WorkExperienceType.Farm;
+                                break;
+
                             case TerrainSubFoilType.WheatFarm:
                             case TerrainSubFoilType.WheatFarmUpgraded:
                                 carry = new Resource.ItemResource(
@@ -289,7 +302,7 @@ namespace VikingEngine.DSSWars.Work
                                         farmGrowthMultiplier(DssConst.WheatFoodAmount, city, foilType == TerrainSubFoilType.WheatFarmUpgraded));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
-                                
+
                                 gainXp = WorkExperienceType.Farm;
                                 break;
 
@@ -341,7 +354,7 @@ namespace VikingEngine.DSSWars.Work
                             case TerrainSubFoilType.Stones:
                                 int amount = 4;
                                 if (workBonus > 0)
-                                { 
+                                {
                                     amount = MathExt.AddPercentage(amount, workBonus);
                                 }
 
@@ -369,16 +382,28 @@ namespace VikingEngine.DSSWars.Work
                     break;
 
                 case WorkType.Plant:
-                    if (subTile.terrainAmount == TerrainContent.FarmCulture_Empty)
-                    {
-                        subTile.terrainAmount++;
-                        //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
-                        city.res_water.amount -= DssConst.PlantWaterCost;
-
-                        gainXp = WorkExperienceType.Farm;
+                    bool available;
+                    int waterCost;
+                    switch ((TerrainSubFoilType)subTile.subTerrain)
+                    {                       
+                        case TerrainSubFoilType.TreeApple:
+                        case TerrainSubFoilType.TreeBanana:
+                            available = subTile.terrainAmount == TerrainContent.OrchardPlucked;
+                            waterCost = DssConst.OrchardWaterCost;
+                            break;
+                        default:
+                            available = subTile.terrainAmount == TerrainContent.FarmCulture_Empty;
+                            waterCost = DssConst.PlantWaterCost;
+                            break;
                     }
 
-                    //work = WorkType.Idle;
+                    if (available)
+                    {
+                        subTile.terrainAmount++;
+                        city.res_water.amount -= waterCost;
+
+                        gainXp = WorkExperienceType.Farm;                        
+                    }
                     break;
 
                 case WorkType.PickUpResource:
@@ -1139,6 +1164,12 @@ namespace VikingEngine.DSSWars.Work
                         case TerrainSubFoilType.DryWood:
                             timeSec = DssConst.WorkTime_GatherFoil_DryWood;
                             break;
+
+                        case TerrainSubFoilType.TreeApple:
+                        case TerrainSubFoilType.TreeBanana:
+                            timeSec = DssConst.WorkTime_PluckOrchards;
+                            break;
+
                         case TerrainSubFoilType.WheatFarm:
                         case TerrainSubFoilType.WheatFarmUpgraded:
                         case TerrainSubFoilType.LinenFarm:

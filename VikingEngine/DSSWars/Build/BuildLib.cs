@@ -101,8 +101,7 @@ namespace VikingEngine.DSSWars.Build
         GardenFourBushes,
         GardenLongTree,
         GardenWalledBush,
-        //ServiceHouse_Small,
-        //BigCityHouse,
+        
         CitySquare,
         CobbleStones,
         GardenBird,
@@ -147,6 +146,11 @@ namespace VikingEngine.DSSWars.Build
         SulfurMine,
         WorkerTent,
 
+        ManorLord,
+
+        OrchidApple,
+        OrchidBanana,
+
         NUM_NONE,
         ALL,
     }
@@ -170,10 +174,17 @@ namespace VikingEngine.DSSWars.Build
 
         public static List<BuildAndExpandType> LogisticsUnlockBuildings_Level2 = new List<BuildAndExpandType>
         {
-
             BuildAndExpandType.GardenGrass,
             BuildAndExpandType.PavemenFountain,
             BuildAndExpandType.Statue_Leader,
+        };
+
+        public static List<BuildAndExpandType> ManorUnlockBuildings = new List<BuildAndExpandType>
+        {
+            BuildAndExpandType.WheatFarm,
+            BuildAndExpandType.HenPen,
+
+            BuildAndExpandType.Cook,
         };
 
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
@@ -189,11 +200,18 @@ namespace VikingEngine.DSSWars.Build
             bool logistics2 = city.buildingStructure.buildingLevel_logistics >= 2 ||
                 unlockAll;
 
+            bool manor = city.buildingStructure.manorLord;
+
             bool campSite = city.cityType == CityType.Campsite;
 
             if (!campSite && city.buildingStructure.buildingLevel_logistics == 0)
             {
                 list.Add(BuildAndExpandType.Logistics);
+            }
+
+            if (!manor)
+            { 
+                list.Add(BuildAndExpandType.ManorLord);
             }
 
             if (logistics1)
@@ -236,34 +254,40 @@ namespace VikingEngine.DSSWars.Build
 
             }
 
-            list.Add(BuildAndExpandType.WheatFarm);
-            if (unlocks.building_upgradedFarm || unlockAll)
+            list.Add(BuildAndExpandType.OrchidApple);
+
+            if (manor)
             {
-                list.Add(BuildAndExpandType.WheatFarmUpgraded);
+                list.Add(BuildAndExpandType.WheatFarm);
+                if (unlocks.building_upgradedFarm || unlockAll)
+                {
+                    list.Add(BuildAndExpandType.WheatFarmUpgraded);
+                }
             }
-            
+
             list.Add(BuildAndExpandType.LinenFarm);
             if (unlocks.building_upgradedFarm)
             {
                 list.Add(BuildAndExpandType.LinenFarmUpgraded);
             }
+
             list.Add(BuildAndExpandType.RapeSeedFarm);
             if (unlocks.building_upgradedFarm)
             {
                 list.Add(BuildAndExpandType.RapeSeedFarmUpgraded);
             }
-            if (unlocks.building_mixedFarms)
-            {
-                list.Add(BuildAndExpandType.HempFarm);
-                if (unlocks.building_upgradedFarm)
-                {
-                    list.Add(BuildAndExpandType.HempFarmUpgraded);
-                }
-                list.Add(BuildAndExpandType.PigPen);
-            }
 
-            if (logistics1)
+            if (manor)
             {
+                if (unlocks.building_mixedFarms)
+                {
+                    list.Add(BuildAndExpandType.HempFarm);
+                    if (unlocks.building_upgradedFarm)
+                    {
+                        list.Add(BuildAndExpandType.HempFarmUpgraded);
+                    }
+                    list.Add(BuildAndExpandType.PigPen);
+                }
                 list.Add(BuildAndExpandType.HenPen);
             }
 
@@ -311,7 +335,10 @@ namespace VikingEngine.DSSWars.Build
 
                 list.Add(BuildAndExpandType.Storehouse);
                 list.Add(BuildAndExpandType.Tavern);
-                list.Add(BuildAndExpandType.Brewery);
+                if (manor)
+                {
+                    list.Add(BuildAndExpandType.Brewery);
+                }
                 list.Add(BuildAndExpandType.WaterResovoir);
 
                 list.Add(BuildAndExpandType.CoalPit);
@@ -319,7 +346,10 @@ namespace VikingEngine.DSSWars.Build
             
             
             list.Add(BuildAndExpandType.WorkBench);
-            list.Add(BuildAndExpandType.Cook);
+            if (manor)
+            {
+                list.Add(BuildAndExpandType.Cook);
+            }
             list.Add(BuildAndExpandType.Smelter);
             list.Add(BuildAndExpandType.Foundry);
             list.Add(BuildAndExpandType.Smith);
@@ -454,6 +484,13 @@ namespace VikingEngine.DSSWars.Build
         {
             new BuildOption(BuildAndExpandType.Logistics, TerrainMainType.Building, (int)TerrainBuildingType.Logistics, SpriteName.WarsBuild_Logistics, CraftBuildingLib.CraftLogistics, true, 
                 BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
+                MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)
+            {
+                uniqueBuilding = true
+            };
+
+            new BuildOption(BuildAndExpandType.ManorLord, TerrainMainType.Building, (int)TerrainBuildingType.ManorLord, SpriteName.WarsBuild_WorkerHutLarge, CraftBuildingLib.ManorLord, true,
+                BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.Farm, BuildFilterTag.Food, 
                 MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)
             {
                 uniqueBuilding = true
@@ -615,11 +652,17 @@ namespace VikingEngine.DSSWars.Build
                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
+            new BuildOption(BuildAndExpandType.OrchidApple, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeApple, SpriteName.WarsBuild_TreeApple, CraftBuildingLib.Orchid, false,
+                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            
+            new BuildOption(BuildAndExpandType.OrchidBanana, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeBanana, SpriteName.WarsBuild_TreeBanana, CraftBuildingLib.Orchid, false,
+                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.DirtRoad, TerrainMainType.Road, (int)TerrainRoadType.DirtRoad, SpriteName.warsFoliageDirtRoad, CraftBuildingLib.DirtRoad, false, 
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Road, DssConst.WorkTime_Building_Small);
-
 
             new BuildOption(BuildAndExpandType.Pavement, TerrainMainType.Decor, (int)TerrainDecorType.Pavement, SpriteName.WarsBuild_Pavement, CraftBuildingLib.Pavement, false, 
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE, 
@@ -929,16 +972,21 @@ namespace VikingEngine.DSSWars.Build
 
         public static bool CanAutoBuildHere(ref SubTile subTile)
         {
-            if (subTile.mainTerrain == TerrainMainType.DefaultLand ||
-                subTile.mainTerrain == TerrainMainType.Destroyed)
+            switch (subTile.mainTerrain)
             {
-                return true;
-            }
+                case TerrainMainType.DefaultLand:
+                case TerrainMainType.Destroyed:
+                    return true;
 
-            if (subTile.mainTerrain == TerrainMainType.Foil)
-            {
-                TerrainSubFoilType foil = (TerrainSubFoilType)subTile.subTerrain;
-                return foil != TerrainSubFoilType.WheatFarm;
+                case TerrainMainType.Foil:
+                    switch ((TerrainSubFoilType)subTile.subTerrain)
+                    {
+                        case TerrainSubFoilType.Bush:
+                        case TerrainSubFoilType.Herbs:
+                        case TerrainSubFoilType.TallGrass:
+                            return true;
+                    }
+                    break;
             }
 
             return false;

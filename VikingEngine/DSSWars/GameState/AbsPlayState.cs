@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars.GameState
     abstract class AbsPlayState : AbsDssState
     {
         public bool isReady = false;
+        public bool hasManorLords = false;
         public WorldResources resources = new WorldResources();
         public Map.MapLayer_Factions factionsMap;
         protected Map.MapLayer_Overview overviewMap;

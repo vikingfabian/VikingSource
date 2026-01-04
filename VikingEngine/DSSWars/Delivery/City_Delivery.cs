@@ -229,7 +229,7 @@ namespace VikingEngine.DSSWars.GameObject
             {                
                 ItemResourceType type = movableCityResource[Ref.rnd.Int(movableCityResource.Length)];
 
-                if (GetGroupedResource(type).reachedBuffer())
+                if (GetGroupedResource(type).canTradeAway())
                 {
                     result = type;
                     return true;

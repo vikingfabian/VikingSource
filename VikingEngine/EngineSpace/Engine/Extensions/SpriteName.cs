@@ -2744,6 +2744,8 @@ namespace VikingEngine
         WarsBuild_Bookpress,
         WarsBuild_TreeHard,
         WarsBuild_TreeSoft,
+        WarsBuild_TreeApple,
+        WarsBuild_TreeBanana,
         WarsBuild_TreeSeedlingHard,
         WarsBuild_TreeSeedlingSoft,
 

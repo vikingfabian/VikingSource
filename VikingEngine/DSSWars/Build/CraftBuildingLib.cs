@@ -179,8 +179,21 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-        new UseResource(ItemResourceType.Wood_Group, 300),
-        new UseResource(ItemResourceType.Stone_G, 60)
+            new UseResource(ItemResourceType.Wood_Group, 300),
+            new UseResource(ItemResourceType.Stone_G, 60)
+           },
+           XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
+       );
+
+        public static readonly CraftBlueprint ManorLord = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.ManorLord,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Wood_Group, 60),
+                new UseResource(ItemResourceType.Stone_G, 60),
+                new UseResource(ItemResourceType.Iron_G, 10)
            },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
        );
@@ -540,7 +553,16 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Water_G, 50),
             }, XP.WorkExperienceType.Farm
         );
-
+        public static readonly CraftBlueprint Orchid = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.OrchidApple,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Food_G, 4),
+                new UseResource(ItemResourceType.Water_G, 20),
+            }, XP.WorkExperienceType.Farm
+        );
 
         public static readonly CraftBlueprint Smith = new CraftBlueprint(
             CraftResultType.Building,
