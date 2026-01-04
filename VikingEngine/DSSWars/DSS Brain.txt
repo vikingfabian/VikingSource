@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log: 
 * collectOpponentGroups test fix
+* fixed empty faction on get gold crash
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
