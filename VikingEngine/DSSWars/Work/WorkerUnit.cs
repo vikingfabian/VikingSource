@@ -262,10 +262,23 @@ namespace VikingEngine.DSSWars.Work
                                         }
                                         break;
                                 }
+                                EditSubTile.OntileChange(WP.SubtileToTilePos(status.subTileEnd));
                                 break;
                             case WorkType.Plant:
+                                int waterCost;
+                                switch ((TerrainSubFoilType)DssRef.world.subTileGrid.Get(status.subTileEnd).subTerrain)
+                                {
+                                    case TerrainSubFoilType.TreeApple:
+                                    case TerrainSubFoilType.TreeBanana:
+                                        waterCost = DssConst.OrchardWaterCost;
+                                        break;
+                                    default:
+                                        waterCost = DssConst.PlantWaterCost;
+                                        break;
+                                }
                                 SoundLib.drop_item.Play(model.position);
-                                new ResourceEffect(ItemResourceType.Water_G, -DssConst.PlantWaterCost, model.position, ResourceEffectType.Add);
+                                new ResourceEffect(ItemResourceType.Water_G, -waterCost, model.position, ResourceEffectType.Add);
+                                EditSubTile.OntileChange(WP.SubtileToTilePos(status.subTileEnd));
                                 break;
                             case WorkType.DropOff:
                                 SoundLib.drop_item.Play(model.position);

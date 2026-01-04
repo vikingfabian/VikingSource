@@ -1,10 +1,12 @@
 ﻿Change log:
-
 * Simplified food system. Orchards farms will produce food.
 * New building: Manor lord
 * The bot factions will keep to simple orchard farming if the player does.
 * Fixed: auto build replacing farms
-x start lvl 3 builder
+* start with a lvl 3 builder on your main city
+* Terrain refresh faster on farming
+* Reduced city water income by 20% 
+
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

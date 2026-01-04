@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars
         public static int LargeCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 7);
         public static int HeadCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 10);
 
-        public static float WaterAdd_Average = 3.6f;
+        public static float WaterAdd_Average = 3.0f;
         public static float WaterAdd_SmallCity = 0.8f * WaterAdd_Average;
         public static float WaterAdd_LargeCity = 0.9f * WaterAdd_Average;
         public static float WaterAdd_HeadCity = 1f * WaterAdd_Average;
@@ -270,7 +270,7 @@ namespace VikingEngine.DSSWars
         public static float WorkTeamEnergyCost_WhenIdle = WorkTeamEnergyCost * 0.5f;
         public static int FoodEnergy = 100;
         public static int PlantWaterCost = 1;
-        public static int OrchardWaterCost = 1;
+        public static int OrchardWaterCost = 5;
 
         public static float CasualSoldierDefaultCost_Copp = 4f * TaxPerWorker_copp / SoldierGroup_DefaultCount;
         //public static int PlantFoodCost = 6;

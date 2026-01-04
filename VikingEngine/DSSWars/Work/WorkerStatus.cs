@@ -288,7 +288,7 @@ namespace VikingEngine.DSSWars.Work
                                         Convert.ToInt32(processTimeLengthSec),
                                         farmGrowthMultiplier(DssConst.OrchidFoodAmount, city, false));
 
-                                subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
+                                subTile.terrainAmount = TerrainContent.OrchardPlucked;
 
                                 gainXp = WorkExperienceType.Farm;
                                 break;
@@ -383,25 +383,26 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.Plant:
                     bool available;
-                    
+                    int waterCost;
                     switch ((TerrainSubFoilType)subTile.subTerrain)
                     {                       
                         case TerrainSubFoilType.TreeApple:
                         case TerrainSubFoilType.TreeBanana:
                             available = subTile.terrainAmount == TerrainContent.OrchardPlucked;
+                            waterCost = DssConst.OrchardWaterCost;
                             break;
                         default:
                             available = subTile.terrainAmount == TerrainContent.FarmCulture_Empty;
+                            waterCost = DssConst.PlantWaterCost;
                             break;
                     }
 
                     if (available)
                     {
                         subTile.terrainAmount++;
-                        city.res_water.amount -= DssConst.PlantWaterCost;
+                        city.res_water.amount -= waterCost;
 
-                        gainXp = WorkExperienceType.Farm;
-                        EditSubTile.OntileChange(WP.SubtileToTilePos(subTileEnd));
+                        gainXp = WorkExperienceType.Farm;                        
                     }
                     break;
 

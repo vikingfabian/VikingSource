@@ -18,7 +18,6 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City
     {
-        //static byte[] MaxSkill = new byte[(int)WorkExperienceType.NUM];
         static WorkerSkillCollector SkillCollector = new WorkerSkillCollector();
 
         public WorkTemplate workTemplate = new WorkTemplate();
@@ -947,7 +946,12 @@ namespace VikingEngine.DSSWars.GameObject
                     newWorker.xp2 = DssConst.WorkXpToLevel;
                 }
             }
-            else if (workerStatuses.Count == 3)
+            else if (workerStatuses.Count == 3 && TryGetFaction(out var f) && f.mainCity == this)
+            {
+                newWorker.xpType2 = WorkExperienceType.HouseBuilding;
+                newWorker.xp2 = (byte)DssConst.WorkLevel_Expert;
+            }
+            else if (workerStatuses.Count == 4)
             {
                 WorkExperienceType cultureWork = WorkExperienceType.NONE;
                 switch (Culture)
