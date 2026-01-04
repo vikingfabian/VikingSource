@@ -7,6 +7,30 @@ namespace VikingEngine
 {
     static class Bound
     {
+        public static float ResetOffBounds(float value, float offBoundsResetValue, IntervalF range)
+        {
+            if (range.IsWithinRange(value))
+            {
+                return value;
+            }
+            else
+            { 
+                return offBoundsResetValue;
+            }
+        }
+
+        public static int ResetOffBounds(int value, int offBoundsResetValue, Range range)
+        {
+            if (range.IsWithinRange(value))
+            {
+                return value;
+            }
+            else
+            {
+                return offBoundsResetValue;
+            }
+        }
+
         public static bool IsWithin(int value, int min, int max)
         {
             return value >= min && value <= max;

@@ -11,6 +11,11 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Italian : AbsLanguage
     {
+        //Winter patch 3
+        public override string Hud_Purchase_AllBuildings => "Metti in coda tutti gli edifici";
+        public override string Hud_Purchase_AllTech => "Metti in coda tutte le tecnologie";
+        public override string BuildingType_CasualBarracks_Description => "Il tempo di reclutamento è diviso tra le caserme";
+
         //Winter update patch + spring
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost

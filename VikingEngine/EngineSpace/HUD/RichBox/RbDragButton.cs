@@ -18,6 +18,20 @@ namespace VikingEngine.HUD.RichBox
         public float min, max;
         public float step;
 
+        public DragButtonSettings(Range minMax, float step)
+        {
+            this.min = minMax.Min;
+            this.max = minMax.Max;
+            this.step = step;
+        }
+
+        public DragButtonSettings(IntervalF minMax, float step)
+        {
+            this.min = minMax.Min;
+            this.max = minMax.Max;
+            this.step = step;
+        }
+
         public DragButtonSettings(float min, float max, float step)
         { 
             this.min = min;

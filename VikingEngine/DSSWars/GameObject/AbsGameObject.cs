@@ -10,11 +10,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.Input;
-using VikingEngine.LootFest.GO.Gadgets;
-using VikingEngine.LootFest.Players;
-using VikingEngine.ToGG.MoonFall.GO;
-using VikingEngine.ToGG.MoonFall.Players;
+
 //
 
 namespace VikingEngine.DSSWars.GameObject
@@ -52,7 +48,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public Faction GetFaction_NoChecks()
         {
-            if (factionIndex < 0)
+            if (factionIndex < 0 || factionIndex >= DssRef.world.factions.Count)
             {
                 return null;
             }

@@ -311,7 +311,7 @@ namespace VikingEngine.DSSWars
 
         public bool InWar(Faction faction1, Faction faction2)
         {
-            if (faction1 == null || faction2 == null)
+            if (faction1 == null || faction2 == null || faction1.diplomaticRelations == null)
             {
                 return false;
             }

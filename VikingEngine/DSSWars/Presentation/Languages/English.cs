@@ -11,6 +11,10 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class English : AbsLanguage
     {
+        //Winter patch 3
+        public override string Hud_Purchase_AllBuildings => "Queue all buildings";
+        public override string Hud_Purchase_AllTech => "Queue all tech";
+        public override string BuildingType_CasualBarracks_Description => "Soldier recruitment time is divided among the barracks";
 
         //Winter update patch + spring
 

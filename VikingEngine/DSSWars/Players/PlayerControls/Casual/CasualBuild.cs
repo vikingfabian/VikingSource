@@ -290,7 +290,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                         new RbSpace(0.5f),
                         new RbImage( SpriteName.WarsConstructBuildingIcon),
                         new RbSpace(),
-                        new RbText(".Queue all buildings") },
+                        new RbText(DssRef.lang.Hud_Purchase_AllBuildings) },
                         new RbAction(queueAllCasualBuildings), null));
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember>
@@ -299,7 +299,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                         new RbSpace(0.5f),
                         new RbImage( SpriteName.WarsTechnology_Unlocked),
                         new RbSpace(),
-                        new RbText(".Queue all tech") },
+                        new RbText(DssRef.lang.Hud_Purchase_AllTech) },
                         new RbAction(queueAllCasualProgress), null));
 
             //CURRENT PROGRESS
@@ -499,7 +499,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                         content.h2(DssRef.lang.Hud_PurchaseTitle_Gain, HudLib.TitleColor_Label);
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(".Soldier recruit time is divided among the barracks"));
+                        content.Add(new RbText(DssRef.lang.BuildingType_CasualBarracks_Description));
                         break;
 
                     case CasualBuildType.GuardTower_Wood:
