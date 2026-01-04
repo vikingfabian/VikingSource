@@ -1428,10 +1428,7 @@ namespace VikingEngine.DSSWars.GameObject
     //        return amount < goalBuffer;
     //    }
 
-        public bool canTradeAway()
-        {
-            return amount >= 30 && amount >= goalBuffer;
-        }
+        
 
     //    public int amountPlusDelivery()
     //    {
