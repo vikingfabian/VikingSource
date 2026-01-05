@@ -3932,6 +3932,10 @@ namespace VikingEngine.DSSWars.GameObject
                 tradeTemplate.onFactionValueChange(newFaction.tradeTemplate);
                 technology.addFactionUnlocked(newFaction.technology, true, false);
 
+                if (newFaction.player != null && newFaction.player.IsLocalPlayer())
+                {
+                    DssRef.world.copyStockPile(null, newFaction, this, CopyPasteOption.FactionToCity, ResourceGroupType.NUM);
+                }
                 
             }
         }
