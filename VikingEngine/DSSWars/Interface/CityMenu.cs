@@ -2925,26 +2925,7 @@ namespace VikingEngine.DSSWars.Interface
         }
     }
 
-    enum ResourceGroupType
-    {
-        Resources,
-        Metals,
-        Weapons,
-        Projectile,
-        Armor,
-        Animals,
-        Mint,
-        NUM,
-        Auto,
-    }
-
-    enum ResourceManagementType
-    { 
-        Overview,
-        Work,
-        Stockpile,
-        Auto,
-    }
+   
 
     //enum WorkSubTab
     //{
