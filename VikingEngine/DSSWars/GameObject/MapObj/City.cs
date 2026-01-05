@@ -79,7 +79,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         Intvector2MinMax workerCullingMinMax, guardCullingMinMax;
         //IntVector2 cullingTopLeft, cullingBottomRight;
-        public int cityTileRadius = 0;
+        //public int cityTileRadius = 0;
+        public Rectangle2 cityTileArea;
         public CityCulture Culture = CityCulture.NUM_NONE;
 
         public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarm;
@@ -375,7 +376,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             w.Write(Debug.Byte_OrCrash((int)cityType));
             w.Write(Debug.Ushort_OrCrash(areaSize));
-            w.Write(Debug.Byte_OrCrash(cityTileRadius));
+            //w.Write(Debug.Byte_OrCrash(cityTileRadius));
+            cityTileArea.pos.writeUshort(w);
+            cityTileArea.size.writeByte(w);
+
+
             w.Write(Debug.Byte_OrCrash(workHutStyle));
 
             w.Write(Debug.Byte_OrCrash(neighborCitiesCount));
@@ -401,8 +406,18 @@ namespace VikingEngine.DSSWars.GameObject
             }
             
             areaSize = r.ReadUInt16();
-            cityTileRadius = r.ReadByte();
-            
+
+            if (saveMapVersion < 10)
+            {
+                int cityTileRadius = r.ReadByte();
+                cityTileArea = Rectangle2.FromCenterTileAndRadius(tilePos, cityTileRadius);
+            }
+            else
+            {
+                cityTileArea.pos.readUshort(r);
+                cityTileArea.size.readByte(r);
+            }
+
             workHutStyle = r.ReadByte();
 
             neighborCitiesCount = 0;
@@ -1376,16 +1391,16 @@ namespace VikingEngine.DSSWars.GameObject
             return (int)Math.Floor(workers / (double)DssConst.HousingCount_WorkerHut);
         }
 
-        public void onWorkHutBuild(bool build_notDestroy, bool large)
+        public void onWorkHutBuild(bool build_notDestroy, int size)
         {
-            int count = large ? DssConst.HousingCount_WorkerHutLarge : DssConst.HousingCount_WorkerHut;
+            //int count = large ? DssConst.HousingCount_WorkerHutLarge : DssConst.HousingCount_WorkerHut;
             if (build_notDestroy)
             {
-                HousingCount_Workers += count;
+                HousingCount_Workers += size;
             }
             else
             {
-                HousingCount_Workers -= count;
+                HousingCount_Workers -= size;
             }
             //refreshCitySize();
         }
@@ -1673,6 +1688,7 @@ namespace VikingEngine.DSSWars.GameObject
                     try
                     {
                         int radius = 3;
+                        Rectangle2 tileArea = new Rectangle2(tilePos, radius);
                         bool foundTile = true;
                         Map.Tile checkTile;
                         while (foundTile)
@@ -1684,12 +1700,13 @@ namespace VikingEngine.DSSWars.GameObject
                                 if (DssRef.world.tileGrid.TryGet(loop.Position, out checkTile) && checkTile.CityIndex == this.myIndex)
                                 {
                                     foundTile = true;
-                                    break;
+                                    tileArea.includeTile(loop.Position);
+                                    //break;
                                 }
                             }
                         }
-
-                        cityTileRadius = radius;
+                        cityTileArea = tileArea;
+                        //cityTileRadius = radius;
                     }
                     catch (Exception ex)
                     {

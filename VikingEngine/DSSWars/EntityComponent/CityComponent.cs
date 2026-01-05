@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars
                 cityResouces[startIndex + CityResoureIndex.GoldOre] = new GroupedResource { goalBuffer = 100 };
 
                 // Refined / materials
-                cityResouces[startIndex + CityResoureIndex.iron] = new GroupedResource { amount = 10, goalBuffer = 100 };
+                cityResouces[startIndex + CityResoureIndex.iron] = new GroupedResource { amount = 20, goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.Tin] = new GroupedResource { goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.Copper] = new GroupedResource { goalBuffer = 100 };
                 cityResouces[startIndex + CityResoureIndex.Lead] = new GroupedResource { goalBuffer = 100 };

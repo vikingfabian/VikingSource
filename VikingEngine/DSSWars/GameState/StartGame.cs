@@ -111,6 +111,19 @@ namespace VikingEngine.DSSWars
                         break;
                 }
 
+                switch (DssRef.storage.gameRuleset.factionStartSize)
+                {
+                    case FactionStartSize.Full:
+                        DssRef.stats.startnewsize_full.addOne();
+                        break;
+                    case FactionStartSize.OneCity:
+                        DssRef.stats.startnewsize_onecity.addOne();
+                        break;
+                    case FactionStartSize.Settler:
+                        DssRef.stats.startnewsize_settler.addOne();
+                        break;
+                }
+
                 switch (DssRef.difficulty.PercDifficulty)
                 {
                     case 25:

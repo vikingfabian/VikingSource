@@ -492,7 +492,8 @@ namespace VikingEngine.DSSWars.Build
                         IntVector2 topleft;
                         ForXYLoop subTileLoop;
 
-                        for (int radius = 1; radius <= city.cityTileRadius; ++radius)
+                        int cityradius = city.cityTileArea.size.SideLength() / 2;
+                        for (int radius = 1; radius <= cityradius; ++radius)
                         {
                             int distanceValue = -radius;
                             ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));

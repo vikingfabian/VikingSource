@@ -527,12 +527,14 @@ namespace VikingEngine.DSSWars.GameObject
                                     buildingStructure.manorLord = true;
                                 }
                                 break;
-
+                            case TerrainBuildingType.WorkerTent:
+                                onWorkHutBuild(build, DssConst.HousingCount_WorkerTent);
+                                break;
                             case TerrainBuildingType.WorkerHut:
-                                onWorkHutBuild(build, false);
+                                onWorkHutBuild(build, DssConst.HousingCount_WorkerHut);
                                 break;
                             case TerrainBuildingType.WorkerHutLarge:
-                                onWorkHutBuild(build, true);
+                                onWorkHutBuild(build, DssConst.HousingCount_WorkerHutLarge);
                                 break;
 
                             case TerrainBuildingType.ServiceMenHouse_small:

@@ -47,6 +47,10 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt startNewPeaceful = new StatsInt("startNewPeaceful");
         public StatsInt startNewSpectator = new StatsInt("startNewSpectator");
 
+        public StatsInt startnewsize_full = new StatsInt("startnewsize_full");
+        public StatsInt startnewsize_onecity = new StatsInt("startnewsize_onecity");
+        public StatsInt startnewsize_settler = new StatsInt("startnewsize_settler");
+
         public StatsInt keyboard_user = new StatsInt("keyboard_user");
         public StatsInt controller_user = new StatsInt("controller_user");
 

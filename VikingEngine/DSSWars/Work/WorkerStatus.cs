@@ -188,6 +188,8 @@ namespace VikingEngine.DSSWars.Work
                     return DssRef.lang.WorkerStatus_TrossReturnToArmy;
                 case WorkType.Demolish:
                     return DssRef.lang.Build_DestroyBuilding;
+                case WorkType.School:
+                    return DssRef.lang.BuildingType_School;
 
                 default:
                     return TextLib.Error;

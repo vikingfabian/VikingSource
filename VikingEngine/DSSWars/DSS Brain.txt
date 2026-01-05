@@ -1,8 +1,5 @@
 ﻿Change log:
-* Fixed: war is not shared among allies
-* Steam stats for won/lost 300%
-* Faction wide stockpile is complete
-
+* 
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

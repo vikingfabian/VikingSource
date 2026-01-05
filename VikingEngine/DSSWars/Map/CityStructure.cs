@@ -50,7 +50,8 @@ namespace VikingEngine.DSSWars.Map
             int wood = 4;
             int stone = 2;
 
-            for (int radius = 2; radius <= city.cityTileRadius; ++radius)
+            int cityradius = city.cityTileArea.size.SideLength() / 2;
+            for (int radius = 2; radius <= cityradius; ++radius)
             {
                 ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
 
@@ -113,7 +114,8 @@ namespace VikingEngine.DSSWars.Map
         {
             IntVector2 topleft;
             ForXYLoop subTileLoop;
-            for (int radius = 0; radius <= city.cityTileRadius; ++radius)
+            int maxRadius = city.cityTileArea.size.SideLength();
+            for (int radius = 0; radius < maxRadius; ++radius)
             {
                 ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
 
@@ -150,7 +152,8 @@ namespace VikingEngine.DSSWars.Map
         {
             IntVector2 topleft;
             ForXYLoop subTileLoop;
-            for (int radius = 0; radius <= city.cityTileRadius; ++radius)
+            int maxRadius = city.cityTileArea.size.SideLength();
+            for (int radius = 0; radius < maxRadius; ++radius)
             {
                 ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
 
@@ -223,18 +226,21 @@ namespace VikingEngine.DSSWars.Map
             StoragePoints_workupdate.Add(city.citySquareSubtilePos);
 
             //Cirkle outward from city to find resources
-            for (int radius = 0; radius <= city.cityTileRadius; ++radius)
-            {
-                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+            //for (int radius = 0; radius <= city.cityTileRadius; ++radius)
+            //{
+            //    ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
 
-                while (cirkleLoop.Next())
-                {
-                    if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
-                    {
-                        var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
+            //    while (cirkleLoop.Next())
+            //    {
+            //        if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
+            //        {
+            ForXYLoop loop = new ForXYLoop(city.cityTileArea);
+            while(loop.Next())
+            {
+                        var tile = DssRef.world.tileGrid.Get(loop.Position);
                         if (tile.CityIndex == city.myIndex && tile.IsLand())
                         {
-                            topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
+                            topleft = WP.ToSubTilePos_TopLeft(loop.Position);
                             subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
 
                             while (subTileLoop.Next())
@@ -616,8 +622,8 @@ namespace VikingEngine.DSSWars.Map
                             }
                         }
                     }
-                }
-            }
+            //    }
+            //}
 
             //Complete
             city.buildingStructure = buildingStructure;

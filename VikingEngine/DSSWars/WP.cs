@@ -56,6 +56,12 @@ namespace VikingEngine.DSSWars
             return new IntVector2(pos.X * WorldData.TileSubDivitions, pos.Y * WorldData.TileSubDivitions);
         }
 
+        public static Rectangle2 ToSubTilePos(Rectangle2 area)
+        {
+            area *= WorldData.TileSubDivitions;
+            return area;
+        }
+
         public static Vector3 SubtileToWorldPosXZ(IntVector2 subtilePos)
         {
             return new Vector3(subtilePos.X * WorldData.SubTileWidth - WorldData.TileHalfWidth, 0, subtilePos.Y * WorldData.SubTileWidth - WorldData.TileHalfWidth);
