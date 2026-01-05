@@ -944,6 +944,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void async_SoldiersUpdate(float time, bool oneMinute)
         {
+            //if (debugTagged)
+            //{
+            //    lib.DoNothing();
+            //}
+
+            if (!HasAliveFaction())
+            {
+                lib.DoNothing();
+            }
+
             if (groups.Count > 0)
             {
                 int count = 0;
@@ -1012,6 +1022,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     totalStrength += groupsC.sel.strengthValue();/*AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip)*/;//(dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
 
+                    
                 }
 
                 army_isIdle = allGropsAreIdle && IdleObjetive();

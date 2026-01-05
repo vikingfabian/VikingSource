@@ -332,7 +332,12 @@ namespace VikingEngine.DSSWars.GameObject
             rotation.ByteDir = r.ReadByte();
 
             soldierCount = r.ReadByte();
-            shipHealth = r.ReadInt32();
+            shipHealth = Bound.Min( r.ReadInt32(), 1);
+
+            //if (shipHealth == 0)
+            //{
+            //    lib.DoNothing();
+            //}
 
             if (needInit)
             {
@@ -856,7 +861,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (debugTagged)
             {
-                lib.DoNothing();
+                 lib.DoNothing();
             }
 
             if (inShipOrGuardTransform)

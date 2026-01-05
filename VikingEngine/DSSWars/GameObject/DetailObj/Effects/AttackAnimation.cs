@@ -80,6 +80,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (target != null)
             {
+                //if (target.GetAbsArmy().debugTagged)
+                //{
+                //    lib.DoNothing();
+                //}
                 attackCooldownTime.MilliSeconds = soldierData.attackTimePlusCoolDown;
                 prevAttackTime = attackCooldownTime.MilliSeconds;
                 attackFrameTime.MilliSeconds = Profile().attackFrameTime;

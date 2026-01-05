@@ -1,6 +1,8 @@
 ﻿UPDATE
 Change Log: 
-* 
+* Reduced average city water from 3.6 to 2.8
+* Fixed the no pause option
+
 
 
 #Event timers (are slightly random)#

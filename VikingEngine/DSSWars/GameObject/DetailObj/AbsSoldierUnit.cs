@@ -445,7 +445,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void update2_battle_move(float time, bool fullUpate, float groupWalkSpeed)
         {
-            
             followPathUpdate(time, groupWalkSpeed);
             
             battleData?.update(this);
@@ -462,6 +461,9 @@ namespace VikingEngine.DSSWars.GameObject
             if (group.debugTagged)
             {
                 lib.DoNothing();
+                var attack = attackTarget;
+                var attack2 = nextAttackTarget;
+
             }
 
             //if (player().IsLocalPlayer() && parentArrayIndex == 1)
