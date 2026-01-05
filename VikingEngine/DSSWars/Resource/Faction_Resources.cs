@@ -579,6 +579,11 @@ namespace VikingEngine.DSSWars
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
+                //if (armiesC.sel.debugTagged)
+                //{
+                //    lib.DoNothing();
+                //}
+
                 float manUpkeepCount = 0;
                 float moneyCarry = 0;
                 //float armyUpkeep = 0;
