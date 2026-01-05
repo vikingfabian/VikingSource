@@ -1,9 +1,5 @@
 ﻿Change log:
-* Fixed init faction entity crash
-* Added work queue overview
-* Cities start with 20 linen
-* Removed raw food cost from non-food farms
-
+* 
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
