@@ -30,6 +30,11 @@ namespace VikingEngine.DSSWars.GameObject
         bool starving = false;
         static List<int> idleWorkers = new List<int>(64);
 
+
+        public int WorkerStats_IdleCount = 0;
+        public int WorkerStats_WorkQueueLength => workQue.Count;
+        public int WorkerStats_TotalUnits => workerStatuses.Count;
+
         public bool mintOnFullStockProperty(object tag, bool set, bool value)
         {
             WorkPriorityType work = (WorkPriorityType)tag;
@@ -248,7 +253,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         workQue.Sort((a, b) => a.priority.CompareTo(b.priority));
                     }
-
+                    //WorkerStats_WorkQueueLength = workQue.Count;
                     previousWorkQueUpdate.setNow();
                 }
 
@@ -291,6 +296,8 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
                 }
+
+                WorkerStats_IdleCount = idleWorkers.Count;
 
                 int distanceValue;
                 int experienceValue;

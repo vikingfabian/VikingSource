@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars
                 cityResouces[startIndex + CityResoureIndex.food] = new GroupedResource { amount = 200, goalBuffer = 500 };
                 cityResouces[startIndex + CityResoureIndex.beer] = new GroupedResource { amount = 0, goalBuffer = 200 };
                 cityResouces[startIndex + CityResoureIndex.coolingfluid] = new GroupedResource { amount = 0, goalBuffer = 200 };
-                cityResouces[startIndex + CityResoureIndex.skinLinnen] = new GroupedResource { goalBuffer = DefaultBuffer_SkinLinnen };
+                cityResouces[startIndex + CityResoureIndex.skinLinnen] = new GroupedResource { amount = 20, goalBuffer = DefaultBuffer_SkinLinnen };
 
                 // Ores
                 cityResouces[startIndex + CityResoureIndex.ironore] = new GroupedResource { goalBuffer = 100 };

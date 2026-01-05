@@ -27,13 +27,13 @@ namespace VikingEngine.DSSWars
 
         public void factionComponentsAdd(Faction faction)
         {
-            initFaction(faction);
-
             if (factions.Array.Length * CityResoureIndex.COUNT >= factionResourceOverviews.Length)
             {
                 int startIndex = factionResourceOverviews.Length;
                 Array.Resize(ref factionResourceOverviews, factionResourceOverviews.Length * 2);
             }
+
+            initFaction(faction);            
         }
 
         void initFaction(Faction faction)

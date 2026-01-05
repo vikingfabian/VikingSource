@@ -647,15 +647,17 @@ namespace VikingEngine.DSSWars.Map
 
         public bool MayAutoBuildHere(City city, IntVector2 subTilePos)
         {
-            switch (DssRef.world.subTileGrid.Get(subTilePos).mainTerrain)
+            if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subtile))
             {
-                case TerrainMainType.Destroyed:
-                case TerrainMainType.DefaultLand:
-                    var tile = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos));
-                    return tile.MayBuild() && tile.CityIndex == city.myIndex;
-                    
-            }
+                switch (subtile.mainTerrain)
+                {
+                    case TerrainMainType.Destroyed:
+                    case TerrainMainType.DefaultLand:
+                        var tile = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos));
+                        return tile.MayBuild() && tile.CityIndex == city.myIndex;
 
+                }
+            }
             return false;
         }
 
