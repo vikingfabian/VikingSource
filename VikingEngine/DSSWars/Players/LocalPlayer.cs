@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Delivery;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameState;
@@ -89,6 +90,7 @@ namespace VikingEngine.DSSWars.Players
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy, goldDeliveryCopy;
         public BarracksStatus soldierConscriptCopy, archerConscriptCopy, warmachineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;
         public SchoolStatus schoolCopy;
+        public GroupedResource[] stockPileCopy = new GroupedResource[CityResoureIndex.COUNT];
 
         public PlayerControls.Tutorial tutorial = null;
         CityBorders cityBorders = new CityBorders();

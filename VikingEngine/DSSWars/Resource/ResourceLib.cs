@@ -25,7 +25,20 @@ namespace VikingEngine.DSSWars.Resource
     }
 
     static class ResourceLib
-    {        
+    {
+
+        public static ItemResourceType[] ResourceGroupList(ResourceGroupType group)
+        {
+            switch (group)
+            {
+                default: return City.MovableCityResource_Misc;
+                case ResourceGroupType.Metals: return City.MovableCityResource_Metals;
+                //case ResourceGroupType.Animals: return City.MovableCityResource_Animals;
+                case ResourceGroupType.Weapons: return City.MovableCityResource_WeaponMelee;
+                case ResourceGroupType.Projectile: return City.MovableCityResource_WeaponRanged;
+                case ResourceGroupType.Armor: return City.MovableCityResource_Armor;
+            }
+        }
 
         public static void FullResourceInfo(RichBoxContent content, object tag)
         {
@@ -373,5 +386,27 @@ namespace VikingEngine.DSSWars.Resource
         Item,
         MercenaryOnMarket,
         NUM
+    }
+
+
+    enum ResourceGroupType
+    {
+        Resources,
+        Metals,
+        Weapons,
+        Projectile,
+        Armor,
+        //Animals,
+        Mint,
+        NUM,
+        Auto,
+    }
+
+    enum ResourceManagementType
+    {
+        Overview,
+        Work,
+        Stockpile,
+        Auto,
     }
 }

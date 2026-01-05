@@ -58,5 +58,39 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public void copyStockPile(City city, bool toCity, ResourceGroupType resourceGroup)
+        {
+            if (city.TryGetFaction(out var faction))
+            {
+                if (resourceGroup == ResourceGroupType.NUM)
+                {
+                    for (int i = 0; i < CityResoureIndex.COUNT; i++)
+                    {
+                        copy(i);
+                    }
+                }
+                else
+                {
+                    ItemResourceType[] items = Resource.ResourceLib.ResourceGroupList(resourceGroup);
+                    foreach (ItemResourceType item in items)
+                    {
+                        copy(ItemPropertyColl.Get(item).cityResourceIndex);
+                    }
+                }
+                
+                void copy(int cityResourceIndex)
+                {
+                    if (toCity)
+                    {
+                        cityResouces[city.resourceComponentStartIndex + cityResourceIndex].goalBuffer = factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].goalBuffer;
+                    }
+                    else
+                    {
+                        factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].goalBuffer = cityResouces[city.resourceComponentStartIndex + cityResourceIndex].goalBuffer;
+                    }
+                }
+            }
+        }
+
     }
 }
