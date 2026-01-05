@@ -802,6 +802,7 @@ namespace VikingEngine.DSSWars.Players
                     //{
                     //    gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);
                     //}
+                    debugKillCityLess();
                 }
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
@@ -864,7 +865,22 @@ namespace VikingEngine.DSSWars.Players
             return null;
         }
 
-       
+        void debugKillCityLess()
+        {
+            var factionsC = DssRef.world.factions.counter();
+            while (factionsC.Next())
+            {
+                if (factionsC.sel.cities.Count == 0)
+                {
+                    var armiesC = factionsC.sel.armies.counter();
+                    while (armiesC.Next())
+                    {
+                        armiesC.sel.DeleteMe(DeleteReason.Desert, true);
+                    }
+                    
+                }
+            }
+        }
 
         public void debugMenu(GuiLayout layout)
         {

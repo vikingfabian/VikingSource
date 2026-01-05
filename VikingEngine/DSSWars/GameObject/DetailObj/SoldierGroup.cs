@@ -254,15 +254,13 @@ namespace VikingEngine.DSSWars.GameObject
                         var first = FirstSoldier();
                         if (first != null)
                         {
-                            shipHealth = first.health;
+                            shipHealth = Bound.Min( first.health, 1);
                         }
                     }
                     deleteAllSoldiers(DeleteReason.CameraCulling);
                 }
             }
         }
-
-        
 
         public void writeNet(System.IO.BinaryWriter w)
         {
@@ -332,7 +330,12 @@ namespace VikingEngine.DSSWars.GameObject
             rotation.ByteDir = r.ReadByte();
 
             soldierCount = r.ReadByte();
-            shipHealth = r.ReadInt32();
+            shipHealth = Bound.Min( r.ReadInt32(), 1);
+
+            //if (shipHealth == 0)
+            //{
+            //    lib.DoNothing();
+            //}
 
             if (needInit)
             {
@@ -543,7 +546,7 @@ namespace VikingEngine.DSSWars.GameObject
                     else
                     {
                         //int count = (int)Math.Ceiling(totalHealth / (double)soldierData.basehealth);
-                        shipHealth = totalHealth;
+                        shipHealth = Bound.Min( totalHealth, 1);
                         createAllSoldiers(currentBuilder, soldierCount, true);
                     }
 
@@ -856,7 +859,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (debugTagged)
             {
-                lib.DoNothing();
+                 lib.DoNothing();
             }
 
             if (inShipOrGuardTransform)

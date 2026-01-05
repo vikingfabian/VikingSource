@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars
         public static int LargeCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 7);
         public static int HeadCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 10);
 
-        public static float WaterAdd_Average = 3.0f;
+        public static float WaterAdd_Average = 2.8f;
         public static float WaterAdd_SmallCity = 0.8f * WaterAdd_Average;
         public static float WaterAdd_LargeCity = 0.9f * WaterAdd_Average;
         public static float WaterAdd_HeadCity = 1f * WaterAdd_Average;

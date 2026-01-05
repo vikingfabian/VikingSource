@@ -13,9 +13,7 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
-        public string Hud_Purchase_AllBuildings => "Queue all buildings";
-        public string Hud_Purchase_AllTech => "Queue all tech";
-        public string BuildingType_CasualBarracks_Description => "Soldier recruitment time is divided among the barracks";
+        
         public string BuildingType_Orchard => "Orchard";
         public string BuildingType_ManorLord => "Manor lord";
         public string BuildingType_ManorLord_Description => "Unlock food processing";
