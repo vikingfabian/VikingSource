@@ -216,7 +216,7 @@ namespace VikingEngine.DSSWars
                 content.Add(subTab);
             }
 
-            new StockPileMenu(content, null, this).toHud(player.resourcesSubTab);
+            new StockPileMenu(content, null, this).toHud(player, player.resourcesSubTab);
             //ItemResourceType[] items = null;
 
             //switch (player.resourcesSubTab)

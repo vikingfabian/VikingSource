@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.Players
         public DeliveryStatus menDeliveryCopy, itemDeliveryCopy, goldDeliveryCopy;
         public BarracksStatus soldierConscriptCopy, archerConscriptCopy, warmachineConscriptCopy, knightConscriptCopy, gunConscriptCopy, cannonConscriptCopy;
         public SchoolStatus schoolCopy;
-        public GroupedResource[] stockPileCopy = new GroupedResource[CityResoureIndex.COUNT];
+        public GroupedResource[] stockPileCopy = null;//= new GroupedResource[CityResoureIndex.COUNT];
 
         public PlayerControls.Tutorial tutorial = null;
         CityBorders cityBorders = new CityBorders();
@@ -358,6 +358,8 @@ namespace VikingEngine.DSSWars.Players
             tooPeacefulCheckTimer.write(w);
             //gameControls.build.buildPriority.writeGameState(w, false);
 
+            DssRef.world.writeStockPile(w, faction);
+
             Debug.WriteCheck(w);
         }
 
@@ -472,11 +474,17 @@ namespace VikingEngine.DSSWars.Players
             {
                 tooPeacefulCheckTimer.read(r);
             }
-                //if (subversion >= 70)
-                //{
-                //    gameControls.build.buildPriority.readGameState(r, subversion, false);
-                //}
-                Debug.ReadCheck(r);
+
+
+            if (subversion >= 102)
+            {
+                DssRef.world.readStockPile(r, subversion, faction);
+            }
+            //if (subversion >= 70)
+            //{
+            //    gameControls.build.buildPriority.readGameState(r, subversion, false);
+            //}
+            Debug.ReadCheck(r);
         }
 
         public void InitTutorial(bool newGame)
@@ -792,10 +800,10 @@ namespace VikingEngine.DSSWars.Players
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.TestNextEvent();
                     //hud.objMenu.diplomacy?.makeServant();
-                    //if (gameControls.map.hover.obj is City)
-                    //{ 
-                    //    gameControls.map.hover.obj.GetCity().setFaction(faction, false, false);
-                    //}
+                    if (gameControls.map.hover.obj is City)
+                    {
+                        gameControls.map.hover.obj.GetCity().setFaction(faction, false, false);
+                    }
                     //if (gameControls.map.hover.obj is Army)
                     //{
                     //    gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars
@@ -58,10 +60,36 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void copyStockPile(City city, bool toCity, ResourceGroupType resourceGroup)
+        public void writeStockPile(BinaryWriter w, Faction faction)
         {
-            if (city.TryGetFaction(out var faction))
+            for (int i = 0; i < CityResoureIndex.COUNT; i++)
             {
+                factionResourceOverviews[faction.resourceComponentStartIndex + i].writeStockPile(w);
+            }
+        }
+        public void readStockPile(BinaryReader r, int subVersion, Faction faction)
+        {
+            for (int i = 0; i < CityResoureIndex.COUNT; i++)
+            {
+                factionResourceOverviews[faction.resourceComponentStartIndex + i].readStockPile(r, subVersion);
+            }
+        }
+
+        public void copyStockPile(LocalPlayer player, Faction faction, City city, CopyPasteOption copyPaste, ResourceGroupType resourceGroup)
+        {
+            if (faction != null)
+            {
+                if (copyPaste == CopyPasteOption.ToAllCities)
+                {
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City _city))
+                    {
+                        copyStockPile(player, faction, _city, CopyPasteOption.FactionToCity, resourceGroup);
+                    }
+                    return;
+                }
+
+
                 if (resourceGroup == ResourceGroupType.NUM)
                 {
                     for (int i = 0; i < CityResoureIndex.COUNT; i++)
@@ -80,17 +108,70 @@ namespace VikingEngine.DSSWars
                 
                 void copy(int cityResourceIndex)
                 {
-                    if (toCity)
+                    switch (copyPaste)
                     {
-                        cityResouces[city.resourceComponentStartIndex + cityResourceIndex].goalBuffer = factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].goalBuffer;
+                        case CopyPasteOption.FactionToCity:
+                            cityResouces[city.resourceComponentStartIndex + cityResourceIndex].goalBuffer = factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].goalBuffer;
+                            break;
+                        case CopyPasteOption.CityToFaction:
+                            factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].goalBuffer = cityResouces[city.resourceComponentStartIndex + cityResourceIndex].goalBuffer;
+                            break;
+
+                            //if (toCity)
+                            //{
+                            //    cityResouces[city.resourceComponentStartIndex + cityResourceIndex].goalBuffer = factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].goalBuffer;
+                            //}
+                            //else
+                            //{
+                            //    factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].goalBuffer = cityResouces[city.resourceComponentStartIndex + cityResourceIndex].goalBuffer;
+                            //}
+                            //break;
+
+                        case CopyPasteOption.ToMemory:
+                            if (player.stockPileCopy == null)
+                            {
+                                player.stockPileCopy = new GroupedResource[CityResoureIndex.COUNT];
+                            }
+
+                            if (city == null)
+                            {
+                                player.stockPileCopy[cityResourceIndex].goalBuffer = factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].goalBuffer;
+                            }
+                            else
+                            {
+                                player.stockPileCopy[cityResourceIndex].goalBuffer = cityResouces[city.resourceComponentStartIndex + cityResourceIndex].goalBuffer;
+                            }
+                            break;
+
+                        case CopyPasteOption.FromMemory:
+                            if (player.stockPileCopy != null)
+                            {
+                                if (city == null)
+                                {
+                                    factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].goalBuffer= player.stockPileCopy[cityResourceIndex].goalBuffer;
+                                }
+                                else
+                                {
+                                    cityResouces[city.resourceComponentStartIndex + cityResourceIndex].goalBuffer= player.stockPileCopy[cityResourceIndex].goalBuffer;
+                                }
+                            }
+                            break;
+
                     }
-                    else
-                    {
-                        factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].goalBuffer = cityResouces[city.resourceComponentStartIndex + cityResourceIndex].goalBuffer;
-                    }
+
                 }
             }
         }
 
+    }
+
+    enum CopyPasteOption
+    { 
+        None,
+        ToMemory,
+        FromMemory,
+        FactionToCity,
+        CityToFaction,
+        ToAllCities,
     }
 }

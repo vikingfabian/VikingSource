@@ -65,6 +65,15 @@ namespace VikingEngine.DSSWars.EntityComponent
             goalBuffer = r.ReadUInt16();
         }
 
+        public void writeStockPile(System.IO.BinaryWriter w)
+        {
+            w.Write((ushort)goalBuffer);
+        }
+        public void readStockPile(System.IO.BinaryReader r, int subversion)
+        {
+            goalBuffer = r.ReadUInt16();
+        }
+
         public bool needMore()
         {
             return amount < goalBuffer;

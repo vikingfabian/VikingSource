@@ -1990,7 +1990,7 @@ namespace VikingEngine.DSSWars.Interface
                 case ResourcesSubTab.Stockpile_Projectile:
                 case ResourcesSubTab.Stockpile_Armor:
                     content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-                    new StockPileMenu(content, city, null).toHud(player.resourcesSubTab);
+                    new StockPileMenu(content, city, city.GetFaction()).toHud(player, player.resourcesSubTab);
                     break;
                 //case ResourcesSubTab.Stockpile_Resources:
                 //    content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
