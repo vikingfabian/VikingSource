@@ -2,7 +2,7 @@
 Change Log: 
 * Reduced average city water from 3.6 to 2.8
 * Fixed the no pause option
-
+* Immortal units have health again (temporary fix)
 
 
 #Event timers (are slightly random)#

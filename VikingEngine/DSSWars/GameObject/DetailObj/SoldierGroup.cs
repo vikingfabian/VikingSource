@@ -254,15 +254,13 @@ namespace VikingEngine.DSSWars.GameObject
                         var first = FirstSoldier();
                         if (first != null)
                         {
-                            shipHealth = first.health;
+                            shipHealth = Bound.Min( first.health, 1);
                         }
                     }
                     deleteAllSoldiers(DeleteReason.CameraCulling);
                 }
             }
         }
-
-        
 
         public void writeNet(System.IO.BinaryWriter w)
         {
@@ -548,7 +546,7 @@ namespace VikingEngine.DSSWars.GameObject
                     else
                     {
                         //int count = (int)Math.Ceiling(totalHealth / (double)soldierData.basehealth);
-                        shipHealth = totalHealth;
+                        shipHealth = Bound.Min( totalHealth, 1);
                         createAllSoldiers(currentBuilder, soldierCount, true);
                     }
 
