@@ -93,6 +93,15 @@ namespace VikingEngine.DSSWars.EntityComponent
             //capacity = r.ReadUInt16();
         }
 
+        public void writeStockPile(System.IO.BinaryWriter w)
+        {
+            w.Write((ushort)stockPileLimit);
+        }
+        public void readStockPile(System.IO.BinaryReader r, int subversion)
+        {
+            stockPileLimit = r.ReadUInt16();
+        }
+
         public bool needMore()
         {
             return amount < stockPileLimit;
@@ -115,13 +124,15 @@ namespace VikingEngine.DSSWars.EntityComponent
 
         public bool canTradeAway()
         {
-            return amount >= stockPileLimit;
+            return amount >= 30 && amount >= stockPileLimit;
         }
 
         public int amountPlusDelivery()
         {
             return amount + deliverCount;
         }
+
+        
 
         public void add(ItemResource item, int multiply = 1)
         {

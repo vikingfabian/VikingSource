@@ -474,47 +474,51 @@ namespace VikingEngine.DSSWars.Map
 
         public void collectOpponentGroups(int faction, IntVector2 tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities)
         {
-            groups_nearUpdate.Clear();
-            cities_nearUpdate.Clear();
-
-            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
-            UnitCollArea area;
-
-            for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
+            lock (groups_nearUpdate)
             {
-                for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
-                {
-                    if (grid.TryGet(x, y, out area))
-                    {
-                        lock (area.groups)
-                        {                              
-                            foreach (var m in area.groups)
-                            {
-                                if (DssRef.diplomacy.GetRelation_Safe(faction, m.factionIndex).InWar())
-                                {
-                                    groups_nearUpdate.Add(m);
-                                }
-                            }                            
-                        }
+                groups_nearUpdate.Clear();
+                cities_nearUpdate.Clear();
 
-                        for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
+                IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+                UnitCollArea area;
+
+                for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
+                {
+                    for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
+                    {
+                        if (grid.TryGet(x, y, out area))
                         {
-                            var city = DssRef.world.cities[area.cities[i]];
-                            if (DssRef.diplomacy.GetRelation_Safe(faction, city.factionIndex).InWar())
+                            lock (area.groups)
                             {
-                                var groupsC = city.groups.counter();
-                                while (groupsC.Next())
+                                //if (DssRef.diplomacy.GetRelation_Safe(faction, m.factionIndex).InWar())
+                                foreach (var m in area.groups)
                                 {
-                                    groups_nearUpdate.Add(groupsC.sel);
+                                    if ( DssRef.diplomacy.GetRelation_Safe(faction, m.factionIndex).InWar())
+                                    {
+                                        groups_nearUpdate.Add(m);
+                                    }
+                                }
+                            }
+
+                            for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
+                            {
+                                var city = DssRef.world.cities[area.cities[i]];
+                                if (DssRef.diplomacy.GetRelation_Safe(faction, city.factionIndex).InWar())
+                                {
+                                    var groupsC = city.groups.counter();
+                                    while (groupsC.Next())
+                                    {
+                                        groups_nearUpdate.Add(groupsC.sel);
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                groups = groups_nearUpdate;
+                cities = cities_nearUpdate;
+                
             }
-
-            groups = groups_nearUpdate;
-            cities = cities_nearUpdate;
         }
 
         //public List<GameObject.AbsGroup> collectOpponents(int faction, IntVector2 tilePos)

@@ -139,7 +139,7 @@ namespace VikingEngine.DSSWars
         public static int LargeCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 7);
         public static int HeadCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 10);
 
-        public static float WaterAdd_Average = 3.6f;
+        public static float WaterAdd_Average = 2.8f;
         public static float WaterAdd_SmallCity = 0.8f * WaterAdd_Average;
         public static float WaterAdd_LargeCity = 0.9f * WaterAdd_Average;
         public static float WaterAdd_HeadCity = 1f * WaterAdd_Average;
@@ -227,6 +227,7 @@ namespace VikingEngine.DSSWars
         public static float WorkTime_GatherFoil_TreeSoft = 12;
         public static float WorkTime_GatherFoil_TreeHard = 15;
         public static float WorkTime_GatherFoil_DryWood = 6;
+        public static float WorkTime_PluckOrchards = 40;
         public static float WorkTime_GatherFoil_FarmCulture = 22;
         public static float WorkTime_GatherFoil_Stones = 7;
         //public static float WorkTime_Till = 34;
@@ -255,6 +256,7 @@ namespace VikingEngine.DSSWars
         public static int Worker_MaxEnergy = 500;
         public static int Worker_Starvation = -Worker_MaxEnergy;
 
+        public static int OrchidFoodAmount = 15;
         public static int WheatFoodAmount = 30;
         public static int PenBreedingStockCount = 8;
         //public static int AnimalFoodAmount = 60;
@@ -274,6 +276,7 @@ namespace VikingEngine.DSSWars
         public static float WorkTeamEnergyCost_WhenIdle = WorkTeamEnergyCost * 0.5f;
         public static int FoodEnergy = 100;
         public static int PlantWaterCost = 1;
+        public static int OrchardWaterCost = 5;
 
         public static float CasualSoldierDefaultCost_Copp = 4f * TaxPerWorker_copp / SoldierGroup_DefaultCount;
         //public static int PlantFoodCost = 6;

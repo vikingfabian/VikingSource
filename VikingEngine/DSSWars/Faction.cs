@@ -668,11 +668,12 @@ namespace VikingEngine.DSSWars
             }
 
             if (player != null && player.IsLocalPlayer())
-            {
-                player.orders.refreshAvailable(this);
+            {  
 
                 Ref.update.AddSyncAction(new SyncAction(() =>
                 {
+                    player.orders.refreshAvailable(this);
+
                     RichBoxContent content = new RichBoxContent();
                     var localplayer = player.GetLocalPlayer();
                     if (localplayer.battleMessageCheck(city.tilePos))
@@ -959,45 +960,52 @@ namespace VikingEngine.DSSWars
         //    }
         //}
 
-        public void tradeAllianceWars(Faction otherFaction)
+        public void tradeAllianceWars(Faction enemyFaction, DiplomaticRelation warRelation)
         {
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
                         //foreach (var m in otherFaction.diplomaticRelations)
+                        //foreach (var m in otherFaction.diplomaticRelations)
                         //{
                         //    if (m != null)
                         //    {
-                        RelationsLoop loop = new RelationsLoop(otherFaction.myIndex);
+                        RelationsLoop loop = new RelationsLoop(myIndex);
                         while (loop.Next())
+                        //foreach (var m in diplomaticRelations)
                         {
-                            if (loop.Relation().InWar())//m.Relation <= RelationType.RelationTypeN3_War)
+                            var m = loop.Relation();
+                            //if (m != null)
                             {
-                                if (loop.OtherFaction(out var thirdFaction))//m.opponent(otherFaction);
+                                if (m.Relation >= RelationType.RelationType3_Ally)
                                 {
-                                    var thisAndThirdRelation = DssRef.diplomacy.GetRelation_Safe(myIndex, thirdFaction.myIndex);//diplomaticRelations[thirdFaction.myIndex];
-                                    //if (thisAndThirdRelation == null)
-                                    //{
-                                    //    //Gain bad relation
-                                    //    DssRef.diplomacy.SetRelationType(this, thirdFaction, m.Relation);
-                                    //}
-                                    //else
-                                    //{
-                                        if (thisAndThirdRelation.Relation < RelationType.RelationType3_Ally)
+                                    if (loop.OtherFaction(out var ally))
+                                    {
+                                        var allyToEnemyRelation = DssRef.diplomacy.GetRelation(ally, enemyFaction);//ally.diplomaticRelations[enemyFaction.myIndex];
+                                                                                                                   //if (allyToEnemyRelation == null)
+                                                                                                                   //{
+                                                                                                                   //    //Gain bad relation
+                                                                                                                   //    DssRef.diplomacy.SetRelationType(ally, enemyFaction, warRelation.Relation);
+                                                                                                                   //}
+                                                                                                                   //else
+                                                                                                                   //{
+                                        if (allyToEnemyRelation.Relation < RelationType.RelationType3_Ally)
                                         {
                                             //share worst relation
-                                            RelationType worst = (RelationType)Math.Min((int)loop.Relation().Relation, (int)thisAndThirdRelation.Relation);
+                                            RelationType worst = (RelationType)Math.Min((int)warRelation.Relation, (int)allyToEnemyRelation.Relation);
                                             if (worst <= RelationType.RelationTypeN3_War)
                                             {
-                                                DssRef.diplomacy.declareWar(this, thirdFaction);
+                                                DssRef.diplomacy.declareWar(enemyFaction, ally);
                                             }
                                             else
                                             {
-                                                DssRef.diplomacy.SetRelationType(this, thirdFaction, worst);
+                                                DssRef.diplomacy.SetRelationType(enemyFaction, ally, worst);
                                             }
                                         }
-                                    //}
+                                        //}
+                                        //}
+                                    }
                                 }
                             }
                         }

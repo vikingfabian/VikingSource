@@ -71,6 +71,8 @@ namespace VikingEngine.DSSWars.Work
                                 gainXp = WorkExperienceType.WoodWork;
                                 break;
 
+                            case TerrainSubFoilType.TreeApple:
+                            case TerrainSubFoilType.TreeBanana:
                             case TerrainSubFoilType.WheatFarm:
                             case TerrainSubFoilType.LinenFarm:
                             case TerrainSubFoilType.RapeSeedFarm:

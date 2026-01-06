@@ -186,8 +186,21 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-        new UseResource(ItemResourceType.Wood_Group, 300),
-        new UseResource(ItemResourceType.Stone_G, 60)
+            new UseResource(ItemResourceType.Wood_Group, 300),
+            new UseResource(ItemResourceType.Stone_G, 60)
+           },
+           XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
+       );
+
+        public static readonly CraftBlueprint ManorLord = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.ManorLord,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Wood_Group, 60),
+                new UseResource(ItemResourceType.Stone_G, 60),
+                new UseResource(ItemResourceType.Iron_G, 10)
            },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
        );
@@ -741,7 +754,11 @@ namespace VikingEngine.DSSWars.Build
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.LinenFarm,
             1,
-            FarmResources, XP.WorkExperienceType.Farm
+            [
+                new UseResource(ItemResourceType.SkinLinen_Group, 4),
+                new UseResource(ItemResourceType.Water_G, 2)
+            ], 
+             XP.WorkExperienceType.Farm
         );
 
         public static readonly CraftBlueprint LinenFarmUpgrade = new CraftBlueprint(
@@ -756,7 +773,11 @@ namespace VikingEngine.DSSWars.Build
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.HempFarm,
             1,
-            FarmResources, XP.WorkExperienceType.Farm
+            [
+                new UseResource(ItemResourceType.SkinLinen_Group, 2),
+                new UseResource(ItemResourceType.Fuel_G, 2),
+                new UseResource(ItemResourceType.Water_G, 2)
+            ], XP.WorkExperienceType.Farm
         );
 
         public static readonly CraftBlueprint HempFarmUpgrade = new CraftBlueprint(
@@ -771,7 +792,8 @@ namespace VikingEngine.DSSWars.Build
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.RapeSeedFarm,
             1,
-            FarmResources, XP.WorkExperienceType.Farm
+            [new UseResource(ItemResourceType.Fuel_G, 4), new UseResource(ItemResourceType.Water_G, 2)],
+            XP.WorkExperienceType.Farm
         );
         public static readonly CraftBlueprint RapeseedFarmUpgrade = new CraftBlueprint(
             CraftResultType.Building,
@@ -788,8 +810,7 @@ namespace VikingEngine.DSSWars.Build
             1,
             new UseResource[] 
             {
-                new UseResource(ItemResourceType.RawFood_Group, 1),
-                new UseResource(ItemResourceType.Wood_Group, 1),
+                new UseResource(ItemResourceType.Wood_Group, 2),
                 new UseResource(ItemResourceType.Water_G, 20),
             }, XP.WorkExperienceType.Farm
         );
@@ -800,12 +821,20 @@ namespace VikingEngine.DSSWars.Build
             1,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.RawFood_Group, 1),
-                new UseResource(ItemResourceType.Wood_Group, 1),
+                new UseResource(ItemResourceType.Wood_Group, 2),
                 new UseResource(ItemResourceType.Water_G, 50),
             }, XP.WorkExperienceType.Farm
         );
-
+        public static readonly CraftBlueprint Orchid = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.OrchidApple,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Food_G, 4),
+                new UseResource(ItemResourceType.Water_G, 20),
+            }, XP.WorkExperienceType.Farm
+        );
 
         public static readonly CraftBlueprint Smith = new CraftBlueprint(
             CraftResultType.Building,

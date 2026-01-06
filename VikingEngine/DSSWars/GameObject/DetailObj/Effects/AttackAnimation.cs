@@ -45,27 +45,30 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected int startMultiAttack(bool fullUpdate, AbsDetailUnit target, bool mainAttack, int attackCount, bool local)
         {
-            int hitCount=0;
+            int hitCount = 0;
 
-            if (attackTarget.IsSingleTarget())
+            if (target != null)
             {
-                for (int i = 0; i < attackCount; i++)
+                if (target.IsSingleTarget())
                 {
-                    startAttack(fullUpdate, target, mainAttack, local);
-                }
-
-                hitCount = attackCount;
-            }
-            else
-            {
-                attackCount += 1;
-                for (int i = 0; i < attackCount; i++)
-                {
-                    var groupTarget = target.group.soldiers.GetRandomUnsafe(Ref.peRnd);
-                    if (groupTarget != null)
+                    for (int i = 0; i < attackCount; i++)
                     {
-                        startAttack(fullUpdate, groupTarget, mainAttack, local);
-                        ++hitCount;
+                        startAttack(fullUpdate, target, mainAttack, local);
+                    }
+
+                    hitCount = attackCount;
+                }
+                else
+                {
+                    attackCount += 1;
+                    for (int i = 0; i < attackCount; i++)
+                    {
+                        var groupTarget = target.group.soldiers?.GetRandomUnsafe(Ref.peRnd);
+                        if (groupTarget != null)
+                        {
+                            startAttack(fullUpdate, groupTarget, mainAttack, local);
+                            ++hitCount;
+                        }
                     }
                 }
             }
@@ -77,6 +80,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (target != null)
             {
+                //if (target.GetAbsArmy().debugTagged)
+                //{
+                //    lib.DoNothing();
+                //}
                 attackCooldownTime.MilliSeconds = soldierData.attackTimePlusCoolDown;
                 prevAttackTime = attackCooldownTime.MilliSeconds;
                 attackFrameTime.MilliSeconds = Profile().attackFrameTime;

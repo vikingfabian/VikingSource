@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Text;
+﻿
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -24,17 +24,8 @@ using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.Input;
-using VikingEngine.LootFest;
-using VikingEngine.LootFest.GO.Gadgets;
-using VikingEngine.LootFest.Map;
-using VikingEngine.PJ.MiniGolf;
-using VikingEngine.ToGG;
-using VikingEngine.ToGG.MoonFall;
-using VikingEngine.ToGG.ToggEngine.Map;
-using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.EntityComponent;
-using Microsoft.CodeAnalysis;
+using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -93,7 +84,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         Intvector2MinMax workerCullingMinMax, guardCullingMinMax;
         //IntVector2 cullingTopLeft, cullingBottomRight;
-        public int cityTileRadius = 0;
+        //public int cityTileRadius = 0;
+        public Rectangle2 cityTileArea;
         public CityCulture Culture = CityCulture.NUM_NONE;
         public CityBiom Biom = CityBiom.None;
 
@@ -410,7 +402,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             w.Write(Debug.Byte_OrCrash((int)cityType));
             w.Write(Debug.Ushort_OrCrash(areaSize));
-            w.Write(Debug.Byte_OrCrash(cityTileRadius));
+            //w.Write(Debug.Byte_OrCrash(cityTileRadius));
+            cityTileArea.pos.writeUshort(w);
+            cityTileArea.size.writeByte(w);
+
+
             w.Write(Debug.Byte_OrCrash(workHutStyle));
 
             w.Write(Debug.Byte_OrCrash(neighborCitiesCount));
@@ -436,8 +432,18 @@ namespace VikingEngine.DSSWars.GameObject
             }
             
             areaSize = r.ReadUInt16();
-            cityTileRadius = r.ReadByte();
-            
+
+            if (saveMapVersion < 10)
+            {
+                int cityTileRadius = r.ReadByte();
+                cityTileArea = Rectangle2.FromCenterTileAndRadius(tilePos, cityTileRadius);
+            }
+            else
+            {
+                cityTileArea.pos.readUshort(r);
+                cityTileArea.size.readByte(r);
+            }
+
             workHutStyle = r.ReadByte();
 
             neighborCitiesCount = 0;
@@ -1319,7 +1325,7 @@ namespace VikingEngine.DSSWars.GameObject
                                             ++totalWorkerHutAndLevelCount;
 
                                             //Place farm curlutures
-                                            const int CulturesPerFarm = 8;
+                                            const int CulturesPerFarm = 12;
                                             int cultureCount = 0;
 
                                             ForXYEdgeLoop farmLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(subPos, 1));
@@ -1333,26 +1339,46 @@ namespace VikingEngine.DSSWars.GameObject
                                                     TerrainMainType terrain;
                                                     int sub;
                                                     int maxAmount;
-                                                    if (Ref.peRnd.Chance(0.75))
-                                                    {
-                                                        terrain = TerrainMainType.Foil;
-                                                        sub = (int)TerrainSubFoilType.WheatFarm;
-                                                        maxAmount = TerrainContent.FarmCulture_MaxSize;
-                                                    }
-                                                    else
-                                                    {
-                                                        terrain = TerrainMainType.Building;
-                                                        //if (Ref.peRnd.Chance(0.4))
-                                                        //{
-                                                        //    sub = (int)TerrainBuildingType.PigPen;
-                                                        //    maxAmount = TerrainContent.PigMaxSize;
-                                                        //}
-                                                        //else
-                                                        //{
-                                                            sub = (int)TerrainBuildingType.HenPen;
-                                                            maxAmount = TerrainContent.HenGrowth.maxSize;
-                                                        //}
-                                                    }
+                                                    //if (Ref.peRnd.Chance(0.75))
+                                                    //{
+                                                    //    terrain = TerrainMainType.Foil;
+                                                    //    sub = (int)TerrainSubFoilType.WheatFarm;
+                                                    //    maxAmount = TerrainContent.FarmCulture_MaxSize;
+                                                    //}
+                                                    //else
+                                                    //{
+                                                    //    terrain = TerrainMainType.Building;
+                                                    //    //if (Ref.peRnd.Chance(0.4))
+                                                    //    //{
+                                                    //    //    sub = (int)TerrainBuildingType.PigPen;
+                                                    //    //    maxAmount = TerrainContent.PigMaxSize;
+                                                    //    //}
+                                                    //    //else
+                                                    //    //{
+                                                    //        sub = (int)TerrainBuildingType.HenPen;
+                                                    //        maxAmount = TerrainContent.HenGrowth.maxSize;
+                                                    //    //}
+                                                    //}
+                                                    terrain = TerrainMainType.Foil;
+                                                    sub = (int)TerrainSubFoilType.TreeApple;
+                                                    maxAmount = TerrainContent.OrchardReady;
+                                                        //sub = (int)TerrainSubFoilType.WheatFarm;
+                                                        //maxAmount = TerrainContent.FarmCulture_MaxSize;
+                                                    //}
+                                                    //else
+                                                    //{
+                                                    //    terrain = TerrainMainType.Building;
+                                                    //    if (Ref.peRnd.Chance(0.4))
+                                                    //    {
+                                                    //        sub = (int)TerrainBuildingType.PigPen;
+                                                    //        maxAmount = TerrainContent.PigMaxSize;
+                                                    //    }
+                                                    //    else
+                                                    //    {
+                                                    //        sub = (int)TerrainBuildingType.HenPen;
+                                                    //        maxAmount = TerrainContent.HenMaxSize;
+                                                    //    }
+                                                    //}
 
                                                     if (Build.BuildLib.TryAutoBuild(farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))
                                                     {
@@ -1412,16 +1438,16 @@ namespace VikingEngine.DSSWars.GameObject
             return (int)Math.Floor(workers / (double)DssConst.HousingCount_WorkerHut);
         }
 
-        public void onWorkHutBuild(bool build_notDestroy, bool large)
+        public void onWorkHutBuild(bool build_notDestroy, int size)
         {
-            int count = large ? DssConst.HousingCount_WorkerHutLarge : DssConst.HousingCount_WorkerHut;
+            //int count = large ? DssConst.HousingCount_WorkerHutLarge : DssConst.HousingCount_WorkerHut;
             if (build_notDestroy)
             {
-                HousingCount_Workers += count;
+                HousingCount_Workers += size;
             }
             else
             {
-                HousingCount_Workers -= count;
+                HousingCount_Workers -= size;
             }
             //refreshCitySize();
         }
@@ -1730,6 +1756,7 @@ namespace VikingEngine.DSSWars.GameObject
                     try
                     {
                         int radius = 3;
+                        Rectangle2 tileArea = new Rectangle2(tilePos, radius);
                         bool foundTile = true;
                         Map.Tile checkTile;
                         while (foundTile)
@@ -1741,12 +1768,13 @@ namespace VikingEngine.DSSWars.GameObject
                                 if (DssRef.world.tileGrid.TryGet(loop.Position, out checkTile) && checkTile.CityIndex == this.myIndex)
                                 {
                                     foundTile = true;
-                                    break;
+                                    tileArea.includeTile(loop.Position);
+                                    //break;
                                 }
                             }
                         }
-
-                        cityTileRadius = radius;
+                        cityTileArea = tileArea;
+                        //cityTileRadius = radius;
                     }
                     catch (Exception ex)
                     {
@@ -2234,10 +2262,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override void asyncNearObjectsUpdate()
         {
             base.asyncNearObjectsUpdate();
-        //} 
-
-        ////public void asynchNearObjectsUpdate()
-        //{
+       
             float armyDefence = 0;
             const int DominanceTileRadius = 4;
 
@@ -2439,8 +2464,6 @@ namespace VikingEngine.DSSWars.GameObject
             pos.Y += 0.1f;
             Vector3 scale;
 
-            //selection.frameModel.Position = position;
-            //selection.frameModel.position.Y += 0.1f;
             switch (cityType)
             {
                 case CityType.UnClaimed:
@@ -2461,38 +2484,19 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             selection.groupModels_terrian.OneFrameModel(pos, scale, hover, true);
-            //frameModel.Scale = new Vector3(1.2f);
-            //frameModel.SetSpriteName(SpriteName.WhiteArea_LFtiles);
-            //selection.frameModel.LoadedMeshType = hover ? LoadedMesh.SelectSquareDotted : LoadedMesh.SelectSquareSolid;
         }
 
-        //public void respawnGuard()
+        //bool spendWorker(int count)
         //{
-        //    if (guardCount < maxGuardSize && 
-        //        guardCount > 0 && //Zero when waiting for domination
-        //        //!InBattle() &&
-        //        spendWorker(1))
-        //    {
-        //        guardCount += 1;
+        //    if (workForce.amount >= count)
+        //    { 
+        //        workForce.amount -= count;
+        //        return true;
         //    }
+
+        //    return false;
         //}
-
-        bool spendWorker(int count)
-        {
-            if (workForce.amount >= count)
-            { 
-                workForce.amount -= count;
-                return true;
-            }
-
-            return false;
-        }
        
-        //public int GetWeekIncome()
-        //{
-        //    return income;
-        //}
-
         public override bool Equals(object obj)
         {
             return obj is City && ((City)obj).myIndex == myIndex;
@@ -3045,6 +3049,29 @@ namespace VikingEngine.DSSWars.GameObject
 
                 }
 
+                {
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.WarsHammerAdd));
+                    content.space();
+                    content.Add(new RbText(".Work queue" + ":"));
+                    content.hspace();
+                    content.Add(new RbText(WorkerStats_WorkQueueLength.ToString()));
+
+                    HudLib.BulletSeperationPoint(content);
+                    content.Add(new RbImage(SpriteName.WarsWorker));
+                    content.hspace();
+                    content.Add(new RbText((WorkerStats_TotalUnits - WorkerStats_IdleCount).ToString()));
+
+                    content.space();
+
+                    content.Add(new RbImage(SpriteName.unitEmoteSnore));
+                    content.hspace();
+                    content.Add(new RbText(WorkerStats_IdleCount.ToString()));
+
+                    content.space();
+                    HudLib.InfoButton(content, new RbTooltip(workQueueInfo));
+                }
+
                 if (!player.profile.casualControls)
                 {
                     cultureToHud(player, content, interactive);
@@ -3064,6 +3091,32 @@ namespace VikingEngine.DSSWars.GameObject
                 
             }
 
+            void workQueueInfo(RichBoxContent content, object tag)
+            {
+                content.h1(".Work queue", HudLib.TitleColor_Label);
+                HudLib.Label(content, "Remaining work objectives");
+                content.hspace();
+                content.Add(new RbText(WorkerStats_WorkQueueLength.ToString()));
+
+                content.newParagraph();
+                
+                HudLib.Label(content, "Active work teams");
+                content.hspace();
+                content.Add(new RbImage(SpriteName.WarsWorker));
+                content.hspace();
+                content.Add(new RbText((WorkerStats_TotalUnits - WorkerStats_IdleCount).ToString()));
+
+                content.newLine();
+                
+                HudLib.Label(content, "Idle work teams");
+                content.hspace();
+                content.Add(new RbImage(SpriteName.unitEmoteSnore));
+                content.hspace();
+                content.Add(new RbText(WorkerStats_IdleCount.ToString()));
+
+                content.newLine();
+                content.text(string.Format("Villagers work in teams of {0}", WorkTeamSize), HudLib.InfoYellow_Light);
+            }
 
 
             void automationToolTip(RichBoxContent content, object tag)
@@ -4047,6 +4100,10 @@ namespace VikingEngine.DSSWars.GameObject
                 tradeTemplate.onFactionValueChange(newFaction.tradeTemplate);
                 technology.addFactionUnlocked(newFaction.technology, true, false);
 
+                if (newFaction.player != null && newFaction.player.IsLocalPlayer())
+                {
+                    DssRef.world.copyStockPile(null, newFaction, this, CopyPasteOption.FactionToCity, ResourceGroupType.NUM);
+                }
                 
             }
         }

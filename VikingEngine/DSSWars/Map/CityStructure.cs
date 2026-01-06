@@ -15,6 +15,7 @@ namespace VikingEngine.DSSWars.Map
     {
         public static readonly CityStructure WorkInstance = new CityStructure();
         public static readonly CityStructure AutomationInstance = new CityStructure();
+        ForXYEdgeLoopRandomPicker edgeRandomizer = new ForXYEdgeLoopRandomPicker();
 
         public List<IntVector2> FoodSpots_workupdate = new List<IntVector2>(4);
         public List<IntVector2> StoragePoints_workupdate = new List<IntVector2>(4);
@@ -28,7 +29,7 @@ namespace VikingEngine.DSSWars.Map
         public List<IntVector2> Mines = new List<IntVector2>(20);
         public List<IntVector2> CraftStation = new List<IntVector2>(20);
         public List<IntVector2> CoinMinting = new List<IntVector2>(2);
-        public List<IntVector2> EmptyLand = new List<IntVector2>(2);
+        //public List<IntVector2> EmptyLand = new List<IntVector2>(2);
         public List<IntVector2> ResourceOnGround = new List<IntVector2>(20);
 
         public List<IntVector2> WoodCutter = new List<IntVector2>(20);
@@ -51,7 +52,8 @@ namespace VikingEngine.DSSWars.Map
             int wood = 4;
             int stone = 2;
 
-            for (int radius = 2; radius <= city.cityTileRadius; ++radius)
+            int cityradius = city.cityTileArea.size.SideLength() / 2;
+            for (int radius = 2; radius <= cityradius; ++radius)
             {
                 ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
 
@@ -114,7 +116,8 @@ namespace VikingEngine.DSSWars.Map
         {
             IntVector2 topleft;
             ForXYLoop subTileLoop;
-            for (int radius = 0; radius <= city.cityTileRadius; ++radius)
+            int maxRadius = city.cityTileArea.size.SideLength();
+            for (int radius = 0; radius < maxRadius; ++radius)
             {
                 ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
 
@@ -151,7 +154,8 @@ namespace VikingEngine.DSSWars.Map
         {
             IntVector2 topleft;
             ForXYLoop subTileLoop;
-            for (int radius = 0; radius <= city.cityTileRadius; ++radius)
+            int maxRadius = city.cityTileArea.size.SideLength();
+            for (int radius = 0; radius < maxRadius; ++radius)
             {
                 ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
 
@@ -185,6 +189,51 @@ namespace VikingEngine.DSSWars.Map
             return false;
         }
 
+        public bool NextEmptyLand(City city, int addSpaces, out IntVector2 freeSubTilePos)
+        {
+            freeSubTilePos = IntVector2.Zero;
+
+            int maxRadius = city.cityTileArea.size.SideLength();
+            for (int radius = 0; radius < maxRadius; ++radius)
+            {
+                //ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                edgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                while (edgeRandomizer.Next())
+                {
+                    if (DssRef.world.tileBounds.IntersectTilePoint(edgeRandomizer.Position))
+                    {
+                        if (DssRef.world.tileGrid.TryGet(edgeRandomizer.Position, out Tile tile))
+                        {
+                            if (tile.CityIndex == city.myIndex && tile.IsLand())
+                            {
+                                IntVector2 topleft = WP.ToSubTilePos_TopLeft(edgeRandomizer.Position);
+                                ForXYLoop subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+
+                                while (subTileLoop.Next())
+                                {
+                                    SubTile subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+                                    switch (subTile.mainTerrain)
+                                    {
+                                        case TerrainMainType.Destroyed:
+                                        case TerrainMainType.DefaultLand:
+                                            freeSubTilePos = subTileLoop.Position;
+                                            if (--addSpaces <= 0)
+                                            {   
+                                                return true;
+                                            }
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            
+            return freeSubTilePos.X > 0;
+        }
+
         public void update(City city, int workerCount, int emptyLandExpansions = 2)
         {
             //int emptyLandExpansions = 2;
@@ -202,7 +251,7 @@ namespace VikingEngine.DSSWars.Map
             Mines.Clear();
             CraftStation.Clear();
             CoinMinting.Clear();
-            EmptyLand.Clear();
+            //EmptyLand.Clear();
             ResourceOnGround.Clear();
             WoodCutter.Clear();
             StoneCutter.Clear();
@@ -224,18 +273,21 @@ namespace VikingEngine.DSSWars.Map
             StoragePoints_workupdate.Add(city.citySquareSubtilePos);
 
             //Cirkle outward from city to find resources
-            for (int radius = 0; radius <= city.cityTileRadius; ++radius)
-            {
-                ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+            //for (int radius = 0; radius <= city.cityTileRadius; ++radius)
+            //{
+            //    ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
 
-                while (cirkleLoop.Next())
-                {
-                    if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
-                    {
-                        var tile = DssRef.world.tileGrid.Get(cirkleLoop.Position);
+            //    while (cirkleLoop.Next())
+            //    {
+            //        if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
+            //        {
+            ForXYLoop loop = new ForXYLoop(city.cityTileArea);
+            while(loop.Next())
+            {
+                        var tile = DssRef.world.tileGrid.Get(loop.Position);
                         if (tile.CityIndex == city.myIndex && tile.IsLand())
                         {
-                            topleft = WP.ToSubTilePos_TopLeft(cirkleLoop.Position);
+                            topleft = WP.ToSubTilePos_TopLeft(loop.Position);
                             subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
 
                             while (subTileLoop.Next())
@@ -273,6 +325,21 @@ namespace VikingEngine.DSSWars.Map
                                             case Map.TerrainSubFoilType.Stones:
                                                 ++terrainStructure.resourceCount_stone;
                                                 Stones.Add(subTileLoop.Position);
+                                                break;
+
+                                            case TerrainSubFoilType.TreeApple:
+                                            case TerrainSubFoilType.TreeBanana:
+                                                ++buildingStructure.Orchard_count;
+                                                ++foodspots;
+                                                if (subTile.terrainAmount == TerrainContent.OrchardPlucked)
+                                                {
+                                                    Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.Plant));
+                                                }
+                                                else if (subTile.terrainAmount >= TerrainContent.OrchardReady)
+                                                {
+                                                    Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.GatherFoil));
+                                                }
+                                                buildingPosition.Orchard_pos = subTileLoop.Position;
                                                 break;
 
                                             case TerrainSubFoilType.WheatFarm:
@@ -766,6 +833,10 @@ namespace VikingEngine.DSSWars.Map
                                             case TerrainBuildingType.Logistics:
                                                 buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
                                                 break;
+                                            case TerrainBuildingType.ManorLord:
+                                                buildingStructure.manorLord = true;
+                                                DssRef.state.hasManorLords = true;
+                                                break;
                                             case TerrainBuildingType.WaterResovoir:
                                                 ++buildingStructure.WaterResovoir_count;
                                                 buildingPosition.WaterResovoir_pos = subTileLoop.Position;
@@ -857,7 +928,7 @@ namespace VikingEngine.DSSWars.Map
                                             else if (!emptyArea.IntersectTilePoint(subTileLoop.Position))
                                             {
                                                 --emptyLandExpansions;
-                                                EmptyLand.Add(subTileLoop.Position);
+                                                //EmptyLand.Add(subTileLoop.Position);
                                                 emptyArea.includeTileAndRadius(subTileLoop.Position, 3);
                                             }                                             
                                         }
@@ -866,8 +937,8 @@ namespace VikingEngine.DSSWars.Map
                             }
                         }
                     }
-                }
-            }
+            //    }
+            //}
 
             //Complete
             city.buildingStructure = buildingStructure;
@@ -891,15 +962,17 @@ namespace VikingEngine.DSSWars.Map
 
         public bool MayAutoBuildHere(City city, IntVector2 subTilePos)
         {
-            switch (DssRef.world.subTileGrid.Get(subTilePos).mainTerrain)
+            if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subtile))
             {
-                case TerrainMainType.Destroyed:
-                case TerrainMainType.DefaultLand:
-                    var tile = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos));
-                    return tile.MayBuild() && tile.CityIndex == city.myIndex;
-                    
-            }
+                switch (subtile.mainTerrain)
+                {
+                    case TerrainMainType.Destroyed:
+                    case TerrainMainType.DefaultLand:
+                        var tile = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos));
+                        return tile.MayBuild() && tile.CityIndex == city.myIndex;
 
+                }
+            }
             return false;
         }
 

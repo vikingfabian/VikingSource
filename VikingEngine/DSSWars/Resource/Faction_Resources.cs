@@ -238,7 +238,7 @@ namespace VikingEngine.DSSWars
                 content.Add(subTab);
             }
 
-            new StockPileMenu(content, null, this).toHud(player.resourcesSubTab.resourceGroup);
+            new StockPileMenu(content, null, this).toHud(player, player.resourcesSubTab.resourceGroup);
             //ItemResourceType[] items = null;
 
             //switch (player.resourcesSubTab)
@@ -571,6 +571,11 @@ namespace VikingEngine.DSSWars
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
+                //if (armiesC.sel.debugTagged)
+                //{
+                //    lib.DoNothing();
+                //}
+
                 float manUpkeepCount = 0;
                 float moneyCarry = 0;
                 //float armyUpkeep = 0;

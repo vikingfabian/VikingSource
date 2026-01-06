@@ -11,6 +11,11 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class French : AbsLanguage
     {
+        //Winter patch 3
+        public override string Hud_Purchase_AllBuildings => "Tout construire (file d'attente)";
+        public override string Hud_Purchase_AllTech => "Tout rechercher (file d'attente)";
+        public override string BuildingType_CasualBarracks_Description => "Le temps de recrutement est réparti entre les casernes";
+
         //Winter update patch + spring
 
         /// <summary>

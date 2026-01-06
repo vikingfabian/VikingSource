@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -32,13 +33,15 @@ namespace VikingEngine.DSSWars.Resource
             this.faction = faction;
         }
 
-        public void toHud(ResourceGroupType tab)
+        public void toHud(LocalPlayer player, ResourceGroupType tab)
         {
+            ResourceGroupType groupType = ResourceGroupType.NUM;
+
             switch (tab)
             {
                 case ResourceGroupType.Resources:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-
+                    groupType = ResourceGroupType.Resources;
                     stockpile(ItemResourceType.Wood_Group);
                     stockpile(ItemResourceType.Stone_G);
                     stockpile(ItemResourceType.Brick);
@@ -72,6 +75,7 @@ namespace VikingEngine.DSSWars.Resource
                 case ResourceGroupType.Metals:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
 
+                    groupType = ResourceGroupType.Metals;
                     stockpile(ItemResourceType.IronOre_G);
                     stockpile(ItemResourceType.TinOre);
                     stockpile(ItemResourceType.CopperOre);
@@ -98,6 +102,7 @@ namespace VikingEngine.DSSWars.Resource
                     break;
                 case ResourceGroupType.Weapons:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
+                    groupType = ResourceGroupType.Weapons;
                     stockpile(ItemResourceType.SharpStick);
                     stockpile(ItemResourceType.BronzeSword);
                     stockpile(ItemResourceType.ShortSword);
@@ -119,6 +124,7 @@ namespace VikingEngine.DSSWars.Resource
                 case ResourceGroupType.Projectile:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
 
+                    groupType = ResourceGroupType.Projectile;
                     stockpile(ItemResourceType.SlingShot);
                     stockpile(ItemResourceType.ThrowingSpear);
                     stockpile(ItemResourceType.Bow);
@@ -146,7 +152,8 @@ namespace VikingEngine.DSSWars.Resource
                     break;
 
                 case ResourceGroupType.Armor:
-                    
+
+                    groupType = ResourceGroupType.Armor;
                     stockpile(ItemResourceType.HeavyPaddedArmor);
                     stockpile(ItemResourceType.PaddedArmor);
                     stockpile(ItemResourceType.BronzeArmor);
@@ -200,6 +207,62 @@ namespace VikingEngine.DSSWars.Resource
                     stockpile(ItemResourceType.Oliphant);
                     break;
             }
+
+            content.newParagraph();
+            HudLib.Label(content, ".Current page"); content.space();
+            copyPasteOptions(groupType);
+
+            content.newParagraph();
+            HudLib.Label(content, ".All pages"); content.space();
+            copyPasteOptions(ResourceGroupType.NUM);
+
+
+            void copyPasteOptions(ResourceGroupType group)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.WarsHudIconCopy) ,
+                new RbSpace(),
+                new RbText(DssRef.lang.Hud_Copy)},
+                new RbAction5Arg<Players.LocalPlayer, Faction, City, CopyPasteOption, ResourceGroupType>(DssRef.world.copyStockPile,
+                    player, faction, city, CopyPasteOption.ToMemory, group, RbSoundType.Copy)));
+
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.WarsHudIconPaste) ,
+                new RbSpace(),
+                new RbText(DssRef.lang.Hud_Paste)},
+                   new RbAction5Arg<Players.LocalPlayer, Faction, City, CopyPasteOption, ResourceGroupType>(DssRef.world.copyStockPile,
+                        player, faction, city, CopyPasteOption.FromMemory, group, RbSoundType.Paste), null, player.stockPileCopy != null));
+
+                content.newLine();
+
+                if (city == null)
+                {
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                        new RbImage(SpriteName.WarsHudIconExport) ,
+                        new RbSpace(),
+                        new RbText(".To all cities")},
+                       new RbAction5Arg<Players.LocalPlayer, Faction, City, CopyPasteOption, ResourceGroupType>(DssRef.world.copyStockPile,
+                            player, faction, null, CopyPasteOption.ToAllCities, group, RbSoundType.Copy), new RbTooltip_Text(".Use the faction wide setting")));
+                }
+                else
+                {
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                        new RbImage(SpriteName.WarsHudIconExport) ,
+                        new RbSpace(),
+                        new RbText(".To faction")},
+                       new RbAction5Arg<Players.LocalPlayer, Faction, City, CopyPasteOption, ResourceGroupType>(DssRef.world.copyStockPile,
+                            player, faction, city, CopyPasteOption.CityToFaction, group, RbSoundType.Copy), new RbTooltip_Text(".Use the faction wide setting")));
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                        new RbImage(SpriteName.WarsHudIconImport) ,
+                        new RbSpace(),
+                        new RbText(".From faction")},
+                        new RbAction5Arg<Players.LocalPlayer, Faction, City, CopyPasteOption, ResourceGroupType>(DssRef.world.copyStockPile,
+                            player, faction, city, CopyPasteOption.FactionToCity, group, RbSoundType.Copy), new RbTooltip_Text(".Use the faction wide setting")));
+                }
+            }
+
         }
 
         void stockpile(ItemResourceType item)

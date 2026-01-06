@@ -647,7 +647,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int desertSoldiers()
         {
-            int count = MathExt.MultiplyInt(Ref.peRnd.Double(0.2, 0.4), groups.Count);
+            int count = Bound.Min( MathExt.MultiplyInt(Ref.peRnd.Double(0.2, 0.4), groups.Count), 2);
             int soldiersDeserted = 0;
 
             for (int i = 0; i < count; i++)
@@ -959,6 +959,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void async_SoldiersUpdate(float time, bool oneMinute)
         {
+            //if (debugTagged)
+            //{
+            //    lib.DoNothing();
+            //}
+
+            if (!HasAliveFaction())
+            {
+                lib.DoNothing();
+            }
+
             if (groups.Count > 0)
             {
                 int count = 0;
@@ -1027,6 +1037,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     totalStrength += groupsC.sel.strengthValue();/*AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip)*/;//(dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
 
+                    
                 }
 
                 army_isIdle = allGropsAreIdle && IdleObjetive();

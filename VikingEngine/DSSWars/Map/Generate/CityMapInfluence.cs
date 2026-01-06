@@ -316,10 +316,12 @@ namespace VikingEngine.DSSWars.Map
 
         void bindTiles(WorldData world, Rectangle2 area)
         {
+            
+
             //End by binding tiles to cities
             //inflenceMap.LoopBegin();
             ForXYLoop loop = new ForXYLoop(area);
-            Debug.Log("bindTiles " + area.ToString());
+            //Debug.Log("bindTiles " + area.ToString());
             while (loop.Next())
             {
                 var city = inflenceMap.Get(loop.Position).city;
@@ -333,10 +335,15 @@ namespace VikingEngine.DSSWars.Map
                 world.tileGrid.Set(loop.Position, tile);
 
                 var r = loop.Position.SideLength(city.tilePos);
-                if (city.cityTileRadius < r)
+                if (city.cityTileArea.size.X == 0)
                 {
-                    city.cityTileRadius = r;
+                    city.cityTileArea = Rectangle2.FromCenterTileAndRadius(city.tilePos, 3);
                 }
+                city.cityTileArea.includeTile(loop.Position);
+                //if (city.cityTileRadius < r)
+                //{
+                //    city.cityTileRadius = r;
+                //}
             }
         }
 

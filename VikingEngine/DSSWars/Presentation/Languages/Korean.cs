@@ -11,6 +11,10 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Korean : AbsLanguage
     {
+        //Winter patch 3
+        public override string Hud_Purchase_AllBuildings => "모든 건물 대기열 등록";
+        public override string Hud_Purchase_AllTech => "모든 기술 대기열 등록";
+        public override string BuildingType_CasualBarracks_Description => "병사 모집 시간이 병영 간에 분배됩니다";
         //Winter update patch + spring
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost

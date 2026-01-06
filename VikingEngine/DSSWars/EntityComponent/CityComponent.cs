@@ -53,15 +53,16 @@ namespace VikingEngine.DSSWars
                 //cities[cityIx].resourceComponentStartIndex = startIndex;
                 //int multiplyDefault = cities[cityIx].cityType == CityType.UnClaimed ? 0 : 1;
                 // Basics
-                //cityResouces[resourceStart + CityResoureIndex.wood] = new GroupedResource { amount = 20, stockPileLimit = DefaultBuffer_Wood };
-                //cityResouces[resourceStart + CityResoureIndex.fuel] = new GroupedResource { amount = 100, stockPileLimit = 400 };
-                //cityResouces[resourceStart + CityResoureIndex.water] = new GroupedResource { stockPileLimit = 0 }; // (no default given)
-                //cityResouces[resourceStart + CityResoureIndex.stone] = new GroupedResource { amount = 20, stockPileLimit = 300 };
-                //cityResouces[resourceStart + CityResoureIndex.rawFood] = new GroupedResource { amount = 50, stockPileLimit = 200 };
-                //cityResouces[resourceStart + CityResoureIndex.food] = new GroupedResource { amount = 200, stockPileLimit = 500 };
-                //cityResouces[resourceStart + CityResoureIndex.beer] = new GroupedResource { amount = 0, stockPileLimit = 200 };
-                //cityResouces[resourceStart + CityResoureIndex.coolingfluid] = new GroupedResource { amount = 0, stockPileLimit = 200 };
-                //cityResouces[resourceStart + CityResoureIndex.skinLinnen] = new GroupedResource { stockPileLimit = DefaultBuffer_SkinLinnen };
+                //cityResouces[startIndex + CityResoureIndex.wood] = new GroupedResource { amount = 20, goalBuffer = DefaultBuffer_Wood };
+                //cityResouces[startIndex + CityResoureIndex.fuel] = new GroupedResource { amount = 100, goalBuffer = 400 };
+                //cityResouces[startIndex + CityResoureIndex.water] = new GroupedResource { goalBuffer = 0 }; // (no default given)
+                //cityResouces[startIndex + CityResoureIndex.stone] = new GroupedResource { amount = 20, goalBuffer = 300 };
+                //cityResouces[startIndex + CityResoureIndex.rawFood] = new GroupedResource { amount = 0, goalBuffer = 200 };
+                //cityResouces[startIndex + CityResoureIndex.food] = new GroupedResource { amount = 200, goalBuffer = 500 };
+                //cityResouces[startIndex + CityResoureIndex.beer] = new GroupedResource { amount = 0, goalBuffer = 200 };
+                //cityResouces[startIndex + CityResoureIndex.coolingfluid] = new GroupedResource { amount = 0, goalBuffer = 200 };
+                //cityResouces[startIndex + CityResoureIndex.skinLinnen] = new GroupedResource { amount = 20, goalBuffer = DefaultBuffer_SkinLinnen };
+                
 
                 //// Ores
                 //cityResouces[resourceStart + CityResoureIndex.ironore] = new GroupedResource { stockPileLimit = 100 };
@@ -71,14 +72,15 @@ namespace VikingEngine.DSSWars
                 //cityResouces[resourceStart + CityResoureIndex.SilverOre] = new GroupedResource { stockPileLimit = 100 };
                 //cityResouces[resourceStart + CityResoureIndex.GoldOre] = new GroupedResource { stockPileLimit = 100 };
 
-                //// Refined / materials
-                //cityResouces[resourceStart + CityResoureIndex.iron] = new GroupedResource { amount = 10, stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.Tin] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.Copper] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.Lead] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.Silver] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.RawMithril] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.Sulfur] = new GroupedResource { stockPileLimit = 100 };
+                // Refined / materials
+                //cityResouces[startIndex + CityResoureIndex.iron] = new GroupedResource { amount = 20, goalBuffer = 100 };
+                //cityResouces[startIndex + CityResoureIndex.Tin] = new GroupedResource { goalBuffer = 100 };
+                //cityResouces[startIndex + CityResoureIndex.Copper] = new GroupedResource { goalBuffer = 100 };
+                //cityResouces[startIndex + CityResoureIndex.Lead] = new GroupedResource { goalBuffer = 100 };
+                //cityResouces[startIndex + CityResoureIndex.Silver] = new GroupedResource { goalBuffer = 100 };
+                //cityResouces[startIndex + CityResoureIndex.RawMithril] = new GroupedResource { goalBuffer = 100 };
+                //cityResouces[startIndex + CityResoureIndex.Sulfur] = new GroupedResource { goalBuffer = 100 };
+                
 
                 //// Alloys / specials
                 //cityResouces[resourceStart + CityResoureIndex.Bronze] = new GroupedResource { stockPileLimit = 100 };

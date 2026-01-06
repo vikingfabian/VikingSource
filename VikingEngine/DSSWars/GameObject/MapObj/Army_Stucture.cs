@@ -240,7 +240,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             column(Col_Center + PosXAdd, relPos, out Vector2 finalCenter, out float largestWidth, -0.5f, endAsShip);
 
-            Vector2 relPosLeft = new Vector2(-largestWidth * 0.5f - DssVar.SoldierGroup_GridExtraSpacing, 0);
+            Vector2 relPosLeft = new Vector2(-(largestWidth * 0.5f + DssVar.SoldierGroup_GridExtraSpacing), 0);
             Vector2 relPosRight = new Vector2(largestWidth * 0.5f + DssVar.SoldierGroup_GridExtraSpacing, 0);
 
 
@@ -253,7 +253,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             column(Col_LeftFlank + PosXAdd, relPosLeft, out _, out largestWidth, -1f, endAsShip);
 
-            column(Col_RightFlank + PosXAdd, relPosRight, out _, out largestWidth, 0f, endAsShip);
+            column(Col_RightFlank + PosXAdd, relPosRight, out _, out largestWidth, -1f, endAsShip);
 
 
             int leftColX = 0, centerColX = 0, rightColX = 0;

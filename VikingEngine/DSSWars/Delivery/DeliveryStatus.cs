@@ -211,7 +211,13 @@ namespace VikingEngine.DSSWars.Delivery
                 }
                 else
                 {
-                    recieverHasAmountPlusDeliveries = recievingCity.GetGroupedResource(sendItem).amountPlusDelivery();
+                    var resource = recievingCity.GetGroupedResource(sendItem);                    
+                    recieverHasAmountPlusDeliveries = resource.amountPlusDelivery();
+
+                    if (resource.reachedBuffer())
+                    {
+                        return false;
+                    }
                 }
 
                 if (useRecieverMax)

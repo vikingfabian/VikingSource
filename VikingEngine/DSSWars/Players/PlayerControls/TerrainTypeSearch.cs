@@ -35,9 +35,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 cityIx = city.myIndex;
                 this.terrainType = terrainType;
 
-                area = Rectangle2.FromCenterTileAndRadius(WP.ToSubTilePos_TopLeft(city.tilePos), city.cityTileRadius * WorldData.TileSubDivitions);
-                area.SetTileBounds(DssRef.world.subTileGrid.Area);
-                
+                //area = Rectangle2.FromCenterTileAndRadius(WP.ToSubTilePos_TopLeft(city.tilePos), city.cityTileRadius * WorldData.TileSubDivitions);
+                //area.SetBounds(DssRef.world.subTileGrid.TileBound());
+                area = WP.ToSubTilePos(city.cityTileArea);
+
                 currentPos = area.pos;
             }
 

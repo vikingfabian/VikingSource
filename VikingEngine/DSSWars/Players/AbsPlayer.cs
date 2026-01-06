@@ -132,7 +132,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (toWar)
                 {
-                    faction.tradeAllianceWars(otherFaction);
+                    faction.tradeAllianceWars(otherFaction, rel);
                 }
                 else
                 {
@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Players
             if (rel.Relation == RelationType.RelationType3_Ally &&
                 !rel.secret)
             {
-                faction.tradeAllianceWars(otherFaction);
+                faction.tradeAllianceWars(otherFaction, rel);
             }
         }
 

@@ -178,7 +178,6 @@ namespace VikingEngine.DSSWars.Data
                 localPlayers[i].write(w);
             }
 
-
             w.Write(generateNewMaps);
             w.Write(autoSave);
             w.Write(multiplayerGameSpeed);

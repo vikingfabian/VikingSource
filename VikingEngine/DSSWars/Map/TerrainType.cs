@@ -44,6 +44,12 @@ namespace VikingEngine.DSSWars.Map
         RapeSeedFarm,
         RapeSeedFarmUpgraded,
 
+        
+        TreeApple,
+        TreeBanana,
+        //TreeAppleSprout,
+        //TreeBananaSprout,
+
         BogIron,
         ClayPit,
         SaltPit,
@@ -130,6 +136,7 @@ namespace VikingEngine.DSSWars.Map
         WorkerTent,
         CityHall_Unclaimed,
         CityHall_Tent,
+        ManorLord,
 
         //NEW
         Pottery,

@@ -12,6 +12,11 @@ namespace VikingEngine.DSSWars.Presentation
     //Licenesed 2025 Sep 11, "Astro: you can remix our work freely, any platform"
     partial class Turkish : AbsLanguage
     {
+        //Winter patch 3
+        public override string Hud_Purchase_AllBuildings => "Tüm binaları sıraya al";
+        public override string Hud_Purchase_AllTech => "Tüm teknolojileri sıraya al";
+        public override string BuildingType_CasualBarracks_Description => "Asker toplama süresi kışlalar arasında bölünür";
+
         //Winter update patch + spring
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost

@@ -60,17 +60,18 @@ namespace VikingEngine.DSSWars.Interface
                         content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
                         content.space(0.5f);
                     }
-                
 
-                content.Add(new ArtButton(RbButtonStyle.Primary,
-                    new List<AbsRichBoxMember> { new RbImage(Ref.isPaused ? SpriteName.WarsHudHeadBarPauseIcon : SpriteName.WarsHudHeadBarPlayIcon) },
-                    new RbAction(Ref.TogglePause), new RbTooltip((RichBoxContent content, object tag) =>
-                    {
-                        content.Add(new RbImage(player.gameControls.input.PauseGame.Icon));
-                        content.Add(new RbSpace(0.5f));
-                        content.Add(new RbText(DssRef.lang.Input_Pause));
-                    })));
-
+                if (DssRef.difficulty.setting_allowPauseCommand)
+                {
+                    content.Add(new ArtButton(RbButtonStyle.Primary,
+                        new List<AbsRichBoxMember> { new RbImage(Ref.isPaused ? SpriteName.WarsHudHeadBarPauseIcon : SpriteName.WarsHudHeadBarPlayIcon) },
+                        new RbAction(Ref.TogglePause), new RbTooltip((RichBoxContent content, object tag) =>
+                        {
+                            content.Add(new RbImage(player.gameControls.input.PauseGame.Icon));
+                            content.Add(new RbSpace(0.5f));
+                            content.Add(new RbText(DssRef.lang.Input_Pause));
+                        }), DssRef.difficulty.setting_allowPauseCommand));
+                }
 
                 if (viewControllerTabs)
                 {

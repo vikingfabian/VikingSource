@@ -114,28 +114,34 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                int buildCount = lib.SmallestValue(AutoBuildList.Count, CityStructure.WorkInstance.EmptyLand.Count);
+                //int buildCount = lib.SmallestValue(AutoBuildList.Count, CityStructure.WorkInstance.EmptyLand.Count);
 
-                for (int i = 0; i < buildCount; ++i)
+                for (int i = 0; i < AutoBuildList.Count; ++i)
                 {
                     var buildType = AutoBuildList[i];
-                    
-                    var pos = CityStructure.WorkInstance.EmptyLand[i];
-                    if (this.buildingStructure.getCount(buildType) > 0)
+
+                    if (CityStructure.WorkInstance.NextEmptyLand(this, Ref.peRnd.Int(32), out var pos))//.EmptyLand[i];
                     {
-                        var prevPos = CityStructure.WorkInstance.buildingPosition.getPos(buildType);
-                        if (prevPos.X > 0)
+                        if (this.buildingStructure.getCount(buildType) > 0)
                         {
-                            findAdjacentFreeSpot(Auto_EdgeRandomizer, prevPos, ref pos);
+                            var prevPos = CityStructure.WorkInstance.buildingPosition.getPos(buildType);
+                            if (prevPos.X > 0)
+                            {
+                                findAdjacentFreeSpot(Auto_EdgeRandomizer, prevPos, ref pos);
+                            }
+                        }
+
+                        if (BuildLib.BuildOptions[(int)buildType].availableBlueprintResources(this) &&
+                            work_isFreeTile(pos))
+                        {
+                            workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
                         }
                     }
-                    
-                    if (BuildLib.BuildOptions[(int)buildType].availableBlueprintResources(this) &&
-                        work_isFreeTile(pos))
+                    else
                     {
                         workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
+                        break;
                     }
-                    
                 }
             }
 
@@ -312,6 +318,8 @@ namespace VikingEngine.DSSWars.GameObject
                         chance = 200;
                         break;
 
+                    case BuildAndExpandType.OrchidApple:
+                    case BuildAndExpandType.OrchidBanana:
                     case BuildAndExpandType.WheatFarm:
                     case BuildAndExpandType.LinenFarm:
                     case BuildAndExpandType.HenPen:
@@ -359,6 +367,19 @@ namespace VikingEngine.DSSWars.GameObject
                     case BuildAndExpandType.Logistics:
                         chance = automationFocus == AutomationFocus.Grow ? 300 : 150;
                         maxCount = 1;
+                        break;
+                    case BuildAndExpandType.ManorLord:
+                        if (DssRef.state.hasManorLords)
+                        {
+                            chance = 100;
+                            maxCount = 1;
+                        }
+                        else
+                        {
+                            chance = 0;
+                            maxCount = 0;
+                        }
+                        
                         break;
 
                     case BuildAndExpandType.School:
@@ -509,13 +530,25 @@ namespace VikingEngine.DSSWars.GameObject
                                     buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
                                 }
                                 break;
-
-
+                            case TerrainBuildingType.ManorLord:
+                                if (build)
+                                {
+                                    if (buildingStructure.manorLord)
+                                    {
+                                        //Already built
+                                        return false;
+                                    }
+                                    buildingStructure.manorLord = true;
+                                }
+                                break;
+                            case TerrainBuildingType.WorkerTent:
+                                onWorkHutBuild(build, DssConst.HousingCount_WorkerTent);
+                                break;
                             case TerrainBuildingType.WorkerHut:
-                                onWorkHutBuild(build, false);
+                                onWorkHutBuild(build, DssConst.HousingCount_WorkerHut);
                                 break;
                             case TerrainBuildingType.WorkerHutLarge:
-                                onWorkHutBuild(build, true);
+                                onWorkHutBuild(build, DssConst.HousingCount_WorkerHutLarge);
                                 break;
 
                             case TerrainBuildingType.ServiceMenHouse_small:

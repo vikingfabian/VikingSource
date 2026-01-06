@@ -202,6 +202,9 @@ namespace VikingEngine.DSSWars.Interface
             content.space(0.5f);
             content.Add(new RbText(faction.PlayerName, HudLib.TitleColor_Name));
 
+            content.space(1);
+            content.Add(new RbText(string.Format(DssRef.lang.UnitId, faction.myIndex), HudLib.SecondaryTextColor));
+
             content.Add(new RbSeperationLine());
 
             FactionSize(faction, content, false);
