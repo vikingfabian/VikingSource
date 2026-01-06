@@ -291,6 +291,9 @@ namespace VikingEngine.DSSWars.Resource
                             buttonContent.Add(new RbText(res.stockPileLimit.ToString()));
                         }
                         break;
+                    case StockpileLimitOption.Zero:
+                        buttonContent.Add(new RbText("0", numberCol));
+                        break;
                     case StockpileLimitOption.Value100:
                         buttonContent.Add(new RbText(DssRef.lang.EngineHud_SymbolFor100, numberCol));
                         break;
@@ -338,7 +341,7 @@ namespace VikingEngine.DSSWars.Resource
             if (args.limit == StockpileLimitOption.NoLimit)
             {
                 content.h1(".No limit", HudLib.TitleColor_Head);
-                content.text("Will stockpile up to the storage size");
+                content.text(".Will stockpile up to the storage size");
             }
             else
             {

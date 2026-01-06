@@ -317,6 +317,7 @@ namespace VikingEngine.DSSWars.Resource
                 case StockpileLimitOption.NoLimit:
                     return int.MaxValue;
 
+                case StockpileLimitOption.Zero: return 0;
                 case StockpileLimitOption.Value100: return 100;
                 case StockpileLimitOption.Value500: return 500;
                 case StockpileLimitOption.Value2000: return 2000;
