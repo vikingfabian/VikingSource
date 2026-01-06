@@ -375,6 +375,15 @@ namespace VikingEngine.DSSWars.GameObject
 
             ref GroupedResource resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex];
             resource.amount += add;
+            if (resource.hasCesspit && resource.amount >= resource.stockPileLimit)
+            {
+                int remove = resource.amount - resource.stockPileLimit + 10;
+                resource.amount -= remove;
+                if (Ref.peRnd.ChanceF(DssConst.CessPitConvertToFuelPercentage))
+                {   
+                    AddGroupedResource(CityResoureIndex.fuel, remove);
+                }
+            }
             resource.changeRate.onChange(add);
 
             //ref var overview = ref DssRef.world.factionResourceOverviews[itemIndex + factionIndex * CityResoureIndex.COUNT];

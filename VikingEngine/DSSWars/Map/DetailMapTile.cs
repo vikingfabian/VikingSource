@@ -1008,7 +1008,9 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_storage, 4, wp, WorldData.SubTileWidth * 0.9f));
                     break;
 
-
+                case TerrainBuildingType.Cesspit:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_storage, 5, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
                 default:
                     throw new NotImplementedException();
             }

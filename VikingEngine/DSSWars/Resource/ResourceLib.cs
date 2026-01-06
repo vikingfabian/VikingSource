@@ -267,6 +267,16 @@ namespace VikingEngine.DSSWars.Resource
                     blueprint.toMenu(content, city, false, false);
                 }
             }
+
+            if (resources.hasCesspit)
+            {
+                content.Add(new RbSeperationLine());
+                content.Add(new RbBeginTitle());
+                content.Add(new RbImage(SpriteName.MissingImage));
+                content.space();
+                content.Add(new RbText(DssRef.todoLang.BuildingType_Cesspit, HudLib.TitleColor_Head2));
+                content.text(".Todo info here");
+            }
         }
 
         public static string Name(ResourceType resource)
@@ -318,9 +328,9 @@ namespace VikingEngine.DSSWars.Resource
                     return int.MaxValue;
 
                 case StockpileLimitOption.Zero: return 0;
-                case StockpileLimitOption.Value100: return 100;
-                case StockpileLimitOption.Value500: return 500;
-                case StockpileLimitOption.Value2000: return 2000;
+                //case StockpileLimitOption.Value100: return 100;
+                case StockpileLimitOption.Value200: return 200;
+                case StockpileLimitOption.Value4000: return 4000;
 
                 default: return -1;
             }

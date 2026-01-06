@@ -1615,7 +1615,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (attackTarget_soldierGroupOrCity != null && attackTarget_soldierGroupOrCity.TryGetTarget(out var target) &&                    
 
                     (target.defeated() || 
-                    !DssRef.diplomacy.GetRelation(factionIndex, target.factionIndex).InWar() ||
+                    !DssRef.diplomacy.GetRelation_Safe(factionIndex, target.factionIndex).InWar() ||
                     distance(target) > 4)
                )
             {

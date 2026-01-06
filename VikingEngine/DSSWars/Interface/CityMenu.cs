@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Stockpile;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
@@ -181,6 +182,9 @@ namespace VikingEngine.DSSWars.Interface
                         progressTab(content);
                         break;
 
+                    case MenuTab.CessPit:
+                        city.cesspitToHud(player, content);
+                        break;
                     //case MenuTab.Mix:
                     //    mixTab(content);
                     //    break;
@@ -453,6 +457,8 @@ namespace VikingEngine.DSSWars.Interface
 
 
         }
+
+
         void progressTab(RichBoxContent content)
         {
             //bool foodSafeGuard = false;
@@ -2867,7 +2873,7 @@ namespace VikingEngine.DSSWars.Interface
         Mix,
         Help,
         Defence,
-
+        CessPit,
         God_Recruit,
 
         Casual_Recruit,

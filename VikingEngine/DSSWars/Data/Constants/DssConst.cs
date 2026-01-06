@@ -283,8 +283,9 @@ namespace VikingEngine.DSSWars
 
         public static int WorkSafeGuardAmount = 10;
 
-        public const int StockPileMinBound = 0;
-        public const int StockPileMaxBound = 20000;
+        //public const int StockPileMinBound = 0;
+        //public const int StockPileMaxBound = 20000;
+        public const float CessPitConvertToFuelPercentage = 0.1f;
 
         //XP
         public static byte WorkXpToLevel = 50;

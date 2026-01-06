@@ -473,18 +473,81 @@ namespace VikingEngine.DSSWars.Conscript
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
+            //if ((byte)weapon > 200)
+            //{
+            //    lib.DoNothing();
+            //}
+
+            //    public ItemResourceType man;
+            //public ItemResourceType weapon;
+            //public ItemResourceType armorLevel;
+            //public ItemResourceType animal;
+            //public ItemResourceType mountArmor;
+            //public ItemResourceType vehicle;
+            //public TrainingLevel training;
+            //public SpecializationType specialization;
+
+            bool special_man = man != ItemResourceType.Men;
+            bool special_animal = animal != ItemResourceType.NONE;
+            bool special_mountArmor = mountArmor != ItemResourceType.NONE;
+            bool special_vehicle = vehicle != ItemResourceType.NONE;
+            bool special_specialization = specialization != SpecializationType.None;
+
+            new EightBit(special_man, special_animal, special_mountArmor, special_vehicle, special_specialization).write(w);
+
+            if (special_man)
+            {
+                w.Write((byte)man);
+            }
             w.Write((byte)weapon);
             w.Write((byte)armorLevel);
+            if (special_animal)
+            {
+                w.Write((byte)animal);
+            }
+            if (special_mountArmor)
+            {
+                w.Write((byte)mountArmor);
+            }
+            if (special_vehicle)
+            {
+                w.Write((byte)vehicle);
+            }
             w.Write((byte)training);
-            w.Write((byte)specialization);
+            if (special_specialization)
+            {
+                w.Write((byte)specialization);
+            }
         }
 
         public void readGameState(System.IO.BinaryReader r)
         {
+            EightBit specials = EightBit.FromStream(r);
+            specials.Get(out bool special_man, out bool special_animal, out bool special_mountArmor, out bool special_vehicle, out bool special_specialization);
+
+            if (special_man)
+            {
+                man = (ItemResourceType)r.ReadByte();
+            }
             weapon = (ItemResourceType)r.ReadByte();
             armorLevel = (ItemResourceType)r.ReadByte();
+            if (special_animal)
+            {
+                animal = (ItemResourceType)r.ReadByte();
+            }
+            if (special_mountArmor)
+            {
+                mountArmor = (ItemResourceType)r.ReadByte();
+            }
+            if (special_vehicle)
+            {
+                vehicle = (ItemResourceType)r.ReadByte();
+            }
             training = (TrainingLevel)r.ReadByte();
-            specialization = (SpecializationType)r.ReadByte();
+            if (special_specialization)
+            {
+                specialization = (SpecializationType)r.ReadByte();
+            }
         }
 
         //make these static

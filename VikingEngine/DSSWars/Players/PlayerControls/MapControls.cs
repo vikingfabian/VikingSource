@@ -985,6 +985,13 @@ namespace VikingEngine.DSSWars.Players
                         selectedSubTile.city.selectedResearchBuilding = selectedSubTile.city.ResearchIxFromSubTile(selectedSubTile.subTilePos);
                     }
                     break;
+
+                case SelectTileResult.CessPit:
+                    {
+                        player.cityTab = Interface.MenuTab.CessPit;
+                        selectedSubTile.city.selectedCessPit = selectedSubTile.city.cesspitIxFromSubTile(selectedSubTile.subTilePos);
+                    }
+                    break;
             }
         }
 

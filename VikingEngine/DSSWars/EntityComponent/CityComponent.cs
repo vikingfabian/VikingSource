@@ -150,7 +150,7 @@ namespace VikingEngine.DSSWars
                 resourceStart += CityResoureIndex.COUNT;
                 //workStart += WorkTemplate.COUNT;
 
-                cities[cityIx].workTemplate.initComponents(true, cityWork, WorkTemplate.COUNT * cityIx);
+                
             }
 
             for (int i = 0; i < cityStorage.Length; i++)

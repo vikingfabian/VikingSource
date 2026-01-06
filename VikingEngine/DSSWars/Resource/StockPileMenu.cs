@@ -42,30 +42,30 @@ namespace VikingEngine.DSSWars.Resource
                 case ResourceGroupType.Resources:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
                     groupType = ResourceGroupType.Resources;
-                    stockpile(ItemResourceType.Wood_Group);
-                    stockpile(ItemResourceType.Stone_G);
-                    stockpile(ItemResourceType.Brick);
-                    stockpile(ItemResourceType.RawFood_Group);
-                    stockpile(ItemResourceType.SkinLinen_Group);
+                    stockpile(player, ItemResourceType.Wood_Group);
+                    stockpile(player, ItemResourceType.Stone_G);
+                    stockpile(player, ItemResourceType.Brick);
+                    stockpile(player, ItemResourceType.RawFood_Group);
+                    stockpile(player, ItemResourceType.SkinLinen_Group);
                     content.newParagraph();
 
-                    stockpile(ItemResourceType.Food_G);
-                    stockpile(ItemResourceType.Fuel_G);
-                    stockpile(ItemResourceType.Beer);
-                    stockpile(ItemResourceType.CoolingFluid);
+                    stockpile(player, ItemResourceType.Food_G);
+                    stockpile(player, ItemResourceType.Fuel_G);
+                    stockpile(player, ItemResourceType.Beer);
+                    stockpile(player, ItemResourceType.CoolingFluid);
                     content.newParagraph();
 
-                    stockpile(ItemResourceType.Container);
-                    stockpile(ItemResourceType.Palisade);
-                    stockpile(ItemResourceType.Toolkit);
-                    stockpile(ItemResourceType.Wagon2Wheel);
-                    stockpile(ItemResourceType.Wagon4Wheel);
-                    stockpile(ItemResourceType.WagonClosed);
-                    stockpile(ItemResourceType.WagonIron);
-                    stockpile(ItemResourceType.WagonSteel);
-                    stockpile(ItemResourceType.BlackPowder);
-                    stockpile(ItemResourceType.GunPowder);
-                    stockpile(ItemResourceType.LedBullet);
+                    stockpile(player, ItemResourceType.Container);
+                    stockpile(player, ItemResourceType.Palisade);
+                    stockpile(player, ItemResourceType.Toolkit);
+                    stockpile(player, ItemResourceType.Wagon2Wheel);
+                    stockpile(player, ItemResourceType.Wagon4Wheel);
+                    stockpile(player, ItemResourceType.WagonClosed);
+                    stockpile(player, ItemResourceType.WagonIron);
+                    stockpile(player, ItemResourceType.WagonSteel);
+                    stockpile(player, ItemResourceType.BlackPowder);
+                    stockpile(player, ItemResourceType.GunPowder);
+                    stockpile(player, ItemResourceType.LedBullet);
 
                     //content.newParagraph();
                     //HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
@@ -76,135 +76,135 @@ namespace VikingEngine.DSSWars.Resource
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
 
                     groupType = ResourceGroupType.Metals;
-                    stockpile(ItemResourceType.IronOre_G);
-                    stockpile(ItemResourceType.TinOre);
-                    stockpile(ItemResourceType.CopperOre);
-                    stockpile(ItemResourceType.LeadOre);
-                    stockpile(ItemResourceType.SilverOre);
-                    stockpile(ItemResourceType.GoldOre);
+                    stockpile(player, ItemResourceType.IronOre_G);
+                    stockpile(player, ItemResourceType.TinOre);
+                    stockpile(player, ItemResourceType.CopperOre);
+                    stockpile(player, ItemResourceType.LeadOre);
+                    stockpile(player, ItemResourceType.SilverOre);
+                    stockpile(player, ItemResourceType.GoldOre);
                     content.newParagraph();
 
-                    stockpile(ItemResourceType.Iron_G);
-                    stockpile(ItemResourceType.Tin);
-                    stockpile(ItemResourceType.Copper);
-                    stockpile(ItemResourceType.Lead);
-                    stockpile(ItemResourceType.Silver);
-                    stockpile(ItemResourceType.RawMithril);
-                    stockpile(ItemResourceType.Sulfur);
+                    stockpile(player, ItemResourceType.Iron_G);
+                    stockpile(player, ItemResourceType.Tin);
+                    stockpile(player, ItemResourceType.Copper);
+                    stockpile(player, ItemResourceType.Lead);
+                    stockpile(player, ItemResourceType.Silver);
+                    stockpile(player, ItemResourceType.RawMithril);
+                    stockpile(player, ItemResourceType.Sulfur);
                     content.newParagraph();
 
-                    stockpile(ItemResourceType.Bronze);
-                    stockpile(ItemResourceType.CastIron);
-                    stockpile(ItemResourceType.BloomeryIron);
-                    stockpile(ItemResourceType.Steel);
-                    stockpile(ItemResourceType.Mithril);
+                    stockpile(player, ItemResourceType.Bronze);
+                    stockpile(player, ItemResourceType.CastIron);
+                    stockpile(player, ItemResourceType.BloomeryIron);
+                    stockpile(player, ItemResourceType.Steel);
+                    stockpile(player, ItemResourceType.Mithril);
 
                     break;
                 case ResourceGroupType.Weapons:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
                     groupType = ResourceGroupType.Weapons;
-                    stockpile(ItemResourceType.SharpStick);
-                    stockpile(ItemResourceType.BronzeSword);
-                    stockpile(ItemResourceType.ShortSword);
-                    stockpile(ItemResourceType.Sword);
-                    stockpile(ItemResourceType.LongSword);
-                    stockpile(ItemResourceType.HandSpear);
-                    stockpile(ItemResourceType.Warhammer);
-                    stockpile(ItemResourceType.TwoHandSword);
-                    //stockpile(ItemResourceType.KnightsLance);
-                    stockpile(ItemResourceType.MithrilSword);
+                    stockpile(player, ItemResourceType.SharpStick);
+                    stockpile(player, ItemResourceType.BronzeSword);
+                    stockpile(player, ItemResourceType.ShortSword);
+                    stockpile(player, ItemResourceType.Sword);
+                    stockpile(player, ItemResourceType.LongSword);
+                    stockpile(player, ItemResourceType.HandSpear);
+                    stockpile(player, ItemResourceType.Warhammer);
+                    stockpile(player, ItemResourceType.TwoHandSword);
+                    //stockpile(player, ItemResourceType.KnightsLance);
+                    stockpile(player, ItemResourceType.MithrilSword);
                     content.newParagraph();
 
-                    stockpile(ItemResourceType.BucklerShield);
-                    stockpile(ItemResourceType.RoundShield);
-                    stockpile(ItemResourceType.HeaterShield);
-                    stockpile(ItemResourceType.TowerShield);
+                    stockpile(player, ItemResourceType.BucklerShield);
+                    stockpile(player, ItemResourceType.RoundShield);
+                    stockpile(player, ItemResourceType.HeaterShield);
+                    stockpile(player, ItemResourceType.TowerShield);
                     break;
 
                 case ResourceGroupType.Projectile:
                     //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
 
                     groupType = ResourceGroupType.Projectile;
-                    stockpile(ItemResourceType.SlingShot);
-                    stockpile(ItemResourceType.ThrowingSpear);
-                    stockpile(ItemResourceType.Bow);
-                    stockpile(ItemResourceType.LongBow);
-                    stockpile(ItemResourceType.Crossbow);
-                    stockpile(ItemResourceType.MithrilBow);
+                    stockpile(player, ItemResourceType.SlingShot);
+                    stockpile(player, ItemResourceType.ThrowingSpear);
+                    stockpile(player, ItemResourceType.Bow);
+                    stockpile(player, ItemResourceType.LongBow);
+                    stockpile(player, ItemResourceType.Crossbow);
+                    stockpile(player, ItemResourceType.MithrilBow);
                     content.newParagraph();
 
-                    stockpile(ItemResourceType.HandCannon);
-                    stockpile(ItemResourceType.HandCulverin);
-                    stockpile(ItemResourceType.Rifle);
-                    stockpile(ItemResourceType.Blunderbuss);
+                    stockpile(player, ItemResourceType.HandCannon);
+                    stockpile(player, ItemResourceType.HandCulverin);
+                    stockpile(player, ItemResourceType.Rifle);
+                    stockpile(player, ItemResourceType.Blunderbuss);
 
                     content.newParagraph();
 
-                    stockpile(ItemResourceType.Ballista);
-                    stockpile(ItemResourceType.Manuballista);
-                    stockpile(ItemResourceType.Catapult);
+                    stockpile(player, ItemResourceType.Ballista);
+                    stockpile(player, ItemResourceType.Manuballista);
+                    stockpile(player, ItemResourceType.Catapult);
 
-                    stockpile(ItemResourceType.SiegeCannonBronze);
-                    stockpile(ItemResourceType.ManCannonBronze);
-                    stockpile(ItemResourceType.SiegeCannonIron);
-                    stockpile(ItemResourceType.ManCannonIron);
+                    stockpile(player, ItemResourceType.SiegeCannonBronze);
+                    stockpile(player, ItemResourceType.ManCannonBronze);
+                    stockpile(player, ItemResourceType.SiegeCannonIron);
+                    stockpile(player, ItemResourceType.ManCannonIron);
 
                     break;
 
                 case ResourceGroupType.Armor:
 
                     groupType = ResourceGroupType.Armor;
-                    stockpile(ItemResourceType.HeavyPaddedArmor);
-                    stockpile(ItemResourceType.PaddedArmor);
-                    stockpile(ItemResourceType.BronzeArmor);
-                    stockpile(ItemResourceType.IronArmor);
-                    stockpile(ItemResourceType.HeavyIronArmor);
-                    stockpile(ItemResourceType.LightPlateArmor);
-                    stockpile(ItemResourceType.FullPlateArmor);
-                    stockpile(ItemResourceType.MithrilArmor);
+                    stockpile(player, ItemResourceType.HeavyPaddedArmor);
+                    stockpile(player, ItemResourceType.PaddedArmor);
+                    stockpile(player, ItemResourceType.BronzeArmor);
+                    stockpile(player, ItemResourceType.IronArmor);
+                    stockpile(player, ItemResourceType.HeavyIronArmor);
+                    stockpile(player, ItemResourceType.LightPlateArmor);
+                    stockpile(player, ItemResourceType.FullPlateArmor);
+                    stockpile(player, ItemResourceType.MithrilArmor);
 
                     content.newParagraph();
 
-                    stockpile(ItemResourceType.MountHeavyPaddedArmor);
-                    stockpile(ItemResourceType.MountPaddedArmor);
-                    stockpile(ItemResourceType.MountBronzeArmor);
-                    stockpile(ItemResourceType.MountIronArmor);
-                    stockpile(ItemResourceType.MountHeavyIronArmor);
-                    stockpile(ItemResourceType.MountLightPlateArmor);
-                    stockpile(ItemResourceType.MountFullPlateArmor);
-                    stockpile(ItemResourceType.MountMithrilArmor);
+                    stockpile(player, ItemResourceType.MountHeavyPaddedArmor);
+                    stockpile(player, ItemResourceType.MountPaddedArmor);
+                    stockpile(player, ItemResourceType.MountBronzeArmor);
+                    stockpile(player, ItemResourceType.MountIronArmor);
+                    stockpile(player, ItemResourceType.MountHeavyIronArmor);
+                    stockpile(player, ItemResourceType.MountLightPlateArmor);
+                    stockpile(player, ItemResourceType.MountFullPlateArmor);
+                    stockpile(player, ItemResourceType.MountMithrilArmor);
                     break;
 
                 case ResourceGroupType.Animals:
-                    stockpile(ItemResourceType.Hen);
-                    stockpile(ItemResourceType.Pig);
-                    stockpile(ItemResourceType.Oxen);
-                    stockpile(ItemResourceType.KineOxen);
+                    stockpile(player, ItemResourceType.Hen);
+                    stockpile(player, ItemResourceType.Pig);
+                    stockpile(player, ItemResourceType.Oxen);
+                    stockpile(player, ItemResourceType.KineOxen);
                     content.newParagraph();
-                    stockpile(ItemResourceType.Dog);
-                    stockpile(ItemResourceType.Hound);
+                    stockpile(player, ItemResourceType.Dog);
+                    stockpile(player, ItemResourceType.Hound);
                     content.newParagraph();
-                    stockpile(ItemResourceType.Pony);
-                    stockpile(ItemResourceType.Horse);
-                    stockpile(ItemResourceType.WarHorse);
-                    stockpile(ItemResourceType.DraftHorse);
+                    stockpile(player, ItemResourceType.Pony);
+                    stockpile(player, ItemResourceType.Horse);
+                    stockpile(player, ItemResourceType.WarHorse);
+                    stockpile(player, ItemResourceType.DraftHorse);
                     content.newParagraph();
-                    stockpile(ItemResourceType.WildPig);
-                    stockpile(ItemResourceType.WildHog);
-                    stockpile(ItemResourceType.WarHog);
-                    stockpile(ItemResourceType.StagHog);
+                    stockpile(player, ItemResourceType.WildPig);
+                    stockpile(player, ItemResourceType.WildHog);
+                    stockpile(player, ItemResourceType.WarHog);
+                    stockpile(player, ItemResourceType.StagHog);
                     content.newParagraph();
-                    stockpile(ItemResourceType.Wolf);
-                    stockpile(ItemResourceType.Warg);
-                    stockpile(ItemResourceType.AlphaWarg);
+                    stockpile(player, ItemResourceType.Wolf);
+                    stockpile(player, ItemResourceType.Warg);
+                    stockpile(player, ItemResourceType.AlphaWarg);
                     content.newParagraph();
-                    stockpile(ItemResourceType.WildCat);
-                    stockpile(ItemResourceType.Lion);
-                    stockpile(ItemResourceType.WarLion);
+                    stockpile(player, ItemResourceType.WildCat);
+                    stockpile(player, ItemResourceType.Lion);
+                    stockpile(player, ItemResourceType.WarLion);
                     content.newParagraph();
-                    stockpile(ItemResourceType.Elephant);
-                    stockpile(ItemResourceType.WarElephant);
-                    stockpile(ItemResourceType.Oliphant);
+                    stockpile(player, ItemResourceType.Elephant);
+                    stockpile(player, ItemResourceType.WarElephant);
+                    stockpile(player, ItemResourceType.Oliphant);
                     break;
             }
 
@@ -265,7 +265,7 @@ namespace VikingEngine.DSSWars.Resource
 
         }
 
-        void stockpile(ItemResourceType item)
+        void stockpile(LocalPlayer player, ItemResourceType item)
         {
             GroupedResource res;
             IconName.Item(item, out SpriteName itemIcon, out string itemName);
@@ -305,7 +305,7 @@ namespace VikingEngine.DSSWars.Resource
                     }
                     )));
 
-            content.space();
+            //content.space();
 
             for (StockpileLimitOption limit = 0; limit < StockpileLimitOption.NUM; limit++)
             {
@@ -357,14 +357,14 @@ namespace VikingEngine.DSSWars.Resource
                     case StockpileLimitOption.Zero:
                         buttonContent.Add(new RbText("0", numberCol));
                         break;
-                    case StockpileLimitOption.Value100:
-                        buttonContent.Add(new RbText(DssRef.lang.EngineHud_SymbolFor100, numberCol));
+                    //case StockpileLimitOption.Value200:
+                    //    buttonContent.Add(new RbText(DssRef.lang.EngineHud_SymbolFor100, numberCol));
+                    //    break;
+                    case StockpileLimitOption.Value200:
+                        buttonContent.Add(new RbText("2" + DssRef.lang.EngineHud_SymbolFor100, numberCol));
                         break;
-                    case StockpileLimitOption.Value500:
-                        buttonContent.Add(new RbText("5" + DssRef.lang.EngineHud_SymbolFor100, numberCol));
-                        break;
-                    case StockpileLimitOption.Value2000:
-                        buttonContent.Add(new RbText("2" + DssRef.lang.EngineHud_SymbolFor1000, numberCol));
+                    case StockpileLimitOption.Value4000:
+                        buttonContent.Add(new RbText("4" + DssRef.lang.EngineHud_SymbolFor1000, numberCol));
                         break;
 
                 }
@@ -389,6 +389,15 @@ namespace VikingEngine.DSSWars.Resource
                     new RbTooltip(limitTooltip, new LimitTooltipArgs() { limit = limit, res = res })));
             }
 
+            if (res.hasCesspit)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.KeyDelete)},
+                    new RbAction2Arg<LocalPlayer, ItemResourceType>(city.itemCesspitClick, player, item),
+                    new RbTooltip_Text(DssRef.todoLang.BuildingType_Cesspit))
+                { AddXRadius = -2 });
+                
+            }
             //stockPileEdit(content, item, res);
         }
 

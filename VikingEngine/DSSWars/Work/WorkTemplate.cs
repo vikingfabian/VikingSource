@@ -380,7 +380,7 @@ namespace VikingEngine.DSSWars.Work
             //    EightBit minterBools = new EightBit(r);
             //    minterBools.Get(out coinmaker_copper_fullStock, out coinmaker_bronze_fullStock, out coinmaker_silver_fullStock, out coinmaker_mithril_fullStock);
             //}
-
+            this.isCity = isCity;
 
             WorkPriority[] work = Work();
             int exEnd = resourceComponentStartIndex + COUNT;

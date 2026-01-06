@@ -132,6 +132,8 @@ namespace VikingEngine.DSSWars.Conscript
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
+            Debug.WriteCheck(w);
+
             w.Write((byte)active);
             profile.writeGameState(w);
             if (active != ConscriptActiveStatus.Idle)
@@ -159,10 +161,14 @@ namespace VikingEngine.DSSWars.Conscript
 
 
             new EightBit(requireMaxPopulation, requireMaxFood).write(w);
+
+            Debug.WriteCheck(w);
         }
 
         public void readGameState(System.IO.BinaryReader r, int subVersion)
         {
+            Debug.ReadCheck(r);
+
             active = (ConscriptActiveStatus)r.ReadByte();
             profile.readGameState(r);
             if (active != ConscriptActiveStatus.Idle)
@@ -187,26 +193,22 @@ namespace VikingEngine.DSSWars.Conscript
                     countdown.readGameState(r);
                     break;
             }
-            
-            if (subVersion >= 40)
-            {
-                type = (BuildAndExpandType)r.ReadByte();
-            }
+
+
+            type = (BuildAndExpandType)r.ReadByte();
+
             idAndPosition = r.ReadInt32();
             que = r.ReadByte();
 
-            if (subVersion >= 43)
-            {
-                maxTrainingLevel = (TrainingLevel)r.ReadByte();
-                //maxTrainingLevel = TrainingLevel.Skillful;
-            }
 
-            if (subVersion >= 60)
-            {
-                EightBit bools = EightBit.FromStream(r);
-                requireMaxPopulation = bools.Get(0);
-                requireMaxFood = bools.Get(1);
-            }
+            maxTrainingLevel = (TrainingLevel)r.ReadByte();
+            //maxTrainingLevel = TrainingLevel.Skillful;
+
+            EightBit bools = EightBit.FromStream(r);
+            requireMaxPopulation = bools.Get(0);
+            requireMaxFood = bools.Get(1);
+
+            Debug.ReadCheck(r);
         }
         public bool CountDownQue()
         {

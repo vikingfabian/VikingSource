@@ -16,9 +16,10 @@ namespace VikingEngine.DSSWars.EntityComponent
     enum StockpileLimitOption
     {
         Zero,
-        Value100,
-        Value500,
-        Value2000,
+        //Value100,
+        //Value500,
+        Value200,
+        Value4000,
         NoLimit,
         NUM
     }

@@ -1358,7 +1358,8 @@ namespace VikingEngine.DSSWars.Presentation
                 case TerrainBuildingType.ImmigrationTent:
                     return string.Format(DssRef.lang.BuildingType_ImmigrationTent_Description, DssConst.ImmigrantionTent_Capacity);
 
-                
+                case TerrainBuildingType.Cesspit:
+                    return DssRef.todoLang.BuildingType_Cesspit_Description;
 
                 default:
                     return TextLib.Error;

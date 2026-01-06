@@ -13,6 +13,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.PJ.Joust;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Stockpile
 {
@@ -23,11 +24,13 @@ namespace VikingEngine.DSSWars.Stockpile
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
+            w.Write(idAndPosition);
             w.Write((byte)type);
         }
 
         public void readGameState(System.IO.BinaryReader r, int subVersion)
         {
+            idAndPosition = r.ReadInt32();
             type = (ItemResourceType)r.ReadByte();
         }
     }
@@ -39,8 +42,8 @@ namespace VikingEngine.DSSWars.GameObject
    
     partial class City
     {
-        int selectedCessPit = -1;
-        StructList<CesspitStatus> cesspits = new StructList<CesspitStatus>(0);
+        public int selectedCessPit = -1;
+        public StructList<CesspitStatus> cesspits = new StructList<CesspitStatus>(0);
 
         public void cesspitToHud(LocalPlayer player, RichBoxContent content)
         {
@@ -53,6 +56,14 @@ namespace VikingEngine.DSSWars.GameObject
                         CesspitStatus currentStatus = cesspits.array[selectedCessPit];
                         //selected view
 
+                        HudLib.buildingMenuTitle(content, SpriteName.NO_IMAGE, DssRef.todoLang.BuildingType_Cesspit, currentStatus.idAndPosition,
+                            selectedCessPit, cesspits.Count,
+                            () => { selectedCessPit = -1; },
+                            (int next) => {
+                                selectedCessPit = Bound.SetRollover(selectedCessPit + next, 0, cesspits.Count - 1);
+                            });
+
+                        content.newParagraph();
                         option(ItemResourceType.NONE);
 
                         for (ResourceGroupType group = 0; group < ResourceGroupType.NUM; group++)
@@ -77,6 +88,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         if (cesspits.InBound(selectedCessPit))
                                         {
                                             cesspits.array[selectedCessPit].type = item;
+                                            refreshResourceCesspits();
                                         }
                                     }
                                 }, item), 
@@ -87,6 +99,8 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         bool hasAnySelected = false;
                         //list all
+                        content.h2(".Select building", HudLib.TitleColor_Action);
+
                         for (int i = 0; i < cesspits.Count; ++i)
                         {
                             ItemResourceType item = cesspits.array[i].type;
@@ -96,8 +110,9 @@ namespace VikingEngine.DSSWars.GameObject
                             content.newLine();
                             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                                 new RbImage(icon), new RbSpace(), new RbText(name),
-                            }, new RbAction1Arg<int>((int selectIndex)=> { selectedCessPit = selectIndex; }, i),
-                            null));
+                            }, new RbAction1Arg<int>((int selectIndex) => { selectedCessPit = selectIndex; }, i),
+                            null)
+                            { fillWidth = true });
                         }
 
                         content.newParagraph();
@@ -147,6 +162,11 @@ namespace VikingEngine.DSSWars.GameObject
                 content.space();
                 content.Add(new RbText(DssRef.todoLang.BuildingType_Cesspit));
             }
+
+            content.newLine();
+            content.text(".Destroy selected resurces that reach stockpile limit.", HudLib.InfoYellow_Light);
+            content.text(string.Format(".Convert {0}% to {1}", 10, DssRef.lang.Resource_TypeName_Fuel), HudLib.InfoYellow_Light);
+
         }
 
         void refreshResourceCesspits()
@@ -225,6 +245,19 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             return -1;
+        }
+
+        public void itemCesspitClick(LocalPlayer player, ItemResourceType item)
+        {
+            for (int i = 0; i < cesspits.Count; ++i)
+            {
+                if (cesspits.array[i].type == item)
+                {
+                    selectedCessPit = i;
+                    player.cityTab = MenuTab.CessPit;
+                    return;
+                }
+            }
         }
     }
 }

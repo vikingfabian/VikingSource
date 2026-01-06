@@ -140,6 +140,10 @@ namespace VikingEngine.DSSWars.Players
                                             case Map.TerrainBuildingType.BookPress:
                                                 selectTileResult = SelectTileResult.BookPress;
                                                 break;
+
+                                            case Map.TerrainBuildingType.Cesspit:
+                                                selectTileResult = SelectTileResult.CessPit;
+                                                break;
                                         }
                                         break;
 
@@ -339,6 +343,7 @@ namespace VikingEngine.DSSWars.Players
         ResearchCenter,
         BookPress,
         Wall,
+        CessPit,
         //Resources,
         
         Build,

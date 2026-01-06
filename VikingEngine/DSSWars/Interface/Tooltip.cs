@@ -343,6 +343,11 @@ namespace VikingEngine.DSSWars.Interface
                         content.Add(title);
                         break;
 
+                    case SelectTileResult.CessPit:
+                        title = new RbText(DssRef.todoLang.BuildingType_Cesspit);
+                        content.Add(title);
+                        break;
+
                     case Players.SelectTileResult.Conscript:
                         {
                             title = new RbText(DssRef.lang.Conscription_Title);
