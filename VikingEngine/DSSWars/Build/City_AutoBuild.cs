@@ -113,28 +113,33 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                int buildCount = lib.SmallestValue(AutoBuildList.Count, CityStructure.WorkInstance.EmptyLand.Count);
+                //int buildCount = lib.SmallestValue(AutoBuildList.Count, CityStructure.WorkInstance.EmptyLand.Count);
 
-                for (int i = 0; i < buildCount; ++i)
+                for (int i = 0; i < AutoBuildList.Count; ++i)
                 {
                     var buildType = AutoBuildList[i];
-                    
-                    var pos = CityStructure.WorkInstance.EmptyLand[i];
-                    if (this.buildingStructure.getCount(buildType) > 0)
+
+                    if (CityStructure.WorkInstance.NextEmptyLand(this, Ref.peRnd.Int(32), out var pos))//.EmptyLand[i];
                     {
-                        var prevPos = CityStructure.WorkInstance.buildingPosition.getPos(buildType);
-                        if (prevPos.X > 0)
+                        if (this.buildingStructure.getCount(buildType) > 0)
                         {
-                            findAdjacentFreeSpot(Auto_EdgeRandomizer, prevPos, ref pos);
+                            var prevPos = CityStructure.WorkInstance.buildingPosition.getPos(buildType);
+                            if (prevPos.X > 0)
+                            {
+                                findAdjacentFreeSpot(Auto_EdgeRandomizer, prevPos, ref pos);
+                            }
+                        }
+
+                        if (BuildLib.BuildOptions[(int)buildType].availableBlueprintResources(this) &&
+                            work_isFreeTile(pos))
+                        {
+                            workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.autoBuild.value, 0, 0));
                         }
                     }
-                    
-                    if (BuildLib.BuildOptions[(int)buildType].availableBlueprintResources(this) &&
-                        work_isFreeTile(pos))
+                    else
                     {
-                        workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.autoBuild.value, 0, 0));
+                        break;
                     }
-                    
                 }
             }
 

@@ -15,6 +15,7 @@ namespace VikingEngine.DSSWars.Map
     {
         public static readonly CityStructure WorkInstance = new CityStructure();
         public static readonly CityStructure AutomationInstance = new CityStructure();
+        ForXYEdgeLoopRandomPicker edgeRandomizer = new ForXYEdgeLoopRandomPicker();
 
         public List<IntVector2> FoodSpots_workupdate = new List<IntVector2>(4);
         public List<IntVector2> StoragePoints_workupdate = new List<IntVector2>(4);
@@ -27,7 +28,7 @@ namespace VikingEngine.DSSWars.Map
         public List<IntVector2> Mines = new List<IntVector2>(20);
         public List<IntVector2> CraftStation = new List<IntVector2>(20);
         public List<IntVector2> CoinMinting = new List<IntVector2>(2);
-        public List<IntVector2> EmptyLand = new List<IntVector2>(2);
+        //public List<IntVector2> EmptyLand = new List<IntVector2>(2);
         public List<IntVector2> ResourceOnGround = new List<IntVector2>(20);
 
         public List<IntVector2> WoodCutter = new List<IntVector2>(20);
@@ -187,6 +188,51 @@ namespace VikingEngine.DSSWars.Map
             return false;
         }
 
+        public bool NextEmptyLand(City city, int addSpaces, out IntVector2 freeSubTilePos)
+        {
+            freeSubTilePos = IntVector2.Zero;
+
+            int maxRadius = city.cityTileArea.size.SideLength();
+            for (int radius = 0; radius < maxRadius; ++radius)
+            {
+                //ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                edgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                while (edgeRandomizer.Next())
+                {
+                    if (DssRef.world.tileBounds.IntersectTilePoint(edgeRandomizer.Position))
+                    {
+                        if (DssRef.world.tileGrid.TryGet(edgeRandomizer.Position, out Tile tile))
+                        {
+                            if (tile.CityIndex == city.myIndex && tile.IsLand())
+                            {
+                                IntVector2 topleft = WP.ToSubTilePos_TopLeft(edgeRandomizer.Position);
+                                ForXYLoop subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+
+                                while (subTileLoop.Next())
+                                {
+                                    SubTile subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+                                    switch (subTile.mainTerrain)
+                                    {
+                                        case TerrainMainType.Destroyed:
+                                        case TerrainMainType.DefaultLand:
+                                            freeSubTilePos = subTileLoop.Position;
+                                            if (--addSpaces <= 0)
+                                            {   
+                                                return true;
+                                            }
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            
+            return freeSubTilePos.X > 0;
+        }
+
         public void update(City city, int workerCount, int emptyLandExpansions = 2)
         {
             //int emptyLandExpansions = 2;
@@ -204,7 +250,7 @@ namespace VikingEngine.DSSWars.Map
             Mines.Clear();
             CraftStation.Clear();
             CoinMinting.Clear();
-            EmptyLand.Clear();
+            //EmptyLand.Clear();
             ResourceOnGround.Clear();
             WoodCutter.Clear();
             StoneCutter.Clear();
@@ -613,7 +659,7 @@ namespace VikingEngine.DSSWars.Map
                                             else if (!emptyArea.IntersectTilePoint(subTileLoop.Position))
                                             {
                                                 --emptyLandExpansions;
-                                                EmptyLand.Add(subTileLoop.Position);
+                                                //EmptyLand.Add(subTileLoop.Position);
                                                 emptyArea.includeTileAndRadius(subTileLoop.Position, 3);
                                             }                                             
                                         }

@@ -1049,10 +1049,13 @@ namespace VikingEngine.DSSWars.GameObject
             structure.update(this, 32, FuelFarmCount);
             if (structure.fuelSpots <= 8)
             {
-                int count = Math.Min(structure.EmptyLand.Count, FuelFarmCount);
-                for (int i = 0; i < count; ++i)
+                //int count = Math.Min(structure.EmptyLand.Count, FuelFarmCount);
+                for (int i = 0; i < FuelFarmCount; ++i)
                 {
-                    BuildLib.TryAutoBuild(structure.EmptyLand[i], TerrainMainType.Foil, fuelType, Ref.peRnd.Int(1, TerrainContent.FarmCulture_MaxSize));
+                    if (structure.NextEmptyLand(this, Ref.peRnd.Int(64), out var freeSubTilePos))
+                    {
+                        BuildLib.TryAutoBuild(freeSubTilePos, TerrainMainType.Foil, fuelType, Ref.peRnd.Int(1, TerrainContent.FarmCulture_MaxSize));
+                    }
                 }
             }
         }
