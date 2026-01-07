@@ -178,6 +178,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (automationFocus)
             {
                 case AutomationFocus.Food:
+                    auto_addBuildingType(BuildAndExpandType.OrchidApple);
                     auto_addBuildingType(BuildAndExpandType.WheatFarm);
                     auto_addBuildingType(BuildAndExpandType.Cook);
                     auto_addBuildingType(BuildAndExpandType.CoalPit);
@@ -185,6 +186,7 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case AutomationFocus.Grow:
                     auto_addBuildingType(BuildAndExpandType.WorkerHut);
+                    auto_addBuildingType(BuildAndExpandType.OrchidApple);
                     auto_addBuildingType(BuildAndExpandType.WheatFarm);
                     auto_addBuildingType(BuildAndExpandType.WorkBench);
                     auto_addBuildingType(BuildAndExpandType.ServiceHouse_Small);

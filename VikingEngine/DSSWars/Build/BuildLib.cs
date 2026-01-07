@@ -652,11 +652,11 @@ namespace VikingEngine.DSSWars.Build
                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.OrchidApple, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeApple, SpriteName.WarsBuild_TreeApple, CraftBuildingLib.Orchid, false,
+            new BuildOption(BuildAndExpandType.OrchidApple, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeApple, SpriteName.WarsBuild_TreeApple, CraftBuildingLib.Orchid, true,
                 BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             
-            new BuildOption(BuildAndExpandType.OrchidBanana, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeBanana, SpriteName.WarsBuild_TreeBanana, CraftBuildingLib.Orchid, false,
+            new BuildOption(BuildAndExpandType.OrchidBanana, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeBanana, SpriteName.WarsBuild_TreeBanana, CraftBuildingLib.Orchid, true,
                 BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
