@@ -27,13 +27,13 @@ namespace VikingEngine.ToGG.HeroQuest.Data.LevelConditions
             flavorText(rb, "A band of goblin bandits is trying to steal the village's food supply.");
 
             missionObjectivesTitle(rb);
-            rb.Add(new RichBoxText("Defend the village for " + Turns.ToString() + " turns"));
-            rb.Add(new RichBoxNewLine());
+            rb.Add(new RbText("Defend the village for " + Turns.ToString() + " turns"));
+            rb.Add(new RbNewLine());
 
             specialConditionsTitle(rb);
-            rb.Add(new RichBoxImage(SpriteName.DoomSkull));
-            rb.Add(new RichBoxText(": If a goblin leaves the map with food"));
-            rb.Add(new RichBoxNewLine());
+            rb.Add(new RbImage(SpriteName.DoomSkull));
+            rb.Add(new RbText(": If a goblin leaves the map with food"));
+            rb.Add(new RbNewLine());
 
             //turns
             turnLimitText(rb);

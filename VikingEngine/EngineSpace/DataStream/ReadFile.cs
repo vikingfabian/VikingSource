@@ -18,7 +18,7 @@ namespace VikingEngine.DataStream
         public override void runQuedStorageTask()
         {
             base.runQuedStorageTask();
-            data = DataStreamHandler.Read(filePath);
+            data = FileToDiskManager.Read(filePath);
             //return true;
         }
         //public override void Time_Update(float time)

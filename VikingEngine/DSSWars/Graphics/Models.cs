@@ -1,15 +1,17 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Data;
-using VikingEngine.LootFest.Editor;
 using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars
@@ -17,14 +19,20 @@ namespace VikingEngine.DSSWars
    
     class Models
     {
-        public Dictionary<VoxelModelName, VoxelObjGridDataAnimHD> rawModels = new Dictionary<VoxelModelName, VoxelObjGridDataAnimHD>();
-        Dictionary<VoxelModelName, Graphics.VoxelModel> voxelModels = new Dictionary<VoxelModelName, Graphics.VoxelModel>();
         
+        public Dictionary<VoxelModelName, VoxelObjGridDataAnimHD> rawModels;
+        public Dictionary<VoxelModelName, Graphics.VoxelModel> voxelModels = new Dictionary<VoxelModelName, Graphics.VoxelModel>();
+
+        public Dictionary<VoxelModelName, WeaponModel> weaponModels;
+
         List<VoxelModelData> loadedData = new List<VoxelModelData>();
         bool asycTaskComplete = false;
 
         public Texture2D[] waterTextures;
-        
+        public Texture2D[] seaTextures;
+        //public Texture2D[] waterEdgeTextures;
+        public Stack<Mesh> shipWaveModels = new Stack<Mesh>(64);
+
         public Models()
         {
             DssRef.models = this;
@@ -35,8 +43,15 @@ namespace VikingEngine.DSSWars
             waterTextures = new Texture2D[4];
             for (int i = 1; i <= 4; ++i)
             {
-                waterTextures[i-1] = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "watertex_i" + i);
+                waterTextures[i - 1] = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "watertex_i" + i);
             }
+
+            seaTextures = new Texture2D[4];
+            for (int i = 1; i <= 4; ++i)
+            {
+                seaTextures[i - 1] = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "seatex_i" + i);
+            }
+
             //RAW
             List<VoxelModelName> loadRawModels = new List<VoxelModelName>
             {
@@ -46,25 +61,110 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.wars_captain,
 
                 VoxelModelName.banner,
+                VoxelModelName.wars_flag,
                 VoxelModelName.horsebanner,
                 VoxelModelName.armystand,
+                VoxelModelName.armystand_detail,
                 VoxelModelName.cityicon,
                 VoxelModelName.citybanner,
+
+                VoxelModelName.modsoldier_debug,
+                VoxelModelName.modsoldier_body1,
+                VoxelModelName.modsoldier_body_beef1,
+                VoxelModelName.modsoldier_body3lady,
+                VoxelModelName.modsoldier_face1,
+                VoxelModelName.modsoldier_face_orc,
+                VoxelModelName.modsoldier_face_skull,
+         
+                VoxelModelName.modsoldier_leg1,
+
+                VoxelModelName.modsoldier_larm_empty1,
+                VoxelModelName.modsoldier_larm_shield1,
+                VoxelModelName.modsoldier_rarm_sword1,
+                VoxelModelName.modsoldier_rarm_bow1v2,
+
+                VoxelModelName.modsoldier_larm_empty2naked,
+                VoxelModelName.modsoldier_larm_shield2naked,
+                VoxelModelName.modsoldier_rarm_sword2naked,
+                VoxelModelName.modsoldier_rarm_bow2naked,
+
+                VoxelModelName.modsoldier_addons,
+                VoxelModelName.modsoldier_face_access,
+                VoxelModelName.modsoldier_hat_soldier_all,
+                VoxelModelName.modsoldier_hat_custom_all,
+
+            };
+            rawModels = new Dictionary<VoxelModelName, VoxelObjGridDataAnimHD>(loadRawModels.Count);
+
+            List<VoxelModelName> loadWeaponModels = new List<VoxelModelName>
+            {
+                VoxelModelName.modweapon_sword1,
+                
+                
+                VoxelModelName.modweapon_blunderbuss,
+                VoxelModelName.modweapon_crossbow,
+                VoxelModelName.modweapon_culvertin,
+                VoxelModelName.modweapon_hammer,
+                VoxelModelName.modweapon_handcannon,
+                VoxelModelName.modweapon_javelin,
+                VoxelModelName.modweapon_longbow,
+                VoxelModelName.modweapon_mithrilbow,
+                VoxelModelName.modweapon_mithrilsword,
+                VoxelModelName.modweapon_rifle,
+                VoxelModelName.modweapon_sharpstick,
+                VoxelModelName.modweapon_shortbow,
+                VoxelModelName.modweapon_sling,
+                VoxelModelName.modweapon_spear,
+                VoxelModelName.modweapon_twohand,
+
+                VoxelModelName.modweapon_shortsword,
+                VoxelModelName.modweapon_longsword,
+                VoxelModelName.modweapon_bronzesword,
+
+                VoxelModelName.modshield_javelin,
+                VoxelModelName.modshield_roman,
+                VoxelModelName.modshield_knightsmallside,
             };
 
-            new AllUnits().AddModelsToLoad(loadRawModels);
+            weaponModels = new Dictionary<VoxelModelName, WeaponModel>(loadWeaponModels.Count);
+
+            var units = new AllUnits();
+            units.AddRawModelsToLoad(loadRawModels);
+
+            foreach (var model in units.AddUniqueModelsToLoad())
+            {
+                loadVoxelModel(model, false);
+            }
 
             foreach (var modelName in loadRawModels)
             {
                 DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
-                byte[] data = DataStream.DataStreamHandler.Read(path);
-                System.IO.MemoryStream s = new System.IO.MemoryStream(data);
-                System.IO.BinaryReader r = new System.IO.BinaryReader(s);
-                
-                var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
-                var result = new VoxelObjGridDataAnimHD(grids);
+                byte[] data = DataStream.FileToDiskManager.Read(path);
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        System.IO.MemoryStream s = new System.IO.MemoryStream(data);
+                        System.IO.BinaryReader r = new System.IO.BinaryReader(s);
 
-                rawModels.Add(modelName, result);
+                        var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
+                        var result = new VoxelObjGridDataAnimHD(grids);
+
+                        lock (rawModels)
+                        {
+                            rawModels.Add(modelName, result);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                });
+            }
+
+            foreach (var weaponName in loadWeaponModels)
+            {
+                weaponModels.Add(weaponName, new WeaponModel(weaponName));
             }
 
 
@@ -79,6 +179,7 @@ namespace VikingEngine.DSSWars
 
             loadVoxelModel(VoxelModelName.city_dirtwall, false);
             loadVoxelModel(VoxelModelName.city_dirttower, false);
+            loadVoxelModel(VoxelModelName.city_palisade, false);
             loadVoxelModel(VoxelModelName.city_woodwall, false);
             loadVoxelModel(VoxelModelName.city_woodtower, false);
             loadVoxelModel(VoxelModelName.city_stonewall, false);
@@ -86,6 +187,8 @@ namespace VikingEngine.DSSWars
 
             loadVoxelModel(VoxelModelName.city_stonehall, false);
             loadVoxelModel(VoxelModelName.city_workerhut, false);
+            loadVoxelModel(VoxelModelName.city_workerhut_long, false);
+            loadVoxelModel(VoxelModelName.city_guard_house, false);
             loadVoxelModel(VoxelModelName.city_pen, false);
 
             loadVoxelModel(VoxelModelName.city_cobblestone, false);
@@ -96,21 +199,31 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.city_tavern, false);
             loadVoxelModel(VoxelModelName.city_bank, false);
             loadVoxelModel(VoxelModelName.city_postal, false);
-            loadVoxelModel(VoxelModelName.city_recruitment, false);
+            //loadVoxelModel(VoxelModelName.city_recruitment, false);
             loadVoxelModel(VoxelModelName.city_barracks, false);
             loadVoxelModel(VoxelModelName.city_carpenter, false);
             loadVoxelModel(VoxelModelName.city_nobelhouse, false);
             loadVoxelModel(VoxelModelName.city_logistic, false);
-
+            loadVoxelModel(VoxelModelName.city_quarry, false);
+            loadVoxelModel(VoxelModelName.city_water, false);
+            loadVoxelModel(VoxelModelName.city_tent, false);
+            loadVoxelModel(VoxelModelName.city_research, false);
+           
             loadVoxelModel(VoxelModelName.decor_statue, false);
+            loadVoxelModel(VoxelModelName.city_flagpole, false);
             loadVoxelModel(VoxelModelName.city_pavement, false);
+            loadVoxelModel(VoxelModelName.city_garden, false);
 
             loadVoxelModel(VoxelModelName.Pig, false);
             loadVoxelModel(VoxelModelName.Hen, false);
+            loadVoxelModel(VoxelModelName.Pheasant, false);
             loadVoxelModel(VoxelModelName.Arrow, true);
+            loadVoxelModel(VoxelModelName.slingstone, true);
+            loadVoxelModel(VoxelModelName.boulder_proj, true);
             loadVoxelModel(VoxelModelName.little_javelin, true);
             loadVoxelModel(VoxelModelName.little_boltarrow, true);
             loadVoxelModel(VoxelModelName.war_cannonball, true);
+            loadVoxelModel(VoxelModelName.war_gunblast, true);
             loadVoxelModel(VoxelModelName.war_ballista_proj, true);
             loadVoxelModel(VoxelModelName.wars_loading_anim, true);
             loadVoxelModel(VoxelModelName.wars_shipbuild, true);
@@ -120,6 +233,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.horse_white, false);
             loadVoxelModel(VoxelModelName.wars_shipmelee, false);
             loadVoxelModel(VoxelModelName.buildarea, false);
+            loadVoxelModel(VoxelModelName.godfire, false);
             loadVoxelModel(VoxelModelName.wars_borderstick, false);
 
             foreach (var model in DetailMapTile.LoadModel())
@@ -134,13 +248,13 @@ namespace VikingEngine.DSSWars
                 float yAdjust = 0;
 
                 DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
-                byte[] data = DataStream.DataStreamHandler.Read(path);
+                byte[] data = DataStream.FileToDiskManager.Read(path);
                 System.IO.MemoryStream s = new System.IO.MemoryStream(data);
                 System.IO.BinaryReader r = new System.IO.BinaryReader(s);
 
                 Vector3 centerAdjust = new Vector3(0, yAdjust, 0);
 
-                List<VoxelObjGridDataHD> loadedFrames = LootFest.Editor.VoxelObjDataLoader.LoadVoxelObjGridHD(r);
+                List<VoxelObjGridDataHD> loadedFrames = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
 
                 if (centerY)
                     centerAdjust += loadedFrames[0].CenterAdj();
@@ -168,21 +282,63 @@ namespace VikingEngine.DSSWars
             }
             
         }
-
-        public Graphics.AbsVoxelObj ModelInstance(
-           VoxelModelName name,
-           float scale = 1f,
-           bool addToRender = true)
+        public void recycle(ref Graphics.VoxelModelInstance instance, bool detailLayer, bool allowRecycle = true)
         {
-            Graphics.VoxelModelInstance instance = new Graphics.VoxelModelInstance(null, addToRender);
-#if DEBUG
-            //Debug.CrashIfThreaded();
-            instance.DebugName = name.ToString();
 
-            if (!voxelModels.ContainsKey(name))
+            if (instance != null)
             {
-                lib.DoNothing();
+                if (detailLayer)
+                {
+                    //if (allowRecycle)
+                    //{
+                    //    instance.Visible = false;
+                    //    instance.Rotation = RotationQuarterion.Identity;
+                    //    DssRef.state.modelPool(detailLayer).Push(instance);
+                    //}
+                    
+                    instance.SetInRender(false);
+                }
+                else
+                {
+
+                    if (allowRecycle)
+                    {
+                        instance.Visible = false;
+                        instance.Rotation = RotationQuarterion.Identity;
+                        DssRef.state.modelPool(detailLayer).Push(instance);
+                    }
+                    else
+                    {
+                        instance.DeleteMe();
+                    }
+                }
             }
+            
+            instance = null;
+        }
+
+        public VoxelModelInstance_Pooled NextInstance_Pooled()
+        {
+            VoxelModelInstance_Pooled instance;
+            if (DssRef.state.voxelModelInstancesPooled.TryPop(out instance))
+            {
+                instance.Pool_Reset();
+            }
+            else
+            {
+                instance = new VoxelModelInstance_Pooled(true);
+            }
+            return instance;
+        }
+
+        public VoxelModelInstance_Pooled ModelInstance_drawbatch(
+            VoxelModelName name,
+            float scale = 1f)
+        {
+            VoxelModelInstance_Pooled instance = NextInstance_Pooled();
+           
+#if DEBUG
+            instance.DebugName = name.ToString();
 #endif
 
             Graphics.VoxelModel master = voxelModels[name];
@@ -192,61 +348,79 @@ namespace VikingEngine.DSSWars
                 instance.scale = VectorExt.V3(instance.SizeToScale * scale);
             }
 
+            Ref.draw.drawBatch.Add(instance.master.modelIndex, instance);               
+            
+            return instance;        
+        }
+
+        public Graphics.VoxelModelInstance ModelInstance(            
+            VoxelModelName name,
+            bool detailLayer,
+            float scale = 1f,
+            bool allowRecycle = true,
+            bool addToRender = true, 
+            bool async = false)
+        {
+            
+            Graphics.VoxelModelInstance instance;
+            if (allowRecycle && addToRender &&
+                DssRef.state.modelPool(detailLayer).TryPop(out instance))
+            {
+                instance.Visible = true;
+                instance.Frame = 0;
+                instance.SpottedArrayMemberIndex = -1;
+                instance.inPlayerCamera = EightBit.AllTrue;
+               
+            }
+            else
+            {
+                instance = new Graphics.VoxelModelInstance(null, false);
+                if (addToRender)
+                {                    
+                    if (!detailLayer)
+                    {
+                        int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.MidLayer;
+
+                        if (async)
+                        {
+                            Ref.update.AddSyncAction(new SyncAction1Arg<int>(instance.AddToRender, lay));
+                        }
+                        else
+                        {
+                            instance.AddToRender(lay);
+                        }
+                    }
+                }
+            }
+
+#if DEBUG
+            instance.DebugName = name.ToString();
+#endif
+
+            Graphics.VoxelModel master = voxelModels[name];
+            instance.SetMaster(master);
+            if (scale > 0)
+            {
+                instance.scale = VectorExt.V3(instance.SizeToScale * scale);
+            }
+
+            if (addToRender && detailLayer)
+            {
+                if (async)
+                {
+                    Ref.update.AddSyncAction(new SyncAction(() => {
+                        Ref.draw.drawBatch.Add(instance.master.modelIndex, instance);
+                    }));
+                }
+                else
+                {
+                    Ref.draw.drawBatch.Add(instance.master.modelIndex, instance);
+                }
+            }
+
             return instance;
         }
 
-        //public Graphics.AbsVoxelObj AutoLoadModelInstance(
-        //    VoxelModelName name,
-        //    float scale = 1f,
-        //    float yAdjust = 0f, bool centerY = false,
-        //    bool addToRender = true)
-        //{
-        //    Graphics.VoxelModelInstance instance = new Graphics.VoxelModelInstance(null, addToRender);
-
-        //}
-
-        //public VoxelObjGridDataAnimHD Get(VoxelModelName name, bool initiateLoading)
-        //{
-        //    VoxelObjGridDataAnimHD model = null;
-        //    lock (loaded)
-        //    {
-        //        loaded.TryGetValue(name, out model);
-        //    }
-
-        //    if (model == null && initiateLoading)
-        //    {
-        //        lock (loading)
-        //        {
-        //            if (!loading.Contains(name))
-        //            {
-        //                loading.Add(name);
-        //                new LoadRawModelTask(name);
-        //            }
-        //        }
-
-        //    }
-
-        //    return model;
-        //}
-
-        //public void onModelLoad_asynch(VoxelModelName name, VoxelObjGridDataAnimHD model)
-        //{
-        //    lock (loaded)
-        //    {
-        //        loaded.Add(name, model);
-        //    }
-        //    //lock (loading)
-        //    //{
-        //    //    loading.Remove(name);
-        //    //}
-
-        //    //var factions = DssRef.world.factions.counter();
-
-        //    //while (factions.Next())//var m in DssRef.state.players)
-        //    //{
-        //    //    factions.sel.OnRawModelLoaded_asynch(name, model);
-        //    //}
-        //}
     }
     class VoxelModelData
     {
@@ -272,58 +446,4 @@ namespace VikingEngine.DSSWars
         }
     }
 
-//    class LoadRawModelTask : DataLib.StorageTaskWithQuedProcess
-//    {
-//        VoxelModelName name;
-//        VoxelObjGridDataAnimHD result;
-//        public LoadRawModelTask(VoxelModelName name)
-//            : base(false, VoxelObjDataLoader.ContentPath(name), true)
-//        {
-//            this.name = name;
-//#if DEBUG
-//            System.Diagnostics.Debug.WriteLine("begin raw load: " + name);
-//#endif            
-//            beginAutoTasksRun();
-//        }
-
-//        public override void ReadStream(System.IO.BinaryReader r)
-//        {
-//#if DEBUG
-//            System.Diagnostics.Debug.WriteLine("begin raw read: " + name);
-//#endif 
-//            var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
-//            result = new VoxelObjGridDataAnimHD(grids);
-//#if DEBUG
-//            System.Diagnostics.Debug.WriteLine("end raw read: " + name);
-//#endif 
-//        }
-
-//        protected override void runQuedAsynchTask()
-//        {
-//#if DEBUG
-//            System.Diagnostics.Debug.WriteLine("begin raw asynch: " + name);
-//#endif 
-//            base.runQuedAsynchTask();
-//            DssRef.modelsRaw.onModelL
-//            oad_asynch(name, result);
-
-//#if DEBUG
-//            System.Diagnostics.Debug.WriteLine("end raw asynch: " + name);
-//#endif 
-//        }
-
-//        protected override void runQuedMainTask()
-//        {
-//#if DEBUG
-//            System.Diagnostics.Debug.WriteLine("raw main task: " + name);
-//#endif 
-//            base.runQuedMainTask();
-            
-//        }
-
-//        public override void Time_Update(float time_ms)
-//        {
-//            base.Time_Update(time_ms);
-//        }
-//    }
 }

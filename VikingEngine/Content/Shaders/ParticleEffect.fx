@@ -2,15 +2,15 @@
 // LightParticleEffect.fx
 //-----------------------------------------------------------------------------
 
-	#if OPENGL
-	#define SV_POSITION POSITION
-	#define VS_SHADERMODEL vs_3_0
-	#define PS_SHADERMODEL ps_3_0
-	#else
-	#define VS_SHADERMODEL vs_4_0_level_9_1
-	#define PS_SHADERMODEL ps_4_0_level_9_1
-	#endif
-// Camera parameters.
+#if OPENGL
+#define SV_POSITION POSITION
+#define VS_SHADERMODEL vs_3_0
+#define PS_SHADERMODEL ps_3_0
+#else
+#define VS_SHADERMODEL vs_4_0_level_9_1
+#define PS_SHADERMODEL ps_4_0_level_9_1
+#endif
+
 float4x4 View;
 float4x4 Projection;
 float2 ViewportScale;
@@ -79,30 +79,26 @@ struct VertexShaderOutput
 float4 ComputeParticlePosition(float3 position, float3 velocity,
                                float age, float normalizedAge)
 {
-    float startVelocity = length(velocity);
+    // Speed and direction (safe)
+    float speed2 = dot(velocity, velocity);
+    float speed = sqrt(speed2);
+    float3 dir = (speed2 > 1e-8f) ? (velocity * rsqrt(speed2)) : float3(0, 0, 0);
 
-    // Work out how fast the particle should be moving at the end of its life,
-    // by applying a constant scaling factor to its starting velocity.
-    float endVelocity = startVelocity * EndVelocity;
-    
-    // Our particles have constant acceleration, so given a starting velocity
-    // S and ending velocity E, at time T their velocity should be S + (E-S)*T.
-    // The particle position is the sum of this velocity over the range 0 to T.
-    // To compute the position directly, we must integrate the velocity
-    // equation. Integrating S + (E-S)*T for T produces S*T + (E-S)*T*T/2.
+    // End speed and integrated displacement under constant accel
+    float endSpeed = speed * EndVelocity;
+    float velocityIntegral = speed * normalizedAge +
+                             (endSpeed - speed) * (normalizedAge * normalizedAge * 0.5f);
 
-    float velocityIntegral = startVelocity * normalizedAge +
-                             (endVelocity - startVelocity) * normalizedAge *
-                                                             normalizedAge / 2;
-     
-    position += normalize(velocity) * velocityIntegral * Duration;
-    
-    // Apply the gravitational force.
+    // Displacement along direction (zero if speed==0)
+    position += dir * velocityIntegral * Duration;
+
+    // Gravity term
     position += Gravity * age * normalizedAge;
-    
-    // Apply the camera view and projection transforms.
+
+    // View-projection
     return mul(mul(float4(position, 1), View), Projection);
 }
+
 
 
 // Vertex shader helper for computing the size of a particle.
@@ -188,16 +184,6 @@ VertexShaderOutput ParticleVertexShader(VertexShaderInput input)
 // Pixel shader for drawing particles.
 float4 ParticlePixelShader(VertexShaderOutput input) : COLOR0
 {
-	//float4 outCol = tex2D(Sampler, input.TextureCoordinate);
-	//if (outCol.a  < 1)
-	//{
-		//outCol.r *= outCol.a;		
-		//outCol.g *= outCol.a;		
-		//outCol.b *= outCol.a;
-		
- 	//	clip(outCol.a - 0.3);
-	//}
-	//return outCol;
     return tex2D(Sampler, input.TextureCoordinate) * input.Color;
 }
 

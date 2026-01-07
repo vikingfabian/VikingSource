@@ -19,8 +19,23 @@ namespace VikingEngine.HUD.RichBox
 
 
         public SpriteName checkOn, checkOff;
+        public SpriteName optionOn, optionOff;
 
         public float breadIconHeight, titleIconHeight;
+
+        public NineSplitSettings artPrimaryButtonTex;
+        public NineSplitSettings artSecondaryButtonTex;
+        public NineSplitSettings artGodPowerButtonTex;
+        public NineSplitSettings artOutlineButtonTex;
+        public NineSplitSettings artCheckButtonTex;
+        public NineSplitSettings artOptionButtonTex;
+        public NineSplitSettings artToggleButtonTex;
+        public NineSplitSettings artDropDownButtonTex;
+        public NineSplitSettings artTabTex;
+        public NineSplitSettings artSubTabTex;
+        public NineSplitSettings artHoverAreaTex;
+        public ThreeSplitSettings dragButtonTex;
+        public NineSplitSettings windowBackground;
 
         public RichBoxSettings(TextFormat breadText, TextFormat button, float iconHeight, float TitleSizeUp = 1.2f)
         {

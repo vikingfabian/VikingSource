@@ -87,7 +87,7 @@ namespace VikingEngine.LootFest.Display
             {
                 if (visible)
                 {
-                    lockModel = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.area_lock, 2f, 0f, true);
+                    lockModel = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 2f, 0f, true);
                     Map.WorldPosition.Rotation1DToQuaterion(lockModel, teleport.Rotation.Radians + MathHelper.Pi);
                 }
             }

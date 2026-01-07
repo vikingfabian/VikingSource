@@ -133,24 +133,33 @@ namespace VikingEngine
         /// </summary>
         public bool Next()
         {
-            Position += stepDirOrder[stepDir];//IntVector2.From4Dirs[(int)stepDir];
-            if (--stepsLeft <= 0)
+            if (area.size == IntVector2.One)
             {
-                if (++stepDir >= 4)
+                Position = area.pos;
+                --stepsLeft;
+                return stepsLeft >= 0;
+            }
+            else
+            {
+                Position += stepDirOrder[stepDir];//IntVector2.From4Dirs[(int)stepDir];
+                if (--stepsLeft <= 0)
                 {
-                    stepDir = 0;
+                    if (++stepDir >= 4)
+                    {
+                        stepDir = 0;
+                    }
+                    stepsLeft = ((stepDir == 1 || stepDir == 3) ? area.Height : area.Width) - 1;
                 }
-                stepsLeft = ((stepDir == 1 || stepDir ==  3)?  area.Height : area.Width) - 1;
-            }
 
-            if (!loopHasStarted)
-            {
-                start = Position;
-                loopHasStarted =true;
-                return true;   
-            }
+                if (!loopHasStarted)
+                {
+                    start = Position;
+                    loopHasStarted = true;
+                    return true;
+                }
 
-            return Position != start;
+                return Position != start;
+            }
         }
 
         public void RandomPosition(bool prepareLoop)

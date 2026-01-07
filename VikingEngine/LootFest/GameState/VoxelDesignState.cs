@@ -1,37 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using VikingEngine.Engine;
-using VikingEngine.Graphics;
+﻿//using System;
+//using System.Collections.Generic;
+//using Microsoft.Xna.Framework;
+//using Microsoft.Xna.Framework.Graphics;
+//using VikingEngine.Engine;
 
-namespace VikingEngine.LootFest.GameState
-{
-    class VoxelDesignState : Voxels.AbsVoxelDesignerState
-    {
-        Editor.VoxelDesigner vDesigner;
-        public VoxelDesignState(int player)
-            : base(true)
-        {
-            vDesigner = new Editor.VoxelDesigner(player);
-            init(vDesigner);
-        }
+//using VikingEngine.Graphics;
+//using VikingEngine.Voxels;
 
-        //public VoxelDesignState(int player, LootFest.Map.Terrain.HandMadeTerrainMaster editTerrain)
-        //    : base(false)
-        //{
-        //    vDesigner = new Editor.VoxelDesigner(player, editTerrain);
-        //    init(vDesigner);
-        //}
+//namespace VikingEngine.LootFest.GameState
+//{
+//    class VoxelDesignState : Voxels.AbsVoxelDesignerState
+//    {
+//        VoxelDesigner vDesigner;
+//        public VoxelDesignState(int player)
+//            : base(true)
+//        {
+//            vDesigner = new VoxelDesigner(player);
+//            init(vDesigner);
+//        }
 
-        void init(Editor.VoxelDesigner vDesigner)
-        {
-            Input.Mouse.Visible = false;
-            desinger = vDesigner;
-            Ref.draw.ClrColor = Color.CornflowerBlue;
-        }
-
-
-        
-    }
-}
+//        void init(VoxelDesigner vDesigner)
+//        {
+//            Input.Mouse.Visible = false;
+//            desinger = vDesigner;
+//            Ref.draw.ClrColor = Color.CornflowerBlue;
+//        }
+//    }
+//}

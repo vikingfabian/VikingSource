@@ -49,14 +49,14 @@ namespace VikingEngine.LootFest
                 //DrawGenerated(1, cameraIndex); //water
 
                 // TODO(Martin): Fix this code
-                if (DebugSett.Debug3DParticles)
-                {
-                    // TODO(Martin): This only works for in single client mode
-                    instancing.Draw(ref Camera.ViewMatrix, ref Camera.Projection);
-                }
+                //if (DebugSett.Debug3DParticles)
+                //{
+                //    // TODO(Martin): This only works for in single client mode
+                //    instancing.Draw(ref Camera.ViewMatrix, ref Camera.Projection);
+                //}
                 // NOTE(Martin): Ends here
 
-                Engine.ParticleHandler.Draw();
+                Engine.ParticleHandler.Draw(Camera);
                 
                 Camera.SetPersonVisible(true);
             }

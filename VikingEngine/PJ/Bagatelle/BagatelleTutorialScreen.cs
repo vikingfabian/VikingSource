@@ -20,7 +20,7 @@ namespace VikingEngine.PJ.Bagatelle
             {
                 Ref.netSession.BeginWritingPacket(Network.PacketType.birdBeginLoadScreen, Network.PacketReliability.Reliable);
             }
-            Input.Mouse.Visible = false;
+            Input.Mouse.Hide();//Input.Mouse.Visible = false;
 
             this.joinedLocalGamers = joinedGamers;
            
@@ -33,10 +33,10 @@ namespace VikingEngine.PJ.Bagatelle
             Microsoft.Xna.Framework.Media.MediaPlayer.Stop();
             Ref.music.SetPlaylist(new List<Sound.SongData>
                 {
-                    new Sound.SongData(PjLib.MusicFolder + "AgriculturalHuts", "Agricultural Huts", true, MusicVol),
-                    new Sound.SongData(PjLib.MusicFolder + "BunnyMassacre", "Bunny Massacre", true, MusicVol),
-                    new Sound.SongData(PjLib.MusicFolder + "Endless Plains", "Endless Plains", true, MusicVol),
-                    new Sound.SongData(PjLib.MusicFolder + "Mysterious Grotto","Mysterious Grotto", false, 1.6f * MusicVol),
+                    new Sound.SongData(PjLib.MusicFolder + "AgriculturalHuts", "Agricultural Huts", null, true, MusicVol),
+                    new Sound.SongData(PjLib.MusicFolder + "BunnyMassacre", "Bunny Massacre", null, true, MusicVol),
+                    new Sound.SongData(PjLib.MusicFolder + "Endless Plains", "Endless Plains", null, true, MusicVol),
+                    new Sound.SongData(PjLib.MusicFolder + "Mysterious Grotto","Mysterious Grotto", null, false, 1.6f * MusicVol),
                 }, false);
 
             if (ViewTimes == 0)

@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RollForward>Major</RollForward>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
@@ -58,18 +58,25 @@
     <Optimize>True</Optimize>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Content\DSS\Map\**" />
     <Compile Remove="LF2\**" />
+    <EmbeddedResource Remove="Content\DSS\Map\**" />
     <EmbeddedResource Remove="LF2\**" />
+    <None Remove="Content\DSS\Map\**" />
     <None Remove="LF2\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="DSSWars\Display\Translation\Swedish.cs" />
-    <Compile Remove="EngineSpace\HUD\Translation\OptionsLanguage_Swedish.cs" />
+    <Compile Remove="DSSWars\Presentation\Swedish.cs" />
+    <Compile Remove="EngineSpace\Translation\OptionsLanguage_Swedish.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Content\DSS\Music\Endless Plains.mp3" />
     <None Remove="Content\Modding\ModConst.txt" />
+    <None Remove="Content\Shaders\OceanEffect.fx" />
+    <None Remove="Content\Shaders\OceanShaderTest.fx" />
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
+    <None Remove="VikingEngine-linux-x64.tar.gz" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Content\Modding\ModConst.txt" />
@@ -88,10 +95,23 @@
 	</EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.3" />
+    <PackageReference Include="NVorbis" Version="0.10.5" />
+    <PackageReference Include="Sentry" Version="5.7.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\..\..\monogame\MonoGame\MonoGame.Framework\obj\DesktopGL\Release\MonoGame.Framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <PropertyGroup>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+</PropertyGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />
     <Exec Command="dotnet tool restore" />

@@ -27,16 +27,16 @@ namespace VikingEngine.LootFest.Players
         public Players.ShieldType shieldType = ShieldType.Round1;
         public bool UseCape = false;
         
-        public ushort SkinColor = BlockHD.ToBlockValue(new Color(255,215,171), BlockHD.UnknownMaterial);
-        public ushort ClothColor = BlockHD.ToBlockValue(Color.DarkBlue, BlockHD.UnknownMaterial);//(byte)Data.MaterialType.dark_blue_violet;
-        public ushort hairColor = BlockHD.ToBlockValue(Color.Brown, BlockHD.UnknownMaterial);//(byte)Data.MaterialType.dark_warm_brown;
-        public ushort BeardColor = BlockHD.ToBlockValue(Color.RosyBrown, BlockHD.UnknownMaterial);//(byte)Data.MaterialType.dark_warm_brown;
-        public ushort PantsColor = BlockHD.ToBlockValue(Color.DarkOliveGreen, BlockHD.UnknownMaterial);//(byte)Data.MaterialType.dark_yellow;
-        public ushort ShoeColor = BlockHD.ToBlockValue(Color.SaddleBrown, BlockHD.UnknownMaterial);//(byte)Data.MaterialType.darker_warm_brown;
+        public ushort SkinColor = BlockHD.ToBlockValue(new Color(255,215,171), BlockHD.DefaultMaterial);
+        public ushort ClothColor = BlockHD.ToBlockValue(Color.DarkBlue, BlockHD.DefaultMaterial);//(byte)Data.MaterialType.dark_blue_violet;
+        public ushort hairColor = BlockHD.ToBlockValue(Color.Brown, BlockHD.DefaultMaterial);//(byte)Data.MaterialType.dark_warm_brown;
+        public ushort BeardColor = BlockHD.ToBlockValue(Color.RosyBrown, BlockHD.DefaultMaterial);//(byte)Data.MaterialType.dark_warm_brown;
+        public ushort PantsColor = BlockHD.ToBlockValue(Color.DarkOliveGreen, BlockHD.DefaultMaterial);//(byte)Data.MaterialType.dark_yellow;
+        public ushort ShoeColor = BlockHD.ToBlockValue(Color.SaddleBrown, BlockHD.DefaultMaterial);//(byte)Data.MaterialType.darker_warm_brown;
         
         public byte CapeColor = (byte)Data.MaterialType.pastel_red_orange;
-        public ushort BeltColor = BlockHD.ToBlockValue(Color.DarkGray, BlockHD.UnknownMaterial);//(byte)Data.MaterialType.darker_warm_brown;
-        public ushort BeltBuckleColor = BlockHD.ToBlockValue(Color.Orange, BlockHD.UnknownMaterial);//(byte)Data.MaterialType.pastel_blue_violet;
+        public ushort BeltColor = BlockHD.ToBlockValue(Color.DarkGray, BlockHD.DefaultMaterial);//(byte)Data.MaterialType.darker_warm_brown;
+        public ushort BeltBuckleColor = BlockHD.ToBlockValue(Color.Orange, BlockHD.DefaultMaterial);//(byte)Data.MaterialType.pastel_blue_violet;
 
         public byte ShieldMainColor = (byte)Data.MaterialType.dark_yellow_orange;
         public byte ShieldDetailColor = (byte)Data.MaterialType.darker_red_orange;

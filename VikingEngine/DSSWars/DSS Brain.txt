@@ -1,82 +1,66 @@
-﻿-Change Log-
-* Full translation
-* Water/diplomacy description
+﻿UPDATE
+Change Log: 
+* 
 
-#Todo (xmas patch)#
+#Event timers (are slightly random)#
+- Bot delay: 8 minutes
+- Bot peace time: 30 min
+- The first attack: 35min
+- War manager start: 40min
+- Barbarians: 1.5 hours
+- Mercenaries: 4 hours (total 7 hours by now)
+- The cohalition: 6 hours (or when the player grabs 5 to 7 cities)
+- Boss warning: 12 hours
+- Boss; 1 hour
+Plus the boss fight: about 10 hours
+(total: about 45 hours)
 
-
-
---Efter release polish--
--war icon
-pilar med resurser från delivery
-Factories modeller
-city economy
-visa antal byggnader i bygg meny
-menu scroll
-
-Error
--back button in menues 
-
-Retreat system
--retreat av de sista motståndarna
--light taunt units (slingers, light cavalry)
--reassemble av flydd arme
-
-
-Polish
-- full auto option
-
--döda av faktion som bara har en soldat kvar
--Missing file error på load
--(mercenaries cost increase bort)
--cost mercenaries på tooltip
--I should improve the diplomacy so peace agreements are shared with allies
--större radie på köpa till armeer
--attack warning -Battle notification
--diplomacy toggle/relation heatmap/units
--AI sök fiende armeer som passerar
--krig icon på karta
--the horses dont load when paused, plus rotation error
--dölj move path OnHud 
--attack ally yes/no warning
-
-#Art
-
-
-#Voxel
-/logistic overseer, +lvl 2
-/farm plus tool shed
-/smelter
-/manuballista, /cannons, /hand cannon, /slinger, /long sword, /mithril user, /warhammer
-/stone cutter, wood cutter
-/water resovoir
-/Embassy
-/delivery lvl2/3
-/knight barrack
-/barrack in use, melee/range/siege
-/mines
-/chemestry
-/Foundry (gjuteri)
-/cast iron
-/-lvl2 gun powder (beer chemist) Black powder/ gunpowder
 #current
-English, Simplified Chinese, Japanese, Russian, Spanish
+English, Simplified Chinese, Korean, Japanese, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian
+
+Fully translate all the strings in the file to Brazilian Portuguese and save into a new file, that I can download. Translate all of them, do not stop.
+Brazilians are used to English in gaming, use a “hybrid” translation.
+Use an accessable language, that doesnt use very niche words, so the translation feels natural and player-friendly.
+The game is a strategy wargame, with medieval and low fantasy theme.
+
+Where English is used in gaming, use a “hybrid” translation.
 
 
-#Todo (DSS 2)#
-1. better presentation
-2. 100 hour playtime
-3. maybe multiplayer
+##
+Translate all strings to French.
+Use an accessable language, that doesnt use very niche words, so the translation feels natural and player-friendly.
+The game is a strategy wargame, with medieval and low fantasy theme.
+Where English is used in gaming, use a “hybrid” translation.
 
--Free build of city walls, towers
--Better looking start cities
--Nicer menu
--Dynamic shadows shader
--New end boss
--Lots of named factions
--Are you strongly opposed to showing building counts per town or production outputs
+https://discord.com/verification
+
+Pigeon bombs
+https://discord.com/channels/405016249127665664/405016249660211213/1398608516767420548
 
 
 
+#Shaders
+Dimma
+https://www.shadertoy.com/view/4ltcRB
+
+Most of what I use can be found here: 
+https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping 
+
+#Export
+cd VikingEngine
+dotnet publish -c Release -r win-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained
+
+old:
+dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+
+#LINUX
+dotnet publish -c Release -r linux-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained
+
+(högerklick i Publish "open git bash here")
+chmod +x VikingEngine
+
+tar -czf VikingEngine-linux-x64.tar.gz -C bin/Release/net8.0/linux-x64/publish .
+(hamnar i Repo\VikingSource\VikingEngine)
 
 
+"cross of SIM City & RTSs and Hearts of Iron IV"

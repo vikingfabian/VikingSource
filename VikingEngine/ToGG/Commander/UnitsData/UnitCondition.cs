@@ -33,7 +33,7 @@ namespace VikingEngine.ToGG.Commander.UnitsData
         public override string Name => "Open taget";
         public override UnitPropertyType Type => UnitPropertyType.OpenTarget;
 
-        public override string Desc => string.Format("+{0} chance to hit. Removed after one turn.", TextLib.PercentText(AddChanceToHit)); //Open target efter attack
+        public override string Desc => string.Format("+{0} chance to hit. Removed after one turn.", TextLib.PercentTextWithSymbol(AddChanceToHit)); //Open target efter attack
              
         public override void OnEvent(EventType eventType, bool local, object tag, AbsUnit parentUnit)
         {

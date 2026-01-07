@@ -33,17 +33,19 @@ namespace VikingEngine
             StartProgram.LootFest3;
 #endif
 
-        public static readonly bool Debug_SteamAPI = false;
+        public static readonly bool Debug_SteamAPI = true;
+
+        public static readonly bool Debug_SteamStats = false;
 
         public static readonly bool Debug_AllowDisconnect = false;
 
-        public const bool Debug_HideMouse = false;
+        public const bool Debug_HideMouse = true;
 
         static readonly bool Debug_PlayMusic = true;
 
-        const bool Debug_StartLiveConnection = true;
+        //const bool Debug_StartLiveConnection = true;
 
-        static readonly bool Debug_AutoJoinNetSession = true;
+        static readonly bool Debug_AutoJoinNetSession = false;
 
         const bool Debug_TravelEverywhere = true;
 
@@ -79,6 +81,8 @@ namespace VikingEngine
 
         public const int SteamNetworkVersion = 101; //fungerar som nätverks spärr mellan versioner
 
+        
+
         public static readonly bool RunningWindows =
 #if PCGAME
             true;
@@ -104,9 +108,9 @@ namespace VikingEngine
 
         public static readonly bool PC_platform = TargetPlatform == ReleasePlatform.PC;
 
-        public const bool PCTrial =
-#if PCGAME
-            false;
+        public static bool STEAM_DEMO =
+#if DEMO
+            true;
 #else
             false;//DONT CHANGE
 #endif
@@ -140,8 +144,8 @@ namespace VikingEngine
         public static bool PlayMusic =
             DebugLevel >= BuildDebugLevel.ShowDemo ? LockedToTrue : Debug_PlayMusic;
 
-        public static readonly bool StartLiveConnection =
-            DebugLevel >= BuildDebugLevel.Release ? LockedToTrue : Debug_StartLiveConnection;
+        //public static readonly bool StartLiveConnection =
+        //    DebugLevel >= BuildDebugLevel.Release ? LockedToTrue : Debug_StartLiveConnection;
 
         public static readonly bool AutoJoinNetSession =
             DebugLevel != BuildDebugLevel.Dev ? LockedToFalse : Debug_AutoJoinNetSession;
@@ -161,10 +165,11 @@ namespace VikingEngine
         public static readonly bool ViewCollisionBounds =
           DebugLevel != BuildDebugLevel.Dev ? LockedToFalse : Debug_ViewCollisionBounds;
 
-        public static readonly bool Demo =
-            DebugLevel == BuildDebugLevel.DebugDemo ||
-            DebugLevel == BuildDebugLevel.PublicDemo || 
-            DebugLevel == BuildDebugLevel.ShowDemo;
+        public static readonly bool OnlineMultiplayer = false;
+        //public static readonly bool Demo =
+        //    DebugLevel == BuildDebugLevel.DebugDemo ||
+        //    DebugLevel == BuildDebugLevel.PublicDemo || 
+        //    DebugLevel == BuildDebugLevel.ShowDemo;
 
         /// <summary>
         /// Will make a delay when accessing files on the computer
@@ -198,7 +203,7 @@ namespace VikingEngine
             {
                 if (Engine.LoadContent.SteamVersion == null)
                     return "Unknown Version";
-                else if (PlatformSettings.Demo)
+                else if (PlatformSettings.STEAM_DEMO)
                     return "Demo v. " + Engine.LoadContent.SteamVersion;
                 else
                     return "Version " + Engine.LoadContent.SteamVersion;

@@ -43,12 +43,16 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 model.Frame = currentFrame;
+                if (lib.IsEven(currentFrame) && Ref.peRnd.ChanceF_Low(0.04f))
+                {
+                    SoundLib.footstep.Play(model.position);
+                }
             }
         }
 
         public void randomStartFrame()
         {
-            currentFrame = Ref.rnd.Int(startframe, endFrame + 1);
+            currentFrame = Ref.peRnd.Int(startframe, endFrame + 1);
         }
     }
 }

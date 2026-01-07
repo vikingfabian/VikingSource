@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+
 using VikingEngine.Graphics;
 using VikingEngine.Voxels;
 
@@ -153,7 +154,7 @@ namespace VikingEngine.LootFest.Data
 
         public WaitingToAutoLoad(VoxelModelName name, Graphics.AbsVoxelModelInstance instance,
             float scale, float yAdjust, bool centerY)
-            : base(false, Editor.VoxelObjDataLoader.ContentPath(name), true)
+            : base(false, VoxelObjDataLoader.ContentPath(name), true)
         {
             this.yAdjust = yAdjust;
             this.centerY = centerY;
@@ -178,7 +179,7 @@ namespace VikingEngine.LootFest.Data
 #endif 
             Vector3 centerAdjust = new Vector3(0, yAdjust, 0);
 
-            List<VoxelObjGridDataHD> loadedFrames = LootFest.Editor.VoxelObjDataLoader.LoadVoxelObjGridHD(r);
+            List<VoxelObjGridDataHD> loadedFrames = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
             
             if (centerY)
                 centerAdjust += loadedFrames[0].CenterAdj();
@@ -187,7 +188,7 @@ namespace VikingEngine.LootFest.Data
 
             gridSz = loadedFrames[0].Size;
 
-            verticeData = Editor.VoxelObjBuilder.BuildVerticesHD(loadedFrames, centerAdjust, out framesData);
+            verticeData = VoxelObjBuilder.BuildVerticesHD(loadedFrames, centerAdjust, out framesData);
 
 #if DEBUG
             System.Diagnostics.Debug.WriteLine("end vox read: " + name);
@@ -205,7 +206,7 @@ namespace VikingEngine.LootFest.Data
 #endif 
             base.runSyncAction();
 
-            Graphics.VoxelModel master = Editor.VoxelObjBuilder.BuildModelHD(verticeData, gridSz, framesData);
+            Graphics.VoxelModel master = VoxelObjBuilder.BuildModelHD(verticeData, gridSz, framesData);
 
 
             LfRef.modelLoad.ModelDoneAutoLoading(name, master);

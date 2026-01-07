@@ -50,7 +50,7 @@ namespace VikingEngine.ToGG.HeroQuest
                     var opt = surgeOptions[i];
                     List<HUD.RichBox.AbsRichBoxMember> label = new List<HUD.RichBox.AbsRichBoxMember>(8);
                     opt.addConvertIcons(label);
-                    label.Add(new HUD.RichBox.RichBoxText("to " + opt.Name));
+                    label.Add(new HUD.RichBox.RbText("to " + opt.Name));
 
                     convertSurgesOptions.addOption(opt, label, null);
 
@@ -97,18 +97,18 @@ namespace VikingEngine.ToGG.HeroQuest
                             {
                                 arrowOptions.addOption(null, new List<HUD.RichBox.AbsRichBoxMember>
                                 {
-                                    new HUD.RichBox.RichBoxImage(arrows.sel.Icon),
-                                    new HUD.RichBox.RichBoxText(arrows.sel.Name),
+                                    new HUD.RichBox.RbImage(arrows.sel.Icon),
+                                    new HUD.RichBox.RbText(arrows.sel.Name),
                                 }, null);
                             }
                             else
                             {
                                 List<HUD.RichBox.AbsRichBoxMember> members = new List<HUD.RichBox.AbsRichBoxMember>();
-                                members.Add(new HUD.RichBox.RichBoxImage(arrows.sel.Icon));
-                                members.Add(new HUD.RichBox.RichBoxImage(SpriteName.cmdConvertArrow, HudLib.ConvertArrowScale));
+                                members.Add(new HUD.RichBox.RbImage(arrows.sel.Icon));
+                                members.Add(new HUD.RichBox.RbImage(SpriteName.cmdConvertArrow, HudLib.ConvertArrowScale));
 
                                 members.AddRange(arrows.sel.DescriptionIcons());
-                                members.Add(new HUD.RichBox.RichBoxText(
+                                members.Add(new HUD.RichBox.RbText(
                                     arrows.sel.Name + TextLib.Parentheses(arrows.sel.count.ToString(), true)));
                                 
                                 arrowOptions.addOption(arrows.sel, members,
@@ -223,10 +223,10 @@ namespace VikingEngine.ToGG.HeroQuest
         {
             List<HUD.RichBox.AbsRichBoxMember> richBox = new List<HUD.RichBox.AbsRichBoxMember>();
 
-            richBox.Add(new HUD.RichBox.RichBoxText(
+            richBox.Add(new HUD.RichBox.RbText(
                 "Spend " + display.staminaAttackBoost.addCost().ToString() + 
                 " stamina to add 1 attack dice"));
-            richBox.Add(new HUD.RichBox.RichBoxNewLine(true));
+            richBox.Add(new HUD.RichBox.RbNewLine(true));
 
             display.attackRoll.attacker.staminaToRichbox(richBox);
            

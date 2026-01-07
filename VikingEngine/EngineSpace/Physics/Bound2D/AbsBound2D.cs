@@ -52,9 +52,9 @@ namespace VikingEngine.Physics
         
         abstract public AbsBound2D Clone();
 
-        public bool AsynchCollect(AbsBound2D otherBound)
+        public bool AsynchCollect(AbsBound2D otherBound, float extraDistance = 1.2f)
         {
-            float r = (ExtremeRadius + otherBound.ExtremeRadius) * 1.2f;
+            float r = (ExtremeRadius + otherBound.ExtremeRadius) * extraDistance;
             float l = (otherBound.Center - Center).Length();
 
             return l < r;

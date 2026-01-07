@@ -142,7 +142,7 @@ namespace VikingEngine.Engine
             //{
             //    return Ref.steam.P2PManager.localHost;
             //}
-            return Ref.netSession.LocalHost();
+            return Ref.netSession.LocalPeer();
         }
 
         public override bool equals(AbsPlayerData otherPlayerData)
@@ -155,14 +155,20 @@ namespace VikingEngine.Engine
     
     class PlayerData : AbsPlayerData
     {
+        public const int AllPlayers = -1;
         public VikingEngine.Input.PlayerInputMap inputMap = null;
         
         public bool IsActive = false; 
-        public bool IsAlive = false; 
+        public bool IsAlive = false;
+        public bool IgnoreLostController = false;
        
         public PlayerData(int localPlayerIndex, int globalIndex = -1)
         {
             view = new PlayerView();
+            if (localPlayerIndex == AllPlayers)
+            {
+                view.FullScreenSetup();
+            }
             this.localPlayerIndex = localPlayerIndex;
             this.globalPlayerIndex = globalIndex;
             inputMap = null;
@@ -172,13 +178,17 @@ namespace VikingEngine.Engine
         {
             get
             {
-                if (PlatformSettings.RunningWindows)
-                    return false;
+                //if (PlatformSettings.RunningWindows)
+                //    return false;
 
-                if (IsActive)
+                if (IsActive && !Ref.gamesett.muteControllerDisconnect)
                 {
-                    return !inputMap.Connected;
+                    if (!inputMap.Connected)
+                    {
+                        return !IgnoreLostController;
+                    }
                 }
+                IgnoreLostController = false;
                 return false;
             }
         }
@@ -189,7 +199,7 @@ namespace VikingEngine.Engine
             //{
             //    return Ref.steam.P2PManager.localHost;
             //}
-            return Ref.netSession.LocalHost();
+            return Ref.netSession.LocalPeer();
         }
 
         override public string PublicName(LoadedFont fontsafe)

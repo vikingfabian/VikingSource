@@ -18,7 +18,7 @@ namespace VikingEngine.LootFest.GO.Characters.Monster3
         public Scorpion3(GoArgs args)
             : base(args)
         {
-            createImage(VoxelModelName.scorpion1v2, ScaleRange.GetRandom(), 0, new Graphics.AnimationsSettings(9, 0.8f, 4));
+            createImage(VoxelModelName.NUM_NON, ScaleRange.GetRandom(), 0, new Graphics.AnimationsSettings(9, 0.8f, 4));
             Health = LfLib.LargeEnemyHealth;
             loadBounds();
 

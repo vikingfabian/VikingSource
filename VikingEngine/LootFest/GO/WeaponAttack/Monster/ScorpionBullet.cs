@@ -47,7 +47,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
 
         protected override VoxelModelName VoxelObjName
         {
-            get { return VoxelModelName.enemy_projectile_green; }
+            get { return VoxelModelName.NUM_NON; }
         }
         public override Effects.BouncingBlockColors DamageColors
         {

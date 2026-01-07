@@ -53,7 +53,7 @@ namespace VikingEngine.ToGG.HeroQuest.Gadgets
             if (result == null)
             {
                 result = new List<HUD.RichBox.AbsRichBoxMember>
-                { new HUD.RichBox.RichBoxText(Description) };
+                { new HUD.RichBox.RbText(Description) };
             }
 
             return result;
@@ -67,9 +67,9 @@ namespace VikingEngine.ToGG.HeroQuest.Gadgets
 
         public void toRichbox(List<HUD.RichBox.AbsRichBoxMember> richbox)
         {
-            richbox.Add(new HUD.RichBox.RichBoxImage(Icon));
-            richbox.Add(new HUD.RichBox.RichBoxText(NameAndCount()));
-            richbox.Add(new HUD.RichBox.RichBoxNewLine());
+            richbox.Add(new HUD.RichBox.RbImage(Icon));
+            richbox.Add(new HUD.RichBox.RbText(NameAndCount()));
+            richbox.Add(new HUD.RichBox.RbNewLine());
         }
 
         virtual public int StackLimit => 1;

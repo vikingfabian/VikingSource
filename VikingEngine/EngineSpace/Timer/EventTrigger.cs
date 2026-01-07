@@ -78,6 +78,76 @@ namespace VikingEngine.Timer
             method(arg1, arg2);
         }
     }
+    class TimedAction0ArgTrigger_InGame : AbsInGameTrigger
+    {
+        Action method;
+
+        public TimedAction0ArgTrigger_InGame(Action method, float timeSeconds)
+            : base(timeSeconds)
+        {
+            this.method = method;
+        }
+        protected override void timeTrigger()
+        {
+            method();
+        }
+    }
+    class TimedAction1ArgTrigger_InGame<T1> : AbsInGameTrigger
+    {
+        Action<T1> method;
+        T1 arg1;
+
+        public TimedAction1ArgTrigger_InGame(Action<T1> method, T1 arg1, float timeSec)
+            : base(timeSec)
+        {
+            this.method = method;
+            this.arg1 = arg1;
+        }
+        protected override void timeTrigger()
+        {
+            method(arg1);
+        }
+    }
+    class TimedAction2ArgTrigger_InGame<T1, T2> : AbsInGameTrigger
+    {
+        Action<T1, T2> method;
+        T1 arg1;
+        T2 arg2;
+
+        public TimedAction2ArgTrigger_InGame(Action<T1, T2> method, T1 arg1, T2 arg2, float timeSec)
+            : base(timeSec)
+        {
+            this.method = method;
+            this.arg1 = arg1;
+            this.arg2 = arg2;
+        }
+        protected override void timeTrigger()
+        {
+            method(arg1, arg2);
+        }
+    }
+
+    class TimedAction3ArgTrigger_InGame<T1, T2, T3> : AbsInGameTrigger
+    {
+        Action<T1, T2, T3> method;
+        T1 arg1;
+        T2 arg2;
+        T3 arg3;
+
+        public TimedAction3ArgTrigger_InGame(Action<T1, T2, T3> method, T1 arg1, T2 arg2, T3 arg3, float timeSec)
+            : base(timeSec)
+        {
+            this.method = method;
+            this.arg1 = arg1;
+            this.arg2 = arg2;
+            this.arg3 = arg3;
+
+        }
+        protected override void timeTrigger()
+        {
+            method(arg1, arg2, arg3);
+        }
+    }
 
     /// <summary>
     /// Trigger on next frame

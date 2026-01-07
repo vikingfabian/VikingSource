@@ -73,7 +73,7 @@ namespace VikingEngine.ToGG.HeroQuest.Gadgets
             {
                 case ArrowSpecialType.Piercing2:
                     return arraylib.Repeate_List<AbsRichBoxMember>(
-                        new HUD.RichBox.RichBoxImage(SpriteName.cmdPierce), MailPierceValue);
+                        new HUD.RichBox.RbImage(SpriteName.cmdPierce), MailPierceValue);
                 default:
                     return null;
             }

@@ -18,8 +18,8 @@ namespace VikingEngine.LootFest.Players
 
         void updateInput()
         {
-            if (Engine.XGuide.OverridePlayerInput)
-                return;
+            //if (Engine.XGuide.OverridePlayerInput)
+            //    return;
             //if (Engine.Input.KeyBoardInput != null)
             //    return;
 
@@ -100,7 +100,7 @@ namespace VikingEngine.LootFest.Players
             }
             if (inputMap.chat.DownEvent)//pData.inputMap/.DownEvent(ButtonActionType.GameChat))
             {
-                XGuide.BeginKeyBoardInput(new KeyboardInputValues("", "", "", PlayerIndex, 0, chatInput));
+                //XGuide.BeginKeyBoardInput(new KeyboardInputValues("", "", PlayerIndex, 0, chatInput));
             }
 
             updateCamInput();
@@ -359,14 +359,14 @@ namespace VikingEngine.LootFest.Players
         //    }
         //}
 
-        public override void TextInputEvent(int playerIndex, string input, int link)
+        public override void TextInputEvent(string input, object tag)
         {
-            if (voxelDesigner != null && voxelDesigner.WaitingForTextInput)
-            {
-                voxelDesigner.TextInputEvent(playerIndex, input, link);
-                //return true;
-            }
-            else
+            //if (voxelDesigner != null && voxelDesigner.WaitingForTextInput)
+            //{
+            //    voxelDesigner.TextInputEvent(input, tag);
+            //    //return true;
+            //}
+            //else
             {
                 input = Engine.LoadContent.CheckCharsSafety(input, LoadedFont.Regular);
                 input = TextLib.CheckBadLanguage(input);

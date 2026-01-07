@@ -10,13 +10,11 @@ namespace VikingEngine.Input
 {
     static class InputLib
     {
+        public const float ButtonMaxClickTimeMs = 250;
+        public const float ButtonHoldTimeMs = 500;
         public static void Init(MainGame main)
         {
-            if (PlatformSettings.RunningWindows)
-            {
-                Mouse.Init(main);
-                //SharpDXInput.Initialize();
-            }
+            
 
             XInput.Init();
         }
@@ -169,6 +167,15 @@ namespace VikingEngine.Input
             }
         }
 
+        public static IButtonMap CombineButtons(IButtonMap buttonMap, IButtonMap add)
+        {
+            if (buttonMap is NoButtonMap)
+            {
+                return add;
+            }
+            return new AlternativeButtonsMap(buttonMap, add);
+        }
+
         //public static bool DownEvent_AnyInstance(IButtonMap buttons)
         //{
         //    if (buttons.inputSource == InputSourceType.XController)
@@ -213,10 +220,12 @@ namespace VikingEngine.Input
         KeyboardMouse,
         XController,
         //SteamController,
+        Any,
         Num_Non,
 
         Keyboard,
         Mouse,
+        
         //GenericController,
     }
 
@@ -242,17 +251,17 @@ namespace VikingEngine.Input
 
         public bool HasKeyBoard
         {
-            get { return sourceType == InputSourceType.KeyboardMouse; }
+            get { return sourceType == InputSourceType.KeyboardMouse || sourceType == InputSourceType.Any; }
         }
 
         public bool HasMouse
         {
-            get { return sourceType == InputSourceType.KeyboardMouse; }
+            get { return sourceType == InputSourceType.KeyboardMouse || sourceType == InputSourceType.Any; }
         }
 
         public bool IsController
         {
-            get { return sourceType == InputSourceType.XController; }
+            get { return sourceType == InputSourceType.XController || sourceType == InputSourceType.Any; }
         }
 
         public bool HasIndex

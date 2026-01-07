@@ -13,7 +13,7 @@ namespace VikingEngine.ToGG.ToggEngine.Display3D
         List<AbsRichBoxMember> rbMembers;
 
         public UnitMessageRichbox(AbsUnit unit, string text, bool startNow = true)
-            :this(unit, new List<AbsRichBoxMember> { new RichBoxText(text) }, startNow)
+            :this(unit, new List<AbsRichBoxMember> { new RbText(text) }, startNow)
         { }
 
         public UnitMessageRichbox(AbsUnit unit, SpriteName icon, string text, bool startNow = true)

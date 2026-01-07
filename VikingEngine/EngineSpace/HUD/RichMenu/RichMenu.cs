@@ -1,0 +1,420 @@
+﻿using Microsoft.VisualBasic;
+using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Sockets;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.Interface;
+using VikingEngine.Engine;
+using VikingEngine.Graphics;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.Input;
+
+namespace VikingEngine.HUD.RichMenu
+{
+    /// <summary>
+    /// Creates a scrollable container of richbox content. Will update input, and create tooltips.
+    /// </summary>
+    class RichMenu
+    {
+        public static readonly Vector2 DefaultRenderEdge = new Vector2(4);
+
+        public RichBoxGroup richBox;
+        protected RichBoxContent content = new RichBoxContent();
+        
+        public NineSplitAreaTexture backgroundTextures;
+        public VectorRect backgroundArea, edgeArea, renderArea, richboxArea, mouseScrollArea;
+        Vector2 renderEdge;
+        public RbInteraction interaction = null;
+        
+        //Graphics.RectangleLines outLine;
+        public RenderTargetDrawContainer renderList = null;//Is a target image, rendering the menu content
+        
+        RichBoxSettings settings;
+
+        float scrollerWidth;
+        RichScrollbar scrollBar;
+        public ImageLayers layer;
+        public PlayerData playerData;
+        RichTooltip tooltip = null;
+        public string activeDropDown = null;
+        public bool needRefresh = false;
+        public List<string> menuStack = new List<string>();
+
+        public Action OnPageDelete = null;
+
+        public RichMenu(RichBoxSettings settings, VectorRect edgeArea, Vector2 edgeThickness, Vector2 renderEdge, ImageLayers layer, PlayerData playerData)
+        { 
+            this.playerData = playerData;
+            this.layer = layer;
+            this.settings = settings;
+            edgeArea.Size = Bound.Min(edgeArea.Size, new Vector2(20));
+            this.edgeArea = edgeArea;
+            backgroundArea = edgeArea;
+            renderArea = edgeArea;
+            renderArea.AddXRadius(-edgeThickness.X);
+            renderArea.AddYRadius(-edgeThickness.Y);
+
+            this.renderEdge = renderEdge;
+            richboxArea = renderArea;
+            richboxArea.AddXRadius(-renderEdge.X); 
+            richboxArea.AddYRadius(-renderEdge.Y);
+
+            scrollerWidth = Screen.MinClickSize;
+
+            renderList = new RenderTargetDrawContainer(renderArea.Position, renderArea.Size, layer, new List<AbsDraw>());
+#if DEBUG
+            renderList.DebugName = "RichMenu target";
+#endif
+
+
+            scrollBar = new RichScrollbar(HudLib.HudMenuScollButton, HudLib.HudMenuScollBackground, edgeArea, scrollerWidth, layer -2);
+            mouseScrollArea = scrollBar.IncludeScrollArea(edgeArea);
+        }
+
+        
+
+        public void OnDropDownClick(string name)
+        {
+            if (activeDropDown == name)
+            {
+                activeDropDown = null;
+            }
+            else
+            {
+                activeDropDown = name;
+            }
+            needRefresh = true;
+        }
+
+        public void Refresh()
+        {
+            needRefresh = true;
+        }
+
+        public void CloseDropDown()
+        {
+            activeDropDown = null;
+            needRefresh = true;
+        }
+
+        public void addToolTip(RichBoxContent content, VectorRect buttonArea)
+        {
+            //Debug.Log("deleteTooltip: add");
+            deleteTooltip();
+            //Debug.Log("add Tooltip");
+            buttonArea.Position += renderList.position;
+            tooltip = new RichTooltip(content, HudLib.TooltipSettings, buttonArea, playerData.view.safeScreenArea, layer -5);
+        }
+
+        public void deleteTooltip()
+        {
+            if (Input.Keyboard.Ctrl)
+            {
+                lib.DoNothing();
+            }
+            //Debug.Log("delete Tooltip");
+            tooltip?.DeleteMe();
+            tooltip = null;
+        }
+
+        public void move(Vector2 move)
+        {
+            backgroundArea.Position  += move;
+            renderArea.Position += move;
+            renderList.position += move;
+
+            backgroundTextures?.Move(move);
+            //backgroundTextures.images
+        }
+
+        public void moveToY(float y)
+        {
+            //backgroundArea.Position += move;
+            //renderArea.Position += move;
+            //renderList.position += move;
+            Vector2 moveDist= VectorExt.V2FromY(y- backgroundArea.Y);
+            this.move(moveDist);
+        }
+
+        public void updateWidthFromContent(bool resetFirst = true)
+        {
+            float edgeThickness = edgeArea.Bottom - renderArea.Bottom;
+
+            if (resetFirst)
+            {
+                backgroundArea = edgeArea;
+            }
+            backgroundArea.Width = richBox.maxArea.Size.X + edgeThickness * 2;
+        }
+
+
+        public void updateHeightFromContent(bool resetFirst = true)
+        {
+            float edgeThickness = edgeArea.Bottom - renderArea.Bottom;
+            if (resetFirst)
+            {
+                backgroundArea = edgeArea;
+            }
+            backgroundArea.Height = richBox.area.Size.Y + edgeThickness * 3;
+        }
+
+        public void updateHeightFromContent(float maxBottom, bool resetFirst = true)
+        {
+            updateHeightFromContent(resetFirst);
+            if (backgroundArea.Bottom > maxBottom)
+            {
+                backgroundArea.SetBottom(maxBottom, true);
+            }
+        }
+
+
+        public NineSplitAreaTexture addBackground(NineSplitSettings texture, ImageLayers layer)
+        {
+            backgroundTextures?.DeleteMe();
+            backgroundTextures = new NineSplitAreaTexture(texture, backgroundArea, layer + 1);
+            return backgroundTextures;
+        }
+
+        public Graphics.Image addBackground_Flat(Color color, float opacity)
+        {
+            Graphics.Image bg = new Image( SpriteName.WhiteArea, backgroundArea.Position, backgroundArea.Size,  layer + 1);
+            bg.ColorAndAlpha(color, opacity);
+            return bg;
+        }
+
+        public void OpenMenu(string menuName, StackOption stack)
+        {
+            if (stack == StackOption.ClearStack)
+            {
+                menuStack.Clear();
+            }
+            else if (stack == StackOption.ReplaceLast)
+            {
+                arraylib.RemoveLast(menuStack);
+            }
+            menuStack.Add(menuName);
+            needRefresh = true;
+        }
+
+        public void OpenMenu(RichBoxContent content, string menuName)
+        {
+            menuStack.Add(menuName);
+            Refresh(content, null);
+        }
+
+        public void clearState()
+        {
+            menuStack.Clear();
+            needRefresh = true;
+        }
+        //public void SetMenuState(string state)
+        //{
+        //    menuState.Add(state);
+        //    menuStateHasChange = true;
+        //}
+
+        //public bool HasMenuState(string state)
+        //{
+        //    return menuState.Contains(state);
+        //}
+        public void menuBack()
+        {
+            arraylib.RemoveLast(menuStack);
+            needRefresh = true;
+        }
+
+        //void menuMoveRefreshOnStateChange()
+        //{
+        //    if (input.RichboxGuiUseMove && movePos_part >= 0)
+        //    {
+        //        beginMove(movePos_part);
+        //    }
+        //}
+
+        public string CurrentMenuState => menuStack.LastOrDefault();
+
+        public void Refresh(RichBoxContent content, RichMenuControllerPointer pointer = null)
+        {
+            //Debug.Log("Rich menu REFRESH");
+            deleteContent();
+
+            Ref.draw.AddToContainer = renderList;
+            {
+                richBox = new RichBoxGroup(Vector2.Zero,
+                    richboxArea.Width, ImageLayers.Lay0, settings, content, true, true, false);                
+                
+            } Ref.draw.AddToContainer = null;
+
+            scrollBar.Refresh(richBox.area.Height + renderEdge.Y * 2, renderArea.Height - renderEdge.Y * 2, settings.button.size);
+            bool hadSelection = interaction != null && interaction.hover != null;
+
+            //var prevInteract = interaction;
+            //updateContentScroll();
+            if (interaction == null || interaction.drawContainer != renderList)
+            {
+                interaction = new RbInteraction(content, layer, playerData.inputMap== null? new Input.MouseButtonMap(MouseButton.Left): playerData.inputMap.MenuClick);
+
+                interaction.drawContainer = renderList;
+            }
+            else
+            {
+                interaction.refresh(content);
+            }
+            //Debug.Log("Rich menu SCROLL");
+            updateContentScroll();
+
+            needRefresh = false;
+
+            if (hadSelection)
+            {
+
+                //interaction.inherit(prevInteract);
+                //deleteTooltip();
+                if (pointer == null)
+                {
+
+                    interaction.update(-renderArea.Position, this, false, out _, out _);
+                }
+                else
+                {
+                    interaction.refreshControllerHover(pointer);
+                }
+                tooltip?.view();
+
+                //interaction.update(-renderArea.Position, this, false, out _);
+            }
+        }
+
+        //public void Queue_Refresh(RichBoxContent content)
+        //{
+        //    Ref.update.AddSyncAction(new SyncAction1Arg<RichBoxContent>(Refresh, content));
+        //}
+
+        void deleteContent()
+        {
+            OnPageDelete?.Invoke();
+            OnPageDelete = null;
+            renderList.renderList.Clear();
+        }
+
+        public void DeleteMe()
+        {
+            renderList.DeleteMe();
+            backgroundTextures?.DeleteMe();
+            //Debug.Log("deleteTooltip: del menu");
+            deleteTooltip();
+            scrollBar.DeleteMe();
+        }
+
+        public void updateMouseInput(ref bool mouseOver)
+        {     
+            if (interaction != null)
+            {      
+                if (backgroundArea.IntersectPoint(Input.Mouse.Position)
+                    ||
+                    interaction.interactionStack != null)
+                {
+                    mouseOver = true;
+                    if (interaction.update(-renderArea.Position, this, true, out bool interactRefresh, out _))
+                    {
+                        needRefresh = true;
+                    }
+                    needRefresh |= interactRefresh;
+                }
+                else
+                {
+                    //Debug.Log("deleteTooltip: outside menu");
+                    deleteTooltip();
+                    interaction.clearSelection();
+                }
+
+                if (scrollBar.IsVisible() && ( mouseScrollArea.IntersectPoint(Input.Mouse.Position) || scrollBar.mouseDown))
+                {
+                    mouseOver = true;
+                    if (interaction.interactionStack == null && scrollBar.updateMouseInput())
+                    {
+                        updateContentScroll();
+                    }
+                    if (scrollBar.updateScrollWheel())
+                    {
+                        updateContentScroll();
+                    }
+                }
+                else
+                {
+                    scrollBar.updateOutOfFocus();
+                }
+            }
+        }
+
+        public void updateControllerInput(RichMenuControllerPointer pointer)
+        {
+            if (interaction != null)
+            {
+                
+
+                if (interaction.updateController(pointer, this, false, out needRefresh, out _, out float pushScroll))
+                {
+                    needRefresh = true;
+                }
+
+                if (scrollBar.IsVisible())
+                {
+                    if (scrollBar.updateControllerScroll(pointer.inputMap))
+                    {
+                        updateContentScroll();
+                    }
+                    else if (pushScroll != 0)
+                    {
+                        float scroll = scrollBar.scrollInput(-pushScroll);
+                        if (scroll != 0)
+                        {
+                            pointer.pointer.position.Y -= scroll;
+                            updateContentScroll();
+                        }
+                    }
+                }
+                
+
+                this.needRefresh |= needRefresh;
+            }
+        }
+
+        public bool HasToolTip(int id)
+        {
+            if (Input.Keyboard.Ctrl)
+            {
+                lib.DoNothing();
+            }
+            return tooltip != null && Tooltip.tooltip_id == id && (Ref.TotalTimeSec- Tooltip.tooltip_id_timestampsec) >= 1f;
+        }
+
+        public bool BlockRefresh()
+        {
+            if (interaction == null)
+            {
+                return false;
+            }
+            return interaction.interactionStack != null;
+        }
+
+        void updateContentScroll()
+        {
+
+            richBox.SetOffset( new Vector2(renderEdge.X, renderEdge.Y + scrollBar.scrollResult));
+        }
+    }
+
+    enum StackOption
+    { 
+        Stack,
+        ClearStack,
+        ReplaceLast,
+    }
+}

@@ -7,73 +7,49 @@ namespace VikingEngine.DSSWars.Map.Generate
     class GenerateRegion
     {
         public List<City> cities = new List<City>(16);
-        public int goalWorkForce, currentWorkforce;
-        public Faction tempFaction = new Faction();
-
-        public void Reset(int goalWorkForce)
+        
+        public int GetStartFactionRegion(int goalWorkForce, City startCity, WorldData world, Faction faction)
         {
-            this.goalWorkForce = goalWorkForce;
-            currentWorkforce = 0;
-
             cities.Clear();
-        }
 
-        void addCity(City city)
-        {
-            city.faction = tempFaction;
-            cities.Add(city);
-            currentWorkforce += city.workForceMax;
-        }
-
-
-        public void GetStartFactionRegion(City startCity, WorldData world)
-        {
-            //if (startCity.faction == null)
-            //{
-            //faction = new Faction(factions.Count);
-            //factions.Add(faction);
+            int currentWorkforce = 0;
             addCity(startCity);
 
-
-            List<City> checkCities = new List<City>(8);
+            int checkStartIx = 0;
+            int checkEndIx = 0;            
 
             int loopCount = 0;
-            while (++loopCount < 20)
-            {
-                checkCities.Clear();
-                checkCities.AddRange(cities);
 
-                foreach (City check in checkCities)
+            while (++loopCount < 3)
+            {
+                checkEndIx = cities.Count -1;
+                for (int cityIx = checkStartIx; cityIx <= checkEndIx; cityIx++)
                 {
-                    foreach (int n in check.neighborCities)
+                    foreach (int n in cities[cityIx].neighborCities)
                     {
-                        //if (!arraylib.InBound(world.cities, n))
-                        //{ 
-                        //    lib.DoNothing();
-                        //}
                         City c = world.cities[n];
-                        if (c.faction == null)
+                        if (c.factionIndex < 0)
                         {
                             addCity(c);
 
                             if (currentWorkforce >= goalWorkForce)
                             {
-                                //faction.availableForPlayer = true;
-                                return;
+                                return currentWorkforce;
                             }
                         }
                     }
+
+                    checkStartIx = checkEndIx +1;
                 }
             }
-            //}
-        }
 
-        public void ApplyFaction(Faction faction)
-        {
-            foreach (var c in cities)
+            return currentWorkforce;
+
+            void addCity(City city)
             {
-                c.faction = null;
-                faction.AddCity(c, true);
+                faction.AddCity(city, true);
+                cities.Add(city);
+                currentWorkforce += city.HousingCount_Workers;
             }
         }
     }

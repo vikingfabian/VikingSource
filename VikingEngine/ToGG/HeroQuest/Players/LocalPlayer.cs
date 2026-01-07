@@ -605,7 +605,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players
         public void NetUpdate()
         {
             var w = Ref.netSession.BeginWritingPacket(Network.PacketType.hqPlayerStatus, Network.PacketReliability.Unrelyable);
-            SaveLib.WriteVector(w, mapControls.selectionV2);
+            StreamLib.WriteVector(w, mapControls.selectionV2);
 
             bool moveArrows = movingUnit != null && movingUnit.movelines != null;
             bool bAttackArrow = attackerArrow != null;

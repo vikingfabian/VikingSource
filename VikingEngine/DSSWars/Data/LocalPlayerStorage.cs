@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.Input;
 
 namespace VikingEngine.DSSWars.Data
@@ -12,7 +13,7 @@ namespace VikingEngine.DSSWars.Data
         public InputSource inputSource;
         public int controllerIndex = 0;
         public int screenIndex = 0;
-        public int profile;
+        public int profileIndex;/*flagDesignIndex*/
         public int index;
         public LocalPlayerStorage(int index)
         {
@@ -20,9 +21,20 @@ namespace VikingEngine.DSSWars.Data
             inputSource = index == 0 ? InputSource.DefaultPC : InputSource.Empty;
             //controllerIndex = index - 1;
             screenIndex = index;
-            profile = index;
+            profileIndex = index;
         }
 
+        public PlayerProfile Profile()
+        {
+            var profile = DssRef.storage.profileStorage.profiles[profileIndex];
+            return profile;
+        }
+
+        public FlagAndColor Flag()
+        {
+            var profile = DssRef.storage.profileStorage.profiles[profileIndex];
+            return profile.flag;
+        }
         public void checkDoublette(int myIndex, LocalPlayerStorage[] localPlayers)
         {
             if (checkDoublette_input(myIndex, localPlayers))
@@ -32,10 +44,10 @@ namespace VikingEngine.DSSWars.Data
 
             if (checkDoublette_profile(myIndex, localPlayers))
             {
-                profile = 0;
+                profileIndex = 0;
                 while (checkDoublette_profile(myIndex, localPlayers))
                 {
-                    profile++;
+                    profileIndex++;
                 }
             }
 
@@ -85,7 +97,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 if (i != myIndex)
                 {
-                    if (localPlayers[i].profile == profile)
+                    if (localPlayers[i].profileIndex == profileIndex)
                     {
                         return true;
                     }
@@ -97,12 +109,13 @@ namespace VikingEngine.DSSWars.Data
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(screenIndex);
-            w.Write(profile);
+            w.Write(profileIndex);
         }
         public void read(System.IO.BinaryReader r, int version)
         {
             screenIndex = r.ReadInt32();
-            profile = r.ReadInt32();
+            //profileIndex = r.ReadInt32();
+            profileIndex = Bound.Max(r.ReadInt32(), DssRef.storage.profileStorage.profiles.Count - 1);
         }
     }
 }

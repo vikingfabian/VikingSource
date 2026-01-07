@@ -29,7 +29,7 @@ namespace VikingEngine.Network
         public bool AllowVoiceChat = true;
         public int maxLocalGamers = 4;
 
-        
+        public Dictionary<int, SteamWrapping.SteamLargePacketWriter> largePackets = new Dictionary<int, SteamWrapping.SteamLargePacketWriter>(2); 
 
         /// <summary>
         /// Äger lobbyn, false om man är client.
@@ -41,9 +41,9 @@ namespace VikingEngine.Network
             {
 #if PCGAME
                 ulong lobbyId = Ref.steam.LobbyMatchmaker.currentLobbyID;
-                if (lobbyId != 0 && Ref.steam.P2PManager.localHost != null)
+                if (lobbyId != 0 && Ref.steam.P2PManager.localPeer != null)
                 {
-                    return Valve.Steamworks.SteamAPI.SteamMatchmaking().GetLobbyOwner(lobbyId) == Ref.steam.P2PManager.localHost.fullId;
+                    return Valve.Steamworks.SteamAPI.SteamMatchmaking().GetLobbyOwner(lobbyId) == Ref.steam.P2PManager.localPeer.fullId;
                 }
 #endif
                 return false;
@@ -118,8 +118,8 @@ namespace VikingEngine.Network
                     }
                     else
                     {
-                        return Ref.steam.P2PManager.localHost != null &&
-                            Ref.steam.P2PManager.localHost.GotAssignedId;
+                        return Ref.steam.P2PManager.localPeer != null &&
+                            Ref.steam.P2PManager.localPeer.GotAssignedId;
                     }
                 }
 #endif
@@ -199,12 +199,12 @@ namespace VikingEngine.Network
 #endif
             return null;
         }
-        public AbsNetworkPeer LocalHost()
+        public AbsNetworkPeer LocalPeer()
         {
 #if PCGAME
             if (Ref.steam.isNetworkInitialized)
             {
-                return Ref.steam.P2PManager.GetLocalHost();
+                return Ref.steam.P2PManager.GetLocalPeer();
             }
 #endif
             return null;
@@ -235,8 +235,10 @@ namespace VikingEngine.Network
         {
 #if PCGAME
             return Ref.steam.P2PManager.GetPeer(fullId);
-#endif
+#else
             return null;
+#endif
+            
 
         }
 
@@ -359,8 +361,10 @@ namespace VikingEngine.Network
 #if PCGAME
             string data = Valve.Steamworks.SteamAPI.SteamMatchmaking().GetLobbyData(lobbyID, key);
             return Convert.ToInt32(data);
-#endif
+#else
             return int.MinValue;
+#endif
+           
         }
         
         float nextNetUpdateTime = 0;

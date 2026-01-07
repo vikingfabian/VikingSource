@@ -129,7 +129,7 @@ namespace VikingEngine.PJ.MiniGolf
         {
             var f = FieldStorage.file(true);
             f.FileName = "";
-            string[] files = DataStream.DataStreamHandler.SearchFilesInStorageDir(f, true);
+            string[] files = DataStream.FileToDiskManager.SearchFilesInStorageDir(f, true);
             new Timer.Action2ArgTrigger<int, string[]>(loadFilesComplete, pageId, files);
         }
 
@@ -159,7 +159,7 @@ namespace VikingEngine.PJ.MiniGolf
             }
         }
 
-        void onFileNameChange(int user, string result, int index)
+        void onFileNameChange(string result, object tag)
         {
             GolfRef.field.storage.saveFileName = TextLib.checkFileName(result);
         }

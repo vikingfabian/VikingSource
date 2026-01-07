@@ -41,7 +41,7 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
         {
             if (content.Count > 0)
             {
-                content.Add(new RichBoxSeperationLine());
+                content.Add(new RbSeperationLine());
             }
         }
 
@@ -49,27 +49,27 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
         {
             if (source.Icon != SpriteName.MissingImage)
             {
-                content.Add(new RichBoxImage(source.Icon));
+                content.Add(new RbImage(source.Icon));
             }
-            content.Add(new RichBoxText(source.Name));
+            content.Add(new RbText(source.Name));
             sourceArrow();
         }
 
         public void modSource(AbsHeroStrategy source)
         {   
-            content.Add(new RichBoxImage(source.cardSprite));
+            content.Add(new RbImage(source.cardSprite));
             sourceArrow();
         }
 
         void sourceArrow()
         {
-            content.Add(new RichBoxImage(SpriteName.cmdConvertArrow, 0.6f));
+            content.Add(new RbImage(SpriteName.cmdConvertArrow, 0.6f));
         }
 
         public void attackModifier(int diceModifier)
         {
-            content.Add(new RichBoxText(TextLib.ValuePlusMinus(diceModifier)));
-            content.Add(new RichBoxImage(SpriteName.cmdDiceAttack));
+            content.Add(new RbText(TextLib.ValuePlusMinus(diceModifier)));
+            content.Add(new RbImage(SpriteName.cmdDiceAttack));
         }
 
     }

@@ -21,15 +21,43 @@ namespace VikingEngine.DSSWars.Players
         Mesh model;
         public bool isNew = false;
         public SelectTileResult selectTileResult = SelectTileResult.None;
+        public bool tileOfInterest = false;
         public City city;
         public SelectedSubTile(LocalPlayer player, bool isHover)
         {
-            model = new Mesh(isHover ? LoadedMesh.SelectSquareDotted : LoadedMesh.SelectSquareSolid, Vector3.Zero, new Vector3(WorldData.SubTileWidth * 1.1f),
+            model = CreateOutlineModel(player, isHover);
+            //model = new Mesh(isHover ? LoadedMesh.SelectSquareDotted : LoadedMesh.SelectSquareSolid, Vector3.Zero, new Vector3(WorldData.SubTileWidth * 1.1f),
+            //    TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
+
+            //model.setVisibleCamera(player.playerData.localPlayerIndex);
+            //model.AddToRender(DrawGame.UnitDetailLayer);
+            //model.Visible = false;
+        }
+
+        public static Mesh CreateOutlineModel(LocalPlayer player, bool isHover)
+        {
+            LoadedMesh loadedMesh;
+            float scale;
+
+            if (isHover)
+            {
+                loadedMesh = LoadedMesh.SelectSquareDotted;
+                scale = WorldData.SubTileWidth * 1.1f;
+            }
+            else
+            {
+                loadedMesh = LoadedMesh.SelectSquareSolid;
+                scale = WorldData.SubTileWidth * 1.0f;
+            }
+
+            var model = new Mesh(loadedMesh, Vector3.Zero, new Vector3(scale),
                 TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
 
             model.setVisibleCamera(player.playerData.localPlayerIndex);
             model.AddToRender(DrawGame.UnitDetailLayer);
             model.Visible = false;
+
+            return model;
         }
 
         public void update(IntVector2 subTilePos, LocalPlayer player)
@@ -42,20 +70,18 @@ namespace VikingEngine.DSSWars.Players
                 {
                     this.subTilePos = subTilePos;
                     isNew = true;
+                    tileOfInterest = false;
                     if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
                     {
                         city = tile.City();
                     }
 
-                    if (player.InBuildOrdersMode())
-                        //player.mapControls.selection.obj != null &&
-                        //player.mapControls.selection.obj.gameobjectType() == GameObjectType.City &&
-                        //player.cityTab == Display.MenuTab.Build)
+                    if (player.gameControls.InBuildOrdersMode())
                     {
-                        selectTileResult = player.buildControls.buildMode;
+                        selectTileResult = player.gameControls.build.buildMode;
                         hasSelection = true;
-                        model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
-                        model.position.Y = subTile.groundY;
+                        model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
+                        //model.position.Y = subTile.groundY;
 
                         
                         return;
@@ -67,38 +93,85 @@ namespace VikingEngine.DSSWars.Players
 
                         if (city != null) 
                         {
-                            if (city.faction == player.faction)
+                            if (city.factionIndex == player.faction.myIndex)
                             {
-                                switch (subTile.GeBuildingType())
+                                switch (subTile.mainTerrain)
                                 {
-                                    case Map.TerrainBuildingType.StoneHall:
-                                        selectTileResult = SelectTileResult.CityHall;
+                                    case TerrainMainType.Building:
+                                        switch ((TerrainBuildingType)subTile.subTerrain)
+                                        {
+                                            case Map.TerrainBuildingType.CityHall_Village:
+                                            case Map.TerrainBuildingType.CityHall_Town:
+                                            case Map.TerrainBuildingType.CityHall_Capital:
+                                                selectTileResult = SelectTileResult.CityHall;
+                                                break;
+                                            case Map.TerrainBuildingType.Postal:
+                                            case Map.TerrainBuildingType.PostalLevel2:
+                                            case Map.TerrainBuildingType.PostalLevel3:
+                                                selectTileResult = SelectTileResult.Postal;
+                                                break;
+                                            case Map.TerrainBuildingType.Recruitment:
+                                            case Map.TerrainBuildingType.RecruitmentLevel2:
+                                            case Map.TerrainBuildingType.RecruitmentLevel3:
+                                                selectTileResult = SelectTileResult.Recruitment;
+                                                break;
+                                            case Map.TerrainBuildingType.GoldDeliveryLevel1:
+                                            case Map.TerrainBuildingType.GoldDeliveryLevel2:
+                                            case Map.TerrainBuildingType.GoldDeliveryLevel3:
+                                                selectTileResult = SelectTileResult.GoldDeliver;
+                                                break;
+
+                                            case Map.TerrainBuildingType.SoldierBarracks:
+                                            case Map.TerrainBuildingType.ArcherBarracks:
+                                            case Map.TerrainBuildingType.WarmachineBarracks:
+                                            case Map.TerrainBuildingType.KnightsBarracks:
+                                            case Map.TerrainBuildingType.GunBarracks:
+                                            case Map.TerrainBuildingType.CannonBarracks:
+                                                selectTileResult = SelectTileResult.Conscript;
+                                                break;
+
+                                            case Map.TerrainBuildingType.School:
+                                                selectTileResult = SelectTileResult.School;
+                                                break;
+                                            case Map.TerrainBuildingType.ResearchCenter:
+                                                selectTileResult = SelectTileResult.ResearchCenter;
+                                                break;
+                                            case Map.TerrainBuildingType.BookPress:
+                                                selectTileResult = SelectTileResult.BookPress;
+                                                break;
+                                        }
                                         break;
-                                    case Map.TerrainBuildingType.Postal:
-                                        selectTileResult = SelectTileResult.Postal;
+
+                                    case TerrainMainType.Mine:
+                                        tileOfInterest = true;
                                         break;
-                                    case Map.TerrainBuildingType.Recruitment:
-                                        selectTileResult = SelectTileResult.Recruitment;
+
+                                    case TerrainMainType.Foil:
+                                        switch ((TerrainSubFoilType)subTile.subTerrain)
+                                        {
+                                            case TerrainSubFoilType.BogIron:
+                                                tileOfInterest = true;
+                                                break;
+                                        }
                                         break;
-                                    case Map.TerrainBuildingType.Nobelhouse:
-                                    case Map.TerrainBuildingType.Barracks:
-                                        selectTileResult = SelectTileResult.Conscript;
+                                    case TerrainMainType.Wall:
+                                        selectTileResult = SelectTileResult.Wall;
+                                        //hasSelection = true;
+                                        //model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
                                         break;
-                                        //case Map.TerrainBuildingType.Square:
-                                        //    selectTileResult = SelectTileResult.Resources;
-                                        //    break;
+                                }
+
+                                if (player.profile.casualControls && selectTileResult != SelectTileResult.CityHall)
+                                {
+                                    selectTileResult = SelectTileResult.None;
                                 }
 
                                 hasSelection = selectTileResult != SelectTileResult.None;
-                                model.position = WP.SubtileToWorldPosXZ_Centered(subTilePos);
-                                model.position.Y = subTile.groundY;
-                                return;
+                                model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
                             }
-
                         }
                     }
                 }
-
             }
             else
             {
@@ -107,16 +180,41 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public MayBuildResult MayBuild(LocalPlayer player)
+        public MayBuildResult mayBuild(LocalPlayer player, out bool upgrade)
         {
+            return MayBuild(subTilePos, player, out upgrade, out _);
+        }
+
+        public static MayBuildResult MayBuild(IntVector2 subTilePos, LocalPlayer player, out bool upgrade, out City city)
+        {
+            if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
+            { 
+                if (DssRef.world.tileGrid.TryGet(WP.SubtileToTilePos(subTilePos), out var tile))
+                {
+                    if (tile.MayBuild())
+                    {
+                        city = tile.City();
+
+                        return MayBuild(city, subTile, player, out upgrade);
+                    }
+                }
+            }
+
+            city = null;
+            upgrade = false;
+            return MayBuildResult.ERR;
+        }
+
+        public static MayBuildResult MayBuild(City city, SubTile subTile, LocalPlayer player, out bool upgrade)
+        {
+            upgrade = false;
             if (city != null)
             {
-                if (city.faction.player == player)
+                if (city.GetPlayer() == player || DssRef.difficulty.GodPowers())
                 {
-                    //var current = subTile.GeBuildingType();
-                    if (subTile.MayBuild())
+                    if (subTile.MayBuild(player.gameControls.build.placeBuildingType, out upgrade))
                     {
-                        if (player.mapControls.selection.obj == city)
+                        if (player.gameControls.map.selection.obj == city)
                         {
                             return MayBuildResult.Yes;
                         }
@@ -135,23 +233,59 @@ namespace VikingEngine.DSSWars.Players
             return MayBuildResult.No_OutsideRegion;
         }
 
-        public bool MayDemolish(LocalPlayer player)
+        //public MayBuildResult MayBuild(LocalPlayer player, out bool upgrade)
+        //{
+        //    upgrade = false;
+        //    if (city != null)
+        //    {
+        //        if (city.faction.player == player)
+        //        {
+        //            //var current = subTile.GeBuildingType();
+        //            if (subTile.MayBuild(player.buildControls.placeBuildingType, out upgrade))
+        //            {
+        //                if (player.mapControls.selection.obj == city)
+        //                {
+        //                    return MayBuildResult.Yes;
+        //                }
+        //                else
+        //                {
+        //                    return MayBuildResult.Yes_ChangeCity;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                return MayBuildResult.No_Occupied;
+        //            }
+        //        }
+        //    }
+
+        //    return MayBuildResult.No_OutsideRegion;
+        //}
+
+        public static bool MayDemolish(IntVector2 subTilePos, LocalPlayer player, out City city)
         {
-            if (city != null)
+            if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
             {
-                if (city.faction.player == player)
+                IntVector2 tilePos = WP.SubtileToTilePos(subTilePos);
+                if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
                 {
-                    if (WP.SubtileToTilePos(subTilePos) != city.tilePos) //center tile is protected
-                    {
-                        var buildingType = BuildLib.GetType(subTile.mainTerrain, subTile.subTerrain);
-                        if (buildingType != BuildAndExpandType.NUM_NONE)
+                    city = tile.City();
+                    
+                        if (city.GetPlayer() == player || DssRef.difficulty.GodPowers())
                         {
-                            return true;
+                            if (subTilePos != city.cityStorageCenter && subTilePos != city.cityHallSubtilePos) //center tile is protected
+                            {
+                                var buildingType = BuildLib.GetType(subTile.mainTerrain, subTile.subTerrain);
+                                if (buildingType != BuildAndExpandType.NUM_NONE)
+                                {
+                                    return true;
+                                }
+                            }
                         }
-                    }
+                    
                 }
             }
-
+            city = null;
             return false;
         }
 
@@ -198,8 +332,12 @@ namespace VikingEngine.DSSWars.Players
         CityHall,
         Postal,
         Recruitment,
+        GoldDeliver,
         Conscript,
-
+        School,
+        ResearchCenter,
+        BookPress,
+        Wall,
         //Resources,
         
         Build,
@@ -211,6 +349,7 @@ namespace VikingEngine.DSSWars.Players
     { 
         ERR,
         Yes,
+        YesUpgrade,
         Yes_ChangeCity,
         No_OutsideRegion,
         No_Occupied,

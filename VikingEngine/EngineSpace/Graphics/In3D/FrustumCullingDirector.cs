@@ -15,7 +15,7 @@ namespace VikingEngine.Graphics
         SpottedArrayCounter<AbsDraw> generated;
 
         public FrustumCullingDirector(bool start)
-            :base(null, "Frustum Culling Director", 0, 1, 0, start)
+            :base(null, "Frustum Culling Director", 0, ThreadPriority.Normal, start)
         {
             
             meshes = new SpottedArrayCounter<AbsDraw>(Ref.draw.renderList[0].GetList(DrawObjType.Mesh));

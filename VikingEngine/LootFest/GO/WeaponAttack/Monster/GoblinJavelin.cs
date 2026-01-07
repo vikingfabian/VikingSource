@@ -35,7 +35,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.Monster
        
         protected override VoxelModelName VoxelObjName
         {
-            get { return VoxelModelName.goblin_spear; }
+            get { return VoxelModelName.NUM_NON; }
         }
         public override WeaponUserType WeaponTargetType
         {

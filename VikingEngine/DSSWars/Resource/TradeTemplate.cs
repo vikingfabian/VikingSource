@@ -123,11 +123,11 @@ namespace VikingEngine.DSSWars.Resource
                     return sword;
                 case ItemResourceType.Bow:
                     return bow;
-                case ItemResourceType.LightArmor:
+                case ItemResourceType.PaddedArmor:
                     return lightArmor;
-                case ItemResourceType.MediumArmor:
+                case ItemResourceType.IronArmor:
                     return mediumArmor;
-                case ItemResourceType.HeavyArmor:
+                case ItemResourceType.HeavyIronArmor:
                     return heavyArmor;
 
                 default:
@@ -157,13 +157,13 @@ namespace VikingEngine.DSSWars.Resource
                 case ItemResourceType.Bow:
                     bow = value;
                     break;
-                case ItemResourceType.LightArmor:
+                case ItemResourceType.PaddedArmor:
                     lightArmor = value;
                     break;
-                case ItemResourceType.MediumArmor:
+                case ItemResourceType.IronArmor:
                     mediumArmor = value;
                     break;
-                case ItemResourceType.HeavyArmor:
+                case ItemResourceType.HeavyIronArmor:
                     heavyArmor = value;
                     break;
                 default:
@@ -183,9 +183,9 @@ namespace VikingEngine.DSSWars.Resource
             sword.toHud(player, content, DssRef.lang.Resource_TypeName_Sword, ItemResourceType.Sword, faction, city);
             bow.toHud(player, content, DssRef.lang.Resource_TypeName_Bow, ItemResourceType.Bow, faction, city);
 
-            lightArmor.toHud(player, content, DssRef.lang.Resource_TypeName_LightArmor, ItemResourceType.LightArmor, faction, city);
-            mediumArmor.toHud(player, content, DssRef.lang.Resource_TypeName_MediumArmor, ItemResourceType.MediumArmor, faction, city);
-            heavyArmor.toHud(player, content, DssRef.lang.Resource_TypeName_HeavyArmor, ItemResourceType.HeavyArmor, faction, city);
+            lightArmor.toHud(player, content, DssRef.lang.Resource_TypeName_LightArmor, ItemResourceType.PaddedArmor, faction, city);
+            mediumArmor.toHud(player, content, DssRef.lang.Resource_TypeName_MediumArmor, ItemResourceType.IronArmor, faction, city);
+            heavyArmor.toHud(player, content, DssRef.lang.Resource_TypeName_HeavyArmor, ItemResourceType.HeavyIronArmor, faction, city);
         }
 
     }
@@ -224,7 +224,7 @@ namespace VikingEngine.DSSWars.Resource
         public void toHud(Players.LocalPlayer player, RichBoxContent content, string name, ItemResourceType resource, Faction faction, City city)
         {
             content.newLine();
-            content.Add(new RichBoxText(name));
+            content.Add(new RbText(name));
             content.newLine();
 
             if (city != null)
@@ -247,19 +247,19 @@ namespace VikingEngine.DSSWars.Resource
             for (int i = PriceControls.Length - 1; i >= 0; i--)
             {
                 float change = -PriceControls[i];
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(change)) },
                     new RbAction3Arg<float, ItemResourceType, City>(faction.changeResourcePrice, change, resource, city)));
 
                 content.space();
             }
 
-            content.Add(new RichBoxText(TextLib.OneDecimal(price)));
+            content.Add(new RbText(TextLib.OneDecimal(price)));
             content.space();
 
             for (int i = 0; i < PriceControls.Length; i++)
             {
                 float change = PriceControls[i];
-                content.Add(new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(TextLib.PlusMinus(change)) },
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(change)) },
                     new RbAction3Arg<float, ItemResourceType, City>(faction.changeResourcePrice, change, resource, city)));
 
                 content.space();

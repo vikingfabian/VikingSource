@@ -52,7 +52,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
 
         void createTargetWarning()
         {
-            targetWarning = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.target_warning, 2.2f, 1, false);
+            targetWarning = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 2.2f, 1, false);
             Map.WorldPosition wp = new Map.WorldPosition(position + VectorExt.V2toV3XZ(rotation.Direction(travelLength)));
             wp.SetAtClosestFreeY(1);
             targetWarning.position = wp.PositionV3;
@@ -89,7 +89,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
                 {
                     this.CollisionAndDefaultBound = LootFest.ObjSingleBound.QuickBoundingBox(new Vector3(1, RootH, 1));
                     CollisionAndDefaultBound.UpdatePosition2(Rotation1D.D0, position);
-                    rootImage = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.ent_root, 14, 0, false);
+                    rootImage = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 14, 0, false);
                     rootStartPos = position + RootH * Vector3.Down;
                     rootImage.position = rootStartPos;
                    // targetWarning.DeleteMe();

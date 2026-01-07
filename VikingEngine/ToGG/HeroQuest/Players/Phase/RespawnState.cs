@@ -176,9 +176,9 @@ namespace VikingEngine.ToGG.HeroQuest.Players.Phase
             : base(mapControls)
         {
             var members = new List<AbsRichBoxMember>{
-                new RichBoxBeginTitle(),
-                new RichBoxImage(SpriteName.cmdRegenrate),
-                new RichBoxText("Restart here"),
+                new RbBeginTitle(),
+                new RbImage(SpriteName.cmdRegenrate),
+                new RbText("Restart here"),
             };
 
             AddRichBox(members);

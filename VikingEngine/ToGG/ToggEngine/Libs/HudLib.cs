@@ -257,11 +257,11 @@ namespace VikingEngine.ToGG
             
             if (title != null)
             {
-                members.Add(new HUD.RichBox.RichBoxBeginTitle());
-                members.Add(new HUD.RichBox.RichBoxText(title));
-                members.Add(new HUD.RichBox.RichBoxNewLine(false));
+                members.Add(new HUD.RichBox.RbBeginTitle());
+                members.Add(new HUD.RichBox.RbText(title));
+                members.Add(new HUD.RichBox.RbNewLine(false));
             }
-            members.Add(new HUD.RichBox.RichBoxText(text));
+            members.Add(new HUD.RichBox.RbText(text));
 
             AddTooltipText(tooltip, members, dir, area, buttonArea);
         }

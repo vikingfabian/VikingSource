@@ -11,14 +11,14 @@ with.
     <!--
     Modify this string to change the font that will be imported.
     -->
-    <FontName>Open Sans</FontName>
+    <FontName>Open Sans SemiBold</FontName>
 
     <!--
     Open Sans
     Size is a float value, measured in points. Modify this value to change
     the size of the font.
     -->
-    <Size>25</Size>
+    <Size>18</Size>
 
     <!--
     Spacing is a float value, measured in pixels. Modify this value to change
@@ -79,6 +79,11 @@ with.
         <End>&#x44F;</End>
 
       </CharacterRegion>
+		
+		<CharacterRegion>
+			<Start>&#x0451;</Start>
+			<End>&#x0451;</End>
+		</CharacterRegion>
 
       <!-- Most common Kanji (japanese, chinese) -->
       <CharacterRegion>

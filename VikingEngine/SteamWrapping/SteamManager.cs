@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VikingEngine.DSSWars;
+
 
 #if PCGAME
 using Valve.Steamworks;
@@ -80,9 +82,17 @@ namespace VikingEngine.SteamWrapping
             else if (PlatformSettings.RunProgram == StartProgram.DSS)
             {
 #if DSS
-                //new Wars.GameStats();
+                new DSSWars.Data.GameStats();
 #endif
             }
+        }
+
+        public void GoOffline()
+        {
+            isInitialized = false;
+            isNetworkInitialized = false;
+            statsInitialized = false;
+            leaderboardsInitialized = false;
         }
 
         /// <summary>
@@ -119,13 +129,20 @@ namespace VikingEngine.SteamWrapping
                     result = new SteamApplicationSettings(367030);
                     break;
                 case StartProgram.DSS:
-                    result = new SteamApplicationSettings(1223150);
+                    if (PlatformSettings.STEAM_DEMO)
+                    {
+                        result = new SteamApplicationSettings(3585100);
+                    }
+                    else
+                    {
+                        result = new SteamApplicationSettings(1223150);
+                    }
                     break;
                 case StartProgram.PartyJousting:
                     result = new SteamApplicationSettings(437900);
                     break;                    
                 case StartProgram.ToGG:
-                    if (PlatformSettings.Demo)
+                    if (PlatformSettings.STEAM_DEMO)
                     {
                         result = new SteamApplicationSettings(878070);
                     }
@@ -162,13 +179,15 @@ namespace VikingEngine.SteamWrapping
 
             AbsGameStats gamestats = null;
             if (PlatformSettings.RunProgram == StartProgram.LootFest3)
-            { gamestats = LootFest.LfRef.stats; }
-//            else if (PlatformSettings.RunProgram == StartProgram.Wars)
-//            {
-//#if DSS
-//                gamestats = Wars.warsRef.stats;
-//#endif
-//            }
+            { 
+                gamestats = LootFest.LfRef.stats; 
+            }
+            else if (PlatformSettings.RunProgram == StartProgram.DSS)
+            {
+#if DSS
+                gamestats = DssRef.stats;
+#endif
+            }
             else if (PlatformSettings.RunProgram == StartProgram.PartyJousting)
             {
 #if PJ
@@ -182,14 +201,17 @@ namespace VikingEngine.SteamWrapping
 
             if (PlatformSettings.RunProgram == StartProgram.LootFest3 ||
                 PlatformSettings.RunProgram == StartProgram.PartyJousting ||
-                //PlatformSettings.RunProgram == StartProgram.DSS ||
+                PlatformSettings.RunProgram == StartProgram.DSS ||
                 PlatformSettings.RunProgram == StartProgram.ToGG)
             {
-                P2PManager = new SteamP2PManager();
-                LobbyMatchmaker = new SteamLobbyMatchmaker();
-                VOIP = new SteamVOIP();
+                if (PlatformSettings.OnlineMultiplayer)
+                {
+                    P2PManager = new SteamP2PManager();
+                    LobbyMatchmaker = new SteamLobbyMatchmaker();
+                    VOIP = new SteamVOIP();
 
-                isNetworkInitialized = true;
+                    isNetworkInitialized = true;
+                }
             }
             
             DLC = new SteamDLC();
@@ -319,9 +341,9 @@ namespace VikingEngine.SteamWrapping
         {
             new DownloadAllUserStats();
         }
-        void downloadCrashReports()
+        public void downloadCrashReports()
         {
-            new DebugExtensions.DownloadSteamCrashReports();
+            new DebugExtensions.DownloadSteamCrashReports(true, null);
         }
     }
 

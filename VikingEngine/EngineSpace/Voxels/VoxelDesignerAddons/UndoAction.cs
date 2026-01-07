@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.DSSWars;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.Voxels;
@@ -37,15 +40,15 @@ namespace VikingEngine.Voxels
                 }
 
                 undo.Undo(designer);
-                designer.updateVoxelObj(undo.selectionArea);
+                designer.updateVoxelObj(IntervalIntV3.Zero);
+                designer.updateFrameInfo();
+                //if (designer.inGameEditor)
+                //{
+                //    undo.selectionArea.AddValue(designer.worldPos.WorldGrindex);
+                //    EditorDrawTools.NetWriteVoxelEdit(undo.selectionArea);
+                //}
 
-                if (designer.inGameEditor)
-                {
-                    undo.selectionArea.AddValue(designer.worldPos.WorldGrindex);
-                    EditorDrawTools.NetWriteVoxelEdit(undo.selectionArea);
-                }
-
-                designer.print("Undo " + undoActions.Count.ToString());
+                designer.print(DssRef.lang.Hud_Undo + " " + undoActions.Count.ToString());
                 return true;
             }
             else
@@ -60,50 +63,56 @@ namespace VikingEngine.Voxels
 
     class UndoAction
     {
-        List<ushort> gridCompressed;
-        public IntervalIntV3 selectionArea;
         public int frame;
-        
+        public int layer;
+        VoxelObjGridDataAnimHD allFrames = null;
+        VoxelObjGridDataHD oneFrame = null;
+        ListWithSelection<VoxLayer> layers = null;
+
         public UndoAction()
         { }
-        public UndoAction(IntervalIntV3 selectionArea, AbsVoxelDesigner designer, int frame)
+        public UndoAction(AbsVoxelDesigner designer, int frame, int layer)
         {
             this.frame = frame;
-            this.selectionArea = selectionArea;
+            this.layer = layer;
 
-            var grid = new VoxelObjGridDataHD(selectionArea.Size);
-
-            ForXYZLoop loop = new ForXYZLoop(grid.Size);
-            while (loop.Next())
+            if (layer < 0)
             {
-                grid.Set(loop.Position, designer.GetVoxel(loop.Position + selectionArea.Min));
+                layers = designer.voxelProject.CloneLayers();
             }
-
-            gridCompressed = new List<ushort>();
-            VoxelLib.CompressToList(grid.MaterialGrid, gridCompressed);
+            else if (frame < 0)
+            {
+                allFrames = designer.voxelProject.AnimationFrames.Clone();
+            }
+            else
+            {
+                oneFrame = designer.voxelProject.layers.Selected().GetFrame(frame).Clone();
+            }
         }
 
-        public UndoAction(IntervalIntV3 selectionArea, VoxelObjGridDataHD grid, int frame)
+        public UndoAction(VoxelObjGridDataHD grid, int frame)
         {
             this.frame = frame;
-            this.selectionArea = selectionArea;
-
-            gridCompressed = new List<ushort>();
-            VoxelLib.CompressToList(grid.MaterialGrid, gridCompressed);
+            oneFrame = grid.Clone();
         }
 
         public void Undo(AbsVoxelDesigner designer)
         {
-            designer.currentFrame.Value = frame;
-
-            var grid = new VoxelObjGridDataHD(selectionArea.Size);
-            VoxelLib.DeCompressList(gridCompressed, grid.MaterialGrid);
-
-            ForXYZLoop loop = new ForXYZLoop(grid.Size);
-            while (loop.Next())
+            if (layers != null)
             {
-                designer.SetVoxel(loop.Position + selectionArea.Min, grid.Get(loop.Position));
+                designer.voxelProject.layers = layers;
             }
+            else if (oneFrame != null)
+            {
+                designer.voxelProject.layers.Selected().SetFrame(frame, oneFrame);
+            }
+            else
+            {
+                designer.setUndoDrawLimit(allFrames.Frames.First().Size);
+                designer.voxelProject.layers.list[layer].animationFrames = allFrames;
+            }
+
+            designer.voxelProject.currentFrame.Value = frame;
         }
         
     }

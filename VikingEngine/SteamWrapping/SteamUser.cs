@@ -20,13 +20,13 @@ namespace VikingEngine.SteamWrapping
 
         public void write(System.IO.BinaryWriter w)
         {
-            SaveLib.WriteString(w, name);
+            StreamLib.WriteString(w, name);
             w.Write(id);
         }
 
         public void read(System.IO.BinaryReader r)
         {
-            name = SaveLib.ReadString(r);
+            name = StreamLib.ReadString_safe(r);
             id = r.ReadUInt64();
         }
 

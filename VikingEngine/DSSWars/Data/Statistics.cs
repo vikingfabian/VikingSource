@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Data
@@ -50,22 +52,43 @@ namespace VikingEngine.DSSWars.Data
             content.newParagraph();
             content.text(string.Format(DssRef.lang.EndGameStatistics_StatuesBuilt, statuesBuilt));
             content.text(string.Format(DssRef.lang.EndGameStatistics_DecorsBuilt, decorBuilt));
-
         }
 
-        public void onDecorBuild_async(bool statue)
+        public void onDecorBuild_async(TerrainDecorType decorType)
         {
             decorBuilt++;
-            if (statue)
-            {
-                DssRef.achieve.UnlockAchievement_async(AchievementIndex.statue);
-                statuesBuilt++;
-            }
 
+            switch (decorType)
+            {
+                case TerrainDecorType.Statue_Horse:
+                case TerrainDecorType.Statue_Leader:
+                case TerrainDecorType.Statue_Pillar:
+                case TerrainDecorType.Statue_Lion:
+                    statuesBuilt++;
+                    break;
+
+                case TerrainDecorType.Statue_ThePlayer:
+                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.statue_of_player);
+                    statuesBuilt++;
+                    break;
+            }
+            
             if (decorBuilt >= Achievements.DecorationsTotalCount &&
                 statuesBuilt >= Achievements.DecorationsStatueCount)
             {
-                DssRef.achieve.UnlockAchievement_async(AchievementIndex.decorations);
+                DssRef.achieve.UnlockAchievement_async(AchievementIndex.decorations_tier1);
+
+                if (decorBuilt >= Achievements.DecorationsTotalCount * 2 &&
+                    statuesBuilt >= Achievements.DecorationsStatueCount * 2)
+                {
+                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.decorations_tier2);
+
+                    if (decorBuilt >= Achievements.DecorationsTotalCount * 4 &&
+                        statuesBuilt >= Achievements.DecorationsStatueCount * 4)
+                    {
+                        DssRef.achieve.UnlockAchievement_async(AchievementIndex.decorations_tier3);
+                    }
+                }
             }
         }
 
@@ -90,8 +113,8 @@ namespace VikingEngine.DSSWars.Data
 
         public void readGameState(BinaryReader r, int subVersion)
         {
-             SoldiersRecruited =r.ReadInt32();
-             FriendlySoldiersLost = r.ReadInt32();
+            SoldiersRecruited =r.ReadInt32();
+            FriendlySoldiersLost = r.ReadInt32();
             EnemySoldiersKilled = r.ReadInt32();
 
             CitiesCaptured = r.ReadUInt16();

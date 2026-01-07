@@ -1,36 +1,73 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Players
 {
-    abstract class AbsPlayer
+    abstract partial class AbsPlayer
     {
         public const int AggressionLevel0_Passive = 0;
-        protected const int AggressionLevel1_RevengeOnly = 1;
-        protected const int AggressionLevel2_RandomAttacks = 2;
-        protected const int AggressionLevel3_FocusedAttacks = 3;
+        public const int AggressionLevel1_RevengeOnly = 1;
+        public const int AggressionLevel2_RandomAttacks = 2;
+        public const int AggressionLevel3_FocusedAttacks = 3;
 
         public bool IsPlayerNeighbor = false;
         public Faction faction;
         public int aggressionLevel = AggressionLevel0_Passive;
-        public bool protectedPlayer = false;
+        public bool protectedFromBotAttacks = false;
         protected bool ignorePlayerCapture = false;
+        public bool personality_loner = false;
+        public bool protectedFromDelete = false;
+        public bool mayAttackPlayer = true;
 
-        //public List<AbsOrder> orders = new List<AbsOrder>();
         public Orders.Orders orders;
         abstract public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType buildType, out bool intelligent);
-        public AbsPlayer(Faction faction)
+
+        public PlayerProfile profile;
+        public Texture2D flagTexture;
+
+        public AbsPlayer()
+        { }
+
+        public void SetProfile(PlayerProfile profile)
+        {
+            this.profile = profile;
+            flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
+        }
+
+        public AbsPlayer(Faction faction, bool newGame)
         {
             this.faction = faction;
             faction.SetStartOwner(this);
 
-            createStartupBarracks();
+            if (newGame)
+            {
+                createStartupBarracks();
+            }
+        }
+
+        /// <summary>
+        /// Casual: upkeep in copper, Normal: upkeep in energy
+        /// </summary>
+        public float ConvertUpkeep(float upkeep, out bool casual)
+        {
+            casual = profile.casualControls;
+            if (profile.casualControls)
+            {
+                return upkeep * DssConst.CasualSoldierDefaultCost_Copp;
+            }
+            else
+            {
+                return upkeep * DssConst.ManDefaultEnergyCost;
+            }
         }
 
         public void createStartupBarracks()
@@ -45,19 +82,39 @@ namespace VikingEngine.DSSWars.Players
         {
 
         }
+
+        
+
+        protected void readAiPlayerGameState(BinaryReader r, int subversion)
+        {
+            if (subversion < 72)
+            {
+                IsPlayerNeighbor = r.ReadBoolean();
+                aggressionLevel = r.ReadByte();
+                protectedFromBotAttacks = r.ReadBoolean();
+            }
+            else
+            {
+                aggressionLevel = r.ReadByte();
+                var bools = new EightBit(r);
+                bools.Get(out IsPlayerNeighbor, out protectedFromBotAttacks, out personality_loner, out protectedFromDelete, out mayAttackPlayer);
+                
+            }
+        }
+
         virtual public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
         {
 
         }
 
-        virtual public void writeNet(System.IO.BinaryWriter w)
-        {
+        //virtual public void writeNet(System.IO.BinaryWriter w)
+        //{
 
-        }
-        virtual public void readNet(System.IO.BinaryReader r)
-        {
+        //}
+        //virtual public void readNet(System.IO.BinaryReader r)
+        //{
 
-        }
+        //}
 
         virtual public void oneSecUpdate()
         { }
@@ -92,7 +149,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void onPlayerNeighborCapture(LocalPlayer player)
         {
-            if (player.IsAi())
+            if (player.IsBot())
             {
                 if (ignorePlayerCapture)
                     return;
@@ -103,18 +160,18 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (DssRef.difficulty.aiAggressivity == AiAggressivity.Medium)
                     {
-                        if (Ref.rnd.Chance(0.35))
+                        if (Ref.peRnd.Chance(0.35))
                         {
                             aggressionLevel = AggressionLevel2_RandomAttacks;
                         }
-                        else if (Ref.rnd.Chance(0.06))
+                        else if (Ref.peRnd.Chance(0.06))
                         {
                             aggressionLevel = AggressionLevel3_FocusedAttacks;
                         }
                     }
                     else if (DssRef.difficulty.aiAggressivity == AiAggressivity.High)
                     {
-                        if (Ref.rnd.Chance(0.6))
+                        if (Ref.peRnd.Chance(0.6))
                         {
                             aggressionLevel = AggressionLevel2_RandomAttacks;
                         }
@@ -128,31 +185,66 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (DssRef.difficulty.aiAggressivity == AiAggressivity.Medium)
                     {
-                        if (Ref.rnd.Chance(0.05))
+                        if (Ref.peRnd.Chance(0.05))
                         {
                             aggressionLevel = AggressionLevel3_FocusedAttacks;
                         }
                     }
                     else if (DssRef.difficulty.aiAggressivity == AiAggressivity.High)
                     {
-                        if (Ref.rnd.Chance(0.7))
+                        if (Ref.peRnd.Chance(0.7))
                         {
                             aggressionLevel = AggressionLevel3_FocusedAttacks;
                         }
                     }
                 }
 
-                player.GetAiPlayer().refreshAggression();
+                //player.GetAiPlayer().refreshAggression();
 
                 var relation = DssRef.diplomacy.GetOrCreateRelation(faction, player.faction);
                 relation.SetWorseSpeakTerms(DssRef.diplomacy.SpeakTermsOnNeigbor_BadChance, DssRef.diplomacy.SpeakTermsOnNeigbor_NoneChance);
 
                 if (faction.Size() >= FactionSize.Big)
                 {
-                    protectedPlayer = true;
+                    protectedFromBotAttacks = true;
                 }
             }
         }
+
+        protected bool quickMatchUnits(bool checkIfParticipant)
+        {
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
+            {
+                if (!checkIfParticipant || IsLocalPlayer() || DssRef.world.quickMatchFactions.Contains(faction.myIndex))
+                {
+                    IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
+                    Army mainArmy = faction.NewArmy(onTile);
+
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        new SoldierGroup(mainArmy, DssLib.SoldierProfile_StandardArcher, mainArmy.position);
+                    }
+                    for (int i = 0; i < 1; ++i)
+                    {
+                        new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
+                    }
+
+                    if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
+                    {
+                        for (int i = 0; i < 1; ++i)
+                        {
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
+                        }
+                    }
+
+                    mainArmy.setAsStartArmy();
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
 
         virtual public void createStartUnits()
         {   
@@ -162,11 +254,16 @@ namespace VikingEngine.DSSWars.Players
 
         abstract public bool IsLocal { get; }
 
-        abstract public bool IsAi();
+        abstract public bool IsBot();
 
-        abstract public bool IsPlayer();
+        abstract public bool IsLocalPlayer();
 
         virtual public LocalPlayer GetLocalPlayer()
+        {
+            return null;
+        }
+
+        virtual public AbsHumanPlayer GetHumanPlayer()
         {
             return null;
         }
@@ -180,6 +277,26 @@ namespace VikingEngine.DSSWars.Players
         virtual public void OnCityCapture(City city)
         {
             
+        }
+        public void setAggression(int agg)
+        {
+            if (aggressionLevel != agg)
+            {
+                aggressionLevel = agg;
+                //GetAiPlayer()?.refreshAggression();
+            }
+        }
+        public void setMinimumAggression(int minAgg)
+        {
+            if (aggressionLevel <= minAgg)
+            {
+                setAggression(minAgg);
+            }
+        }
+
+        public override string ToString()
+        {
+            return "Player (" + Name + ")";
         }
     }
 

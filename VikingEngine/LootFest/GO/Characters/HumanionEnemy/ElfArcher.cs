@@ -10,7 +10,7 @@ namespace VikingEngine.LootFest.GO.Characters.HumanionEnemy
     class ElfArcher : AbsElf
     {
         public ElfArcher(GoArgs args)
-            : base(args, VoxelModelName.elf_archer, ElfScaleRange)
+            : base(args, VoxelModelName.NUM_NON, ElfScaleRange)
         {
             aggresivity = HumanoidEnemyAgressivity.Careful_2;
             hasRangedWeapon = true;
@@ -30,7 +30,7 @@ namespace VikingEngine.LootFest.GO.Characters.HumanionEnemy
 
         protected override void createPreRangedAttackEffect()
         {
-            preRangedAttackWeaponEffect = new Effects.HumanoidEnemyPreBowEffect(VoxelModelName.elfbow,
+            preRangedAttackWeaponEffect = new Effects.HumanoidEnemyPreBowEffect(VoxelModelName.NUM_NON,
                 new Vector3(0.1f, 0.3f, 0.3f) * modelScale, this);
         }
         protected override void createRangedAttack()

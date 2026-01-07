@@ -108,7 +108,7 @@ namespace VikingEngine.ToGG.HeroQuest.Gadgets
         public override List<AbsRichBoxMember> interactToolTip()
         {
             var richbox = base.interactToolTip();
-            richbox.Add(new RichBoxNewLine(true));
+            richbox.Add(new RbNewLine(true));
             items.toRichbox(richbox);
 
             return richbox;

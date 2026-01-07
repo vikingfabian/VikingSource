@@ -39,7 +39,7 @@ namespace VikingEngine.LootFest.Effects
         {
             if (!Ref.isPaused)
             {
-                if (Ref.TimePassed16ms)
+                //if (Ref.TimePassed16ms)
                 {
                     speed.Y += EffectLib.Gravity;
                 }

@@ -1,12 +1,40 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using VikingEngine.DataStream;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Data
 {
     static class IOLib
     {
+
+        
+        public static FileCheck fileCheck_gamestorage;
+        public static FileCheck fileCheck_savemeta;
+
+        public static void FileCheckToHud(RichBoxContent content)
+        {
+            check(GameSettings.FileCheck, "set");
+            check(fileCheck_gamestorage, "sto");
+            check(fileCheck_savemeta, "met");
+
+            void check(FileCheck fileCheck, string name)
+            {
+                HudLib.BulletSeperationPoint(content);
+                content.Add(new RbText(name + "(" + fileCheck.ToString() + ")", HudLib.SecondaryTextColor));
+                if (fileCheck.exception != null)
+                {
+                    content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("!") },
+                        new RbAction1Arg<System.Exception>((System.Exception ex) => { BlueScreen.ThreadException = ex; }, fileCheck.exception),
+                        new RbTooltip_Text(fileCheck.exception.Message)));
+                }
+            }
+            HudLib.BulletSeperationPoint(content);
+            content.Add(new RbText("cnf" + "(" + Config.RWCheck.ToString() + ")", HudLib.SecondaryTextColor));
+        }
+
         public static void WriteGameObject(System.IO.BinaryWriter w, AbsGameObject gameObject)
         {
             var type = gameObject.gameobjectType();
@@ -15,11 +43,11 @@ namespace VikingEngine.DSSWars.Data
             {
                 case GameObjectType.Army:
                     WriteFactionPointer(w, gameObject.GetFaction());
-                    w.Write((ushort)gameObject.parentArrayIndex);
+                    w.Write((ushort)gameObject.myIndex);
                     break;
 
                 case GameObjectType.City:
-                    w.Write((ushort)gameObject.parentArrayIndex);
+                    w.Write((ushort)gameObject.myIndex);
                     break;
 
                 case GameObjectType.Faction:
@@ -47,7 +75,7 @@ namespace VikingEngine.DSSWars.Data
                 case GameObjectType.Faction:
                     {
                         var index = r.ReadUInt16();
-                        return DssRef.world.factions.Array[index];
+                        return DssRef.world.factions.GetIndex_Safe(index);
                     }
             }
 
@@ -155,12 +183,12 @@ namespace VikingEngine.DSSWars.Data
 
         public static void WriteFactionPointer(System.IO.BinaryWriter w, Faction faction)
         {
-            w.Write((ushort)faction.parentArrayIndex);
+            w.Write((ushort)faction.myIndex);
         }
 
         public static Faction ReadFactionPointer(System.IO.BinaryReader r)
         {
-            return DssRef.world.factions.Array[r.ReadUInt32()];
+            return DssRef.world.factions.GetIndex_Safe(r.ReadUInt16());
         }
 
 

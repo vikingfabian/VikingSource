@@ -13,6 +13,11 @@ namespace VikingEngine.DSSWars.Delivery
 {
     struct DeliveryStatus
     {
+        public const ItemResourceType DeliveryType_Resource = ItemResourceType.AutomatedItem;
+        public const ItemResourceType DeliveryType_Men = ItemResourceType.Men;
+        public const ItemResourceType DeliveryType_Gold = ItemResourceType.Gold;
+
+
         public const int MaxQue = 20;
 
         public DeliveryActiveStatus active;
@@ -23,13 +28,13 @@ namespace VikingEngine.DSSWars.Delivery
         public bool useRecieverMax;
         public int recieverMax;
 
+        public int level;
         public int idAndPosition;
         public int que;
         //public int itemsCollected;
         public DeliveryProfile profile;
         public DeliveryProfile inProgress;
 
-        //public Resource.ItemResource nextDelivery;
         public TimeInGameCountdown countdown;
 
         public void halt()
@@ -39,18 +44,58 @@ namespace VikingEngine.DSSWars.Delivery
 
         public void useSetup(DeliveryStatus setup, LocalPlayer player)
         {
-            useSenderMin = setup.useSenderMin;
-            senderMin = setup.senderMin;
-            useRecieverMax = setup.useRecieverMax;
-            recieverMax = setup.recieverMax;
-            profile = setup.profile;
+            if (setup.fullSetup())
+            {
+                useSenderMin = setup.useSenderMin;
+                senderMin = setup.senderMin;
+                useRecieverMax = setup.useRecieverMax;
+                recieverMax = setup.recieverMax;
+                profile = setup.profile;
 
-            checkCity(player);
+                checkCity(player);
+            }
+        }
+
+        public bool fullSetup()
+        {
+            return profile.fullSetup();
+        }
+
+        public bool IsGold()
+        { 
+            return profile.type == DeliveryType_Gold;
+        }
+        public bool IsRecruitment()
+        {
+            return profile.type == DeliveryType_Men;
+        }
+
+        public bool IsPostal()
+        {
+            return profile.type != DeliveryType_Men && profile.type != DeliveryType_Gold;
+        }
+
+        public ItemResourceType GetFilterType()
+        {
+            switch (profile.type)
+            {
+                case ItemResourceType.Men:
+                case ItemResourceType.Gold:
+                    return profile.type;
+                default:
+                    return ItemResourceType.RESOURCES;
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"Deliver: {GetFilterType()}, {shortActiveString()}";
         }
 
         public void checkCity(LocalPlayer player)
         {
-            if (profile.toCity == DeliveryProfile.ToCityAuto)
+            if (profile.toCity < 0 ||
+                profile.toCity == DeliveryProfile.ToCityAuto)
             {
                 return;
             }
@@ -59,7 +104,7 @@ namespace VikingEngine.DSSWars.Delivery
 
             while (citiesC.Next())
             {
-                if (citiesC.sel.parentArrayIndex == profile.toCity)
+                if (citiesC.sel.myIndex == profile.toCity)
                 {
                     return;
                 }
@@ -91,16 +136,18 @@ namespace VikingEngine.DSSWars.Delivery
             }
             w.Write(idAndPosition);
             w.Write((byte)que);
+
+            w.Write((byte)level);
+            
+            
         }
 
         public void readGameState(System.IO.BinaryReader r, int subVersion)
         {
             active = (DeliveryActiveStatus)r.ReadByte();
-
-           
-                useSenderMin = r.ReadBoolean();
-                useRecieverMax = r.ReadBoolean();
-            
+                       
+            useSenderMin = r.ReadBoolean();
+            useRecieverMax = r.ReadBoolean();            
 
             senderMin = r.ReadUInt16();
             recieverMax = r.ReadUInt16();
@@ -117,58 +164,57 @@ namespace VikingEngine.DSSWars.Delivery
                     break;
             }
             idAndPosition = r.ReadInt32();
-            que = r.ReadByte();
+            que = r.ReadByte();            
+            level = r.ReadByte();            
         }
 
-        public bool CanSend(City city)
+        public bool CanSend(City city, out ItemResourceType item)
         {
+            item = profile.type;
             int min = useSenderMin ? senderMin : 0;
             if (profile.type == ItemResourceType.Men)
             {
-                return city.workForce.amount - min >= DssConst.CityDeliveryCount;
+                return city.workForce.amount - min >= DssConst.CityDeliveryChunkSize_Level1;
+            }
+            else if (profile.type == ItemResourceType.AutomatedItem)
+            {
+                item = city.findAutoItem();
+                return item != ItemResourceType.NONE;
             }
             else
             {
-                return city.GetGroupedResource(profile.type).amount - min >= DssConst.CityDeliveryCount;
+                return city.GetGroupedResource(profile.type).amount - min >= DssConst.CityDeliveryChunkSize_Level1;
             }
         }
 
-        public bool CanRecieve()
+        public bool CanRecieve(ItemResourceType sendItem)
         {
-            return CanRecieve(profile.toCity, out _);
-            //if (useRecieverMax)
-            //{
-            //    City city = DssRef.world.cities[profile.toCity];
-            //    if (profile.type == ItemResourceType.Men)
-            //    {
-            //        return city.workForce < recieverMax;
-            //    }
-            //    else
-            //    {
-            //        return city.GetGroupedResource(profile.type).amount < recieverMax;
-            //    }
-            //}
-            //return true;
+            return CanRecieve(sendItem, profile.toCity, out _);
         }
 
-        public bool CanRecieve(int cityIx, out int recieverHasAmountPlusDeliveries)
+        public bool CanRecieve(ItemResourceType sendItem, int cityIx, out int recieverHasAmountPlusDeliveries)
         {
             if (arraylib.InBound(DssRef.world.cities, cityIx))
             {
-                City city = DssRef.world.cities[cityIx];
-                if (profile.type == ItemResourceType.Men)
+                City recievingCity = DssRef.world.cities[cityIx];
+                if (profile.type == DeliveryType_Men)
                 {
-                    recieverHasAmountPlusDeliveries = city.homesTotal() + city.workForce.deliverCount;
+                    recieverHasAmountPlusDeliveries = recievingCity.workForce.amount + recievingCity.workForce.deliverCount;
 
-                    if (recieverHasAmountPlusDeliveries + DssConst.CityDeliveryCount > city.homesTotal())
+                    if (recieverHasAmountPlusDeliveries + DssConst.CityDeliveryChunkSize_Level1 > recievingCity.HousingCount_Workers)
                     {
                         return false;
                     }
                 }
                 else
                 {
+                    var resource = recievingCity.GetGroupedResource(sendItem);                    
+                    recieverHasAmountPlusDeliveries = resource.amountPlusDelivery();
 
-                    recieverHasAmountPlusDeliveries = city.GetGroupedResource(profile.type).amountPlusDelivery();
+                    if (resource.reachedBuffer())
+                    {
+                        return false;
+                    }
                 }
 
                 if (useRecieverMax)
@@ -201,10 +247,7 @@ namespace VikingEngine.DSSWars.Delivery
             return false;
         }
 
-        public bool Recruitment()
-        {
-            return profile.type == ItemResourceType.Men;
-        }
+       
 
         public string shortActiveString()
         {
@@ -215,13 +258,15 @@ namespace VikingEngine.DSSWars.Delivery
             }
             else
             {
-                result = active.ToString() + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Queue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
+                result = active.ToString() + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
             }
 
             return result;
         }
-        public string longTimeProgress(City from)
+        public string longTimeProgress(City from, out bool hasValue)
         {
+            hasValue = true;
+
             string remaining;
             if (active == DeliveryActiveStatus.Delivering)
             {
@@ -229,44 +274,82 @@ namespace VikingEngine.DSSWars.Delivery
             }
             else
             {
-                remaining = DeliveryProfile.DeliveryTime(from, DssRef.world.cities[profile.toCity], out _).LongString();
+                if (arraylib.InBound(DssRef.world.cities, profile.toCity))
+                {
+                    remaining = DeliveryProfile.DeliveryTime(from, DssRef.world.cities[profile.toCity], level, out _).LongString();
+                }
+                else
+                {
+                    hasValue = false;
+                    remaining = TextLib.Error;
+                }
             }
             return string.Format("Delivering {0}", remaining);
         }
 
-        public void defaultSetup(bool recruitment)
+        public void defaultSetup(ItemResourceType deliveryType)
         {
-            senderMin = 100;
-            recieverMax = 100;
+            
             profile.toCity = -1;
-            profile.type = recruitment ? ItemResourceType.Men : ItemResourceType.Food_G;
+            profile.type = deliveryType;// ? ItemResourceType.Men : ItemResourceType.Food_G;
+
+            useRecieverMax = true;
+
+            if (deliveryType == DeliveryType_Gold)
+            {
+                senderMin = 1000;
+                recieverMax = 1000;
+                profile.SendAmount = DssConst.GoldDeliveryChunkSize_Level1;
+            }
+            else
+            {
+                senderMin = 100;
+                recieverMax = 100;
+                profile.SendAmount = DssConst.CityDeliveryChunkSize_Level1;
+            }
+
+            if (level < 1)
+            {
+                level = 1;
+            }
         }
 
         public void tooltip(LocalPlayer player, City city, RichBoxContent content)
         {
 
-            if (profile.type == ItemResourceType.Men)
+            switch (profile.type)
             {
-                HudLib.ResourceCost(content, ItemResourceType.Men, DssConst.SoldierGroup_DefaultCount, city.workForce.amount);
-            }
-            else
-            {
-                HudLib.ResourceCost(content, profile.type, DssConst.SoldierGroup_DefaultCount, city.GetGroupedResource(profile.type).amount);
+                case DeliveryType_Men:
+                    HudLib.ResourceCost(content, ItemResourceType.Men, profile.SendAmount, city.workForce.amount);
+                    break;
+                case DeliveryType_Gold:
+                    HudLib.ResourceCost(content, ItemResourceType.Gold, profile.SendAmount, (int)city.money.GetGold());
+                    break;
+                case DeliveryType_Resource:
+                    content.Add(new RbImage(SpriteName.AutomationGearIcon));
+                    content.space();
+                    content.Add(new RbText(DssRef.lang.Automation_Title));
+                    break;
+                default:
+                    HudLib.ResourceCost(content, profile.type, DssConst.SoldierGroup_DefaultCount, city.GetGroupedResource(profile.type).amount);
+                    break;
+
             }
 
-            content.newLine();
-            content.Add(new RichBoxImage(player.input.Stop.Icon));
-            content.space(0.5f);
-            content.Add(new RichBoxText(shortActiveString()));
 
             content.newLine();
-            content.Add(new RichBoxImage(player.input.Copy.Icon));
+            player.gameControls.input.StopStart.ToRichContent(content);
             content.space(0.5f);
-            content.Add(new RichBoxText(DssRef.lang.Hud_CopySetup));
+            content.Add(new RbText(shortActiveString()));
+
+            content.newLine();
+            player.gameControls.input.Copy.ToRichContent(content);
+            content.space(0.5f);
+            content.Add(new RbText(DssRef.lang.Hud_CopySetup));
             content.space(2);
-            content.Add(new RichBoxImage(player.input.Paste.Icon));
+            player.gameControls.input.Paste.ToRichContent(content);
             content.space(0.5f);
-            content.Add(new RichBoxText(DssRef.lang.Hud_Paste));
+            content.Add(new RbText(DssRef.lang.Hud_Paste));
         }
     }
 
@@ -274,14 +357,21 @@ namespace VikingEngine.DSSWars.Delivery
     {
         public const int ToCityAuto = short.MaxValue;
         public int toCity;
+        public int SendAmount;
         public int autoCity;
         public ItemResourceType type;
+
+        public bool fullSetup()
+        {
+            return type != ItemResourceType.NONE && type != ItemResourceType.RESOURCES &&
+                toCity >= 0;
+        }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write((short)toCity);
             w.Write((byte)type);
-
+            w.Write((short)SendAmount);
             if (toCity == ToCityAuto)
             {
                 w.Write((short)autoCity);
@@ -291,14 +381,13 @@ namespace VikingEngine.DSSWars.Delivery
         public void readGameState(System.IO.BinaryReader r, int subVersion)
         {
             toCity = r.ReadInt16();
-            type = (ItemResourceType)r.ReadByte();
-            //if (subVersion >= 21 && subVersion != SaveGamestate.MergeVersion)
-            //{
-                if (toCity == ToCityAuto)
-                {
-                    autoCity = r.ReadInt16();
-                }
-            //}
+            type = (ItemResourceType)r.ReadByte();           
+            SendAmount = r.ReadInt16();
+
+            if (toCity == ToCityAuto)
+            {
+                autoCity = r.ReadInt16();
+            }            
         }
 
         public int ToCity()
@@ -314,15 +403,24 @@ namespace VikingEngine.DSSWars.Delivery
         }
 
 
-        public static TimeLength DeliveryTime(City from, City othercity, out float distance)//int toCity)
+        public static TimeLength DeliveryTime(City from, City othercity, int level, out float distance)
         {
-            //City othercity = DssRef.world.cities[toCity];
             distance = VectorExt.Length((othercity.tilePos - from.tilePos).Vec);
             float time = distance / DssVar.Men_StandardWalkingSpeed_PerSec;
             if (from.Culture == CityCulture.Networker)
             {
                 time *= 0.5f;
             }
+
+            if (level == 2)
+            {
+                time = MathExt.SubtractIntegerPercentage(time, DssConst.DeliveryLevel2TimeReducePerc);
+            }
+            else if (level == 3)
+            {
+                time = MathExt.SubtractIntegerPercentage(time, DssConst.DeliveryLevel3TimeReducePerc);
+            }
+
             return new TimeLength(time);
         }
 
@@ -331,7 +429,6 @@ namespace VikingEngine.DSSWars.Delivery
     enum DeliveryActiveStatus
     {
         Idle,
-        //CollectingItems,
         Delivering,
     }
 }

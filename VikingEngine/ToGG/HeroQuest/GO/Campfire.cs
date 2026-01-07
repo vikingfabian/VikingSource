@@ -21,7 +21,7 @@ namespace VikingEngine.ToGG.HeroQuest.GO
                 SpriteName.cmdLightAction, "Light the fire",
                 InteractType.ActivateItself, 0, true, true);
             InteractSettings.addedDesc = new List<HUD.RichBox.AbsRichBoxMember>{
-                new HUD.RichBox.RichBoxText(CampfireProperty.GainRest)
+                new HUD.RichBox.RbText(CampfireProperty.GainRest)
             };
 
             const float Width = 0.8f;

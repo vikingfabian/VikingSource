@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
+
 using VikingEngine.Graphics;
+using VikingEngine.ToGG.ToggEngine.Map;
+using VikingEngine.Voxels;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace VikingEngine.Graphics
@@ -34,6 +38,23 @@ namespace VikingEngine.Graphics
             return Polygons[polyIndex].V2se;
         }
         public object GetPolygonVertex3(ref int polyIndex)
+        {
+            return Polygons[polyIndex].V3ne;
+        }
+
+        public VertexPositionColorTexture GetPolygonVertex0_coltex(ref int polyIndex)
+        {
+            return Polygons[polyIndex].V0sw;
+        }
+        public VertexPositionColorTexture GetPolygonVertex1_coltex(ref int polyIndex)
+        {
+            return Polygons[polyIndex].V1nw;
+        }
+        public VertexPositionColorTexture GetPolygonVertex2_coltex(ref int polyIndex)
+        {
+            return Polygons[polyIndex].V2se;
+        }
+        public VertexPositionColorTexture GetPolygonVertex3_coltex(ref int polyIndex)
         {
             return Polygons[polyIndex].V3ne;
         }
@@ -105,13 +126,27 @@ namespace VikingEngine.Graphics
         {
 
             Graphics.Sprite file = DataLib.SpriteCollection.Get(sprite);// LootFest.LootfestLib.Images.TileIxToImgeFile[tileIx];
-            Face data = LootFest.Data.Block.GetVoxelObjFace(blockPos, facetype);
+            Face data = Block.GetVoxelObjFace(blockPos, facetype);
 
             V0sw = new VertexPositionColorTexture(data.Corner3, color, file.SourcePolygonLowLeft);
             V1nw = new VertexPositionColorTexture(data.Corner1, color, file.SourcePolygonTopLeft);
             V2se = new VertexPositionColorTexture(data.Corner4, color, file.SourcePolygonLowRight);
             V3ne = new VertexPositionColorTexture(data.Corner2, color, file.SourcePolygonTopRight);
         }
+        public PolygonColor(Graphics.Face face)
+        {
+            V0sw = new VertexPositionColorTexture(face.Corner3, Color.White, Vector2.Zero);
+            V1nw = new VertexPositionColorTexture(face.Corner1, Color.White, Vector2.Zero);
+            V2se = new VertexPositionColorTexture(face.Corner4, Color.White, Vector2.Zero);
+            V3ne = new VertexPositionColorTexture(face.Corner2, Color.White, Vector2.Zero);
+        }
+        //public PolygonNormal(Graphics.Face face)
+        //{
+        //    Vertex0sw = new VertexPositionNormalTexture(face.Corner3, face.Normal, Vector2.Zero);
+        //    Vertex1nw = new VertexPositionNormalTexture(face.Corner1, face.Normal, Vector2.Zero);
+        //    Vertex2se = new VertexPositionNormalTexture(face.Corner4, face.Normal, Vector2.Zero);
+        //    Vertex3ne = new VertexPositionNormalTexture(face.Corner2, face.Normal, Vector2.Zero);
+        //}
 
         public PolygonColor(int facetype, int tileIx, 
             Voxels.FaceCornerColorYS colors, IntVector3 blockPos)
@@ -119,7 +154,7 @@ namespace VikingEngine.Graphics
 
             Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIx];
 
-            Face data = LootFest.Data.Block.GetTerrainFace(blockPos, (CubeFace)facetype);
+            Face data = Block.GetTerrainFace(blockPos, (CubeFace)facetype);
 
             //VerticeData = new VertexPositionColorTexture[NumCorners]
             //{ 
@@ -137,7 +172,7 @@ namespace VikingEngine.Graphics
             Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIx];
 
             //opta bort förflyttning av blockpos
-            Face data = LootFest.Data.Block.GetTerrainFace(blockPos, (CubeFace)facetype);
+            Face data = Block.GetTerrainFace(blockPos, (CubeFace)facetype);
             //VerticeData = new VertexPositionColorTexture[NumCorners]
             //{ 
             V0sw= new VertexPositionColorTexture(data.Corner3, 
@@ -180,7 +215,7 @@ namespace VikingEngine.Graphics
         public void ComplementPositionAndTileIx(IntVector3 blockPos, int tileIx, int facetype)
         {
             Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[tileIx];
-            Face data = LootFest.Data.Block.GetTerrainFace(blockPos, (CubeFace)facetype);
+            Face data = Block.GetTerrainFace(blockPos, (CubeFace)facetype);
 
              V0sw.TextureCoordinate = file.SourcePolygonLowLeft;
             V1nw.TextureCoordinate = file.SourcePolygonTopLeft;

@@ -13,7 +13,7 @@ using VikingEngine.ToGG.ToggEngine.Display2D;
 
 namespace VikingEngine.ToGG.HeroQuest.Lobby
 {
-    class LobbyState : AbsToggState, DataStream.IStreamIOCallback
+    class LobbyState : AbsToggState, IStreamIOCallback
     {
         HeroSelectScreen selectScreen;
         bool host;
@@ -56,7 +56,7 @@ namespace VikingEngine.ToGG.HeroQuest.Lobby
 
                 collectLobbyMembers();
 
-                selectScreen.setLocal(Ref.netSession.LocalHost(), host);
+                selectScreen.setLocal(Ref.netSession.LocalPeer(), host);
 
                 
                 selectScreen.setVisuals(hqRef.localPlayers.setups.First);
@@ -122,7 +122,7 @@ namespace VikingEngine.ToGG.HeroQuest.Lobby
                 }
             }
 
-            selectScreen.setNext(Ref.netSession.LocalHost());
+            selectScreen.setNext(Ref.netSession.LocalPeer());
         }
 
         void refreshMainMenu()
@@ -137,7 +137,7 @@ namespace VikingEngine.ToGG.HeroQuest.Lobby
                 }
                 new GuiTextButton("Pick hero", null, pickHero, true, layout);
                 
-                if (!PlatformSettings.Demo)
+                if (!PlatformSettings.STEAM_DEMO)
                 {
                     new GuiTextButton("**Debug**", null, debugMenu, false, layout);
                 }
@@ -249,7 +249,7 @@ namespace VikingEngine.ToGG.HeroQuest.Lobby
 
                 if (hqRef.setup.quest == QuestName.Custom)
                 {
-                    SaveLib.WriteString(w, hqRef.setup.customName);
+                    StreamLib.WriteString(w, hqRef.setup.customName);
 
                     filemanager.data.memory.WriteSaveFile(w);
                 }

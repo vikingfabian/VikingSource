@@ -14,6 +14,11 @@ namespace VikingEngine.DSSWars
         public static float StandardBoundRadius;
         public static float DefaultGroupSpacing;
         public static float SoldierGroup_Spacing;
+        public static float SoldierGroup_Spacing_Radius;
+        public static float SoldierGroup_CollisionRadius;
+        public static float SoldierGroup_MoveCollisionRadius;
+
+        public static float SoldierGroup_GridExtraSpacing;
         public static float Worker_StandardBoundRadius;
         public static float Men_StandardWalkingSpeed_PerSec;
         public static Vector3 WorkerUnit_ResourcePosDiff;
@@ -21,14 +26,20 @@ namespace VikingEngine.DSSWars
         {
             Projectile.Projectile_PeekHeight = DssConst.Men_StandardModelScale * 1f;
             Men_AsynchCollisionGroupRadius = StandardBoundRadius * 2f;
-            StandardBoundRadius = 0.3f * DssConst.Men_StandardModelScale;
-            DefaultGroupSpacing = StandardBoundRadius * 3f;
-            SoldierGroup_Spacing = DssConst.SoldierGroup_RowWidth * DefaultGroupSpacing * 1.2f;
-            Worker_StandardBoundRadius = StandardBoundRadius * 4f;
+            StandardBoundRadius = 0.4f * DssConst.Men_StandardModelScale;
+            DefaultGroupSpacing = StandardBoundRadius * 2.5f;
+            SoldierGroup_Spacing = DssConst.SoldierGroup_RowWidth * DefaultGroupSpacing * 1.15f;
+            SoldierGroup_Spacing_Radius = SoldierGroup_Spacing * 0.5f;
+            SoldierGroup_CollisionRadius = DssConst.SoldierGroup_RowWidth * DefaultGroupSpacing * 0.45f;
+            SoldierGroup_MoveCollisionRadius = SoldierGroup_CollisionRadius * 0.6f;
+
+            SoldierGroup_GridExtraSpacing = DefaultGroupSpacing;
+            Worker_StandardBoundRadius = StandardBoundRadius * 2f;
             Men_StandardWalkingSpeed_PerSec = DssConst.Men_StandardWalkingSpeed * TimeExt.SecondToMs;
             WorkerUnit_ResourcePosDiff = new Vector3(0, DssConst.Men_StandardModelScale * 1.2f, DssConst.Men_StandardModelScale * 0.25f);
 
             BloodBlock.UpdateConstants();
+            SoldierGroup.Init();
         }
     }
 }

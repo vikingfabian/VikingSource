@@ -18,8 +18,8 @@ namespace VikingEngine.ToGG
 
         public static readonly bool AlertAllMonsters = false;
 
-        public static readonly ArmyRace cmdAutoPickMyArmy = ArmyRace.Elf;
-        public static readonly ArmyRace cmdAutoPickAiArmy = ArmyRace.Orc;
+        public static readonly ArmyRace cmdAutoPickMyArmy = ArmyRace.NUM_NON;
+        public static readonly ArmyRace cmdAutoPickAiArmy = ArmyRace.NUM_NON;
 
         public static readonly bool RunMoonFall =
 #if DEBUG

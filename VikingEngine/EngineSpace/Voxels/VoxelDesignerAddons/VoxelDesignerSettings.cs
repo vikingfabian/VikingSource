@@ -1,28 +1,65 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VikingEngine.DataLib;
+using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.Map.HDvoxel;
-using Microsoft.Xna.Framework;
 
 namespace VikingEngine.Voxels
 {
+    struct PaintSettings
+    {
+        public PaintToolType drawTool = PaintToolType.Rectangle;
+        public int pencilSize = 3;
+        public float radiusTolerance = 0.05f;
+        public bool roundPencil = true;
+        public int roadEdgeSize = 1;
+        public int roadPercentFill = 100;
+        public int roadUpwardClear = 4;
+        public int roadBelowFill = 2;
+        public bool continiousFill = false;
+
+        public PaintSettings()
+        { }
+
+        public void WriteStream(System.IO.BinaryWriter w)
+        {
+           
+            w.Write((byte)pencilSize);
+            w.Write(radiusTolerance);
+            w.Write(roundPencil);
+            w.Write((byte)roadEdgeSize);
+            w.Write((byte)roadPercentFill);
+            w.Write((byte)roadUpwardClear);
+            w.Write((byte)roadBelowFill);
+        }
+
+        public void ReadStream(System.IO.BinaryReader r, int version)
+        {            
+            pencilSize = r.ReadByte();
+            radiusTolerance = r.ReadSingle();
+            roundPencil = r.ReadBoolean();
+            roadEdgeSize = r.ReadByte();
+            roadPercentFill = r.ReadByte();
+            roadUpwardClear = r.ReadByte();
+            roadBelowFill = r.ReadByte();
+        }
+    }
+
     class VoxelDesignerSettings
     {
-        public BlockHD Material = new BlockHD(Color.LightBlue, MaterialProperty.Unknown);//new BlockHD(Color.Red);
-        public BlockHD SecondaryMaterial = new BlockHD(Color.Yellow, MaterialProperty.Unknown);//new BlockHD(Color.Yellow);
+        public BlockHD Material = new BlockHD(Color.LightBlue, MaterialProperty.Default);//new BlockHD(Color.Red);
+        public BlockHD SecondaryMaterial = new BlockHD(Color.Yellow, MaterialProperty.Default);//new BlockHD(Color.Yellow);
         public bool SelectionCut = true;
         public bool ShowDrawCoord = true;
         public bool DrawFilled = true;//N
-        public PaintToolType DrawTool = PaintToolType.Rectangle;
-        public int PencilSize = 3;
-        public float RadiusTolerance = 0.05f;
-        public bool RoundPencil = true;
-        public int RoadEdgeSize = 1;
-        public int RoadPercentFill = 100;
-        public int RoadUpwardClear = 4;
-        public int RoadBelowFill = 2;
+        public PaintSettings paintSettings = new PaintSettings();
         public float pencilMoveSpeed = 1;
+        
+
+        public FileSortSettings SortSettings = new FileSortSettings();
 
         public void WriteStream(System.IO.BinaryWriter w)
         {
@@ -32,13 +69,7 @@ namespace VikingEngine.Voxels
             w.Write(SelectionCut);
             w.Write(ShowDrawCoord);
             w.Write(DrawFilled);
-            w.Write((byte)PencilSize);
-            w.Write(RadiusTolerance);
-            w.Write(RoundPencil);
-            w.Write((byte)RoadEdgeSize);
-            w.Write((byte)RoadPercentFill);
-            w.Write((byte)RoadUpwardClear);
-            w.Write((byte)RoadBelowFill);
+            paintSettings.WriteStream(w);
             w.Write(pencilMoveSpeed);
         }
 
@@ -50,13 +81,7 @@ namespace VikingEngine.Voxels
             SelectionCut = r.ReadBoolean();
             ShowDrawCoord = r.ReadBoolean();
             DrawFilled = r.ReadBoolean();
-            PencilSize = r.ReadByte();
-            RadiusTolerance = r.ReadSingle();
-            RoundPencil = r.ReadBoolean();
-            RoadEdgeSize = r.ReadByte();
-            RoadPercentFill = r.ReadByte();
-            RoadUpwardClear = r.ReadByte();
-            RoadBelowFill = r.ReadByte();
+            paintSettings.ReadStream(r, version);
 
             pencilMoveSpeed = r.ReadSingle();
         }

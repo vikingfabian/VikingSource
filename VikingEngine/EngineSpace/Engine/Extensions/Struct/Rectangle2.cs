@@ -8,6 +8,8 @@ using VikingEngine.Physics;
 using VikingEngine.EngineSpace.Maths;
 using System.Runtime.CompilerServices;
 
+using VikingEngine.ToGG.HeroQuest.Data.Condition;
+
 
 namespace VikingEngine
 {
@@ -85,6 +87,17 @@ namespace VikingEngine
         public IntVector2 pos;
         public IntVector2 size;
 
+        public void writeUshort(System.IO.BinaryWriter w)
+        {
+            pos.writeUshort(w);
+            size.writeUshort(w);
+        }
+
+        public void readUshort(System.IO.BinaryReader r)
+        {
+            pos.readUshort(r);
+            size.readUshort(r);
+        }
 
         /// <summary>
         /// Returns the right or bottom coordinate, depending on the dimension.
@@ -367,7 +380,28 @@ namespace VikingEngine
                 case Dir4.E: size.X += add; return;
             }
         }
-
+        public void SetRight(int right, bool adjustWidth)
+        {
+            if (adjustWidth)
+            {
+                size.X = right - pos.X;
+            }
+            else
+            {
+                pos.X = right - size.X;
+            }
+        }
+        public void SetBottom(int bottom, bool adjustHeight)
+        {
+            if (adjustHeight)
+            {
+                size.Y = bottom - pos.Y;
+            }
+            else
+            {
+                pos.Y = bottom - size.Y;
+            }
+        }
         public Vector2 CenterF
         {
             get
@@ -714,6 +748,19 @@ namespace VikingEngine
                 size.X += tile.X - RightTile;
             if (BottomTile < tile.Y)
                 size.Y += tile.Y - BottomTile;
+        }
+
+        public void includeTileAndRadius(IntVector2 tile, int radius)
+        {
+            if (pos.X > tile.X)
+                AddToLeftSide(pos.X - tile.X + radius);
+            if (pos.Y > tile.Y)
+                AddToTopSide(pos.Y - tile.Y + radius);
+
+            if (RightTile < tile.X)
+                size.X += tile.X - RightTile + radius;
+            if (BottomTile < tile.Y)
+                size.Y += tile.Y - BottomTile + radius;
         }
 
         public void SetDim(Dimensions dim, int pos, int width)

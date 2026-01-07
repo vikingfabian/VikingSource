@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Resource;
@@ -18,19 +19,20 @@ namespace VikingEngine.DSSWars.Map
         public const int FarmCulture_ReadySize = FarmCulture_MaxSize - 1;
         public const int FarmCulture_HalfSize = FarmCulture_ReadySize / 2;
 
-        public const int PigMaxSize = 3;
+        public const int PigMaxSize = 4;
         public const int PigMaxCount = 4;
         const int PigMaxTotal = PigMaxSize * PigMaxCount;
         public const int PigReady = PigMaxSize * 3;
 
-        public const int HenMaxSize = 2;
+        public const int HenMaxSize = 3;
         public const int HenMaxCount = 6;
         const int HenMaxTotal = HenMaxSize * HenMaxCount;
         public const int HenReady = HenMaxSize * 3;
 
-        public const int MineAmount = 10;
+        public const int DefaultMineAmount = 10;
+        public const int MineAmount_Coal = 20;
 
-        public void asyncFoilGroth(IntVector2 pos, SubTile subtile)
+        public void asyncFoilGroth(IntVector2 pos, ref SubTile subtile)
         {
             Map.TerrainSubFoilType foilType = (Map.TerrainSubFoilType)subtile.subTerrain;
             switch (foilType)
@@ -51,16 +53,17 @@ namespace VikingEngine.DSSWars.Map
                             {
                                 rndDir *= 2;
                             }
-                            Map.SubTile ntile;
+                            //Map.SubTile ntile;
                             var npos = pos + rndDir;
-                            if (DssRef.world.subTileGrid.TryGet(npos, out ntile))
+                            if (DssRef.world.subTileGrid.InBounds(npos))//.TryGet(npos, out ntile))
                             {
+                                ref var ntile = ref DssRef.world.subTileGrid.GetRef(npos);
                                 if (ntile.mainTerrain == Map.TerrainMainType.DefaultLand)
                                 {
                                     Map.TerrainSubFoilType sprout = foilType == Map.TerrainSubFoilType.TreeSoft ? Map.TerrainSubFoilType.TreeSoftSprout : Map.TerrainSubFoilType.TreeHardSprout;
                                     ntile.SetType(Map.TerrainMainType.Foil, (int)sprout, 1);
 
-                                    DssRef.world.subTileGrid.Set(npos, ntile);
+                                    //DssRef.world.subTileGrid.Set(npos, ntile);
                                 }
                             }
 
@@ -75,7 +78,7 @@ namespace VikingEngine.DSSWars.Map
                             subtile.SetType(Map.TerrainMainType.Foil, (int)Map.TerrainSubFoilType.TreeHard, 1);
                         }
 
-                        DssRef.world.subTileGrid.Set(pos, subtile);
+                        //DssRef.world.subTileGrid.Set(pos, subtile);
                     }
                     break;
 
@@ -83,17 +86,20 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainSubFoilType.LinenFarm:
                 case TerrainSubFoilType.RapeSeedFarm:
                 case TerrainSubFoilType.HempFarm:
+                case TerrainSubFoilType.WheatFarmUpgraded:
+                case TerrainSubFoilType.LinenFarmUpgraded:
+                case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                case TerrainSubFoilType.HempFarmUpgraded:
                     if (subtile.terrainAmount > FarmCulture_Empty && 
                         subtile.terrainAmount < FarmCulture_MaxSize)
                     {
                         subtile.terrainAmount++;
-                        DssRef.world.subTileGrid.Set(pos, subtile);
                     }
                     break;
             }
         }
 
-        public void asyncCityProduce(IntVector2 pos, SubTile subtile)
+        public void asyncCityProduce(IntVector2 pos, ref SubTile subtile)
         {
             Map.TerrainBuildingType buildingType = (Map.TerrainBuildingType)subtile.subTerrain;
             switch (buildingType)
@@ -102,7 +108,7 @@ namespace VikingEngine.DSSWars.Map
                     if (subtile.terrainAmount < PigMaxTotal)
                     {
                         subtile.terrainAmount++;
-                        DssRef.world.subTileGrid.Set(pos, subtile);
+                        //DssRef.world.subTileGrid.Set(pos, subtile);
                     }
                     break;
                 case TerrainBuildingType.HenPen:
@@ -125,7 +131,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         subtile.terrainAmount++;
                     }
-                    DssRef.world.subTileGrid.Set(pos, subtile);
+                    //DssRef.world.subTileGrid.Set(pos, subtile);
                     break;
             }
         }
@@ -138,7 +144,8 @@ namespace VikingEngine.DSSWars.Map
             ref IntervalF mudRadius,
             ref SubTile subTile, 
             WorldData world, 
-            VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap)
+            VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap,
+            List<IntVector2> mineLocations)
         {
             if (tile.IsLand() && !height.isMountainPeek)
             {
@@ -160,19 +167,21 @@ namespace VikingEngine.DSSWars.Map
                         if (tile.heightLevel >= Height.MineHeightStart)
                         {
                             var rndMine = world.rnd.Double();
-                            if (rndMine < 0.001)
+                            //if (rndMine < 0.001)
+                            //{
+                            //    subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.GoldOre, 1);
+                            //    return;
+                            //}
+                            //else if (rndMine < 0.002)
+                            //{
+                            //    subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.Coal, 1);
+                            //    return;
+                            //}
+                            //else 
+                            if (rndMine < 0.008)
                             {
-                                subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.GoldOre, 1);
-                                return;
-                            }
-                            else if (rndMine < 0.002)
-                            {
-                                subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.Coal, 1);
-                                return;
-                            }
-                            else if (rndMine < 0.0065)
-                            {
-                                subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.IronOre, 1);
+                                subTile.SetType(TerrainMainType.Mine, 0, 1);//(int)TerrainMineType.IronOre, 1);
+                                mineLocations.Add(new IntVector2(x, y));
                                 return;
                             }
                         }

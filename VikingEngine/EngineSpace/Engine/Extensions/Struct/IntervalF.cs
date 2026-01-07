@@ -118,6 +118,24 @@ namespace VikingEngine
             return MathExt.Lerp(other.Min, other.Max, GetValuePercentPos(value));
         }
 
+
+        public byte GetValueBytePercentPos_WithBound(float value)
+        {
+            float result = GetValuePercentPos(value) * byte.MaxValue;
+
+            if (result <= 0)
+                return byte.MinValue;
+
+            if (result >= byte.MaxValue)
+                return byte.MaxValue;
+
+            return (byte)result;
+        }
+        public float GetFromBytePercent(byte percent)
+        {
+            return Min + Difference * percent / byte.MaxValue;
+        }
+
         /// <summary>
         /// Where the value is relative to the range min/max
         /// </summary>
@@ -169,6 +187,10 @@ namespace VikingEngine
         public float GetRandom()
         {
             return Ref.rnd.Float(Min, Max);
+        }
+        public float PeRandom()
+        {
+            return Ref.peRnd.Float(Min, Max);
         }
 
         public float GetRandom(PcgRandom rnd)

@@ -105,7 +105,8 @@ namespace VikingEngine.ToGG
                 
                 //Figure Poly
                 soldier.figure = toggLib.CamFacingPolygon(place, scale, imageFile, ColorExt.GrayScale(brightness));
-                
+
+
                 {//Shadow Poly
                     place.X -= 0.02f;
                     place.Z += shadowOffset * scale.Y;
@@ -239,7 +240,7 @@ namespace VikingEngine.ToGG
             }
 
             shadow = new Graphics.VoxelModel(true);
-            shadow.Effect = Ref.draw.getEffect(TextureEffectType.Shadow);
+            shadow.Effect = Ref.draw.getEffect(TextureEffectType.BillboardShadow);
             shadow.BuildFromPolygons(new Graphics.PolygonsAndTrianglesColor(shadowPolygons, null),
                 new List<int> { shadowPolygons.Count }, Texture);
 

@@ -27,16 +27,16 @@ namespace VikingEngine.ToGG.HeroQuest.Display
         protected override void createToolTip()
         {
             var richbox = new List<AbsRichBoxMember>{
-                new RichBoxText(unit.data.Name + " action: "),
-                 new RichBoxNewLine(),
-                new RichBoxBeginTitle(),
-                new RichBoxImage(skill.Icon),
-                new RichBoxText(skill.Name),
+                new RbText(unit.data.Name + " action: "),
+                 new RbNewLine(),
+                new RbBeginTitle(),
+                new RbImage(skill.Icon),
+                new RbText(skill.Name),
 
-                new RichBoxNewLine(),
-                new RichBoxText(skill.Desc),
+                new RbNewLine(),
+                new RbText(skill.Desc),
 
-                new RichBoxNewLine(true),
+                new RbNewLine(true),
 
             };
 

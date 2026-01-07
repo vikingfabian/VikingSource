@@ -64,6 +64,12 @@ namespace VikingEngine.Graphics
             moveTowards(goalLookTarget);            
         }
 
+        public override Vector3 Right()
+        {
+            Vector2 dir = lib.AngleToV2(tilt.X, 1f);
+            return VectorExt.V2toV3XZ(dir);
+        }
+
         public void moveTowards(Vector3 goal)
         {
             Vector3 diff = goal - lookTarget;
@@ -72,7 +78,7 @@ namespace VikingEngine.Graphics
             const float MinChaseSpeed = 0.05f;
             if (l > MinChaseSpeed)
             {
-                if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
                 {
                     currentChaseLength = l * positionChaseLengthPercentage;
                     currentChaseLength = Bound.Set(currentChaseLength, MinChaseSpeed, maxChaseLength);
@@ -87,7 +93,7 @@ namespace VikingEngine.Graphics
 
             if (float.NaN.Equals(lookTarget.Z))
             {
-                throw new Exception();
+                throw new DivideByZeroException();
             }
             
             positionFromRotation();
@@ -112,7 +118,7 @@ namespace VikingEngine.Graphics
         public override void positionFromRotation()
         {
 
-            Vector3 cameraOffsetDir = new Vector3(MathExt.Cosf(Tilt.X), MathExt.Cosf(Tilt.Y), MathExt.Sinf(Tilt.X));
+            Vector3 cameraOffsetDir = new Vector3(MathExt.Cosf(tilt.X), MathExt.Cosf(tilt.Y), MathExt.Sinf(tilt.X));
 
             // rotate
             //{
@@ -181,8 +187,6 @@ namespace VikingEngine.Graphics
                     }
                 }
 
-                //if (targetZoom < currentZoom)
-                //{
                 for (int i = 0; i < Ref.GameTimePassed16ms; ++i)
                 {
                     currentZoom += (targetZoom - currentZoom) * zoomChaseLengthPercentage;
@@ -199,21 +203,6 @@ namespace VikingEngine.Graphics
                 {
                     currentZoom = targetZoom;
                 }
-
-                //if (InstantZoomIn && targetZoom < currentZoom)
-                //{ currentZoom = targetZoom; }
-                //else if (InstantZoomOut && )
-                //{ currentZoom = targetZoom; }
-                //else
-                //{ currentZoom += (targetZoom - currentZoom) * ZoomChasePercSpeed; }
-                //}
-                //else
-                //{
-                //    if (InstantZoomOut)
-                //        currentZoom = targetZoom;
-                //    else
-                //        currentZoom += (targetZoom - currentZoom) * ZoomChasePercSpeed;
-                //}
 
                 usedZoomVariable = currentZoom;
             }

@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.ToGG.HeroQuest.Gadgets;
 using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject
 {
     class ShipMeleeAttack:AbsInGameUpdateable
     {
-        Graphics.AbsVoxelObj model;
+        Graphics.VoxelModelInstance model;
         AbsSoldierUnit ship;
         Vector3 posDiff;
         public ShipMeleeAttack(AbsSoldierUnit ship, Rotation1D dir)
@@ -19,7 +20,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.ship = ship;
 
-            int frame = Ref.rnd.Int(2);
+            int frame = Ref.peRnd.Int(2);
             Vector3 offset = new Vector3(-0.076f, 0.14f, 0.07f);
             offset.Y -= 0.03f;
             offset.X -= 0.08f;
@@ -32,18 +33,29 @@ namespace VikingEngine.DSSWars.GameObject
 
             posDiff = ship.soldierData.modelScale * offset;
 
-            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_shipmelee, DssConst.Men_StandardModelScale * 2f, false);
+            model = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.wars_shipmelee, DssConst.Men_StandardModelScale * 2f);
             model.Frame = frame;
-            model.AddToRender(DrawGame.UnitDetailLayer);
+            //model.AddToRender(DrawGame.UnitDetailLayer);
+
+            Time_Update(0);
         }
 
         public override void Time_Update(float time_ms)
         {
-            WP.Rotation1DToQuaterion(model, ship.rotation.Radians);
-            model.position = model.Rotation.TranslateAlongAxis(
-                posDiff, ship.position);
+            var shipModel_sp = ship.model;
+            if (shipModel_sp != null)
+            {
+                //WP.Rotation1DToQuaterion(model, ship.rotation.Radians);
+                model.Rotation = shipModel_sp.model.Rotation;
+                model.position = model.Rotation.TranslateAlongAxis(
+                    posDiff, shipModel_sp.model.position);
 
-            if (!ship.inAttackAnimation() || ship.isDeleted)
+                if (!ship.inAttackAnimation() || ship.isDeleted)
+                {
+                    DeleteMe();
+                }
+            }
+            else
             {
                 DeleteMe();
             }
@@ -52,7 +64,8 @@ namespace VikingEngine.DSSWars.GameObject
         public override void DeleteMe()
         {
             base.DeleteMe();
-            model.DeleteMe();
+            model.preRemoveFromDrawBatch();
+            //model.DeleteMe();
         }
     }
 }

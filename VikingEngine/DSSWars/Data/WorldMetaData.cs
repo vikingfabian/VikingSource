@@ -16,6 +16,7 @@ namespace VikingEngine.DSSWars.Data
         public int saveIndex = -1;
         public bool IsGenerated => saveIndex < 0;
         public PcgRandom objRnd;
+        public bool customEditorMap = false;
 
         public WorldMetaData(ushort seed, MapSize mapSize, int saveIndex)
         {
@@ -29,6 +30,10 @@ namespace VikingEngine.DSSWars.Data
         public WorldMetaData(System.IO.BinaryReader r)
         { 
             read(r);
+        }
+
+        public WorldMetaData()
+        {
         }
 
         public void write(System.IO.BinaryWriter w)
@@ -50,6 +55,15 @@ namespace VikingEngine.DSSWars.Data
             objRnd = new PcgRandom(objSeed);
             mapSize = (MapSize)r.ReadByte();
             saveIndex = r.ReadInt16();
+        }
+
+        public void writeNet(System.IO.BinaryWriter w)
+        {
+            write(w);
+        }
+        public void readNet(System.IO.BinaryReader r)
+        {
+            read(r);
         }
 
         public void setObjSeed(int id)

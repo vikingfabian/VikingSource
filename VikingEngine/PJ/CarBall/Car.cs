@@ -111,7 +111,7 @@ namespace VikingEngine.PJ.CarBall
                     {
                         pitchUpdate.MilliSeconds = Ref.rnd.Float(150, 250);
                         driveSound.Pitch = -0.5f + 1f * PercMaxSpeed + Ref.rnd.Float(0.1f);
-                        driveSound.Volume = (0.1f + 0.1f * PercMaxSpeed) * Engine.Sound.SoundVolume; 
+                        driveSound.Volume = (0.1f + 0.1f * PercMaxSpeed) * Ref.gamesett.SoundVol(); 
                         Engine.Sound.SetInstancePan(driveSound, image.position);
                     }
                 }
@@ -282,7 +282,7 @@ namespace VikingEngine.PJ.CarBall
             }
 
             sumVelocity = Velocity + pushForce;
-            if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
             {
                 if (pushForce.Length() < minSpeed * 0.1f)
                 {

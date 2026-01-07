@@ -197,7 +197,7 @@ namespace VikingEngine.PJ.Strategy
         {
             arrangeAreaConnections();
 
-            SaveLib.WriteVector(w, center / Map.MapScale);
+            StreamLib.WriteVector(w, center / Map.MapScale);
             w.Write(startAreaPrio);
 
             w.Write(adjacentAreas.Count);
@@ -210,7 +210,7 @@ namespace VikingEngine.PJ.Strategy
 
         public void read(System.IO.BinaryReader r, int version, List<MapArea> areas)
         {
-            center = SaveLib.ReadVector2(r) * Map.MapScale;
+            center = StreamLib.ReadVector2(r) * Map.MapScale;
             startAreaPrio = r.ReadInt32();
 
             int adjacentCount = r.ReadInt32();

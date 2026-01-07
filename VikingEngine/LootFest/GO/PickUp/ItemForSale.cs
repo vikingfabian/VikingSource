@@ -106,20 +106,20 @@ namespace VikingEngine.LootFest.GO.PickUp
             {
                 switch (saleType)
                 {
-                    case ForSaleType.NUM_NON:
-                        return VoxelModelName.NUM_NON;
-                    case ForSaleType.HealthRefill:
-                        return VoxelModelName.healup_effect;
-                    case ForSaleType.ItemApple:
-                        return VoxelModelName.itembox_apple;
-                    case ForSaleType.ItemPie:
-                        return VoxelModelName.itembox_pie;
-                    case ForSaleType.SpecialAmmoRefill:
-                        return VoxelModelName.specialammorefill;
-                    case ForSaleType.Cards:
-                        return VoxelModelName.cardcollection;
-                    case ForSaleType.PickAxe:
-                        return VoxelModelName.itembox_pickaxe;
+                    //case ForSaleType.NUM_NON:
+                    //    return VoxelModelName.NUM_NON;
+                    //case ForSaleType.HealthRefill:
+                    //    return VoxelModelName.healup_effect;
+                    //case ForSaleType.ItemApple:
+                    //    return VoxelModelName.itembox_apple;
+                    //case ForSaleType.ItemPie:
+                    //    return VoxelModelName.itembox_pie;
+                    //case ForSaleType.SpecialAmmoRefill:
+                    //    return VoxelModelName.specialammorefill;
+                    //case ForSaleType.Cards:
+                    //    return VoxelModelName.cardcollection;
+                    //case ForSaleType.PickAxe:
+                    //    return VoxelModelName.itembox_pickaxe;
                     default:
                         throw new NotImplementedException("ItemForSale voxelimage: " +  saleType.ToString());
                 }

@@ -45,6 +45,11 @@ namespace VikingEngine
             return sel != null;
         }
 
+        public bool HasMore()
+        {
+            return selIndex < 0 || sel != null;
+        }
+
         public bool Prev_Rollover()
         {
             if (array.Count == 0)
@@ -387,7 +392,7 @@ namespace VikingEngine
         {
             for (int i = 0; i < SpottedLength; ++i)
             {
-                if (Array[i] != null && Array[i].Equals(obj))
+                if (Array != null && Array[i] != null && Array[i].Equals(obj))
                 {
                     RemoveAt(i);
                     return;
@@ -405,7 +410,7 @@ namespace VikingEngine
 
         public void RemoveAt_EqualSafeCheck(T obj, int index)
         {
-            if (obj.Equals(Array[index]))
+            if (index < Array.Length && obj.Equals(Array[index]))
             {
                 --Count;
                 Array[index] = default(T);
@@ -445,10 +450,29 @@ namespace VikingEngine
 
         public T GetIndex_Safe(int index)
         {
-            if (index > 0 && index < Array.Length)
+            if (index >= 0 && index < Array.Length)
             {
                 return Array[index];
             }
+            return default(T);
+        }
+
+        public T PullIndex_Safe(int index)
+        {
+            if (index >= 0 && index < Array.Length)
+            {
+                T value = Array[index];
+                if (value != null)
+                {
+                    --Count;
+                    Array[index] = default(T);
+                    mostLeftFreePosition = lib.SmallestValue(mostLeftFreePosition, index);
+                    updateSpottedLength();
+
+                    return value;
+                }
+            }
+
             return default(T);
         }
 
@@ -462,7 +486,7 @@ namespace VikingEngine
 
         public void adjustLength()
         {
-            T[] newArray = new T[Array.Length * 2];
+            T[] newArray = new T[Math.Max(Array.Length * 2, 8)];
             for (int i = 0; i < Array.Length; ++i)
             {
                 newArray[i] = Array[i];
@@ -512,7 +536,7 @@ namespace VikingEngine
             return default(T);
         }
 
-        public T GetRandomUnsafe(PcgRandom rnd)
+        public T GetRandomUnsafe(AbsRandom rnd)
         {
             if (Count <= 0)
             {
@@ -564,7 +588,7 @@ namespace VikingEngine
            
         }
 
-        public T GetRandomSafe(PcgRandom rnd)
+        public T GetRandomSafe(AbsRandom rnd)
         {
             int ix = rnd.Int(Count);
             for (int i = 0; i < SpottedLength; ++i)
@@ -578,7 +602,7 @@ namespace VikingEngine
             return default(T);
         }
 
-        public T PullRandom_Safe(PcgRandom rnd)
+        public T PullRandom_Safe(AbsRandom rnd)
         {
             int ix = rnd.Int(Count);
             for (int i = 0; i < SpottedLength; ++i)
@@ -629,7 +653,7 @@ namespace VikingEngine
 
         public List<T> toList()
         {
-            List<T> list = new List<T>(this.Count);
+            List<T> list = new List<T>(Math.Clamp(this.Count, 0, Array.Length));
             SpottedArrayCounter<T> counter = new SpottedArrayCounter<T>(this);
             while (counter.Next())
             {

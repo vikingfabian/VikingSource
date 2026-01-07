@@ -28,7 +28,7 @@ namespace VikingEngine.ToGG
             //new Timer.AsynchActionTrigger(asynchContentLoading);
             new StorageTask(asynchContentLoading, true, onContentLoadComplete);
 
-            Engine.Draw.horizontalSplit = !Engine.Screen.IsHighDefinition();
+            //Engine.Draw.horizontalSplit = !Engine.Screen.IsHighDefinition();
             Engine.ParticleHandler.Init();
 
             //if (!isReset)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using VikingEngine.Engine;
+using VikingEngine.Sound;
 
 namespace VikingEngine.PJ.Joust
 {
@@ -252,7 +253,8 @@ namespace VikingEngine.PJ.Joust
         {
             state = State.AnnounceWinner;
 
-            Engine.Sound.StopMusic();
+            //MusicPlayer.StopMusic();
+            Ref.music?.StopMusic();
 
             foreach (var m in endLevelAchievements)
             {

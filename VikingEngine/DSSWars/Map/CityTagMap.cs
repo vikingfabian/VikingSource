@@ -9,7 +9,7 @@ namespace VikingEngine.DSSWars.Map
 {
     class CityTagMap
     {
-        List<CityTag> cityTags;
+        List<CityTagMapMember> cityTags;
         LocalPlayer player;
         SpottedArrayCounter<City> citiesC;
         SpottedArrayCounter<Army> armiesC;
@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.Map
             this.player = player;
             citiesC = player.faction.cities.counter();
             armiesC = player.faction.armies.counter();
-            cityTags = new List<CityTag>(8);
+            cityTags = new List<CityTagMapMember>(8);
         }
 
         public void update()
@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.Map
 
                         if (cityTags.Count <= tagIndex)
                         {
-                            cityTags.Add(new CityTag());
+                            cityTags.Add(new CityTagMapMember());
                         }
 
                         cityTags[tagIndex].update(player, citiesC.sel);
@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Map
 
                         if (cityTags.Count <= tagIndex)
                         {
-                            cityTags.Add(new CityTag());
+                            cityTags.Add(new CityTagMapMember());
                         }
 
                         cityTags[tagIndex].update(player, armiesC.sel);
@@ -72,20 +72,20 @@ namespace VikingEngine.DSSWars.Map
 
         public void DeleteMe()
         {
-            foreach (CityTag cityTag in cityTags)
+            foreach (CityTagMapMember cityTag in cityTags)
             {
                 cityTag.DeleteMe();
             }
         }
     }
 
-    class CityTag
+    class CityTagMapMember
     {
         public Graphics.Image icon = null;
         public Graphics.Image bg = null;
         //Vector2 offset;
 
-        public CityTag()
+        public CityTagMapMember()
         {
             bg = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, Vector2.Zero, Engine.Screen.IconSizeV2 * 0.8f, HudLib.DiplomacyDisplayLayer +1, true);
             bg.Opacity = 0.7f;
@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars.Map
                 visible = player.playerData.view.DrawAreaF.IntersectPoint(bg.position);
             }
 
-            if ((Mouse.Position - bg.position).Length() < Engine.Screen.IconSize)
+            if ((player.gameControls.map.pointerPos() - bg.position).Length() < Engine.Screen.IconSize)
             { 
                 visible = false;
             }
@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars.Map
 
                 bg.Visible = true;
                 bg.SetSpriteName(back);
-                if (art != SpriteName.NO_IMAGE)
+                if (art != Data.CityTag.NoBackSprite)
                 {
                     icon.position = bg.position;
                     icon.Visible = true;

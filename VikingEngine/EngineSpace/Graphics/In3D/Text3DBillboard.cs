@@ -83,5 +83,12 @@ namespace VikingEngine.Graphics
         {
             scale.X = scale.Z / renderTarget.Height * renderTarget.Width;
         }
+
+        public override void DeleteMe()
+        {
+            base.DeleteMe();
+            renderTarget?.renderTarget.Dispose();
+            renderTarget = null;
+        }
     }
 }

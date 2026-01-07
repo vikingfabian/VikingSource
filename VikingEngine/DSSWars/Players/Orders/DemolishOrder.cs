@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Work;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 
@@ -22,14 +23,14 @@ namespace VikingEngine.DSSWars.Players.Orders
             this.subTile = subTile;
         }
 
-        public override void onAdd()
+        public override void onAdd(int playerIx)
         {
-            createModel(1);
+            createModel(1, playerIx);
         }
 
         public WorkQueMember createWorkQue()
         {
-            var result = new WorkQueMember(WorkType.Demolish, 0, subTile, priority, 0);
+            var result = new WorkQueMember(WorkType.Demolish, 0, 0, subTile, priority, 0, 0);
             result.orderId = id;
             return result;
         }
@@ -77,6 +78,11 @@ namespace VikingEngine.DSSWars.Players.Orders
                 return OrderType.Demolish;
             }
             return OrderType.NONE;
+        }
+
+        public override OrderType Type()
+        {
+            return OrderType.Demolish;
         }
     }
 }

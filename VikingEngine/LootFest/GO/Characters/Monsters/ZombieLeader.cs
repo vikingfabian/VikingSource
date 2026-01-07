@@ -35,7 +35,7 @@ namespace VikingEngine.LootFest.GO.Characters.Monsters
         }
         protected override VoxelModelName imageName
         {
-            get { return VoxelModelName.zombieleader; }
+            get { return VoxelModelName.NUM_NON; }
         }
 
         static readonly Graphics.AnimationsSettings AnimSet = 

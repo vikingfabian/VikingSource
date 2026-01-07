@@ -5,6 +5,7 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.PJ.Strategy;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -43,12 +44,13 @@ namespace VikingEngine.DSSWars.GameObject
         //public Vector3 position;
 
         public SoldierData soldierData;
-        protected Vector2 collisionForce = Vector2.Zero;
-        const int CollGroupSize = 8;
+        //protected Vector2 collisionForce = Vector2.Zero;
+        //const int CollGroupSize = 8;
 
-        protected SafeCollectAsynchStaticList<AbsDetailUnit> collisionGroup = new SafeCollectAsynchStaticList<AbsDetailUnit>(CollGroupSize);
-        protected int collisionFrames = 0;
+        //protected SafeCollectAsynchStaticList<AbsDetailUnit> collisionGroup = new SafeCollectAsynchStaticList<AbsDetailUnit>(CollGroupSize);
+        //protected int collisionFrames = 0;
         public DetailUnitModel model;
+        //public Physics.AbsBound2D bound;
 
         //bool isDeleted = false;
 
@@ -82,15 +84,22 @@ namespace VikingEngine.DSSWars.GameObject
             return Rotation1D.FromDirection(VectorExt.V3XZtoV2(targetPosDiff));
         }
 
-        virtual public void takeDamage(int damageAmount, Rotation1D attackDir, Faction enemyFaction, bool fullUpdate)
+        
+
+        virtual public void takeDamage(int damageAmount, float blockReduce, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction enemyFaction, bool fullUpdate, out bool blocked)
         {
             if (health > 0)
             {
-                
-                lockedIncomingDamage -= damageAmount;
-               
-                if (damageAmount>0)
+                if (Ref.peRnd.Chance_CheckForZero(group.damageBlockChance_fromTerrain * blockReduce))
                 {
+                    blocked = true;
+                    return;
+                }                
+
+                if (damageAmount > 0)
+                {
+                    lockedIncomingDamage -= damageAmount;
+
                     recievedProjectileAttackWhileIdle = state.idle;
                    
                     health -= damageAmount;
@@ -98,7 +107,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (health <= 0 && localMember)
                     {
                         onDeath(fullUpdate, enemyFaction);
-                    }
+                    }                    
 
                     if (fullUpdate)
                     {
@@ -106,8 +115,13 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
+
+            blocked = false;
+
+            
         }
-        
+
+
         public void lockInAttackDamage(int damageAmount)
         {
             if (damageAmount > 0)
@@ -118,7 +132,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         abstract public void update(float time, bool fullUpdate);
 
-        abstract public void asynchUpdate();
+        //abstract public void asynchUpdate();
 
         //public void setDetailLevel(bool unitDetailView)
         //{
@@ -180,16 +194,20 @@ namespace VikingEngine.DSSWars.GameObject
         //}
         protected void refreshAttackTarget()
         {
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
             var attackTarget_sp = attackTarget;
 
-            if (attackTarget_sp != null && attackTarget_sp.defeatedBy(GetFaction()))
+            if (attackTarget_sp != null && attackTarget_sp.defeatedBy(factionIndex))
             {
                 attackTarget = null;
             }
 
             var nextAttackTarget_sp= nextAttackTarget;
             nextAttackTarget = null;
-            if (nextAttackTarget_sp != null && !nextAttackTarget_sp.defeatedBy(GetFaction()))
+            if (nextAttackTarget_sp != null && !nextAttackTarget_sp.defeatedBy(factionIndex))
             {
                 attackTarget = nextAttackTarget_sp;
             }
@@ -197,47 +215,58 @@ namespace VikingEngine.DSSWars.GameObject
 
         //abstract public bool defeated(Faction attacker);
 
-        protected void closestTargetCheck(AbsDetailUnit unit,
+        public void closestTargetCheck(AbsDetailUnit unit,
             ref AbsDetailUnit closestOpponent,
             ref float closestOpponentDistance)
         {
             float distance = spaceBetweenUnits(unit);
 
-            float anglediff = Math.Abs(angleDiff(unit));
-            distance += anglediff * 0.1f;
-
-            if (distance < closestOpponentDistance)
+            if (distance < DssConst.MeleeAwareRange)
             {
-                if (canTargetUnit(unit))
+                if (distance < closestOpponentDistance &&
+                   canTargetUnit(unit))
+                {                    
+                    closestOpponent = unit;
+                    closestOpponentDistance = distance;   
+                }
+            }
+            else
+            {
+                float anglediff = Math.Abs(angleDiff(unit));
+                distance += anglediff * 0.1f;
+
+                if (distance < closestOpponentDistance &&
+                    canTargetUnit(unit))
                 {
                     var data = Profile();
-                    
+
                     if (!data.restrictTargetAngle || anglediff <= data.targetAngle)
                     {
                         closestOpponent = unit;
                         closestOpponentDistance = distance;
-                    }
+                    }                    
                 }
             }
-            
         }
 
-        protected void collisionGroupCheck(AbsDetailUnit unit, float distance)
-        {
-            if (distance < DssVar.Men_AsynchCollisionGroupRadius)
-            {
-                if (collisionGroup.processList.Count < CollGroupSize)
-                {
-                    collisionGroup.processList.Add(unit);
-                }
-            }
-        }
+        //protected void collisionGroupCheck(AbsDetailUnit unit, float distance)
+        //{
+        //    if (distance < DssVar.Men_AsynchCollisionGroupRadius)
+        //    {
+        //        if (collisionGroup.processList.Count < CollGroupSize)
+        //        {
+        //            collisionGroup.processList.Add(unit);
+        //        }
+        //    }
+        //}
 
         
 
         virtual protected AbsMapObject ParentMapObject()
         {
-            return group.army;
+            
+            group.army.TryGetTarget(out var tArmy);
+            return tArmy;
         }
 
         virtual protected bool canTargetUnit(AbsDetailUnit unit)
@@ -274,13 +303,13 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public void onDeath(bool fullUpdate, Faction enemyFaction)
         {
             //onEvent(UnitEventType.Death);
-            if (enemyFaction.player.IsPlayer())
+            if (enemyFaction != null && enemyFaction.player.IsLocalPlayer())
             {
                 ++enemyFaction.player.GetLocalPlayer().statistics.EnemySoldiersKilled;
             }
-            if (group.army.faction.player.IsPlayer())
+            if (group.GetPlayer().IsLocalPlayer())
             {
-                ++group.army.faction.player.GetLocalPlayer().statistics.FriendlySoldiersLost;
+                ++group.GetPlayer().GetLocalPlayer().statistics.FriendlySoldiersLost;
             }
 
             if (fullUpdate)
@@ -472,7 +501,7 @@ namespace VikingEngine.DSSWars.GameObject
             return health <= 0;
         }
 
-        public override bool defeatedBy(Faction attacker)
+        public override bool defeatedBy(int attackerFaction)
         {
             return health <= 0;
         }
@@ -494,23 +523,27 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool localMember
         {
-            get { return player().IsLocal; }
+            get {
+                var p = player();
+                return p != null && p.IsLocal; 
+            }
         }
 
-        override public Faction GetFaction()
-        {
-            return group.army.faction;
-        }
+        //override public Faction GetFaction()
+        //{
+        //    return group.army.faction;
+        //}
 
         public Players.AbsPlayer player()
         {
-            return group.army.faction.player;
+            return GetFaction()?.player;
         }
 
         virtual public Vector3 projectileStartPos()
         {
             Vector3 pos = position;
-            pos.Y += DssConst.Men_StandardModelScale * 0.6f;
+            //pos.Y += DssConst.Men_StandardModelScale * 0.6f;
+            model?.RotateVector(soldierData.attackStart, ref pos);
             return pos;
         }
 
@@ -539,7 +572,7 @@ namespace VikingEngine.DSSWars.GameObject
             return soldierData.basehealth;
         }
         
-        abstract public AbsDetailUnitProfile Profile();
+        abstract public AbsDetailUnitBuilder Profile();
 
         public override string TypeName()
         {
@@ -548,8 +581,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string ToString()
         {
-            string groupName = group == null? "" : " group(" + group.parentArrayIndex.ToString() + ")";
-            return DetailUnitType().ToString() + "(" + parentArrayIndex.ToString() + ")" + groupName + " p" + " area(" + tilePos.X.ToString() + "," + tilePos.Y.ToString() + ")";
+            string groupName = group == null? "" : " group(" + group.myIndex.ToString() + ")";
+            return DetailUnitType().ToString() + "(" + myIndex.ToString() + ")" + groupName + " p" + " area(" + tilePos.X.ToString() + "," + tilePos.Y.ToString() + ")";
         }
     }
 

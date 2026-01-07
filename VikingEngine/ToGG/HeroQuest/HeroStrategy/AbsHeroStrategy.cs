@@ -48,9 +48,9 @@ namespace VikingEngine.ToGG.HeroQuest.HeroStrategy
             List<AbsRichBoxMember> result = new List<AbsRichBoxMember>(8);
             if (movement > 0)
             {
-                result.Add(new RichBoxText(movement.ToString()));
-                result.Add(new RichBoxImage(SpriteName.cmdUnitMoveGui_Small));
-                result.Add(new RichBoxText(" squares"));                
+                result.Add(new RbText(movement.ToString()));
+                result.Add(new RbImage(SpriteName.cmdUnitMoveGui_Small));
+                result.Add(new RbText(" squares"));                
             }
 
             if (baseAttackActions > 0)
@@ -62,10 +62,10 @@ namespace VikingEngine.ToGG.HeroQuest.HeroStrategy
                 wep.strongestAttack(out strength, out melee);
                 strength = modifiedAttackStrength(strength);
 
-                result.Add(new RichBoxText(baseAttackActions.ToString()));
-                result.Add(new RichBoxImage(melee? SpriteName.cmdUnitMeleeGui : SpriteName.cmdUnitRangedGui));
+                result.Add(new RbText(baseAttackActions.ToString()));
+                result.Add(new RbImage(melee? SpriteName.cmdUnitMeleeGui : SpriteName.cmdUnitRangedGui));
 
-                var die = new RichBoxImage(SpriteName.cmdDiceAttack);
+                var die = new RbImage(SpriteName.cmdDiceAttack);
                 for (int i = 0; i < strength; ++i)
                 {
                     result.Add(die);
@@ -78,7 +78,7 @@ namespace VikingEngine.ToGG.HeroQuest.HeroStrategy
             {
                 if (result.Count > 0)
                 {
-                    result.Add(new RichBoxNewLine());
+                    result.Add(new RbNewLine());
                 }
             }
         }
@@ -379,35 +379,35 @@ namespace VikingEngine.ToGG.HeroQuest.HeroStrategy
         {
             var members = new List<HUD.RichBox.AbsRichBoxMember>
             {
-                new HUD.RichBox.RichBoxBeginTitle(),
-                new HUD.RichBox.RichBoxText(Name),
-                new HUD.RichBox.RichBoxNewLine(false),
-                new HUD.RichBox.RichBoxText(Description)
+                new HUD.RichBox.RbBeginTitle(),
+                new HUD.RichBox.RbText(Name),
+                new HUD.RichBox.RbNewLine(false),
+                new HUD.RichBox.RbText(Description)
             };
 
             var unit = HeroQuest.hqRef.players.localHost.HeroUnit;
             var actions = actionsTooltip(unit);
             if (actions != null)
             {
-                members.Add(new HUD.RichBox.RichBoxNewLine(true));
+                members.Add(new HUD.RichBox.RbNewLine(true));
                 members.AddRange(actions);
             }
 
             if (arraylib.HasMembers(resources))
             {
-                members.Add(new HUD.RichBox.RichBoxNewLine(true));
-                members.Add(new HUD.RichBox.RichBoxBeginTitle());
-                members.Add(new HUD.RichBox.RichBoxText("Requirements"));
-                members.Add(new HUD.RichBox.RichBoxNewLine(false));
+                members.Add(new HUD.RichBox.RbNewLine(true));
+                members.Add(new HUD.RichBox.RbBeginTitle());
+                members.Add(new HUD.RichBox.RbText("Requirements"));
+                members.Add(new HUD.RichBox.RbNewLine(false));
 
                 for (int i = 0; i < resources.Count; ++i)
                 {
                     var r = resources[i];
-                    members.Add(new HUD.RichBox.RichBoxImage(r.sprite));
-                    members.Add(new HUD.RichBox.RichBoxText(r.toolTipDesc,
+                    members.Add(new HUD.RichBox.RbImage(r.sprite));
+                    members.Add(new HUD.RichBox.RbText(r.toolTipDesc,
                         r.available ? Color.White : HudLib.UnavailableRedCol));
 
-                    members.Add(new HUD.RichBox.RichBoxNewLine(false));
+                    members.Add(new HUD.RichBox.RbNewLine(false));
                 }
 
                 specialRequirements(unit, members);
@@ -574,9 +574,9 @@ namespace VikingEngine.ToGG.HeroQuest.HeroStrategy
         {
             List <AbsRichBoxMember> result = base.actionsTooltip(unit);
 
-            result.Add(new RichBoxNewLine());
-            result.Add(new RichBoxImage(SpriteName.cmdBackpack));
-            result.Add(new RichBoxText("backpack"));
+            result.Add(new RbNewLine());
+            result.Add(new RbImage(SpriteName.cmdBackpack));
+            result.Add(new RbText("backpack"));
 
             HeroData.RestActionsDesc(result);
             return result;
@@ -626,8 +626,8 @@ namespace VikingEngine.ToGG.HeroQuest.HeroStrategy
         public override void modLabel(BattleModifierLabel label)
         {
             label.modSource(this);
-            label.content.Add(new RichBoxText(PierceAdd.ToString()));
-            label.content.Add(new RichBoxImage(SpriteName.cmdPierce));
+            label.content.Add(new RbText(PierceAdd.ToString()));
+            label.content.Add(new RbImage(SpriteName.cmdPierce));
         }
 
         //public override void battleModifiers(BattleSetup setup)

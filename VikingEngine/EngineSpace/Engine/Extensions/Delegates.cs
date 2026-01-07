@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
+using VikingEngine.PJ.MiniGolf;
 
 namespace VikingEngine
 {
@@ -18,9 +19,10 @@ namespace VikingEngine
     /// Event called upoin after text box input
     /// </summary>
     /// <param name="result">input, null is canceled</param>
-    public delegate void TextInputEvent(int user, string result, int index);
-    
+    public delegate void TextInputEvent(string result, object tag);
+
     delegate bool BoolGetSet(int index, bool set, bool value);
+    delegate bool BoolGetSet_Tag(object tag, bool set, bool value);
     delegate int IntGetSet(bool set, int value);
     delegate int IntGetSetIx(int index, bool set, int value);
     delegate float FloatGetSet(bool set, float value);

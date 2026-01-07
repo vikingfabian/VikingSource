@@ -16,7 +16,7 @@ namespace VikingEngine.LootFest.GO.Characters
         public SpitChick(GoArgs args)
             : base(args)
         {
-            createImage(VoxelModelName.spitchick_lvl1, ScaleRange.GetRandom(), 0, new Graphics.AnimationsSettings(7, 0.8f, 2));
+            createImage(VoxelModelName.NUM_NON, ScaleRange.GetRandom(), 0, new Graphics.AnimationsSettings(7, 0.8f, 2));
             Health = LfLib.StandardEnemyHealth;
             loadBounds();
 

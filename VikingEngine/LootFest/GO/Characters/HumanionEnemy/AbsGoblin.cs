@@ -28,7 +28,7 @@ namespace VikingEngine.LootFest.GO.Characters
         protected void goblinBoneSword()
         {
             handWeapon = new Gadgets.HumanoidEnemyHandWeapon(
-                VoxelModelName.goblin_sword,
+                VoxelModelName.NUM_NON,
                 new HandWeaponAttackSettings(
                     GameObjectType.GoblinBoneAttack, 0.8f, 0.16f,
                     new Vector3(2, 4, 6.1f),
@@ -51,7 +51,7 @@ namespace VikingEngine.LootFest.GO.Characters
 
         protected override void createPreRangedAttackEffect()
         {
-            preRangedAttackWeaponEffect = new Effects.PreRangedAttackWeaponEffect(VoxelModelName.goblin_spear,
+            preRangedAttackWeaponEffect = new Effects.PreRangedAttackWeaponEffect(VoxelModelName.NUM_NON,
                 GoblinJavelin.Scale * 0.1f, GoblinJavelin.Scale * 0.7f, aiStateTimer.MilliSeconds * 0.6f,
                 new Vector3(5f, 9f, 1f) * image.Scale1D, this);
         }

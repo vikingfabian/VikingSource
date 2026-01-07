@@ -135,16 +135,16 @@ namespace VikingEngine.LootFest.GO.Bounds
                 return new BoundCollisionResult(myBound, otherBound, IntersectLength2D(rect, cylinder));
 
             //Treat the cirkle as a point and check is it is inside the box
-            Circle flatCirkle = cylinder.flatCirkle();//new Circle(VectorExt.V3XZtoV2(cylinder.center), cylinder.scale.X);//cylinder.InnerCirkle.PlaneCirkle();
-            Circle orgFlatCirkle = flatCirkle;
+            Circle flatCircle = cylinder.flatCirkle();//new Circle(VectorExt.V3XZtoV2(cylinder.center), cylinder.scale.X);//cylinder.InnerCirkle.PlaneCirkle();
+            Circle orgFlatCircle = flatCircle;
             RectangleCentered flatRect = rect.PlaneCenterScale;
             if (rect.rotation != 0)
             {
-                flatCirkle.Center = lib.RotatePointAroundCenter(flatRect.Center, flatCirkle.Center, -rect.rotation);
+                flatCircle.Center = lib.RotatePointAroundCenter(flatRect.Center, flatCircle.Center, -rect.rotation);
             }
-            if (flatRect.IntersectCirkle(flatCirkle))
+            if (flatRect.IntersectCircle(flatCircle))
             {
-                return new BoundCollisionResult(myBound, otherBound, flatRect.IntersectCirkleDepth(flatCirkle, rect.rotation, orgFlatCirkle));
+                return new BoundCollisionResult(myBound, otherBound, flatRect.IntersectCircleDepth(flatCircle, rect.rotation, orgFlatCircle));
             }
             return null;
         }

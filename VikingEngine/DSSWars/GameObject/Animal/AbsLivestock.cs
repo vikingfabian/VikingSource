@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
+using VikingEngine.Sound;
 
 namespace VikingEngine.DSSWars.GameObject.Animal
 {
@@ -15,30 +16,30 @@ namespace VikingEngine.DSSWars.GameObject.Animal
     {        
         VectorRect area;
         protected WalkingAnimation walkingAnimation;
-        protected Graphics.AbsVoxelObj model;
-        Tile tile;
+        protected Graphics.VoxelModelInstance model;
+        IntVector2 tilepos;
         Time stateTime;
         Vector3 walkDir;
         bool walkState = true;
-        public AbsLivestock(Tile tile, Vector3 topCenterWp)
+        public AbsLivestock(IntVector2 tilepos, Vector3 topCenterWp)
             :base(true)
         {
-            this.tile = tile;
+            this.tilepos = tilepos;
             model = createModel();
-            model.AddToRender(DrawGame.UnitDetailLayer);
+            //model.AddToRender(DrawGame.UnitDetailLayer);
             
 
-            stateTime = new Time(Ref.rnd.Float(10, 2000));
+            stateTime = new Time(Ref.peRnd.Float(10, 2000));
             area = VectorRect.FromCenterSize(VectorExt.PlaneXZVec(topCenterWp), WorldData.SubTileWidthV2 * 0.8f);
             model.position = VectorExt.V3FromXZ( area.RandomPos(), topCenterWp.Y);
-            WP.Rotation1DToQuaterion(model, Ref.rnd.Rotation());
+            WP.Rotation1DToQuaterion(model, Ref.peRnd.Rotation());
         }
 
-        abstract protected Graphics.AbsVoxelObj createModel();
+        abstract protected Graphics.VoxelModelInstance createModel();
 
         void randomWalkDir()
         {
-            float dir = Ref.rnd.Rotation();
+            float dir = Ref.peRnd.Rotation();
             WP.Rotation1DToQuaterion(model, dir);
             walkDir = VectorExt.V2toV3XZ(lib.AngleToV2(dir, 1f), 0);
         }
@@ -48,7 +49,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
             if (stateTime.CountDownGameTime())
             {
                 walkState = !walkState;
-                stateTime = new Time(Ref.rnd.Float(500, 5000));
+                stateTime = new Time(Ref.peRnd.Float(500, 5000));
 
                 sound();
 
@@ -76,6 +77,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
                 }
             }
 
+            var tile = DssRef.world.tileGrid.Get(tilepos);
             if (!tile.hasTileInRender && tile.OutOfRenderTimeOut())
             {
                 DeleteMe();
@@ -87,50 +89,75 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         public override void DeleteMe()
         {
             base.DeleteMe();
-            model.DeleteMe();
+            model.preRemoveFromDrawBatch();
+            
+            //model.DeleteMe();
         }
     }
 
     class Pig : AbsLivestock
     {
-        public Pig(Tile tile, Vector3 topCenterWp)
-            : base(tile, topCenterWp)
+        public Pig(IntVector2 tilepos, Vector3 topCenterWp)
+            : base(tilepos, topCenterWp)
         { }
-        protected override Graphics.AbsVoxelObj createModel()
+        protected override Graphics.VoxelModelInstance createModel()
         {
             walkingAnimation = new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames);
 
-            return DssRef.models.ModelInstance(VoxelModelName.Pig,
-                DssConst.Men_StandardModelScale * 0.5f, false);
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.Pig,
+                DssConst.Men_StandardModelScale * 0.5f);
         }
 
         protected override void sound()
         {
-            if (Ref.rnd.Chance(0.03))
+            if (Ref.peRnd.Chance(0.03) && SoundStackManager.RareAvailable())
             {
                 SoundLib.pig.Play(model.position);
             }
         }
     }
+
     class Hen : AbsLivestock
     {
-        public Hen(Tile tile, Vector3 topCenterWp)
-            : base(tile, topCenterWp)
+        public Hen(IntVector2 tilepos, Vector3 topCenterWp)
+            : base(tilepos, topCenterWp)
         { }
-        protected override Graphics.AbsVoxelObj createModel()
+        protected override Graphics.VoxelModelInstance createModel()
         {
             walkingAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 0.25f);
 
-            return DssRef.models.ModelInstance(VoxelModelName.Hen,
-                DssConst.Men_StandardModelScale * 0.3f, false);
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.Hen,
+                DssConst.Men_StandardModelScale * 0.3f);
         }
 
         protected override void sound()
         {
-            if (Ref.rnd.Chance(0.02))
+            if (Ref.peRnd.Chance(0.03) && SoundStackManager.RareAvailable())
             {
                 SoundLib.hen.Play(model.position);
             }
+        }
+    }
+
+    class Pheasant : AbsLivestock
+    {
+        public Pheasant(IntVector2 tilepos, Vector3 topCenterWp)
+            : base(tilepos, topCenterWp)
+        { }
+        protected override Graphics.VoxelModelInstance createModel()
+        {
+            walkingAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 0.25f);
+
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.Pheasant,
+                DssConst.Men_StandardModelScale * 0.6f);
+        }
+
+        protected override void sound()
+        {
+            //if (Ref.rnd.Chance(0.02))
+            //{
+            //    SoundLib.hen.Play(model.position);
+            //}
         }
     }
 
@@ -138,5 +165,6 @@ namespace VikingEngine.DSSWars.GameObject.Animal
     { 
         Pig,
         Hen,
+        Pheasant,
     }
 }

@@ -35,8 +35,8 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
             members.text("Pick which units to activate this turn");
             //members.add(SpriteName.cmdOrderCheckFlat, TextLib.Divition(ordersMade, totalOrders));
             members.newLine();
-            members.Add(new RichBoxImage(SpriteName.cmdOrderCheckFlat));
-            var orderCountText = new RichBoxText(TextLib.Divition(ordersMade, totalOrders));
+            members.Add(new RbImage(SpriteName.cmdOrderCheckFlat));
+            var orderCountText = new RbText(TextLib.Divition(ordersMade, totalOrders));
             if (red)
             {
                 orderCountText.overrideColor = HudLib.UnavailableRedCol;

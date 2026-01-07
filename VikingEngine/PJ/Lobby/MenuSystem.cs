@@ -98,7 +98,7 @@ namespace VikingEngine.PJ
 
                 new GuiSectionSeparator(layout);
                 resolutionOptions(layout);
-                new GuiImageCheckbox(SpriteName.MenuIconMonitorArrowsOut, null, Ref.gamesett.fullscreenProperty, layout);
+                //new GuiImageCheckbox(SpriteName.MenuIconMonitorArrowsOut, null, Ref.gamesett.fullscreenProperty, layout);
 
                 new GuiSectionSeparator(layout);
                 new GuiTextButton("*Debug Controls*", null, controlDebugScreen, true, layout);
@@ -150,7 +150,7 @@ namespace VikingEngine.PJ
                 optionsList.Add(new GuiOption<int>(m.ToString() + "%", m));
             }
 
-            new GuiIconOptionsList<int>(SpriteName.MenuIconScreenResolution, "R", optionsList, Ref.gamesett.resolutionPercProperty, layout);
+            new GuiIconOptionsList<int>(SpriteName.MenuIconScreenResolution, "R", optionsList, Ref.gamesett.windowScaleProperty, layout);
             new GuiIconTextButton(SpriteName.MenuIconScreenResolution, "Youtube", null, recordingResolutionOptions, true, layout);
         }
 
@@ -214,8 +214,8 @@ namespace VikingEngine.PJ
                 new GuiRichLabel(
                     new List<HUD.RichBox.AbsRichBoxMember>
                     {
-                        new HUD.RichBox.RichBoxImage(SpriteName.MenuIconScreenResolution),
-                        new HUD.RichBox.RichBoxText(Engine.Screen.RenderingResolution.ToString("x"))
+                        new HUD.RichBox.RbImage(SpriteName.MenuIconScreenResolution),
+                        new HUD.RichBox.RbText(Engine.Screen.RenderingResolution.ToString("x"))
                     }, 
                     layout);
 

@@ -7,25 +7,25 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class ShipTransform : AbsInGameUpdateable
+    abstract class AbsSoldierStateTransform : AbsInGameUpdateable
     {
-        SoldierGroup group;
-        bool lookingForTerrain = true;
-        bool toShip;
-        Time transformTimer;
-        //Graphics.Mesh transformIcon;
-        AbsVoxelObj transformModel, loadingModel;
+        protected SoldierGroup group;
+        protected bool lookingForTerrain = true;
+        
+        protected Time transformTimer;
+        VoxelModelInstance transformModel, loadingModel;
         bool transformEffect = false;
 
-        public ShipTransform(SoldierGroup group, bool immediet)
-            :base(false)
+        public AbsSoldierStateTransform(SoldierGroup group, bool immediet)
+            : base(false)
         {
-
             this.group = group;
-            
-            toShip = !group.IsShip();
+            group.inShipOrGuardTransform = true;
 
-            transformTimer.Seconds = (toShip ? DssLib.ShipBuildTimeSec : DssLib.ShipExitTimeSec) * group.typeCurrentData.ShipBuildTimeMultiplier;
+            init(out float timeSec);
+            transformTimer.Seconds = timeSec;
+            //toShip = !group.isShip;
+            //transformTimer.Seconds = (toShip ? DssLib.ShipBuildTimeSec : DssLib.ShipExitTimeSec) * group.typeCurrentData.ShipBuildTimeMultiplier;
 
             AddToUpdateList();
 
@@ -33,12 +33,85 @@ namespace VikingEngine.DSSWars.GameObject
             { begin(); }
         }
 
+        abstract protected void init(out float timeSec);
+        
+
+        public override void Time_Update(float time_ms)
+        {
+            updateEffect();
+        }
+
+        protected void begin()
+        {
+            transformEffect = true;
+            lookingForTerrain = false;
+        }
+
+        void updateEffect()
+        {
+            if (group.isDeleted)
+            {
+                DeleteMe();
+            }
+            else if (transformEffect && group.army.TryGetTarget(out var tArmy) && tArmy.inRender_detailLayer)
+            {
+                if (transformModel == null)
+                {
+                    transformModel = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.wars_shipbuild, DssConst.Men_StandardModelScale * 2f);
+
+                    loadingModel = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.wars_loading_anim, DssConst.Men_StandardModelScale * 2f);
+                    transformModel.Frame = modelFrame();
+
+
+                    loadingModel.position = group.position;
+                    loadingModel.position.Y += 0.15f;
+
+                    transformModel.position = loadingModel.position;
+                    transformModel.position.Y += 0.04f;
+
+                }
+
+                loadingModel.Rotation.RotateWorldX(MathExt.Tau * Ref.DeltaTimeSec * -0.25f);
+            }
+        }
+
+
+        public override void DeleteMe()
+        {
+            base.DeleteMe();
+
+            transformModel?.preRemoveFromDrawBatch();
+            loadingModel?.preRemoveFromDrawBatch();
+            //DssRef.models.recycle(ref transformModel, true);
+            //DssRef.models.recycle(ref loadingModel, true);
+
+            completeTransform();
+        }
+        abstract protected int modelFrame();
+        abstract protected void completeTransform();
+    }
+
+    class ShipTransform : AbsSoldierStateTransform
+    {
+        bool toShip;
+
+        public ShipTransform(SoldierGroup group, bool immediet)
+            :base(group, immediet)
+        { }
+
+        protected override void init(out float timeSec)
+        {
+            toShip = !group.isShip;
+            timeSec = (toShip ? DssConst.ShipBuildTimeSec : DssConst.ShipExitTimeSec) * 
+                DssRef.units.Get(group.currentBuilder).ShipBuildTimeMultiplier;
+
+        }
+
         public override void Time_Update(float time_ms)
         {
             if (lookingForTerrain)
             {
-                Tile tile;
-                if (DssRef.world.tileGrid.TryGet(group.tilePos, out tile) &&
+                if (DssRef.world.tileGrid.TryGet(group.tilePos, out Tile tile) &&
                     tile.IsWater() == toShip)
                 {
                     begin();
@@ -53,62 +126,68 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
 
-            updateEffect();
+            base.Time_Update(time_ms);
         }
 
-        void begin()
+        override protected int modelFrame()
         { 
-            transformEffect = true;                    
-            lookingForTerrain = false;
-            group.lockMovement = true;
+            return toShip ? 0 : 1;
         }
 
-        void updateEffect()
+        protected override void completeTransform()
         {
-            if (group.isDeleted)
+            group.completeTransform(toShip ? SoldierTransformType.ToShip : SoldierTransformType.FromShip, -1);
+        }
+    }
+
+    class GuardPostTransform : AbsSoldierStateTransform
+    {
+        bool toGuard;
+        int postIdAndPosition;
+        public GuardPostTransform(SoldierGroup group, int postIdAndPosition, bool immediet)
+            : base(group, immediet)
+        {
+            this.postIdAndPosition = postIdAndPosition;
+        }
+
+        protected override void init(out float timeSec)
+        {
+            toGuard = !group.InGuardPost();
+            timeSec = toGuard ? DssConst.GuardPostEnter_TimeSec : DssConst.GuardPostExit_TimeSec;
+
+
+        }
+
+        public override void Time_Update(float time_ms)
+        {
+            if (lookingForTerrain)
             {
-                DeleteMe();
+                //if (DssRef.world.tileGrid.TryGet(group.tilePos, out Tile tile) &&
+                //    tile.IsWater() == toGuard)
+                //{
+                    begin();
+                //}
             }
-            else if (transformEffect && group.army.inRender_detailLayer)
+            else
             {
-                if (transformModel == null)
+                if (transformTimer.CountDownGameTime())
                 {
-                    transformModel = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_shipbuild, DssConst.Men_StandardModelScale * 2f, false);
-
-                    //transformIcon = new Graphics.Mesh(LoadedMesh.cube_repeating, group.position,
-                    //    new Vector3(AbsDetailUnitData.StandardModelScale * 2f), Graphics.TextureEffectType.Flat,
-                    //        SpriteName.WhiteArea, Color.Brown, false);
-                    
-
-                    loadingModel = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_loading_anim, DssConst.Men_StandardModelScale * 2f, false);
-                    transformModel.Frame = toShip? 0 : 1;
-                    
-
-                    loadingModel.position = group.position;
-                    loadingModel.position.Y += 0.15f;
-
-                    transformModel.position = loadingModel.position;
-                    transformModel.position.Y += 0.04f;
-
-                    transformModel.AddToRender(DrawGame.UnitDetailLayer);
-                    loadingModel.AddToRender(DrawGame.UnitDetailLayer);
-                    //new Graphics.Motion3d(Graphics.MotionType.ROTATE, loadingModel,
-                    //    new Vector3(MathExt.Tau, 0, 0), Graphics.MotionRepeate.Loop, 1000, true);
+                    DeleteMe();
+                    return;
                 }
-
-                loadingModel.Rotation.RotateWorldX(MathExt.Tau * Ref.DeltaTimeSec * -0.25f);
             }
+
+            base.Time_Update(time_ms);
         }
 
-
-        public override void DeleteMe()
+        override protected int modelFrame()
         {
-            base.DeleteMe();
-            transformModel?.DeleteMe();
-            loadingModel?.DeleteMe();
-            //group.inShipTransform = null;
-            group.lockMovement = false;
-            group.completeTransform(toShip? SoldierTransformType.ToShip : SoldierTransformType.FromShip);
+            return toGuard ? 2 : 3;
+        }
+
+        protected override void completeTransform()
+        {
+            group.completeTransform(toGuard ? SoldierTransformType.EnterGuard : SoldierTransformType.ExitGuard, postIdAndPosition);
         }
     }
 }

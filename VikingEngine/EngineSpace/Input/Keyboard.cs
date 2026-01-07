@@ -15,19 +15,25 @@ namespace VikingEngine.Input
 
         public static void Update()
         {
+            if (Ref.update.textInput != null)
+            {
+                currentState = new KeyboardState();
+                previousState = currentState;
+                return;
+            }
             previousState = currentState;
             currentState =  Microsoft.Xna.Framework.Input.Keyboard.GetState();
 
-            if (currentState.IsKeyDown(Keys.Escape))
-            {
-                holdEscTime += Ref.DeltaTimeSec;
-                if (holdEscTime > 3f)
-                { Ref.update.exitApplication = true; }
-            }
-            else
-            {
-                holdEscTime = 0;
-            }
+            //if (currentState.IsKeyDown(Keys.Escape))
+            //{
+            //    holdEscTime += Ref.DeltaTimeSec;
+            //    if (holdEscTime > 3f)
+            //    { Ref.update.exitApplication = true; }
+            //}
+            //else
+            //{
+            //    holdEscTime = 0;
+            //}
         }
 
         public static void ClearInput()
@@ -143,6 +149,21 @@ namespace VikingEngine.Input
                     text += TextLib.LastLetters(letter.ToString().ToLower());
                 }
             }
+        }
+
+        public static List<Keys> AllMappableKeys()
+        {
+            var availableKeyboardKeys = VikingEngine.Input.Keyboard.AllKeys.ToList();
+
+            //reserved keys
+            availableKeyboardKeys.Remove(Keys.Escape);
+            availableKeyboardKeys.Remove(Keys.Enter);
+            availableKeyboardKeys.Remove(Keys.Up);
+            availableKeyboardKeys.Remove(Keys.Down);
+            availableKeyboardKeys.Remove(Keys.Left);
+            availableKeyboardKeys.Remove(Keys.Right);
+
+            return availableKeyboardKeys;
         }
 
         public static readonly Keys[] AllKeys = new Keys[]

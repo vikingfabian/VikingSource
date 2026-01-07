@@ -201,14 +201,14 @@ namespace VikingEngine.HUD
 
         public void WriteStream(System.IO.BinaryWriter w)
         {
-            SaveLib.WriteString(w, Text);
-            SaveLib.WriteString(w, Sender);
+            StreamLib.WriteString(w, Text);
+            StreamLib.WriteString(w, Sender);
 
         }
         public void ReadStream(System.IO.BinaryReader r)
         {
-            Text = SaveLib.ReadString(r);
-            Sender = SaveLib.ReadString(r);
+            Text = StreamLib.ReadString_safe(r);
+            Sender = StreamLib.ReadString_safe(r);
         }
 
 

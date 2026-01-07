@@ -46,7 +46,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.Boss
             rotateTowardsObject(target, 0.002f * homingSpeed);
             Velocity.Set(rotation, speed);
 
-            if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
             {
                 const float YspeedMulti = 2f;
 
@@ -96,7 +96,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.Boss
             : base(args, target, startDir, StartSpeed, HomingSpeed)
         {
 
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.bot_rocket, Scale, 0, true);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, Scale, 0, true);
             image.position = args.startPos;
 
             //givesDamage = ;
@@ -121,7 +121,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.Boss
                 speed += 0.04f * Ref.DeltaTimeSec;
             }
             
-            if (Ref.gamesett.DetailLevel > 0 && Ref.TimePassed16ms)
+            if (Ref.gamesett.DetailLevel > 0 /*&& Ref.TimePassed16ms*/)
             {
                 Vector3 offset = image.Rotation.TranslateAlongAxis(-Vector3.UnitZ, Vector3.Zero);
 

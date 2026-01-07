@@ -1,7 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using VikingEngine.DSSWars;
+using VikingEngine.DSSWars.GameState;
 using VikingEngine.ToGG.Commander.Players;
 
 namespace VikingEngine.ToGG
@@ -31,13 +33,15 @@ namespace VikingEngine.ToGG
 
             if (winner is LocalPlayer)
             {
-                toggRef.storage.wonQuickPlay++;
+                DssRef.stats.commander_won.addOne();
+                //toggRef.storage.wonQuickPlay++;
             }
             else
             {
-                toggRef.storage.lostQuickPlay++;
+                DssRef.stats.commander_lost.addOne();
+                //toggRef.storage.lostQuickPlay++;
             }
-            toggRef.storage.saveLoad(true);
+            //toggRef.storage.saveLoad(true);
         }
 
         public override void Time_Update(float time)
@@ -52,7 +56,12 @@ namespace VikingEngine.ToGG
                     Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Enter) ||
                     Input.Mouse.ButtonDownEvent(MouseButton.Left))
                 {
+#if DSS
+                    //new DSSWars.LobbyState();
+                    new ExitToLobby(false);
+#else
                     new GameState.MainMenuState();
+#endif
                 }
             }
         }

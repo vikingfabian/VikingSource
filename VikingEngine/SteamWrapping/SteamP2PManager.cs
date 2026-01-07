@@ -5,17 +5,25 @@ using System.Linq;
 using System.Text;
 using Valve.Steamworks;
 using VikingEngine.Network;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.SteamWrapping
 {
     class SteamP2PManager
     {
-        const float NoResponceTimeKickSeconds = 10;
+        public const int SteamPackageByteLimit = 1200;
+
+        const float NoResponceTimeKickSeconds =
+#if DSS
+            40;
+#else
+            10;
+#endif
         public bool autoAcceptSessionRequests = false;
         public int PeerCount { get { return remoteGamers.Count; } }
 
         public SteamNetworkPeer Host;
-        public SteamNetworkPeer localHost;
+        public SteamNetworkPeer localPeer;
         public List<AbsNetworkPeer> remoteGamers;
         public bool hostSession = false;
 
@@ -124,7 +132,6 @@ namespace VikingEngine.SteamWrapping
                         {
                             default:
                                 Ref.NetUpdateReciever().NetworkReadPacket(packet);
-
                                 break;
 
                             case PacketType.Steam_SendRoundtrip:
@@ -140,13 +147,25 @@ namespace VikingEngine.SteamWrapping
                                     float timePassed = TimeExt.SecondsToMS(Ref.TotalTimeSec - timestamp);
                                     packet.sender.roundTripTime = packet.sender.roundTripTime * 0.5f + timePassed * 0.5f;
 
-                                    Ref.NetUpdateReciever().NetEvent_PingReturned(packet.sender);
+                                    int packetCount = 2;
+                                    if (packet.sender.roundTripTime < 40)
+                                    {
+                                        packetCount = 32;
+                                    }
+                                    else if(packet.sender.roundTripTime < 140)
+                                    {
+                                        packetCount = 8;
+                                    }
 
-                                    // Debug.Log("Ping returned " + packet.sender.roundTripTime.ToString());
+                                    packet.sender.maxPacketCount = Bound.Min(packetCount / remoteGamers.Count, 1);
+                                    Ref.NetUpdateReciever().NetEvent_PingReturned(packet.sender);
                                 }
                                 break;
                             case PacketType.Steam_SuccesfulJoinPing:
-                                lib.DoNothing();
+                                {
+                                    var w = Ref.netSession.BeginWritingPacket(PacketType.Steam_ReturnRoundtrip, senderId, PacketReliability.Reliable, packet.sender.id);
+                                    w.Write(0f);
+                                }
                                 break;
                             case PacketType.Steam_AssignClientId:
                                 if (hostSession)
@@ -170,11 +189,33 @@ namespace VikingEngine.SteamWrapping
                                 break;
                             case Network.PacketType.KickPlayer:
                                 ulong fullId = packet.r.ReadUInt64();
-                                if (localHost.fullId == fullId)
+                                if (localPeer.fullId == fullId)
                                 {
                                     //ReceiveKick();
                                     Ref.netSession.Disconnect("Removed by host");
                                     //Ref.steam.LobbyMatchmaker.CreateLobby();
+                                }
+                                break;
+                            case PacketType.Steam_LargePacket:
+                                {
+                                    int id = packet.r.ReadInt32();
+                                    if (Ref.netSession.largePackets.TryGetValue(id, out var largePacketWriter))
+                                    {
+                                        largePacketWriter.readNext(packet);
+                                    }
+                                    else
+                                    {
+                                        new SteamLargePacketWriter(packet, id);
+                                    }
+                                }
+                                break;
+                            case PacketType.Steam_LargePacket_Recieved:
+                                {
+                                    int id = packet.r.ReadInt32();
+                                    if (Ref.netSession.largePackets.TryGetValue(id, out var largePacketWriter))
+                                    {
+                                        largePacketWriter.sendNext();
+                                    }
                                 }
                                 break;
                         }
@@ -201,9 +242,9 @@ namespace VikingEngine.SteamWrapping
 
         public AbsNetworkPeer AddPeer(ulong peerId)
         {
-            if (localHost == null)
+            if (localPeer == null)
             {
-                createLocalHost();
+                createLocalPeer();
             }
 
             if (peerId == 0)
@@ -211,7 +252,7 @@ namespace VikingEngine.SteamWrapping
                 throw new Exception();
             }
 
-            if (peerId == localHost.fullId)
+            if (peerId == localPeer.fullId)
             {
                 //local gamer, never add
                 return null;
@@ -247,7 +288,7 @@ namespace VikingEngine.SteamWrapping
             if (hostSession)
             {
                 return Ref.netSession.joinableStatus &&
-                    remoteGamers.Count + 2 <= SteamLobbyMatchmaker.MAX_LOBBY_MEMBERS &&
+                    remoteGamers.Count <= SteamLobbyMatchmaker.MAX_LOBBY_MEMBERS &&
                     Ref.gamesett.bannedPeers.isBanned(peer) == false;
             }
             else
@@ -256,19 +297,19 @@ namespace VikingEngine.SteamWrapping
             }
         }
 
-        public SteamNetworkPeer GetLocalHost()
+        public SteamNetworkPeer GetLocalPeer()
         {
-            if (localHost == null)
+            if (localPeer == null)
             {
-                createLocalHost();
+                createLocalPeer();
             }
 
-            return localHost;
+            return localPeer;
         }
 
-        void createLocalHost()
+        void createLocalPeer()
         {
-            localHost = new SteamNetworkPeer(SteamAPI.SteamUser().GetSteamID(), true);
+            localPeer = new SteamNetworkPeer(SteamAPI.SteamUser().GetSteamID(), true);
         }
 
         public void RemovePeer(AbsNetworkPeer peer)
@@ -312,8 +353,8 @@ namespace VikingEngine.SteamWrapping
         {
             if (hostSession)
             {
-                Host = localHost;
-                localHost.id = 0;
+                Host = localPeer;
+                localPeer.id = 0;
 
                 //Host = 0-3
                 //Error = 255
@@ -358,8 +399,8 @@ namespace VikingEngine.SteamWrapping
                     w.Write(r.id);
                 }
 
-                w.Write(localHost.fullId);
-                w.Write(localHost.id);
+                w.Write(localPeer.fullId);
+                w.Write(localPeer.id);
             }
         }
 
@@ -377,9 +418,9 @@ namespace VikingEngine.SteamWrapping
                 ulong steamId = r.ReadUInt64();
                 byte id = r.ReadByte();
 
-                if (localHost.fullId == steamId)
+                if (localPeer.fullId == steamId)
                 {
-                    localHost.id = id;
+                    localPeer.id = id;
                     myId = true;
                 }
                 else
@@ -406,15 +447,32 @@ namespace VikingEngine.SteamWrapping
                     return peer;
             }
 
-            if (localHost.fullId == peerId)
-                return localHost;
+            if (localPeer.fullId == peerId)
+                return localPeer;
 
             return null;
         }
 
-        
+        public static void CrashOnTooLargePacket(System.IO.BinaryWriter w)
+        {
+#if DEBUG
+            if (w.BaseStream.Length > SteamPackageByteLimit)
+            {
+                throw new Exception("Passed steam package limit");
+            }
+#endif
+        }
+
+
         public void Send(byte[] data, VikingEngine.Network.PacketReliability rely, SendPacketTo to, ulong specificGamerID)
         {
+#if DEBUG
+            if (data.Length > SteamPackageByteLimit)
+            {
+                var packet = (PacketType)data[1];
+                throw new Exception("Passed steam package limit: " + packet);
+            }
+#endif
             EP2PSend sendType;
 
             if (rely == Network.PacketReliability.Unrelyable)
@@ -430,7 +488,8 @@ namespace VikingEngine.SteamWrapping
 
             if (to == SendPacketTo.OneSpecific)
             {
-                SteamAPI.SteamNetworking().SendP2PPacket(specificGamerID, data, (uint)data.Length, sendType, 0);
+
+                bool result = SteamAPI.SteamNetworking().SendP2PPacket(specificGamerID, data, (uint)data.Length, sendType, 0);
             }
             else if (to == SendPacketTo.Host)
             {
@@ -451,7 +510,7 @@ namespace VikingEngine.SteamWrapping
 
         public void SendUnreliable(byte[] data)
         {
-            if (data.Length > 1200)
+            if (data.Length > SteamPackageByteLimit)
             {
                 throw new IndexOutOfRangeException("MTU size is 1200 bytes. Please split the data into smaller packets.");
             }
@@ -463,7 +522,7 @@ namespace VikingEngine.SteamWrapping
 
         public void SendUnreliableNoDelay(byte[] data)
         {
-            if (data.Length > 1200)
+            if (data.Length > SteamPackageByteLimit)
             {
                 throw new IndexOutOfRangeException("MTU size is 1200 bytes. Please split the data into smaller packets.");
             }
@@ -510,7 +569,7 @@ namespace VikingEngine.SteamWrapping
                 RemovePeer(remoteGamers[i]);
             }
 
-            localHost = null;
+            localPeer = null;
             Host = null;
             endSession();
             SteamAPI.clearMem();

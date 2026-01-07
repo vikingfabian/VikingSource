@@ -90,15 +90,15 @@ namespace VikingEngine.ToGG.HeroQuest.Gadgets
             {
                 List<HUD.RichBox.AbsRichBoxMember> members = new List<HUD.RichBox.AbsRichBoxMember>
                 {
-                    new HUD.RichBox.RichBoxBeginTitle(),
-                    new HUD.RichBox.RichBoxText(itemSlot.item.Name),
-                    new HUD.RichBox.RichBoxNewLine(false),
+                    new HUD.RichBox.RbBeginTitle(),
+                    new HUD.RichBox.RbText(itemSlot.item.Name),
+                    new HUD.RichBox.RbNewLine(false),
                 };
 
                 var desc = itemSlot.item.DescriptionAdvanced();
                 if (desc == null)
                 {
-                    members.Add(new HUD.RichBox.RichBoxText(itemSlot.item.Description));                    
+                    members.Add(new HUD.RichBox.RbText(itemSlot.item.Description));                    
                 }
                 else
                 {
@@ -111,20 +111,20 @@ namespace VikingEngine.ToGG.HeroQuest.Gadgets
                     SlotType equipClick;
                     hqRef.players.localHost.Backpack().quickMoveEquip(itemSlot, out moveClick, out equipClick);
 
-                    members.Add(new HUD.RichBox.RichBoxNewLine(true));
-                    members.Add(new HUD.RichBox.RichBoxImage(toggRef.inputmap.quickMoveItem.Icon));
-                    members.Add(new HUD.RichBox.RichBoxImage(SpriteName.cmdConvertArrow, 0.6f));
-                    members.Add(new HUD.RichBox.RichBoxImage(ItemSlot.SlotTypeIcon(moveClick)));
-                    members.Add(new HUD.RichBox.RichBoxNewLine(false));
+                    members.Add(new HUD.RichBox.RbNewLine(true));
+                    members.Add(new HUD.RichBox.RbImage(toggRef.inputmap.quickMoveItem.Icon));
+                    members.Add(new HUD.RichBox.RbImage(SpriteName.cmdConvertArrow, 0.6f));
+                    members.Add(new HUD.RichBox.RbImage(ItemSlot.SlotTypeIcon(moveClick)));
+                    members.Add(new HUD.RichBox.RbNewLine(false));
 
                     if (equipClick != SlotType.None)
                     {
-                        members.Add(new HUD.RichBox.RichBoxImage(SpriteName.KeyCtrl));
-                        members.Add(new HUD.RichBox.RichBoxImage(SpriteName.cmdPlus, 0.6f));
-                        members.Add(new HUD.RichBox.RichBoxImage(toggRef.inputmap.click.Icon));
+                        members.Add(new HUD.RichBox.RbImage(SpriteName.KeyCtrl));
+                        members.Add(new HUD.RichBox.RbImage(SpriteName.cmdPlus, 0.6f));
+                        members.Add(new HUD.RichBox.RbImage(toggRef.inputmap.click.Icon));
 
-                        members.Add(new HUD.RichBox.RichBoxImage(SpriteName.cmdConvertArrow, 0.6f));
-                        members.Add(new HUD.RichBox.RichBoxImage(ItemSlot.SlotTypeIcon(equipClick)));
+                        members.Add(new HUD.RichBox.RbImage(SpriteName.cmdConvertArrow, 0.6f));
+                        members.Add(new HUD.RichBox.RbImage(ItemSlot.SlotTypeIcon(equipClick)));
                     }
                 }
 

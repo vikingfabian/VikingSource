@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
+
 namespace VikingEngine.Voxels
 {
     class SelectionModel
@@ -114,7 +115,7 @@ namespace VikingEngine.Voxels
         void build_Asynch()
         {
             Vector3 scaleAdd = new Vector3(AbsVoxelDesigner.BlockScale * 0.02f);
-            newModel = LootFest.Editor.VoxelObjBuilder.BuildModelHD(
+            newModel = VoxelObjBuilder.BuildModelHD(
                 new List<VoxelObjGridDataHD> { buildingData }, -scaleAdd * PublicConstants.Half);
 
             newModel.position = buildingOffset;

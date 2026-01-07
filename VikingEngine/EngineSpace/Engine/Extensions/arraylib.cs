@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
@@ -43,6 +44,11 @@ namespace VikingEngine
             return false;
         }
 
+        public static bool ContainsAny<T>(IEnumerable<T> source, IEnumerable<T> items)
+        {
+            return source.Any(items.Contains);
+        }
+
         public static bool HasDuplicatePointer<T>(List<T> list) where T : class
         {
             for (int i = 0; i < list.Count; ++i)
@@ -58,6 +64,37 @@ namespace VikingEngine
 
             return false;
         }
+
+        /// <summary>
+        /// Moves an element within a list by a relative offset.
+        /// </summary>
+        /// <typeparam name="T">The type of list elements.</typeparam>
+        /// <param name="list">The list to modify.</param>
+        /// <param name="index">The index of the item to move.</param>
+        /// <param name="move">The relative offset to move the item (e.g., -1 to move up).</param>
+        public static int MoveElement<T>(List<T> list, int index, int move)
+        {
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+            if (index < 0 || index >= list.Count)
+                throw new ArgumentOutOfRangeException(nameof(index), "Index is out of range.");
+            if (move == 0 || list.Count < 2)
+                return index;
+
+            int newIndex = index + move;
+            newIndex = Math.Max(0, Math.Min(newIndex, list.Count - 1)); // clamp to list bounds
+
+            if (newIndex == index)
+                return index;
+
+            // Swap elements
+            T temp = list[index];
+            list[index] = list[newIndex];
+            list[newIndex] = temp;
+
+            return newIndex;
+        }
+
 
         public static List<T> Repeate_List<T>(T value, int repeate)
         {
@@ -196,6 +233,11 @@ namespace VikingEngine
             return list[random.Int(list.Count)];
         }
 
+        public static int MaxIndex<T>(List<T> list)
+        {
+            return list.Count -1;
+        }
+
         public static List<T> RandomListMembers<T>(List<T> list, int count)
         {
             if (list.Count <= count)
@@ -277,6 +319,10 @@ namespace VikingEngine
         {
             return array[array.Length - 1];
         }
+        public static ref T RefLast<T>(T[] array)
+        {
+            return ref array[array.Length - 1];
+        }
         public static T Last<T>(List<T> list)
         {
             if (list == null || list.Count == 0)
@@ -284,6 +330,13 @@ namespace VikingEngine
                 return default(T);
             }
             return list[list.Count - 1];
+        }
+        public static void ReplaceLast<T>(List<T> list, T replacingValue)
+        {
+            if (list != null || list.Count > 0)
+            {
+                list[list.Count - 1] = replacingValue;
+            }           
         }
 
         public static bool IsLast<T>(int index, List<T> list)
@@ -329,6 +382,10 @@ namespace VikingEngine
             }
             return default(T);
         }
+        public static void ReplaceFirst<T>(List<T> list, T replacingValue)
+        {
+            list[0] = replacingValue;
+        }
         public static T PullLastMember<T>(List<T> list)
         {
             T result = list[list.Count - 1];
@@ -339,6 +396,12 @@ namespace VikingEngine
         {
             if (list.Count > 0)
             { list.RemoveAt(list.Count - 1); }
+        }
+
+        public static void RemoveCurrentInForwardLoop<T>(List<T> list, ref int i)
+        {
+            list.RemoveAt(i);
+            i--;
         }
 
         public static void SetMaxLength<T>(List<T> list, int max)
@@ -441,7 +504,7 @@ namespace VikingEngine
             }
             else
             {
-                value = default(T);
+                value = default;
                 return false;
             }
         }
@@ -454,7 +517,25 @@ namespace VikingEngine
         {
             return array != null && index >= 0 && index < array.Length;
         }
-       
+
+        public static int Bound<T>(List<T> list, int index)
+        {
+            if (index < 0)
+                return 0;
+            
+            if (index >= list.Count)
+                return list.Count -1;
+
+            return index;
+        }
+
+        public static bool InBound<T>(T[] array, int index1, int index2)
+        {
+            return array != null && 
+                index1 >= 0 && index1 < array.Length &&
+                index2 >= 0 && index2 < array.Length;
+        }
+
 
         public static TKey DictionaryKeyFromValue<TKey, TValue>(Dictionary<TKey, TValue> dictionary, TValue value)
         {
@@ -513,6 +594,19 @@ namespace VikingEngine
             for (int i = 0; i < array.Length; ++i)
             {
                 if (array[i].Equals(value))
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        public static int IndexFromValue<T>(List<T> list, T value)
+        {
+            for (int i = 0; i < list.Count; ++i)
+            {
+                if (list[i].Equals(value))
                 {
                     return i;
                 }

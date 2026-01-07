@@ -207,7 +207,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
             new Vector3(0.45f, 0.5f, 0), new Vector3(0, 0.5f, 0));
 
         public Barrel(GoArgs args)
-            : base(args, VoxelModelName.barrel, 2.2f, BoundSett)
+            : base(args, VoxelModelName.NUM_NON, 2.2f, BoundSett)
         { }
 
         static readonly Effects.BouncingBlockColors DmgCols = new Effects.BouncingBlockColors(
@@ -231,7 +231,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
             new Vector3(0.45f, 0.5f, 0), new Vector3(0, 0.5f, 0));
 
         public Snowman(GoArgs args)
-            : base(args, VoxelModelName.snowman, 4f, BoundSett)
+            : base(args, VoxelModelName.NUM_NON, 4f, BoundSett)
         { }
 
         static readonly Effects.BouncingBlockColors DmgCols = new Effects.BouncingBlockColors(

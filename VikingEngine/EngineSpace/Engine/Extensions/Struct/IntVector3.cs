@@ -472,6 +472,11 @@ namespace VikingEngine
             return lib.LargestValue(X, Y, Z);
         }
 
+        public int LargestSideLength_Abs()
+        {
+            return Math.Abs(lib.LargestAbsoluteValue(X, Y, Z));
+        }
+
 
         public override bool Equals(object obj)
         {

@@ -58,7 +58,7 @@ namespace VikingEngine.SteamWrapping
                 Debug.Log("---" + leaderboard.userName + "---");
                 Debug.Log(SteamLeaderBoard.ScoreToDate(leaderboard.score).ToString());
 
-                var values = Ref.steam.stats.gamestats.listValues();
+                var values = Ref.steam.stats.gamestats.collectTimedValues();
                 foreach (var m in values)
                 {
                     m.getUserStats(leaderboard.user);

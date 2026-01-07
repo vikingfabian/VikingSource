@@ -14,7 +14,7 @@ namespace VikingEngine.LootFest.GO.Characters
         public Crocodile3(GoArgs args)
             : base(args)
         {
-            createImage(VoxelModelName.crockodile1, ScaleRangeLvl1.GetRandom(), 0, new Graphics.AnimationsSettings(6, 0.8f));
+            createImage(VoxelModelName.NUM_NON, ScaleRangeLvl1.GetRandom(), 0, new Graphics.AnimationsSettings(6, 0.8f));
             Health = LfLib.LargeEnemyHealth;
             loadBounds();
 

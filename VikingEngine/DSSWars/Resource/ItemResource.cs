@@ -43,6 +43,14 @@ namespace VikingEngine.DSSWars.Resource
             this.amount = amount;
         }
 
+        public ItemResource(ItemResourceType type, int amount)
+        {
+            this.type = type;
+            this.quality = 1;
+            this.cost = 1;
+            this.amount = amount;
+        }
+
         public void merge(ItemResource other)
         {
             quality = quality * amount + other.quality * other.amount;
@@ -63,48 +71,53 @@ namespace VikingEngine.DSSWars.Resource
 
         Hen,
         Pig,
-        Goat,
-        Ox,
+        UN_Ox,
         Egg,
-        Milk,
-        Cheese,
         Meat,
 
-        RawLeather,
+        Wheat,
+        Beer,
+        Food_G,
+
+        Water_G,
+        Fuel_G,
+
         Leather,
 
-        WoodShoe,
-        LeatherShoe,
+        UN_StoneBlock,
+        Stone_G,
+        UN_Clay,
+        UN_Brick,
 
         SoftWood,
         HardWood,
         DryWood,
-        Planks,
-        Barrel,
-        Box,
-        Wheel,
-        Wagon,
-        Coal,
-        Tar,
+        Wagon2Wheel,
+        Wagon4Wheel,
+        Toolkit,
+        CoolingFluid,
 
+        Wood_Group,
+        RawFood_Group,
+        SkinLinen_Group,
+        
+        Rapeseed,
+        Hemp,
         Linen,
-        Wool,
-        Rope,
-        Cloth,
-        Clothes,
-        Bag,
 
+        Coal,
+        BogIron,
         IronOre_G,
         TinOre,
-        CupperOre,
+        CopperOre,
         SilverOre,
         GoldOre,
-        MithrilOre,
+        RawMithril,
 
         Iron_G,
         Steel,
         Tin,
-        Cupper,
+        Copper,
         Bronze,
         Silver,
         Gold,
@@ -115,41 +128,74 @@ namespace VikingEngine.DSSWars.Resource
 
         SharpStick,
         Sword,
-        Shield,
+        Pike,
 
-        LightArmor,
-        MediumArmor,
-        HeavyArmor,
-
-        StoneBlock,
-        Stone_G,
-        Clay,
-        Brick,
-        Pot,
-
-        Wheat,
-        Bread,
-        Beer,
-        Food_G,
-
-        Water_G,
-        SaltWater,
-
-        Fuel_G,
-        Poop,
+        BronzeArmor,
+        PaddedArmor,
+        HeavyPaddedArmor,
+        IronArmor,
+        HeavyIronArmor,
+        LightPlateArmor,
+        FullPlateArmor,
+        MithrilArmor,
 
         Ballista,
         KnightsLance,
         TwoHandSword,
 
-        Wood_Group,
-        RawFood_Group,
-        SkinLinen_Group,
+        BronzeSword,
+        ShortSword,
+        HandSpear,
+        LongSword,
+        Warhammer,
+        MithrilSword,
+        SlingShot,
+        ThrowingSpear,
+        Crossbow,
+        MithrilBow,
+
+        Sulfur,
+        LeadOre,
+        Lead,
+        BloomeryIron,
+        CastIron,
+
+        BlackPowder,
+        GunPowder,
+        LedBullet,
+        HandCulverin,
+        HandCannon,
+        Rifle,
+        Blunderbuss,
+
+        Manuballista,
+        Catapult,
+        UN_Trebuchet,
+        UN_BatteringRam,
+        SiegeCannonBronze,
+        ManCannonBronze,
+        SiegeCannonIron,
+        ManCannonIron,
+        
+        CopperCoin,
+        BronzeCoin,
+        SilverCoin,
+        ElfCoin,
+
+        AutomatedItem,
+
+        RoseWarrior_soldier,
+        RoseWarrior_tank,
+        RoseWarrior_dog,
+
         Men,
-        Rapeseed,
-        Hemp,
+        ServiceMen,
+
+        Palisade,
 
         NUM,
+
+        RESOURCES,
     }
 
     //enum ItemResourceType

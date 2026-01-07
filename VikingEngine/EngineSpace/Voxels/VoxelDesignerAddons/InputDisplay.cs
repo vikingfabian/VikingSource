@@ -40,7 +40,7 @@ namespace VikingEngine.Voxels
                     mouseTool = new InputDisplayMember(ref position, toolIconSz, input.mouseUseButton.Icon, SpriteName.IconBuildAdd);
                     mainBar.members.Add(mouseTool);
                     mainBar.members.Add(new InputDisplayMember(ref position, toolIconSz, SpriteName.KeyShift, SpriteName.Ydir));
-                    mainBar.members.Add(new InputDisplayMember(ref position, toolIconSz, input.mouseToolMenu.Icon, SpriteName.EditorMouseToolsIcon));
+                    //mainBar.members.Add(new InputDisplayMember(ref position, toolIconSz, input.mouseToolMenu.Icon, SpriteName.EditorMouseToolsIcon));
                 }
                 else
                 {
@@ -107,7 +107,7 @@ namespace VikingEngine.Voxels
 
             if (input.useMouseInput)
             {
-                mouseTool.toolImage.SetSpriteName(MouseToolHUD.ToolIcon(input.mouseTool));
+                mouseTool?.toolImage.SetSpriteName(MouseToolHUD.ToolIcon(input.mouseTool));
             }
         }
 

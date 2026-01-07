@@ -18,10 +18,6 @@ namespace VikingEngine.Timer
             this.action = action;
 
             TaskExt.AddTask(this, accessStorage);
-            //if (accessStorage)
-            //    Engine.Storage.AddToSaveQue(StartQuedProcess, false);
-            //else
-            //    Ref.asynchUpdate.AddThreadQueObj(this);
         }
 
         public void runQuedTask(MultiThreadType threadType)

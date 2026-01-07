@@ -40,17 +40,17 @@ namespace VikingEngine.ToGG.HeroQuest
 
         public static void RestActionsDesc(List<AbsRichBoxMember> rb)
         {
-            rb.Add(new RichBoxNewLine());
-            rb.Add(new RichBoxText(TextLib.ValuePlusMinus(RestStaminaRegain)));
-            rb.Add(new RichBoxImage(SpriteName.cmdStamina));
+            rb.Add(new RbNewLine());
+            rb.Add(new RbText(TextLib.ValuePlusMinus(RestStaminaRegain)));
+            rb.Add(new RbImage(SpriteName.cmdStamina));
 
-            rb.Add(new RichBoxNewLine());
-            rb.Add(new RichBoxText(TextLib.ValuePlusMinus(RestHealthRegain)));
-            rb.Add(new RichBoxImage(SpriteName.cmdStatsHealth));
+            rb.Add(new RbNewLine());
+            rb.Add(new RbText(TextLib.ValuePlusMinus(RestHealthRegain)));
+            rb.Add(new RbImage(SpriteName.cmdStatsHealth));
 
-            rb.Add(new RichBoxNewLine());
-            rb.Add(new RichBoxText(TextLib.ValuePlusMinus(-RestBloodRageLost)));
-            rb.Add(new RichBoxImage(SpriteName.cmdIconBloodrageSmall));
+            rb.Add(new RbNewLine());
+            rb.Add(new RbText(TextLib.ValuePlusMinus(-RestBloodRageLost)));
+            rb.Add(new RbImage(SpriteName.cmdIconBloodrageSmall));
 
         }
 

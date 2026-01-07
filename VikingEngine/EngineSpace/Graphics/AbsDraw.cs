@@ -1,14 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
+using VikingEngine.ToGG;
 
 namespace VikingEngine.Graphics
 {
     abstract class AbsDraw : IDeleteable, IPosition, ISpottedArrayMember
     {
         /* Properties */
+        //public int InDrawBatchCount = 0;
+#if DEBUG
+        public string DebugName = null;
+#endif
+
         public abstract DrawObjType DrawType { get; }
 
         public Color pureColor = Color.White;
@@ -39,7 +46,8 @@ namespace VikingEngine.Graphics
         protected bool visible = true;
         protected bool inRenderList = false;
         public int inRenderLayer = 0;
-        
+
+        public int idOrIndex = int.MinValue;
         private int spottedArrayMemberIndex;
         private int inSpottedArray = 0;
 
@@ -60,6 +68,11 @@ namespace VikingEngine.Graphics
         /* Methods */
         public abstract AbsDraw CloneMe();
         public abstract void Draw(int cameraIndex);
+        public virtual void DrawWave(int cameraIndex, Effect shader) { throw new NotImplementedException(); }
+        //public abstract void Draw(Texture2D texture);
+        //public virtual void DrawShadow(int cameraIndex, AbsEffect shader) { }
+
+        public virtual void DrawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light) { }
         public abstract void UpdateCulling();
 
         public virtual void DrawInDynamicCam(Vector2 camPos)
@@ -103,6 +116,12 @@ namespace VikingEngine.Graphics
 
         public void AddToRender()
         {
+#if DEBUG
+            if (this.GetType() == typeof(DSSWars.VoxelModelInstance_Pooled))
+            {
+                throw new Exception();
+            }
+#endif
             Ref.draw.AddToRenderList(this);
             inRenderList = true;
         }
@@ -113,6 +132,28 @@ namespace VikingEngine.Graphics
             Ref.draw.CurrentRenderLayer = layer;
             AddToRender();
             Ref.draw.CurrentRenderLayer = storeLay;
+        }
+
+        public void SetInRender(bool inRender)
+        {
+            inRenderList = inRender;            
+        }
+
+        virtual public void preRemoveFromDrawBatch()
+        {
+//#if DEBUG
+//            Debug.CrashIfThreaded();
+//#endif
+            inRenderList = false;
+        }
+
+        public void OnDrawBatchAdd()
+        {
+            inRenderList = true;
+        }
+        virtual public void OnDrawBatchRemove()
+        {
+            inRenderList = false;
         }
 
         virtual public void settingsChangedRefresh() { }

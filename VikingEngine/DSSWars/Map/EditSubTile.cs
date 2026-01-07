@@ -22,19 +22,24 @@ namespace VikingEngine.DSSWars.Map
             this.editAmount = editAmount;
             this.editCollection = editCollection;
         }
-
+               
         public void Submit()
         { 
-            DssRef.state.resources.editSubTilesStack.Push(this);
+            DssRef.state.resources.editSubTiles.Enqueue(this);
         }
 
         public void ExecuteEdit()
         {
-            var subTile = DssRef.world.subTileGrid.Get(position);
+            ref var subTile = ref DssRef.world.subTileGrid.GetRef(position);
             if (editTerrain)
             {
                 subTile.mainTerrain = value.mainTerrain;
                 subTile.subTerrain = value.subTerrain;
+
+                if (DssRef.state.culling.insidePlayerAttension_sub(position))
+                {
+                    DssRef.world.tileGrid.GetRef(WP.SubtileToTilePos(position)).subtileVisualEdits++;
+                }
             }
 
             if (editAmount)
@@ -46,8 +51,14 @@ namespace VikingEngine.DSSWars.Map
             {
                 subTile.collectionPointer = value.collectionPointer;
             }
+        }
 
-            DssRef.world.subTileGrid.Set(position, subTile);
+        public static void OntileChange(IntVector2 tilePos)
+        {
+            if (!DssRef.state.culling.outsidePlayerAttension(tilePos))
+            {
+                DssRef.world.tileGrid.GetRef(tilePos).subtileVisualEdits++;
+            }
         }
     }
 }

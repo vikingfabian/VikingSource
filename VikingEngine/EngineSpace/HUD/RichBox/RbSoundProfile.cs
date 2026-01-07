@@ -7,7 +7,7 @@ using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Sound;
 
-namespace VikingEngine.EngineSpace.HUD.RichBox
+namespace VikingEngine.HUD.RichBox
 {
 
     class RbSoundProfile
@@ -21,7 +21,7 @@ namespace VikingEngine.EngineSpace.HUD.RichBox
             this.no = no;
         }
 
-        public void onActionTrigger(bool enabled)
+        public void play(bool enabled)
         {
             if (enabled)
             {
@@ -37,14 +37,64 @@ namespace VikingEngine.EngineSpace.HUD.RichBox
 
     class RbSoundAction : AbsRbAction
     {
-        public RbSoundAction(RbSoundProfile sound)
+        public RbSoundAction(RbSoundType sound)
         {
             this.sound = sound;
         }
 
         public override void actionTrigger()
         {
-            sound?.onActionTrigger(enabled);
+            RbSoundSetup.Get(sound)?.play(enabled);
         }
+    }
+
+    static class RbSoundSetup
+    {
+        public static RbSoundProfile Get(RbSoundType type)
+        {
+            switch (type)
+            {
+                case RbSoundType.Default:
+                    return DSSWars.SoundLib.menu;
+                default:
+                    return null;
+                case RbSoundType.Option:
+                    return DSSWars.SoundLib.menuOption;
+                case RbSoundType.Deselect:
+                    return DSSWars.SoundLib.menuOptionDeselect;
+                case RbSoundType.Tab:
+                    return DSSWars.SoundLib.menutab;
+                case RbSoundType.Back:
+                    return DSSWars.SoundLib.menuBack;
+                case RbSoundType.Expand:
+                    return DSSWars.SoundLib.menuExpand;
+                case RbSoundType.Buy:
+                    return DSSWars.SoundLib.menuBuy;
+                case RbSoundType.Copy:
+                    return DSSWars.SoundLib.menuCopy;
+                case RbSoundType.Paste:
+                    return DSSWars.SoundLib.menuPaste;
+                case RbSoundType.Start:
+                    return DSSWars.SoundLib.menuStart;
+                case RbSoundType.Stop:
+                    return DSSWars.SoundLib.menuStop;
+            }
+        }
+    }
+
+    enum RbSoundType
+    { 
+        Default,
+        Option,
+        Deselect,
+        Tab,
+        Expand,
+        Back,
+        Buy,
+        Copy,
+        Paste,
+        Start,
+        Stop,
+        NUM_NONE
     }
 }

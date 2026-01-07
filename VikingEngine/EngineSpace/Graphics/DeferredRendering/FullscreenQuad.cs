@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
 
         public void Draw(GraphicsDevice device)
         {
-            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
+            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 2);
         }
     }
 }

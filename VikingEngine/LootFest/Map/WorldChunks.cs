@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using VikingEngine.LootFest.Map.HDvoxel;
+using VikingEngine.Voxels;
 
 namespace VikingEngine.LootFest.Map
 {
@@ -24,7 +26,7 @@ namespace VikingEngine.LootFest.Map
         /// </summary>
         public SpottedArrayCounter<Chunk> OpenChunksWorldGenCounter, OpenChunksMeshGenCounter;
 
-        static readonly VectorRect StandardBound = new VectorRect(Vector2.Zero, VectorExt.V2(Data.Block.TerrainBlockScale));
+        static readonly VectorRect StandardBound = new VectorRect(Vector2.Zero, VectorExt.V2(Block.TerrainBlockScale));
 
         public Chunk[,] chunksGrid;
 

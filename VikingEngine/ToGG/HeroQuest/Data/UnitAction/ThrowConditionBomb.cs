@@ -95,8 +95,8 @@ namespace VikingEngine.ToGG.HeroQuest.Data.UnitAction
         {
             return new List<AbsRichBoxMember>
             {
-                new RichBoxImage(SpriteName.cmdThrowBombAction),
-                new RichBoxText("Throw bomb"),
+                new RbImage(SpriteName.cmdThrowBombAction),
+                new RbText("Throw bomb"),
             };
         }
 

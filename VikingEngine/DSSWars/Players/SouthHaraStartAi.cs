@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Players
                         messageDone = true;
                     }
 
-                    if (armiesC.sel.InBattle() ||
+                    if (/*armiesC.sel.InBattle() ||*/
                         armiesC.sel.IdleObjetive())
                     {
                         complete();
@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.Players
         void complete()
         {
             faction.player.GetAiPlayer().nextDecisionTimer.Seconds = 5;
-            faction.gold = 20000;
+            faction.money.copper = 2000000;
             faction.hasDeserters = true;
             DeleteMe();
         }

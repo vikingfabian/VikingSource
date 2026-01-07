@@ -116,18 +116,18 @@ namespace VikingEngine.ToGG
     class FollowUpToolTip : ToGG.ToggEngine.Display2D.AbsToolTip
     {
         //Graphics.Image checkBoxIcon;
-        RichBoxText yesNoText;
+        RbText yesNoText;
 
         public FollowUpToolTip(MapControls mapcontrols)
             : base(mapcontrols)
         {
             RichBoxContent members = new RichBoxContent();
-            members.Add(new RichBoxImage(SpriteName.cmdMoveArrowStamina));
-            members.Add(new RichBoxBeginTitle());
-            members.Add(new RichBoxText("Follow Up?"));
+            members.Add(new RbImage(SpriteName.cmdMoveArrowStamina));
+            members.Add(new RbBeginTitle());
+            members.Add(new RbText("Follow Up?"));
 
-            members.Add(new RichBoxNewLine());
-            yesNoText = new RichBoxText("---", HudLib.UnavailableRedCol);
+            members.Add(new RbNewLine());
+            yesNoText = new RbText("---", HudLib.UnavailableRedCol);
             members.Add(yesNoText);
             
             AddRichBox(members);

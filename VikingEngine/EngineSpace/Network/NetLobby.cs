@@ -19,6 +19,8 @@ namespace VikingEngine.Network
         void NetEvent_SessionsFound(
             List<AbsAvailableSession> availableSessions, 
             List<AbsAvailableSession> prevAvailableSessionsList);
+
+        void NetEvent_LargePacket(Network.ReceivedPacket packet);
     }
 
     enum NetLobbyState
@@ -159,7 +161,7 @@ namespace VikingEngine.Network
                     if (state != NetLobbyState.Closing)
                     {
                         state = NetLobbyState.Lobby;
-                        Ref.steamlobby.CreateLobbyIfNotInOne();
+                        Ref.steamlobby?.CreateLobbyIfNotInOne();
                     }
                     updateTimer.Seconds = SearchTimerSec;
                     
@@ -236,6 +238,9 @@ namespace VikingEngine.Network
                 Ref.gamestate.NetworkReadPacket(packet);
             }
         }
+
+        virtual public void NetEvent_LargePacket(Network.ReceivedPacket packet) { }
+
         virtual public void NetEvent_PingReturned(Network.AbsNetworkPeer gamer)
         {
             Ref.gamestate.NetEvent_PingReturned(gamer);

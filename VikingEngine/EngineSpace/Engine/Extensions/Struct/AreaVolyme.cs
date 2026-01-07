@@ -224,7 +224,7 @@ namespace VikingEngine //AreaVolyme
             return Math.Abs(diff.X) < HalfSize.X && Math.Abs(diff.Y) < HalfSize.Y;
         }
 
-        public bool IntersectCirkle(Circle cirkle)
+        public bool IntersectCircle(Circle cirkle)
         {
             Vector2 diff = cirkle.Center - Center;
             float l = Bound.Min(diff.Length() - cirkle.Radius, 0);
@@ -232,7 +232,7 @@ namespace VikingEngine //AreaVolyme
             diff *= l;
             return Math.Abs(diff.X) < HalfSize.X && Math.Abs(diff.Y) < HalfSize.Y;
         }
-        public IntersectDetails2D IntersectCirkleDepth(Circle adjustedCirkle, float rotation, Circle originalCirkle)
+        public IntersectDetails2D IntersectCircleDepth(Circle adjustedCirkle, float rotation, Circle originalCirkle)
         {
             IntersectDetails2D result = new IntersectDetails2D();
             Vector2 diff = adjustedCirkle.Center - Center;
@@ -681,6 +681,20 @@ namespace VikingEngine //AreaVolyme
     {
         public Vector2 Position;
         public Vector2 Size;
+
+        public float distanceTo(Vector2 point)
+        {
+            float left = Position.X;
+            float right = Position.X + Size.X;
+            float top = Position.Y;
+            float bottom = Position.Y + Size.Y;
+
+            float dx = lib.LargestValue(left - point.X, 0, point.X - right);
+            float dy = lib.LargestValue(top - point.Y, 0, point.Y - bottom);
+
+            return MathF.Sqrt(dx * dx + dy * dy);
+        }
+
         public float X
         {
             get { return Position.X; }
@@ -1144,20 +1158,22 @@ namespace VikingEngine //AreaVolyme
                 // Place the point on closest border
                 if (smallRect.Position.X < Position.X)
                 {
-                    smallRect.Position.X = Position.X;
+                    //smallRect.Position.X = Position.X;
+                    smallRect.AddToLeftSide(-Position.X + smallRect.Position.X);
                 }
-                else if (smallRect.Right > Right)
+                if (smallRect.Right > Right)
                 {
                     smallRect.SetRight(Right, true);
                 }
 
                 if (smallRect.Y < Position.Y)
                 {
-                    smallRect.Y = Position.Y;
+                    //smallRect.Y = Position.Y;
+                    smallRect.AddToTopSide(-Position.Y + smallRect.Position.Y);
                 }
-                else if (smallRect.Bottom > Bottom)
+                if (smallRect.Bottom > Bottom)
                 {
-                    smallRect.Bottom = Bottom;
+                    smallRect.SetBottom(Bottom, true);
                 }
             }
 
@@ -1477,6 +1493,11 @@ namespace VikingEngine //AreaVolyme
         public void FlipX()
         {
             Size.X = -Size.X;
+        }
+
+        public float SideLength()
+        {
+            return Size.X > Size.Y ? Size.X : Size.Y;
         }
 
         public float Side(Dir4 side)

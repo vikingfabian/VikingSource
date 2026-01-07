@@ -18,8 +18,8 @@ namespace VikingEngine.LootFest.GO.Characters.Monsters
         public Ent(GoArgs args)
             : base(args)
         {
-            LfRef.modelLoad.PreLoadImage(VoxelModelName.ent_root, false, 0, false);
-            LfRef.modelLoad.PreLoadImage(VoxelModelName.target_warning, false, 1, false);
+            LfRef.modelLoad.PreLoadImage(VoxelModelName.NUM_NON, false, 0, false);
+            LfRef.modelLoad.PreLoadImage(VoxelModelName.NUM_NON, false, 1, false);
             setHealth(LfLib.LargeEnemyHealth);
             NetworkShareObject();
         }
@@ -39,7 +39,7 @@ namespace VikingEngine.LootFest.GO.Characters.Monsters
 
         protected override VoxelModelName imageName
         {
-            get { return characterLevel == 0 ? VoxelModelName.ent : VoxelModelName.ent2; }
+            get { return characterLevel == 0 ? VoxelModelName.NUM_NON : VoxelModelName.NUM_NON; }
         }
 
         static readonly Graphics.AnimationsSettings AnimSet =

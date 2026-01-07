@@ -37,9 +37,9 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
             if (VoxelObjName != VoxelModelName.NUM_NON)
             {
                 bool center = false;
-                if (VoxelObjName == VoxelModelName.throw_axe || 
-                    VoxelObjName == VoxelModelName.enemy_projectile_green || 
-                    VoxelObjName == VoxelModelName.EnemyProjectile)
+                if (VoxelObjName == VoxelModelName.NUM_NON || 
+                    VoxelObjName == VoxelModelName.NUM_NON || 
+                    VoxelObjName == VoxelModelName.NUM_NON)
                 {
                     center = true;
                 }
@@ -64,7 +64,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
             }
             else
             {
-                startPos = SaveLib.ReadVector3(args.reader);//r.ReadVector3();//måste skapa image direkt
+                startPos = StreamLib.ReadVector3(args.reader);//r.ReadVector3();//måste skapa image direkt
                 Velocity.Read(args.reader);
 
                 //imageSetup();
@@ -80,8 +80,8 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
         public override void netWriteGameObject(System.IO.BinaryWriter w)
         {
             base.netWriteGameObject(w);
-            SaveLib.WriteVector( w, image.position);
-           SaveLib.WriteVector( w,Velocity.Value);
+            StreamLib.WriteVector( w, image.position);
+           StreamLib.WriteVector( w,Velocity.Value);
             Velocity.Write(w);
             //writer.Write(Yspeed);
         }
@@ -149,7 +149,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack
                 this.DeleteMe();
             }
 
-            if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
             {
                 //smoke
                 if (Ref.rnd.Chance(40))

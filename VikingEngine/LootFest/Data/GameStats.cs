@@ -27,7 +27,7 @@ namespace VikingEngine.LootFest.Data
             LfRef.stats = this;
         }
 
-        public override List<IStatsValue> listValues()
+        public override List<IStatsValue> collectTimedValues()
         {
             return new List<IStatsValue>
             {
@@ -43,6 +43,11 @@ namespace VikingEngine.LootFest.Data
                 editHours,
             };
         }
+     
+        public override List<IStatsValue> listGlobalStats()
+        {
+            throw new NotImplementedException();
+        }
 
         public override void getStats()
         {
@@ -57,21 +62,25 @@ namespace VikingEngine.LootFest.Data
             playHours.getStat();
             editHours.getStat();
         }
-
-        public override void collectValues(TimeStamp timePassed)
+        public override void initAndSetStats()
         {
-            var creativeMap = LfRef.levels2.GetLevelUnsafe(BlockMap.LevelEnum.Creative);
-            if (creativeMap != null)
-            {
-                editedChunks.value = creativeMap.designAreas.editCount();
-            }
+            throw new NotImplementedException();
+        }
 
-            playHours.value += timePassed.Hours;
-            var p = LfRef.gamestate.LocalHostingPlayer;
-            if (p.inEditor)
-            {
-                editHours.value += timePassed.Hours;
-            }
+        public override void collectValues(float prevTotalTimeSec)
+        {
+            //var creativeMap = LfRef.levels2.GetLevelUnsafe(BlockMap.LevelEnum.Creative);
+            //if (creativeMap != null)
+            //{
+            //    editedChunks.value = creativeMap.designAreas.editCount();
+            //}
+
+            //playHours.value += timePassed.Hours;
+            //var p = LfRef.gamestate.LocalHostingPlayer;
+            //if (p.inEditor)
+            //{
+            //    editHours.value += timePassed.Hours;
+            //}
         }
     }
 }

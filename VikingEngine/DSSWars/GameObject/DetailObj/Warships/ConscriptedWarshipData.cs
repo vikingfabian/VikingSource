@@ -8,7 +8,7 @@ using VikingEngine.DSSWars.Conscript;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    class ConscriptedWarshipData : AbsWarShipProfile
+    class ConscriptedWarshipData : AbsWarShipBuilder
     {
         public ConscriptedWarshipData()
             : base(UnitType.ConscriptWarship)
@@ -52,6 +52,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
 
             AbsSoldierUnit result = base.CreateUnit();
+            //result.refreshShipCarryCount();
             //if (result.group.soldierConscript.conscript.specialization == SpecializationType.DarkLord)
             //{
             //    DssRef.settings.darkLordPlayer.darkLordUnit = result;

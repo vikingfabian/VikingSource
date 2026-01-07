@@ -10,7 +10,7 @@ namespace VikingEngine.LootFest.GO.NPC
         public Mother(GoArgs args)
             :base(args)
         {
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.mother, 0f, 1f);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 0f, 1f);
             //loadImage();
             postImageSetup();
 

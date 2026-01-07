@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using VikingEngine.EngineSpace.HUD.RichBox;
 using VikingEngine.Graphics;
 
 namespace VikingEngine.HUD.RichBox
@@ -26,11 +27,19 @@ namespace VikingEngine.HUD.RichBox
 
         public int bTitelFormat = 0;
         public Stack<AbsRichBoxMember> parentMember = new Stack<AbsRichBoxMember>();
-        public List<List<RichboxButton>> buttonGrid_Y_X = new List<List<RichboxButton>>();
+        public List<List<AbsRbButton>> buttonGrid_Y_X = new List<List<AbsRbButton>>();
+        public List<ControllerSection> controllerSections = new List<ControllerSection>();
 
         int tryCreatePosition = -1;
         bool lockNewLine = false;
         public float groupScale = 1f;
+
+        public override void SetOffset(Vector2 position)
+        {
+            //Debug.Log($"Richbox set offset {position}");
+            base.SetOffset(position);
+
+        }
 
         public RichBoxGroup(Vector2 topleft, float boxWidth, ImageLayers layer, 
             RichBoxSettings settings, List<AbsRichBoxMember> content,
@@ -87,8 +96,8 @@ namespace VikingEngine.HUD.RichBox
             AbsRichBoxMember parent;
             if (parentMember.TryPeek(out parent))
             {
-                var button = parent as RichboxButton;
-                if (button != null)
+                var button = parent as AbsRbButton;
+                if (button != null && button.UseButtonContentSettings())
                 {
                     return button.enabled ? settings.button : settings.buttonDisabled;
                 }
@@ -130,6 +139,15 @@ namespace VikingEngine.HUD.RichBox
             prepLine();
         }
 
+        public void newLine_SetHeight(float height)
+        {
+            completeLine();
+
+            position.Y = height;
+           
+            prepLine();
+        }
+
         public void newLine()
         {
             if (!lockNewLine)
@@ -144,7 +162,7 @@ namespace VikingEngine.HUD.RichBox
         {
             if (buttonGrid_Y_X.Count == 0 || buttonGrid_Y_X.Last().Count > 0)
             {
-                buttonGrid_Y_X.Add(new List<RichboxButton>());
+                buttonGrid_Y_X.Add(new List<AbsRbButton>());
             }
             position.X = topleft.X;
 
@@ -221,8 +239,6 @@ namespace VikingEngine.HUD.RichBox
         {
             return (topleft.X + boxWidth) - position.X;
         }
-
-
         
         public void TryCreate_Start()
         { 
@@ -250,7 +266,22 @@ namespace VikingEngine.HUD.RichBox
             addToRender = true;
             lockNewLine = false;
         }
-        //float LineSpacing => imageHeight
+
+        public VectorRect AreaWithPosOffset()
+        {
+            VectorRect result = area;
+            result.Position += posOffset;
+
+            return result;
+        }
+
+        public VectorRect MaxAreaWithPosOffset()
+        {
+            VectorRect result = maxArea;
+            result.Position += posOffset;
+
+            return result;
+        }
     }
 
    

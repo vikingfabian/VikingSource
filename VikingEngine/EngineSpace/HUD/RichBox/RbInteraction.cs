@@ -1,97 +1,251 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.HUD.RichMenu;
+using VikingEngine.PJ.Match3;
 
 namespace VikingEngine.HUD.RichBox
 {
-    class RbInteraction
+    abstract class AbsRbInteraction
     {
-        public RichboxButton hover = null;
-        public List<RichboxButton> buttons = new List<RichboxButton>(4);
+
+        abstract public bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction, out float pushScroll);
+
+        abstract public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction);
+        abstract public void end(float pointerX, out bool needRefresh);
+    }
+    class RbInteraction: AbsRbInteraction
+    {
+        public AbsRbButton hover = null;
+        public List<AbsRbButton> buttons = new List<AbsRbButton>(4);
         public ImageLayers layer;
 
         Graphics.RectangleLines selectionOutline = null;
-        Input.IButtonMap clickInput;        
+        Input.IButtonMap clickInput;
+        public RenderTargetDrawContainer drawContainer = null;
+        public AbsRbInteraction interactionStack = null;
 
         public RbInteraction(List<AbsRichBoxMember> content, ImageLayers layer,  Input.IButtonMap clickInput)
         {
             this.layer = layer;
             this.clickInput = clickInput;
-           
+
+            //foreach (var m in content)
+            //{
+            //    m.getButtons(buttons);
+            //}
+            refresh(content);
+        }
+
+        public void refresh(List<AbsRichBoxMember> content)
+        {
+            buttons.Clear();
             foreach (var m in content)
             {
                 m.getButtons(buttons);
-                //RichboxButton button = m as RichboxButton;
-                //if (button != null)
-                //{
-                //    buttons.Add(button);
-                //}
             }
         }
 
-        public bool update()
+       
+        override public bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction, out float pushScroll)
         {
+            pushScroll = 0;
+            if (interactionStack == null)
+            {
+                var moveInput = pointer.inputMap.move.direction;
+                pointer.pointer.position += pointer.accelerateInput(moveInput);
+                pointer.pointer.position = pointer.menu.renderArea.KeepPointInsideBound_Position(pointer.pointer.position);
+
+                if (moveInput.Y < 0)
+                { 
+                    float scrollTop = pointer.menu.renderArea.Position.Y + Engine.Screen.IconSize * 2;
+                    if (pointer.pointer.position.Y < scrollTop)
+                    {
+                        pushScroll = pointer.pointer.position.Y - scrollTop;
+                    }
+                }
+                else if (moveInput.Y > 0)
+                {
+                    float scrollBottom = pointer.menu.renderArea.Bottom - Engine.Screen.IconSize * 2;
+                    if (pointer.pointer.position.Y > scrollBottom)
+                    {
+                        pushScroll = pointer.pointer.position.Y - scrollBottom;
+                    }
+                }
+
+                refreshControllerHover(pointer);
+                needRefresh = false;
+                endInteraction = false;
+                return clickUpdate(pointer.menu, true);
+            }
+            else
+            {
+                var result = interactionStack.updateController(pointer, menu, useClickInput, out needRefresh, out endInteraction, out pushScroll);
+                if (endInteraction)
+                {
+                    interactionStack.end(pointer.pointer.Xpos, out needRefresh);
+                    interactionStack = null;
+                }
+                return result;
+            }
+        }
+
+        public void refreshControllerHover(RichMenuControllerPointer pointer)
+        {
+            Vector2 pos = pointer.pointer.position - pointer.menu.renderArea.Position;
+
+            VectorRect area = VectorRect.Zero;
+            AbsRbButton prev = hover;
+            hover = null;
+            float distance = float.MaxValue;
+            foreach (var m in buttons)
+            {
+                area = m.area();
+                float arDist = area.distanceTo(pos);
+                if (arDist <= 0)
+                {
+                    hover = m;
+                    distance = 0;
+                    break;
+                }
+                else
+                {
+                    if (arDist < distance && arDist < pointer.maxInteractDistance)
+                    {
+                        distance = arDist;
+                        hover = m;
+                    }
+                }
+            }
+
+            hoverUpdate(pointer.menu, prev);
+        }
+
+
+        /// <returns>Any interaction happened (to avoid multiple)</returns>
+        override public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool unused1)
+        {
+            //Debug.Log("Interaction UPDATE");
+            //Debug.Log($"Mouse offset: {mousePosOffSet}");
+            //Debug.Log($"Menu bg pos: {menu.backgroundArea.Position}");
+            //Debug.Log($"Menu content offset: {menu.richBox.GetOffset()}");
+            unused1 = false;
+            needRefresh = false;
+            if (interactionStack != null)
+            {
+                var result = interactionStack.update(mousePosOffSet, menu, useClickInput, out needRefresh, out bool endInteraction);
+                if (endInteraction)
+                {
+                    interactionStack.end(Input.Mouse.Position.X, out needRefresh);
+                    interactionStack = null;
+                }
+                return result;
+            }
+
+            AbsRbButton prev = hover;
+            int buttonIndex = 0;
+            VectorRect area = VectorRect.Zero;
+            //VectorRect area2 = VectorRect.Zero;
+            //int hoverIx = 0;
             if (clickInput.IsMouse)
             {
-                Vector2 pos = Input.Mouse.Position;
-                RichboxButton prev = hover;
+                Vector2 pos = Input.Mouse.Position + mousePosOffSet;
+                //Debug.Log($"mouse pos: {pos}");
                 hover = null;
-                VectorRect area = VectorRect.Zero;
+                
 
                 foreach (var m in buttons)
                 {
-                    if (m.buttonMap != null && m.buttonMap.DownEvent)
-                    {
-                        m.onClick();//.click?.actionTrigger();
-                    }
-
                     area = m.area();
                     if (area.IntersectPoint(pos))
                     {
                         hover = m;
                         break;
                     }
-                }
-
-                if (hover != prev)
-                {
-                    //selectionOutline?.DeleteMe();
-                    //if (hover != null)
-                    //{
-                    //    selectionOutline = new RectangleLines(area, 2, 1, layer);
-                    //    hover.enter?.actionTrigger();
-                    //    //Debug.Log("on enter");
-                    //}
-                    refreshSelectOutline();
+                    ++buttonIndex;
                 }
             }
-            if (clickInput.DownEvent && hover != null)
+
+            hoverUpdate(menu, prev);
+
+            return clickUpdate(menu, useClickInput);
+        }
+
+        void hoverUpdate(RichMenu.RichMenu menu, AbsRbButton prev)
+        { 
+            if (hover != prev)
             {
-                hover.onClick();//.click?.actionTrigger();
-                return true;
+                if (prev != null)
+                {
+                    prev.clickAnimation(false);
+                    //Debug.Log("deleteTooltip: new hover");
+                    menu?.deleteTooltip();
+                }
+                refreshSelectOutline();
+                
+                hover?.onEnter(menu);
+            }
+        }
+
+        bool clickUpdate(RichMenu.RichMenu menu, bool useClickInput)
+        {
+            if (hover != null)
+            {
+                if (clickInput.DownEvent && useClickInput)
+                {
+                    hover.onClick(menu);
+                    hover?.clickAnimation(true);
+                    return true;
+                }
+                else if (clickInput.UpEvent)
+                {
+                    hover.clickAnimation(false);
+                }
             }
 
             return false;
         }
 
+        public override void end(float pointerX, out bool needRefresh)
+        {
+            needRefresh = false;
+            //throw new NotImplementedException();
+        }
+
         public void refreshSelectOutline()
         {
+            Ref.draw.AddToContainer = drawContainer;
+
             selectionOutline?.DeleteMe();
             if (hover != null)
             {
-                selectionOutline = new RectangleLines(hover.area(), 2, 1, layer);
-                hover.onEnter();//.enter?.actionTrigger();
-                //Debug.Log("on enter");
+                var ar = hover.area();
+                selectionOutline = new RectangleLines(ar, 2, 1, layer);                
             }
+
+            Ref.draw.AddToContainer = null;
         }
 
         public void clearSelection()
         {
-            hover=null;
-            selectionOutline?.DeleteMe();
-            selectionOutline = null;
+            if (Input.Keyboard.Ctrl)
+            {
+                lib.DoNothing();
+            }
+
+            if (selectionOutline != null)
+            {
+                Ref.draw.AddToContainer = drawContainer;
+                hover = null;
+                selectionOutline?.DeleteMe();
+                selectionOutline = null;
+                Ref.draw.AddToContainer = null;
+            }
         }
 
         public void DeleteMe()

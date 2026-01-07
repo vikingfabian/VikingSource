@@ -51,7 +51,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             terrainModels = DefaultDungeonModels;
             
             List<VoxelModelName> result = new List<VoxelModelName>(terrainModels);
-            result.Add(VoxelModelName.DoorToLobby);
+            result.Add(VoxelModelName.NUM_NON);
             return result;
         }
 
@@ -175,7 +175,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, CenterAreaLockId, GO.EnvironmentObj.AreaUnLockType.Key,
-                0, null, VoxelModelName.locklvl1, Dir4.N);
+                0, null, VoxelModelName.NUM_NON, Dir4.N);
         }
 
         void createMiniBoss(GoArgs goArgs)
@@ -227,14 +227,14 @@ namespace VikingEngine.LootFest.BlockMap.Level
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, EndAreaLockId, GO.EnvironmentObj.AreaUnLockType.ConnectedEnemies,
-                goArgs.characterLevel, null, VoxelModelName.groupLock, Dir4.N);
+                goArgs.characterLevel, null, VoxelModelName.NUM_NON, Dir4.N);
         }
         void doorToBoss(VikingEngine.LootFest.GO.GoArgs goArgs)
         {
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, BossLockId, GO.EnvironmentObj.AreaUnLockType.ConnectedEnemies,
-                goArgs.characterLevel, startBossFight, VoxelModelName.locklvl2, Dir4.N);
+                goArgs.characterLevel, startBossFight, VoxelModelName.NUM_NON, Dir4.N);
         }
 
         void startBossFight()

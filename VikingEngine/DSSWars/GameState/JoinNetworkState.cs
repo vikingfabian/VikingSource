@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars
             statusText.TextString = message.ToString();
             if (message == Network.NetworkStatusMessage.Joining_failed || message == Network.NetworkStatusMessage.Joining_timed_out)
             {
-                new GameState.ExitGamePlay();
+                new GameState.ExitToLobby(false);
             }
 
             //if (message == Network.NetworkStatusMessage.Joining_session)
@@ -112,7 +112,7 @@ namespace VikingEngine.DSSWars
                 case Network.PacketType.rtsStartGame:
                     if (DssRef.world != null)
                     {
-                        new PlayState(false, null);
+                        new PlayState(false, null, null);
                     }
                     break;
             }

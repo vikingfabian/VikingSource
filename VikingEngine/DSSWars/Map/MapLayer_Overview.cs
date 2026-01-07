@@ -7,70 +7,56 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine.DSSWars.Map
 {
-    class MapLayer_Overview : Point3D
+    abstract class AbsMapLayer : Point3D
     {
-        public Map.Borders borders;
-        //BordersUpdate bordersUpdate;
-        public UnitMiniModels unitMiniModels;
-        //Timer.Basic borderUpdate = new Timer.Basic(1000, true);
+        Timer.Basic waterAnimTimer = new Timer.Basic(3000, true);
+        int waterFrame = 0;
+        //int waterEdgeFrame = 0;
+        double waterMoveCurve = 0;
 
-        int state_Processing_Sych_Complete = 2;
-        Map.MapLayer_Factions factionsMap;
-
-        public MapLayer_Overview(Map.MapLayer_Factions factionsMap)
-        {
-            this.factionsMap = factionsMap;
-            Ref.draw.CurrentRenderLayer = DrawGame.TerrainLayer;
-
-            generateTerrain();
-
-            Graphics.Mesh waterSurface, waterBottom;
-            WaterModel(out waterSurface, out waterBottom, false);
-            waterSurface.AddToRender(DrawGame.TerrainLayer);
-            //waterSurface.Opacity = 0.9f;
-            waterBottom.AddToRender(DrawGame.TerrainLayer);
-            waterBottom.Y = waterSurface.Y - 0.1f;
-
-            
-            borders = new Map.Borders();
-            //bordersUpdate = new BordersUpdate(borders, worldOverviewModel);
-
-            Ref.draw.CurrentRenderLayer = 0;
-
-            unitMiniModels = new UnitMiniModels();
-        }
-
-        public static void WaterModel(out Graphics.Mesh waterSurface, out Graphics.Mesh waterBottom, bool highDetail)
+        protected Graphics.Mesh waterSurface, waterBottom;
+        protected void WaterModel(bool detailLayer)
         {
             //Graphics.Mesh waterBottom;
 
             var vol = WaterModelVolume();
 
-            waterBottom = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f), 
+            waterBottom = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f),
                 TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.DarkBlue, false);
             waterBottom.Y -= 0.6f;
             waterBottom.Scale = vol.Scale;
 
-            waterSurface = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f), 
-                TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.White,//Color.CornflowerBlue,
+            waterSurface = new Mesh(LoadedMesh.plane, vol.Position, new Vector3(1f),
+                TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.White,
                 false);
 
-            if (highDetail)
-            {
-                waterSurface.texture = DssRef.models.waterTextures[0];
-                waterSurface.repeatingTextureSource(DssRef.models.waterTextures[1], DssRef.world.Size * 2);
-            }
-            else
-            {
-                waterSurface.Color = WorldData.WaterCol;//new Color(14, 155, 246);
-                //new Color(4.3f, 48.6f,77.3f);
-            }
+            //if (highDetail)
+            //{
+            waterSurface.texture = WaterTex()[0];
+            int repeatCount = detailLayer ? 2 : 1;
+            waterSurface.repeatingTextureSource(WaterTex()[1], DssRef.world.Size * repeatCount);
+            //}
+            //else
+            //{
+            //    waterSurface.effectType = TextureEffectType.SeaNoise;
+
+            //    waterSurface.Color = WorldData.WaterCol;//new Color(14, 155, 246);
+            //    //new Color(4.3f, 48.6f,77.3f);
+            //}
             waterSurface.Scale = vol.Scale;
             const float SurfaceTrans = 0.8f;
             waterSurface.Opacity = SurfaceTrans;
 
+            int drawLayer = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.MidLayer;
+            //if (!detailLayer)
+            {
+                waterSurface.AddToRender(drawLayer);
+            }
+            waterBottom.AddToRender(drawLayer);
             //waterSurface.Visible = true;
         }
+
+        abstract protected Texture2D[] WaterTex();
 
         public static VectorVolume WaterModelVolume()
         {
@@ -80,159 +66,35 @@ namespace VikingEngine.DSSWars.Map
             return new VectorVolume(surfacePos, waterScale);
         }
 
-        private void generateTerrain()
+        protected void updateWaterTexture()
         {
-            IntVector2 pos = IntVector2.Zero;
-
-            Sprite topTex = Sprite.FromeName(SpriteName.WhiteArea_LFtiles);
-            Sprite sideTex = Sprite.FromeName(SpriteName.WhiteArea_LFtiles);
-
-            Sprite citytopTex = Sprite.FromeName(SpriteName.WhiteArea_LFtiles);
-            Sprite citysideTex = Sprite.FromeName(SpriteName.WhiteArea_LFtiles);
-
-            List<Graphics.PolygonColor> billboards = new List<PolygonColor>();
-            List<Graphics.PolygonColor> polygons = new List<PolygonColor>();
-
-
-            Vector3 center = Vector3.Zero;
-            Vector3 nw = Vector3.Zero;
-            Vector3 ne = Vector3.Zero;
-            Vector3 sw = Vector3.Zero;
-            Vector3 se = Vector3.Zero;
-
-            Vector3 bbnw, bbne, bbsw, bbse;
-            bool[] edge4Dir = new bool[4];
-
-            for (pos.Y = 0; pos.Y < DssRef.world.Size.Y; ++pos.Y)
+            if (waterAnimTimer.Update(Ref.DeltaGameTimeMs))
             {
-                center.Z = pos.Y;
-                nw.Z = pos.Y - 0.5f;
-                ne.Z = pos.Y - 0.5f;
-                sw.Z = pos.Y + 0.5f;
-                se.Z = pos.Y + 0.5f;
-
-                for (pos.X = 0; pos.X < DssRef.world.Size.X; ++pos.X)
+                if (++waterFrame >= WaterTex().Length)
                 {
-                    Tile tile = DssRef.world.tileGrid.Get(pos);
-                    if (tile.heightLevel != Height.DeepWaterHeight)
-                    {
-                        Color terrainCol = DssRef.map.bioms.bioms[(int)tile.biom].Color(tile).Color;
-                        //Tile.TerrainTypes[tile.biom, tile.heightLevel].color;
-
-                        center.X = pos.X;
-                        nw.X = pos.X - 0.5f;
-                        ne.X = pos.X + 0.5f;
-                        sw.X = pos.X - 0.5f;
-                        se.X = pos.X + 0.5f;
-
-                        //Height
-                        center.Y = tile.GroundY();
-                        nw.Y = center.Y;
-                        ne.Y = center.Y;
-                        sw.Y = center.Y;
-                        se.Y = center.Y;
-
-                        for (int i = 0; i < IntVector2.Dir4Array.Length; ++i)
-                        {
-                            Tile n;
-
-                            edge4Dir[i] =  DssRef.world.GetTileSafe(pos + IntVector2.Dir4Array[i], out n) && tile.heightLevel > n.heightLevel;
-                        }
-
-                        Sprite imgCoords = topTex;
-
-                        Vector3[] topVertices = new Vector3[]
-                            {
-                                nw,ne,sw,se,
-                            };
-
-                        //move out the texture source 
-                        imgCoords.UpdateSourcePolygon(false);
-
-                        if (tile.IsLand())
-                        {
-                            float h = Bound.Max(TileSideHeight, center.Y + 0.5f); 
-
-                            if (edge4Dir[3]) //west
-                            {
-                                polygons.Add(side(nw, sw, sideTex, ColorExt.ChangeBrighness(terrainCol, -5), h));
-                            }
-                            if (edge4Dir[1]) //east
-                            {
-                                polygons.Add(side(se, ne, sideTex, ColorExt.ChangeBrighness(terrainCol, -5), h));
-                            }
-                            if (edge4Dir[2]) //south
-                            {
-                                polygons.Add(side(sw, se, sideTex, ColorExt.ChangeBrighness(terrainCol, -10), h));
-                            }
-                        }
-
-                        polygons.Add(new Graphics.PolygonColor(
-                            topVertices,
-                            imgCoords, terrainCol));
-
-
-                    }
+                    waterFrame = 0;
                 }
+
+                //if (++waterEdgeFrame >= DssRef.models.waterEdgeTextures.Length)
+                //{ 
+                //    waterEdgeFrame = 0;
+                //}
+
+                waterSurface.texture = WaterTex()[waterFrame];
             }
 
-            polygons.AddRange(billboards);
-
-            Graphics.GeneratedObjColor heightMapModel = new Graphics.GeneratedObjColor(new Graphics.PolygonsAndTrianglesColor(
-                polygons, null), LoadedTexture.SpriteSheet, true);
-
+            waterMoveCurve += Ref.DeltaGameTimeSec * 0.5f;
+            waterSurface.TextureSource.SourceF.X += Ref.DeltaGameTimeSec * -0.05f;
+            waterSurface.TextureSource.SourceF.Y = (float)(Math.Sin(waterMoveCurve) * 0.1);
         }
 
+        //public Texture2D waterEdgeTex()
+        //{
+        //    return DssRef.models.waterEdgeTextures[waterEdgeFrame];
+        //}
 
-        const float TileSideHeight = 1.5f;
-       
-        Graphics.PolygonColor side(Vector3 v1, Vector3 v2, Sprite sideTex, Color col, float height)
-        {
-            
-            Vector3 sw = v1;
-            sw.Y -= height;
+        #region DRAW
 
-            Vector3 se = v2;
-            se.Y -= height;
-
-
-            return new Graphics.PolygonColor(
-                new Vector3[]
-                {
-                    v1, v2,  sw,se,
-                },
-                sideTex, col);
-        }
-
-        public void runAsyncTask()
-        {
-            if (state_Processing_Sych_Complete == 2 && DssRef.world.BordersUpdated)
-            {
-                state_Processing_Sych_Complete = 0;
-
-                borders.quedEvent();
-                factionsMap.asyncTask();
-
-                state_Processing_Sych_Complete = 1;
-            }
-        }
-        public void HalfSecondUpdate()
-        {
-            if (DssLib.UpdateBorders && 
-                state_Processing_Sych_Complete == 1)
-            {
-                DssRef.world.BordersUpdated = false;
-                borders.SetNewModel();
-                factionsMap.syncTask();
-
-                state_Processing_Sych_Complete = 2;
-            }
-
-            unitMiniModels.update();
-        }
-
-#region DRAW
-        
         public override DrawObjType DrawType
         {
             get { return DrawObjType.MeshGenerated; }
@@ -271,6 +133,218 @@ namespace VikingEngine.DSSWars.Map
         {
             throw new NotImplementedException();
         }
-#endregion
+        #endregion
+    }
+
+    class MapLayer_Overview : AbsMapLayer
+    {
+        public Map.Borders borders;
+        public UnitMiniModels unitMiniModels;
+
+        int state_Processing_Sych_Complete = 2;
+        Map.MapLayer_Factions factionsMap;
+        Graphics.GeneratedObjColor heightMapModel;
+        public bool bRefreshTimer = false;
+        public bool bRefreshDataRecieved = false;
+
+        public MapLayer_Overview(Map.MapLayer_Factions factionsMap)
+        {
+            this.factionsMap = factionsMap;
+            Ref.draw.CurrentRenderLayer = DrawGame.MidLayer;
+
+            createModel(generateTerrain());
+
+            WaterModel(false);
+            
+            waterBottom.Y = waterSurface.Y - 0.1f;
+
+            if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
+            {
+                borders = new Map.Borders();
+            }
+            Ref.draw.CurrentRenderLayer = 0;
+
+            unitMiniModels = new UnitMiniModels();
+        }
+        public void update()
+        {
+            updateWaterTexture();
+        }
+
+        public void refresh_async()
+        {
+            if (bRefreshTimer && bRefreshDataRecieved)
+            {
+                bRefreshTimer = false;
+                bRefreshDataRecieved = false;
+
+                var polygons = generateTerrain();
+                Ref.update.AddSyncAction(new SyncAction1Arg<List<Graphics.PolygonColor>>(createModel, polygons));
+            }
+        }
+
+        private List<Graphics.PolygonColor> generateTerrain()
+        {
+            IntVector2 pos = IntVector2.Zero;
+
+            Sprite topTex = Sprite.FromeName(SpriteName.WhiteArea_LFtiles);
+            Sprite sideTex = Sprite.FromeName(SpriteName.WhiteArea_LFtiles);
+
+            Sprite citytopTex = Sprite.FromeName(SpriteName.WhiteArea_LFtiles);
+            Sprite citysideTex = Sprite.FromeName(SpriteName.WhiteArea_LFtiles);
+
+            //List<Graphics.PolygonColor> billboards = new List<PolygonColor>();
+            List<Graphics.PolygonColor> polygons = new List<PolygonColor>();
+
+
+            Vector3 center = Vector3.Zero;
+            Vector3 nw = Vector3.Zero;
+            Vector3 ne = Vector3.Zero;
+            Vector3 sw = Vector3.Zero;
+            Vector3 se = Vector3.Zero;
+
+            Vector3 bbnw, bbne, bbsw, bbse;
+             //bool[] edge4Dir = new bool[4];
+             Span<bool> edge4Dir = stackalloc bool[4];
+
+            for (pos.Y = 0; pos.Y < DssRef.world.Size.Y; ++pos.Y)
+            {
+                center.Z = pos.Y;
+                nw.Z = pos.Y - 0.5f;
+                ne.Z = pos.Y - 0.5f;
+                sw.Z = pos.Y + 0.5f;
+                se.Z = pos.Y + 0.5f;
+
+                for (pos.X = 0; pos.X < DssRef.world.Size.X; ++pos.X)
+                {
+                    Tile tile = DssRef.world.tileGrid.Get(pos);
+                    if (tile.heightLevel != Height.DeepWaterHeight)
+                    {
+                        Color terrainCol = tile.BiomColor();//DssRef.map.bioms.bioms[(int)tile.biom].Color(tile).Color;
+                        //Tile.TerrainTypes[tile.biom, tile.heightLevel].color;
+
+                        center.X = pos.X;
+                        nw.X = pos.X - 0.5f;
+                        ne.X = pos.X + 0.5f;
+                        sw.X = pos.X - 0.5f;
+                        se.X = pos.X + 0.5f;
+
+                        //Height
+                        center.Y = tile.GroundY();
+                        nw.Y = center.Y;
+                        ne.Y = center.Y;
+                        sw.Y = center.Y;
+                        se.Y = center.Y;
+
+                        for (int i = 0; i < IntVector2.Dir4Array.Length; ++i)
+                        {
+                            edge4Dir[i] =  DssRef.world.GetTileSafe(pos + IntVector2.Dir4Array[i], out Tile n) && tile.heightLevel > n.heightLevel;
+                        }
+
+                        Sprite imgCoords = topTex;
+
+                        Vector3[] topVertices = new Vector3[]
+                            {
+                                nw,ne,sw,se,
+                            };
+
+                        //move out the texture source 
+                        imgCoords.UpdateSourcePolygon(false);
+
+                        if (tile.heightLevel > Height.LowerWaterHeight)
+                        {
+                            float h = Bound.Max(TileSideHeight, center.Y + 0.5f); 
+
+                            if (edge4Dir[3]) //west
+                            {
+                                polygons.Add(side(nw, sw, sideTex, ColorExt.ChangeBrighness(terrainCol, -5), h));
+                            }
+                            if (edge4Dir[1]) //east
+                            {
+                                polygons.Add(side(se, ne, sideTex, ColorExt.ChangeBrighness(terrainCol, -5), h));
+                            }
+                            if (edge4Dir[2]) //south
+                            {
+                                polygons.Add(side(sw, se, sideTex, ColorExt.ChangeBrighness(terrainCol, -10), h));
+                            }
+                        }
+
+                        polygons.Add(new Graphics.PolygonColor(
+                            topVertices,
+                            imgCoords, terrainCol));
+
+
+                    }
+                }
+            }
+
+            //polygons.AddRange(billboards);
+
+            return polygons;
+
+        }
+
+        void createModel(List<Graphics.PolygonColor> polygons)
+        {
+            heightMapModel?.DeleteMe();
+            heightMapModel = new Graphics.GeneratedObjColor(new Graphics.PolygonsAndTrianglesColor(
+                polygons, null), LoadedTexture.SpriteSheet, false);
+            heightMapModel.AddToRender(DrawGame.MidLayer);
+        }
+
+
+        const float TileSideHeight = 1.5f;
+       
+        Graphics.PolygonColor side(Vector3 v1, Vector3 v2, Sprite sideTex, Color col, float height)
+        {
+            
+            Vector3 sw = v1;
+            sw.Y -= height;
+
+            Vector3 se = v2;
+            se.Y -= height;
+
+
+            return new Graphics.PolygonColor(
+                new Vector3[]
+                {
+                    v1, v2,  sw,se,
+                },
+                sideTex, col);
+        }
+
+        public void runAsyncTask()
+        {
+            if (state_Processing_Sych_Complete == 2 && DssRef.world.BordersUpdated)
+            {
+                state_Processing_Sych_Complete = 0;
+
+                borders?.quedEvent();
+                if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
+                {
+                    factionsMap.asyncTask();
+                }
+                state_Processing_Sych_Complete = 1;
+            }
+        }
+        public void HalfSecondUpdate()
+        {
+            if (DssLib.UpdateBorders && 
+                state_Processing_Sych_Complete == 1)
+            {
+                DssRef.world.BordersUpdated = false;
+                borders?.SetNewModel();
+                //factionsMap.syncTask();
+
+                state_Processing_Sych_Complete = 2;
+            }
+
+            unitMiniModels.update();
+        }
+        protected override Texture2D[] WaterTex()
+        {
+            return DssRef.models.seaTextures;
+        }
+
     }
 }

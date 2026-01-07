@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DataStream;
 using VikingEngine.Engine;
 using VikingEngine.PJ;
 
@@ -14,8 +15,10 @@ namespace VikingEngine.Sound
 {
     static class SoundStackManager
     {
-        const float StackTimeRamgeMs = 300;
-        const int MaxSoundStack = 2;
+        static TimeStamp NextRareSound = new TimeStamp();
+
+        const float StackTimeRamgeMs = 30;
+        const int MaxSoundStack = 6;
 
         static float time = 0;
         static int stack = 0;
@@ -34,14 +37,21 @@ namespace VikingEngine.Sound
         { 
             return stack++ <= MaxSoundStack;
         }
+
+        public static bool RareAvailable()
+        {
+            if (NextRareSound.TimeOut())
+            {
+                NextRareSound.setTimeFromNow(Ref.peRnd.Float(2, 4));
+                return true;
+            }
+            return false;
+        }
     }
 
 
     abstract class SoundContainerBase
     {
-        
-        
-        
         protected float volume = 1;
         protected float randomPitch = 0;
         protected float pitchAdd = 0;
@@ -52,10 +62,19 @@ namespace VikingEngine.Sound
         {
             Play(Pan.Center);
         }
+
+        public void PlayDelayed(float milliseconds)
+        {
+            new Timer.TimedAction1ArgTrigger<Pan>(Play, Pan.Center, milliseconds);
+        }
+
         public void Play(Vector3 position)
         {
-            if (SoundStackManager.Available())
+            if (SoundManager.SoundInitializeSuccess && SoundStackManager.Available())
             {
+                if (Ref.draw.ActivePlayerScreens.Count == 0)
+                    return;
+
                 FindMinValue distanceFinder = new FindMinValue(true);
 
                 for (int i = 0; i < Ref.draw.ActivePlayerScreens.Count; i++)
@@ -79,28 +98,31 @@ namespace VikingEngine.Sound
                     dir.Add(cam.TiltX - MathHelper.PiOver2);
                     Vector2 direction = dir.Direction(diff.Length());
 
-                    float pan = direction.X / MaxSoundDist;
+                    float pan = Bound.Set(direction.X / MaxSoundDist, -1, 1) * Ref.gamesett.reversedStereoValue;
 
                     float pitch = pitchAdd;
                     if (randomPitch != 0)
                     {
-                        pitch = Bound.Set(pitch + Ref.rnd.Plus_MinusF(randomPitch), -1, 1);
+                        pitch = Bound.Set(pitch + Ref.peRnd.Plus_MinusF(randomPitch), -1, 1);
                     }
 
-                    File().Play(Bound.Max(outvolume * Engine.Sound.SoundVolume, 1), pitch, pan);
+                    File().Play(Bound.Max(outvolume * Ref.gamesett.SoundVol(), 1), pitch, pan);
                 }
             }
         }
         
         public void Play(Pan pan)
         {
-            float pitch = pitchAdd;
-            if (randomPitch != 0)
+            if (SoundManager.SoundInitializeSuccess)
             {
-                pitch = Bound.Set(pitch + Ref.rnd.Plus_MinusF(randomPitch), -1, 1);
-            }
+                float pitch = pitchAdd;
+                if (randomPitch != 0)
+                {
+                    pitch = Bound.Set(pitch + Ref.peRnd.Plus_MinusF(randomPitch), -1, 1);
+                }
 
-            File().Play(Bound.Max(volume * Engine.Sound.SoundVolume, 1), pitch, pan.Value);
+                File().Play(Bound.Max(volume * Ref.gamesett.SoundVol(), 1), pitch, pan.Value);
+            }
         }
     }
 
@@ -110,10 +132,13 @@ namespace VikingEngine.Sound
 
         public SoundContainerSingle(string filePath, float volume = 1, float randomPitch = 0, float pitchAdd = 0)
         {
-            file = LoadContent.Content.Load<SoundEffect>(filePath);
-            this.volume = volume;
-            this.randomPitch = randomPitch;
-            this.pitchAdd = pitchAdd;
+            if (SoundManager.SoundInitializeSuccess)
+            {
+                file = LoadContent.Content.Load<SoundEffect>(filePath);
+                this.volume = volume;
+                this.randomPitch = randomPitch;
+                this.pitchAdd = pitchAdd;
+            }
         }
 
         protected override SoundEffect File()
@@ -128,19 +153,114 @@ namespace VikingEngine.Sound
 
         public SoundContainerMultiple(string[] filePath, float volume = 1, float randomPitch = 0, float pitchAdd = 0)
         {
-            files = new SoundEffect[filePath.Length];
-            for (int i = 0; i < filePath.Length; i++)
+            if (SoundManager.SoundInitializeSuccess)
             {
-                files[i] = LoadContent.Content.Load<SoundEffect>(filePath[i]);
+                files = new SoundEffect[filePath.Length];
+                for (int i = 0; i < filePath.Length; i++)
+                {
+                    files[i] = LoadContent.Content.Load<SoundEffect>(filePath[i]);
+                }
+                this.volume = volume;
+                this.randomPitch = randomPitch;
+                this.pitchAdd = pitchAdd;
             }
-            this.volume = volume;
-            this.randomPitch = randomPitch;
-            this.pitchAdd = pitchAdd;
         }
 
         protected override SoundEffect File()
         {
-            return files[Ref.rnd.Int(files.Length)];
+            return files[Ref.peRnd.Int(files.Length)];
         }
+    }
+
+    struct LoopingSoundData
+    { 
+        public string filePath;
+        public float basevolume;
+
+        public LoopingSoundData(string filePath, float basevolume = 1f)
+        {
+            this.filePath = filePath;
+            this.basevolume = basevolume;
+        }
+    }
+
+    class LoopingSound
+    {
+        SoundEffect file;
+        SoundEffectInstance ins;
+        float basevolume = 1f;
+        float volume = 1f;
+        public void Play()
+        {
+            if (SoundManager.SoundInitializeSuccess && volume > 0)
+            {
+                ins = file.CreateInstance();
+                ins.IsLooped = true;
+                ins.Volume = Bound.Max(Ref.gamesett.AmbientVol() * basevolume * volume, 1f);
+                ins.Play();
+            }
+        }
+
+        public void Stop()
+        {
+            ins?.Stop();
+        }
+
+        public void StopAndUnload()
+        {
+            if (ins != null)
+            {
+                ins.Stop();
+                ins.Dispose();
+                ins = null;
+            }
+        }
+
+        public void Load(LoopingSoundData data)
+        {
+            if (SoundManager.SoundInitializeSuccess)
+            {
+                basevolume = data.basevolume;
+                file = LoadContent.Content.Load<SoundEffect>(data.filePath);
+            }
+        }
+
+        public void setVolume(float volume)
+        {
+            this.volume = volume;
+            if (ins == null)
+            {
+                if (volume > 0)
+                {
+                    Play();
+                }
+            }
+            else
+            {
+                if (volume <= 0)
+                {
+                    if (ins.State == SoundState.Playing)
+                    {
+                        ins.Stop();
+                        ins.Dispose();
+                        ins = null;
+                    }
+                }
+                else
+                {
+                    ins.Volume = Bound.Max( Ref.gamesett.AmbientVol() * basevolume * volume, 1f);
+                    
+                }
+            }
+        }
+
+        public void fadeInSound(float addPerSec, float fullVolume)
+        {
+            if (volume != fullVolume)
+            {
+                setVolume(Bound.Max(volume + addPerSec * Ref.DeltaTimeSec, fullVolume));
+            } 
+        }
+
     }
 }

@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.EngineSpace;
 
 namespace VikingEngine.DSSWars.GameObject
 {
-    partial class AbsMapObject
+    partial class AbsArmy
     {
-        protected List<WorkerStatus> workerStatuses = new List<WorkerStatus>();
+        protected StructList<WorkerStatus> workerStatuses = new StructList<WorkerStatus>(16);
         public List<WorkerUnit> workerUnits = null;
 
         protected void updateWorkerUnits()
@@ -22,21 +23,47 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 var city = GetCity();
-                foreach (var w in workerUnits)
+                for (int i = workerUnits.Count -1; i>=0;--i)//each (var w in workerUnits)
                 {
-                    w.update(city);
+                    if (workerUnits[i].update(city))
+                    { 
+                        workerUnits.RemoveAt(i);
+                    }
                 }
             }
         }
 
+        //public void setTimeOnAllWorkers()
+        //{
+        //    for (int i = 0; i < workerStatuses.Count; ++i)
+        //    {
+        //        var status = workerStatuses[i];
+        //        status.processTimeStartStampSec = Ref.TotalGameTimeSec;
+
+        //        workerStatuses[i] = status;
+        //    }
+        //}
+
         void addMissingWorkerUnits()
         {
-            for (int i = workerUnits.Count; i < workerStatuses.Count; i++)
+            lock (workerStatuses.array)
             {
-                if (workerStatuses[i].work != WorkType.IsDeleted)
+                for (int i = workerUnits.Count; i < workerStatuses.Count; i++)
                 {
-                    workerUnits.Add(new WorkerUnit(this, workerStatuses[i], i));
+                    if (workerStatuses[i].work != WorkType.IsDeleted)
+                    {
+                        workerUnits.Add(new WorkerUnit(this, workerStatuses[i], i));
+                    }
                 }
+            }
+        }
+
+        public void setTimeOnAllWorkers()
+        {
+            for (int i = 0; i < workerStatuses.Count; ++i)
+            {
+                ref var status = ref workerStatuses.array[i];
+                status.processTimeStartStampSec = Ref.TotalGameTimeSec;
             }
         }
 
@@ -66,12 +93,18 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void getWorkerStatus(int index, ref WorkerStatus status)
         {
-            status = workerStatuses[index];
+            lock (workerStatuses.array)
+            {
+                status = workerStatuses[index];
+            }
         }
 
         public void setWorkerStatus(int index, ref WorkerStatus status)
         {
-            workerStatuses[index] = status;
+            lock (workerStatuses.array)
+            {
+                workerStatuses[index] = status;
+            }
         }
     }
 }

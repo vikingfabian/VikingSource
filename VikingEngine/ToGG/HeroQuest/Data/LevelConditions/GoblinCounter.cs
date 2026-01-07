@@ -67,13 +67,13 @@ namespace VikingEngine.ToGG.HeroQuest.Data.LevelConditions
             flavorText(rb, "The king has lended you soldiers from his personal guard - use them well.");
 
             missionObjectivesTitle(rb);
-            rb.Add(new RichBoxText("Defend the barracks for " + Turns.ToString() + " turns"));
-            rb.Add(new RichBoxNewLine());
+            rb.Add(new RbText("Defend the barracks for " + Turns.ToString() + " turns"));
+            rb.Add(new RbNewLine());
 
             specialConditionsTitle(rb);
-            rb.Add(new RichBoxImage(SpriteName.DoomSkull));
-            rb.Add(new RichBoxText(": A monster may attack one of the barracks"));
-            rb.Add(new RichBoxNewLine());
+            rb.Add(new RbImage(SpriteName.DoomSkull));
+            rb.Add(new RbText(": A monster may attack one of the barracks"));
+            rb.Add(new RbNewLine());
 
             //turns
             turnLimitText(rb);

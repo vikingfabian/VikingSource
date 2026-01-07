@@ -10,7 +10,7 @@ namespace VikingEngine.LootFest.GO.Characters
     class OrcKnight: AbsOrc
     {
         public OrcKnight(GoArgs args)
-            : base(args, VoxelModelName.orc_knight, OrcScaleRange)
+            : base(args, VoxelModelName.NUM_NON, OrcScaleRange)
         {
             shieldWalkDist = 8;
             aggresivity = HumanoidEnemyAgressivity.Agressive_3;
@@ -19,7 +19,7 @@ namespace VikingEngine.LootFest.GO.Characters
 
             const float Angle = -0.2f;
             handWeapon = new Gadgets.HumanoidEnemyHandWeapon(
-                VoxelModelName.orc_handspear,
+                VoxelModelName.NUM_NON,
                 new HandWeaponAttackSettings(
                     GameObjectType.OrcKnightAttack, 0.8f, 0.3f,
                     new Vector3(2, 2, 8),//bounds
@@ -34,7 +34,7 @@ namespace VikingEngine.LootFest.GO.Characters
                 new Effects.BouncingBlockColors(Data.MaterialType.gray_60, Data.MaterialType.gray_80)
                 );
 
-            shield = new Gadgets.HumanoidEnemyShield(VoxelModelName.orc_steel_shield, 3f,
+            shield = new Gadgets.HumanoidEnemyShield(VoxelModelName.NUM_NON, 3f,
                 new Vector3(-0.16f, 0.32f, 0.18f) * modelScale, //posOffset
                 this, new Effects.BouncingBlockColors(
                     Data.MaterialType.gray_75,

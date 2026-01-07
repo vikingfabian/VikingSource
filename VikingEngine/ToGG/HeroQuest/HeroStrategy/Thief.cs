@@ -115,9 +115,9 @@ namespace VikingEngine.ToGG.HeroQuest.HeroStrategy
 
         public override void specialRequirements(AbsUnit unit, List<AbsRichBoxMember> richbox)
         {
-            richbox.Add(new RichBoxNewLine(false));
-            richbox.Add(new RichBoxImage(SpriteName.cmdThiefDaggersTier1));
-            richbox.Add(new RichBoxText(Gadgets.AbsWeapon.MixedMeleeProjecSpriteName, 
+            richbox.Add(new RbNewLine(false));
+            richbox.Add(new RbImage(SpriteName.cmdThiefDaggersTier1));
+            richbox.Add(new RbText(Gadgets.AbsWeapon.MixedMeleeProjecSpriteName, 
                 hasWeaponRequirement(unit) ? Color.White : HudLib.UnavailableRedCol));            
         }
 

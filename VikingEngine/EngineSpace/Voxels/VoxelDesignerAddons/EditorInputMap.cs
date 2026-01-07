@@ -36,7 +36,7 @@ namespace VikingEngine.Voxels
 
         public IButtonMap keyboardYmovementToggel = new KeyboardButtonMap(Keys.LeftShift);
         public IButtonMap mouseUseButton = new MouseButtonMap(MouseButton.Left);
-        public IButtonMap mouseToolMenu = new KeyboardButtonMap(Keys.LeftControl); //
+        //public IButtonMap mouseToolMenu = new KeyboardButtonMap(Keys.LeftControl); //
 
 
         float movePencilTime = 0;
@@ -68,8 +68,9 @@ namespace VikingEngine.Voxels
             }
         }
 
-        public Vector3 pencilMovement(int playerIndex, float settingsMoveSpeed)
+        public Vector3 pencilMovement(int playerIndex, float settingsMoveSpeed, out bool yMoveToggle)
         {
+            yMoveToggle = false;
             if (toggleCameraMode.IsDown)
             {
                 return Vector3.Zero;
@@ -106,6 +107,7 @@ namespace VikingEngine.Voxels
 
             if (keyboardYmovementToggel.IsDown)
             {
+                yMoveToggle = true;
                 result.Y -= result.Z;
                 result.Z = 0;
             }
@@ -204,22 +206,21 @@ namespace VikingEngine.Voxels
         {
             useMouseInput = true;
 
-            moveXZ = new AlternativeDirectionalMap(Input.PlayerInputMap.arrowKeys, Input.PlayerInputMap.WASD);
+            moveXZ = Input.PlayerInputMap.arrowKeys;
             cameraXMoveY = null;//cameraXMoveY = directionalMappings[(int)DirActionType.GamePlayerMovement];
-            toggleCameraMode = new MouseButtonMap(MouseButton.Right);
-            cameraZoom =
-                new DirectionalButtonsMap(new KeyboardButtonMap(Keys.OemPlus), new KeyboardButtonMap(Keys.OemMinus), new NoButtonMap(), new NoButtonMap());
+            toggleCameraMode = new KeyboardButtonMap(Keys.Space);
+            cameraZoom = new DirectionalButtonsMap(new KeyboardButtonMap(Keys.OemPlus), new KeyboardButtonMap(Keys.OemMinus), new NoButtonMap(), new NoButtonMap());
 
-            draw = new NoButtonMap();//new AlternativeButtonsMap(new KeyboardButtonMap(Keys.Space), new MouseButtonMap(MouseButton.Left));
-            erase = new NoButtonMap();//new AlternativeButtonsMap(new KeyboardButtonMap(Keys.LeftAlt), new MouseButtonMap(MouseButton.Right));
-            select = new NoButtonMap();//new AlternativeButtonsMap(new KeyboardButtonMap(Keys.LeftControl), new MouseButtonMap(MouseButton.Middle));
+            draw = new MouseButtonMap(MouseButton.Left);//new AlternativeButtonsMap(new KeyboardButtonMap(Keys.Space), new MouseButtonMap(MouseButton.Left));
+            erase = new MouseButtonMap(MouseButton.Right);//new AlternativeButtonsMap(new KeyboardButtonMap(Keys.LeftAlt), new MouseButtonMap(MouseButton.Right));
+            select = new KeyboardButtonMap(Keys.LeftControl);
             colorPick = new KeyboardButtonMap(Keys.LeftAlt);
-            cancel = new KeyboardButtonMap(Keys.Delete);
-            mirrorX = new KeyboardButtonMap(Keys.D1);
-            mirrorY = new KeyboardButtonMap(Keys.D2);
+            cancel = new KeyboardButtonMap(Keys.Back);
+            mirrorX = new KeyboardButtonMap(Keys.X);
+            mirrorY = new KeyboardButtonMap(Keys.Y);
             undo = new KeyboardButtonMap(Keys.Z);
-            previous = new KeyboardButtonMap(Keys.PageUp);
-            next = new KeyboardButtonMap(Keys.PageDown);
+            previous = new KeyboardButtonMap(Keys.A);
+            next = new KeyboardButtonMap(Keys.D);
 
             OpenClose = new KeyboardButtonMap(Keys.Tab);
         }

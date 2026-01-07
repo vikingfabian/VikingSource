@@ -31,7 +31,7 @@ namespace VikingEngine
 
         virtual public void Time_Update(float time){ }
         
-        virtual public void TextInputEvent(int playerIndex, string input, int link){ }
+        virtual public void TextInputEvent(string input, object tag){ }
         virtual public void TextInputCancelEvent(int playerIndex) { }
         virtual public void BeginInputDialogueEvent(VikingEngine.Engine.KeyboardInputValues keyInputValues) { }
         

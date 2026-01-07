@@ -115,8 +115,8 @@ namespace VikingEngine.ToGG.HeroQuest.HeroStrategy
         public override List<AbsRichBoxMember> actionTargetToolTip()
         {
             return new List<AbsRichBoxMember>{
-                new RichBoxImage(SpriteName.cmdFlying),
-                new RichBoxText("Jump here")
+                new RbImage(SpriteName.cmdFlying),
+                new RbText("Jump here")
             };
         }
 

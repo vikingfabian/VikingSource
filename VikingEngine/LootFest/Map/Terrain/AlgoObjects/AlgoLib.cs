@@ -12,8 +12,8 @@ namespace VikingEngine.LootFest.Map.Terrain.AlgoObjects
     {
         List<bool> heightSteps;
         List<bool> lengthSteps;
-        CirkleCounterUp currenHstep;
-        CirkleCounterUp currenLstep;
+        CircleCounterUp currenHstep;
+        CircleCounterUp currenLstep;
         int sideBordersHeight;
         int sideBordersLength;
 
@@ -27,8 +27,8 @@ namespace VikingEngine.LootFest.Map.Terrain.AlgoObjects
             this.sideBordersHeight = sideBordersHeight;
             this.sideBordersLength = sideBordersLength;
 
-            currenHstep = new CirkleCounterUp(heightSteps.Count - 1);
-            currenLstep = new CirkleCounterUp(lengthSteps.Count - 1);
+            currenHstep = new CircleCounterUp(heightSteps.Count - 1);
+            currenLstep = new CircleCounterUp(lengthSteps.Count - 1);
 
             heightLength = 0;
             lengthLength = 0;

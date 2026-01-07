@@ -140,22 +140,22 @@ namespace VikingEngine.ToGG.ToggEngine.GO
         virtual public List<AbsRichBoxMember> interactToolTip()
         {
             var members = new List<AbsRichBoxMember>{
-                new RichBoxBeginTitle(),
-                new RichBoxImage(InteractSettings.icon),
-                new RichBoxText(InteractSettings.text),
+                new RbBeginTitle(),
+                new RbImage(InteractSettings.icon),
+                new RbText(InteractSettings.text),
             };
 
             if (InteractSettings.addedDesc != null)
             {
-                members.Add(new RichBoxNewLine(true));
+                members.Add(new RbNewLine(true));
                 members.AddRange(InteractSettings.addedDesc);
             }
 
             if (InteractSettings.willEndMovement)
             {
-                members.Add(new RichBoxNewLine(true));
-                members.Add(new RichBoxImage(SpriteName.cmdNoMove));
-                members.Add(new RichBoxText("Will end movement"));
+                members.Add(new RbNewLine(true));
+                members.Add(new RbImage(SpriteName.cmdNoMove));
+                members.Add(new RbText("Will end movement"));
             }
             return members;
         }

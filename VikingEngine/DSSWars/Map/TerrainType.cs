@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.Map
 {
-
-   
-
     enum TerrainMainType
     {
         DefaultLand,
@@ -21,6 +18,7 @@ namespace VikingEngine.DSSWars.Map
         Building,
         Decor,
         Wall,
+        Road,
         NUM
     }
 
@@ -41,6 +39,12 @@ namespace VikingEngine.DSSWars.Map
         BogIron,
         HempFarm,
         RapeSeedFarm,
+
+        WheatFarmUpgraded,
+        LinenFarmUpgraded,
+        HempFarmUpgraded,
+        RapeSeedFarmUpgraded,
+
         NUM_NONE
     }
 
@@ -56,19 +60,20 @@ namespace VikingEngine.DSSWars.Map
     }
 
     enum TerrainBuildingType
-    {
-        _RESERVE1,//DirtWall,
-        _RESERVE2,//DirtTower,
-        _RESERVE3,//WoodWall,
-        _RESERVE4,//WoodTower,
-        _RESERVE5,//StoneWall,
-        _RESERVE6,//StoneTower,
-        StoneHall,
-        SmallHouse,
-        BigHouse,
-        Square,
-        CobbleStones,
+    {   
+        CityHall_Village,
+        CityHall_Town,
+        CityHall_Capital,
+
         WorkerHut,
+        WorkerHutLarge,
+
+        ServiceMenHouse_small,
+        ServiceMenHouse_Large,
+
+        GuardHouse_Small,
+        GuardHouse_Large,
+
         Brewery,
         Work_Cook,
         Work_Bench,
@@ -77,14 +82,50 @@ namespace VikingEngine.DSSWars.Map
         PigPen,
         HenPen,
         Tavern,
+        
         Postal,
+        PostalLevel2,
+        PostalLevel3,
+
         Recruitment,
-        Barracks,
+        RecruitmentLevel2,
+        RecruitmentLevel3,
+
+        GoldDeliveryLevel1,
+        GoldDeliveryLevel2,
+        GoldDeliveryLevel3,
+
+        SoldierBarracks,
+        ArcherBarracks,
+        WarmachineBarracks,
+        GunBarracks,
+        CannonBarracks,
+        KnightsBarracks,
+
         Carpenter,
         Nobelhouse,
         Storehouse,
         Bank,
+        CoinMinter,
+
         Logistics,
+        Smelter,
+        WoodCutter,
+        StoneCutter,
+        Embassy,
+        WaterResovoir,
+        
+        Foundry,
+        Armory,
+        Chemist,
+        Gunmaker,
+        School,
+        ResearchCenter,
+        BookPress,
+        ImmigrationTent,
+
+        CityHall_Unclaimed,
+        CityHall_Tent,
         NUM_NONE
     }
 
@@ -96,15 +137,52 @@ namespace VikingEngine.DSSWars.Map
         WoodTower,
         StoneWall,
         StoneTower,
-
+        StoneWallGreen,
+        StoneWallBlueRoof,
+        StoneWallWoodHouse,
+        StoneGate,
+        StoneHouse,
+        Palisade,
         NUM_NONE
     }
 
     enum TerrainDecorType
     {
+        Square,
+        CobbleStones,
+
         Pavement,
         PavementFlower,
         Statue_ThePlayer,
+        PavementLamp,
+        PavemenFountain,
+        PavementRectFlower,
+        GardenFourBushes,
+        GardenLongTree,
+        GardenWalledBush,
+        GardenGrass,
+        GardenBird,
+        GardenMemoryStone,
+        Statue_Leader,
+        Statue_Lion,
+        Statue_Horse,
+        Statue_Pillar,
+
+        FlagPole_LongBanner,
+        FlagPole_Banner,
+        FlagPole_SlimBanner,
+
+        FlagPole_Flag,
+        FlagPole_FlagRound,
+        FlagPole_FlagLarge,
+        FlagPole_Streamer,
+        FlagPole_Triangle,
+        NUM_NONE
+    }
+
+    enum TerrainRoadType
+    {
+        DirtRoad,
         NUM_NONE
     }
 
@@ -115,10 +193,12 @@ namespace VikingEngine.DSSWars.Map
         StoneBlock,
         IronOre,
         TinOre,
-        CupperOre,
+        CopperOre,
         SilverOre,
         GoldOre,
-        MithrilOre,
+        LeadOre,
+        Mithril,
+        Sulfur,
     }
 
     enum TerrainSeaType
@@ -132,5 +212,4 @@ namespace VikingEngine.DSSWars.Map
         Flat,
         Mountain,
     }
-
 }

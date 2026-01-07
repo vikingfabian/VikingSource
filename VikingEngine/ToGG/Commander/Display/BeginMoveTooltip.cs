@@ -18,8 +18,8 @@ namespace VikingEngine.ToGG.Commander.Display
             }
             else
             {
-                members.Add(new RichBoxBeginTitle());
-                members.Add(new RichBoxText("Out of movement", HudLib.UnavailableRedCol));
+                members.Add(new RbBeginTitle());
+                members.Add(new RbText("Out of movement", HudLib.UnavailableRedCol));
             }
 
             AddRichBox(members);

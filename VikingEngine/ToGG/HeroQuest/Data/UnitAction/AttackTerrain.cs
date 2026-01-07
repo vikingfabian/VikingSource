@@ -61,9 +61,9 @@ namespace VikingEngine.ToGG.HeroQuest.Data.UnitAction
         {
             return new List<AbsRichBoxMember>
             {
-                new RichBoxBeginTitle(),
-                new RichBoxImage(SpriteName.cmdUnitMeleeGui),
-                new RichBoxText(LanguageLib.AttackTerrain),
+                new RbBeginTitle(),
+                new RbImage(SpriteName.cmdUnitMeleeGui),
+                new RbText(LanguageLib.AttackTerrain),
             };
         }
         public override bool InstantAction => false;

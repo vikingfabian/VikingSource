@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Map
@@ -14,22 +15,20 @@ namespace VikingEngine.DSSWars.Map
         public Grid2D<UnitCollArea> grid;
 
         public List<GameObject.SoldierGroup> groups_nearUpdate = new List<GameObject.SoldierGroup>(32);
+        public List<City> cities_nearUpdate = new List<City>(4);
         public List<GameObject.AbsGroup> groupsAndCities_nearUpdate = new List<GameObject.AbsGroup>(32);
-        public List<GameObject.Army> armies_nearUpdate = new List<GameObject.Army>(8);
+        public List<GameObject.AbsArmy> armies_nearUpdate = new List<GameObject.AbsArmy>(8);
         public List<GameObject.AbsGroup> friendlyGroupsAndCities_nearUpdate = new List<GameObject.AbsGroup>(8);
 
         public List<GameObject.City> cities_aiUpdate = new List<GameObject.City>(8);
-        public List<GameObject.Army> armies_aiUpdate = new List<GameObject.Army>(8);
+        public List<GameObject.AbsArmy> armies_aiUpdate = new List<GameObject.AbsArmy>(8);
 
         public List<GameObject.AbsMapObject> mapObjects_aiUpdate = new List<GameObject.AbsMapObject>(8);
 
         List<AbsMapObject> playerNearMapObjects = new List<AbsMapObject>();
         List<AbsSoldierUnit> playerNearDetailUnits = new List<AbsSoldierUnit>();
+        List<SoldierGroup> playerNearGroups = new List<SoldierGroup>();
 
-        
-
-
-        //Dictionary<int, float> cityDominationStrength = new Dictionary<int, float>();
 
         public UnitCollAreaGrid(IntVector2 worldSz)
         {
@@ -47,8 +46,6 @@ namespace VikingEngine.DSSWars.Map
             {
                 grid.LoopValueSet(new UnitCollArea());
             }
-
-            //cityGrid = new Grid2D<GameObject.City>(grid.Size);
         }
 
         public void asynchUpdate()
@@ -88,6 +85,20 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
 
+            foreach (var city in DssRef.world.cities)
+            {
+                var groups = city.groups.counter();
+                while (groups.Next())
+                {
+                    IntVector2 area = groups.sel.tilePos / UnitGridSquareWidth;
+                    UnitCollArea collArea;
+                    if (grid.TryGet(area, out collArea))
+                    {
+                        collArea.processAdd(groups.sel);
+                    }
+                }
+            }
+
             //MOVE POINTERS
             for (int y = 0; y < grid.Size.Y; ++y)
             {
@@ -98,72 +109,109 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        IntVector2 previousBattleGroupCheckTilePos = IntVector2.NegativeOne;
-        List<AbsMapObject> battleGroupNearMapObjects = new List<AbsMapObject>();
+        //IntVector2 previousBattleGroupCheckTilePos = IntVector2.NegativeOne;
+        //List<AbsMapObject> battleGroupNearMapObjects = new List<AbsMapObject>();
 
-        public List<AbsMapObject> BattleGroupNearMapObjects(IntVector2 tilePos, List<Faction> factions)
+        //public List<AbsMapObject> BattleGroupNearMapObjects(IntVector2 tilePos, List<Faction> factions)
+        //{
+        //    battleGroupNearMapObjects.Clear();
+
+        //    if (tilePos != previousBattleGroupCheckTilePos)
+        //    {
+        //        previousBattleGroupCheckTilePos = tilePos;
+
+        //        IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+
+        //        UnitCollArea area;
+
+        //        for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
+        //        {
+        //            for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
+        //            {
+        //                if (grid.TryGet(x, y, out area))
+        //                {
+        //                    if (area.cities != null)
+        //                    {
+        //                        foreach (var m in area.cities)
+        //                        {
+        //                            if (m.battleGroup == null &&
+        //                                m.tilePos.SideLength(tilePos) <= DssLib.BattleChainConflictRadius &&
+        //                                factions.Contains(m.faction))
+        //                            {
+        //                                battleGroupNearMapObjects.Add(m);
+        //                            }
+        //                        }                                
+        //                    }
+
+        //                    lock (area.armies)
+        //                    {
+        //                        //var armies_sp = area.armies;
+        //                        if (area.armies != null)
+        //                        {
+        //                            foreach (var m in area.armies)
+        //                            {
+        //                                if (m.battleGroup == null &&
+        //                                    m.tilePos.SideLength(tilePos) <= DssLib.BattleChainConflictRadius &&
+        //                                    m.IdleObjetive() &&
+        //                                   factions.Contains(m.faction))
+        //                                {
+        //                                    battleGroupNearMapObjects.Add(m);
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                }
+
+        //            }
+        //        }
+        //    }
+
+        //    return battleGroupNearMapObjects;
+        //}
+        public List<AbsSoldierUnit> MapControlsNearDetailUnits(IntVector2 tilePos)
         {
-            battleGroupNearMapObjects.Clear();
-            
-            if (tilePos != previousBattleGroupCheckTilePos)
+            playerNearDetailUnits.Clear();
+
+            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+            UnitCollArea area;
+
+            for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
             {
-                previousBattleGroupCheckTilePos = tilePos;
-
-                IntVector2 areaPos = tilePos / UnitGridSquareWidth;
-
-                UnitCollArea area;
-
-                for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
+                for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
                 {
-                    for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
+                    //if (x != areaPos.X || y != areaPos.Y)
                     {
                         if (grid.TryGet(x, y, out area))
                         {
-                            if (area.cities != null)
+                            //var groups_sp = area.groups;
+                            lock (area.groups)
                             {
-                                foreach (var m in area.cities)
-                                {
-                                    if (m.battleGroup == null &&
-                                        m.tilePos.SideLength(tilePos) <= DssLib.BattleChainConflictRadius &&
-                                        factions.Contains(m.faction))
+                                
+                                    for (int i = 0; i < area.groups.Count; ++i)
                                     {
-                                        battleGroupNearMapObjects.Add(m);
+                                        area.groups[i].soldiers?.toList(ref playerNearDetailUnits);
                                     }
-                                }                                
-                            }
-
-                            lock (area.armies)
-                            {
-                                //var armies_sp = area.armies;
-                                if (area.armies != null)
-                                {
-                                    foreach (var m in area.armies)
-                                    {
-                                        if (m.battleGroup == null &&
-                                            m.tilePos.SideLength(tilePos) <= DssLib.BattleChainConflictRadius &&
-                                            m.IdleObjetive() &&
-                                           factions.Contains(m.faction))
-                                        {
-                                            battleGroupNearMapObjects.Add(m);
-                                        }
-                                    }
-                                }
+                                
                             }
                         }
-                        
                     }
                 }
             }
 
-            return battleGroupNearMapObjects;
+            return playerNearDetailUnits;
         }
 
-        public List<AbsMapObject> MapControlsMultiselectMapObjects(IntVector2 tilePosStart, IntVector2 tilePosEnd, Faction faction)
+        public List<AbsMapObject> MapControlsMultiselectMapObjects(IntVector2 tilePosStart, IntVector2 tilePosEnd, int faction)
         {
+            //Debug.CrashIfThreaded();
             playerNearMapObjects.Clear();
 
             IntVector2 areaPosStart = tilePosStart / UnitGridSquareWidth;
             IntVector2 areaPosEnd = tilePosEnd / UnitGridSquareWidth;
+
+            areaPosStart -= IntVector2.One;
+            areaPosEnd += IntVector2.One;
+
 
             UnitCollArea area;
 
@@ -174,16 +222,14 @@ namespace VikingEngine.DSSWars.Map
                     if (grid.TryGet(x, y, out area))
                     {
                         lock (area.armies)
-                        {
-                            
-                                foreach (AbsMapObject obj in area.armies)
-                                {
-                                if (obj.faction == faction)
+                        {                            
+                            foreach (AbsMapObject obj in area.armies)
+                            {
+                                if (obj.factionIndex == faction)
                                 {
                                     playerNearMapObjects.Add(obj);
                                 }
-                                }
-                            
+                            }                            
                         }
                     }
                 }
@@ -193,61 +239,51 @@ namespace VikingEngine.DSSWars.Map
         }
 
 
-        public List<AbsMapObject> MapControlsWorkerCities(IntVector2 tilePos)
+        public bool PlayerInBattle(IntVector2 tilePos, int playerFaction)
         {
-            const int MinCityCount = 6;
-            UnitCollArea area;
+            //Debug.CrashIfThreaded();
+            //playerNearMapObjects.Clear();
+
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
-            playerNearMapObjects.Clear();
-            checkArea(areaPos); //adding center tile
+            UnitCollArea area;
 
-            int radius = 1;
-
-            while (playerNearMapObjects.Count < MinCityCount)
+            for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
             {
-                ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(areaPos, radius));
-                while (loop.Next())
+                for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
                 {
-                    checkArea(loop.Position);
-                }
+                    if (grid.TryGet(x, y, out area))
+                    {
+                        //foreach (var cityIx in area.cities)
+                        //{
+                        //    var city = DssRef.world.cities[area.cities[i]];
+                        //    if (city.detailObj.inBattle != null && city.faction == player)
+                        //    {
+                        //        return true;
+                        //    }
+                        //}
 
-                ++radius;
-            }
+                        lock (area.groups)
+                        {
+                            foreach (var group in area.groups)
+                            { 
+                                if (group.attackTarget_soldierGroupOrCity != null && group.factionIndex == playerFaction)
+                                {
+                                    return true;
+                                }
+                            }
 
-            //if (false)
-            //{
-            //    int find = 138;
-            //    //find specific city
-            //    for (int y = 0; y < grid.Size.Y; ++y)
-            //    {
-            //        for (int x = 0; x < grid.Size.X; ++x)
-            //        {
-            //            foreach (var c in grid.array[x, y].cities)
-            //            {
-            //                if (c.parentArrayIndex == find)
-            //                { 
-            //                    lib.DoNothing();
-            //                    break;
-            //                }
-            //            }
-                       
-            //        }
-            //    }
-            //}
+                        }
+                    }
 
-            return playerNearMapObjects;
-
-            void checkArea(IntVector2 pos)
-            {
-                if (grid.TryGet(pos, out area))
-                {
-                    playerNearMapObjects.AddRange(area.cities);
                 }
             }
+
+            return false;
         }
 
         public List<AbsMapObject> MapControlsNearMapObjects(IntVector2 tilePos, bool controller)
         {
+            //Debug.CrashIfThreaded();
             playerNearMapObjects.Clear();
 
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
@@ -255,17 +291,16 @@ namespace VikingEngine.DSSWars.Map
 
             if (grid.TryGet(areaPos.X, areaPos.Y, out area))
             {
-                if (area.cities != null)
+                for (int i = 0; i < area.cities.Count; ++i)//each (var cityIx in area.cities)
                 {
-                    playerNearMapObjects.AddRange(area.cities);
+                    playerNearMapObjects.Add(DssRef.world.cities[area.cities[i]]);
                 }
                 lock (area.armies)
                 {
                     //var armies_sp = area.armies;
-                    if (area.armies != null)
-                    {
+                    
                         playerNearMapObjects.AddRange(area.armies);
-                    }
+                    
                 }
             }
 
@@ -282,18 +317,17 @@ namespace VikingEngine.DSSWars.Map
                     {
                         if (grid.TryGet(x, y, out area))
                         {
-                            if (area.cities != null)
+                            for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
                             {
-                                playerNearMapObjects.AddRange(area.cities);
+                                playerNearMapObjects.Add(DssRef.world.cities[area.cities[i]]);
                             }
 
                             lock (area.armies)
                             {
                                 //var armies_sp = area.armies;
-                                if (area.armies != null)
-                                {
+                                
                                     playerNearMapObjects.AddRange(area.armies);
-                                }
+                                
                             }
                         }
                     }
@@ -305,28 +339,11 @@ namespace VikingEngine.DSSWars.Map
 
         public List<AbsMapObject> MapControlsNearMapObjects_Workers(IntVector2 tilePos, bool controller)
         {
+            //Debug.CrashIfThreaded();
             playerNearMapObjects.Clear();
 
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
             UnitCollArea area;
-
-            //if (grid.TryGet(areaPos.X, areaPos.Y, out area))
-            //{
-            //    if (area.cities != null)
-            //    {
-            //        playerNearMapObjects.AddRange(area.cities);
-            //    }
-            //    var armies_sp = area.armies;
-            //    if (armies_sp != null)
-            //    {
-            //        playerNearMapObjects.AddRange(armies_sp);
-            //    }
-            //}
-
-            //if (!controller && playerNearMapObjects.Count > 0)
-            //{
-            //    return playerNearMapObjects;
-            //}
 
             const int Radius = 3;
 
@@ -336,18 +353,22 @@ namespace VikingEngine.DSSWars.Map
                 {
                     //if (x != areaPos.X || y != areaPos.Y)
                     //{
-                        if (grid.TryGet(x, y, out area))
+                    if (grid.TryGet(x, y, out area))
+                    {
+
+                        for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
                         {
-                            if (area.cities != null)
-                            {
-                                playerNearMapObjects.AddRange(area.cities);
-                            }
+                            playerNearMapObjects.Add(DssRef.world.cities[area.cities[i]]);
+                        }
+                        lock (area.armies)
+                        {
                             var armies_sp = area.armies;
                             if (armies_sp != null)
                             {
                                 playerNearMapObjects.AddRange(armies_sp);
                             }
                         }
+                    }
                     //}
                 }
             }
@@ -355,247 +376,155 @@ namespace VikingEngine.DSSWars.Map
             return playerNearMapObjects;
         }
 
-        public List<AbsSoldierUnit> MapControlsNearDetailUnits(IntVector2 tilePos)
+        public List<SoldierGroup> MapControlsNearGroups_Rectangle(IntVector2 tilePosStart, IntVector2 tilePosEnd, Faction faction,
+            ScreenToSpaceRectangleBound rectangle)
         {
-            playerNearDetailUnits.Clear();
+            playerNearGroups.Clear();
 
-            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+            IntVector2 areaPosStart = tilePosStart / UnitGridSquareWidth;
+            IntVector2 areaPosEnd = tilePosEnd / UnitGridSquareWidth;
+
             UnitCollArea area;
+            areaPosStart.Add(-1);
+            areaPosEnd.Add(1);
 
-            //if (grid.TryGet(areaPos.X, areaPos.Y, out area))
-            //{
-            //    var groups_sp = area.groups;
-            //    if (groups_sp != null)
-            //    {
-            //        for (int i = 0; i < groups_sp.Count; ++i)
-            //        {
-            //            groups_sp[i].soldiers.toList(ref playerNearDetailUnits);
-            //        }
-            //    }
-            //}
-
-            //if (playerNearDetailUnits.Count > 0)
-            //{
-            //    return playerNearDetailUnits;
-            //}
-
-            for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
+            for (int y = areaPosStart.Y; y <= areaPosEnd.Y; ++y)
             {
-                for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
-                {
-                    //if (x != areaPos.X || y != areaPos.Y)
-                    {
-                        if (grid.TryGet(x, y, out area))
-                        {
-                            //var groups_sp = area.groups;
-                            lock (area.groups)
-                            {
-                                if (area.groups != null)
-                                {
-                                    for (int i = 0; i < area.groups.Count; ++i)
-                                    {
-                                        area.groups[i].soldiers.toList(ref playerNearDetailUnits);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return playerNearDetailUnits;
-        }
-
-
-        public List<GameObject.SoldierGroup> collectOpponentGroups(Faction faction, IntVector2 tilePos)
-        {
-            groups_nearUpdate.Clear();
-
-            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
-            UnitCollArea area;
-
-            for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
-            {
-                for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
+                for (int x = areaPosStart.X; x <= areaPosEnd.X; ++x)
                 {
                     if (grid.TryGet(x, y, out area))
                     {
                         //var groups_sp = area.groups;
                         lock (area.groups)
                         {
-                            if (area.groups != null)
+                            
+                                for (int i = 0; i < area.groups.Count; ++i)
+                                {
+                                    if (area.groups[i].GetFaction() == faction &&
+                                        area.groups[i].rectangleCollision(rectangle))
+                                    {
+                                        playerNearGroups.Add(area.groups[i]);
+                                    }
+                                }
+                            
+                        }
+                    }
+                }
+            }
+
+            return playerNearGroups;
+        }
+
+
+        public Faction cityCaptureCheck(City city, int radius)
+        {
+            IntVector2 areaStart = (city.tilePos - radius) / UnitGridSquareWidth;
+            IntVector2 areaEnd = (city.tilePos + radius) / UnitGridSquareWidth;
+            
+            Dictionary<int, float> faction_power = new Dictionary<int, float>();
+            //faction_power.Add(city.faction.parentArrayIndex, 0);
+
+            for (int arY = areaStart.Y; arY <= areaEnd.Y; ++arY)
+            {
+                for (int arX = areaStart.X; arX <= areaEnd.X; ++arX)
+                {
+                    if (grid.TryGet(arX, arY, out UnitCollArea area))
+                    {
+                        lock (area.groups)
+                        {
+                            
+                                foreach (var m in area.groups)
+                                {
+                                    if (m.tilePos.SideLength(city.tilePos) <= radius)
+                                    {
+                                        if (city.factionIndex == m.factionIndex ||
+                                            DssRef.diplomacy.InWar(city.factionIndex, m.factionIndex))
+                                        {
+                                            if (faction_power.TryGetValue(m.factionIndex, out float strength))
+                                            {
+                                                faction_power[m.factionIndex] = strength + m.strengthValue();
+                                            }
+                                            else
+                                            {
+                                                faction_power.Add(m.factionIndex, m.strengthValue());
+                                            }
+                                        }
+                                    }
+                                }
+                            
+                        }
+                    }
+                }
+            }
+
+            int strongest = city.factionIndex;
+            float strongestValue = 0;
+
+            foreach (var kv in faction_power)
+            {
+                if (kv.Value > strongestValue)
+                {
+                    strongest = kv.Key;
+                    strongestValue = kv.Value;
+                }
+            }
+
+            return DssRef.world.factions.Array[strongest];
+        }
+
+        public void collectOpponentGroups(int faction, IntVector2 tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities)
+        {
+            lock (groups_nearUpdate)
+            {
+                groups_nearUpdate.Clear();
+                cities_nearUpdate.Clear();
+
+                IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+                UnitCollArea area;
+
+                for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
+                {
+                    for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
+                    {
+                        if (grid.TryGet(x, y, out area))
+                        {
+                            lock (area.groups)
                             {
                                 foreach (var m in area.groups)
                                 {
-                                    if (DssRef.diplomacy.InWar(faction, m.army.faction))
+                                    if (DssRef.diplomacy.InWar(faction, m.factionIndex))
                                     {
                                         groups_nearUpdate.Add(m);
                                     }
                                 }
                             }
-                        }
-                    }
-                }
-            }
 
-            return groups_nearUpdate;
-        }
-
-        public List<GameObject.AbsGroup> collectOpponents(Faction faction, IntVector2 tilePos)
-        {
-            groupsAndCities_nearUpdate.Clear();
-
-            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
-            UnitCollArea area;
-
-            for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
-            {
-                for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
-                {
-                    if (grid.TryGet(x, y, out area))
-                    {
-                        // var groups_sp = area.groups;
-                        lock (area.groups)
-                        {
-                            if (area.groups != null)
+                            for (int i = 0; i < area.cities.Count; ++i)
                             {
-                                foreach (var m in area.groups)
+                                var city = DssRef.world.cities[area.cities[i]];
+                                if (DssRef.diplomacy.InWar(faction, city.factionIndex))
                                 {
-                                    if (m.army.faction != faction)
+                                    var groupsC = city.groups.counter();
+                                    while (groupsC.Next())
                                     {
-                                        groupsAndCities_nearUpdate.Add(m);
+                                        groups_nearUpdate.Add(groupsC.sel);
                                     }
-                                }
-                            }
-                        }
-
-                        foreach (var city in area.cities)
-                        {
-                            if (city.faction != faction)
-                            {
-                                groupsAndCities_nearUpdate.Add(city);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return groupsAndCities_nearUpdate;
-        }
-
-        public void collectMapObjectBattles(Faction faction, IntVector2 tilePos, ref List<AbsMapObject> units, bool collectCities)
-        {
-            units.Clear();
-
-            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
-            UnitCollArea area;
-
-            for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
-            {
-                for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
-                {
-                    if (grid.TryGet(x, y, out area))
-                    {
-                        lock (area.armies)
-                        {
-                            //var armies_sp = area.armies;
-                            if (area.armies != null)
-                            {
-                                for (int aix = 0; aix < area.armies.Count; ++aix)
-                                {
-                                    var army = area.armies[aix];
-                                    if (army.faction != faction &&
-                                        DssRef.diplomacy.InWar(faction, army.faction))
-                                    {
-                                        units.Add(army);
-                                    }
-                                }
-                            }
-                        }
-
-                        if (collectCities)
-                        {
-                            foreach (var city in area.cities)
-                            {
-                                if (city.faction != faction &&
-                                    city.guardCount > 0 &&
-                                    DssRef.diplomacy.InWar(faction, city.faction))
-                                {
-                                    units.Add(city);
                                 }
                             }
                         }
                     }
                 }
+
+                groups = groups_nearUpdate;
+                cities = cities_nearUpdate;
             }
         }
 
-        public void collectOpponentsAndFriendlies(Faction faction, IntVector2 tilePos,
-            out List<GameObject.AbsGroup> opponents, out List<GameObject.AbsGroup> friendly)
-        {
-            groupsAndCities_nearUpdate.Clear();
-            friendlyGroupsAndCities_nearUpdate.Clear();
-
-            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
-            UnitCollArea area;
-
-            for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
-            {
-                for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
-                {
-                    if (grid.TryGet(x, y, out area))
-                    {
-                        // var groups_sp = area.groups;
-                        lock (area.groups)
-                        {
-                            if (area.groups != null)
-                            {
-                                foreach (var m in area.groups)
-                                {
-                                    if (m.army.faction == faction)
-                                    {
-                                        friendlyGroupsAndCities_nearUpdate.Add(m);
-                                    }
-                                    else
-                                    {
-                                        groupsAndCities_nearUpdate.Add(m);
-                                    }
-                                }
-                            }
-                        }
-
-                        //var city = this.cityGrid.Get(x, y);
-                        //if (collArea.city != null)// && city.faction != faction)
-                        foreach (var city in area.cities)
-                        {
-                            if (city.faction == faction)
-                            {
-                                friendlyGroupsAndCities_nearUpdate.Add(city);
-                            }
-                            else
-                            {
-                                groupsAndCities_nearUpdate.Add(city);
-                            }
-                        }
-                    }
-                }
-            }
-
-
-            opponents = groupsAndCities_nearUpdate;
-            friendly = friendlyGroupsAndCities_nearUpdate;
-            //return groupsAndCities_nearUpdate;
-        }
-
-        
-
-        //public Faction CityDomination(City city)
+        //public List<GameObject.AbsGroup> collectOpponents(int faction, IntVector2 tilePos)
         //{
-        //    cityDominationStrength.Clear();
+        //    groupsAndCities_nearUpdate.Clear();
 
-        //    cityDominationStrength.Add(city.faction.index, 0);
-
-        //    IntVector2 areaPos = city.tilePos / UnitGridSquareWidth;
+        //    IntVector2 areaPos = tilePos / UnitGridSquareWidth;
         //    UnitCollArea area;
 
         //    for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
@@ -604,51 +533,240 @@ namespace VikingEngine.DSSWars.Map
         //        {
         //            if (grid.TryGet(x, y, out area))
         //            {
-        //                var armies_sp = area.armies;
-        //                if (armies_sp != null)
+        //                // var groups_sp = area.groups;
+        //                lock (area.groups)
         //                {
-        //                    foreach (var army in armies_sp)
+        //                    if (area.groups != null)
         //                    {
-        //                        bool inRange = (army.tilePos - city.tilePos).Length() <= DssLib.CityDominationRadius;
-
-        //                        if (inRange)
+        //                        foreach (var m in area.groups)
         //                        {
-        //                            if (cityDominationStrength.ContainsKey(army.faction.index))
+        //                            if (m.army.faction != faction)
         //                            {
-        //                                cityDominationStrength[army.faction.index] += army.strengthValue;
-        //                            }
-        //                            else if (DssRef.diplomacy.InWar(army.faction, city.faction))
-        //                            {
-        //                                cityDominationStrength.Add(army.faction.index, army.strengthValue);
+        //                                groupsAndCities_nearUpdate.Add(m);
         //                            }
         //                        }
+        //                    }
+        //                }
+
+        //                for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
+        //                {
+        //                    var city = DssRef.world.cities[area.cities[i]];
+        //                    if (city.faction != faction)
+        //                    {
+        //                        groupsAndCities_nearUpdate.Add(city);
         //                    }
         //                }
         //            }
         //        }
         //    }
 
-        //    int strongestFaction = -1;
-        //    float strongest = float.MinValue;
+        //    return groupsAndCities_nearUpdate;
+        //}
 
-        //    foreach (var kv in cityDominationStrength)
+        //public void collectMapObjectBattles(Faction faction, IntVector2 tilePos, ref List<AbsMapObject> units, bool collectCities)
+        //{
+        //    units.Clear();
+
+        //    IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+        //    UnitCollArea area;
+
+        //    for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
         //    {
-        //        if (kv.Value > strongest)
+        //        for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
         //        {
-        //            strongestFaction = kv.Key;
-        //            strongest = kv.Value;
+        //            if (grid.TryGet(x, y, out area))
+        //            {
+        //                lock (area.armies)
+        //                {
+        //                    //var armies_sp = area.armies;
+        //                    if (area.armies != null)
+        //                    {
+        //                        for (int aix = 0; aix < area.armies.Count; ++aix)
+        //                        {
+        //                            var army = area.armies[aix];
+        //                            if (army.faction != faction &&
+        //                                DssRef.diplomacy.InWar(faction, army.faction))
+        //                            {
+        //                                units.Add(army);
+        //                            }
+        //                        }
+        //                    }
+        //                }
+
+        //                if (collectCities)
+        //                {
+        //                    for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
+        //                    {
+        //                        var city = DssRef.world.cities[area.cities[i]];
+        //                        if (city.faction != faction &&
+        //                            //city.guardCount > 0 &&
+        //                            DssRef.diplomacy.InWar(faction, city.faction))
+        //                        {
+        //                            units.Add(city);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+        //public void collectOpponentsAndFriendlies(Faction faction, IntVector2 tilePos,
+        //    out List<GameObject.AbsGroup> opponents, out List<GameObject.AbsGroup> friendly)
+        //{
+        //    groupsAndCities_nearUpdate.Clear();
+        //    friendlyGroupsAndCities_nearUpdate.Clear();
+
+        //    IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+        //    UnitCollArea area;
+
+        //    for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
+        //    {
+        //        for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
+        //        {
+        //            if (grid.TryGet(x, y, out area))
+        //            {
+        //                // var groups_sp = area.groups;
+        //                lock (area.groups)
+        //                {
+        //                    if (area.groups != null)
+        //                    {
+        //                        foreach (var m in area.groups)
+        //                        {
+        //                            if (m.army.faction == faction)
+        //                            {
+        //                                friendlyGroupsAndCities_nearUpdate.Add(m);
+        //                            }
+        //                            else
+        //                            {
+        //                                groupsAndCities_nearUpdate.Add(m);
+        //                            }
+        //                        }
+        //                    }
+        //                }
+
+        //                for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
+        //                {
+        //                    var city = DssRef.world.cities[area.cities[i]];
+        //                    if (city.faction == faction)
+        //                    {
+        //                        friendlyGroupsAndCities_nearUpdate.Add(city);
+        //                    }
+        //                    else
+        //                    {
+        //                        groupsAndCities_nearUpdate.Add(city);
+        //                    }
+        //                }
+        //            }
         //        }
         //    }
 
-        //    return DssRef.world.factions.Array[strongestFaction];
+
+        //    opponents = groupsAndCities_nearUpdate;
+        //    friendly = friendlyGroupsAndCities_nearUpdate;
         //}
 
-        public void collectArmies(Faction factionFilter, IntVector2 tilePos, int areaRadius,
-            List<GameObject.Army> armies)
+        public void collectGroups(IntVector2 tilePos,
+           ref List<GameObject.AbsGroup> groups, bool cities)
+        {
+            groups.Clear();
+
+            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+            UnitCollArea area;
+
+            for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
+            {
+                for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
+                {
+                    if (grid.TryGet(x, y, out area))
+                    {
+                        lock (area.groups)
+                        {
+                            
+                                groups.AddRange(area.groups);
+                            
+                        }
+
+                        for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
+                        {
+                            var city = DssRef.world.cities[area.cities[i]];
+                            var groupsC = city.groups.counter();
+                            while (groupsC.Next())
+                            {
+                                groups.Add(groupsC.sel);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        public void collectArmies(IntVector2 tilePos, List<GameObject.AbsArmy> armies)
         {
             armies.Clear();
-            //GameObject.Army prevArmy = null;
 
+            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+            UnitCollArea area;
+
+            for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
+            {
+                for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
+                {
+                    if (grid.TryGet(x, y, out area))
+                    {
+                        lock (area.armies)
+                        {
+                           
+                                foreach (var m in area.armies)
+                                {
+                                    if (!armies.Contains(m))
+                                    {
+                                        armies.Add(m);
+                                    }                                    
+                                }
+                            
+                        }
+                    }
+                }
+            }
+        }
+
+        public void net_collectArmies(Rectangle2 mapTileArea, List<GameObject.Army> armies)
+        {
+            armies.Clear();
+            IntVector2 areaStart = mapTileArea.pos / UnitGridSquareWidth;
+            IntVector2 areaEnd = mapTileArea.BottomRightTile / UnitGridSquareWidth;
+
+            for (int arY = areaStart.Y; arY <= areaEnd.Y; ++arY)
+            {
+                for (int arX = areaStart.X; arX <= areaEnd.X; ++arX)
+                {
+                    if (grid.TryGet(arX, arY, out UnitCollArea area))
+                    {
+                        lock (area.armies)
+                        {
+                            //Todo dont add remote player armies
+                            
+                                foreach (var m in area.armies)
+                                {
+                                    if (!armies.Contains(m))
+                                    {
+                                        armies.Add(m);
+                                    }
+                                }
+                            
+                        }
+                    }
+                }
+            }
+        }
+
+        public void collectArmies(int factionFilter, IntVector2 tilePos, int areaRadius,
+            List<GameObject.AbsArmy> armies)
+        {
+            armies.Clear();
+            
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
             UnitCollArea area;
 
@@ -660,23 +778,18 @@ namespace VikingEngine.DSSWars.Map
                     {
                         lock (area.armies)
                         {
-                            //var armies_sp = area.armies;
-                            //var groups_sp = area.groups;
-                            if (area.armies != null)
-                            {
-                                foreach (var m in area.armies)//crash (ändras i realtid)
+                            
+                                foreach (var m in area.armies)
                                 {
-                                    if (m.faction == factionFilter)
+                                    if (m.factionIndex == factionFilter)
                                     {
-                                        //prevArmy = m.army;
                                         if (!armies.Contains(m))
                                         {
                                             armies.Add(m);
                                         }
-                                        //armies.Add(m);
                                     }
                                 }
-                            }
+                            
                         }
                     }
                 }
@@ -684,11 +797,11 @@ namespace VikingEngine.DSSWars.Map
         }
 
 
-        public void collectOpponentArmies(Faction faction, IntVector2 tilePos, int areaRadius,
-            List<GameObject.Army> armies)
+        public void collectOpponentArmies(int faction, IntVector2 tilePos, int areaRadius,
+            List<GameObject.AbsArmy> armies)
         {
             armies.Clear();
-            GameObject.Army prevArmy = null;
+            GameObject.AbsArmy prevArmy = null;
 
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
             UnitCollArea area;
@@ -701,29 +814,27 @@ namespace VikingEngine.DSSWars.Map
                     {
                         lock (area.groups)
                         {
-                            //var groups_sp = area.groups;
-                            if (area.groups != null)
-                            {
-                                foreach (var m in area.groups)//crash (ändras i realtid)
+                            
+                                foreach (var m in area.groups)
                                 {
-                                    if (m.army.faction != faction &&
-                                        m.army != prevArmy)
+                                    if (m.factionIndex != faction && !RefExt.EqTarget(prevArmy, m.army))
+                                        /*prevArmy != m.army*/
                                     {
-                                        prevArmy = m.army;
-                                        if (!armies.Contains(m.army))
+                                        prevArmy = m.GetAbsArmy();
+                                        if (prevArmy != null && !armies.Contains(prevArmy))
                                         {
-                                            armies.Add(m.army);
+                                            armies.Add(prevArmy);
                                         }
                                     }
                                 }
-                            }
+                            
                         }
                     }
                 }
             }
         }
 
-        public GameObject.Army AdjacenToArmy(Faction factionFilter, Army ignore, IntVector2 tilePos, float maxTileDistance)
+        public GameObject.Army AdjacenToArmy(int factionFilter, Army ignore, IntVector2 tilePos, float maxTileDistance)
         {
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
             UnitCollArea area;
@@ -737,19 +848,18 @@ namespace VikingEngine.DSSWars.Map
                         lock (area.armies)
                         {
                             //var armies_sp = area.armies;
-                            if (area.armies != null)
-                            {
+                           
                                 for (int i = 0; i < area.armies.Count; ++i)
                                 {
                                     var army = area.armies[i];
                                     if (army != ignore &&
-                                        army.faction == factionFilter &&
+                                        army.factionIndex == factionFilter &&
                                         (army.tilePos - tilePos).Length() <= maxTileDistance)
                                     {
                                         return army;
                                     }
                                 }
-                            }
+                            
                         }
                     }
                 }
@@ -762,19 +872,12 @@ namespace VikingEngine.DSSWars.Map
         {
             IntVector2 areaPos = city.tilePos / UnitGridSquareWidth;
 
-            grid.Get(areaPos).cities.Add(city);
+            grid.Get(areaPos).cities.Add(city.myIndex);
         }
 
-        //public void remove(GameObject.City city)
-        //{
-        //    IntVector2 areaPos = city.tilePos / UnitGridSquareWidth;
-
-        //    grid.Get(areaPos).cities.Remove(city);
-        //}
 
         public GameObject.City closestCity(IntVector2 tilePos)
         {
-            //cities_aiUpdate.Clear();
             IntVector2 areaPos = tilePos / UnitGridSquareWidth;
 
             FindMinValuePointer<GameObject.City> closest = new FindMinValuePointer<GameObject.City>();
@@ -801,8 +904,9 @@ namespace VikingEngine.DSSWars.Map
                 UnitCollArea area;
                 if (grid.TryGet(pos, out area))
                 {
-                    foreach (var city in area.cities)
+                    for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
                     {
+                        var city = DssRef.world.cities[area.cities[i]];
                         closest.Next(city.tilePos.Length(tilePos), city);
                     }
                 }
@@ -811,13 +915,14 @@ namespace VikingEngine.DSSWars.Map
 
         public void collectCities_fromArea(IntVector2 areaPos, int minCount,
             List<GameObject.City> nearCities, 
-            Faction myFaction = null, Faction factionFilter = null)
+            int myFaction = -1, int factionFilter = -1)
         {
-            if (factionFilter != null)
+            if ( factionFilter >=0)
             {
-                if (factionFilter.cities.Count < minCount)
+                var pFilter = DssRef.world.faction(factionFilter);
+                if (pFilter != null && pFilter.cities.Count < minCount)
                 {
-                    minCount = factionFilter.cities.Count;
+                    minCount = pFilter.cities.Count;
                 }
             }
 
@@ -843,16 +948,17 @@ namespace VikingEngine.DSSWars.Map
             {
                 if (grid.TryGet(pos, out area))
                 {
-                    foreach (var city in area.cities)
+                    for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
                     {
-                        if (factionFilter != null)
+                        var city = DssRef.world.cities[area.cities[i]];
+                        if (factionFilter >= 0)
                         {
-                            if (city.faction == factionFilter)
+                            if (city.factionIndex == factionFilter)
                             {
                                 nearCities.Add(city);
                             }
                         }
-                        else if (myFaction != city.faction)
+                        else if (myFaction != city.factionIndex)
                         {
                             nearCities.Add(city);
                         }
@@ -863,7 +969,7 @@ namespace VikingEngine.DSSWars.Map
 
         public void collectCitiesAndArmies(IntVector2 areaPos, int goalCount, float maxStrengthValue,
             List<GameObject.AbsMapObject> nearMapObjects,
-            Faction myFaction = null, Faction factionFilter = null)
+            int myFaction = -1, int factionFilter = -1)
         {
 
             UnitCollArea area;
@@ -888,18 +994,19 @@ namespace VikingEngine.DSSWars.Map
             {
                 if (grid.TryGet(pos, out area))
                 {
-                    foreach (var city in area.cities)
+                    for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
                     {
+                        var city = DssRef.world.cities[area.cities[i]];
                         if (city.strengthValue + city.ai_armyDefenceValue <= maxStrengthValue)
                         {
-                            if (factionFilter != null)
+                            if (factionFilter >= 0)
                             {
-                                if (city.faction == factionFilter)
+                                if (city.factionIndex == factionFilter)
                                 {
                                     nearMapObjects.Add(city);
                                 }
                             }
-                            else if (myFaction != city.faction)
+                            else if (myFaction != city.factionIndex)
                             {
                                 nearMapObjects.Add(city);
                             }
@@ -907,27 +1014,25 @@ namespace VikingEngine.DSSWars.Map
                     }
                     lock (area.armies)
                     {
-                        //var armies_sp = area.armies;
-                        if (area.armies != null)
-                        {
+                        
                             foreach (var army in area.armies)
                             {
                                 if (army.strengthValue <= maxStrengthValue)
                                 {
-                                    if (factionFilter != null)
+                                    if (factionFilter >= 0)
                                     {
-                                        if (army.faction == factionFilter)
+                                        if (army.factionIndex == factionFilter)
                                         {
                                             nearMapObjects.Add(army);
                                         }
                                     }
-                                    else if (myFaction != army.faction)
+                                    else if (myFaction != army.factionIndex)
                                     {
                                         nearMapObjects.Add(army);
                                     }
                                 }
                             }
-                        }
+                        
                     }
                 }
             }
@@ -947,15 +1052,10 @@ namespace VikingEngine.DSSWars.Map
         public List<GameObject.Army> processingArmies = new List<GameObject.Army>(2);//null;
         public List<GameObject.Army> armies = new List<GameObject.Army>(2);//null;
 
-        public List<GameObject.City> cities = new List<City>(2);
+        public List<int> cities = new List<int>(2);
 
         public void processAdd(GameObject.SoldierGroup group)
         {
-            //if (processingGroups == null)
-            //{
-            //    processingGroups = new List<GameObject.SoldierGroup>(16);
-            //}
-
             processingGroups.Add(group);
         }
 
@@ -981,67 +1081,36 @@ namespace VikingEngine.DSSWars.Map
 
             lock (groups)
             {
-                //if (processingGroups == null || processingGroups.Count == 0)
-                //{
-                //    processingGroups = null;
-                //    groups = null;
-                //}
-                //else
-                //{
-                    var pointer = groups;
-                    groups = processingGroups;
-                    processingGroups = pointer;
-                //}
+                var pointer = groups;
+                groups = processingGroups;
+                processingGroups = pointer;
             }
 
             lock (armies)
             {
-                //if (processingArmies == null || processingArmies.Count == 0)
-                //{
-                //    processingArmies = null;
-                //    armies = null;
-                //}
-                //else
-                //{
-                    var pointer = armies;
-                    armies = processingArmies;
-                    processingArmies = pointer;
-                //}
+                var pointer = armies;
+                armies = processingArmies;
+                processingArmies = pointer;
             }
         }
     }
 
-    //class UnitAreaCityCollector
-    //{
-    //    UnitCollAreaGrid grid;
-        
-        
-    //    public UnitAreaCityCollector(UnitCollAreaGrid grid)
-    //    {
-    //        this.grid = grid;
-            
-    //    }
 
-       
+    struct SoldierGroupId
+    {
+        public int faction;
+        public int army;
+        public int group;
+    }
+    struct ArmyId
+    {
+        public int faction;
+        public int army;
+        public ArmyId(Army army)
+        {
+            faction = army.factionIndex;
+            this.army = army.myIndex;
+        }
 
-        
-
-    //    //public void end()
-    //    //{
-    //    //    var loop = grid.grid.LoopInstance();
-
-    //    //    while (loop.Next())
-    //    //    {
-    //    //        var clist = cities[loop.Position.X, loop.Position.Y];
-    //    //        if (clist != null)
-    //    //        {
-    //    //            if (clist.Count > 1)
-    //    //            {
-    //    //                throw new Exception();
-    //    //            }
-    //    //            grid.grid.Get(loop.Position).city = clist.ToArray()[0];
-    //    //        }
-    //    //    }
-    //    //}
-    //}
+    }
 }

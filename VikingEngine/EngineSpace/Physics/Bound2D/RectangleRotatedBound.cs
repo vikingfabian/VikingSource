@@ -5,9 +5,7 @@ namespace VikingEngine.Physics
 {
     class RectangleRotatedBound : RectangleBound
     {
-        //public RectangleCentered area;
         public Rotation1D rotation;
-        //float radius;
 
         public RectangleRotatedBound()
         { }

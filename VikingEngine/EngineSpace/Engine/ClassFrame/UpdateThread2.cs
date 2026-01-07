@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 
@@ -12,49 +13,62 @@ namespace VikingEngine
     {
         protected AsynchUpdateAction updateAction;
 
-        //System.Threading.Thread thread;
-        Task task;
-
+        AutoResetEvent resetEvent = new AutoResetEvent(false);
+        System.Threading.Thread thread;
+       
         protected float time = 0, asynchTime = 0;
         protected string name;
         protected int id;
 
-        int startDelay;
-        float updateDelays;
-
+        bool busyThread = false;
         public bool end = false;
 
         public AsynchUpdateable(AsynchUpdateAction updateAction, string name, int id = 0,
-            int startDelay = 0, float updateDelays = 0, bool addToUpdate = true)
+            ThreadPriority priority = ThreadPriority.Normal, bool addToUpdate = true)
             : base(addToUpdate)
         {
             this.name = name;
             this.id = id;
             this.updateAction = updateAction;
 
-            this.startDelay = startDelay;
-            this.updateDelays = updateDelays;
-
             if (addToUpdate)
             {
-                startNewUpdate();
+                StartThread(priority);
+                //startNewUpdate();
             }
         }
 
-        //void threadAction()
-        //{
-        //    while (!end)
-        //    {
-        //        asynchTime = time;
-        //        time = 0;
-        //        asynchAction();
+        bool End()
+        {
+            return end || Ref.update.exitApplication;
+        }
 
-        //        if (time == 0)
-        //        {
-        //            System.Threading.Thread.Sleep(16);
-        //        }
-        //    }
-        //}
+        public void StartThread(ThreadPriority priority)
+        {
+            thread = new Thread(() =>
+            {
+                while (!End())
+                {                    
+                    resetEvent.WaitOne(); // Blocks until the event is signaled
+                    if (End())
+                    {
+                        return;
+                    }
+                    asynchTime = time;
+                    time -= asynchTime;
+
+                    busyThread = true;
+                    {
+                        asynchAction();
+                    }
+                    busyThread = false;
+                    //}
+                }
+            });
+
+            thread.Start();
+            thread.Priority = priority;
+        }
 
         public override void Time_Update(float time_ms)
         {
@@ -66,36 +80,11 @@ namespace VikingEngine
 
             time += Ref.DeltaGameTimeMs;
 
-//#if XBOX
-            if (time >= updateDelays)
+            if (!busyThread)
             {
-                if (task == null || task.IsCompleted)
-                {
-                    startNewUpdate();
-                }
-            }
-//#endif
-        }
-
-        void startNewUpdate()
-        {
-            if (--startDelay < 0)
-            {
-                asynchTime = time;
-                time = 0;
-
-                //try
-                //{
-                task = Task.Factory.StartNew(asynchAction);
-                //}
-                //catch (Exception e)
-                //{
-                //    end = true;
-                //    new DebugExtensions.TheadedCrash(e);
-                //}
+                resetEvent.Set(); // Signal the waiting thread
             }
         }
-
         virtual protected void asynchAction()
         {
             if (updateAction != null)
@@ -107,6 +96,25 @@ namespace VikingEngine
         public override void DeleteMe()
         {
             base.DeleteMe();
+            AbortThreads();
+        }
+
+        public override void AbortThreads()
+        {
+            
+                end = true;
+                resetEvent.Set();
+
+#if DEBUG
+                thread?.Join();
+#endif
+            
+
+        }
+
+        public bool Alive()
+        { 
+            return thread != null && thread.IsAlive;
         }
 
         public override string ToString()
@@ -118,13 +126,13 @@ namespace VikingEngine
 
     class AsynchUpdateable_TryCatch : AsynchUpdateable
     {
-        public AsynchUpdateable_TryCatch(AsynchUpdateAction updateAction, string name, int id = 0)
-            : base(updateAction, name, id, 0, 0, true)
+        public AsynchUpdateable_TryCatch(AsynchUpdateAction updateAction, string name, int id = 0, ThreadPriority priority = ThreadPriority.Normal)
+            : base(updateAction, name, id, priority, true)
         { }
 
         override protected void asynchAction()
         {
-#if DEBUG
+#if FALSE
             if (updateAction != null)
             {
                 end = updateAction(id, asynchTime);
@@ -139,7 +147,10 @@ namespace VikingEngine
             }
             catch (Exception e)
             {
-                BlueScreen.ThreadException = e;
+                if (!end)
+                {
+                    BlueScreen.ThreadException = e;
+                }
             }
 #endif
 

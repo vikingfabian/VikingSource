@@ -54,29 +54,29 @@ namespace VikingEngine.ToGG.HeroQuest.Gadgets
             //    title = "Projectile weapon";
             //}
 
-            richbox.Add(new RichBoxText(title));
-            richbox.Add(new RichBoxNewLine());
+            richbox.Add(new RbText(title));
+            richbox.Add(new RbNewLine());
 
             int strength = lib.LargestValue(stats.meleeStrength, stats.projectileStrength);
             
             for (int i = 0; i < strength; ++i)
             {
-                richbox.Add(new RichBoxImage(SpriteName.cmdDiceAttack));
+                richbox.Add(new RbImage(SpriteName.cmdDiceAttack));
             }
 
             if (!IsMelee)
             {
-                richbox.Add(new RichBoxNewLine());
-                richbox.Add(new RichBoxText("Range " + stats.projectileRange.ToString()));
+                richbox.Add(new RbNewLine());
+                richbox.Add(new RbText("Range " + stats.projectileRange.ToString()));
             }
 
             if (surgeOptions != null)
             {
                 foreach (var surge in surgeOptions)
                 {
-                    richbox.Add(new RichBoxNewLine());
+                    richbox.Add(new RbNewLine());
                     surge.addConvertIcons(richbox);
-                    richbox.Add(new RichBoxText(surge.Name));
+                    richbox.Add(new RbText(surge.Name));
                 }
             }
 

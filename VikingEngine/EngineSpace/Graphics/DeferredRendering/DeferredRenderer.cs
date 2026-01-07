@@ -266,13 +266,13 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
                 Camera = p.view.Camera;
                 Camera.updateBillboard();
                 graphicsDeviceManager.GraphicsDevice.Viewport = p.view.Viewport;
-                if (DebugSett.Debug3DParticles)
-                {
-                    // TODO(Martin): This only works for in single client mode
-                    // Also, lots more to fix on particle system
-                    instancing.Draw(ref Camera.ViewMatrix, ref Camera.Projection);
-                }
-                Engine.ParticleHandler.Draw();
+                //if (DebugSett.Debug3DParticles)
+                //{
+                //    // TODO(Martin): This only works for in single client mode
+                //    // Also, lots more to fix on particle system
+                //    instancing.Draw(ref Camera.ViewMatrix, ref Camera.Projection);
+                //}
+                Engine.ParticleHandler.Draw(Camera);
             }
             graphicsDeviceManager.GraphicsDevice.Viewport = savedViewport;
 
@@ -327,7 +327,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
                 Abs3DModel model = counter.sel as Abs3DModel;
                 if (model != null)
                 {
-                    model.DrawDeferred(device, shader, view, playerIndex);
+                    //model.DrawDeferred(device, shader, view, playerIndex);
                 }
             }
         }
@@ -340,7 +340,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
                 Abs3DModel model = counter.sel as Abs3DModel;
                 if (model != null)
                 {
-                    model.DrawDeferredDepthOnly(shader, -1);
+                    //model.DrawDeferredDepthOnly(shader, -1);
                 }
             }
         }
@@ -351,7 +351,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
 
             if (DrawGround)
             {
-                heightmap.DrawDeferredDepthOnly(shader, -1);
+                //heightmap.DrawDeferredDepthOnly(shader, -1);
             }
 
             DrawRenderListMembersDepthOnly(device, shader, RenderLayer.Basic, DrawObjType.MeshGenerated);
@@ -373,7 +373,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
 
             if (DrawGround)
             {
-                heightmap.DrawDeferred(device, gBuf, view, playerIndex);
+                //heightmap.DrawDeferred(device, gBuf, view, playerIndex);
             }
             device.Textures[0] = Engine.LoadContent.Texture(VikingEngine.LootFest.LfLib.BlockTexture);
             DrawRenderListMembers(device, gBuf, view, playerIndex, RenderLayer.Basic, DrawObjType.MeshGenerated);
@@ -477,8 +477,7 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
 
                 spotLightFx.CurrentTechnique.Passes[0].Apply();
 
-                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0,
-                    spotMeshPart.NumVertices,
+                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 
                     spotMeshPart.StartIndex,
                     spotMeshPart.PrimitiveCount);
             }
