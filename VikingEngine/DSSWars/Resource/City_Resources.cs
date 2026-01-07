@@ -191,7 +191,7 @@ namespace VikingEngine.DSSWars.GameObject
             runList(ResourceLib.MovableCityResource_WeaponMelee);
             runList(ResourceLib.MovableCityResource_WeaponRanged);
             runList(ResourceLib.MovableCityResource_Armor);
-
+            
             void runList(ItemResourceType[] items)
             {
                 foreach (ItemResourceType item in items)
