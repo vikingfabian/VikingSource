@@ -1,7 +1,6 @@
 ﻿Change log:
-* Fixed war declaration share relations bug
-* Fixed: Unit Army right flank is offset incorrectly
-* Fixed and improved auto build placements
+* Fixed auto build of Orchards
+
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
