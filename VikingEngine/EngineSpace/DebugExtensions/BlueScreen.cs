@@ -6,7 +6,7 @@ using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using Microsoft.Xna.Framework.Input;
 using VikingEngine.HUD;
-using Valve.Steamworks;
+
 using VikingEngine.SteamWrapping;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Data;
@@ -236,10 +236,10 @@ namespace VikingEngine.DebugExtensions
                 {
                     method();
                 }
-                catch (AbsSteamException e) 
-                {
-                    new SteamBlueScreen(ErrorMessage(e, methodType));
-                }
+                //catch (AbsSteamException e) 
+                //{
+                //    new SteamBlueScreen(ErrorMessage(e, methodType));
+                //}
                 catch (Exception e)
                 {
                     new BlueScreen(ErrorMessage(e, methodType));

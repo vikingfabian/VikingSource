@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Xml.Linq;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Build;
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Conscript;

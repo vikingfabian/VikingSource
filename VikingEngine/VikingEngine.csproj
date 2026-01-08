@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj" />
+    <ProjectReference Include="..\..\..\SteamworksNet\Steamworks.NET\Standalone2.0\Steamworks.NET.Standard.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading;
 using System.Xml.Linq;
-using Valve.Steamworks;
+
 using VikingEngine.DataStream;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
@@ -724,9 +724,9 @@ namespace VikingEngine.DSSWars
             {
                 content.Button("wish", new RbAction(() =>
                     {
-                        SteamAPI.SteamFriends().ActivateGameOverlayToStore(
-                        3585100,
-                        EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
+                        Steamworks.SteamFriends.ActivateGameOverlayToStore(
+                            new Steamworks.AppId_t(3585100),
+                            Steamworks.EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
                     }
                 ), null, true);
             }
