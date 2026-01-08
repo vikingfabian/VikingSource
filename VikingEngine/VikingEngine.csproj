@@ -109,6 +109,11 @@
       <HintPath>..\..\..\monogame\MonoGame\MonoGame.Framework\obj\DesktopGL\Release\MonoGame.Framework.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <None Update="steam_api64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <PropertyGroup>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
     <PlatformTarget>AnyCPU</PlatformTarget>
