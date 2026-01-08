@@ -4,7 +4,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+using Steamworks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.ToGG.Commander.UnitsData;
@@ -41,5 +41,11 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Hud_Purchase_LowXCost => "Low {0} cost";
 
+        public string WorkQueue_Title => "Work queue";
+        public string WorkQueue_Length => "Remaining work objectives";
+        public string WorkQueue_ActiveWorkers => "Active work teams";
+        public string WorkQueue_IdleWorkers => "Idle work teams";
+
+        public string WorkTeam_Size => "Villagers work in teams of {0}";
     }
 }

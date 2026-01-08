@@ -1575,7 +1575,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         {
             int ix = world.rnd.Int(world.cities.Count);
 
-            while (world.cities[ix].factionIndex >= 0)
+            while (world.cities[ix].factionIndex >= 0 && world.cities[ix].cityType == CityType.UnClaimed)
             {
                 ix++;
                 if (ix >= world.cities.Count)

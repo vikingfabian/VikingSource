@@ -2691,6 +2691,7 @@ namespace VikingEngine
         WarsBuild_PavementFlowers,
 
         WarsBuild_Logistics,
+        WarsBuild_ManorLord,
         WarsBuild_Smelter,
         WarsBuild_WoodCutter,
         WarsBuild_StoneCutter,
@@ -2787,6 +2788,9 @@ namespace VikingEngine
         WarsResource_FoodSub,
         WarsResource_FoodEmpty,
         WarsIcon_Resources,
+        WarsIcon_WorkQueueTotal,
+        WarsIcon_WorkQueueIdle,
+        WarsIcon_WorkQueueActive,
         WarsResource_Wood,
         WarsResource_Fuel,
         WarsResource_Wheat,

@@ -141,5 +141,10 @@ namespace VikingEngine.DSSWars.Build
         {
             return blueprint.hasResources(city) || (altBlueprint != null && altBlueprint.hasResources(city));
         }
+
+        public bool availableBlueprintResources_ignorewater(City city)
+        {
+            return blueprint.hasResources_ignorewater(city) || (altBlueprint != null && altBlueprint.hasResources_ignorewater(city));
+        }
     }
 }

@@ -1,5 +1,13 @@
 ﻿Change log:
 * Fixed auto build of Orchards
+* Increased the points needed for gun powder 600 > 1000
+* Added missing icons and models
+* Implemented the Steamworks.NET library for better SteamAPI access
+* Added 50% to Orchards upkeep and gain
+* Fixed load cities crash
+* Auto build ignores lack of water to not get stuck
+* Fixed: unclaimed land were added to factions start area
+* Improved camera placement on start
 
 
 #Event timers (are slightly random)#

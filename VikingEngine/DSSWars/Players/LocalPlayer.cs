@@ -1704,18 +1704,26 @@ namespace VikingEngine.DSSWars.Players
                 });
             }
 
-            if (newGame)
+
+            if (faction.mainCity != null)
             {
-                if (faction.mainCity != null)
+                if (newGame)
                 {
+
                     faction.mainCity.tagBack = CityTagBack.Carton;
                     faction.mainCity.tagArt = CityTagArt.IconFaction;
 
                     if (profile.casualControls)
-                    { 
-                        faction.mainCity.FinishCasualBuild( PlayerControls.Casual.CasualBuildType.StartUpBarracks);
+                    {
+                        faction.mainCity.FinishCasualBuild(PlayerControls.Casual.CasualBuildType.StartUpBarracks);
                     }
                 }
+
+                gameControls.map.setCameraPos(faction.mainCity.tilePos);
+            }
+            else
+            {
+                gameControls.map.setCameraPos(DssRef.world.Size / 2);
             }
 
             nextDominationSize = faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();

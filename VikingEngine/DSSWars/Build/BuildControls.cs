@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Build
     {
         static readonly Build.BuildAndExpandType[] AutoBuildOptions =
         {
-            Build.BuildAndExpandType.OrchidApple,
+            Build.BuildAndExpandType.OrchardApple,
             Build.BuildAndExpandType.WheatFarm,
             Build.BuildAndExpandType.LinenFarm,
             Build.BuildAndExpandType.RapeSeedFarm,
@@ -1172,7 +1172,7 @@ namespace VikingEngine.DSSWars.Build
                     //content.newLine();
                     break;
 
-                case BuildAndExpandType.OrchidApple:
+                case BuildAndExpandType.OrchardApple:
                 case BuildAndExpandType.OrchidBanana:
                     farmHud_any(false, new ItemResource(ItemResourceType.Food_G, DssConst.OrchidFoodAmount), ItemResource.Empty, 
                         TerrainContent.OrchardReady - TerrainContent.OrchardWatered, DssConst.WorkTime_PluckOrchards, DssConst.OrchardWaterCost);

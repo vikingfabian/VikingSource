@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Smith: return Smith_pos;
                 case BuildAndExpandType.Carpenter: return Carpenter_pos;
 
-                case BuildAndExpandType.OrchidApple:
+                case BuildAndExpandType.OrchardApple:
                 case BuildAndExpandType.OrchidBanana:
                     return Orchard_pos;
 
@@ -397,7 +397,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Smith: return Smith_count;
                 case BuildAndExpandType.Carpenter: return Carpenter_count;
 
-                case BuildAndExpandType.OrchidApple: return Orchard_count;
+                case BuildAndExpandType.OrchardApple: return Orchard_count;
                 case BuildAndExpandType.OrchidBanana: return Orchard_count;
                 case BuildAndExpandType.WheatFarm: return WheatFarm_count;
                 case BuildAndExpandType.WheatFarmUpgraded: return WheatFarm_count;
@@ -472,7 +472,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Smith: Smith_count += add; break;
                 case BuildAndExpandType.Carpenter: Carpenter_count += add; break;
 
-                case BuildAndExpandType.OrchidApple:
+                case BuildAndExpandType.OrchardApple:
                 case BuildAndExpandType.OrchidBanana:
                     Orchard_count += add; break;
 

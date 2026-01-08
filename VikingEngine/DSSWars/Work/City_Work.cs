@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void async_workUpdate(int updateSpeed)
         {
-            if (factionIndex < 0)
+            if (factionIndex < 0 || cityType == CityType.UnClaimed)
             {
                 CityStructure.WorkInstance.update(this, 0);
                 return; 

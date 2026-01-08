@@ -148,7 +148,7 @@ namespace VikingEngine.DSSWars.Build
 
         ManorLord,
 
-        OrchidApple,
+        OrchardApple,
         OrchidBanana,
 
         NUM_NONE,
@@ -254,7 +254,7 @@ namespace VikingEngine.DSSWars.Build
 
             }
 
-            list.Add(BuildAndExpandType.OrchidApple);
+            list.Add(BuildAndExpandType.OrchardApple);
 
             if (manor)
             {
@@ -489,7 +489,7 @@ namespace VikingEngine.DSSWars.Build
                 uniqueBuilding = true
             };
 
-            new BuildOption(BuildAndExpandType.ManorLord, TerrainMainType.Building, (int)TerrainBuildingType.ManorLord, SpriteName.WarsBuild_WorkerHutLarge, CraftBuildingLib.ManorLord, true,
+            new BuildOption(BuildAndExpandType.ManorLord, TerrainMainType.Building, (int)TerrainBuildingType.ManorLord, SpriteName.WarsBuild_ManorLord, CraftBuildingLib.ManorLord, true,
                 BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.Farm, BuildFilterTag.Food, 
                 MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)
             {
@@ -652,11 +652,11 @@ namespace VikingEngine.DSSWars.Build
                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.OrchidApple, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeApple, SpriteName.WarsBuild_TreeApple, CraftBuildingLib.Orchid, true,
+            new BuildOption(BuildAndExpandType.OrchardApple, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeApple, SpriteName.WarsBuild_TreeApple, CraftBuildingLib.Orchard, true,
                 BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             
-            new BuildOption(BuildAndExpandType.OrchidBanana, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeBanana, SpriteName.WarsBuild_TreeBanana, CraftBuildingLib.Orchid, true,
+            new BuildOption(BuildAndExpandType.OrchidBanana, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeBanana, SpriteName.WarsBuild_TreeBanana, CraftBuildingLib.Orchard, true,
                 BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 

@@ -693,13 +693,19 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.Upgrade:
                 case WorkType.Build:
-                   
+#if DEBUG
+                    if (BuildLib.BuildOptions[workSubType].buildType == BuildAndExpandType.OrchardApple)
+                    {
+                        lib.DoNothing();
+                    }
+#endif
                     if (orderIsActive(city))
                     {
                         bool upgrade = work == WorkType.Upgrade;
                         var build = BuildLib.BuildOptions[workSubType];
                         if (build.execute_async(city, subTileEnd, ref subTile, upgrade))
                         {
+
                             EditSubTile edit = new EditSubTile(subTileEnd, subTile, true, true, false);
                             edit.Submit();
                         }

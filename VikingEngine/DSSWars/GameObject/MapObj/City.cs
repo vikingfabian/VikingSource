@@ -81,6 +81,7 @@ namespace VikingEngine.DSSWars.GameObject
         //IntVector2 cullingTopLeft, cullingBottomRight;
         //public int cityTileRadius = 0;
         public Rectangle2 cityTileArea;
+        //public Intvector2MinMax buildArea;
         public CityCulture Culture = CityCulture.NUM_NONE;
 
         public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarm;
@@ -280,6 +281,8 @@ namespace VikingEngine.DSSWars.GameObject
             this.myIndex = index;
             world.InitCity(this);
             this.tilePos = pos;
+            cityTileArea = Rectangle2.FromCenterTileAndRadius(tilePos, 3);
+            //buildArea = new Intvector2MinMax(tilePos);
             this.cityType = type;
         }
 
@@ -304,27 +307,30 @@ namespace VikingEngine.DSSWars.GameObject
 
             workHutStyle = areaCulture.percMountain > 0.5 ? 0 : 1;
 
-            if (areaCulture.percForest >= 0.7 && cityType == CityType.Capital)
+            if (cityType > CityType.UnClaimed)
             {
-                cityCultureCollection.LargeGreen.Add(this);
-            }
-            else if (areaCulture.percDry >= 0.7 && areaCulture.worldPercX >= 0.75)
-            {
-                cityCultureCollection.DryEast.Add(this);
-            }
-            else if (areaCulture.percWater >= 0.25 && areaCulture.worldPercY <= 0.25)
-            {
-                cityCultureCollection.NorthSea.Add(this);
-            }
-            else if (areaCulture.worldPercY > 0.5f)
-            {
-                if (areaCulture.worldPercX < 0.3f)
+                if (areaCulture.percForest >= 0.7 && cityType == CityType.Capital)
                 {
-                    cityCultureCollection.WestKingdom.Add(this);
+                    cityCultureCollection.LargeGreen.Add(this);
                 }
-                else
+                else if (areaCulture.percDry >= 0.7 && areaCulture.worldPercX >= 0.75)
                 {
-                    cityCultureCollection.DarkLands.Add(this);
+                    cityCultureCollection.DryEast.Add(this);
+                }
+                else if (areaCulture.percWater >= 0.25 && areaCulture.worldPercY <= 0.25)
+                {
+                    cityCultureCollection.NorthSea.Add(this);
+                }
+                else if (areaCulture.worldPercY > 0.5f)
+                {
+                    if (areaCulture.worldPercX < 0.3f)
+                    {
+                        cityCultureCollection.WestKingdom.Add(this);
+                    }
+                    else
+                    {
+                        cityCultureCollection.DarkLands.Add(this);
+                    }
                 }
             }
 
@@ -1296,7 +1302,7 @@ namespace VikingEngine.DSSWars.GameObject
                                             ++totalWorkerHutAndLevelCount;
 
                                             //Place farm curlutures
-                                            const int CulturesPerFarm = 12;
+                                            const int CulturesPerFarm = 9;
                                             int cultureCount = 0;
 
                                             ForXYEdgeLoop farmLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(subPos, 1));
@@ -1683,36 +1689,36 @@ namespace VikingEngine.DSSWars.GameObject
 
                 createCampSite(subtile);
 
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        int radius = 3;
-                        Rectangle2 tileArea = new Rectangle2(tilePos, radius);
-                        bool foundTile = true;
-                        Map.Tile checkTile;
-                        while (foundTile)
-                        {
-                            radius++;
-                            ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, radius));
-                            while (loop.Next())
-                            {
-                                if (DssRef.world.tileGrid.TryGet(loop.Position, out checkTile) && checkTile.CityIndex == this.myIndex)
-                                {
-                                    foundTile = true;
-                                    tileArea.includeTile(loop.Position);
-                                    //break;
-                                }
-                            }
-                        }
-                        cityTileArea = tileArea;
-                        //cityTileRadius = radius;
-                    }
-                    catch (Exception ex)
-                    {
-                        BlueScreen.ThreadException = ex;
-                    }
-                });
+                //Task.Run(() =>
+                //{
+                //    try
+                //    {
+                //        int radius = 3;
+                //        Rectangle2 tileArea = new Rectangle2(tilePos, radius);
+                //        bool foundTile = true;
+                //        Map.Tile checkTile;
+                //        while (foundTile)
+                //        {
+                //            radius++;
+                //            ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, radius));
+                //            while (loop.Next())
+                //            {
+                //                if (DssRef.world.tileGrid.TryGet(loop.Position, out checkTile) && checkTile.CityIndex == this.myIndex)
+                //                {
+                //                    foundTile = true;
+                //                    tileArea.includeTile(loop.Position);
+                //                    //break;
+                //                }
+                //            }
+                //        }
+                //        cityTileArea = tileArea;
+                //        //cityTileRadius = radius;
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        BlueScreen.ThreadException = ex;
+                //    }
+                //});
 
                 
                 setFaction(faction, false, false);
@@ -2960,20 +2966,20 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 {
                     content.newLine();
-                    content.Add(new RbImage(SpriteName.WarsHammerAdd));
+                    content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueTotal));
                     content.space();
-                    content.Add(new RbText(".Work queue" + ":"));
+                    content.Add(new RbText(DssRef.todoLang.WorkQueue_Title + ":"));
                     content.hspace();
                     content.Add(new RbText(WorkerStats_WorkQueueLength.ToString()));
 
                     HudLib.BulletSeperationPoint(content);
-                    content.Add(new RbImage(SpriteName.WarsWorker));
+                    content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueActive));
                     content.hspace();
                     content.Add(new RbText((WorkerStats_TotalUnits - WorkerStats_IdleCount).ToString()));
 
                     content.space();
 
-                    content.Add(new RbImage(SpriteName.unitEmoteSnore));
+                    content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueIdle));
                     content.hspace();
                     content.Add(new RbText(WorkerStats_IdleCount.ToString()));
 
@@ -2999,32 +3005,7 @@ namespace VikingEngine.DSSWars.GameObject
                 
             }
 
-            void workQueueInfo(RichBoxContent content, object tag)
-            {
-                content.h1(".Work queue", HudLib.TitleColor_Label);
-                HudLib.Label(content, "Remaining work objectives");
-                content.hspace();
-                content.Add(new RbText(WorkerStats_WorkQueueLength.ToString()));
-
-                content.newParagraph();
-                
-                HudLib.Label(content, "Active work teams");
-                content.hspace();
-                content.Add(new RbImage(SpriteName.WarsWorker));
-                content.hspace();
-                content.Add(new RbText((WorkerStats_TotalUnits - WorkerStats_IdleCount).ToString()));
-
-                content.newLine();
-                
-                HudLib.Label(content, "Idle work teams");
-                content.hspace();
-                content.Add(new RbImage(SpriteName.unitEmoteSnore));
-                content.hspace();
-                content.Add(new RbText(WorkerStats_IdleCount.ToString()));
-
-                content.newLine();
-                content.text(string.Format("Villagers work in teams of {0}", WorkTeamSize), HudLib.InfoYellow_Light);
-            }
+            
 
 
             void automationToolTip(RichBoxContent content, object tag)
@@ -3156,6 +3137,34 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void workQueueInfo(RichBoxContent content, object tag)
+        {
+            content.h1(DssRef.todoLang.WorkQueue_Title, HudLib.TitleColor_Head);
+            HudLib.Label(content, DssRef.todoLang.WorkQueue_Length);
+            content.hspace();
+            content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueTotal));
+            content.hspace();
+            content.Add(new RbText(WorkerStats_WorkQueueLength.ToString()));
+
+            content.newParagraph();
+
+            HudLib.Label(content, DssRef.todoLang.WorkQueue_ActiveWorkers);
+            content.hspace();
+            content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueActive));
+            content.hspace();
+            content.Add(new RbText((WorkerStats_TotalUnits - WorkerStats_IdleCount).ToString()));
+
+            content.newLine();
+
+            HudLib.Label(content, DssRef.todoLang.WorkQueue_IdleWorkers);
+            content.hspace();
+            content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueIdle));
+            content.hspace();
+            content.Add(new RbText(WorkerStats_IdleCount.ToString()));
+
+            content.newLine();
+            content.text(string.Format(DssRef.todoLang.WorkTeam_Size, WorkTeamSize), HudLib.InfoYellow_Light);
+        }
 
         public void immigrantsTooltip(RichBoxContent content, object tag)
         {
@@ -3921,6 +3930,12 @@ namespace VikingEngine.DSSWars.GameObject
             if (newFaction == null)
                 return;
 
+#if DEBUG
+            if (cityType == CityType.UnClaimed)
+            {
+                throw new Exception();      
+            }
+#endif
             Faction owner = GetFaction_Safe();
             if (owner != newFaction)
             {

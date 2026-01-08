@@ -196,6 +196,11 @@ namespace VikingEngine.DSSWars.Map
                         tasks.Clear();
                     }
 
+                    //foreach (var city in world.cities)
+                    //{ 
+                    //    city.cityTileArea = city.buildArea.max
+                    //}
+
 
                     Rectangle2 cityArea(int part, int divitions, bool insertEdges)
                     {
@@ -334,12 +339,18 @@ namespace VikingEngine.DSSWars.Map
                 tile.CityIndex = city.myIndex;
                 world.tileGrid.Set(loop.Position, tile);
 
-                var r = loop.Position.SideLength(city.tilePos);
-                if (city.cityTileArea.size.X == 0)
+                //var r = loop.Position.SideLength(city.tilePos);
+
+                lock (city)
                 {
-                    city.cityTileArea = Rectangle2.FromCenterTileAndRadius(city.tilePos, 3);
+                   city.cityTileArea.includeTile(loop.Position);
                 }
-                city.cityTileArea.includeTile(loop.Position);
+                
+                //if (city.cityTileArea.size.X == 0)
+                //{
+                //    city.cityTileArea = Rectangle2.FromCenterTileAndRadius(city.tilePos, 3);
+                //}
+                //city.buildArea.Next(ref loop.Position);//cityTileArea.includeTile(loop.Position);
                 //if (city.cityTileRadius < r)
                 //{
                 //    city.cityTileRadius = r;
