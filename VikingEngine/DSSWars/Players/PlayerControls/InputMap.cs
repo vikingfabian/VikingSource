@@ -13,7 +13,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.HeroQuest.Display;
 using VikingEngine.DataStream;
 using VikingEngine.EngineSpace.HUD.RichBox;
-using Valve.Steamworks;
+
 using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars

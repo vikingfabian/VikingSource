@@ -1,4 +1,5 @@
 ﻿#if PCGAME
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,49 +8,49 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.SteamWrapping
 {
-    struct SteamUser
+    struct SteamUserOld
     {
         public string name;
-        public ulong id;
+        public CSteamID id;
 
-        public SteamUser(ulong id)
+        public SteamUserOld(CSteamID id)
         {
             this.id = id;
-            name = Valve.Steamworks.SteamAPI.SteamFriends().GetFriendPersonaName(id);
+            name = SteamFriends.GetFriendPersonaName(id);
         }
 
         public void write(System.IO.BinaryWriter w)
         {
             StreamLib.WriteString(w, name);
-            w.Write(id);
+            w.Write(id.m_SteamID);
         }
 
         public void read(System.IO.BinaryReader r)
         {
             name = StreamLib.ReadString_safe(r);
-            id = r.ReadUInt64();
+            id = new CSteamID(r.ReadUInt64());
         }
 
         public override bool Equals(object obj)
         {
-            SteamUser other = (SteamUser)obj;
+            SteamUserOld other = (SteamUserOld)obj;
             
             return this.id == other.id;
         }
 
         public override int GetHashCode()
         {
-            return (int)id;
+            return id.GetHashCode();
         }
     }
 
     class SteamUserList
     {
-        public List<SteamUser> members = new List<SteamUser>();
+        public List<SteamUserOld> members = new List<SteamUserOld>();
 
 
 
-        public void Add(SteamUser user, int maxLength = int.MaxValue)
+        public void Add(SteamUserOld user, int maxLength = int.MaxValue)
         {
             for (int i = 0; i < members.Count; ++i)
             {
@@ -84,7 +85,7 @@ namespace VikingEngine.SteamWrapping
             members.Clear();
             for (int i = 0; i < membersCount; ++i)
             {
-                var user = new SteamUser();
+                var user = new SteamUserOld();
                 user.read(r);
                 members.Add(user);
             }

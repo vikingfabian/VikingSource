@@ -102,11 +102,17 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj" />
+    <ProjectReference Include="..\..\..\SteamworksNet\Steamworks.NET\Standalone2.0\Steamworks.NET.Standard.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
       <HintPath>..\..\..\monogame\MonoGame\MonoGame.Framework\obj\DesktopGL\Release\MonoGame.Framework.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="steam_api64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
