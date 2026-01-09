@@ -1039,10 +1039,10 @@ namespace VikingEngine.DSSWars.Map.Generate
                                 if (cityHasNeededSpace(pos))
                                 {
                                     var setType = type;
-                                    if (world.rnd.Chance(generateSettings.percentageUnclaimed))
-                                    {
-                                        setType = CityType.UnClaimed;
-                                    }
+                                    //if (world.rnd.Chance(generateSettings.percentageUnclaimed))
+                                    //{
+                                    //    setType = CityType.UnClaimed;
+                                    //}
 
                                     City c = new City(world.cities.Count, pos, setType, world);
                                     //c.generateCultureAndEconomy(world, cityCultureCollection);
