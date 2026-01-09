@@ -203,6 +203,12 @@ namespace VikingEngine.DSSWars.Build
         static readonly SubTile TerrainType_sulfur = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Sulfur);
         static readonly SubTile TerrainType_coal = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Coal);
 
+        public bool HasIndependantResources()
+        {
+            return mineCount_bogIron + mineCount_bogIron >= 1 &&
+                resourceCount_wood >= 3 &&
+                resourceCount_stone >= 1;
+        }
 
         public void miningOverviewHud(LocalPlayer player, RichBoxContent content)
         {

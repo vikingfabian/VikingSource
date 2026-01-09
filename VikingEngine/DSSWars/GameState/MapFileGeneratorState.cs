@@ -86,7 +86,7 @@ namespace VikingEngine.DSSWars
                         while (true)
                         {
                             List<Task> tasks = new List<Task>();
-                            bool success = new GenerateMap().Generate(true, new Data.WorldMetaData(Ref.rnd.Ushort(), loadingSz, loadingNumber), new MapGenerateSettings(), tasks);
+                            bool success = new GenerateMap().Generate(true, new Data.WorldMetaData(Ref.rnd.Ushort(), loadingSz, loadingNumber), new MapGenerateSettings(), tasks).Result;
 
                             await Task.WhenAll(tasks);
 
