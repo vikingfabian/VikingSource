@@ -850,7 +850,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             //CITY
             if (input.NextCity.DownEvent && player.faction.cities.Count > 0)
             {
-                nextCity(!Input.Keyboard.Shift);
+                nextCity();
                 if (input.inputSource.IsController)
                 {
                     setMenuFocus(true, true);
@@ -877,44 +877,79 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.hud.needRefresh = true;
         }
 
-        public void nextCity(bool forward)
+        public void nextCity()
         {
             player.hud.needRefresh = true;
-            if (forward)
+
+            int dir = 1;
+            if (Input.Keyboard.Shift &&
+                player.gameControls.input.inputSource.HasKeyBoard)
             {
-                tabCity++;
-                if (tabCity >= player.faction.cities.Count)
-                {
-                    tabCity = 0;
-                }
-            }
-            else
-            {
-                tabCity--;
-                if (tabCity < 0)
-                {
-                    tabCity = player.faction.cities.Count - 1;
-                }
+                dir = -1;
             }
 
+            int loops = 0;
+            do
+            {
+                tabCity = Bound.SetRollover(tabCity + dir, 0, player.faction.cities.Array.Length-1);
 
-            int current = 0;
-            //var citiesC = player.faction.cities.counter();
-            //while (citiesC.Next())
+                var cIx = player.faction.cities.Array[tabCity];
+                if (cIx >= 0)
+                {
+                    var city = DssRef.world.cities[cIx];
+                    if (city.factionIndex == player.faction.myIndex)
+                    {
+                        if (city.automateCity &&
+                            player.gameControls.input.inputSource.HasKeyBoard &&
+                            Input.Keyboard.Alt)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            //focus on city
+                            map.cameraFocus = city;
+                            mapSelect(city);
+                            return;
+                        }
+                    }
+                }
+
+            } while (++loops < player.faction.cities.Array.Length);
+
+            //if (forward)
             //{
-            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-            while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
-            {
-                if (current == tabCity)
-                {
-                    //focus on city
-                    map.cameraFocus = citySel;
-                    mapSelect(citySel);
+            //    tabCity++;
+            //    if (tabCity >= player.faction.cities.Count)
+            //    {
+            //        tabCity = 0;
+            //    }
+            //}
+            //else
+            //{
+            //    tabCity--;
+            //    if (tabCity < 0)
+            //    {
+            //        tabCity = player.faction.cities.Count - 1;
+            //    }
+            //}
 
-                    return;
-                }
-                current++;
-            }
+
+            //int current = 0;
+            
+            //SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            //while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
+            //{
+            //    if (current == tabCity)
+            //    {
+            //        //focus on city
+            //        map.cameraFocus = citySel;
+            //        mapSelect(citySel);
+
+            //        return;
+            //    }
+            //    current++;
+            //}
             
         }
         public void nextArmy(bool forward)

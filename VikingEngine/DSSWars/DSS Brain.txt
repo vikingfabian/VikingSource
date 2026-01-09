@@ -1,9 +1,5 @@
 ﻿Change log:
-! map generating is broken
-* Warning icons can be displayed on cities and armies
-* The map generating now generates terrain foil before assigning factions
-* Cities will check starting resources when determing unclaimed
-
+*
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

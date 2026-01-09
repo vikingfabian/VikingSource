@@ -290,6 +290,14 @@ namespace VikingEngine.HUD.RichBox
             space();
             Add(new RbText(desc));
         }
+
+        public void ButtonDescription(SpriteName buttonMapIcon, string desc)
+        {
+            newLine();
+            Add(new RbImage(buttonMapIcon));
+            space();
+            Add(new RbText(desc));
+        }
         public void buttonMap(IButtonMap buttonMap)
         {
             ButtonMap(buttonMap, this);

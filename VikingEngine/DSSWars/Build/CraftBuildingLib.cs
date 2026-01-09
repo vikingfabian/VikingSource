@@ -571,6 +571,16 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Water_G, 30),
             }, XP.WorkExperienceType.Farm
         );
+        public static readonly CraftBlueprint Orchard_Gold = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.OrchardApple,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Gold, DssConst.FoodGoldValue_BlackMarket * 6),
+                new UseResource(ItemResourceType.Water_G, 30),
+            }, XP.WorkExperienceType.Farm
+        );
 
         public static readonly CraftBlueprint Smith = new CraftBlueprint(
             CraftResultType.Building,

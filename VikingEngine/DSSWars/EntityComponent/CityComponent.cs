@@ -36,21 +36,35 @@ namespace VikingEngine.DSSWars
             cityResouces = new GroupedResource[CityResoureIndex.COUNT * cityCount];
             neighborCities = new EcsStaticArray(14, cityCount);
 
+            int startWood, startLinnen, startFood;
+            if (DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+            {
+                startWood = 120;
+                startLinnen = 120;
+                startFood = 120;
+            }
+            else
+            {
+                startWood = 20;
+                startLinnen = 20;
+                startFood = 200;
+            }
+
             int startIndex = 0;
             for (int cityIx = 0; cityIx < cityCount; cityIx++)
             {
                 //cities[cityIx].resourceComponentStartIndex = startIndex;
                 //int multiplyDefault = cities[cityIx].cityType == CityType.UnClaimed ? 0 : 1;
                 // Basics
-                cityResouces[startIndex + CityResoureIndex.wood] = new GroupedResource { amount = 20, stockPileLimit = DefaultBuffer_Wood };
+                cityResouces[startIndex + CityResoureIndex.wood] = new GroupedResource { amount = startWood, stockPileLimit = DefaultBuffer_Wood };
                 cityResouces[startIndex + CityResoureIndex.fuel] = new GroupedResource { amount = 100, stockPileLimit = 400 };
                 cityResouces[startIndex + CityResoureIndex.water] = new GroupedResource { stockPileLimit = 0 }; // (no default given)
                 cityResouces[startIndex + CityResoureIndex.stone] = new GroupedResource { amount = 20, stockPileLimit = 300 };
                 cityResouces[startIndex + CityResoureIndex.rawFood] = new GroupedResource { amount = 0, stockPileLimit = 200 };
-                cityResouces[startIndex + CityResoureIndex.food] = new GroupedResource { amount = 200, stockPileLimit = 500 };
+                cityResouces[startIndex + CityResoureIndex.food] = new GroupedResource { amount = startFood, stockPileLimit = 500 };
                 cityResouces[startIndex + CityResoureIndex.beer] = new GroupedResource { amount = 0, stockPileLimit = 200 };
                 cityResouces[startIndex + CityResoureIndex.coolingfluid] = new GroupedResource { amount = 0, stockPileLimit = 200 };
-                cityResouces[startIndex + CityResoureIndex.skinLinnen] = new GroupedResource { amount = 20, stockPileLimit = DefaultBuffer_SkinLinnen };
+                cityResouces[startIndex + CityResoureIndex.skinLinnen] = new GroupedResource { amount = startLinnen, stockPileLimit = DefaultBuffer_SkinLinnen };
 
                 // Ores
                 cityResouces[startIndex + CityResoureIndex.ironore] = new GroupedResource { stockPileLimit = 100 };

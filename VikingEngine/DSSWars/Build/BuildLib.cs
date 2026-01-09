@@ -159,7 +159,7 @@ namespace VikingEngine.DSSWars.Build
         public static List<BuildAndExpandType> LogisticsUnlockBuildings = new List<BuildAndExpandType>
         {
             BuildAndExpandType.CoalPit,
-            BuildAndExpandType.Brewery,
+            //BuildAndExpandType.Brewery,
 
             BuildAndExpandType.ImmigrationTent,
             BuildAndExpandType.Recruitment,
@@ -654,11 +654,13 @@ namespace VikingEngine.DSSWars.Build
 
             new BuildOption(BuildAndExpandType.OrchardApple, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeApple, SpriteName.WarsBuild_TreeApple, CraftBuildingLib.Orchard, true,
                 BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
-                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
-            
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { altBlueprint = CraftBuildingLib.Orchard_Gold };
+
             new BuildOption(BuildAndExpandType.OrchidBanana, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeBanana, SpriteName.WarsBuild_TreeBanana, CraftBuildingLib.Orchard, true,
                 BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
-                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { altBlueprint = CraftBuildingLib.Orchard_Gold };
 
             new BuildOption(BuildAndExpandType.DirtRoad, TerrainMainType.Road, (int)TerrainRoadType.DirtRoad, SpriteName.warsFoliageDirtRoad, CraftBuildingLib.DirtRoad, false, 
                 BuildCategoryTab.Decor, BuildFilterTag.Road, BuildFilterTag.NUM_NONE, BuildFilterTag.NUM_NONE,
