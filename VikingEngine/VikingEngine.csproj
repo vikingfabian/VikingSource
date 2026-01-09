@@ -103,10 +103,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj">
-      <Properties>Platform=x64</Properties>
+      <Properties Condition="'$(Configuration)' == 'Release'">Platform=x64</Properties>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SteamworksNet\Steamworks.NET\Standalone2.0\Steamworks.NET.Standard.csproj">
-        <Properties>Platform=x64</Properties>
+        <Properties Condition="'$(Configuration)' == 'Release'">Platform=x64</Properties>
     </ProjectReference>
   </ItemGroup>
   

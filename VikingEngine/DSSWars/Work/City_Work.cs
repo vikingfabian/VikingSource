@@ -35,6 +35,9 @@ namespace VikingEngine.DSSWars.GameObject
         public int WorkerStats_WorkQueueLength => workQue.Count;
         public int WorkerStats_TotalUnits => workerStatuses.Count;
 
+        public int WorkerStats_StuckBuildings_Process = 0;
+        public int WorkerStats_StuckBuildings = 0;
+
         public bool mintOnFullStockProperty(object tag, bool set, bool value)
         {
             WorkPriorityType work = (WorkPriorityType)tag;

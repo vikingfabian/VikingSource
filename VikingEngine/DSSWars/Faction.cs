@@ -736,12 +736,12 @@ namespace VikingEngine.DSSWars
                 City largest = null;
 
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
+                while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
                 {
                     
-                    if (largest == null || city.HousingCount_Workers > largest.HousingCount_Workers)
+                    if (largest == null || citySel.HousingCount_Workers > largest.HousingCount_Workers)
                     {
-                        largest = city;
+                        largest = citySel;
                     }
                 }
 

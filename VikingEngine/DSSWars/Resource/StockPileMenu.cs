@@ -225,7 +225,7 @@ namespace VikingEngine.DSSWars.Resource
             else
             {
                 res = new GroupedResource() {
-                    goalBuffer = faction.GetResourceOverview(item).goalBuffer
+                    stockPileLimit = faction.GetResourceOverview(item).stockPileLimit
                 };
             }
 
@@ -233,7 +233,7 @@ namespace VikingEngine.DSSWars.Resource
 
             content.Add(new ArtButton(RbButtonStyle.HoverArea,
                 new List<AbsRichBoxMember>{
-                        new RbImage(res.amount >= res.goalBuffer ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd),
+                        new RbImage(res.amount >= res.stockPileLimit ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd),
                         new RbImage(ResourceLib.Icon(item))}, null,
                     new RbTooltip((RichBoxContent content, object tag) =>
                     {
@@ -269,10 +269,10 @@ namespace VikingEngine.DSSWars.Resource
                     var res = city.GetGroupedResource(item);
                     if (set)
                     {
-                        res.goalBuffer = value;
+                        res.stockPileLimit = value;
                         city.SetGroupedResource(item, res);
                     }
-                    return res.goalBuffer;
+                    return res.stockPileLimit;
                 };
             }
             else
@@ -282,11 +282,11 @@ namespace VikingEngine.DSSWars.Resource
                     ref var res = ref faction.GetRefResourceOverview(item);
                     if (set)
                     {
-                        res.goalBuffer = value;
+                        res.stockPileLimit = value;
                         //todo set all cities
                     }
 
-                    return res.goalBuffer;
+                    return res.stockPileLimit;
                 };
             }
 

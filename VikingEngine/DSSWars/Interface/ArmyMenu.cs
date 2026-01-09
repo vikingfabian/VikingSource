@@ -454,8 +454,10 @@ namespace VikingEngine.DSSWars.Interface
 
         public void tagsToMenu(RichBoxContent content)
         {
+            HudLib.Label(content, ".View on map" + string.Format(" ({0})", ".All armies"));
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tag_ViewOnMap) }, player.ArmyTagsOnMapProperty));
+            player.armyHudSettings.toHud(content, false);
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tag_ViewOnMap) }, player.ArmyTagsOnMapProperty));
             content.newParagraph();
 
             for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)

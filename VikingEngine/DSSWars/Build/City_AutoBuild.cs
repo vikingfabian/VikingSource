@@ -246,22 +246,22 @@ namespace VikingEngine.DSSWars.GameObject
             ref var res_rawFood = ref GetRefGroupedResource(CityResoureIndex.rawFood);
             ref var res_fuel = ref GetRefGroupedResource(CityResoureIndex.fuel);
 
-            res_food.goalBuffer = Bound.Min(workForce.amount / 100 * 100 + 200, DssConst.Logistics1FoodStorage) * multi;
-            res_rawFood.goalBuffer = (workForce.amount / 300 * 100 + 100) * multi;
-            res_fuel.goalBuffer = res_rawFood.goalBuffer;
+            res_food.stockPileLimit = Bound.Min(workForce.amount / 100 * 100 + 200, DssConst.Logistics1FoodStorage) * multi;
+            res_rawFood.stockPileLimit = (workForce.amount / 300 * 100 + 100) * multi;
+            res_fuel.stockPileLimit = res_rawFood.stockPileLimit;
 
 
             ref var res_wood = ref GetRefGroupedResource(CityResoureIndex.wood);
             ref var res_skin = ref GetRefGroupedResource(CityResoureIndex.skinLinnen);
 
-            res_wood.goalBuffer = WorldData.DefaultBuffer_Wood;
-            res_skin.goalBuffer = WorldData.DefaultBuffer_SkinLinnen;
+            res_wood.stockPileLimit = WorldData.DefaultBuffer_Wood;
+            res_skin.stockPileLimit = WorldData.DefaultBuffer_SkinLinnen;
 
             if (prepareSettle)
             {
-                res_food.goalBuffer += Conscript.ConscriptDataLib.CraftSettlerFood;
-                res_wood.goalBuffer += Conscript.ConscriptDataLib.CraftSettlerWood;
-                res_skin.goalBuffer += Conscript.ConscriptDataLib.CraftSettlerSkinLinen;
+                res_food.stockPileLimit += Conscript.ConscriptDataLib.CraftSettlerFood;
+                res_wood.stockPileLimit += Conscript.ConscriptDataLib.CraftSettlerWood;
+                res_skin.stockPileLimit += Conscript.ConscriptDataLib.CraftSettlerSkinLinen;
             }
         }
 

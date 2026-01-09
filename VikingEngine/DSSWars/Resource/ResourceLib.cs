@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.Resource
             resources.changeRate.toMenu(content);
 
             SpriteName stockIcon;
-            if (resources.amount >= resources.goalBuffer)
+            if (resources.amount >= resources.stockPileLimit)
             {
                 stockIcon = SpriteName.WarsStockpileStop;
             }
@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.Resource
             content.space();
             content.Add(new RbImage(stockIcon));
             content.space();
-            content.Add(new RbText(TextLib.LargeNumber(resources.goalBuffer)));
+            content.Add(new RbText(TextLib.LargeNumber(resources.stockPileLimit)));
 
             var priority = city.workTemplate.GetWorkPriority(item, out bool hasPriority);
             if (hasPriority)
