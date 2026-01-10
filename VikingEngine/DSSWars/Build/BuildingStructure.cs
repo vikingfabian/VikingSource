@@ -70,6 +70,7 @@ namespace VikingEngine.DSSWars.Build
         {
             switch (type)
             {
+                case BuildAndExpandType.WorkerTent:
                 case BuildAndExpandType.WorkerHut:
                 case BuildAndExpandType.WorkerHutLarge:
                     return WorkerHuts_pos;
@@ -321,6 +322,7 @@ namespace VikingEngine.DSSWars.Build
         
         public bool manorLord;
         public int buildingLevel_logistics;
+        public int TentHuts_count;
         public int WorkerHuts_count;
         public int WorkerHuts_Large_count;
         public int ServiceMenHouse_count;
@@ -372,12 +374,14 @@ namespace VikingEngine.DSSWars.Build
         public int School_count;
         public int ResearchCenter_count;
         public int BookPress_count;
-        
+
+        public int wallCount;
 
         public int getCount(BuildAndExpandType type)
         {
             switch (type)
             {
+                case BuildAndExpandType.WorkerTent: return TentHuts_count;
                 case BuildAndExpandType.WorkerHut: return WorkerHuts_count;
                 case BuildAndExpandType.WorkerHutLarge: return WorkerHuts_Large_count;
 

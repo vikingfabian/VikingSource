@@ -1741,7 +1741,7 @@ namespace VikingEngine.DSSWars.Players
                 });
             }
 
-
+            faction.refreshMainCity();
             if (faction.mainCity != null)
             {
                 if (newGame)

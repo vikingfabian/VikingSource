@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using VikingEngine.DSSWars.GameObject;
-using VikingEngine.ToGG.ToggEngine.Map;
-using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Work;
+using VikingEngine.LootFest.Map;
+using VikingEngine.ToGG.ToggEngine.Map;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.Map
             {
                 newCity = false;
 
-                update(city, workerCount);
+                update(DssRef.world, city, workerCount);
             }
         }
 
@@ -233,7 +233,7 @@ namespace VikingEngine.DSSWars.Map
             return freeSubTilePos.X > 0;
         }
 
-        public void update(City city, int workerCount, int emptyLandExpansions = 2)
+        public void update(WorldData world, City city, int workerCount, int emptyLandExpansions = 2)
         {
             //int emptyLandExpansions = 2;
 
@@ -284,7 +284,7 @@ namespace VikingEngine.DSSWars.Map
             while (loop.Next())
             {
 
-                if (DssRef.world.tileGrid.TryGet(loop.Position, out var tile) &&
+                if (world.tileGrid.TryGet(loop.Position, out var tile) &&
                     tile.CityIndex == city.myIndex &&
                     tile.IsLand())
                 {
@@ -293,7 +293,7 @@ namespace VikingEngine.DSSWars.Map
 
                     while (subTileLoop.Next())
                     {
-                        SubTile subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+                        SubTile subTile = world.subTileGrid.Get(subTileLoop.Position);
 
                         if (subTile.collectionPointer >= 0)
                         {
@@ -426,6 +426,10 @@ namespace VikingEngine.DSSWars.Map
 
                                 switch (building)
                                 {
+                                    case TerrainBuildingType.WorkerTent:
+                                        ++buildingStructure.TentHuts_count;
+                                        buildingPosition.WorkerHuts_pos = subTileLoop.Position;
+                                        break;
                                     case TerrainBuildingType.WorkerHut:
                                         ++buildingStructure.WorkerHuts_count;
                                         buildingPosition.WorkerHuts_pos = subTileLoop.Position;
@@ -648,6 +652,8 @@ namespace VikingEngine.DSSWars.Map
                                         CoinMinting.Add(subTileLoop.Position);
                                         buildingPosition.CoinMinter_pos = subTileLoop.Position;
                                         break;
+
+                                   
                                 }
                                 break;
                             case TerrainMainType.Destroyed:
@@ -665,6 +671,9 @@ namespace VikingEngine.DSSWars.Map
                                         emptyArea.includeTileAndRadius(subTileLoop.Position, 3);
                                     }
                                 }
+                                break;
+                            case TerrainMainType.Wall:
+                                ++buildingStructure.wallCount;
                                 break;
                         }
                     }
@@ -693,21 +702,21 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public bool MayAutoBuildHere(City city, IntVector2 subTilePos)
-        {
-            if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subtile))
-            {
-                switch (subtile.mainTerrain)
-                {
-                    case TerrainMainType.Destroyed:
-                    case TerrainMainType.DefaultLand:
-                        var tile = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos));
-                        return tile.MayBuild() && tile.CityIndex == city.myIndex;
+        //public bool MayAutoBuildHere(City city, IntVector2 subTilePos)
+        //{
+        //    if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subtile))
+        //    {
+        //        switch (subtile.mainTerrain)
+        //        {
+        //            case TerrainMainType.Destroyed:
+        //            case TerrainMainType.DefaultLand:
+        //                var tile = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos));
+        //                return tile.MayBuild() && tile.CityIndex == city.myIndex;
 
-                }
-            }
-            return false;
-        }
+        //        }
+        //    }
+        //    return false;
+        //}
 
         public IntVector2 eatPosition(IntVector2 workerSubtile)
         { 

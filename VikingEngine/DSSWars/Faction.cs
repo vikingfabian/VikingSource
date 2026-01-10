@@ -115,7 +115,16 @@ namespace VikingEngine.DSSWars
 
         public void initDiplomacy(WorldData world)
         {
-            diplomaticRelations = new DiplomaticRelation[world.factions.Array.Length];
+            if (diplomaticRelations == null)
+            {
+                diplomaticRelations = new DiplomaticRelation[world.factions.Array.Length];
+            }
+            else if (diplomaticRelations.Length < world.factions.Array.Length)
+            {
+#if DEBUG
+                throw new Exception();
+#endif
+            }
         }
 
         public void initVisuals(WorldMetaData worldMeta)
@@ -283,6 +292,8 @@ namespace VikingEngine.DSSWars
 
         void readRelations(System.IO.BinaryReader r, int subVersion)
         {
+            initDiplomacy(DssRef.world);
+
             while (true)
             {
                 DiplomaticRelation relation = new DiplomaticRelation();

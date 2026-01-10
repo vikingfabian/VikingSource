@@ -254,7 +254,7 @@ namespace VikingEngine.DSSWars.Map
 
         public void DeleteMe()
         { 
-            bg.DeleteMe();
+            bg?.DeleteMe();
             foreach (var m in icons)
             {
                 m.DeleteMe();

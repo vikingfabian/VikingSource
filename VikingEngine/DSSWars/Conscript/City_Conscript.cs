@@ -367,7 +367,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void conscriptSettlerLink()
         {
-            conscriptSettler(null);
+            conscriptSettler(null, false);
         }
 
         public CraftBlueprint SettlerBp()
@@ -375,11 +375,12 @@ namespace VikingEngine.DSSWars.GameObject
             return Culture == CityCulture.Nomads ? ConscriptDataLib.CraftNomadSettler : ConscriptDataLib.CraftSettler;
         }
 
-        public Army conscriptSettler(City settleArea)
+        public Army conscriptSettler(City settleArea, bool checkIfExists)
         {
             Army army = null;
 
-            if (SettlerBp().tryPayResources(this) > 0)
+            if ((!checkIfExists || !army.HasSettler(out _)) &&
+                SettlerBp().tryPayResources(this) > 0)
             {
                 army = conscriptArmy(new ConscriptProfile()
                 {

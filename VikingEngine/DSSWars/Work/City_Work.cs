@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (factionIndex < 0 || cityType == CityType.UnClaimed)
             {
-                CityStructure.WorkInstance.update(this, 0);
+                CityStructure.WorkInstance.update(DssRef.world, this, 0);
                 return; 
             }
 
@@ -1049,7 +1049,7 @@ namespace VikingEngine.DSSWars.GameObject
             int fuelType = (int)TerrainSubFoilType.RapeSeedFarm;
 
             CityStructure structure = new CityStructure();
-            structure.update(this, 32, FuelFarmCount);
+            structure.update(DssRef.world,this, 32, FuelFarmCount);
             if (structure.fuelSpots <= 8)
             {
                 //int count = Math.Min(structure.EmptyLand.Count, FuelFarmCount);

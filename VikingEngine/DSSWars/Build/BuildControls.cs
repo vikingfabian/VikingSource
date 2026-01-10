@@ -440,7 +440,7 @@ namespace VikingEngine.DSSWars.Build
                 {
                     List<IntVector2> positions = new List<IntVector2>(count);
                     CityStructure structure = new CityStructure();
-                    structure.update(city, 1);
+                    structure.update( DssRef.world, city, 1);
 
                     findBuildPositons_AutoBuilder(positions);
                     if (count > 0)
@@ -473,7 +473,7 @@ namespace VikingEngine.DSSWars.Build
 
                                 while (Auto_EdgeRandomizer.Next())
                                 {
-                                    if (structure.MayAutoBuildHere(city, Auto_EdgeRandomizer.Position) &&
+                                    if (city.MayAutoBuildHere(Auto_EdgeRandomizer.Position) &&
                                         !player.orders.orderConflictingSubTile(Auto_EdgeRandomizer.Position, false))
                                     {
                                         result.Add(Auto_EdgeRandomizer.Position);

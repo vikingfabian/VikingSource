@@ -91,7 +91,7 @@ namespace VikingEngine.DSSWars
                 cityResouces[startIndex + CityResoureIndex.Mithril] = new GroupedResource { stockPileLimit = 100 };
 
                 // Tools / components / melee
-                cityResouces[startIndex + CityResoureIndex.Palisade] = new GroupedResource { stockPileLimit = 100 };
+                cityResouces[startIndex + CityResoureIndex.Palisade] = new GroupedResource { stockPileLimit = 0 };
                 cityResouces[startIndex + CityResoureIndex.Toolkit] = new GroupedResource { stockPileLimit = 100 };
                 cityResouces[startIndex + CityResoureIndex.Wagon2Wheel] = new GroupedResource { stockPileLimit = 100 };
                 cityResouces[startIndex + CityResoureIndex.Wagon4Wheel] = new GroupedResource { stockPileLimit = 100 };

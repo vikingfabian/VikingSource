@@ -1248,7 +1248,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         void findCityTerrain(MapGenerateSettings generateSettings)
         {
-            DssRef.world = world;
+            //DssRef.world = world;
             //Calculating start terrain
             List<Task> tasks = new List<Task>();
             foreach (var city in world.cities)
@@ -1258,7 +1258,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     try
                     {
                         CityStructure cityStructure = new CityStructure();
-                        cityStructure.update(city, 0, 0);
+                        cityStructure.update(world, city, 0, 0);
                     }
                     catch (Exception ex)
                     {

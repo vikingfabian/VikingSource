@@ -1919,6 +1919,10 @@ namespace VikingEngine.DSSWars.GameObject
 
             void pathTowardsPosition(Vector3 goalWp)
             {
+                if (goalWp.X <= 0)
+                {
+                    return;
+                }
                 
                 tilePos = WP.ToTilePos(position);
                 setGroundY();
@@ -1981,7 +1985,7 @@ namespace VikingEngine.DSSWars.GameObject
             
             //bool endAsShip = DssRef.world.tileGrid.Get(army.adjustedWalkGoal).IsWater();
 
-            if (!army.TryGetTarget(out var tArmy))
+            if (!army.TryGetTarget(out var tArmy) || position.X <= 0)
             {
                 return;
             }

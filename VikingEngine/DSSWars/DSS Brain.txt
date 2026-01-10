@@ -1,5 +1,5 @@
 ﻿Change log:
-*
+* 
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
