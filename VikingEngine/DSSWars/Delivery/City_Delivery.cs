@@ -97,7 +97,8 @@ namespace VikingEngine.DSSWars.GameObject
                                             {
                                                 Ref.update.AddSyncAction(new SyncAction(() =>
                                                 {
-                                                    new ResourceEffect(status.inProgress.type, status.inProgress.SendAmount,
+                                                    /*new ResourceEffect*/
+                                                    SpriteText3D.GetOrCreate().init(status.inProgress.type, status.inProgress.SendAmount,
                                                        VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition)), DssConst.Men_StandardModelScale * 2f),
                                                        ResourceEffectType.Deliver);
                                                 }));

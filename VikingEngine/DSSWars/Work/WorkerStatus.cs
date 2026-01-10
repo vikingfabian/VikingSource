@@ -484,10 +484,12 @@ namespace VikingEngine.DSSWars.Work
                     if (visualUnit)
                     {
                         Vector3 pos = VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f);
-                        new ResourceEffect(convert1.type, convert1.amount, pos, ResourceEffectType.Add);
+                        /*new ResourceEffect*/
+                        SpriteText3D.GetOrCreate().init(convert1.type, convert1.amount, pos, ResourceEffectType.Add);
                         if (convert2.amount > 0)
                         {
-                            new ResourceEffect(convert2.type, convert2.amount, VectorExt.AddY(pos, 0.08f), ResourceEffectType.Add);
+                            /*new ResourceEffect*/
+                            SpriteText3D.GetOrCreate().init(convert2.type, convert2.amount, VectorExt.AddY(pos, 0.08f), ResourceEffectType.Add);
                         }
                     }
 
@@ -685,7 +687,7 @@ namespace VikingEngine.DSSWars.Work
 
                             if (visualUnit)
                             {
-                                new ResourceEffect(item, add, VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f), ResourceEffectType.Add);
+                                /*new ResourceEffect*/SpriteText3D.GetOrCreate().init(item, add, VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f), ResourceEffectType.Add);
                             }
                         }
                     }

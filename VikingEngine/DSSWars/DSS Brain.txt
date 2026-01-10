@@ -1,6 +1,6 @@
 ﻿Change log:
 * Added description: "Water will limit how many units you can support and the size of your production"
-
+* Better looking and performing 3D text
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
