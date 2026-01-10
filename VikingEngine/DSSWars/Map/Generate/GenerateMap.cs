@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Settings;
@@ -23,6 +24,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         AllTerrain,
         CleanUp,
         ClearPopulation,
+        SubTiles,
         Cities,
         Countries,
         AllPopulation,
@@ -149,7 +151,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             return true;
         }
 
-        public bool Generate(bool save, Data.WorldMetaData worldMeta, MapGenerateSettings generateSettings, List<Task> extraTasks)
+        public async Task<bool> Generate(bool save, Data.WorldMetaData worldMeta, MapGenerateSettings generateSettings, List<Task> extraTasks)
         {
             //Debug.Log("Generate map, " + worldMeta.seed);
             try
@@ -162,16 +164,22 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                 LoadStatus = 55;
                 generateCities(generateSettings);
-                LoadStatus = 60;
+                LoadStatus = 56;
                 bindTilesToCities();
-                LoadStatus = 65;
+                LoadStatus = 57;
 
                 bool areasuccess = calculateCityAreaSize_success();
                 if (!areasuccess)
                 {
                     return false;
                 }
-                LoadStatus = 70;
+                LoadStatus = 60;
+
+                generateSubTiles(world);
+                
+                LoadStatus = 65;
+
+                findCityTerrain(generateSettings);
 
                 if (generateSettings.factionsOnMap)
                 {
@@ -323,7 +331,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             LoadStatus = 10;
         }
 
-        public void postLoadGenerate_Part1(WorldData world)
+        public void generateSubTiles(WorldData world)
         { 
             this.world = world;
             world.rnd = new PcgRandom(world.metaData.seed);
@@ -331,10 +339,10 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             //Debug.Log("postLoadGenerate_Part1, " + world.metaData.seed);
             //partComplete = new bool[ProcessSubTileParts];
-            var task = Task.Factory.StartNew(async () =>
-            {
-                try
-                {
+            //var task = Task.Factory.StartNew(async () =>
+            //{
+            //    try
+            //    {
                     List<Task> tasks = new List<Task>();
 
                     for (int i = 0; i < ProcessTilesDivisionParts; i++)
@@ -353,8 +361,8 @@ namespace VikingEngine.DSSWars.Map.Generate
                         }));
                     }
 
-                    await Task.WhenAll(tasks);
-                    tasks.Clear();
+            Task.WaitAll(tasks.ToArray());
+            tasks.Clear();
 
 
                     for (int i = 0; i < ProcessTilesDivisionParts; i++)
@@ -375,16 +383,16 @@ namespace VikingEngine.DSSWars.Map.Generate
                     }
 
 
-                    await Task.WhenAll(tasks);
-                    postComplete = true;
+            Task.WaitAll(tasks.ToArray());
+            postComplete = true;
 
                     //new Exception("test");
-                }
-                catch (Exception ex)
-                {
-                    BlueScreen.ThreadException = ex;
-                }
-            });
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        BlueScreen.ThreadException = ex;
+            //    }
+            //});
 
         }
  
@@ -1040,10 +1048,10 @@ namespace VikingEngine.DSSWars.Map.Generate
                                 if (cityHasNeededSpace(pos))
                                 {
                                     var setType = type;
-                                    if (world.rnd.Chance(generateSettings.percentageUnclaimed))
-                                    {
-                                        setType = CityType.UnClaimed;
-                                    }
+                                    //if (world.rnd.Chance(generateSettings.percentageUnclaimed))
+                                    //{
+                                    //    setType = CityType.UnClaimed;
+                                    //}
 
                                     City c = new City(world.cities.Count, pos, setType, world);
                                     //c.generateCultureAndEconomy(world, cityCultureCollection);
@@ -1234,10 +1242,80 @@ namespace VikingEngine.DSSWars.Map.Generate
                     world.tileGrid.Set(loop.Position, t);
                 }
             }
-           
+
+            
         }
 
+        void findCityTerrain(MapGenerateSettings generateSettings)
+        {
+            //DssRef.world = world;
+            //Calculating start terrain
+            List<Task> tasks = new List<Task>();
+            foreach (var city in world.cities)
+            {
+                tasks.Add(Task.Factory.StartNew(() =>
+                {
+                    try
+                    {
+                        CityStructure cityStructure = new CityStructure();
+                        cityStructure.update(world, city, 0, 0);
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                }));
+            }
 
+            Task.WaitAll(tasks.ToArray());
+
+            tasks.Clear();
+
+            const int LoopSplit = 8;
+            int currentCityIndex = 0;
+            int unclaimed = 0;
+            
+            for (int loop = 0; loop < LoopSplit; loop++)
+            {
+                int start = currentCityIndex;
+                int ex_end = currentCityIndex + world.cities.Count / LoopSplit;
+                if (loop == LoopSplit - 1)
+                {
+                    ex_end = world.cities.Count;
+                }
+
+                tasks.Add(Task.Factory.StartNew(() =>
+                {
+                    try
+                    {
+                        for (int cityIx = start; cityIx < ex_end; ++cityIx)
+                        {
+                            if (world.cities[cityIx].terrainStructure.HasIndependantResources() == false)
+                            {
+                                if (DssRef.storage.gameRuleset.factionStartSize != FactionStartSize.Full || Ref.rnd.Chance(0.75))
+                                {
+                                    world.cities[cityIx].cityType = CityType.UnClaimed;
+                                    unclaimed++;
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                }));
+            }
+            Task.WaitAll(tasks.ToArray());
+
+
+            int expectedUnclaimCount = MathExt.MultiplyInt(generateSettings.percentageUnclaimed, world.cities.Count);
+            while (expectedUnclaimCount > unclaimed)
+            { 
+                randomCity().cityType = CityType.UnClaimed;
+                unclaimed++;
+            }            
+        }
 
         bool calculateCityAreaSize_success()
         {
@@ -1499,7 +1577,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             while (collection.Count > 0)
             {
                 var city = arraylib.RandomListMemberPop(collection, world.rnd);
-                if (city.factionIndex < 0)
+                if (city.factionIndex < 0 && city.cityType > CityType.UnClaimed)
                 {
                     return city;
                 }
@@ -1576,7 +1654,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         {
             int ix = world.rnd.Int(world.cities.Count);
 
-            while (world.cities[ix].factionIndex >= 0)
+            while (world.cities[ix].factionIndex >= 0 || world.cities[ix].cityType == CityType.UnClaimed)
             {
                 ix++;
                 if (ix >= world.cities.Count)

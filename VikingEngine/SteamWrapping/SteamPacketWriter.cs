@@ -56,7 +56,7 @@ namespace VikingEngine.SteamWrapping
 #if PCGAME
             if (Ref.steam.isNetworkInitialized)
             {
-                Ref.steam.P2PManager.Send(this.ByteArray(), relyability, To, SpecificGamerID);
+                Ref.steam.P2PManager.Send(this.ByteArray(), relyability, To, new Steamworks.CSteamID(SpecificGamerID));
             }
 #endif
         }

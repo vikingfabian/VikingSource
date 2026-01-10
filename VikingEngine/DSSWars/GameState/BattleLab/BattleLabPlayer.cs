@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.GameObject;

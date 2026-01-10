@@ -41,6 +41,7 @@ namespace VikingEngine.DSSWars.GameObject
             //battlesCounter = new SpottedArrayCounter<AbsMapObject>(battles);
         }
 
+        virtual public bool lowFood() { throw new NotImplementedException(); }
         public bool payGold(int cost)
         {
             if (DssRef.storage.gameRuleset.centralGold)

@@ -1369,24 +1369,50 @@ namespace VikingEngine.DSSWars.Interface
                         description = DssRef.lang.HudPins_Description;
                         break;
 
+                    case TagSubTab.TagSettings:
+                        tabContent.Add(new RbImage(SpriteName.WarsHudIconSettings, 0.7f));
+                        tabContent.space(0.6f);
+                        tabContent.Add(new RbText(Ref.langOpt.Options_title));
+                        break;
                 }
 
                 var subTab = new ArtButton(player.tagSubTab == subTabType ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, tabContent,
                     new RbAction1Arg<TagSubTab>((TagSubTab subTabType) =>
                     {
                         player.tagSubTab = subTabType;
-                    }, subTabType, RbSoundType.Tab), new RbTooltip_Text(description));
+                    }, subTabType, RbSoundType.Tab), description == null? null : new RbTooltip_Text(description));
                 content.Add(subTab);
             }
             content.newParagraph();
 
             switch (player.tagSubTab)
             {
+                case TagSubTab.TagSettings:
+
+                    HudLib.Label(content, ".View on map" + string.Format(" ({0})", DssRef.lang.Hud_AllCities));
+                    content.newLine();
+                    player.cityHudSettings.toHud(content, true);
+                    //HudLib.Label(content, ".View on map" + string.Format(" ({0})", DssRef.lang.Hud_AllCities));
+                    //content.newLine();
+                    //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { 
+                    //    new RbImage( SpriteName.warsFolder_carton), new RbSpace(), new RbText(DssRef.lang.MenuTab_Tag) }, player.CityTagsOnMapProperty));
+                    //content.newLine();
+                    //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                    //    new RbImage( SpriteName.WarsResource_FoodEmpty), new RbSpace(), new RbText(DssRef.lang.Message_OutOfFood_Title) }, player.CityTagsOnMapProperty));
+                    //content.newLine();
+                    //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                    //    new RbImage( SpriteName.WarsIcon_WorkQueueIdle), new RbSpace(), new RbText(DssRef.todoLang.WorkQueue_IdleWorkers) }, player.CityTagsOnMapProperty));
+                    //content.newLine();
+                    //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                    //    new RbImage( SpriteName.WarsConstructBuildingIcon), new RbSpace(), new RbText(".Stuck build orders") }, player.CityTagsOnMapProperty));
+
+                    //content.newParagraph();
+                    //content.text(DssRef.lang.Hud_AllCities);
+                    break;
+
                 default:
                     //__
-                    content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tag_ViewOnMap) }, player.CityTagsOnMapProperty));
-                    content.newParagraph();
+                   
 
                     for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
                     {
@@ -2957,6 +2983,7 @@ namespace VikingEngine.DSSWars.Interface
     { 
         Tag,
         HudPin,
+        TagSettings,
         NUM
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+using Steamworks;
 using VikingEngine.Network;
 
 namespace VikingEngine.SteamWrapping

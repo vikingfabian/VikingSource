@@ -179,6 +179,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        override public bool lowFood()
+        {
+            return resourceAmount(CityResoureIndex.food) <= DssConst.WorkSafeGuardAmount;
+        }
+
 
         public TradeTemplate tradeTemplate = new TradeTemplate();
         public const int DefaultFoodBuffer = 500;

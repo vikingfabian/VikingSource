@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Presentation;

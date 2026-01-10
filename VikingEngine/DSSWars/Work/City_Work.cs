@@ -36,6 +36,10 @@ namespace VikingEngine.DSSWars.GameObject
         public int WorkerStats_TotalUnits => workerStatuses.Count;
 
         //public bool mintOnFullStockProperty(object tag, bool set, bool value)
+        
+        public int WorkerStats_StuckBuildings_Process = 0;
+        public int WorkerStats_StuckBuildings = 0;
+
         public bool craftOnFullStockProperty(object tag, bool set, bool value)
         {
             WorkPriorityType work = (WorkPriorityType)tag;
@@ -51,9 +55,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void async_workUpdate(int updateSpeed)
         {
-            if (factionIndex < 0)
+            if (factionIndex < 0 || cityType == CityType.UnClaimed)
             {
-                CityStructure.WorkInstance.update(this, 0);
+                CityStructure.WorkInstance.update(DssRef.world, this, 0);
                 return; 
             }
 
@@ -1023,7 +1027,7 @@ namespace VikingEngine.DSSWars.GameObject
             int fuelType = (int)TerrainSubFoilType.RapeSeedFarm;
 
             CityStructure structure = new CityStructure();
-            structure.update(this, 32, FuelFarmCount);
+            structure.update(DssRef.world,this, 32, FuelFarmCount);
             if (structure.fuelSpots <= 8)
             {
                 //int count = Math.Min(structure.EmptyLand.Count, FuelFarmCount);

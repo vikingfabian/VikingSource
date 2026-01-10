@@ -585,7 +585,7 @@ namespace VikingEngine.DSSWars.Work
                                 city.AddGroupedResource(item, add);
                                 if (visualUnit)
                                 {
-                                    new ResourceEffect(item, add, VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(me.subTileEnd), 0.08f * number), ResourceEffectType.Add);
+                                    SpriteText3D.GetOrCreate().init(item, add, VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(me.subTileEnd), 0.08f * number), ResourceEffectType.Add);
                                 }
                             }
                         }
@@ -945,10 +945,12 @@ namespace VikingEngine.DSSWars.Work
                     if (visualUnit)
                     {
                         Vector3 pos = VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f);
-                        new ResourceEffect(convert1.type, convert1.amount, pos, ResourceEffectType.Add);
+                        /*new ResourceEffect*/
+                        SpriteText3D.GetOrCreate().init(convert1.type, convert1.amount, pos, ResourceEffectType.Add);
                         if (convert2.amount > 0)
                         {
-                            new ResourceEffect(convert2.type, convert2.amount, VectorExt.AddY(pos, 0.08f), ResourceEffectType.Add);
+                            /*new ResourceEffect*/
+                            SpriteText3D.GetOrCreate().init(convert2.type, convert2.amount, VectorExt.AddY(pos, 0.08f), ResourceEffectType.Add);
                         }
                     }
 
@@ -1028,15 +1030,144 @@ namespace VikingEngine.DSSWars.Work
                     break;
                 
 
+                    //    ItemResourceType item = (ItemResourceType)workSubType;
+                    //    ItemPropertyColl.Blueprint(item, out var bp1, out var bp2);
+
+                    //    bool alwaysNeedMore = false;
+                    //    int add = 0;
+                    //    if (bp2 != null)
+                    //    { //Secondary blueprint has priority
+                    //        add = bp2.tryPayResources(city);
+                    //    }
+                    //    if (add == 0)
+                    //    {
+                    //        add = bp1.payResources(city);
+                    //    }
+                    //    gainXp = bp1.experienceType;
+                        
+
+                    //    if (add > 0)
+                    //    {
+                    //        switch (item)
+                    //        {
+                    //            case ItemResourceType.Food_G:
+                    //                city.foodProduction.add(add);
+                    //                break;
+
+                    //            case ItemResourceType.Fuel_G:
+                    //            case ItemResourceType.Coal:
+                    //                item = ItemResourceType.Fuel_G;
+                    //                if (city.Culture == CityCulture.PitMasters)
+                    //                {
+                    //                    add *= 2;
+                    //                }
+                    //                break;
+
+
+                    //            case ItemResourceType.Iron_G:
+                    //            case ItemResourceType.Copper:
+                    //            case ItemResourceType.Tin:
+                    //            case ItemResourceType.Lead:
+                    //            case ItemResourceType.Silver:
+                    //            case ItemResourceType.RawMithril:
+                    //                if (city.Culture == CityCulture.Smelters)
+                    //                {
+                    //                    add *= 2;
+                    //                }
+                    //                break;
+                    //            case ItemResourceType.Beer:
+                    //                if (city.Culture == CityCulture.Brewmaster)
+                    //                {
+                    //                    add += add / 2;
+                    //                }
+                    //                break;
+
+                    //            case ItemResourceType.PaddedArmor:
+                    //            case ItemResourceType.HeavyPaddedArmor:
+                    //                if (city.Culture == CityCulture.Weavers)
+                    //                {
+                    //                    add += 1;
+                    //                }
+                    //                break;
+
+                    //            case ItemResourceType.IronArmor:
+                    //            case ItemResourceType.HeavyIronArmor:
+                    //            case ItemResourceType.LightPlateArmor:
+                    //            case ItemResourceType.FullPlateArmor:
+                    //                if (city.Culture == CityCulture.Armorsmith)
+                    //                {
+                    //                    add += 1;
+                    //                }
+                    //                break;
+                    //            case ItemResourceType.Bronze:
+                    //            case ItemResourceType.BronzeSword:
+                                
+                    //                if (city.Culture == CityCulture.BronzeCasters)
+                    //                {
+                    //                    add *= 2;
+                    //                }
+                    //                break;
+
+                    //            case ItemResourceType.BronzeArmor:
+                    //                if (city.Culture == CityCulture.Armorsmith ||
+                    //                    city.Culture == CityCulture.BronzeCasters)
+                    //                {
+                    //                    add += 1;
+                    //                }
+                    //                break;
+
+                    //            case ItemResourceType.Gold:
+                    //            case ItemResourceType.CopperCoin:
+                    //            case ItemResourceType.BronzeCoin:
+                    //            case ItemResourceType.SilverCoin:
+                    //            case ItemResourceType.ElfCoin:
+                    //                alwaysNeedMore = true;
+                    //                break;
+
+                    //            case ItemResourceType.TwoHandSword:
+                    //                lib.DoNothing();
+                    //                break;
+                    //        }
+
+                    //        city.AddGroupedResource(item, add);
+
+                    //        tryRepeatWork = false;
+
+                    //        if (alwaysNeedMore || city.GetGroupedResource(item).needMore())
+                    //        {
+                    //            if (bp1.hasResources(city))
+                    //            {
+                    //                tryRepeatWork = true;
+                    //            }
+                    //            else if (bp2 != null && bp2.hasResources(city))
+                    //            {
+                    //                tryRepeatWork = true;
+                    //            }
+                    //        }
+
+                    //        if (visualUnit)
+                    //        {
+                    //            /*new ResourceEffect*/SpriteText3D.GetOrCreate().init(item, add, VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f), ResourceEffectType.Add);
+                    //        }
+                    //    }
+                    //}
+                    //break;
+
                 case WorkType.Upgrade:
                 case WorkType.Build:
-                   
+#if DEBUG
+                    if (BuildLib.BuildOptions[workSubType].buildType == BuildAndExpandType.OrchardApple)
+                    {
+                        lib.DoNothing();
+                    }
+#endif
                     if (orderIsActive(city))
                     {
                         bool upgrade = work == WorkType.Upgrade;
                         var build = BuildLib.BuildOptions[workSubType];
                         if (build.execute_async(city, subTileEnd, ref subTile, upgrade))
                         {
+
                             EditSubTile edit = new EditSubTile(subTileEnd, subTile, true, true, false);
                             edit.Submit();
                         }

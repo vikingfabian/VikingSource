@@ -48,6 +48,21 @@ namespace VikingEngine.DSSWars
             int resourceStart = 0;
             //int workStart = 0;
 
+            int startWood, startLinnen, startFood;
+            if (DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+            {
+                startWood = 120;
+                startLinnen = 120;
+                startFood = 120;
+            }
+            else
+            {
+                startWood = 20;
+                startLinnen = 20;
+                startFood = 200;
+            }
+
+            int startIndex = 0;
             for (int cityIx = 0; cityIx < cityCount; cityIx++)
             {
                 //cities[cityIx].resourceComponentStartIndex = startIndex;
@@ -146,6 +161,13 @@ namespace VikingEngine.DSSWars
                 {
                     cityResouces[resourceStart + resourceIx] = new GroupedResource();
                 }
+
+                cityResouces[startIndex + CityResoureIndex.wood].amount = startWood;
+                cityResouces[startIndex + CityResoureIndex.fuel].amount = 100;
+                cityResouces[startIndex + CityResoureIndex.stone].amount = 20;
+                cityResouces[startIndex + CityResoureIndex.food].amount = startFood;
+                cityResouces[startIndex + CityResoureIndex.skinLinnen].amount = startLinnen;                
+                cityResouces[startIndex + CityResoureIndex.iron].amount = 20;
 
                 resourceStart += CityResoureIndex.COUNT;
                 //workStart += WorkTemplate.COUNT;

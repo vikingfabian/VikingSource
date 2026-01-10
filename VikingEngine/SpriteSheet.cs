@@ -2162,11 +2162,16 @@ namespace VikingEngine
                 }
 
 
-                //currentIndex = numTilesWidth * 85;
-                //{
-                //    add(SpriteName.rtsCardBg, currentIndex, DSSCardSz.X, DSSCardSz.Y);
-                //}
             }
+
+            currentIndex = numTilesWidth * 85;
+            currentIndex += 12;
+            {
+                add(SpriteName.WarsIcon_WorkQueueTotal);
+                add(SpriteName.WarsIcon_WorkQueueIdle);
+                add(SpriteName.WarsIcon_WorkQueueActive);
+            }
+
 
             currentIndex = numTilesWidth * 85;
             {
@@ -2339,6 +2344,7 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_TreeSeedlingSoft, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_TreeApple, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_TreeBanana, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_ManorLord, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_MaterialStorage, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_FoodStorage, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_WeaponStorage, currentIndex, 3, 3);

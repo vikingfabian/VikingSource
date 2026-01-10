@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Steamworks;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Work;
@@ -101,6 +102,20 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             return DssRef.world.factions.Array[factionIndex]?.player;
+        }
+
+        public bool TryGetPlayer(out Players.AbsPlayer player)
+        {
+
+            if (factionIndex < 0)
+            {
+                player = null;
+            }
+            else
+            {
+                player = DssRef.world.factions.Array[factionIndex]?.player;
+            }
+            return player != null;
         }
 
         public bool GetCasual()

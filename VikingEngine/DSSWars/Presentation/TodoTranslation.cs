@@ -4,7 +4,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+using Steamworks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.ToGG.Commander.UnitsData;
@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
-        
+        public string Resource_WaterReason => "Water will limit how many units you can support and the size of your production";
         public string BuildingType_Orchard => "Orchard";
         public string BuildingType_ManorLord => "Manor lord";
         public string BuildingType_ManorLord_Description => "Unlock food processing";
@@ -41,6 +41,12 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string Hud_Purchase_LowXCost => "Low {0} cost";
 
+        public string WorkQueue_Title => "Work queue";
+        public string WorkQueue_Length => "Remaining work objectives";
+        public string WorkQueue_ActiveWorkers => "Active work teams";
+        public string WorkQueue_IdleWorkers => "Idle work teams";
+
+        public string WorkTeam_Size => "Villagers work in teams of {0}";
         //## Mounted update ##
      
         public string Economy_AnimalPenUpkeep => "Pen upkeep: {0}";

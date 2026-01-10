@@ -277,7 +277,8 @@ namespace VikingEngine.DSSWars.Work
                                         break;
                                 }
                                 SoundLib.drop_item.Play(model.position);
-                                new ResourceEffect(ItemResourceType.Water_G, -waterCost, model.position, ResourceEffectType.Add);
+                                /*new ResourceEffect*/
+                                SpriteText3D.GetOrCreate().init(ItemResourceType.Water_G, -waterCost, model.position, ResourceEffectType.Add);
                                 EditSubTile.OntileChange(WP.SubtileToTilePos(status.subTileEnd));
                                 break;
                             case WorkType.DropOff:

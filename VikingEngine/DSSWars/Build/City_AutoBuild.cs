@@ -5,7 +5,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool autoExport_weapons = false;
         public GameTimeStamp nextAutoConscriptTime = GameTimeStamp.None;
 
-        
+        int currentWallRadius = 0;
 
         protected void workAutoBuild(bool fuelSafeGuard, bool rawFoodSafeGuard)
         {
@@ -49,26 +49,69 @@ namespace VikingEngine.DSSWars.GameObject
 
             //EMPTY
             //if (checkAutoBuildAvailable())
-            {
+            //{
                
 
                 AutoBuildList.Clear();
+                int safeGuardBuildCount = 1;
 
                 BuildAndExpandType safeGuardBuild = BuildAndExpandType.NUM_NONE;
                 if (fuelSafeGuard && CityStructure.WorkInstance.fuelSpots < 4)
                 {
                     ++CityStructure.WorkInstance.fuelSpots;
                     safeGuardBuild = BuildAndExpandType.RapeSeedFarm;
+                    safeGuardBuildCount = 2;
                 }
                 else if (rawFoodSafeGuard && CityStructure.WorkInstance.foodspots < 4)
                 {
                     ++CityStructure.WorkInstance.foodspots;
-                    safeGuardBuild = BuildAndExpandType.WheatFarm;
+                    safeGuardBuild = BuildAndExpandType.OrchardApple;
+                    safeGuardBuildCount = 4;
+                }
+
+                if (buildingStructure.Orchard_count + buildingStructure.WheatFarm_count + buildingStructure.HenPen_count < 2)
+                {
+                    safeGuardBuild = BuildAndExpandType.OrchardApple;
+                    safeGuardBuildCount = 2;
+                }
+                else if (cityType == CityType.Campsite && buildingStructure.TentHuts_count < 2)
+                {
+                    safeGuardBuild = BuildAndExpandType.WorkerTent;
+                }
+                else if (cityType == CityType.Campsite && buildingStructure.LinenFarm_count < 2)
+                {
+                    safeGuardBuild = BuildAndExpandType.LinenFarm;
+                }
+                else if (cityType == CityType.Campsite && buildingStructure.Orchard_count < 6)
+                {
+                    safeGuardBuild = BuildAndExpandType.OrchardApple;
+                    safeGuardBuildCount = 2;
+                }
+                else if (buildingStructure.WorkBench_count < 1)
+                {
+                    safeGuardBuild = BuildAndExpandType.WorkBench;
+                }
+                else if (cityType == CityType.Campsite && TryGetFaction(out var faction) && faction.cities.Count == 1 && 
+                    buildingStructure.SoldierBarracks_count + buildingStructure.ArcherBarracks_count < 1)
+                {
+                    if (freeServiceMen.amount < 1)
+                    {
+                        safeGuardBuild = BuildAndExpandType.ServiceHouse_Small;
+                    }
+                    else if (GetGroupedResource(EntityComponent.CityResoureIndex.sharpstick).amount >
+                        GetGroupedResource(EntityComponent.CityResoureIndex.ThrowingSpear).amount)
+                    {
+                        safeGuardBuild = BuildAndExpandType.SoldierBarracks;
+                    }
+                    else
+                    {
+                        safeGuardBuild = BuildAndExpandType.ArcherBarracks;
+                    }
                 }
 
                 if (safeGuardBuild != BuildAndExpandType.NUM_NONE)
                 {
-                    for (int i = 0; i < 4; i++)
+                    for (int i = 0; i < safeGuardBuildCount; i++)
                     {
                         AutoBuildList.Add(safeGuardBuild);
                     }
@@ -114,40 +157,116 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                //int buildCount = lib.SmallestValue(AutoBuildList.Count, CityStructure.WorkInstance.EmptyLand.Count);
+            //int buildCount = lib.SmallestValue(AutoBuildList.Count, CityStructure.WorkInstance.EmptyLand.Count);
 
-                for (int i = 0; i < AutoBuildList.Count; ++i)
+            for (int i = 0; i < AutoBuildList.Count; ++i)
+            {
+                var buildType = AutoBuildList[i];
+
+#if DEBUG
+                if (buildType == BuildAndExpandType.OrchardApple)
                 {
-                    var buildType = AutoBuildList[i];
+                    lib.DoNothing();
 
-                    if (CityStructure.WorkInstance.NextEmptyLand(this, Ref.peRnd.Int(32), out var pos))//.EmptyLand[i];
+                }
+#endif
+
+                bool foundPos = false;
+                IntVector2 pos = IntVector2.Zero;
+
+                if (this.buildingStructure.getCount(buildType) > 0)
+                {
+                    var prevPos = CityStructure.WorkInstance.buildingPosition.getPos(buildType);
+                    if (prevPos.X > 0)
                     {
-                        if (this.buildingStructure.getCount(buildType) > 0)
-                        {
-                            var prevPos = CityStructure.WorkInstance.buildingPosition.getPos(buildType);
-                            if (prevPos.X > 0)
-                            {
-                                findAdjacentFreeSpot(Auto_EdgeRandomizer, prevPos, ref pos);
-                            }
-                        }
-
-                        if (BuildLib.BuildOptions[(int)buildType].availableBlueprintResources(this) &&
-                            work_isFreeTile(pos))
-                        {
-                            workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
-                        }
+                        foundPos = findAdjacentFreeSpot(Auto_EdgeRandomizer, prevPos, ref pos);
                     }
-                    else
+                }
+
+                if (!foundPos && CityStructure.WorkInstance.NextEmptyLand(this, Ref.peRnd.Int(32), out pos))//.EmptyLand[i];
+                {
+                    foundPos = true;
+                }
+
+                if (foundPos)
+                {
+                    if (BuildLib.BuildOptions[(int)buildType].availableBlueprintResources_ignorewater(this) &&
+                        work_isFreeTile(pos))
                     {
+                        //workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.autoBuild.value, 0, 0));
                         workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
-                        break;
                     }
+                }
+                else
+                {
+                    break;
                 }
             }
 
+            if (safeGuardBuild == BuildAndExpandType.NUM_NONE)
+            {
+                int freeWalls = buildingStructure.wallCount - groups.Count;
+                if (freeWalls < 2 && currentWallRadius < 32)
+                {
+                    if (currentWallRadius == 0)
+                    {
+                        currentWallRadius = Ref.rnd.Int(4, 8);
+                    }
+
+                    int addCount = 2;
+                    BuildAndExpandType wallType, towerType;
+                    switch (cityType)
+                    {
+                        default:
+                            wallType = BuildAndExpandType.DirtWall;
+                            towerType = BuildAndExpandType.DirtTower;
+                            break;
+                        case CityType.Town:
+                            wallType = BuildAndExpandType.WoodWall;
+                            towerType = BuildAndExpandType.WoodTower;
+                            break;
+                        case CityType.Capital:
+                            wallType = BuildAndExpandType.StoneWall;
+                            towerType = BuildAndExpandType.StoneTower;
+                            break;
+                    }
+
+                    if (BuildLib.BuildOptions[(int)wallType].availableBlueprintResources(this))
+                    {
+                        ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(cityHallSubtilePos, currentWallRadius));
+                        while (loop.Next())
+                        {
+                            if (!(loop.AtBottom && loop.AtCenterX) && //place for opening
+                                MayAutoBuildHere(loop.Position) && work_isFreeTile(loop.Position))
+                            {                                
+                                workQue.Add(new WorkQueMember(WorkType.Build, (int)(loop.AtCorner? towerType : wallType), 0, loop.Position, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
+                                addCount--;
+                                if (addCount <= 0)
+                                {
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (addCount > 0)
+                        {
+                            currentWallRadius += Ref.rnd.Int(5, 9);
+                        }
+                            //    workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
+                            //}
+                        }
+                    //else
+                    //{
+                    //    workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
+                    //    break;
+                    //}
+                }
+            }
+            //}
+
         }
 
-        void findAdjacentFreeSpot(ForXYEdgeLoopRandomPicker edgeRandomizer, IntVector2 center, ref IntVector2 result)
+        bool findAdjacentFreeSpot(ForXYEdgeLoopRandomPicker edgeRandomizer, IntVector2 center, ref IntVector2 result)
         {
             for (int r = 1; r <= 2; r++)
             {
@@ -155,13 +274,14 @@ namespace VikingEngine.DSSWars.GameObject
 
                 while (edgeRandomizer.Next())
                 {
-                    if (CityStructure.WorkInstance.MayAutoBuildHere(this, edgeRandomizer.Position))
+                    if (MayAutoBuildHere(edgeRandomizer.Position))
                     {
                         result = edgeRandomizer.Position;
-                        return;
+                        return true;
                     }
                 }
             }
+            return false;
         }
 
         private void commit_automateCityBuilding()
@@ -180,13 +300,17 @@ namespace VikingEngine.DSSWars.GameObject
             switch (automationFocus)
             {
                 case AutomationFocus.Food:
+                    auto_addBuildingType(BuildAndExpandType.OrchardApple);
                     auto_addBuildingType(BuildAndExpandType.WheatFarm);
                     auto_addBuildingType(BuildAndExpandType.Cook);
                     auto_addBuildingType(BuildAndExpandType.CoalPit);
                     auto_addBuildingType(BuildAndExpandType.Postal);
                     break;
                 case AutomationFocus.Grow:
+
+                    auto_addBuildingType(BuildAndExpandType.WorkerTent);
                     auto_addBuildingType(BuildAndExpandType.WorkerHut);
+                    auto_addBuildingType(BuildAndExpandType.OrchardApple);
                     auto_addBuildingType(BuildAndExpandType.WheatFarm);
                     auto_addBuildingType(BuildAndExpandType.WorkBench);
                     auto_addBuildingType(BuildAndExpandType.ServiceHouse_Small);
@@ -318,8 +442,12 @@ namespace VikingEngine.DSSWars.GameObject
                         chance = 200;
                         break;
 
-                    case BuildAndExpandType.OrchidApple:
+                    case BuildAndExpandType.OrchardApple:
                     case BuildAndExpandType.OrchidBanana:
+                        chance = automationFocus == AutomationFocus.Grow ? 2000 : 1000;
+                        maxCount = 200;
+                        break;
+
                     case BuildAndExpandType.WheatFarm:
                     case BuildAndExpandType.LinenFarm:
                     case BuildAndExpandType.HenPen:
@@ -376,8 +504,7 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         else
                         {
-                            chance = 0;
-                            maxCount = 0;
+                            bBuild = false;
                         }
                         
                         break;
@@ -391,7 +518,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (bBuild)
                 {
                     var opt = BuildLib.BuildOptions[(int)buildType];
-                    if (opt.blueprint.hasResources_buildAndUpgrade(this))
+                    if (opt.blueprint.hasResources_buildAndUpgrade_IgnoreWater(this))
                     {
                         int currentCount = this.buildingStructure.getCount(buildType);
 
@@ -847,6 +974,21 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             return true;
+        }
+        public bool MayAutoBuildHere(IntVector2 subTilePos)
+        {
+            if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subtile))
+            {
+                switch (subtile.mainTerrain)
+                {
+                    case TerrainMainType.Destroyed:
+                    case TerrainMainType.DefaultLand:
+                        var tile = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos));
+                        return tile.MayBuild() && tile.CityIndex == myIndex;
+
+                }
+            }
+            return false;
         }
     }
 

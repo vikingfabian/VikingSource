@@ -127,7 +127,7 @@ namespace VikingEngine.DSSWars
             w.Write(money.copper);
             Debug.WriteCheck(w);
 
-            cities.write_ushort(w);
+            cities.write_ushort_compressed(w);
             //var cityList = cities.toList(DssRef.world.cities);
             //w.Write((ushort)cityList.Count);
             //foreach(var city in cityList)
@@ -326,20 +326,21 @@ namespace VikingEngine.DSSWars
             //{
             //    w.Write((ushort)c.myIndex);
             //}
-            cities.write_ushort(w);
+            cities.write_ushort_compressed(w);
 
             w.Write(availableForPlayer);
         }
 
         public void readMapFile(System.IO.BinaryReader r, int mapVersion, WorldData world)
         {
-            int cityCount = r.ReadUInt16();
+            cities.read_ushort_compressed(r);
+            //int cityCount = r.ReadUInt16();
 
-            for (int i = 0; i < cityCount; ++i)
-            {
-                int cityIx = r.ReadUInt16();
-                AddCity(world.cities[cityIx], true);
-            }
+            //for (int i = 0; i < cityCount; ++i)
+            //{
+            //    int cityIx = r.ReadUInt16();
+            //    AddCity(world.cities[cityIx], true);
+            //}
 
             availableForPlayer= r.ReadBoolean();
         }
@@ -705,12 +706,12 @@ namespace VikingEngine.DSSWars
                 City largest = null;
 
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
+                while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
                 {
                     
-                    if (largest == null || city.HousingCount_Workers > largest.HousingCount_Workers)
+                    if (largest == null || citySel.HousingCount_Workers > largest.HousingCount_Workers)
                     {
-                        largest = city;
+                        largest = citySel;
                     }
                 }
 
