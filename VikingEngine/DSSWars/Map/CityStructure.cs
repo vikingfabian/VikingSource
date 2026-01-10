@@ -235,8 +235,10 @@ namespace VikingEngine.DSSWars.Map
 
         public void update(WorldData world, City city, int workerCount, int emptyLandExpansions = 2)
         {
-            //int emptyLandExpansions = 2;
-
+//#if DEBUG
+//            Debug.CrashIfMainThread();
+//            //int emptyLandExpansions = 2;
+//#endif
             IntVector2 topleft;
             ForXYLoop subTileLoop;
             FoodSpots_workupdate.Clear();

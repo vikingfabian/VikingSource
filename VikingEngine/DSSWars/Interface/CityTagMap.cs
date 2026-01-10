@@ -8,7 +8,7 @@ using VikingEngine.Graphics;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
 
-namespace VikingEngine.DSSWars.Map
+namespace VikingEngine.DSSWars.Interface
 {
     class CityTagMap
     {
@@ -89,9 +89,9 @@ namespace VikingEngine.DSSWars.Map
 
         //Vector2 bgSize;
 
-        public List<Graphics.Image> icons = new List<Graphics.Image>(4);
+        public List<Image> icons = new List<Image>(4);
         //public Graphics.Image icon = null;
-        public Graphics.Image bg = null;
+        public Image bg = null;
 
         bool isVisible = true;
         
@@ -144,7 +144,7 @@ namespace VikingEngine.DSSWars.Map
 
                     if (bg == null)
                     {
-                        bg = new Graphics.Image(SpriteName.NO_IMAGE, Vector2.Zero, Engine.Screen.IconSizeV2 * BgScale, HudLib.DiplomacyDisplayLayer + 1, true);
+                        bg = new Image(SpriteName.NO_IMAGE, Vector2.Zero, Engine.Screen.IconSizeV2 * BgScale, HudLib.DiplomacyDisplayLayer + 1, true);
                         bg.Opacity = 0.7f;
                     }
 
@@ -200,7 +200,7 @@ namespace VikingEngine.DSSWars.Map
 
                     if (index >= icons.Count)
                     {
-                        var icon = new Graphics.Image(SpriteName.NO_IMAGE, Vector2.Zero, Engine.Screen.IconSizeV2 * 0.65f, HudLib.DiplomacyDisplayLayer, true);
+                        var icon = new Image(SpriteName.NO_IMAGE, Vector2.Zero, Engine.Screen.IconSizeV2 * 0.65f, HudLib.DiplomacyDisplayLayer, true);
                         icons.Add(icon);
                         return icon;
                     }
