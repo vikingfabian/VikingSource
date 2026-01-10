@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
-        
+        public string Resource_WaterReason => "Water will limit how many units you can support and the size of your production";
         public string BuildingType_Orchard => "Orchard";
         public string BuildingType_ManorLord => "Manor lord";
         public string BuildingType_ManorLord_Description => "Unlock food processing";

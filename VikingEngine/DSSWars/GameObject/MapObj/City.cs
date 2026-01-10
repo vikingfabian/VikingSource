@@ -2604,7 +2604,11 @@ namespace VikingEngine.DSSWars.GameObject
                        content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.OneDecimal(waterAddPerSec))));
 
                        content.newParagraph();
-                       HudLib.Description(content, DssRef.lang.Resource_WaterAddLimit);
+                       HudLib.BulletPoint(content);
+                       content.Add(new RbText(DssRef.todoLang.Resource_WaterReason, HudLib.InfoYellow_Light));
+                       content.newLine();
+                       HudLib.BulletPoint(content);
+                       content.Add(new RbText(DssRef.lang.Resource_WaterAddLimit, HudLib.InfoYellow_Light));
 
                        //player.hud.tooltip.create(player, content, true);
                    }));
