@@ -8,7 +8,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DataLib;
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Event;

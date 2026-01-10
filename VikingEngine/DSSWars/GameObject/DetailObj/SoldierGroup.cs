@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
@@ -1919,6 +1919,10 @@ namespace VikingEngine.DSSWars.GameObject
 
             void pathTowardsPosition(Vector3 goalWp)
             {
+                if (goalWp.X <= 0)
+                {
+                    return;
+                }
                 
                 tilePos = WP.ToTilePos(position);
                 setGroundY();
@@ -1981,7 +1985,7 @@ namespace VikingEngine.DSSWars.GameObject
             
             //bool endAsShip = DssRef.world.tileGrid.Get(army.adjustedWalkGoal).IsWater();
 
-            if (!army.TryGetTarget(out var tArmy))
+            if (!army.TryGetTarget(out var tArmy) || position.X <= 0)
             {
                 return;
             }

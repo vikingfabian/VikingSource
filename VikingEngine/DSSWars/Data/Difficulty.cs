@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;

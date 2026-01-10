@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.XP
             SteelUnlock = 300 / speed;
             CatapultUnlock = 200 / speed;
             BlackPowderUnlock = 500 / speed;
-            GunPowderUnlock = 600 / speed;
+            GunPowderUnlock = 1000 / speed;
         }
     }
 

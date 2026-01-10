@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.EntityComponent
     struct GroupedResource
     {
         public int amount;
-        public int goalBuffer;
+        public int stockPileLimit;
         public int deliverCount;
 
         public ResourceChangeRate changeRate;
@@ -57,46 +57,46 @@ namespace VikingEngine.DSSWars.EntityComponent
         public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write(amount);
-            w.Write((ushort)goalBuffer);
+            w.Write((ushort)stockPileLimit);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion)
         {
             amount = r.ReadInt32();
-            goalBuffer = r.ReadUInt16();
+            stockPileLimit = r.ReadUInt16();
         }
 
         public void writeStockPile(System.IO.BinaryWriter w)
         {
-            w.Write((ushort)goalBuffer);
+            w.Write((ushort)stockPileLimit);
         }
         public void readStockPile(System.IO.BinaryReader r, int subversion)
         {
-            goalBuffer = r.ReadUInt16();
+            stockPileLimit = r.ReadUInt16();
         }
 
         public bool needMore()
         {
-            return amount < goalBuffer;
+            return amount < stockPileLimit;
         }
 
         public bool reachedBuffer()
         {
-            return amount >= goalBuffer;
+            return amount >= stockPileLimit;
         }
 
         public bool almostReachedBuffer()
         {
-            return amount >= goalBuffer - 50;
+            return amount >= stockPileLimit - 50;
         }
 
         public bool needToImport()
         {
-            return amount < goalBuffer;
+            return amount < stockPileLimit;
         }
 
         public bool canTradeAway()
         {
-            return amount >= 30 && amount >= goalBuffer;
+            return amount >= 30 && amount >= stockPileLimit;
         }
 
         public int amountPlusDelivery()
@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.EntityComponent
                 item != ItemResourceType.Men &&
                 item != ItemResourceType.ServiceMen)
             {
-                bool reached = amount >= goalBuffer;
+                bool reached = amount >= stockPileLimit;
                 reachedBuffer |= reached;
                 SpriteName stockIcon;
                 if (safeGuard)
@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.EntityComponent
                 item != ItemResourceType.Gold &&
                 item != ItemResourceType.Men)
             {
-                bool reached = amount >= goalBuffer;
+                bool reached = amount >= stockPileLimit;
                 reachedBuffer |= reached;
                 SpriteName stockIcon;
                 if (safeGuard)
@@ -203,7 +203,7 @@ namespace VikingEngine.DSSWars.EntityComponent
                             content.newLine();
                             content.Add(new RbImage(stockIcon));
                             content.space();
-                            content.Add(new RbText(city.GetGroupedResource(item).goalBuffer.ToString()));
+                            content.Add(new RbText(city.GetGroupedResource(item).stockPileLimit.ToString()));
                         }));
 
                     //content.space();
@@ -259,7 +259,7 @@ namespace VikingEngine.DSSWars.EntityComponent
 
         public override string ToString()
         {
-            return $"Grouped resource {amount}/{goalBuffer}";
+            return $"Grouped resource {amount}/{stockPileLimit}";
         }
     }
 }

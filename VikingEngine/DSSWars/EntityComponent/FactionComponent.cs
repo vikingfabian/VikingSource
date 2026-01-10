@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars
                     if (properties.cityResourceIndex >= 0)
                     {
                         ref GroupedResource resource = ref factionResourceOverviews[faction.resourceComponentStartIndex + properties.cityResourceIndex];
-                        resource.goalBuffer = properties.defaultStockPile;
+                        resource.stockPileLimit = properties.defaultStockPile;
                     }
                 }
             }
@@ -111,10 +111,10 @@ namespace VikingEngine.DSSWars
                     switch (copyPaste)
                     {
                         case CopyPasteOption.FactionToCity:
-                            cityResouces[city.resourceComponentStartIndex + cityResourceIndex].goalBuffer = factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].goalBuffer;
+                            cityResouces[city.resourceComponentStartIndex + cityResourceIndex].stockPileLimit = factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].stockPileLimit;
                             break;
                         case CopyPasteOption.CityToFaction:
-                            factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].goalBuffer = cityResouces[city.resourceComponentStartIndex + cityResourceIndex].goalBuffer;
+                            factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].stockPileLimit = cityResouces[city.resourceComponentStartIndex + cityResourceIndex].stockPileLimit;
                             break;
 
                             //if (toCity)
@@ -135,11 +135,11 @@ namespace VikingEngine.DSSWars
 
                             if (city == null)
                             {
-                                player.stockPileCopy[cityResourceIndex].goalBuffer = factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].goalBuffer;
+                                player.stockPileCopy[cityResourceIndex].stockPileLimit = factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].stockPileLimit;
                             }
                             else
                             {
-                                player.stockPileCopy[cityResourceIndex].goalBuffer = cityResouces[city.resourceComponentStartIndex + cityResourceIndex].goalBuffer;
+                                player.stockPileCopy[cityResourceIndex].stockPileLimit = cityResouces[city.resourceComponentStartIndex + cityResourceIndex].stockPileLimit;
                             }
                             break;
 
@@ -148,11 +148,11 @@ namespace VikingEngine.DSSWars
                             {
                                 if (city == null)
                                 {
-                                    factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].goalBuffer= player.stockPileCopy[cityResourceIndex].goalBuffer;
+                                    factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].stockPileLimit= player.stockPileCopy[cityResourceIndex].stockPileLimit;
                                 }
                                 else
                                 {
-                                    cityResouces[city.resourceComponentStartIndex + cityResourceIndex].goalBuffer= player.stockPileCopy[cityResourceIndex].goalBuffer;
+                                    cityResouces[city.resourceComponentStartIndex + cityResourceIndex].stockPileLimit= player.stockPileCopy[cityResourceIndex].stockPileLimit;
                                 }
                             }
                             break;

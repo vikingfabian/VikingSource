@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Map;

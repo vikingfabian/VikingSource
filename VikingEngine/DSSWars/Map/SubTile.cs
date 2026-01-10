@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Path;

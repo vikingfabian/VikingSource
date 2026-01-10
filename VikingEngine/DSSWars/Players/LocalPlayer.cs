@@ -99,10 +99,13 @@ namespace VikingEngine.DSSWars.Players
         public FactionPixelTexture minimapPixelTexture;
 
         public UnitsPixelTexture unitsPixelTexture;
-        
-        public bool viewCityTagsOnMap = true;
-        public bool viewArmyTagsOnMap = true;
-        
+
+        //public bool viewCityTagsOnMap = true;
+        //public bool viewArmyTagsOnMap = true;
+        public Profile.ObjectHudSettings cityHudSettings = new Profile.ObjectHudSettings();
+        public Profile.ObjectHudSettings armyHudSettings = new Profile.ObjectHudSettings();
+
+
         public int firstAttacker = ushort.MaxValue;
         public int nextDominationSize;
         public int factionsTerminated = 0;
@@ -334,8 +337,10 @@ namespace VikingEngine.DSSWars.Players
             tutorial_writeGameState(w);
             orders.writeGameState(w);
 
-            w.Write(viewCityTagsOnMap);
-            w.Write(viewArmyTagsOnMap);
+            //w.Write(viewCityTagsOnMap);
+            //w.Write(viewArmyTagsOnMap);
+            cityHudSettings.write(w);   
+            armyHudSettings.write(w);
 
             w.Write((ushort)firstAttacker);
             w.Write((ushort)nextDominationSize);
@@ -431,8 +436,16 @@ namespace VikingEngine.DSSWars.Players
            // Debug.ReadCheck(r);//TEMP!
             orders.readGameState(playerData.localPlayerIndex , r, subversion, pointers);
 
-            viewCityTagsOnMap = r.ReadBoolean();
-            viewArmyTagsOnMap = r.ReadBoolean();
+            if (subversion < 103)
+            {
+                var viewCityTagsOnMap = r.ReadBoolean();
+                var viewArmyTagsOnMap = r.ReadBoolean();
+            }
+            else
+            {
+                cityHudSettings.read(r, subversion);
+                armyHudSettings.read(r, subversion);
+            }
 
             if (subversion >= 73)
             { 
@@ -1008,6 +1021,30 @@ namespace VikingEngine.DSSWars.Players
             void setThemeColor(float percSouth, Vector3 north, Vector3 south)
             {
                 ShaderThemeColor = VectorExt.AddX( north * (1f - percSouth) + south * percSouth, DssRef.time.ShaderDayLight_RedTint);
+            }
+
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+            {
+                citySel.WorkerStats_StuckBuildings_Process = 0;
+            }
+
+            lock (orders.orders)
+            {
+                for (int i = 0; i < orders.orders.Count; ++i)
+                {
+                    var buildOrder = orders.orders[i].GetBuild();
+                    if (buildOrder != null && !Build.BuildLib.BuildOptions[(int)buildOrder.buildingType].blueprint.hasResources_buildAndUpgrade(buildOrder.city))
+                    {
+                        buildOrder.city.WorkerStats_StuckBuildings_Process++;
+                    }
+                }
+            }
+
+            citiesC.Reset();
+            while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+            {
+                citySel.WorkerStats_StuckBuildings = citySel.WorkerStats_StuckBuildings_Process;
             }
         }
 
@@ -1704,18 +1741,26 @@ namespace VikingEngine.DSSWars.Players
                 });
             }
 
-            if (newGame)
+            faction.refreshMainCity();
+            if (faction.mainCity != null)
             {
-                if (faction.mainCity != null)
+                if (newGame)
                 {
+
                     faction.mainCity.tagBack = CityTagBack.Carton;
                     faction.mainCity.tagArt = CityTagArt.IconFaction;
 
                     if (profile.casualControls)
-                    { 
-                        faction.mainCity.FinishCasualBuild( PlayerControls.Casual.CasualBuildType.StartUpBarracks);
+                    {
+                        faction.mainCity.FinishCasualBuild(PlayerControls.Casual.CasualBuildType.StartUpBarracks);
                     }
                 }
+
+                gameControls.map.setCameraPos(faction.mainCity.tilePos);
+            }
+            else
+            {
+                gameControls.map.setCameraPos(DssRef.world.Size / 2);
             }
 
             nextDominationSize = faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();
@@ -1798,25 +1843,25 @@ namespace VikingEngine.DSSWars.Players
             intelligent = true;
             city.AutoExpandType(out work, out farm);
         }
-        public bool CityTagsOnMapProperty(object tag, bool set, bool value)
-        {
-            if (set)
-            {
-                viewCityTagsOnMap = value;
-                (value ? SoundLib.click : SoundLib.back).Play();
-            }
-            return viewCityTagsOnMap;
-        }
+        //public bool CityTagsOnMapProperty(object tag, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        viewCityTagsOnMap = value;
+        //        (value ? SoundLib.click : SoundLib.back).Play();
+        //    }
+        //    return viewCityTagsOnMap;
+        //}
 
-        public bool ArmyTagsOnMapProperty(object tag, bool set, bool value)
-        {
-            if (set)
-            {
-                viewArmyTagsOnMap = value;
-                (value ? SoundLib.click : SoundLib.back).Play();
-            }
-            return viewArmyTagsOnMap;
-        }
+        //public bool ArmyTagsOnMapProperty(object tag, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        viewArmyTagsOnMap = value;
+        //        (value ? SoundLib.click : SoundLib.back).Play();
+        //    }
+        //    return viewArmyTagsOnMap;
+        //}
         public bool IsLocalHost()
         { 
             return playerData.localPlayerIndex == 0;

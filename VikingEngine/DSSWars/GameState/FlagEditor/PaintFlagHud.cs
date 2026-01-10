@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players.Profile;

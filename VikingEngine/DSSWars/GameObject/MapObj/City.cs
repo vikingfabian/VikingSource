@@ -81,6 +81,7 @@ namespace VikingEngine.DSSWars.GameObject
         //IntVector2 cullingTopLeft, cullingBottomRight;
         //public int cityTileRadius = 0;
         public Rectangle2 cityTileArea;
+        //public Intvector2MinMax buildArea;
         public CityCulture Culture = CityCulture.NUM_NONE;
 
         public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarm;
@@ -280,6 +281,8 @@ namespace VikingEngine.DSSWars.GameObject
             this.myIndex = index;
             world.InitCity(this);
             this.tilePos = pos;
+            cityTileArea = Rectangle2.FromCenterTileAndRadius(tilePos, 3);
+            //buildArea = new Intvector2MinMax(tilePos);
             this.cityType = type;
         }
 
@@ -304,27 +307,30 @@ namespace VikingEngine.DSSWars.GameObject
 
             workHutStyle = areaCulture.percMountain > 0.5 ? 0 : 1;
 
-            if (areaCulture.percForest >= 0.7 && cityType == CityType.Capital)
+            if (cityType > CityType.UnClaimed)
             {
-                cityCultureCollection.LargeGreen.Add(this);
-            }
-            else if (areaCulture.percDry >= 0.7 && areaCulture.worldPercX >= 0.75)
-            {
-                cityCultureCollection.DryEast.Add(this);
-            }
-            else if (areaCulture.percWater >= 0.25 && areaCulture.worldPercY <= 0.25)
-            {
-                cityCultureCollection.NorthSea.Add(this);
-            }
-            else if (areaCulture.worldPercY > 0.5f)
-            {
-                if (areaCulture.worldPercX < 0.3f)
+                if (areaCulture.percForest >= 0.7 && cityType == CityType.Capital)
                 {
-                    cityCultureCollection.WestKingdom.Add(this);
+                    cityCultureCollection.LargeGreen.Add(this);
                 }
-                else
+                else if (areaCulture.percDry >= 0.7 && areaCulture.worldPercX >= 0.75)
                 {
-                    cityCultureCollection.DarkLands.Add(this);
+                    cityCultureCollection.DryEast.Add(this);
+                }
+                else if (areaCulture.percWater >= 0.25 && areaCulture.worldPercY <= 0.25)
+                {
+                    cityCultureCollection.NorthSea.Add(this);
+                }
+                else if (areaCulture.worldPercY > 0.5f)
+                {
+                    if (areaCulture.worldPercX < 0.3f)
+                    {
+                        cityCultureCollection.WestKingdom.Add(this);
+                    }
+                    else
+                    {
+                        cityCultureCollection.DarkLands.Add(this);
+                    }
                 }
             }
 
@@ -540,6 +546,8 @@ namespace VikingEngine.DSSWars.GameObject
                     casualProgress.writeGameState(w);
                 }
 
+                w.Write((byte)currentWallRadius);
+
                 Debug.WriteCheck(w);
 
                 //throw new Exception("test");
@@ -715,6 +723,10 @@ namespace VikingEngine.DSSWars.GameObject
                     //casualCityProfile.refreshTech(casualProgress);
                 }
             }
+            if (subversion >= 104)
+            { 
+                currentWallRadius = r.ReadByte();
+            }
             Debug.ReadCheck(r);
         }
 
@@ -795,98 +807,99 @@ namespace VikingEngine.DSSWars.GameObject
         void writeResources(System.IO.BinaryWriter w)
         {            
             w.Write((short)res_water.amount);
-            write(CityResoureIndex.wood);
-            write(CityResoureIndex.fuel);
-            write(CityResoureIndex.stone);
-            write(CityResoureIndex.rawFood);
-            write(CityResoureIndex.food);
-            write(CityResoureIndex.beer);
-            write(CityResoureIndex.coolingfluid);
-            write(CityResoureIndex.skinLinnen);
+            //write(CityResoureIndex.wood);
+            //write(CityResoureIndex.fuel);
+            //write(CityResoureIndex.stone);
+            //write(CityResoureIndex.rawFood);
+            //write(CityResoureIndex.food);
+            //write(CityResoureIndex.beer);
+            //write(CityResoureIndex.coolingfluid);
+            //write(CityResoureIndex.skinLinnen);
 
-            // Ores
-            write(CityResoureIndex.ironore);
-            write(CityResoureIndex.TinOre);
-            write(CityResoureIndex.CopperOre);
-            write(CityResoureIndex.LeadOre);
-            write(CityResoureIndex.SilverOre);
-            write(CityResoureIndex.GoldOre);
+            //// Ores
+            //write(CityResoureIndex.ironore);
+            //write(CityResoureIndex.TinOre);
+            //write(CityResoureIndex.CopperOre);
+            //write(CityResoureIndex.LeadOre);
+            //write(CityResoureIndex.SilverOre);
+            //write(CityResoureIndex.GoldOre);
 
-            // Refined metals and materials
-            write(CityResoureIndex.iron);
-            write(CityResoureIndex.Tin);
-            write(CityResoureIndex.Copper);
-            write(CityResoureIndex.Lead);
-            write(CityResoureIndex.Silver);
-            write(CityResoureIndex.RawMithril);
-            write(CityResoureIndex.Sulfur);
+            //// Refined metals and materials
+            //write(CityResoureIndex.iron);
+            //write(CityResoureIndex.Tin);
+            //write(CityResoureIndex.Copper);
+            //write(CityResoureIndex.Lead);
+            //write(CityResoureIndex.Silver);
+            //write(CityResoureIndex.RawMithril);
+            //write(CityResoureIndex.Sulfur);
 
-            // Alloys and special materials
-            write(CityResoureIndex.Bronze);
-            write(CityResoureIndex.Steel);
-            write(CityResoureIndex.CastIron);
-            write(CityResoureIndex.BloomeryIron);
-            write(CityResoureIndex.Mithril);
+            //// Alloys and special materials
+            //write(CityResoureIndex.Bronze);
+            //write(CityResoureIndex.Steel);
+            //write(CityResoureIndex.CastIron);
+            //write(CityResoureIndex.BloomeryIron);
+            //write(CityResoureIndex.Mithril);
 
-            // Tools / construction
-            write(CityResoureIndex.Palisade);
-            write(CityResoureIndex.Toolkit);
-            write(CityResoureIndex.Wagon2Wheel);
-            write(CityResoureIndex.Wagon4Wheel);
-            write(CityResoureIndex.BlackPowder);
-            write(CityResoureIndex.GunPowder);
-            write(CityResoureIndex.LedBullet);
+            //// Tools / construction
+            //write(CityResoureIndex.Palisade);
+            //write(CityResoureIndex.Toolkit);
+            //write(CityResoureIndex.Wagon2Wheel);
+            //write(CityResoureIndex.Wagon4Wheel);
+            //write(CityResoureIndex.BlackPowder);
+            //write(CityResoureIndex.GunPowder);
+            //write(CityResoureIndex.LedBullet);
 
-            // Melee weapons
-            write(CityResoureIndex.sharpstick);
-            write(CityResoureIndex.BronzeSword);
-            write(CityResoureIndex.shortsword);
-            write(CityResoureIndex.Sword);
-            write(CityResoureIndex.LongSword);
-            write(CityResoureIndex.HandSpear);
-            write(CityResoureIndex.MithrilSword);
+            //// Melee weapons
+            //write(CityResoureIndex.sharpstick);
+            //write(CityResoureIndex.BronzeSword);
+            //write(CityResoureIndex.shortsword);
+            //write(CityResoureIndex.Sword);
+            //write(CityResoureIndex.LongSword);
+            //write(CityResoureIndex.HandSpear);
+            //write(CityResoureIndex.MithrilSword);
 
-            // Additional melee / ranged
-            write(CityResoureIndex.Warhammer);
-            write(CityResoureIndex.twohandsword);
-            write(CityResoureIndex.knightslance);
-            write(CityResoureIndex.SlingShot);
-            write(CityResoureIndex.ThrowingSpear);
-            write(CityResoureIndex.bow);
-            write(CityResoureIndex.longbow);
-            write(CityResoureIndex.crossbow);
-            write(CityResoureIndex.MithrilBow);
+            //// Additional melee / ranged
+            //write(CityResoureIndex.Warhammer);
+            //write(CityResoureIndex.twohandsword);
+            //write(CityResoureIndex.knightslance);
+            //write(CityResoureIndex.SlingShot);
+            //write(CityResoureIndex.ThrowingSpear);
+            //write(CityResoureIndex.bow);
+            //write(CityResoureIndex.longbow);
+            //write(CityResoureIndex.crossbow);
+            //write(CityResoureIndex.MithrilBow);
 
-            // Firearms
-            write(CityResoureIndex.HandCannon);
-            write(CityResoureIndex.HandCulvertin);
-            write(CityResoureIndex.Rifle);
-            write(CityResoureIndex.Blunderbuss);
+            //// Firearms
+            //write(CityResoureIndex.HandCannon);
+            //write(CityResoureIndex.HandCulvertin);
+            //write(CityResoureIndex.Rifle);
+            //write(CityResoureIndex.Blunderbuss);
 
-            // Siege
-            write(CityResoureIndex.BatteringRam);
-            write(CityResoureIndex.ballista);
-            write(CityResoureIndex.Manuballista);
-            write(CityResoureIndex.Catapult);
-            write(CityResoureIndex.SiegeCannonBronze);
-            write(CityResoureIndex.ManCannonBronze);
-            write(CityResoureIndex.SiegeCannonIron);
-            write(CityResoureIndex.ManCannonIron);
+            //// Siege
+            //write(CityResoureIndex.BatteringRam);
+            //write(CityResoureIndex.ballista);
+            //write(CityResoureIndex.Manuballista);
+            //write(CityResoureIndex.Catapult);
+            //write(CityResoureIndex.SiegeCannonBronze);
+            //write(CityResoureIndex.ManCannonBronze);
+            //write(CityResoureIndex.SiegeCannonIron);
+            //write(CityResoureIndex.ManCannonIron);
 
-            // Armors
-            write(CityResoureIndex.paddedArmor);
-            write(CityResoureIndex.HeavyPaddedArmor);
-            write(CityResoureIndex.BronzeArmor);
-            write(CityResoureIndex.mailArmor);
-            write(CityResoureIndex.heavyMailArmor);
-            write(CityResoureIndex.LightPlateArmor);
-            write(CityResoureIndex.FullPlateArmor);
-            write(CityResoureIndex.MithrilArmor);
+            //// Armors
+            //write(CityResoureIndex.paddedArmor);
+            //write(CityResoureIndex.HeavyPaddedArmor);
+            //write(CityResoureIndex.BronzeArmor);
+            //write(CityResoureIndex.mailArmor);
+            //write(CityResoureIndex.heavyMailArmor);
+            //write(CityResoureIndex.LightPlateArmor);
+            //write(CityResoureIndex.FullPlateArmor);
+            //write(CityResoureIndex.MithrilArmor);
 
 
-            void write(int cityResourceIndex)
+            //void write(int cityResourceIndex)
+            for (int i = 0; i < CityResoureIndex.COUNT; i++)
             {
-                DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex].writeGameState(w);
+                DssRef.world.cityResouces[resourceComponentStartIndex + i].writeGameState(w);
             }
 
             //res_wood.writeGameState(w); // ItemResourceType.Wood_Group
@@ -973,97 +986,107 @@ namespace VikingEngine.DSSWars.GameObject
         {
             res_water.amount = r.ReadInt16();
 
-            read(CityResoureIndex.wood);
-            read(CityResoureIndex.fuel);
-            read(CityResoureIndex.stone);
-            read(CityResoureIndex.rawFood);
-            read(CityResoureIndex.food);
-            read(CityResoureIndex.beer);
-            read(CityResoureIndex.coolingfluid);
-            read(CityResoureIndex.skinLinnen);
-
-            // Ores
-            read(CityResoureIndex.ironore);
-            read(CityResoureIndex.TinOre);
-            read(CityResoureIndex.CopperOre);
-            read(CityResoureIndex.LeadOre);
-            read(CityResoureIndex.SilverOre);
-            read(CityResoureIndex.GoldOre);
-
-            // Refined metals and materials
-            read(CityResoureIndex.iron);
-            read(CityResoureIndex.Tin);
-            read(CityResoureIndex.Copper);
-            read(CityResoureIndex.Lead);
-            read(CityResoureIndex.Silver);
-            read(CityResoureIndex.RawMithril);
-            read(CityResoureIndex.Sulfur);
-
-            // Alloys and special materials
-            read(CityResoureIndex.Bronze);
-            read(CityResoureIndex.Steel);
-            read(CityResoureIndex.CastIron);
-            read(CityResoureIndex.BloomeryIron);
-            read(CityResoureIndex.Mithril);
-
-            // Tools / construction
-            read(CityResoureIndex.Palisade);
-            read(CityResoureIndex.Toolkit);
-            read(CityResoureIndex.Wagon2Wheel);
-            read(CityResoureIndex.Wagon4Wheel);
-            read(CityResoureIndex.BlackPowder);
-            read(CityResoureIndex.GunPowder);
-            read(CityResoureIndex.LedBullet);
-
-            // Melee weapons
-            read(CityResoureIndex.sharpstick);
-            read(CityResoureIndex.BronzeSword);
-            read(CityResoureIndex.shortsword);
-            read(CityResoureIndex.Sword);
-            read(CityResoureIndex.LongSword);
-            read(CityResoureIndex.HandSpear);
-            read(CityResoureIndex.MithrilSword);
-
-            // Additional melee / ranged
-            read(CityResoureIndex.Warhammer);
-            read(CityResoureIndex.twohandsword);
-            read(CityResoureIndex.knightslance);
-            read(CityResoureIndex.SlingShot);
-            read(CityResoureIndex.ThrowingSpear);
-            read(CityResoureIndex.bow);
-            read(CityResoureIndex.longbow);
-            read(CityResoureIndex.crossbow);
-            read(CityResoureIndex.MithrilBow);
-
-            // Firearms
-            read(CityResoureIndex.HandCannon);
-            read(CityResoureIndex.HandCulvertin);
-            read(CityResoureIndex.Rifle);
-            read(CityResoureIndex.Blunderbuss);
-
-            // Siege
-            read(CityResoureIndex.BatteringRam);
-            read(CityResoureIndex.ballista);
-            read(CityResoureIndex.Manuballista);
-            read(CityResoureIndex.Catapult);
-            read(CityResoureIndex.SiegeCannonBronze);
-            read(CityResoureIndex.ManCannonBronze);
-            read(CityResoureIndex.SiegeCannonIron);
-            read(CityResoureIndex.ManCannonIron);
-
-            // Armors
-            read(CityResoureIndex.paddedArmor);
-            read(CityResoureIndex.HeavyPaddedArmor);
-            read(CityResoureIndex.BronzeArmor);
-            read(CityResoureIndex.mailArmor);
-            read(CityResoureIndex.heavyMailArmor);
-            read(CityResoureIndex.LightPlateArmor);
-            read(CityResoureIndex.FullPlateArmor);
-            read(CityResoureIndex.MithrilArmor);
-
-            void read(int cityResourceIndex)
+            if (subversion < 104)
             {
-                DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex].readGameState(r, subversion);
+                read(CityResoureIndex.wood);
+                read(CityResoureIndex.fuel);
+                read(CityResoureIndex.stone);
+                read(CityResoureIndex.rawFood);
+                read(CityResoureIndex.food);
+                read(CityResoureIndex.beer);
+                read(CityResoureIndex.coolingfluid);
+                read(CityResoureIndex.skinLinnen);
+
+                // Ores
+                read(CityResoureIndex.ironore);
+                read(CityResoureIndex.TinOre);
+                read(CityResoureIndex.CopperOre);
+                read(CityResoureIndex.LeadOre);
+                read(CityResoureIndex.SilverOre);
+                read(CityResoureIndex.GoldOre);
+
+                // Refined metals and materials
+                read(CityResoureIndex.iron);
+                read(CityResoureIndex.Tin);
+                read(CityResoureIndex.Copper);
+                read(CityResoureIndex.Lead);
+                read(CityResoureIndex.Silver);
+                read(CityResoureIndex.RawMithril);
+                read(CityResoureIndex.Sulfur);
+
+                // Alloys and special materials
+                read(CityResoureIndex.Bronze);
+                read(CityResoureIndex.Steel);
+                read(CityResoureIndex.CastIron);
+                read(CityResoureIndex.BloomeryIron);
+                read(CityResoureIndex.Mithril);
+
+                // Tools / construction
+                read(CityResoureIndex.Palisade);
+                read(CityResoureIndex.Toolkit);
+                read(CityResoureIndex.Wagon2Wheel);
+                read(CityResoureIndex.Wagon4Wheel);
+                read(CityResoureIndex.BlackPowder);
+                read(CityResoureIndex.GunPowder);
+                read(CityResoureIndex.LedBullet);
+
+                // Melee weapons
+                read(CityResoureIndex.sharpstick);
+                read(CityResoureIndex.BronzeSword);
+                read(CityResoureIndex.shortsword);
+                read(CityResoureIndex.Sword);
+                read(CityResoureIndex.LongSword);
+                read(CityResoureIndex.HandSpear);
+                read(CityResoureIndex.MithrilSword);
+
+                // Additional melee / ranged
+                read(CityResoureIndex.Warhammer);
+                read(CityResoureIndex.twohandsword);
+                read(CityResoureIndex.knightslance);
+                read(CityResoureIndex.SlingShot);
+                read(CityResoureIndex.ThrowingSpear);
+                read(CityResoureIndex.bow);
+                read(CityResoureIndex.longbow);
+                read(CityResoureIndex.crossbow);
+                read(CityResoureIndex.MithrilBow);
+
+                // Firearms
+                read(CityResoureIndex.HandCannon);
+                read(CityResoureIndex.HandCulvertin);
+                read(CityResoureIndex.Rifle);
+                read(CityResoureIndex.Blunderbuss);
+
+                // Siege
+                read(CityResoureIndex.BatteringRam);
+                read(CityResoureIndex.ballista);
+                read(CityResoureIndex.Manuballista);
+                read(CityResoureIndex.Catapult);
+                read(CityResoureIndex.SiegeCannonBronze);
+                read(CityResoureIndex.ManCannonBronze);
+                read(CityResoureIndex.SiegeCannonIron);
+                read(CityResoureIndex.ManCannonIron);
+
+                // Armors
+                read(CityResoureIndex.paddedArmor);
+                read(CityResoureIndex.HeavyPaddedArmor);
+                read(CityResoureIndex.BronzeArmor);
+                read(CityResoureIndex.mailArmor);
+                read(CityResoureIndex.heavyMailArmor);
+                read(CityResoureIndex.LightPlateArmor);
+                read(CityResoureIndex.FullPlateArmor);
+                read(CityResoureIndex.MithrilArmor);
+
+                void read(int cityResourceIndex)
+                {
+                    DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex].readGameState(r, subversion);
+                }
+            }
+            else
+            {//NEW
+                for (int i = 0; i < CityResoureIndex.COUNT; i++)
+                {
+                    DssRef.world.cityResouces[resourceComponentStartIndex + i].readGameState(r, subversion);
+                }
             }
             //res_wood.readGameState(r, subversion); // ItemResourceType.Wood_Group
             //res_fuel.readGameState(r, subversion); // ItemResourceType.Fuel_G
@@ -1296,7 +1319,7 @@ namespace VikingEngine.DSSWars.GameObject
                                             ++totalWorkerHutAndLevelCount;
 
                                             //Place farm curlutures
-                                            const int CulturesPerFarm = 12;
+                                            const int CulturesPerFarm = 9;
                                             int cultureCount = 0;
 
                                             ForXYEdgeLoop farmLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(subPos, 1));
@@ -1683,36 +1706,36 @@ namespace VikingEngine.DSSWars.GameObject
 
                 createCampSite(subtile);
 
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        int radius = 3;
-                        Rectangle2 tileArea = new Rectangle2(tilePos, radius);
-                        bool foundTile = true;
-                        Map.Tile checkTile;
-                        while (foundTile)
-                        {
-                            radius++;
-                            ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, radius));
-                            while (loop.Next())
-                            {
-                                if (DssRef.world.tileGrid.TryGet(loop.Position, out checkTile) && checkTile.CityIndex == this.myIndex)
-                                {
-                                    foundTile = true;
-                                    tileArea.includeTile(loop.Position);
-                                    //break;
-                                }
-                            }
-                        }
-                        cityTileArea = tileArea;
-                        //cityTileRadius = radius;
-                    }
-                    catch (Exception ex)
-                    {
-                        BlueScreen.ThreadException = ex;
-                    }
-                });
+                //Task.Run(() =>
+                //{
+                //    try
+                //    {
+                //        int radius = 3;
+                //        Rectangle2 tileArea = new Rectangle2(tilePos, radius);
+                //        bool foundTile = true;
+                //        Map.Tile checkTile;
+                //        while (foundTile)
+                //        {
+                //            radius++;
+                //            ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, radius));
+                //            while (loop.Next())
+                //            {
+                //                if (DssRef.world.tileGrid.TryGet(loop.Position, out checkTile) && checkTile.CityIndex == this.myIndex)
+                //                {
+                //                    foundTile = true;
+                //                    tileArea.includeTile(loop.Position);
+                //                    //break;
+                //                }
+                //            }
+                //        }
+                //        cityTileArea = tileArea;
+                //        //cityTileRadius = radius;
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        BlueScreen.ThreadException = ex;
+                //    }
+                //});
 
                 
                 setFaction(faction, false, false);
@@ -2964,20 +2987,20 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 {
                     content.newLine();
-                    content.Add(new RbImage(SpriteName.WarsHammerAdd));
+                    content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueTotal));
                     content.space();
-                    content.Add(new RbText(".Work queue" + ":"));
+                    content.Add(new RbText(DssRef.todoLang.WorkQueue_Title + ":"));
                     content.hspace();
                     content.Add(new RbText(WorkerStats_WorkQueueLength.ToString()));
 
                     HudLib.BulletSeperationPoint(content);
-                    content.Add(new RbImage(SpriteName.WarsWorker));
+                    content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueActive));
                     content.hspace();
                     content.Add(new RbText((WorkerStats_TotalUnits - WorkerStats_IdleCount).ToString()));
 
                     content.space();
 
-                    content.Add(new RbImage(SpriteName.unitEmoteSnore));
+                    content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueIdle));
                     content.hspace();
                     content.Add(new RbText(WorkerStats_IdleCount.ToString()));
 
@@ -3003,32 +3026,7 @@ namespace VikingEngine.DSSWars.GameObject
                 
             }
 
-            void workQueueInfo(RichBoxContent content, object tag)
-            {
-                content.h1(".Work queue", HudLib.TitleColor_Label);
-                HudLib.Label(content, "Remaining work objectives");
-                content.hspace();
-                content.Add(new RbText(WorkerStats_WorkQueueLength.ToString()));
-
-                content.newParagraph();
-                
-                HudLib.Label(content, "Active work teams");
-                content.hspace();
-                content.Add(new RbImage(SpriteName.WarsWorker));
-                content.hspace();
-                content.Add(new RbText((WorkerStats_TotalUnits - WorkerStats_IdleCount).ToString()));
-
-                content.newLine();
-                
-                HudLib.Label(content, "Idle work teams");
-                content.hspace();
-                content.Add(new RbImage(SpriteName.unitEmoteSnore));
-                content.hspace();
-                content.Add(new RbText(WorkerStats_IdleCount.ToString()));
-
-                content.newLine();
-                content.text(string.Format("Villagers work in teams of {0}", WorkTeamSize), HudLib.InfoYellow_Light);
-            }
+            
 
 
             void automationToolTip(RichBoxContent content, object tag)
@@ -3160,6 +3158,34 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void workQueueInfo(RichBoxContent content, object tag)
+        {
+            content.h1(DssRef.todoLang.WorkQueue_Title, HudLib.TitleColor_Head);
+            HudLib.Label(content, DssRef.todoLang.WorkQueue_Length);
+            content.hspace();
+            content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueTotal));
+            content.hspace();
+            content.Add(new RbText(WorkerStats_WorkQueueLength.ToString()));
+
+            content.newParagraph();
+
+            HudLib.Label(content, DssRef.todoLang.WorkQueue_ActiveWorkers);
+            content.hspace();
+            content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueActive));
+            content.hspace();
+            content.Add(new RbText((WorkerStats_TotalUnits - WorkerStats_IdleCount).ToString()));
+
+            content.newLine();
+
+            HudLib.Label(content, DssRef.todoLang.WorkQueue_IdleWorkers);
+            content.hspace();
+            content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueIdle));
+            content.hspace();
+            content.Add(new RbText(WorkerStats_IdleCount.ToString()));
+
+            content.newLine();
+            content.text(string.Format(DssRef.todoLang.WorkTeam_Size, WorkTeamSize), HudLib.InfoYellow_Light);
+        }
 
         public void immigrantsTooltip(RichBoxContent content, object tag)
         {
@@ -3925,6 +3951,12 @@ namespace VikingEngine.DSSWars.GameObject
             if (newFaction == null)
                 return;
 
+#if DEBUG
+            //if (cityType == CityType.UnClaimed)
+            //{
+            //    throw new Exception();      
+            //}
+#endif
             Faction owner = GetFaction_Safe();
             if (owner != newFaction)
             {

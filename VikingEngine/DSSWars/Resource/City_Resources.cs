@@ -274,6 +274,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        override public bool lowFood()
+        {
+            return resourceAmount(CityResoureIndex.food) <= DssConst.WorkSafeGuardAmount;
+        }
+
 
         public TradeTemplate tradeTemplate = new TradeTemplate();
         public const int DefaultFoodBuffer = 500;
@@ -295,7 +300,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (properties.cityResourceIndex >= 0)
                     {
                         ref GroupedResource resource = ref world.cityResouces[resourceComponentStartIndex + properties.cityResourceIndex];
-                        resource.goalBuffer = properties.defaultStockPile;
+                        resource.stockPileLimit = properties.defaultStockPile;
                     }
                 }
             }
@@ -471,7 +476,7 @@ namespace VikingEngine.DSSWars.GameObject
                 switch (type)
                 {
                     case ItemResourceType.Gold:
-                        return new GroupedResource() { amount = (int)(DssRef.storage.gameRuleset.centralGold ? GetFaction_NoChecks().money.GetGold() : money.GetGold()), goalBuffer = int.MaxValue };
+                        return new GroupedResource() { amount = (int)(DssRef.storage.gameRuleset.centralGold ? GetFaction_NoChecks().money.GetGold() : money.GetGold()), stockPileLimit = int.MaxValue };
                     case ItemResourceType.Men:
                         return workForce;
                     case ItemResourceType.ServiceMen:

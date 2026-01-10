@@ -82,6 +82,19 @@ namespace VikingEngine.DSSWars.Resource
             return true;
         }
 
+        public bool hasResources_ignorewater(City city)
+        {
+            foreach (var r in resources)
+            {
+                var res = city.GetGroupedResource(r.type);
+                if (res.amount < r.amount && r.type != ItemResourceType.Water_G)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public bool hasResources_buildAndUpgrade(City city)
         {
             if (upgradeFrom != null && !upgradeFrom.hasResources_buildAndUpgrade(city))
@@ -91,6 +104,22 @@ namespace VikingEngine.DSSWars.Resource
             {
                 var res = city.GetGroupedResource(r.type);
                 if (res.amount < r.amount)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool hasResources_buildAndUpgrade_IgnoreWater(City city)
+        {
+            if (upgradeFrom != null && !upgradeFrom.hasResources_buildAndUpgrade(city))
+            { return false; }
+
+            foreach (var r in resources)
+            {
+                var res = city.GetGroupedResource(r.type);
+                if (res.amount < r.amount && r.type != ItemResourceType.Water_G)
                 {
                     return false;
                 }

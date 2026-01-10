@@ -118,6 +118,15 @@ namespace VikingEngine.HUD.RichBox
             return text;
         }
 
+        public void h1(SpriteName icon, string textline, Color? color = null)
+        {
+            newLine();
+            Add(new RbBeginTitle(1));
+            Add(new RbImage(icon));
+            Add(new RbText(textline, color));
+
+        }
+
         public RbText h2(string textline)
         {
             newLine();
@@ -278,6 +287,14 @@ namespace VikingEngine.HUD.RichBox
         {
             newLine();
             this.buttonMap(buttonMap);
+            space();
+            Add(new RbText(desc));
+        }
+
+        public void ButtonDescription(SpriteName buttonMapIcon, string desc)
+        {
+            newLine();
+            Add(new RbImage(buttonMapIcon));
             space();
             Add(new RbText(desc));
         }

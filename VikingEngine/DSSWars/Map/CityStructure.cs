@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
-using VikingEngine.DSSWars.GameObject;
-using VikingEngine.ToGG.ToggEngine.Map;
-using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Work;
+using VikingEngine.LootFest.Map;
+using VikingEngine.ToGG.ToggEngine.Map;
 
 namespace VikingEngine.DSSWars.Map
 {
@@ -15,6 +15,7 @@ namespace VikingEngine.DSSWars.Map
     {
         public static readonly CityStructure WorkInstance = new CityStructure();
         public static readonly CityStructure AutomationInstance = new CityStructure();
+        ForXYEdgeLoopRandomPicker edgeRandomizer = new ForXYEdgeLoopRandomPicker();
 
         public List<IntVector2> FoodSpots_workupdate = new List<IntVector2>(4);
         public List<IntVector2> StoragePoints_workupdate = new List<IntVector2>(4);
@@ -27,7 +28,7 @@ namespace VikingEngine.DSSWars.Map
         public List<IntVector2> Mines = new List<IntVector2>(20);
         public List<IntVector2> CraftStation = new List<IntVector2>(20);
         public List<IntVector2> CoinMinting = new List<IntVector2>(2);
-        public List<IntVector2> EmptyLand = new List<IntVector2>(2);
+        //public List<IntVector2> EmptyLand = new List<IntVector2>(2);
         public List<IntVector2> ResourceOnGround = new List<IntVector2>(20);
 
         public List<IntVector2> WoodCutter = new List<IntVector2>(20);
@@ -106,7 +107,7 @@ namespace VikingEngine.DSSWars.Map
             {
                 newCity = false;
 
-                update(city, workerCount);
+                update(DssRef.world, city, workerCount);
             }
         }
 
@@ -187,10 +188,57 @@ namespace VikingEngine.DSSWars.Map
             return false;
         }
 
-        public void update(City city, int workerCount, int emptyLandExpansions = 2)
+        public bool NextEmptyLand(City city, int addSpaces, out IntVector2 freeSubTilePos)
         {
-            //int emptyLandExpansions = 2;
+            freeSubTilePos = IntVector2.Zero;
 
+            int maxRadius = city.cityTileArea.size.SideLength();
+            for (int radius = 0; radius < maxRadius; ++radius)
+            {
+                //ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                edgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
+                while (edgeRandomizer.Next())
+                {
+                    if (DssRef.world.tileBounds.IntersectTilePoint(edgeRandomizer.Position))
+                    {
+                        if (DssRef.world.tileGrid.TryGet(edgeRandomizer.Position, out Tile tile))
+                        {
+                            if (tile.CityIndex == city.myIndex && tile.IsLand())
+                            {
+                                IntVector2 topleft = WP.ToSubTilePos_TopLeft(edgeRandomizer.Position);
+                                ForXYLoop subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+
+                                while (subTileLoop.Next())
+                                {
+                                    SubTile subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+                                    switch (subTile.mainTerrain)
+                                    {
+                                        case TerrainMainType.Destroyed:
+                                        case TerrainMainType.DefaultLand:
+                                            freeSubTilePos = subTileLoop.Position;
+                                            if (--addSpaces <= 0)
+                                            {   
+                                                return true;
+                                            }
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            
+            return freeSubTilePos.X > 0;
+        }
+
+        public void update(WorldData world, City city, int workerCount, int emptyLandExpansions = 2)
+        {
+//#if DEBUG
+//            Debug.CrashIfMainThread();
+//            //int emptyLandExpansions = 2;
+//#endif
             IntVector2 topleft;
             ForXYLoop subTileLoop;
             FoodSpots_workupdate.Clear();
@@ -204,7 +252,7 @@ namespace VikingEngine.DSSWars.Map
             Mines.Clear();
             CraftStation.Clear();
             CoinMinting.Clear();
-            EmptyLand.Clear();
+            //EmptyLand.Clear();
             ResourceOnGround.Clear();
             WoodCutter.Clear();
             StoneCutter.Clear();
@@ -235,393 +283,404 @@ namespace VikingEngine.DSSWars.Map
             //        if (DssRef.world.tileBounds.IntersectTilePoint(cirkleLoop.Position))
             //        {
             ForXYLoop loop = new ForXYLoop(city.cityTileArea);
-            while(loop.Next())
+            while (loop.Next())
             {
-                        var tile = DssRef.world.tileGrid.Get(loop.Position);
-                        if (tile.CityIndex == city.myIndex && tile.IsLand())
+
+                if (world.tileGrid.TryGet(loop.Position, out var tile) &&
+                    tile.CityIndex == city.myIndex &&
+                    tile.IsLand())
+                {
+                    topleft = WP.ToSubTilePos_TopLeft(loop.Position);
+                    subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+
+                    while (subTileLoop.Next())
+                    {
+                        SubTile subTile = world.subTileGrid.Get(subTileLoop.Position);
+
+                        if (subTile.collectionPointer >= 0)
                         {
-                            topleft = WP.ToSubTilePos_TopLeft(loop.Position);
-                            subTileLoop = new ForXYLoop(topleft, topleft + WorldData.TileSubDivitions_MaxIndex);
+                            //if (ResourceOnGround.Count < workerCount)
+                            //{ 
+                            ResourceOnGround.Add(subTileLoop.Position);
+                            //}
+                        }
 
-                            while (subTileLoop.Next())
-                            {
-                                SubTile subTile = DssRef.world.subTileGrid.Get(subTileLoop.Position);
+                        switch (subTile.mainTerrain)
+                        {
 
-                                if (subTile.collectionPointer >= 0)
+                            case TerrainMainType.Foil:
+                                var foil = (TerrainSubFoilType)subTile.subTerrain;
+
+                                switch (foil)
                                 {
-                                    //if (ResourceOnGround.Count < workerCount)
-                                    //{ 
-                                        ResourceOnGround.Add(subTileLoop.Position);
-                                    //}
-                                }
-
-                                switch (subTile.mainTerrain)
-                                {
-
-                                    case TerrainMainType.Foil:
-                                        var foil = (TerrainSubFoilType)subTile.subTerrain;
-
-                                        switch (foil)
+                                    case Map.TerrainSubFoilType.TreeSoft:
+                                    case Map.TerrainSubFoilType.TreeHard:
+                                    case Map.TerrainSubFoilType.DryWood:
+                                        if (foil == TerrainSubFoilType.DryWood || subTile.terrainAmount >= TerrainContent.TreeReadySize)
                                         {
-                                            case Map.TerrainSubFoilType.TreeSoft:
-                                            case Map.TerrainSubFoilType.TreeHard:
-                                            case Map.TerrainSubFoilType.DryWood:
-                                                if (foil == TerrainSubFoilType.DryWood || subTile.terrainAmount >= TerrainContent.TreeReadySize)
-                                                {
-                                                    ++terrainStructure.resourceCount_wood;
-                                                    ++fuelSpots;
-                                                    Trees.Add(subTileLoop.Position);
-                                                }
-                                                break;
-
-                                            case Map.TerrainSubFoilType.StoneBlock:
-                                            case Map.TerrainSubFoilType.Stones:
-                                                ++terrainStructure.resourceCount_stone;
-                                                Stones.Add(subTileLoop.Position);
-                                                break;
-
-                                            case TerrainSubFoilType.TreeApple:
-                                            case TerrainSubFoilType.TreeBanana:
-                                                ++buildingStructure.Orchard_count;
-                                                ++foodspots;
-                                                if (subTile.terrainAmount == TerrainContent.OrchardPlucked)
-                                                {
-                                                    Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.Plant));
-                                                }
-                                                else if (subTile.terrainAmount >= TerrainContent.OrchardReady)
-                                                {
-                                                    Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.GatherFoil));
-                                                }
-                                                buildingPosition.Orchard_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainSubFoilType.WheatFarm:
-                                            case TerrainSubFoilType.WheatFarmUpgraded:
-                                                ++buildingStructure.WheatFarm_count;
-                                                ++foodspots;
-                                                farming(ref subTile);
-                                                buildingPosition.WheatFarm_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainSubFoilType.LinenFarm:
-                                            case TerrainSubFoilType.LinenFarmUpgraded:
-                                                ++buildingStructure.LinenFarm_count;
-                                                farming(ref subTile);
-                                                buildingPosition.LinenFarm_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainSubFoilType.RapeSeedFarm:
-                                            case TerrainSubFoilType.RapeSeedFarmUpgraded:
-                                                ++buildingStructure.RapeSeedFarm_count;
-                                                ++fuelSpots;
-                                                farming(ref subTile);
-                                                buildingPosition.RapeSeedFarm_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainSubFoilType.HempFarm:
-                                            case TerrainSubFoilType.HempFarmUpgraded:
-                                                ++buildingStructure.HempFarm_count;
-                                                ++fuelSpots;
-                                                farming(ref subTile);
-                                                buildingPosition.HempFarm_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainSubFoilType.BogIron:
-                                                ++terrainStructure.mineCount_bogIron;
-                                                if (BogIron.Count < workerCount)
-                                                {
-                                                    BogIron.Add(subTileLoop.Position);
-                                                }
-                                                break;
-                                        }
-
-                                        break;
-
-                                    case TerrainMainType.Mine:
-                                        Mines.Add(subTileLoop.Position);
-
-                                        var mineType = (TerrainMineType)subTile.subTerrain;
-                                        switch (mineType)
-                                        {
-                                            case TerrainMineType.Coal:
-                                                ++terrainStructure.mineCount_coal;
-                                                break;
-                                            case TerrainMineType.IronOre:
-                                                ++terrainStructure.mineCount_iron;
-                                                break;
-                                            case TerrainMineType.TinOre:
-                                                ++terrainStructure.mineCount_tin;
-                                                break;
-                                            case TerrainMineType.CopperOre:
-                                                ++terrainStructure.mineCount_copper;
-                                                break;
-                                            case TerrainMineType.Sulfur:
-                                                ++terrainStructure.mineCount_sulfur;
-                                                break;
-                                            case TerrainMineType.LeadOre:
-                                                ++terrainStructure.mineCount_lead;
-                                                break;
-                                            case TerrainMineType.SilverOre:
-                                                ++terrainStructure.mineCount_silver;
-                                                break;
-                                            case TerrainMineType.GoldOre:
-                                                ++terrainStructure.mineCount_gold;
-                                                break;
-                                            case TerrainMineType.Mithril:
-                                                ++terrainStructure.mineCount_mithril;
-                                                break;
+                                            ++terrainStructure.resourceCount_wood;
+                                            ++fuelSpots;
+                                            Trees.Add(subTileLoop.Position);
                                         }
                                         break;
 
-                                    case TerrainMainType.Building:
-                                        var building = (TerrainBuildingType)subTile.subTerrain;
-
-                                        switch (building)
-                                        {
-                                            case TerrainBuildingType.WorkerHut:
-                                                ++buildingStructure.WorkerHuts_count;
-                                                buildingPosition.WorkerHuts_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.WorkerHutLarge:
-                                                ++buildingStructure.WorkerHuts_Large_count;
-                                                buildingPosition.WorkerHuts_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.ServiceMenHouse_small:
-                                                ++buildingStructure.ServiceMenHouse_count;
-                                                serviceMenHousing += DssConst.HousingCount_ServiceHouse_Small;
-                                                buildingPosition.ServiceHouse_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.ServiceMenHouse_Large:
-                                                ++buildingStructure.ServiceMenHouse_Large_count;
-                                                serviceMenHousing += DssConst.HousingCount_ServiceHouse_Large;
-                                                buildingPosition.ServiceHouse_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.GuardHouse_Small:
-                                                ++buildingStructure.GuardOffice_count;
-                                                break;
-                                            case TerrainBuildingType.GuardHouse_Large:
-                                                ++buildingStructure.GuardOffice_Large_count;
-                                                break;
-
-                                            case TerrainBuildingType.HenPen:
-                                                ++buildingStructure.HenPen_count;
-                                                ++foodspots;
-                                                if (subTile.terrainAmount > TerrainContent.HenReady)
-                                                {
-                                                    AnimalPens.Add(subTileLoop.Position);
-                                                }
-
-                                                buildingPosition.HenPen_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.PigPen:
-                                                ++buildingStructure.PigPen_count;
-                                                ++foodspots;
-                                                if (subTile.terrainAmount > TerrainContent.PigReady)
-                                                {
-                                                    AnimalPens.Add(subTileLoop.Position);
-                                                }
-
-                                                buildingPosition.PigPen_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.Postal:
-                                            case TerrainBuildingType.PostalLevel2:
-                                            case TerrainBuildingType.PostalLevel3:
-                                                ++buildingStructure.Postal_count;
-                                                buildingPosition.Postal_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.Recruitment:
-                                            case TerrainBuildingType.RecruitmentLevel2:
-                                            case TerrainBuildingType.RecruitmentLevel3:
-                                                ++buildingStructure.Recruitment_count;
-                                                buildingPosition.Recruitment_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.ImmigrationTent:
-                                                ++buildingStructure.ImmigrationTent_count;
-                                                buildingPosition.ImmigrationTent_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.SoldierBarracks:
-                                                ++buildingStructure.SoldierBarracks_count;
-                                                buildingPosition.SoldierBarracks_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.ArcherBarracks:
-                                                ++buildingStructure.ArcherBarracks_count;
-                                                buildingPosition.ArcherBarracks_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.WarmachineBarracks:
-                                                ++buildingStructure.WarmachineBarracks_count;
-                                                buildingPosition.WarmachineBarracks_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.KnightsBarracks:
-                                                ++buildingStructure.KnightsBarracks_count;
-                                                buildingPosition.KnightsBarracks_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.GunBarracks:
-                                                ++buildingStructure.GunBarracks_count;
-                                                buildingPosition.GunBarracks_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.CannonBarracks:
-                                                ++buildingStructure.CannonBarracks_count;
-                                                buildingPosition.CannonBarracks_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.Tavern:
-                                                ++buildingStructure.Tavern_count;
-                                                FoodSpots_workupdate.Add(subTileLoop.Position);
-                                                buildingPosition.Tavern_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.Storehouse:
-                                                ++buildingStructure.Storehouse_count;
-                                                StoragePoints_workupdate.Add(subTileLoop.Position);
-                                                buildingPosition.Storehouse_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.Carpenter:
-                                                ++buildingStructure.Carpenter_count;
-                                                CraftStation.Add(subTileLoop.Position);
-                                                buildingPosition.Carpenter_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.Brewery:
-                                                ++buildingStructure.Brewery_count;
-                                                CraftStation.Add(subTileLoop.Position);
-                                                buildingPosition.Brewery_pos = subTileLoop.Position;
-                                                break;
-                                            
-                                            case TerrainBuildingType.Work_CoalPit:
-                                                ++buildingStructure.CoalPit_count;
-                                                CraftStation.Add(subTileLoop.Position);
-                                                buildingPosition.CoalPit_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.Work_Cook:
-                                                ++buildingStructure.Cook_count;
-                                                CraftStation.Add(subTileLoop.Position);
-                                                buildingPosition.Cook_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.Work_Bench:
-                                                ++buildingStructure.WorkBench_count;
-                                                CraftStation.Add(subTileLoop.Position);
-                                                buildingPosition.WorkBench_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.Work_Smith:
-                                                ++buildingStructure.Smith_count;
-                                                CraftStation.Add(subTileLoop.Position);
-                                                buildingPosition.Smith_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.Smelter:
-                                                ++buildingStructure.Smelter_count;
-                                                CraftStation.Add(subTileLoop.Position);
-                                                buildingPosition.Smelter_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.Foundry:
-                                                ++buildingStructure.Foundry_count;
-                                                CraftStation.Add(subTileLoop.Position);
-                                                buildingPosition.Foundry_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.Armory:
-                                                ++buildingStructure.Armory_count;
-                                                CraftStation.Add(subTileLoop.Position);
-                                                buildingPosition.Armory_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.Chemist:
-                                                ++buildingStructure.Chemist_count;
-                                                CraftStation.Add(subTileLoop.Position);
-                                                buildingPosition.Chemist_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.Gunmaker:
-                                                ++buildingStructure.Gunmaker_count;
-                                                CraftStation.Add(subTileLoop.Position);
-                                                buildingPosition.Gunmaker_pos = subTileLoop.Position;
-                                                break;
-
-                                            case TerrainBuildingType.WoodCutter:
-                                                ++buildingStructure.WoodCutter_count;
-                                                WoodCutter.Add(subTileLoop.Position);
-                                                break;
-                                            case TerrainBuildingType.StoneCutter:
-                                                ++buildingStructure.StoneCutter_count;
-                                                StoneCutter.Add(subTileLoop.Position);
-                                                break;
-
-                                            case TerrainBuildingType.Nobelhouse:
-                                                ++buildingStructure.Nobelhouse_count;
-                                                buildingPosition.Nobelhouse_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.Embassy:
-                                                ++buildingStructure.Embassy_count;
-                                                buildingPosition.Embassy_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.School:
-                                                ++buildingStructure.School_count;
-                                                buildingPosition.School_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.ResearchCenter:
-                                                ++buildingStructure.ResearchCenter_count;
-                                                buildingPosition.ResearchCenter_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.BookPress:
-                                                ++buildingStructure.BookPress_count;
-                                                buildingPosition.BookPress_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.Logistics:
-                                                buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
-                                                break;
-                                            case TerrainBuildingType.ManorLord:
-                                                buildingStructure.manorLord = true;
-                                                DssRef.state.hasManorLords = true;
-                                                break;
-                                            case TerrainBuildingType.WaterResovoir:
-                                                ++buildingStructure.WaterResovoir_count;
-                                                buildingPosition.WaterResovoir_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.GoldDeliveryLevel1:
-                                            case TerrainBuildingType.GoldDeliveryLevel2:
-                                            case TerrainBuildingType.GoldDeliveryLevel3:
-                                                ++buildingStructure.GoldDelivery_count;
-                                                buildingPosition.GoldDelivery_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.Bank:
-                                                ++buildingStructure.Bank_count;
-                                                buildingPosition.Bank_pos = subTileLoop.Position;
-                                                break;
-                                            case TerrainBuildingType.CoinMinter:
-                                                ++buildingStructure.CoinMinter_count;
-                                                CoinMinting.Add(subTileLoop.Position);
-                                                buildingPosition.CoinMinter_pos = subTileLoop.Position;
-                                                break;
-                                        }
+                                    case Map.TerrainSubFoilType.StoneBlock:
+                                    case Map.TerrainSubFoilType.Stones:
+                                        ++terrainStructure.resourceCount_stone;
+                                        Stones.Add(subTileLoop.Position);
                                         break;
-                                    case TerrainMainType.Destroyed:
-                                    case TerrainMainType.DefaultLand:
-                                        if (emptyLandExpansions > 0)
+
+                                    case TerrainSubFoilType.TreeApple:
+                                    case TerrainSubFoilType.TreeBanana:
+                                        ++buildingStructure.Orchard_count;
+                                        ++foodspots;
+                                        if (subTile.terrainAmount == TerrainContent.OrchardPlucked)
                                         {
-                                            if (emptyArea.size.X == 0)
-                                            {
-                                                emptyArea = Rectangle2.FromCenterTileAndRadius(subTileLoop.Position, 3);
-                                            }
-                                            else if (!emptyArea.IntersectTilePoint(subTileLoop.Position))
-                                            {
-                                                --emptyLandExpansions;
-                                                EmptyLand.Add(subTileLoop.Position);
-                                                emptyArea.includeTileAndRadius(subTileLoop.Position, 3);
-                                            }                                             
+                                            Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.Plant));
+                                        }
+                                        else if (subTile.terrainAmount >= TerrainContent.OrchardReady)
+                                        {
+                                            Farms.Add(new SubTileWork(subTileLoop.Position, WorkType.GatherFoil));
+                                        }
+                                        buildingPosition.Orchard_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainSubFoilType.WheatFarm:
+                                    case TerrainSubFoilType.WheatFarmUpgraded:
+                                        ++buildingStructure.WheatFarm_count;
+                                        ++foodspots;
+                                        farming(ref subTile);
+                                        buildingPosition.WheatFarm_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainSubFoilType.LinenFarm:
+                                    case TerrainSubFoilType.LinenFarmUpgraded:
+                                        ++buildingStructure.LinenFarm_count;
+                                        farming(ref subTile);
+                                        buildingPosition.LinenFarm_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainSubFoilType.RapeSeedFarm:
+                                    case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                                        ++buildingStructure.RapeSeedFarm_count;
+                                        ++fuelSpots;
+                                        farming(ref subTile);
+                                        buildingPosition.RapeSeedFarm_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainSubFoilType.HempFarm:
+                                    case TerrainSubFoilType.HempFarmUpgraded:
+                                        ++buildingStructure.HempFarm_count;
+                                        ++fuelSpots;
+                                        farming(ref subTile);
+                                        buildingPosition.HempFarm_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainSubFoilType.BogIron:
+                                        ++terrainStructure.mineCount_bogIron;
+                                        if (BogIron.Count < workerCount)
+                                        {
+                                            BogIron.Add(subTileLoop.Position);
                                         }
                                         break;
                                 }
-                            }
+
+                                break;
+
+                            case TerrainMainType.Mine:
+                                Mines.Add(subTileLoop.Position);
+
+                                var mineType = (TerrainMineType)subTile.subTerrain;
+                                switch (mineType)
+                                {
+                                    case TerrainMineType.Coal:
+                                        ++terrainStructure.mineCount_coal;
+                                        break;
+                                    case TerrainMineType.IronOre:
+                                        ++terrainStructure.mineCount_iron;
+                                        break;
+                                    case TerrainMineType.TinOre:
+                                        ++terrainStructure.mineCount_tin;
+                                        break;
+                                    case TerrainMineType.CopperOre:
+                                        ++terrainStructure.mineCount_copper;
+                                        break;
+                                    case TerrainMineType.Sulfur:
+                                        ++terrainStructure.mineCount_sulfur;
+                                        break;
+                                    case TerrainMineType.LeadOre:
+                                        ++terrainStructure.mineCount_lead;
+                                        break;
+                                    case TerrainMineType.SilverOre:
+                                        ++terrainStructure.mineCount_silver;
+                                        break;
+                                    case TerrainMineType.GoldOre:
+                                        ++terrainStructure.mineCount_gold;
+                                        break;
+                                    case TerrainMineType.Mithril:
+                                        ++terrainStructure.mineCount_mithril;
+                                        break;
+                                }
+                                break;
+
+                            case TerrainMainType.Building:
+                                var building = (TerrainBuildingType)subTile.subTerrain;
+
+                                switch (building)
+                                {
+                                    case TerrainBuildingType.WorkerTent:
+                                        ++buildingStructure.TentHuts_count;
+                                        buildingPosition.WorkerHuts_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.WorkerHut:
+                                        ++buildingStructure.WorkerHuts_count;
+                                        buildingPosition.WorkerHuts_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.WorkerHutLarge:
+                                        ++buildingStructure.WorkerHuts_Large_count;
+                                        buildingPosition.WorkerHuts_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.ServiceMenHouse_small:
+                                        ++buildingStructure.ServiceMenHouse_count;
+                                        serviceMenHousing += DssConst.HousingCount_ServiceHouse_Small;
+                                        buildingPosition.ServiceHouse_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.ServiceMenHouse_Large:
+                                        ++buildingStructure.ServiceMenHouse_Large_count;
+                                        serviceMenHousing += DssConst.HousingCount_ServiceHouse_Large;
+                                        buildingPosition.ServiceHouse_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.GuardHouse_Small:
+                                        ++buildingStructure.GuardOffice_count;
+                                        break;
+                                    case TerrainBuildingType.GuardHouse_Large:
+                                        ++buildingStructure.GuardOffice_Large_count;
+                                        break;
+
+                                    case TerrainBuildingType.HenPen:
+                                        ++buildingStructure.HenPen_count;
+                                        ++foodspots;
+                                        if (subTile.terrainAmount > TerrainContent.HenReady)
+                                        {
+                                            AnimalPens.Add(subTileLoop.Position);
+                                        }
+
+                                        buildingPosition.HenPen_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.PigPen:
+                                        ++buildingStructure.PigPen_count;
+                                        ++foodspots;
+                                        if (subTile.terrainAmount > TerrainContent.PigReady)
+                                        {
+                                            AnimalPens.Add(subTileLoop.Position);
+                                        }
+
+                                        buildingPosition.PigPen_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.Postal:
+                                    case TerrainBuildingType.PostalLevel2:
+                                    case TerrainBuildingType.PostalLevel3:
+                                        ++buildingStructure.Postal_count;
+                                        buildingPosition.Postal_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.Recruitment:
+                                    case TerrainBuildingType.RecruitmentLevel2:
+                                    case TerrainBuildingType.RecruitmentLevel3:
+                                        ++buildingStructure.Recruitment_count;
+                                        buildingPosition.Recruitment_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.ImmigrationTent:
+                                        ++buildingStructure.ImmigrationTent_count;
+                                        buildingPosition.ImmigrationTent_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.SoldierBarracks:
+                                        ++buildingStructure.SoldierBarracks_count;
+                                        buildingPosition.SoldierBarracks_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.ArcherBarracks:
+                                        ++buildingStructure.ArcherBarracks_count;
+                                        buildingPosition.ArcherBarracks_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.WarmachineBarracks:
+                                        ++buildingStructure.WarmachineBarracks_count;
+                                        buildingPosition.WarmachineBarracks_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.KnightsBarracks:
+                                        ++buildingStructure.KnightsBarracks_count;
+                                        buildingPosition.KnightsBarracks_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.GunBarracks:
+                                        ++buildingStructure.GunBarracks_count;
+                                        buildingPosition.GunBarracks_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.CannonBarracks:
+                                        ++buildingStructure.CannonBarracks_count;
+                                        buildingPosition.CannonBarracks_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.Tavern:
+                                        ++buildingStructure.Tavern_count;
+                                        FoodSpots_workupdate.Add(subTileLoop.Position);
+                                        buildingPosition.Tavern_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.Storehouse:
+                                        ++buildingStructure.Storehouse_count;
+                                        StoragePoints_workupdate.Add(subTileLoop.Position);
+                                        buildingPosition.Storehouse_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.Carpenter:
+                                        ++buildingStructure.Carpenter_count;
+                                        CraftStation.Add(subTileLoop.Position);
+                                        buildingPosition.Carpenter_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.Brewery:
+                                        ++buildingStructure.Brewery_count;
+                                        CraftStation.Add(subTileLoop.Position);
+                                        buildingPosition.Brewery_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.Work_CoalPit:
+                                        ++buildingStructure.CoalPit_count;
+                                        CraftStation.Add(subTileLoop.Position);
+                                        buildingPosition.CoalPit_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.Work_Cook:
+                                        ++buildingStructure.Cook_count;
+                                        CraftStation.Add(subTileLoop.Position);
+                                        buildingPosition.Cook_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.Work_Bench:
+                                        ++buildingStructure.WorkBench_count;
+                                        CraftStation.Add(subTileLoop.Position);
+                                        buildingPosition.WorkBench_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.Work_Smith:
+                                        ++buildingStructure.Smith_count;
+                                        CraftStation.Add(subTileLoop.Position);
+                                        buildingPosition.Smith_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.Smelter:
+                                        ++buildingStructure.Smelter_count;
+                                        CraftStation.Add(subTileLoop.Position);
+                                        buildingPosition.Smelter_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.Foundry:
+                                        ++buildingStructure.Foundry_count;
+                                        CraftStation.Add(subTileLoop.Position);
+                                        buildingPosition.Foundry_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.Armory:
+                                        ++buildingStructure.Armory_count;
+                                        CraftStation.Add(subTileLoop.Position);
+                                        buildingPosition.Armory_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.Chemist:
+                                        ++buildingStructure.Chemist_count;
+                                        CraftStation.Add(subTileLoop.Position);
+                                        buildingPosition.Chemist_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.Gunmaker:
+                                        ++buildingStructure.Gunmaker_count;
+                                        CraftStation.Add(subTileLoop.Position);
+                                        buildingPosition.Gunmaker_pos = subTileLoop.Position;
+                                        break;
+
+                                    case TerrainBuildingType.WoodCutter:
+                                        ++buildingStructure.WoodCutter_count;
+                                        WoodCutter.Add(subTileLoop.Position);
+                                        break;
+                                    case TerrainBuildingType.StoneCutter:
+                                        ++buildingStructure.StoneCutter_count;
+                                        StoneCutter.Add(subTileLoop.Position);
+                                        break;
+
+                                    case TerrainBuildingType.Nobelhouse:
+                                        ++buildingStructure.Nobelhouse_count;
+                                        buildingPosition.Nobelhouse_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.Embassy:
+                                        ++buildingStructure.Embassy_count;
+                                        buildingPosition.Embassy_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.School:
+                                        ++buildingStructure.School_count;
+                                        buildingPosition.School_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.ResearchCenter:
+                                        ++buildingStructure.ResearchCenter_count;
+                                        buildingPosition.ResearchCenter_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.BookPress:
+                                        ++buildingStructure.BookPress_count;
+                                        buildingPosition.BookPress_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.Logistics:
+                                        buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
+                                        break;
+                                    case TerrainBuildingType.ManorLord:
+                                        buildingStructure.manorLord = true;
+                                        DssRef.state.hasManorLords = true;
+                                        break;
+                                    case TerrainBuildingType.WaterResovoir:
+                                        ++buildingStructure.WaterResovoir_count;
+                                        buildingPosition.WaterResovoir_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.GoldDeliveryLevel1:
+                                    case TerrainBuildingType.GoldDeliveryLevel2:
+                                    case TerrainBuildingType.GoldDeliveryLevel3:
+                                        ++buildingStructure.GoldDelivery_count;
+                                        buildingPosition.GoldDelivery_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.Bank:
+                                        ++buildingStructure.Bank_count;
+                                        buildingPosition.Bank_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.CoinMinter:
+                                        ++buildingStructure.CoinMinter_count;
+                                        CoinMinting.Add(subTileLoop.Position);
+                                        buildingPosition.CoinMinter_pos = subTileLoop.Position;
+                                        break;
+
+                                   
+                                }
+                                break;
+                            case TerrainMainType.Destroyed:
+                            case TerrainMainType.DefaultLand:
+                                if (emptyLandExpansions > 0)
+                                {
+                                    if (emptyArea.size.X == 0)
+                                    {
+                                        emptyArea = Rectangle2.FromCenterTileAndRadius(subTileLoop.Position, 3);
+                                    }
+                                    else if (!emptyArea.IntersectTilePoint(subTileLoop.Position))
+                                    {
+                                        --emptyLandExpansions;
+                                        //EmptyLand.Add(subTileLoop.Position);
+                                        emptyArea.includeTileAndRadius(subTileLoop.Position, 3);
+                                    }
+                                }
+                                break;
+                            case TerrainMainType.Wall:
+                                ++buildingStructure.wallCount;
+                                break;
                         }
                     }
+                }
+            }
             //    }
             //}
 
@@ -645,21 +704,21 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public bool MayAutoBuildHere(City city, IntVector2 subTilePos)
-        {
-            if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subtile))
-            {
-                switch (subtile.mainTerrain)
-                {
-                    case TerrainMainType.Destroyed:
-                    case TerrainMainType.DefaultLand:
-                        var tile = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos));
-                        return tile.MayBuild() && tile.CityIndex == city.myIndex;
+        //public bool MayAutoBuildHere(City city, IntVector2 subTilePos)
+        //{
+        //    if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subtile))
+        //    {
+        //        switch (subtile.mainTerrain)
+        //        {
+        //            case TerrainMainType.Destroyed:
+        //            case TerrainMainType.DefaultLand:
+        //                var tile = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTilePos));
+        //                return tile.MayBuild() && tile.CityIndex == city.myIndex;
 
-                }
-            }
-            return false;
-        }
+        //        }
+        //    }
+        //    return false;
+        //}
 
         public IntVector2 eatPosition(IntVector2 workerSubtile)
         { 

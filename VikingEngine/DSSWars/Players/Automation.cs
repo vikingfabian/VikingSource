@@ -274,8 +274,8 @@ namespace VikingEngine.DSSWars.Players
                                 {   
                                     cityAction = citySel;
                                     automationAction = AutomationAction.UpgradeLogistics;
-                                    CityStructure.AutomationInstance.update(citySel, 0, 4);
-                                    subtilePos = CityStructure.AutomationInstance.EmptyLand.Last();
+                                    //CityStructure.AutomationInstance.update(citySel, 0, 4);
+                                    CityStructure.AutomationInstance.NextEmptyLand(citySel, Ref.peRnd.Int(32), out subtilePos);//.EmptyLand.Last();
                                     return;
                                 }
 

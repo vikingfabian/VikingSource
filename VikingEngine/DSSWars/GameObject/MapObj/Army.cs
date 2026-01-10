@@ -6,12 +6,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Xsl;
-using Valve.Steamworks;
+
 using VikingEngine.DebugExtensions;
 
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
@@ -98,6 +99,11 @@ namespace VikingEngine.DSSWars.GameObject
             bound = new BoundingSphere(Vector3.Zero, 0.5f);
             asynchCullingUpdate(1f, DssRef.state.culling.cullingStateA);
             faction.AddArmy(this, overrideIx);
+        }
+
+        override public bool lowFood()
+        {
+            return food <= DssConst.WorkSafeGuardAmount;
         }
 
         public static void NetWriteArmy(System.IO.BinaryWriter w, Army army)

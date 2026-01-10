@@ -1681,7 +1681,7 @@ namespace VikingEngine.DSSWars.Players
                         {
                             if (nCity.cityType == CityType.UnClaimed && Ref.peRnd.ChanceF(0.5f))
                             {
-                                city.conscriptSettler(nCity);
+                                city.conscriptSettler(nCity, true);
                                 return;
                             }
                         }
