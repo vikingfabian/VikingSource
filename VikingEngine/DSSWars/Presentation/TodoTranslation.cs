@@ -52,6 +52,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Economy_AnimalPenUpkeep => "Pen upkeep: {0}";
         public string Work_SlaughterX => "Slaughter {0}";
 
+        public string Resource_TypeName_ManType => "man type";
         public string Resource_TypeName_NobelMen => "nobelmen";
         public string Resource_TypeName_ConservedFood => "conserved food";
         public string Resource_TypeName_Clay => "clay";
@@ -59,7 +60,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Resource_TypeName_Container => "container";
         public string Resource_TypeName_Meat => "meat";
         public string Resource_TypeName_Salt => "salt";
-        public string Resource_TypeName_Wagon=> "wagon";
+        public string Resource_TypeName_Vehicle=> "vehicle";
         public string Resource_TypeName_WagonClosed => "closed wagon";
         public string Resource_TypeName_WagonIron => "iron coach";
         public string Resource_TypeName_WagonSteel => "steel coach";
@@ -70,6 +71,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string Resource_TypeName_TowerShield => "tower shield";
 
         public string Resource_TypeName_Mount => "mount";
+
+        public string Resource_TypeName_MountArmorTitle => "mount armor";
 
         /// <summary>
         /// 0: armor type

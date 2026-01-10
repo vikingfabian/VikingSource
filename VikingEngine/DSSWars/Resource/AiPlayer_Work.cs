@@ -55,16 +55,18 @@ namespace VikingEngine.DSSWars.Players
 
                     adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.iron/*ref city.res_iron*/, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.smeltIron));
 
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.rawFood/*ref city.res_rawFood*/, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.farmfood));
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.food/*ref city.res_rawFood*/, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.farmFood));
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.rawFood/*ref city.res_rawFood*/, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.farmRawFood));
 
-                    
+
 
                     //adjustWorkToBuffer(ref city.res_wood, ref city.workTemplate.wood);
 
                     if (city.resourceAmount(CityResoureIndex.food)/*city.res_food.amount*/ <= 0)
                     {
                         city.workTemplate.setWorkPrio(WorkPriorityType.craftFood, 5);// .craft_food.value = 5;
-                        city.workTemplate.setWorkPrio(WorkPriorityType.farmfood, 4);// .farm_food.value = 4;
+                        city.workTemplate.setWorkPrio(WorkPriorityType.farmFood, 5);
+                        city.workTemplate.setWorkPrio(WorkPriorityType.farmRawFood, 4);// .farm_food.value = 4;
                     }
                     if (city.resourceAmount(CityResoureIndex.wood)/*city.res_wood.amount*/ <= 0)
                     {

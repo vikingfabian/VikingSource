@@ -52,12 +52,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         static readonly Vector2 CamCullingRadius = new Vector2(DssVar.SoldierGroup_Spacing * 1.4f);
         public Vector2 cullingTopLeft, cullingBottomRight;
-        
+
         public float food = 0;
-        public float totalUpkeep = 0;
+        public float conservedFood = 0;
+        public SoldierUpkeep totalUpkeep = new SoldierUpkeep();
 
         public float foodBuffer_minutes = 2f;
-        public float friendlyAreaFoodBuffer_minutes = 5f;
+        public float friendlyAreaFoodBuffer_minutes = 3f;
+        public float friendlyAreaConservedFoodBuffer_minutes = 6f;
 
         public MinuteStats foodCosts_import = new MinuteStats();
         public MinuteStats foodCosts_blackmarket = new MinuteStats();
@@ -103,7 +105,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         override public bool lowFood()
         {
-            return food <= DssConst.WorkSafeGuardAmount;
+            return food + conservedFood <= DssConst.WorkSafeGuardAmount;
         }
 
         public static void NetWriteArmy(System.IO.BinaryWriter w, Army army)
@@ -235,6 +237,7 @@ namespace VikingEngine.DSSWars.GameObject
             writeAiState(w);
 
             w.Write(food);
+            w.Write(conservedFood);
             money.write(w);
             w.Write((byte)tagBack);
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
@@ -259,16 +262,9 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 name.name = Data.NameGenerator.ArmyName(id);
             }
-
-            if (subVersion < 62)
-            {
-                WP.readPosXZ_old(r, out position, out tilePos);
-            }
-            else
-            {
-                WP.ReadPosXZPercentU16(r, out position, out tilePos);
-            }
-
+                        
+            WP.ReadPosXZPercentU16(r, out position, out tilePos);
+            
             readSoldierGroups(r, subVersion, pointers);
 
             init(faction);
@@ -278,10 +274,10 @@ namespace VikingEngine.DSSWars.GameObject
             readAiState(r, subVersion, pointers);
 
             food = r.ReadSingle();
-            if (subVersion >= 83)
-            {
-                money.read(r);
-            }
+            conservedFood = r.ReadSingle();
+            
+            money.read(r);
+            
 
             tagBack = (CityTagBack)r.ReadByte();
 
@@ -290,15 +286,11 @@ namespace VikingEngine.DSSWars.GameObject
                 tagArt = (ArmyTagArt)r.ReadUInt16();
             }
 
-            if (subVersion >= 89)
-            { 
-                armyColumnWidth = r.ReadByte();
-            }
+            armyColumnWidth = r.ReadByte();
+            
 
-            if (subVersion >= 62)
-            { 
-                Debug.ReadCheck(r);
-            }
+            Debug.ReadCheck(r);
+            
         }
 
 
@@ -369,6 +361,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (!GetCasual())
             {
                 HudLib.ItemCount(args.content, SpriteName.WarsResource_Food, DssRef.lang.Resource_TypeName_Food, TextLib.OneDecimal(food));
+                HudLib.ItemCount(args.content, SpriteName.WarsResource_ConservedFood, DssRef.todoLang.Resource_TypeName_ConservedFood, TextLib.OneDecimal(conservedFood));
             }
 
             args.content.newLine();
@@ -447,18 +440,17 @@ namespace VikingEngine.DSSWars.GameObject
 
         void foodAndUpkeepToHud(ObjectHudArgs args, bool mayInteract)
         {
-            float upkeepConvert = GetPlayer().ConvertUpkeep(totalUpkeep, out bool casual);
+            //float upkeepConvert = GetPlayer().ConvertUpkeep(totalGoldUpkeep, out bool casual);
 
-            if (casual)
-            {
-                args.content.newLine();
-                args.content.Add(new RbImage(SpriteName.rtsUpkeepTime));
-                args.content.space();
-                args.content.Add(new RbText(string.Format(DssRef.lang.Hud_Upkeep, TextLib.OneDecimal(upkeepConvert * Money.CopperToGold))));
-                args.content.space();
-                HudLib.PerSecondInfo(args.player, args.content, false);
-            }
-            else
+            
+            args.content.newLine();
+            args.content.Add(new RbImage(SpriteName.rtsUpkeepTime));
+            args.content.space();
+            args.content.Add(new RbText(string.Format(DssRef.lang.Hud_Upkeep, TextLib.OneDecimal(totalUpkeep.copper * Money.CopperToGold))));
+            args.content.space();
+            HudLib.PerSecondInfo(args.player, args.content, false);
+
+            if (!GetPlayer().profile.casualControls)
             {
                 args.content.Add(new RbImage(SpriteName.WarsResource_Food));
                 args.content.space();
@@ -471,9 +463,14 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 args.content.newLine();
+                args.content.Add(new RbImage(SpriteName.WarsResource_ConservedFood));
+                args.content.space();
+                args.content.Add(new RbText(string.Format(".Conserved food reserves", TextLib.LargeNumber((int)conservedFood))));
+
+                args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
                 args.content.space();
-                args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(Army.ManUpkeepToFoodUpkeep(upkeepConvert)))));
+                args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(Army.ManUpkeepToFoodUpkeep(totalUpkeep.food)))));
                 args.content.space();
                 HudLib.PerSecondInfo(args.player, args.content, false);
 

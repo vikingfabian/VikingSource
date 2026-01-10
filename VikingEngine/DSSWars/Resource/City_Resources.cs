@@ -1201,27 +1201,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             int carry = ItemPropertyColl.CarryAmount(itemResourceType, maxWeight);
             AddGroupedResource(itemResourceType, -carry);
-            //switch (itemResourceType)
-            //{
-            //    case ItemResourceType.SoftWood:
-            //        res_wood.amount -= carry;
-            //        break;
-            //    case ItemResourceType.Stone_G:
-            //        res_stone.amount -= carry;
-            //        break;
-            //    case ItemResourceType.Food_G:
-            //        res_food.amount -= carry;
-            //        break;
-            //    case ItemResourceType.Iron_G:
-            //        res_iron.amount -= carry;
-            //        break;
-
-            //    default:
-            //        throw new NotImplementedException(itemResourceType.ToString());
-            //}
-
+            
             return new ItemResource(itemResourceType, 1, payment, carry);
-            //throw new NotImplementedException();
         }
 
         public void dropOffItem(ItemResource item, out ItemResource convert1, out ItemResource convert2)

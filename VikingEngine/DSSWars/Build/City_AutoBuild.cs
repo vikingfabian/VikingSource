@@ -596,7 +596,8 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.setWorkPrio(WorkPriorityType.craftBullet, 3);
 
             // Farming & Gathering
-            workTemplate.setWorkPrio(WorkPriorityType.farmfood, 4);
+            workTemplate.setWorkPrio(WorkPriorityType.farmFood, 4);
+            workTemplate.setWorkPrio(WorkPriorityType.farmRawFood, 3);
             workTemplate.setWorkPrio(WorkPriorityType.farmfuel, 3);
             workTemplate.setWorkPrio(WorkPriorityType.farmlinen, 3);
             workTemplate.setWorkPrio(WorkPriorityType.bogiron, 1);

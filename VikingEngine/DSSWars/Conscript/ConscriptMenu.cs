@@ -61,6 +61,8 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.Catapult,
         };
 
+        
+
         //static readonly ItemResourceType[] NobelWeapons = {
         //    ItemResourceType.Warhammer,
         //    ItemResourceType.TwoHandSword,
@@ -89,7 +91,7 @@ namespace VikingEngine.DSSWars.Conscript
         };
 
         static readonly ItemResourceType[] AnimalTypes = {
-
+            ItemResourceType.NONE,
             ItemResourceType.Pig,
             ItemResourceType.Oxen,
             ItemResourceType.KineOxen,
@@ -120,7 +122,20 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.Oliphant,
         };
 
-        static readonly ItemResourceType[] WagonTypes = {
+        static readonly ItemResourceType[] MountArmorTypes = {
+            ItemResourceType.NONE,
+            ItemResourceType.MountBronzeArmor,
+            ItemResourceType.MountPaddedArmor,
+            ItemResourceType.MountHeavyPaddedArmor,
+            ItemResourceType.MountIronArmor,
+            ItemResourceType.MountHeavyIronArmor,
+            ItemResourceType.MountLightPlateArmor,
+            ItemResourceType.MountFullPlateArmor,
+            ItemResourceType.MountMithrilArmor,
+        };
+
+        static readonly ItemResourceType[] VehicleTypes = {
+            ItemResourceType.NONE,
             ItemResourceType.Wagon2Wheel,
             ItemResourceType.Wagon4Wheel,
             ItemResourceType.WagonClosed,
@@ -229,6 +244,30 @@ namespace VikingEngine.DSSWars.Conscript
                 }
 
                 content.newParagraph();
+                HudLib.Label(content, DssRef.todoLang.Resource_TypeName_ManType);
+                content.space();
+                foreach (var item in MenTypes)
+                {
+                    IconName.Item(item, out SpriteName itemIcon, out _);
+
+                    var buttonContent = new List<AbsRichBoxMember>(3) {
+                        new RbImage(itemIcon),
+                    };
+
+                    if (city.GetGroupedResource(item).amount >= menCostNext)
+                    {
+                        buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
+                    }
+
+                    var button = new ArtOption(item == currentStatus.profile.man, buttonContent,
+                    new RbAction1Arg<ItemResourceType>(manClick, item, RbSoundType.Option),
+                    new RbTooltip(manTooltip, item)
+                    );
+
+                    content.Add(button);
+                }
+
+                content.newParagraph();
                 HudLib.Label(content, DssRef.lang.Conscript_WeaponTitle);
                 content.newLine();
                 
@@ -254,6 +293,109 @@ namespace VikingEngine.DSSWars.Conscript
                 }
 
                 content.newParagraph();
+                HudLib.Label(content, DssRef.todoLang.Resource_TypeName_Shield);
+                content.newLine();
+
+                var shields = currentStatus.profile.AvailableShields();
+                foreach (var item in shields)
+                {
+                    IconName.Item(item, out SpriteName itemIcon, out _);
+
+                    var buttonContent = new List<AbsRichBoxMember>(3) {
+                        new RbImage(itemIcon),
+                    };
+
+                    if (city.GetGroupedResource(item).amount >= menCostNext)
+                    {
+                        buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
+                    }
+
+                    var button = new ArtOption(item == currentStatus.profile.shield, buttonContent,
+                    new RbAction1Arg<ItemResourceType>(shieldClick, item, RbSoundType.Option),
+                    new RbTooltip(shieldTooltip, item)
+                    );
+
+                    content.Add(button);
+                }
+
+                content.newParagraph();
+                HudLib.Label(content, DssRef.todoLang.Resource_TypeName_Animal);
+                content.newLine();
+
+                foreach (var item in AnimalTypes)
+                {
+                    IconName.Item(item, out SpriteName itemIcon, out _);
+
+                    var buttonContent = new List<AbsRichBoxMember>(3) {
+                        new RbImage(itemIcon),
+                    };
+
+                    if (city.GetGroupedResource(item).amount >= menCostNext)
+                    {
+                        buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
+                    }
+
+                    var button = new ArtOption(item == currentStatus.profile.animal, buttonContent,
+                    new RbAction1Arg<ItemResourceType>(animalClick, item, RbSoundType.Option),
+                    new RbTooltip(animalTooltip, item)
+                    );
+
+                    content.Add(button);
+                }
+
+                if (currentStatus.profile.animal != ItemResourceType.NONE)
+                {
+                    content.newParagraph();
+                    HudLib.Label(content, DssRef.todoLang.Resource_TypeName_MountArmorTitle);
+                    content.newLine();
+
+                    foreach (var item in MountArmorTypes)
+                    {
+                        IconName.Item(item, out SpriteName itemIcon, out _);
+
+                        var buttonContent = new List<AbsRichBoxMember>(3) {
+                        new RbImage(itemIcon),
+                    };
+
+                        if (city.GetGroupedResource(item).amount >= menCostNext)
+                        {
+                            buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
+                        }
+
+                        var button = new ArtOption(item == currentStatus.profile.mountArmor, buttonContent,
+                        new RbAction1Arg<ItemResourceType>(mountArmorClick, item, RbSoundType.Option),
+                        new RbTooltip(mountArmorTooltip, item)
+                        );
+
+                        content.Add(button);
+                    }
+
+                    content.newParagraph();
+                    HudLib.Label(content, DssRef.todoLang.Resource_TypeName_Vehicle);
+                    content.newLine();
+
+                    foreach (var item in VehicleTypes)
+                    {
+                        IconName.Item(item, out SpriteName itemIcon, out _);
+
+                        var buttonContent = new List<AbsRichBoxMember>(3) {
+                        new RbImage(itemIcon),
+                    };
+
+                        if (city.GetGroupedResource(item).amount >= menCostNext)
+                        {
+                            buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
+                        }
+
+                        var button = new ArtOption(item == currentStatus.profile.vehicle, buttonContent,
+                        new RbAction1Arg<ItemResourceType>(vehicleClick, item, RbSoundType.Option),
+                        new RbTooltip(vehicleTooltip, item)
+                        );
+
+                        content.Add(button);
+                    }
+                }
+
 
                 HudLib.Label(content, DssRef.lang.Conscript_ArmorTitle);
                 content.newLine();
@@ -694,18 +836,48 @@ namespace VikingEngine.DSSWars.Conscript
 
         }
 
-        void weaponClick(ItemResourceType weapon)
+        void manClick(ItemResourceType item)
         {
             BarracksStatus currentProfile = get();
-            currentProfile.profile.weapon = weapon;
+            currentProfile.profile.man = item;
+            set(currentProfile);
+        }
+        void weaponClick(ItemResourceType item)
+        {
+            BarracksStatus currentProfile = get();
+            currentProfile.profile.weapon = item;
+            set(currentProfile);
+        }
+        void shieldClick(ItemResourceType item)
+        {
+            BarracksStatus currentProfile = get();
+            currentProfile.profile.shield = item;
+            set(currentProfile);
+        }
+        
+        void animalClick(ItemResourceType item)
+        {
+            BarracksStatus currentProfile = get();
+            currentProfile.profile.animal = item;
+            set(currentProfile);
+        }
+        void mountArmorClick(ItemResourceType item)
+        {
+            BarracksStatus currentProfile = get();
+            currentProfile.profile.mountArmor = item;
+            set(currentProfile);
+        }
+        void vehicleClick(ItemResourceType item)
+        {
+            BarracksStatus currentProfile = get();
+            currentProfile.profile.vehicle = item;
             set(currentProfile);
         }
 
         void weaponTooltip(RichBoxContent content, object tag)
         {
             ItemResourceType weapon = (ItemResourceType)tag;
-
-            
+                        
             var data = new SoldierConscriptProfile() { conscript = new ConscriptProfile() { weapon = weapon } }.init();
 
             IconName.Item(weapon, out SpriteName weaponicon, out string weaponname);
@@ -744,14 +916,47 @@ namespace VikingEngine.DSSWars.Conscript
             content.Add(new RbText(DssRef.lang.Conscript_BlockDescription, HudLib.InfoYellow_Light));
 
             content.newParagraph();
-            var res = city.GetGroupedResource(weapon);
 
-            content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
-            bool reachedBuffer = false;
-            res.toMenu(content, weapon, false, ref reachedBuffer);
-            
-           
+            ResourceLib.FullResourceInfo(city, weapon, content); 
+            //var res = city.GetGroupedResource(weapon);
+
+            //content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
+            //bool reachedBuffer = false;
+            //res.toMenu(content, weapon, false, ref reachedBuffer);
         }
+
+        void manTooltip(RichBoxContent content, object tag)
+        {
+            ItemResourceType item = (ItemResourceType)tag;
+
+            ResourceLib.FullResourceInfo(city, item, content);
+        }
+
+        void shieldTooltip(RichBoxContent content, object tag)
+        {
+            ItemResourceType item = (ItemResourceType)tag;
+
+            ResourceLib.FullResourceInfo(city, item, content);
+        }
+        void animalTooltip(RichBoxContent content, object tag)
+        {
+            ItemResourceType item = (ItemResourceType)tag;
+
+            ResourceLib.FullResourceInfo(city, item, content);
+        }
+        void mountArmorTooltip(RichBoxContent content, object tag)
+        {
+            ItemResourceType item = (ItemResourceType)tag;
+
+            ResourceLib.FullResourceInfo(city, item, content);
+        }
+        void vehicleTooltip(RichBoxContent content, object tag)
+        {
+            ItemResourceType item = (ItemResourceType)tag;
+
+            ResourceLib.FullResourceInfo(city, item, content);
+        }
+
         void armorClick(ItemResourceType armor)
         {
             BarracksStatus currentProfile = get();

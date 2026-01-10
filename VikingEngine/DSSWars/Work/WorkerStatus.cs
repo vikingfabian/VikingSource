@@ -204,7 +204,18 @@ namespace VikingEngine.DSSWars.Work
             {
                 case WorkType.TrossCityTrade:
                     var toCity = DssRef.world.tileGrid.Get(subTileEnd / WorldData.TileSubDivitions).City();
-                    ItemResource recieved = toCity.MakeTrade(ItemResourceType.Food_G, carry.amount, DssConst.Worker_TrossWorkerCarryWeight);
+
+                    ItemResourceType foodType;
+                    if (toCity.GetGroupedResource(EntityComponent.CityResoureIndex.ConservedFood).amount >= ItemPropertyColl.DefaultCarry)
+                    {
+                        foodType = ItemResourceType.ConservedFood;
+                    }
+                    else
+                    { 
+                        foodType= ItemResourceType.Food_G;
+                    }
+
+                    ItemResource recieved = toCity.MakeTrade(foodType, carry.amount, DssConst.Worker_TrossWorkerCarryWeight);
                     carry = recieved;
 
                     createWorkOrder(WorkType.TrossReturnToArmy, 0, 0, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(army.tilePos), null);

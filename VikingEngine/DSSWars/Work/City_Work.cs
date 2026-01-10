@@ -496,7 +496,7 @@ namespace VikingEngine.DSSWars.GameObject
                             case TerrainSubFoilType.TreeBanana:
                                 safeGuard = rawFoodSafeGuard;
                                 bNeedMore = needMore(CityResoureIndex.food);
-                                prio = workTemplate.Get(WorkPriorityType.farmfood).value;
+                                prio = workTemplate.Get(WorkPriorityType.farmFood).value;
                                 break;
 
                             case TerrainSubFoilType.LinenFarm:
@@ -511,12 +511,12 @@ namespace VikingEngine.DSSWars.GameObject
                             case TerrainSubFoilType.WheatFarm:
                                 safeGuard = rawFoodSafeGuard;
                                 bNeedMore = needMore(CityResoureIndex.rawFood);
-                                prio = workTemplate.Get(WorkPriorityType.farmfood).value;
+                                prio = workTemplate.Get(WorkPriorityType.farmRawFood).value;
                                 break;
                             case TerrainSubFoilType.WheatFarmUpgraded:
                                 safeGuard = rawFoodSafeGuard;
                                 bNeedMore = needMore(CityResoureIndex.rawFood);//res_rawFood.needMore();
-                                prio = workTemplate.Get(WorkPriorityType.farmfood).value;
+                                prio = workTemplate.Get(WorkPriorityType.farmRawFood).value;
                                 bonus = 1;
                                 break;
                             case TerrainSubFoilType.RapeSeedFarm:
@@ -544,7 +544,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if (((bNeedMore && prio > WorkTemplate.NoPrio) || safeGuard) && work_isFreeTile(tilework.subtile))
                         {
                             int distanceValue = -center.SideLength(tilework.subtile);
-                            workQue.Add(new WorkQueMember(tilework.workType, NoSubWork, bonus, tilework.subtile, safeGuard ? WorkTemplate.SafeGuardPrio : workTemplate.Get( WorkPriorityType.farmfood).value, 0, distanceValue));
+                            workQue.Add(new WorkQueMember(tilework.workType, NoSubWork, bonus, tilework.subtile, prio, 0, distanceValue));
                         }
                     }
 
@@ -626,7 +626,7 @@ namespace VikingEngine.DSSWars.GameObject
 
 
                     //ANIMALS
-                    if (workTemplate.Get(WorkPriorityType.farmfood).HasPrio() || rawFoodSafeGuard)
+                    if (workTemplate.Get(WorkPriorityType.move).HasPrio())
                     {
                         foreach (var pos in CityStructure.WorkInstance.AnimalPens)
                         {
@@ -636,17 +636,94 @@ namespace VikingEngine.DSSWars.GameObject
                             switch (subTile.GetBuildingType())
                             {
                                 case TerrainBuildingType.HenPen:
-                                    bNeedMore = needMore(CityResoureIndex.rawFood);//res_rawFood.needMore();
+                                    bNeedMore = needMore(CityResoureIndex.Hen);
                                     break;
                                 case TerrainBuildingType.PigPen:
-                                    bNeedMore = needMore(CityResoureIndex.rawFood) || needMore(CityResoureIndex.skinLinnen);// res_rawFood.needMore() || res_skinLinnen.needMore();
+                                    bNeedMore = needMore(CityResoureIndex.Pig);
+                                    break;
+
+                                // Oxen
+                                case TerrainBuildingType.OxenPen:
+                                    bNeedMore = needMore(CityResoureIndex.Oxen);
+                                    break;
+                                case TerrainBuildingType.KineOxenPen:
+                                    bNeedMore = needMore(CityResoureIndex.KineOxen);
+                                    break;
+
+                                // Dogs
+                                case TerrainBuildingType.DogCage:
+                                    bNeedMore = needMore(CityResoureIndex.Dog);
+                                    break;
+                                case TerrainBuildingType.HoundCage:
+                                    bNeedMore = needMore(CityResoureIndex.Hound);
+                                    break;
+
+                                // Horses
+                                case TerrainBuildingType.PonyPen:
+                                    bNeedMore = needMore(CityResoureIndex.Pony);
+                                    break;
+                                case TerrainBuildingType.HorsePen:
+                                    bNeedMore = needMore(CityResoureIndex.Horse);
+                                    break;
+                                case TerrainBuildingType.WarHorsePen:
+                                    bNeedMore = needMore(CityResoureIndex.WarHorse);
+                                    break;
+                                case TerrainBuildingType.DraftHorsePen:
+                                    bNeedMore = needMore(CityResoureIndex.DraftHorse);
+                                    break;
+
+                                // Wild Pigs/Hogs
+                                case TerrainBuildingType.WildPigPen:
+                                    bNeedMore = needMore(CityResoureIndex.WildPig);
+                                    break;
+                                case TerrainBuildingType.WildHogPen:
+                                    bNeedMore = needMore(CityResoureIndex.WildHog);
+                                    break;
+                                case TerrainBuildingType.WarHogPen:
+                                    bNeedMore = needMore(CityResoureIndex.WarHog);
+                                    break;
+                                case TerrainBuildingType.StagHogPen:
+                                    bNeedMore = needMore(CityResoureIndex.StagHog);
+                                    break;
+
+                                // Wolves
+                                case TerrainBuildingType.WolfCage:
+                                    bNeedMore = needMore(CityResoureIndex.Wolf);
+                                    break;
+                                case TerrainBuildingType.WargCage:
+                                    bNeedMore = needMore(CityResoureIndex.Warg);
+                                    break;
+                                case TerrainBuildingType.AlphaWargCage:
+                                    bNeedMore = needMore(CityResoureIndex.AlphaWarg);
+                                    break;
+
+                                // Cats
+                                case TerrainBuildingType.WildCatCage:
+                                    bNeedMore = needMore(CityResoureIndex.WildCat);
+                                    break;
+                                case TerrainBuildingType.LionCage:
+                                    bNeedMore = needMore(CityResoureIndex.Lion);
+                                    break;
+                                case TerrainBuildingType.WarLionCage:
+                                    bNeedMore = needMore(CityResoureIndex.WarLion);
+                                    break;
+
+                                // Elephants
+                                case TerrainBuildingType.ElephantCage:
+                                    bNeedMore = needMore(CityResoureIndex.Elephant);
+                                    break;
+                                case TerrainBuildingType.WarElephantCage:
+                                    bNeedMore = needMore(CityResoureIndex.WarElephant);
+                                    break;
+                                case TerrainBuildingType.OliphantCage:
+                                    bNeedMore = needMore(CityResoureIndex.Oliphant);
                                     break;
                             }
 
-                            if ((bNeedMore || rawFoodSafeGuard) && work_isFreeTile(pos))
+                            if (bNeedMore && work_isFreeTile(pos))
                             {
                                 int distanceValue = -center.SideLength(pos);
-                                workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, 0, pos, rawFoodSafeGuard ? WorkTemplate.SafeGuardPrio : workTemplate.Get(WorkPriorityType.farmfood).value, 0, distanceValue));
+                                workQue.Add(new WorkQueMember(WorkType.PickUpProduce, NoSubWork, 0, pos, workTemplate.Get(WorkPriorityType.move).value, 0, distanceValue));
                             }
                         }
                     }

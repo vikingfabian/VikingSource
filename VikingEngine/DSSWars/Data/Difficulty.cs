@@ -57,6 +57,7 @@ namespace VikingEngine.DSSWars.Data
         public int setting_QuickMatch_PlayerCount = 4;
         public bool setting_QuickMatch_TwoTeams = false;
 
+        public float manFoodUpkeep;
 
         public int TechMultiProperty(bool set, int value)
         {
@@ -397,6 +398,8 @@ namespace VikingEngine.DSSWars.Data
             MercenaryPurchaseCost_Add = 100 + mediumOffset * 20;
 
             aiEconomyMultiplier = AiEconomyLevel[aiEconomyLevel] / 100.0;
+
+            manFoodUpkeep = DssConst.ManDefaultEnergyCost / FoodEnergySett;
         }
 
         public void write(System.IO.BinaryWriter w)

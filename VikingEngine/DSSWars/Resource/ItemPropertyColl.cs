@@ -385,6 +385,7 @@ namespace VikingEngine.DSSWars.Resource
             //Init weapons
             {
                 var weapon = Get(ItemResourceType.SharpStick);
+                weapon.Filter_IsTwoHandWeapon = false;
                 ref var soldier = ref weapon.soldierData;
                 soldier.attackDamage = DssConst.WeaponDamage_SharpStick;
                 soldier.attackDamageStructure = soldier.attackDamage;
@@ -403,6 +404,7 @@ namespace VikingEngine.DSSWars.Resource
 
             {
                 var weapon = Get(ItemResourceType.BronzeSword);
+                weapon.Filter_IsTwoHandWeapon = false;
                 ref var soldier = ref weapon.soldierData;
 
                 soldier.attackDamage = DssConst.WeaponDamage_BronzeSword;
@@ -423,6 +425,7 @@ namespace VikingEngine.DSSWars.Resource
 
             {
                 var weapon = Get(ItemResourceType.ShortSword);
+                weapon.Filter_IsTwoHandWeapon = false;
                 ref var soldier = ref weapon.soldierData;
 
                 soldier.attackDamage = DssConst.WeaponDamage_ShortSword;
@@ -443,6 +446,7 @@ namespace VikingEngine.DSSWars.Resource
 
             {
                 var weapon = Get(ItemResourceType.Sword);
+                weapon.Filter_IsTwoHandWeapon = false;
                 ref var soldier = ref weapon.soldierData;
 
                 soldier.attackDamage = DssConst.WeaponDamage_Sword;
@@ -463,6 +467,7 @@ namespace VikingEngine.DSSWars.Resource
 
             {
                 var weapon = Get(ItemResourceType.LongSword);
+                weapon.Filter_IsTwoHandWeapon = false;
                 ref var soldier = ref weapon.soldierData;
 
                 soldier.attackDamage = DssConst.WeaponDamage_LongSword;
@@ -505,6 +510,7 @@ namespace VikingEngine.DSSWars.Resource
 
             {
                 var weapon = Get(ItemResourceType.HandSpear);
+                weapon.Filter_IsTwoHandWeapon = false;
                 ref var soldier = ref weapon.soldierData;
 
                 soldier.attackDamage = DssConst.WeaponDamage_Handspear;
@@ -528,6 +534,7 @@ namespace VikingEngine.DSSWars.Resource
 
             {
                 var weapon = Get(ItemResourceType.Warhammer);
+                weapon.Filter_IsTwoHandWeapon = false;
                 ref var soldier = ref weapon.soldierData;
 
                 soldier.attackDamage = DssConst.WeaponDamage_Warhammer;
@@ -609,6 +616,7 @@ namespace VikingEngine.DSSWars.Resource
 
             {
                 var weapon = Get(ItemResourceType.MithrilSword);
+                weapon.Filter_IsTwoHandWeapon = false;
                 ref var soldier = ref weapon.soldierData;
 
                 soldier.attackDamage = DssConst.WeaponDamage_MithrilSword;
@@ -654,6 +662,7 @@ namespace VikingEngine.DSSWars.Resource
 
             {
                 var weapon = Get(ItemResourceType.ThrowingSpear);
+                weapon.Filter_IsTwoHandWeapon = false;
                 ref var soldier = ref weapon.soldierData;
 
                 soldier.attackDamage = DssConst.WeaponDamage_Throwingspear;
@@ -882,7 +891,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.rowWidth = 3;
                 soldier.columnsDepth = 2;
                 soldier.workForcePerUnit = 2;
-                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                //soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                 soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
                 soldier.hasBannerMan = false;
                 soldier.rotationSpeed = DssConst.WarmachineRotatingSpeed_NoWheels;
@@ -916,7 +925,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.rowWidth = 3;
                 soldier.columnsDepth = 2;
                 soldier.workForcePerUnit = 2;
-                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                //soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                 soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
                 soldier.hasBannerMan = false;
                 soldier.rotationSpeed = DssConst.WarmachineRotatingSpeed_NoWheels;
@@ -948,7 +957,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.rowWidth = 2;
                 soldier.columnsDepth = 2;
                 soldier.workForcePerUnit = 2;
-                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                //soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                 soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
                 soldier.hasBannerMan = false;
                 soldier.rotationSpeed = DssConst.WarmachineRotatingSpeed_NoWheels;
@@ -981,7 +990,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.rowWidth = 1;
                 soldier.columnsDepth = 1;
                 soldier.workForcePerUnit = 6;
-                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                //soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                 soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
                 soldier.hasBannerMan = false;
                 soldier.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 2.4f);
@@ -1015,7 +1024,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.rowWidth = 3;
                 soldier.columnsDepth = 2;
                 soldier.workForcePerUnit = 2;
-                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                //soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                 soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
                 soldier.hasBannerMan = false;
                 soldier.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 1.1f);
@@ -1048,7 +1057,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.rowWidth = 3;
                 soldier.columnsDepth = 2;
                 soldier.workForcePerUnit = 2;
-                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                //soldier.upkeepMultiplier = DssLib.SoldierDefaultUpkeep * 2;
                 soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
                 soldier.hasBannerMan = false;
                 soldier.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 0.3f);
@@ -1083,7 +1092,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.rowWidth = 3;
                 soldier.columnsDepth = 2;
                 soldier.workForcePerUnit = 2;
-                soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
+                //soldier.upkeepPerSoldier = DssLib.SoldierDefaultUpkeep * 2;
                 soldier.groupSpacing = DssVar.DefaultGroupSpacing * 2.2f;
                 soldier.hasBannerMan = false;
                 soldier.attackStart = new Vector3(0, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 1f);

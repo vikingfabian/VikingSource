@@ -763,7 +763,7 @@ namespace VikingEngine.DSSWars
 
                 case DSSWars.CityCulture.Wainwright:
                     title = DssRef.todoLang.CityCulture_Wainwright;
-                    description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_Wagon);
+                    description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_Vehicle);
                     break;
 
                 case DSSWars.CityCulture.Wheelwright:

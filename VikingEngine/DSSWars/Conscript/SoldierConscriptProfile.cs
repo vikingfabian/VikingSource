@@ -769,7 +769,7 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.workForcePerUnit = 0;
                     soldierData.rowWidth = 1;
                     soldierData.columnsDepth = 1;
-                    soldierData.upkeepPerSoldier = 0;
+                    //soldierData.upkeepPerSoldier = 0;
 
                     soldierData.attackRange = 0.02f;
                     soldierData.basehealth = DssConst.Soldier_DefaultHealth * 4;
@@ -781,6 +781,12 @@ namespace VikingEngine.DSSWars.Conscript
 
                     soldierData.modelName = LootFest.VoxelModelName.wars_darklord;
                     break;
+            }
+
+            soldierData.copperUpkeepPerSoldier = DssConst.TrainingGoldUpkeep[(int)conscript.training];
+            if (conscript.man == ItemResourceType.NobelMen)
+            {
+                soldierData.copperUpkeepPerSoldier += DssConst.Nobel_GoldUpkeep;
             }
 
             soldierData.attackTimePlusCoolDown /= ConscriptProfile.TrainingAttackSpeed(conscript.training);

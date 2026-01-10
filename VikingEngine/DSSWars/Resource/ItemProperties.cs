@@ -123,6 +123,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public SoldierData soldierData = new SoldierData();
         public bool Filter_IsSiegeWeapon = false;
+        public bool Filter_IsTwoHandWeapon = true;
         public int cityResourceIndex;
         public int defaultStockPile = 100;
 

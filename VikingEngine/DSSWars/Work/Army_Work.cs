@@ -29,19 +29,24 @@ namespace VikingEngine.DSSWars.GameObject
         {
             setMaxFood();
             food *= 10;
+            conservedFood *= 10;
         }
 
         public void setMaxFood()
         {
             float energy = DssConst.ManDefaultEnergyCost / DssRef.difficulty.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
-            float bufferGoalFood = friendlyAreaFoodBuffer_minutes * TimeExt.MinuteInSeconds * energy;
-#if DEBUG
-            if (Debug.CorruptValue(food))
-            {
-                lib.DoNothing();
-            }
-#endif
+            float minuteEnergy = TimeExt.MinuteInSeconds * energy;
+            float bufferGoalFood = friendlyAreaFoodBuffer_minutes * minuteEnergy;
+            float bufferGoalConservedFood = friendlyAreaConservedFoodBuffer_minutes * minuteEnergy;
+
+            //#if DEBUG
+            //            if (Debug.CorruptValue(food))
+            //            {
+            //                lib.DoNothing();
+            //            }
+            //#endif
             food = bufferGoalFood;
+            conservedFood = bufferGoalConservedFood;
         }
 
         public void async_workUpdate(Faction faction, float seconds)
@@ -52,11 +57,10 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (seconds > 0)
                 {
-                    if (casual)
-                    {
-                        goldUpkeepUpdate_async(seconds);
-                    }
-                    else
+                    
+                    goldUpkeepUpdate_async(seconds);
+
+                    if (!casual)
                     {
                         foodUpkeepUpdate_async(faction, seconds);
                     }
@@ -91,7 +95,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             //float energyUpkeep = totalUpkeep * DssConst.ManDefaultEnergyCost;
             //float foodUpkeep = energyUpkeep * DssRef.difficulty.FoodEnergySett;
-            float foodUpkeep = ManUpkeepToFoodUpkeep(totalUpkeep);
+            //float foodUpkeep = //ManUpkeepToFoodUpkeep(totalCopperUpkeep);
 
             if (foodBackOrderTimeSec > 0)
             {
@@ -113,13 +117,13 @@ namespace VikingEngine.DSSWars.GameObject
                         bufferGoal_minutes = foodBuffer_minutes;
                     }
 
-                    float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * foodUpkeep;
+                    float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * totalUpkeep.food;
 
                     //if (bufferGoal_minutes > 0 && food < bufferGoalFood && 
                     //    city.res_food.amount >= ItemPropertyColl.CarryFood &&
                     //     faction.hasGold(city.SellCost(ItemResourceType.Food_G) * ItemPropertyColl.CarryFood, this))
                     if (bufferGoal_minutes > 0 && 
-                        food < bufferGoalFood && 
+                        (food + conservedFood) < bufferGoalFood && 
                         city.resourceAmount(EntityComponent.CityResoureIndex.food) >= ItemPropertyColl.CarryFood &&                            
                         faction.hasGold(city.SellCost(ItemResourceType.Food_G) * ItemPropertyColl.CarryFood, this))
                     {
@@ -145,9 +149,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             }
 
-            float minBuffer = foodUpkeep * 2;
+            float minBuffer = totalUpkeep.food * 2;
 
-            if (food < minBuffer)
+            if (food + conservedFood < minBuffer)
             {
                 bool allowDept = false;
 

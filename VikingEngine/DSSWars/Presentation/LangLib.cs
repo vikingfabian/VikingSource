@@ -239,8 +239,14 @@ namespace VikingEngine.DSSWars.Presentation
                     typeIcon = SpriteName.WarsResource_MithrilAlloy;
                     break;
 
-                case WorkPriorityType.farmfood:
-                    name = DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Food;
+                case WorkPriorityType.farmFood:
+                    name = DssRef.lang.Work_Farming + ": " + DssRef.todoLang.BuildingType_Orchard;
+                    workIcon = SpriteName.WarsWorkFarm;
+                    typeIcon = SpriteName.WarsResource_Food;
+                    break;
+
+                case WorkPriorityType.farmRawFood:
+                    name = DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_RawFood;
                     workIcon = SpriteName.WarsWorkFarm;
                     typeIcon = SpriteName.WarsResource_RawFood;
                     break;

@@ -44,7 +44,8 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public bool canAttackStructure = true;
         public float modelScale = DssConst.Men_ModCharacterScale;
 
-        public float upkeepPerSoldier = DssLib.SoldierDefaultUpkeep;
+        //public float upkeepPerSoldier = DssLib.SoldierDefaultUpkeep;
+        public float copperUpkeepPerSoldier = 0;
         public int workForcePerUnit = 1;
         public float groupSpacing = DssVar.DefaultGroupSpacing;
         public Vector3 attackStart = new Vector3(DssConst.Men_StandardModelScale * 0.5f, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 0.5f);
@@ -143,10 +144,10 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
             }
         }
 
-        public int Upkeep()
-        {
-            return Convert.ToInt32(rowWidth * columnsDepth * upkeepPerSoldier);
-        }
+        //public int Upkeep()
+        //{
+        //    return Convert.ToInt32(rowWidth * columnsDepth * upkeepPerSoldier);
+        //}
 
         public Vector3 ShadowModelScale()
         {

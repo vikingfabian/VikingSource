@@ -13,10 +13,22 @@ namespace VikingEngine.DSSWars.Conscript
 {
     struct ConscriptProfile
     {
+        static readonly ItemResourceType[] SideShield = {
+            ItemResourceType.NONE,
+            ItemResourceType.BucklerShield
+        };
+        static readonly ItemResourceType[] AllShields = {
+            ItemResourceType.NONE,
+            ItemResourceType.BucklerShield,
+            ItemResourceType.RoundShield,
+            ItemResourceType.HeaterShield,
+            ItemResourceType.TowerShield,
+        };
         public static readonly ConscriptProfile Empty = new ConscriptProfile();
-
+        
         public ItemResourceType man;
         public ItemResourceType weapon;
+        public ItemResourceType shield;
         public ItemResourceType armorLevel;
         public ItemResourceType animal;
         public ItemResourceType mountArmor;
@@ -28,6 +40,7 @@ namespace VikingEngine.DSSWars.Conscript
         {
             man = ItemResourceType.Men;
             weapon = ItemResourceType.SharpStick;
+            shield = ItemResourceType.NONE;
             armorLevel = ItemResourceType.NONE;
 
             animal = ItemResourceType.NONE;
@@ -36,6 +49,18 @@ namespace VikingEngine.DSSWars.Conscript
 
             training = 0;
             specialization = SpecializationType.None;
+        }
+
+        public ItemResourceType[] AvailableShields()
+        {
+            if (ItemPropertyColl.Get(weapon).Filter_IsTwoHandWeapon)
+            {
+                return SideShield;
+            }
+            else
+            {
+                return AllShields;
+            }
         }
 
         public int menCost()
@@ -488,18 +513,23 @@ namespace VikingEngine.DSSWars.Conscript
             //public SpecializationType specialization;
 
             bool special_man = man != ItemResourceType.Men;
+            bool special_shield = shield != ItemResourceType.NONE;
             bool special_animal = animal != ItemResourceType.NONE;
             bool special_mountArmor = mountArmor != ItemResourceType.NONE;
             bool special_vehicle = vehicle != ItemResourceType.NONE;
             bool special_specialization = specialization != SpecializationType.None;
 
-            new EightBit(special_man, special_animal, special_mountArmor, special_vehicle, special_specialization).write(w);
+            new EightBit(special_man, special_shield, special_animal, special_mountArmor, special_vehicle, special_specialization).write(w);
 
             if (special_man)
             {
                 w.Write((byte)man);
             }
             w.Write((byte)weapon);
+            if (special_shield)
+            {
+                w.Write((byte)shield);
+            }
             w.Write((byte)armorLevel);
             if (special_animal)
             {
@@ -523,13 +553,17 @@ namespace VikingEngine.DSSWars.Conscript
         public void readGameState(System.IO.BinaryReader r)
         {
             EightBit specials = EightBit.FromStream(r);
-            specials.Get(out bool special_man, out bool special_animal, out bool special_mountArmor, out bool special_vehicle, out bool special_specialization);
+            specials.Get(out bool special_man, out bool special_shield, out bool special_animal, out bool special_mountArmor, out bool special_vehicle, out bool special_specialization);
 
             if (special_man)
             {
                 man = (ItemResourceType)r.ReadByte();
             }
             weapon = (ItemResourceType)r.ReadByte();
+            if (special_shield)
+            {
+                shield = (ItemResourceType)r.ReadByte();
+            }
             armorLevel = (ItemResourceType)r.ReadByte();
             if (special_animal)
             {

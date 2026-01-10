@@ -15,9 +15,12 @@ RESOURCES
 * 21 new animals
 * 8 Animal armor types
 * 4 new collectable terrain resources
+* Conserved food, Extra storage capacity for armies
 
 SOLDIER RECRUITING
 x More options in soldier conscript: man type, shield, animal and wagon.
+* Soldiers have gold upkeep, related to their training
+x -conscript ui
 
 USER INTERFACE
 x Menu for cesspits
@@ -27,6 +30,7 @@ SYSTEMS
 * Animal pens have upkeep
 * Resource collecting is limited by storage
 * Crafting can produce two item types
+* Orchards have their own priority
 
 PERFORMANCE
 * Diplomacy is converted to a component system, removing around a 1000 references
@@ -42,18 +46,6 @@ QUESTIONS
 CITY CULTURES
 * AnimalBreeder2, //Higher chance of successful breeding (replaces the old culture)
 * Wheelwright, //Speed bonus to conscripted carts
-
-Butcher
-- Butcher priorities menu
-
-Conserved food (high storage)
-- Extra storage capacity for armies
-- craft 1: raw food + salt + beer
-- craft 2: storage box + food
-- craft 3: smoker meat
-- craft 4: drying meat (desert area)
-
-
 
 Base mounts, use breeding to go from pony to warhorse:
 - Pony

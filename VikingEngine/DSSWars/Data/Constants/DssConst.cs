@@ -42,6 +42,13 @@ namespace VikingEngine.DSSWars
         public static float MediumBlockReduceAttack_Inv = 0.5f;
         public static float SmallBlockReduceAttack_Inv = 0.75f;
 
+        public static float TrainingLevelMinimal_GoldUpkeep = 0;
+        public static float TrainingLevelBasic_GoldUpkeep = TaxPerWorker_copp * 0.4f;
+        public static float TrainingLevelSkillful_GoldUpkeep = TaxPerWorker_copp * 0.8f;
+        public static float TrainingLevelProfessional_GoldUpkeep = TaxPerWorker_copp * 2f;
+        public static float Nobel_GoldUpkeep = TaxPerWorker_copp * 2f;
+        public static readonly float[] TrainingGoldUpkeep = [TrainingLevelMinimal_GoldUpkeep, TrainingLevelBasic_GoldUpkeep, TrainingLevelSkillful_GoldUpkeep, TrainingLevelProfessional_GoldUpkeep];
+        
         //NOBEL
         public const int NobelHouseMenCount = 15;
         public const float NobelHouseMenAddSpeed_Minute = 5;
@@ -278,7 +285,7 @@ namespace VikingEngine.DSSWars
         public static int PlantWaterCost = 1;
         public static int OrchardWaterCost = 8;
 
-        public static float CasualSoldierDefaultCost_Copp = 4f * TaxPerWorker_copp / SoldierGroup_DefaultCount;
+        public static float CasualSoldierDefaultCost_Copp = 4f * TaxPerWorker_copp /* / SoldierGroup_DefaultCount*/;
         //public static int PlantFoodCost = 6;
 
         public static int WorkSafeGuardAmount = 10;

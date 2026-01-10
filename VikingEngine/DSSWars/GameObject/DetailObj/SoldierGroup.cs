@@ -2271,9 +2271,19 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void Upkeep(ref float upkeepCount, ref float moneyCarry)
+        public void Upkeep(bool casual, ref SoldierUpkeep upkeep, ref float moneyCarry)
         {
-            upkeepCount += soldierData.upkeepMultiplier * soldierCount;
+            float upkeepCount = soldierData.upkeepMultiplier * soldierCount;
+
+            upkeep.food += upkeepCount * DssRef.difficulty.manFoodUpkeep;
+            if (casual)
+            {
+                upkeep.copper += upkeepCount * DssConst.CasualSoldierDefaultCost_Copp;
+            }
+            else
+            {
+                upkeep.copper += upkeepCount * soldierData.copperUpkeepPerSoldier;
+            }
             moneyCarry += soldierCount * DssConst.MoneyCarryPerSoldier;
         }
 

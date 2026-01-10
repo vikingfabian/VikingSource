@@ -79,7 +79,8 @@ namespace VikingEngine.DSSWars.Work
             work[startIndex + (int)WorkPriorityType.smeltIron].value = 3;
             work[startIndex + (int)WorkPriorityType.craftSharpStick].value = 1;
             work[startIndex + (int)WorkPriorityType.craftPaddedArmor].value = 1;
-            work[startIndex + (int)WorkPriorityType.farmfood].value = 2;
+            work[startIndex + (int)WorkPriorityType.farmFood].value = 3;
+            //work[startIndex + (int)WorkPriorityType.farmRawFood].value = 2;
             work[startIndex + (int)WorkPriorityType.farmfuel].value = 2;
             work[startIndex + (int)WorkPriorityType.farmlinen].value = 1;
             work[startIndex + (int)WorkPriorityType.bogiron].value = 1;
@@ -1505,7 +1506,8 @@ namespace VikingEngine.DSSWars.Work
                         city == null ? 0 : city.terrainStructure.mineCount_stoneblock);
                     Get(WorkPriorityType.craftBrick).toHud(player, content, string.Format(DssRef.lang.Work_CraftX, DssRef.todoLang.Resource_TypeName_Brick), SpriteName.WarsHammer, SpriteName.WarsResource_Brick, WorkPriorityType.craftBrick, faction, city, ItemResourceType.Brick);
 
-                    Get(WorkPriorityType.farmfood).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Food.ToLowerInvariant(), SpriteName.WarsWorkFarm, SpriteName.WarsResource_RawFood, WorkPriorityType.farmfood, faction, city, ItemResourceType.RawFood_Group);
+                    Get(WorkPriorityType.farmFood).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.todoLang.BuildingType_Orchard, SpriteName.WarsWorkFarm, SpriteName.WarsResource_Food, WorkPriorityType.farmFood, faction, city, ItemResourceType.Food_G);
+                    Get(WorkPriorityType.farmRawFood).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Food.ToLowerInvariant(), SpriteName.WarsWorkFarm, SpriteName.WarsResource_RawFood, WorkPriorityType.farmRawFood, faction, city, ItemResourceType.RawFood_Group);
                     Get(WorkPriorityType.farmfuel).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Fuel.ToLowerInvariant(), SpriteName.WarsWorkFarm, SpriteName.WarsResource_Fuel, WorkPriorityType.farmfuel, faction, city, ItemResourceType.Fuel_G);
                     Get(WorkPriorityType.farmlinen).toHud(player, content, DssRef.lang.Work_Farming + ": " + DssRef.lang.Resource_TypeName_Linen.ToLowerInvariant(), SpriteName.WarsWorkFarm, SpriteName.WarsResource_LinenCloth, WorkPriorityType.farmlinen, faction, city, ItemResourceType.SkinLinen_Group);
 
@@ -1667,37 +1669,90 @@ namespace VikingEngine.DSSWars.Work
                     waitForFullStock(WorkPriorityType.SlaughterHen);
 
                     Get(WorkPriorityType.SlaughterPig).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Pig), SpriteName.WarsHammer, SpriteName.WarsResource_Pig, WorkPriorityType.SlaughterPig, faction, city, ItemResourceType.Pig);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterPig);
 
                     // --- Oxen ---
                     Get(WorkPriorityType.SlaughterOxen).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Oxen), SpriteName.WarsHammer, SpriteName.WarsResource_Oxen, WorkPriorityType.SlaughterOxen, faction, city, ItemResourceType.Oxen);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterOxen);
+
                     Get(WorkPriorityType.SlaughterKineOxen).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_KineOxen), SpriteName.WarsHammer, SpriteName.WarsResource_KineOxen, WorkPriorityType.SlaughterKineOxen, faction, city, ItemResourceType.KineOxen);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterKineOxen);
 
                     // --- Horses ---
                     Get(WorkPriorityType.SlaughterPony).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Pony), SpriteName.WarsHammer, SpriteName.WarsResource_Pony, WorkPriorityType.SlaughterPony, faction, city, ItemResourceType.Pony);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterPony);
+
                     Get(WorkPriorityType.SlaughterHorse).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Horse), SpriteName.WarsHammer, SpriteName.WarsResource_Horse, WorkPriorityType.SlaughterHorse, faction, city, ItemResourceType.Horse);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterHorse);
+
                     Get(WorkPriorityType.SlaughterWarHorse).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WarHorse), SpriteName.WarsHammer, SpriteName.WarsResource_WarHorse, WorkPriorityType.SlaughterWarHorse, faction, city, ItemResourceType.WarHorse);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterWarHorse);
+
                     Get(WorkPriorityType.SlaughterDraftHorse).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_DraftHorse), SpriteName.WarsHammer, SpriteName.WarsResource_DraftHorse, WorkPriorityType.SlaughterDraftHorse, faction, city, ItemResourceType.DraftHorse);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterDraftHorse);
 
                     // --- Wild Pigs ---
                     Get(WorkPriorityType.SlaughterWildPig).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WildPig), SpriteName.WarsHammer, SpriteName.WarsResource_WildPig, WorkPriorityType.SlaughterWildPig, faction, city, ItemResourceType.WildPig);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterWildPig);
+
                     Get(WorkPriorityType.SlaughterWildHog).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WildHog), SpriteName.WarsHammer, SpriteName.WarsResource_WildHog, WorkPriorityType.SlaughterWildHog, faction, city, ItemResourceType.WildHog);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterWildHog);
+
                     Get(WorkPriorityType.SlaughterWarHog).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WarHog), SpriteName.WarsHammer, SpriteName.WarsResource_WarHog, WorkPriorityType.SlaughterWarHog, faction, city, ItemResourceType.WarHog);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterWarHog);
+
                     Get(WorkPriorityType.SlaughterStagHog).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_StagHog), SpriteName.WarsHammer, SpriteName.WarsResource_StagHog, WorkPriorityType.SlaughterStagHog, faction, city, ItemResourceType.StagHog);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterStagHog);
 
                     // --- Wolves ---
                     Get(WorkPriorityType.SlaughterWolf).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Wolf), SpriteName.WarsHammer, SpriteName.WarsResource_Wolf, WorkPriorityType.SlaughterWolf, faction, city, ItemResourceType.Wolf);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterWolf);
+
                     Get(WorkPriorityType.SlaughterWarg).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Warg), SpriteName.WarsHammer, SpriteName.WarsResource_Warg, WorkPriorityType.SlaughterWarg, faction, city, ItemResourceType.Warg);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterWarg);
+
                     Get(WorkPriorityType.SlaughterAlphaWarg).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_AlphaWarg), SpriteName.WarsHammer, SpriteName.WarsResource_AlphaWarg, WorkPriorityType.SlaughterAlphaWarg, faction, city, ItemResourceType.AlphaWarg);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterAlphaWarg);
 
                     // --- Cats ---
                     Get(WorkPriorityType.SlaughterWildCat).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WildCat), SpriteName.WarsHammer, SpriteName.WarsResource_WildCat, WorkPriorityType.SlaughterWildCat, faction, city, ItemResourceType.WildCat);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterWildCat);
+
                     Get(WorkPriorityType.SlaughterLion).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Lion), SpriteName.WarsHammer, SpriteName.WarsResource_Lion, WorkPriorityType.SlaughterLion, faction, city, ItemResourceType.Lion);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterLion);
+
                     Get(WorkPriorityType.SlaughterWarLion).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WarLion), SpriteName.WarsHammer, SpriteName.WarsResource_WarLion, WorkPriorityType.SlaughterWarLion, faction, city, ItemResourceType.WarLion);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterWarLion);
 
                     // --- Elephants ---
                     Get(WorkPriorityType.SlaughterElephant).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Elephant), SpriteName.WarsHammer, SpriteName.WarsResource_Elephant, WorkPriorityType.SlaughterElephant, faction, city, ItemResourceType.Elephant);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterElephant);
+
                     Get(WorkPriorityType.SlaughterWarElephant).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_WarElephant), SpriteName.WarsHammer, SpriteName.WarsResource_WarElephant, WorkPriorityType.SlaughterWarElephant, faction, city, ItemResourceType.WarElephant);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterWarElephant);
+
                     Get(WorkPriorityType.SlaughterOliphant).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Oliphant), SpriteName.WarsHammer, SpriteName.WarsResource_Oliphant, WorkPriorityType.SlaughterOliphant, faction, city, ItemResourceType.Oliphant);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterOliphant); 
                     break;
 
                 case ResourceGroupType.Mint:
@@ -2061,7 +2116,8 @@ namespace VikingEngine.DSSWars.Work
         craftHeaterShield,
         craftTowerShield,
 
-        farmfood,
+        farmFood,
+        farmRawFood,
         farmfuel,
         farmlinen,
         bogiron,
