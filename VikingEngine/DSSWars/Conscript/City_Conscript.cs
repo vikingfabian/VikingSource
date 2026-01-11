@@ -377,9 +377,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Army conscriptSettler(City settleArea, bool checkIfExists)
         {
-            Army army = null;
-
-            if ((!checkIfExists || !army.HasSettler(out _)) &&
+            Army army = recruitToClosestArmy();
+            
+            if ((!checkIfExists || army == null || !army.HasSettler(out _)) &&
                 SettlerBp().tryPayResources(this) > 0)
             {
                 army = conscriptArmy(new ConscriptProfile()
