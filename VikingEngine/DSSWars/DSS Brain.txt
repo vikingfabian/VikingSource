@@ -2,6 +2,7 @@
 * Fixed: does not load city guard
 * Graphical options for map layers
 * Map layers fade after a 300ms delay
+* Repaired custom map generating
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

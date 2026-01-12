@@ -114,6 +114,9 @@ namespace VikingEngine.DSSWars.Map.Generate
                         break;
 
                     case GenerateMapPass.Countries:
+                        generateSubTiles(world);
+                        findCityTerrain(generateSettings);
+
                         factionStartAreas(worldMeta.mapSize, 
                             DssRef.storage.gameRuleset.factionStartSize != FactionStartSize.Full, 
                             generateSettings);
@@ -133,6 +136,9 @@ namespace VikingEngine.DSSWars.Map.Generate
                             {
                                 return false;
                             }
+
+                            generateSubTiles(world);
+                            findCityTerrain(generateSettings);
 
                             factionStartAreas(worldMeta.mapSize, 
                                 DssRef.storage.gameRuleset.factionStartSize != FactionStartSize.Full, 
