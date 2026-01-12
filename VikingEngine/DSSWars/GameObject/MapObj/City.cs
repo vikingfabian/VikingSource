@@ -3979,7 +3979,7 @@ namespace VikingEngine.DSSWars.GameObject
                     EditSubTile.OntileChange(tilePos);
                 }
 
-                OnNewOwner(newFaction, convert);                
+                OnNewOwner(newFaction, convert || duringStartup);                
             }
         }
 
