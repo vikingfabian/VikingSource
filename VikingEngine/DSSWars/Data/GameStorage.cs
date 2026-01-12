@@ -303,6 +303,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 fileCheck.exception = e;
                 DssRef.storage = new Data.GameStorage();
+                DssRef.difficulty = new Difficulty();
             }
 
             IOLib.fileCheck_gamestorage = fileCheck;
