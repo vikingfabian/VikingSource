@@ -9,6 +9,15 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Japanese : AbsOptionsLanguage
     {
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "レイヤーのフェード";
+        public override string SplitScreen_HorizontalFirst => "横方向を優先";
+        public override string SplitScreen_VerticalFirst => "縦方向を優先";
+        public override string SplitScreen_HorizontalOnly => "横分割のみ";
+        public override string SplitScreen_VerticalOnly => "縦分割のみ";
+        public override string SplitScreen_Title => "スプリットスクリーン";
+        public override string SplitScreen_AdjustSplit => "分割の調整 {0}";
+
         public override string Settings_ControllerVibration => "コントローラーの振動";
         public override string GraphicsOption_IngameMenuWidth => "ゲーム内メニューの幅";
         public override string DisplayMode => "表示モード";

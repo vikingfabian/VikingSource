@@ -237,7 +237,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{
-                        new RbText(".Place Settlement") }, new RbAction(() =>
+                        new RbText(DssRef.lang.Action_PlaceSettlement) }, new RbAction(() =>
                         {
                             if (!unit.isDeleted)
                             {
@@ -455,7 +455,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public void tagsToMenu(RichBoxContent content)
         {
-            HudLib.Label(content, ".View on map" + string.Format(" ({0})", ".All armies"));
+            HudLib.Label(content, DssRef.lang.ObjectUi_ViewOnMap + string.Format(" ({0})", DssRef.lang.Hud_AllArmies));
             content.newLine();
             player.armyHudSettings.toHud(content, false);
             //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tag_ViewOnMap) }, player.ArmyTagsOnMapProperty));

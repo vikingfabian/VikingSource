@@ -1669,7 +1669,7 @@ namespace VikingEngine.DSSWars.Players
             if (faction.cities.Count > 0)
             {
                 City city = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
-
+                                
                 if (city != null &&
                     city.cityType > CityType.Campsite &&
                     city.homesUnused() < 20)

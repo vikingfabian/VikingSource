@@ -132,23 +132,23 @@ namespace VikingEngine.DSSWars.GameObject
         bool followFaction_Stockpile_Projectile = true;
         bool followFaction_Stockpile_Armor = true;
 
-        public bool foodSafeGuardIsActive(ItemResourceType item)
-        {
-            bool food = foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
-            switch (item)
-            {
-                case ItemResourceType.Food_G:
-                    return food;
-                case ItemResourceType.Fuel_G:
-                    return fuelSafeGuard;
-                case ItemResourceType.RawFood_Group:
-                    return rawFoodSafeGuard;
-                case ItemResourceType.Wood_Group:
-                    return woodSafeGuard;
-            }
+        //public bool foodSafeGuardIsActive(ItemResourceType item)
+        //{
+        //    bool food = foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
+        //    switch (item)
+        //    {
+        //        case ItemResourceType.Food_G:
+        //            return food;
+        //        case ItemResourceType.Fuel_G:
+        //            return fuelSafeGuard;
+        //        case ItemResourceType.RawFood_Group:
+        //            return rawFoodSafeGuard;
+        //        case ItemResourceType.Wood_Group:
+        //            return woodSafeGuard;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
         public int resourceAmount(int cityResourceIndex)
         { 
@@ -161,27 +161,27 @@ namespace VikingEngine.DSSWars.GameObject
             resource.amount = amount;
         }
 
-        public bool foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard)
-        {
-            if (res_food_safeguard && resourceAmount(CityResoureIndex.food) <= DssConst.WorkSafeGuardAmount)
-            {
-                fuelSafeGuard = resourceAmount(CityResoureIndex.fuel) <= DssConst.WorkSafeGuardAmount;
-                rawFoodSafeGuard = resourceAmount(CityResoureIndex.rawFood) <= DssConst.WorkSafeGuardAmount;
-                woodSafeGuard = fuelSafeGuard && resourceAmount(CityResoureIndex.wood) <= DssConst.WorkSafeGuardAmount;
-                return true;
-            }
-            else
-            {
-                fuelSafeGuard = false;
-                rawFoodSafeGuard = false;
-                woodSafeGuard = false;
-                return false;
-            }
-        }
+        //public bool foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard)
+        //{
+        //    if (res_food_safeguard && resourceAmount(CityResoureIndex.food) <= DssConst.WorkSafeGuardAmount)
+        //    {
+        //        fuelSafeGuard = resourceAmount(CityResoureIndex.fuel) <= DssConst.WorkSafeGuardAmount;
+        //        rawFoodSafeGuard = resourceAmount(CityResoureIndex.rawFood) <= DssConst.WorkSafeGuardAmount;
+        //        woodSafeGuard = fuelSafeGuard && resourceAmount(CityResoureIndex.wood) <= DssConst.WorkSafeGuardAmount;
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        fuelSafeGuard = false;
+        //        rawFoodSafeGuard = false;
+        //        woodSafeGuard = false;
+        //        return false;
+        //    }
+        //}
 
         override public bool lowFood()
         {
-            return resourceAmount(CityResoureIndex.food) <= DssConst.WorkSafeGuardAmount;
+            return resourceAmount(CityResoureIndex.food) <= workForce.amount;//DssConst.WorkSafeGuardAmount;
         }
 
 
@@ -789,39 +789,39 @@ namespace VikingEngine.DSSWars.GameObject
 
 
 
-        public bool needMore(ItemResourceType type, bool rawfoodSafeGuard, bool woodSafeGuard, out bool usesSafeGuard)
+        public bool needMore(ItemResourceType type/*, bool rawfoodSafeGuard, bool woodSafeGuard, out bool usesSafeGuard*/)
         {
-            usesSafeGuard = false;
+            //usesSafeGuard = false;
             switch (type)
             {
                 case ItemResourceType.RawFood_Group:
                 case ItemResourceType.Wheat:
                 case ItemResourceType.Egg:
                 case ItemResourceType.Hen:
-                    if (rawfoodSafeGuard)
-                    {
-                        usesSafeGuard = true;
-                        return true;
-                    }
+                    //if (rawfoodSafeGuard)
+                    //{
+                    //    usesSafeGuard = true;
+                    //    return true;
+                    //}
                     return needMore(CityResoureIndex.rawFood);
 
                 case ItemResourceType.Pig:
-                    if (rawfoodSafeGuard)
-                    {
-                        usesSafeGuard = true;
-                        return true;
-                    }
+                    //if (rawfoodSafeGuard)
+                    //{
+                    //    usesSafeGuard = true;
+                    //    return true;
+                    //}
                     return needMore(CityResoureIndex.food) || needMore(CityResoureIndex.skinLinnen);
 
                 case ItemResourceType.Wood_Group:
                 case ItemResourceType.DryWood:
                 case ItemResourceType.SoftWood:
                 case ItemResourceType.HardWood:
-                    if (woodSafeGuard)
-                    {
-                        usesSafeGuard = true;
-                        return true;
-                    }
+                    //if (woodSafeGuard)
+                    //{
+                    //    usesSafeGuard = true;
+                    //    return true;
+                    //}
                     return needMore(CityResoureIndex.wood);
 
                 case ItemResourceType.NONE:

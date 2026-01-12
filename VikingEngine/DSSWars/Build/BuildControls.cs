@@ -1584,7 +1584,7 @@ namespace VikingEngine.DSSWars.Build
             if (type == BuildAndExpandType.Logistics)
             {
                 bool reachedBuffer = false;
-                city.GetGroupedResource(EntityComponent.CityResoureIndex.food)/*res_food*/.toMenu(content, ItemResourceType.Food_G, false, ref reachedBuffer);
+                city.GetGroupedResource(EntityComponent.CityResoureIndex.food)/*res_food*/.toMenu(content, ItemResourceType.Food_G, ref reachedBuffer);
             }
 
             if (build.blueprint.levelRequirement > XP.ExperienceLevel.Beginner_1)

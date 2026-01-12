@@ -247,7 +247,7 @@ namespace VikingEngine.DSSWars.Resource
 
             content.Add(new RbSeperationLine());
 
-            content.h1(DssRef.todoLang.ItemSource, HudLib.TitleColor_Head2);
+            content.h1(DssRef.lang.ItemSource, HudLib.TitleColor_Head2);
             content.newLine();
             properties.ItemSourceToHud(content);
 

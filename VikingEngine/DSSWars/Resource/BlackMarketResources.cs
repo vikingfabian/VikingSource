@@ -173,8 +173,8 @@ namespace VikingEngine.DSSWars.Resource
 
                         content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn).overrideColor = HudLib.TitleColor_Label;
                         bool reachedBuffer = false;
-                        bool safeGuard = city.foodSafeGuardIsActive(resourceType);
-                        city.GetGroupedResource(resourceType).toMenu(content, resourceType, safeGuard, ref reachedBuffer);
+                        //bool safeGuard = city.foodSafeGuardIsActive(resourceType);
+                        city.GetGroupedResource(resourceType).toMenu(content, resourceType, ref reachedBuffer);
                         
                         //player.hud.tooltip.create(player, content, true);
 

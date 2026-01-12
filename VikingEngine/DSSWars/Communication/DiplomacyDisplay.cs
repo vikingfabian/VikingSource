@@ -150,7 +150,7 @@ namespace VikingEngine.DSSWars.Interface
                             forgeRelationString = DssRef.lang.Hud_WardeclarationTitle;
                             break;
                         case RelationType.RelationType0_Neutral:
-                            forgeRelationString = DssRef.todoLang.Diplomacy_EndRelations;
+                            forgeRelationString = DssRef.lang.Diplomacy_EndRelations;
                             break;
                         default:
                             forgeRelationString = string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, Diplomacy.RelationString(opt.toRelation));

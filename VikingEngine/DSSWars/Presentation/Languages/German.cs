@@ -8,6 +8,62 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class German : AbsLanguage
     {
+        
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "Automatisiertes überspringen";
+
+        public override string Resource_WaterReason => "Wasser begrenzt die Anzahl deiner Einheiten und die Größe deiner Produktion";
+        public override string BuildingType_Orchard => "Obstgarten";
+        public override string BuildingType_ManorLord => "Gutsherr";
+        public override string BuildingType_ManorLord_Description => "Schaltet Nahrungsmittelverarbeitung frei";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "Beziehungen beenden";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "Herkunft";
+
+        public override string ItemSource_Terrain => "Gelände";
+        public override string ItemSource_Farm => "Bauernhof";
+        public override string ItemSource_CraftStation => "Handwerksstation";
+        public override string ItemSource_Gathering => "Sammeln";
+
+        public override string CityCulture_Nomad => "Nomade";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "Änderungsfaktor: {0}";
+
+        public override string Hud_Purchase_LowXCost => "Niedrige {0}-Kosten";
+
+        public override string WorkQueue_Title => "Arbeitsliste";
+        public override string WorkQueue_Length => "Verbleibende Aufgaben";
+        public override string WorkQueue_ActiveWorkers => "Aktive Arbeitstrupps";
+        public override string WorkQueue_IdleWorkers => "Untätige Arbeitstrupps";
+
+        public override string WorkTeam_Size => "Dorfbewohner arbeiten in Teams von {0}";
+
+        public override string ObjectUi_ViewOnMap => "Auf Karte zeigen";
+        public override string ObjectUi_StuckBuildOrders => "Blockierte Bauaufträge";
+        public override string Hud_AllArmies => "Alle Armeen";
+
+        public override string Hud_CurrentPage => "Aktuelle Seite";
+        public override string Hud_AllPages => "Alle Seiten";
+        public override string Hud_ToAllCities => "An alle Städte";
+        public override string Hud_ToFaction => "An Fraktion";
+        public override string Hud_FromFaction => "Von Fraktion";
+        public override string Hud_FactionWide => "Fraktionsweite Einstellung nutzen";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "Siedlung platzieren";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "Alle anderen Frames entfernen";
         //Winter patch 3
         public override string Hud_Purchase_AllBuildings => "Alle Gebäude einreihen";
         public override string Hud_Purchase_AllTech => "Alle Technologien einreihen";

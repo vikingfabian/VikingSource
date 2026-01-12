@@ -70,7 +70,7 @@ namespace VikingEngine.SteamWrapping
         {
             Ref.steam = this;
 
-            if (SteamAPI.Init())
+            if (PlatformSettings.SteamAPI && SteamAPI.Init())
             {
                 isInitialized = true;
 
@@ -272,7 +272,7 @@ namespace VikingEngine.SteamWrapping
         bool initUserStats = false;
         void OnUserStatsRecieved(UserStatsReceived_t caller)
         {
-            if (caller.m_nGameID == SteamUtils.GetAppID().m_AppId) // Other games may be requesting...
+            if (Ref.steam.isInitialized && caller.m_nGameID == SteamUtils.GetAppID().m_AppId) // Other games may be requesting...
             {
                 if (caller.m_eResult == EResult.k_EResultOK)
                 {

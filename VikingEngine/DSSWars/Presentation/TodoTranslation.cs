@@ -13,40 +13,6 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
-        public string Resource_WaterReason => "Water will limit how many units you can support and the size of your production";
-        public string BuildingType_Orchard => "Orchard";
-        public string BuildingType_ManorLord => "Manor lord";
-        public string BuildingType_ManorLord_Description => "Unlock food processing";
-        /// <summary>
-        /// Will end diplomatic relations like alliance
-        /// </summary>
-        public string Diplomacy_EndRelations => "End relations";
-
-        /// <summary>
-        /// Where a resource is produced or found
-        /// </summary>
-        public string ItemSource => "Item source";
-
-        public string ItemSource_Terrain => "Terrain";
-        public string ItemSource_Farm => "Farm";
-        public string ItemSource_CraftStation => "Craft station";
-        public string ItemSource_Gathering => "Gathering";
-
-        public string CityCulture_Nomad => "Nomads";
-
-        /// <summary>
-        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
-        /// </summary>
-        public string Hud_ChangeFactor => "By change factor: {0}";
-
-        public string Hud_Purchase_LowXCost => "Low {0} cost";
-
-        public string WorkQueue_Title => "Work queue";
-        public string WorkQueue_Length => "Remaining work objectives";
-        public string WorkQueue_ActiveWorkers => "Active work teams";
-        public string WorkQueue_IdleWorkers => "Idle work teams";
-
-        public string WorkTeam_Size => "Villagers work in teams of {0}";
         //## Mounted update ##
      
         public string Economy_AnimalPenUpkeep => "Pen upkeep: {0}";

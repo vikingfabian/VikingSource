@@ -2709,6 +2709,11 @@ namespace VikingEngine.DSSWars.GameObject
                        content.Add(new RbText(string.Format(DssRef.lang.Resource_AddPerSec, TextLib.OneDecimal(waterAddPerSec))));
 
                        content.newParagraph();
+                       HudLib.BulletPoint(content);
+                       content.Add(new RbText(DssRef.lang.Resource_WaterReason, HudLib.InfoYellow_Light));
+                       content.newLine();
+                       HudLib.BulletPoint(content);
+                       content.Add(new RbText(DssRef.lang.Resource_WaterAddLimit, HudLib.InfoYellow_Light));
                        HudLib.Description(content, DssRef.lang.Resource_WaterAddLimit);
 
                        //player.hud.tooltip.create(player, content, true);
@@ -3078,6 +3083,7 @@ namespace VikingEngine.DSSWars.GameObject
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsResource_RawFoodRemove));
                     content.space();
+                    content.Add(new RbText(DssRef.lang.WorkQueue_Title + ":"));
                     content.Add(new RbImage(SpriteName.WarsBuild_PigPen));
                     content.space();
                     content.Add(new RbText(string.Format(DssRef.todoLang.Economy_AnimalPenUpkeep, TextLib.OneDecimal(cityEconomy.animalPenUpkeep))));
@@ -3283,6 +3289,34 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public void workQueueInfo(RichBoxContent content, object tag)
+        {
+            content.h1(DssRef.lang.WorkQueue_Title, HudLib.TitleColor_Head);
+            HudLib.Label(content, DssRef.lang.WorkQueue_Length);
+            content.hspace();
+            content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueTotal));
+            content.hspace();
+            content.Add(new RbText(WorkerStats_WorkQueueLength.ToString()));
+
+            content.newParagraph();
+
+            HudLib.Label(content, DssRef.lang.WorkQueue_ActiveWorkers);
+            content.hspace();
+            content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueActive));
+            content.hspace();
+            content.Add(new RbText((WorkerStats_TotalUnits - WorkerStats_IdleCount).ToString()));
+
+            content.newLine();
+
+            HudLib.Label(content, DssRef.lang.WorkQueue_IdleWorkers);
+            content.hspace();
+            content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueIdle));
+            content.hspace();
+            content.Add(new RbText(WorkerStats_IdleCount.ToString()));
+
+            content.newLine();
+            content.text(string.Format(DssRef.lang.WorkTeam_Size, WorkTeamSize), HudLib.InfoYellow_Light);
+        }
 
         public void immigrantsTooltip(RichBoxContent content, object tag)
         {
@@ -3994,7 +4028,7 @@ namespace VikingEngine.DSSWars.GameObject
             int factor = DssLib.CulturePercChangeFactor(Culture);
             if (factor >= 0)
             {
-                content.text(string.Format(DssRef.todoLang.Hud_ChangeFactor, factor + "%"));
+                content.text(string.Format(DssRef.lang.Hud_ChangeFactor, factor + "%"));
             }
             content.h2(title, HudLib.TitleColor_Head);
             content.text(description);
@@ -4081,7 +4115,7 @@ namespace VikingEngine.DSSWars.GameObject
                     EditSubTile.OntileChange(tilePos);
                 }
 
-                OnNewOwner(newFaction, convert);                
+                OnNewOwner(newFaction, convert || duringStartup);                
             }
         }
 

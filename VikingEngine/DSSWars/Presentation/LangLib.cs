@@ -240,7 +240,7 @@ namespace VikingEngine.DSSWars.Presentation
                     break;
 
                 case WorkPriorityType.farmFood:
-                    name = DssRef.lang.Work_Farming + ": " + DssRef.todoLang.BuildingType_Orchard;
+                    name = DssRef.lang.Work_Farming + ": " + DssRef.lang.BuildingType_Orchard;
                     workIcon = SpriteName.WarsWorkFarm;
                     typeIcon = SpriteName.WarsResource_Food;
                     break;
@@ -1265,7 +1265,7 @@ namespace VikingEngine.DSSWars.Presentation
                 case TerrainBuildingType.Logistics:
                     return DssRef.lang.BuildingType_Logistics_Description;
                 case TerrainBuildingType.ManorLord:
-                    return DssRef.todoLang.BuildingType_ManorLord_Description;
+                    return DssRef.lang.BuildingType_ManorLord_Description;
                 case TerrainBuildingType.Tavern:
                     return DssRef.lang.BuildingType_Tavern_Description;
                 case TerrainBuildingType.Storehouse:

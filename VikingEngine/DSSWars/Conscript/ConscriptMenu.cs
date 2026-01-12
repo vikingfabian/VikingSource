@@ -659,7 +659,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                 //settler
                 content.Add(new RbSeperationLine());
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.UnitType_Settler) },
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsSettlerAdd), new RbSpace(), new RbText(DssRef.lang.UnitType_Settler) },
                     new RbAction(city.conscriptSettlerLink),
                     new RbTooltip(settlerTooltip),
                      city.SettlerBp().available(city)));
@@ -729,7 +729,7 @@ namespace VikingEngine.DSSWars.Conscript
 
         void settlerTooltip(RichBoxContent content, object tag)
         {
-            content.h2(DssRef.lang.UnitType_Settler, HudLib.TitleColor_TypeName);
+            content.h2(SpriteName.WarsSettler, DssRef.lang.UnitType_Settler, HudLib.TitleColor_TypeName);
             content.text(DssRef.lang.UnitType_Settler_Description, HudLib.InfoYellow_Light);
             city.SettlerBp().toMenu(content, city);
         }
@@ -979,7 +979,7 @@ namespace VikingEngine.DSSWars.Conscript
                 content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
 
                 bool reachedBuffer = false;
-                city.GetGroupedResource(armor).toMenu(content, armor, false, ref reachedBuffer);
+                city.GetGroupedResource(armor).toMenu(content, armor, ref reachedBuffer);
                
             }
         }

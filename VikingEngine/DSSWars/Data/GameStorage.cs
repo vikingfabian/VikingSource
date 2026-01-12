@@ -150,7 +150,7 @@ namespace VikingEngine.DSSWars.Data
             }
             DataStream.BeginReadWrite.BinaryIO(true, path, write, null, callBack, true);
         }
-        public const int Version = 33;
+        public const int Version = 34;
         public void writeGameSetup(System.IO.BinaryWriter w)
         {
             w.Write(Version);
@@ -302,6 +302,7 @@ namespace VikingEngine.DSSWars.Data
             {
                 fileCheck.exception = e;
                 DssRef.storage = new Data.GameStorage();
+                DssRef.difficulty = new Difficulty();
             }
 
             IOLib.fileCheck_gamestorage = fileCheck;

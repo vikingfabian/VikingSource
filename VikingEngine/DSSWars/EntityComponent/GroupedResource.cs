@@ -141,7 +141,7 @@ namespace VikingEngine.DSSWars.EntityComponent
             amount += item.amount * multiply;
         }
 
-        public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer)
+        public void toMenu(RichBoxContent content, ItemResourceType item, ref bool reachedBuffer)
         {
             IconName.Item(item, out SpriteName itemIcon, out string itemName);
 
@@ -159,11 +159,8 @@ namespace VikingEngine.DSSWars.EntityComponent
                 bool reached = amount >= stockPileLimit;
                 reachedBuffer |= reached;
                 SpriteName stockIcon;
-                if (safeGuard)
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd_Protected;
-                }
-                else if (reached)
+                
+                if (reached)
                 {
                     stockIcon = SpriteName.WarsStockpileStop;
                 }
@@ -177,7 +174,7 @@ namespace VikingEngine.DSSWars.EntityComponent
 
         }
 
-        public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer, LocalPlayer player, City city, bool hideOnZero = false)
+        public void toMenu(RichBoxContent content, ItemResourceType item, ref bool reachedBuffer, LocalPlayer player, City city, bool hideOnZero = false)
         {
             if (amount > 0 || !hideOnZero)
             {
@@ -197,11 +194,8 @@ namespace VikingEngine.DSSWars.EntityComponent
                     bool reached = amount >= stockPileLimit;
                     reachedBuffer |= reached;
                     SpriteName stockIcon;
-                    if (safeGuard)
-                    {
-                        stockIcon = SpriteName.WarsStockpileAdd_Protected;
-                    }
-                    else if (reached)
+                    
+                    if (reached)
                     {
                         stockIcon = SpriteName.WarsStockpileStop;
                     }

@@ -695,7 +695,7 @@ namespace VikingEngine.DSSWars
         public static void CityResource(RichBoxContent content, City city, ItemResourceType type)
         {
             bool buffer = false;
-            city.GetGroupedResource(type).toMenu(content, type, city.foodSafeGuardIsActive(type), ref buffer);
+            city.GetGroupedResource(type).toMenu(content, type, ref buffer);
         }
 
         public static List<AbsRichBoxMember> AddLockOnDemo(List<AbsRichBoxMember> buttonContent)

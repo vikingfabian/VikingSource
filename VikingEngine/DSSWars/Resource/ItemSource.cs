@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.Resource
                 switch (source)
                 {
                     case ItemSourceType.Terrain:
-                        label(DssRef.todoLang.ItemSource_Terrain);
+                        label(DssRef.lang.ItemSource_Terrain);
                         terrain(sourceId);
 
                         void terrain(int terrainType)
@@ -65,18 +65,18 @@ namespace VikingEngine.DSSWars.Resource
                         break;
 
                     case ItemSourceType.Farm:
-                        label(DssRef.todoLang.ItemSource_Farm);
+                        label(DssRef.lang.ItemSource_Farm);
                         addBuilding(sourceId);
                         break;
 
                     case ItemSourceType.Crafting:
 
-                        label(DssRef.todoLang.ItemSource_CraftStation);
+                        label(DssRef.lang.ItemSource_CraftStation);
                         addBuilding(sourceId);
                         break;
 
                     case ItemSourceType.Mine:
-                        label(DssRef.todoLang.ItemSource_Gathering);
+                        label(DssRef.lang.ItemSource_Gathering);
                         IconName.Terrain(TerrainMainType.Mine, sourceId, out var icon, out var name);
                         content.Add(new RbImage(icon));
                         content.hspace();

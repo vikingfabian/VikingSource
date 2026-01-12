@@ -8,6 +8,64 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Spanish : AbsLanguage
     {
+        
+
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "Saltar automatizados";
+
+        public override string Resource_WaterReason => "El agua limitará cuántas unidades puedes mantener y el tamaño de tu producción";
+        public override string BuildingType_Orchard => "Huerto";
+        public override string BuildingType_ManorLord => "Señor del Solar"; // "Lord of the Manor/Estate"
+        public override string BuildingType_ManorLord_Description => "Desbloquea procesamiento de alimentos";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "Terminar relaciones";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "Fuente del objeto";
+
+        public override string ItemSource_Terrain => "Terreno";
+        public override string ItemSource_Farm => "Granja";
+        public override string ItemSource_CraftStation => "Puesto de artesanía";
+        public override string ItemSource_Gathering => "Recolección";
+
+        public override string CityCulture_Nomad => "Nómada";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "Por factor de cambio: {0}";
+
+        public override string Hud_Purchase_LowXCost => "Bajo coste de {0}";
+
+        public override string WorkQueue_Title => "Cola de trabajo";
+        public override string WorkQueue_Length => "Objetivos de trabajo restantes";
+        public override string WorkQueue_ActiveWorkers => "Equipes de trabajo activos";
+        public override string WorkQueue_IdleWorkers => "Equipos de trabajo inactivos";
+
+        public override string WorkTeam_Size => "Los aldeanos trabajan en equipos de {0}";
+
+        public override string ObjectUi_ViewOnMap => "Ver en el mapa";
+        public override string ObjectUi_StuckBuildOrders => "Órdenes de construcción bloqueadas";
+        public override string Hud_AllArmies => "Todos los ejércitos";
+
+        public override string Hud_CurrentPage => "Página actual";
+        public override string Hud_AllPages => "Todas las páginas";
+        public override string Hud_ToAllCities => "A todas las ciudades";
+        public override string Hud_ToFaction => "A la facción";
+        public override string Hud_FromFaction => "De la facción";
+        public override string Hud_FactionWide => "Usar configuración de facción";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "Colocar asentamiento";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "Eliminar el resto de fotogramas";
+
         //Winter patch 3
         public override string Hud_Purchase_AllBuildings => "Encolar todos los edificios";
         public override string Hud_Purchase_AllTech => "Encolar toda la tecnología";

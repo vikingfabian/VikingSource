@@ -86,10 +86,10 @@ namespace VikingEngine.DSSWars.Players.Profile
             {
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
-                new RbImage( SpriteName.WarsIcon_WorkQueueIdle), new RbSpace(), new RbText(DssRef.todoLang.WorkQueue_IdleWorkers) }, viewIdleWorkOnMapProperty));
+                new RbImage( SpriteName.WarsIcon_WorkQueueIdle), new RbSpace(), new RbText(DssRef.lang.WorkQueue_IdleWorkers) }, viewIdleWorkOnMapProperty));
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
-                new RbImage( SpriteName.WarsConstructBuildingIcon), new RbSpace(), new RbText(".Stuck build orders") }, viewStuckBuildOrdersOnMapProperty));
+                new RbImage( SpriteName.WarsConstructBuildingIcon), new RbSpace(), new RbText(DssRef.lang.ObjectUi_StuckBuildOrders) }, viewStuckBuildOrdersOnMapProperty));
             }
         }
 

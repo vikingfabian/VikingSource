@@ -8,6 +8,62 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Japanese : AbsLanguage
     {
+        
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "自動化をスキップ";
+
+        public override string Resource_WaterReason => "水資源は、維持可能なユニット数と生産規模を制限します";
+        public override string BuildingType_Orchard => "果樹園";
+        public override string BuildingType_ManorLord => "領主の館";
+        public override string BuildingType_ManorLord_Description => "食料加工をアンロック";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "関係の解消";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "アイテムの入手元";
+
+        public override string ItemSource_Terrain => "地形";
+        public override string ItemSource_Farm => "農場";
+        public override string ItemSource_CraftStation => "製作所";
+        public override string ItemSource_Gathering => "採集";
+
+        public override string CityCulture_Nomad => "遊牧民";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "変動係数: {0}";
+
+        public override string Hud_Purchase_LowXCost => "低{0}コスト";
+
+        public override string WorkQueue_Title => "作業キュー";
+        public override string WorkQueue_Length => "残りの作業目標";
+        public override string WorkQueue_ActiveWorkers => "稼働中のチーム";
+        public override string WorkQueue_IdleWorkers => "待機中のチーム";
+
+        public override string WorkTeam_Size => "村人は{0}人のチームで働きます";
+
+        public override string ObjectUi_ViewOnMap => "マップで見る";
+        public override string ObjectUi_StuckBuildOrders => "停滞中の建設指示";
+        public override string Hud_AllArmies => "全軍";
+
+        public override string Hud_CurrentPage => "現在のページ";
+        public override string Hud_AllPages => "全ページ";
+        public override string Hud_ToAllCities => "全都市へ";
+        public override string Hud_ToFaction => "自勢力へ";
+        public override string Hud_FromFaction => "自勢力から";
+        public override string Hud_FactionWide => "勢力全体の設定を使用";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "入植地を配置";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "他のフレームを全て削除";
         //Winter patch 3
         public override string Hud_Purchase_AllBuildings => "全建造物を予約";
         public override string Hud_Purchase_AllTech => "全技術を予約";

@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         int currentWallRadius = 0;
 
-        protected void workAutoBuild(bool fuelSafeGuard, bool rawFoodSafeGuard)
+        protected void workAutoBuild(/*bool fuelSafeGuard, bool rawFoodSafeGuard*/)
         {
 
             var player = GetPlayer();
@@ -56,18 +56,18 @@ namespace VikingEngine.DSSWars.GameObject
                 int safeGuardBuildCount = 1;
 
                 BuildAndExpandType safeGuardBuild = BuildAndExpandType.NUM_NONE;
-                if (fuelSafeGuard && CityStructure.WorkInstance.fuelSpots < 4)
-                {
-                    ++CityStructure.WorkInstance.fuelSpots;
-                    safeGuardBuild = BuildAndExpandType.RapeSeedFarm;
-                    safeGuardBuildCount = 2;
-                }
-                else if (rawFoodSafeGuard && CityStructure.WorkInstance.foodspots < 4)
-                {
-                    ++CityStructure.WorkInstance.foodspots;
-                    safeGuardBuild = BuildAndExpandType.OrchardApple;
-                    safeGuardBuildCount = 4;
-                }
+                //if (fuelSafeGuard && CityStructure.WorkInstance.fuelSpots < 4)
+                //{
+                //    ++CityStructure.WorkInstance.fuelSpots;
+                //    safeGuardBuild = BuildAndExpandType.RapeSeedFarm;
+                //    safeGuardBuildCount = 2;
+                //}
+                //else if (rawFoodSafeGuard && CityStructure.WorkInstance.foodspots < 4)
+                //{
+                //    ++CityStructure.WorkInstance.foodspots;
+                //    safeGuardBuild = BuildAndExpandType.OrchardApple;
+                //    safeGuardBuildCount = 4;
+                //}
 
                 if (buildingStructure.Orchard_count + buildingStructure.WheatFarm_count + buildingStructure.HenPen_count < 2)
                 {
@@ -108,8 +108,14 @@ namespace VikingEngine.DSSWars.GameObject
                         safeGuardBuild = BuildAndExpandType.ArcherBarracks;
                     }
                 }
+                else if (CityStructure.WorkInstance.fuelSpots < 2)
+                {
+                    ++CityStructure.WorkInstance.fuelSpots;
+                    safeGuardBuild = BuildAndExpandType.RapeSeedFarm;
+                    safeGuardBuildCount = 2;
+                }
 
-                if (safeGuardBuild != BuildAndExpandType.NUM_NONE)
+            if (safeGuardBuild != BuildAndExpandType.NUM_NONE)
                 {
                     for (int i = 0; i < safeGuardBuildCount; i++)
                     {

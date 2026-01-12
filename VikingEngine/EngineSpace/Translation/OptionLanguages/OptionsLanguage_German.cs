@@ -9,6 +9,15 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_German : AbsOptionsLanguage
     {
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "Ebenen ausblenden";
+        public override string SplitScreen_HorizontalFirst => "Horizontal zuerst";
+        public override string SplitScreen_VerticalFirst => "Vertikal zuerst";
+        public override string SplitScreen_HorizontalOnly => "Nur horizontal";
+        public override string SplitScreen_VerticalOnly => "Nur vertikal";
+        public override string SplitScreen_Title => "Splitscreen"; // Common term in German gaming
+        public override string SplitScreen_AdjustSplit => "Aufteilung anpassen {0}";
+
         public override string Settings_ControllerVibration => "Controller-Vibration";
         public override string GraphicsOption_IngameMenuWidth => "Breite des Ingame-Menüs";
         public override string DisplayMode => "Anzeigemodus";
