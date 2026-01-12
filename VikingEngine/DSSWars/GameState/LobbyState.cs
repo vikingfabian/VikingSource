@@ -1630,16 +1630,16 @@ namespace VikingEngine.DSSWars
                         switch (opt)
                         {
                             case SplitScreenOptions.HorizontalFirst:
-                                caption = ".Horizontal first";
+                                caption = Ref.langOpt.SplitScreen_HorizontalFirst;
                                 break;
                             case SplitScreenOptions.VerticalFirst:
-                                caption = ".Vertical first";
+                                caption = Ref.langOpt.SplitScreen_VerticalFirst;
                                 break;
                             case SplitScreenOptions.HorizontalOnly:
-                                caption = ".Horizontal only";
+                                caption = Ref.langOpt.SplitScreen_HorizontalOnly;
                                 break;
                             case SplitScreenOptions.VerticalOnly:
-                                caption = ".Vertical only";
+                                caption = Ref.langOpt.SplitScreen_VerticalOnly;
                                 break;
                         }
                         splitOptions.AddOption(caption, opt == Engine.Screen.splitScreenOptions, opt == SplitScreenOptions.HorizontalOnly,
@@ -1649,7 +1649,7 @@ namespace VikingEngine.DSSWars
                                 refreshSplitScreen();
                             }, opt), null);
                     }
-                }   splitOptions.Build(content, SpriteName.MenuIconScreenResolution, ".Split-screen", underMenu);
+                }   splitOptions.Build(content, SpriteName.MenuIconScreenResolution, Ref.langOpt.SplitScreen_Title, underMenu);
 
                 int adjustCount = 0;
                 if (Engine.Screen.splitScreenOptions <= SplitScreenOptions.HorizontalFirst)
@@ -1665,7 +1665,7 @@ namespace VikingEngine.DSSWars
                 if (adjustCount >= 1)
                 {
                     content.newLine();
-                    content.Add(new RbText(string.Format(".Adjust split {0}", 1), HudLib.TitleColor_Label));
+                    content.Add(new RbText(string.Format(Ref.langOpt.SplitScreen_AdjustSplit, 1), HudLib.TitleColor_Label));
                     
                     content.space();
                     content.Add(new RbDragButton(new DragButtonSettings(-MaxAdjust, MaxAdjust, 0.1f), splitAdj1Property, true, null));
@@ -1677,7 +1677,7 @@ namespace VikingEngine.DSSWars
                 if (adjustCount >= 2)
                 {
                     content.newLine();
-                    content.Add(new RbText(string.Format(".Adjust split {0}", 2), HudLib.TitleColor_Label));
+                    content.Add(new RbText(string.Format(Ref.langOpt.SplitScreen_AdjustSplit, 2), HudLib.TitleColor_Label));
                     content.space();
                     content.Add(new RbDragButton(new DragButtonSettings(-MaxAdjust, MaxAdjust, 0.1f), splitAdj2Property, true, null));
                     content.space(2);
@@ -1687,7 +1687,7 @@ namespace VikingEngine.DSSWars
                 if (adjustCount >= 3)
                 {
                     content.newLine();
-                    content.Add(new RbText(string.Format(".Adjust split {0}", 3), HudLib.TitleColor_Label));
+                    content.Add(new RbText(string.Format(Ref.langOpt.SplitScreen_AdjustSplit, 3), HudLib.TitleColor_Label));
                     content.space();
                     content.Add(new RbDragButton(new DragButtonSettings(-MaxAdjust, MaxAdjust, 0.1f), splitAdj3Property, true, null));
                     content.space(2);

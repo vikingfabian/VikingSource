@@ -158,11 +158,11 @@ namespace VikingEngine.DSSWars.Resource
             }
 
             content.newParagraph();
-            HudLib.Label(content, ".Current page"); content.space();
+            HudLib.Label(content, DssRef.lang.Hud_CurrentPage); content.space();
             copyPasteOptions(groupType);
 
             content.newParagraph();
-            HudLib.Label(content, ".All pages"); content.space();
+            HudLib.Label(content, DssRef.lang.Hud_AllPages); content.space();
             copyPasteOptions(ResourceGroupType.NUM);
 
 
@@ -189,9 +189,9 @@ namespace VikingEngine.DSSWars.Resource
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                         new RbImage(SpriteName.WarsHudIconExport) ,
                         new RbSpace(),
-                        new RbText(".To all cities")},
+                        new RbText(DssRef.lang.Hud_ToAllCities)},
                        new RbAction5Arg<Players.LocalPlayer, Faction, City, CopyPasteOption, ResourceGroupType>(DssRef.world.copyStockPile,
-                            player, faction, null, CopyPasteOption.ToAllCities, group, RbSoundType.Copy), new RbTooltip_Text(".Use the faction wide setting")));
+                            player, faction, null, CopyPasteOption.ToAllCities, group, RbSoundType.Copy), new RbTooltip_Text(DssRef.lang.Hud_FactionWide)));
                 }
                 else
                 {
@@ -199,16 +199,16 @@ namespace VikingEngine.DSSWars.Resource
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                         new RbImage(SpriteName.WarsHudIconExport) ,
                         new RbSpace(),
-                        new RbText(".To faction")},
+                        new RbText(DssRef.lang.Hud_ToFaction)},
                        new RbAction5Arg<Players.LocalPlayer, Faction, City, CopyPasteOption, ResourceGroupType>(DssRef.world.copyStockPile,
-                            player, faction, city, CopyPasteOption.CityToFaction, group, RbSoundType.Copy), new RbTooltip_Text(".Use the faction wide setting")));
+                            player, faction, city, CopyPasteOption.CityToFaction, group, RbSoundType.Copy), new RbTooltip_Text(DssRef.lang.Hud_FactionWide)));
 
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                         new RbImage(SpriteName.WarsHudIconImport) ,
                         new RbSpace(),
-                        new RbText(".From faction")},
+                        new RbText(DssRef.lang.Hud_FromFaction)},
                         new RbAction5Arg<Players.LocalPlayer, Faction, City, CopyPasteOption, ResourceGroupType>(DssRef.world.copyStockPile,
-                            player, faction, city, CopyPasteOption.FactionToCity, group, RbSoundType.Copy), new RbTooltip_Text(".Use the faction wide setting")));
+                            player, faction, city, CopyPasteOption.FactionToCity, group, RbSoundType.Copy), new RbTooltip_Text(DssRef.lang.Hud_FactionWide)));
                 }
             }
 

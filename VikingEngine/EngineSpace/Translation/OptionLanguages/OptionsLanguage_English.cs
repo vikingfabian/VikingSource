@@ -9,6 +9,13 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_English : AbsOptionsLanguage
     {
+        public override string Settings_Particles_FadeMapLayers => "Fade layers";
+        public override string SplitScreen_HorizontalFirst => "Horizontal first";
+        public override string SplitScreen_VerticalFirst => "Vertical first";
+        public override string SplitScreen_HorizontalOnly => "Horizontal only";
+        public override string SplitScreen_VerticalOnly => "Vertical only";
+        public override string SplitScreen_Title => "Split-screen";
+        public override string SplitScreen_AdjustSplit => "Adjust split {0}";
         public override string Settings_ControllerVibration => "Controller vibration";
 
         //Winter update settings

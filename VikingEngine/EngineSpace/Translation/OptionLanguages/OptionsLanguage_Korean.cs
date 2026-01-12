@@ -9,6 +9,15 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Korean : AbsOptionsLanguage
     {
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "레이어 페이드"; // "Layer Fade"
+        public override string SplitScreen_HorizontalFirst => "가로 우선";
+        public override string SplitScreen_VerticalFirst => "세로 우선";
+        public override string SplitScreen_HorizontalOnly => "가로 전용";
+        public override string SplitScreen_VerticalOnly => "세로 전용";
+        public override string SplitScreen_Title => "화면 분할";
+        public override string SplitScreen_AdjustSplit => "분할 조정 {0}";
+
         public override string Settings_ControllerVibration => "컨트롤러 진동";
         public override string GraphicsOption_IngameMenuWidth => "인게임 메뉴 너비";
         public override string DisplayMode => "디스플레이 모드";

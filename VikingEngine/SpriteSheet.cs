@@ -2170,6 +2170,9 @@ namespace VikingEngine
                 add(SpriteName.WarsIcon_WorkQueueTotal);
                 add(SpriteName.WarsIcon_WorkQueueIdle);
                 add(SpriteName.WarsIcon_WorkQueueActive);
+                add(SpriteName.WarsSettler);
+                add(SpriteName.WarsSettlerAdd);
+
             }
 
             currentIndex = numTilesWidth * 86;

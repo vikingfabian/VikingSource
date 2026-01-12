@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars.EntityComponent
         //    amount = 0;
         //}
 
-        public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer)
+        public void toMenu(RichBoxContent content, ItemResourceType item/*, bool safeGuard*/, ref bool reachedBuffer)
         {
             content.newLine();
 
@@ -132,11 +132,8 @@ namespace VikingEngine.DSSWars.EntityComponent
                 bool reached = amount >= stockPileLimit;
                 reachedBuffer |= reached;
                 SpriteName stockIcon;
-                if (safeGuard)
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd_Protected;
-                }
-                else if (reached)
+                
+                if (reached)
                 {
                     stockIcon = SpriteName.WarsStockpileStop;
                 }
@@ -150,7 +147,7 @@ namespace VikingEngine.DSSWars.EntityComponent
 
         }
 
-        public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer, LocalPlayer player, City city, ResourcesSubTab stockpileLink)
+        public void toMenu(RichBoxContent content, ItemResourceType item/*, bool safeGuard*/, ref bool reachedBuffer, LocalPlayer player, City city, ResourcesSubTab stockpileLink)
         {
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember>{
@@ -166,11 +163,12 @@ namespace VikingEngine.DSSWars.EntityComponent
                 bool reached = amount >= stockPileLimit;
                 reachedBuffer |= reached;
                 SpriteName stockIcon;
-                if (safeGuard)
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd_Protected;
-                }
-                else if (reached)
+                //if (safeGuard)
+                //{
+                //    stockIcon = SpriteName.WarsStockpileAdd_Protected;
+                //}
+                //else
+                if (reached)
                 {
                     stockIcon = SpriteName.WarsStockpileStop;
                 }

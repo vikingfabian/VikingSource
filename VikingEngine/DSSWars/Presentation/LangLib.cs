@@ -1259,7 +1259,7 @@ namespace VikingEngine.DSSWars.Presentation
                 case TerrainBuildingType.Logistics:
                     return DssRef.lang.BuildingType_Logistics_Description;
                 case TerrainBuildingType.ManorLord:
-                    return DssRef.todoLang.BuildingType_ManorLord_Description;
+                    return DssRef.lang.BuildingType_ManorLord_Description;
                 case TerrainBuildingType.Tavern:
                     return DssRef.lang.BuildingType_Tavern_Description;
                 case TerrainBuildingType.Storehouse:
@@ -1707,7 +1707,7 @@ namespace VikingEngine.DSSWars.Presentation
                     return title ? DssRef.lang.CityCulture_Apprentices : DssRef.lang.CityCulture_Apprentices_Description;
 
                 case DSSWars.CityCulture.Nomads:
-                    return title ? DssRef.todoLang.CityCulture_Nomad : string.Format( DssRef.todoLang.Hud_Purchase_LowXCost, DssRef.lang.UnitType_Settler);
+                    return title ? DssRef.lang.CityCulture_Nomad : string.Format( DssRef.lang.Hud_Purchase_LowXCost, DssRef.lang.UnitType_Settler);
 
                 default: return TextLib.Error;
             }

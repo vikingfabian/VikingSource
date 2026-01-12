@@ -275,7 +275,7 @@ namespace VikingEngine.DSSWars
         public static float CasualSoldierDefaultCost_Copp = 4f * TaxPerWorker_copp / SoldierGroup_DefaultCount;
         //public static int PlantFoodCost = 6;
 
-        public static int WorkSafeGuardAmount = 10;
+        //public static int WorkSafeGuardAmount = 10;
 
         public const int StockPileMinBound = 0;
         public const int StockPileMaxBound = 20000;

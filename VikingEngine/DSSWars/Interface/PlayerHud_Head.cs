@@ -388,7 +388,7 @@ namespace VikingEngine.DSSWars.Interface
             content.newParagraph();
             content.ButtonDescription(player.gameControls.input.NextCity, DssRef.lang.InputActionName_NextCity);
             content.ButtonDescription(SpriteName.KeyShift, DssRef.lang.Hud_Previous);
-            content.ButtonDescription(SpriteName.KeyAlt, ".Skip automated");
+            content.ButtonDescription(SpriteName.KeyAlt, DssRef.lang.InputAction_SkipAutomated);
 
         }
         void nextArmyTip(RichBoxContent content, object tag)

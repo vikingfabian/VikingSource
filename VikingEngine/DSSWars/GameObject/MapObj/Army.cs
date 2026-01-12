@@ -103,7 +103,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         override public bool lowFood()
         {
-            return food <= DssConst.WorkSafeGuardAmount;
+            return food <= 10;//DssConst.WorkSafeGuardAmount;
         }
 
         public static void NetWriteArmy(System.IO.BinaryWriter w, Army army)

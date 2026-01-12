@@ -9,6 +9,15 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Russian : AbsOptionsLanguage
     {
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "Затухание слоев";
+        public override string SplitScreen_HorizontalFirst => "Сначала горизонтально";
+        public override string SplitScreen_VerticalFirst => "Сначала вертикально";
+        public override string SplitScreen_HorizontalOnly => "Только горизонтально";
+        public override string SplitScreen_VerticalOnly => "Только вертикально";
+        public override string SplitScreen_Title => "Разделение экрана";
+        public override string SplitScreen_AdjustSplit => "Настройка разделения {0}";
+
         public override string Settings_ControllerVibration => "Вибрация геймпада";
         public override string GraphicsOption_IngameMenuWidth => "Ширина игрового меню";
         public override string DisplayMode => "Режим отображения";

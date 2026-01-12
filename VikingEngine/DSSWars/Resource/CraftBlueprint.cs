@@ -454,8 +454,8 @@ namespace VikingEngine.DSSWars.Resource
             foreach (var r in resources)
             {
                 var cityResource = city.GetGroupedResource(r.type);
-                bool safeGuard = city.foodSafeGuardIsActive(r.type);
-                cityResource.toMenu(content, r.type, safeGuard, ref reachedBuffer);
+                //bool safeGuard = city.foodSafeGuardIsActive(r.type);
+                cityResource.toMenu(content, r.type, ref reachedBuffer);
             }
 
             if (optionalBp != null)
@@ -465,8 +465,8 @@ namespace VikingEngine.DSSWars.Resource
                     if (!resources.Contains(r))
                     {
                         var cityResource = city.GetGroupedResource(r.type);
-                        bool safeGuard = city.foodSafeGuardIsActive(r.type);
-                        cityResource.toMenu(content, r.type, safeGuard, ref reachedBuffer);
+                        //bool safeGuard = city.foodSafeGuardIsActive(r.type);
+                        cityResource.toMenu(content, r.type, ref reachedBuffer);
                     }
                 }
             }

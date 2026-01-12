@@ -2598,6 +2598,8 @@ namespace VikingEngine
         WarsWorker,
         WarsWorkerAdd,
         WarsWorkerSub,
+        WarsSettler,
+        WarsSettlerAdd,
         WarsServiceMen,
         WarsServiceMenTotal,
         WarsGuardPostIcon,

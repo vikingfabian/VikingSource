@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.Delivery
                     else if (currentStatus.profile.type != ItemResourceType.NONE)
                     {
                         bool reachedBuffer = false;
-                        city.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, false, ref reachedBuffer);
+                        city.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, ref reachedBuffer);
                     }
                     content.newLine();
                     for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
@@ -195,15 +195,15 @@ namespace VikingEngine.DSSWars.Delivery
 
                                     content.h2(DssRef.lang.Hud_ThisCity).overrideColor = HudLib.TitleColor_Label;
                                     bool reachedBuffer = false;
-                                    bool safeGuard = city.foodSafeGuardIsActive(item);
+                                    //bool safeGuard = city.foodSafeGuardIsActive(item);
 
-                                    city.GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
+                                    city.GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
 
                                     if (currentStatus.profile.toCity >= 0 && currentStatus.profile.toCity != DeliveryProfile.ToCityAuto)
                                     {
                                         content.newParagraph();
                                         content.h2(DssRef.lang.Hud_RecieveingCity).overrideColor = HudLib.TitleColor_Label;
-                                        DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, safeGuard, ref reachedBuffer);
+                                        DssRef.world.cities[currentStatus.profile.toCity].GetGroupedResource(item).toMenu(content, item, ref reachedBuffer);
 
                                     }
 
@@ -253,8 +253,8 @@ namespace VikingEngine.DSSWars.Delivery
                                     content.newParagraph();
                                     content.h2(DssRef.lang.Hud_ThisCity).overrideColor = HudLib.TitleColor_Label;
                                     bool reachedBuffer = false;
-                                    bool safeGuard = city.foodSafeGuardIsActive(currentStatus.profile.type);
-                                    city.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, safeGuard, ref reachedBuffer);
+                                    //bool safeGuard = city.foodSafeGuardIsActive(currentStatus.profile.type);
+                                    city.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, ref reachedBuffer);
 
                                     //if (currentStatus.profile.toCity >= 0)
                                     //{
@@ -266,7 +266,7 @@ namespace VikingEngine.DSSWars.Delivery
                                     //}
                                     //else
                                     //{
-                                    toCity.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, false, ref reachedBuffer);
+                                    toCity.GetGroupedResource(currentStatus.profile.type).toMenu(content, currentStatus.profile.type, ref reachedBuffer);
                                         //}
                                     //}
                                 }

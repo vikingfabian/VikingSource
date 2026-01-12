@@ -2628,7 +2628,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                        content.newParagraph();
                        HudLib.BulletPoint(content);
-                       content.Add(new RbText(DssRef.todoLang.Resource_WaterReason, HudLib.InfoYellow_Light));
+                       content.Add(new RbText(DssRef.lang.Resource_WaterReason, HudLib.InfoYellow_Light));
                        content.newLine();
                        HudLib.BulletPoint(content);
                        content.Add(new RbText(DssRef.lang.Resource_WaterAddLimit, HudLib.InfoYellow_Light));
@@ -2989,7 +2989,7 @@ namespace VikingEngine.DSSWars.GameObject
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueTotal));
                     content.space();
-                    content.Add(new RbText(DssRef.todoLang.WorkQueue_Title + ":"));
+                    content.Add(new RbText(DssRef.lang.WorkQueue_Title + ":"));
                     content.hspace();
                     content.Add(new RbText(WorkerStats_WorkQueueLength.ToString()));
 
@@ -3160,8 +3160,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void workQueueInfo(RichBoxContent content, object tag)
         {
-            content.h1(DssRef.todoLang.WorkQueue_Title, HudLib.TitleColor_Head);
-            HudLib.Label(content, DssRef.todoLang.WorkQueue_Length);
+            content.h1(DssRef.lang.WorkQueue_Title, HudLib.TitleColor_Head);
+            HudLib.Label(content, DssRef.lang.WorkQueue_Length);
             content.hspace();
             content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueTotal));
             content.hspace();
@@ -3169,7 +3169,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             content.newParagraph();
 
-            HudLib.Label(content, DssRef.todoLang.WorkQueue_ActiveWorkers);
+            HudLib.Label(content, DssRef.lang.WorkQueue_ActiveWorkers);
             content.hspace();
             content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueActive));
             content.hspace();
@@ -3177,14 +3177,14 @@ namespace VikingEngine.DSSWars.GameObject
 
             content.newLine();
 
-            HudLib.Label(content, DssRef.todoLang.WorkQueue_IdleWorkers);
+            HudLib.Label(content, DssRef.lang.WorkQueue_IdleWorkers);
             content.hspace();
             content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueIdle));
             content.hspace();
             content.Add(new RbText(WorkerStats_IdleCount.ToString()));
 
             content.newLine();
-            content.text(string.Format(DssRef.todoLang.WorkTeam_Size, WorkTeamSize), HudLib.InfoYellow_Light);
+            content.text(string.Format(DssRef.lang.WorkTeam_Size, WorkTeamSize), HudLib.InfoYellow_Light);
         }
 
         public void immigrantsTooltip(RichBoxContent content, object tag)
@@ -3889,7 +3889,7 @@ namespace VikingEngine.DSSWars.GameObject
             int factor = DssLib.CulturePercChangeFactor(Culture);
             if (factor >= 0)
             {
-                content.text(string.Format(DssRef.todoLang.Hud_ChangeFactor, factor + "%"));
+                content.text(string.Format(DssRef.lang.Hud_ChangeFactor, factor + "%"));
             }
             content.newParagraph();
             content.text(DssRef.lang.CityCultureDescription, HudLib.InfoYellow_Light);

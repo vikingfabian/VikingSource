@@ -12,6 +12,64 @@ namespace VikingEngine.DSSWars.Presentation
     //Licenesed 2025 Sep 11, "Astro: you can remix our work freely, any platform"
     partial class Turkish : AbsLanguage
     {
+        
+
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "Otomatikleri atla";
+
+        public override string Resource_WaterReason => "Su, destekleyebileceğiniz birlik sayısını ve üretim kapasitenizi sınırlar";
+        public override string BuildingType_Orchard => "Meyve Bahçesi";
+        public override string BuildingType_ManorLord => "Malikane Lordu";
+        public override string BuildingType_ManorLord_Description => "Gıda işlemeyi açar";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "İlişkileri sonlandır";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "Eşya kaynağı";
+
+        public override string ItemSource_Terrain => "Arazi";
+        public override string ItemSource_Farm => "Çiftlik";
+        public override string ItemSource_CraftStation => "Zanaat istasyonu";
+        public override string ItemSource_Gathering => "Toplayıcılık";
+
+        public override string CityCulture_Nomad => "Göçebe";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "Değişim katsayısı: {0}";
+
+        public override string Hud_Purchase_LowXCost => "Düşük {0} maliyeti";
+
+        public override string WorkQueue_Title => "İş kuyruğu";
+        public override string WorkQueue_Length => "Kalan iş hedefleri";
+        public override string WorkQueue_ActiveWorkers => "Aktif iş ekipleri";
+        public override string WorkQueue_IdleWorkers => "Boşta iş ekipleri";
+
+        public override string WorkTeam_Size => "Köylüler {0} kişilik ekipler halinde çalışır";
+
+        public override string ObjectUi_ViewOnMap => "Haritada göster";
+        public override string ObjectUi_StuckBuildOrders => "Takılan inşa emirleri";
+        public override string Hud_AllArmies => "Tüm ordular";
+
+        public override string Hud_CurrentPage => "Mevcut sayfa";
+        public override string Hud_AllPages => "Tüm sayfalar";
+        public override string Hud_ToAllCities => "Tüm şehirlere";
+        public override string Hud_ToFaction => "Fraksiyona";
+        public override string Hud_FromFaction => "Fraksiyondan";
+        public override string Hud_FactionWide => "Fraksiyon genelindeki ayarı kullan";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "Yerleşim yeri kur";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "Diğer tüm kareleri kaldır";
+
         //Winter patch 3
         public override string Hud_Purchase_AllBuildings => "Tüm binaları sıraya al";
         public override string Hud_Purchase_AllTech => "Tüm teknolojileri sıraya al";

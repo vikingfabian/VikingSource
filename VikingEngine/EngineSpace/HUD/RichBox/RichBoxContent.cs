@@ -123,6 +123,7 @@ namespace VikingEngine.HUD.RichBox
             newLine();
             Add(new RbBeginTitle(1));
             Add(new RbImage(icon));
+            Add(new RbSpace());
             Add(new RbText(textline, color));
 
         }
@@ -146,6 +147,16 @@ namespace VikingEngine.HUD.RichBox
             Add(text);
 
             return text;
+        }
+
+        public void h2(SpriteName icon, string textline, Color? color = null)
+        {
+            newLine();
+            Add(new RbBeginTitle(2));
+            Add(new RbImage(icon));
+            Add(new RbSpace());
+            Add(new RbText(textline, color));
+
         }
 
         public void newLine()

@@ -819,7 +819,7 @@ namespace VikingEngine
                 particlesProperty));
 
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Settings_Particles_FadeMapLayers) },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.Settings_Particles_FadeMapLayers) },
                 FadeMapLayersProperty));
             content.space();
             content.Add(new RbImage(SpriteName.MenuIconPerformanceHot));
