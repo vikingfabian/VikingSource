@@ -1,5 +1,5 @@
 ﻿Change log:
-* 
+* Fixed faction work tooltip crash
 
 
 #Event timers (are slightly random)#

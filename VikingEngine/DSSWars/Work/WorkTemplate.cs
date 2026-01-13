@@ -1787,7 +1787,7 @@ namespace VikingEngine.DSSWars.Work
             {
                 infoContent.Add(new RbImage(sprite2));
             }
-            var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null, new RbTooltip(workTooltip, new WorkTooltipArgs() { City = city, Name = name, resourceInfo = resourceInfo, mineCount = mineCount }));
+            var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null, new RbTooltip(workTooltip, new WorkTooltipArgs() { Faction = player.faction, City = city, Name = name, resourceInfo = resourceInfo, mineCount = mineCount }));
                
 
             content.Add(infoButton);
@@ -1805,6 +1805,7 @@ namespace VikingEngine.DSSWars.Work
 
         struct WorkTooltipArgs
         { 
+            public Faction Faction;
             public City City;
             public string Name;
 
@@ -1829,7 +1830,7 @@ namespace VikingEngine.DSSWars.Work
                     content.newLine();
                 }
                 content.Add(new RbSeperationLine());
-                ResourceLib.FullResourceInfo(args.City, args.resourceInfo, content);
+                ResourceLib.FullResourceInfo(args.Faction, args.City, args.resourceInfo, content);
             }
         }
 

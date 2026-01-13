@@ -2152,7 +2152,7 @@ namespace VikingEngine.DSSWars.Interface
                         //    bool buffer = false;
                         //    city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);                           
                         //}
-                        new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(city, item))
+                        new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(null,city, item))
                         ));
                 
                 content.space();

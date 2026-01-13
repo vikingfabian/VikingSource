@@ -154,7 +154,7 @@ namespace VikingEngine.DSSWars.EntityComponent
                 new RbImage(ResourceLib.Icon(item)),
                 new RbSpace(),
                 new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": " + TextLib.LargeNumber(amount))
-            }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(city, item))));
+            }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(player.faction, city, item))));
 
             if (item != ItemResourceType.Water_G &&
                 item != ItemResourceType.Gold &&
