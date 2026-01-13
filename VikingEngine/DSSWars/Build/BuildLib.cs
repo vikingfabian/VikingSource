@@ -200,7 +200,7 @@ namespace VikingEngine.DSSWars.Build
             bool logistics2 = city.buildingStructure.buildingLevel_logistics >= 2 ||
                 unlockAll;
 
-            bool manor = city.buildingStructure.manorLord;
+            bool manor = city.buildingStructure.manorLord || unlockAll;
 
             bool campSite = city.cityType == CityType.Campsite;
 

@@ -257,7 +257,7 @@ namespace VikingEngine.DSSWars
 
         //public static int DefaultItemFuelAmount = 25;
         public static int RapeSeedFuelAmount = 15;
-        public static int HempLinenAndFuelAmount = 8;
+        public static int HempLinenAndFuelAmount = 10;
         public static int LinenHarvestAmount = 15;
 
         public static int HenRawFoodAmout = 4;
