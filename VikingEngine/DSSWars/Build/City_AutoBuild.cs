@@ -664,17 +664,24 @@ namespace VikingEngine.DSSWars.GameObject
                                     buildingStructure.buildingLevel_logistics = subTile.terrainAmount;
                                 }
                                 break;
+
                             case TerrainBuildingType.ManorLord:
-                                if (build)
+                                if (build && buildingStructure.manorLord)
                                 {
-                                    if (buildingStructure.manorLord)
-                                    {
-                                        //Already built
-                                        return false;
-                                    }
-                                    buildingStructure.manorLord = true;
+                                    //Already built
+                                    return false;
                                 }
+                                buildingStructure.manorLord = build;
                                 break;
+                            case TerrainBuildingType.GreatHall:
+                                if (build && buildingStructure.greatHall)
+                                {
+                                    //Already built
+                                    return false;
+                                }
+                                buildingStructure.greatHall = build;
+                                break;
+
                             case TerrainBuildingType.WorkerTent:
                                 onWorkHutBuild(build, DssConst.HousingCount_WorkerTent);
                                 break;

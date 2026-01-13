@@ -139,6 +139,7 @@ namespace VikingEngine.DSSWars.Map
         ManorLord,
 
         //NEW
+        GreatHall,
         Pottery,
         DryingPan,
         Butcher,

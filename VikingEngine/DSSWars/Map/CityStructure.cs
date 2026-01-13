@@ -852,6 +852,9 @@ namespace VikingEngine.DSSWars.Map
                                         buildingStructure.manorLord = true;
                                         DssRef.state.hasManorLords = true;
                                         break;
+                                    case TerrainBuildingType.GreatHall:
+                                        buildingStructure.greatHall = true;
+                                        break;
                                     case TerrainBuildingType.WaterResovoir:
                                         ++buildingStructure.WaterResovoir_count;
                                         buildingPosition.WaterResovoir_pos = subTileLoop.Position;

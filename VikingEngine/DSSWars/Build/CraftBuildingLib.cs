@@ -205,6 +205,19 @@ namespace VikingEngine.DSSWars.Build
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
        );
 
+        public static readonly CraftBlueprint GreatHall = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.ManorLord,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Wood_Group, 20),
+                new UseResource(ItemResourceType.Stone_G, 80),
+                new UseResource(ItemResourceType.Iron_G, 10)
+           },
+           XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
+       );
+
         public static readonly CraftBlueprint Tavern = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.Tavern,

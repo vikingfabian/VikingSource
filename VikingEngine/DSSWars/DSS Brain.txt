@@ -2,7 +2,7 @@
 Change Log: 
 
 # SUMMER UPDATE #
-* 32 new buildings
+* 33 new buildings
 * Animal farming uses breeding and cost upkeep
 * Cities have a biom status
 * Redesign of the resource stockpile system
@@ -21,6 +21,7 @@ SOLDIER RECRUITING
 x More options in soldier conscript: man type, shield, animal and wagon.
 * Soldiers have gold upkeep, related to their training
 x -conscript ui
+* Soldier hall - unlock advanced conscripting
 
 USER INTERFACE
 x Menu for cesspits

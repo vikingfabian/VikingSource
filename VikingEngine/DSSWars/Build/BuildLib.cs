@@ -153,6 +153,7 @@ namespace VikingEngine.DSSWars.Build
         WorkerTent,
 
         ManorLord,
+        GreatHall,
 
         OrchardApple,
         OrchidBanana,
@@ -257,13 +258,16 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.Logistics);
             }
 
-            if (!manor)
-            { 
-                list.Add(BuildAndExpandType.ManorLord);
-            }
+            
 
             if (logistics1)
             {
+                if (!manor)
+                {
+                    list.Add(BuildAndExpandType.ManorLord);
+                }
+                list.Add(BuildAndExpandType.GreatHall);
+
                 list.Add(BuildAndExpandType.School);
 
                 list.Add(BuildAndExpandType.ResearchCenter);
@@ -636,6 +640,13 @@ namespace VikingEngine.DSSWars.Build
 
             new BuildOption(BuildAndExpandType.ManorLord, TerrainMainType.Building, (int)TerrainBuildingType.ManorLord, SpriteName.WarsBuild_ManorLord, CraftBuildingLib.ManorLord, true,
                 BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.Farm, BuildFilterTag.Food, 
+                MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)
+            {
+                uniqueBuilding = true
+            };
+
+            new BuildOption(BuildAndExpandType.GreatHall, TerrainMainType.Building, (int)TerrainBuildingType.GreatHall, SpriteName.MissingImage, CraftBuildingLib.GreatHall, true,
+                BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.Military, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)
             {
                 uniqueBuilding = true

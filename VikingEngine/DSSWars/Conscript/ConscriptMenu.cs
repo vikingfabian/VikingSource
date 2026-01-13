@@ -179,6 +179,7 @@ namespace VikingEngine.DSSWars.Conscript
 
             if (arraylib.InBound(city.conscriptBuildings, city.selectedConscript))
             {
+                bool advanced = city.buildingStructure.greatHall || StartupSettings.UnlockAllProgress;
                 BarracksStatus currentStatus = get();
                 int menCostNext = currentStatus.profile.menCost();
                 SpriteName icon =  new SoldierConscriptProfile() { conscript = currentStatus.profile }.Icon();
@@ -243,28 +244,31 @@ namespace VikingEngine.DSSWars.Conscript
                         new RbAction1Arg<bool>(guardTabClick, true, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_GuardType_Description)));
                 }
 
-                content.newParagraph();
-                HudLib.Label(content, DssRef.todoLang.Resource_TypeName_ManType);
-                content.space();
-                foreach (var item in MenTypes)
+                if (advanced)
                 {
-                    IconName.Item(item, out SpriteName itemIcon, out _);
+                    content.newParagraph();
+                    HudLib.Label(content, DssRef.todoLang.Resource_TypeName_ManType);
+                    content.space();
+                    foreach (var item in MenTypes)
+                    {
+                        IconName.Item(item, out SpriteName itemIcon, out _);
 
-                    var buttonContent = new List<AbsRichBoxMember>(3) {
+                        var buttonContent = new List<AbsRichBoxMember>(3) {
                         new RbImage(itemIcon),
                     };
 
-                    if (city.GetGroupedResource(item).amount >= menCostNext)
-                    {
-                        buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
+                        if (city.GetGroupedResource(item).amount >= menCostNext)
+                        {
+                            buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
+                        }
+
+                        var button = new ArtOption(item == currentStatus.profile.man, buttonContent,
+                        new RbAction1Arg<ItemResourceType>(manClick, item, RbSoundType.Option),
+                        new RbTooltip(manTooltip, item)
+                        );
+
+                        content.Add(button);
                     }
-
-                    var button = new ArtOption(item == currentStatus.profile.man, buttonContent,
-                    new RbAction1Arg<ItemResourceType>(manClick, item, RbSoundType.Option),
-                    new RbTooltip(manTooltip, item)
-                    );
-
-                    content.Add(button);
                 }
 
                 content.newParagraph();
@@ -292,64 +296,14 @@ namespace VikingEngine.DSSWars.Conscript
                     content.Add(button);
                 }
 
-                content.newParagraph();
-                HudLib.Label(content, DssRef.todoLang.Resource_TypeName_Shield);
-                content.newLine();
-
-                var shields = currentStatus.profile.AvailableShields();
-                foreach (var item in shields)
-                {
-                    IconName.Item(item, out SpriteName itemIcon, out _);
-
-                    var buttonContent = new List<AbsRichBoxMember>(3) {
-                        new RbImage(itemIcon),
-                    };
-
-                    if (city.GetGroupedResource(item).amount >= menCostNext)
-                    {
-                        buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
-                    }
-
-                    var button = new ArtOption(item == currentStatus.profile.shield, buttonContent,
-                    new RbAction1Arg<ItemResourceType>(shieldClick, item, RbSoundType.Option),
-                    new RbTooltip(shieldTooltip, item)
-                    );
-
-                    content.Add(button);
-                }
-
-                content.newParagraph();
-                HudLib.Label(content, DssRef.todoLang.Resource_TypeName_Animal);
-                content.newLine();
-
-                foreach (var item in AnimalTypes)
-                {
-                    IconName.Item(item, out SpriteName itemIcon, out _);
-
-                    var buttonContent = new List<AbsRichBoxMember>(3) {
-                        new RbImage(itemIcon),
-                    };
-
-                    if (city.GetGroupedResource(item).amount >= menCostNext)
-                    {
-                        buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
-                    }
-
-                    var button = new ArtOption(item == currentStatus.profile.animal, buttonContent,
-                    new RbAction1Arg<ItemResourceType>(animalClick, item, RbSoundType.Option),
-                    new RbTooltip(animalTooltip, item)
-                    );
-
-                    content.Add(button);
-                }
-
-                if (currentStatus.profile.animal != ItemResourceType.NONE)
+                if (advanced)
                 {
                     content.newParagraph();
-                    HudLib.Label(content, DssRef.todoLang.Resource_TypeName_MountArmorTitle);
+                    HudLib.Label(content, DssRef.todoLang.Resource_TypeName_Shield);
                     content.newLine();
 
-                    foreach (var item in MountArmorTypes)
+                    var shields = currentStatus.profile.AvailableShields();
+                    foreach (var item in shields)
                     {
                         IconName.Item(item, out SpriteName itemIcon, out _);
 
@@ -362,40 +316,14 @@ namespace VikingEngine.DSSWars.Conscript
                             buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
                         }
 
-                        var button = new ArtOption(item == currentStatus.profile.mountArmor, buttonContent,
-                        new RbAction1Arg<ItemResourceType>(mountArmorClick, item, RbSoundType.Option),
-                        new RbTooltip(mountArmorTooltip, item)
-                        );
-
-                        content.Add(button);
-                    }
-
-                    content.newParagraph();
-                    HudLib.Label(content, DssRef.todoLang.Resource_TypeName_Vehicle);
-                    content.newLine();
-
-                    foreach (var item in VehicleTypes)
-                    {
-                        IconName.Item(item, out SpriteName itemIcon, out _);
-
-                        var buttonContent = new List<AbsRichBoxMember>(3) {
-                        new RbImage(itemIcon),
-                    };
-
-                        if (city.GetGroupedResource(item).amount >= menCostNext)
-                        {
-                            buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
-                        }
-
-                        var button = new ArtOption(item == currentStatus.profile.vehicle, buttonContent,
-                        new RbAction1Arg<ItemResourceType>(vehicleClick, item, RbSoundType.Option),
-                        new RbTooltip(vehicleTooltip, item)
+                        var button = new ArtOption(item == currentStatus.profile.shield, buttonContent,
+                        new RbAction1Arg<ItemResourceType>(shieldClick, item, RbSoundType.Option),
+                        new RbTooltip(shieldTooltip, item)
                         );
 
                         content.Add(button);
                     }
                 }
-
 
                 HudLib.Label(content, DssRef.lang.Conscript_ArmorTitle);
                 content.newLine();
@@ -414,7 +342,7 @@ namespace VikingEngine.DSSWars.Conscript
                 };
 
 
-                foreach ( var armorLvl in armorOptions )
+                foreach (var armorLvl in armorOptions)
                 {
                     var buttonContent = new List<AbsRichBoxMember>(3);
                     if (city.GetGroupedResource(armorLvl).amount >= menCostNext)
@@ -426,11 +354,92 @@ namespace VikingEngine.DSSWars.Conscript
                         IconName.Item(armorLvl, out SpriteName armoricon, out _);
                         buttonContent.Add(new RbImage(armoricon));
                     }
-                    
-                    var button = new ArtOption(armorLvl == currentStatus.profile.armorLevel,buttonContent,
+
+                    var button = new ArtOption(armorLvl == currentStatus.profile.armorLevel, buttonContent,
                         new RbAction1Arg<ItemResourceType>(armorClick, armorLvl, RbSoundType.Option),
                     new RbTooltip(armorTooltip, armorLvl));
                     content.Add(button);
+                }
+
+                if (advanced)
+                {
+                    content.newParagraph();
+                    HudLib.Label(content, DssRef.todoLang.Resource_TypeName_Animal);
+                    content.newLine();
+
+                    foreach (var item in AnimalTypes)
+                    {
+                        IconName.Item(item, out SpriteName itemIcon, out _);
+
+                        var buttonContent = new List<AbsRichBoxMember>(3) {
+                        new RbImage(itemIcon),
+                    };
+
+                        if (city.GetGroupedResource(item).amount >= menCostNext)
+                        {
+                            buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
+                        }
+
+                        var button = new ArtOption(item == currentStatus.profile.animal, buttonContent,
+                        new RbAction1Arg<ItemResourceType>(animalClick, item, RbSoundType.Option),
+                        new RbTooltip(animalTooltip, item)
+                        );
+
+                        content.Add(button);
+                    }
+
+                    if (currentStatus.profile.animal != ItemResourceType.NONE)
+                    {
+                        content.newParagraph();
+                        HudLib.Label(content, DssRef.todoLang.Resource_TypeName_MountArmorTitle);
+                        content.newLine();
+
+                        foreach (var item in MountArmorTypes)
+                        {
+                            IconName.Item(item, out SpriteName itemIcon, out _);
+
+                            var buttonContent = new List<AbsRichBoxMember>(3) {
+                        new RbImage(itemIcon),
+                    };
+
+                            if (city.GetGroupedResource(item).amount >= menCostNext)
+                            {
+                                buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
+                            }
+
+                            var button = new ArtOption(item == currentStatus.profile.mountArmor, buttonContent,
+                            new RbAction1Arg<ItemResourceType>(mountArmorClick, item, RbSoundType.Option),
+                            new RbTooltip(mountArmorTooltip, item)
+                            );
+
+                            content.Add(button);
+                        }
+
+                        content.newParagraph();
+                        HudLib.Label(content, DssRef.todoLang.Resource_TypeName_Vehicle);
+                        content.newLine();
+
+                        foreach (var item in VehicleTypes)
+                        {
+                            IconName.Item(item, out SpriteName itemIcon, out _);
+
+                            var buttonContent = new List<AbsRichBoxMember>(3) {
+                        new RbImage(itemIcon),
+                    };
+
+                            if (city.GetGroupedResource(item).amount >= menCostNext)
+                            {
+                                buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
+                            }
+
+                            var button = new ArtOption(item == currentStatus.profile.vehicle, buttonContent,
+                            new RbAction1Arg<ItemResourceType>(vehicleClick, item, RbSoundType.Option),
+                            new RbTooltip(vehicleTooltip, item)
+                            );
+
+                            content.Add(button);
+                        }
+                    }
                 }
 
                 content.newParagraph();
@@ -456,7 +465,7 @@ namespace VikingEngine.DSSWars.Conscript
                     content.Add(button);
                 }
 
-                if (!guardTab)
+                if (advanced && !guardTab)
                 {
                     content.newParagraph();
 
@@ -505,8 +514,6 @@ namespace VikingEngine.DSSWars.Conscript
             }
             else
             {
-
-                
                 if (city.conscriptBuildings.Count == 0)
                 {
                     //EMPTY
