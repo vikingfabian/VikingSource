@@ -947,7 +947,7 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_logistic, 3, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.GreatHall:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_logistic, 3, wp, WorldData.SubTileWidth * 1.2f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_logistic, 4, wp, WorldData.SubTileWidth * 1.1f));
                     break;
                 case TerrainBuildingType.Bank:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_bank, 0, wp, WorldData.SubTileWidth * 1.0f));

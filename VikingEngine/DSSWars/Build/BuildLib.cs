@@ -249,7 +249,7 @@ namespace VikingEngine.DSSWars.Build
             bool logistics2 = city.buildingStructure.buildingLevel_logistics >= 2 ||
                 unlockAll;
 
-            bool manor = city.buildingStructure.manorLord;
+            bool manor = city.buildingStructure.manorLord || unlockAll;
 
             bool campSite = city.cityType == CityType.Campsite;
 
@@ -1169,7 +1169,7 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             
-            new BuildOption(BuildAndExpandType.Cesspit, TerrainMainType.Building, (int)TerrainBuildingType.Cesspit, SpriteName.MissingImage, CraftBuildingLib.Cesspit, true,
+            new BuildOption(BuildAndExpandType.Cesspit, TerrainMainType.Building, (int)TerrainBuildingType.Cesspit, SpriteName.WarsBuild_Cesspit, CraftBuildingLib.Cesspit, true,
                             BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
                             MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
 

@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars.Map
                 case FactionMapFilter.StrengthHeatmap:
                 case FactionMapFilter.ResourceHeatmap:
 
-                    float max = 0;
+                    max = 0;
 
                     var factionsC = DssRef.world.factions.counter();
                     switch (filter)
@@ -236,6 +236,15 @@ namespace VikingEngine.DSSWars.Map
                                 if (factionsC.sel.isAlive)
                                 {
                                     max = Math.Max(max, factionsC.sel.militaryStrength);
+                                }
+                            }
+                            break;
+
+                        case FactionMapFilter.ResourceHeatmap:
+                            {
+                                foreach (var city in DssRef.world.cities)
+                                {
+                                    max = Math.Max(max, city.terrainStructure.Get(resourceFilter));
                                 }
                             }
                             break;
@@ -262,7 +271,8 @@ namespace VikingEngine.DSSWars.Map
                         }
                         else
                         {
-                            Faction faction = t.Faction();
+                            City city = t.City();
+                            Faction faction = city.GetFaction();
 
                             if (faction != null)
                             {
@@ -275,6 +285,10 @@ namespace VikingEngine.DSSWars.Map
 
                                     case FactionMapFilter.StrengthHeatmap:
                                         value = faction.militaryStrength;
+                                        break;
+
+                                    case FactionMapFilter.ResourceHeatmap:
+                                        value = city.terrainStructure.Get(resourceFilter);
                                         break;
                                 }
 

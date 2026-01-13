@@ -2,13 +2,11 @@
 Change Log: 
 
 # SUMMER UPDATE #
-* 33 new buildings
-* Animal farming uses breeding and cost upkeep
 * Cities have a biom status
 * Redesign of the resource stockpile system
 * 10 new city cultures
 
-RESOURCES
+40 NEW RESOURCES
 * 5 New basic resources
 * 3 new wagon types
 * 4 shield types
@@ -17,11 +15,15 @@ RESOURCES
 * 4 new collectable terrain resources
 * Conserved food, Extra storage capacity for armies
 
+30 NEW BUILDINGS
+* Animal farming pens uses breeding and cost upkeep
+* Item storage
+* Soldier hall - unlock advanced conscripting
+
 SOLDIER RECRUITING
 x More options in soldier conscript: man type, shield, animal and wagon.
 * Soldiers have gold upkeep, related to their training
 x -conscript ui
-* Soldier hall - unlock advanced conscripting
 
 USER INTERFACE
 x Menu for cesspits

@@ -2676,6 +2676,7 @@ namespace VikingEngine
         WarsBuild_WarmachineBarracks,
         WarsBuild_GunBarracks,
         WarsBuild_CannonBarracks,
+        WarsBuild_Cesspit,
 
         WarsBuild_Tavern,
         WarsBuild_Storehouse,
@@ -2711,6 +2712,7 @@ namespace VikingEngine
 
         WarsBuild_Logistics,
         WarsBuild_ManorLord,
+        WarsBuild_GreatHall,
         WarsBuild_Smelter,
         WarsBuild_WoodCutter,
         WarsBuild_StoneCutter,

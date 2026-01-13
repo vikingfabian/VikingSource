@@ -2372,6 +2372,9 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_WarHorsePen, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_DraftHorsePen, currentIndex, 3, 3);
 
+                add(SpriteName.WarsBuild_GreatHall, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_Cesspit, currentIndex, 3, 3);
+
             }
             currentIndex = numTilesWidth * 90;
             {

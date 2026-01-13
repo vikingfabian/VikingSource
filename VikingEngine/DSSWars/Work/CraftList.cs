@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.Work
         };
 
         public static readonly ItemResourceType[] BenchCraftTypes = {
-            ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear 
+            ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.SharpStick, ItemResourceType.HandSpear, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear 
         };
 
         public static readonly ItemResourceType[] CarpenterCraftTypes = {
