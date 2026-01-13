@@ -1,5 +1,10 @@
 ﻿Change log:
-* 
+* fixed: Map Filters look broken
+* Added hand spear to work bench
+* One city option is default
+* A bit more unclaimed areas in one city setup from 70% to 85%
+* Longer bot peace event on settler mode (+20 minutes)
+
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

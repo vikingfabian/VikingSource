@@ -301,7 +301,31 @@ namespace VikingEngine.DSSWars.Event
         }
         public override void onStart()
         {
-            init(false, DssRef.difficulty.extremeAggression? new TimeLength(10) : TimeLength.FromMinutes(30));
+            bool settler = DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler;
+            TimeLength time;
+            if (DssRef.difficulty.extremeAggression)
+            {
+                if (settler) 
+                {
+                    time = new TimeLength(10);
+                }
+                else
+                {
+                    time = TimeLength.FromMinutes(5);
+                }
+            }
+            else
+            {
+                if (settler)
+                {
+                    time = TimeLength.FromMinutes(50);
+                }
+                else
+                {
+                    time = TimeLength.FromMinutes(30); //DEFAULT
+                }
+            }
+            init(false, time);
         }
         public override bool RunAi()
         {

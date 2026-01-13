@@ -1001,11 +1001,11 @@ namespace VikingEngine.DSSWars.Map.Generate
                     generateCityType(CityType.Village, numHeadCities * 4, 8, generateSettings);
                     break;
                 case FactionStartSize.OneCity:
-                    generateSettings.percentageUnclaimed = 0.75f;
+                    generateSettings.percentageUnclaimed = 0.85f;
                     generateCityType(CityType.Village, numHeadCities * 8, 8, generateSettings);
                     break;
                 case FactionStartSize.Settler:
-                    generateSettings.percentageUnclaimed = 0.8f;
+                    generateSettings.percentageUnclaimed = 0.85f;
                     generateCityType(CityType.Campsite, numHeadCities * 8, 8, generateSettings);
                     break;
             }            

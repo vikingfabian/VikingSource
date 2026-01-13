@@ -10,7 +10,7 @@ namespace VikingEngine.DSSWars.Data
     {        
         public MapSize mapSize = MapSize.Medium;
         public bool centralGold = true;
-        public FactionStartSize factionStartSize = FactionStartSize.Full;
+        public FactionStartSize factionStartSize = FactionStartSize.OneCity;
 
         public GameRuleset() 
         { }
