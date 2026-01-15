@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.Interface
                             new RbImage(icon),
                             new RbSpace(0.5f), 
                             new RbText(resourceCount.amount.ToString(), Color.White)
-                        }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(city, item)), true, BgCol));
+                        }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(null,city, item)), true, BgCol));
                     break;
                 case HudPinType.TechnologyTree:
                     var techType = (TechnologyTreeType)id;

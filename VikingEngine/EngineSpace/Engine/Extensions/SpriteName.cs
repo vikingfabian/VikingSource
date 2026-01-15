@@ -2511,6 +2511,7 @@ namespace VikingEngine
         warsBuildCategorySearch,
         warsBuildCategoryMilitaryWall,
         warsBuildCategoryHouse,
+        warsBuildCategoryFarm,
         warsBuildCategoryAdvanced,
         warsBuildCategoryDecorTree,
         warsBuildCategoryAutomation,

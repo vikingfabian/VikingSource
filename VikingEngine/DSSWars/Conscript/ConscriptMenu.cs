@@ -8,19 +8,12 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.GameObject.Animal;
-using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.Component;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.LootFest.Data;
-using VikingEngine.LootFest.GO.Characters;
-using VikingEngine.LootFest.GO.Characters.Monsters;
-using VikingEngine.LootFest.GO.Gadgets;
-using VikingEngine.ToGG.ToggEngine.QueAction;
 
 namespace VikingEngine.DSSWars.Conscript
 {
@@ -924,7 +917,7 @@ namespace VikingEngine.DSSWars.Conscript
 
             content.newParagraph();
 
-            ResourceLib.FullResourceInfo(city, weapon, content); 
+            ResourceLib.FullResourceInfo(player.faction, city, weapon, content); 
             //var res = city.GetGroupedResource(weapon);
 
             //content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
@@ -936,32 +929,32 @@ namespace VikingEngine.DSSWars.Conscript
         {
             ItemResourceType item = (ItemResourceType)tag;
 
-            ResourceLib.FullResourceInfo(city, item, content);
+            ResourceLib.FullResourceInfo(player.faction, city, item, content);
         }
 
         void shieldTooltip(RichBoxContent content, object tag)
         {
             ItemResourceType item = (ItemResourceType)tag;
 
-            ResourceLib.FullResourceInfo(city, item, content);
+            ResourceLib.FullResourceInfo(player.faction, city, item, content);
         }
         void animalTooltip(RichBoxContent content, object tag)
         {
             ItemResourceType item = (ItemResourceType)tag;
 
-            ResourceLib.FullResourceInfo(city, item, content);
+            ResourceLib.FullResourceInfo(player.faction, city, item, content);
         }
         void mountArmorTooltip(RichBoxContent content, object tag)
         {
             ItemResourceType item = (ItemResourceType)tag;
 
-            ResourceLib.FullResourceInfo(city, item, content);
+            ResourceLib.FullResourceInfo(player.faction, city, item, content);
         }
         void vehicleTooltip(RichBoxContent content, object tag)
         {
             ItemResourceType item = (ItemResourceType)tag;
 
-            ResourceLib.FullResourceInfo(city, item, content);
+            ResourceLib.FullResourceInfo(player.faction, city, item, content);
         }
 
         void armorClick(ItemResourceType armor)

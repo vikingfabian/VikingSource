@@ -2172,7 +2172,7 @@ namespace VikingEngine
                 add(SpriteName.WarsIcon_WorkQueueActive);
                 add(SpriteName.WarsSettler);
                 add(SpriteName.WarsSettlerAdd);
-
+                add(SpriteName.warsBuildCategoryFarm);
             }
 
 

@@ -16,11 +16,13 @@ namespace VikingEngine.DSSWars.Resource
 {
     struct ResourceInfoTag
     {
-        public ResourceInfoTag(City city, ItemResourceType item)
+        public ResourceInfoTag(Faction faction, City city, ItemResourceType item)
         {
+            this.faction = faction;
             this.city = city;
             this.item = item;
         }
+        public Faction faction;
         public City city;
         public ItemResourceType item;
     }
@@ -191,12 +193,12 @@ namespace VikingEngine.DSSWars.Resource
         public static void FullResourceInfo(RichBoxContent content, object tag)
         {
             ResourceInfoTag args = (ResourceInfoTag)tag;
-            FullResourceInfo(args.city, args.item, content); 
+            FullResourceInfo(args.faction, args.city, args.item, content); 
         }
 
-        public static void FullResourceInfo(City city, ItemResourceType item, RichBoxContent content)
+        public static void FullResourceInfo(Faction faction, City city, ItemResourceType item, RichBoxContent content)
         {
-            var resources = city.GetGroupedResource(item);
+            EntityComponent.GroupedResource resources = city != null? city.GetGroupedResource(item) : faction.GetRefResourceOverview(item);
             IconName.Item(item, out SpriteName itemIcon, out string itemName);
 
             content.Add(new RbBeginTitle());
@@ -228,7 +230,8 @@ namespace VikingEngine.DSSWars.Resource
             content.space();
             content.Add(new RbText(TextLib.LargeNumber(resources.stockPileLimit)));
 
-            var priority = city.workTemplate.GetWorkPriority(item, out bool hasPriority);
+            bool hasPriority;
+            Work.WorkPriority priority = city != null? city.workTemplate.GetWorkPriority(item, out hasPriority) : faction.workTemplate.GetWorkPriority(item, out hasPriority);
             if (hasPriority)
             {
                 content.newLine();

@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         }
                                     }
                                 }, item), 
-                                new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(this, item))));
+                                new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(null, this, item))));
                         }
                     }
                     else

@@ -2304,6 +2304,29 @@ namespace VikingEngine.DSSWars.Interface
                     city.GetGroupedResource(CityResoureIndex.Oliphant).toMenu(content, ItemResourceType.Oliphant, ref reachedBuffer, player, city, true);
                     break;
             }
+
+            //void stockpile(ItemResourceType item)
+            //{   
+            //    GroupedResource res = city.GetGroupedResource(item);
+
+            //    content.newLine();
+
+            //    content.Add(new ArtButton(RbButtonStyle.HoverArea, 
+            //        new List<AbsRichBoxMember>{
+            //            new RbImage(res.amount >= res.stockPileLimit ? SpriteName.WarsStockpileStop : SpriteName.WarsStockpileAdd),
+            //            new RbImage(ResourceLib.Icon(item))},null,
+            //            //new RbTooltip((RichBoxContent content, object tag) =>
+            //            //{
+            //            //    bool buffer = false;
+            //            //    city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);                           
+            //            //}
+            //            new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(null,city, item))
+            //            ));
+                
+            //    content.space();
+               
+            //    //stockPileEdit(content, item, res);
+            //}
         }
 
         private void godPowerSetAllResources(RichBoxContent content, ItemResourceType[] Resources)

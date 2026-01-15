@@ -67,6 +67,9 @@ namespace VikingEngine.DSSWars
         public IButtonMap ToggleMinimap;
         public IButtonMap GameSpeed;
         public IButtonMap PauseGame;
+        public IButtonMap WorkPriorityShortcut;
+        public IButtonMap StockpileShortcut;
+
 
         public IButtonMap FlagDesign_ToggleColor_Prev;
         public IButtonMap FlagDesign_ToggleColor_Next;
@@ -170,19 +173,15 @@ namespace VikingEngine.DSSWars
             cameraTiltUp = new KeyboardButtonMap(Keys.R);
             cameraTiltUpSmooth = null;
 
-            //ControllerSelect = new MouseButtonMap(MouseButton.Left);
-            //Execute = new MouseButtonMap(MouseButton.Right);
             CancelKey = new KeyboardButtonMap(Keys.Back);
             QuickSelect = new KeyboardButtonMap(Keys.Enter);
 
-            //DragPan = new MouseButtonMap(MouseButton.Middle);
-
-            //Home = new KeyboardButtonMap(Keys.Home);
             StopStart = new KeyboardButtonMap(Keys.H);
             Copy = new KeyboardButtonMap(Keys.C);
             Paste = new KeyboardButtonMap(Keys.V);
             Build = new KeyboardButtonMap(Keys.B);
-            //AutomationSetting = new KeyboardButtonMap(Keys.I);
+            WorkPriorityShortcut = new KeyboardButtonMap(Keys.P);
+            StockpileShortcut = new KeyboardButtonMap(Keys.L);
 
             Menu = new KeyboardButtonMap(Keys.Escape);
             ToggleHudDetail = new KeyboardButtonMap(Keys.U);
@@ -192,7 +191,6 @@ namespace VikingEngine.DSSWars
 
             zoomInKey = new KeyboardButtonMap(Keys.PageUp);
             zoomOutKey = new KeyboardButtonMap(Keys.PageDown);
-
 
             NextCity = new KeyboardButtonMap(Keys.D1);
             NextArmy = new KeyboardButtonMap(Keys.D2);
@@ -315,6 +313,8 @@ namespace VikingEngine.DSSWars
             Build = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex, true);
             Copy = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex, true);
             Paste = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex, true);
+            WorkPriorityShortcut = new NoButtonMap();//
+            StockpileShortcut = new NoButtonMap();//
 
             GameSpeed = new NoButtonMap();//
             PauseGame = new NoButtonMap();//
@@ -340,7 +340,7 @@ namespace VikingEngine.DSSWars
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int InputVersion = 7;
+            const int InputVersion = 8;
             w.Write(InputVersion);
 
 
@@ -372,6 +372,8 @@ namespace VikingEngine.DSSWars
                 Copy.write(w);
                 Paste.write(w);
                 Build.write(w);
+                WorkPriorityShortcut.write(w);
+                StockpileShortcut.write(w);
             }
 
             if (inputSource.HasMouse)
@@ -434,7 +436,12 @@ namespace VikingEngine.DSSWars
                 Copy = MapRead.Button(r, inputSource.controllerIndex);
                 Paste = MapRead.Button(r, inputSource.controllerIndex);
                 Build = MapRead.Button(r, inputSource.controllerIndex);
-               
+
+                if (inputVersion >= 8)
+                {
+                    WorkPriorityShortcut = MapRead.Button(r, inputSource.controllerIndex);
+                    StockpileShortcut = MapRead.Button(r, inputSource.controllerIndex);
+                }
 
                 refreshKeyBoardInput();
             }

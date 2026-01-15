@@ -276,9 +276,7 @@ namespace VikingEngine.DSSWars.Resource
             }
             else
             {
-                res = new GroupedResource() {
-                    stockPileLimit = faction.GetResourceOverview(item).stockPileLimit
-                };
+                res = faction.GetResourceOverview(item);
             }
 
             content.newLine();
@@ -289,7 +287,7 @@ namespace VikingEngine.DSSWars.Resource
                         new RbImage(itemIcon)}, null,
                     new RbTooltip((RichBoxContent content, object tag) =>
                     {
-                        ResourceLib.FullResourceInfo(city, item, content);
+                        ResourceLib.FullResourceInfo(player.faction, city, item, content);
                         //if (city != null)
                         //{
                             
@@ -315,7 +313,7 @@ namespace VikingEngine.DSSWars.Resource
                 SpriteName storage;
 
                 Color? numberCol = null;
-                if (ResourceLib.Limit(limit) >= res.stockPileLimit)
+                if (ResourceLib.Limit(limit) > res.stockPileLimit)
                 {
                     numberCol = HudLib.SecondaryTextColor;
                 }
