@@ -11,6 +11,7 @@ namespace VikingEngine.DSSWars.GameObject
     static class GoreManager
     {
         static float BloodRadius = DssConst.Men_StandardModelScale * 0.1f;
+        static float BloodRadiusShip = DssConst.Men_StandardModelScale * 0.8f;
 
         public static void ViewDamage(AbsDetailUnit reciever, int damageAmount, Rotation1D attackDir)
         {
@@ -35,14 +36,43 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 if (Ref.peRnd.ChanceF(soundChanceGore))
                 {
-                    SoundLib.fleshgore.Play(reciever.position);
+                    if (reciever.IsShipType())
+                    {
+                        SoundLib.wood_bonk.Play(reciever.position);
+                    }
+                    else
+                    {
+                        SoundLib.fleshgore.Play(reciever.position);
+                    }
                 }
 
                 int particleCount = Bound.Min(damageAmount * Ref.gamesett.Blood / 100, 2);
                 Vector3 pos = reciever.position;
-                pos.Y += DssConst.Men_StandardModelScale * 0.1f;
-                Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.DssDamage, pos, BloodRadius, particleCount);
+                float radius;
+                if (reciever.IsShipType())
+                {
+                    pos.Y += DssConst.Men_StandardModelScale * 1f;
+                    radius = BloodRadiusShip;
+                }
+                else
+                { 
+                    pos.Y += DssConst.Men_StandardModelScale * 0.1f;
+                    radius = BloodRadius;
+                }
+                Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.DssDamage, pos, radius, particleCount);
             }
+        }
+
+        public static void ViewBlock(AbsDetailUnit reciever, int damageAmount, Rotation1D attackDir)
+        {
+            if (Ref.peRnd.ChanceF(0.1f))
+            {
+                SoundLib.block_attack.Play(reciever.position);
+            }
+           
+             Vector3 pos = VectorExt.AddXZ(reciever.position, attackDir.Direction(DssConst.Men_StandardModelScale * -0.5f));
+            pos.Y += DssConst.Men_StandardModelScale * 0.1f;
+            Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.WeaponSparks, pos, BloodRadius, 10);
         }
     }
 
@@ -67,6 +97,10 @@ namespace VikingEngine.DSSWars.GameObject
             this.groundY = groundY;
             model = new Graphics.Mesh(LoadedMesh.cube_repeating, pos, new Vector3(Blood_BlockScale), 
                 Graphics.TextureEffectType.Flat, SpriteName.WhiteArea_LFtiles, Color.Red);
+#if DEBUG
+            model.DebugName = "BloodBlock";
+#endif
+
             float speed = Ref.peRnd.Float(0.001f, 0.003f) * DssConst.Men_StandardModelScale;
             if (onDeath)
             {
@@ -104,7 +138,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (bounces <= 1)
                 {
-                    if (Ref.TimePassed16ms)
+                    for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
                     {
                         velocity.Y += Blood_Gravity;
                     }
@@ -114,7 +148,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //State 2: sliding
                     velocity.Y = 0;
 
-                    if (Ref.TimePassed16ms)
+                    for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
                     {
                         velocity.Value *= 0.9f;
                         if (velocity.PlaneLength() < Blood_MinSpeed)

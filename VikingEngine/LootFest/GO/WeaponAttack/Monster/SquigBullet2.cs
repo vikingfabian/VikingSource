@@ -89,7 +89,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.Monster
 
         protected override VoxelModelName VoxelObjName
         {
-            get { return characterLevel == 0? VoxelModelName.enemy_projectile_green : VoxelModelName.EnemyProjectile; }
+            get { return characterLevel == 0? VoxelModelName.NUM_NON : VoxelModelName.NUM_NON; }
         }
         protected override float ImageScale
         {

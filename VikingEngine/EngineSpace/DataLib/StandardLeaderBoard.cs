@@ -22,12 +22,12 @@ namespace VikingEngine.DataLib
 
         public void WriteSaveFile(System.IO.BinaryWriter w)
         {
-            SaveLib.WriteString(w, gamer);
+            StreamLib.WriteString(w, gamer);
             w.Write(Score);
         }
         public void ReadSaveFile(System.IO.BinaryReader r, byte version)
         {
-            gamer = SaveLib.ReadString_safe(r);
+            gamer = StreamLib.ReadString_safe(r);
             Score = r.ReadInt32();
         }
 

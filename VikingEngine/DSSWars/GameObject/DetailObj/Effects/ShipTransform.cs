@@ -53,13 +53,13 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 DeleteMe();
             }
-            else if (transformEffect && group.army.inRender_detailLayer)
+            else if (transformEffect && group.army.TryGetTarget(out var tArmy) && tArmy.inRender_detailLayer)
             {
                 if (transformModel == null)
                 {
-                    transformModel = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_shipbuild, true, DssConst.Men_StandardModelScale * 2f, true);
+                    transformModel = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.wars_shipbuild, DssConst.Men_StandardModelScale * 2f);
 
-                    loadingModel = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_loading_anim, true, DssConst.Men_StandardModelScale * 2f, true);
+                    loadingModel = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.wars_loading_anim, DssConst.Men_StandardModelScale * 2f);
                     transformModel.Frame = modelFrame();
 
 
@@ -80,8 +80,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             base.DeleteMe();
 
-            DssRef.models.recycle(ref transformModel, true);
-            DssRef.models.recycle(ref loadingModel, true);
+            transformModel?.preRemoveFromDrawBatch();
+            loadingModel?.preRemoveFromDrawBatch();
+            //DssRef.models.recycle(ref transformModel, true);
+            //DssRef.models.recycle(ref loadingModel, true);
 
             completeTransform();
         }
@@ -100,7 +102,8 @@ namespace VikingEngine.DSSWars.GameObject
         protected override void init(out float timeSec)
         {
             toShip = !group.isShip;
-            timeSec = (toShip ? DssConst.ShipBuildTimeSec : DssConst.ShipExitTimeSec) * group.typeCurrentData.ShipBuildTimeMultiplier;
+            timeSec = (toShip ? DssConst.ShipBuildTimeSec : DssConst.ShipExitTimeSec) * 
+                DssRef.units.Get(group.currentBuilder).ShipBuildTimeMultiplier;
 
         }
 
@@ -159,11 +162,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (lookingForTerrain)
             {
-                //if (DssRef.world.tileGrid.TryGet(group.tilePos, out Tile tile) &&
-                //    tile.IsWater() == toGuard)
-                //{
-                    begin();
-                //}
+                begin();
             }
             else
             {
@@ -185,6 +184,53 @@ namespace VikingEngine.DSSWars.GameObject
         protected override void completeTransform()
         {
             group.completeTransform(toGuard ? SoldierTransformType.EnterGuard : SoldierTransformType.ExitGuard, postIdAndPosition);
+        }
+    }
+
+    class SettlerTransform : AbsSoldierStateTransform
+    {
+        IntVector2 subTile;
+        public SettlerTransform(SoldierGroup group, IntVector2 subTile)
+            : base(group, true)
+        {
+            this.subTile = subTile;
+        }
+
+        protected override void init(out float timeSec)
+        {            
+            timeSec = DssConst.SettlerTransform_TimeSec;
+        }
+
+        public override void Time_Update(float time_ms)
+        {
+            
+            if (transformTimer.CountDownGameTime())
+            {
+                DeleteMe();
+                return;
+            }
+            
+            base.Time_Update(time_ms);
+        }
+
+        override protected int modelFrame()
+        {
+            return 0;
+        }
+
+        protected override void completeTransform()
+        {
+            //group.completeTransform(toGuard ? SoldierTransformType.EnterGuard : SoldierTransformType.ExitGuard, postIdAndPosition);
+            var city = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTile)).City();
+
+            if (group.soldierCount > 0 &&
+                city.cityType == CityType.UnClaimed)
+            {
+                if (city.claimCity(group.GetFaction(), subTile))
+                {
+                    group.DeleteMe(DeleteReason.Transform, true);
+                }
+            }
         }
     }
 }

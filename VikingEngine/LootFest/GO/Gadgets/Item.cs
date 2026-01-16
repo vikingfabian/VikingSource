@@ -145,7 +145,7 @@ namespace VikingEngine.LootFest.GO.Gadgets
                     amountInBox = int.MaxValue;
                     useEvent = usePickAxeEvent;
 
-                    model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.pickaxe, 
+                    model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 
                         1f, 0, false);
                     
                     break;

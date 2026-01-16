@@ -24,7 +24,7 @@ namespace VikingEngine
         public const string Unknown = "Unknown";
         const string MaxTwoDecimalsFormat = "0.##";
         public const string TextFileEnding = ".txt";
-        public static readonly List<char> BreakPoints = new List<char> { ' ', '+', '-', '*', '/', '^' };
+        public static readonly List<char> BreakPoints = new List<char> { ' ', '+', '-', '*', '/', '\\', '^' };
         //const char NewLineChar1 = '\n';
         //const char NewLineChar2 = '\r';
         public static readonly string NewLine = Environment.NewLine;
@@ -99,10 +99,24 @@ namespace VikingEngine
 
         public static string LargeNumber(int number)
         {
-            if (number < short.MinValue)
+            //if (number < short.MinValue)
+            //{
+            //    return Error;
+            //}
+
+            if (Math.Abs(number) < 1000)
             {
-                return Error;
+                return number.ToString();
             }
+            return number.ToString(NoDecimals, ThounsandSeperatorSpaceFormat).Trim();
+        }
+
+        public static string LargeNumber(long number)
+        {
+            //if (number < short.MinValue)
+            //{
+            //    return Error;
+            //}
 
             if (Math.Abs(number) < 1000)
             {
@@ -250,20 +264,24 @@ namespace VikingEngine
         //    }
         //}
 
-        public static string PercentText(float percent)
+        public static string PercentTextWithSymbol(float percent)
         {
             return Convert.ToInt32(percent * 100).ToString() + "%";
+        }
+        public static string PercentText(float percent)
+        {
+            return Convert.ToInt32(percent * 100).ToString();
         }
 
         public static string PercentAddText(float percent)
         {
             if (percent < 0f)
             {
-                return PercentText(percent);
+                return PercentTextWithSymbol(percent);
             }
             else
             {
-                return "+" + PercentText(percent);
+                return "+" + PercentTextWithSymbol(percent);
             }
         }
 
@@ -289,6 +307,7 @@ namespace VikingEngine
         }
 
         public static string IndexToString(int index) { return (index + 1).ToString(); }
+        public static string AddIndexToString(string name, int index) { return name + " " + (index + 1).ToString(); }
 
         public static string CheckBadLanguage(string textString)
         {

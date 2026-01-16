@@ -45,6 +45,12 @@ namespace VikingEngine.DSSWars.Map
         HempFarmUpgraded,
         RapeSeedFarmUpgraded,
 
+        
+        TreeApple,
+        TreeBanana,
+        //TreeAppleSprout,
+        //TreeBananaSprout,
+
         NUM_NONE
     }
 
@@ -97,7 +103,7 @@ namespace VikingEngine.DSSWars.Map
 
         SoldierBarracks,
         ArcherBarracks,
-        WarmashineBarracks,
+        WarmachineBarracks,
         GunBarracks,
         CannonBarracks,
         KnightsBarracks,
@@ -120,7 +126,14 @@ namespace VikingEngine.DSSWars.Map
         Chemist,
         Gunmaker,
         School,
-        
+        ResearchCenter,
+        BookPress,
+        ImmigrationTent,
+
+        WorkerTent,
+        CityHall_Unclaimed,
+        CityHall_Tent,
+        ManorLord,
         NUM_NONE
     }
 

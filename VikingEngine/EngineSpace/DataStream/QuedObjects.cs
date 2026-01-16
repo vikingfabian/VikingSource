@@ -34,10 +34,10 @@ namespace VikingEngine.DataStream
 
         public override void runQuedStorageTask()
         {
-            List<string> files = DataStreamHandler.GetTimeMarkedStoragePaths(filePath);
+            List<string> files = FileToDiskManager.GetTimeMarkedStoragePaths(filePath);
             foreach (string s in files)
             {
-                DataStreamHandler.RemoveFile(s);
+                FileToDiskManager.RemoveFile(s);
             }
         }
     }
@@ -78,7 +78,7 @@ namespace VikingEngine.DataStream
         }
         public override void runQuedStorageTask()
         {
-            data = DataStreamHandler.Read(path);
+            data = FileToDiskManager.Read(path);
             //if (data != null)
             //{
             //    bMainThreadTask;

@@ -9,38 +9,44 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
 {
     class BaseWarship : AbsSoldierUnit
     {
-        //int storedAttacks = 0;
-        int soldierCount;
+        const float ShipAttackCooldownMulti = 1;
+        int crewCount;
         int multiAttackCount;
         float multiAttackTimeCooldown;
-
-        //float maxHealth;
-        //public UnitType carryUnitType;
 
         public BaseWarship()
             : base()
         {
         }
+        public override void InitLocal(Vector3 center, IntVector2 gridPlacement, IntVector2 tile, SoldierGroup group)
+        {
+            
+            base.InitLocal(center, gridPlacement, tile, group);
 
+            refreshShipCarryCount();
+        }
         override public void refreshShipCarryCount()
         {
-            var defaultSoldier = group.soldierConscript.init(group.typeSoldierData);
+            //var defaultSoldier = group.soldierConscript.init(group.typeSoldierData);
             //var data = group.typeCurrentData;//.SoldierData();
-            soldierCount = MathExt.Div_Ceiling(this.health, defaultSoldier.basehealth);
-            if (soldierCount > 0)
+            crewCount = MathExt.Div_Ceiling(this.health, group.soldierData_soldier.basehealth);
+            if (crewCount > 0)
             {
-                multiAttackCount = Math.Min(soldierCount, group.soldierData.rowWidth);
-                multiAttackTimeCooldown = defaultSoldier.attackTimePlusCoolDown / (soldierCount / multiAttackCount);
+                multiAttackCount = Math.Min(crewCount, group.soldierData_soldier.rowWidth);
+                multiAttackTimeCooldown = group.soldierData_soldier.attackTimePlusCoolDown / (crewCount / multiAttackCount);
+                multiAttackTimeCooldown *= ShipAttackCooldownMulti; 
             }
-            
-
         }
 
-        public override void takeDamage(int damageAmount, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction damageFaction, bool fullUpdate)
+        public override void takeDamage(int damageAmount, float blockReduce, AbsDetailUnit meleeAttacker, Rotation1D attackDir, Faction damageFaction, bool fullUpdate, out bool blocked)
         {
-            base.takeDamage(damageAmount, meleeAttacker, attackDir, damageFaction, fullUpdate);
-            refreshShipCarryCount();
-            model?.displayHealth(health / (float)soldierData.basehealth);
+            base.takeDamage(damageAmount, blockReduce, meleeAttacker, attackDir, damageFaction, fullUpdate, out blocked);
+
+            if (!blocked)
+            {
+                refreshShipCarryCount();
+                model?.displayHealth(health / (float)soldierData.basehealth);
+            }
         }
 
         public override bool IsShipType()
@@ -66,24 +72,6 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
         protected override void commitAttack(bool fullUpdate)
         {
 
-
-            //int attacks = Ref.rnd.Int(5, 10) + Bound.Max(storedAttacks, 5) - 1;
-
-            //var soldiersC = attackTarget.group.soldiers.counter();
-            //while (soldiersC.Next())
-            //{
-            //    if (soldiersC.sel != attackTarget && soldiersC.sel.Alive_IncomingDamageIncluded())
-            //    {
-            //        --attacks;
-            //        startAttack(fullUpdate, soldiersC.sel, true, true);
-            //    }
-
-            //    if (attacks <= 0)
-            //    {
-            //        break;
-            //    }
-            //}
-            //storedAttacks = attacks;
             startMultiAttack(fullUpdate, attackTarget, true, multiAttackCount, true);
             attackCooldownTime.MilliSeconds = multiAttackTimeCooldown;
         }
@@ -92,16 +80,18 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
         {
             return true;
         }
-        //protected override DetailUnitModel initModel()
-        //{
-        //    if (this.parentArrayIndex == 11)
-        //    {
-        //        return new KnightBannerModel(this);
-        //    }
-        //    else
-        //    {
-        //        return new KnightModel(this);
-        //    }
-        //}
+        public override void DeleteMe(DeleteReason reason, bool removeFromParent)
+        {
+            //base.DeleteMe(reason, removeFromParent);
+            isDeleted = true;
+            health = 0;
+
+            deleteModels();
+
+            if (removeFromParent)
+            {
+                group?.remove(this);
+            }
+        }
     }
 }

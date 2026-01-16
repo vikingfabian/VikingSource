@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Steamworks;
 using VikingEngine.SteamWrapping;
-using Valve.Steamworks;
 
 namespace VikingEngine.Network
 {
@@ -13,42 +13,42 @@ namespace VikingEngine.Network
         static long ServerTime;
         public static void RefreshServerTime()
         {
-            ServerTime = SteamAPI.SteamUtils().GetServerRealTime();
+            ServerTime = SteamUtils.GetServerRealTime();
         }
 
-        public SteamAvailableSession(ulong available)
-            :base(available)
+        public SteamAvailableSession(CSteamID available)
+            :base(available.m_SteamID)
         {
-            Ref.steam.LobbyMatchmaker.getMetaData(lobbyId, out publicity);
+            Ref.steam.LobbyMatchmaker.getMetaData(available, out publicity);
 
-            this.name = SteamAPI.SteamMatchmaking().GetLobbyData(lobbyId, LobbyDatas.LobbyName.ToString());
+            this.name = SteamMatchmaking.GetLobbyData(available, LobbyDatas.LobbyName.ToString());
             
-            this.lobbyHost = SteamAPI.SteamMatchmaking().GetLobbyOwner(lobbyId);
+            this.lobbyHost = SteamMatchmaking.GetLobbyOwner(available).m_SteamID;
 
-            ulong steamIDFriend;
-            if (Ref.steam.LobbyMatchmaker.lobbyIsFriend(lobbyId, out steamIDFriend))
+            CSteamID steamIDFriend;
+            if (Ref.steam.LobbyMatchmaker.lobbyIsFriend(available, out steamIDFriend))
             {
                 friend = true;
-                lobbyHost = steamIDFriend;
+                lobbyHost = steamIDFriend.m_SteamID;
             }
         }
 
         public override bool refreshAvailable()
         {
-            long lobbyTimeStamp = Ref.steamlobby.GetLobbyTimeStamp(lobbyId);
+            long lobbyTimeStamp = Ref.steamlobby.GetLobbyTimeStamp(new CSteamID(lobbyId));
 
             return Math.Abs(lobbyTimeStamp - ServerTime) < SteamP2PManager.LobbyTimeOut;
         }
 
         public SteamImageLoadData tryLoadGamerIcon()
         {
-            SteamImageLoadData steamImage = SteamNetworkPeer.GetAvatarImage(lobbyHost);
+            SteamImageLoadData steamImage = SteamNetworkPeer.GetAvatarImage(new CSteamID( lobbyHost));
             return steamImage;
         }
 
         override public void join()
         {
-            Ref.steam.LobbyMatchmaker.JoinLobby(lobbyId);
+            Ref.steam.LobbyMatchmaker.JoinLobby(new CSteamID( lobbyId));
         }
     }
 }

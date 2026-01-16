@@ -15,10 +15,13 @@ namespace VikingEngine.Sound
         public SoundData(string filepath, float volume = 1f,
             float randomPitch = 0, float pitchAdd = 0)
         {
-            soundeffect = Engine.LoadContent.Content.Load<SoundEffect>(filepath);
-            this.volume = volume;
-            this.randomPitch = randomPitch;
-            this.pitchAdd = pitchAdd;
+            if (VikingEngine.Sound.SoundManager.SoundInitializeSuccess)
+            {
+                soundeffect = Engine.LoadContent.Content.Load<SoundEffect>(filepath);
+                this.volume = volume;
+                this.randomPitch = randomPitch;
+                this.pitchAdd = pitchAdd;
+            }
         }
 
         public SoundData(SoundEffect soundeffect, float volume = 1f,

@@ -88,7 +88,7 @@ namespace VikingEngine.LootFest.GO.NPC
 
         override protected VoxelModelName swordImage
         {
-            get { return VoxelModelName.Sword1; }
+            get { return VoxelModelName.NUM_NON; }
         }
 
         //protected override EnvironmentObj.MapChunkObjectType dataType

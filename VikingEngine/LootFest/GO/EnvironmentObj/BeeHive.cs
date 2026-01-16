@@ -48,7 +48,7 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
         {
             WorldPos = spawnPos;
 
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.beehive, Scale, 0, false);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, Scale, 0, false);
             image.position = WorldPos.PositionV3;
             
             CollisionAndDefaultBound = LootFest.ObjSingleBound.QuickBoundingBox(new Vector3( Scale * 0.35f), 1.2f);

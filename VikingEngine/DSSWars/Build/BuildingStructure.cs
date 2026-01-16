@@ -3,11 +3,14 @@ using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.PlayerControls.Casual;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
@@ -18,9 +21,11 @@ namespace VikingEngine.DSSWars.Build
     struct BuildingPosition
     {
         public IntVector2 WorkerHuts_pos;
+        public IntVector2 ServiceHouse_pos;
         public IntVector2 Postal_pos;
         public IntVector2 Recruitment_pos;
         public IntVector2 SoldierBarracks_pos;
+        public IntVector2 ImmigrationTent_pos;
         public IntVector2 Nobelhouse_pos;
         public IntVector2 Tavern_pos;
         public IntVector2 Storehouse_pos;
@@ -30,6 +35,7 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 WorkBench_pos;
         public IntVector2 Smith_pos;
         public IntVector2 Carpenter_pos;
+        public IntVector2 Orchard_pos;
         public IntVector2 WheatFarm_pos;
         public IntVector2 LinenFarm_pos;
         public IntVector2 HempFarm_pos;
@@ -47,7 +53,7 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 Embassy_pos;
         public IntVector2 WaterResovoir_pos;
         public IntVector2 ArcherBarracks_pos;
-        public IntVector2 WarmashineBarracks_pos;
+        public IntVector2 WarmachineBarracks_pos;
         public IntVector2 GunBarracks_pos;
         public IntVector2 CannonBarracks_pos;
         public IntVector2 KnightsBarracks_pos;
@@ -57,14 +63,32 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 Chemist_pos;
         public IntVector2 Gunmaker_pos;
         public IntVector2 School_pos;
+        public IntVector2 ResearchCenter_pos;
+        public IntVector2 BookPress_pos;
 
         public IntVector2 getPos(BuildAndExpandType type)
         {
             switch (type)
             {
-                case BuildAndExpandType.WorkerHut: return WorkerHuts_pos;
-                case BuildAndExpandType.Postal: return Postal_pos;
-                case BuildAndExpandType.Recruitment: return Recruitment_pos;
+                case BuildAndExpandType.WorkerTent:
+                case BuildAndExpandType.WorkerHut:
+                case BuildAndExpandType.WorkerHutLarge:
+                    return WorkerHuts_pos;
+
+                case BuildAndExpandType.ServiceHouse_Small:
+                case BuildAndExpandType.ServiceHouse_Large:
+                    return ServiceHouse_pos;
+
+                case BuildAndExpandType.Postal:
+                case BuildAndExpandType.PostalLevel2:
+                case BuildAndExpandType.PostalLevel3:
+                    return Postal_pos;
+
+                case BuildAndExpandType.Recruitment:
+                case BuildAndExpandType.RecruitmentLevel2:
+                case BuildAndExpandType.RecruitmentLevel3:
+                    return Recruitment_pos;
+
                 case BuildAndExpandType.SoldierBarracks: return SoldierBarracks_pos;
                 case BuildAndExpandType.Nobelhouse: return Nobelhouse_pos;
                 case BuildAndExpandType.Tavern: return Tavern_pos;
@@ -75,10 +99,27 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WorkBench: return WorkBench_pos;
                 case BuildAndExpandType.Smith: return Smith_pos;
                 case BuildAndExpandType.Carpenter: return Carpenter_pos;
-                case BuildAndExpandType.WheatFarm: return WheatFarm_pos;
-                case BuildAndExpandType.LinenFarm: return LinenFarm_pos;
-                case BuildAndExpandType.HempFarm: return HempFarm_pos;
-                case BuildAndExpandType.RapeSeedFarm: return RapeSeedFarm_pos;
+
+                case BuildAndExpandType.OrchardApple:
+                case BuildAndExpandType.OrchidBanana:
+                    return Orchard_pos;
+
+                case BuildAndExpandType.WheatFarm:
+                case BuildAndExpandType.WheatFarmUpgraded:
+                    return WheatFarm_pos;
+
+                case BuildAndExpandType.LinenFarm:
+                case BuildAndExpandType.LinenFarmUpgraded:
+                    return LinenFarm_pos;
+
+                case BuildAndExpandType.HempFarm:
+                case BuildAndExpandType.HempFarmUpgraded:
+                    return HempFarm_pos;
+
+                case BuildAndExpandType.RapeSeedFarm:
+                case BuildAndExpandType.RapeSeedFarmUpgraded:
+                    return RapeSeedFarm_pos;
+
                 case BuildAndExpandType.PigPen: return PigPen_pos;
                 case BuildAndExpandType.HenPen: return HenPen_pos;
                 case BuildAndExpandType.Statue_ThePlayer: return Statue_ThePlayer_pos;
@@ -86,13 +127,18 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.PavementFlower: return PavementFlower_pos;
                 case BuildAndExpandType.Bank: return Bank_pos;
                 case BuildAndExpandType.CoinMinter: return CoinMinter_pos;
-                case BuildAndExpandType.GoldDeliveryLvl1: return GoldDelivery_pos;
+
+                case BuildAndExpandType.GoldDeliveryLvl1:
+                case BuildAndExpandType.GoldDeliveryLvl2:
+                case BuildAndExpandType.GoldDeliveryLvl3:
+                    return GoldDelivery_pos;
+
                 case BuildAndExpandType.WoodCutter: return WoodCutter_pos;
                 case BuildAndExpandType.StoneCutter: return StoneCutter_pos;
                 case BuildAndExpandType.Embassy: return Embassy_pos;
                 case BuildAndExpandType.WaterResovoir: return WaterResovoir_pos;
                 case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_pos;
-                case BuildAndExpandType.WarmashineBarracks: return WarmashineBarracks_pos;
+                case BuildAndExpandType.WarmachineBarracks: return WarmachineBarracks_pos;
                 case BuildAndExpandType.GunBarracks: return GunBarracks_pos;
                 case BuildAndExpandType.CannonBarracks: return CannonBarracks_pos;
                 case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_pos;
@@ -103,13 +149,32 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Gunmaker: return Gunmaker_pos;
                 case BuildAndExpandType.School: return School_pos;
 
-                default: throw new NotImplementedException(); // Return 0 for NUM_NONE or any other undefined type
+                case BuildAndExpandType.ImmigrationTent: return ImmigrationTent_pos;
+
+                default:
+                    throw new NotImplementedException($"getPos() not implemented for {type}");
             }
         }
     }
 
     struct TerrainStructure
     {
+        public static readonly ItemResourceType[] AllTerrainResources = {
+            ItemResourceType.Wood_Group,
+            ItemResourceType.Stone_G,
+            ItemResourceType.Coal,
+
+            ItemResourceType.BogIron,
+            ItemResourceType.IronOre_G,
+            ItemResourceType.TinOre,
+            ItemResourceType.CopperOre,
+            ItemResourceType.LeadOre,
+            ItemResourceType.SilverOre,
+            ItemResourceType.GoldOre,
+            ItemResourceType.RawMithril,
+            ItemResourceType.Sulfur,
+        };
+
         public int mineCount_bogIron;
 
         public int mineCount_iron;
@@ -122,7 +187,31 @@ namespace VikingEngine.DSSWars.Build
         public int mineCount_sulfur;
         public int mineCount_coal;
 
-        public void miningOverviewHud(RichBoxContent content, LocalPlayer player)
+        public int resourceCount_stone;
+        public int resourceCount_wood;
+
+        static readonly SubTile TerrainType_wood = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeSoft);
+        static readonly SubTile TerrainType_stone = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.Stones);
+
+        static readonly SubTile TerrainType_bogiron = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.BogIron);
+        static readonly SubTile TerrainType_iron = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.IronOre);
+        static readonly SubTile TerrainType_tin = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.TinOre);
+        static readonly SubTile TerrainType_copper = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.CopperOre);
+        static readonly SubTile TerrainType_lead = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.LeadOre);
+        static readonly SubTile TerrainType_silver = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.SilverOre);
+        static readonly SubTile TerrainType_gold = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.GoldOre);
+        static readonly SubTile TerrainType_mithril = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Mithril);
+        static readonly SubTile TerrainType_sulfur = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Sulfur);
+        static readonly SubTile TerrainType_coal = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Coal);
+
+        public bool HasIndependantResources()
+        {
+            return mineCount_bogIron + mineCount_bogIron >= 1 &&
+                resourceCount_wood >= 3 &&
+                resourceCount_stone >= 1;
+        }
+
+        public void miningOverviewHud(LocalPlayer player, RichBoxContent content)
         {
             content.newLine();
 
@@ -131,71 +220,116 @@ namespace VikingEngine.DSSWars.Build
 
             int totalCount = 0;
 
-            mine(mineCount_coal, ItemResourceType.Coal);
-            mine(mineCount_bogIron, ItemResourceType.BogIron);
-            mine(mineCount_iron, ItemResourceType.Iron_G);
-            mine(mineCount_tin, ItemResourceType.Tin);
-            mine(mineCount_copper, ItemResourceType.Copper);
-            mine(mineCount_lead, ItemResourceType.Lead);
-            mine(mineCount_silver, ItemResourceType.Silver);
-            mine(mineCount_gold, ItemResourceType.Gold);
-            mine(mineCount_mithril, ItemResourceType.Mithril);
-            mine(mineCount_sulfur, ItemResourceType.Sulfur);
-            
+            naturalResource(player, content, resourceCount_wood, ItemResourceType.Wood_Group, TerrainType_wood, ref totalCount);
+            naturalResource(player, content, resourceCount_stone, ItemResourceType.Stone_G, TerrainType_stone, ref totalCount);
+            mine(player, content, mineCount_coal, ItemResourceType.Coal, TerrainType_coal, ref totalCount);
+            mine(player, content, mineCount_bogIron, ItemResourceType.BogIron, TerrainType_bogiron, ref totalCount);
+            mine(player, content, mineCount_iron, ItemResourceType.Iron_G, TerrainType_iron, ref totalCount);
+            mine(player, content, mineCount_tin, ItemResourceType.Tin, TerrainType_tin, ref totalCount);
+            mine(player, content, mineCount_copper, ItemResourceType.Copper, TerrainType_copper, ref totalCount);
+            mine(player, content, mineCount_lead, ItemResourceType.Lead, TerrainType_lead, ref totalCount);
+            mine(player, content, mineCount_silver, ItemResourceType.Silver, TerrainType_silver, ref totalCount);
+            mine(player, content, mineCount_gold, ItemResourceType.Gold, TerrainType_gold, ref totalCount);
+            mine(player, content, mineCount_mithril, ItemResourceType.Mithril, TerrainType_mithril, ref totalCount);
+            mine(player, content, mineCount_sulfur, ItemResourceType.Sulfur, TerrainType_sulfur, ref totalCount);
+
 
             if (totalCount == 0)
             {
                 content.Add(new RbText(DssRef.lang.Hud_EmptyList));
             }
+            
+        }
 
+        
 
-            void mine(int count, ItemResourceType resource)
+        public int Get(ItemResourceType type)
+        {
+            switch (type)
             {
-                totalCount += count;
-                if (count > 0)
-                {
-                    SpriteName icon = ResourceLib.Icon(resource);
-                    string resourceName = LangLib.Item(resource);
-                    var infoContent = new RichBoxContent();
+                case ItemResourceType.BogIron:
+                    return mineCount_bogIron;
+                case ItemResourceType.IronOre_G:
+                    return mineCount_iron;
+                case ItemResourceType.TinOre:
+                    return mineCount_tin;
+                case ItemResourceType.CopperOre:
+                    return mineCount_copper;
+                case ItemResourceType.LeadOre:
+                    return mineCount_lead;
+                case ItemResourceType.SilverOre:
+                    return mineCount_silver;
+                case ItemResourceType.GoldOre:
+                    return mineCount_gold;
+                case ItemResourceType.RawMithril:
+                    return mineCount_mithril;
+                case ItemResourceType.Sulfur:
+                    return mineCount_sulfur;
+                case ItemResourceType.Coal:
+                    return mineCount_coal;
+                case ItemResourceType.Stone_G:
+                    return resourceCount_stone;
+                case ItemResourceType.Wood_Group:
+                    return resourceCount_wood;
+                default:
+                    return 0;
+            }
+        }
 
-                    infoContent.Add(new RbImage(icon));
-                    infoContent.space();
-                    var countText = new RbText(count.ToString());
-                    countText.overrideColor = Color.White;
-                    infoContent.Add(countText); 
 
-                    var infoButton = new ArtButton( RbButtonStyle.HoverArea, infoContent, null, 
-                        new RbTooltip((RichBoxContent content, object tag) =>
+        public void naturalResource(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, SubTile terrainType, ref int totalCount)
+        {
+            resourceHoverButton(player, content, count, resource, DssRef.lang.Work_GatherXResource, SpriteName.WarsWorkCollect, terrainType, false, ref totalCount);
+        }
+
+        public void mine(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, SubTile terrainType, ref int totalCount)
+        {
+            resourceHoverButton(player, content, count, resource, DssRef.lang.BuildingType_ResourceMine, SpriteName.WarsWorkMine, terrainType, terrainType.mainTerrain != TerrainMainType.NUM, ref totalCount);
+        }
+
+        public void resourceHoverButton(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, string categoryName, SpriteName workIcon, SubTile terrainType, bool clickable, ref int totalCount)
+        {
+            totalCount += count;
+            if (count > 0)
+            {
+                SpriteName icon = ResourceLib.Icon(resource);
+                string resourceName = LangLib.Item(resource);
+                var infoContent = new RichBoxContent();
+
+                infoContent.Add(new RbOverlapImage(new RbImage(icon), workIcon, VectorExt.V2FromX(-0.2f), 0.8f));
+                infoContent.space();
+                var countText = new RbText(count.ToString());
+                countText.overrideColor = Color.White;
+                infoContent.Add(countText);
+
+                var infoButton = new ArtButton(clickable? RbButtonStyle.Outline : RbButtonStyle.HoverArea, infoContent, clickable? new RbAction1Arg<SubTile>( player.gameControls.map.terrainSearchClick, terrainType) : null,
+                    new RbTooltip((RichBoxContent content, object tag) =>
                     {
-                        //RichBoxContent content = new RichBoxContent();
-
-                        content.Add(new RbImage(icon));
+                        content.Add(new RbOverlapImage(new RbImage(icon), workIcon, Vector2.Zero, 0.8f));
                         content.space();
-                        var mineString = string.Format(DssRef.lang.BuildingType_ResourceMine, resourceName);
-                        content.Add(new RbText(TextLib.LargeFirstLetter( string.Format(DssRef.lang.Language_XCountIsY, mineString, count))));
+                        var mineString = string.Format(categoryName, resourceName);
+                        content.Add(new RbText(TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XCountIsY, mineString, count))));
 
-
-                        //player.hud.tooltip.create(player, content, true);
                     }));
 
-                    //infoButton.overrideBgColor = HudLib.InfoYellow_BG;
-                    content.Add(infoButton);
-                    //content.space();
-                }
+                content.Add(infoButton);
             }
         }
     }
 
     struct BuildingStructure
     {
+        
+        public bool manorLord;
         public int buildingLevel_logistics;
+        public int TentHuts_count;
         public int WorkerHuts_count;
         public int WorkerHuts_Large_count;
         public int ServiceMenHouse_count;
         public int ServiceMenHouse_Large_count;
         public int GuardOffice_count;
         public int GuardOffice_Large_count;
-
+        public int ImmigrationTent_count;
 
 
         public int Postal_count;
@@ -210,6 +344,7 @@ namespace VikingEngine.DSSWars.Build
         public int WorkBench_count;
         public int Smith_count;
         public int Carpenter_count;
+        public int Orchard_count;
         public int WheatFarm_count;
         public int LinenFarm_count;
         public int HempFarm_count;
@@ -227,7 +362,7 @@ namespace VikingEngine.DSSWars.Build
         public int Embassy_count;
         public int WaterResovoir_count;
         public int ArcherBarracks_count;
-        public int WarmashineBarracks_count;
+        public int WarmachineBarracks_count;
         public int GunBarracks_count;
         public int CannonBarracks_count;
         public int KnightsBarracks_count;
@@ -237,14 +372,30 @@ namespace VikingEngine.DSSWars.Build
         public int Chemist_count;
         public int Gunmaker_count;
         public int School_count;
+        public int ResearchCenter_count;
+        public int BookPress_count;
+
+        public int wallCount;
 
         public int getCount(BuildAndExpandType type)
         {
             switch (type)
             {
+                case BuildAndExpandType.WorkerTent: return TentHuts_count;
                 case BuildAndExpandType.WorkerHut: return WorkerHuts_count;
+                case BuildAndExpandType.WorkerHutLarge: return WorkerHuts_Large_count;
+
+                case BuildAndExpandType.ServiceHouse_Small: return ServiceMenHouse_count;
+                case BuildAndExpandType.ServiceHouse_Large: return ServiceMenHouse_Large_count;
+
                 case BuildAndExpandType.Postal: return Postal_count;
+                case BuildAndExpandType.PostalLevel2: return Postal_count;
+                case BuildAndExpandType.PostalLevel3: return Postal_count;
+
                 case BuildAndExpandType.Recruitment: return Recruitment_count;
+                case BuildAndExpandType.RecruitmentLevel2: return Recruitment_count;
+                case BuildAndExpandType.RecruitmentLevel3: return Recruitment_count;
+
                 case BuildAndExpandType.SoldierBarracks: return SoldierBarracks_count;
                 case BuildAndExpandType.Nobelhouse: return Nobelhouse_count;
                 case BuildAndExpandType.Tavern: return Tavern_count;
@@ -255,10 +406,18 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WorkBench: return WorkBench_count;
                 case BuildAndExpandType.Smith: return Smith_count;
                 case BuildAndExpandType.Carpenter: return Carpenter_count;
+
+                case BuildAndExpandType.OrchardApple: return Orchard_count;
+                case BuildAndExpandType.OrchidBanana: return Orchard_count;
                 case BuildAndExpandType.WheatFarm: return WheatFarm_count;
+                case BuildAndExpandType.WheatFarmUpgraded: return WheatFarm_count;
                 case BuildAndExpandType.LinenFarm: return LinenFarm_count;
+                case BuildAndExpandType.LinenFarmUpgraded: return LinenFarm_count;
                 case BuildAndExpandType.HempFarm: return HempFarm_count;
+                case BuildAndExpandType.HempFarmUpgraded: return HempFarm_count;
                 case BuildAndExpandType.RapeSeedFarm: return RapeSeedFarm_count;
+                case BuildAndExpandType.RapeSeedFarmUpgraded: return RapeSeedFarm_count;
+
                 case BuildAndExpandType.PigPen: return PigPen_count;
                 case BuildAndExpandType.HenPen: return HenPen_count;
                 case BuildAndExpandType.Statue_ThePlayer: return Statue_ThePlayer_count;
@@ -266,13 +425,17 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.PavementFlower: return PavementFlower_count;
                 case BuildAndExpandType.Bank: return Bank_count;
                 case BuildAndExpandType.CoinMinter: return CoinMinter_count;
+
                 case BuildAndExpandType.GoldDeliveryLvl1: return GoldDelivery_count;
+                case BuildAndExpandType.GoldDeliveryLvl2: return GoldDelivery_count;
+                case BuildAndExpandType.GoldDeliveryLvl3: return GoldDelivery_count;
+
                 case BuildAndExpandType.WoodCutter: return WoodCutter_count;
                 case BuildAndExpandType.StoneCutter: return StoneCutter_count;
                 case BuildAndExpandType.Embassy: return Embassy_count;
                 case BuildAndExpandType.WaterResovoir: return WaterResovoir_count;
                 case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_count;
-                case BuildAndExpandType.WarmashineBarracks: return WarmashineBarracks_count;
+                case BuildAndExpandType.WarmachineBarracks: return WarmachineBarracks_count;
                 case BuildAndExpandType.GunBarracks: return GunBarracks_count;
                 case BuildAndExpandType.CannonBarracks: return CannonBarracks_count;
                 case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_count;
@@ -282,10 +445,151 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Chemist: return Chemist_count;
                 case BuildAndExpandType.Gunmaker: return Gunmaker_count;
                 case BuildAndExpandType.School: return School_count;
+                case BuildAndExpandType.ImmigrationTent: return ImmigrationTent_count;
 
-                default: return 0; // Return 0 for NUM_NONE or any other undefined type
+                default: return 0; // NUM_NONE or any untracked type
             }
         }
+
+        public void addCount(BuildAndExpandType type, int add)
+        {
+            switch (type)
+            {
+                case BuildAndExpandType.WorkerHut: WorkerHuts_count += add; break;
+                case BuildAndExpandType.WorkerHutLarge: WorkerHuts_Large_count += add; break;
+
+                case BuildAndExpandType.ServiceHouse_Small: ServiceMenHouse_count += add; break;
+                case BuildAndExpandType.ServiceHouse_Large: ServiceMenHouse_Large_count += add; break;
+
+                case BuildAndExpandType.Postal:
+                case BuildAndExpandType.PostalLevel2:
+                case BuildAndExpandType.PostalLevel3:
+                    Postal_count += add; break;
+
+                case BuildAndExpandType.Recruitment:
+                case BuildAndExpandType.RecruitmentLevel2:
+                case BuildAndExpandType.RecruitmentLevel3:
+                    Recruitment_count += add; break;
+
+                case BuildAndExpandType.SoldierBarracks: SoldierBarracks_count += add; break;
+                case BuildAndExpandType.Nobelhouse: Nobelhouse_count += add; break;
+                case BuildAndExpandType.Tavern: Tavern_count += add; break;
+                case BuildAndExpandType.Storehouse: Storehouse_count += add; break;
+                case BuildAndExpandType.Brewery: Brewery_count += add; break;
+                case BuildAndExpandType.Cook: Cook_count += add; break;
+                case BuildAndExpandType.CoalPit: CoalPit_count += add; break;
+                case BuildAndExpandType.WorkBench: WorkBench_count += add; break;
+                case BuildAndExpandType.Smith: Smith_count += add; break;
+                case BuildAndExpandType.Carpenter: Carpenter_count += add; break;
+
+                case BuildAndExpandType.OrchardApple:
+                case BuildAndExpandType.OrchidBanana:
+                    Orchard_count += add; break;
+
+                case BuildAndExpandType.WheatFarm:
+                case BuildAndExpandType.WheatFarmUpgraded:
+                    WheatFarm_count += add; break;
+
+                case BuildAndExpandType.LinenFarm:
+                case BuildAndExpandType.LinenFarmUpgraded:
+                    LinenFarm_count += add; break;
+
+                case BuildAndExpandType.HempFarm:
+                case BuildAndExpandType.HempFarmUpgraded:
+                    HempFarm_count += add; break;
+
+                case BuildAndExpandType.RapeSeedFarm:
+                case BuildAndExpandType.RapeSeedFarmUpgraded:
+                    RapeSeedFarm_count += add; break;
+
+                case BuildAndExpandType.PigPen: PigPen_count += add; break;
+                case BuildAndExpandType.HenPen: HenPen_count += add; break;
+                case BuildAndExpandType.Statue_ThePlayer: Statue_ThePlayer_count += add; break;
+                case BuildAndExpandType.Pavement: Pavement_count += add; break;
+                case BuildAndExpandType.PavementFlower: PavementFlower_count += add; break;
+                case BuildAndExpandType.Bank: Bank_count += add; break;
+                case BuildAndExpandType.CoinMinter: CoinMinter_count += add; break;
+
+                case BuildAndExpandType.GoldDeliveryLvl1:
+                case BuildAndExpandType.GoldDeliveryLvl2:
+                case BuildAndExpandType.GoldDeliveryLvl3:
+                    GoldDelivery_count += add; break;
+
+                case BuildAndExpandType.WoodCutter: WoodCutter_count += add; break;
+                case BuildAndExpandType.StoneCutter: StoneCutter_count += add; break;
+                case BuildAndExpandType.Embassy: Embassy_count += add; break;
+                case BuildAndExpandType.WaterResovoir: WaterResovoir_count += add; break;
+                case BuildAndExpandType.ArcherBarracks: ArcherBarracks_count += add; break;
+                case BuildAndExpandType.WarmachineBarracks: WarmachineBarracks_count += add; break;
+                case BuildAndExpandType.GunBarracks: GunBarracks_count += add; break;
+                case BuildAndExpandType.CannonBarracks: CannonBarracks_count += add; break;
+                case BuildAndExpandType.KnightsBarracks: KnightsBarracks_count += add; break;
+                case BuildAndExpandType.Smelter: Smelter_count += add; break;
+                case BuildAndExpandType.Foundry: Foundry_count += add; break;
+                case BuildAndExpandType.Armory: Armory_count += add; break;
+                case BuildAndExpandType.Chemist: Chemist_count += add; break;
+                case BuildAndExpandType.Gunmaker: Gunmaker_count += add; break;
+                case BuildAndExpandType.School: School_count += add; break;
+                case BuildAndExpandType.ImmigrationTent: ImmigrationTent_count += add; break;
+
+                default: break; // For NUM_NONE or any untracked type
+            }
+        }
+
+
+        //public int getCount(BuildAndExpandType type)
+        //{
+        //    switch (type)
+        //    {
+        //        case BuildAndExpandType.WorkerHut: return WorkerHuts_count;
+        //        case BuildAndExpandType.WorkerHutLarge: return WorkerHuts_Large_count;
+
+        //        case BuildAndExpandType.ServiceHouse_Small: return ServiceMenHouse_count;
+        //        case BuildAndExpandType.ServiceHouse_Large: return ServiceMenHouse_Large_count;
+
+        //        case BuildAndExpandType.Postal: return Postal_count;
+        //        case BuildAndExpandType.Recruitment: return Recruitment_count;
+        //        case BuildAndExpandType.SoldierBarracks: return SoldierBarracks_count;
+        //        case BuildAndExpandType.Nobelhouse: return Nobelhouse_count;
+        //        case BuildAndExpandType.Tavern: return Tavern_count;
+        //        case BuildAndExpandType.Storehouse: return Storehouse_count;
+        //        case BuildAndExpandType.Brewery: return Brewery_count;
+        //        case BuildAndExpandType.Cook: return Cook_count;
+        //        case BuildAndExpandType.CoalPit: return CoalPit_count;
+        //        case BuildAndExpandType.WorkBench: return WorkBench_count;
+        //        case BuildAndExpandType.Smith: return Smith_count;
+        //        case BuildAndExpandType.Carpenter: return Carpenter_count;
+        //        case BuildAndExpandType.WheatFarm: return WheatFarm_count;
+        //        case BuildAndExpandType.LinenFarm: return LinenFarm_count;
+        //        case BuildAndExpandType.HempFarm: return HempFarm_count;
+        //        case BuildAndExpandType.RapeSeedFarm: return RapeSeedFarm_count;
+        //        case BuildAndExpandType.PigPen: return PigPen_count;
+        //        case BuildAndExpandType.HenPen: return HenPen_count;
+        //        case BuildAndExpandType.Statue_ThePlayer: return Statue_ThePlayer_count;
+        //        case BuildAndExpandType.Pavement: return Pavement_count;
+        //        case BuildAndExpandType.PavementFlower: return PavementFlower_count;
+        //        case BuildAndExpandType.Bank: return Bank_count;
+        //        case BuildAndExpandType.CoinMinter: return CoinMinter_count;
+        //        case BuildAndExpandType.GoldDeliveryLvl1: return GoldDelivery_count;
+        //        case BuildAndExpandType.WoodCutter: return WoodCutter_count;
+        //        case BuildAndExpandType.StoneCutter: return StoneCutter_count;
+        //        case BuildAndExpandType.Embassy: return Embassy_count;
+        //        case BuildAndExpandType.WaterResovoir: return WaterResovoir_count;
+        //        case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_count;
+        //        case BuildAndExpandType.WarmashineBarracks: return WarmashineBarracks_count;
+        //        case BuildAndExpandType.GunBarracks: return GunBarracks_count;
+        //        case BuildAndExpandType.CannonBarracks: return CannonBarracks_count;
+        //        case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_count;
+        //        case BuildAndExpandType.Smelter: return Smelter_count;
+        //        case BuildAndExpandType.Foundry: return Foundry_count;
+        //        case BuildAndExpandType.Armory: return Armory_count;
+        //        case BuildAndExpandType.Chemist: return Chemist_count;
+        //        case BuildAndExpandType.Gunmaker: return Gunmaker_count;
+        //        case BuildAndExpandType.School: return School_count;
+
+        //        default: return 0; // Return 0 for NUM_NONE or any other undefined type
+        //    }
+        //}
 
         public int getBarracksCount(BuildAndExpandType type)
         {
@@ -294,7 +598,7 @@ namespace VikingEngine.DSSWars.Build
                 
                 case BuildAndExpandType.SoldierBarracks: return SoldierBarracks_count;
                 case BuildAndExpandType.ArcherBarracks: return ArcherBarracks_count;
-                case BuildAndExpandType.WarmashineBarracks: return WarmashineBarracks_count;
+                case BuildAndExpandType.WarmachineBarracks: return WarmachineBarracks_count;
                 case BuildAndExpandType.GunBarracks: return GunBarracks_count;
                 case BuildAndExpandType.CannonBarracks: return CannonBarracks_count;
                 case BuildAndExpandType.KnightsBarracks: return KnightsBarracks_count;

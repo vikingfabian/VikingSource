@@ -47,7 +47,7 @@ namespace VikingEngine.LootFest.GO.Characters.Monsters
          }
         protected override VoxelModelName imageName
         {
-            get { return characterLevel == 0? VoxelModelName.scorpion1 : VoxelModelName.scorpion2; }
+            get { return characterLevel == 0? VoxelModelName.NUM_NON : VoxelModelName.NUM_NON; }
         }
 
         static readonly Graphics.AnimationsSettings AnimSet = 

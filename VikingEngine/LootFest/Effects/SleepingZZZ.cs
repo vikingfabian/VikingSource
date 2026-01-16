@@ -28,7 +28,7 @@ namespace VikingEngine.LootFest.Effects
             this.go = go;
             //this.parent = parent;
             //this.headOffset = headOffset;
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.ZZZ, 0.1f, 0, false);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 0.1f, 0, false);
 
             //runDuringPause = false;
             resetPos();

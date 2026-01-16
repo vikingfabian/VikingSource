@@ -19,7 +19,7 @@ namespace VikingEngine.LootFest.GO.PickUp
 
         protected override VoxelModelName imageType
         {
-            get { return VoxelModelName.card; }
+            get { return VoxelModelName.NUM_NON; }
         }
         ////static readonly Data.TempBlockReplacementSett TempImage = new Data.TempBlockReplacementSett(new Color(255, 228, 0), new Vector3(1, 1, 0.2f));
         //protected override Data.TempBlockReplacementSett tempImage
@@ -94,7 +94,7 @@ namespace VikingEngine.LootFest.GO.PickUp
         public override void Time_Update(float time)
         {
             model.Scale1D += scaleSpeed * Ref.DeltaTimeSec;
-            if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
             {
                 scaleSpeed += scaleAccelerate;
                 Engine.ParticleHandler.AddExpandingParticleArea(Graphics.ParticleSystemType.WeaponSparks, model.position, 4f, 8, -0.5f);

@@ -21,7 +21,7 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
         //protected
         public int retreats = 0;
         
-        public SlotMashineWheelStrip attackwheels;
+        public SlotMachineWheelStrip attackwheels;
         public BattleEngine.AbsBattleSetup attacks;
         protected AbsGenericPlayer activePlayer;
 
@@ -86,8 +86,8 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
 
         public static void AttackWheelsSize(out int wheelsWidthCount, out float width)
         {
-            wheelsWidthCount = (int)((Engine.Screen.Height * 0.52f) / (SlotMashineWheel.Size.X + SlotMashineWheel.SpacingX));
-            width = wheelsWidthCount * (SlotMashineWheel.Size.X + SlotMashineWheel.SpacingX) - SlotMashineWheel.SpacingX;
+            wheelsWidthCount = (int)((Engine.Screen.Height * 0.52f) / (SlotMachineWheel.Size.X + SlotMachineWheel.SpacingX));
+            width = wheelsWidthCount * (SlotMachineWheel.Size.X + SlotMachineWheel.SpacingX) - SlotMachineWheel.SpacingX;
         }
 
         virtual protected Vector2 initStartPos(VectorRect screenArea)
@@ -216,7 +216,7 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
         {
             Graphics.Image hitIcon = new Graphics.Image(icon, pos, new Vector2(infoHeight), HudLib.AttackWheelLayer);
             Graphics.TextG hitPercText = new Graphics.TextG(LoadedFont.Regular, hitIcon.RightCenter, Vector2.One,
-                Graphics.Align.CenterHeight, TextLib.PercentText(percent), Color.Black, HudLib.AttackWheelLayer);
+                Graphics.Align.CenterHeight, TextLib.PercentTextWithSymbol(percent), Color.Black, HudLib.AttackWheelLayer);
             hitPercText.SetHeight(percInfoHeight);
 
             images.Add(hitIcon);

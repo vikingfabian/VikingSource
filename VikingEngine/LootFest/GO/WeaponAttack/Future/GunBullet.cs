@@ -61,7 +61,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.Future
 
         protected override VoxelModelName VoxelObjName
         {
-            get { return VoxelModelName.gunbullet; }
+            get { return VoxelModelName.NUM_NON; }
         }
 
         public override GameObjectType Type
@@ -88,7 +88,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.Future
 
         protected override VoxelModelName VoxelObjName
         {
-            get { return VoxelModelName.gunbullet; }
+            get { return VoxelModelName.NUM_NON; }
         }
 
         public override GameObjectType Type

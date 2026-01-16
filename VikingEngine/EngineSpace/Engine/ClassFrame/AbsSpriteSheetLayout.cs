@@ -14,6 +14,7 @@ namespace VikingEngine.Engine
         {
             const int WhiteAreaSize = 256;
             addTexture(SpriteName.WhiteArea, WhiteAreaSize, WhiteAreaSize, LoadedTexture.WhiteArea);
+            addTexture(SpriteName.TestTexture, WhiteAreaSize, WhiteAreaSize, LoadedTexture.TestTexture);
         }
     }
 

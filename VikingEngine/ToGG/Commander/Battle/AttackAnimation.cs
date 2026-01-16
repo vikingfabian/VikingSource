@@ -74,7 +74,7 @@ namespace VikingEngine.ToGG.Commander.Battle
             attackTypeTitle(ref pos);
             attackerAndSupportInfo(ref pos, dice[0]);
 
-            attackwheels = new SlotMashineWheelStrip(ref pos, dice, wheelsWidthCount);
+            attackwheels = new SlotMachineWheelStrip(ref pos, dice, wheelsWidthCount);
             //diceWheels(ref pos, dice);
 
             //listAllModifiers(ref pos);

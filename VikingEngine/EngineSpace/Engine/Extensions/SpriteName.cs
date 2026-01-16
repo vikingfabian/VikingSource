@@ -10,6 +10,7 @@ namespace VikingEngine
         NO_IMAGE = 0,
 
         WhiteArea,
+        TestTexture,
         WhiteArea_LFtiles,
         //WarsWaterTexture,
         WhiteCirkle,
@@ -205,6 +206,9 @@ namespace VikingEngine
 
         ButtonDisabledCross,
         TextureWaterMap,
+        WaterEdgeMask_coast,
+        WaterEdgeMask_ship,
+
         TextureHueSaturation,
         TextureDarknessGradient,
         ColorPickerCircle,
@@ -217,8 +221,9 @@ namespace VikingEngine
         LangButton_Japanese,
         LangButton_Frensh,
         LangButton_Chinese,
-
-
+        LangButton_Turkish,
+        LangButton_Italian,
+ LangButton_Korean,
         IconBuildArrow,
         IconBuildSelection,
         IconBuildAdd,
@@ -548,87 +553,6 @@ namespace VikingEngine
         IconBossKey,
         #endregion
 
-        #region Goods
-        //GoodsGlass,
-        //GoodsGlassBroken,
-        //GoodsGemRed,
-        //GoodsGemChrystal,
-        //GoodsGemDiamond,
-        //GoodsGemBlack,
-        //GoodsScroll,
-        //GoodsApple,
-        //GoodsAppleGrilled,
-        //GoodsWine,
-        //GoodsBread,
-        //GoodsSeed,
-        //GoodsGrapes,
-        //GoodsTusk,
-        //GoodsTeeth,
-        //GoodsHorn,
-        //GoodsNoseHorn,
-        //GoodsLeather,
-        //GoodsSkinn,
-        //GoodsLeatherScaled,
-        //GoodsFur,
-        //GoodsFeather,
-        //GoodsMeat,
-        //GoodsGrilledMeat,
-        //GoodsSlingstone,
-        //GoodsStoneGranit,
-        //GoodsStoneMarmour,
-        //GoodsStoneSand,
-        //GoodsStoneFlint,
-        //GoodsMetalIron,
-        //GoodsMetalBronze,
-        //GoodsMetalSilver,
-        //GoodsMetalGold,
-        //GoodsMetalMithril,
-        //GoodsStick,
-        //GoodsWood,
-        //GoodsBloodFingerHerb,
-        //GoodsFrogHeartHerb,
-        //GoodsFireStarHerb,
-        //GoodsBlueRoseHerb,
-
-        //GoodsBlackTooth,
-        //GoodsBladderStone,
-        //GoodsRib,
-        //GoodsPlastma,
-        //GoodsThread,
-        //GoodsCoal,
-        //GoodsInk,
-        //GoodsPoisionSting,
-        //GoodsHonny,
-        //GoodsVax,
-        //GoodsBlackEye,
-        //GoodsPaw,
-        //GoodsHolyWater,
-
-        //ItemGreenBottle,
-        //ItemBlueBottle,
-        //ItemRedBottle,
-        //ItemYellowBottle,
-        //ItemPurpleBottle,
-        //ItemGoldenBomb,
-        //ItemGoldenArrow,
-
-        //ItemCookie,
-        //ItemGoldenCookie,
-        //ItemCandle,
-        //ItemBeer,
-        //ItemOrcMead,
-        //ItemLuckyPaw,
-        //ItemCoinOrc,
-        //ItemCoinDwarf,
-        //ItemCoinSouth,
-        //ItemCoinElf,
-        //ItemCoinAncient,
-        //ItemCoinNordic,
-        //ItemWaterFull,
-        //ItemWaterEmpty,
-        //ItemRepairKit,
-
-        #endregion
 
         #region LF_Items
         WeaponDaggerIron,
@@ -650,7 +574,7 @@ namespace VikingEngine
         WeaponLongSwordMithril,
         WeaponPickAxe,
         WeaponSickle,
-        WeaponBuildHammer,
+        //WeaponBuildHammer,
 
         WeaponAxeBronze,
         WeaponAxeIron,
@@ -722,7 +646,42 @@ namespace VikingEngine
         PrevFrame,
         NextFrame,
         Undo,
-        
+
+        VoxelEditorColorCube,
+        VoxelEditorEmptyCube,
+        VoxelEditorMaterialCube,
+        VoxelEditorTint,
+        VoxelEditorBucket,
+        VoxelEditorSortTime,
+        VoxelEditorSortName,
+        VoxelEditorSortUp,
+        VoxelEditorSortDown,
+        VoxelEditorMoveFrameToEndL,
+        VoxelEditorMoveFrameL,
+        VoxelEditorMoveFrameToEndR,
+        VoxelEditorMoveFrameR,
+        VoxelEditorFrameSelected,
+        VoxelEditorFrame,
+        VoxelEditorAllFrames,
+        VoxelEditorFrameLocked,
+        VoxelEditorFrameToFirst,
+        VoxelEditorFramePrevious,
+        VoxelEditorFrameNext,
+        VoxelEditorFrameToLast,
+        VoxelEditorFrameAddEmpty,
+        VoxelEditorFrameAddCopy,
+        VoxelEditorFrameRemove,
+        VoxelEditorFrameRemoveAll,
+        VoxelEditorFlipLyingStanding,
+
+        EditorLayer,
+        EditorAllLayer,
+        EditorLayerAdd,
+        EditorLayerRemove,
+        EditorLayerMergeDown,
+
+
+
 
         #region Commander
 
@@ -2340,8 +2299,9 @@ namespace VikingEngine
         MenuIconMonitorFrame,
         MenuIconMonitorArrowsOut,
         MenuIconMonitorArrowsIn,
+        MenuIconPerformanceHot,
+        MenuIconPerformanceCold,
 
-        
         MousePointer,
         ClickCirkleEffect,
 
@@ -2432,6 +2392,7 @@ namespace VikingEngine
         WarsHudSecondaryButtonDisabled,
         WarsHudOutlineButton,
         WarsHudPopUpButton,
+        WarsHudGodPowerButton,
 
         WarsHudOptionSelected,
         WarsHudOptionNotSelected,
@@ -2459,8 +2420,12 @@ namespace VikingEngine
         WarsHudToolDownButton,
         WarsHudFlagBorder,
         WarsHudHeadBarBg,
+        WarsHudMinimapBorder,
         WarsHudToolUpButton,
         WarsHudTutorialBg,
+        WarsHudFlapMinimize,
+        WarsHudFlapMaximize,
+       
 
         WarsHudDropDownArrow,
         WarsHudYellowDot,
@@ -2483,6 +2448,23 @@ namespace VikingEngine
         WarsHudIconChildArrow,
         WarsHudIconExtraModes,
         WarsHudIconCollection,
+        WarsHudIconReturn,
+        WarsHudIconSave,
+        WarsHudIconPaste,
+        WarsHudIconCopy,
+        WarsHudIconCut,
+        WarsHudIconCrop,
+        WarsHudIconSaveProject,
+        WarsHudIconOpenProject,
+        WarsHudIconNext,
+        WarsHudIconPrevious,
+        WarsHudIconProgress,
+        WarsHudIconSpeed_Pause,
+        WarsHudIconSpeed_Low,
+        WarsHudIconSpeed_Medium,
+        WarsHudIconSpeed_High,
+
+
         DSS2MainMenu,
         SteamIcon,
 
@@ -2506,6 +2488,7 @@ namespace VikingEngine
         warsWorkerPromoHammer,
         warsWorkerPromoBox,
         warsWorkerPromoCannon,
+        UpdatePromo_SnowFlake,
 
         warsCheckYes,
         warsCheckNo,
@@ -2524,10 +2507,15 @@ namespace VikingEngine
         warsFolder_blue,
         warsFolder_cyan,
 
+
+        warsBuildCategorySearch,
         warsBuildCategoryMilitaryWall,
         warsBuildCategoryHouse,
+        warsBuildCategoryFarm,
+        warsBuildCategoryAdvanced,
         warsBuildCategoryDecorTree,
         warsBuildCategoryAutomation,
+        warsBuildCategoryUpgrades,
 
 
         warsArmyTag_Lightning,
@@ -2541,6 +2529,7 @@ namespace VikingEngine
         warsArmyTag_Retreat,
         warsArmyTag_Return,
         warsArmyTag_Anchor,
+        HudPinIcon,
 
 
         WarsRelationAlly,
@@ -2548,12 +2537,22 @@ namespace VikingEngine
         WarsRelationPeace,
         WarsRelationNeutral,
         WarsRelationTruce,
+        WarsRelationEnemy,
         WarsRelationWar,
         WarsRelationTotalWar,
+        WarsRelationServant,
         WarsRelationFlagOutline,
         WarsRelationFlag,
-        
+        WarsRelationArrowWar,
+        WarsRelationArrowAlly,
+
         WarsMapIcon,
+        WarsMapFilterFactions,
+        WarsMapFilterWorkers,
+        WarsMapFilterMinimap,
+        WarsMapFilterStrength,
+        WarsMapFilterTerrain,
+        WarsMapFilterResources,
         WarsTechnology_Unlocked,
         WarsTechnology_Locked,
         WarsGovernmentIcon,
@@ -2566,6 +2565,7 @@ namespace VikingEngine
         WarsWorkCollect,
         WarsWorkMine,
         WarsWorkFarm,
+        WarsWorkCasting,
         WarsWorkSmelting,
         //WarsMapIcon,
         //WarsFactionIcon,
@@ -2573,6 +2573,7 @@ namespace VikingEngine
         WarsFollowFactionNo,
         WarsBogIron,
         WarsBedIcon,
+        WarsGodPowerIcon,
 
         WarsUnitLevelMinimal,
         WarsUnitLevelBasic,
@@ -2591,19 +2592,23 @@ namespace VikingEngine
         WarsDiplomaticAddTime,
         WarsDiplomaticSub,
         WarsDiplomaticSubTime,
-
+        
         WarsArmy,
         WarsGuard,
         WarsGuardAdd,
         WarsWorker,
         WarsWorkerAdd,
         WarsWorkerSub,
+        WarsSettler,
+        WarsSettlerAdd,
         WarsServiceMen,
         WarsServiceMenTotal,
         WarsGuardPostIcon,
         WarsHammer,
         WarsHammerAdd,
         WarsHammerSub,
+        WarsConstructBuildingIcon,
+
         WarsIncreaseArrowUp,
         WarsDecreaseArrowDown,
 
@@ -2622,6 +2627,9 @@ namespace VikingEngine
         WarsUnitIcon_Viking,
         WarsUnitIcon_Greensoldier,
         WarsUnitIcon_Folkman,
+        WarsUnitIcon_Immigrant,
+        WarsUnitIcon_Immigrant_RemoveTime,
+
 
         WarsUnitIcon_Hammerknight,
         WarsUnitIcon_Javelin,
@@ -2646,6 +2654,7 @@ namespace VikingEngine
         WarsSpecializeTradition,
 
         WarsCityHall,
+        WarsBuild_TentHut,
         WarsBuild_WorkerHuts,
         WarsBuild_WorkerHutLarge,
         WarsBuild_Postal,
@@ -2660,7 +2669,7 @@ namespace VikingEngine
         WarsBuild_Barracks,
         WarsBuild_SoldierBarracks,
         WarsBuild_ArcherBarracks,
-        WarsBuild_WarmashineBarracks,
+        WarsBuild_WarmachineBarracks,
         WarsBuild_GunBarracks,
         WarsBuild_CannonBarracks,
 
@@ -2685,6 +2694,7 @@ namespace VikingEngine
         WarsBuild_PavementFlowers,
 
         WarsBuild_Logistics,
+        WarsBuild_ManorLord,
         WarsBuild_Smelter,
         WarsBuild_WoodCutter,
         WarsBuild_StoneCutter,
@@ -2733,6 +2743,15 @@ namespace VikingEngine
         WarsBuild_GuardOffice,
         WarsBuild_GuardOfficeLarge,
 
+        WarsBuild_Tent,
+        WarsBuild_ResearchCenter,
+        WarsBuild_Bookpress,
+        WarsBuild_TreeHard,
+        WarsBuild_TreeSoft,
+        WarsBuild_TreeApple,
+        WarsBuild_TreeBanana,
+        WarsBuild_TreeSeedlingHard,
+        WarsBuild_TreeSeedlingSoft,
 
         WarsFlagType_LongBanner,
         WarsFlagType_Banner,
@@ -2771,6 +2790,10 @@ namespace VikingEngine
         WarsResource_FoodAdd,
         WarsResource_FoodSub,
         WarsResource_FoodEmpty,
+        WarsIcon_Resources,
+        WarsIcon_WorkQueueTotal,
+        WarsIcon_WorkQueueIdle,
+        WarsIcon_WorkQueueActive,
         WarsResource_Wood,
         WarsResource_Fuel,
         WarsResource_Wheat,
@@ -2800,6 +2823,10 @@ namespace VikingEngine
 
         WarsResource_Wagon2Wheel,
         WarsResource_Wagon4Wheel,
+        WarsResource_WagonClosed,
+        WarsResource_WagonIron,
+        WarsResource_WagonSteel,
+
         WarsResource_ShortSword,
         WarsResource_HandSpear,
         WarsResource_Longsword,
@@ -2832,6 +2859,10 @@ namespace VikingEngine
         WarsResource_Bullets,
         WarsResource_GunPowder,
         WarsResource_Toolkit,
+        WarsResource_CopperCoin,
+        WarsResource_BonzeCoin,
+        WarsResource_SilverCoin,
+        WarsResource_ElfCoin,
 
         WarsHome,
         WarsDelivery,
@@ -2901,6 +2932,7 @@ namespace VikingEngine
         rtsRelationAllied,
         rtsRelationAtWar,
         rtsRelationNemesis,
+        
 
         rtsLoading0of8,
         rtsLoading1of8,

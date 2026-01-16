@@ -274,7 +274,7 @@
 //            //asynchUpdate_closestTarget();
 //        }
 
-//        public override bool defeatedBy(Faction attacker)
+//        public override bool defeatedBy(int attackerFaction)
 //        {
 //            return this.GetFaction() == attacker;
 //        }

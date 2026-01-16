@@ -14,6 +14,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         public StartBattleLab(MapBackgroundLoading loading)
             : base()
         {
+            DssRef.settings.playType = PlayStateType.BattleLab;
             lab = true;
             BattleLabStorage.Singleton = new BattleLabStorage();
 
@@ -32,8 +33,8 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         {
             lab = false;
             MapGenerateSettings generateSettings = new MapGenerateSettings();
-            generateSettings.customSeed = true;
-            generateSettings.seed = 1;
+            generateSettings.storage.customSeed = true;
+            generateSettings.storage.seed = 1;
             generateSettings.useGenerate = true;
             generateSettings.DigChainsCount_per100Tiles *= 0.2f;
             generateSettings.repeatBuildDigCount = 2;

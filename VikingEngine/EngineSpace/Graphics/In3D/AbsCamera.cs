@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using VikingEngine.LootFest.Map;
-using VikingEngine.LootFest;
+using System;
+using System.Collections.Generic;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.EngineSpace.Graphics.DeferredRendering;
 using VikingEngine.EngineSpace.Graphics.DeferredRendering.Lights;
+using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.EngineSpace.Maths;
+using VikingEngine.LootFest;
+using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.Graphics
 {
@@ -44,6 +46,22 @@ namespace VikingEngine.Graphics
                 lookTarget = value;
                 clearGoalTarget(); 
             }
+        }
+
+        public Vector2 LookTargetXZ
+        {
+            get { return VectorExt.V3XZtoV2(lookTarget); }
+            set
+            {
+                lookTarget.X = value.X;
+                lookTarget.Z = value.Y;
+                clearGoalTarget();
+            }
+        }
+
+        virtual public Vector3 Right()
+        { 
+            throw new NotImplementedException();
         }
 
         public void MoveLookTargetXZ(Vector2 move)
@@ -281,19 +299,17 @@ namespace VikingEngine.Graphics
             currentZoom = targetZoom;
         }
 
+        public float lookFocalOffset = 0.5f;
+
         virtual public void RecalculateMatrices()
         {
             Vector3 pos = Position;// + positionOffset;
             Vector3 target = LookTarget;// + positionOffset;
             float near = NearPlane;
             float far = FarPlane;
-            //if (Ref.draw is DeferredRenderer)
-            //{
-            //    pos *= DeferredRenderer.FLOATING_POINT_PRECISION_MODIFIER;
-            //    target *= DeferredRenderer.FLOATING_POINT_PRECISION_MODIFIER;
-            //    near *= DeferredRenderer.FLOATING_POINT_PRECISION_MODIFIER;
-            //    far *= DeferredRenderer.FLOATING_POINT_PRECISION_MODIFIER;
-            //}
+
+            lookFocalOffset = 0.1f;
+
             if (camShakeValue > 0)
             {
                 float addSideLength = Bound.MaxAbs((float)Math.Sin(camShakeValue * 2f) * camShakeValue * 0.004f, 0.6f);
@@ -305,10 +321,33 @@ namespace VikingEngine.Graphics
                 target.Z += dir.Y;
             }
 
+
+            Vector2 offsetDir = lib.AngleToV2(tilt.X + MathExt.TauOver4, lookFocalOffset);
             Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(angle), aspectRatio, near, far);
-            ViewMatrix = Matrix.CreateLookAt(pos, target, Vector3.Up);
+            ViewMatrix = Matrix.CreateLookAt(pos, VectorExt.AddXZ(target, offsetDir), Vector3.Up);
             ViewProjection = ViewMatrix * Projection;
             Frustum.Matrix = ViewProjection;
+        }
+
+        public StoredCameraPos GetStoredPosition()
+        {
+            return new StoredCameraPos()
+            { 
+                hasValue = true,
+                Position = Position,
+                lookTarget = lookTarget,
+                tilt = tilt,
+                targetZoom = targetZoom,
+            };
+        }
+
+        public void ResetToPosition(StoredCameraPos storedCameraPos)
+        {
+            this.position = storedCameraPos.Position;
+            lookTarget = storedCameraPos.lookTarget;
+            this.tilt = storedCameraPos.tilt;
+            this.targetZoom = storedCameraPos.targetZoom;
+            clearGoalTarget();
         }
 
         public Vector3 lookDir()

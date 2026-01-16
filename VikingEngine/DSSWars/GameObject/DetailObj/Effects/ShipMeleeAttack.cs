@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.ToGG.HeroQuest.Gadgets;
 using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -32,18 +33,29 @@ namespace VikingEngine.DSSWars.GameObject
 
             posDiff = ship.soldierData.modelScale * offset;
 
-            model = DssRef.models.ModelInstance(LootFest.VoxelModelName.wars_shipmelee, true, DssConst.Men_StandardModelScale * 2f, true);
+            model = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.wars_shipmelee, DssConst.Men_StandardModelScale * 2f);
             model.Frame = frame;
-            model.AddToRender(DrawGame.UnitDetailLayer);
+            //model.AddToRender(DrawGame.UnitDetailLayer);
+
+            Time_Update(0);
         }
 
         public override void Time_Update(float time_ms)
         {
-            WP.Rotation1DToQuaterion(model, ship.rotation.Radians);
-            model.position = model.Rotation.TranslateAlongAxis(
-                posDiff, ship.position);
+            var shipModel_sp = ship.model;
+            if (shipModel_sp != null)
+            {
+                //WP.Rotation1DToQuaterion(model, ship.rotation.Radians);
+                model.Rotation = shipModel_sp.model.Rotation;
+                model.position = model.Rotation.TranslateAlongAxis(
+                    posDiff, shipModel_sp.model.position);
 
-            if (!ship.inAttackAnimation() || ship.isDeleted)
+                if (!ship.inAttackAnimation() || ship.isDeleted)
+                {
+                    DeleteMe();
+                }
+            }
+            else
             {
                 DeleteMe();
             }
@@ -52,7 +64,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override void DeleteMe()
         {
             base.DeleteMe();
-            DssRef.models.recycle(ref model, true);
+            model.preRemoveFromDrawBatch();
             //model.DeleteMe();
         }
     }

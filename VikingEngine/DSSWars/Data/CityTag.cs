@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.Data
         {
             if (art == CityTagArt.None)
             {
-                return SpriteName.NO_IMAGE;
+                return NoBackSprite;
             }
             else if (art <= CityTagArt.ItemResourceTypeMithril)
             {
@@ -232,11 +232,11 @@ namespace VikingEngine.DSSWars.Data
                     case CityTagArt.BuildArmory: return SpriteName.WarsBuild_Armory;
 
                     case CityTagArt.BuildSoldierBarracks: return SpriteName.WarsBuild_Barracks;
-                    case CityTagArt.BuildArcherBarracks: return SpriteName.MissingImage;
-                    case CityTagArt.BuildWarmashineBarracks: return SpriteName.MissingImage;
-                    case CityTagArt.BuildGunBarracks: return SpriteName.MissingImage;
-                    case CityTagArt.BuildCannonBarracks: return SpriteName.MissingImage;
-                    case CityTagArt.BuildKnightsBarracks: return SpriteName.MissingImage;
+                    case CityTagArt.BuildArcherBarracks: return SpriteName.WarsBuild_ArcherBarracks;
+                    case CityTagArt.BuildWarmachineBarracks: return SpriteName.WarsBuild_WarmachineBarracks;
+                    case CityTagArt.BuildGunBarracks: return SpriteName.WarsBuild_GunBarracks;
+                    case CityTagArt.BuildCannonBarracks: return SpriteName.WarsBuild_CannonBarracks;
+                    case CityTagArt.BuildKnightsBarracks: return SpriteName.WarsBuild_KnightBarrack;
 
                     case CityTagArt.BuildWoodCutter: return SpriteName.WarsBuild_WoodCutter;
                     case CityTagArt.BuildStoneCutter: return SpriteName.WarsBuild_StoneCutter;
@@ -286,7 +286,7 @@ namespace VikingEngine.DSSWars.Data
                     case CityTagArt.IconMovebox: return SpriteName.WarsWorkMove;
                     case CityTagArt.IconHandCollect: return SpriteName.WarsWorkCollect;
                     case CityTagArt.IconMine: return SpriteName.WarsWorkMine;
-                    case CityTagArt.IconSmelt: return SpriteName.WarsWorkSmelting;
+                    case CityTagArt.IconSmelt: return SpriteName.WarsWorkCasting;
                     case CityTagArt.IconDig: return SpriteName.WarsWorkFarm;
                     case CityTagArt.IconBed: return SpriteName.WarsBedIcon;
                     case CityTagArt.IconMap: return SpriteName.WarsMapIcon;
@@ -324,7 +324,7 @@ namespace VikingEngine.DSSWars.Data
         {
             if (art == ArmyTagArt.None)
             {
-                return SpriteName.NO_IMAGE;
+                return NoBackSprite;
             }
             else if (art <= ArmyTagArt.UnitType_ManIronCannon)
             {
@@ -833,7 +833,7 @@ namespace VikingEngine.DSSWars.Data
 
         BuildSoldierBarracks,
         BuildArcherBarracks,
-        BuildWarmashineBarracks,
+        BuildWarmachineBarracks,
         BuildGunBarracks,
         BuildCannonBarracks,
         BuildKnightsBarracks,

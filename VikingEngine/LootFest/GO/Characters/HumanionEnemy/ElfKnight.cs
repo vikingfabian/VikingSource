@@ -10,7 +10,7 @@ namespace VikingEngine.LootFest.GO.Characters.HumanionEnemy
     class ElfKnight : AbsElf
      {
         public ElfKnight(GoArgs args)
-            : this(args, VoxelModelName.elf_knight, ElfScaleRange, 0.22f, VoxelModelName.elf_knight_shield, 2.6f,
+            : this(args, VoxelModelName.NUM_NON, ElfScaleRange, 0.22f, VoxelModelName.NUM_NON, 2.6f,
                 new Effects.BouncingBlockColors(
                     Data.MaterialType.gray_75,
                     Data.MaterialType.gray_85))
@@ -26,7 +26,7 @@ namespace VikingEngine.LootFest.GO.Characters.HumanionEnemy
             hasHandWeapon = true;
 
             handWeapon = new Gadgets.HumanoidEnemyHandWeapon(
-                VoxelModelName.elf_long_sword1,
+                VoxelModelName.NUM_NON,
                 new HandWeaponAttackSettings(
                     GameObjectType.ElfLongSword, 0.8f, weaponScale,
                     new Vector3(

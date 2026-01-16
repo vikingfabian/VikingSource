@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Input;
 
@@ -18,6 +18,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         {
             initGameState();
             onGameStart();
+            DssRef.stats.start_battle_lab.addOne_ifUnset();
         }
 
         public void initGameState()
@@ -31,11 +32,12 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             new GameTime();
             HudLib.Init();
 
+            prePlayerInit();
             initPlayers();
-            baseInit();
+            postPlayerInit();
             initScenario();
 
-            LocalHost().gameControls.mapControls.battleModeCamBound();
+            LocalHost().gameControls.map.battleModeCamBound();
         }
 
         virtual protected void initPlayers()
@@ -48,18 +50,18 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 factionsCounter.sel.initDiplomacy(DssRef.world);
                 if (factionsCounter.sel.factiontype == FactionType.DarkLord)
                 {
-                    DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(factionsCounter.sel);
+                    DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(factionsCounter.sel, true);
                 }
                 else
                 {
-                    new Players.AiPlayer(factionsCounter.sel);
+                    new Players.AiPlayer(factionsCounter.sel, true);
                 }
             }
 
             int playerCount = 1;
 
             localPlayers = new List<Players.LocalPlayer>(playerCount);
-            Engine.Screen.SetupSplitScreen(playerCount, !DssRef.storage.verticalScreenSplit);
+            Engine.Screen.SetupSplitScreen(playerCount);
             for (var i = 0; i < playerCount; ++i)
             {
                 var startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
@@ -106,16 +108,12 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
                 new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62, System.Threading.ThreadPriority.Normal);
 
-                //new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63);
-                //new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61);
-
-
                 if (localPlayers.Count > 1)
                 {
                     Ref.SetGameSpeed(DssRef.storage.multiplayerGameSpeed);
                 }
 
-                initPathFindingThreads(1);
+                initPathFindingThreads();
             }
 
             isReady = true;
@@ -124,6 +122,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
+            //MayChangeDetail_OnNewUpdate();
             updateStepFrames();
             Sound.SoundStackManager.Update();
 
@@ -134,6 +133,10 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
             if (Ref.steam.inOverlay)
             {
+                if (!menuSystem.IsOpen())
+                {
+                    menuSystem.pauseMenu();
+                }
                 return;
             }
 
@@ -152,7 +155,10 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                     var factions = DssRef.world.factions.counter();
                     while (factions.Next())
                     {
-                        factions.sel.update();
+                        if (factions.sel.player != null)
+                        {
+                            factions.sel.update();
+                        }
 
                         //if (DssRef.time.oneSecond)
                         //{
@@ -183,7 +189,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 overviewMap.bRefreshTimer = true;
             }
 
-            detailMap.update();
+            //detailMap.update();
             overviewMap.update();
 
             if (localPlayers != null)
@@ -253,6 +259,11 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 }
             }
             return exitThreads;
+        }
+
+        public override int PathThreadCount()
+        {
+            return 1;
         }
     }
 }

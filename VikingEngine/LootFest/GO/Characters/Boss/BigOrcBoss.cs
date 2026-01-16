@@ -20,13 +20,13 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
           //  this.subLevel = subLevel;
 
             shieldWalkDist = 10;
-            createImage(VoxelModelName.bigorc, Scale, new Graphics.AnimationsSettings(6, 1.2f, 2));
+            createImage(VoxelModelName.NUM_NON, Scale, new Graphics.AnimationsSettings(6, 1.2f, 2));
             CollisionAndDefaultBound = LootFest.ObjSingleBound.QuickCylinderBoundFromFeetPos(Scale * 0.3f, Scale * 0.45f, 0f);
 
             
 
             handWeapon = new Gadgets.HumanoidEnemyHandWeapon(
-               VoxelModelName.bigorc_club,
+               VoxelModelName.NUM_NON,
                new HandWeaponAttackSettings(
                    GameObjectType.BigOrcBossAttack, 0.6f, 0.4f,
                     new Vector3(

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.Network;
 
@@ -86,6 +87,8 @@ namespace VikingEngine.HUD
 
         public NineSplitAreaTexture(SpriteName baseTexture, int textureEdgeInsert, int cornerTexSize, VectorRect area,
             float edgeScale, bool useTextureAsEdgeSz, ImageLayers layer, bool addCenterImage, bool addToRender = true)
+            :this(new NineSplitSettings(baseTexture, textureEdgeInsert, cornerTexSize, edgeScale, useTextureAsEdgeSz, addCenterImage),
+                 area, layer, addToRender)
         { }
 
         public NineSplitAreaTexture(NineSplitSettings settings, VectorRect area, ImageLayers layer, bool addToRender = true)
@@ -195,7 +198,12 @@ namespace VikingEngine.HUD
 
             images.Add(swImg); images.Add(sImg); images.Add(seImg);
 
-            
+#if DEBUG
+            for (int i = 0; i < images.Count; i++)
+            {
+                images[i].DebugName = "Ninesplit tex {" + i.ToString() + "}";
+            }
+#endif
         }
 
         public void addCenterColor(float distanceFromEdge, Color col)
@@ -210,17 +218,23 @@ namespace VikingEngine.HUD
 
         public void DeleteMe()
         {
-            foreach (var m in images)
+            if (images != null)
             {
-                m.DeleteMe();
+                foreach (var m in images)
+                {
+                    m.DeleteMe();
+                }
             }
         }
 
         public void SetVisible(bool visible)
         {
-            foreach (var m in images)
+            if (images != null)
             {
-                m.Visible = visible;
+                foreach (var m in images)
+                {
+                    m.Visible = visible;
+                }
             }
         }
 

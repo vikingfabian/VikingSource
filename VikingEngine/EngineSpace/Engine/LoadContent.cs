@@ -44,18 +44,22 @@ namespace VikingEngine.Engine
             return retrievedColor;
         }
 
-        public static void Init(ContentManager inContent)
+        public static void Init(ContentManager contentManager)
+        { 
+            Content = contentManager;
+        }
+
+        public static void LoadConsoleFont()
+        { 
+            var console = Content.Load<SpriteFont>("Font\\Console");
+            Fonts[(int)LoadedFont.Console] = console;
+        }
+
+        public static void BaseContentLoad()
         {
-            Content = inContent;
             
             //Load fonts
-            Fonts = new SpriteFont[(int)LoadedFont.NUM_NON];
-
-            //regular = Content.Load<SpriteFont>("Font\\Regular");
-            //bold = Content.Load<SpriteFont>("Font\\Bold");
-            //console = Content.Load<SpriteFont>("Font\\Console");
-
-            
+            //Fonts = new SpriteFont[(int)LoadedFont.NUM_NON];
 
             setFontLanguage(FontLanguage.Western);
 
@@ -65,6 +69,7 @@ namespace VikingEngine.Engine
             Textures[0] = Content.Load<Texture2D>(TexturePath + "noimage");
             Textures[(int)LoadedTexture.TargetColor0] = Content.Load<Texture2D>(TexturePath + "noimage");
             Textures[(int)LoadedTexture.WhiteArea] = Content.Load<Texture2D>(TexturePath + "whitearea256");
+            Textures[(int)LoadedTexture.TestTexture] = Content.Load<Texture2D>(TexturePath + "test_texture");
             effectList[(int)LoadedEffect.ParticleEffect] = LoadShader(LoadedEffect.ParticleEffect.ToString());
             BaseContentLoaded = true;
         }
@@ -103,6 +108,16 @@ namespace VikingEngine.Engine
                         Fonts[(int)LoadedFont.Regular] = japanese_regular;
                         Fonts[(int)LoadedFont.Bold] = japanese_bold;
                         Fonts[(int)LoadedFont.Console] = japanese_console;
+                        break;
+
+                    case FontLanguage.Korean:
+                        var korean_regular = Content.Load<SpriteFont>("Font\\KoreanRegular");
+                        var korean_bold = Content.Load<SpriteFont>("Font\\KoreanBold");
+                        var korean_console = Content.Load<SpriteFont>("Font\\KoreanConsole");
+
+                        Fonts[(int)LoadedFont.Regular] = korean_regular;
+                        Fonts[(int)LoadedFont.Bold] = korean_bold;
+                        Fonts[(int)LoadedFont.Console] = korean_console;
                         break;
                 }
             }
@@ -194,7 +209,10 @@ namespace VikingEngine.Engine
 
         public static void LoadSound(LoadedSound sound, string dir)
         {
-            SoundEffects[(int)sound] = Content.Load<SoundEffect>(dir);
+            if (VikingEngine.Sound.SoundManager.SoundInitializeSuccess)
+            {
+                SoundEffects[(int)sound] = Content.Load<SoundEffect>(dir);
+            }
         }
         
         public static void SetTextureFromTarget(Texture2D texture, LoadedTexture name)
@@ -275,10 +293,11 @@ namespace VikingEngine
         TargetColor0,
         ptrace,
         WhiteArea,
+        TestTexture,
         particle3,
         ccg_piece_particle,
         realistic_particle,
-
+        waterEdge,
 
         BirdJoustBG,
         cmdTiles,
@@ -292,5 +311,6 @@ namespace VikingEngine
         Western,
         Chinese,
         Japanese,
+        Korean,
     }
 }

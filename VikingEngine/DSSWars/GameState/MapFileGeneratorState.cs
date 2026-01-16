@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.PJ;
@@ -52,46 +54,60 @@ namespace VikingEngine.DSSWars
 
         void loadThread()
         {
-            if (StartupSettings.SaveLoadSpecificMap.HasValue)
+            Task.Factory.StartNew(async () =>
             {
-                loadingSz = StartupSettings.SaveLoadSpecificMap.Value;
-                generateLoopUntilSucess(loadingSz, 1);
-            }
-            else
-            {
-                MapSize startSize = 0;
-                for (loadingSz = startSize; loadingSz < MapSize.NUM; ++loadingSz)
+                try
                 {
-                    for (loadingNumber = 1; loadingNumber <= MapCountPerSize; ++loadingNumber)
+                    if (StartupSettings.SaveLoadSpecificMap.HasValue)
                     {
-                        generateLoopUntilSucess(loadingSz, loadingNumber);
-                    }
-                }
-            }
-            new Timer.TimedAction0ArgTrigger(()=> 
-            {
-                new ExitGamePlay();
-            }, 5000);
-            complete = true;
-
-
-            void generateLoopUntilSucess(MapSize size, int number)
-            {
-                while (true)
-                {
-                    bool success = new GenerateMap().Generate(true, new Data.WorldMetaData(Ref.rnd.Ushort(), loadingSz, loadingNumber), new MapGenerateSettings());
-
-                    if (success)
-                    {
-                        return;
+                        loadingSz = StartupSettings.SaveLoadSpecificMap.Value;
+                        generateLoopUntilSucess(loadingSz, 1);
                     }
                     else
                     {
-                        failCount++;
+                        MapSize startSize = 0;
+                        for (loadingSz = startSize; loadingSz < MapSize.NUM; ++loadingSz)
+                        {
+                            for (loadingNumber = 1; loadingNumber <= MapCountPerSize; ++loadingNumber)
+                            {
+                                generateLoopUntilSucess(loadingSz, loadingNumber);
+                            }
+                        }
                     }
-                }              
+                    new Timer.TimedAction0ArgTrigger(() =>
+                    {
+                        new ExitToLobby(false);
+                    }, 5000);
+                    complete = true;
+
+
+                    async Task generateLoopUntilSucess(MapSize size, int number)
+                    {
+                        while (true)
+                        {
+                            List<Task> tasks = new List<Task>();
+                            bool success = new GenerateMap().Generate(true, new Data.WorldMetaData(Ref.rnd.Ushort(), loadingSz, loadingNumber), new MapGenerateSettings(), tasks).Result;
+
+                            await Task.WhenAll(tasks);
+
+                            if (success)
+                            {
+                                return;
+                            }
+                            else
+                            {
+                                failCount++;
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
                 
-            }
+            });
         }
 
         

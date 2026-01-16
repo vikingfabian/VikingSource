@@ -30,7 +30,7 @@ namespace VikingEngine.ToGG
             toggRef.UnitsBlockLOS = mode == GameMode.Commander;
             HudLib.Init();
             ToggEngine.BattleEngine.DiceModel.Init();
-            SlotMashineWheel.Init();
+            SlotMachineWheel.Init();
             new ToggEngine.Camera();
             
 

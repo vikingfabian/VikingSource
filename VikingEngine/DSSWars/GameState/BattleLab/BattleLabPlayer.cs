@@ -5,9 +5,9 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Conscript;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
@@ -22,19 +22,24 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
         BattleSetupManager setupManager;
         public BattleLabPlayer(Faction faction)
-            : base(faction)
+            : base(faction, true)
         {
             setupManager = new BattleSetupManager();
         }
 
         public override bool updateObjectDisplay()
         {
-            hud.objMenu.createMenu(this);
-            RichBoxContent content = new RichBoxContent();
-            var result = setupManager.updateObjectDisplay(content, hud.objMenu.menu);
-            hud.objMenu.refresh(this, content);
+            if (hud.maximizedHud)
+            {
 
-            return result;
+                hud.objMenu.createMenu(this);
+                RichBoxContent content = new RichBoxContent();
+                var result = setupManager.updateObjectDisplay(content, hud.objMenu.menu);
+                hud.objMenu.refresh(this, content);
+
+                return result;
+            }
+            return false;
         }
 
 

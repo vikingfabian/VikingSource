@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Players.Command
             {
                 ref var defence = ref city.defenceBuildings.array[defenceIndex];
 
-                defence.soldierGroupId = group.parentArrayIndex;
+                defence.soldierGroupId = group.myIndex;
             }
         }
 
@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars.Players.Command
 
             if (defence.CheckIsEmpty(city)) //.soldierGroupId == DefenceStatus.NoSoldiers)
             {
-                defence.soldierGroupId = group.parentArrayIndex;
+                defence.soldierGroupId = group.myIndex;
                 return true;
             }
 
@@ -59,23 +59,17 @@ namespace VikingEngine.DSSWars.Players.Command
 
         public static void ExitPost(GuardGroup group)
         {
-            var city = group.army.GetCity();
-            int defenceIndex = city.defenceIxFromPosId(group.assignedToPost_IdAndPosition);
-            if (city.defenceBuildings.InBound(defenceIndex))
+            if (group.army.TryGetTarget(out var tArmy))
             {
-                ref var defence = ref city.defenceBuildings.array[defenceIndex];
-                defence.soldierGroupId = DefenceStatus.NoSoldiers;
+                var city = tArmy.GetCity();
+                int defenceIndex = city.defenceIxFromPosId(group.assignedToPost_IdAndPosition);
+                if (city.defenceBuildings.InBound(defenceIndex))
+                {
+                    ref var defence = ref city.defenceBuildings.array[defenceIndex];
+                    defence.soldierGroupId = DefenceStatus.NoSoldiers;
+                }
             }
         }
-
-        //void init(SoldierGroup group, City city)
-        //{
-
-        //    var defence = city.defenceBuildings.Array[id];
-        //    defence.soldierGroupId = group.parentArrayIndex;
-        //    city.defenceBuildings[id] = defence;
-        //}
-
 
         public override void begin(SoldierGroup group)
         {

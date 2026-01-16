@@ -1,0 +1,14 @@
+﻿
+Grid med gräs, vatten, berg och gruvor
+kortlek med olika pjäser, placera ut, vänta på en timer och sen placera nästa
+
+surround-> döda allt inuti, alla blir level up armor
+square -> skapa 2 by 2 grid, alla gör attack runt sig
+damen -> hoppar över motståndare vid aktivering
+gruva, placera på den för att ta en guld
+scroller -> flyttar alla tiles, behåll guld
+rook -> dödar alla i en linje
+spikes -> skadar tillbaka vid attack
+svinstia -> placerar en ny gris efter varje aktivering
+pusher -> knuffar alla figurer ifrån sig
+pawn -> bara en pjäs

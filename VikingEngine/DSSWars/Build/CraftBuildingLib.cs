@@ -11,44 +11,116 @@ namespace VikingEngine.DSSWars.Build
     {
         public const int CraftSmith_IronUse = 10;
 
-        public static readonly ItemResourceType[] SmelterCraftTypes = {
-            ItemResourceType.Copper, ItemResourceType.Tin, ItemResourceType.Lead, ItemResourceType.Iron_G,
-            ItemResourceType.BloomeryIron, ItemResourceType.Silver, ItemResourceType.Mithril };
+        public static readonly CraftBlueprint TreeSoft = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.TreeSoft,
+            1,
+            new UseResource[] { },
+            XP.WorkExperienceType.Farm
+);
 
-        public static readonly ItemResourceType[] SmithCraftTypes = {
-            ItemResourceType.ShortSword, ItemResourceType.Sword, ItemResourceType.LongSword,
-            ItemResourceType.HandSpear,
-            ItemResourceType.Warhammer, ItemResourceType.TwoHandSword, ItemResourceType.KnightsLance,
-            ItemResourceType.IronArmor,
-        };
+        public static readonly CraftBlueprint TreeHard = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.TreeHard,
+            1,
+            new UseResource[] { },
+            XP.WorkExperienceType.Farm
+        );
 
-        public static readonly ItemResourceType[] GunmakerCraftTypes = {
-            ItemResourceType.HandCannon, ItemResourceType.HandCulverin,
-            ItemResourceType.Rifle, ItemResourceType.Blunderbuss,
-            ItemResourceType.SiegeCannonBronze, ItemResourceType.ManCannonBronze,
-            ItemResourceType.SiegeCannonIron, ItemResourceType.ManCannonIron,
-        };
+        public static readonly CraftBlueprint StonesMine = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.StonesMine,
+            1,
+            new UseResource[] { },
+            XP.WorkExperienceType.Farm
+        );
 
-        public static readonly ItemResourceType[] ArmoryCraftTypes = {
-            ItemResourceType.PaddedArmor, ItemResourceType.HeavyPaddedArmor, ItemResourceType.BronzeArmor, ItemResourceType.IronArmor, ItemResourceType.HeavyIronArmor, ItemResourceType.LightPlateArmor, ItemResourceType.FullPlateArmor, ItemResourceType.MithrilArmor
-        };
+        public static readonly CraftBlueprint CoalMine = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.CoalMine,
+            1,
+            new UseResource[] { },
+            XP.WorkExperienceType.Farm
+        );
 
-        public static readonly ItemResourceType[] FoundryCraftTypes = {
-            ItemResourceType.Bronze, ItemResourceType.CastIron, ItemResourceType.BloomeryIron, ItemResourceType.Mithril };
+        public static readonly CraftBlueprint StoneBlockMine = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.StoneBlockMine,
+            1,
+            new UseResource[] { },
+            XP.WorkExperienceType.Farm
+        );
 
-        public static readonly ItemResourceType[] BenchCraftTypes = {
-            ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear };
+        public static readonly CraftBlueprint IronOreMine = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.IronOreMine,
+            1,
+            new UseResource[] { },
+            XP.WorkExperienceType.Farm
+        );
 
-        public static readonly ItemResourceType[] CarpenterCraftTypes = {
-            ItemResourceType.Palisade,
-            ItemResourceType.SharpStick, ItemResourceType.Bow, ItemResourceType.LongBow, ItemResourceType.Crossbow,
-            ItemResourceType.MithrilBow,
-            ItemResourceType.Ballista, ItemResourceType.Manuballista, ItemResourceType.Catapult };
+        public static readonly CraftBlueprint TinOreMine = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.TinOreMine,
+            1,
+            new UseResource[] { },
+            XP.WorkExperienceType.Farm
+        );
 
-        public static readonly ItemResourceType[] ChemistCraftTypes = {
-            ItemResourceType.BlackPowder, ItemResourceType.GunPowder };
+        public static readonly CraftBlueprint CopperOreMine = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.CopperOreMine,
+            1,
+            new UseResource[] { },
+            XP.WorkExperienceType.Farm
+        );
+
+        public static readonly CraftBlueprint SilverOreMine = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.SilverOreMine,
+            1,
+            new UseResource[] { },
+            XP.WorkExperienceType.Farm
+        );
+
+        public static readonly CraftBlueprint GoldOreMine = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.GoldOreMine,
+            1,
+            new UseResource[] { },
+            XP.WorkExperienceType.Farm
+        );
+
+        public static readonly CraftBlueprint LeadOreMine = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.LeadOreMine,
+            1,
+            new UseResource[] { },
+            XP.WorkExperienceType.Farm
+        );
+
+        public static readonly CraftBlueprint MithrilMine = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.MithrilMine,
+            1,
+            new UseResource[] { },
+            XP.WorkExperienceType.Farm
+        );
+
+        public static readonly CraftBlueprint SulfurMine = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.SulfurMine,
+            1,
+            new UseResource[] { },
+            XP.WorkExperienceType.Farm
+        );
+
+        
 
 
+
+        //public static readonly ItemResourceType[] CoinMinterCraftTypes = {
+        //     ItemResourceType.CoolingFluid, ItemResourceType.BlackPowder, ItemResourceType.GunPowder };
 
         public static readonly CraftBlueprint CraftLogistics = new CraftBlueprint(
             CraftResultType.Building,
@@ -77,14 +149,26 @@ namespace VikingEngine.DSSWars.Build
             CraftRequirement.Logistics2
         );
 
+        public static readonly CraftBlueprint WorkerTent = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.WorkerTent,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Wood_Group, 100),
+                new UseResource(ItemResourceType.SkinLinen_Group, 100),
+            },
+            XP.WorkExperienceType.Transport
+        );
+
         public static readonly CraftBlueprint WorkerHut = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.WorkerHut,
             1,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Wood_Group, 200),
-        new UseResource(ItemResourceType.Stone_G, 40)
+                new UseResource(ItemResourceType.Wood_Group, 200),
+                new UseResource(ItemResourceType.Stone_G, 40)
             },
             XP.WorkExperienceType.HouseBuilding
         );
@@ -95,8 +179,21 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-        new UseResource(ItemResourceType.Wood_Group, 300),
-        new UseResource(ItemResourceType.Stone_G, 60)
+            new UseResource(ItemResourceType.Wood_Group, 300),
+            new UseResource(ItemResourceType.Stone_G, 60)
+           },
+           XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
+       );
+
+        public static readonly CraftBlueprint ManorLord = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.ManorLord,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Wood_Group, 60),
+                new UseResource(ItemResourceType.Stone_G, 60),
+                new UseResource(ItemResourceType.Iron_G, 10)
            },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
        );
@@ -291,9 +388,9 @@ namespace VikingEngine.DSSWars.Build
                     XP.WorkExperienceType.HouseBuilding
                 );
 
-        public static readonly CraftBlueprint WarmashineBarracks = new CraftBlueprint(
+        public static readonly CraftBlueprint WarmachineBarracks = new CraftBlueprint(
                     CraftResultType.Building,
-                    (int)Build.BuildAndExpandType.WarmashineBarracks,
+                    (int)Build.BuildAndExpandType.WarmachineBarracks,
                     1,
                     new UseResource[]
                     {
@@ -349,9 +446,9 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-        new UseResource(ItemResourceType.Water_G, 4),
-        new UseResource(ItemResourceType.Wood_Group, 20),
-        new UseResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount)
+                new UseResource(ItemResourceType.Water_G, 8),
+                new UseResource(ItemResourceType.Wood_Group, 20),
+                new UseResource(ItemResourceType.RawFood_Group, DssConst.AnimalFoodAmount)
            }, XP.WorkExperienceType.AnimalCare
        );
 
@@ -361,9 +458,9 @@ namespace VikingEngine.DSSWars.Build
             1,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.Water_G, 2),
-        new UseResource(ItemResourceType.Wood_Group, 20),
-        new UseResource(ItemResourceType.RawFood_Group, DssConst.WheatFoodAmount)
+                new UseResource(ItemResourceType.Water_G, 4),
+                new UseResource(ItemResourceType.Wood_Group, 20),
+                new UseResource(ItemResourceType.RawFood_Group, DssConst.AnimalFoodAmount)
             }, XP.WorkExperienceType.AnimalCare
         );
 
@@ -372,12 +469,24 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.RawFood_Group, 4),
                 new UseResource(ItemResourceType.Water_G, 2),
             };
+       
 
         public static readonly CraftBlueprint WheatFarm = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.WheatFarm,
             1,
             FarmResources, XP.WorkExperienceType.Farm
+        );
+
+        public static readonly CraftBlueprint WheatFarm_Gold = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.WheatFarm,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Gold, DssConst.FoodGoldValue_BlackMarket * 3),
+                new UseResource(ItemResourceType.Water_G, 2),
+            }, XP.WorkExperienceType.Farm
         );
 
         public static readonly CraftBlueprint WheatFarmUpgrade = new CraftBlueprint(
@@ -392,7 +501,11 @@ namespace VikingEngine.DSSWars.Build
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.LinenFarm,
             1,
-            FarmResources, XP.WorkExperienceType.Farm
+            [
+                new UseResource(ItemResourceType.SkinLinen_Group, 4),
+                new UseResource(ItemResourceType.Water_G, 2)
+            ], 
+             XP.WorkExperienceType.Farm
         );
 
         public static readonly CraftBlueprint LinenFarmUpgrade = new CraftBlueprint(
@@ -407,7 +520,11 @@ namespace VikingEngine.DSSWars.Build
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.HempFarm,
             1,
-            FarmResources, XP.WorkExperienceType.Farm
+            [
+                new UseResource(ItemResourceType.SkinLinen_Group, 2),
+                new UseResource(ItemResourceType.Fuel_G, 2),
+                new UseResource(ItemResourceType.Water_G, 2)
+            ], XP.WorkExperienceType.Farm
         );
 
         public static readonly CraftBlueprint HempFarmUpgrade = new CraftBlueprint(
@@ -422,7 +539,8 @@ namespace VikingEngine.DSSWars.Build
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.RapeSeedFarm,
             1,
-            FarmResources, XP.WorkExperienceType.Farm
+            [new UseResource(ItemResourceType.Fuel_G, 4), new UseResource(ItemResourceType.Water_G, 2)],
+            XP.WorkExperienceType.Farm
         );
         public static readonly CraftBlueprint RapeseedFarmUpgrade = new CraftBlueprint(
             CraftResultType.Building,
@@ -431,6 +549,50 @@ namespace VikingEngine.DSSWars.Build
             XP.WorkExperienceType.Farm, XP.ExperienceLevel.Practitioner_2
         )
         { upgradeFrom = RapeseedFarm };
+
+
+        public static readonly CraftBlueprint TreeSeedlingSoft = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.TreeSeedlingSoft,
+            1,
+            new UseResource[] 
+            {
+                new UseResource(ItemResourceType.Wood_Group, 2),
+                new UseResource(ItemResourceType.Water_G, 20),
+            }, XP.WorkExperienceType.Farm
+        );
+
+        public static readonly CraftBlueprint TreeSeedlingHard = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.TreeSeedlingHard,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Wood_Group, 2),
+                new UseResource(ItemResourceType.Water_G, 50),
+            }, XP.WorkExperienceType.Farm
+        );
+
+        public static readonly CraftBlueprint Orchard = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.OrchardApple,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Food_G, 6),
+                new UseResource(ItemResourceType.Water_G, 30),
+            }, XP.WorkExperienceType.Farm
+        );
+        public static readonly CraftBlueprint Orchard_Gold = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.OrchardApple,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Gold, DssConst.FoodGoldValue_BlackMarket * 6),
+                new UseResource(ItemResourceType.Water_G, 30),
+            }, XP.WorkExperienceType.Farm
+        );
 
         public static readonly CraftBlueprint Smith = new CraftBlueprint(
             CraftResultType.Building,
@@ -450,8 +612,8 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-               new UseResource(ItemResourceType.Wood_Group, 10),
-               new UseResource(ItemResourceType.Stone_G, 10),
+               new UseResource(ItemResourceType.Wood_Group, 20),
+               //new UseResource(ItemResourceType.Stone_G, 10),
                new UseResource(ItemResourceType.Iron_G, 5),
            },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
@@ -476,7 +638,7 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-               new UseResource(ItemResourceType.Wood_Group, 10),
+               new UseResource(ItemResourceType.Wood_Group, 20),
                new UseResource(ItemResourceType.Iron_G, 2),
            },
             XP.WorkExperienceType.HouseBuilding
@@ -765,7 +927,8 @@ namespace VikingEngine.DSSWars.Build
           1,
           new UseResource[]
           {
-               new UseResource(ItemResourceType.Gold, 1),
+               new UseResource(ItemResourceType.Wood_Group, 25),
+                new UseResource(ItemResourceType.Stone_G, 25),
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
         );
@@ -800,8 +963,8 @@ namespace VikingEngine.DSSWars.Build
           1,
          new UseResource[]
           {
-               new UseResource(ItemResourceType.Wood_Group, 80),
-                new UseResource(ItemResourceType.Stone_G, 20),
+               new UseResource(ItemResourceType.Wood_Group, 100),
+                new UseResource(ItemResourceType.Stone_G, 30),
 
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
@@ -823,8 +986,8 @@ namespace VikingEngine.DSSWars.Build
           1,
           new UseResource[]
           {
-              new UseResource(ItemResourceType.Wood_Group, 20),
-                new UseResource(ItemResourceType.Stone_G, 100)
+              new UseResource(ItemResourceType.Wood_Group, 40),
+                new UseResource(ItemResourceType.Stone_G, 120)
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );
@@ -834,8 +997,8 @@ namespace VikingEngine.DSSWars.Build
           1,
            new UseResource[]
           {
-              new UseResource(ItemResourceType.Wood_Group, 20),
-                new UseResource(ItemResourceType.Stone_G, 100)
+              new UseResource(ItemResourceType.Wood_Group, 40),
+                new UseResource(ItemResourceType.Stone_G, 120)
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );
@@ -845,8 +1008,8 @@ namespace VikingEngine.DSSWars.Build
           1,
            new UseResource[]
           {
-              new UseResource(ItemResourceType.Wood_Group, 20),
-                new UseResource(ItemResourceType.Stone_G, 100)
+              new UseResource(ItemResourceType.Wood_Group, 40),
+                new UseResource(ItemResourceType.Stone_G, 120)
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );
@@ -856,8 +1019,8 @@ namespace VikingEngine.DSSWars.Build
           1,
            new UseResource[]
           {
-              new UseResource(ItemResourceType.Wood_Group, 20),
-                new UseResource(ItemResourceType.Stone_G, 100)
+              new UseResource(ItemResourceType.Wood_Group, 40),
+                new UseResource(ItemResourceType.Stone_G, 120)
           },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         );
@@ -1184,6 +1347,18 @@ namespace VikingEngine.DSSWars.Build
          XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Expert_3
       );
 
+        public static readonly CraftBlueprint CityHall_Village = new CraftBlueprint(
+            CraftResultType.NoSet,
+            0,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.ServiceMen, DssConst.VillageHall_RequiredStaff),
+                new UseResource(ItemResourceType.Gold, 500),
+                new UseResource(ItemResourceType.Wood_Group, 50),
+            },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+            );
 
         public static readonly CraftBlueprint CityHall_Town = new CraftBlueprint(
             CraftResultType.NoSet,
@@ -1263,5 +1438,45 @@ namespace VikingEngine.DSSWars.Build
                },
            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
            );
+
+        public static readonly CraftBlueprint ImmigrationTent = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.ImmigrationTent,
+           1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.SkinLinen_Group, 80),
+                new UseResource(ItemResourceType.Wood_Group, 60)
+            },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+           );
+
+        public static readonly CraftBlueprint ResearchCenter = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.ResearchCenter,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.ServiceMen, 4),
+               new UseResource(ItemResourceType.Bronze, 40),
+                new UseResource(ItemResourceType.Stone_G, 300)
+           },
+           XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Practitioner_2
+        );
+        
+        public static readonly CraftBlueprint BookPress = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.ResearchCenter,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.ServiceMen, 4),
+                new UseResource(ItemResourceType.Bronze, 50),
+                new UseResource(ItemResourceType.Wood_Group, 100),
+           
+            },
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+        );
+
     }
 }

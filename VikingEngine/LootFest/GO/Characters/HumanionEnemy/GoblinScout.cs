@@ -11,12 +11,12 @@ namespace VikingEngine.LootFest.GO.Characters
     class GoblinScout : AbsGoblin
     {
         public GoblinScout(GoArgs args)
-            : base(args, VoxelModelName.goblin1)
+            : base(args, VoxelModelName.NUM_NON)
         {
             goblinBoneSword();
             aggresivity = HumanoidEnemyAgressivity.ChickenShit_0;
             hasRangedWeapon = true;
-            LfRef.modelLoad.PreLoadImage(VoxelModelName.goblin_spear, false, 0, false);
+            LfRef.modelLoad.PreLoadImage(VoxelModelName.NUM_NON, false, 0, false);
 
             if (args.LocalMember)
             {

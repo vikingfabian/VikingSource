@@ -13,7 +13,7 @@ namespace VikingEngine.LootFest.GO.Characters.Monster3
         public MiniSpider(GoArgs args)
             : base(args)
         {
-            createImage(VoxelModelName.mini_spider1, ScaleRange.GetRandom(), 0, new Graphics.AnimationsSettings(8, 0.8f, 3));
+            createImage(VoxelModelName.NUM_NON, ScaleRange.GetRandom(), 0, new Graphics.AnimationsSettings(8, 0.8f, 3));
             Health = LfLib.SuperWeakEnemyHealth;
             loadBounds();
 

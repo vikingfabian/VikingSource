@@ -78,6 +78,8 @@ namespace VikingEngine.HUD
                 area.AddToTopSide(-style.memberHeight);
             }
 
+            area.Size = Bound.Min(area.Size, new Vector2(10));
+
             layoutStack = new Stack<GuiLayout>();
             overlays = new List<GuiOverlay>();
 
@@ -92,7 +94,7 @@ namespace VikingEngine.HUD
         {
             if (layoutStack.Count > 0)
             {
-                style.openSound?.Play();//.PlayFlat(soundVolume);
+                style.openSound?.Play();
             }
             layoutStack.Push(layout);
             UpdateLayoutFadings();
@@ -117,7 +119,7 @@ namespace VikingEngine.HUD
                     layout = layoutStack.Peek();
                 }
 
-                style.closeSound?.Play();//.PlayFlat(soundVolume);
+                style.closeSound?.Play();
                 layout.TryDoRefreshAction();
             }
         }
@@ -162,7 +164,7 @@ namespace VikingEngine.HUD
 
         Vector2 moveInput()
         {
-            if (useAnyControllerInput)
+            if (useAnyControllerInput && Input.XInput.controllers != null)
             {
                 foreach (var ins in Input.XInput.controllers)
                 {

@@ -15,21 +15,21 @@ namespace VikingEngine.LootFest.BlockMap
     {
         protected static readonly VoxelModelName[] NormalDefaultModels = new VoxelModelName[]
         { 
-            VoxelModelName.BirchTree1,
-            VoxelModelName.BirchTree2,
-            VoxelModelName.PineTree1,
-            VoxelModelName.PineTree2,
-            VoxelModelName.PinkTree, 
-            VoxelModelName.Stone1,
-            VoxelModelName.Stone2,
-            VoxelModelName.Stone3,
+            //VoxelModelName.BirchTree1,
+            //VoxelModelName.BirchTree2,
+            //VoxelModelName.PineTree1,
+            //VoxelModelName.PineTree2,
+            //VoxelModelName.PinkTree, 
+            //VoxelModelName.Stone1,
+            //VoxelModelName.Stone2,
+            //VoxelModelName.Stone3,
         };
         protected static readonly VoxelModelName[] DefaultDungeonModels = new VoxelModelName[]
         { 
-            VoxelModelName.DungeonTerrain1,
-            VoxelModelName.DungeonTerrain2,
-            VoxelModelName.DungeonTerrain3,
-            VoxelModelName.DungeonTerrain4,
+            //VoxelModelName.DungeonTerrain1,
+            //VoxelModelName.DungeonTerrain2,
+            //VoxelModelName.DungeonTerrain3,
+            //VoxelModelName.DungeonTerrain4,
         };
 
         public static readonly IntVector2 ChunkSize = new IntVector2(64, 64);
@@ -182,7 +182,7 @@ namespace VikingEngine.LootFest.BlockMap
             FilePath filePath = new FilePath(LfLib.ModelsCategoryTerrain, model.ToString(),
                 VikingEngine.Voxels.VoxelLib.VoxelObjByteArrayEnding, false, false);
 
-            if (filePath.Storage && !DataStreamHandler.FileExists(filePath))
+            if (filePath.Storage && !FileToDiskManager.FileExists(filePath))
             {
                 emptyGrid();
             }
@@ -409,7 +409,7 @@ namespace VikingEngine.LootFest.BlockMap
 
         protected Map.WorldPosition addModel(VoxelModelName modelName, int rotation, IntVector2 squarePos, IntVector2 worldXZ, IntVector3 adjPos, bool centerModel, bool centerSquare, bool fillUpTheGround)
         {
-            if (modelName == VoxelModelName.TutJumpToTeleport2)
+            if (modelName == VoxelModelName.NUM_NON)
             {
                 lib.DoNothing();
             }
@@ -626,11 +626,11 @@ namespace VikingEngine.LootFest.BlockMap
             VoxelModelName model;
             if (goArgs.characterLevel == 0)
             {
-                model = VoxelModelName.key_lvl1;
+                model = VoxelModelName.NUM_NON;
             }
             else
             {
-                model = VoxelModelName.key_lvl2;
+                model = VoxelModelName.NUM_NON;
             }
 
             goArgs.startWp.WorldGrindex += 1;
@@ -649,7 +649,7 @@ namespace VikingEngine.LootFest.BlockMap
             levelEntrance = toWorldXZ(spawnPos);
 
             spawnPos.Y -= 2;
-            teleport(spawnPos, returnLocation, Dir4.N, VoxelModelName.DoorToLobby);
+            teleport(spawnPos, returnLocation, Dir4.N, VoxelModelName.NUM_NON);
 
             SuitType suit1, suit2;
             switch (rnd.Int(5))
@@ -735,7 +735,7 @@ namespace VikingEngine.LootFest.BlockMap
             {
                 foreach (var m in c.models)
                 {
-                    if (m.name.name == VoxelModelName.townwall_walltower)
+                    if (m.name.name == VoxelModelName.NUM_NON)
                     {
                         lib.DoNothing();
                     }
@@ -842,13 +842,13 @@ namespace VikingEngine.LootFest.BlockMap
             Map.WorldPosition wp;
             if (up)
             {
-                wp = addModel(VoxelModelName.uppath, (int)walkingDir, squarePos, IntVector3.Zero, true, true);
+                wp = addModel(VoxelModelName.NUM_NON, (int)walkingDir, squarePos, IntVector3.Zero, true, true);
 
             }
             else
             {
                 
-                wp = addModel(VoxelModelName.downpath, (int)walkingDir, squarePos, IntVector3.FromHeight(-6), true, false);
+                wp = addModel(VoxelModelName.NUM_NON, (int)walkingDir, squarePos, IntVector3.FromHeight(-6), true, false);
                 wp.Y += 8;
             }
 

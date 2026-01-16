@@ -38,7 +38,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 levelEntrance = toWorldXZ(spawnPos);
 
                 spawnPos.Y -= 2;
-                teleport(spawnPos, TeleportLocationId.CaveToIntroLevel, Dir4.E, VoxelModelName.DoorToLobby);
+                teleport(spawnPos, TeleportLocationId.CaveToIntroLevel, Dir4.E, VoxelModelName.NUM_NON);
                 //LfLib.Location(TeleportLocationId.FirstLevel).wp = new Map.WorldPosition(new Vector2toV3(levelEntrance));
                 setTeleportLocation(TeleportLocationId.FirstLevel, levelEntrance);
 
@@ -79,7 +79,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
                     SpawnPointData.Empty, SpawnImportance.Must_0, true));
 
                 guardPos.Y += 4;
-                addModelOnWorldXZ(VoxelModelName.GoblinGate1, 0, guardPos, IntVector3.NegativeY, true, false);
+                addModelOnWorldXZ(VoxelModelName.NUM_NON, 0, guardPos, IntVector3.NegativeY, true, false);
 
                 createLockSpawn(pointer, Dir4.S, createLock, FirstLockGroup);
 
@@ -91,8 +91,8 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 BlockMapSegment segment = LfRef.blockmaps.loadSegment(53);
                 var pointer = placeSegment(segment, sleepingGuardSegment.getEntranceSqPos(Dir4.S, 0), Dir4.N, 0, SecondAreaLockId);
 
-                var fortWp = addModel(VoxelModelName.GoblinFortress1, 0, pointer.specialPoints[0].position, IntVector3.NegativeY, true, true);
-                var route = jointsToPatrolroute(getModelJointsSorted(VoxelModelName.GoblinFortress1, fortWp, true, new Range(0, 3)));
+                var fortWp = addModel(VoxelModelName.NUM_NON, 0, pointer.specialPoints[0].position, IntVector3.NegativeY, true, true);
+                var route = jointsToPatrolroute(getModelJointsSorted(VoxelModelName.NUM_NON, fortWp, true, new Range(0, 3)));
 
                 {//Guard 1
                     VikingEngine.LootFest.GO.Characters.AI.PatrolRoute patrol = new GO.Characters.AI.PatrolRoute(route, true, 0);
@@ -125,8 +125,8 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 {
                     if (m.square.specialIndex == 0)
                     {
-                        var modelWp = addModel(VoxelModelName.GoblinPatrolWall1, 0, m.position, IntVector3.NegativeY, false, true);
-                        var route = jointsToPatrolroute(getModelJointsSorted(VoxelModelName.GoblinPatrolWall1, modelWp, false, new Range(0, 1)));
+                        var modelWp = addModel(VoxelModelName.NUM_NON, 0, m.position, IntVector3.NegativeY, false, true);
+                        var route = jointsToPatrolroute(getModelJointsSorted(VoxelModelName.NUM_NON, modelWp, false, new Range(0, 1)));
                         VikingEngine.LootFest.GO.Characters.AI.PatrolRoute patrol = new GO.Characters.AI.PatrolRoute(route, false, 0);
 
                         SpawnPointDelegate spawn = new SpawnPointDelegate(jointsSorted[0].wp, null,
@@ -137,7 +137,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
                     }
                     else
                     {
-                        var modelWp = addModel(VoxelModelName.GoblinPost1, 0, m.position, IntVector3.NegativeY, true, false);
+                        var modelWp = addModel(VoxelModelName.NUM_NON, 0, m.position, IntVector3.NegativeY, true, false);
                         modelWp.Z -= 4;
                         var spawn = new SpawnPointDelegate(modelWp, null,
                             new SpawnPointData(GameObjectType.GoblinBerserk), SpawnImportance.LowSuggest_3, true);
@@ -164,7 +164,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 var pointer = placeSegment(segment, guardWalls.getEntranceSqPos(Dir4.S, 0), Dir4.N, 0, OpenAreaLockId);
 
                 addTerrainModels(pointer.terrainModels, NormalDefaultModels, rnd);
-                addModel(VoxelModelName.GoblinDogHouse1, 0, pointer.landMarkIx0, IntVector3.NegativeY, false, false);
+                addModel(VoxelModelName.NUM_NON, 0, pointer.landMarkIx0, IntVector3.NegativeY, false, false);
                 placeMonsterSpawns(pointer, spawns);
 
 
@@ -180,9 +180,9 @@ namespace VikingEngine.LootFest.BlockMap.Level
                 var pointer = placeSegment(segment, dogPark.getEntranceSqPos(Dir4.E, 0), Dir4.W, 0, OpenAreaLockId);
 
                 //Key = joint9
-                var modelWp = addModel(VoxelModelName.GoblinKeyGuard1, 0, pointer.spawnPositions[0].position, IntVector3.Zero, true, true);
+                var modelWp = addModel(VoxelModelName.NUM_NON, 0, pointer.spawnPositions[0].position, IntVector3.Zero, true, true);
 
-                var route = jointsToPatrolroute(getModelJointsSorted(VoxelModelName.GoblinKeyGuard1, modelWp, true, new Range(0, 3)));
+                var route = jointsToPatrolroute(getModelJointsSorted(VoxelModelName.NUM_NON, modelWp, true, new Range(0, 3)));
 
                 {//Guard 1
                     VikingEngine.LootFest.GO.Characters.AI.PatrolRoute patrol = new GO.Characters.AI.PatrolRoute(route, true, 0);
@@ -247,7 +247,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
         protected void constructGO_Key(GoArgs goArgs)
         {
             goArgs.fromSpawn.spawnLock = 1;
-            VoxelModelName model = VoxelModelName.key_lvl2;
+            VoxelModelName model = VoxelModelName.NUM_NON;
 
             new GO.PickUp.Key(goArgs, false, this, model);
         }
@@ -278,7 +278,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, SecondAreaLockId, GO.EnvironmentObj.AreaUnLockType.ConnectedEnemies,
-                goArgs.characterLevel, null, VoxelModelName.groupLock, Dir4.N);
+                goArgs.characterLevel, null, VoxelModelName.NUM_NON, Dir4.N);
         }
 
         void doorToBoss(VikingEngine.LootFest.GO.GoArgs goArgs)
@@ -286,7 +286,7 @@ namespace VikingEngine.LootFest.BlockMap.Level
             goArgs.fromSpawn.spawnLock = 1;
 
             var lockGo = new GO.EnvironmentObj.AreaLock(goArgs, this, ThirdAreaLockId, GO.EnvironmentObj.AreaUnLockType.Key,
-                goArgs.characterLevel, null, VoxelModelName.locklvl2, Dir4.N);
+                goArgs.characterLevel, null, VoxelModelName.NUM_NON, Dir4.N);
         }
 
         void createBoss(GoArgs goArgs)
@@ -303,16 +303,16 @@ namespace VikingEngine.LootFest.BlockMap.Level
         {
             var result = new List<VoxelModelName>
                 {
-                    VoxelModelName.DoorToLobby,
-                    VoxelModelName.GoblinGate1,
-                    VoxelModelName.GoblinPatrolWall1,
-                    VoxelModelName.GoblinFortress1,
-                    VoxelModelName.GoblinEndFortress1,
-                    VoxelModelName.GoblinTent,
-                    VoxelModelName.GoblinKeyGuard1,
-                    VoxelModelName.GoblinPost1,
-                    VoxelModelName.goblin_hut,
-                    VoxelModelName.GoblinDogHouse1,
+                    //VoxelModelName.DoorToLobby,
+                    //VoxelModelName.GoblinGate1,
+                    //VoxelModelName.GoblinPatrolWall1,
+                    //VoxelModelName.GoblinFortress1,
+                    //VoxelModelName.GoblinEndFortress1,
+                    //VoxelModelName.GoblinTent,
+                    //VoxelModelName.GoblinKeyGuard1,
+                    //VoxelModelName.GoblinPost1,
+                    //VoxelModelName.goblin_hut,
+                    //VoxelModelName.GoblinDogHouse1,
                 };
             result.AddRange(NormalDefaultModels);
             return result;

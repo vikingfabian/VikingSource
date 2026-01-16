@@ -338,7 +338,7 @@ namespace VikingEngine.ToGG.ToggEngine.GO
             IntVector2 result = towards - squarePos;
             if (result.SideLength() > 1)
             {
-                result = result.Normal_RoundUp();
+                result = result.Normal_Round();
             }
 
             return result;

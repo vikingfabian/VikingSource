@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
@@ -14,8 +13,10 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.HUD.RichMenu;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.LootFest.Players;
+using VikingEngine.Timer;
+using VikingEngine.DSSWars.Presentation;
 
 namespace VikingEngine.DSSWars.GameState.BattleLab
 {
@@ -56,7 +57,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 var army = player.faction.NewArmy(VectorExt.AddX(center, -2));
                 friendlyArmy = army;
                 army.rotation = playerRot;
-                army.food = float.MaxValue;
+                army.food = float.MaxValue / 8;
 
                 army.armyColumnWidth = 6;
             }
@@ -64,7 +65,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 var army = enemyFac.NewArmy(VectorExt.AddX(center, 2));
                 enemyArmy = army;
                 army.rotation = enemyRot;
-                army.food = float.MaxValue;
+                army.food = float.MaxValue / 8;
 
                 army.armyColumnWidth = 6;
             }
@@ -86,6 +87,8 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             {
                 enemyArmy.Order_Attack(friendlyArmy);
             }
+
+            DssRef.stats.battle_lab_newbattle.addOne();
         }
 
         public bool updateObjectDisplay(RichBoxContent content, RichMenu menu)
@@ -105,32 +108,10 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 {
                     tabs.Add(new ArtTabMember(new List<AbsRichBoxMember> { new RbText(PlayerOptionName(i)) }));
                 }
-               
+
                 content.Add(new ArtTabgroup(tabs, Setup.selectedPlayer,
                     new Action<int>((int ix) => { Setup.selectedPlayer = ix; })));
-
-                var weapons_groups = ConscriptMenu.AllConstriptWeapons();
-                foreach (var group in weapons_groups)
-                {
-                    content.newLine();
-                    foreach (var wep in group)
-                    {
-                        content.Add(new ArtToggle(wep == Setup.selectedWeapon, new List<AbsRichBoxMember> { new RbImage(ResourceLib.Icon(wep)) },
-                            new RbAction1Arg<ItemResourceType>(selectWeapon, wep), new RbTooltip_Text(LangLib.Item(wep))));
-                    }
-                }
-
-                content.newParagraph();
-
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_AddX, 1)) }, new RbAction1Arg<int>(addSoldier, 1)));
-                {
-                    const int AddCount = 5;
-                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, AddCount)) }, new RbAction1Arg<int>(addSoldier, AddCount)));
-                }
-                {
-                    const int AddCount = 20;
-                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, AddCount)) }, new RbAction1Arg<int>(addSoldier, AddCount)));
-                }
+                GodConscript.ToHud(content, addSoldier);
 
                 content.newParagraph();
                 content.Add(new RbSeperationLine());
@@ -147,10 +128,12 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                     attackerOptions.Build(content, SpriteName.WarsBattleIcon, DssRef.lang.BattleLab_Attacker, menu);
                 }
             }
-            
+
 
             return true;
         }
+
+        
 
         string PlayerOptionName(int player)
         {
@@ -170,10 +153,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             }
         }
 
-        void selectWeapon(ItemResourceType item)
-        {
-            Setup.selectedWeapon = item;
-        }
+        
 
         void addSoldier(int count)
         {
@@ -213,6 +193,14 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             {
                 enemyArmy.setAsStartArmy();
             }
+        }
+
+        public void addTimedAttackFromEnemy(float seconds)
+        {
+            new TimedAction0ArgTrigger(() => 
+            {
+                enemyArmy.Order_Attack(friendlyArmy);
+            }, seconds * TimeExt.SecondToMs); 
         }
     }
 }

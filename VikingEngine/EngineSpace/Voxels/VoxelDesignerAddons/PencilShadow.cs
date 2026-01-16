@@ -23,13 +23,15 @@ namespace VikingEngine.Voxels
         {
             hide();
 
+            var limits = designer.voxelProject.drawLimits;
+            int frame = designer.CurrentFrame;
             if (visible)
             {
                 {
                     IntVector3 pos = designer.designerInterface.drawCoord;
-                    for (pos.X = designer.drawLimits.Min.X; pos.X <= designer.drawLimits.Max.X; ++pos.X)
+                    for (pos.X =limits.Min.X; pos.X <=limits.Max.X; ++pos.X)
                     {
-                        bool isBlock = designer.GetVoxel(pos) != LootFest.Map.HDvoxel.BlockHD.EmptyBlock;
+                        bool isBlock = designer.Get(pos) != LootFest.Map.HDvoxel.BlockHD.EmptyBlock;
 
                         dirCheck(designer, isBlock, pos, Dimensions.X, -1);
                         dirCheck(designer, isBlock, pos, Dimensions.X, 1);
@@ -37,9 +39,9 @@ namespace VikingEngine.Voxels
                 }
                 {
                     IntVector3 pos = designer.designerInterface.drawCoord;
-                    for (pos.Y = designer.drawLimits.Min.Y; pos.Y <= designer.drawLimits.Max.Y; ++pos.Y)
+                    for (pos.Y =limits.Min.Y; pos.Y <=limits.Max.Y; ++pos.Y)
                     {
-                        bool isBlock = designer.GetVoxel(pos) != LootFest.Map.HDvoxel.BlockHD.EmptyBlock;
+                        bool isBlock = designer.Get(pos) != LootFest.Map.HDvoxel.BlockHD.EmptyBlock;
 
                         dirCheck(designer, isBlock, pos, Dimensions.Y, -1);
                         dirCheck(designer, isBlock, pos, Dimensions.Y, 1);
@@ -47,9 +49,9 @@ namespace VikingEngine.Voxels
                 }
                 {
                     IntVector3 pos = designer.designerInterface.drawCoord;
-                    for (pos.Z = designer.drawLimits.Min.Z; pos.Z <= designer.drawLimits.Max.Z; ++pos.Z)
+                    for (pos.Z =limits.Min.Z; pos.Z <=limits.Max.Z; ++pos.Z)
                     {
-                        bool isBlock = designer.GetVoxel(pos) != LootFest.Map.HDvoxel.BlockHD.EmptyBlock;
+                        bool isBlock = designer.Get(pos) != LootFest.Map.HDvoxel.BlockHD.EmptyBlock;
 
                         dirCheck(designer, isBlock, pos, Dimensions.Z, -1);
                         dirCheck(designer, isBlock, pos, Dimensions.Z, 1);
@@ -74,9 +76,9 @@ namespace VikingEngine.Voxels
             //    outsideBound = adjPos.GetDimension(d) > designer.drawLimits.Max.GetDimension(d);
             //}
 
-            if (designer.drawLimits.pointInBounds(adjPos))
+            if (designer.voxelProject.drawLimits.pointInBounds(adjPos))
             {
-                if (designer.GetVoxel(adjPos) == LootFest.Map.HDvoxel.BlockHD.EmptyBlock)
+                if (designer.Get(adjPos) == LootFest.Map.HDvoxel.BlockHD.EmptyBlock)
                 {
                     if (isBlock)
                     {

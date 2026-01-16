@@ -12,11 +12,12 @@ using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 using VikingEngine.ToGG.ToggEngine.GO;
+using VikingEngine.DSSWars.Players.Profile;
 
 
 namespace VikingEngine.DSSWars.GameState.FlagEditor
 {
-    class PaintFlagState : Engine.GameState, DataStream.IStreamIOCallback
+    class PaintFlagState : Engine.GameState, IStreamIOCallback
     {
         InputMap keyboardInput, controllerInput;
         int profileIx;
@@ -28,7 +29,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
         public VectorRect paintArea;
         float squareWidth;
         Vector2 squareSz;
-        Display.MenuSystem menuSystem;
+        Interface.MenuSystem menuSystem;
         PaintFlagHud hud;
         bool isExiting = false;
         public bool controllerMode;
@@ -42,8 +43,6 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
         public PaintFlagState(int profileIx, bool bController)
             : base(false)
         {
-            
-
             XGuide.UnjoinAll();
             int player = 0;
             XGuide.LocalHostIndex = player;
@@ -82,7 +81,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                     area.Size, ImageLayers.Bottom5));
             }
 
-            updateImageGrid();
+            
 
             pointer = new Image(SpriteName.ColorPickerCircle,
                     paintArea.Center, Screen.SmallIconSizeV2, ImageLayers.Lay1_Front, true);
@@ -93,12 +92,14 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
 
             //HUD
             HudLib.Init();
-            menuSystem = new Display.MenuSystem(keyboardInput, Display.MenuType.Editor);
+            menuSystem = new Interface.MenuSystem(keyboardInput, Interface.MenuType.Editor);
 
             hud = new PaintFlagHud(XGuide.GetPlayer(player), keyboardInput, this);
             setColorType(ProfileColorType.Main);
             //new Timer.AsynchActionTrigger(load_asynch, true);
-            new Display.EditorBackground();
+            new Interface.EditorBackground();
+
+            updateImageGrid();
         }
         
         void setControllerMode(bool value)
@@ -163,8 +164,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
             }
             else
             {
-                int p = -1;
-                if (XInput.AnyActivationKey_DownEvent(ref p))
+                if (XInput.AnyActivationKey_DownEvent(out int p))
                 {
                     setControllerMode(true);
                     hud.refresh();
@@ -190,8 +190,8 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                 }
 
                 if (XInput.KeyDownEvent(Buttons.Back) ||
-                    controllerInput.CancelKey.DownEvent_AnyInstance ||
-                    controllerInput.ControllerSelect.DownEvent_AnyInstance ||
+                    controllerInput.cancelDownEvent_anyInstance() ||
+                    controllerInput.mouseSelect.DownEvent_AnyInstance ||
                     controllerInput.Controller_FlagDesign_Colorpicker.DownEvent_AnyInstance)
                 {
                     controllerPickColorState = false;
@@ -206,27 +206,29 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                     hud.refresh();
                 }
 
-                foreach (var ins in XInput.controllers)
+                if (XInput.controllers != null)
                 {
-                    if (ins.Connected)
+                    foreach (var ins in XInput.controllers)
                     {
-                        if (ins.bLeftStick)
+                        if (ins.Connected)
                         {
-                            pointer.position += 0.4f * paintArea.Width * Ref.DeltaGameTimeSec * ins.JoyStickValue(ThumbStickType.Left).Direction;
-                            pointer.position = paintArea.KeepPointInsideBound_Position(pointer.position);
-                        }
+                            if (ins.bLeftStick)
+                            {
+                                pointer.position += 0.4f * paintArea.Width * Ref.DeltaGameTimeSec * ins.JoyStickValue(ThumbStickType.Left).Direction;
+                                pointer.position = paintArea.KeepPointInsideBound_Position(pointer.position);
+                            }
 
-                        if (ins.IsButtonDown(Buttons.A))
-                        {
-                            paintInput(pointer.position, true, false);
-                        }
-                        else if (ins.IsButtonDown(Buttons.X))
-                        {
-                            paintInput(pointer.position, true, true);
+                            if (ins.IsButtonDown(Buttons.A))
+                            {
+                                paintInput(pointer.position, true, false);
+                            }
+                            else if (ins.IsButtonDown(Buttons.X))
+                            {
+                                paintInput(pointer.position, true, true);
+                            }
                         }
                     }
                 }
-
                 //if (controllerInput.Select.DownEvent_AnyInstance)
                 //{
 
@@ -251,7 +253,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
 
 
                 paintInput(Input.Mouse.Position,
-                    keyboardInput.ControllerSelect.IsDown || Input.Mouse.IsButtonDown(MouseButton.Left),
+                    keyboardInput.mouseSelect.IsDown || Input.Mouse.IsButtonDown(MouseButton.Left),
                     keyboardInput.FlagDesign_PaintBucket.IsDown);
 
                 if (XInput.KeyDownEvent(Buttons.Back))
@@ -353,7 +355,8 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
 
         public void discardAndExit()
         {
-            new LobbyState();
+            //new LobbyState();
+            new ExitToLobby(true);
         }
         public void saveAndExit()
         {
@@ -361,7 +364,8 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
 
             //EXIT
             DssRef.storage.flagStorage.flagDesigns[profileIx] = profile;
-            new LobbyState();
+            //new LobbyState();
+            new ExitToLobby(true);
             DssRef.storage.flagStorage.Save(profileIx);
         }
 
@@ -448,7 +452,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
             setUndoPoint();
         }
 
-        void onColorChange()
+        public void onColorChange()
         {
             updateImageGrid();
             hud.refresh();
@@ -463,6 +467,14 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                 imageGrid.LoopValueGet().Color = profile.getColor((ProfileColorType)profile.flagDesign.Get(imageGrid.LoopPosition));
                 setTexturePos(imageGrid.LoopPosition);
             }
+
+           
+            hud.previewImageSmall.Texture = profile.flagDesign.CreateTexture(profile);
+            hud.previewImageSmall.SetFullTextureSource();
+
+            hud.previewImageLarge.Texture = hud.previewImageSmall.Texture;
+            hud.previewImageLarge.ImageSource = hud.previewImageSmall.ImageSource;
+
         }
 
 
@@ -557,12 +569,17 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                 case ProfileColorType.Skin: return DssRef.lang.ProfileEditor_SkinColor;
                 case ProfileColorType.Hair: return DssRef.lang.ProfileEditor_HairColor;
                 case ProfileColorType.AltMain: return DssRef.lang.ProfileEditor_AltMain;
+
+                case ProfileColorType.Tunic: return DssRef.lang.ProfileEditor_TunicColor;
+                case ProfileColorType.Pants: return DssRef.lang.ProfileEditor_PantsColor;
+                case ProfileColorType.Leader: return DssRef.lang.ProfileEditor_LeaderColor;
+
             }
             throw new NotImplementedException();
         }
 
         bool autoAltMain = true;
-        public bool autoAltMainProperty(int index, bool _set, bool value)
+        public bool autoAltMainProperty(object tag, bool _set, bool value)
         {
             if (_set)
             {

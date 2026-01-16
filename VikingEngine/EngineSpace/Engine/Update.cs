@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Concurrent;
+using VikingEngine.Input;
 
 namespace VikingEngine.Engine
 {
@@ -13,20 +14,23 @@ namespace VikingEngine.Engine
 
     class Update
     {
-        const Keys DebugNormalSpeed = Keys.D1;
-        const Keys DebugSlowSpeed = Keys.D2;
-        const Keys DebugStepSpeed = Keys.D3;
+        //const Keys DebugNormalSpeed = Keys.D1;
+        //const Keys DebugSlowSpeed = Keys.D2;
+        //const Keys DebugStepSpeed = Keys.D3;
 
-        const float DebugSlowFrameTime = 1000;
+        //const float DebugSlowFrameTime = 1000;
 
 
         public LasyUpdatePart LasyUpdatePart = LasyUpdatePart.Part1;
         public float LazyUpdateTime = 0;
-        float time_16msCountDown = 0;
+        //float time_16msCountDown = 0;
         float gametime_16msCountDown = 0;
         public float TotalGameTime = 0;
         public bool exitApplication = false;
-        
+        public TextInput textInput = null;
+        //public bool blockGameInput = false;
+        //public string blockGameInputId = null;
+
         SpottedArray<IUpdateable>[] updateLists;
         SpottedArray<IUpdateable> oneTimeTriggers;
         ConcurrentStack<ISyncAction> syncQue = new ConcurrentStack<ISyncAction>();
@@ -148,18 +152,18 @@ namespace VikingEngine.Engine
             lazyUpdateAccumulatedTime_next += time;
             TotalGameTime += time;
 
-            {//Calc Ref.TimePassed16ms
-                time_16msCountDown += time;
-                if (time_16msCountDown >= Time16ms)
-                {
-                    time_16msCountDown -= Time16ms;
-                    Ref.TimePassed16ms = true;
-                }
-                else
-                {
-                    Ref.TimePassed16ms = false;
-                }
-            }
+            //{//Calc Ref.TimePassed16ms
+            //    time_16msCountDown += time;
+            //    if (time_16msCountDown >= Time16ms)
+            //    {
+            //        time_16msCountDown -= Time16ms;
+            //        Ref.TimePassed16ms = true;
+            //    }
+            //    else
+            //    {
+            //        Ref.TimePassed16ms = false;
+            //    }
+            //}
 
             {//Calc Ref.GameTimePassed16ms
                 Ref.GameTimePassed16ms = 0;
@@ -299,8 +303,9 @@ namespace VikingEngine.Engine
         {
             Ref.main.TargetElapsedTime = new TimeSpan((long)(TimeSpan.TicksPerMillisecond * (1000.0 / (double)fps)));
             Ref.UpdateTimes30FPS = fps / 30;
+            Ref.UpdateTimes60FPS = fps / 60f;
             Ref.TargetDeltaTimeMs = (float)Ref.main.TargetElapsedTime.TotalMilliseconds;
-
+            Ref.TargetDeltaTimeSec =  (float)Ref.main.TargetElapsedTime.TotalSeconds;
         }
 
         public static int MillisecToFrames(float ms)
@@ -317,6 +322,20 @@ namespace VikingEngine.Engine
                 var updateable= upateC.sel as AbsUpdateable;
                 updateable?.AbortThreads();
             }
+        }
+
+        public bool HaveLiveThreads()
+        {
+            var upateC = updateLists[(int)UpdateType.Full].counter();
+
+            while (upateC.Next())
+            {
+                var threadedUpdate = upateC.sel as AsynchUpdateable;
+                if (threadedUpdate != null && threadedUpdate.Alive())
+                    return true;
+            }
+
+            return false;
         }
 
         public void Exit()

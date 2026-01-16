@@ -16,7 +16,7 @@ namespace VikingEngine.LootFest.GO.Characters
             :base(new GoArgs(startPos, 0))
         {
             modelScale = ScaleRange.GetRandom();
-            createImage(VoxelModelName.moth, modelScale, new Graphics.AnimationsSettings(2, 0.8f, 0));
+            createImage(VoxelModelName.NUM_NON, modelScale, new Graphics.AnimationsSettings(2, 0.8f, 0));
             CollisionAndDefaultBound = LootFest.ObjSingleBound.QuickRectangleRotated2(
                 new Vector3(0.3f * modelScale, 0.3f * modelScale, modelScale * 0.4f));
 

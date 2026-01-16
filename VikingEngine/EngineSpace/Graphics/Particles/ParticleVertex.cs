@@ -58,5 +58,10 @@ namespace VikingEngine.Graphics
 
         // Describe the size of this vertex structure.
         public const int SizeInBytes = 36;
+
+        public override string ToString()
+        {
+            return $"Corner{Corner}, Position{Position}, Velocity{Velocity}, Random_Vcolor{Random_Vcolor}, Time{Time}";
+        }
     }
 }

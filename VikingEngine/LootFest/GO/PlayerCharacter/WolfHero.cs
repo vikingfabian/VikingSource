@@ -29,7 +29,7 @@ namespace VikingEngine.LootFest.GO.PlayerCharacter
             JumpFrame = 1;
             WalkingFramesCount = 5;
 
-            currentWalkingFrame = new CirkleCounterUp(WalkingFramesCount - 1);
+            currentWalkingFrame = new CircleCounterUp(WalkingFramesCount - 1);
 
             //Vector3 posAdj = Vector3.Up * ModelYadj;
 
@@ -40,7 +40,7 @@ namespace VikingEngine.LootFest.GO.PlayerCharacter
             //        new ByteVector2((byte)Data.MaterialType.pale_skin, appear.HatDetailColor), //sec col
             //    };
 
-            new HeroAppearance(VoxelModelName.herowolf, true, Vector3.Up * ModelYadj, storage, player.SuitAppearance, setModel, this.Type);
+            new HeroAppearance(VoxelModelName.NUM_NON, true, Vector3.Up * ModelYadj, storage, player.SuitAppearance, setModel, this.Type);
             //new Process.ModifiedImage(this, VoxelModelName.herowolf,
             //   colorReplace, null, posAdj);
 

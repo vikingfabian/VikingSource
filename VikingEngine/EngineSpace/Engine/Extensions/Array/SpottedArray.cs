@@ -45,6 +45,11 @@ namespace VikingEngine
             return sel != null;
         }
 
+        public bool HasMore()
+        {
+            return selIndex < 0 || sel != null;
+        }
+
         public bool Prev_Rollover()
         {
             if (array.Count == 0)
@@ -387,7 +392,7 @@ namespace VikingEngine
         {
             for (int i = 0; i < SpottedLength; ++i)
             {
-                if (Array[i] != null && Array[i].Equals(obj))
+                if (Array != null && Array[i] != null && Array[i].Equals(obj))
                 {
                     RemoveAt(i);
                     return;
@@ -405,7 +410,7 @@ namespace VikingEngine
 
         public void RemoveAt_EqualSafeCheck(T obj, int index)
         {
-            if (obj.Equals(Array[index]))
+            if (index < Array.Length && obj.Equals(Array[index]))
             {
                 --Count;
                 Array[index] = default(T);
@@ -417,17 +422,6 @@ namespace VikingEngine
                 lib.DoNothing();
             }
         }
-
-        //public void RemoveAt_EqualSafeCheck_OrCrash(T obj, int index)
-        //{
-        //    if (obj.Equals(Array[index]))
-        //    {
-        //        --Count;
-        //        Array[index] = default(T);
-        //        mostLeftFreePosition = lib.SmallestValue(mostLeftFreePosition, index);
-        //        updateSpottedLength();
-        //    }
-        //}
 
         public T Get(int position)
         {
@@ -481,7 +475,7 @@ namespace VikingEngine
 
         public void adjustLength()
         {
-            T[] newArray = new T[Array.Length * 2];
+            T[] newArray = new T[Math.Max(Array.Length * 2, 8)];
             for (int i = 0; i < Array.Length; ++i)
             {
                 newArray[i] = Array[i];
@@ -648,7 +642,7 @@ namespace VikingEngine
 
         public List<T> toList()
         {
-            List<T> list = new List<T>(this.Count);
+            List<T> list = new List<T>(Math.Clamp(this.Count, 0, Array.Length));
             SpottedArrayCounter<T> counter = new SpottedArrayCounter<T>(this);
             while (counter.Next())
             {

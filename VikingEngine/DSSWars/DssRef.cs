@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Settings;
+using VikingEngine.DSSWars.Presentation;
 
 namespace VikingEngine.DSSWars
 {
@@ -24,10 +25,10 @@ namespace VikingEngine.DSSWars
         public static AbsPlayState state;
         public static Ambience ambience;
 
-        public static GameObject.AllUnits profile;
+        public static GameObject.AllUnits units;
         public static GameTime time = new GameTime();
-        public static Display.Translation.AbsLanguage lang;
-        public static Display.Translation.TodoTranslation todoLang = new Display.Translation.TodoTranslation();
+        public static Presentation.AbsLanguage lang;
+        public static TodoTranslation todoLang = new Presentation.TodoTranslation();
         public static PlaySettings settings;
         public static Difficulty difficulty = new Difficulty();
         //public static Data.Constants.Const Const = new Data.Constants.Const();

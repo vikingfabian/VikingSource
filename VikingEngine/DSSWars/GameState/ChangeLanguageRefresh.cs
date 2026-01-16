@@ -3,23 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Presentation;
+using VikingEngine.Engine;
 
 namespace VikingEngine.DSSWars.GameState
 {
-    class ChangeLanguageRefresh : Engine.GameState
+    class ChangeLanguageRefresh : ExitToLobby
     {
         public ChangeLanguageRefresh() 
-            :base()
-        { }
-
-        public override void Time_Update(float time)
+            :base(true)
         {
-            base.Time_Update(time);
+        }
 
-            new Translation().setupLanguage(false);
+        //public override void Time_Update(float time)
+        //{
+        //    base.Time_Update(time);
+
+        //    new Presentation.Translation().setupLanguage(false);
+        //    Ref.gamesett.Save();
+        //    new LobbyState();
+        //}
+        protected override void launch()
+        {
+            new Presentation.Translation().setupLanguage(false);
             Ref.gamesett.Save();
-            new LobbyState();
+            base.launch();
         }
     }
 }

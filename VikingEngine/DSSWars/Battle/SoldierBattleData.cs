@@ -24,49 +24,80 @@ namespace VikingEngine.DSSWars.Battle
         List<AbsSoldierUnit> nearBodyCollisionUnits = new List<AbsSoldierUnit>(8);
         public float queueTime = 0;
         static CircleBound QueBound = new CircleBound();
+
+        int maxBlock;
+        int blocks;
+        GameTimeStamp lastBlockTime;
+
+        public SoldierBattleData(AbsSoldierUnit parent)
+        {
+            maxBlock = parent.soldierData.MaxBlockCount();
+            blocks = maxBlock;
+            lastBlockTime = GameTimeStamp.Now();
+        }
+
+        public bool spendBlock()
+        {
+            if (blocks > 0)
+            {
+                --blocks;
+                return true;
+            }
+            return false;
+        }
+
+        Vector2 collisionForce = Vector2.Zero;
         public void update(AbsSoldierUnit parent)
         {
             //1. Is the soldier queuing behind friendlies
             //2. Is he bumping into other people/items
-            Vector2 collisionForce = Vector2.Zero;
 
-            lock (nearBodyCollisionUnits)
-            {
-                foreach (var unit in nearBodyCollisionUnits)
+            if (nearBodyCollisionUnits.Count > 0)
+            {               
+                if (Ref.peRnd.ChanceF(0.2f))
                 {
-                    Physics.Collision2D intersection = parent.Bound2D(ParentBound).Intersect2(unit.Bound2D(OtherBound));
-                    //Make sure friendly units dont push eachother forward
-                    if (intersection.IsCollision)
+                    collisionForce = Vector2.Zero;
+
+                    lock (nearBodyCollisionUnits)
                     {
-                        if (parent.GetFaction() == unit.GetFaction())
+                        foreach (var unit in nearBodyCollisionUnits)
                         {
-                            if (Rotation1D.AngleDifference_Absolute(parent.rotation.radians, lib.V2ToAngle(-intersection.direction)) < MathExt.TauOver8)
+                            Physics.Collision2D intersection = parent.Bound2D(ParentBound).Intersect2(unit.Bound2D(OtherBound));
+                            //Make sure friendly units dont push eachother forward
+                            if (intersection.IsCollision)
                             {
-                                //Is pushing friend, halt and queue
-                                queueTime = 400;
+                               
+                                if (parent.factionIndex == unit.factionIndex)
+                                {
+                                    if (Rotation1D.AngleDifference_Absolute(parent.rotation.radians, lib.V2ToAngle_PreNorm_Unsafe(-intersection.direction)) < MathExt.TauOver8)
+                                    {
+                                        //Is pushing friend, halt and queue
+                                        queueTime = 400;
+                                    }
+                                }
+                                collisionForce += intersection.direction;
                             }
                         }
-                        collisionForce += intersection.direction;                        
                     }
                 }
-            }
 
-            if (VectorExt.HasValue(collisionForce))
-            {
-                float collPush = 0.18f;
-                if (queueTime > 0)
+                if (VectorExt.HasValue(collisionForce))
                 {
-                    collPush = 0.25f;
+                    float collPush = 0.18f;
+                    if (queueTime > 0)
+                    {
+                        collPush = 0.25f;
+                    }
+                    parent.position += VectorExt.V2toV3XZ(VectorExt.SetMaxSideLength(collPush * collisionForce, MaxPushLength));
                 }
-                parent.position += VectorExt.V2toV3XZ(VectorExt.SetMaxSideLength(collPush * collisionForce, MaxPushLength));
-
-                //collisionForce = Vector2.Zero;
             }
+
+            
         }
 
         public void onTakeMeleeDamage(AbsSoldierUnit parent, AbsDetailUnit meleeAttacker)
         {
-            if (parent.group.debugTagged && parent.parentArrayIndex == 3)
+            if (parent.group.debugTagged && parent.myIndex == 3)
             {
                 lib.DoNothing();
             }
@@ -82,6 +113,15 @@ namespace VikingEngine.DSSWars.Battle
 
         public bool InQueue(AbsSoldierUnit parent)
         {
+            if (lastBlockTime.secPassed(parent.soldierData.blocksRefillTimeSec))
+            {
+                lastBlockTime.setNow();
+                if (blocks < maxBlock)
+                {
+                    ++blocks;
+                }
+            }
+
             const float Regular_QueTime = 400;
             const float Turn_QueTime = 1200;
 
@@ -161,9 +201,8 @@ namespace VikingEngine.DSSWars.Battle
                     foreach (var unit in nearBodyCollisionUnits)
                     {
                         if (parent.GetFaction() == unit.GetFaction())
-                        {
-                            Physics.Collision2D intersection = QueBound.Intersect2(unit.Bound2D(OtherBound));
-                            if (intersection.IsCollision)
+                        {   
+                            if (QueBound.Intersect2_IsCollision(unit.Bound2D(OtherBound)))
                             {
                                 queueTime = qTime;
                                 return true;
@@ -177,12 +216,15 @@ namespace VikingEngine.DSSWars.Battle
 
         public void asycUpdate(AbsSoldierUnit parent) 
         {
+
             if (parent.group.debugTagged)
             {
                 lib.DoNothing();
             }
             AbsDetailUnit closestOpponent = null;
             float closestOpponentDistance = float.MaxValue;
+
+            bool collectCollisions = !parent.group.InGuardPost();
 
             //const float SoldierToGroupMaxDistance = 1.0f;
 
@@ -207,10 +249,17 @@ namespace VikingEngine.DSSWars.Battle
                                 {
                                     if (soldiersC.sel.Alive_IncomingDamageIncluded())
                                     {
-                                        if (parent.Bound2D(ParentBound).AsynchCollect(soldiersC.sel.Bound2D(OtherBound)) &&
+                                        if (collectCollisions &&
+                                            parent.Bound2D(ParentBound).AsynchCollect(soldiersC.sel.Bound2D(OtherBound)) &&
                                             soldiersC.sel != parent)
                                         {
                                             SoldierBuffer.Add(soldiersC.sel);
+
+                                            //Make sure friendly units dont push eachother forward
+                                            //if (parent.Bound2D(ParentBound).Intersect2_IsCollision(soldiersC.sel.Bound2D(OtherBound)))
+                                            //{
+                                            //    hasCollsions = true;
+                                            //}
                                         }
 
                                         if (opponent)
@@ -241,7 +290,7 @@ namespace VikingEngine.DSSWars.Battle
 
             if (closestOpponent == null)
             {
-                var groupTarget_sp = parent.group.attackTarget_soldierGroupOrCity?.Soldiers();
+                var groupTarget_sp = RefExt.Target_safe(parent.group.attackTarget_soldierGroupOrCity)?.Soldiers();
 
                 if (groupTarget_sp != null)
                 {

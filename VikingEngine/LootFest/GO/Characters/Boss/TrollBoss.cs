@@ -20,12 +20,12 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
             : base(args)
         {
             shieldWalkDist = 10;
-            createImage(VoxelModelName.troll_boss, TrollBossScale, new Graphics.AnimationsSettings(6, 1.8f, 2));
+            createImage(VoxelModelName.NUM_NON, TrollBossScale, new Graphics.AnimationsSettings(6, 1.8f, 2));
             CollisionAndDefaultBound = LootFest.ObjSingleBound.QuickCylinderBoundFromFeetPos(TrollBossScale * 0.3f, TrollBossScale * 0.45f, 0f);
 
 
             handWeapon = new Gadgets.HumanoidEnemyHandWeapon(
-               VoxelModelName.bigorc_club,
+               VoxelModelName.NUM_NON,
                new HandWeaponAttackSettings(
                    GameObjectType.BigOrcBossAttack, 0.6f, 0.5f,
                     new Vector3(
@@ -172,7 +172,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
 
         public TrollBossBaby(Graphics.AbsVoxelObj parentModel)
         {
-            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.baby,
+            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                 2.2f, 0, false);
             posOffset = new Vector3(0, TrollBoss.TrollBossScale * 0.7f, TrollBoss.TrollBossScale * -0.32f);
         }
@@ -198,7 +198,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
 
         public BodyShieldSymbol(Graphics.AbsVoxelObj parentModel)
         {
-            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.shield_symbol,
+            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                4f, 0, true);
             model.Visible = false;
             posOffset = new Vector3(0, TrollBoss.TrollBossScale * 0.4f, TrollBoss.TrollBossScale * 0.3f);

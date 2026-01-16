@@ -2,21 +2,19 @@
 using System;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.PlayerControls.Casual;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
-using VikingEngine.PJ;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars.Conscript
 {
-    
-
-
     struct ConscriptProfile
     {
+        public static readonly ConscriptProfile Empty = new ConscriptProfile();
+
         public ItemResourceType weapon;
         public ItemResourceType armorLevel;
         public TrainingLevel training;
@@ -37,14 +35,15 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 conscript = this,
             };
-            var data = SoldierProfile.init(null);
+            var data = SoldierProfile.init();
             return data.workForceCount();
         }
 
-        public void classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine)
+        public void classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmachine)
         {
             switch (weapon)
             {
+                case ItemResourceType.Settler:
                 case ItemResourceType.SharpStick:
                 case ItemResourceType.BronzeSword:
                 case ItemResourceType.ShortSword:
@@ -56,7 +55,7 @@ namespace VikingEngine.DSSWars.Conscript
                     rangedMan = false;
                     meleeMan = true;
                     knight = false; 
-                    warmashine = false;
+                    warmachine = false;
                     break;
 
                 case ItemResourceType.SlingShot:
@@ -73,7 +72,7 @@ namespace VikingEngine.DSSWars.Conscript
                     rangedMan = true;
                     meleeMan = false;
                     knight = false;
-                    warmashine = false;
+                    warmachine = false;
                     break;
 
                 case ItemResourceType.Warhammer:
@@ -84,7 +83,7 @@ namespace VikingEngine.DSSWars.Conscript
                     rangedMan = false;
                     meleeMan = true;
                     knight = true;
-                    warmashine = false;
+                    warmachine = false;
                     break;
 
                 case ItemResourceType.MithrilBow:
@@ -92,7 +91,7 @@ namespace VikingEngine.DSSWars.Conscript
                     rangedMan = true;
                     meleeMan = false;
                     knight = true;
-                    warmashine = false;
+                    warmachine = false;
                     break;
 
                 case ItemResourceType.Ballista:
@@ -107,7 +106,7 @@ namespace VikingEngine.DSSWars.Conscript
                     rangedMan = false;
                     meleeMan = false;
                     knight = false;
-                    warmashine = true;
+                    warmachine = true;
                     break;
 
                 case ItemResourceType.UN_BatteringRam:
@@ -115,47 +114,13 @@ namespace VikingEngine.DSSWars.Conscript
                     rangedMan = false;
                     meleeMan = false;
                     knight = false;
-                    warmashine = true;
+                    warmachine = true;
                     break;
 
                 default:
                     throw new NotImplementedException();
             }
         }
-
-        //public bool RangedManUnit()
-        //{
-        //    return weapon == ItemResourceType.Bow || weapon == ItemResourceType.Crossbow;    
-        //}
-
-        //public bool MeleeSoldier()
-        //{
-        //    return weapon == ItemResourceType.SharpStick || weapon == ItemResourceType.Sword || weapon == ItemResourceType.TwoHandSword;
-        //}
-
-        //public bool KnightUnit()
-        //{
-        //    return weapon == ItemResourceType.TwoHandSword || weapon == ItemResourceType.KnightsLance;
-        //}
-
-        //public bool Warmashine()
-        //{
-        //    return weapon == ItemResourceType.Ballista;
-        //}
-
-        //public int DefaultArmyRow()
-        //{
-        //    switch (weapon)
-        //    {
-        //        case MainWeapon.Bow:
-        //        case MainWeapon.CrossBow:
-        //            return ArmyPlacementGrid.Row_Second;
-        //        case MainWeapon.Ballista:
-        //            return ArmyPlacementGrid.Row_Behind;
-        //        default:
-        //            return ArmyPlacementGrid.Row_Body;
-        //    }
-        //}
 
         public double armySpeedBonus(bool land)
         {
@@ -186,32 +151,32 @@ namespace VikingEngine.DSSWars.Conscript
             return 0;
         }
 
-        public void defaultSetup(BuildAndExpandType barrackType)
-        {
-            switch (barrackType)
-            {
-                case BuildAndExpandType.SoldierBarracks:
-                    weapon = ItemResourceType.SharpStick;
-                    break;
-                case BuildAndExpandType.ArcherBarracks:
-                    weapon = ItemResourceType.SlingShot;
-                    break;
-                case BuildAndExpandType.WarmashineBarracks:
-                    weapon = ItemResourceType.Ballista;
-                    break;
-                case BuildAndExpandType.KnightsBarracks:
-                    weapon = ItemResourceType.Warhammer;
-                    training = TrainingLevel.Basic;
-                    break;
-                case BuildAndExpandType.GunBarracks:
-                    weapon = ItemResourceType.HandCannon;
-                    break;
-                case BuildAndExpandType.CannonBarracks:
-                    weapon = ItemResourceType.ManCannonBronze;
-                    break;
-            }
+        //public void defaultSetup(BuildAndExpandType barrackType)
+        //{
+        //    switch (barrackType)
+        //    {
+        //        case BuildAndExpandType.SoldierBarracks:
+        //            weapon = ItemResourceType.SharpStick;
+        //            break;
+        //        case BuildAndExpandType.ArcherBarracks:
+        //            weapon = ItemResourceType.SlingShot;
+        //            break;
+        //        case BuildAndExpandType.WarmachineBarracks:
+        //            weapon = ItemResourceType.Ballista;
+        //            break;
+        //        case BuildAndExpandType.KnightsBarracks:
+        //            weapon = ItemResourceType.Warhammer;
+        //            training = TrainingLevel.Basic;
+        //            break;
+        //        case BuildAndExpandType.GunBarracks:
+        //            weapon = ItemResourceType.HandCannon;
+        //            break;
+        //        case BuildAndExpandType.CannonBarracks:
+        //            weapon = ItemResourceType.ManCannonBronze;
+        //            break;
+        //    }
 
-        }
+        //}
 
         public string TypeName()
         {
@@ -229,6 +194,9 @@ namespace VikingEngine.DSSWars.Conscript
                 default:
                     switch (weapon)
                     {
+                        case ItemResourceType.Settler:
+                            return DssRef.lang.UnitType_Settler;
+
                         case ItemResourceType.SharpStick:
                             return DssRef.lang.UnitType_Folkman;
                         case ItemResourceType.Pike:
@@ -250,7 +218,7 @@ namespace VikingEngine.DSSWars.Conscript
                         case ItemResourceType.TwoHandSword:
                             return DssRef.lang.UnitType_FootKnight;
                         case ItemResourceType.MithrilSword:
-                            return DssRef.lang.UnitType_MithrilKnight;
+                            return DssRef.lang.UnitType_MithrilSwordsman;
                         case ItemResourceType.MithrilBow:
                             return DssRef.lang.UnitType_MithrilArcher;
 
@@ -361,12 +329,13 @@ namespace VikingEngine.DSSWars.Conscript
                     content.Add(new RbText(LangLib.Item(armorLevel), HudLib.TitleColor_TypeName));
                 }
 
-                content.newLine();
-                HudLib.BulletSeperationPoint(content);
-
-                //content.Add(new RbImage(ResourceLib.Icon(weapon)));
-                content.space();
-                content.Add(new RbText(LangLib.SpecializationTypeName(specialization), HudLib.TitleColor_TypeName));
+                if (specialization != SpecializationType.None)
+                {
+                    content.newLine();
+                    HudLib.BulletSeperationPoint(content);
+                    content.space();
+                    content.Add(new RbText(LangLib.SpecializationTypeName(specialization, out var specIcon), HudLib.TitleColor_TypeName));
+                }
             }
 
             //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_WeaponTitle, LangLib.Item(weapon)));
@@ -394,70 +363,74 @@ namespace VikingEngine.DSSWars.Conscript
         //make these static
         public static int WeaponDamage(ItemResourceType weapon, out int splashCount)
         {
-            splashCount = 0;
-            switch (weapon)
-            {
-                case ItemResourceType.SharpStick: return DssConst.WeaponDamage_SharpStick;
-                case ItemResourceType.BronzeSword: return DssConst.WeaponDamage_BronzeSword;
-                case ItemResourceType.ShortSword: return DssConst.WeaponDamage_ShortSword;
-                case ItemResourceType.Sword: return DssConst.WeaponDamage_Sword;
-                case ItemResourceType.LongSword: return DssConst.WeaponDamage_LongSword;
-                case ItemResourceType.Pike: return DssConst.WeaponDamage_Pike;
-                case ItemResourceType.HandSpear: return DssConst.WeaponDamage_Handspear;
+            var soldierData = ItemPropertyColl.Get(weapon).soldierData;
+            splashCount = soldierData.attackSplashCount;
+            return soldierData.attackDamage;
 
-                case ItemResourceType.Warhammer: return DssConst.WeaponDamage_Warhammer;
-                case ItemResourceType.TwoHandSword: return DssConst.WeaponDamage_TwoHandSword;
-                case ItemResourceType.KnightsLance: return DssConst.WeaponDamage_KnigtsLance;
-                case ItemResourceType.MithrilSword: return DssConst.WeaponDamage_MithrilSword;
+            //splashCount = 0;
+            //switch (weapon)
+            //{
+            //    case ItemResourceType.SharpStick: return DssConst.WeaponDamage_SharpStick;
+            //    case ItemResourceType.BronzeSword: return DssConst.WeaponDamage_BronzeSword;
+            //    case ItemResourceType.ShortSword: return DssConst.WeaponDamage_ShortSword;
+            //    case ItemResourceType.Sword: return DssConst.WeaponDamage_Sword;
+            //    case ItemResourceType.LongSword: return DssConst.WeaponDamage_LongSword;
+            //    case ItemResourceType.Pike: return DssConst.WeaponDamage_Pike;
+            //    case ItemResourceType.HandSpear: return DssConst.WeaponDamage_Handspear;
 
-                case ItemResourceType.SlingShot: return DssConst.WeaponDamage_Slingshot;
-                case ItemResourceType.ThrowingSpear: return DssConst.WeaponDamage_Throwingspear;
-                case ItemResourceType.Bow: return DssConst.WeaponDamage_Bow;
-                case ItemResourceType.LongBow: return DssConst.WeaponDamage_Longbow;
-                case ItemResourceType.Crossbow: return DssConst.WeaponDamage_CrossBow;
-                case ItemResourceType.MithrilBow: return DssConst.WeaponDamage_MithrilBow;
+            //    case ItemResourceType.Warhammer: return DssConst.WeaponDamage_Warhammer;
+            //    case ItemResourceType.TwoHandSword: return DssConst.WeaponDamage_TwoHandSword;
+            //    case ItemResourceType.KnightsLance: return DssConst.WeaponDamage_KnigtsLance;
+            //    case ItemResourceType.MithrilSword: return DssConst.WeaponDamage_MithrilSword;
 
-                case ItemResourceType.HandCannon: return DssConst.WeaponDamage_Handcannon;
-                case ItemResourceType.HandCulverin:
-                    splashCount = 7;
-                    return DssConst.WeaponDamage_Handculvetin;
-                case ItemResourceType.Rifle: return DssConst.WeaponDamage_Rifle;
-                case ItemResourceType.Blunderbuss:
-                    splashCount = 8;
-                    return DssConst.WeaponDamage_Blunderbus;
+            //    case ItemResourceType.SlingShot: return DssConst.WeaponDamage_Slingshot;
+            //    case ItemResourceType.ThrowingSpear: return DssConst.WeaponDamage_Throwingspear;
+            //    case ItemResourceType.Bow: return DssConst.WeaponDamage_Bow;
+            //    case ItemResourceType.LongBow: return DssConst.WeaponDamage_Longbow;
+            //    case ItemResourceType.Crossbow: return DssConst.WeaponDamage_CrossBow;
+            //    case ItemResourceType.MithrilBow: return DssConst.WeaponDamage_MithrilBow;
 
-                case ItemResourceType.Ballista:
-                    splashCount = 1;
-                    return DssConst.WeaponDamage_Ballista;
-                case ItemResourceType.Manuballista:
-                    splashCount = 1;
-                    return DssConst.WeaponDamage_ManuBallista;
-                case ItemResourceType.Catapult:
-                    splashCount = 3; 
-                    return DssConst.WeaponDamage_Catapult;
+            //    case ItemResourceType.HandCannon: return DssConst.WeaponDamage_Handcannon;
+            //    case ItemResourceType.HandCulverin:
+            //        splashCount = 7;
+            //        return DssConst.WeaponDamage_Handculvetin;
+            //    case ItemResourceType.Rifle: return DssConst.WeaponDamage_Rifle;
+            //    case ItemResourceType.Blunderbuss:
+            //        splashCount = 8;
+            //        return DssConst.WeaponDamage_Blunderbus;
 
-                case ItemResourceType.SiegeCannonBronze:
-                    splashCount = 12; 
-                    return DssConst.WeaponDamage_SiegeCannonBronze;
-                case ItemResourceType.ManCannonBronze:
-                    splashCount = 5; return DssConst.WeaponDamage_ManCannonBronze;
-                case ItemResourceType.SiegeCannonIron:
-                    splashCount = 2; return DssConst.WeaponDamage_SiegeCannonIron;
-                case ItemResourceType.ManCannonIron:
-                    splashCount = 6; return DssConst.WeaponDamage_ManCannonIron;
+            //    case ItemResourceType.Ballista:
+            //        splashCount = 1;
+            //        return DssConst.WeaponDamage_Ballista;
+            //    case ItemResourceType.Manuballista:
+            //        splashCount = 1;
+            //        return DssConst.WeaponDamage_ManuBallista;
+            //    case ItemResourceType.Catapult:
+            //        splashCount = 3; 
+            //        return DssConst.WeaponDamage_Catapult;
 
-                case ItemResourceType.RoseWarrior_soldier:
-                    return DssConst.WeaponDamage_LongSword;
+            //    case ItemResourceType.SiegeCannonBronze:
+            //        splashCount = 12; 
+            //        return DssConst.WeaponDamage_SiegeCannonBronze;
+            //    case ItemResourceType.ManCannonBronze:
+            //        splashCount = 5; return DssConst.WeaponDamage_ManCannonBronze;
+            //    case ItemResourceType.SiegeCannonIron:
+            //        splashCount = 2; return DssConst.WeaponDamage_SiegeCannonIron;
+            //    case ItemResourceType.ManCannonIron:
+            //        splashCount = 6; return DssConst.WeaponDamage_ManCannonIron;
 
-                case ItemResourceType.RoseWarrior_tank:
-                    return DssConst.WeaponDamage_MithrilSword;
+            //    case ItemResourceType.RoseWarrior_soldier:
+            //        return DssConst.WeaponDamage_LongSword;
 
-                case ItemResourceType.RoseWarrior_dog:
-                    return DssConst.WeaponDamage_Sword;
+            //    case ItemResourceType.RoseWarrior_tank:
+            //        return DssConst.WeaponDamage_MithrilSword;
+
+            //    case ItemResourceType.RoseWarrior_dog:
+            //        return DssConst.WeaponDamage_Sword;
 
 
-                default: throw new NotImplementedException();
-            }
+            //    default: throw new NotImplementedException();
+            //}
         }
 
         //public static Resource.ItemResourceType WeaponItem(ItemResourceType weapon)
@@ -478,19 +451,20 @@ namespace VikingEngine.DSSWars.Conscript
 
         public static int ArmorHealth(ItemResourceType armorLevel)
         {
-            switch (armorLevel)
-            {
-                case ItemResourceType.NONE: return DssConst.ArmorHealth_None;
-                case ItemResourceType.PaddedArmor: return DssConst.ArmorHealth_Padded;
-                case ItemResourceType.HeavyPaddedArmor: return DssConst.ArmorHealth_HeavyPadded;
-                case ItemResourceType.BronzeArmor: return DssConst.ArmorHealth_Bronze;
-                case ItemResourceType.IronArmor: return DssConst.ArmorHealth_Mail;
-                case ItemResourceType.HeavyIronArmor: return DssConst.ArmorHealth_HeavyMail;
-                case ItemResourceType.LightPlateArmor: return DssConst.ArmorHealth_Plate;
-                case ItemResourceType.FullPlateArmor: return DssConst.ArmorHealth_FullPlate;
-                case ItemResourceType.MithrilArmor: return DssConst.ArmorHealth_Mithril;
-                default: throw new NotImplementedException();
-            }
+            return ItemPropertyColl.Get(armorLevel).soldierData.basehealth;
+            //switch (armorLevel)
+            //{
+            //    case ItemResourceType.NONE: return DssConst.ArmorHealth_None;
+            //    case ItemResourceType.PaddedArmor: return DssConst.ArmorHealth_Padded;
+            //    case ItemResourceType.HeavyPaddedArmor: return DssConst.ArmorHealth_HeavyPadded;
+            //    case ItemResourceType.BronzeArmor: return DssConst.ArmorHealth_Bronze;
+            //    case ItemResourceType.IronArmor: return DssConst.ArmorHealth_Mail;
+            //    case ItemResourceType.HeavyIronArmor: return DssConst.ArmorHealth_HeavyMail;
+            //    case ItemResourceType.LightPlateArmor: return DssConst.ArmorHealth_Plate;
+            //    case ItemResourceType.FullPlateArmor: return DssConst.ArmorHealth_FullPlate;
+            //    case ItemResourceType.MithrilArmor: return DssConst.ArmorHealth_Mithril;
+            //    default: throw new NotImplementedException();
+            //}
         }
 
         //public static Resource.ItemResourceType ArmorItem(ItemResourceType armorLevel)
@@ -513,7 +487,12 @@ namespace VikingEngine.DSSWars.Conscript
                 case TrainingLevel.Basic: return DssConst.TrainingAttackSpeed_Basic;
                 case TrainingLevel.Skillful: return DssConst.TrainingAttackSpeed_Skillful;
                 case TrainingLevel.Professional: return DssConst.TrainingAttackSpeed_Professional;
+                case TrainingLevel.Champion: return DssConst.TrainingAttackSpeed_Champion;
+#if DEBUG
                 default: throw new NotImplementedException();
+#else
+                default: return DssConst.TrainingAttackSpeed_Basic; 
+#endif
             }
         }
 
@@ -551,34 +530,26 @@ namespace VikingEngine.DSSWars.Conscript
             
             return result;
         }
+
+        public static float TrainingTime(CasualSoldierType casualType)
+        {
+            float result;
+            switch (casualType)
+            {
+                case CasualSoldierType.FolkMen:
+                    result = DssConst.TrainingTimeSec_Minimal;
+                    break;
+                default:
+                    result = DssConst.TrainingTimeSec_Basic;
+                    break;
+                case  CasualSoldierType.Rider:
+                    result = DssConst.TrainingTimeSec_Skillful;
+                    break;
+            }
+
+            return result;
+        }
     }
-
-    //enum ArmorLevel
-    //{
-    //    None,
-    //    PaddedArmor,
-    //    HeavyPaddedArmor,
-    //    Mail,
-    //    HeavyMail,
-    //    Plate,
-    //    FullPlate,
-    //    Mithril,
-    //    NUM
-    //}
-
-    //enum MainWeapon
-    //{
-    //    SharpStick,
-    //    Sword,
-    //    Pike,
-    //    Bow,
-    //    CrossBow,
-    //    TwoHandSword,
-    //    KnightsLance,
-    //    Ballista,
-    //    Longbow,
-    //    NUM
-    //}
 
     enum TrainingLevel
     {
@@ -615,13 +586,4 @@ namespace VikingEngine.DSSWars.Conscript
         Training,
     }
 
-    //enum BarracksType
-    //{ 
-    //    Soldier,
-    //    Archer,
-    //    Warmashine,
-    //    Knight,
-    //    Gun,
-    //    Cannon,
-    //}
 }

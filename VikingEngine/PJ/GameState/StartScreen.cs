@@ -10,7 +10,7 @@ using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.PJ
 {
-    class StartScreen : Engine.GameState//, DataStream.IStreamIOCallback
+    class StartScreen : Engine.GameState//, IStreamIOCallback
     {
         //public static int SignedInPLayer;
         bool isReset;
@@ -89,9 +89,9 @@ namespace VikingEngine.PJ
                 Engine.LoadContent.LoadSound(LoadedSound.bassdrop, PjLib.ContentFolder + "Bassbomb");
                 
                 Ref.music = new Sound.MusicPlayer();
-                PjRef.JoustSong = new Sound.SongData(PjLib.ContentFolder + "Hemisphere Three", "Standard Joust", false, 1f);
+                PjRef.JoustSong = new Sound.SongData(PjLib.ContentFolder + "Hemisphere Three", "Standard Joust", null, false, 1f);
                 PjRef.JoustSong.LoadAndStore();
-                PjRef.LobbySong = new Sound.SongData(PjLib.ContentFolder + "Elevating", "Lobby", true, 0.3f);
+                PjRef.LobbySong = new Sound.SongData(PjLib.ContentFolder + "Elevating", "Lobby", null, true, 0.3f);
                 PjRef.LobbySong.LoadAndStore();
 
 

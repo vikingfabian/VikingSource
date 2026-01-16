@@ -6,7 +6,7 @@ using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using Microsoft.Xna.Framework.Input;
 using VikingEngine.HUD;
-using Valve.Steamworks;
+
 using VikingEngine.SteamWrapping;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Data;
@@ -29,8 +29,10 @@ namespace VikingEngine.DebugExtensions
 
         protected Gui menu;
         public static Exception ThreadException = null;
+        public static string AttachMessage = null;
         Time flashTimer = Time.Zero;
         bool redFlash = true;
+        
 
         public BlueScreen()
         {
@@ -41,35 +43,8 @@ namespace VikingEngine.DebugExtensions
         {
             cleanUp();
 
-            logError(Engine.LoadContent.SteamVersion + errorMessageDetailed);
-            //if (PlatformSettings.PC_platform)
-            //{
-            //    try
-            //    {
-            //        var now = DateTime.Now;
-
-            //        var logFilePath = new DataStream.FilePath(
-            //             "Logs",
-            //             string.Format("{0}_{1}_{2}__{3}_{4}", now.Year, now.Month, now.Day, now.Hour, now.Minute),
-            //             ".txt", true, false);
-
-            //        System.IO.Directory.CreateDirectory(logFilePath.CompleteDirectory);
-
-            //        //create a log file
-            //        logFullPath = logFilePath.CompletePath(true);
-            //        DataLib.SaveLoad.CreateTextFile(logFullPath, new List<string>
-            //        {
-            //            PlatformSettings.SteamVersion,
-            //            errorMessageDetailed,
-            //        });
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Debug.LogError(e.Message);
-            //    }
-            //}
-
-
+            logError(Engine.LoadContent.SteamVersion + (AttachMessage== null? string.Empty : AttachMessage + Environment.NewLine) + errorMessageDetailed);
+            
             errorMessageDetailed = Engine.LoadContent.SteamVersion + errorMessageDetailed;
 
 
@@ -93,6 +68,10 @@ namespace VikingEngine.DebugExtensions
                     {
                         new GuiIconTextButton(SpriteName.ButtonA, "RESTART", null, restart, false, layout);
                     }
+                    if (AttachMessage != null)
+                    {
+                        new GuiLabel(Engine.LoadContent.CheckCharsSafety(AttachMessage, menu.style.textFormat.Font), true, menu.style.textFormat, layout);
+                    }
                     new GuiLabel(Engine.LoadContent.CheckCharsSafety(detailedText, menu.style.textFormat.Font), true, menu.style.textFormat, layout);
                 }
                 layout.End();
@@ -111,6 +90,8 @@ namespace VikingEngine.DebugExtensions
                     Ref.steam.stats.upload();
                 }
             }
+
+            AttachMessage = null;
         }
 
         protected void cleanUp()
@@ -249,16 +230,16 @@ namespace VikingEngine.DebugExtensions
 
         public static void TryCatch(Action method, TryMethodType methodType)
         {
-            if (PlatformSettings.BlueScreen || Engine.Screen.PcTargetFullScreen)
+            if (PlatformSettings.BlueScreen || Engine.Screen.PcDisplayMode == WindowDisplayMode.HardwareFullscreen)
             {
                 try
                 {
                     method();
                 }
-                catch (AbsSteamException e) 
-                {
-                    new SteamBlueScreen(ErrorMessage(e, methodType));
-                }
+                //catch (AbsSteamException e) 
+                //{
+                //    new SteamBlueScreen(ErrorMessage(e, methodType));
+                //}
                 catch (Exception e)
                 {
                     new BlueScreen(ErrorMessage(e, methodType));
@@ -277,6 +258,12 @@ namespace VikingEngine.DebugExtensions
         {
             if (ThreadException != null)
             {
+#if DEBUG
+                if (!PlatformSettings.BlueScreen)
+                {
+                    throw new Exception();
+                }
+#endif
                 if (Ref.gamestate is BlueScreen == false)
                 {
                     new BlueScreen(ErrorMessage(ThreadException, TryMethodType.A));
@@ -284,7 +271,7 @@ namespace VikingEngine.DebugExtensions
                 ThreadException = null;
             }
         }
-        
+
         public static string ErrorMessage(Exception e, TryMethodType methodType)
         {
             string gametypeCode = "-";
@@ -310,6 +297,10 @@ namespace VikingEngine.DebugExtensions
             if (methodType == TryMethodType.U)
             {
                 type += " N" + ((int)Network.NetLib.PacketType).ToString();
+            }
+            if (!Ref.steam.isInitialized)
+            {
+                type += "-P";
             }
 
             string stacktrace = string.Empty;

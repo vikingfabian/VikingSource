@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -39,7 +39,7 @@ namespace VikingEngine.HUD.RichMenu
 
         float scrollerWidth;
         RichScrollbar scrollBar;
-        ImageLayers layer;
+        public ImageLayers layer;
         public PlayerData playerData;
         RichTooltip tooltip = null;
         public string activeDropDown = null;
@@ -53,6 +53,7 @@ namespace VikingEngine.HUD.RichMenu
             this.playerData = playerData;
             this.layer = layer;
             this.settings = settings;
+            edgeArea.Size = Bound.Min(edgeArea.Size, new Vector2(20));
             this.edgeArea = edgeArea;
             backgroundArea = edgeArea;
             renderArea = edgeArea;
@@ -67,7 +68,11 @@ namespace VikingEngine.HUD.RichMenu
             scrollerWidth = Screen.MinClickSize;
 
             renderList = new RenderTargetDrawContainer(renderArea.Position, renderArea.Size, layer, new List<AbsDraw>());
-            
+#if DEBUG
+            renderList.DebugName = "RichMenu target";
+#endif
+
+
             scrollBar = new RichScrollbar(HudLib.HudMenuScollButton, HudLib.HudMenuScollBackground, edgeArea, scrollerWidth, layer -2);
             mouseScrollArea = scrollBar.IncludeScrollArea(edgeArea);
         }
@@ -159,12 +164,28 @@ namespace VikingEngine.HUD.RichMenu
             backgroundArea.Height = richBox.area.Size.Y + edgeThickness * 3;
         }
 
+        public void updateHeightFromContent(float maxBottom, bool resetFirst = true)
+        {
+            updateHeightFromContent(resetFirst);
+            if (backgroundArea.Bottom > maxBottom)
+            {
+                backgroundArea.SetBottom(maxBottom, true);
+            }
+        }
+
 
         public NineSplitAreaTexture addBackground(NineSplitSettings texture, ImageLayers layer)
         {
             backgroundTextures?.DeleteMe();
             backgroundTextures = new NineSplitAreaTexture(texture, backgroundArea, layer + 1);
             return backgroundTextures;
+        }
+
+        public Graphics.Image addBackground_Flat(Color color, float opacity)
+        {
+            Graphics.Image bg = new Image( SpriteName.WhiteArea, backgroundArea.Position, backgroundArea.Size,  layer + 1);
+            bg.ColorAndAlpha(color, opacity);
+            return bg;
         }
 
         public void OpenMenu(string menuName, StackOption stack)
@@ -184,7 +205,7 @@ namespace VikingEngine.HUD.RichMenu
         public void OpenMenu(RichBoxContent content, string menuName)
         {
             menuStack.Add(menuName);
-            Refresh(content);
+            Refresh(content, null);
         }
 
         public void clearState()
@@ -218,7 +239,7 @@ namespace VikingEngine.HUD.RichMenu
 
         public string CurrentMenuState => menuStack.LastOrDefault();
 
-        public void Refresh(RichBoxContent content)
+        public void Refresh(RichBoxContent content, RichMenuControllerPointer pointer = null)
         {
             //Debug.Log("Rich menu REFRESH");
             deleteContent();
@@ -237,7 +258,7 @@ namespace VikingEngine.HUD.RichMenu
             //updateContentScroll();
             if (interaction == null || interaction.drawContainer != renderList)
             {
-                interaction = new RbInteraction(content, layer, new Input.MouseButtonMap(MouseButton.Left));
+                interaction = new RbInteraction(content, layer, playerData.inputMap== null? new Input.MouseButtonMap(MouseButton.Left): playerData.inputMap.MenuClick);
 
                 interaction.drawContainer = renderList;
             }
@@ -252,21 +273,28 @@ namespace VikingEngine.HUD.RichMenu
 
             if (hadSelection)
             {
-                
+
                 //interaction.inherit(prevInteract);
                 //deleteTooltip();
-                interaction.update(-renderArea.Position, this, false, out _, out _);
-                
+                if (pointer == null)
+                {
+
+                    interaction.update(-renderArea.Position, this, false, out _, out _);
+                }
+                else
+                {
+                    interaction.refreshControllerHover(pointer);
+                }
                 tooltip?.view();
 
                 //interaction.update(-renderArea.Position, this, false, out _);
             }
         }
 
-        public void Queue_Refresh(RichBoxContent content)
-        {
-            Ref.update.AddSyncAction(new SyncAction1Arg<RichBoxContent>(Refresh, content));
-        }
+        //public void Queue_Refresh(RichBoxContent content)
+        //{
+        //    Ref.update.AddSyncAction(new SyncAction1Arg<RichBoxContent>(Refresh, content));
+        //}
 
         void deleteContent()
         {
@@ -278,15 +306,14 @@ namespace VikingEngine.HUD.RichMenu
         public void DeleteMe()
         {
             renderList.DeleteMe();
-            backgroundTextures.DeleteMe();
+            backgroundTextures?.DeleteMe();
             //Debug.Log("deleteTooltip: del menu");
             deleteTooltip();
             scrollBar.DeleteMe();
         }
 
         public void updateMouseInput(ref bool mouseOver)
-        {           
-
+        {     
             if (interaction != null)
             {      
                 if (backgroundArea.IntersectPoint(Input.Mouse.Position)
@@ -326,6 +353,39 @@ namespace VikingEngine.HUD.RichMenu
             }
         }
 
+        public void updateControllerInput(RichMenuControllerPointer pointer)
+        {
+            if (interaction != null)
+            {
+                
+
+                if (interaction.updateController(pointer, this, false, out needRefresh, out _, out float pushScroll))
+                {
+                    needRefresh = true;
+                }
+
+                if (scrollBar.IsVisible())
+                {
+                    if (scrollBar.updateControllerScroll(pointer.inputMap))
+                    {
+                        updateContentScroll();
+                    }
+                    else if (pushScroll != 0)
+                    {
+                        float scroll = scrollBar.scrollInput(-pushScroll);
+                        if (scroll != 0)
+                        {
+                            pointer.pointer.position.Y -= scroll;
+                            updateContentScroll();
+                        }
+                    }
+                }
+                
+
+                this.needRefresh |= needRefresh;
+            }
+        }
+
         public bool HasToolTip(int id)
         {
             if (Input.Keyboard.Ctrl)
@@ -337,6 +397,10 @@ namespace VikingEngine.HUD.RichMenu
 
         public bool BlockRefresh()
         {
+            if (interaction == null)
+            {
+                return false;
+            }
             return interaction.interactionStack != null;
         }
 

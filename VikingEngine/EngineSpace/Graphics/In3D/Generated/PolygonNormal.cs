@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
+
 using VikingEngine.Graphics;
+using VikingEngine.Voxels;
 
 
 namespace VikingEngine.Graphics
@@ -82,7 +84,7 @@ namespace VikingEngine.Graphics
         public PolygonNormal(LootFest.Map.PreparedFace face, Vector3 pos)
         {            
             Graphics.Sprite file = LootFest.LfRef.Images.TileIxToImgeFile[face.tileIx];
-            Graphics.Face data = LootFest.Data.Block.GetVoxelObjFace(pos, face.faceType);
+            Graphics.Face data = Block.GetVoxelObjFace(pos, face.faceType);
 
             Vertex0sw = new VertexPositionNormalTexture(data.Corner3, data.Normal, file.SourcePolygonLowLeft);
             Vertex1nw = new VertexPositionNormalTexture(data.Corner1, data.Normal, file.SourcePolygonTopLeft);

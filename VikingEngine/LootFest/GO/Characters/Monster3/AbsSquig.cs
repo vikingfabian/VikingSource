@@ -229,7 +229,7 @@ namespace VikingEngine.LootFest.GO.Characters.Monster3
                     aiPhys.MovUpdate_MoveForward(rotation, rushSpeed);
                 }
 
-                if (Ref.TimePassed16ms && Ref.rnd.Chance(0.6f))
+                if (/*Ref.TimePassed16ms && */Ref.rnd.Chance(0.6f))
                 {
                         Engine.ParticleHandler.AddParticles(ParticleSystemType.RunningSmoke,
                             new ParticleInitData(Ref.rnd.Vector3_Sq(image.position, 0.3f), Vector3.Zero));

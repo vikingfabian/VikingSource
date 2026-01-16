@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.LootFest.Players;
@@ -13,6 +15,12 @@ using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls
 {
+    struct WallPosition
+    {
+        public IntVector2 Position;
+        public bool available;
+    }
+
     class SoldierControls
     {
         List<SoldierGroup> groups;
@@ -23,56 +31,21 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public void mapExecute(LocalPlayer player)
         {
-            var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.mapControls.subTilePosition);
-            SoldierGroup target = null;
-            if (player.gameControls.mapControls.armyMayAttackHoverObj())
+            if (player.mapLayersManager.current.DrawDetailLayer)
             {
-                target = player.gameControls.mapControls.hover.obj.GetSoldierGroup();
-                new AttackHereAnimation(target, player.playerData.view.ScreenIndex);
+                var pos = WP.SubtileToWorldPosXZgroundY_Centered(player.gameControls.map.subTilePosition);
+                SoldierGroup target = null;
+                if (player.gameControls.map.armyMayAttackHoverObj())
+                {
+                    target = player.gameControls.map.hover.obj.GetSoldierGroup();
+                    new AttackHereAnimation(target, player.playerData.view.ScreenIndex);
+                }
+                else
+                {
+                    new MoveHereAnimation(pos);
+                }
+                calculateGroupOrder(player, pos, target);
             }
-            else
-            {
-                new MoveHereAnimation(pos);
-            }
-            calculateGroupOrder(player, pos, target);
-            //if (target == null)
-            //{
-            //    new MoveHereAnimation(pos);
-            //}
-            //else
-            //{ 
-            //    new AttackHereAnimation(target, player.playerData.view.ScreenIndex);
-            //}
-
-            //if (player.gameControls.mapControls.armyMayAttackHoverObj())
-            //{
-
-            //    foreach (SoldierGroup group in groups)
-            //    {
-            //        new AttackCommand(group, target, false);
-            //    }
-            //    new AttackHereAnimation(target, player.playerData.view.ScreenIndex);
-            //}
-            //else
-            //{
-
-            //    foreach (SoldierGroup group in groups)
-            //    {
-            //        new MoveCommand(group, pos, false);
-
-            //        if (group.InGuardPost())
-            //        {
-            //            new GuardPostTransform(group, -1, false);
-            //        }
-
-            //        if (player.gameControls.mapControls.hover.subTile.selectTileResult == SelectTileResult.Wall)
-            //        {
-            //            var enterCommand = new EnterPostCommand(group, player.gameControls.mapControls.hover.subTile.subTilePos, true);
-            //            enterCommand.claimPost(group, player.gameControls.mapControls.hover.subTile.city, player.gameControls.mapControls.hover.subTile.city.defenceIxFromPosId(enterCommand.id));
-            //        }
-            //    }
-            //    new MoveHereAnimation(pos);
-            //}
         }
 
         void calculateGroupOrder(LocalPlayer player, Vector3 goalPos, SoldierGroup target)
@@ -81,134 +54,230 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             if (groups_sp.Count > 0)
             {
-                bool wall = target == null && player.gameControls.mapControls.hover.subTile.selectTileResult == SelectTileResult.Wall;
-                IntVector2 subTile = player.gameControls.mapControls.hover.subTile.subTilePos;
-                var city = player.gameControls.mapControls.hover.subTile.city;
+                bool wall = target == null && player.gameControls.map.hover.subTile.selectTileResult == SelectTileResult.Wall;
+                IntVector2 subTile = player.gameControls.map.hover.subTile.subTilePos;
+                var city = player.gameControls.map.hover.subTile.city;
 
-                Task taskA = Task.Run(() =>
+                Task.Run(() =>
                 {
-                    Vector3 center = Vector3.Zero;
-                    float groupRotation = 0;
-                    bool allSameDir = true;
-                    float firstRotation = groups_sp.First().rotation.radians;
-                    foreach (SoldierGroup group in groups_sp)
+                    try
                     {
-                        center += group.position;
-                        groupRotation += group.rotation.radians;
-                        if (allSameDir && group.rotation.AngleDifference(firstRotation) > MathExt.TauOver4)
-                        { 
-                            allSameDir = false;
+                        Vector3 center = Vector3.Zero;
+                        float groupRotation = 0;
+                        bool allSameDir = true;
+                        float firstRotation = groups_sp.First().rotation.radians;
+                        foreach (SoldierGroup group in groups_sp)
+                        {
+                            center += group.position;
+                            groupRotation += group.rotation.radians;
+                            if (allSameDir && group.rotation.AngleDifference(firstRotation) > MathExt.TauOver4)
+                            {
+                                allSameDir = false;
+                            }
                         }
-                    }
-                    center /= groups_sp.Count;
-                    groupRotation /= groups_sp.Count;
-                    //If the soldiers all look in the same general direction, rotate the formation, otherwise just move
-                    Vector2 goalDir = VectorExt.V3XZtoV2(goalPos - center);
-                    Vector2 goalCenter = VectorExt.V3XZtoV2(goalPos);
-                    Rotation1D goalRot = Rotation1D.FromDirection(goalDir);
-                    Vector2 goalDirNorm = goalDir;
-                    goalDirNorm.Normalize();
+                        center /= groups_sp.Count;
+                        groupRotation /= groups_sp.Count;
+                        //If the soldiers all look in the same general direction, rotate the formation, otherwise just move
+                        Vector2 goalDir = VectorExt.V3XZtoV2(goalPos - center);
+                        Vector2 goalCenter = VectorExt.V3XZtoV2(goalPos);
+                        Rotation1D goalRot = Rotation1D.FromDirection(goalDir);
+                        Vector2 goalDirNorm = goalDir;
+                        goalDirNorm.Normalize();
 
-                    float rotateGroupOffsets = 0;
-                    bool mirror = false; 
-                    if (allSameDir) 
-                    {
-                        rotateGroupOffsets = -goalRot.AngleDifference(groupRotation);
-                        mirror = Math.Abs(rotateGroupOffsets) > MathExt.TauOver4;
-                    }
-
-                    Span<GroupCommandPlacement> groupPlacements = stackalloc GroupCommandPlacement[groups_sp.Count];
-                    for (int i = 0; i < groups_sp.Count; i++)
-                    {
-                        GroupCommandPlacement placement = new GroupCommandPlacement(groups_sp[i].position, groups_sp[i].GroupMoveBoundRadius(), center, goalPos);
-                        
+                        float rotateGroupOffsets = 0;
+                        bool mirror = false;
                         if (allSameDir)
                         {
-                            placement.rotateGroup(goalDirNorm, rotateGroupOffsets, mirror);
+                            rotateGroupOffsets = -goalRot.AngleDifference(groupRotation);
+                            mirror = Math.Abs(rotateGroupOffsets) > MathExt.TauOver4;
                         }
 
-                        placement.finalize();
-
-                        groupPlacements[i] = placement;
-                    }
-
-                    
-
-                    //float r = DssVar.SoldierGroup_Spacing_Radius * 1f;
-                    bool collision = true;
-                    int loopMaxCount = 20;
-                    if (groups_sp.Count > 1)
-                    {
-                        //Pull all groups outward from center until they don't collide anymore
-                        while (collision && loopMaxCount > 0)
+                        Span<GroupCommandPlacement> groupPlacements = stackalloc GroupCommandPlacement[groups_sp.Count];
+                        for (int i = 0; i < groups_sp.Count; i++)
                         {
-                            collision = false;
-                            for (int group1Ix = 0; group1Ix < groups_sp.Count - 1; ++group1Ix)
+                            GroupCommandPlacement placement = new GroupCommandPlacement(groups_sp[i].position, groups_sp[i].GroupMoveBoundRadius(), center, goalPos);
+
+                            if (allSameDir)
                             {
-                                for (int group2Ix = group1Ix +1; group2Ix < groups_sp.Count; ++group2Ix)
+                                placement.rotateGroup(goalDirNorm, rotateGroupOffsets, mirror);
+                            }
+
+                            placement.finalize();
+
+                            groupPlacements[i] = placement;
+                        }
+
+
+
+                        //float r = DssVar.SoldierGroup_Spacing_Radius * 1f;
+                        bool collision = true;
+                        int loopMaxCount = 20;
+                        if (groups_sp.Count > 1)
+                        {
+                            //Pull all groups outward from center until they don't collide anymore
+                            while (collision && loopMaxCount > 0)
+                            {
+                                collision = false;
+                                for (int group1Ix = 0; group1Ix < groups_sp.Count - 1; ++group1Ix)
                                 {
-                                    var group1 = groupPlacements[group1Ix];
-                                    var group2 = groupPlacements[group2Ix];
-
-                                    if (PhysicsLib2D.CirkleIntersect(group1.currentPlacement, group1.radius,
-                                         group2.currentPlacement, group2.radius, out float intersect))
+                                    for (int group2Ix = group1Ix + 1; group2Ix < groups_sp.Count; ++group2Ix)
                                     {
-                                        collision = true;
+                                        var group1 = groupPlacements[group1Ix];
+                                        var group2 = groupPlacements[group2Ix];
 
-                                        //On collision move the group furthest away from its offset
-                                        int moveIx;
-                                        int otherIx;
-                                        if (group1.distanceToGroupOffset() > group2.distanceToGroupOffset())
+                                        if (PhysicsLib2D.CirkleIntersect(group1.currentPlacement, group1.radius,
+                                             group2.currentPlacement, group2.radius, out float intersect))
                                         {
-                                            moveIx = group1Ix;
-                                            otherIx = group2Ix;
+                                            collision = true;
+
+                                            //On collision move the group furthest away from its offset
+                                            int moveIx;
+                                            int otherIx;
+                                            if (group1.distanceToGroupOffset() > group2.distanceToGroupOffset())
+                                            {
+                                                moveIx = group1Ix;
+                                                otherIx = group2Ix;
+                                            }
+                                            else
+                                            {
+                                                moveIx = group2Ix;
+                                                otherIx = group1Ix;
+                                            }
+
+                                            ref var moveGroup = ref groupPlacements[moveIx];
+                                            moveGroup.moveOnCollision(goalCenter, intersect, groupPlacements[otherIx].currentPlacement);
+                                        }
+                                    }
+                                }
+                                --loopMaxCount;
+                            }
+                        }
+
+                        List<WallPosition> nextWalls = null;
+
+                        for (int i = 0; i < groups_sp.Count; ++i)
+                        {
+                            var place = groupPlacements[i];
+                            var group = groups_sp[i];
+
+                            if (target == null)
+                            {
+                                new MoveCommand(group, VectorExt.V2toV3XZ(place.currentPlacement), goalRot.radians, false);
+                            }
+                            else
+                            {
+                                new AttackCommand(group, place.currentPlacement - goalCenter, target, false);
+                            }
+
+                            if (group.IsGuardGroup())
+                            {
+                                if (group.InGuardPost())
+                                {
+                                    new GuardPostTransform(group, -1, false);
+                                }
+
+                                if (wall)
+                                {
+                                    if (i > 0)
+                                    {
+                                        if (nextWalls == null)
+                                        {
+                                            nextWalls = new List<WallPosition>(groups_sp.Count + 8);
+                                            int nextWallIx = 0;
+                                            int goalCount = groups_sp.Count - 1;
+                                            int available = 0;
+                                            findSourroundingWalls(subTile);
+
+                                            while (nextWallIx < nextWalls.Count && available < goalCount)
+                                            {
+                                                findSourroundingWalls(nextWalls[nextWallIx].Position);
+                                                nextWallIx++;
+                                            }
+
+                                            //clear out
+                                            for (int wallIx = nextWalls.Count - 1; wallIx >= 0; wallIx--)
+                                            {
+                                                if (!nextWalls[wallIx].available)
+                                                {
+                                                    nextWalls.RemoveAt(wallIx);
+                                                }
+                                            }
+
+                                            void findSourroundingWalls(IntVector2 center)
+                                            {
+                                                ForXYLoop loop = new ForXYLoop(Rectangle2.FromCenterTileAndRadius(center, 2));
+                                                while (loop.Next())
+                                                {
+                                                    if (loop.Position != center)
+                                                    {
+                                                        if (DssRef.world.subTileGrid.TryGet(loop.Position, out var tile))
+                                                        {
+                                                            if (tile.mainTerrain == Map.TerrainMainType.Wall &&
+                                                                !containsWall(loop.Position))
+                                                            {
+                                                                if (group.army.TryGetTarget(out var tArmy))
+                                                                {
+                                                                    var city = tArmy.GetCity();
+
+                                                                    if (DssRef.world.tileGrid.Get(WP.SubtileToTilePos(loop.Position)).CityIndex == city.myIndex)
+                                                                    {
+                                                                        WallPosition wallPosition = new WallPosition();
+                                                                        wallPosition.Position = loop.Position;
+                                                                        if (city.tryGetDefence(loop.Position, out var defence))
+                                                                        {
+                                                                            if (defence.soldierGroupId == DefenceStatus.NoSoldiers)
+                                                                            {
+                                                                                wallPosition.available = true;
+                                                                                available++;
+                                                                            }
+
+                                                                            nextWalls.Add(wallPosition);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            bool containsWall(IntVector2 pos)
+                                            {
+                                                foreach (var wall in nextWalls)
+                                                {
+                                                    if (wall.Position == pos)
+                                                    { 
+                                                        return true;
+                                                    }
+                                                }
+
+                                                return false;
+                                            }
+                                        }
+
+                                        if (nextWalls.Count > 0)
+                                        {
+                                            var enterCommand = new EnterPostCommand(group, arraylib.PullFirstMember(nextWalls).Position, true);
                                         }
                                         else
                                         {
-                                            moveIx = group2Ix;
-                                            otherIx = group1Ix;
+                                            new MoveCommand(group, VectorExt.V2toV3XZ(place.currentPlacement), goalRot.radians, false);
                                         }
-
-                                        ref var moveGroup = ref groupPlacements[moveIx];
-                                        moveGroup.moveOnCollision(goalCenter, intersect, groupPlacements[otherIx].currentPlacement);
+                                    }
+                                    else if (EnterPostCommand.tryClaimPost(group, city, subTile))
+                                    {
+                                        var enterCommand = new EnterPostCommand(group, subTile, true);
                                     }
                                 }
                             }
-                            --loopMaxCount;
                         }
                     }
-
-
-                    for (int i = 0; i < groups_sp.Count; ++i)
+                    catch (Exception ex)
                     {
-                        var place = groupPlacements[i];
-                        var group = groups_sp[i];
-
-                        if (target == null)
-                        {
-                            new MoveCommand(group, VectorExt.V2toV3XZ(place.currentPlacement), goalRot.radians, false);
-                        }
-                        else
-                        {
-                            new AttackCommand(group, place.currentPlacement - goalCenter, target, false);
-                        }
-
-                        if (group.IsGuardGroup())
-                        {
-                            if (group.InGuardPost())
-                            {
-                                new GuardPostTransform(group, -1, false);
-                            }
-
-                            if (wall)
-                            {
-                                if (EnterPostCommand.tryClaimPost(group, city, subTile))
-                                {
-                                    var enterCommand = new EnterPostCommand(group, subTile, true);
-                                }
-                            }
-                        }
+                        BlueScreen.ThreadException = ex;
                     }
+
+                    
                 });
             }
         }

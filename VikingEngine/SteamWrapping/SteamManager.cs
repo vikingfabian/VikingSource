@@ -9,7 +9,8 @@ using VikingEngine.DSSWars;
 
 
 #if PCGAME
-using Valve.Steamworks;
+
+using Steamworks;//
 #endif
 namespace VikingEngine.SteamWrapping
 {
@@ -17,11 +18,11 @@ namespace VikingEngine.SteamWrapping
     struct SteamApplicationSettings
     {
         /* Fields */
-        public uint appId;
+        public AppId_t appId;
 
         /* Constructors */
         public SteamApplicationSettings(
-            uint appId)
+            AppId_t appId)
         {
             this.appId = appId;
         }
@@ -35,7 +36,7 @@ namespace VikingEngine.SteamWrapping
         public SteamStats stats;
         public SteamLobbyMatchmaker LobbyMatchmaker = null;
         public SteamP2PManager P2PManager = null;
-        public SteamVOIP VOIP = null;
+        //public SteamVOIP VOIP = null;
         public SteamDLC DLC = null;
 
         /* Fields */
@@ -49,10 +50,10 @@ namespace VikingEngine.SteamWrapping
 
         public string UserCloudPath = "unknown_user";
 
-        SteamCallback<GameOverlayActivated_t> gameOverlayActivatedCB;
-        SteamCallback<UserStatsReceived_t> UserStatsRecievedCallback;
-        SteamCallback<UserStatsStored_t> UserStatsStoredCallback;
-        SteamWarningMessageHookDelegate warningHook;
+        Callback<GameOverlayActivated_t> gameOverlayActivatedCB;
+        Callback<UserStatsReceived_t> UserStatsRecievedCallback;
+        Callback<UserStatsStored_t> UserStatsStoredCallback;
+        //SteamWarningMessageHookDelegate warningHook;
 
         static void SteamAPIDebugTextHook(int severity, StringBuilder builder)
         {
@@ -69,21 +70,36 @@ namespace VikingEngine.SteamWrapping
         {
             Ref.steam = this;
 
-            if (PlatformSettings.RunProgram == StartProgram.LootFest3)
+            if (PlatformSettings.SteamAPI && SteamAPI.Init())
             {
-                new LootFest.Data.GameStats();
-            }
-            else if (PlatformSettings.RunProgram == StartProgram.PartyJousting)
-            {
+                isInitialized = true;
+
+                applicationSettings = SetupSteamApplicationSettings(PlatformSettings.RunProgram);
+
+                SetupSubsystems(applicationSettings);
+                UserCloudPath = SteamUser.GetSteamID().ToString();
+
+                if (PlatformSettings.RunProgram == StartProgram.LootFest3)
+                {
+                    new LootFest.Data.GameStats();
+                }
+                else if (PlatformSettings.RunProgram == StartProgram.PartyJousting)
+                {
 #if PJ
                 new PJ.PjEngine.GameStats();
 #endif
-            }
-            else if (PlatformSettings.RunProgram == StartProgram.DSS)
-            {
+                }
+                else if (PlatformSettings.RunProgram == StartProgram.DSS)
+                {
 #if DSS
-                new DSSWars.Data.GameStats();
+                    new DSSWars.Data.GameStats();
 #endif
+                }
+            }
+            else
+            {
+                Debug.LogError("SteamAPI_Init() failed.");
+                Debug.LogError("Next to the EXE, there must be steam_api.dll, steam_api64.dll & steam_appid.txt");
             }
         }
 
@@ -98,25 +114,25 @@ namespace VikingEngine.SteamWrapping
         /// <summary>
         /// Returns false if an error occured
         /// </summary>
-        public bool Initialize()
-        {
-            applicationSettings = SetupSteamApplicationSettings(PlatformSettings.RunProgram);
+        //public bool Initialize()
+        //{
+        //    applicationSettings = SetupSteamApplicationSettings(PlatformSettings.RunProgram);
 
-            isInitialized = SteamAPI.Init(applicationSettings.appId);
+        //    //isInitialized = SteamAPI.Init(applicationSettings.appId);
            
-            if (!isInitialized)
-            {
-                Debug.LogError("SteamAPI_Init() failed.");
-                Debug.LogError("Next to the EXE, there must be steam_api.dll, steam_api64.dll & steam_appid.txt");
-                return false;
-            }
+        //    if (!isInitialized)
+        //    {
+        //        Debug.LogError("SteamAPI_Init() failed.");
+        //        Debug.LogError("Next to the EXE, there must be steam_api.dll, steam_api64.dll & steam_appid.txt");
+        //        return false;
+        //    }
 
-            SetupSubsystems(applicationSettings);
-            UserCloudPath = SteamAPI.SteamUser().GetSteamID().ToString();
-            
+        //    SetupSubsystems(applicationSettings);
+        //    //UserCloudPath = SteamAPI.SteamUser().GetSteamID().ToString();
+        //    UserCloudPath = SteamUser.GetSteamID().ToString();
 
-            return true;
-        }
+        //    return true;
+        //}
 
 
         SteamApplicationSettings SetupSteamApplicationSettings(StartProgram program)
@@ -126,29 +142,29 @@ namespace VikingEngine.SteamWrapping
             switch (program)
             {
                 case StartProgram.LootFest3:
-                    result = new SteamApplicationSettings(367030);
+                    result = new SteamApplicationSettings(new AppId_t(367030));
                     break;
                 case StartProgram.DSS:
                     if (PlatformSettings.STEAM_DEMO)
                     {
-                        result = new SteamApplicationSettings(3585100);
+                        result = new SteamApplicationSettings(new AppId_t(3585100));
                     }
                     else
                     {
-                        result = new SteamApplicationSettings(1223150);
+                        result = new SteamApplicationSettings(new AppId_t(1223150));
                     }
                     break;
                 case StartProgram.PartyJousting:
-                    result = new SteamApplicationSettings(437900);
+                    result = new SteamApplicationSettings(new AppId_t(437900));
                     break;                    
                 case StartProgram.ToGG:
                     if (PlatformSettings.STEAM_DEMO)
                     {
-                        result = new SteamApplicationSettings(878070);
+                        result = new SteamApplicationSettings(new AppId_t(878070));
                     }
                     else
                     {
-                        result = new SteamApplicationSettings(629450);
+                        result = new SteamApplicationSettings(new AppId_t(629450));
                     }                   
                     break;
 
@@ -161,12 +177,12 @@ namespace VikingEngine.SteamWrapping
 
         void SetupSubsystems(SteamApplicationSettings settings)
         {
-            warningHook = SteamAPIDebugTextHook;
-            SteamAPI.SteamClient().SetWarningMessageHook(warningHook);
+            //warningHook = SteamAPIDebugTextHook;
+            //SteamAPI.SteamClient().SetWarningMessageHook(warningHook);
             
-            gameOverlayActivatedCB = new SteamCallback<GameOverlayActivated_t>(OnGameOverlayActivated, false);
-            UserStatsRecievedCallback = new SteamCallback<UserStatsReceived_t>(OnUserStatsRecieved, false);
-            UserStatsStoredCallback = new SteamCallback<UserStatsStored_t>(OnUserStatsStored, false);
+            gameOverlayActivatedCB = new Callback<GameOverlayActivated_t>(OnGameOverlayActivated, false);
+            UserStatsRecievedCallback = new Callback<UserStatsReceived_t>(OnUserStatsRecieved, false);
+            UserStatsStoredCallback = new Callback<UserStatsStored_t>(OnUserStatsStored, false);
 
             if (PlatformSettings.RunProgram == StartProgram.LootFest3 ||
                 PlatformSettings.RunProgram == StartProgram.DSS ||
@@ -208,7 +224,7 @@ namespace VikingEngine.SteamWrapping
                 {
                     P2PManager = new SteamP2PManager();
                     LobbyMatchmaker = new SteamLobbyMatchmaker();
-                    VOIP = new SteamVOIP();
+                    //VOIP = new SteamVOIP();
 
                     isNetworkInitialized = true;
                 }
@@ -216,7 +232,7 @@ namespace VikingEngine.SteamWrapping
             
             DLC = new SteamDLC();
 
-            RequestStats();
+            //RequestStats();
         }
         
         public void Update()
@@ -225,38 +241,38 @@ namespace VikingEngine.SteamWrapping
             {
                 SteamAPI.RunCallbacks();
                 
-                if (VOIP != null)
+                if (P2PManager != null)
                 {
-                    VOIP.Update();
+                    //VOIP.Update();
 
                     P2PManager.update();
                 }
             }
         }
 
-        bool RequestStats()
-        {
-            if (!Ref.steam.isInitialized || !SteamAPI.SteamUser().BLoggedOn())
-            {
-                return false;
-            }
+        //bool RequestStats()
+        //{
+        //    if (!Ref.steam.isInitialized || !SteamUser.BLoggedOn())
+        //    {
+        //        return false;
+        //    }
 
-            return SteamAPI.SteamUserStats().RequestCurrentStats();
-        }
+        //    return SteamUserStats.RequestCurrentStats();//SteamAPI.SteamUserStats().RequestCurrentStats();
+        //}
 
-        public void Shutdown()
-        {
-            if (isInitialized)
-            {
-                SteamGamepad.Shutdown();
-                isInitialized = false;
-            }
-        }
+        //public void Shutdown()
+        //{
+        //    if (isInitialized)
+        //    {
+        //        //SteamGamepad.Shutdown();
+        //        isInitialized = false;
+        //    }
+        //}
 
         bool initUserStats = false;
         void OnUserStatsRecieved(UserStatsReceived_t caller)
         {
-            if (caller.m_nGameID == SteamAPI.SteamUtils().GetAppID()) // Other games may be requesting...
+            if (Ref.steam.isInitialized && caller.m_nGameID == SteamUtils.GetAppID().m_AppId) // Other games may be requesting...
             {
                 if (caller.m_eResult == EResult.k_EResultOK)
                 {
@@ -294,7 +310,7 @@ namespace VikingEngine.SteamWrapping
         /// </summary>
         void OnUserStatsStored(UserStatsStored_t caller)
         {
-            if (caller.m_nGameID == SteamAPI.SteamUtils().GetAppID())
+            if (caller.m_nGameID == SteamUtils.GetAppID().m_AppId)
             {
                 if (caller.m_eResult == EResult.k_EResultOK)
                 {

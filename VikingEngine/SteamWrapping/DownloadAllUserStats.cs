@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+using Steamworks;
 
 namespace VikingEngine.SteamWrapping
 {
@@ -39,15 +39,15 @@ namespace VikingEngine.SteamWrapping
 
     class DownloadUserStats : AbsUpdateable
     {
-        SteamCallResult<UserStatsReceived_t> userStatsReceivedCallback;
+        CallResult<UserStatsReceived_t> userStatsReceivedCallback;
         SteamLeaderBoardRemote leaderboard;
 
         public DownloadUserStats(SteamLeaderBoardRemote leaderboard)
             : base(true)
         {
             this.leaderboard = leaderboard;
-            userStatsReceivedCallback = new SteamCallResult<UserStatsReceived_t>(onUserStatsReceived);
-            var apiCall = SteamAPI.SteamUserStats().RequestUserStats(leaderboard.user);
+            userStatsReceivedCallback = new CallResult<UserStatsReceived_t>(onUserStatsReceived);
+            var apiCall = SteamUserStats.RequestUserStats(leaderboard.user);
             userStatsReceivedCallback.Set(apiCall);
         }
 

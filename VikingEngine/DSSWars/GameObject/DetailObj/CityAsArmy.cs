@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.GameObject
     {
         void updateArmyMembers(float time, bool fullUpdate)
         {
-            if (parentArrayIndex == 0)
+            if (myIndex == 0)
             {
                 lib.DoNothing();
             }
@@ -61,41 +61,26 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void async_SoldiersUpdate(bool oneMinute)
         {
+            int count = 0;
+            float totalStrength = 0;
+            Intvector2MinMax minMax = new Intvector2MinMax(tilePos);
+
             if (groups.Count > 0)
             {
-                int count = 0;
-                float totalStrength = 0;
-                //int dps;
-
                 var groupsC = groups.counter();
 
                 while (groupsC.Next())
                 {
                     count += groupsC.sel.soldierCount;
-
-                    //int health;
-
-                    //if (groupsC.sel.isShip)
-                    //{
-
-                    //    dps = groupsC.sel.soldierData.DPS_sea();
-                    //    health = groupsC.sel.soldierData.basehealth;
-                    //}
-                    //else
-                    //{
-                    //    dps = groupsC.sel.soldierData.DPS_land();
-                    //    health = groupsC.sel.soldierData.basehealth;
-                    //}
-
-                    //totalStrength += (dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
                     totalStrength += AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip);
-                }
 
-                this.strengthValue = totalStrength;//count;
-                soldiersCount = count;
-                //strengthValue = 2f * totalStrength / AllUnits.AverageGroupStrength;
+                    minMax.Next(ref groupsC.sel.tilePos);
+                }
             }
 
+            soldiersCount = count;
+            this.strengthValue = totalStrength;
+            guardCullingMinMax = minMax;
         }
     }
 }

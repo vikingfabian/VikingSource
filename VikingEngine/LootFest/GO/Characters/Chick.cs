@@ -23,7 +23,7 @@ namespace VikingEngine.LootFest.GO.Characters
         void chickInit()
         {
             animSettings =  new Graphics.AnimationsSettings(5, 0.2f, 1);
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.chick,
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                 1.2f, 1, false);
             CollisionAndDefaultBound = LootFest.ObjSingleBound.QuickBoundingBox(0.8f);
             image.position = WorldPos.PositionV3;

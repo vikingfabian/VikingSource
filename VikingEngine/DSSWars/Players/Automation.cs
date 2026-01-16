@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.Players
         //    return autoRecruit;
         //}
 
-        bool AutoBuildProperty(int index, bool set, bool value)
+        bool AutoBuildProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.Players
             }
             return autoBuild;
         }
-        bool AutoBuildIntelligentProperty(int index, bool set, bool value)
+        bool AutoBuildIntelligentProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Players
             return autoBuild_intelligent;
         }
 
-        bool AutoExpandGuardProperty(int index, bool set, bool value)
+        bool AutoExpandGuardProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars.Players
             return autoExpandGuard;
         }
 
-        bool AutoRepairCityProperty(int index, bool set, bool value)
+        bool AutoRepairCityProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.Players
             return autoRepair;
         }
 
-        bool AutoUpgradeLogisticsProperty(int index, bool set, bool value)
+        bool AutoUpgradeLogisticsProperty(object tag, bool set, bool value)
         {
             if (set)
             {
@@ -249,31 +249,33 @@ namespace VikingEngine.DSSWars.Players
 
                 if (player.faction.GoldSecDiff() > 0)
                 {
-                    var citiesC = player.faction.cities.counter();
-
-                    for (CityType type = CityType.Factory; type >= CityType.Village; type--)
+                    //var citiesC = player.faction.cities.counter();
+                    for (CityType type = CityType.Capital; type >= CityType.Village; type--)
                     {
-                        citiesC.Reset();
-                        while (citiesC.Next())
+                        //citiesC.Reset();
+                        //while (citiesC.Next())
+                        //{
+                        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                        while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
                         {
-                            if (citiesC.sel.cityType == type &&
-                                citiesC.sel.isMaxHomeUsers() )
+                            if (citySel.cityType == type &&
+                                citySel.isMaxHomeUsers() )
                                 //&&
-                                //citiesC.sel.battleGroup == null)
+                                //citySel.battleGroup == null)
                             {
-                                //if (autoRepair && citiesC.sel.damages.HasValue())
+                                //if (autoRepair && citySel.damages.HasValue())
                                 //{
-                                //    cityAction = citiesC.sel;
+                                //    cityAction = citySel;
                                 //    automationAction = AutomationAction.Repair;
                                 //    return;
                                 //}
 
-                                if (autoUpgradeLogistics && citiesC.sel.autoUpgradeLogistics(IntVector2.Zero, false))
+                                if (autoUpgradeLogistics && citySel.autoUpgradeLogistics(IntVector2.Zero, false))
                                 {   
-                                    cityAction = citiesC.sel;
+                                    cityAction = citySel;
                                     automationAction = AutomationAction.UpgradeLogistics;
-                                    CityStructure.AutomationInstance.update(citiesC.sel, 0, 4);
-                                    subtilePos = CityStructure.AutomationInstance.EmptyLand.Last();
+                                    //CityStructure.AutomationInstance.update(citySel, 0, 4);
+                                    CityStructure.AutomationInstance.NextEmptyLand(citySel, Ref.peRnd.Int(32), out subtilePos);//.EmptyLand.Last();
                                     return;
                                 }
 
@@ -344,4 +346,6 @@ namespace VikingEngine.DSSWars.Players
         GuardSize,
         UpgradeLogistics,
     }
+
+    
 }

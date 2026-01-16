@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -18,21 +18,21 @@ namespace VikingEngine.DSSWars.GameObject
         { 
             this.position = position;
             tilePos = WP.ToTilePos(position);
-            faction= player.faction;
+            factionIndex= player.faction.myIndex;
             createOverViewModel();
             inRender_overviewLayer = true;          
         }
 
         public LocationPin(LocalPlayer player, System.IO.BinaryReader r, int subVersion)
         {
-            faction = player.faction;
+            factionIndex = player.faction.myIndex;
             readGameState(r, subVersion);
         }
 
         public void basicInit()
         {
             bound = new BoundingSphere(position, 0.3f);
-            name.setDefault("Pin " + parentArrayIndex.ToString());
+            name.setDefault("Pin " + myIndex.ToString());
         }
 
         public void update()
@@ -46,14 +46,14 @@ namespace VikingEngine.DSSWars.GameObject
             
             args.content.newLine();
             args.content.Add(new ArtButton(RbButtonStyle.Primary, new System.Collections.Generic.List<AbsRichBoxMember>{
-               new RbText(  DssRef.lang.Hud_Delete) }, new RbAction1Arg<int>(args.player.deletePin, parentArrayIndex)));
+               new RbText(  DssRef.lang.Hud_Delete) }, new RbAction1Arg<int>(args.player.deletePin, myIndex)));
                
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
             name.write(w);
-            WP.writePosXZ(w, position);
+            WP.WritePosXZPercentU16(w, position);
         }
 
 
@@ -65,16 +65,23 @@ namespace VikingEngine.DSSWars.GameObject
             //    name.name = Data.NameGenerator.ArmyName(id);
             //}
 
-            WP.readPosXZ(r, out position, out tilePos);
+            if (subVersion < 62)
+            {
+                WP.readPosXZ_old(r, out position, out tilePos);
+            }
+            else
+            {
+                WP.ReadPosXZPercentU16(r, out position, out tilePos);
+            }
         }
 
         void createOverViewModel()
         {
             overviewModel?.DeleteMe();
 
-            overviewModel = faction.AutoLoadModelInstance(
+            overviewModel = GetFaction().AutoLoadModelInstance(
                LootFest.VoxelModelName.wars_flag, 1f, false);
-            overviewModel.AddToRender(DrawGame.TerrainLayer);
+            overviewModel.AddToRender(DrawGame.MidLayer);
             overviewModel.position = position;
         }
         public override void asynchCullingUpdate(float time, bool bStateA)
@@ -83,7 +90,7 @@ namespace VikingEngine.DSSWars.GameObject
             //{
             //    lib.DoNothing();
             //}
-            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, tilePos, faction.player.GetLocalPlayer().playerData.localPlayerIndex);
+            DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, tilePos, GetPlayer().GetLocalPlayer().playerData.localPlayerIndex);
         }
 
         protected override void setInRenderState()
@@ -127,7 +134,7 @@ namespace VikingEngine.DSSWars.GameObject
             return base.aliveAndBelongTo(faction);
         }
 
-        public override bool defeatedBy(Faction attacker)
+        public override bool defeatedBy(int attackerFaction)
         {
             throw new NotImplementedException();
         }
@@ -136,7 +143,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             throw new NotImplementedException();
         }
-        public override void OnNewOwner()
+        public override void OnNewOwner(Faction newFaction, bool convert)
         {
             throw new NotImplementedException();
         }
@@ -146,7 +153,7 @@ namespace VikingEngine.DSSWars.GameObject
            return GameObjectType.LocationPin;
         }
 
-        protected override void NameEditEvent(string result, object tag)
+        public override void NameEditEvent(string result, object tag)
         {
             name.setCustom(result);
         }

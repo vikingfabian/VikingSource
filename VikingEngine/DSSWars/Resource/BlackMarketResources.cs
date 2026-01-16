@@ -5,7 +5,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
@@ -21,10 +21,11 @@ namespace VikingEngine.DSSWars.Resource
         {
             ItemResourceType.Wood_Group,
             ItemResourceType.Stone_G,
+            ItemResourceType.Iron_G,
             ItemResourceType.RawFood_Group,
             ItemResourceType.SkinLinen_Group,
-            ItemResourceType.Food_G,
-            ItemResourceType.Iron_G,
+            //ItemResourceType.Food_G,
+            
         };
         static readonly int[] PurchaseCount = { 20, 100, 500 };
 
@@ -40,7 +41,8 @@ namespace VikingEngine.DSSWars.Resource
             int count = 5;
             if (faction.payGold(count * Cost_Wood, false, city))
             {
-                city.res_wood.amount += count;
+                city.AddGroupedResource(EntityComponent.CityResoureIndex.wood, count);
+                //city.res_wood.amount += count;
             }
         }
         public static bool AiPurchaseIron(City city, Faction faction)
@@ -48,7 +50,8 @@ namespace VikingEngine.DSSWars.Resource
             int count = CraftBuildingLib.CraftSmith_IronUse;
             if (faction.payGold(count * Cost_Iron, false, city))
             {
-                city.res_iron.amount += count;
+                city.AddGroupedResource(EntityComponent.CityResoureIndex.iron, count);
+                //city.res_iron.amount += count;
                 return true;
             }
             return false;
@@ -65,7 +68,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public static void ToHud(LocalPlayer player, RichBoxContent content, City city)
         {
-            if (city.Culture == CityCulture.Lawbiding)
+            if (city.Culture == CityCulture.Lawbiding && player.tutorial == null)
             {
                 city.cultureToHud(player, content, false);
                 return;
@@ -83,6 +86,17 @@ namespace VikingEngine.DSSWars.Resource
                     content.Add(new RbSeperationLine());
                 }
             }
+
+            content.newLine();
+            content.Add(new RbImage(SpriteName.rtsUpkeep));
+            content.Add(new RbText(Cost_Food.ToString()));
+            content.Add(new RbTab(0.2f));
+            content.Add(new RbImage(SpriteName.WarsResource_Food));
+            content.space();
+            content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
+            content.space();
+            HudLib.InfoButton(content, new RbTooltip_Text(DssRef.lang.Info_WhenFoodRunsOut));
+
         }
 
         public static void ResourceToHud(ItemResourceType item, LocalPlayer player, RichBoxContent content, City city)
@@ -124,7 +138,7 @@ namespace VikingEngine.DSSWars.Resource
                         new RbImage(ResourceLib.Icon(resourceType)),
                         new RbText(name),
                     },
-                new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, SoundLib.menuBuy),
+                new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, RbSoundType.Buy),
                 tooltip(count), player.faction.hasGold(cost, city));
 
                 content.Add(button);
@@ -138,7 +152,7 @@ namespace VikingEngine.DSSWars.Resource
                         {
                             new RbText(string.Format(DssRef.lang.Hud_XTimes, count)),
                         },
-                    new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, SoundLib.menuBuy),
+                    new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, RbSoundType.Buy),
                     tooltip(count), player.faction.hasGold(cost * count, city));
                     content.Add(xbutton);
                     //content.space();
@@ -152,14 +166,14 @@ namespace VikingEngine.DSSWars.Resource
                         //RichBoxContent content = new RichBoxContent();
                         content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
                         content.newLine();
-                        HudLib.ResourceCost(content, ResourceType.Gold, cost * count, player.faction.money.GetGold());
+                        HudLib.ResourceCost(content, ResourceType.Gold, cost * count, (int)player.faction.GetGold(city));
 
                         content.newParagraph();
 
                         content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn).overrideColor = HudLib.TitleColor_Label;
                         bool reachedBuffer = false;
-                        bool safeGuard = city.foodSafeGuardIsActive(resourceType);
-                        city.GetGroupedResource(resourceType).toMenu(content, resourceType, safeGuard, ref reachedBuffer);
+                        //bool safeGuard = city.foodSafeGuardIsActive(resourceType);
+                        city.GetGroupedResource(resourceType).toMenu(content, resourceType, ref reachedBuffer);
                         
                         //player.hud.tooltip.create(player, content, true);
 

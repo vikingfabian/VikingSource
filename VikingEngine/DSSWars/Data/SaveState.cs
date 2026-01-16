@@ -5,22 +5,17 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
 using VikingEngine.DataStream;
-//using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.GameObject;
-using VikingEngine.DSSWars.Players;
-using VikingEngine.LootFest.Data;
-using VikingEngine.PJ.Strategy;
-using VikingEngine.ToGG;
-using VikingEngine.ToGG.MoonFall;
+using VikingEngine.DSSWars.Interface;
+
 
 namespace VikingEngine.DSSWars.Data
 {
     class SaveGamestate : AbsUpdateable, IStreamIOCallback
     {
         public const int Version = 12;
-        public const int SubVersion = 54; 
+        public const int SubVersion = 104; 
 
         MemoryStreamHandler memoryStream = new MemoryStreamHandler();
 
@@ -29,7 +24,7 @@ namespace VikingEngine.DSSWars.Data
         ObjectPointerCollection pointers;
         SaveStateMeta meta;
         public WorldData worldData;
-
+        public static int MainProgress = 0, LoopProgress = 0;
         public SaveGamestate(SaveStateMeta meta)
              : base(false)
         {
@@ -62,6 +57,8 @@ namespace VikingEngine.DSSWars.Data
 
         public void load()
         {
+            DssRef.difficulty.setting_gameMode = meta.gameMode;
+            DssRef.state.importedWorld = meta.importedWorld;
             DataStream.BeginReadWrite.BinaryIO(false, meta.Path, null, readGameState, this, true);
         }
 
@@ -80,6 +77,8 @@ namespace VikingEngine.DSSWars.Data
         {
             meta.worldmeta.writeNet(w);
             DssRef.world.writeNet(w);
+
+            w.Write(Ref.TotalGameTimeSec);
         }
         public void readNet(System.IO.BinaryReader r)
         {
@@ -89,27 +88,30 @@ namespace VikingEngine.DSSWars.Data
             worldData.readNet(r);
             worldData.metaData = meta.worldmeta;
             DssRef.world = worldData;
+
+            Ref.TotalGameTimeSec = r.ReadSingle();
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            new SaveVersion(Version, SubVersion).write(w);
+            MainProgress = 0; LoopProgress = 0;
+            new SaveVersion(Version, SubVersion).write(w); MainProgress++;
 
             //META
-            meta.write(w);
+            meta.write(w); MainProgress++;
             Debug.WriteCheck(w);
 
             //WORLD
-            DssRef.world.writeMapFile(w);
+            DssRef.world.writeMapFile(w); MainProgress++;
 
             //STATE
-            DssRef.storage.write(w, true);
+            DssRef.storage.writeGameSetup(w); MainProgress++;
             Debug.WriteCheck(w);
-            DssRef.settings.writeGameState(w);
+            DssRef.settings.writeGameState(w); MainProgress++;
             Debug.WriteCheck(w);
-            DssRef.world.writeGameState(w);
+            DssRef.world.writeGameState(w); MainProgress++;
             Debug.WriteCheck(w);
-            DssRef.state.Game().writeGameState(w);
+            DssRef.state.Game().writeGameState(w); MainProgress++;
         }        
 
         public void readGameState(System.IO.BinaryReader r)
@@ -125,22 +127,37 @@ namespace VikingEngine.DSSWars.Data
             
             //WORLD
             worldData = new WorldData();
+            
             worldData.metaData = meta.worldmeta;
             worldData.readMapFile(r);
             DssRef.world = worldData;
             
 
             DssRef.state.Game().initGameState(false, pointers);
+            
 
             //STATE
-            DssRef.storage.read(r, true);
+            if (version.sub < 79)
+            {
+                DssRef.storage.read(r, true);
+            }
+            else
+            {
+               DssRef.storage.readGameSetup(r);
+            }
+
+            CityMenu.InitGame();
             Debug.ReadCheck(r);
             DssRef.settings.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);
             DssRef.world.readGameState(r, version.sub, pointers);
             Debug.ReadCheck(r);
-            DssRef.state.Game().readGameState(r, version.sub, pointers);
             DssRef.time.setTotalTime(meta.playTime);
+            DssRef.state.Game().readGameState(r, version.sub, pointers);
+
+            //Clean up
+            DssRef.state.events.loadCleanup();
+           
         }
 
         public override void Time_Update(float time_ms)
@@ -157,7 +174,9 @@ namespace VikingEngine.DSSWars.Data
     }
 
     class ObjectPointerCollection
-    { 
+    {
+        public List<Faction>[] oldFactionTypes;
+
         public List<AbsObjectPointer> pointers = new List<AbsObjectPointer>();
 
         public void SetPointer()
@@ -189,11 +208,11 @@ namespace VikingEngine.DSSWars.Data
                 switch (type)
                 {
                     case GameObjectType.Army:
-                        writeFaction(w, gameObject.GetFaction());
+                        writeFaction(w, gameObject.GetFaction_NoChecks());
                         w.Write((ushort)gameObject.GetArmy().id);
                         break;
                     case GameObjectType.City:
-                        w.Write((ushort)gameObject.GetCity().parentArrayIndex);
+                        w.Write((ushort)gameObject.GetCity().myIndex);
                         break;
                 }
             }
@@ -219,7 +238,7 @@ namespace VikingEngine.DSSWars.Data
 
         protected Faction GetFaction()
         {
-           return DssRef.world.factions.Array[factionIndex];
+           return DssRef.world.faction(factionIndex);
         }
 
         protected AbsGameObject GetObject()
@@ -250,7 +269,14 @@ namespace VikingEngine.DSSWars.Data
 
         public void writeFaction(System.IO.BinaryWriter w, Faction faction)
         {
-            w.Write((ushort)faction.parentArrayIndex);
+            if (faction != null)
+            {
+                w.Write((ushort)faction.myIndex);
+            }
+            else
+            {
+                w.Write(ushort.MaxValue);
+            }
         }
 
         public int readFaction(System.IO.BinaryReader r)

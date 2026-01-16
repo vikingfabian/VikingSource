@@ -88,13 +88,13 @@ namespace VikingEngine.ToGG.Commander.Battle
 
         public void ResultSetHitChance(float hitChance)
         {
-            content.Add(new RbText("=" + TextLib.PercentText(hitChance)));
+            content.Add(new RbText("=" + TextLib.PercentTextWithSymbol(hitChance)));
             content.Add(new RbImage(BattleDice.ResultIcon(BattleDiceResult.Hit1)));
         }
 
         public void ResultSetRetreatChance(float chance)
         {
-            content.Add(new RbText("=" + TextLib.PercentText(chance)));
+            content.Add(new RbText("=" + TextLib.PercentTextWithSymbol(chance)));
             content.Add(new RbImage(BattleDice.ResultIcon(BattleDiceResult.Retreat)));
         }
 

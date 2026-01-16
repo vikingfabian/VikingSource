@@ -3,48 +3,221 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Event;
+using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map;
+using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {
+    /*
+     * BRAINSTORM
+     * -breaking int32 gold
+     * 
+     */
+
     class Achievements
     {
         public const int DecorationsTotalCount = 20;
         public const int DecorationsStatueCount = 4;
 
+        /// <summary>
+        /// Slaughtered: Loose 100 soldiers in a battle
+        /// </summary>
+        public const int SlaughteredCount = 100;
+
+        /// <summary>
+        /// Defeating victory: Win after loosing 40 military strength
+        /// </summary>
+        public const float Defeating_victory_strengthLost = 40;
+
         public const int FriendshipAllyCount = 8;
-        double difficultyPerc;
+        public double difficultyPerc;
 
-        const int FactionUniqueUnitTypeCount = 4;
-        bool[] factionUniquePurchase = new bool[FriendshipAllyCount];
+        public const int LargePopulationCount_Tier1 = 4000;
+        public const int LargePopulationCount_Tier2 = 10000;
+        public const int LargePopulationCount_Tier3 = 16000;
+        
 
-        public const int LargePopulationCount = 5000;
-        public bool largePopulation = false;
-
-        public const int AllUnitTypesCount = 6;
-
-        public Achievements() 
+        public Achievements()
         {
             DssRef.achieve = this;
             difficultyPerc = DssRef.difficulty.TotalDifficulty();
         }
+
+        public void asyncUpdate()
+        {
+            if (Ref.peRnd.ChanceF(0.1f))
+            {
+                if (achivementsAreModeBlocked())
+                {
+                    //Modes not available 
+                    return;
+                }
+
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    if (p.faction.militaryStrength > 200)
+                    {
+                        UnlockAchievement_async(AchievementIndex.military_might_tier1);
+
+                        if (p.faction.militaryStrength > 500)
+                        {
+                            UnlockAchievement_async(AchievementIndex.military_might_tier2);
+
+                            if (p.faction.militaryStrength > 1500)
+                            {
+                                UnlockAchievement_async(AchievementIndex.military_might_tier3);
+                            }
+                        }
+                    }
+
+                    if (p.faction.money.copper > int.MaxValue)
+                    {
+                        UnlockAchievement_async(AchievementIndex.gold_64bit);
+                    }
+
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref p.faction.cities, DssRef.world.cities, out City city))
+                    {
+                        if (city.workForce.amount > LargePopulationCount_Tier1)
+                        {
+                            UnlockAchievement_async(AchievementIndex.large_population_tier1);
+
+                            if (city.workForce.amount > LargePopulationCount_Tier2)
+                            {
+                                UnlockAchievement_async(AchievementIndex.large_population_tier2);
+
+                                if (city.workForce.amount > LargePopulationCount_Tier3)
+                                {
+                                    UnlockAchievement_async(AchievementIndex.large_population_tier3);
+                                }
+                            }
+                        }
+
+                        int posted = 0;
+                        int posted_stone = 0;
+
+
+                        var groupsC = city.groups.counter();
+                        while (groupsC.Next())
+                        {
+                            int post = groupsC.sel.GetGuardGroup().assignedToPost_IdAndPosition;
+                            if (post > 0)
+                            {
+                                posted++;
+
+                                switch ((TerrainWallType)DssRef.world.subTileGrid.Get(conv.IntToIntVector2(post)).subTerrain)
+                                {
+                                    case TerrainWallType.StoneGate:
+                                    case TerrainWallType.StoneWallGreen:
+                                    case TerrainWallType.StoneWall:
+                                    case TerrainWallType.StoneTower:
+                                    case TerrainWallType.StoneWallWoodHouse:
+                                        posted_stone++;
+                                        break;
+                                }
+                            }
+                        }
+                        //20 posted guards, then 40, then 80
+                        if (posted >= 20)
+                        {
+                            UnlockAchievement_async(AchievementIndex.fortress_tier1);
+
+                            if (posted >= 40)
+                            {
+                                UnlockAchievement_async(AchievementIndex.fortress_tier2);
+
+                                if (posted >= 80)
+                                {
+                                    UnlockAchievement_async(AchievementIndex.fortress_tier3);
+                                }
+                            }
+
+                            if (posted_stone >= 20)
+                            {
+                                UnlockAchievement_async(AchievementIndex.stone_fortress_tier1);
+
+                                if (posted_stone >= 40)
+                                {
+                                    UnlockAchievement_async(AchievementIndex.stone_fortress_tier2);
+
+                                    if (posted_stone >= 80)
+                                    {
+                                        UnlockAchievement_async(AchievementIndex.stone_fortress_tier3);
+
+                                    }
+                                }
+                            }
+                        }
+
+                        
+                    }
+
+                    var armiesC = p.faction.armies.counter();
+                    while (armiesC.Next())
+                    {
+                        int vikings = 0;
+                        int farmers = 0;
+
+                        var groupsC = armiesC.sel.groups.counter();
+                        while (groupsC.Next())
+                        {
+                            switch (groupsC.sel.soldierConscript.conscript.weapon)
+                            {
+                                case Resource.ItemResourceType.SharpStick:
+                                case Resource.ItemResourceType.SlingShot:
+                                    farmers++; 
+                                    break;
+                            }
+
+                            if (groupsC.sel.isShip && groupsC.sel.soldierConscript.conscript.specialization == SpecializationType.Sea)
+                            { 
+                                vikings++;
+                            }
+                        }
+
+                        if (farmers >= 16)
+                        {
+                            UnlockAchievement_async(AchievementIndex.folkmen_rise);
+                        }
+
+                        if (vikings >= 16)
+                        {
+                            UnlockAchievement_async(AchievementIndex.vikings);
+                        }
+                    }
+                }
+            }
+        }
+
         public void UnlockAchievement(AchievementIndex achievement)
         {
 #if DEMO
             return;
 #endif
 #if DEBUG
-            //System.Diagnostics.Debug.WriteLine("[!] Achievement: " + achievement.ToString());
+            System.Diagnostics.Debug.WriteLine("[!] Achievement: " + achievement.ToString());
 #endif
+            if (DssRef.state.importedWorld && DssRef.storage.blockImportAchievements)
+            {
+                return;
+            }
+
             if (Ref.steam.isInitialized)
             {
                 Ref.steam.Achievements.SetAchievement((int)achievement);
             }
             else if (PlatformSettings.DebugLevel < BuildDebugLevel.Release)
             {
-                DssRef.state.localPlayers[0].hud.messages.Add("Achivement", achievement.ToString());
+                if (SteamAchievements.DebugSetAchievement_Local((int)achievement))
+                {
+                    DssRef.state.LocalHost().hud.messages.Add("Achivement", achievement.ToString());
+                }
             }
         }
 
@@ -53,6 +226,11 @@ namespace VikingEngine.DSSWars
 #if DEMO
             return;
 #endif
+            if (DssRef.state.importedWorld && DssRef.storage.blockImportAchievements)
+            {
+                return;
+            }
+
             if (Ref.steam.isInitialized)
             {
                 Ref.steam.Achievements.SetAchievement_async((int)achievement);
@@ -63,41 +241,168 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void onVictory()
+        public void UnlockAchievement_onAny_50_100_150(AchievementIndex achievementAny, AchievementIndex achievement50, AchievementIndex achievement100, AchievementIndex achievement150)
         {
-            if (difficultyPerc >= 25)
+            UnlockAchievement(achievementAny);
+
+            if (difficultyPerc >= 50)
             {
-                UnlockAchievement(AchievementIndex.victory25);
+                UnlockAchievement(achievement50);
 
-                if (difficultyPerc >= 50)
+                if (difficultyPerc >= 100)
                 {
-                    UnlockAchievement(AchievementIndex.victory50);
+                    UnlockAchievement(achievement100);
 
-                    if (difficultyPerc >= 100)
+                    if (difficultyPerc >= 150)
                     {
-                        UnlockAchievement(AchievementIndex.victory100);
-
-                        foreach (var p in DssRef.state.localPlayers)
-                        {
-                            if (p.statistics.WarsStartedByYou == 0)
-                            {
-                                UnlockAchievement(AchievementIndex.victory_peace);
-                            }
-                            else if (p.statistics.WarsStartedByYou >= 12)
-                            {
-                                UnlockAchievement(AchievementIndex.warmonger);
-                            }
-
-                            findHonorGuard(p);
-                        }
-
-                        if (difficultyPerc >= 200)
-                        {
-                            UnlockAchievement(AchievementIndex.victory200);
-                        }
+                        UnlockAchievement(achievement150);
                     }
                 }
             }
+        }
+
+        public void UnlockAchievement_onAny_100(AchievementIndex achievementAny, AchievementIndex achievement100)
+        {
+            UnlockAchievement(achievementAny);
+
+            if (difficultyPerc >= 100)
+            {
+                UnlockAchievement(achievement100);
+            }
+        }
+
+        public void UnlockAchievement_on75(AchievementIndex achievement)
+        {
+            if (difficultyPerc >= 75)
+            {
+                UnlockAchievement(achievement);
+            }
+        }
+
+        public void onAllyCount(int allies)
+        {
+            if (allies >= 4)
+            {
+                UnlockAchievement_async(AchievementIndex.friendship_tier1);
+                if (allies >= 8)
+                {
+                    UnlockAchievement_async(AchievementIndex.friendship_tier2);
+                    if (allies >= 16)
+                    {
+                        UnlockAchievement_async(AchievementIndex.friendship_tier3);
+                    }
+                }
+            }
+        }
+
+        public bool achivementsAreModeBlocked()
+        {
+            return DssRef.state.PlayType() != GameState.PlayStateType.Play ||
+                DssRef.difficulty.setting_gameMode == GameModeMainType.Peaceful ||
+                DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator;
+        }
+
+        public void onVictory(VictoryType victoryType)
+        {
+            if (achivementsAreModeBlocked())
+            {
+                //Modes not available 
+                return;
+            }
+
+            switch (victoryType)
+            {
+                case VictoryType.DefeatBoss:
+                    UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_boss_any, AchievementIndex.victory_boss_50, AchievementIndex.victory_boss_100, AchievementIndex.victory_boss_150);
+                    break;
+                case VictoryType.WorldPeace:
+                    UnlockAchievement(AchievementIndex.victory_worldpeace_any);
+
+
+                    break;
+                case VictoryType.Domination:
+                    UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_mini_domination_sandbox_any, AchievementIndex.victory_mini_domination_sandbox_50, AchievementIndex.victory_mini_domination_sandbox_100, AchievementIndex.victory_mini_domination_sandbox_150);
+
+                    //if (DssRef.world.metaData.mapSize >= MapSize.Medium)
+                    //{
+                    //    UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_domination_sandbox_any, AchievementIndex.victory_domination_sandbox_50, AchievementIndex.victory_domination_sandbox_100, AchievementIndex.victory_domination_sandbox_150);  
+                    //}
+
+                    if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
+                    {
+                        //if (DssRef.world.metaData.mapSize < MapSize.Medium)
+                        //{
+                            UnlockAchievement_onAny_100(AchievementIndex.victory_mini_domination_story_any, AchievementIndex.victory_mini_domination_story_100);
+                        //}
+                        //else
+                        //{
+                        //    UnlockAchievement_onAny_100(AchievementIndex.victory_domination_story_any, AchievementIndex.victory_domination_story_100);
+
+                        //    if (DssRef.world.metaData.mapSize >= MapSize.Large)
+                        //    {
+                        //        UnlockAchievement_on75(AchievementIndex.massive_victory_domination);
+                        //    }
+                        //}
+                    }
+
+                    break;
+            }
+
+            if (!DssRef.difficulty.setting_allowPauseCommand)
+            { 
+                UnlockAchievement_onAny_50_100_150(AchievementIndex.no_pause_any, AchievementIndex.no_pause_50, AchievementIndex.no_pause_100, AchievementIndex.no_pause_150);
+            }
+
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                if (p.statistics.WarsStartedByYou == 0)
+                {
+                    UnlockAchievement_onAny_50_100_150(AchievementIndex.no_war_started_any, AchievementIndex.no_war_started_50, AchievementIndex.no_war_started_100, AchievementIndex.no_war_started_150);
+
+                    //if (victoryType == VictoryType.WorldPeace)
+                    //{
+                    //    UnlockAchievement_onAny_100(AchievementIndex.peace_and_love_any, AchievementIndex.peace_and_love_100);
+
+                    //    if (DssRef.world.metaData.mapSize >= MapSize.Large)
+                    //    {
+                    //        UnlockAchievement_on75(AchievementIndex.massive_peace_and_love);
+                    //    }
+                    //}
+                }
+                else if (p.statistics.WarsStartedByYou >= 10)
+                {
+                    UnlockAchievement(AchievementIndex.warstarter_tier1);
+                    if (p.statistics.WarsStartedByYou >= 20)
+                    {
+                        UnlockAchievement(AchievementIndex.warstarter_tier2);
+                        if (p.statistics.WarsStartedByYou >= 40)
+                        {
+                            UnlockAchievement(AchievementIndex.warstarter_tier3);
+                        }
+                    }
+                }
+
+                findHonorGuard(p);
+            }
+
+            
+
+            int hill_Factions = 0;
+            var factionsC = DssRef.world.factions.counter();
+            while (factionsC.Next())
+            {
+                if (factionsC.sel.factiontype == FactionType.BramblebrookHill ||
+                    factionsC.sel.factiontype == FactionType.Tumblehill)
+                {
+                    ++hill_Factions;
+                }
+            }
+
+            if (hill_Factions >= 2)
+            {
+                UnlockAchievement_onAny_100(AchievementIndex.worth_saving_any, AchievementIndex.worth_saving_100);
+            }
+
 
             void findHonorGuard(Players.LocalPlayer p)
             {
@@ -109,132 +414,354 @@ namespace VikingEngine.DSSWars
                     {
                         if (groupsC.sel.soldierConscript.conscript.specialization == SpecializationType.HonorGuard)//.type == GameObject.UnitType.HonorGuard)
                         {
-                            UnlockAchievement(AchievementIndex.honorguards);
+                            UnlockAchievement_onAny_50_100_150(AchievementIndex.honorguards_any, AchievementIndex.honorguards_50, AchievementIndex.honorguards_100, AchievementIndex.honorguards_150);
                             return;
                         }
                     }
                 }
             }
+
+
         }
 
-        public void onAlly(Faction playerFaction, Faction otherFaction)
-        {
-            if (otherFaction.factiontype == FactionType.GreenWood)
-            {
-                UnlockAchievement(AchievementIndex.greenwood_ally);
-            }
+        //public void onAlly(Faction playerFaction, Faction otherFaction)
+        //{
+        //    if (otherFaction.factiontype == FactionType.GreenWood)
+        //    {
+        //        UnlockAchievement(AchievementIndex.greenwood_ally);
+        //    }
 
-            if (DssRef.state.events.nextEvent >= EventType.DarkLord)
-            {
-                //Count allies
-                Task.Factory.StartNew(() =>
-                {
-                    int allyCount = 0;
+        //    //if (DssRef.state.events.nextEvent >= EventType.DarkLord)
+        //    //{
+        //    //    //Count allies
+        //    //    Task.Factory.StartNew(() =>
+        //    //    {
+        //    //        int allyCount = 0;
 
-                    for (int i = 0; i < playerFaction.diplomaticRelations.Length; ++i)
-                    {
-                        var rel = playerFaction.diplomaticRelations[i];
-                        if (rel != null &&
-                            rel.Relation >= RelationType.RelationType3_Ally &&
-                            !DssRef.world.factions[i].HasZeroUnits())
-                        {
-                            ++allyCount;
-                        }
-                    }
+        //    //        for (int i = 0; i < playerFaction.diplomaticRelations.Length; ++i)
+        //    //        {
+        //    //            var rel = playerFaction.diplomaticRelations[i];
+        //    //            if (rel != null &&
+        //    //                rel.Relation >= RelationType.RelationType3_Ally &&
+        //    //                !DssRef.world.factions[i].HasZeroUnits())
+        //    //            {
+        //    //                ++allyCount;
+        //    //            }
+        //    //        }
 
-                    if (allyCount >= FriendshipAllyCount)
-                    {
-                        Ref.update.AddSyncAction(new SyncAction1Arg<AchievementIndex>(UnlockAchievement, AchievementIndex.friendship));
-                    }
-                });
-            }
-        }
+        //    //        if (allyCount >= FriendshipAllyCount)
+        //    //        {
+        //    //            Ref.update.AddSyncAction(new SyncAction1Arg<AchievementIndex>(UnlockAchievement, AchievementIndex.friendship));
+        //    //        }
+        //    //    });
+        //    //}
+        //    //        catch (Exception ex)
+        //    //        {
+        //    //            BlueScreen.ThreadException = ex;
+        //    //        }
+                    
+        //    //    });
+        //    //}
+        //}
 
-        public void onFactionUniquePurchase(int uniqeTypeIndex)
-        {
-            if (!factionUniquePurchase[uniqeTypeIndex])
-            {
-                factionUniquePurchase[uniqeTypeIndex] = true;
+        //public void onFactionUniquePurchase(int uniqeTypeIndex)
+        //{
+        //    if (!factionUniquePurchase[uniqeTypeIndex])
+        //    {
+        //        factionUniquePurchase[uniqeTypeIndex] = true;
 
-                int count = 0;
-                foreach (var m in factionUniquePurchase)
-                {
-                    if (m)
-                    {
-                        ++count;
-                    }
-                }
+        //        int count = 0;
+        //        foreach (var m in factionUniquePurchase)
+        //        {
+        //            if (m)
+        //            {
+        //                ++count;
+        //            }
+        //        }
 
-                UnlockAchievement(AchievementIndex.buy_special1);
+        //        UnlockAchievement(AchievementIndex.buy_special1);
 
-                if (count >= 3)
-                {
-                    UnlockAchievement(AchievementIndex.buy_special3);
-                }
-            }
-        }
+        //        if (count >= 3)
+        //        {
+        //            UnlockAchievement(AchievementIndex.buy_special3);
+        //        }
+        //    }
+        //}
     }
 
+    /// <summary>
+    /// i = implemented, t = tested, a = art
+    /// </summary>
     enum AchievementIndex
     {
-        victory25,
-        victory50,
-        victory100,
-        victory200,
-        victory_peace,
-        early_hara,
-        greenwood_ally,
-        viking_naval,
-        honorguards,
-        buy_special1,
-        buy_special3,
-        no_darklord,
-        warmonger,
-        friendship,
+        /// <summary>
+        /// just to test that achivements run
+        /// </summary>
+        first_game,//i, t, a
 
-        //Resource update
-//-1 statue
-//-many statues
-//-produce knights
-//-army with all unit types
-//-deliver food to starving city
-//-create an archer with archer culture and a soldier with warrior culture
-//-city with a population of 1000
+        /// <summary>
+        /// have 4 allies, then 8, then 16
+        /// </summary>
+        friendship_tier1,//i, t, a
+        friendship_tier2,
+        friendship_tier3,
+
+        /// <summary>
+        /// Declare war on an ally.
+        /// </summary>
+        traitor,//i, t, a
+
+        /// <summary>
+        /// Glory to me: contruct the "sword raising player" statue
+        /// </summary>
+        statue_of_player,//i, t, a
+
+        /// <summary>
+        /// Decorations: Constuct 20 decorative buildings, including at least 4 statues, then 40/8, then 80/16
+        /// </summary>
+        decorations_tier1,//i, t, a
+        decorations_tier2,
+        decorations_tier3,
+
+        /// <summary>
+        /// Large population: Reach a workforce of a 4000 men in one city, then 10k, then 16k
+        /// </summary>
+        large_population_tier1,//i, t, a
+        large_population_tier2,
+        large_population_tier3,
+
+        /// <summary>
+        /// Fortress: Own a city with 20 posted guards, then 40, then 80
+        /// </summary>
+        fortress_tier1,//i, t, a
+        fortress_tier2,
+        fortress_tier3,
+
+        /// <summary>
+        /// Stone Fortress: Own a city with 20 stone wall posted guards, then 40, then 80
+        /// </summary>
+        stone_fortress_tier1,//i, t, a
+        stone_fortress_tier2,
+        stone_fortress_tier3,
+
+        /// <summary>
+        /// Military might: Have an army power greater than 200, then 500, then 1500
+        /// </summary>
+        military_might_tier1,//i, t, a
+        military_might_tier2,
+        military_might_tier3,
+
+        /// <summary>
+        /// Go 64bit: break the 16 bit limit of gold.
+        /// </summary>
+        gold_64bit,//i, t, a
         
-        /// <summary>
-        /// Statue: Build one statue
-        /// </summary>
-        statue,//t
 
         /// <summary>
-        /// Decorations: Constuct 20 decorative buildings, including at least 4 statues
+        /// Purge: Wipe out 1 nation, then 4, then 12. story, 75% difficulty
         /// </summary>
-        decorations,//t
+        purge_nation_tier1,//i, t, a
+        purge_nation_tier2,
+        purge_nation_tier3,
 
         /// <summary>
-        /// Knights of Elite: Produce cavalry knights with the best armor and training
+        /// Max out - casual: gain all tech using casual controls
         /// </summary>
-        elite_knights,//t
+        maxout_casual,//i, t, a
 
         /// <summary>
-        /// All unit types: Own an army with all unit types
+        ///  fully research all technologies
         /// </summary>
-        all_unit_types,//t
+        techtree,//i, t, a
 
         /// <summary>
-        /// Take-out: Deliver food to a starving city
+        /// The people rise: 16 group army of only folkmen and slingers
         /// </summary>
-        deliver_food,//t
+        folkmen_rise,//i, t, a
 
         /// <summary>
-        ///  Men of culture: Create a bowman with archer culture, and a soldier with warrior culture
+        /// Vikings: Have a fleet with 16 ships with sea specialization.
         /// </summary>
-        soldier_culture,//t
+        vikings,//i, t, a
 
         /// <summary>
-        /// Large population: Reach a workforce of a 5000 men in one city
+        /// Slaughtered: Loose 100 soldiers in a battle
         /// </summary>
-        large_population,//t
+        slaughtered,//i, t, a
+
+        /// <summary>
+        /// Defeating victory: Win after loosing 40 military strength
+        /// </summary>
+        defeating_victory,//i, t, a
+
+        /// <summary>
+        /// Rear flanking: Make a cavalry charge against siege weapons
+        /// </summary>
+        rear_flanking,//i, t, a (can be cheesed)
+
+        /// <summary>
+        /// Bane of the barbarians: get the Dark Horde reward 
+        /// </summary>
+        barbarian_bane_any,//i, t, a
+        barbarian_bane_100,
+
+        /// <summary>
+        /// Deliver gold
+        /// </summary>
+        gold_deliver,//i, t, a        
+
+        /// <summary>
+        /// Terminate the first faction to attack you
+        /// </summary>
+        destroy_first_attacker_any,//i, t, a
+        destroy_first_attacker_100,
+
+        /// <summary>
+        /// destroy the mercenaries on sea
+        /// </summary>
+        early_hara_any,//i, t, a
+        early_hara_100,
+
+        /// <summary>
+        /// Destroy servants of dread, before the end boss
+        /// </summary>
+        early_dread_any,//i, t, a
+        early_dread_100,
+
+        /// <summary>
+        /// Destroy the united kingdom, before the end boss
+        /// </summary>
+        early_uk_any,//i, t, a
+        early_uk_100,
+
+        /// <summary>
+        /// Ally with both the "hill" factions
+        /// </summary>
+        worthy_friends,//i, t, a
+
+        /// <summary>
+        /// Reach victory with both the "hill" factions still alive
+        /// </summary>
+        worth_saving_any,//i, t, a
+        worth_saving_100,
+
+
+        /// <summary>
+        /// Produce soldiers with an iron cannon
+        /// </summary>
+        iron_cannon,//i, t, a
+
+        /// <summary>
+        /// The Ottoman - defeat a city with bronze siege cannons
+        /// </summary>
+        ottoman,//i, t, a
+
+        /// <summary>
+        /// Knights: Produce cavalry knights
+        /// </summary>
+        knights,//i, t, a
+
+        /// <summary>
+        /// Men of steel: Produce soldiers with steel sword and armor.
+        /// </summary>
+        men_of_steel,//i, t, a
+
+        /// <summary>
+        /// Knights of Lunimari: Produce an army with fully mithril equipped swordsmen and archers
+        /// </summary>
+        knights_of_lumini,//i, a
+
+        /// <summary>
+        /// reach victory without starting a single war
+        /// </summary>
+        no_war_started_any,//i, t, a
+        no_war_started_50,
+        no_war_started_100,
+        no_war_started_150,
+
+        /// <summary>
+        /// reach victory, and have started (10, 20, 40) wars, min 75%
+        /// </summary>
+        warstarter_tier1,//i, t, a
+        warstarter_tier2,
+        warstarter_tier3,
+
+        /// <summary>
+        ///  Reach victory with honor guards alive. Any difficulty.
+        /// </summary>
+        honorguards_any, //i, t, a
+        honorguards_50,
+        honorguards_100,
+        honorguards_150,
+
+        /// <summary>
+        ///  be in open war with 6 nations, then 9, then 12. Achieved on boss enter.
+        /// </summary>
+        warjuggler_tier1,//i, t, a
+        warjuggler_tier2,
+        warjuggler_tier3,
+
+        /// <summary>
+        /// Reach victory with locked pause command 
+        /// </summary>
+        no_pause_any,//i, t, a
+        no_pause_50,
+        no_pause_100,
+        no_pause_150,
+
+
+        /// <summary>
+        /// Begin the final battle
+        /// </summary>
+        reach_boss_any,//i, t, a
+        reach_boss_100,
+
+        /// <summary>
+        /// defeat the boss
+        /// </summary>
+        victory_boss_any,//i, t, a
+        victory_boss_50,
+        victory_boss_100,
+        victory_boss_150,
+
+        /// <summary>
+        /// have good relations with all nations who speaks to you
+        /// </summary>
+        victory_worldpeace_any,//i, t, a
+
+        /// <summary>
+        /// Grab the whole world to yourself - in sandbox
+        /// </summary>
+        victory_mini_domination_sandbox_any,//i, t, a
+        victory_mini_domination_sandbox_50,
+        victory_mini_domination_sandbox_100,
+        victory_mini_domination_sandbox_150,
+
+        /// <summary>
+        /// Grab the whole world to yourself - in story
+        /// </summary>
+        victory_mini_domination_story_any,//i, t, a
+        victory_mini_domination_story_100,
+
+        /// <summary>
+        /// Taste the impossible: Defeat the first attacker in 300% difficulty 
+        /// </summary>
+        destroy_first_attacker_300, //i, a
+
+        /// <summary>
+        /// Win a quick match
+        /// </summary>
+        quick_victory_any, //i, a
+        quick_victory_50,
+        quick_victory_100,
+        quick_victory_150,
+
+        /// <summary>
+        /// Found 1, 3, 9 new cities
+        /// </summary>
+        colonizer_tier1,
+        colonizer_tier2,
+        colonizer_tier3,
 
         NUM_ACHIEVEMENTS
     }

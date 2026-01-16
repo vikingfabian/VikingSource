@@ -2,18 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
-using VikingEngine.DSSWars.Display.Component;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Interface.Component;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.Players;
 using VikingEngine.PJ.Joust.DropItem;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -30,7 +32,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int selectedConscript = -1;
         public List<BarracksStatus> conscriptBuildings = new List<BarracksStatus>();
         Time conscriptDelay = Time.Zero;
-        IntVector2 recruitToTile;
+        public IntVector2 recruitToTile;
         public void async_conscriptUpdate(float time)
         {
             if (conscriptDelay.HasTime)
@@ -90,56 +92,111 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
 
                             case ConscriptActiveStatus.CollectingMen:
-                                int needMen = status.menNeeded - status.menCollected;
-                                int collectMen = lib.SmallestValue(workForce.amount, needMen);
-                                workForce.amount -= collectMen;
-                                status.menCollected += collectMen;
 
-                                if (status.menCollected == status.menNeeded)
+                                status.followsRequirements(this, out bool populationIsOk, out bool foodIsOk);
+
+                                if (populationIsOk && foodIsOk)
                                 {
-                                    status.active++;
-                                    status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.type)));
+                                    int needMen = status.menNeeded - status.menCollected;
+                                    int collectMen = lib.SmallestValue(workForce.amount, needMen);
+                                    workForce.amount -= collectMen;
+                                    status.menCollected += collectMen;
+
+                                    if (status.menCollected == status.menNeeded &&
+                                        (status.profile.specialization != SpecializationType.CityGuard || AvailableGuardHousing() >= status.menNeeded))
+                                    {
+                                        status.active++;
+                                        status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.type)));
+                                    }
                                 }
                                 break;
 
                             case ConscriptActiveStatus.Training:
                                 if (status.countdown.TimeOut())
                                 {
-                                    Vector3 startPos = WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition));
-                                    Ref.update.AddSyncAction(new SyncAction3Arg<ConscriptProfile, Vector3, int>(conscriptArmy, status.inProgress, startPos, 1));
-
-                                    status.active = ConscriptActiveStatus.Idle;
-
-                                    status.menCollected = 0;
-                                    status.equipmentCollected = 0;
-
-                                    if (faction.player.IsLocalPlayer())
+                                    if (status.profile.specialization == SpecializationType.CityGuard && AvailableGuardHousing() < status.menNeeded)
                                     {
-                                        if (status.inProgress.specialization == SpecializationType.CityGuard)
-                                        {
-                                            DssRef.stats.guardsRecruited++;
-                                        }
+                                        //Reset timer when there is no space
+                                        status.active = ConscriptActiveStatus.CollectingMen;
+                                    }
+                                    else
+                                    {
+                                        Vector3 startPos = WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition));
+                                        Ref.update.AddSyncAction(new SyncAction3Arg<ConscriptProfile, Vector3, int>(conscriptArmyLink, status.inProgress, startPos, 1));
 
-                                        if (status.inProgress.weapon == ItemResourceType.KnightsLance &&
-                                            (status.inProgress.armorLevel == ItemResourceType.FullPlateArmor || status.inProgress.armorLevel == ItemResourceType.MithrilArmor) &&
-                                            status.inProgress.training == TrainingLevel.Professional)
-                                        {
-                                            DssRef.achieve.UnlockAchievement_async(AchievementIndex.elite_knights);
-                                        }
+                                        status.active = ConscriptActiveStatus.Idle;
 
-                                        switch (Culture)
+                                        status.menCollected = 0;
+                                        status.equipmentCollected = 0;
+
+                                        if (GetPlayer().IsLocalPlayer())
                                         {
-                                            case CityCulture.Archers:
-                                                DssRef.state.progress.onCultureBuild(true);
-                                                break;
-                                            case CityCulture.Warriors:
-                                                DssRef.state.progress.onCultureBuild(false);
-                                                break;
+                                            if (status.inProgress.specialization == SpecializationType.CityGuard)
+                                            {
+                                                DssRef.stats.guardsRecruited++;
+                                            }
+
+                                            switch (status.inProgress.weapon)
+                                            {
+                                                case ItemResourceType.LongSword:
+                                                    if (status.inProgress.armorLevel == ItemResourceType.LightPlateArmor ||
+                                                        status.inProgress.armorLevel == ItemResourceType.FullPlateArmor)
+                                                    {
+                                                        DssRef.achieve.UnlockAchievement_async(AchievementIndex.men_of_steel);
+                                                    }
+                                                    break;
+                                                case ItemResourceType.KnightsLance:
+                                                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.knights);
+                                                    break;
+                                                case ItemResourceType.ManCannonIron:
+                                                case ItemResourceType.SiegeCannonIron:
+                                                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.iron_cannon);
+                                                    break;
+                                            }
+                                            //if (status.inProgress.weapon == ItemResourceType.KnightsLance)
+                                            //    //&&
+                                            //    //(status.inProgress.armorLevel == ItemResourceType.FullPlateArmor || status.inProgress.armorLevel == ItemResourceType.MithrilArmor) &&
+                                            //    //status.inProgress.training == TrainingLevel.Professional)
+                                            //{
+                                                
+                                            //}
+
+                                            //switch (Culture)
+                                            //{
+                                            //    case CityCulture.Archers:
+                                            //        DssRef.state.progress.onCultureBuild(true);
+                                            //        break;
+                                            //    case CityCulture.Warriors:
+                                            //        DssRef.state.progress.onCultureBuild(false);
+                                            //        break;
+                                            //}
                                         }
                                     }
                                 }
                                 break;
                         }
+                    }
+                    conscriptBuildings[i] = status;
+                }
+            }
+        }
+
+        public void queueToAllConscripts(int count, LocalPlayer player)
+        {
+            for (int i = 0; i < conscriptBuildings.Count; ++i)
+            {
+                if (player == null ||
+                    player.conscriptSubTab == BuildAndExpandType.ALL ||
+                    player.conscriptSubTab == conscriptBuildings[i].type)
+                {
+                    var status = conscriptBuildings[i];
+                    if (count == 1)
+                    {
+                        status.que++;
+                    }
+                    else
+                    {
+                        status.que = count;
                     }
                     conscriptBuildings[i] = status;
                 }
@@ -168,6 +225,19 @@ namespace VikingEngine.DSSWars.GameObject
             copyConscript(player, selectedConscript);
         }
 
+        void haltAllConscriptProgress()
+        {
+            lock (conscriptBuildings)
+            {
+                for (int i = 0; i < conscriptBuildings.Count; i++)
+                {
+                    BarracksStatus currentStatus = conscriptBuildings[i];
+                    currentStatus.que = currentStatus.que > 0 ? 0 : 100;
+                    conscriptBuildings[i] = currentStatus;
+                }
+            }
+        }
+
         public void copyConscript(LocalPlayer player, int index)
         {
             if (arraylib.InBound(conscriptBuildings, index))
@@ -176,31 +246,50 @@ namespace VikingEngine.DSSWars.GameObject
                 switch (currentStatus.type)
                 {
                     case Build.BuildAndExpandType.SoldierBarracks:
-                        player.soldierConscriptCopy = currentStatus.profile;
+                        player.soldierConscriptCopy = currentStatus;
                         break;
                     case Build.BuildAndExpandType.ArcherBarracks:
-                        player.archerConscriptCopy = currentStatus.profile;
+                        player.archerConscriptCopy = currentStatus;
                         break;
-                    case Build.BuildAndExpandType.WarmashineBarracks:
-                        player.warmashineConscriptCopy = currentStatus.profile;
+                    case Build.BuildAndExpandType.WarmachineBarracks:
+                        player.warmachineConscriptCopy = currentStatus;
                         break;
                     case Build.BuildAndExpandType.KnightsBarracks:
-                        player.knightConscriptCopy = currentStatus.profile;
+                        player.knightConscriptCopy = currentStatus;
                         break;
                     case Build.BuildAndExpandType.GunBarracks:
-                        player.gunConscriptCopy = currentStatus.profile;
+                        player.gunConscriptCopy = currentStatus;
                         break;
                     case Build.BuildAndExpandType.CannonBarracks:
-                        player.cannonConscriptCopy = currentStatus.profile;
+                        player.cannonConscriptCopy = currentStatus;
                         break;
 
                 }
             }
         }
 
+        public void pasteConscriptToAll(LocalPlayer player)
+        {
+            for (int i = 0; i < conscriptBuildings.Count; ++i)
+            {
+                if (player.conscriptSubTab == BuildAndExpandType.ALL ||
+                    player.conscriptSubTab == conscriptBuildings[i].type)
+                {
+                    pasteConscript(player, i);
+                }
+            }
+        }
+
         public void pasteConscript(LocalPlayer player)
         {
-            pasteConscript(player, selectedConscript);
+            if (selectedConscript < 0)
+            {
+                pasteConscriptToAll(player);
+            }
+            else
+            {
+                pasteConscript(player, selectedConscript);
+            }
         }
 
         public void pasteConscript(LocalPlayer player, int index)
@@ -212,22 +301,22 @@ namespace VikingEngine.DSSWars.GameObject
                 switch (currentStatus.type)
                 {
                     case Build.BuildAndExpandType.SoldierBarracks:
-                        currentStatus.profile=player.soldierConscriptCopy;
+                        currentStatus.paste(player.soldierConscriptCopy);
                         break;
                     case Build.BuildAndExpandType.ArcherBarracks:
-                        currentStatus.profile= player.archerConscriptCopy;
+                        currentStatus.paste(player.archerConscriptCopy);
                         break;
-                    case Build.BuildAndExpandType.WarmashineBarracks:
-                        currentStatus.profile=player.warmashineConscriptCopy ;
+                    case Build.BuildAndExpandType.WarmachineBarracks:
+                        currentStatus.paste(player.warmachineConscriptCopy) ;
                         break;
                     case Build.BuildAndExpandType.KnightsBarracks:
-                        currentStatus.profile=player.knightConscriptCopy;
+                        currentStatus.paste(player.knightConscriptCopy);
                         break;
                     case Build.BuildAndExpandType.GunBarracks:
-                        currentStatus.profile=player.gunConscriptCopy;
+                        currentStatus.paste(player.gunConscriptCopy);
                         break;
                     case Build.BuildAndExpandType.CannonBarracks:
-                        currentStatus.profile=player.cannonConscriptCopy;
+                        currentStatus.paste(player.cannonConscriptCopy);
                         break;
 
                 }
@@ -235,21 +324,6 @@ namespace VikingEngine.DSSWars.GameObject
                 conscriptBuildings[index] = currentStatus;
             }
         }
-
-        //public void toggleConscriptStop()
-        //{
-        //    toggleConscriptStop(selectedConscript);
-        //}
-
-        //public void toggleConscriptStop(int index)
-        //{
-        //    if (arraylib.InBound(deliveryServices, index))
-        //    {
-        //        DeliveryStatus currentStatus = deliveryServices[index];
-        //        currentStatus.que = currentStatus.que > 0 ? 0 : 100;
-        //        deliveryServices[index] = currentStatus;
-        //    }
-        //}
 
         public Vector3 defaultConscriptPos()
         {
@@ -266,6 +340,18 @@ namespace VikingEngine.DSSWars.GameObject
             return startPos;
         }
 
+        public IntVector2 defaultConscriptSubtilePos()
+        {
+            if (conscriptBuildings.Count > 0)
+            {
+               return conv.IntToIntVector2(conscriptBuildings[0].idAndPosition);
+            }
+            else
+            {
+                return cityHallSubtilePos;
+            }
+        }
+
         public void onConscriptChange()
         {
             lock (conscriptBuildings)
@@ -279,7 +365,46 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void conscriptArmy(ConscriptProfile profile, Vector3 startPos, int count)
+        public void conscriptSettlerLink()
+        {
+            conscriptSettler(null, false);
+        }
+
+        public CraftBlueprint SettlerBp()
+        {
+            return Culture == CityCulture.Nomads ? ConscriptDataLib.CraftNomadSettler : ConscriptDataLib.CraftSettler;
+        }
+
+        public Army conscriptSettler(City settleArea, bool checkIfExists)
+        {
+            Army army = recruitToClosestArmy();
+            
+            if ((!checkIfExists || army == null || !army.HasSettler(out _)) &&
+                SettlerBp().tryPayResources(this) > 0)
+            {
+                army = conscriptArmy(new ConscriptProfile()
+                {
+                    weapon = ItemResourceType.Settler,
+                    armorLevel = ItemResourceType.NONE,
+                    specialization = SpecializationType.None,
+                    training = TrainingLevel.Minimal,
+                }, defaultConscriptPos(), 1) as Army;
+
+                if (settleArea != null)
+                {
+                    army.Ai_Order_MoveTo(settleArea.tilePos);
+                }
+            }
+
+            return army;
+        }
+
+        public void conscriptArmyLink(ConscriptProfile profile, Vector3 startPos, int count)
+        {
+            conscriptArmy(profile, startPos, count);
+        }
+
+        public AbsArmy conscriptArmy(ConscriptProfile profile, Vector3 startPos, int count)
         {
             AbsArmy army = null;
 
@@ -289,7 +414,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (army == null)
                 {
-                    army = faction.NewArmy(recruitToTile);
+                    army = GetFaction().NewArmy(recruitToTile);
                 }
             }
             SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
@@ -298,7 +423,7 @@ namespace VikingEngine.DSSWars.GameObject
                 skillBonus = 1,
             };
 
-            soldierProfile.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmashine);
+            soldierProfile.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmachine);
 
 
             switch (Culture)
@@ -329,7 +454,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     break;
                 case CityCulture.SiegeEngineer:
-                    if (warmashine)
+                    if (warmachine)
                     {
                         soldierProfile.skillBonus = 1.2f;
                     }
@@ -355,7 +480,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 army?.GetArmy().OnSoldierPurchaseCompleted();
             }
-            
+
+            return army;
         }
 
         public void debugConscript(ItemResourceType weapon)
@@ -364,9 +490,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (army == null)
             {
-                //IntVector2 onTile = DssRef.world.GetFreeTile(tilePos);
-
-                army = faction.NewArmy(recruitToTile);
+                army = GetFaction().NewArmy(recruitToTile);
             }
 
             SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
@@ -384,7 +508,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 new SoldierGroup(army, soldierProfile, startPos);
             }
-            //army?.OnSoldierPurchaseCompleted();
+
             army.setAsStartArmy();
         }
 
@@ -431,21 +555,18 @@ namespace VikingEngine.DSSWars.GameObject
         public void createStartupBarracks()
         {
             if (conscriptBuildings.Count == 0 &&
-                DssRef.storage.runTutorial_1short_2normal != 2)
+                !DssRef.storage.runTutorial)
             {
-                //IntVector2 pos = WP.ToSubTilePos_TopLeft(tilePos);
-                //pos.X += 4;
-                //pos.Y += 5;
-                var subTile = DssRef.world.subTileGrid.Get(barracksReservedSpot);
+                ref var subTile = ref DssRef.world.subTileGrid.GetRef(barracksReservedSpot);
                 subTile.SetType(TerrainMainType.Building, (int)TerrainBuildingType.SoldierBarracks, 1);
-                DssRef.world.subTileGrid.Set(barracksReservedSpot, subTile);
-
-
+                
                 BarracksStatus newBarrack = new BarracksStatus(Build.BuildAndExpandType.SoldierBarracks);
                 newBarrack.idAndPosition = conv.IntVector2ToInt(barracksReservedSpot);
                 newBarrack.profile.armorLevel = ItemResourceType.PaddedArmor;
 
                 conscriptBuildings.Add(newBarrack);
+
+
             }
         }
 
@@ -455,12 +576,6 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 idAndPosition = conv.IntVector2ToInt(subPos),
             };
-
-            consriptProfile.profile.defaultSetup(type);
-            //if (nobelmen)
-            //{
-            //    consriptProfile.profile.training = TrainingLevel.Basic;
-            //}
 
             lock (conscriptBuildings)
             {
@@ -517,5 +632,14 @@ namespace VikingEngine.DSSWars.GameObject
             status = new BarracksStatus();
             return false;
         }
+
+        //protected void DispandGuards()
+        //{
+        //    var counter = groups.counter();
+        //    while (counter.Next())
+        //    {
+        //        counter.sel.DeleteMe(DeleteReason.Disband, false);
+        //    }
+        //}
     }   
 }

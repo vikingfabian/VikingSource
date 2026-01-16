@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace VikingEngine
 {
     public struct IntVector2 : IBinaryIOobj, IComparable
-    {
+    {        
         public static readonly IntVector2[] Dir4Array = new IntVector2[] {
             new IntVector2(0, -1),
             new IntVector2(1, 0),
@@ -315,12 +315,27 @@ namespace VikingEngine
             int l = SideLength();
             return new IntVector2(X / l, Y / l);
         }
-        public IntVector2 Normal_RoundUp()
+        public IntVector2 Normal_Round()
         {
             float l = SideLength();
             return new IntVector2(X / l, Y / l);
         }
-        
+
+        public IntVector2 Normal_Ceiling()
+        {            
+            IntVector2 result = IntVector2.Zero;
+            if (X != 0)
+            {
+                result.X = X > 0 ? 1 : -1;
+            }
+            if (Y != 0)
+            {
+                result.Y = Y > 0 ? 1 : -1;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Using geometric similarity
         /// </summary>
@@ -673,7 +688,12 @@ namespace VikingEngine
             result.readByte(r);
             return result;
         }
-
+        public static IntVector2 FromReadShort(System.IO.BinaryReader r)
+        {
+            IntVector2 result = IntVector2.Zero;
+            result.readShort(r);
+            return result;
+        }
         public static IntVector2 FromReadUshort(System.IO.BinaryReader r)
         {
             IntVector2 result = IntVector2.Zero;

@@ -8,7 +8,7 @@ using VikingEngine.Graphics;
 
 namespace VikingEngine
 {
-    interface ICirkleCounter
+    interface ICircleCounter
     {
         int Value { get; }
         int Max { get; }
@@ -20,7 +20,7 @@ namespace VikingEngine
     {
         public static readonly FrameStamp None = new FrameStamp(-1000000);
 
-        public int frame;
+        public double frame;
 
         public FrameStamp(int frame)
         {
@@ -76,7 +76,14 @@ namespace VikingEngine
         {
             this.totalTimeStampSec = Ref.TotalTimeSec;
         }
-
+        public void setTimeFromNow(float seconds)
+        {
+            this.totalTimeStampSec = Ref.TotalTimeSec + seconds;
+        }
+        public bool TimeOut()
+        {
+            return Ref.TotalTimeSec >= totalTimeStampSec;
+        }
         /// <summary>
         /// Time passed this frame
         /// </summary>
@@ -120,14 +127,35 @@ namespace VikingEngine
             this.totalTimeStampSec = totalGameTimeStampSec;
         }
 
-        public bool HasTime()
+        public void write_ushort(System.IO.BinaryWriter w)
         {
-            return totalTimeStampSec > 0;
+            //MAX 1000 hours
+            w.Write(Convert.ToUInt16(totalTimeStampSec));
         }
 
-        public static TimeStamp Now()
+        public void read_ushort(System.IO.BinaryReader r)
         {
-            return new TimeStamp(Ref.TotalGameTimeSec);
+            totalTimeStampSec = r.ReadUInt16();
+        }
+
+        public void write(System.IO.BinaryWriter w)
+        {
+            w.Write(totalTimeStampSec);
+        }
+
+        public void read(System.IO.BinaryReader r)
+        {
+            totalTimeStampSec = r.ReadSingle();
+        }
+
+        public bool HasTime()
+        {
+            return totalTimeStampSec >= Ref.TotalGameTimeSec;
+        }
+
+        public static GameTimeStamp Now()
+        {
+            return new GameTimeStamp(Ref.TotalGameTimeSec);
         }
 
         public bool secPassed(float seconds)
@@ -144,9 +172,20 @@ namespace VikingEngine
             return Ref.TotalGameTimeSec - totalTimeStampSec < TimeExt.MsToSec * ms;
         }
 
+        public bool TimeOut()
+        {
+            return Ref.TotalGameTimeSec >= totalTimeStampSec;
+                
+        }
+
         public void setNow()
         {
             this.totalTimeStampSec = Ref.TotalGameTimeSec;
+        }
+
+        public void setTimeFromNow(float seconds)
+        {
+            this.totalTimeStampSec = Ref.TotalGameTimeSec + seconds;
         }
 
         /// <summary>
@@ -156,6 +195,11 @@ namespace VikingEngine
         {
             return Ref.PrevTotalTimeSec - totalTimeStampSec < seconds &&
                 Ref.TotalGameTimeSec - totalTimeStampSec >= seconds;
+        }
+
+        public void addTime(float seconds)
+        {
+            totalTimeStampSec += seconds;
         }
 
         /// <summary>
@@ -168,15 +212,15 @@ namespace VikingEngine
 
         public float Hours
         {
-            get { return TimeExt.SecondsToHours(Ref.TotalGameTimeSec - totalTimeStampSec); }
+            get { return TimeExt.SecondsToHours(-Ref.TotalGameTimeSec + totalTimeStampSec); }
         }
         public float Seconds
         {
-            get { return Ref.TotalGameTimeSec - totalTimeStampSec; }
+            get { return -Ref.TotalGameTimeSec + totalTimeStampSec; }
         }
         public float MilliSec
         {
-            get { return TimeExt.SecondsToMS(Ref.TotalGameTimeSec - totalTimeStampSec); }
+            get { return TimeExt.SecondsToMS(-Ref.TotalGameTimeSec + totalTimeStampSec); }
         }
     }
 
@@ -449,7 +493,7 @@ namespace VikingEngine
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    public struct CirkleCounter
+    public struct CircleCounter
     {
         int value;
         public int Value
@@ -468,15 +512,17 @@ namespace VikingEngine
         public int Min
         { get { return min; } }
 
-        public CirkleCounter(int maxValue)
+        public int Length => max - min + 1;
+
+        public CircleCounter(int maxValue)
             : this(0, 0, maxValue)
         {
         }
-        public CirkleCounter(int startVal,int minValue, int maxValue)
+        public CircleCounter(int startVal,int minValue, int maxValue)
         {
             min = minValue;
             max = maxValue;
-            value = 0;
+            value = Bound.SetRollover(startVal, min, max);
         }
         public int Next(int dir)
         {
@@ -493,7 +539,7 @@ namespace VikingEngine
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    public struct CirkleCounterUp : ICirkleCounter
+    public struct CircleCounterUp : ICircleCounter
     {
         public int value;
         public int Value
@@ -502,16 +548,16 @@ namespace VikingEngine
         public int Max
         { get { return max; } }
 
-        public CirkleCounterUp(int maxValue)
+        public CircleCounterUp(int maxValue)
             : this(0, maxValue)
         {
         }
-        public CirkleCounterUp(int startVal, int maxValue)
+        public CircleCounterUp(int startVal, int maxValue)
         {
             max = maxValue;
             value = startVal;
         }
-        public static CirkleCounterUp operator ++(CirkleCounterUp val)
+        public static CircleCounterUp operator ++(CircleCounterUp val)
         {
             val.Next();
             return val;
@@ -544,7 +590,7 @@ namespace VikingEngine
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    public struct CirkleCounterDown : ICirkleCounter
+    public struct CircleCounterDown : ICircleCounter
     {
         public int value;
         public int Value
@@ -553,7 +599,7 @@ namespace VikingEngine
         public int Max
         { get { return max; } }
 
-        public CirkleCounterDown(int maxValue)
+        public CircleCounterDown(int maxValue)
         {
             max = maxValue;
             value = maxValue;

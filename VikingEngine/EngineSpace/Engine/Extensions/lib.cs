@@ -859,6 +859,15 @@ namespace VikingEngine
             return val2 > val3 ? val2 : val3;
         }
 
+        public static float LargestValue(float val1, float val2, float val3)
+        {
+            if (val1 > val2)
+            {
+                return val1 > val3 ? val1 : val3;
+            }
+            return val2 > val3 ? val2 : val3;
+        }
+
         public static int SmallestValue(int val1, int val2, int val3)
         {
             if (val1 < val2)
@@ -983,8 +992,11 @@ namespace VikingEngine
         public static Vector2 AngleToV2(float angle, float lenght)
         {
             Vector2 direction = Vector2.Zero;
-            direction.X = (float)(Math.Sin(angle) * lenght);
-            direction.Y = (float)(Math.Cos(angle) * -lenght);
+            if (lenght != 0)
+            {
+                direction.X = (float)(Math.Sin(angle) * lenght);
+                direction.Y = (float)(Math.Cos(angle) * -lenght);
+            }
             return direction;
         }
         public static float V2ToAngle(Vector2 direction)
@@ -992,7 +1004,11 @@ namespace VikingEngine
             if (direction == Vector2.Zero) return 0;
             direction.Normalize();
             return (float)Math.Atan2(direction.X, -direction.Y);
+        }
 
+        public static float V2ToAngle_PreNorm_Unsafe(Vector2 direction)
+        {
+            return (float)Math.Atan2(direction.X, -direction.Y);
         }
 
         public static float V2ToAngle_normalized_unsafe(float xDir, float yDir)
@@ -1281,19 +1297,7 @@ namespace VikingEngine
         {
             return (Dir4)(((int)dir + 2) % 4);
         }
-        public static CubeFace GetOppositeDirection(CubeFace facing)
-        {
-            switch (facing)
-            {
-                case CubeFace.Xnegative: return CubeFace.Xpositive;
-                case CubeFace.Xpositive: return CubeFace.Xnegative;
-                case CubeFace.Ynegative: return CubeFace.Ypositive;
-                case CubeFace.Ypositive: return CubeFace.Ynegative;
-                case CubeFace.Znegative: return CubeFace.Zpositive;
-                case CubeFace.Zpositive: return CubeFace.Znegative;
-                default: throw new NotImplementedException("Bad call, please give a valid facing");
-            }
-        }
+        
         public static bool IsDirAlongAxisZ_NS(Dir4 dir)
         {
             if (dir == Dir4.N || dir == Dir4.S)
@@ -1631,6 +1635,15 @@ namespace VikingEngine
         {
             a1 += a2;
             return a1;
+        }
+
+        public static bool EqualToAny<T>(T value, T compare1, T compare2)
+        { 
+            return value.Equals(compare1) || value.Equals(compare2);
+        }
+        public static bool EqualToAny<T>(T value, T compare1, T compare2, T compare3)
+        {
+            return value.Equals(compare1) || value.Equals(compare2) || value.Equals(compare3);
         }
     }
 }

@@ -121,9 +121,9 @@ namespace VikingEngine.Graphics
         }
 
 
-        public override void Time_Update(float time)
+        public override void Update()
         {
-            base.Time_Update(time);
+            base.Update();
 
             for (int i = 0; i < lightsAndShadows.Count; ++i)
             {

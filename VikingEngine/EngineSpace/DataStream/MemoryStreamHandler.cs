@@ -8,6 +8,7 @@ namespace VikingEngine.DataStream
 {
     class MemoryStreamHandler: DataLib.ISaveByteArrayObj
     {
+
         System.IO.MemoryStream s;
         System.IO.BinaryWriter w;
         
@@ -226,13 +227,13 @@ namespace VikingEngine.DataStream
 
         public void Save(FilePath path)
         {
-            DataStreamHandler.Write(path, s.ToArray());
+            FileToDiskManager.Write(path, s.ToArray());
         }
 
         ulong dataSumValue(byte[] data, int dataLenght)
         {
             ulong sum = 0;
-            CirkleCounterUp primIx = new CirkleCounterUp(0, Primes.Length - 1);
+            CircleCounterUp primIx = new CircleCounterUp(0, Primes.Length - 1);
             for (int i = 0; i < dataLenght; ++i)
             {
                 sum += (ulong)(data[i] * Primes[primIx.Next()]);

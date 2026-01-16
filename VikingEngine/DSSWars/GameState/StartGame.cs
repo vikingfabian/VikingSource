@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.LootFest.GO.Characters.CastleEnemy;
 using VikingEngine.Network;
@@ -23,16 +24,19 @@ namespace VikingEngine.DSSWars
         public AbsStartPlayState()
             :base(false)
         {
-
             loadingStatusText = new Graphics.TextG(LoadedFont.Regular,
                new Vector2(Engine.Screen.SafeArea.X, Engine.Screen.SafeArea.Bottom - Engine.Screen.IconSize * 2),
                new Vector2(Engine.Screen.TextSize * 2f),
                Graphics.Align.Zero, "...", Color.White, ImageLayers.Lay1);
+            
             Ref.music.stop(true);
+            Ref.music.DelayBetweenSongs_minutes = new IntervalF(5, 8);
+            Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
 
             new PlaySettings();
-        }
 
+            DssRef.storage.meta.gameOverResultCollection = null;
+        }
 
         public override void Time_Update(float time)
         {
@@ -62,7 +66,8 @@ namespace VikingEngine.DSSWars
 
     class StartGame : AbsStartPlayState
     {
-       
+        TimeStamp joinRequestTime;
+        int joinTrials = 0;
         NetworkLobby netLobby;
         WorldDataStorage storage;
         int map_start_process_done = 0;
@@ -74,26 +79,48 @@ namespace VikingEngine.DSSWars
         public StartGame(bool host, NetworkLobby netLobby, SaveStateMeta loadMeta, MapBackgroundLoading loading)
             :base()
         {
+            DssRef.settings.playType = PlayStateType.Play;
             this.host = host;
-           
-
             this.loadMeta = loadMeta;
-            
-            
+
+            var pStorage = DssRef.storage.localPlayers[0];
+            if (DssRef.storage.profileStorage.profiles[pStorage.profileIndex].casualControls)
+            {
+                DssRef.stats.startnew_casual.addOne();
+            }
 
             if (loadMeta == null)
             {
                 // new game
                 switch (DssRef.difficulty.setting_gameMode)
                 {
-                    case GameMode.FullStory:
+                    case GameModeMainType.FullStory:
                         DssRef.stats.startNewStory.addOne();
                         break;
-                    case GameMode.Sandbox:
+                    case GameModeMainType.QuickMatch:
+                        DssRef.stats.startQuickMatch.addOne();
+                        break;
+                    case GameModeMainType.Sandbox:
                         DssRef.stats.startNewSandbox.addOne();
                         break;
-                    case GameMode.Peaceful:
+                    case GameModeMainType.Peaceful:
                         DssRef.stats.startNewPeaceful.addOne();
+                        break;
+                    case GameModeMainType.Spectator:
+                        DssRef.stats.startNewSpectator.addOne();
+                        break;
+                }
+
+                switch (DssRef.storage.gameRuleset.factionStartSize)
+                {
+                    case FactionStartSize.Full:
+                        DssRef.stats.startnewsize_full.addOne();
+                        break;
+                    case FactionStartSize.OneCity:
+                        DssRef.stats.startnewsize_onecity.addOne();
+                        break;
+                    case FactionStartSize.Settler:
+                        DssRef.stats.startnewsize_settler.addOne();
                         break;
                 }
 
@@ -123,26 +150,41 @@ namespace VikingEngine.DSSWars
                     case 200:
                         DssRef.stats.startNew200perc.addOne();
                         break;
+                    case 300:
+                        DssRef.stats.startNew300perc.addOne();
+                        break;
 
                 }
 
-                switch (DssRef.storage.runTutorial_1short_2normal)
+                if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
                 {
-                    case 0:
-                        if (PlatformSettings.STEAM_DEMO)
-                        {
-                            DssRef.stats.startNewDemo.addOne();
-                        }
-                        break;
+                    //switch (DssRef.storage.runTutorial_1short_2normal)
+                    //{
+                    //    case 0:
+                    //        if (PlatformSettings.STEAM_DEMO)
+                    //        {
+                    //            DssRef.stats.startNewDemo.addOne();
+                    //        }
+                    //        break;
 
-                    case 1:
-                        DssRef.stats.startShortTutorial.addOne();
-                        break;
+                    //    case 1:
+                    //        //DssRef.stats.startShortTutorial.addOne();
+                    //        break;
 
-                    case 2:
+                    //    case 2:
+                    //        DssRef.stats.startTutorial.addOne();
+                    //        break;
+
+                    //}
+
+                    if (DssRef.storage.runTutorial)
+                    { 
                         DssRef.stats.startTutorial.addOne();
-                        break;
-
+                    }
+                    else if (PlatformSettings.STEAM_DEMO)
+                    {
+                        DssRef.stats.startNewDemo.addOne();
+                    }
                 }
 
                 if (DssRef.storage.playerCount > 1)
@@ -159,7 +201,7 @@ namespace VikingEngine.DSSWars
                     DssRef.stats.keyboard_user.addOne();
                 }
 
-                switch (DssRef.storage.mapSize)
+                switch (DssRef.storage.gameRuleset.mapSize)
                 {
                     case MapSize.Tiny:
                     case MapSize.Small:
@@ -193,10 +235,44 @@ namespace VikingEngine.DSSWars
             }
             else
             {
+                joinRequest();
+                //if (Ref.netSession.Host() != null)
+                //{
+                //    var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssJoined_WantWorld,
+                //        Network.PacketReliability.Reliable, Ref.netSession.Host().Id);
+                //}
+            }
+        }
+
+        void joinRequest()
+        {
+            joinRequestTime.setNow();
+            if (Ref.netSession.Host() != null)
+            {
                 var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssJoined_WantWorld,
                     Network.PacketReliability.Reliable, Ref.netSession.Host().Id);
             }
         }
+
+        public override void Time_Update(float time)
+        {
+            base.Time_Update(time);
+            if (!host)
+            {
+                if (joinRequestTime.secPassed(3))
+                {
+                    if (++joinTrials >= 3)
+                    {
+                        new ExitToLobby(false);
+                    }
+                    else
+                    {
+                        joinRequest();
+                    }
+                }
+            }
+        }
+
         protected override void onLoadComplete()
         {
             if (state == null)

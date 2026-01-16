@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using Valve.Steamworks;
+
 
 namespace VikingEngine.DSSWars
 {
     
 
 
-    class WorldDataStorage: DataStream.IStreamIOCallback
+    class WorldDataStorage: IStreamIOCallback
     {
         public WorldData worldData;
         public bool loadComplete = false;

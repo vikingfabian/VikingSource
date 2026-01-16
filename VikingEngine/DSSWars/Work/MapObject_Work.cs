@@ -23,20 +23,37 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 var city = GetCity();
-                foreach (var w in workerUnits)
+                for (int i = workerUnits.Count -1; i>=0;--i)//each (var w in workerUnits)
                 {
-                    w.update(city);
+                    if (workerUnits[i].update(city))
+                    { 
+                        workerUnits.RemoveAt(i);
+                    }
                 }
             }
         }
 
+        //public void setTimeOnAllWorkers()
+        //{
+        //    for (int i = 0; i < workerStatuses.Count; ++i)
+        //    {
+        //        var status = workerStatuses[i];
+        //        status.processTimeStartStampSec = Ref.TotalGameTimeSec;
+
+        //        workerStatuses[i] = status;
+        //    }
+        //}
+
         void addMissingWorkerUnits()
         {
-            for (int i = workerUnits.Count; i < workerStatuses.Count; i++)
+            lock (workerStatuses.array)
             {
-                if (workerStatuses[i].work != WorkType.IsDeleted)
+                for (int i = workerUnits.Count; i < workerStatuses.Count; i++)
                 {
-                    workerUnits.Add(new WorkerUnit(this, workerStatuses[i], i));
+                    if (workerStatuses[i].work != WorkType.IsDeleted)
+                    {
+                        workerUnits.Add(new WorkerUnit(this, workerStatuses[i], i));
+                    }
                 }
             }
         }
@@ -76,12 +93,18 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void getWorkerStatus(int index, ref WorkerStatus status)
         {
-            status = workerStatuses[index];
+            lock (workerStatuses.array)
+            {
+                status = workerStatuses[index];
+            }
         }
 
         public void setWorkerStatus(int index, ref WorkerStatus status)
         {
-            workerStatuses[index] = status;
+            lock (workerStatuses.array)
+            {
+                workerStatuses[index] = status;
+            }
         }
     }
 }

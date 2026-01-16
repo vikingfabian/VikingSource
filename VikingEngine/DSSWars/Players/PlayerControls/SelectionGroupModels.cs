@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Graphics;
+using VikingEngine.Timer;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -13,12 +14,23 @@ namespace VikingEngine.DSSWars.Players
         public List<Mesh> groupModels = new List<Mesh>();
         int layer;
         int playerCam;
+        int count = 0;
+
+        public bool Visible => count > 0;
         //public SelectionGroupModels(bool 
 
         public SelectionGroupModels(int playerCam, bool detailLayer)
         {
             this.playerCam = playerCam;
-            layer = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
+            layer = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.MidLayer;
+        }
+
+        public void Draw(int cameraIndex)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                groupModels[i].Draw(cameraIndex);
+            }
         }
 
         public void BeginGroupModel()
@@ -28,12 +40,16 @@ namespace VikingEngine.DSSWars.Players
 
         public void clear()
         {
-            
-            foreach (var gm in groupModels)
+            if (Input.Keyboard.Ctrl)
             {
-                gm.Visible = false;
+                lib.DoNothing();
             }
-            
+
+            for (int i = 0; i < count; i++)
+            {
+                groupModels[i].Visible = false;
+            }
+            count = 0;
         }
 
         public void setGroupModel(int index, Vector3 pos, Vector3 scale, bool hover, bool main, bool squareSelection)
@@ -51,15 +67,19 @@ namespace VikingEngine.DSSWars.Players
             while (index >= groupModels.Count)
             {
                 var model = new Mesh(mesh, Vector3.Zero, scale,
-                TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
-                model.AddToRender(layer);
-                model.setVisibleCamera(playerCam);
+                    TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
+                //model.AddToRender(layer);
+                //model.setVisibleCamera(playerCam);
                 model.Visible = false;
 
                 groupModels.Add(model);
             }
 
             var unitModel = groupModels[index];
+            if (index >= count)
+            {
+                count = index + 1;
+            }
             unitModel.LoadedMeshType = mesh;
             unitModel.Visible = true;
             unitModel.position = pos;

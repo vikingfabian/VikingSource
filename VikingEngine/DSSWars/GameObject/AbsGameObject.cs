@@ -1,26 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Text;
 using Microsoft.Xna.Framework;
-using VikingEngine.DSSWars.Display;
+using Steamworks;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.Input;
-using VikingEngine.LootFest.Players;
-using VikingEngine.ToGG.MoonFall.GO;
-using VikingEngine.ToGG.MoonFall.Players;
+
 //
 
 namespace VikingEngine.DSSWars.GameObject
 {
     abstract class AbsGameObject
     {
-
-        public int parentArrayIndex = -1;
+        public int factionIndex = -1;
+        public int myIndex = -1;
         public bool isDeleted = false;
         
         abstract public GameObjectType gameobjectType();
@@ -30,15 +29,113 @@ namespace VikingEngine.DSSWars.GameObject
             return null;
         }
 
-        abstract public Faction GetFaction();
+        virtual public bool IsDeleted()
+        {
+            return isDeleted;
+        }
+        virtual public bool IsGuardGroup()
+        {
+            return false;
+        }
+        virtual public bool IsSoldiers()
+        {
+            return false;
+        }
+
+        public bool HasFaction()
+        { 
+            return factionIndex >= 0 && factionIndex < DssRef.world.factions.Count;
+        }
+
+        public bool HasAliveFaction()
+        {
+            if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
+            { 
+                return DssRef.world.factions.Array[factionIndex] != null && DssRef.world.factions.Array[factionIndex].isAlive; 
+            }
+            return false;
+        }
+
+        virtual public Faction GetFaction_NoChecks()
+        {
+            if (factionIndex < 0 || factionIndex >= DssRef.world.factions.Count)
+            {
+                return null;
+            }
+
+            return DssRef.world.factions.Array[factionIndex];
+        }
+
+        virtual public Faction GetFaction()
+        {
+
+            if (factionIndex < 0)
+            {
+                return null;
+            }
+
+            return DssRef.world.faction(factionIndex);
+        }
+
+        public bool TryGetFaction(out Faction faction)
+        {
+            if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
+            {
+                faction = DssRef.world.factions.Array[factionIndex];
+                return true;
+            }
+            faction = null;
+            return false;
+        }
+
+        virtual public Faction GetFaction_Safe()
+        {
+            return DssRef.world?.faction(factionIndex);
+        }
+
+        public Players.AbsPlayer GetPlayer()
+        {
+
+            if (factionIndex < 0)
+            {
+                return null;
+            }
+
+            return DssRef.world.factions.Array[factionIndex]?.player;
+        }
+
+        public bool TryGetPlayer(out Players.AbsPlayer player)
+        {
+
+            if (factionIndex < 0)
+            {
+                player = null;
+            }
+            else
+            {
+                player = DssRef.world.factions.Array[factionIndex]?.player;
+            }
+            return player != null;
+        }
+
+        public bool GetCasual()
+        {
+            //if (factionIndex > 0)
+            //{
+            var f = DssRef.world.faction(factionIndex);
+            return f != null && f.player.profile.casualControls;
+            //}
+            //return false;
+        }
 
         virtual public City GetCity() { return null; }
 
+        virtual public AbsArmy GetAbsArmy() { return null; }
         virtual public Army GetArmy() { return null; }
         virtual public AbsSoldierUnit GetSoldier() { return null; }
         virtual public SoldierGroup GetSoldierGroup() { return null; }
 
-        virtual public MapObjectCollection GetMapCollection() { return null; }
+        virtual public ArmyCollection GetMapCollection() { return null; }
         virtual public DetailObjectCollection GetDetailCollection() { return null; }
 
         virtual public WorkerUnit GetWorker() { return null; }
@@ -72,10 +169,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void beginEditName()
         {
-            new TextInput(Name(out _), NameEditEvent, null);
+            new DSSWars.Players.PlayerControls.TextInput(this);
+            //new TextInputState(Name(out _), NameEditEvent, null);
         }
 
-        virtual protected void NameEditEvent(string result, object tag)
+        virtual public void NameEditEvent(string result, object tag)
         {
             throw new NotImplementedException();
         }
@@ -97,31 +195,46 @@ namespace VikingEngine.DSSWars.GameObject
             string name = Name(out bool mayEdit);
             if (name != null)
             {
-                if (mayEdit && mayInteract)
+                if (Ref.update.textInput != null &&
+                    !Ref.update.textInput.Exiting &&
+                    Ref.update.textInput.recieverId == Name(out _))
                 {
-                    var editButton = new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
-                        new RbAction(beginEditName), null);
-                    content.Add(editButton);
-                    content.space();
+                    content.Add(new RbButton(new List<AbsRichBoxMember> {
+                        new RbImage(SpriteName.InterfaceTextInput),
+                        new RbSpace(),
+                        new RbText(Ref.update.textInput.DisplayText(), Color.Black),
+                    }, null, null)
+                    { overrideBgColor = Color.White });
+
+                    content.newLine();
                 }
-                var nameText = new RbText(name);
-                nameText.overrideColor = Color.LightYellow;
-                content.Add(nameText);
-                content.newLine();
+                else
+                {
+                    if (mayEdit && mayInteract)
+                    {
+                        var editButton = new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
+                            new RbAction(beginEditName), null);
+                        content.Add(editButton);
+                        content.space();
+                    }
+                    content.Add(new RbText(name, Color.LightYellow));
+                    content.newLine();
+                }
             }
         }
-        protected void ownerToHud(Display.ObjectHudArgs args, bool divider)
+        protected void ownerToHud(Interface.ObjectHudArgs args, bool divider)
         {
-            if (GetFaction() != args.player.faction)
+            var faction = GetFaction();
+            if (args.player != null && faction != null && faction != args.player.faction)
             {
-                var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
+                var relation = DssRef.diplomacy.GetRelationType(args.player.faction, faction);
 
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
                 args.content.space(0.5f);
                 args.content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
                 args.content.space(0.5f);
-                args.content.Add(new RbText(GetFaction().PlayerName, HudLib.TitleColor_Name));
+                args.content.Add(new RbText(faction.PlayerName, HudLib.TitleColor_Name));
 
                 if (divider)
                 {
@@ -129,7 +242,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
-        virtual public void toHud(Display.ObjectHudArgs args)
+
+        virtual public void toHud(Interface.ObjectHudArgs args)
         {
             nameToHud(args.content, true);
             args.content.Add(new RbBeginTitle());
@@ -177,6 +291,7 @@ namespace VikingEngine.DSSWars.GameObject
         ObjectCollection,
         DetailCollection,
         LocationPin,
+        Point,
         NONE,
         NUM,
     }

@@ -86,10 +86,22 @@ namespace VikingEngine.DSSWars.Net
         public override void NetworkStatusMessage(NetworkStatusMessage message)
         {
             base.NetworkStatusMessage(message);
-            if (message == Network.NetworkStatusMessage.Created_Lobby)
+
+            switch (message)
             {
-                applyNewSettings();
+                case Network.NetworkStatusMessage.Created_Lobby:
+                    applyNewSettings();
+                    break;
+                //case Network.NetworkStatusMessage.Created_session:
+
+                //    break;
             }
+
+            Ref.gamestate.NetworkStatusMessage(message);
+        }
+        public override void NetEvent_GotNetworkId()
+        {
+            base.NetEvent_GotNetworkId();
         }
 
         public override void onNewGameState(Engine.GameState newState)
@@ -155,6 +167,12 @@ namespace VikingEngine.DSSWars.Net
         public override void NetEvent_PingReturned(AbsNetworkPeer gamer)
         {
             Ref.gamestate.NetEvent_PingReturned(gamer);
+        }
+
+        public override void NetEvent_PeerLost(AbsNetworkPeer gamer)
+        {
+            base.NetEvent_PeerLost(gamer);
+            DssRef.state?.NetEvent_PeerLost(gamer);
         }
 
         //public override void NetEvent_PeerJoined(AbsNetworkPeer gamer)

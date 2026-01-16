@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
@@ -27,47 +28,93 @@ namespace VikingEngine.DSSWars.Players
             int count = Bound.Min(faction.cities.Count / 4, 1);
             for (int i = 0; i < count; i++)
             {
-                City city = faction.cities.GetRandomSafe(Ref.rnd);
+                City city = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
 
                 if (city != null)
                 {
+                    bool prepareSettle = false;
+                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))
+                    {
+                        if (nCity.cityType == CityType.UnClaimed)
+                        {
+                            prepareSettle = true;
+                            break;
+                        }
+                    }
+
+                    city.autoAdjustResourcesToCitySize(prepareSettle);
+
+                    //DOES NOT WORK - will reset in auto_updateWorkPrio()
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.stone/*ref city.res_stone*/, ref city.workTemplate.stone);
+
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.food/*ref city.res_food*/, ref city.workTemplate.craft_food);
+
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.fuel/*ref city.res_fuel*/, ref city.workTemplate.craft_fuel);
+
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.iron/*ref city.res_iron*/, ref city.workTemplate.craft_iron);
+
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.rawFood/*ref city.res_rawFood*/, ref city.workTemplate.farm_food);
+
+                    
+
                     //adjustWorkToBuffer(ref city.res_wood, ref city.workTemplate.wood);
 
-                    adjustWorkToBuffer(ref city.res_stone, ref city.workTemplate.stone);
-
-                    adjustWorkToBuffer(ref city.res_food, ref city.workTemplate.craft_food);
-
-                    adjustWorkToBuffer(ref city.res_fuel, ref city.workTemplate.craft_fuel);
-
-                    adjustWorkToBuffer(ref city.res_iron, ref city.workTemplate.craft_iron);
-
-                    adjustWorkToBuffer(ref city.res_rawFood, ref city.workTemplate.farm_food);
-
-                    //adjustWorkToBuffer(ref city.res_wood, ref city.workTemplate.wood);
-
-                    if (city.res_food.amount <= 0)
+                    if (city.resourceAmount(CityResoureIndex.food)/*city.res_food.amount*/ <= 0)
                     {
                         city.workTemplate.craft_food.value = 5;
                         city.workTemplate.farm_food.value = 4;
                     }
-                    if (city.res_wood.amount <= 0)
+                    if (city.resourceAmount(CityResoureIndex.wood)/*city.res_wood.amount*/ <= 0)
                     {
                         BlackMarketResources.AiPurchaseWood(city, faction);
                     }
 
-                    bool craftWeapon = adjustWorkToCrafting(city, CraftResourceLib.Sword, ref city.workTemplate.craft_sword, false);
-                    craftWeapon = adjustWorkToCrafting(city, CraftResourceLib.Bow, ref city.workTemplate.craft_bow, craftWeapon);
-                    adjustWorkToCrafting(city, CraftResourceLib.SharpStick, ref city.workTemplate.craft_sharpstick, craftWeapon);
-                    
-                    bool craftArmour= adjustWorkToCrafting(city, CraftResourceLib.HeavyMailArmor, ref city.workTemplate.craft_heavymailarmor, false);
-                    craftArmour = adjustWorkToCrafting(city, CraftResourceLib.MailArmor, ref city.workTemplate.craft_mailarmor, craftArmour);
-                    adjustWorkToCrafting(city, CraftResourceLib.PaddedArmor, ref city.workTemplate.craft_paddedarmor, craftArmour);
-                    
+
+                    bool hasBetterCraft = false;
+                    foreach (var weaponType in ConscriptWeaponPrioOrder)
+                    {
+                        var work = city.workTemplate.GetWorkPriority(weaponType.item, out _);
+                        if (adjustWorkToMilitaryCrafting(city, ItemPropertyColl.Get(weaponType.item).bp1, ref work, hasBetterCraft, out bool available))
+                        {
+                            //if (hasBetterCraft && weaponType.item != ItemResourceType.SharpStick)
+                            //{
+                            //    lib.DoNothing();
+                            //}
+                            city.workTemplate.SetWorkPriority(weaponType.item, work);
+                        }
+
+                        if (available && city.buildingStructure.getBarracksCount(weaponType.barracks) > 0)
+                        { 
+                            hasBetterCraft = true;
+                        }
+                    }
+
+                    hasBetterCraft = false;
+                    foreach (var armorType in conscriptArmorPrioOrder)
+                    {
+                        var work = city.workTemplate.GetWorkPriority(armorType, out _);
+                        if (adjustWorkToMilitaryCrafting(city, ItemPropertyColl.Get(armorType).bp1, ref work, hasBetterCraft, out hasBetterCraft))
+                        {
+                            city.workTemplate.SetWorkPriority(armorType, work);
+                        }
+                    }
+
+                    //bool craftWeapon = adjustWorkToCrafting(city, CraftResourceLib.Sword, ref city.workTemplate.craft_sword, false);
+                    //craftWeapon = adjustWorkToCrafting(city, CraftResourceLib.Bow, ref city.workTemplate.craft_bow, craftWeapon);
+                    //adjustWorkToCrafting(city, CraftResourceLib.SharpStick, ref city.workTemplate.craft_sharpstick, craftWeapon);
+
+                    //bool craftArmour= adjustWorkToCrafting(city, CraftResourceLib.HeavyMailArmor, ref city.workTemplate.craft_heavymailarmor, false);
+                    //craftArmour = adjustWorkToCrafting(city, CraftResourceLib.MailArmor, ref city.workTemplate.craft_mailarmor, craftArmour);
+                    //adjustWorkToCrafting(city, CraftResourceLib.PaddedArmor, ref city.workTemplate.craft_paddedarmor, craftArmour);
+
                 }
             }
 
-            void adjustWorkToBuffer(ref GroupedResource resource, ref WorkPriority workPriority)
+            void adjustWorkToBuffer(int resourceCompex/*ref GroupedResource resource*/, ref WorkPriority workPriority)
             {
+                GroupedResource resource = DssRef.world.cityResouces[resourceCompex];
+
                 if (resource.amount < ResourceLowBuffer)
                 {
                     if (Ref.peRnd.Chance(0.5))
@@ -75,7 +122,7 @@ namespace VikingEngine.DSSWars.Players
                         workPriority.addPrio_belowMax(1);
                     }
                 }
-                else if (resource.amount >= resource.goalBuffer / 2)
+                else if (resource.amount >= resource.stockPileLimit / 2)
                 {
                     if (Ref.peRnd.Chance(0.3))
                     {
@@ -84,26 +131,34 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            bool adjustWorkToCrafting(City city, CraftBlueprint blueprint, ref WorkPriority workPriority, bool lowPrio)
+            bool adjustWorkToMilitaryCrafting(City city, CraftBlueprint blueprint, ref WorkPriority workPriority, bool lowPrio, out bool available)
             {
                 int count = blueprint.canCraftCount(city);
                 if (!lowPrio && count >= ResourceLowBuffer)
                 {
+                    available = true;
                     if (Ref.peRnd.Chance(0.8))
                     {
-                        workPriority.addPrio_belowMax(1);
+                        workPriority.addPrio_belowMax(changeWeight());
                         return true;
                     }
                 }
                 else
                 {
+                    available = false;
                     if (Ref.peRnd.Chance(0.4))
                     {
-                        workPriority.addPrio(-1);
+                        workPriority.addPrio(-changeWeight());
+                        return true;
                     }
                 }
 
                 return false;
+
+                int changeWeight()
+                {
+                    return aggressionLevel >= AggressionLevel2_RandomAttacks? 2 : 1;
+                }
             }
         }
 
@@ -113,15 +168,15 @@ namespace VikingEngine.DSSWars.Players
             intelligent = false;
             work = false;
 
-            if (city.res_rawFood.needMore() && Ref.peRnd.Chance(0.6))
+            if (city.needMore(CityResoureIndex.rawFood)/*res_rawFood.needMore()*/ && Ref.peRnd.Chance(0.6))
             {
                 building = BuildAndExpandType.WheatFarm;
             }
-            else if (city.res_fuel.amount < ResourceLowBuffer && city.res_wood.amount > ResourceLowBuffer && Ref.rnd.Chance(0.6))
+            else if (city.resourceAmount(CityResoureIndex.fuel)/*res_fuel.amount*/ < ResourceLowBuffer && city.resourceAmount(CityResoureIndex.wood)/*res_wood.amount*/ > ResourceLowBuffer && Ref.rnd.Chance(0.6))
             {
                 building = BuildAndExpandType.CoalPit;
             }
-            else if (city.res_skinLinnen.needMore() && Ref.peRnd.Chance(0.6))
+            else if (city.needMore(CityResoureIndex.skinLinnen)/*res_skinLinnen.needMore()*/ && Ref.peRnd.Chance(0.6))
             {
                 building = BuildAndExpandType.LinenFarm;
             }
@@ -129,32 +184,38 @@ namespace VikingEngine.DSSWars.Players
             {
                 building = BuildAndExpandType.SoldierBarracks;
             }
-            else if (((city.buildingStructure.Smith_count == 0 && city.res_ironore.amount > ResourceLowBuffer) ||
-                (city.res_ironore.amount >= city.res_ironore.goalBuffer)
-                    && Ref.peRnd.Chance(0.02))
-                )
-            {
-                if (city.res_iron.amount < CraftBuildingLib.CraftSmith_IronUse)
-                {
-                    if (!BlackMarketResources.AiPurchaseIron(city, faction))
-                    {
-
-                        intelligent = true;
-                        work = true;
-
-                        return;
-                    }
-                }
-                building = BuildAndExpandType.Smith;
-            }
-            else if (city.deliveryServices.Count < 2 && Ref.peRnd.Chance(0.2))
-            {
-                building = BuildAndExpandType.Postal;
-            }
             else
             {
-                intelligent = true;
-                work = true;
+                var res_ironore = city.GetGroupedResource(CityResoureIndex.ironore);
+                var res_iron = city.GetGroupedResource(CityResoureIndex.iron);
+
+                if (((city.buildingStructure.Smith_count == 0 && city.resourceAmount(CityResoureIndex.ironore)/*res_ironore.amount*/ > ResourceLowBuffer) ||
+                    (res_ironore.amount >= res_ironore.stockPileLimit)
+                        && Ref.peRnd.Chance(0.02))
+                    )
+                {
+                    if (res_iron.amount < CraftBuildingLib.CraftSmith_IronUse)
+                    {
+                        if (!BlackMarketResources.AiPurchaseIron(city, faction))
+                        {
+
+                            intelligent = true;
+                            work = true;
+
+                            return;
+                        }
+                    }
+                    building = BuildAndExpandType.Smith;
+                }
+                else if (city.deliveryServices.Count < 2 && Ref.peRnd.Chance(0.2))
+                {
+                    building = BuildAndExpandType.Postal;
+                }
+                else
+                {
+                    intelligent = true;
+                    work = true;
+                }
             }
         }
     }

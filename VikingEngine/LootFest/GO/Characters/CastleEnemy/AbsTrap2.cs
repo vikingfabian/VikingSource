@@ -59,7 +59,7 @@ namespace VikingEngine.LootFest.GO.Characters.CastleEnemy
 
         virtual protected VoxelModelName voxelImage
         {
-            get { return VoxelModelName.BlockTrap; }
+            get { return VoxelModelName.NUM_NON; }
         }
 
         //static readonly Data.TempBlockReplacementSett BlockTrapTempImage = new Data.TempBlockReplacementSett(new Color(92,84,64), new Vector3(3, 2f, 3));

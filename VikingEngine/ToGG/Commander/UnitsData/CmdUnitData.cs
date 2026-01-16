@@ -14,7 +14,7 @@ namespace VikingEngine.ToGG.Commander.UnitsData
         protected const int OrcCavalryHealth = CavalryHealth -1;
 
         //public UnitType type;
-        public UnitMainType mainType; //döp till cathegory
+        public UnitMainType mainType; //döp till category
         public UnitUnderType underType;
 
         public string name;

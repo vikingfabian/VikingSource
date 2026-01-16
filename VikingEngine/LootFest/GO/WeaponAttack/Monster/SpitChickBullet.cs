@@ -28,7 +28,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.Monster
        
         protected override VoxelModelName VoxelObjName
         {
-            get { return VoxelModelName.spitchick_bullet; }
+            get { return VoxelModelName.NUM_NON; }
         }
         public override WeaponUserType WeaponTargetType
         {

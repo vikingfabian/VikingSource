@@ -130,6 +130,11 @@ namespace VikingEngine
         {
             return array[position.X, position.Y];
         }
+
+        public ref T GetRef(IntVector2 position)
+        {
+            return ref array[position.X, position.Y];
+        }
         public T Get(int x, int y)
         {
             return array[x, y];
@@ -466,6 +471,11 @@ namespace VikingEngine
         public Rectangle2 Area
         {
             get { return new Rectangle2(IntVector2.Zero, size); }
+        }
+
+        public Rectangle2 TileBound()
+        {
+            return new Rectangle2(IntVector2.Zero, size -1); 
         }
 
         public void Print()

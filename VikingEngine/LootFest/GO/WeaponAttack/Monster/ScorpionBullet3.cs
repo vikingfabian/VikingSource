@@ -30,7 +30,7 @@ namespace VikingEngine.LootFest.GO.WeaponAttack.Monster
 
         protected override VoxelModelName VoxelObjName
         {
-            get { return VoxelModelName.scorpion_bullet; }
+            get { return VoxelModelName.NUM_NON; }
         }
 
         static readonly Effects.BouncingBlockColors DamageColorsLvl1 = new Effects.BouncingBlockColors(

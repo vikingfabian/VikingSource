@@ -38,11 +38,12 @@ namespace VikingEngine.DSSWars.Players.Command
         public AttackHereAnimation(SoldierGroup target, int playerIndex)
             : base()
         {
+            models = new List<Mesh>(32);
+
             var soldiers_sp = target?.soldiers;
             if (soldiers_sp != null)
             {
-                var soldiersC = soldiers_sp.counter();
-                models = new List<Mesh>(soldiersC.array.Count);
+                var soldiersC = soldiers_sp.counter();               
 
                 while (soldiersC.Next())
                 {

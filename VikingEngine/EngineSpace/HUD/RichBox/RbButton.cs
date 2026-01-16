@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 
@@ -17,6 +17,8 @@ namespace VikingEngine.HUD.RichBox
         public bool fillWidth = false;
         
         public bool enabled = true;
+        public float SpaceAfter = 8;
+        public float AddXRadius = 2;
 
         virtual protected float ButtonEdgeToContentSpace(RichBoxGroup group, bool left)
         {
@@ -61,15 +63,16 @@ namespace VikingEngine.HUD.RichBox
             }
             else
             {
-                group.position.X += 8;
+                group.position.X += SpaceAfter;
             }
 
             VectorRect area = VectorRect.FromTwoPoints(topLeft, bottomRight);
 
             if (multiline) area.Width = group.boxWidth;
 
-            area.AddXRadius(2);
+            area.AddXRadius(AddXRadius);
             area.AddYRadius(-2);
+            area.Round();
             //bgPointer = new Image(SpriteName.WhiteArea_LFtiles, area.Position, area.Size, group.layer + 1);
             createBackground(group, area, group.layer + 1);
 

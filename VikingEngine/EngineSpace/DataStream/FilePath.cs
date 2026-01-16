@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using VikingEngine.Voxels;
 
 namespace VikingEngine.DataStream
 {
@@ -16,7 +17,7 @@ namespace VikingEngine.DataStream
 #elif CCG
                 "PickHero";
 #elif DSS
-                "DSS_warparty"; 
+                "DSS_war_storage"; //"DSS_warparty"; 
 #elif TOGG
                 "TowardsGoldAndGlory"; 
 #else
@@ -69,7 +70,7 @@ namespace VikingEngine.DataStream
                 string dir = CompleteDirectory;
                 if (CompleteDirectory != TextLib.EmptyString)
                     dir += Dir;
-                return dir + FileName + DataStreamHandler.FileTimeMark() + FileEnd;
+                return dir + FileName + FileToDiskManager.FileTimeMark() + FileEnd;
             }
             else
             {
@@ -119,19 +120,19 @@ namespace VikingEngine.DataStream
 
         
 
-        static string PcStoragePath = null;
+        
 
         public static string StorageDirectory()
         {
 #if PCGAME
             if (PlatformSettings.ReleaseBuild && PlatformSettings.PC_platform)
             {
-                if (PcStoragePath == null)
-                {
-                    PcStoragePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + 
-                        "\\My Games\\" +
-                        StorageFolderName;
-                }
+                //if (Config.PcStoragePath == null)
+                //{
+                //    PcStoragePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + 
+                //        "\\My Games\\" +
+                //        StorageFolderName;
+                //}
 //#if PJ
 //                "PartyJousting";}
 //#elif CCG
@@ -143,7 +144,7 @@ namespace VikingEngine.DataStream
 //#else
 //                "Lootfest";}
 //#endif
-                return PcStoragePath;
+                return Config.PcStoragePath;
             }
             else
             {
@@ -178,7 +179,7 @@ namespace VikingEngine.DataStream
         {
             if (Storage)
             {
-                return DataStreamHandler.SearchFilesInStorageDir(this, true);
+                return FileToDiskManager.SearchFilesInStorageDir(this, true);
             }
             else
             {
@@ -204,7 +205,7 @@ namespace VikingEngine.DataStream
 
         public bool Exists()
         {
-            return DataStream.DataStreamHandler.FileExists(this);
+            return DataStream.FileToDiskManager.FileExists(this);
         }
 
         public static string SanitizeFileName(string fileName)
@@ -217,6 +218,11 @@ namespace VikingEngine.DataStream
             }
 
             return fileName;
+        }
+
+        public string searchPattern()
+        {
+            return "*" + FileEnd;
         }
     }
     

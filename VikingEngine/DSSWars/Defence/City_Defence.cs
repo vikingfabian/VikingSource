@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.LootFest.Players;
 using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.EngineSpace;
+using VikingEngine.DebugExtensions;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -26,28 +27,25 @@ namespace VikingEngine.DSSWars.GameObject
             return defenceIxFromPosId(id);
         }
 
-        public void addDefenceBuilding_async(IntVector2 subPos)
-        {
-            //Task.Factory.StartNew(() =>
-            //{
-                lock (defenceBuildings.array)
+        public void addDefenceBuilding_async(IntVector2 subPos, bool tower)
+        {   
+            lock (defenceBuildings.array)
+            {
+                DefenceStatus newDefence = new DefenceStatus();
+                newDefence.init(subPos, tower);
+                newDefence.autoAssign = true;
+
+                for (int i = 0; i < defenceBuildings.Count; ++i)
                 {
-                    DefenceStatus newDefence = new DefenceStatus();
-                    newDefence.init(subPos);
-                    newDefence.autoAssign = true;
-
-                    for (int i = 0; i < defenceBuildings.Count; ++i)
+                    if (!defenceBuildings.array[i].active)
                     {
-                        if (!defenceBuildings.array[i].active)
-                        {
-                            defenceBuildings[i] = newDefence;
-                            return;
-                        }
+                        defenceBuildings[i] = newDefence;
+                        return;
                     }
-
-                    defenceBuildings.Add(newDefence);
                 }
-            //});
+
+                defenceBuildings.Add(newDefence);
+            }            
         }
 
         public void destroyDefenceBuilding_async(IntVector2 subPos)
@@ -77,52 +75,59 @@ namespace VikingEngine.DSSWars.GameObject
             //Find a free guard post or move to a guard house (or city center)
             Task.Factory.StartNew(() =>
             {
-
+                try
+                {
                 int closestIx = -1;
                 float closestDist = float.MaxValue;
 
-                lock (defenceBuildings.array)
-                {
-                    for (int i = 0; i < defenceBuildings.Count; ++i)
+                    lock (defenceBuildings.array)
                     {
-                        var defence = defenceBuildings.array[i];
-                        if (defence.checkSoldierAssignment(this))
+                        for (int i = 0; i < defenceBuildings.Count; ++i)
                         {
-                            defenceBuildings.array[i] = defence;
-                        }
-
-                        if (defence.AvailableForAutoAssign())
-                        {
-                            float dist = (defence.WorldPos() - group.position).PlaneXZLength();
-                            if (dist < closestDist)
+                            var defence = defenceBuildings.array[i];
+                            if (defence.checkSoldierAssignment(this))
                             {
-                                closestIx = i;
-                                closestDist = dist; 
+                                defenceBuildings.array[i] = defence;
+                            }
+
+                            if (defence.AvailableForAutoAssign())
+                            {
+                                float dist = (defence.WorldPos() - group.position).PlaneXZLength();
+                                if (dist < closestDist)
+                                {
+                                    closestIx = i;
+                                    closestDist = dist;
+                                }
                             }
                         }
-                    }
 
-                    if (closestIx >= 0)
-                    {
-                        var defence = defenceBuildings.array[closestIx];
-                        if (inRender_detailLayer)
+                        if (closestIx >= 0)
                         {
-                            new MoveCommand(group, defence.WorldPos(), float.MinValue, false);
-                            new EnterPostCommand(group, defence.idAndPosition, true).claimPost(group, this, closestIx);
+                            var defence = defenceBuildings.array[closestIx];
+                            if (inRender_detailLayer)
+                            {
+                                new MoveCommand(group, defence.WorldPos(), float.MinValue, false);
+                                new EnterPostCommand(group, defence.idAndPosition, true).claimPost(group, this, closestIx);
+                            }
+                            else
+                            {
+                                group.completeTransform(SoldierTransformType.EnterGuard, defence.idAndPosition);
+                            }
                         }
                         else
                         {
-                            group.completeTransform(SoldierTransformType.EnterGuard, defence.idAndPosition);
+                            Rotation1D dir = new Rotation1D(Ref.peRnd.Rotation());
+                            float dist = Ref.peRnd.Float(WorldData.SubTileHalfWidth, WorldData.SubTileWidth * 2f);
+
+                            group.goalWp = VectorExt.AddXZ(group.position, dir.Direction(dist));
                         }
                     }
-                    else
-                    {
-                        Rotation1D dir = new Rotation1D(Ref.peRnd.Rotation());
-                        float dist = Ref.peRnd.Float(WorldData.SubTileHalfWidth, WorldData.SubTileWidth * 2f);
-
-                        group.goalWp = VectorExt.AddXZ(group.position, dir.Direction(dist));
-                    }
                 }
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
+                
 
                
             });
@@ -144,12 +149,77 @@ namespace VikingEngine.DSSWars.GameObject
             return -1;
         }
 
+        public bool tryGetDefence(IntVector2 position, out DefenceStatus defence)
+        {
+            int idAndPosition = conv.IntVector2ToInt(position);
+            lock (defenceBuildings.array)
+            {
+                for (int i = 0; i < defenceBuildings.Count; ++i)
+                {
+                    if (defenceBuildings[i].idAndPosition == idAndPosition)
+                    {
+                        defence = defenceBuildings[i];
+                        return true;
+                    }
+                }
+            }
+
+            defence = DefenceStatus.Empty;
+            return false;
+        }
+
+        public void setAllDefenceAutoAssign(bool toValue, bool towersOnly, bool message = true)
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    int count = 0;
+                    lock (defenceBuildings.array)
+                    {                        
+                        for (int i = 0; i < defenceBuildings.Count; ++i)
+                        {
+                            ref var defence = ref defenceBuildings.array[i];
+                            if (!towersOnly || defence.tower)
+                            {
+                                if (defence.autoAssign != toValue)
+                                {
+                                    ++count;
+                                    defence.autoAssign = toValue;
+                                }
+                            }
+                        }
+                    }
+
+                    if (message)
+                    {
+                        var player = GetPlayer().GetLocalPlayer();
+                        if (player != null)
+                        {
+                            Ref.update.AddSyncAction(new SyncAction2Arg<bool, int>(player.hud.messages.changedAllBuildings, toValue, count));
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    BlueScreen.ThreadException = e;
+                }
+            });
+        }
+
         public void defence_assignGuard_toIndex(GuardGroup guard, int index)
         {
-            var defence = defenceBuildings[index];
-            guard.onEnterGuard(this, defence.idAndPosition);
-            defence.soldierGroupId = guard.parentArrayIndex;
-            defenceBuildings[index] = defence;
+            lock (defenceBuildings.array)
+            {
+                if (arraylib.InBound(defenceBuildings.array, index))
+                {
+                    var defence = defenceBuildings[index];
+                    guard.onEnterGuard(this, defence.idAndPosition);
+                    defence.soldierGroupId = guard.myIndex;
+                    defenceBuildings[index] = defence;
+                }                
+            }
+            
 
             //guard.refreshSoldierDefence();
             //switch (DssRef.world.subTileGrid.Get(conv.IntToIntVector2(defence.idAndPosition)).GetWallType())

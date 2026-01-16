@@ -1,12 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime;
 //xna
 
 namespace VikingEngine.Engine
@@ -23,8 +24,7 @@ namespace VikingEngine.Engine
 
         public void GotFocus(GameState previousGameState)
         {
-            //if (previousGameState != null)
-                this.previousGameState = previousGameState;
+            this.previousGameState = previousGameState;
 
             if (Ref.draw != null)
             {
@@ -42,6 +42,13 @@ namespace VikingEngine.Engine
             {
                 Ref.lobby.onNewGameState(this);
             }
+
+            refreshGcLatency();
+        }
+
+        public void refreshGcLatency()
+        { 
+            GCSettings.LatencyMode = MayUseLowLatencyGC() && Ref.gamesett.lowGCProperty(0, false, false)? GCLatencyMode.SustainedLowLatency : GCLatencyMode.Interactive;
         }
 
         virtual public void LostFocus()
@@ -52,7 +59,7 @@ namespace VikingEngine.Engine
         virtual public void OnDestroy()
         {
             previousGameState?.OnDestroy();
-            Engine.Sound.StopAllLoopedSounds();                    
+            Engine.Sound.StopAllLoopedSounds();
         }
         
         public GameState()
@@ -80,8 +87,6 @@ namespace VikingEngine.Engine
 
         virtual public void FirstUpdate()
         { }
-
-        
 
         virtual protected void createDrawManager()
         {
@@ -148,7 +153,7 @@ namespace VikingEngine.Engine
 
         virtual public void OnAppSuspend(bool fullExit)
         { }
-        //virtual public void onClosingApplication() { }
+
         virtual public void OnAppResume()
         { }
 
@@ -157,24 +162,20 @@ namespace VikingEngine.Engine
                               
         virtual public void OnResolutionChange()
         { }
-        
 
         virtual public void NetUpdate()
         { }
         virtual public void GameCrashed()
         { }
 
+        virtual public bool MayUseLowLatencyGC()
+        {
+            return false;
+        }
+
         public bool IsActiveGameState { get { return Ref.gamestate == this; } }
     }
-    enum GameStateType
-    {
-        LoadingContent,
-        PressStart,
-        MainMenu,
-        LoadingGame,
-        InGame,
-        Editor,
-        Other,
-    }
+
+    
 
 }

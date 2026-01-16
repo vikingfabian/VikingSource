@@ -2,13 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
@@ -30,6 +31,8 @@ namespace VikingEngine.DSSWars.Resource
         public WorkExperienceType experienceType;
         public ExperienceLevel levelRequirement;
         public CraftBlueprint upgradeFrom = null;
+
+        public int workTag = -1;
 
         public CraftBlueprint(CraftResultType resultType, int resultSubType, int resultAmount, UseResource[] resources, XP.WorkExperienceType experienceType, ExperienceLevel levelRequirement = ExperienceLevel.Beginner_1, CraftRequirement requirement = CraftRequirement.None)
         {
@@ -79,6 +82,19 @@ namespace VikingEngine.DSSWars.Resource
             return true;
         }
 
+        public bool hasResources_ignorewater(City city)
+        {
+            foreach (var r in resources)
+            {
+                var res = city.GetGroupedResource(r.type);
+                if (res.amount < r.amount && r.type != ItemResourceType.Water_G)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public bool hasResources_buildAndUpgrade(City city)
         {
             if (upgradeFrom != null && !upgradeFrom.hasResources_buildAndUpgrade(city))
@@ -88,6 +104,22 @@ namespace VikingEngine.DSSWars.Resource
             {
                 var res = city.GetGroupedResource(r.type);
                 if (res.amount < r.amount)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool hasResources_buildAndUpgrade_IgnoreWater(City city)
+        {
+            if (upgradeFrom != null && !upgradeFrom.hasResources_buildAndUpgrade(city))
+            { return false; }
+
+            foreach (var r in resources)
+            {
+                var res = city.GetGroupedResource(r.type);
+                if (res.amount < r.amount && r.type != ItemResourceType.Water_G)
                 {
                     return false;
                 }
@@ -109,6 +141,19 @@ namespace VikingEngine.DSSWars.Resource
                 min = lib.SmallestValue(res.amount / r.amount, min);
             }
             return min;
+        }
+
+        public bool hasFullStock(City city)
+        {
+            foreach (var r in resources)
+            {
+                var res = city.GetGroupedResource(r.type);
+                if (!res.almostReachedBuffer())
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public int payResources(City city)
@@ -184,7 +229,7 @@ namespace VikingEngine.DSSWars.Resource
             content.Add(new RbText(name()));
         }
 
-        public void toMenu(RichBoxContent content, City city, bool upgradeOnly = false, bool newLine = true)
+        public void toMenu(RichBoxContent content, City city, bool upgradeOnly = false, bool newLine = true, bool includeAvailable = true, bool includeLevel = true)
         {
             if (upgradeFrom != null && !upgradeOnly)
             {
@@ -198,32 +243,89 @@ namespace VikingEngine.DSSWars.Resource
             }
 
             bool first = true;
-            bool available;
+            bool available = false;
             foreach (var r in resources)
             {
-                available = city.GetGroupedResource(r.type).amount >= r.amount;
-                addResources(r.amount, ResourceLib.Icon(r.type), LangLib.Item(r.type));
+                if (city != null)
+                {
+                    available = city.GetGroupedResource(r.type).amount >= r.amount;
+                }
+                addResources(r.amount, ResourceLib.Icon(r.type), LangLib.Item(r.type), available);
                 first = false;
             }
 
+            void addResources(int count, SpriteName sprite, string name, bool available)
+            {
+                if (count > 0)
+                {
+                    //string countString = count.ToString();
+                    if (!first)
+                    {
+                        content.Add(new RbImage(SpriteName.pjNumPlus));
+                    }
+
+                    var countText = new RbText(count.ToString());
+                    if (includeAvailable)
+                    {
+                        content.Add(new RbImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
+                        content.space(0.5f);
+                        countText.overrideColor = available ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                    }
+
+                    content.Add(countText);
+                    content.hspace();
+                    content.Add(new RbImage(sprite));
+                    content.hspace();
+                    content.Add(new RbText(TextLib.LargeFirstLetter(name)));
+                }
+            }
+            
+
             if (resultType != CraftResultType.NoSet)
             {
+                if (resources.Length > 1)
+                {
+                    content.newLine();
+                }
+
                 var arrow = new RbImage(SpriteName.pjNumArrowR);
                 arrow.color = Color.CornflowerBlue;
                 content.Add(arrow);
-                content.Add(new RbText(resultAmount.ToString()));
+                content.hspace();
+                if (resultType == CraftResultType.Building)
+                {
+                    if (resultAmount > 1)
+                    {
+                        content.Add(new RbImage((SpriteName)((int)SpriteName.WarsUnitLevelMinimal + resultAmount - 1)));
+                    }
+                }
+                else
+                {
+                    content.hspace();
+                    content.Add(new RbText(resultAmount.ToString()));
+                    content.hspace();
+                }
                 content.Add(new RbImage(icon()));
                 content.space();
                 content.Add(new RbText(name()));
             }
-            content.newLine();
+            if (includeLevel && experienceType != WorkExperienceType.NONE)
+            
             //if (levelRequirement > ExperienceLevel.Beginner_1)
             {
-                var levelReqText = new RbText(DssRef.lang.Hud_PurchaseTitle_Requirement + ":");
-                levelReqText.overrideColor = HudLib.TitleColor_Label;
-                content.Add(levelReqText);
-                content.space();
-                
+                content.newLine();
+                //var levelReqText = new RbText(DssRef.lang.Hud_PurchaseTitle_Requirement + ":");
+                //levelReqText.overrideColor = HudLib.TitleColor_Label;
+                //content.Add(levelReqText);
+                //content.space();
+                HudLib.Label(content, DssRef.lang.Experience_Required);
+                content.newLine();
+
+                if (city != null)
+                {
+                    bool gotskill = city.cityExperienceLevels.Get(experienceType).Max() >= levelRequirement;
+                    content.Add(new RbImage(gotskill ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
+                }
                 LangLib.ExperienceType(experienceType, out string expName, out SpriteName expIcon);
                 content.Add(new RbImage(expIcon));
                 content.space();
@@ -236,30 +338,14 @@ namespace VikingEngine.DSSWars.Resource
                 var levelText = new RbText(LangLib.ExperienceLevel(levelRequirement));
                 levelText.overrideColor = HudLib.TitleColor_TypeName;
             
-                content.Add(levelText);  
-                content.newLine();
-            }
-
-            void addResources(int count, SpriteName sprite, string name)
-            {
-                if (count > 0)
+                content.Add(levelText);
+                if (newLine)
                 {
-                    //string countString = count.ToString();
-                    if (!first)
-                    {
-                        content.Add(new RbImage(SpriteName.pjNumPlus));
-                        //countString = " + " + countString;
-                    }
-                    var countText = new RbText(count.ToString());
-                    //if (!available)
-                    //{ 
-                    countText.overrideColor = available ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                    //}
-                    content.Add(countText);
-                    content.Add(new RbImage(sprite));
-                    content.Add(new RbText(name));
+                    content.newLine();
                 }
             }
+
+            
         }
 
         public bool meetsRequirements(City city)
@@ -282,48 +368,68 @@ namespace VikingEngine.DSSWars.Resource
                     HudLib.BulletPoint(content);
                 }
                 string reqText;
-
+                SpriteName icon;
                 switch (requirement)
                 {
                     case CraftRequirement.Carpenter:
+                        icon = SpriteName.WarsBuild_Carpenter;
                         reqText = DssRef.lang.BuildingType_Carpenter;
                         available = city.buildingStructure.Carpenter_count>0;
                         break;
                     case CraftRequirement.Brewery:
+                        icon = SpriteName.WarsBuild_Brewery;
                         reqText = DssRef.lang.BuildingType_Brewery;
                         available = city.buildingStructure.Brewery_count>0;
                         break;
                     case CraftRequirement.Smelter:
+                        icon = SpriteName.WarsBuild_Smelter;
                         reqText = DssRef.lang.BuildingType_SmeltingFurnace;
                         available = city.buildingStructure.Smelter_count > 0;
                         break;
+                    case CraftRequirement.Minter:
+                        icon = SpriteName.WarsBuild_Coinminter;
+                        reqText = DssRef.lang.BuildingType_CoinMaker;
+                        available = city.buildingStructure.CoinMinter_count > 0;
+                        break;
                     case CraftRequirement.Chemist:
+                        icon = SpriteName.WarsBuild_Chemist;
                         reqText = DssRef.lang.BuildingType_Chemist;
                         available = city.buildingStructure.Chemist_count > 0;
                         break;
                     case CraftRequirement.Gunmaker:
+                        icon = SpriteName.WarsBuild_Gunmaker;
                         reqText = DssRef.lang.BuildingType_Gunmaker;
                         available = city.buildingStructure.Gunmaker_count > 0;
                         break;
                     case CraftRequirement.CoinMaker:
+                        icon = SpriteName.WarsBuild_Coinminter;
                         reqText = DssRef.lang.BuildingType_CoinMaker;
                         available = city.buildingStructure.CoinMinter_count > 0;
                         break;
                     case CraftRequirement.Foundry:
+                        icon = SpriteName.WarsBuild_Foundry;
                         reqText = DssRef.lang.BuildingType_Foundry;
                         available = city.buildingStructure.Foundry_count > 0;
                         break;
                     case CraftRequirement.Smith:
+                        icon = SpriteName.WarsBuild_Smith;
                         reqText = DssRef.lang.BuildingType_Smith;
                         available = city.buildingStructure.Smith_count > 0;
                         break;
+                    case CraftRequirement.ArmorSmith:
+                        icon = SpriteName.WarsBuild_Armory;
+                        reqText = DssRef.lang.BuildingType_Armory;
+                        available = city.buildingStructure.Armory_count > 0;
+                        break;
                     case CraftRequirement.CoalPit:
+                        icon = SpriteName.WarsBuild_CoalPit;
                         reqText = DssRef.lang.BuildingType_CoalPit;
                         available = city.buildingStructure.CoalPit_count > 0;
                         break;
                     case CraftRequirement.Logistics1:
-                        reqText = string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, City.Logistics1FoodStorage);
-                        available = city.res_food.amount >= City.Logistics1FoodStorage;
+                        icon = SpriteName.WarsBuild_Logistics;
+                        reqText = string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, DssConst.Logistics1FoodStorage);
+                        available = city.resourceAmount(EntityComponent.CityResoureIndex.food)/*res_food.amount*/ >= DssConst.Logistics1FoodStorage;
                         break;
 
                     default:
@@ -332,6 +438,10 @@ namespace VikingEngine.DSSWars.Resource
 
                 if (content != null)
                 {
+                    content.Add(new RbImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
+
+                    content.Add(new RbImage(icon));
+                    content.space();
                     RbText requirement1 = new RbText(reqText);
                     requirement1.overrideColor = available ? HudLib.AvailableColor : HudLib.NotAvailableColor;
                     content.Add(requirement1);
@@ -346,8 +456,8 @@ namespace VikingEngine.DSSWars.Resource
             foreach (var r in resources)
             {
                 var cityResource = city.GetGroupedResource(r.type);
-                bool safeGuard = city.foodSafeGuardIsActive(r.type);
-                cityResource.toMenu(content, r.type, safeGuard, ref reachedBuffer);
+                //bool safeGuard = city.foodSafeGuardIsActive(r.type);
+                cityResource.toMenu(content, r.type, ref reachedBuffer);
             }
 
             if (optionalBp != null)
@@ -357,8 +467,8 @@ namespace VikingEngine.DSSWars.Resource
                     if (!resources.Contains(r))
                     {
                         var cityResource = city.GetGroupedResource(r.type);
-                        bool safeGuard = city.foodSafeGuardIsActive(r.type);
-                        cityResource.toMenu(content, r.type, safeGuard, ref reachedBuffer);
+                        //bool safeGuard = city.foodSafeGuardIsActive(r.type);
+                        cityResource.toMenu(content, r.type, ref reachedBuffer);
                     }
                 }
             }
@@ -389,6 +499,7 @@ namespace VikingEngine.DSSWars.Resource
         Brewery,
         Smelter,
         Smith,
+        ArmorSmith,
         Foundry,
         CoalPit,
         CoinMaker,
@@ -396,7 +507,7 @@ namespace VikingEngine.DSSWars.Resource
         Gunmaker,
         Logistics1,
         Logistics2,
-
+        Minter
     }
 
     enum CraftResultType

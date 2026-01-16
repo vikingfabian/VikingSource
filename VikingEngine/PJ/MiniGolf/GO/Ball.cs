@@ -49,7 +49,7 @@ namespace VikingEngine.PJ.MiniGolf
         {
             Color.Magenta, Color.Blue, Color.Green, Color.Yellow, new Color(237, 28, 36)
         };
-        CirkleCounterUp rainbowColor;
+        CircleCounterUp rainbowColor;
         Sound.SoundSettings bounceSound = new Sound.SoundSettings(LoadedSound.bass_pluck, 0.4f);
         Sound.SoundSettings pointSound;
         int flagCountInOneStrike = 0;
@@ -68,7 +68,7 @@ namespace VikingEngine.PJ.MiniGolf
                 }
                 else if (gamer.animalSetup.theme == AnimalTheme.Rainbow)
                 {
-                    rainbowColor = new CirkleCounterUp(0, RainBowColors.Length - 1);
+                    rainbowColor = new CircleCounterUp(0, RainBowColors.Length - 1);
                 }
             }
 
@@ -116,8 +116,8 @@ namespace VikingEngine.PJ.MiniGolf
         override public void update()
         {
             FieldSquare onSquare = GolfRef.field.tryGetSquare(image.Position);
-            
-            if (Ref.TimePassed16ms)
+
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
             { //Friction update
                 float speed = velocity.Length();
                 if (speed < GolfRef.gamestate.MinSpeed)
@@ -345,7 +345,7 @@ namespace VikingEngine.PJ.MiniGolf
         void updateRotation()
         {
             image.Rotation += rotationSpeed * Ref.DeltaTimeSec;
-            if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
             {
                 if (Math.Abs(rotationSpeed) > 0.1f)
                 {
@@ -420,7 +420,7 @@ namespace VikingEngine.PJ.MiniGolf
             }
             else
             {
-                if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
                 {
                     diff.Normalize();
                     addForce(diff * GolfRef.gamestate.MaxClubForce * 0.015f, null);

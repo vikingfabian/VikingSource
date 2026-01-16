@@ -25,7 +25,7 @@ namespace VikingEngine.LootFest.GO.Characters
                 modelScale = Ref.rnd.Float(3, 4);
                 Health = LfLib.StandardEnemyHealth;
                 targetAbovePos = 10;
-                modelName = VoxelModelName.fat_bird;
+                modelName = VoxelModelName.NUM_NON;
             }
             else
             {
@@ -33,7 +33,7 @@ namespace VikingEngine.LootFest.GO.Characters
                 Health = LfLib.LargeEnemyHealth;
                 targetAbovePos = 13;
                 eggCount = 2;
-                modelName = VoxelModelName.fat_bird2;
+                modelName = VoxelModelName.NUM_NON;
                 projectileRate.Seconds = 3f;
             }
             //1. fall

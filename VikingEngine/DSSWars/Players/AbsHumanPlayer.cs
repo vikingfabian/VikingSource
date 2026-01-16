@@ -11,8 +11,8 @@ namespace VikingEngine.DSSWars.Players
     {
         public NetworkInstancePeer networkPeer;
 
-        public AbsHumanPlayer(Faction faction)
-            : base(faction)
+        public AbsHumanPlayer(Faction faction, bool newGame)
+            : base(faction, newGame)
         { }
 
         public AbsHumanPlayer()

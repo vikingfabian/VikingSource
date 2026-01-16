@@ -20,8 +20,6 @@ namespace VikingEngine.DSSWars.Players
         AbsGameObject prevObj = null;
         public bool isNew = false;
 
-        //public List<Mesh> groupModels;
-        //public Mesh frameModel;
         public SelectionGroupModels groupModels_terrian, groupModels_detail;
         public Graphics.ImageGroup guiModels = new Graphics.ImageGroup(32);
         bool currentUnitDetailLayer = false;
@@ -30,25 +28,16 @@ namespace VikingEngine.DSSWars.Players
         /// <summary>
         /// Only for controller input
         /// </summary>
-        public bool menuFocus = false;
+        //public bool menuFocus = false;
 
         int playerCam;
         bool isHover;
-        //public List<string> menuState = new List<string>();
-        //public Army sendUnitsToArmy;
-        //public bool menuStateChange = false;
 
         public Selection(LocalPlayer player, bool isHover)
         {
             this.isHover = isHover;
             playerCam = player.playerData.localPlayerIndex;
-            //frameModel = new Mesh(LoadedMesh.SelectSquareDotted, Vector3.Zero, Vector3.One,
-            //   TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
-            //frameModel.AddToRender(DrawGame.TerrainLayer);
-            //frameModel.AddToRender(DrawGame.UnitDetailLayer);
-            //frameModel.setVisibleCamera(player.playerData.localPlayerIndex);
-            //frameModel.Visible = false;
-
+            
             subTile = new SelectedSubTile(player, isHover);
             groupPath = new PathVisuals(player.playerData.localPlayerIndex);
             groupModels_terrian = new SelectionGroupModels(playerCam, false);
@@ -61,50 +50,10 @@ namespace VikingEngine.DSSWars.Players
             targetLine = null;
             guiModels.DeleteAll();
             groupPath.DeleteMe();
-            //frameModel.Visible = false;
 
-            //if (groupModels != null)
-            //{
-            //    foreach (var gm in groupModels)
-            //    {
-            //        gm.Visible = false;
-            //    }
-            //}
             groupModels_detail.clear();
             groupModels_terrian.clear();
         }
-
-       
-
-        //public void BeginGroupModel(bool unitDetail)
-        //{
-        //    if (currentUnitDetailLayer != unitDetail)
-        //    {
-        //        ClearSelectionModels();
-        //        currentUnitDetailLayer = unitDetail;
-        //    }
-
-        //    if (unitDetail)
-        //    {
-        //        groupModels_detail.clear();
-        //    }
-        //    else
-        //    { 
-        //        groupModels_terrian.clear();
-        //    }
-
-        //    //if (groupModels == null)
-        //    //{
-        //    //    groupModels = new List<Mesh>();
-        //    //}
-        //    //else
-        //    //{
-        //    //    foreach (var m in groupModels)
-        //    //    { 
-        //    //        m.Visible = false;
-        //    //    }
-        //    //}
-        //}
 
         public void viewGroupPath(DetailWalkingPath path)
         {
@@ -135,67 +84,10 @@ namespace VikingEngine.DSSWars.Players
             targetLine = null;
         }
 
-        //public void setGroupModel(bool unitDetail, int index, Vector3 pos, Vector3 scale, bool hover, bool main, bool squareSelection)
-        //{
-        //    if (unitDetail)
-        //    {
-        //        groupModels_detail.setGroupModel(
-        //    }
-        //    else
-        //    {
-        //        groupModels_terrian.clear();
-        //    }
-        //    //LoadedMesh mesh;
-        //    //if (squareSelection)
-        //    //{
-        //    //    mesh = hover ? LoadedMesh.SelectSquareDotted : LoadedMesh.SelectSquareSolid;
-        //    //}
-        //    //else
-        //    //{
-        //    //    mesh = hover ? LoadedMesh.SelectCircleDotted : LoadedMesh.SelectCircleSolid;
-        //    //}
-
-        //    //while (index >= groupModels.Count)
-        //    //{                
-        //    //    var model = new Mesh(mesh, Vector3.Zero, scale,
-        //    //    TextureEffectType.Flat, SpriteName.WhiteArea, Color.White, false);
-        //    //    model.AddToRender(unitDetail ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer);
-        //    //    model.setVisibleCamera(playerCam);
-        //    //    model.Visible = false;
-
-        //    //    groupModels.Add(model);
-        //    //}
-
-        //    //var soldierModel = groupModels[index];
-        //    //soldierModel.LoadedMeshType = mesh;
-        //    //soldierModel.Visible = true;
-        //    //soldierModel.position = pos;
-        //    //soldierModel.scale = scale;
-
-
-        //    //soldierModel.Color = main? Color.White : Color.LightGray;
-        //}
-
-        //public static void createGroupModel(LoadedMesh mesh)
-        //{
-            
-        //}
-
-        //public void OneFrameModel(bool unitDetail, Vector3 pos, Vector3 scale, bool hover, bool squareSelection)
-        //{
-        //    BeginGroupModel(unitDetail);
-        //    setGroupModel(unitDetail,0, pos, scale, hover, true, squareSelection);
-        //}
-
-        //public bool isNew_Detail()
-        //{
-        //    return detailObj != prevDetailObj;
-        //}
-
         public void begin(bool hover)
         {
             prevObj = obj;
-            //prevDetailObj = detailObj;
+
             if (hover)
             {
                 obj = null;
@@ -209,17 +101,8 @@ namespace VikingEngine.DSSWars.Players
 
         public bool clear()
         {
-            menuFocus = false;
             isNew = false;
-            //frameModel.Visible = false;
-            //if (groupModels != null)
-            //{
-            //    foreach (var model in groupModels)
-            //    { 
-            //        model.DeleteMe();
-            //    }
-            //    groupModels = null;
-            //}
+
             groupModels_detail.clear();
             groupModels_terrian.clear();
             guiModels.DeleteAll();

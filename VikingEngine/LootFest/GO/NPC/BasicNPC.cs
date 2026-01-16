@@ -136,7 +136,7 @@ namespace VikingEngine.LootFest.GO.NPC
 
         override protected VoxelModelName swordImage
         {
-            get { return VoxelModelName.stick; }
+            get { return VoxelModelName.NUM_NON; }
         }
         
         protected override bool Immortal

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 #if PCGAME
-using Valve.Steamworks;
+using Steamworks;
 using VikingEngine.DSSWars;
 
 namespace VikingEngine.SteamWrapping
@@ -33,9 +33,9 @@ namespace VikingEngine.SteamWrapping
 
     class SteamAchievements
     {
-        SteamCallback<UserAchievementStored_t> UserAchievementStoredCallback;
+        Callback<UserAchievementStored_t> UserAchievementStoredCallback;
 
-        SteamAchievementData[] achievements;
+        static SteamAchievementData[] achievements;
         bool isInitialized;
         
         /* Constructors */
@@ -64,8 +64,25 @@ namespace VikingEngine.SteamWrapping
                 }
             }
 
-            UserAchievementStoredCallback = new SteamCallback<UserAchievementStored_t>(OnUserAchievementStored, false);
+            UserAchievementStoredCallback = new Callback<UserAchievementStored_t>(OnUserAchievementStored, false);
 
+        }
+
+        public static bool DebugSetAchievement_Local(int enumValue)
+        {
+            if (achievements == null)
+            {
+                new SteamAchievements();
+            }
+
+            var achievement = achievements[enumValue];
+            if (!achievement.achieved)
+            {
+                achievement.achieved = true;
+                achievements[enumValue] = achievement;
+            }
+
+            return false;
         }
 
         /* Novelty methods */
@@ -79,8 +96,8 @@ namespace VikingEngine.SteamWrapping
 
                 if (isInitialized)
                 {
-                    SteamAPI.SteamUserStats().SetAchievement(achievement.idString);
-                    return SteamAPI.SteamUserStats().StoreStats();
+                    SteamUserStats.SetAchievement(achievement.idString);
+                    return SteamUserStats.StoreStats();
                 }
                 
             }
@@ -92,8 +109,7 @@ namespace VikingEngine.SteamWrapping
         {
             if (isInitialized)
             {
-                var achievement = achievements[enumValue];
-                if (!achievement.achieved)
+                if (!achievements[enumValue].achieved)
                 {
                     Ref.update.AddSyncAction(new SyncAction(() => { SetAchievement(enumValue); }));
                     return true;
@@ -107,8 +123,8 @@ namespace VikingEngine.SteamWrapping
         {
             if (isInitialized)
             {
-                SteamAPI.SteamUserStats().SetAchievement(id);
-                return SteamAPI.SteamUserStats().StoreStats();
+                SteamUserStats.SetAchievement(id);
+                return SteamUserStats.StoreStats();
             }
 
             return false;
@@ -118,8 +134,8 @@ namespace VikingEngine.SteamWrapping
         {
             if (isInitialized)
             {
-                SteamAPI.SteamUserStats().ClearAchievement(achievements[enumValue].idString);
-                return SteamAPI.SteamUserStats().StoreStats();
+                SteamUserStats.ClearAchievement(achievements[enumValue].idString);
+                return SteamUserStats.StoreStats();
             }
 
             return false;
@@ -146,9 +162,9 @@ namespace VikingEngine.SteamWrapping
                 {
                     SteamAchievementData a = achievements[i];
 
-                    SteamAPI.SteamUserStats().GetAchievement(a.idString, out a.achieved);
-                    a.name = SteamAPI.SteamUserStats().GetAchievementDisplayAttribute(a.idString, "name");
-                    a.description = SteamAPI.SteamUserStats().GetAchievementDisplayAttribute(a.idString, "desc");
+                    SteamUserStats.GetAchievement(a.idString, out a.achieved);
+                    a.name = SteamUserStats.GetAchievementDisplayAttribute(a.idString, "name");
+                    a.description = SteamUserStats.GetAchievementDisplayAttribute(a.idString, "desc");
 
                     achievements[i] = a;
                 }
@@ -161,7 +177,7 @@ namespace VikingEngine.SteamWrapping
         /// <param name="caller"></param>
         void OnUserAchievementStored(UserAchievementStored_t caller)
         {
-            if (caller.m_nGameID == SteamAPI.SteamUtils().GetAppID())
+            if (caller.m_nGameID == SteamUtils.GetAppID().m_AppId)
             {
                 Debug.Log("Stored achievements for Steam");
             }

@@ -1,0 +1,304 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+using VikingEngine.ToGG.Commander.Players;
+using VikingEngine.Input;
+
+namespace VikingEngine.DSSWars.Map
+{
+    
+    class MapLayerManager
+    {
+        //public static readonly float SelectUnitZoomIn = FactionZoom.Min - 0.4f;
+        public static MapLayerManager[] CameraIndexToView;        
+
+        List2<MapLayer> layers;
+        public MapLayer current;
+        public MapLayer prevLayer;
+
+        public static readonly IntervalF FullZoomRange = new IntervalF(1.5f, 2500);
+        public static IntervalF MidToDetailZoomRange;
+
+        public const float OverviewZoomStart = 80f;
+        static readonly float UnitMaxZoom = FullZoomRange.Max - 0.4f;
+
+        static readonly float TerrainMaxZoom = 200;
+        public static readonly float StartZoom= TerrainMaxZoom * 0.5f;
+
+        const float CloseUpCamAngle = 0.85f;
+        public const float NormalCamAngle = 0.78f;
+        const float OverviewCamAngle = 0.65f;
+
+        //static readonly IntervalF DetailZoom = new IntervalF(2f, 4f) + FullZoomRange.Min;
+        //static readonly IntervalF OverviewZoom = new IntervalF(OverviewZoomStart - 2f, OverviewZoomStart);
+        //static readonly IntervalF FactionZoom = new IntervalF(-1.5f, 0f) + UnitMaxZoom;
+
+        
+        Engine.PlayerData player;
+       
+        //public bool DrawCloseUp, DrawNormalAndClose, DrawNormal, DrawOverview, DrawFullOverview;
+        public float OverviewAndFactionsTransparentsy;
+        public float OverviewScale = 1f;
+
+        public float TiltYAdd = 0;
+
+        public MapLayerManager(Engine.PlayerData player)
+        {
+            this.player = player;
+
+            refreshLayers();
+
+            updateCamIndex();
+            new AsynchUpdateable(asynchUpdate, "Units cam culling, " + player.localPlayerIndex.ToString(), player.localPlayerIndex);
+            
+        }
+
+        public void refreshLayers()
+        {
+            layers = new List2<MapLayer>((int)MapDetailLayerType.NUM);
+            {
+                float zoomBuffer = FullZoomRange.Difference * 0.0025f;
+
+                float minZoom = FullZoomRange.Min;
+
+                float maxZoom;// = Ref.gamesett.farViewDistance? 38 : 26;
+
+                switch (Ref.gamesett.farViewDistance)
+                {
+                    default:
+                        maxZoom = 38;
+                        break;
+                    case ThreeOptions.Medium:
+                        maxZoom = 26;
+                        break;
+                    case ThreeOptions.Low:
+                        maxZoom = 14;
+                        break;
+
+                }
+
+                layers.Add(new MapLayer(MapDetailLayerType.UnitDetail1, minZoom, maxZoom, zoomBuffer));
+
+                minZoom = maxZoom;
+                maxZoom = TerrainMaxZoom;//FullZoomRange.GetFromPercent(0.5f);
+
+                layers.Add(new MapLayer(MapDetailLayerType.TerrainOverview2, minZoom, maxZoom, zoomBuffer));
+
+                MidToDetailZoomRange = new IntervalF(FullZoomRange.Min, maxZoom - zoomBuffer);
+
+                minZoom = maxZoom;
+                maxZoom = 450;//FullZoomRange.GetFromPercent(0.75f);
+
+                layers.Add(new MapLayer(MapDetailLayerType.FactionColors3, minZoom, maxZoom, zoomBuffer), true);
+
+                minZoom = maxZoom;
+                maxZoom = FullZoomRange.Max;
+
+                layers.Add(new MapLayer(MapDetailLayerType.FullOverview4, minZoom, maxZoom, zoomBuffer));
+            }
+
+            setNewLayer();
+        }
+
+        public bool DoUpdateDetailLayer()
+        {
+            //Debug.Log(mapLayersManager.ToString());
+            //if (mapLayersManager.prevLayer != null)
+            //{
+            //    lib.DoNothing();
+            //}
+            return current.DrawDetailLayer;
+        }
+
+        public bool LockDetailLevel = false;
+        BoundingSphere boundingSphere = new BoundingSphere();
+        SpottedArrayCounter<GameObject.City> cityCounter = new SpottedArrayCounter<GameObject.City>(null);
+        
+        bool asynchUpdate(int id, float time)
+        { 
+           
+            return false;
+        }
+
+
+        void updateCamIndex()
+        {
+            if (CameraIndexToView == null)
+            {
+                CameraIndexToView = new MapLayerManager[DssLib.MaxLocalPlayers];
+            }
+
+            for (int i = 0; i < DssLib.MaxLocalPlayers; ++i)
+            {
+                if (Ref.draw.ActivePlayerScreens[i] == player)
+                {
+                    CameraIndexToView[i] = this;
+                    return;
+                }
+            }
+
+            throw new Exception("Could not find player view");
+        }
+
+        void setNewLayer()
+        {
+           
+            prevLayer = current;
+            current = layers.sel;
+
+            if (prevLayer != null)
+            {
+                prevLayer.opacity = 1f;
+                if (current.DrawDetailLayer)
+                {
+                    prevLayer.opacity = 1.75f;
+                }
+              
+            }
+
+            player.view.Camera.FarPlane = current.type < MapDetailLayerType.FactionColors3 ? 800 : 5000;
+        }
+        public void Update()
+        {
+            if (prevLayer != null)
+            {
+                prevLayer.fadeDelay -= 3f * Ref.DeltaTimeSec;
+
+                if (prevLayer.fadeDelay <= 0)
+                {
+                    if (Ref.gamesett.fadeMapLayers)
+                    {
+                        prevLayer.opacity -= 3f * Ref.DeltaTimeSec;
+
+                        if (prevLayer.opacity <= 0.2f)
+                        {
+                            prevLayer.opacity = 0;
+                            prevLayer = null;
+                        }
+                    }
+                    else
+                    {
+
+                        prevLayer = null;
+
+                    }
+                }
+            }
+
+            if (player.view.Camera.targetZoom < current.zoom.Min)
+            {
+                layers.selectPrev();
+                setNewLayer();
+            }
+            else if (player.view.Camera.targetZoom >= current.zoom.Max)
+            {
+                layers.selectNext();
+                setNewLayer();
+            }
+
+            float goalTiltY = current.goalCamAngle;
+            if (current.DrawDetailLayer)
+            { 
+                goalTiltY += TiltYAdd;
+            }
+
+            if (player.view.Camera.TiltY != goalTiltY)
+            {
+                float tiltSpeed = Ref.DeltaTimeMs * 0.0016f;
+                float diff = goalTiltY - player.view.Camera.TiltY;
+                if (tiltSpeed > Math.Abs(diff))
+                {
+                    player.view.Camera.TiltY = goalTiltY;
+                }
+                else
+                {
+                    player.view.Camera.TiltY += tiltSpeed * lib.ToLeftRight(diff);
+                }
+            }
+        }
+
+        public float PercZoom()
+        {
+            return FullZoomRange.GetValuePercentPos(player.view.Camera.targetZoom);
+        }
+        public override string ToString()
+        {
+            return $"Current: {current}, prev {prevLayer}";
+        }
+
+        public MapLayer GetLayer(MapDetailLayerType layerType)
+        {
+            return layers[(int)layerType];
+        }
+    }
+
+    class MapLayer
+    {
+        const float CloseUpCamAngle = 0.85f;
+        public const float NormalCamAngle = 0.78f;
+        const float OverviewCamAngle = 0.65f;
+
+        public bool DrawDetailLayer, DrawNormalAndClose, DrawMid, DrawFar, DrawFullOverview;
+        //public float CloseUpTransparentsy, NormalAndCloseTransparentsy, NormalTransparentsy, OverviewTransparentsy, OverviewAndFactionsTransparentsy, FactionsTransparentsy;
+
+        public float goalCamAngle;
+
+        public IntervalF zoom;
+
+        public float opacity = 1f;
+        public float fadeDelay = 1f;
+
+        public MapDetailLayerType type;
+
+        public MapLayer(MapDetailLayerType type, float minZoom, float maxZoom, float zoomBuffer)
+        {
+            this.type = type;
+            zoom = new IntervalF(minZoom - zoomBuffer, maxZoom + zoomBuffer);
+
+            switch (type)
+            {
+                case MapDetailLayerType.UnitDetail1:
+                    //CloseUp
+                    goalCamAngle = CloseUpCamAngle;
+                    DrawDetailLayer = true;
+                   
+                    break;
+
+                default://case DrawUnitsLevel.Normal:
+                    goalCamAngle = NormalCamAngle;
+                    DrawMid = true;
+                    break;
+
+                case MapDetailLayerType.FactionColors3:
+                    goalCamAngle = OverviewCamAngle;
+                    DrawFar = true;
+                    DrawFullOverview = false;
+                    DrawDetailLayer = false;                  
+                    break;
+
+                case MapDetailLayerType.FullOverview4:
+                    goalCamAngle = OverviewCamAngle;
+                    DrawFullOverview = true;
+                    DrawFar = true;                   
+                    break;
+            }
+        }
+
+        public override string ToString()
+        {
+            return type.ToString() + opacity;
+        }
+    }
+
+    enum MapDetailLayerType
+    {
+        UnitDetail1,
+        TerrainOverview2,
+        FactionColors3,
+        FullOverview4,
+        NUM
+    }
+}

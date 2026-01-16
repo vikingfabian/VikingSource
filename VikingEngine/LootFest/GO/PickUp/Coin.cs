@@ -38,7 +38,7 @@ namespace VikingEngine.LootFest.GO.PickUp
 
         protected override VoxelModelName imageType
         {
-            get { return VoxelModelName.Coin; }
+            get { return VoxelModelName.NUM_NON; }
         }
         ////static readonly Data.TempBlockReplacementSett TempImage = new Data.TempBlockReplacementSett(new Color(255, 228, 0), new Vector3(1, 1, 0.2f));
         //protected override Data.TempBlockReplacementSett tempImage
@@ -48,7 +48,7 @@ namespace VikingEngine.LootFest.GO.PickUp
 
         public override GameObjectType Type
         {
-            get { return GameObjectType.Coin; }
+            get { return GameObjectType.NUM_NON; }
         }
 
         public override void DeleteMe(bool local)

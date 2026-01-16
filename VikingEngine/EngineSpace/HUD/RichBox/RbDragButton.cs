@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.Network;
 
@@ -15,6 +17,20 @@ namespace VikingEngine.HUD.RichBox
     {
         public float min, max;
         public float step;
+
+        public DragButtonSettings(Range minMax, float step)
+        {
+            this.min = minMax.Min;
+            this.max = minMax.Max;
+            this.step = step;
+        }
+
+        public DragButtonSettings(IntervalF minMax, float step)
+        {
+            this.min = minMax.Min;
+            this.max = minMax.Max;
+            this.step = step;
+        }
 
         public DragButtonSettings(float min, float max, float step)
         { 
@@ -30,20 +46,20 @@ namespace VikingEngine.HUD.RichBox
         /// A drag button sourronded by + - buttons
         /// </summary>
         /// <param name="options">Positive values, low to high</param>
-        public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, IntGetSet intValue)
+        public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, IntGetSet intValue, bool useSymbols)
         {
             var dragButton = new RbDragButton(settings, intValue);
 
             for (int i = options.Count - 1; i >= 0; --i)
             {
-                content.Add(new RbDragOptionButton(dragButton, -options[i]));
+                content.Add(new RbDragOptionButton(dragButton, -options[i], useSymbols));
             }
 
             content.Add(dragButton);
 
             for (int i = 0; i < options.Count; ++i)
             {
-                content.Add(new RbDragOptionButton(dragButton, options[i]));
+                content.Add(new RbDragOptionButton(dragButton, options[i], useSymbols));
             }
         }
 
@@ -53,14 +69,14 @@ namespace VikingEngine.HUD.RichBox
 
             for (int i = options.Count - 1; i >= 0; --i)
             {
-                content.Add(new RbDragOptionButton(dragButton, -options[i]));
+                content.Add(new RbDragOptionButton(dragButton, -options[i], false));
             }
 
             content.Add(dragButton);
 
             for (int i = 0; i < options.Count; ++i)
             {
-                content.Add(new RbDragOptionButton(dragButton, options[i]));
+                content.Add(new RbDragOptionButton(dragButton, options[i], false));
             }
         }
 
@@ -144,41 +160,72 @@ namespace VikingEngine.HUD.RichBox
                     change *= settings.step;
                 }
 
+                bool hasChanged = false;
+
                 if (valueType == DragValueType.Int)
                 {
                     int value = intValue.Invoke(false, 0);
 
+                    int prev = value;
                     value = Convert.ToInt32(Bound.Set(value + change, settings.min, settings.max));
-                    intValue.Invoke(true, value);
+                    if (prev != value)
+                    {
+                        intValue.Invoke(true, value);
 
-                    textPointer.pointer.TextString = TextLib.LargeNumber(value);
+                        textPointer.pointer.TextString = TextLib.LargeNumber(value);
+
+                        hasChanged = true;
+                    }
                 }
                 else
                 {
                     float value = floatValue.Invoke(false, 0);
 
-
+                    float prev = value;
                     value = Bound.Set(value + change, settings.min, settings.max);
-                    floatValue.Invoke(true, value);
+                    if (prev != value)
+                    {
+                        floatValue.Invoke(true, value);
 
-                    textPointer.pointer.TextString = valueType == DragValueType.Float_1Dec ? TextLib.OneDecimal(value) : TextLib.TwoDecimal(value);
+                        textPointer.pointer.TextString = valueType == DragValueType.Float_1Dec ? TextLib.OneDecimal(value) : TextLib.TwoDecimal(value);
+
+                        hasChanged = true;
+                    }
+                }
+
+                if (hasChanged)
+                {
+                    (change > 0 ? DSSWars.SoundLib.scroll_forward : DSSWars.SoundLib.scroll_back).Play();
+                }
+                else
+                { 
+                    DSSWars.SoundLib.soft_buzz_error.Play();
                 }
             }
         }
 
         public void refreshValueDisplay()
         {
-            if (valueType == DragValueType.Int)
+            if (textPointer != null && textPointer.pointer != null)
             {
-                int value = intValue.Invoke(false, 0);
+                if (valueType == DragValueType.Int)
+                {
+                    if (intValue != null)
+                    {
+                        int value = intValue.Invoke(false, 0);
 
-                textPointer.pointer.TextString = TextLib.LargeNumber(value);
-            }
-            else
-            {
-                float value = floatValue.Invoke(false, 0);
+                        textPointer.pointer.TextString = TextLib.LargeNumber(value);
+                    }
+                }
+                else
+                {
+                    if (floatValue != null)
+                    {
+                        float value = floatValue.Invoke(false, 0);
 
-                textPointer.pointer.TextString = valueType == DragValueType.Float_1Dec ? TextLib.OneDecimal(value) : TextLib.TwoDecimal(value);
+                        textPointer.pointer.TextString = valueType == DragValueType.Float_1Dec ? TextLib.OneDecimal(value) : TextLib.TwoDecimal(value);
+                    }
+                }
             }
         }
 
@@ -206,13 +253,33 @@ namespace VikingEngine.HUD.RichBox
         RbDragButton parent;
         float add;
 
-        public RbDragOptionButton(RbDragButton parent, float add)
+        //public RbDragOptionButton(RbDragButton parent, float add)
+        //{
+        //    this.parent = parent;
+        //    this.buttonStyle = Artistic.RbButtonStyle.Primary;
+        //    this.add = add;
+
+        //    content = new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(add)) };            
+        //}
+
+        public RbDragOptionButton(RbDragButton parent, float add, bool useSymbols)
         {
             this.parent = parent;
             this.buttonStyle = Artistic.RbButtonStyle.Primary;
+
+            
             this.add = add;
 
-            content = new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(add)) };            
+
+            if (useSymbols)
+            {
+                content = new List<AbsRichBoxMember> { new RbText(LangLib.ValueSymbol((int)add)) };
+                enter = new RbTooltip_Text(TextLib.PlusMinus(add));
+            }
+            else
+            {
+                content = new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(add)) };
+            }
         }
 
         public override void onClick(RichMenu.RichMenu menu)
@@ -229,7 +296,8 @@ namespace VikingEngine.HUD.RichBox
         float moveLengthForValueChange;
         TimeStamp timeStamp;
         float buttonCenter;
-        
+        //float controllerMove = 0;
+        DirXYstepping controllerStepping = new DirXYstepping();
         public DragButtonInteraction(RichMenu.RichMenu menu, RbDragButton dragButton) 
         {
             prevMousePos = Input.Mouse.Position;
@@ -243,6 +311,7 @@ namespace VikingEngine.HUD.RichBox
         }
         public override bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClick, out bool needRefresh, out bool endInteraction)
         {
+            
             float move = Input.Mouse.Position.X - prevMousePos.X;
             if (Math.Abs(move) > moveLengthForValueChange)
             {
@@ -272,11 +341,53 @@ namespace VikingEngine.HUD.RichBox
             return false;
         }
 
-        public override void end(out bool needRefresh)
+        public override bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction, out float pushScroll)
+        {
+            pushScroll = 0;
+            pointer.pointer.Visible = false;
+
+            int steps = controllerStepping.update(pointer.inputMap.move.direction).X;
+            //pointer.inputMap.move.
+            //controllerMove += pointer.accelerateInput(pointer.inputMap.move.direction).X * 0.2f;
+
+            //if (Math.Abs(controllerMove) > moveLengthForValueChange)
+            //{
+            //    float change = (int)(controllerMove / moveLengthForValueChange);
+            //    controllerMove -= change * moveLengthForValueChange;
+
+            if (steps == 0)
+            {
+                needRefresh = false;
+            }
+            else
+            {
+                needRefresh = true;
+                dragButton.valueChangeInput(steps, true);
+            }
+            //}
+            //else
+            //{
+            //    needRefresh = false;
+            //}
+
+            if (pointer.inputMap.MenuClick.IsDown == false)
+            {
+                endInteraction = true;
+                pointer.pointer.Visible = true;
+            }
+            else
+            {
+                endInteraction = false;
+            }
+
+            return false;
+        }
+
+        public override void end(float pointerX, out bool needRefresh)
         {
             if (timeStamp.belowTime_ms(InputLib.ButtonMaxClickTimeMs))
             {
-                dragButton.valueChangeInput(lib.BoolToLeftRight(prevMousePos.X > buttonCenter), true);
+                dragButton.valueChangeInput(lib.BoolToLeftRight(pointerX/*prevMousePos.X*/ > buttonCenter), true);
                 needRefresh = true;
             }
 

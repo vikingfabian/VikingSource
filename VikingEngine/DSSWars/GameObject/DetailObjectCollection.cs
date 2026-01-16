@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Graphics;
 using VikingEngine.HUD;
@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public DetailObjectCollection(Faction faction)
         {
-            this.faction = faction;
+            this.factionIndex = faction.myIndex;
         }
 
         public override void selectionFrame(LocalPlayer player, bool hover, Selection selection)
@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.GameObject
                     else
                     {
                         args.content.newLine();
-                        objects[i].toGroupHud(args.content);
+                        objects[i].toGroupHud(args);
                         if (i < objects.Count - 1)
                         {
                             args.content.Add(new RbSeperationLine());
@@ -254,6 +254,15 @@ namespace VikingEngine.DSSWars.GameObject
         public override int CollectionCount()
         {
             return armyGroups.Count + guardGroups.Count;
+        }
+
+        public override bool IsGuardGroup()
+        {
+            return guardGroups.Count > 0;
+        }
+        public override bool IsSoldiers()
+        {
+            return true;
         }
 
         public override string TypeName()

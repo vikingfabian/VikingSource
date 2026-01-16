@@ -20,8 +20,8 @@ namespace VikingEngine.LootFest.GO.EnvironmentObj
             }
 
             modelScale = 3f;
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.mining_pile, modelScale, 0, false);
-            LfRef.modelLoad.PreLoadImage(VoxelModelName.mithril_ingot, false, 0, false);
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, modelScale, 0, false);
+            LfRef.modelLoad.PreLoadImage(VoxelModelName.NUM_NON, false, 0, false);
             image.position = WorldPos.PositionV3;
             image.position.Y -= 0.1f;
 

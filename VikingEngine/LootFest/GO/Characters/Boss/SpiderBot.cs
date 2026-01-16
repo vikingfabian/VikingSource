@@ -39,7 +39,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
         {
             WorldPos = args.startWp;
 
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.spiderbot_mid, 
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 
                 BodySize, 0, false);
             image.position = WorldPos.PositionV3;
 
@@ -125,7 +125,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
                     Velocity.Set(moveDir, WalkingSpeed);
                     Velocity.Update(Ref.DeltaTimeMs, image);
 
-                    if (Ref.TimePassed16ms)
+                    //if (Ref.TimePassed16ms)
                     {
                         float yDiff = groundY + WalkY - image.position.Y;
                         image.position.Y += yDiff * 0.2f;
@@ -335,7 +335,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
         {
             this.dir = dir;
             this.parent = parent;
-            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.spiderbot_leg,
+            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                 SpiderBot.BodySize * 1.4f, 0, true);
 
             RelRotation.X = dir.Radians +MathHelper.Pi;
@@ -390,7 +390,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
 
             if (exdrudedState)
             {
-                if (Ref.TimePassed16ms)
+                for(int i = 0; i < Ref.GameTimePassed16ms; ++i)//f (Ref.TimePassed16ms)
                 {
                     Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.BulletTrace, damageBound.center, 0.5f, 4);
                 }
@@ -410,7 +410,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
                 if (!smokeTimer.TimeOut)
                 {
                     smokeTimer.CountDown();
-                    if (Ref.TimePassed16ms)
+                    for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
                     {
                         Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.Smoke, collisionBound.center, 0.5f, 4);
                     }
@@ -453,7 +453,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
     {
         public SpiderbotGoblin()
         {
-            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.spiderbot_goblin,
+            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                2f, 0, false);
             posOffset = new Vector3(0, 1.6f, 1f);
 
@@ -465,7 +465,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
     {
         public SpiderbotBaby()
         {
-            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.baby,
+            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                2.2f, 0, false);
             posOffset = new Vector3(0, 2.0f, -2.3f);
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using VikingEngine.Voxels;
 
 namespace VikingEngine.LootFest.Process
@@ -21,7 +22,7 @@ namespace VikingEngine.LootFest.Process
             
         //}
         public LoadImage(ILoadImage callback, VoxelModelName baseImage, Vector3 centerAdj)
-            :base(false, Editor.VoxelObjDataLoader.ContentPath(baseImage), true)
+            :base(false, VoxelObjDataLoader.ContentPath(baseImage), true)
         {
             this.centerAdj = centerAdj;
             //this.deleteOrgMesh = deleteOrgMesh;
@@ -40,7 +41,7 @@ namespace VikingEngine.LootFest.Process
         public override void ReadStream(System.IO.BinaryReader r)
         {
             this.runSynchTrigger = true;
-            originalMesh = Editor.VoxelObjDataLoader.GetVoxelObjMaster(r, centerAdj);
+            originalMesh = VoxelObjDataLoader.GetVoxelObjMaster(r, centerAdj);
             //if (deleteOrgMesh)
             //    originalMesh.DeleteMe();
         }

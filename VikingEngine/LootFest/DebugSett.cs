@@ -15,7 +15,7 @@ namespace VikingEngine.LootFest
         public static readonly bool DebugDeferredRenderer = false;
         public static readonly bool SwapCoordinatesMGOptionInMenu = true;
         public static readonly bool MarkLevelRoomCorners = false;
-        public static readonly bool Debug3DParticles = false;
+        //public static readonly bool Debug3DParticles = false;
         public static readonly bool DebugNetwork = true;
         public const bool DebugAllAppearanceUnlocked = true;
 

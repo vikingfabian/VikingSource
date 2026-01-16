@@ -220,7 +220,7 @@ namespace VikingEngine.DSSWars
             float volumeCurve = 1f + (float)(Math.Sin(volumeCurveTime) * 0.3);
 
             float goalFade;
-            var detailLayer = Map.MapDetailLayerManager.CameraIndexToView[0];
+            var detailLayer = Map.MapLayerManager.CameraIndexToView[0];
             switch (detailLayer.current.type)
             {
                 case Map.MapDetailLayerType.UnitDetail1:
@@ -242,7 +242,7 @@ namespace VikingEngine.DSSWars
             }
 
             bool playerLookingAtBattle = detailLayer.current.type == MapDetailLayerType.UnitDetail1 &&
-                DssRef.world.unitCollAreaGrid.PlayerInBattle(tileCenter, DssRef.state.localPlayers[0].faction);
+                DssRef.world.unitCollAreaGrid.PlayerInBattle(tileCenter, DssRef.state.LocalHost().faction.myIndex);
             bool hadBattleSound = battleFade > 0;
             battleFade = Bound.Set(battleFade + FarNearFadeSpeed_PerSec * lib.BoolToLeftRight(playerLookingAtBattle) * Ref.DeltaGameTimeSec, 0f, 1f);
             var battleFadeTotal = battleFade * musicReduceFade * Ref.gamesett.BattleMelodyVol();

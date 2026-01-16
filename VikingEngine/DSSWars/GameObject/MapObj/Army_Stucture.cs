@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.PJ.CarBall;
 
@@ -98,11 +99,20 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void refreshGroupPlacements2(IntVector2 walkToTilePos, bool resetCommand, bool teleport, bool async = true)
         {
+           
             if (async)
             {
                 Task.Factory.StartNew(() =>
                 {
-                    execute();
+                    try
+                    {
+                        execute();
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                    
                 });
             }
             else
@@ -112,7 +122,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             void execute()
             {
-                if ( faction.player.IsAi())
+                
+                if ( TryGetPlayer(out var player) && player.IsBot())
                 {
                     autoColumnWidth();
                 }
@@ -230,7 +241,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             column(Col_Center + PosXAdd, relPos, out Vector2 finalCenter, out float largestWidth, -0.5f, endAsShip);
 
-            Vector2 relPosLeft = new Vector2(-largestWidth * 0.5f - DssVar.SoldierGroup_GridExtraSpacing, 0);
+            Vector2 relPosLeft = new Vector2(-(largestWidth * 0.5f + DssVar.SoldierGroup_GridExtraSpacing), 0);
             Vector2 relPosRight = new Vector2(largestWidth * 0.5f + DssVar.SoldierGroup_GridExtraSpacing, 0);
 
 
@@ -243,7 +254,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             column(Col_LeftFlank + PosXAdd, relPosLeft, out _, out largestWidth, -1f, endAsShip);
 
-            column(Col_RightFlank + PosXAdd, relPosRight, out _, out largestWidth, 0f, endAsShip);
+            column(Col_RightFlank + PosXAdd, relPosRight, out _, out largestWidth, -1f, endAsShip);
 
 
             int leftColX = 0, centerColX = 0, rightColX = 0;
@@ -332,6 +343,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             void column(int colindex, Vector2 _relPos, out Vector2 finalPos, out float largestWidth, float centerPan, bool endAsShip)
             {
+                colindex = Bound.Set(colindex, 0, RowsCount - 1);
+
                 finalPos.X = _relPos.X;
                 largestWidth = 0;
                 Vector2 cellSize;
@@ -340,11 +353,14 @@ namespace VikingEngine.DSSWars.GameObject
 
                 for (int row = 1; row < RowsCount; row++)
                 {
-                    grid[colindex, row].nextPlacement(centerWp, army.armyGoalRotation, _relPos, centerPan, columnWidth, 
-                        out cellSize, out float adjLeft, false, endAsShip, resetCommand, teleport, failedPlacements);
-                    largestWidth = lib.LargestValue(largestWidth, cellSize.X);
-                    finalPos.X = adjLeft;
-                    _relPos.Y += cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;
+                    //if (grid.GetLength(1) > row)
+                    //{
+                        grid[colindex, row].nextPlacement(centerWp, army.armyGoalRotation, _relPos, centerPan, columnWidth,
+                            out cellSize, out float adjLeft, false, endAsShip, resetCommand, teleport, failedPlacements);
+                        largestWidth = lib.LargestValue(largestWidth, cellSize.X);
+                        finalPos.X = adjLeft;
+                        _relPos.Y += cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;
+                    //}
                 }
 
                 comumnWidth[colindex] = largestWidth;
@@ -377,12 +393,18 @@ namespace VikingEngine.DSSWars.GameObject
         List<SoldierGroup> groups = new List<SoldierGroup>();
         public void add(SoldierGroup group)
         {
-            groups.Add(group);
+            lock (groups)
+            {
+                groups.Add(group);
+            }
         }
 
         public void recycle()
         {
-            groups.Clear();
+            lock (groups)
+            {
+                groups.Clear();
+            }
         }
 
         public static bool ExtraPlacement(Vector2 centerWp, float endRotation, Vector2 relativePosition, int armyColumnWidth, ref int currentColX, out Vector3 goalWp)
@@ -420,69 +442,60 @@ namespace VikingEngine.DSSWars.GameObject
         public void nextPlacement(Vector2 centerWp, float endRotation, Vector2 relativePosition, float centerPan, int armyColumnWidth, 
             out Vector2 cellSize, out float adjLeft, bool frontRow, bool endAsShip, bool resetCommand, bool teleport, List<SoldierGroup> failedPlacements)
         {
-            if (centerPan < 0)
-            {
-                lib.DoNothing();
-            }
+            
             int cols = Bound.Min(lib.SmallestValue(groups.Count, armyColumnWidth), 1);
             int rows = Bound.Min((int)Math.Ceiling(groups.Count / (double)cols), 1);
 
             cellSize = new Vector2(cols * DssVar.SoldierGroup_Spacing, rows * DssVar.SoldierGroup_Spacing);
 
-            //Adjust center
-            //this.relativePosition.X += cellSize.X * centerPan;
-
             Vector2 topleft = relativePosition;
-            topleft.X += cellSize.X * centerPan + DssVar.SoldierGroup_Spacing * 0.5f;//cellSize.X * 0.5f + DssVar.SoldierGroup_Spacing * 0.5f;
+            topleft.X += cellSize.X * centerPan + DssVar.SoldierGroup_Spacing * 0.5f;
             adjLeft = topleft.X;
 
-
-            if (groups.Count > 0)
+            lock (groups)
             {
-                //Debug.Log($"####place grid x{x} y{y}");
-
-                
-                if (frontRow)
+                if (groups.Count > 0)
                 {
-                    topleft.Y -= cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;
-                }
 
-                int colX = 0;
-                int rowY = 0;
-                foreach (SoldierGroup group in groups)
-                {
-                    Vector2 localPos = new Vector2(
-                        topleft.X + colX * DssVar.SoldierGroup_Spacing,
-                        topleft.Y + rowY * DssVar.SoldierGroup_Spacing);
-
-                    //if (localPos.Y < 0.38f)
-                    //{
-                    //    lib.DoNothing();
-                    //}
-                    localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos,  endRotation);
-                    Vector3 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
-                    IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
-                    var subTile = DssRef.world.subTileGrid.Get(subTilePos);
-                    if ((subTile.mainTerrain == Map.TerrainMainType.DefaultSea) != endAsShip)
+                    if (frontRow)
                     {
-                        failedPlacements.Add(group);
+                        topleft.Y -= cellSize.Y + DssVar.SoldierGroup_GridExtraSpacing;
                     }
-                    //else
-                    //{
-                        group.setArmyPlacement2(goalWp, resetCommand, teleport);
-                    //}
 
-                    if (++colX >= cols)
+                    int colX = 0;
+                    int rowY = 0;
+                    foreach (SoldierGroup group in groups)
                     {
-                        colX = 0;
-                        rowY++;
+                        Vector2 localPos = new Vector2(
+                            topleft.X + colX * DssVar.SoldierGroup_Spacing,
+                            topleft.Y + rowY * DssVar.SoldierGroup_Spacing);
+
+                        localPos = lib.RotatePointAroundCenter(Vector2.Zero, localPos, endRotation);
+                        Vector3 goalWp = VectorExt.V2toV3XZ(localPos + centerWp);
+                        IntVector2 subTilePos = WP.ToSubTilePos(goalWp);
+                        if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subTile))
+                        {
+                            if ((subTile.mainTerrain == Map.TerrainMainType.DefaultSea) != endAsShip)
+                            {
+                                failedPlacements.Add(group);
+                            }
+                        }
+                        else
+                        {
+                            failedPlacements.Add(group);
+                        }
+
+                        group.setArmyPlacement2(goalWp, resetCommand, teleport);
+
+
+                        if (++colX >= cols)
+                        {
+                            colX = 0;
+                            rowY++;
+                        }
                     }
                 }
             }
-            //else
-            //{
-            //    cellSize = new Vector2(DssVar.SoldierGroup_Spacing);
-            //}
         }
 
         public override string ToString()

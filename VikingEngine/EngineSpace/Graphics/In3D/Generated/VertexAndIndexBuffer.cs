@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 using VikingEngine.Graphics;
 
 
@@ -34,6 +35,9 @@ namespace VikingEngine.Graphics
         protected IndexBuffer indexBuffer;
 
         private float opacity = 1;
+
+        static int NextBufferId = 0;
+        public int bufferId = ++NextBufferId;
 
         /* Constructors */
         public AbsVertexAndIndexBuffer(IVerticeData verticeData)
@@ -78,9 +82,9 @@ namespace VikingEngine.Graphics
             throw new NotImplementedException();
         }
         
-        public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
-        { }
-        public override void DrawDeferredDepthOnly(Effect shader, int cameraIndex)
+        //public override void DrawDeferred(GraphicsDevice device, Effect shader, Matrix view, int cameraIndex)
+        //{ }
+        public override void DrawDepthOnly(bool drawDepth, Effect shader, LightProjection light, int cameraIndex)
         { }
         public override void copyAllDataFrom(AbsDraw master)
         {
@@ -93,8 +97,12 @@ namespace VikingEngine.Graphics
         /* Novelty methods */
         public void SetBuffer()
         {
-            Engine.Draw.graphicsDeviceManager.GraphicsDevice.SetVertexBuffer(vertexBuffer_GPU);
-            Engine.Draw.graphicsDeviceManager.GraphicsDevice.Indices = indexBuffer;
+            if (bufferId != Engine.Draw.PreviousVertexBuffer)
+            {
+                Engine.Draw.PreviousVertexBuffer = bufferId;
+                Engine.Draw.graphicsDeviceManager.GraphicsDevice.SetVertexBuffer(vertexBuffer_GPU);
+                Engine.Draw.graphicsDeviceManager.GraphicsDevice.Indices = indexBuffer;
+            }
         }
     }
 
@@ -122,7 +130,7 @@ namespace VikingEngine.Graphics
         {
             if (numTriangles > 0)
             {
-                Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
+                Engine.Draw.graphicsDeviceManager.GraphicsDevice.DrawIndexedPrimitives_trianglelist_Unsafe(0,
                     0, numTriangles);
             }
         }

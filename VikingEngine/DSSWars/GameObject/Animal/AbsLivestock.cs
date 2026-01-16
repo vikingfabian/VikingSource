@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
+using VikingEngine.Sound;
 
 namespace VikingEngine.DSSWars.GameObject.Animal
 {
@@ -88,7 +89,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         public override void DeleteMe()
         {
             base.DeleteMe();
-            DssRef.models.recycle(ref model, true);
+            model.preRemoveFromDrawBatch();
             
             //model.DeleteMe();
         }
@@ -103,18 +104,19 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         {
             walkingAnimation = new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames);
 
-            return DssRef.models.ModelInstance(VoxelModelName.Pig, true,
-                DssConst.Men_StandardModelScale * 0.5f, true);
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.Pig,
+                DssConst.Men_StandardModelScale * 0.5f);
         }
 
         protected override void sound()
         {
-            if (Ref.peRnd.Chance(0.014))
+            if (Ref.peRnd.Chance(0.03) && SoundStackManager.RareAvailable())
             {
                 SoundLib.pig.Play(model.position);
             }
         }
     }
+
     class Hen : AbsLivestock
     {
         public Hen(IntVector2 tilepos, Vector3 topCenterWp)
@@ -124,13 +126,13 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         {
             walkingAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 0.25f);
 
-            return DssRef.models.ModelInstance(VoxelModelName.Hen, true,
-                DssConst.Men_StandardModelScale * 0.3f, true);
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.Hen,
+                DssConst.Men_StandardModelScale * 0.3f);
         }
 
         protected override void sound()
         {
-            if (Ref.peRnd.Chance(0.014))
+            if (Ref.peRnd.Chance(0.03) && SoundStackManager.RareAvailable())
             {
                 SoundLib.hen.Play(model.position);
             }
@@ -146,8 +148,8 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         {
             walkingAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 0.25f);
 
-            return DssRef.models.ModelInstance(VoxelModelName.Pheasant, true,
-                DssConst.Men_StandardModelScale * 0.6f, true);
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.Pheasant,
+                DssConst.Men_StandardModelScale * 0.6f);
         }
 
         protected override void sound()

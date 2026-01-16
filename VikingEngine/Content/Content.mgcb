@@ -37,293 +37,11 @@
 /processorParam:TextureFormat=Color
 /build:DSS/flag painter bg.png
 
-#begin DSS/Map/map_sz0_i1.map
-/copy:DSS/Map/map_sz0_i1.map
-
-#begin DSS/Map/map_sz0_i10.map
-/copy:DSS/Map/map_sz0_i10.map
-
-#begin DSS/Map/map_sz0_i11.map
-/copy:DSS/Map/map_sz0_i11.map
-
-#begin DSS/Map/map_sz0_i12.map
-/copy:DSS/Map/map_sz0_i12.map
-
-#begin DSS/Map/map_sz0_i13.map
-/copy:DSS/Map/map_sz0_i13.map
-
-#begin DSS/Map/map_sz0_i14.map
-/copy:DSS/Map/map_sz0_i14.map
-
-#begin DSS/Map/map_sz0_i15.map
-/copy:DSS/Map/map_sz0_i15.map
-
-#begin DSS/Map/map_sz0_i16.map
-/copy:DSS/Map/map_sz0_i16.map
-
-#begin DSS/Map/map_sz0_i2.map
-/copy:DSS/Map/map_sz0_i2.map
-
-#begin DSS/Map/map_sz0_i3.map
-/copy:DSS/Map/map_sz0_i3.map
-
-#begin DSS/Map/map_sz0_i4.map
-/copy:DSS/Map/map_sz0_i4.map
-
-#begin DSS/Map/map_sz0_i5.map
-/copy:DSS/Map/map_sz0_i5.map
-
-#begin DSS/Map/map_sz0_i6.map
-/copy:DSS/Map/map_sz0_i6.map
-
-#begin DSS/Map/map_sz0_i7.map
-/copy:DSS/Map/map_sz0_i7.map
-
-#begin DSS/Map/map_sz0_i8.map
-/copy:DSS/Map/map_sz0_i8.map
-
-#begin DSS/Map/map_sz0_i9.map
-/copy:DSS/Map/map_sz0_i9.map
-
-#begin DSS/Map/map_sz1_i1.map
-/copy:DSS/Map/map_sz1_i1.map
-
-#begin DSS/Map/map_sz1_i10.map
-/copy:DSS/Map/map_sz1_i10.map
-
-#begin DSS/Map/map_sz1_i11.map
-/copy:DSS/Map/map_sz1_i11.map
-
-#begin DSS/Map/map_sz1_i12.map
-/copy:DSS/Map/map_sz1_i12.map
-
-#begin DSS/Map/map_sz1_i13.map
-/copy:DSS/Map/map_sz1_i13.map
-
-#begin DSS/Map/map_sz1_i14.map
-/copy:DSS/Map/map_sz1_i14.map
-
-#begin DSS/Map/map_sz1_i15.map
-/copy:DSS/Map/map_sz1_i15.map
-
-#begin DSS/Map/map_sz1_i16.map
-/copy:DSS/Map/map_sz1_i16.map
-
-#begin DSS/Map/map_sz1_i2.map
-/copy:DSS/Map/map_sz1_i2.map
-
-#begin DSS/Map/map_sz1_i3.map
-/copy:DSS/Map/map_sz1_i3.map
-
-#begin DSS/Map/map_sz1_i4.map
-/copy:DSS/Map/map_sz1_i4.map
-
-#begin DSS/Map/map_sz1_i5.map
-/copy:DSS/Map/map_sz1_i5.map
-
-#begin DSS/Map/map_sz1_i6.map
-/copy:DSS/Map/map_sz1_i6.map
-
-#begin DSS/Map/map_sz1_i7.map
-/copy:DSS/Map/map_sz1_i7.map
-
-#begin DSS/Map/map_sz1_i8.map
-/copy:DSS/Map/map_sz1_i8.map
-
-#begin DSS/Map/map_sz1_i9.map
-/copy:DSS/Map/map_sz1_i9.map
-
-#begin DSS/Map/map_sz2_i1.map
-/copy:DSS/Map/map_sz2_i1.map
-
-#begin DSS/Map/map_sz2_i10.map
-/copy:DSS/Map/map_sz2_i10.map
-
-#begin DSS/Map/map_sz2_i11.map
-/copy:DSS/Map/map_sz2_i11.map
-
-#begin DSS/Map/map_sz2_i12.map
-/copy:DSS/Map/map_sz2_i12.map
-
-#begin DSS/Map/map_sz2_i13.map
-/copy:DSS/Map/map_sz2_i13.map
-
-#begin DSS/Map/map_sz2_i14.map
-/copy:DSS/Map/map_sz2_i14.map
-
-#begin DSS/Map/map_sz2_i15.map
-/copy:DSS/Map/map_sz2_i15.map
-
-#begin DSS/Map/map_sz2_i16.map
-/copy:DSS/Map/map_sz2_i16.map
-
-#begin DSS/Map/map_sz2_i2.map
-/copy:DSS/Map/map_sz2_i2.map
-
-#begin DSS/Map/map_sz2_i3.map
-/copy:DSS/Map/map_sz2_i3.map
-
-#begin DSS/Map/map_sz2_i4.map
-/copy:DSS/Map/map_sz2_i4.map
-
-#begin DSS/Map/map_sz2_i5.map
-/copy:DSS/Map/map_sz2_i5.map
-
-#begin DSS/Map/map_sz2_i6.map
-/copy:DSS/Map/map_sz2_i6.map
-
-#begin DSS/Map/map_sz2_i7.map
-/copy:DSS/Map/map_sz2_i7.map
-
-#begin DSS/Map/map_sz2_i8.map
-/copy:DSS/Map/map_sz2_i8.map
-
-#begin DSS/Map/map_sz2_i9.map
-/copy:DSS/Map/map_sz2_i9.map
-
-#begin DSS/Map/map_sz3_i1.map
-/copy:DSS/Map/map_sz3_i1.map
-
-#begin DSS/Map/map_sz3_i10.map
-/copy:DSS/Map/map_sz3_i10.map
-
-#begin DSS/Map/map_sz3_i11.map
-/copy:DSS/Map/map_sz3_i11.map
-
-#begin DSS/Map/map_sz3_i12.map
-/copy:DSS/Map/map_sz3_i12.map
-
-#begin DSS/Map/map_sz3_i13.map
-/copy:DSS/Map/map_sz3_i13.map
-
-#begin DSS/Map/map_sz3_i14.map
-/copy:DSS/Map/map_sz3_i14.map
-
-#begin DSS/Map/map_sz3_i15.map
-/copy:DSS/Map/map_sz3_i15.map
-
-#begin DSS/Map/map_sz3_i16.map
-/copy:DSS/Map/map_sz3_i16.map
-
-#begin DSS/Map/map_sz3_i2.map
-/copy:DSS/Map/map_sz3_i2.map
-
-#begin DSS/Map/map_sz3_i3.map
-/copy:DSS/Map/map_sz3_i3.map
-
-#begin DSS/Map/map_sz3_i4.map
-/copy:DSS/Map/map_sz3_i4.map
-
-#begin DSS/Map/map_sz3_i5.map
-/copy:DSS/Map/map_sz3_i5.map
-
-#begin DSS/Map/map_sz3_i6.map
-/copy:DSS/Map/map_sz3_i6.map
-
-#begin DSS/Map/map_sz3_i7.map
-/copy:DSS/Map/map_sz3_i7.map
-
-#begin DSS/Map/map_sz3_i8.map
-/copy:DSS/Map/map_sz3_i8.map
-
-#begin DSS/Map/map_sz3_i9.map
-/copy:DSS/Map/map_sz3_i9.map
-
-#begin DSS/Map/map_sz4_i1.map
-/copy:DSS/Map/map_sz4_i1.map
-
-#begin DSS/Map/map_sz4_i10.map
-/copy:DSS/Map/map_sz4_i10.map
-
-#begin DSS/Map/map_sz4_i11.map
-/copy:DSS/Map/map_sz4_i11.map
-
-#begin DSS/Map/map_sz4_i12.map
-/copy:DSS/Map/map_sz4_i12.map
-
-#begin DSS/Map/map_sz4_i13.map
-/copy:DSS/Map/map_sz4_i13.map
-
-#begin DSS/Map/map_sz4_i14.map
-/copy:DSS/Map/map_sz4_i14.map
-
-#begin DSS/Map/map_sz4_i15.map
-/copy:DSS/Map/map_sz4_i15.map
-
-#begin DSS/Map/map_sz4_i16.map
-/copy:DSS/Map/map_sz4_i16.map
-
-#begin DSS/Map/map_sz4_i2.map
-/copy:DSS/Map/map_sz4_i2.map
-
-#begin DSS/Map/map_sz4_i3.map
-/copy:DSS/Map/map_sz4_i3.map
-
-#begin DSS/Map/map_sz4_i4.map
-/copy:DSS/Map/map_sz4_i4.map
-
-#begin DSS/Map/map_sz4_i5.map
-/copy:DSS/Map/map_sz4_i5.map
-
-#begin DSS/Map/map_sz4_i6.map
-/copy:DSS/Map/map_sz4_i6.map
-
-#begin DSS/Map/map_sz4_i7.map
-/copy:DSS/Map/map_sz4_i7.map
-
-#begin DSS/Map/map_sz4_i8.map
-/copy:DSS/Map/map_sz4_i8.map
-
-#begin DSS/Map/map_sz4_i9.map
-/copy:DSS/Map/map_sz4_i9.map
-
-#begin DSS/Map/map_sz5_i1.map
-/copy:DSS/Map/map_sz5_i1.map
-
-#begin DSS/Map/map_sz5_i10.map
-/copy:DSS/Map/map_sz5_i10.map
-
-#begin DSS/Map/map_sz5_i11.map
-/copy:DSS/Map/map_sz5_i11.map
-
-#begin DSS/Map/map_sz5_i12.map
-/copy:DSS/Map/map_sz5_i12.map
-
-#begin DSS/Map/map_sz5_i13.map
-/copy:DSS/Map/map_sz5_i13.map
-
-#begin DSS/Map/map_sz5_i14.map
-/copy:DSS/Map/map_sz5_i14.map
-
-#begin DSS/Map/map_sz5_i15.map
-/copy:DSS/Map/map_sz5_i15.map
-
-#begin DSS/Map/map_sz5_i16.map
-/copy:DSS/Map/map_sz5_i16.map
-
-#begin DSS/Map/map_sz5_i2.map
-/copy:DSS/Map/map_sz5_i2.map
-
-#begin DSS/Map/map_sz5_i3.map
-/copy:DSS/Map/map_sz5_i3.map
-
-#begin DSS/Map/map_sz5_i4.map
-/copy:DSS/Map/map_sz5_i4.map
-
-#begin DSS/Map/map_sz5_i5.map
-/copy:DSS/Map/map_sz5_i5.map
-
-#begin DSS/Map/map_sz5_i6.map
-/copy:DSS/Map/map_sz5_i6.map
-
-#begin DSS/Map/map_sz5_i7.map
-/copy:DSS/Map/map_sz5_i7.map
-
-#begin DSS/Map/map_sz5_i8.map
-/copy:DSS/Map/map_sz5_i8.map
-
-#begin DSS/Map/map_sz5_i9.map
-/copy:DSS/Map/map_sz5_i9.map
+#begin DSS/Music/37 (longer).mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/37 (longer).mp3
 
 #begin DSS/Music/A History of Cubes - Gameplay Edit.ogg
 /importer:OggImporter
@@ -343,11 +61,11 @@
 /processorParam:Quality=Best
 /build:DSS/Music/Arcadia.ogg
 
-#begin DSS/Music/BBaaB_loop.ogg
-/importer:OggImporter
+#begin DSS/Music/CCGmusic_mastered.mp3
+/importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:DSS/Music/BBaaB_loop.ogg
+/build:DSS/Music/CCGmusic_mastered.mp3
 
 #begin DSS/Music/digital battleground.ogg
 /importer:OggImporter
@@ -421,12 +139,6 @@
 /processorParam:Quality=Best
 /build:DSS/Music/RM 1 - Introversion.ogg
 
-#begin DSS/Music/RM 10 - Incubation.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:DSS/Music/RM 10 - Incubation.ogg
-
 #begin DSS/Music/RM 2 - Arcane Benevolence.ogg
 /importer:OggImporter
 /processor:SongProcessor
@@ -444,12 +156,6 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:DSS/Music/RM 4 - Warhogs.ogg
-
-#begin DSS/Music/RM 5 - Suddenly Empty.ogg
-/importer:OggImporter
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:DSS/Music/RM 5 - Suddenly Empty.ogg
 
 #begin DSS/Music/RM 6 - Auderesne.ogg
 /importer:OggImporter
@@ -493,6 +199,138 @@
 /processorParam:Quality=Best
 /build:DSS/Music/Shadows of Conflict.ogg
 
+#begin DSS/Music/soundimage org/Ancient-Game-Menu_looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Ancient-Game-Menu_looping.mp3
+
+#begin DSS/Music/soundimage org/City-Beneath-the-Waves.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/City-Beneath-the-Waves.mp3
+
+#begin DSS/Music/soundimage org/Crossing-the-Tundra_v001_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Crossing-the-Tundra_v001_Looping.mp3
+
+#begin DSS/Music/soundimage org/Cumulonimbus.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Cumulonimbus.mp3
+
+#begin DSS/Music/soundimage org/Dragon-Mystery_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Dragon-Mystery_Looping.mp3
+
+#begin DSS/Music/soundimage org/Dreamy-Game-Intro_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Dreamy-Game-Intro_Looping.mp3
+
+#begin DSS/Music/soundimage org/Eerie-Techno-Game-Open_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Eerie-Techno-Game-Open_Looping.mp3
+
+#begin DSS/Music/soundimage org/Fantascape_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Fantascape_Looping.mp3
+
+#begin DSS/Music/soundimage org/Flurries.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Flurries.mp3
+
+#begin DSS/Music/soundimage org/Gliding.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Gliding.mp3
+
+#begin DSS/Music/soundimage org/History-Piano.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/History-Piano.mp3
+
+#begin DSS/Music/soundimage org/Key-West-Sunset_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Key-West-Sunset_Looping.mp3
+
+#begin DSS/Music/soundimage org/Kingdom-Quest_LoFi_looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Kingdom-Quest_LoFi_looping.mp3
+
+#begin DSS/Music/soundimage org/Moonlight-Flying_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Moonlight-Flying_Looping.mp3
+
+#begin DSS/Music/soundimage org/Mysterious-Deep.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Mysterious-Deep.mp3
+
+#begin DSS/Music/soundimage org/Of-Legends-and-Fables-3_looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Of-Legends-and-Fables-3_looping.mp3
+
+#begin DSS/Music/soundimage org/Once-Upon-a-Time-in-the-Kingdom_looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Once-Upon-a-Time-in-the-Kingdom_looping.mp3
+
+#begin DSS/Music/soundimage org/Our-Mountain_v003_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Our-Mountain_v003_Looping.mp3
+
+#begin DSS/Music/soundimage org/Pond-at-Twilight_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Pond-at-Twilight_Looping.mp3
+
+#begin DSS/Music/soundimage org/Secret-Journey_Looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Secret-Journey_Looping.mp3
+
+#begin DSS/Music/soundimage org/Spooky-Enchantment_looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/Spooky-Enchantment_looping.mp3
+
+#begin DSS/Music/soundimage org/The-Spunky-Princess_looping.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:DSS/Music/soundimage org/The-Spunky-Princess_looping.mp3
+
 #begin DSS/Music/Veil of Time.ogg
 /importer:OggImporter
 /processor:SongProcessor
@@ -511,8 +349,8 @@
 /processorParam:Quality=Best
 /build:DSS/Music/What Lurks Below.ogg
 
-#begin DSS/PlayMap/demomap2.sav
-/copy:DSS/PlayMap/demomap2.sav
+#begin DSS/PlayMap/demomap5.sav
+/copy:DSS/PlayMap/demomap5.sav
 
 #begin DSS/seatex_i1.png
 /importer:TextureImporter
@@ -1252,6 +1090,18 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/bladethrow.wav
 
+#begin DSS/Sound/block_attack (1).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/block_attack (1).wav
+
+#begin DSS/Sound/block_attack (3).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/block_attack (3).wav
+
 #begin DSS/Sound/bow1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1582,11 +1432,23 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/hover_disabled.wav
 
+#begin DSS/Sound/intro_beat.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/intro_beat.wav
+
 #begin DSS/Sound/load_ballista.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/load_ballista.wav
+
+#begin DSS/Sound/menu_expand.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/menu_expand.wav
 
 #begin DSS/Sound/musket1.wav
 /importer:WavImporter
@@ -1605,6 +1467,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/musket3.wav
+
+#begin DSS/Sound/option_deselect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/option_deselect.wav
+
+#begin DSS/Sound/option_select.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/option_select.wav
 
 #begin DSS/Sound/ordermove.wav
 /importer:WavImporter
@@ -1660,6 +1534,18 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/reload_ballista2.wav
 
+#begin DSS/Sound/scroll_back.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/scroll_back.wav
+
+#begin DSS/Sound/scroll_forward.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/scroll_forward.wav
+
 #begin DSS/Sound/scythe.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1683,6 +1569,24 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/select_faction.wav
+
+#begin DSS/Sound/ship_knirr1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ship_knirr1.wav
+
+#begin DSS/Sound/ship_knirr2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/ship_knirr2.wav
+
+#begin DSS/Sound/soft_buzz_error.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/soft_buzz_error.wav
 
 #begin DSS/Sound/spear.wav
 /importer:WavImporter
@@ -1713,6 +1617,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/spearwhoosh (4).wav
+
+#begin DSS/Sound/start_build_contruct.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/start_build_contruct.wav
+
+#begin DSS/Sound/start_destroy_contruct.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/start_destroy_contruct.wav
 
 #begin DSS/Sound/start.wav
 /importer:WavImporter
@@ -1768,6 +1684,18 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/trophy.wav
 
+#begin DSS/Sound/wood_bonk1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wood_bonk1.wav
+
+#begin DSS/Sound/wood_bonk2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wood_bonk2.wav
+
 #begin DSS/Sound/woodcut.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1779,6 +1707,30 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/wrong.wav
+
+#begin DSS/story_background.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/story_background.png
+
+#begin DSS/story_background2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/story_background2.png
 
 #begin DSS/Story/doom_story1.png
 /importer:TextureImporter
@@ -1827,6 +1779,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:DSS/Story/doom_story4.png
+
+#begin DSS/Story/endscreen2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/Story/endscreen2.png
 
 #begin DSS/Story/fail.png
 /importer:TextureImporter
@@ -1912,6 +1876,30 @@
 /processorParam:TextureFormat=Color
 /build:DSS/watertex_i4.png
 
+#begin DSS/wave_mask1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/wave_mask1.png
+
+#begin DSS/wave_mask2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:DSS/wave_mask2.png
+
 #begin Font/Bold.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -1967,6 +1955,27 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Font/JapaneseRegular.spritefont
+
+#begin Font/KoreanBold.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/KoreanBold.spritefont
+
+#begin Font/KoreanConsole.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/KoreanConsole.spritefont
+
+#begin Font/KoreanRegular.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/KoreanRegular.spritefont
 
 #begin Font/Regular.spritefont
 /importer:FontDescriptionImporter
@@ -2185,6 +2194,18 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/LightParticleEffect.fx
 
+#begin Shaders/OceanEffectFlat.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/OceanEffectFlat.fx
+
+#begin Shaders/OceanEffectTest.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/OceanEffectTest.fx
+
 #begin Shaders/ParticleEffect.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -2203,11 +2224,29 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/SeaNoiseEffect.fx
 
+#begin Shaders/ShadowEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/ShadowEffect.fx
+
 #begin Shaders/ShadowMap.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/ShadowMap.fx
+
+#begin Shaders/VertexColorShadow.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/VertexColorShadow.fx
+
+#begin Shaders/WaveXzEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/WaveXzEffect.fx
 
 #begin Texture/Lf3Tiles2.tga
 /importer:TextureImporter
@@ -2220,6 +2259,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Texture/Lf3Tiles2.tga
+
+#begin Texture/monogame_splash.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Texture/monogame_splash.png
 
 #begin Texture/noimage.tga
 /importer:TextureImporter
@@ -2244,6 +2295,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Texture/particle3.tga
+
+#begin Texture/test_texture.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Texture/test_texture.png
 
 #begin Texture/whitearea256.tga
 /importer:TextureImporter
@@ -2302,8 +2365,143 @@
 #begin Version Number.txt
 /copy:Version Number.txt
 
+#begin VoxelModel/Character/modshield_javelin.vox
+/copy:VoxelModel/Character/modshield_javelin.vox
+
+#begin VoxelModel/Character/modshield_knightsmallside.vox
+/copy:VoxelModel/Character/modshield_knightsmallside.vox
+
+#begin VoxelModel/Character/modshield_roman.vox
+/copy:VoxelModel/Character/modshield_roman.vox
+
+#begin VoxelModel/Character/modsoldier_addons.vox
+/copy:VoxelModel/Character/modsoldier_addons.vox
+
+#begin VoxelModel/Character/modsoldier_body_beef1.vox
+/copy:VoxelModel/Character/modsoldier_body_beef1.vox
+
+#begin VoxelModel/Character/modsoldier_body1.vox
+/copy:VoxelModel/Character/modsoldier_body1.vox
+
+#begin VoxelModel/Character/modsoldier_body3lady.vox
+/copy:VoxelModel/Character/modsoldier_body3lady.vox
+
+#begin VoxelModel/Character/modsoldier_debug.vox
+/copy:VoxelModel/Character/modsoldier_debug.vox
+
+#begin VoxelModel/Character/modsoldier_face_access.vox
+/copy:VoxelModel/Character/modsoldier_face_access.vox
+
+#begin VoxelModel/Character/modsoldier_face_orc.vox
+/copy:VoxelModel/Character/modsoldier_face_orc.vox
+
+#begin VoxelModel/Character/modsoldier_face_skull.vox
+/copy:VoxelModel/Character/modsoldier_face_skull.vox
+
+#begin VoxelModel/Character/modsoldier_face1.vox
+/copy:VoxelModel/Character/modsoldier_face1.vox
+
+#begin VoxelModel/Character/modsoldier_hat_custom_all.vox
+/copy:VoxelModel/Character/modsoldier_hat_custom_all.vox
+
+#begin VoxelModel/Character/modsoldier_hat_soldier_all.vox
+/copy:VoxelModel/Character/modsoldier_hat_soldier_all.vox
+
+#begin VoxelModel/Character/modsoldier_larm_empty1.vox
+/copy:VoxelModel/Character/modsoldier_larm_empty1.vox
+
+#begin VoxelModel/Character/modsoldier_larm_empty2naked.vox
+/copy:VoxelModel/Character/modsoldier_larm_empty2naked.vox
+
+#begin VoxelModel/Character/modsoldier_larm_shield1.vox
+/copy:VoxelModel/Character/modsoldier_larm_shield1.vox
+
+#begin VoxelModel/Character/modsoldier_larm_shield2naked.vox
+/copy:VoxelModel/Character/modsoldier_larm_shield2naked.vox
+
+#begin VoxelModel/Character/modsoldier_leg1.vox
+/copy:VoxelModel/Character/modsoldier_leg1.vox
+
+#begin VoxelModel/Character/modsoldier_rarm_bow1v2.vox
+/copy:VoxelModel/Character/modsoldier_rarm_bow1v2.vox
+
+#begin VoxelModel/Character/modsoldier_rarm_bow2naked.vox
+/copy:VoxelModel/Character/modsoldier_rarm_bow2naked.vox
+
+#begin VoxelModel/Character/modsoldier_rarm_sword1.vox
+/copy:VoxelModel/Character/modsoldier_rarm_sword1.vox
+
+#begin VoxelModel/Character/modsoldier_rarm_sword2naked.vox
+/copy:VoxelModel/Character/modsoldier_rarm_sword2naked.vox
+
+#begin VoxelModel/Character/modweapon_blunderbuss.vox
+/copy:VoxelModel/Character/modweapon_blunderbuss.vox
+
+#begin VoxelModel/Character/modweapon_bronzesword.vox
+/copy:VoxelModel/Character/modweapon_bronzesword.vox
+
+#begin VoxelModel/Character/modweapon_crossbow.vox
+/copy:VoxelModel/Character/modweapon_crossbow.vox
+
+#begin VoxelModel/Character/modweapon_culvertin.vox
+/copy:VoxelModel/Character/modweapon_culvertin.vox
+
+#begin VoxelModel/Character/modweapon_guns.vox
+/copy:VoxelModel/Character/modweapon_guns.vox
+
+#begin VoxelModel/Character/modweapon_hammer.vox
+/copy:VoxelModel/Character/modweapon_hammer.vox
+
+#begin VoxelModel/Character/modweapon_handcannon.vox
+/copy:VoxelModel/Character/modweapon_handcannon.vox
+
+#begin VoxelModel/Character/modweapon_javelin.vox
+/copy:VoxelModel/Character/modweapon_javelin.vox
+
+#begin VoxelModel/Character/modweapon_longbow.vox
+/copy:VoxelModel/Character/modweapon_longbow.vox
+
+#begin VoxelModel/Character/modweapon_longsword.vox
+/copy:VoxelModel/Character/modweapon_longsword.vox
+
+#begin VoxelModel/Character/modweapon_mithrilbow.vox
+/copy:VoxelModel/Character/modweapon_mithrilbow.vox
+
+#begin VoxelModel/Character/modweapon_mithrilsword.vox
+/copy:VoxelModel/Character/modweapon_mithrilsword.vox
+
+#begin VoxelModel/Character/modweapon_rifle.vox
+/copy:VoxelModel/Character/modweapon_rifle.vox
+
+#begin VoxelModel/Character/modweapon_settler.vox
+/copy:VoxelModel/Character/modweapon_settler.vox
+
+#begin VoxelModel/Character/modweapon_sharpstick.vox
+/copy:VoxelModel/Character/modweapon_sharpstick.vox
+
+#begin VoxelModel/Character/modweapon_shortbow.vox
+/copy:VoxelModel/Character/modweapon_shortbow.vox
+
+#begin VoxelModel/Character/modweapon_shortsword.vox
+/copy:VoxelModel/Character/modweapon_shortsword.vox
+
+#begin VoxelModel/Character/modweapon_sling.vox
+/copy:VoxelModel/Character/modweapon_sling.vox
+
+#begin VoxelModel/Character/modweapon_spear.vox
+/copy:VoxelModel/Character/modweapon_spear.vox
+
+#begin VoxelModel/Character/modweapon_sword1.vox
+/copy:VoxelModel/Character/modweapon_sword1.vox
+
+#begin VoxelModel/Character/modweapon_twohand.vox
+/copy:VoxelModel/Character/modweapon_twohand.vox
+
 #begin VoxelModel/LfWars/armybanner.vox
 /copy:VoxelModel/LfWars/armybanner.vox
+
+#begin VoxelModel/LfWars/armystand_detail.vox
+/copy:VoxelModel/LfWars/armystand_detail.vox
 
 #begin VoxelModel/LfWars/armystand.vox
 /copy:VoxelModel/LfWars/armystand.vox
@@ -2374,6 +2572,9 @@
 #begin VoxelModel/LfWars/city_quarry.vox
 /copy:VoxelModel/LfWars/city_quarry.vox
 
+#begin VoxelModel/LfWars/city_research.vox
+/copy:VoxelModel/LfWars/city_research.vox
+
 #begin VoxelModel/LfWars/city_smallhouse.vox
 /copy:VoxelModel/LfWars/city_smallhouse.vox
 
@@ -2394,6 +2595,12 @@
 
 #begin VoxelModel/LfWars/city_tavern.vox
 /copy:VoxelModel/LfWars/city_tavern.vox
+
+#begin VoxelModel/LfWars/city_tent.vox
+/copy:VoxelModel/LfWars/city_tent.vox
+
+#begin VoxelModel/LfWars/city_tenthut.vox
+/copy:VoxelModel/LfWars/city_tenthut.vox
 
 #begin VoxelModel/LfWars/city_tower24.vox
 /copy:VoxelModel/LfWars/city_tower24.vox
@@ -2428,6 +2635,9 @@
 #begin VoxelModel/LfWars/decor_statue.vox
 /copy:VoxelModel/LfWars/decor_statue.vox
 
+#begin VoxelModel/LfWars/ErrorCube.vox
+/copy:VoxelModel/LfWars/ErrorCube.vox
+
 #begin VoxelModel/LfWars/fo_stone1.vox
 /copy:VoxelModel/LfWars/fo_stone1.vox
 
@@ -2442,6 +2652,9 @@
 
 #begin VoxelModel/LfWars/fol_farmculture2.vox
 /copy:VoxelModel/LfWars/fol_farmculture2.vox
+
+#begin VoxelModel/LfWars/fol_greenfoliage.vox
+/copy:VoxelModel/LfWars/fol_greenfoliage.vox
 
 #begin VoxelModel/LfWars/fol_herbs.vox
 /copy:VoxelModel/LfWars/fol_herbs.vox
@@ -2458,11 +2671,26 @@
 #begin VoxelModel/LfWars/fol_tree_dry.vox
 /copy:VoxelModel/LfWars/fol_tree_dry.vox
 
+#begin VoxelModel/LfWars/fol_tree_hard_lava.vox
+/copy:VoxelModel/LfWars/fol_tree_hard_lava.vox
+
+#begin VoxelModel/LfWars/fol_tree_hard_snow.vox
+/copy:VoxelModel/LfWars/fol_tree_hard_snow.vox
+
 #begin VoxelModel/LfWars/fol_tree_hard.vox
 /copy:VoxelModel/LfWars/fol_tree_hard.vox
 
+#begin VoxelModel/LfWars/fol_tree_soft_lava.vox
+/copy:VoxelModel/LfWars/fol_tree_soft_lava.vox
+
+#begin VoxelModel/LfWars/fol_tree_soft_snow.vox
+/copy:VoxelModel/LfWars/fol_tree_soft_snow.vox
+
 #begin VoxelModel/LfWars/fol_tree_soft.vox
 /copy:VoxelModel/LfWars/fol_tree_soft.vox
+
+#begin VoxelModel/LfWars/godfire.vox
+/copy:VoxelModel/LfWars/godfire.vox
 
 #begin VoxelModel/LfWars/Hen.vox
 /copy:VoxelModel/LfWars/Hen.vox
@@ -2502,6 +2730,15 @@
 
 #begin VoxelModel/LfWars/slingstone.vox
 /copy:VoxelModel/LfWars/slingstone.vox
+
+#begin VoxelModel/LfWars/tree_apple.vox
+/copy:VoxelModel/LfWars/tree_apple.vox
+
+#begin VoxelModel/LfWars/tree_banana.vox
+/copy:VoxelModel/LfWars/tree_banana.vox
+
+#begin VoxelModel/LfWars/unclaimed_icon.vox
+/copy:VoxelModel/LfWars/unclaimed_icon.vox
 
 #begin VoxelModel/LfWars/war_archer_i2.vox
 /copy:VoxelModel/LfWars/war_archer_i2.vox

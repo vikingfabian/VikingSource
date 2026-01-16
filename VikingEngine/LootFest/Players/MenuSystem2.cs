@@ -20,6 +20,8 @@ using VikingEngine.EngineSpace.Maths;
 //using SharpDX.DirectInput;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.Network;
+using VikingEngine.Voxels;
+
 
 namespace VikingEngine.LootFest
 {
@@ -43,7 +45,7 @@ namespace VikingEngine.LootFest
 
             menu = new Gui(GuiStyle(), player.SafeScreenArea, 0f, LfLib.Layer_GuiMenu, Input.InputSource.DefaultPC);//player.PlayerIndex);
 
-            Input.Mouse.Visible = true;
+            Input.Mouse.CenterLockAndHide();//Input.Mouse.Visible = true;
 
             //inputOverview = new Display.InputOverview(player.SafeScreenArea, player.inputMap);
         }
@@ -142,15 +144,15 @@ namespace VikingEngine.LootFest
                     //new GuiTextButton("Joystick Test", null, JoystickTest, true, layout);
                 }
                 
-                new GuiIcon(SpriteName.LFExpressHi, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_hi), false, layout);
-                new GuiIcon(SpriteName.LFExpressThumbsUp, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_thumbup), false, layout);
-                new GuiIcon(SpriteName.LFExpressLaugh, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_laugh), false, layout);
-                new GuiIcon(SpriteName.LFExpressTease, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_teasing), false, layout);
+                new GuiIcon(SpriteName.LFExpressHi, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
+                new GuiIcon(SpriteName.LFExpressThumbsUp, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
+                new GuiIcon(SpriteName.LFExpressLaugh, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
+                new GuiIcon(SpriteName.LFExpressTease, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
 
-                new GuiIcon(SpriteName.LFExpressAngry, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_anger), false, layout);
-                new GuiIcon(SpriteName.LFExpressSad, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_sad1), false, layout);
-                new GuiIcon(SpriteName.LFExpressLoot, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_loot), false, layout);
-                new GuiIcon(SpriteName.LFExpressDuck, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.express_duck), false, layout);
+                new GuiIcon(SpriteName.LFExpressAngry, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
+                new GuiIcon(SpriteName.LFExpressSad, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
+                new GuiIcon(SpriteName.LFExpressLoot, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
+                new GuiIcon(SpriteName.LFExpressDuck, null, new GuiAction1Arg<VoxelModelName>(expressOption, VoxelModelName.NUM_NON), false, layout);
 
 
                 // basic & important
@@ -904,7 +906,7 @@ namespace VikingEngine.LootFest
             GuiLayout layout = new GuiLayout("Options", menu);
             {
                 // Controls
-                Ref.gamesett.optionsMenu(layout);
+                //Ref.gamesett.optionsMenu(layout);
 
                 new GuiSectionSeparator(layout);
 
@@ -917,15 +919,15 @@ namespace VikingEngine.LootFest
 
                 new GuiSectionSeparator(layout);
 
-                if (LfRef.LocalHeroes.Count > 1)
-                    new GuiCheckbox("Horizontal split", null, horiSplitProperty, layout);
+                //if (LfRef.LocalHeroes.Count > 1)
+                //    new GuiCheckbox("Horizontal split", null, horiSplitProperty, layout);
                 // other graphics
                 new GuiTextButton("Camera", null, cameraSettings, true, layout);
-                new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Frame rate", new List<GuiOption<int>>
-                {
-                    new GuiOption<int>(30), new GuiOption<int>(60), new GuiOption<int>(90), 
-                    new GuiOption<int>(100), new GuiOption<int>(120), new GuiOption<int>(144)
-                }, frameRateProperty, layout);
+                //new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Frame rate", new List<GuiOption<int>>
+                //{
+                //    new GuiOption<int>(30), new GuiOption<int>(60), new GuiOption<int>(90), 
+                //    new GuiOption<int>(100), new GuiOption<int>(120), new GuiOption<int>(144)
+                //}, frameRateProperty, layout);
 
                 new GuiOptionsList<int>(SpriteName.NO_IMAGE, "Detail level", new List<GuiOption<int>>
                 {
@@ -1125,15 +1127,15 @@ namespace VikingEngine.LootFest
             return GetSet.Do<int>(set, ref Ref.gamesett.DetailLevel, value);
         }
 
-        int frameRateProperty(bool set, int value)
-        {
-            if (set)
-            {
-                Ref.gamesett.FrameRate = value;
-                Engine.Update.SetFrameRate(Ref.gamesett.FrameRate);
-            }
-            return Ref.gamesett.FrameRate;
-        }
+        //int frameRateProperty(bool set, int value)
+        //{
+        //    if (set)
+        //    {
+        //        Ref.gamesett.FrameRate = value;
+        //        Engine.Update.SetFrameRate(Ref.gamesett.FrameRate);
+        //    }
+        //    return Ref.gamesett.FrameRate;
+        //}
 
         int chunkRadiusProperty(bool set, int value)
         {
@@ -1153,15 +1155,15 @@ namespace VikingEngine.LootFest
         //{
         //    return GetSet.Do<float>(set, ref Engine.Sound.SoundVolume, value);
         //}
-        bool horiSplitProperty(int index, bool set, bool value)
-        {
-            if (set)
-            {
-                Engine.Draw.horizontalSplit = value;
-                LfRef.gamestate.UpdateSplitScreen();
-            }
-            return Engine.Draw.horizontalSplit;
-        }
+        //bool horiSplitProperty(int index, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        Engine.Draw.horizontalSplit = value;
+        //        LfRef.gamestate.UpdateSplitScreen();
+        //    }
+        //    return Engine.Draw.horizontalSplit;
+        //}
         bool invertCamYProperty(int index, bool set, bool value)
         {
             if (set)
@@ -1241,11 +1243,11 @@ namespace VikingEngine.LootFest
 
         void startVoxelEditor()
         {
-            new GameState.VoxelDesignState(player.PlayerIndex);
+            //new GameState.VoxelDesignState(player.PlayerIndex);
         }
         void startSceneMaker()
         {
-            new Editor.SceneMaker(player.PlayerIndex);
+            new Voxels.SceneMaker(player.PlayerIndex);
         }
 
         //void HandMadeTerrainPage()
@@ -1932,14 +1934,14 @@ namespace VikingEngine.LootFest
         public void DeleteMe()
         {
             menu.DeleteMe();
-            Input.Mouse.Visible = false;
+            Input.Mouse.CenterLockAndHide();//Input.Mouse.Visible = false;
 
             //inputOverview.DeleteMe();
         }
 
         void listMaterials(Action<BlockHD> link)
         {
-            Editor.VoxelDesigner.listMaterials(menu, link, false);//mFile, (int)d, false, Storage, (int)Link.ShowHideMaterialNames, 0);
+            //VoxelDesigner.listMaterials(menu, link, false);//mFile, (int)d, false, Storage, (int)Link.ShowHideMaterialNames, 0);
         }
 
         void refreshShield()

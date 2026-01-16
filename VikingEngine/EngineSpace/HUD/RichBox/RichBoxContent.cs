@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars;
-using VikingEngine.DSSWars.Display;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -24,6 +24,14 @@ namespace VikingEngine.HUD.RichBox
         {
             newLine();
             var textCont = new RbText(textline);
+            Add(textCont);
+
+            return textCont;
+        }
+        public RbText text(string textline, Color color)
+        {
+            newLine();
+            var textCont = new RbText(textline, color);
             Add(textCont);
 
             return textCont;
@@ -52,6 +60,21 @@ namespace VikingEngine.HUD.RichBox
             return textCont;
         }
 
+        public RbText iconiconicontext(SpriteName icon, SpriteName icon2, SpriteName icon3, string textline)
+        {
+            newLine();
+            Add(new RbImage(icon));
+            space();
+            Add(new RbImage(icon2));
+            space();
+            Add(new RbImage(icon3));
+            space();
+            var textCont = new RbText(textline);
+            Add(textCont);
+
+            return textCont;
+        }
+
         public AbsRichBoxMember AddReturn(AbsRichBoxMember member)
         { 
             Add(member);
@@ -68,6 +91,10 @@ namespace VikingEngine.HUD.RichBox
         public void space(float spaces = 1f)
         { 
             Add(new RbSpace(spaces));
+        }
+        public void hspace()
+        {
+            Add(new RbSpace(0.5f));
         }
 
         public RbText h1(string textline)
@@ -91,6 +118,16 @@ namespace VikingEngine.HUD.RichBox
             return text;
         }
 
+        public void h1(SpriteName icon, string textline, Color? color = null)
+        {
+            newLine();
+            Add(new RbBeginTitle(1));
+            Add(new RbImage(icon));
+            Add(new RbSpace());
+            Add(new RbText(textline, color));
+
+        }
+
         public RbText h2(string textline)
         {
             newLine();
@@ -110,6 +147,16 @@ namespace VikingEngine.HUD.RichBox
             Add(text);
 
             return text;
+        }
+
+        public void h2(SpriteName icon, string textline, Color? color = null)
+        {
+            newLine();
+            Add(new RbBeginTitle(2));
+            Add(new RbImage(icon));
+            Add(new RbSpace());
+            Add(new RbText(textline, color));
+
         }
 
         public void newLine()
@@ -195,7 +242,7 @@ namespace VikingEngine.HUD.RichBox
 
         public RbImage BulletPoint()
         {
-            var dot =new  RbImage(SpriteName.WhiteArea, 0.4f, 1f, 2f);
+            var dot =new  RbImage(SpriteName.WhiteArea, 0.4f, null, 1f, 2f);
             dot.color = Color.DarkGray;
             Add(dot);
             return dot;
@@ -254,20 +301,17 @@ namespace VikingEngine.HUD.RichBox
             space();
             Add(new RbText(desc));
         }
+
+        public void ButtonDescription(SpriteName buttonMapIcon, string desc)
+        {
+            newLine();
+            Add(new RbImage(buttonMapIcon));
+            space();
+            Add(new RbText(desc));
+        }
         public void buttonMap(IButtonMap buttonMap)
         {
             ButtonMap(buttonMap, this);
-            //List<SpriteName> sprites = new List<SpriteName>(2);
-            //buttonMap.ListIcons(sprites);
-
-            //for (int i = 0; i < sprites.Count; i++)
-            //{
-            //    Add(new RichBoxImage(sprites[i]));
-            //    if (i < sprites.Count - 1)
-            //    {
-            //        Add(new RichBoxText("+"));
-            //    }
-            //}
         }
         public static void ButtonMap(IButtonMap buttonMap, List<AbsRichBoxMember> content )
         { 
@@ -284,6 +328,7 @@ namespace VikingEngine.HUD.RichBox
             }
         }
 
+       
         //public void DropDown(string label, List<AbsRichBoxMember> menuCaption, List<List<AbsRichBoxMember>> options, 
         //    int selectedIx, int defaultIx, AbsRbAction openClose, RbAction1Arg<int> onSelect, List<AbsRbAction> optionsTooltip, bool isDown)
         //{ 

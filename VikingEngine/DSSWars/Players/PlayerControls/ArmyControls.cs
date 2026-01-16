@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
+using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -15,17 +17,17 @@ namespace VikingEngine.DSSWars.Players
         LocalPlayer player;
         
         public bool newSquare = false;
+  
+        ArmyCollection collection;
 
-        
-        List<ArmyControlsMember> armies;
-        
-        public ArmyControls(LocalPlayer player, List<AbsMapObject> list)
+        public ArmyControls(LocalPlayer player, ArmyCollection collection)
         {
             this.player = player;
-            armies = new List<ArmyControlsMember>(list.Count);
-            foreach (AbsMapObject item in list)
+            this.collection = collection;
+           
+            foreach (var item in collection.objects)
             {
-                armies.Add(new ArmyControlsMember(player, item.GetArmy()));
+                item.initControls(player);
             }
 
             newSquare = true;
@@ -34,14 +36,14 @@ namespace VikingEngine.DSSWars.Players
         public void update()
         {
             
-            if (player.gameControls.mapControls.onNewTile)
+            if (player.gameControls.map.onNewTile)
             {
                 newSquare = true;
             }
 
             bool alive = false;
 
-            foreach (var m in armies)
+            foreach (var m in collection.objects)
             { 
                 m.update();
                 alive |= m.isAlive;
@@ -56,7 +58,7 @@ namespace VikingEngine.DSSWars.Players
             if (player.gameControls.input.StopStart.DownEvent)
             {
                 SoundLib.orderstop.Play();
-                foreach (var m in armies)
+                foreach (var m in collection.objects)
                 {
                     if (m.isAlive)
                     {
@@ -68,31 +70,34 @@ namespace VikingEngine.DSSWars.Players
             
         }
 
-        public void asynchUpdate()
+        public void asynchPathUpdate()
         {
             if (newSquare)
             {
                 newSquare = false;
 
-                foreach (var m in armies)
+                lock (collection.objects)
                 {
-                    m.asynchUpdate(player);
+                    foreach (var m in collection.objects)
+                    {
+                        m.asynchUpdate(player);
+                    }
                 }
             }
         }
 
         public void clearState()
         {
-            foreach (var m in armies)
-            {
-                m.pathVisuals.DeleteMe();
-            }
-            
+            //foreach (var m in collection.objects)
+            //{
+            //    m.pathVisuals.DeleteMe();
+            //}
+            collection.DeleteMembers(false);
         }
 
         public void moveOrderEffect()
         {
-            foreach (var m in armies)
+            foreach (var m in collection.objects)
             {
                 if (m.isAlive)
                 {
@@ -105,111 +110,63 @@ namespace VikingEngine.DSSWars.Players
 
         public void mapExecute()
         {
-            if (player.gameControls.mapControls.armyMayAttackHoverObj())
+            if (player.gameControls.map.armyMayAttackHoverObj())
             {
-                var target = player.gameControls.mapControls.hover.obj.RelatedMapObject();
+                var target = player.gameControls.map.hover.obj.RelatedMapObject();
                 if (target != null)
                 {
-                    SoundLib.ordermove.Play();
-                    foreach (var m in armies)
+                    if (DssRef.diplomacy.InWar(player.faction, target.GetFaction()))
                     {
-                        if (m.isAlive)
-                        {
-                            m.army.Order_Attack(target);
-                        }
+                        mapExecuteAttack(target);
                     }
+                    else
+                    {
+                        new PopMenu(player, new HUD.RichBox.RbAction1Arg<AbsMapObject>(mapExecuteAttack, target));
+                    }
+                    
                 }
             }
             else
             {
                 SoundLib.ordermove.Play();
-                foreach (var m in armies)
+                //int radius = 0;
+                ForXYEdgeLoop nextPlacementLoop = new ForXYEdgeLoop(player.gameControls.map.tilePosition, player.gameControls.map.tilePosition);
+
+                foreach (var m in collection.objects)
                 {
                     if (m.isAlive)
                     {
-                        m.army.Ai_Order_MoveTo(player.gameControls.mapControls.tilePosition);
+                        bool continueLoop = nextPlacementLoop.Next();
+                        if (!continueLoop)
+                        {
+                            nextPlacementLoop.ExpandRadius();
+                        }
+                        m.army.Ai_Order_MoveTo(nextPlacementLoop.Position);
+                        
+                    }
+                }
+
+                moveOrderEffect();
+            }
+        }
+
+        public void mapExecuteAttack(AbsMapObject target)
+        {
+            if (target != null)
+            {
+                SoundLib.ordermove.Play();
+                foreach (var m in collection.objects)
+                {
+                    if (m.isAlive)
+                    {
+                        m.army.Order_Attack(target);
                     }
                 }
             }
+
+            moveOrderEffect();
         }
     }
 
-    class ArmyControlsMember
-    {
-        public GameObject.Army army;
-        public PathVisuals pathVisuals;
-        public WalkingPath path = null, newPath = null;
-
-        PathFindState pathState = PathFindState.None;
-
-        public bool isAlive = true;
-
-        public ArmyControlsMember(LocalPlayer player, GameObject.Army army)
-        {
-            pathVisuals = new PathVisuals(player.playerData.localPlayerIndex);
-            this.army = army;
-        }
-
-
-        public void update()
-        {
-            if (isAlive)
-            {
-                if (army.isDeleted)
-                {
-                    pathVisuals.DeleteMe();
-                    isAlive = false;
-                }
-                else if (pathState != PathFindState.None)
-                {
-                    if (pathState == PathFindState.NewPath)
-                    {
-
-                        path = newPath;
-                        newPath = null;
-
-                        pathVisuals.refresh(path, false, false);
-                    }
-                    else
-                    {
-
-                        path = null;
-                        pathVisuals.DeleteMe();
-                    }
-
-                    pathState = PathFindState.None;
-                }
-            }
-        }
-
-        public void asynchUpdate(LocalPlayer player)
-        {
-            if (pathState == PathFindState.None && isAlive)
-            {
-                if (army.tilePos != player.gameControls.mapControls.tilePosition &&
-                    DssRef.world.tileGrid.InBounds(player.gameControls.mapControls.tilePosition))
-                {
-                    PathFinding pf = DssRef.state.pathUpdates[DssRef.state.pathUpdates.Length -1].pathFindingPool.GetPf();
-                    {
-                        newPath = pf.FindPath(PlayState.PathThreadCount, army.tilePos, army.rotation, player.gameControls.mapControls.tilePosition,
-                            false);
-                    }
-                    DssRef.state.pathUpdates[DssRef.state.pathUpdates.Length -1].pathFindingPool.Return(pf);
-
-                    pathState = PathFindState.NewPath;
-                }
-                else
-                {
-                    pathState = PathFindState.NoPath;
-                }
-            }
-        }
-
-        enum PathFindState
-        {
-            None,
-            NewPath,
-            NoPath,
-        }
-    }
+   
 }

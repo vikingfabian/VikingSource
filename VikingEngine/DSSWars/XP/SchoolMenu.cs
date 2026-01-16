@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using VikingEngine.DSSWars.Conscript;
-using VikingEngine.DSSWars.Display.Component;
-using VikingEngine.DSSWars.Display.Translation;
+using VikingEngine.DSSWars.Interface.Component;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.Players;
@@ -34,14 +34,12 @@ namespace VikingEngine.DSSWars.XP
             {
                 SchoolStatus currentStatus = city.schoolBuildings[city.selectedSchool];
                 LangLib.ExperienceType(currentStatus.learnExperience, out string expName, out SpriteName expIcon);
-                content.Add(new RbImage(expIcon));
-                content.space();
-                content.Add(new RbBeginTitle(1));
-                var title = new RbText(DssRef.lang.BuildingType_School + " " + currentStatus.idAndPosition.ToString());
-                title.overrideColor = HudLib.TitleColor_TypeName;
-                content.Add(title);
-                content.space();
-                HudLib.CloseButton(content, new RbAction(() => { city.selectedSchool = -1; }, SoundLib.menuBack));
+                
+                HudLib.buildingMenuTitle(content,expIcon, DssRef.lang.BuildingType_School, currentStatus.idAndPosition, city.selectedSchool,
+                    city.schoolBuildings.Count, () => { city.selectedSchool = -1; },
+                    (int next) => {
+                        city.selectedSchool = Bound.SetRollover(city.selectedSchool + next, 0, city.schoolBuildings.Count - 1);
+                    });
 
                 content.newParagraph();
                 HudLib.Label(content, DssRef.lang.Experience_Title);
@@ -58,11 +56,9 @@ namespace VikingEngine.DSSWars.XP
                     };
 
                     var button = new ArtOption(exp == currentStatus.learnExperience,buttonContent,
-                       new RbAction1Arg<WorkExperienceType>(experienceClick, exp, SoundLib.menu),
+                       new RbAction1Arg<WorkExperienceType>(experienceClick, exp, RbSoundType.Option),
                    new RbTooltip(expTooltip, exp));
-                    //button.setGroupSelectionColor(HudLib.RbSettings, );
                     content.Add(button);
-                    //content.space();
                 }
                 content.newParagraph();
 
@@ -83,22 +79,34 @@ namespace VikingEngine.DSSWars.XP
                     };
 
                         var button = new ArtOption(level == currentStatus.toLevel,buttonContent,
-                           new RbAction1Arg<ExperienceLevel>(toLevelClick, level, SoundLib.menu),
+                           new RbAction1Arg<ExperienceLevel>(toLevelClick, level, RbSoundType.Option),
                        new RbTooltip(lvlToolTip, level));
-                        //button.setGroupSelectionColor(HudLib.RbSettings, );
                         content.Add(button);
-                        //content.space();
                     }
 
                     content.newParagraph();
-                    que.toHud(player, content, queClick, currentStatus.que, SchoolStatus.MaxQue, false);
+                    bool active = city.workerInSchoolCheckup(currentStatus.idAndPosition, out float time);
+                    if (active)
+                    {
+                        content.Add(new RbSeperationLine());
+                        {
+                            content.newLine();
+                            HudLib.BulletPoint(content);
+                            content.Add(new RbText(new Data.TimeLength(time - Ref.TotalGameTimeSec).LongString()));
+                        }
+                    }
+                    que.singleToHud(player, content, queClick, currentStatus.que, SchoolStatus.MaxQue, false);
                 }
 
+                content.newParagraph();
+                HudLib.copyPaste(content, player,
+                    new RbAction1Arg<LocalPlayer>(city.copySchool, player, RbSoundType.Copy),
+                    new RbAction1Arg<LocalPlayer>(city.pasteSchool, player, RbSoundType.Paste));
             }
             else
             {
 
-                content.h2(DssRef.lang.SchoolHud_SelectSchool).overrideColor = HudLib.TitleColor_Action;
+                //content.h2(DssRef.lang.SchoolHud_SelectSchool).overrideColor = HudLib.TitleColor_Action;
                 if (city.schoolBuildings.Count == 0)
                 {
                     //EMPTY
@@ -112,6 +120,23 @@ namespace VikingEngine.DSSWars.XP
                 }
                 else
                 {
+                    content.h2(DssRef.lang.GeneralSetting_SetAll, HudLib.TitleColor_Action);
+                    HudLib.Label(content, DssRef.lang.Hud_ProductionQueue); content.space();
+                    que.listToHud(player, content, queueToAll, false);
+
+                    content.newLine();
+                    player.gameControls.input.Paste.ToRichContent(content);
+                    content.hspace();
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                            new RbImage(SpriteName.WarsHudIconPaste, HudLib.WarHudIcons_DefaultScale),
+                            new RbSpace(),
+                            new RbText(DssRef.lang.Hud_Paste)
+                        },
+                        new RbAction1Arg<LocalPlayer>(city.pasteSchoolToAll, player, RbSoundType.Paste)));
+
+                    content.Add(new RbSeperationLine());
+                    content.h2(DssRef.lang.SchoolHud_SelectSchool, HudLib.TitleColor_Action);
+
                     for (int i = 0; i < city.schoolBuildings.Count; ++i)
                     {
                         content.newLine();
@@ -119,15 +144,38 @@ namespace VikingEngine.DSSWars.XP
                         SchoolStatus currentProfile = city.schoolBuildings[i];
                         LangLib.ExperienceType(currentProfile.learnExperience, out string text, out SpriteName icon);
                         var caption = new RbText(text);
-                        caption.overrideColor = HudLib.TitleColor_Name;
+                        caption.overrideColor = HudLib.TitleColor_Label_Dark;
 
-                        content.Add(new RbButton(new List<AbsRichBoxMember>(){
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>(){
                         new RbImage(icon),
                         new RbSpace(),
                         caption,
-                        }, new RbAction1Arg<int>(selectClick, i, SoundLib.menu)));
+                        new RbNewLine(),
+                         new RbText(currentProfile.shortActiveString(city), HudLib.InfoYellow_Dark),
+                        }, new RbAction1Arg<int>(selectClick, i, RbSoundType.Default)));
 
                     }
+                }
+            }
+        }
+
+        void queueToAll(int count)
+        {
+            lock (city.schoolBuildings)
+            {
+                for (int i = 0; i < city.schoolBuildings.Count; ++i)
+                {
+                    var status = city.schoolBuildings[i];
+                    if (count == 1)
+                    {
+                        status.que++;
+                    }
+                    else
+                    {
+                        status.que = count;
+                    }
+                    city.schoolBuildings[i] = status;
                 }
             }
         }
@@ -167,7 +215,7 @@ namespace VikingEngine.DSSWars.XP
             
             content.newLine();
 
-            HudLib.Experience(content, exp, city.GetTopSkill(exp));
+            HudLib.Experience(content, exp, city.cityExperienceLevels.Get(exp).Max());
             //LangLib.ExperienceType(exp, out string expName, out SpriteName expIcon);
             //content.Add(new RichBoxImage(expIcon));
             //content.space();

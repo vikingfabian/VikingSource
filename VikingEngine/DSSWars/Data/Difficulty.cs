@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
+using VikingEngine.DataStream;
+using VikingEngine.DSSWars.Event;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
@@ -15,16 +17,24 @@ namespace VikingEngine.DSSWars.Data
 {
     class Difficulty
     {
+        public static readonly IntervalF FoodMultiBound = new IntervalF(0.5f, 10f);
+        public static readonly IntervalF WaterMultiBound = new IntervalF(0.2f, 10f);
+        public static readonly IntervalF ChildMultiBound = new IntervalF(0.2f, 10f);
+        public static readonly IntervalF CraftMultiBound = new IntervalF(0.1f, 4f);
+        public static readonly Range TechMultiBound = new Range(1, 10);
+
         public const int DefaultOption = 2;
 
         int difficulty = DefaultOption;
 
-        static readonly int[] options = new int[] { 25, 50, 75, 100, 125, 150, 175, 200 };
-        public static readonly int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150 };
+        static readonly int[] options = new int[] { 25, 50, 75, 100, 125, 150, 175, 200, 300 };
+        public static readonly int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150, 300 };
+        public static readonly GameModeMainType[] AvailableModes = [GameModeMainType.FullStory, GameModeMainType.QuickMatch, GameModeMainType.Sandbox, GameModeMainType.Peaceful, GameModeMainType.Spectator];
 
         public AiAggressivity aiAggressivity = AiAggressivity.Medium;
         public BossSize bossSize = BossSize.Medium;
-        public BossTimeSettings bossTimeSettings = BossTimeSettings.Normal;
+        
+        //public BossTimeSettings bossTimeSettings = BossTimeSettings.Normal;
         
         public int aiEconomyLevel = 1;
         public double aiEconomyMultiplier = 1.0;
@@ -38,20 +48,50 @@ namespace VikingEngine.DSSWars.Data
 
         public bool setting_allowPauseCommand = true;
         public float setting_foodMulti = 1;
-        public const GameMode DefaultMode = GameMode.FullStory;
-        public GameMode setting_gameMode = DefaultMode;
-        public bool runEvents = true;
+        public float setting_waterMulti = 1;
+        public float setting_childMulti = 1;
+        public float setting_craftMulti = 1;
+        public int setting_techMulti = 1;
+
+        public int setting_techMulti_QuickMatch = 2;
+        public int setting_QuickMatch_PlayerCount = 4;
+        public bool setting_QuickMatch_TwoTeams = false;
+
+
+        public int TechMultiProperty(bool set, int value)
+        {
+            if (set)
+            {
+                if (setting_gameMode == GameModeMainType.QuickMatch)
+                {
+                    setting_techMulti_QuickMatch = value;
+                }
+                else
+                { 
+                    setting_techMulti = value;
+                }
+
+            }
+            return setting_gameMode == GameModeMainType.QuickMatch ? setting_techMulti_QuickMatch : setting_techMulti;
+        }
+
+        public const GameModeMainType DefaultMode = GameModeMainType.FullStory;
+        public GameModeMainType setting_gameMode = DefaultMode;
+        public bool runStory = true;
         public bool peaceful = false;
+        public bool extremeAggression = false;
         //public bool toPeacefulCheck = true;
 
         public int MercenaryPurchaseCost_Start;
         public int MercenaryPurchaseCost_Add;
-        public float toPeacefulPercentage=0;
+        public float toPeacefulPercentage = 0;
 
         public double resourceMultiplyChance = 0;
         public bool resourceMultiplyDecrease;
         public int FoodEnergySett;
         public int PlayerBonusGold = 0;
+
+        
 
         public Difficulty(int difficulty = DefaultOption)
         {
@@ -69,9 +109,9 @@ namespace VikingEngine.DSSWars.Data
                 new GuiTextButton(options[i].ToString() + "%",
                     string.Format( DssRef.lang.DifficultyDescription_AiAggression, TextLib.IndexDivition((int)difficultyLvl.aiAggressivity, (int)AiAggressivity.NUM)) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_BossSize,TextLib.IndexDivition((int)difficultyLvl.bossSize, (int)BossSize.NUM)) + Environment.NewLine +
-                    string.Format(DssRef.lang.DifficultyDescription_BossEnterTime, TextLib.IndexDivition((int)difficultyLvl.bossTimeSettings, (int)BossTimeSettings.NUM)) + Environment.NewLine +
+                    //string.Format(DssRef.lang.DifficultyDescription_BossEnterTime, TextLib.IndexDivition((int)difficultyLvl.bossTimeSettings, (int)BossTimeSettings.NUM)) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_AiEconomy, AiEconomyLevel[difficultyLvl.aiEconomyLevel].ToString()) + Environment.NewLine +
-                    string.Format(DssRef.lang.DifficultyDescription_AiDelay, TimeSpan.FromSeconds(difficultyLvl.aiDelayTimeSec).ToString()) + Environment.NewLine +
+                    //string.Format(DssRef.lang.DifficultyDescription_AiDelay, TimeSpan.FromSeconds(difficultyLvl.aiDelayTimeSec).ToString()) + Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_DiplomacyDifficulty, TextLib.IndexDivition(difficultyLvl.diplomacyDifficulty, DiplomacyDifficultyCount)) + Environment.NewLine +
                     //string.Format(DssRef.lang.DifficultyDescription_MercenaryCost, difficulty.MercenaryPurchaseCost_Start.ToString() )+ Environment.NewLine +
                     string.Format(DssRef.lang.DifficultyDescription_HonorGuards, difficultyLvl.honorGuard? Ref.langOpt.Hud_Yes : Ref.langOpt.Hud_No),
@@ -79,6 +119,11 @@ namespace VikingEngine.DSSWars.Data
                     new GuiAction1Arg<int>(difficultyOptionsLink, i),
                     false, layout);
             }
+        }
+
+        public bool GodPowers()
+        { 
+            return setting_gameMode == GameModeMainType.Spectator;
         }
 
         public static void OptionsRb(RichBoxContent content, RichMenu menu, Action<int> callback)
@@ -89,11 +134,62 @@ namespace VikingEngine.DSSWars.Data
                 Difficulty difficultyLvl = new Difficulty(i);
                 content.newLine();
                 mapSzOptions.AddOption(options[i].ToString() + "%", DssRef.difficulty.difficulty == i, DefaultOption == i,
-                    new RbAction1Arg<int>(callback, i), null);
+                    new RbAction1Arg<int>(callback, i), new RbTooltip(difficultyToolTip, i));
                 //content.Add(new ArtOption(DssRef.difficulty.difficulty == i, new List<AbsRichBoxMember> { new RbText(options[i].ToString() + "%") }, null));
             }
             mapSzOptions.DropDown(content, SpriteName.NO_IMAGE, string.Format(DssRef.lang.Settings_DifficultyLevel, DssRef.difficulty.PercDifficulty), menu.OnDropDownClick, menu.activeDropDown);
         }
+
+        static void difficultyToolTip(RichBoxContent content, object tag)
+        {
+            Difficulty difficultyLvl = new Difficulty((int)tag);
+            content.h2(string.Format(DssRef.lang.Settings_DifficultyLevel, difficultyLvl.PercDifficulty), HudLib.TitleColor_Head);
+
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(SpriteName.WarsBattleIcon));
+                content.hspace();
+                content.Add(new RbText(string.Format(DssRef.lang.DifficultyDescription_AiAggression, TextLib.IndexDivition((int)difficultyLvl.aiAggressivity, (int)AiAggressivity.NUM))));
+            }
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(SpriteName.WarsDarkLordBossIcon));
+                content.hspace();
+                content.Add(new RbText(string.Format(DssRef.lang.DifficultyDescription_BossSize, TextLib.IndexDivition((int)difficultyLvl.bossSize, (int)BossSize.NUM))));
+            }
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(SpriteName.rtsIncome));
+                content.hspace();
+                content.Add(new RbText(string.Format(DssRef.lang.DifficultyDescription_AiEconomy, AiEconomyLevel[difficultyLvl.aiEconomyLevel].ToString())));
+            }
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
+                content.hspace();
+                content.Add(new RbText(string.Format(DssRef.lang.DifficultyDescription_DiplomacyDifficulty, TextLib.IndexDivition(difficultyLvl.diplomacyDifficulty, DiplomacyDifficultyCount))));
+            }
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(SpriteName.WarsUnitIcon_Honorguard));
+                content.hspace();
+                content.Add(new RbText(string.Format(DssRef.lang.DifficultyDescription_HonorGuards, difficultyLvl.honorGuard ? Ref.langOpt.Hud_Yes : Ref.langOpt.Hud_No)));
+            }
+            if (difficultyLvl.extremeAggression)
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(SpriteName.WarsRelationTotalWar));
+                content.hspace();
+                content.Add(new RbText(DssRef.lang.DifficultyDescription_ExtremeAggression));
+            }
+        }
+
         public void set(int difficulty)
         {
             this.difficulty = difficulty;
@@ -107,16 +203,16 @@ namespace VikingEngine.DSSWars.Data
             {
                 result *= 1.25;
             }
-            if (!DssRef.storage.centralGold)
+            if (!DssRef.storage.gameRuleset.centralGold)
             {
                 result *= 1.5;
             }
             switch (setting_gameMode)
             {
-                case GameMode.Sandbox:
+                case GameModeMainType.Sandbox:
                     result *= 0.75;
                     break;
-                case GameMode.Peaceful:
+                case GameModeMainType.Peaceful:
                     result *= 0.25;
                     break;
             }
@@ -124,18 +220,31 @@ namespace VikingEngine.DSSWars.Data
             return Convert.ToInt32(result);
         }
 
+        public bool AllyCountCost()
+        {
+            return diplomacyDifficulty > 0;
+        }
+        public bool UseTruceFailure(out float failChance)
+        {
+            if (diplomacyDifficulty > 0)
+            {
+                failChance = 0.15f + 0.05f * diplomacyDifficulty;
+                return true;
+            }
+            failChance = 0;
+            return false;
+        }
+
         public void refreshSettings()
         {
             FoodEnergySett = Convert.ToInt32(DssConst.FoodEnergy * setting_foodMulti);
-
-            
 
             switch (difficulty)
             {
                 case 0:
                     aiAggressivity = AiAggressivity.Low;
                     bossSize = BossSize.Small;
-                    bossTimeSettings = BossTimeSettings.VeryLate;
+                    //bossTimeSettings = BossTimeSettings.VeryLate;
                     aiEconomyLevel = 0;
                     resourceMultiplyChance = 0.5;
                     resourceMultiplyDecrease = true;
@@ -143,15 +252,14 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = true;
                     resourcesStartHelp = true;
                     //toPeacefulCheck = false;
-                    aiDelayTimeSec = 30 * TimeExt.MinuteInSeconds;
-                    //toPeacefulPercentage = 0.01f;
+                    aiDelayTimeSec = 60 * TimeExt.MinuteInSeconds;
                     PlayerBonusGold = 6000;
                     break;
 
                 case 1:
                     aiAggressivity = AiAggressivity.Low;
                     bossSize = BossSize.Small;
-                    bossTimeSettings = BossTimeSettings.Late;
+                    //bossTimeSettings = BossTimeSettings.Late;
                     aiEconomyLevel = 1;
                     resourceMultiplyChance = 0.25;
                     resourceMultiplyDecrease = true;
@@ -159,15 +267,14 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = true;
                     resourcesStartHelp = true;
                     //toPeacefulCheck = false;
-                    aiDelayTimeSec = 15 * TimeExt.MinuteInSeconds;
-                    //toPeacefulPercentage = 0.05f;
+                    aiDelayTimeSec = 30 * TimeExt.MinuteInSeconds;
                     PlayerBonusGold = 4000;
                     break;
 
-                case 2:
+                case 2://defalut 75%
                     aiAggressivity = AiAggressivity.Low;
                     bossSize = BossSize.Medium;
-                    bossTimeSettings = BossTimeSettings.Late;
+                    //bossTimeSettings = BossTimeSettings.Late;
                     aiEconomyLevel = 1;
                     resourceMultiplyChance = 0.25;
                     resourceMultiplyDecrease = true;
@@ -175,64 +282,65 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = true;
                     resourcesStartHelp = true;
                     //toPeacefulCheck = true;
-                    aiDelayTimeSec = 8 * TimeExt.MinuteInSeconds;
-                    toPeacefulPercentage = 0.1f;
+                    aiDelayTimeSec = 20 * TimeExt.MinuteInSeconds;
+                    toPeacefulPercentage = 0.3f;
                     PlayerBonusGold = 2000;
                     break;
 
                 case 3: //Medium
                     aiAggressivity = AiAggressivity.Medium;
                     bossSize = BossSize.Medium;
-                    bossTimeSettings = BossTimeSettings.Normal;
+                    //bossTimeSettings = BossTimeSettings.Normal;
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = true;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 30;
-                    toPeacefulPercentage = 0.2f;
+                    toPeacefulPercentage = 0.75f;
                     break;
 
                 case 4:
                     aiAggressivity = AiAggressivity.Medium;
                     bossSize = BossSize.Medium;
-                    bossTimeSettings = BossTimeSettings.Normal;
+                    //bossTimeSettings = BossTimeSettings.Normal;
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = false;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 10;
-                    toPeacefulPercentage = 0.5f;
+                    toPeacefulPercentage = 1f;
                     break;
 
                 case 5:
                     aiAggressivity = AiAggressivity.Medium;
                     bossSize = BossSize.Large;
-                    bossTimeSettings = BossTimeSettings.Early;
+                    //bossTimeSettings = BossTimeSettings.Early;
                     aiEconomyLevel = 2;
                     diplomacyDifficulty = 1;
                     honorGuard = false;
+                    aiDelayTimeSec = 0;
                     //toPeacefulCheck = true;
-                    toPeacefulPercentage = 0.75f;
+                    toPeacefulPercentage = 1.5f;
                     break;
 
                 case 6:
                     aiAggressivity = AiAggressivity.High;
                     bossSize = BossSize.Huge;
-                    bossTimeSettings = BossTimeSettings.Early;
+                    //bossTimeSettings = BossTimeSettings.Early;
                     aiEconomyLevel = 3;
 
                     resourceMultiplyChance = 0.25;
                     resourceMultiplyDecrease = false;
                     diplomacyDifficulty = 2;
                     honorGuard = false;
+                    aiDelayTimeSec = 0;
                     //toPeacefulCheck = true;
-                    toPeacefulPercentage = 1.5f;
+                    toPeacefulPercentage = 1.75f;
                     break;
 
-                case 7: //Max
+                case 7: //200%
                     aiAggressivity = AiAggressivity.High;
                     bossSize = BossSize.Huge;
-                    bossTimeSettings = BossTimeSettings.Immediate;
                     aiEconomyLevel = 4;
 
 
@@ -240,8 +348,22 @@ namespace VikingEngine.DSSWars.Data
                     resourceMultiplyDecrease = false;
                     diplomacyDifficulty = 2;
                     honorGuard = false;
-                    //toPeacefulCheck = true;
-                    toPeacefulPercentage = 2f;
+                    aiDelayTimeSec = 0;
+                    toPeacefulPercentage = 3f;
+                    break;
+
+                case 8: // 300%
+                    aiAggressivity = AiAggressivity.High;
+                    bossSize = BossSize.Huge;
+                    aiEconomyLevel = 5;
+
+                    resourceMultiplyChance = 0.5;
+                    resourceMultiplyDecrease = false;
+                    diplomacyDifficulty = 2;
+                    honorGuard = false;
+                    aiDelayTimeSec = 0;
+                    toPeacefulPercentage = 10f;
+                    extremeAggression = true;
                     break;
             }
 
@@ -249,16 +371,22 @@ namespace VikingEngine.DSSWars.Data
 
             switch (setting_gameMode)
             {
-                case GameMode.FullStory:
-                    runEvents = true;
+                case GameModeMainType.FullStory:
+                    runStory = true;
                     peaceful = false;
                     break;
-                case GameMode.Sandbox:
-                    runEvents = false;
+                case GameModeMainType.QuickMatch:
+                    runStory = false;
+                    peaceful = false;
+                    toPeacefulPercentage = 0;
+                    break;
+                case GameModeMainType.Sandbox:
+                case GameModeMainType.Spectator:
+                    runStory = false;
                     peaceful = false;
                     break;
-                case GameMode.Peaceful:
-                    runEvents = false;
+                case GameModeMainType.Peaceful:
+                    runStory = false;
                     peaceful = true;
                     toPeacefulPercentage = 0;
                     //toPeacefulCheck = false;
@@ -277,7 +405,16 @@ namespace VikingEngine.DSSWars.Data
             //w.Write(boss);
             w.Write((byte)setting_gameMode);
             w.Write(setting_foodMulti);
+            w.Write(setting_waterMulti);
+            w.Write(setting_childMulti);
+            w.Write(setting_craftMulti);
+            w.Write(setting_techMulti);
+            w.Write(setting_techMulti_QuickMatch);
+            w.Write(setting_QuickMatch_PlayerCount);
+            w.Write(setting_QuickMatch_TwoTeams);
             w.Write(difficulty);
+
+            Debug.WriteCheck(w);
         }
 
         public void read(System.IO.BinaryReader r, int storageversion)
@@ -285,31 +422,75 @@ namespace VikingEngine.DSSWars.Data
             setting_allowPauseCommand = r.ReadBoolean();
             if (storageversion < 20)
             {
-                runEvents = r.ReadBoolean();
-                if (!runEvents)
+                runStory = r.ReadBoolean();
+                if (!runStory)
                 {
-                    setting_gameMode = GameMode.Sandbox;
+                    setting_gameMode = GameModeMainType.Sandbox;
                 }
             }
             else
             {
                 //NEW
-                setting_gameMode = (GameMode)r.ReadByte();
-                setting_foodMulti = r.ReadSingle();
+                setting_gameMode = (GameModeMainType)r.ReadByte();
+                setting_foodMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, FoodMultiBound);
+                if (storageversion >= 24)
+                {
+                    setting_waterMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, WaterMultiBound);
+                }
+                if (storageversion >= 25)
+                {
+                    setting_childMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, ChildMultiBound);
+                    setting_craftMulti = Bound.ResetOffBounds(r.ReadSingle(), 1, CraftMultiBound);
+                }
+                if (storageversion >= 33)
+                {
+                    setting_techMulti = Bound.ResetOffBounds(r.ReadInt32(), 1, TechMultiBound);
+                    setting_techMulti_QuickMatch = r.ReadInt32();
+                    setting_QuickMatch_PlayerCount = r.ReadInt32();
+                    setting_QuickMatch_TwoTeams = r.ReadBoolean();
+                }
             }
             difficulty = r.ReadInt32();
+            Bound.SetToArray(ref difficulty, options.Length);
+
+            if (storageversion >= 32)
+            {
+                Debug.ReadCheck(r);
+            }
 
             refreshSettings();
+        }
+
+        public Difficulty Clone()
+        {
+            Difficulty clone = new Difficulty();
+
+            MemoryStreamHandler memoryStream = new MemoryStreamHandler();
+            var w = memoryStream.GetWriter();
+            write(w);
+
+            var r = memoryStream.GetReader();
+            clone.read(r, int.MaxValue);
+
+            return clone;
+        }
+
+        public int QuickMatchPlayerStartSize()
+        {
+            int goalWorkForce = MathExt.MultiplyInt( DssConst.HeadCityStartMaxWorkForce, 2.5);
+            return goalWorkForce;
         }
 
     }
 
 
-    enum GameMode
+    enum GameModeMainType
     { 
         FullStory,
         Sandbox,
         Peaceful,
+        Spectator,
+        QuickMatch,
         NUM
     }
     //enum AiResourceMultiplyType

@@ -2,18 +2,21 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Build;
-using VikingEngine.DSSWars.Display.Translation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Map
 {
     struct SubTile
     {
+        public static readonly SubTile Empty = new SubTile() { mainTerrain = TerrainMainType.NUM };
+
         public Color color;
         public float groundY;
         //public FoilType foil = FoilType.None;
@@ -31,10 +34,24 @@ namespace VikingEngine.DSSWars.Map
         /// </summary>
         public int collectionPointer = -1;
 
+        public SubTile(TerrainMainType type, int subType)
+        {
+            this.mainTerrain = type;
+            this.subTerrain = subType;
+            terrainAmount = 1;
+        }
+
         public SubTile(TerrainMainType type, int subType, Color color, float groundY)
         {
+#if DEBUG
+            //if (color == ColorExt.Empty)
+            //{
+            //    throw new Exception("Empty col");
+            //}
+#endif
             this.color = color;
             this.groundY = groundY;
+
             this.mainTerrain = type;
             this.subTerrain = subType;
         }
@@ -114,7 +131,7 @@ namespace VikingEngine.DSSWars.Map
             }
 
             w.Write(groundY);
-            SaveLib.WriteColorStream_3B(w, color);
+            StreamLib.WriteColorStream_3B(w, color);
         }
 
         public void read(System.IO.BinaryReader r, ref SubTile previous, int version)
@@ -158,9 +175,25 @@ namespace VikingEngine.DSSWars.Map
             }
 
             groundY = r.ReadSingle();
-            color = SaveLib.ReadColorStream_3B(r);
+            color = StreamLib.ReadColorStream_3B(r);
+#if DEBUG
+            //if (color == ColorExt.Empty)
+            //{
+            //    throw new Exception("Empty col");
+            //}
+#endif
         }
 
+        public bool EqualTerrain(SubTile other)
+        {
+            return mainTerrain == other.mainTerrain &&
+                subTerrain == other.subTerrain;
+        }
+        public bool EqualTerrain(TerrainMainType main, int sub)
+        {
+            return mainTerrain == main &&
+                subTerrain == sub;
+        }
         public bool EqualSaveData(ref SubTile other)
         {
             return  terrainAmount == other.terrainAmount && 
@@ -177,6 +210,13 @@ namespace VikingEngine.DSSWars.Map
             this.subTerrain = other.subTerrain;
             this.groundY = other.groundY;
             this.color = other.color;
+
+#if DEBUG
+            //if (color == ColorExt.Empty)
+            //{
+            //    throw new Exception("Empty col");
+            //}
+#endif
         }
 
         public bool MayBuild(BuildAndExpandType build, out bool upgrade)
@@ -203,6 +243,8 @@ namespace VikingEngine.DSSWars.Map
                             upgrade = true;
                             return build == BuildAndExpandType.RecruitmentLevel3;
                     }
+
+                case TerrainMainType.Mine:
                 case TerrainMainType.DefaultSea:
                     return false;
 
@@ -225,10 +267,11 @@ namespace VikingEngine.DSSWars.Map
                             upgrade = true;
                             return build == BuildAndExpandType.HempFarmUpgraded;
 
-                        case TerrainSubFoilType.WheatFarmUpgraded:
-                        case TerrainSubFoilType.LinenFarmUpgraded:
-                        case TerrainSubFoilType.RapeSeedFarmUpgraded:
-                        case TerrainSubFoilType.HempFarmUpgraded:
+                        //case TerrainSubFoilType.WheatFarmUpgraded:
+                        //case TerrainSubFoilType.LinenFarmUpgraded:
+                        //case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                        //case TerrainSubFoilType.HempFarmUpgraded:
+                        case TerrainSubFoilType.BogIron:
                             return false;
                         
                     }
@@ -273,7 +316,8 @@ namespace VikingEngine.DSSWars.Map
 
         public string TypeToString()
         {
-            return LangLib.TerrainName(mainTerrain, subTerrain);
+            IconName.Terrain(mainTerrain, subTerrain, out _, out string name);
+            return name;
         }
 
         public bool IsWater()

@@ -16,7 +16,7 @@ namespace VikingEngine.LootFest.GO.NPC
         {
             WorldPos = args.startWp;
             modelScale = Ref.rnd.Float(3.2f, 3.7f);
-            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.happy_npc_female,
+            image = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON,
                 modelScale, 0f, false);
             image.position = WorldPos.PositionV3;
 
@@ -83,7 +83,7 @@ namespace VikingEngine.LootFest.GO.NPC
 
         public BabyChild(HappyNpc parentParent, float parentModelScale)
         {
-            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.baby, 
+            model = LfRef.modelLoad.AutoLoadModelInstance(VoxelModelName.NUM_NON, 
                 parentModelScale * 0.5f, 0, false);
 
             posOffset = new Vector3(0, 0.2f, 0.2f) * parentModelScale;

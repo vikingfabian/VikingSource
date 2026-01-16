@@ -14,75 +14,32 @@ namespace VikingEngine.DSSWars.GameObject
     class AllUnits
     {
         public static float AverageGroupStrength;
-        public const float HealthToStrengthConvertion = 0.5f;
+        public const float HealthToStrengthConvertion = 0.36f;
 
-        AbsSoldierProfile[] profiles = new AbsSoldierProfile[(int)UnitType.NUM];
-        public CityDetailProfile city;
-        public BannerManProfile bannerman;
+        AbsSoldierBuilder[] profiles = new AbsSoldierBuilder[(int)UnitType.NUM];
+        //public CityDetailProfile city;
+        public BannerManBuilder bannerman;
 
         public AllUnits()
         {
-            DssRef.profile = this;
+            DssRef.units = this;
 
-            city = new CityDetailProfile();
-            bannerman = new BannerManProfile();
+            //city = new CityDetailProfile();
+            bannerman = new BannerManBuilder();
 
             add(bannerman);
 
-            add(new ConscriptedSoldierProfile());
+            add(new ConscriptedSoldierBuilder());
             add(new ConscriptedWarshipData());
 
-            add(new WarmashineProfile());
-            add(new CavalryProfile());
+            add(new WarmachineProfile());
+            add(new CavalryBuilder());
 
-            add(new DarkLordProfile());
-            add(new DarkLordWarshipData());
+            //add(new DarkLordBuilder());
+            //add(new DarkLordWarshipData());
 
-            add(new CityGuardSoldierProfile());
-            //add(new FolkWarshipData(UnitType.FolkWarship, 
-            //    add(new FolkManData())));
-
-            //add(new SoldierWarshipData(UnitType.SoldierWarship,
-            //    add(new SoldierData())));
-
-            //add(new SoldierWarshipData(UnitType.HonorGuardWarship,
-            //    add(new HonorGuardData())));
-
-            //add(new VikingWarshipData(UnitType.SailorWarship, 
-            //    add(new SailorData())));
-
-            //add(new KnightWarshipData(UnitType.KnightWarship,
-            //    add(new KnightData())));
-
-            //add(new ArcherWarshipData(UnitType.ArcherWarship,
-            //    add(new ArcherData())));
-
-            //add(new BallistaWarshipData(UnitType.BallistaWarship,
-            //    add(new BallistaData())));
-
-            //add(new BannerManData());
-
-            //add(new SoldierWarshipData(UnitType.PikemanWarship,
-            //    add(new Pikeman())));
-
-            //add(new ArcherWarshipData(UnitType.CrossbowWarship,
-            //    add(new CrossBow())));
-
-            //add(new BallistaWarshipData(UnitType.TrollcannonWarship,
-            //    add(new TrollCannon())));
-
-            //add(new KnightWarshipData(UnitType.GreenWarship,
-            //    add(new GreenSoldier())));
-
-            //add(new VikingWarshipData(UnitType.VikingWarship,
-            //    add(new Viking())));
-
-            //add(new DarkLordWarshipData(UnitType.DarkLordWarship,
-            //    add(new DarkLordData())));
-
-            //var recruit = recruits[(int)UnitType.Soldier];
-            //add(new FolkWarshipData(UnitType.RecruitWarship,
-            //    recruit));
+            add(new CityGuardSoldierBuilder());
+           
 
             int defaultAttackDamage = DssConst.WeaponDamage_Sword;
             int defaultDps = DPS(defaultAttackDamage, DssConst.Soldier_StandardAttackAndCoolDownTime);//Convert.ToInt32(defaultAttackDamage / (DssConst.Soldier_StandardAttackAndCoolDownTime / 1000.0));
@@ -90,6 +47,12 @@ namespace VikingEngine.DSSWars.GameObject
             AverageGroupStrength = GroupStrengh_Raw(DssConst.SoldierGroup_DefaultCount, defaultDps, DssConst.Soldier_DefaultHealth);//DssConst.SoldierGroup_DefaultCount * (defaultDps + HealthToStrengthConvertion * DssConst.Soldier_DefaultHealth) ;
             
         }
+
+        public bool IsShip(UnitType type)
+        {
+            return profiles[(int)type].IsShip();
+        }
+
         static int DPS(int damage, float attackAndCoolDownTime)
         {
             return Convert.ToInt32(damage / (attackAndCoolDownTime / 1000.0));
@@ -101,7 +64,19 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static float GroupStrengh(int soldierCount, ref SoldierData data, bool land)
         {
+            //int damage;
+            //if (land)
+            //{ 
+            
+            //}
+            //else
+            //{
+            //    crewCount = MathExt.Div_Ceiling(this.health, data.basehealth);
+
+            //}
+
             var raw = GroupStrengh_Raw(soldierCount, DPS(land? data.attackDamage : data.attackDamageSea, data.attackTimePlusCoolDown), data.basehealth);
+            
             return raw / AverageGroupStrength;
         }
 
@@ -177,16 +152,12 @@ namespace VikingEngine.DSSWars.GameObject
             };
         }
 
-        AbsSoldierProfile add(AbsSoldierProfile soldier)
+        void add(AbsSoldierBuilder builder)
         {
-            profiles[(int)soldier.unitType] = soldier;
-
-            //recruits[(int)soldier.unitType] = new RecruitData(soldier);
-
-            return soldier;
+            profiles[(int)builder.unitType] = builder;
         }
 
-        public AbsSoldierProfile Get(UnitType type)
+        public AbsSoldierBuilder Get(UnitType type)
         {
             return profiles[(int)type];
         }
@@ -195,6 +166,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             switch (filterType)
             {
+                case UnitFilterType.Settler:
+                    return SpriteName.WarsSettler;
                 case UnitFilterType.SharpStick:
                     return SpriteName.WarsUnitIcon_Folkman;
 
@@ -220,9 +193,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case UnitFilterType.MithrilBow:
                     return SpriteName.WarsUnitIcon_MithrilArcher;
 
-                case UnitFilterType.Slingshot:
-                    return SpriteName.WarsUnitIcon_Slingshot;
-                case UnitFilterType.Throwingspear:
+                case UnitFilterType.Skirmisher:
                     return SpriteName.WarsUnitIcon_Javelin;
                 case UnitFilterType.Bow:
                     return SpriteName.WarsUnitIcon_Archer;
@@ -265,134 +236,12 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        //public AbsSoldierUnit createSoldier(UnitType type, bool recruit)
-        //{
-        //    AbsSoldierProfile data;
-        //    if (recruit)
-        //    {
-        //        data = recruits[(int)type];
-        //    }
-        //    else
-        //    {
-        //        data = soldiers[(int)type];
-        //    }
-        //    var soldier = data.CreateUnit() as AbsSoldierUnit;//TODO borde ta bort konvertering
-        //    soldier.data = data;
-
-        //    return soldier;
-        //}
-
-        //public AbsSoldierUnit createSoldier(AbsSoldierProfile data)
-        //{
-        //    //AbsSoldierData data;
-        //    //if (recruit)
-        //    //{
-        //    //    data = recruits[(int)type];
-        //    //}
-        //    //else
-        //    //{
-        //    //    data = soldiers[(int)type];
-        //    //}
-        //    var soldier = data.CreateUnit() as AbsSoldierUnit;//TODO borde ta bort konvertering
-        //    soldier.soldierData = data;
-
-        //    return soldier;
-        //}
-
-        //public string Name(UnitType type)
-        //{
-        //    switch (type)
-        //    {
-        //        case UnitType.Recruit:
-        //            return DssRef.lang.UnitType_Recruit;
-
-        //        case UnitType.Soldier:
-        //            return DssRef.lang.UnitType_Soldier;
-
-        //        case UnitType.Sailor:
-        //            return DssRef.lang.UnitType_Sailor;
-
-        //        case UnitType.Folkman:
-        //            return DssRef.lang.UnitType_Folkman;
-
-        //        case UnitType.Spearman:
-        //            return DssRef.lang.UnitType_Spearman;
-
-        //        case UnitType.HonorGuard:
-        //            return DssRef.lang.UnitType_HonorGuard;
-
-        //        case UnitType.Pikeman:
-        //            return DssRef.lang.UnitType_Pikeman;
-
-        //        case UnitType.Knight:
-        //            return DssRef.lang.UnitType_Knight;
-
-        //        case UnitType.Archer:
-        //            return DssRef.lang.UnitType_Archer;
-
-        //        case UnitType.CrossBow:
-        //            return DssRef.lang.UnitType_Crossbow;
-
-        //        case UnitType.Ballista:
-        //            return DssRef.lang.UnitType_Ballista;
-
-        //        case UnitType.Trollcannon:
-        //            return DssRef.lang.UnitType_Trollcannon;
-
-        //        case UnitType.GreenSoldier:
-        //            return DssRef.lang.UnitType_GreenSoldier;
-
-        //        case UnitType.Viking:
-        //            return DssRef.lang.UnitType_Viking;
-
-        //        case UnitType.DarkLord:
-        //            return DssRef.lang.UnitType_DarkLord;
-
-        //        case UnitType.BannerMan:
-        //            return DssRef.lang.UnitType_Bannerman;
-
-        //        // Warship cases
-        //        case UnitType.SoldierWarship:
-        //            return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Soldier);
-
-        //        case UnitType.SailorWarship:
-        //            return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Sailor);
-
-        //        case UnitType.HonorGuardWarship:
-        //            return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_HonorGuard);
-
-        //        case UnitType.PikemanWarship:
-        //            return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Pikeman);
-
-        //        case UnitType.KnightWarship:
-        //            return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Knight);
-
-        //        case UnitType.ArcherWarship:
-        //            return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Archer);
-
-        //        case UnitType.CrossbowWarship:
-        //            return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Crossbow);
-
-        //        case UnitType.BallistaWarship:
-        //            return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Ballista);
-
-        //        case UnitType.TrollcannonWarship:
-        //            return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Trollcannon);
-
-        //        case UnitType.VikingWarship:
-        //            return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_Viking);
-
-        //        case UnitType.DarkLordWarship:
-        //            return string.Format(DssRef.lang.UnitType_WarshipWithUnit, DssRef.lang.UnitType_DarkLord);
-
-        //        default:
-        //            return "???";
-        //    }
-        //}
+      
     }
 
     enum UnitFilterType
     { 
+        Settler,
         SharpStick,
         Sword,
         LongSword,
@@ -403,8 +252,7 @@ namespace VikingEngine.DSSWars.GameObject
         Knight,
         MithrilKnight,
 
-        Slingshot,
-        Throwingspear,
+        Skirmisher,
         Bow,
         CrossBow,
         MithrilBow,
@@ -439,7 +287,7 @@ namespace VikingEngine.DSSWars.GameObject
         ConscriptWarship = 1,
         BannerMan = 2,
         ConscriptCavalry = 3,
-        ConscriptWarmashine = 4,
+        ConscriptWarmachine = 4,
         DarkLordWarship = 5,
         DarkLord = 6,
 

@@ -9,8 +9,10 @@ using System.Data;
 
 namespace VikingEngine
 {
+    
     static class Debug
     {
+
         public static VikingEngine.DataStream.FilePath logFilePath;
         static OutputWindow OutputWindow = null;
 
@@ -18,6 +20,7 @@ namespace VikingEngine
         { 
             return float.IsNaN(value) || float.IsInfinity(value);
         }
+
         public static bool CorruptValue(Vector3 value)
         {
             return CorruptValue(value.X) || CorruptValue(value.Y) || CorruptValue(value.Z);
@@ -30,6 +33,14 @@ namespace VikingEngine
                 throw new DivideByZeroException();
             }
         }
+
+        //public static void CrashCorruptValue(int value)
+        //{
+        //    if (CorruptValue(value))
+        //    {
+        //        throw new DivideByZeroException();
+        //    }
+        //}
 
         public static void ToggleOutput()
         {
@@ -84,7 +95,7 @@ namespace VikingEngine
             viewOutput = true;
             OutputWindow = new OutputWindow();
         }
-        static CirkleCounterUp errorIndex = new CirkleCounterUp(0, 9);
+        static CircleCounterUp errorIndex = new CircleCounterUp(0, 9);
 
 
         //public static void LogThreadStart(System.Threading.Thread thread)
@@ -94,7 +105,9 @@ namespace VikingEngine
 
         public static void Log(string text)
         {
+#if DEBUG
             Log(DebugLogType.MSG, text);
+#endif
         }
         public static void LogWarning(string text)
         {

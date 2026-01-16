@@ -15,6 +15,7 @@ namespace VikingEngine
 
         public const float Tau = MathHelper.TwoPi;
         public const float TauOver2 = MathHelper.Pi;
+        public const float TauOver3 = MathHelper.TwoPi / 3f;
         public const float TauOver4 = MathHelper.PiOver2;
         public const float TauOver8 = MathHelper.PiOver4;
         public const float TauOver6 = MathHelper.Pi / 3f;
@@ -66,6 +67,18 @@ namespace VikingEngine
         public static int Pow(int value, double power)
         {
             return Convert.ToInt32(Math.Pow(value, power));
+        }
+
+        public static int NextPowerOfTen(int value)
+        {
+            if (value <= 0)
+                return 1;
+
+            int power = 1;
+            while (power <= value)
+                power *= 10;
+
+            return power;
         }
 
         /// <summary>

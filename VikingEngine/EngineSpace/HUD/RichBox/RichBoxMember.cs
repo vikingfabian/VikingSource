@@ -63,6 +63,8 @@ namespace VikingEngine.HUD.RichBox
         virtual public Vector2 Position => throw new NotImplementedException();
         virtual public Vector2 Center => throw new NotImplementedException();
         virtual public Vector2 Size => throw new NotImplementedException();
+
+        virtual public bool IsNewLine() { return false; }
     }
 
     class RbNewLine : AbsRichBoxMember
@@ -80,6 +82,8 @@ namespace VikingEngine.HUD.RichBox
         {
             group.newLine(newParagraph, lineheight);
         }
+
+        override public bool IsNewLine() { return true; }
     }
 
     class RbNewLine_AtHeight : AbsRichBoxMember
@@ -113,7 +117,7 @@ namespace VikingEngine.HUD.RichBox
 
     class RbText : AbsRichBoxMember
     {
-        string text;
+        public string text;
         public Text2 pointer;
         public Color? overrideColor;
         public LoadedFont? overrideFont;
@@ -247,10 +251,11 @@ namespace VikingEngine.HUD.RichBox
         public Color? color;
         public Image pointer;
 
-        public RbImage(SpriteName sprite, float scale = 1f, float addLeftSpace = 0, float addRightSpace = 0)
+        public RbImage(SpriteName sprite, float scale = 1f, Color? color = null, float addLeftSpace = 0, float addRightSpace = 0)
             : base(scale, addLeftSpace, addRightSpace)
         {
             this.sprite = sprite;
+            this.color = color;
         }
 
         override protected Image createImg(RichBoxGroup group, Vector2 center, Vector2 sz)
@@ -390,13 +395,21 @@ namespace VikingEngine.HUD.RichBox
 
     class RbTexture : AbsRichBoxImage
     {
-        Texture2D tex;
+        protected Texture2D tex;
         public ImageAdvanced pointer;
 
         public RbTexture(Texture2D tex, float scale = 1f, float addLeftSpace = 0, float addRightSpace = 0)
             : base(scale, addLeftSpace, addRightSpace)
         {
             this.tex = tex;
+        }
+
+        public override void Create(RichBoxGroup group)
+        {
+            if (tex != null)
+            {
+                base.Create(group);
+            }
         }
 
         override protected Image createImg(RichBoxGroup group, Vector2 center, Vector2 sz)
@@ -473,8 +486,18 @@ namespace VikingEngine.HUD.RichBox
     class RbSeperationLine : AbsRichBoxMember
     {
         public Image pointer;
+        float opacity;
+        Color color;
+
+        public RbSeperationLine(Color color, float opacity)
+        {
+            this.color = color;
+            this.opacity = opacity;            
+        }
         public RbSeperationLine()
-        { }
+            :this(Color.White, 0.3f)
+        { 
+        }
 
         public override void Create(RichBoxGroup group)
         {
@@ -482,7 +505,7 @@ namespace VikingEngine.HUD.RichBox
 
             pointer = new Image(SpriteName.WhiteArea, pos,
                 new Vector2(group.boxWidth, 2), group.layer, false, group.addToRender);
-            pointer.Opacity = 0.3f;
+            pointer.ColorAndAlpha(color, opacity);
             group.Add(pointer);
         }
 

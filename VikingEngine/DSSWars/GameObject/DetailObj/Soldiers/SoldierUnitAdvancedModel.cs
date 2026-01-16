@@ -9,7 +9,6 @@ namespace VikingEngine.DSSWars.GameObject
     class DetailUnitModel : IDeleteable
     {
         public Graphics.AbsVoxelObj model;
-        //public Physics.AbsBound2D bound;
 
         virtual public void DeleteMe()
         {
@@ -55,9 +54,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             model.position = soldier.position;
 
-            shadowPlane.Position = model.position + shadowOffset;
-            shadowPlane.Rotation = model.Rotation;
-
+            if (shadowPlane != null)
+            {
+                shadowPlane.Position = model.position + shadowOffset;
+                shadowPlane.Rotation = model.Rotation;
+            }
 
             selectionArea.Center = soldier.posXZ();//bound.Center;
             selectionArea.Center.Y -= 0.5f;
@@ -70,20 +71,35 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (soldier.soldierData.factionColoredModel)
             {
-                model = soldier.group.army.faction.AutoLoadModelInstance(
-                    soldier.soldierData.RandomModelName(), soldier.soldierData.modelScale, true);
+                var faction = soldier.GetFaction_NoChecks();
+
+                if (soldier.soldierData.modelData.modelType == ModelType.Soldier)
+                {
+                    model = faction.AutoLoadModelInstance_character(
+                        soldier.soldierData.modelData, soldier.soldierData.modelScale * faction.player.profile.character.soldierScale);
+                }
+                else
+                {
+                    model = faction.AutoLoadModelInstance_batched(
+                        soldier.soldierData.RandomModelName(), soldier.soldierData.modelScale);
+                }
             }
             else
             {
-                model = DssRef.models.ModelInstance(soldier.soldierData.modelName, true, soldier.soldierData.modelScale);
+                model = DssRef.models.ModelInstance_drawbatch(soldier.soldierData.modelName, soldier.soldierData.modelScale);
             }
             model.position = soldier.position;
 
-            shadowPlane = new Graphics.Mesh(LoadedMesh.plane, soldier.position,
-                 soldier.soldierData.ShadowModelScale(), Graphics.TextureEffectType.Flat,
-                 SpriteName.LittleUnitShadow, Color.Black);
+            if (!Ref.gamesett.modelShadow)
+            {
+                shadowPlane = new Graphics.Mesh(LoadedMesh.plane, soldier.position,
+                     soldier.soldierData.ShadowModelScale(), Graphics.TextureEffectType.Flat,
+                     SpriteName.LittleUnitShadow, Color.Black);
+                shadowPlane.Opacity = 0.5f;
+            }
 
-            shadowPlane.Opacity = 0.5f;
+
+            
 
             
             selectionArea = new Circle(Vector2.Zero, 1.2f);
@@ -92,7 +108,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         override public void DeleteMe()
         {
-            base.DeleteMe();
+            //base.DeleteMe();
+            model?.preRemoveFromDrawBatch();
             shadowPlane?.DeleteMe();
         }
     }
@@ -138,7 +155,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 WP.Rotation1DToQuaterion(model, soldier.rotation.Radians + jiggleAdd);
 
-                if (Ref.TimePassed16ms && Ref.peRnd.Chance(0.5))
+
+                if (/*Ref.TimePassed16ms && */Ref.peRnd.Chance(0.5 / Ref.UpdateTimes60FPS))
                 {
                     Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, Ref.peRnd.Vector3_SqXZ( soldier.position, 0.02f));
                     //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, soldier.position);

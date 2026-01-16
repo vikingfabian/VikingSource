@@ -14,11 +14,7 @@ namespace VikingEngine.Input
         public const float ButtonHoldTimeMs = 500;
         public static void Init(MainGame main)
         {
-            if (PlatformSettings.RunningWindows)
-            {
-                Mouse.Init(main);
-                //SharpDXInput.Initialize();
-            }
+            
 
             XInput.Init();
         }

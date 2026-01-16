@@ -13,7 +13,7 @@ namespace VikingEngine.Graphics
         public DssDamage()
             : base()
         { }
-
+        
         protected override void InitializeSettings(ParticleSettings settings)
         {
             //settings.Texture = LoadedTexture.pwater;

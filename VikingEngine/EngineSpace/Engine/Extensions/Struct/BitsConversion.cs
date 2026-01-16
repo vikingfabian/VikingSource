@@ -134,19 +134,27 @@ namespace VikingEngine
         
         public byte bitArray;
 
-        public EightBit(bool value1, bool value2)
-            : this(value1, value2, false, false, false, false, false, false)
-        { }
+        //public EightBit(bool value1, bool value2)
+        //    : this(value1, value2, false, false, false, false, false, false)
+        //{ }
 
-        public EightBit(bool value1, bool value2, bool value3)
-           : this(value1, value2, value3, false, false, false, false, false)
-        { }
+        //public EightBit(bool value1, bool value2, bool value3)
+        //   : this(value1, value2, value3, false, false, false, false, false)
+        //{ }
 
-        public EightBit(bool value1, bool value2, bool value3, bool value4)
-           : this(value1, value2, value3, value4, false, false, false, false)
-        { }
+        //public EightBit(bool value1, bool value2, bool value3, bool value4)
+        //   : this(value1, value2, value3, value4, false, false, false, false)
+        //{ }
 
-        public EightBit(bool value1, bool value2, bool value3, bool value4, bool value5, bool value6, bool value7, bool value8)
+        public EightBit(
+            bool value1, 
+            bool value2 = false,
+            bool value3 = false,
+            bool value4 = false,
+            bool value5 = false,
+            bool value6 = false,
+            bool value7 = false,
+            bool value8 = false)
         {
             bitArray = 0;
 
@@ -191,7 +199,29 @@ namespace VikingEngine
             value1 = Get(0);
             value2 = Get(1);
         }
+        public void Get(out bool value1, out bool value2,  out bool value3)
+        {
+            value1 = Get(0);
+            value2 = Get(1);
+            value3 = Get(2);
+        }
 
+        public void Get(out bool value1, out bool value2, out bool value3, out bool value4)
+        {
+            value1 = Get(0);
+            value2 = Get(1);
+            value3 = Get(2);
+            value4 = Get(3);
+        }
+
+        public void Get(out bool value1, out bool value2, out bool value3, out bool value4, out bool value5)
+        {
+            value1 = Get(0);
+            value2 = Get(1);
+            value3 = Get(2);
+            value4 = Get(3);
+            value5 = Get(4);
+        }
 
         public void Set(int index, bool value)
         {
@@ -202,6 +232,14 @@ namespace VikingEngine
             else
             {
                 bitArray &= (byte)~indexToBitValue[index];
+            }
+        }
+
+        public void Set_Safe(int index, bool value)
+        {
+            if (index >= 0 && index < indexToBitValue.Length)
+            {
+                Set(index, value);
             }
         }
 
@@ -272,10 +310,16 @@ namespace VikingEngine
         {
             bitArray = value;
         }
+       
         public TwoHalfByte(byte value1, byte value2)
         {
             bitArray = value1;
             Value2 = value2;
+        }
+        public TwoHalfByte(int value1, int value2)
+        {
+            bitArray = (byte)value1;
+            Value2 = (byte)value2;
         }
 
         public byte Value1
@@ -334,6 +378,17 @@ namespace VikingEngine
         public override string ToString()
         {
             return Value1.ToString() + ", " + Value2.ToString();
+        }
+    }
+
+    struct IntPair
+    {
+        public int key, value;
+
+        public IntPair(int key, int value)
+        {
+            this.key = key;
+            this.value = value;
         }
     }
 }

@@ -19,15 +19,10 @@ namespace VikingEngine.Graphics
                 settings.Texture = LoadedTexture.WhiteArea;
                 settings.MaxParticles = 3000;
 
-                settings.Duration = TimeSpan.FromSeconds(0.7f);
+                settings.Duration = TimeSpan.FromSeconds(0.9f);
                 settings.DurationRandomness = 1;
 
-                const float Speed = 2;
-                settings.MinHorizontalVelocity = -Speed;
-                settings.MaxHorizontalVelocity = Speed;
-
-                settings.MinVerticalVelocity = -Speed;
-                settings.MaxVerticalVelocity = Speed;
+               
 
                 settings.EndVelocity = 0;
 
@@ -40,10 +35,19 @@ namespace VikingEngine.Graphics
 
                 if (PlatformSettings.RunProgram == StartProgram.DSS)
                 {
-                    settings.MinColor = new Color(248, 255, 174);
-                    settings.MaxColor = new Color(252, 255, 217);
+                    settings.Gravity = new Vector3(0.0f, 0.05f, 0.0f);
 
-                    const float Size = 0.1f;
+                    const float Speed = 0.01f;
+                    settings.MinHorizontalVelocity = -Speed;
+                    settings.MaxHorizontalVelocity = Speed;
+
+                    settings.MinVerticalVelocity = -Speed;
+                    settings.MaxVerticalVelocity = Speed;
+
+                    settings.MinColor = new Color(255, 218, 65);
+                    settings.MaxColor = new Color(253, 228, 121);
+
+                    const float Size = 0.003f;
                     settings.MinStartSize = Size;
                     settings.MaxStartSize = Size;
 
@@ -52,6 +56,13 @@ namespace VikingEngine.Graphics
                 }
                 else
                 {
+                    const float Speed = 2;
+                    settings.MinHorizontalVelocity = -Speed;
+                    settings.MaxHorizontalVelocity = Speed;
+
+                    settings.MinVerticalVelocity = -Speed;
+                    settings.MaxVerticalVelocity = Speed;
+
                     settings.MinColor = Color.Orange;
                     settings.MaxColor = Color.Yellow;
 
