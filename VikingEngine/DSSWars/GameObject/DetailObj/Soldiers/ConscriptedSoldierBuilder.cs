@@ -14,7 +14,6 @@ namespace VikingEngine.DSSWars.GameObject
             unitType = UnitType.Conscript;
            
             boundRadius = DssVar.StandardBoundRadius;
-            //rotationSpeed = SoldierGroupStandardRotatingSpeed;
             targetSpotRange = StandardTargetSpotRange;
         }
     }

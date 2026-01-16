@@ -14,7 +14,12 @@ namespace VikingEngine.DSSWars
         static readonly int MaxModelName = (int)VoxelModelName.NUM_NON;
 
         public ArmorLevel armor;
-        public ItemResourceType weapon; //value range 0 - 150
+        public ItemResourceType manType;
+        public ItemResourceType weapon;
+        public ItemResourceType shield;
+        public bool riding;
+        //public ItemResourceType animal;
+        //public ArmorLevel animalArmor;
         public VisualExperience experience;
         public SpecializationType specialization;
         public int randomVariant; //max 3
@@ -22,8 +27,11 @@ namespace VikingEngine.DSSWars
         public ModelType modelType;
 
         public SoldierModelData(
-           ArmorLevel armor,
+           ItemResourceType manType,
            ItemResourceType weapon,
+           ItemResourceType shield,
+           ArmorLevel armor,
+           bool riding,
            SpecializationType specialization,
            VisualExperience experience,
            int randomVariant,
@@ -34,13 +42,19 @@ namespace VikingEngine.DSSWars
             this.experience = experience;
             this.randomVariant = randomVariant;
             this.profileVariant = profileVariant;
+            this.manType = manType;
+            this.shield = shield;
+            this.riding = riding;
+
         }
 
         public override int GetHashCode()
         {
             int result = HashCode.Combine(
+                manType,
                 armor,
                 weapon,
+                riding,
                 specialization,
                 experience,
                 randomVariant,

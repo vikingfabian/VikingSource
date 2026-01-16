@@ -40,6 +40,9 @@ namespace VikingEngine.DSSWars
 
         static readonly IntVector3 GridSize = new IntVector3(26, 48, 78);
         const int FrameCount = 7;
+        const int LegIdleFrame = 0;
+        const int LegRidingFrame = 1;
+
 
         //26*48*78
 
@@ -53,6 +56,7 @@ namespace VikingEngine.DSSWars
             int faceFrame = 0;
             int armorFrame = (int)modelData.armor;
             VoxelModelName shield = VoxelModelName.NUM_NON;
+            
 
             WeaponLeftArmType weaponLeftArmType = WeaponLeftArmType.None;
             WeaponRightArmType weaponRightArmType = WeaponRightArmType.Sword;
@@ -237,6 +241,9 @@ namespace VikingEngine.DSSWars
 
             }
 
+            //VoxelModelName leg = modelData.riding? VoxelModelName.modsoldier_leg1 : VoxelModelName.modsoldier_leg1;
+            
+
             IntVector3 legOffSet = new IntVector3(5, 0, 32);
             IntVector3 rArmOffSet = new IntVector3(4, 0, 30);
             IntVector3 lArmOffset = VectorExt.AddX(rArmOffSet, 9);
@@ -248,7 +255,7 @@ namespace VikingEngine.DSSWars
             var face = DssRef.models.rawModels[faceModel];
             
             var body = DssRef.models.rawModels[bodyModel];
-            var leg = DssRef.models.rawModels[VoxelModelName.modsoldier_leg1];
+            var legRawModel = DssRef.models.rawModels[VoxelModelName.modsoldier_leg1];
 
            
             var leftArm = DssRef.models.rawModels[armtheme.left];
@@ -258,14 +265,25 @@ namespace VikingEngine.DSSWars
             
             var profileColors = profile.flag.GetColorReplaceTable();
 
-            var legsIdle = leg.Frame(0).GetVoxelArray(legOffSet, profileColors, GridSize);
-            for (int frame = 0; frame < 2; frame++)
-            {                
-                grid.Frame(frame).AddVoxels(legsIdle);
-            }
-            for (int frame = 2; frame < FrameCount; frame++)
+            if (modelData.riding)
             {
-                grid.Frame(frame).AddVoxels(leg.Frame(frame).GetVoxelArray(legOffSet, profileColors, GridSize));
+                var legsRiding = legRawModel.Frame(LegRidingFrame).GetVoxelArray(legOffSet, profileColors, GridSize);
+                for (int frame = 0; frame < FrameCount; frame++)
+                {
+                    grid.Frame(frame).AddVoxels(legsRiding);
+                }
+            }
+            else
+            {
+                var legsIdle = legRawModel.Frame(LegIdleFrame).GetVoxelArray(legOffSet, profileColors, GridSize);
+                for (int frame = 0; frame < 2; frame++)
+                {
+                    grid.Frame(frame).AddVoxels(legsIdle);
+                }
+                for (int frame = 2; frame < FrameCount; frame++)
+                {
+                    grid.Frame(frame).AddVoxels(legRawModel.Frame(frame).GetVoxelArray(legOffSet, profileColors, GridSize));
+                }
             }
 
             var bodyVoxels = body.Frame(armorFrame).GetVoxelArray(new IntVector3(4, 0, 33), profileColors, GridSize);

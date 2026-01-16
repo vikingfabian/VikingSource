@@ -38,35 +38,45 @@ namespace VikingEngine.DSSWars.Conscript
 
         public UnitType unitType()
         {
+            if (conscript.vehicle != ItemResourceType.NONE)
+            {
+                return UnitType.ConscriptWagon;
+            }
+
+            if (conscript.animal != ItemResourceType.NONE &&
+                ItemPropertyColl.Get(conscript.weapon).Filter_IsRidingAnimal)
+            {
+                return UnitType.ConscriptCavalry;
+            }
+
             switch (conscript.specialization)
             {
                 default:
-                    
-                    switch (conscript.weapon)
-                    {
-                        case ItemResourceType.Ballista:
-                        case ItemResourceType.Manuballista:
-                        case ItemResourceType.Catapult:
-                        case ItemResourceType.UN_BatteringRam:
-                        case ItemResourceType.SiegeCannonBronze:
-                        case ItemResourceType.ManCannonBronze:
-                        case ItemResourceType.SiegeCannonIron:
-                        case ItemResourceType.ManCannonIron:
-                            return UnitType.ConscriptWarmachine;
-                        //case ItemResourceType.KnightsLance:
-                        //    return UnitType.ConscriptCavalry;
+                    return ItemPropertyColl.Get(conscript.weapon).Filter_IsSiegeWeapon ? UnitType.ConscriptWarmachine : UnitType.Conscript;
+                //switch (conscript.weapon)
+                //{
+                //    case ItemResourceType.Ballista:
+                //    case ItemResourceType.Manuballista:
+                //    case ItemResourceType.Catapult:
+                //    case ItemResourceType.UN_BatteringRam:
+                //    case ItemResourceType.SiegeCannonBronze:
+                //    case ItemResourceType.ManCannonBronze:
+                //    case ItemResourceType.SiegeCannonIron:
+                //    case ItemResourceType.ManCannonIron:
+                //        return UnitType.ConscriptWarmachine;
 
-                        default:
-                            return UnitType.Conscript;
-                    }
-                    
+                //    default:
+                //        return UnitType.Conscript;
+                //}
+
                 case SpecializationType.CityGuard:
                     return UnitType.CityGuard;
-                case SpecializationType.DarkLord:
-                    return UnitType.DarkLord;
+                    //case SpecializationType.DarkLord:
+                    //    return UnitType.DarkLord;
 
             }
-            
+
+                    
         }
 
         public UnitFilterType filterType()

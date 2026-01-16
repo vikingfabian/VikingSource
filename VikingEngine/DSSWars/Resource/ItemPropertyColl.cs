@@ -190,59 +190,59 @@ namespace VikingEngine.DSSWars.Resource
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HoundCage));
 
             // --- Horses ---
-            new ItemProperties(ItemResourceType.Pony, CityResoureIndex.Pony, DefaultWeight, Work.WorkPriorityType.SlaughterPony, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.Pony, CityResoureIndex.Pony, DefaultWeight, Work.WorkPriorityType.SlaughterPony, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PonyPen));
 
-            new ItemProperties(ItemResourceType.Horse, CityResoureIndex.Horse, DefaultWeight, Work.WorkPriorityType.SlaughterHorse, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.Horse, CityResoureIndex.Horse, DefaultWeight, Work.WorkPriorityType.SlaughterHorse, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HorsePen));
 
-            new ItemProperties(ItemResourceType.WarHorse, CityResoureIndex.WarHorse, DefaultWeight, Work.WorkPriorityType.SlaughterWarHorse, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.WarHorse, CityResoureIndex.WarHorse, DefaultWeight, Work.WorkPriorityType.SlaughterWarHorse, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarHorsePen));
 
-            new ItemProperties(ItemResourceType.DraftHorse, CityResoureIndex.DraftHorse, DefaultWeight, Work.WorkPriorityType.SlaughterDraftHorse, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.DraftHorse, CityResoureIndex.DraftHorse, DefaultWeight, Work.WorkPriorityType.SlaughterDraftHorse, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.DraftHorsePen));
 
             // --- Pigs / Hogs ---
-            new ItemProperties(ItemResourceType.WildPig, CityResoureIndex.WildPig, DefaultWeight, Work.WorkPriorityType.SlaughterWildPig, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.WildPig, CityResoureIndex.WildPig, DefaultWeight, Work.WorkPriorityType.SlaughterWildPig, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildPigPen));
 
-            new ItemProperties(ItemResourceType.WildHog, CityResoureIndex.WildHog, DefaultWeight, Work.WorkPriorityType.SlaughterWildHog, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.WildHog, CityResoureIndex.WildHog, DefaultWeight, Work.WorkPriorityType.SlaughterWildHog, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildHogPen));
 
-            new ItemProperties(ItemResourceType.WarHog, CityResoureIndex.WarHog, DefaultWeight, Work.WorkPriorityType.SlaughterWarHog, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.WarHog, CityResoureIndex.WarHog, DefaultWeight, Work.WorkPriorityType.SlaughterWarHog, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarHogPen));
 
-            new ItemProperties(ItemResourceType.StagHog, CityResoureIndex.StagHog, DefaultWeight, Work.WorkPriorityType.SlaughterStagHog, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.StagHog, CityResoureIndex.StagHog, DefaultWeight, Work.WorkPriorityType.SlaughterStagHog, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.StagHogPen));
 
             // --- Wolves ---
-            new ItemProperties(ItemResourceType.Wolf, CityResoureIndex.Wolf, DefaultWeight, Work.WorkPriorityType.SlaughterWolf, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.Wolf, CityResoureIndex.Wolf, DefaultWeight, Work.WorkPriorityType.SlaughterWolf, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WolfCage));
 
-            new ItemProperties(ItemResourceType.Warg, CityResoureIndex.Warg, DefaultWeight, Work.WorkPriorityType.SlaughterWarg, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.Warg, CityResoureIndex.Warg, DefaultWeight, Work.WorkPriorityType.SlaughterWarg, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WargCage));
 
-            new ItemProperties(ItemResourceType.AlphaWarg, CityResoureIndex.AlphaWarg, DefaultWeight, Work.WorkPriorityType.SlaughterAlphaWarg, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.AlphaWarg, CityResoureIndex.AlphaWarg, DefaultWeight, Work.WorkPriorityType.SlaughterAlphaWarg, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.AlphaWargCage));
 
             // --- Cats ---
-            new ItemProperties(ItemResourceType.WildCat, CityResoureIndex.WildCat, DefaultWeight, Work.WorkPriorityType.SlaughterWildCat, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.WildCat, CityResoureIndex.WildCat, DefaultWeight, Work.WorkPriorityType.SlaughterWildCat, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildCatCage));
 
-            new ItemProperties(ItemResourceType.Lion, CityResoureIndex.Lion, DefaultWeight, Work.WorkPriorityType.SlaughterLion, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.Lion, CityResoureIndex.Lion, DefaultWeight, Work.WorkPriorityType.SlaughterLion, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.LionCage));
 
-            new ItemProperties(ItemResourceType.WarLion, CityResoureIndex.WarLion, DefaultWeight, Work.WorkPriorityType.SlaughterWarLion, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.WarLion, CityResoureIndex.WarLion, DefaultWeight, Work.WorkPriorityType.SlaughterWarLion, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarLionCage));
 
             // --- Elephants ---
-            new ItemProperties(ItemResourceType.Elephant, CityResoureIndex.Elephant, 1f / 2, Work.WorkPriorityType.SlaughterElephant, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.Elephant, CityResoureIndex.Elephant, 1f / 2, Work.WorkPriorityType.SlaughterElephant, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.ElephantCage));
 
-            new ItemProperties(ItemResourceType.WarElephant, CityResoureIndex.WarElephant, 1f / 2, Work.WorkPriorityType.SlaughterWarElephant, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.WarElephant, CityResoureIndex.WarElephant, 1f / 2, Work.WorkPriorityType.SlaughterWarElephant, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarElephantCage));
 
-            new ItemProperties(ItemResourceType.Oliphant, CityResoureIndex.Oliphant, 1f, Work.WorkPriorityType.SlaughterOliphant, null, null, StorageType.AnimalStorage)
+            new ItemProperties(ItemResourceType.Oliphant, CityResoureIndex.Oliphant, 1f, Work.WorkPriorityType.SlaughterOliphant, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OliphantCage));
 
 

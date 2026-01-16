@@ -55,14 +55,15 @@ namespace VikingEngine.DSSWars.GameObject
         protected override DetailUnitModel initModel()
         {
             updateGroudY(true);
-            if (this.myIndex == 11)
-            {
-                return new KnightBannerModel(this);
-            }
-            else
-            {
-                return new KnightModel(this);
-            }
+            return new SoldierUnitAdvancedModel(this);
+            //if (this.myIndex == 11)
+            //{
+            //    return new KnightBannerModel(this);
+            //}
+            //else
+            //{
+            //    return new KnightModel(this);
+            //}
         }
     }
 
