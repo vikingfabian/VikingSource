@@ -19,146 +19,6 @@ namespace VikingEngine.DSSWars.Conscript
 {
     class ConscriptMenu
     {
-        static readonly ItemResourceType[] SoldierWeapons = {
-            ItemResourceType.SharpStick,
-            ItemResourceType.BronzeSword,
-            ItemResourceType.ShortSword,
-            ItemResourceType.Sword,
-            ItemResourceType.LongSword,
-            ItemResourceType.HandSpear,
-            ItemResourceType.Warhammer,
-            ItemResourceType.TwoHandSword,
-        };
-
-        static readonly ItemResourceType[] ArcherWeapons = {
-            ItemResourceType.SlingShot,
-            ItemResourceType.ThrowingSpear,
-            ItemResourceType.Bow,
-            ItemResourceType.LongBow,
-            ItemResourceType.Crossbow,
-            ItemResourceType.MithrilBow,
-        };
-
-        static readonly ItemResourceType[] ArcherGuardWeapons = {
-            ItemResourceType.Stone_G,
-            ItemResourceType.ThrowingSpear,
-            ItemResourceType.Bow,
-            ItemResourceType.LongBow,
-            ItemResourceType.Crossbow,
-        };
-
-        static readonly ItemResourceType[] WarmachineWeapons = {
-           
-            ItemResourceType.Ballista,
-            ItemResourceType.Manuballista,
-            ItemResourceType.Catapult,
-        };
-
-        
-
-        //static readonly ItemResourceType[] NobelWeapons = {
-        //    ItemResourceType.Warhammer,
-        //    ItemResourceType.TwoHandSword,
-        //    ItemResourceType.KnightsLance,
-        //    ItemResourceType.MithrilSword,
-        //    ItemResourceType.MithrilBow,
-        //};
-
-        static readonly ItemResourceType[] GunWeapons = {
-            ItemResourceType.HandCannon,
-            ItemResourceType.HandCulverin,
-            ItemResourceType.Rifle,
-            ItemResourceType.Blunderbuss,
-        };
-
-        static readonly ItemResourceType[] CannonWeapons = {
-           ItemResourceType.SiegeCannonBronze,
-            ItemResourceType.ManCannonBronze,
-            ItemResourceType.SiegeCannonIron,
-            ItemResourceType.ManCannonIron,
-        };
-
-        static readonly ItemResourceType[] MenTypes = {
-            ItemResourceType.Men,
-            ItemResourceType.NobelMen,
-        };
-
-        static readonly ItemResourceType[] AnimalTypes = {
-            ItemResourceType.NONE,
-            ItemResourceType.Pig,
-            ItemResourceType.Oxen,
-            ItemResourceType.KineOxen,
-
-            ItemResourceType.Dog,
-            ItemResourceType.Hound,
-
-            ItemResourceType.Pony,
-            ItemResourceType.Horse,
-            ItemResourceType.WarHorse,
-            ItemResourceType.DraftHorse,
-
-            ItemResourceType.WildPig,
-            ItemResourceType.WildHog,
-            ItemResourceType.WarHog,
-            ItemResourceType.StagHog,
-
-            ItemResourceType.Wolf,
-            ItemResourceType.Warg,
-            ItemResourceType.AlphaWarg,
-
-            ItemResourceType.WildCat,
-            ItemResourceType.Lion,
-            ItemResourceType.WarLion,
-
-            ItemResourceType.Elephant,
-            ItemResourceType.WarElephant,
-            ItemResourceType.Oliphant,
-        };
-
-        static readonly ItemResourceType[] MountArmorTypes = {
-            ItemResourceType.NONE,
-            ItemResourceType.MountBronzeArmor,
-            ItemResourceType.MountPaddedArmor,
-            ItemResourceType.MountHeavyPaddedArmor,
-            ItemResourceType.MountIronArmor,
-            ItemResourceType.MountHeavyIronArmor,
-            ItemResourceType.MountLightPlateArmor,
-            ItemResourceType.MountFullPlateArmor,
-            ItemResourceType.MountMithrilArmor,
-        };
-
-        static readonly ItemResourceType[] VehicleTypes = {
-            ItemResourceType.NONE,
-            ItemResourceType.Wagon2Wheel,
-            ItemResourceType.Wagon4Wheel,
-            ItemResourceType.WagonClosed,
-            ItemResourceType.WagonIron,
-            ItemResourceType.WagonSteel,
-        };
-
-        public static List<ItemResourceType[]> AllConstriptWeapons()
-        {
-            return new List<ItemResourceType[]>
-            {
-                SoldierWeapons,
-                ArcherWeapons,
-                WarmachineWeapons,
-                //NobelWeapons,
-                GunWeapons,
-                CannonWeapons,
-            };
-        }
-        public static List<ItemResourceType[]> AllHandWeapons()
-        {
-            return new List<ItemResourceType[]>
-            {
-                SoldierWeapons,
-                ArcherWeapons,
-                //NobelWeapons,
-                GunWeapons,
-            };
-        }
-
         City city;
         LocalPlayer player;
         ProgressQue que = new ProgressQue();
@@ -184,15 +44,15 @@ namespace VikingEngine.DSSWars.Conscript
                 {
                     case Build.BuildAndExpandType.SoldierBarracks:
                         typeName = DssRef.lang.BuildingType_SoldierBarracks;
-                        weapons = SoldierWeapons;
+                        weapons = ConscriptDataLib.SoldierWeapons;
                         break;
                     case Build.BuildAndExpandType.ArcherBarracks:
                         typeName = DssRef.lang.BuildingType_ArcherBarracks;
-                        weapons = ArcherWeapons;
+                        weapons = ConscriptDataLib.ArcherWeapons;
                         break;
                     case Build.BuildAndExpandType.WarmachineBarracks:
                         typeName = DssRef.lang.BuildingType_WarmachineBarracks;
-                        weapons = WarmachineWeapons;
+                        weapons = ConscriptDataLib.WarmachineWeapons;
                         break;
                     //case Build.BuildAndExpandType.KnightsBarracks:
                     //    hasGuardOption = false;
@@ -201,11 +61,11 @@ namespace VikingEngine.DSSWars.Conscript
                     //    break;
                     case Build.BuildAndExpandType.GunBarracks:
                         typeName = DssRef.lang.BuildingType_GunBarracks;
-                        weapons = GunWeapons;
+                        weapons = ConscriptDataLib.GunWeapons;
                         break;
                     case Build.BuildAndExpandType.CannonBarracks:
                         typeName = DssRef.lang.BuildingType_CannonBarracks;
-                        weapons = CannonWeapons;
+                        weapons = ConscriptDataLib.CannonWeapons;
                         break;
                 }
 
@@ -242,7 +102,7 @@ namespace VikingEngine.DSSWars.Conscript
                     content.newParagraph();
                     HudLib.Label(content, DssRef.todoLang.Resource_TypeName_ManType);
                     content.space();
-                    foreach (var item in MenTypes)
+                    foreach (var item in ConscriptDataLib.MenTypes)
                     {
                         IconName.Item(item, out SpriteName itemIcon, out _);
 
@@ -360,7 +220,7 @@ namespace VikingEngine.DSSWars.Conscript
                     HudLib.Label(content, DssRef.todoLang.Resource_TypeName_Animal);
                     content.newLine();
 
-                    foreach (var item in AnimalTypes)
+                    foreach (var item in ConscriptDataLib.AnimalTypes)
                     {
                         IconName.Item(item, out SpriteName itemIcon, out _);
 
@@ -387,7 +247,7 @@ namespace VikingEngine.DSSWars.Conscript
                         HudLib.Label(content, DssRef.todoLang.Resource_TypeName_MountArmorTitle);
                         content.newLine();
 
-                        foreach (var item in MountArmorTypes)
+                        foreach (var item in ConscriptDataLib.MountArmorTypes)
                         {
                             IconName.Item(item, out SpriteName itemIcon, out _);
 
@@ -412,7 +272,7 @@ namespace VikingEngine.DSSWars.Conscript
                         HudLib.Label(content, DssRef.todoLang.Resource_TypeName_Vehicle);
                         content.newLine();
 
-                        foreach (var item in VehicleTypes)
+                        foreach (var item in ConscriptDataLib.VehicleTypes)
                         {
                             IconName.Item(item, out SpriteName itemIcon, out _);
 

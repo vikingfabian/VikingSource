@@ -182,7 +182,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             content.h1("Diplay options", HudLib.TitleColor_Head);
 
             content.newLine();
-            var weapons = ConscriptMenu.AllHandWeapons();
+            var weapons = ConscriptDataLib.AllHandWeapons();
 
             weaponOption(ItemResourceType.Settler);
 

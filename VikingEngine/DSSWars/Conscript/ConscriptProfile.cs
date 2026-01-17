@@ -13,17 +13,7 @@ namespace VikingEngine.DSSWars.Conscript
 {
     struct ConscriptProfile
     {
-        static readonly ItemResourceType[] SideShield = {
-            ItemResourceType.NONE,
-            ItemResourceType.BucklerShield
-        };
-        static readonly ItemResourceType[] AllShields = {
-            ItemResourceType.NONE,
-            ItemResourceType.BucklerShield,
-            ItemResourceType.RoundShield,
-            ItemResourceType.HeaterShield,
-            ItemResourceType.TowerShield,
-        };
+        
         public static readonly ConscriptProfile Empty = new ConscriptProfile();
         
         public ItemResourceType man;
@@ -55,11 +45,11 @@ namespace VikingEngine.DSSWars.Conscript
         {
             if (ItemPropertyColl.Get(weapon).Filter_IsTwoHandWeapon)
             {
-                return SideShield;
+                return ConscriptDataLib.SideShield;
             }
             else
             {
-                return AllShields;
+                return ConscriptDataLib.AllShields;
             }
         }
 

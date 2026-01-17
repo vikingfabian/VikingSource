@@ -223,13 +223,14 @@ namespace VikingEngine.DSSWars.Interface
             {
                 SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                 {
-                    conscript = new ConscriptProfile()
-                    {
-                        weapon = BattleLabStorage.Singleton.setup.selectedWeapon,
-                        armorLevel = Resource.ItemResourceType.PaddedArmor,
-                        training = TrainingLevel.Basic,
-                        specialization = SpecializationType.Traditional,
-                    }
+                    conscript = BattleLabStorage.Singleton.setup.conscript,
+                    //new ConscriptProfile()
+                    //{
+                    //    weapon = BattleLabStorage.Singleton.setup.selectedWeapon,
+                    //    armorLevel = Resource.ItemResourceType.PaddedArmor,
+                    //    training = TrainingLevel.Basic,
+                    //    specialization = SpecializationType.Traditional,
+                    //}
                 };
 
                 var army = city.recruitToClosestArmy();

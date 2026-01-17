@@ -15,16 +15,36 @@ namespace VikingEngine.DSSWars.Conscript
     {
         public static void ToHud(RichBoxContent content, Action<int> addSoldier)
         {
-            var weapons_groups = ConscriptMenu.AllConstriptWeapons();
+            var weapons_groups = ConscriptDataLib.AllConstriptWeapons();
             foreach (var group in weapons_groups)
             {
                 content.newLine();
-                foreach (var wep in group)
+                foreach (var item in group)
                 {
-                    IconName.Item(wep, out var weaponIcon, out var weaponName);
-                    content.Add(new ArtToggle(wep == BattleLabStorage.Singleton.setup.selectedWeapon, new List<AbsRichBoxMember> { new RbImage(weaponIcon) },
-                        new RbAction1Arg<ItemResourceType>(selectWeapon, wep, RbSoundType.Option), new RbTooltip_Text(weaponName)));
+                    IconName.Item(item, out var icon, out var name);
+                    content.Add(new ArtToggle(item == BattleLabStorage.Singleton.setup.conscript.weapon, new List<AbsRichBoxMember> { new RbImage(icon) },
+                        new RbAction1Arg<ItemResourceType>(selectWeapon, item, RbSoundType.Option), new RbTooltip_Text(name)));
                 }
+            }
+
+            content.newParagraph();
+
+            var shields = BattleLabStorage.Singleton.setup.conscript.AvailableShields();
+            foreach (var item in shields)
+            {
+                IconName.Item(item, out var icon, out var name);
+                content.Add(new ArtToggle(item == BattleLabStorage.Singleton.setup.conscript.shield, new List<AbsRichBoxMember> { new RbImage(icon) },
+                    new RbAction1Arg<ItemResourceType>(selectShield, item, RbSoundType.Option), new RbTooltip_Text(name)));
+            }
+
+            content.newParagraph();
+
+            var animals = ConscriptDataLib.AnimalTypes;
+            foreach (var item in animals)
+            {
+                IconName.Item(item, out var icon, out var name);
+                content.Add(new ArtToggle(item == BattleLabStorage.Singleton.setup.conscript.animal, new List<AbsRichBoxMember> { new RbImage(icon) },
+                    new RbAction1Arg<ItemResourceType>(selectAnimal, item, RbSoundType.Option), new RbTooltip_Text(name)));
             }
 
             content.newParagraph();
@@ -41,7 +61,15 @@ namespace VikingEngine.DSSWars.Conscript
 
             void selectWeapon(ItemResourceType item)
             {
-                BattleLabStorage.Singleton.setup.selectedWeapon = item;
+                BattleLabStorage.Singleton.setup.conscript.weapon = item;
+            }
+            void selectShield(ItemResourceType item)
+            {
+                BattleLabStorage.Singleton.setup.conscript.shield = item;
+            }
+            void selectAnimal(ItemResourceType item)
+            {
+                BattleLabStorage.Singleton.setup.conscript.animal = item;
             }
         }
     }

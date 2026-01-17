@@ -10,6 +10,159 @@ namespace VikingEngine.DSSWars.Conscript
 {
     static class ConscriptDataLib
     {
+        public static readonly ItemResourceType[] SoldierWeapons = {
+            ItemResourceType.SharpStick,
+            ItemResourceType.BronzeSword,
+            ItemResourceType.ShortSword,
+            ItemResourceType.Sword,
+            ItemResourceType.LongSword,
+            ItemResourceType.HandSpear,
+            ItemResourceType.Warhammer,
+            ItemResourceType.TwoHandSword,
+        };
+
+        public static readonly ItemResourceType[] ArcherWeapons = {
+            ItemResourceType.SlingShot,
+            ItemResourceType.ThrowingSpear,
+            ItemResourceType.Bow,
+            ItemResourceType.LongBow,
+            ItemResourceType.Crossbow,
+            ItemResourceType.MithrilBow,
+        };
+
+        public static readonly ItemResourceType[] ArcherGuardWeapons = {
+            ItemResourceType.Stone_G,
+            ItemResourceType.ThrowingSpear,
+            ItemResourceType.Bow,
+            ItemResourceType.LongBow,
+            ItemResourceType.Crossbow,
+        };
+
+        public static readonly ItemResourceType[] WarmachineWeapons = {
+
+            ItemResourceType.Ballista,
+            ItemResourceType.Manuballista,
+            ItemResourceType.Catapult,
+        };
+
+
+
+        //static readonly ItemResourceType[] NobelWeapons = {
+        //    ItemResourceType.Warhammer,
+        //    ItemResourceType.TwoHandSword,
+        //    ItemResourceType.KnightsLance,
+        //    ItemResourceType.MithrilSword,
+        //    ItemResourceType.MithrilBow,
+        //};
+
+        public static readonly ItemResourceType[] GunWeapons = {
+            ItemResourceType.HandCannon,
+            ItemResourceType.HandCulverin,
+            ItemResourceType.Rifle,
+            ItemResourceType.Blunderbuss,
+        };
+
+        public static readonly ItemResourceType[] CannonWeapons = {
+           ItemResourceType.SiegeCannonBronze,
+            ItemResourceType.ManCannonBronze,
+            ItemResourceType.SiegeCannonIron,
+            ItemResourceType.ManCannonIron,
+        };
+
+        public static readonly ItemResourceType[] SideShield = {
+            ItemResourceType.NONE,
+            ItemResourceType.BucklerShield
+        };
+        public static readonly ItemResourceType[] AllShields = {
+            ItemResourceType.NONE,
+            ItemResourceType.BucklerShield,
+            ItemResourceType.RoundShield,
+            ItemResourceType.HeaterShield,
+            ItemResourceType.TowerShield,
+        };
+
+        public static readonly ItemResourceType[] MenTypes = {
+            ItemResourceType.Men,
+            ItemResourceType.NobelMen,
+        };
+
+        public static readonly ItemResourceType[] AnimalTypes = {
+            ItemResourceType.NONE,
+            ItemResourceType.Pig,
+            ItemResourceType.Oxen,
+            ItemResourceType.KineOxen,
+
+            ItemResourceType.Dog,
+            ItemResourceType.Hound,
+
+            ItemResourceType.Pony,
+            ItemResourceType.Horse,
+            ItemResourceType.WarHorse,
+            ItemResourceType.DraftHorse,
+
+            ItemResourceType.WildPig,
+            ItemResourceType.WildHog,
+            ItemResourceType.WarHog,
+            ItemResourceType.StagHog,
+
+            ItemResourceType.Wolf,
+            ItemResourceType.Warg,
+            ItemResourceType.AlphaWarg,
+
+            ItemResourceType.WildCat,
+            ItemResourceType.Lion,
+            ItemResourceType.WarLion,
+
+            ItemResourceType.Elephant,
+            ItemResourceType.WarElephant,
+            ItemResourceType.Oliphant,
+        };
+
+        public static readonly ItemResourceType[] MountArmorTypes = {
+            ItemResourceType.NONE,
+            ItemResourceType.MountBronzeArmor,
+            ItemResourceType.MountPaddedArmor,
+            ItemResourceType.MountHeavyPaddedArmor,
+            ItemResourceType.MountIronArmor,
+            ItemResourceType.MountHeavyIronArmor,
+            ItemResourceType.MountLightPlateArmor,
+            ItemResourceType.MountFullPlateArmor,
+            ItemResourceType.MountMithrilArmor,
+        };
+
+        public static readonly ItemResourceType[] VehicleTypes = {
+            ItemResourceType.NONE,
+            ItemResourceType.Wagon2Wheel,
+            ItemResourceType.Wagon4Wheel,
+            ItemResourceType.WagonClosed,
+            ItemResourceType.WagonIron,
+            ItemResourceType.WagonSteel,
+        };
+
+        public static List<ItemResourceType[]> AllConstriptWeapons()
+        {
+            return new List<ItemResourceType[]>
+            {
+                SoldierWeapons,
+                ArcherWeapons,
+                WarmachineWeapons,
+                //NobelWeapons,
+                GunWeapons,
+                CannonWeapons,
+            };
+        }
+        public static List<ItemResourceType[]> AllHandWeapons()
+        {
+            return new List<ItemResourceType[]>
+            {
+                SoldierWeapons,
+                ArcherWeapons,
+                //NobelWeapons,
+                GunWeapons,
+            };
+        }
+
+
         public static readonly BuildAndExpandType[] BarrackTypes = new BuildAndExpandType[]
             {
                 BuildAndExpandType.SoldierBarracks,
