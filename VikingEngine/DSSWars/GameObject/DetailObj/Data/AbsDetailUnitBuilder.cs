@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.GameObject
         public bool restrictTargetAngle = false; 
         public float targetAngle;
 
-        abstract public AbsSoldierUnit CreateUnit();
+        abstract public AbsSoldierUnit CreateUnit(bool bannerman);
 
         
     }

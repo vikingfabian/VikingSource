@@ -40,14 +40,22 @@ namespace VikingEngine.DSSWars
 
         static readonly IntVector3 GridSize = new IntVector3(26, 48, 78);
         const int FrameCount = 7;
-        const int LegIdleFrame = 0;
-        const int LegRidingFrame = 1;
+        const int FrameCountRiding = 3;
+
+        public const int IdleFrame = 0;
+        public const int IdleBlinkFrame = 1;
+        public const int AttackFrame = 2;
+
+        const int LegsRidingFrame = 1;
+        
 
 
         //26*48*78
 
         public Graphics.VoxelModel buildModel(PlayerProfile profile, SoldierModelData modelData)
         {
+            int length = modelData.riding? FrameCountRiding : FrameCount;
+
             IntVector3 hatOffset = new IntVector3(2, 5, 30);
             VoxelModelName weaponModel;
             int weaponHatFrame;
@@ -249,7 +257,7 @@ namespace VikingEngine.DSSWars
             IntVector3 lArmOffset = VectorExt.AddX(rArmOffSet, 9);
             IntVector3 faceOffset = new IntVector3(2, 5, 30);
 
-            VoxelObjGridDataAnimHD grid = new VoxelObjGridDataAnimHD(GridSize, FrameCount);
+            VoxelObjGridDataAnimHD grid = new VoxelObjGridDataAnimHD(GridSize, length);
 
             //var debug = DssRef.models.rawModels[VoxelModelName.modsoldier_debug];
             var face = DssRef.models.rawModels[faceModel];
@@ -267,20 +275,20 @@ namespace VikingEngine.DSSWars
 
             if (modelData.riding)
             {
-                var legsRiding = legRawModel.Frame(LegRidingFrame).GetVoxelArray(legOffSet, profileColors, GridSize);
-                for (int frame = 0; frame < FrameCount; frame++)
+                var legsRiding = legRawModel.Frame(LegsRidingFrame).GetVoxelArray(legOffSet, profileColors, GridSize);
+                for (int frame = 0; frame < length; frame++)
                 {
                     grid.Frame(frame).AddVoxels(legsRiding);
                 }
             }
             else
             {
-                var legsIdle = legRawModel.Frame(LegIdleFrame).GetVoxelArray(legOffSet, profileColors, GridSize);
+                var legsIdle = legRawModel.Frame(IdleFrame).GetVoxelArray(legOffSet, profileColors, GridSize);
                 for (int frame = 0; frame < 2; frame++)
                 {
                     grid.Frame(frame).AddVoxels(legsIdle);
                 }
-                for (int frame = 2; frame < FrameCount; frame++)
+                for (int frame = 2; frame < length; frame++)
                 {
                     grid.Frame(frame).AddVoxels(legRawModel.Frame(frame).GetVoxelArray(legOffSet, profileColors, GridSize));
                 }
@@ -299,7 +307,7 @@ namespace VikingEngine.DSSWars
                 //var shieldVoxels = shieldModel.Frame(0].GetVoxelArray(new IntVector3(6, 0, 33), profileColors, GridSize);
             }
 
-            for (int frame = 0; frame < FrameCount; frame++)
+            for (int frame = 0; frame < length; frame++)
             {
                 grid.Frame(frame).AddVoxels(frame == 1 ? faceBlinkVoxels : faceVoxels);
             }
@@ -309,7 +317,7 @@ namespace VikingEngine.DSSWars
                 VoxelObjGridDataAnimHD hat = DssRef.models.rawModels[hatmodel];
                 List<VoxelHD> hatVoxels = null;
                 hatVoxels = hat.Frame(hatFrame).GetVoxelArray(hatOffset, profileColors, GridSize);
-                for (int frame = 0; frame < FrameCount; frame++)
+                for (int frame = 0; frame < length; frame++)
                 {
                     grid.Frame(frame).AddVoxels(hatVoxels);
                 }
@@ -330,7 +338,7 @@ namespace VikingEngine.DSSWars
                 rightHandItem.addToGrid(grid.Frame(frame), adjustJointPos(rightHandItem.idle_jointPos, rarm_jointPos)/*rarm_jointPos*/, WeaponModel.IdleFrame);
             }
 
-            for (int frame = 2; frame < FrameCount; frame++)
+            for (int frame = 2; frame < length; frame++)
             {
                 bool attackFrame = frame == 2;
 
@@ -347,7 +355,7 @@ namespace VikingEngine.DSSWars
                 rightHandItem.addToGrid(grid.Frame(frame), adjustJointPos(rightHandJointValue, rarm_jointPos)/*rarm_jointPos*/, attackFrame ? WeaponModel.AttackFrame : WeaponModel.MoveFrame);
             }
 
-            for (int frame = 0; frame < FrameCount; frame++)
+            for (int frame = 0; frame < length; frame++)
             {
                 grid.Frame(frame).AddVoxels(bodyVoxels);
             }
@@ -370,7 +378,7 @@ namespace VikingEngine.DSSWars
                     if (index < access.Frames.Count)
                     {
                         var accessVoxels = access.Frame(index).GetVoxelArray(offset, profileColors, GridSize);
-                        for (int frame = 0; frame < FrameCount; frame++)
+                        for (int frame = 0; frame < length; frame++)
                         {
                             grid.Frame(frame).AddVoxels(accessVoxels);
                         }

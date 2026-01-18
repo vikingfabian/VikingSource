@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Warships
             return true;
         }
 
-        protected override DetailUnitModel initModel()
+        protected override DetailUnitModel initModel(bool bannerman)
         {
             var model = new ShipUnitAdvancedModel(this);
             model.displayHealth(health / (float)soldierData.basehealth);

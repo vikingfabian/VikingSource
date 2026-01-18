@@ -10,7 +10,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
     {
         public CityGuardSoldierBuilder()
         {
-            unitType = UnitType.CityGuard;
+            unitBuildType = UnitBuildType.CityGuard;
 
             boundRadius = DssVar.StandardBoundRadius;
             //rotationSpeed = SoldierGroupStandardRotatingSpeed;

@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.GameObject
         public WarmachineProfile() 
             :base()
         {
-            unitType = UnitType.ConscriptWarmachine;
+            unitBuildType = UnitBuildType.ConscriptWarmachine;
             
             boundRadius = DssVar.StandardBoundRadius * 2.2f;
 
@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             
         }
-        public override AbsSoldierUnit CreateUnit()
+        public override AbsSoldierUnit CreateUnit(bool bannerman)
         {
             
             return new BaseWarmachineBuilder();
@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.GameObject
             : base()
         { }
 
-        protected override DetailUnitModel initModel()
+        protected override DetailUnitModel initModel(bool bannerman)
         {
             updateGroudY(true);
             switch (group.soldierConscript.conscript.weapon)

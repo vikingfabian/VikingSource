@@ -2641,6 +2641,9 @@
 #begin VoxelModel/LfWars/decor_statue.vox
 /copy:VoxelModel/LfWars/decor_statue.vox
 
+#begin VoxelModel/LfWars/Elephant1.vox
+/copy:VoxelModel/LfWars/Elephant1.vox
+
 #begin VoxelModel/LfWars/ErrorCube.vox
 /copy:VoxelModel/LfWars/ErrorCube.vox
 
@@ -2701,6 +2704,9 @@
 #begin VoxelModel/LfWars/Hen.vox
 /copy:VoxelModel/LfWars/Hen.vox
 
+#begin VoxelModel/LfWars/hog1.vox
+/copy:VoxelModel/LfWars/hog1.vox
+
 #begin VoxelModel/LfWars/horse_brown.vox
 /copy:VoxelModel/LfWars/horse_brown.vox
 
@@ -2709,6 +2715,9 @@
 
 #begin VoxelModel/LfWars/horsebanner.vox
 /copy:VoxelModel/LfWars/horsebanner.vox
+
+#begin VoxelModel/LfWars/lion1.vox
+/copy:VoxelModel/LfWars/lion1.vox
 
 #begin VoxelModel/LfWars/little_boltarrow.vox
 /copy:VoxelModel/LfWars/little_boltarrow.vox
@@ -2952,4 +2961,7 @@
 
 #begin VoxelModel/LfWars/wars_viking_ship.vox
 /copy:VoxelModel/LfWars/wars_viking_ship.vox
+
+#begin VoxelModel/LfWars/wolf1.vox
+/copy:VoxelModel/LfWars/wolf1.vox
 

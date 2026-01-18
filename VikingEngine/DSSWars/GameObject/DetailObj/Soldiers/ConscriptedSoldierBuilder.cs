@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public ConscriptedSoldierBuilder()
         {
-            unitType = UnitType.Conscript;
+            unitBuildType = UnitBuildType.Conscript;
            
             boundRadius = DssVar.StandardBoundRadius;
             targetSpotRange = StandardTargetSpotRange;

@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.DSSWars.GameObject
 {
+    //struct AnimationData
+    //{ 
+    
+    //}
+
     struct WalkingAnimation
     {
         public const float StandardMoveFrames = 0.03f;
@@ -15,6 +20,7 @@ namespace VikingEngine.DSSWars.GameObject
         public static readonly WalkingAnimation WorkerCarry = new WalkingAnimation(9, 12, StandardMoveFramesGnome);
         public static readonly WalkingAnimation WorkerTrading = new WalkingAnimation(13, 16, StandardMoveFramesGnome);
 
+        public int idleframe, idleblinkframe, attackframe;
         public int startframe, endFrame;
         int currentFrame;
 
@@ -23,6 +29,18 @@ namespace VikingEngine.DSSWars.GameObject
 
         public WalkingAnimation(int startframe, int endFrame, float movelengthBetweenFrames)
         {
+            this.startframe = startframe;
+            this.endFrame = endFrame;
+            this.movelengthBetweenFrames = movelengthBetweenFrames;
+
+            currentFrame = startframe;
+            moveLength = 0;
+        }
+
+        public WalkingAnimation(int idleframe, int attackframe, int startframe, int endFrame, float movelengthBetweenFrames)
+        {
+            this.idleframe = idleframe;
+            this.attackframe = attackframe;
             this.startframe = startframe;
             this.endFrame = endFrame;
             this.movelengthBetweenFrames = movelengthBetweenFrames;

@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.GameObject
         public static float AverageGroupStrength;
         public const float HealthToStrengthConvertion = 0.36f;
 
-        AbsSoldierBuilder[] profiles = new AbsSoldierBuilder[(int)UnitType.NUM];
+        AbsSoldierBuilder[] profiles = new AbsSoldierBuilder[(int)UnitBuildType.NUM];
         //public CityDetailProfile city;
         public BannerManBuilder bannerman;
 
@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        public bool IsShip(UnitType type)
+        public bool IsShip(UnitBuildType type)
         {
             return profiles[(int)type].IsShip();
         }
@@ -154,10 +154,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         void add(AbsSoldierBuilder builder)
         {
-            profiles[(int)builder.unitType] = builder;
+            profiles[(int)builder.unitBuildType] = builder;
         }
 
-        public AbsSoldierBuilder Get(UnitType type)
+        public AbsSoldierBuilder Get(UnitBuildType type)
         {
             return profiles[(int)type];
         }
@@ -277,7 +277,7 @@ namespace VikingEngine.DSSWars.GameObject
         NUM
     }
 
-    enum UnitType
+    enum UnitBuildType
     {
         NULL = -1,
         //King = 34,

@@ -46,17 +46,18 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int bonusProjectiles = 0;
 
-        public UnitType UnitType;
+        public UnitBuildType unitBuildType;
         float reactionTime;        
         SoldierBattleData battleData = null;
         public float boundRadius;
+        public bool isBannerMan = false;
         public override AbsDetailUnitBuilder Profile()
         {
-            return DssRef.units.Get(UnitType);
+            return DssRef.units.Get(unitBuildType);
         }
         public AbsSoldierBuilder SoldierProfile()
         {
-            return DssRef.units.Get(UnitType);
+            return DssRef.units.Get(unitBuildType);
         }
 
         virtual public void copyDataToUpgradedUnit(AbsSoldierUnit upgradeUnit)
@@ -172,12 +173,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setDetailLevel(bool unitDetailView)
         {
-            Debug.CrashIfThreaded();
+            //Debug.CrashIfThreaded();
             if (unitDetailView)
             {
                 if (model == null)
                 {
-                    model = initModel();
+                    model = initModel(isBannerMan);
                     model.update(this);
                 }
             }
@@ -571,7 +572,7 @@ namespace VikingEngine.DSSWars.GameObject
         const float ModelGroundYAdj = -0.0001f;
         protected void updateGroudY(bool set)
         {
-            if (UnitType == UnitType.CityGuard)
+            if (unitBuildType == UnitBuildType.CityGuard)
             {
                 var guards = group.GetGuardGroup();
                 if (guards.assignedToPost_IdAndPosition > 0)
@@ -1512,9 +1513,9 @@ namespace VikingEngine.DSSWars.GameObject
             group.army.TryGetTarget(out var tArmy);
             return tArmy;
         }
-        public override UnitType DetailUnitType()
+        public override UnitBuildType DetailUnitType()
         {
-            return UnitType;//profile.unitType;
+            return unitBuildType;//profile.unitType;
         }
     }
 

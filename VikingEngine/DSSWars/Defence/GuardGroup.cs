@@ -217,7 +217,7 @@ namespace VikingEngine.DSSWars.Defence
                 base.setGroundY();
             }
         }
-        protected override void createAllSoldiers(UnitType type, int count, bool createModels)
+        protected override void createAllSoldiers(UnitBuildType type, int count, bool createModels)
         {
             var typeProfile = DssRef.units.Get(type);
             soldiers = new SpottedArray<AbsSoldierUnit>(count);
@@ -230,7 +230,7 @@ namespace VikingEngine.DSSWars.Defence
 
             if (count > 0)
             {
-                AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.Zero, tilePos, ref soldierData, createModels);
+                AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.Zero, false, tilePos, ref soldierData, createModels);
                 unit.firstUpdate();
                 refillGuardUnits(typeProfile, count - 1, createModels);
             }
@@ -243,7 +243,7 @@ namespace VikingEngine.DSSWars.Defence
             {
                 if (i < IntVector2.AllDiagonalsArray.Length)
                 {
-                    AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.AllDiagonalsArray[i], tilePos, ref soldierData, createModels);
+                    AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.AllDiagonalsArray[i], false, tilePos, ref soldierData, createModels);
                     unit.firstUpdate();
                 }
             }

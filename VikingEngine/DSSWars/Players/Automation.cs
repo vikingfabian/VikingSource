@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Players
 
         AutomationAction automationAction = AutomationAction.WaitForUpdate;
         City cityAction = null;
-        UnitType recruitType = UnitType.NULL;
+        UnitBuildType recruitType = UnitBuildType.NULL;
         int recruitCount = 0;
         IntVector2 subtilePos;
 

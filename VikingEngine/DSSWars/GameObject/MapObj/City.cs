@@ -4358,7 +4358,7 @@ namespace VikingEngine.DSSWars.GameObject
 
     class CityPurchaseOption
     {
-        public UnitType unitType;
+        public UnitBuildType unitType;
         public bool available = true;
         public int goldCost;
         //TODO lägg till culture bonus för elit versioner
@@ -4372,7 +4372,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void read(System.IO.BinaryReader r)
         {
-            this.unitType = (UnitType)r.ReadByte();
+            this.unitType = (UnitBuildType)r.ReadByte();
             available=r.ReadBoolean();
             goldCost = r.ReadUInt16();
         }

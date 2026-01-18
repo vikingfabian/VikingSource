@@ -36,23 +36,23 @@ namespace VikingEngine.DSSWars.Conscript
             skillBonus = StreamLib.ReadFloatMultiplier(r);
         }
 
-        public UnitType unitType()
+        public UnitBuildType unitType()
         {
             if (conscript.vehicle != ItemResourceType.NONE)
             {
-                return UnitType.ConscriptWagon;
+                return UnitBuildType.ConscriptWagon;
             }
 
             if (conscript.animal != ItemResourceType.NONE &&
                 ItemPropertyColl.Get(conscript.animal).Filter_IsRidingAnimal)
             {
-                return UnitType.ConscriptCavalry;
+                return UnitBuildType.ConscriptCavalry;
             }
 
             switch (conscript.specialization)
             {
                 default:
-                    return ItemPropertyColl.Get(conscript.weapon).Filter_IsSiegeWeapon ? UnitType.ConscriptWarmachine : UnitType.Conscript;
+                    return ItemPropertyColl.Get(conscript.weapon).Filter_IsSiegeWeapon ? UnitBuildType.ConscriptWarmachine : UnitBuildType.Conscript;
                 //switch (conscript.weapon)
                 //{
                 //    case ItemResourceType.Ballista:
@@ -70,7 +70,7 @@ namespace VikingEngine.DSSWars.Conscript
                 //}
 
                 case SpecializationType.CityGuard:
-                    return UnitType.CityGuard;
+                    return UnitBuildType.CityGuard;
                     //case SpecializationType.DarkLord:
                     //    return UnitType.DarkLord;
 

@@ -84,9 +84,9 @@ namespace VikingEngine.DSSWars.GameObject
         public bool inShipOrGuardTransform = false;
         public float damageBlockChance_fromTerrain = 0;
 
-        public UnitType currentBuilder;
-        public UnitType landBuilder;
-        public UnitType shipBuilder;
+        public UnitBuildType currentBuilder;
+        public UnitBuildType landBuilder;
+        public UnitBuildType shipBuilder;
 
         public SoldierConscriptProfile soldierConscript;
         public SoldierData soldierData;
@@ -411,7 +411,7 @@ namespace VikingEngine.DSSWars.GameObject
             //}
         }
 
-        virtual protected void createAllSoldiers(UnitType type, int count, bool createModels)
+        virtual protected void createAllSoldiers(UnitBuildType type, int count, bool createModels)
         {
             AbsSoldierBuilder typeProfile = DssRef.units.Get(type);
 
@@ -433,15 +433,15 @@ namespace VikingEngine.DSSWars.GameObject
                 for (int y = 0; y < columnDepth; ++y)
                 {
                     AbsSoldierUnit unit;
-                    if (bannerPos.Equals(x, y))
-                    {
-                        var bannerData = soldierConscript.bannermanSetup(soldierData);
-                        unit = createUnit(DssRef.units.bannerman, new IntVector2(x + xStart, y), tilePos, ref bannerData, createModels);
-                    }
-                    else
-                    {
-                        unit = createUnit(typeProfile, new IntVector2(x + xStart, y), tilePos, ref soldierData, createModels);
-                    }
+                    //if (bannerPos.Equals(x, y))
+                    //{
+                    //    var bannerData = soldierConscript.bannermanSetup(soldierData);
+                    //    unit = createUnit(DssRef.units.bannerman, new IntVector2(x + xStart, y), tilePos, ref bannerData, createModels);
+                    //}
+                    //else
+                    //{
+                        unit = createUnit(typeProfile, new IntVector2(x + xStart, y), bannerPos.Equals(x, y), tilePos, ref soldierData, createModels);
+                    //}
 
                     if (unit == null)
                     {
@@ -534,7 +534,7 @@ namespace VikingEngine.DSSWars.GameObject
                         var shipData = soldierData;
                         soldierConscript.shipSetup(ref shipData);
 
-                        var ship = createUnit(DssRef.units.Get(shipBuilder), IntVector2.Zero, WP.ToTilePos(position), ref shipData, true);
+                        var ship = createUnit(DssRef.units.Get(shipBuilder), IntVector2.Zero, false, WP.ToTilePos(position), ref shipData, true);
 
                         if (ship != null)
                         {
@@ -560,7 +560,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
 
-        public AbsSoldierUnit createUnit(AbsSoldierBuilder typeProfile, IntVector2 gridPlacement, IntVector2 area, ref SoldierData data, bool models)
+        public AbsSoldierUnit createUnit(AbsSoldierBuilder typeProfile, IntVector2 gridPlacement, bool bBannerPos, IntVector2 area, ref SoldierData data, bool models)
         {
             var soldiers_sp = soldiers;
 
@@ -568,11 +568,20 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 AbsSoldierUnit s;
 
-                s = typeProfile.CreateUnit();
+                s = typeProfile.CreateUnit(bBannerPos);
                 s.factionIndex = this.factionIndex;
-                s.UnitType = typeProfile.unitType;
-                s.soldierData = data;
+                s.unitBuildType = typeProfile.unitBuildType;
 
+                s.isBannerMan = bBannerPos;
+
+                if (bBannerPos && typeProfile.unitBuildType == UnitBuildType.Conscript)
+                {
+                    s.soldierData = soldierConscript.bannermanSetup(data);
+                }
+                else
+                {
+                    s.soldierData = data;
+                }
 
                 s.InitLocal(position, gridPlacement, area, this);
                 s.position = WP.ToWorldPos(area); //temp pos

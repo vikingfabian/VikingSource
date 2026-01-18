@@ -261,6 +261,8 @@ namespace VikingEngine.LootFest
         city_research,
 
         horse_white, horse_brown,
+        hog1, wolf1,
+        lion1, Elephant1,
         
         stupid_board,
         stupid_gate,

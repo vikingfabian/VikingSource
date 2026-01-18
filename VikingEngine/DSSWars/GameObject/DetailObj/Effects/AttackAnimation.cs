@@ -111,7 +111,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (group != null &&
                         group.soldierConscript.conscript.specialization == SpecializationType.AntiCavalry && 
-                        target.DetailUnitType() == UnitType.ConscriptCavalry)
+                        target.DetailUnitType() == UnitBuildType.ConscriptCavalry)
                     {
                         damage = MathExt.MultiplyInt(DssConst.AntiCavalryBonusMultiply, damage);
                     }
