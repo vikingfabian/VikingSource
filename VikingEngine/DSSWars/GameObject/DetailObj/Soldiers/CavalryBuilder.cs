@@ -16,9 +16,9 @@ namespace VikingEngine.DSSWars.GameObject
             :base()
         {
             unitBuildType = UnitBuildType.ConscriptCavalry;
-            boundRadius = DssVar.StandardBoundRadius;
+            //boundRadius = DssVar.StandardBoundRadius;
 
-            idleFrame = 0;
+            //idleFrame = 0;
             targetSpotRange = StandardTargetSpotRange;
             
             goldCost = MathExt.MultiplyInt(2, DssLib.GroupDefaultCost);
@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.GameObject
         protected override DetailUnitModel initModel(bool bannerman)
         {
             updateGroudY(true);
-            if (bannerman)//this.myIndex == 11)
+            if (bannerman)
             {
                 return new CavalryBannerModel(this);
             }

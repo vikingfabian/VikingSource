@@ -190,60 +190,162 @@ namespace VikingEngine.DSSWars.Resource
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HoundCage));
 
             // --- Horses ---
-            new ItemProperties(ItemResourceType.Pony, CityResoureIndex.Pony, DefaultWeight, Work.WorkPriorityType.SlaughterPony, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PonyPen));
+            {
+                var animal = new ItemProperties(ItemResourceType.Pony, CityResoureIndex.Pony, DefaultWeight, Work.WorkPriorityType.SlaughterPony, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PonyPen));
+                animal.soldierData.CavalrySetup();
+            }
 
-            new ItemProperties(ItemResourceType.Horse, CityResoureIndex.Horse, DefaultWeight, Work.WorkPriorityType.SlaughterHorse, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HorsePen));
+            {
+                var animal = new ItemProperties(ItemResourceType.Horse, CityResoureIndex.Horse, DefaultWeight, Work.WorkPriorityType.SlaughterHorse, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HorsePen));
+                animal.soldierData.CavalrySetup();
+            }
 
-            new ItemProperties(ItemResourceType.WarHorse, CityResoureIndex.WarHorse, DefaultWeight, Work.WorkPriorityType.SlaughterWarHorse, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarHorsePen));
+            {
+                var animal = new ItemProperties(ItemResourceType.WarHorse, CityResoureIndex.WarHorse, DefaultWeight, Work.WorkPriorityType.SlaughterWarHorse, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarHorsePen));
+                animal.soldierData.CavalrySetup();
+            }
 
-            new ItemProperties(ItemResourceType.DraftHorse, CityResoureIndex.DraftHorse, DefaultWeight, Work.WorkPriorityType.SlaughterDraftHorse, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.DraftHorsePen));
+            {
+                var animal = new ItemProperties(ItemResourceType.DraftHorse, CityResoureIndex.DraftHorse, DefaultWeight, Work.WorkPriorityType.SlaughterDraftHorse, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.DraftHorsePen));
+                animal.soldierData.CavalrySetup();
+            }
 
             // --- Pigs / Hogs ---
-            new ItemProperties(ItemResourceType.WildPig, CityResoureIndex.WildPig, DefaultWeight, Work.WorkPriorityType.SlaughterWildPig, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildPigPen));
+            {
+                var animal = new ItemProperties(ItemResourceType.WildPig, CityResoureIndex.WildPig, DefaultWeight, Work.WorkPriorityType.SlaughterWildPig, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildPigPen));
+                animal.soldierData.CavalrySetup();
+            }
 
-            new ItemProperties(ItemResourceType.WildHog, CityResoureIndex.WildHog, DefaultWeight, Work.WorkPriorityType.SlaughterWildHog, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildHogPen));
+            {
+                var animal = new ItemProperties(ItemResourceType.WildHog, CityResoureIndex.WildHog, DefaultWeight, Work.WorkPriorityType.SlaughterWildHog, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildHogPen));
+                animal.soldierData.CavalrySetup();
+            }
 
-            new ItemProperties(ItemResourceType.WarHog, CityResoureIndex.WarHog, DefaultWeight, Work.WorkPriorityType.SlaughterWarHog, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarHogPen));
+            {
+                var animal = new ItemProperties(ItemResourceType.WarHog, CityResoureIndex.WarHog, DefaultWeight, Work.WorkPriorityType.SlaughterWarHog, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarHogPen));
+                animal.soldierData.CavalrySetup();
+            }
 
-            new ItemProperties(ItemResourceType.StagHog, CityResoureIndex.StagHog, DefaultWeight, Work.WorkPriorityType.SlaughterStagHog, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.StagHogPen));
+            {
+                var animal = new ItemProperties(ItemResourceType.StagHog, CityResoureIndex.StagHog, DefaultWeight, Work.WorkPriorityType.SlaughterStagHog, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.StagHogPen));
+                animal.soldierData.CavalrySetup();
+            }
 
             // --- Wolves ---
-            new ItemProperties(ItemResourceType.Wolf, CityResoureIndex.Wolf, DefaultWeight, Work.WorkPriorityType.SlaughterWolf, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WolfCage));
+            {
+                var animal = new ItemProperties(ItemResourceType.Wolf, CityResoureIndex.Wolf, DefaultWeight, Work.WorkPriorityType.SlaughterWolf, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WolfCage));
+                animal.soldierData.CavalrySetup();
+            }
 
-            new ItemProperties(ItemResourceType.Warg, CityResoureIndex.Warg, DefaultWeight, Work.WorkPriorityType.SlaughterWarg, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WargCage));
+            {
+                var animal = new ItemProperties(ItemResourceType.Warg, CityResoureIndex.Warg, DefaultWeight, Work.WorkPriorityType.SlaughterWarg, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WargCage));
+                animal.soldierData.CavalrySetup();
+            }
 
-            new ItemProperties(ItemResourceType.AlphaWarg, CityResoureIndex.AlphaWarg, DefaultWeight, Work.WorkPriorityType.SlaughterAlphaWarg, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.AlphaWargCage));
+            {
+                var animal = new ItemProperties(ItemResourceType.AlphaWarg, CityResoureIndex.AlphaWarg, DefaultWeight, Work.WorkPriorityType.SlaughterAlphaWarg, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.AlphaWargCage));
+                animal.soldierData.CavalrySetup();
+            }
 
             // --- Cats ---
-            new ItemProperties(ItemResourceType.WildCat, CityResoureIndex.WildCat, DefaultWeight, Work.WorkPriorityType.SlaughterWildCat, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildCatCage));
+            {
+                var animal = new ItemProperties(ItemResourceType.WildCat, CityResoureIndex.WildCat, DefaultWeight, Work.WorkPriorityType.SlaughterWildCat, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildCatCage));
+                animal.soldierData.CavalrySetup();
+            }
 
-            new ItemProperties(ItemResourceType.Lion, CityResoureIndex.Lion, DefaultWeight, Work.WorkPriorityType.SlaughterLion, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.LionCage));
+            {
+                var animal = new ItemProperties(ItemResourceType.Lion, CityResoureIndex.Lion, DefaultWeight, Work.WorkPriorityType.SlaughterLion, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.LionCage));
+                animal.soldierData.CavalrySetup();
+            }
 
-            new ItemProperties(ItemResourceType.WarLion, CityResoureIndex.WarLion, DefaultWeight, Work.WorkPriorityType.SlaughterWarLion, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarLionCage));
+            {
+                var animal = new ItemProperties(ItemResourceType.WarLion, CityResoureIndex.WarLion, DefaultWeight, Work.WorkPriorityType.SlaughterWarLion, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarLionCage));
+                animal.soldierData.CavalrySetup();
+            }
 
             // --- Elephants ---
-            new ItemProperties(ItemResourceType.Elephant, CityResoureIndex.Elephant, 1f / 2, Work.WorkPriorityType.SlaughterElephant, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.ElephantCage));
+            {
+                var animal = new ItemProperties(ItemResourceType.Elephant, CityResoureIndex.Elephant, 1f / 2, Work.WorkPriorityType.SlaughterElephant, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.ElephantCage));
+                animal.soldierData.ElephantSetup();
+            }
 
-            new ItemProperties(ItemResourceType.WarElephant, CityResoureIndex.WarElephant, 1f / 2, Work.WorkPriorityType.SlaughterWarElephant, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarElephantCage));
+            {
+                var animal = new ItemProperties(ItemResourceType.WarElephant, CityResoureIndex.WarElephant, 1f / 2, Work.WorkPriorityType.SlaughterWarElephant, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarElephantCage));
+                animal.soldierData.ElephantSetup();
+            }
 
-            new ItemProperties(ItemResourceType.Oliphant, CityResoureIndex.Oliphant, 1f, Work.WorkPriorityType.SlaughterOliphant, null, null, StorageType.AnimalStorage) { Filter_IsRidingAnimal = true }
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OliphantCage));
+            {
+                var animal = new ItemProperties(ItemResourceType.Oliphant, CityResoureIndex.Oliphant, 1f, Work.WorkPriorityType.SlaughterOliphant, null, null, StorageType.AnimalStorage)
+                {
+                    Filter_IsRidingAnimal = true,
+                };
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OliphantCage));
+                animal.soldierData.ElephantSetup();
+            }
 
 
             new ItemProperties(ItemResourceType.SlaughterHen, NoCityResource, DefaultWeight, Work.WorkPriorityType.SlaughterHen, CraftResourceLib.SlaughterHen, null, StorageType.NUM_NONE);
@@ -866,6 +968,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Blunderbuss;
                 soldier.modelData.modelType = ModelType.Soldier;
+                soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
 
             {
@@ -901,6 +1004,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelData.weapon = ItemResourceType.Ballista;
                 soldier.modelData.modelType = ModelType.Warmashine;
                 weapon.Filter_IsSiegeWeapon = true;
+                soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
 
             {
@@ -934,6 +1038,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Manuballista;
                 soldier.modelData.modelType = ModelType.Warmashine;
+                soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
             {
                 var weapon = Get(ItemResourceType.Catapult);
@@ -967,6 +1072,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelData.weapon = ItemResourceType.Catapult;
                 soldier.modelData.modelType = ModelType.Warmashine;
                 weapon.Filter_IsSiegeWeapon = true;
+                soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
             {
                 var weapon = Get(ItemResourceType.SiegeCannonBronze);
@@ -1001,6 +1107,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelData.weapon = ItemResourceType.SiegeCannonBronze;
                 soldier.modelData.modelType = ModelType.Warmashine;
                 weapon.Filter_IsSiegeWeapon = true;
+                soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
             {
                 var weapon = Get(ItemResourceType.ManCannonBronze);
@@ -1034,6 +1141,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.ManCannonBronze;
                 soldier.modelData.modelType = ModelType.Warmashine;
+                soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
             {
                 var weapon = Get(ItemResourceType.SiegeCannonIron);
@@ -1068,6 +1176,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.modelData.weapon = ItemResourceType.SiegeCannonIron;
                 soldier.modelData.modelType = ModelType.Warmashine;
                 weapon.Filter_IsSiegeWeapon = true;
+                soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
 
             {
@@ -1102,6 +1211,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.ManCannonIron;
                 soldier.modelData.modelType = ModelType.Warmashine;
+                soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
 
             {

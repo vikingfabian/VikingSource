@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.GameObject
         
         //public float modelScale;
         public float modelAdjY = 0;
-        public float boundRadius;       
+        //public float boundRadius;       
 
         
         
@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.GameObject
         
         //public float shipSpeed = DssConst.Men_StandardShipSpeed;
 
-        public int idleFrame = 0, idleBlinkFrame = 1, attackFrame = 2;
+        //public int idleFrame = 0, idleBlinkFrame = 1, attackFrame = 2;
         public float attackFrameTime = 400;
 
         public bool restrictTargetAngle = false; 

@@ -186,10 +186,17 @@ namespace VikingEngine.DSSWars.Conscript
 
             soldierData.modelData.specialization = conscript.specialization;
 
-            if (conscript.animal != ItemResourceType.NONE &&
-                Resource.ItemPropertyColl.Get(conscript.animal).Filter_IsRidingAnimal)
+            if (conscript.animal != ItemResourceType.NONE)
             {
-                soldierData.modelData.riding = true;
+                var animalProperties = Resource.ItemPropertyColl.Get(conscript.animal);
+                if (animalProperties.Filter_IsRidingAnimal)
+                {
+                    soldierData.modelData.riding = true;
+                    soldierData.columnsDepth = animalProperties.soldierData.columnsDepth;
+                    soldierData.rowWidth = animalProperties.soldierData.rowWidth;
+                    soldierData.boundRadius = animalProperties.soldierData.boundRadius;
+                    soldierData.groupSpacing = animalProperties.soldierData.groupSpacing;
+                }
             }
             
             if (conscript.weapon == ItemResourceType.Pike)
@@ -317,6 +324,7 @@ namespace VikingEngine.DSSWars.Conscript
             soldierData.walkingSpeed = DssConst.Men_StandardShipSpeed;
 
             soldierData.modelScale = DssConst.Men_StandardModelScale * 6f;
+            soldierData.boundRadius = DssVar.StandardBoundRadius * 6f;
 
             soldierData.modelToShadowScale = new Vector3(0.5f, 1f, 0.8f);
             soldierData.basehealth = soldierData.basehealth * soldierData.rowWidth * soldierData.columnsDepth;

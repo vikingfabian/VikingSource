@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 {
@@ -47,6 +48,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         //public float upkeepPerSoldier = DssLib.SoldierDefaultUpkeep;
         public float copperUpkeepPerSoldier = 0;
         public int workForcePerUnit = 1;
+        public float boundRadius = DssVar.StandardBoundRadius;
         public float groupSpacing = DssVar.DefaultGroupSpacing;
         public Vector3 attackStart = new Vector3(DssConst.Men_StandardModelScale * 0.5f, DssConst.Men_StandardModelScale * 0.4f, DssConst.Men_StandardModelScale * 0.5f);
         public float groupSpacingRndOffset = DssVar.StandardBoundRadius * 0.3f;
@@ -142,6 +144,21 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
             {
                 return rowWidth * columnsDepth * workForcePerUnit;
             }
+        }
+
+        public void CavalrySetup()
+        {
+            rowWidth = 4;
+            columnsDepth = 3;
+            groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
+            boundRadius = DssVar.StandardBoundRadius * 1.4f;
+        }
+        public void ElephantSetup()
+        {
+            rowWidth = 3;
+            columnsDepth = 2;
+            groupSpacing = DssVar.DefaultGroupSpacing * 2.6f;
+            boundRadius = DssVar.StandardBoundRadius * 2.5f;
         }
 
         //public int Upkeep()

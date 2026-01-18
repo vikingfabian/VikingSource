@@ -166,7 +166,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (soldier.inAttackAnimation())
                 {
-                    model.Frame =soldier.SoldierProfile().attackFrame;
+                    model.Frame =CharacterModelBuilder.AttackFrame;
                 }
                 else
                 {
@@ -184,7 +184,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
 
 
-                    model.Frame = inBlinkFrame ? soldier.SoldierProfile().idleBlinkFrame : soldier.SoldierProfile().idleFrame;
+                    model.Frame = inBlinkFrame ? CharacterModelBuilder.IdleBlinkFrame : CharacterModelBuilder.IdleFrame;
                 }
 
                 WP.Rotation1DToQuaterion(model, soldier.rotation.Radians);

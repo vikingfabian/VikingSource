@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.GameObject
     {      
         public AbsWarShipBuilder(UnitBuildType shipUnitType) 
         {
-            boundRadius = DssVar.StandardBoundRadius * 6f;
+            //boundRadius = DssVar.StandardBoundRadius * 6f;
             
             this.unitBuildType = shipUnitType;
         }

@@ -130,7 +130,7 @@ namespace VikingEngine.DSSWars.GameObject
             this.gridPlacement = gridPlacement;
             myIndex = group.GetFaction_NoChecks().pickNextUnitId();
             //bound = new Physics.CircleBound(Vector2.Zero, SoldierProfile().boundRadius);
-            boundRadius = SoldierProfile().boundRadius;
+            boundRadius = soldierData.boundRadius;
 
             init(false);
             tilePos = tile;
@@ -257,7 +257,7 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public void init(bool asUpgrade)
         {
             health = soldierData.basehealth;
-            radius = Profile().boundRadius;
+            radius = soldierData.boundRadius;
 
             if (!asUpgrade)
             {

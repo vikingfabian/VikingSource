@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             unitBuildType = UnitBuildType.Conscript;
            
-            boundRadius = DssVar.StandardBoundRadius;
+            //boundRadius = DssVar.StandardBoundRadius;
             targetSpotRange = StandardTargetSpotRange;
         }
     }

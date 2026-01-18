@@ -20,7 +20,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             unitBuildType = UnitBuildType.ConscriptWarmachine;
             
-            boundRadius = DssVar.StandardBoundRadius * 2.2f;
+            //boundRadius = DssVar.StandardBoundRadius * 2.2f;
 
             //walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
             //ArmySpeedBonusLand = -0.5;
