@@ -24,7 +24,9 @@ namespace VikingEngine
         public const string Unknown = "Unknown";
         const string MaxTwoDecimalsFormat = "0.##";
         public const string TextFileEnding = ".txt";
-        public static readonly List<char> BreakPoints = new List<char> { ' ', '+', '-', '*', '/', '\\', '^' };
+        
+        public const char ZeroWidthSpaceChar = '\u200B';
+        public static readonly List<char> BreakPoints = new List<char> { ' ', '+', '-', '*', '/', '\\', '^', ZeroWidthSpaceChar };
         //const char NewLineChar1 = '\n';
         //const char NewLineChar2 = '\r';
         public static readonly string NewLine = Environment.NewLine;

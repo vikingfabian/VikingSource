@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VikingEngine.DSSWars.Map.Generate;
-using VikingEngine.PJ;
-using VikingEngine.ToGG.HeroQuest.Players.Ai;
+
 
 namespace VikingEngine.DSSWars.Presentation
 {
