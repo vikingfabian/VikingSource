@@ -53,6 +53,39 @@ namespace VikingEngine.DSSWars.Conscript
             }
         }
 
+        public ItemResourceType[] AvailableWagons()
+        {
+            switch (ItemPropertyColl.Get(animal).wagonPull)
+            {
+                default:
+                case WagonPull.None:
+                    return null;
+
+                case WagonPull.LightOnly:
+                    return ConscriptDataLib.VehicleTypesLight;
+
+                case WagonPull.All:
+                case WagonPull.Balcon:
+                    return ConscriptDataLib.VehicleTypes;
+            }
+        }
+
+        public ItemResourceType[] AvailableAnimalArmor()
+        {
+            switch (ItemPropertyColl.Get(animal).armorCarry)
+            {
+                default:
+                case ArmorCarry.None:
+                    return null;
+
+                case ArmorCarry.LightOnly:
+                    return ConscriptDataLib.MountArmorTypesLight;
+
+                case ArmorCarry.All:
+                    return ConscriptDataLib.MountArmorTypes;
+            }
+        }
+
         public int menCost()
         {
             SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()

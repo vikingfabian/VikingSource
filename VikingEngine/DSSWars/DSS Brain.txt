@@ -24,6 +24,7 @@ SOLDIER RECRUITING
 x More options in soldier conscript: man type, shield, animal and wagon.
 * Soldiers have gold upkeep, related to their training
 x -conscript ui
+* Extended recruiting to battle lab and god powers
 
 USER INTERFACE
 x Menu for cesspits

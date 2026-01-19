@@ -125,6 +125,8 @@ namespace VikingEngine.DSSWars.Resource
         public bool Filter_IsSiegeWeapon = false;
         public bool Filter_IsTwoHandWeapon = true;
         public bool Filter_IsRidingAnimal = false;
+        public WagonPull wagonPull = WagonPull.None;
+        public ArmorCarry armorCarry = ArmorCarry.None;
         public int cityResourceIndex;
         public int defaultStockPile = 100;
 
@@ -189,5 +191,20 @@ namespace VikingEngine.DSSWars.Resource
         Farm,
         Crafting,
         NUM
+    }
+
+    enum WagonPull
+    { 
+        None,
+        LightOnly,
+        All,
+        Balcon,
+    }
+
+    enum ArmorCarry
+    { 
+        None,
+        LightOnly,
+        All,
     }
 }

@@ -176,12 +176,18 @@ namespace VikingEngine.DSSWars.Resource
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HenPen));
 
             // --- Oxen ---
-            new ItemProperties(ItemResourceType.Oxen, CityResoureIndex.Oxen, DefaultWeight, Work.WorkPriorityType.SlaughterOxen, null, null, StorageType.AnimalStorage)
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OxenPen));
-
-            new ItemProperties(ItemResourceType.KineOxen, CityResoureIndex.KineOxen, DefaultWeight, Work.WorkPriorityType.SlaughterKineOxen, null, null, StorageType.AnimalStorage)
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.KineOxenPen));
-
+            {
+                var animal = new ItemProperties(ItemResourceType.Oxen, CityResoureIndex.Oxen, DefaultWeight, Work.WorkPriorityType.SlaughterOxen, null, null, StorageType.AnimalStorage);
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OxenPen));
+                animal.wagonPull = WagonPull.All;
+                animal.armorCarry = ArmorCarry.All;
+            }
+            {
+                var animal = new ItemProperties(ItemResourceType.KineOxen, CityResoureIndex.KineOxen, DefaultWeight, Work.WorkPriorityType.SlaughterKineOxen, null, null, StorageType.AnimalStorage);
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.KineOxenPen));
+                animal.wagonPull = WagonPull.All;
+                animal.armorCarry = ArmorCarry.All;
+            }
             // --- Dogs ---
             new ItemProperties(ItemResourceType.Dog, CityResoureIndex.Dog, DefaultWeight, Work.WorkPriorityType.NUM_NONE, null, null, StorageType.AnimalStorage)
                 .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.DogCage));
@@ -197,6 +203,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PonyPen));
                 animal.soldierData.CavalrySetup();
+                animal.wagonPull = WagonPull.LightOnly;
+                animal.armorCarry = ArmorCarry.All;
             }
 
             {
@@ -206,6 +214,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HorsePen));
                 animal.soldierData.CavalrySetup();
+                animal.wagonPull = WagonPull.All;
+                animal.armorCarry = ArmorCarry.All;
             }
 
             {
@@ -215,6 +225,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarHorsePen));
                 animal.soldierData.CavalrySetup();
+                animal.wagonPull = WagonPull.All;
+                animal.armorCarry = ArmorCarry.All;
             }
 
             {
@@ -224,6 +236,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.DraftHorsePen));
                 animal.soldierData.CavalrySetup();
+                animal.wagonPull = WagonPull.All;
+                animal.armorCarry = ArmorCarry.All;
             }
 
             // --- Pigs / Hogs ---
@@ -234,6 +248,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildPigPen));
                 animal.soldierData.CavalrySetup();
+                animal.wagonPull = WagonPull.LightOnly;
+                animal.armorCarry = ArmorCarry.All;
             }
 
             {
@@ -243,6 +259,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildHogPen));
                 animal.soldierData.CavalrySetup();
+                animal.wagonPull = WagonPull.LightOnly;
+                animal.armorCarry = ArmorCarry.All;
             }
 
             {
@@ -252,6 +270,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarHogPen));
                 animal.soldierData.CavalrySetup();
+                animal.wagonPull = WagonPull.LightOnly;
+                animal.armorCarry = ArmorCarry.All;
             }
 
             {
@@ -261,6 +281,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.StagHogPen));
                 animal.soldierData.CavalrySetup();
+                animal.wagonPull = WagonPull.All;
+                animal.armorCarry = ArmorCarry.All;
             }
 
             // --- Wolves ---
@@ -271,6 +293,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WolfCage));
                 animal.soldierData.CavalrySetup();
+                animal.wagonPull = WagonPull.LightOnly;
+                animal.armorCarry = ArmorCarry.LightOnly;
             }
 
             {
@@ -280,6 +304,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WargCage));
                 animal.soldierData.CavalrySetup();
+                animal.wagonPull = WagonPull.LightOnly;
+                animal.armorCarry = ArmorCarry.All;
             }
 
             {
@@ -289,6 +315,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.AlphaWargCage));
                 animal.soldierData.CavalrySetup();
+                animal.wagonPull = WagonPull.LightOnly;
+                animal.armorCarry = ArmorCarry.All;
             }
 
             // --- Cats ---
@@ -299,6 +327,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildCatCage));
                 animal.soldierData.CavalrySetup();
+                animal.wagonPull = WagonPull.LightOnly;
+                animal.armorCarry = ArmorCarry.LightOnly;
             }
 
             {
@@ -308,6 +338,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.LionCage));
                 animal.soldierData.CavalrySetup();
+                animal.wagonPull = WagonPull.LightOnly;
+                animal.armorCarry = ArmorCarry.All;
             }
 
             {
@@ -317,6 +349,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarLionCage));
                 animal.soldierData.CavalrySetup();
+                animal.wagonPull = WagonPull.LightOnly;
+                animal.armorCarry = ArmorCarry.All;
             }
 
             // --- Elephants ---
@@ -327,6 +361,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.ElephantCage));
                 animal.soldierData.ElephantSetup();
+                animal.wagonPull = WagonPull.Balcon;
+                animal.armorCarry = ArmorCarry.All;
             }
 
             {
@@ -336,6 +372,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarElephantCage));
                 animal.soldierData.ElephantSetup();
+                animal.wagonPull = WagonPull.Balcon;
+                animal.armorCarry = ArmorCarry.All;
             }
 
             {
@@ -345,6 +383,8 @@ namespace VikingEngine.DSSWars.Resource
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OliphantCage));
                 animal.soldierData.ElephantSetup();
+                animal.wagonPull = WagonPull.Balcon;
+                animal.armorCarry = ArmorCarry.All;
             }
 
 

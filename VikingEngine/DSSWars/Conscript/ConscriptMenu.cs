@@ -181,21 +181,10 @@ namespace VikingEngine.DSSWars.Conscript
                 HudLib.Label(content, DssRef.lang.Conscript_ArmorTitle);
                 content.newLine();
 
-                List<ItemResourceType> armorOptions = new List<ItemResourceType>
-                {
-                    ItemResourceType.NONE,
-                    ItemResourceType.PaddedArmor,
-                    ItemResourceType.HeavyPaddedArmor,
-                    ItemResourceType.BronzeArmor,
-                    ItemResourceType.IronArmor,
-                    ItemResourceType.HeavyIronArmor,
-                    ItemResourceType.LightPlateArmor,
-                    ItemResourceType.FullPlateArmor,
-                    ItemResourceType.MithrilArmor,
-                };
+                
 
 
-                foreach (var armorLvl in armorOptions)
+                foreach (var armorLvl in ConscriptDataLib.ArmorOptions)
                 {
                     var buttonContent = new List<AbsRichBoxMember>(3);
                     if (city.GetGroupedResource(armorLvl).amount >= menCostNext)

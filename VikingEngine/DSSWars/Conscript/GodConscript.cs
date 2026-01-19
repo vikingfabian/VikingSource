@@ -39,6 +39,14 @@ namespace VikingEngine.DSSWars.Conscript
 
             content.newParagraph();
 
+            foreach (var item in ConscriptDataLib.ArmorOptions)
+            {
+                IconName.Item(item, out var icon, out var name);
+                content.Add(new ArtToggle(item == BattleLabStorage.Singleton.setup.conscript.armorLevel, new List<AbsRichBoxMember> { new RbImage(icon) },
+                    new RbAction1Arg<ItemResourceType>(selectArmor, item, RbSoundType.Option), new RbTooltip_Text(name)));
+            }
+            content.newParagraph();
+
             var animals = ConscriptDataLib.AnimalTypes;
             foreach (var item in animals)
             {
@@ -49,14 +57,40 @@ namespace VikingEngine.DSSWars.Conscript
 
             content.newParagraph();
 
+            var animalArmors = BattleLabStorage.Singleton.setup.conscript.AvailableAnimalArmor();
+            if (animalArmors != null)
+            {
+                foreach (var item in animalArmors)
+                {
+                    IconName.Item(item, out var icon, out var name);
+                    content.Add(new ArtToggle(item == BattleLabStorage.Singleton.setup.conscript.mountArmor, new List<AbsRichBoxMember> { new RbImage(icon) },
+                        new RbAction1Arg<ItemResourceType>(selectAnimalArmor, item, RbSoundType.Option), new RbTooltip_Text(name)));
+                }
+
+                content.newParagraph();
+            }
+
+            var wagons = BattleLabStorage.Singleton.setup.conscript.AvailableWagons();
+            if (wagons != null)
+            {
+                foreach (var item in wagons)
+                {
+                    IconName.Item(item, out var icon, out var name);
+                    content.Add(new ArtToggle(item == BattleLabStorage.Singleton.setup.conscript.vehicle, new List<AbsRichBoxMember> { new RbImage(icon) },
+                        new RbAction1Arg<ItemResourceType>(selectVehicle, item, RbSoundType.Option), new RbTooltip_Text(name)));
+                }
+
+                content.newParagraph();
+            }
+
             content.Add(new ArtButton( RbButtonStyle.GodPower,new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_AddX, 1), HudLib.GodPower_Color) }, new RbAction1Arg<int>(addSoldier, 1), null, true));
             {
                 const int AddCount = 5;
-                content.Add(new ArtButton(  RbButtonStyle.GodPower,new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, AddCount), HudLib.GodPower_Color) }, new RbAction1Arg<int>(addSoldier, AddCount), null, true));
+                content.Add(new ArtButton(  RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, AddCount), HudLib.GodPower_Color) }, new RbAction1Arg<int>(addSoldier, AddCount), null, true));
             }
             {
                 const int AddCount = 20;
-                content.Add(new ArtButton( RbButtonStyle.GodPower,new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, AddCount), HudLib.GodPower_Color) }, new RbAction1Arg<int>(addSoldier, AddCount), null, true));
+                content.Add(new ArtButton( RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.Hud_XTimes, AddCount), HudLib.GodPower_Color) }, new RbAction1Arg<int>(addSoldier, AddCount), null, true));
             }
 
             void selectWeapon(ItemResourceType item)
@@ -67,9 +101,21 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 BattleLabStorage.Singleton.setup.conscript.shield = item;
             }
+            void selectArmor(ItemResourceType item)
+            {
+                BattleLabStorage.Singleton.setup.conscript.armorLevel = item;
+            }
             void selectAnimal(ItemResourceType item)
             {
                 BattleLabStorage.Singleton.setup.conscript.animal = item;
+            }
+            void selectAnimalArmor(ItemResourceType item)
+            {
+                BattleLabStorage.Singleton.setup.conscript.mountArmor = item;
+            }
+            void selectVehicle(ItemResourceType item)
+            {
+                BattleLabStorage.Singleton.setup.conscript.vehicle = item;
             }
         }
     }

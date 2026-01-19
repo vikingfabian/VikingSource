@@ -559,35 +559,35 @@ namespace VikingEngine.DSSWars
 
                 case ItemResourceType.MountPaddedArmor:
                     itemIcon = SpriteName.WarsResource_MountPaddedArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_PaddedArmor);
+                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_PaddedArmor.ToLower());
                     break;
                 case ItemResourceType.MountHeavyPaddedArmor:
                     itemIcon = SpriteName.WarsResource_MountHeavyPaddedArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_HeavyPaddedArmor);
+                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_HeavyPaddedArmor.ToLower());
                     break;
                 case ItemResourceType.MountBronzeArmor:
                     itemIcon = SpriteName.WarsResource_MountBronzeArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_BronzeArmor);
+                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_BronzeArmor.ToLower());
                     break;
                 case ItemResourceType.MountIronArmor:
                     itemIcon = SpriteName.WarsResource_MountIronArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_IronArmor);
+                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_IronArmor.ToLower());
                     break;
                 case ItemResourceType.MountHeavyIronArmor:
                     itemIcon = SpriteName.WarsResource_MountHeavyIronArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_HeavyIronArmor);
+                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_HeavyIronArmor.ToLower());
                     break;
                 case ItemResourceType.MountLightPlateArmor:
                     itemIcon = SpriteName.WarsResource_MountLightPlateArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_LightPlateArmor);
+                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_LightPlateArmor.ToLower());
                     break;
                 case ItemResourceType.MountFullPlateArmor:
                     itemIcon = SpriteName.WarsResource_MountFullPlateArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_FullPlateArmor);
+                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_FullPlateArmor.ToLower());
                     break;
                 case ItemResourceType.MountMithrilArmor:
                     itemIcon = SpriteName.WarsResource_MountMithrilArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_MithrilArmor);
+                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_MithrilArmor.ToLower());
                     break;
 
                 // --- Currency ---

@@ -86,6 +86,19 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.NobelMen,
         };
 
+        public static readonly List<ItemResourceType> ArmorOptions = new List<ItemResourceType>
+        {
+            ItemResourceType.NONE,
+            ItemResourceType.PaddedArmor,
+            ItemResourceType.HeavyPaddedArmor,
+            ItemResourceType.BronzeArmor,
+            ItemResourceType.IronArmor,
+            ItemResourceType.HeavyIronArmor,
+            ItemResourceType.LightPlateArmor,
+            ItemResourceType.FullPlateArmor,
+            ItemResourceType.MithrilArmor,
+        };
+
         public static readonly ItemResourceType[] AnimalTypes = {
             ItemResourceType.NONE,
             ItemResourceType.Pig,
@@ -118,6 +131,12 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.Oliphant,
         };
 
+        public static readonly ItemResourceType[] MountArmorTypesLight = {
+            ItemResourceType.NONE,
+            ItemResourceType.MountPaddedArmor,
+            ItemResourceType.MountHeavyPaddedArmor,
+        };
+
         public static readonly ItemResourceType[] MountArmorTypes = {
             ItemResourceType.NONE,
             ItemResourceType.MountBronzeArmor,
@@ -128,6 +147,12 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.MountLightPlateArmor,
             ItemResourceType.MountFullPlateArmor,
             ItemResourceType.MountMithrilArmor,
+        };
+
+
+        public static readonly ItemResourceType[] VehicleTypesLight = {
+            ItemResourceType.NONE,
+            ItemResourceType.Wagon2Wheel,
         };
 
         public static readonly ItemResourceType[] VehicleTypes = {
