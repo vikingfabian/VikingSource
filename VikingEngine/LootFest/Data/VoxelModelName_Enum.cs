@@ -101,6 +101,7 @@ namespace VikingEngine.LootFest
         boulder_proj,
         Pig,
         Hen,
+        dog1,
         Pheasant,
         little_kingman,
         little_kingorc,

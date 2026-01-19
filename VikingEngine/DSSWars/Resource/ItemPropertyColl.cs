@@ -189,12 +189,32 @@ namespace VikingEngine.DSSWars.Resource
                 animal.armorCarry = ArmorCarry.All;
             }
             // --- Dogs ---
-            new ItemProperties(ItemResourceType.Dog, CityResoureIndex.Dog, DefaultWeight, Work.WorkPriorityType.NUM_NONE, null, null, StorageType.AnimalStorage)
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.DogCage));
-
-            new ItemProperties(ItemResourceType.Hound, CityResoureIndex.Hound, DefaultWeight, Work.WorkPriorityType.NUM_NONE, null, null, StorageType.AnimalStorage)
-                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HoundCage));
-
+            {
+                var animal = new ItemProperties(ItemResourceType.Dog, CityResoureIndex.Dog, DefaultWeight, Work.WorkPriorityType.NUM_NONE, null, null, StorageType.AnimalStorage);
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.DogCage));
+                ref var soldier = ref animal.soldierData;
+                soldier.attackDamage = DssConst.WeaponDamage_Dog;
+                soldier.attackDamageStructure = soldier.attackDamage / 4;
+                soldier.attackDamageSea = soldier.attackDamage / 2;
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = 0.03f;
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+                soldier.factionColoredModel = false;
+                soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 2f;
+            }
+            {
+                var animal = new ItemProperties(ItemResourceType.Hound, CityResoureIndex.Hound, DefaultWeight, Work.WorkPriorityType.NUM_NONE, null, null, StorageType.AnimalStorage);
+                animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HoundCage));
+                ref var soldier = ref animal.soldierData;
+                soldier.attackDamage = DssConst.WeaponDamage_Hound;
+                soldier.attackDamageStructure = soldier.attackDamage / 4;
+                soldier.attackDamageSea = soldier.attackDamage / 2;
+                soldier.mainAttack = AttackType.Melee;
+                soldier.attackRange = 0.03f;                
+                soldier.attackTimePlusCoolDown = DssConst.Soldier_StandardAttackAndCoolDownTime;
+                soldier.factionColoredModel = false;
+                soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.7f;
+            }
             // --- Horses ---
             {
                 var animal = new ItemProperties(ItemResourceType.Pony, CityResoureIndex.Pony, DefaultWeight, Work.WorkPriorityType.SlaughterPony, null, null, StorageType.AnimalStorage)

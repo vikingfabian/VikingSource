@@ -413,52 +413,109 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual protected void createAllSoldiers(UnitBuildType type, int count, bool createModels)
         {
-            AbsSoldierBuilder typeProfile = DssRef.units.Get(type);
+            AbsSoldierBuilder builder = DssRef.units.Get(type);
 
             soldiers = new SpottedArray<AbsSoldierUnit>(count +1);
             soldierData = soldierConscript.init();
 
-            if (typeProfile.IsShip())
+            int xStart;
+
+            if (builder.IsShip())
             {
                 soldierConscript.shipSetup(ref soldierData);
+                xStart = 0;
+                create(0, 0, false, builder, ref soldierData);
             }
+            else
+            {
+                xStart = -soldierData.rowWidth / 2;
+                IntVector2 bannerPos = bannerManPos();
 
-            int xStart = -soldierData.rowWidth / 2;
-            IntVector2 bannerPos = bannerManPos();
+                int columnDepth = MathExt.Div_Ceiling(count, soldierData.rowWidth);
 
-            int columnDepth = MathExt.Div_Ceiling(count, soldierData.rowWidth);
 
-            for (int x = 0; x < soldierData.rowWidth; ++x)
-            {               
-                for (int y = 0; y < columnDepth; ++y)
+                switch (soldierConscript.conscript.animal)
                 {
-                    AbsSoldierUnit unit;
-                    //if (bannerPos.Equals(x, y))
-                    //{
-                    //    var bannerData = soldierConscript.bannermanSetup(soldierData);
-                    //    unit = createUnit(DssRef.units.bannerman, new IntVector2(x + xStart, y), tilePos, ref bannerData, createModels);
-                    //}
-                    //else
-                    //{
-                        unit = createUnit(typeProfile, new IntVector2(x + xStart, y), bannerPos.Equals(x, y), tilePos, ref soldierData, createModels);
-                    //}
+                    default:
+                        for (int y = 0; y < columnDepth; ++y)
+                        {
+                            for (int x = 0; x < soldierData.rowWidth; ++x)
+                            {
+                                if (!create(x, y, bannerPos.Equals(x, y), builder, ref soldierData))
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                        break;
 
-                    if (unit == null)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        unit.firstUpdate();
-                    }
+                    case ItemResourceType.Dog:
+                    case ItemResourceType.Hound:
+                        int houndColumnExMax = soldierData.columnsDepth / 2;
+                        
 
-                    if (--count <= 0)
-                    {
-                        return;
-                    }
+                        for (int y = houndColumnExMax; y < columnDepth; ++y)
+                        {
+                            for (int x = 0; x < soldierData.rowWidth; ++x)
+                            {
+                                if (!create(x, y, bannerPos.Equals(x, y), builder, ref soldierData))
+                                {
+                                    return;
+                                }
+                            }
+                        }
+
+                        AbsSoldierBuilder houndbuilder = DssRef.units.Get(UnitBuildType.ConscriptHound);
+                        var houndSoldierData = ItemPropertyColl.Get(soldierConscript.conscript.animal).soldierData;
+                        for (int y = 0; y < houndColumnExMax; ++y)
+                        {
+                            for (int x = 0; x < soldierData.rowWidth; ++x)
+                            {
+                                if (!create(x, y, false, houndbuilder, ref houndSoldierData))
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                        break;
                 }
+                
             }
 
+            bool create(int x, int y, bool banner, AbsSoldierBuilder builder, ref SoldierData soldierData)
+            {
+                AbsSoldierUnit unit = createUnit(builder, new IntVector2(x + xStart, y),
+                        banner, tilePos, ref soldierData, createModels);
+
+                if (unit == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    unit.firstUpdate();                    
+                }
+
+                return --count > 0;
+            }
+
+
+            //AbsSoldierUnit unit = createUnit(typeProfile, new IntVector2(x + xStart, y), 
+            //    bannerPos.Equals(x, y), tilePos, ref soldierData, createModels);
+
+            //if (unit == null)
+            //{
+            //    return;
+            //}
+            //else
+            //{
+            //    unit.firstUpdate();
+            //}
+
+            //if (--count <= 0)
+            //{
+            //    return;
+            //}
         }
 
         void deleteAllSoldiers(DeleteReason reason)

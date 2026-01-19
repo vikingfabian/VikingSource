@@ -222,6 +222,7 @@ namespace VikingEngine.DSSWars
 
             loadVoxelModel(VoxelModelName.Pig, false);
             loadVoxelModel(VoxelModelName.Hen, false);
+            loadVoxelModel(VoxelModelName.dog1, false);
             loadVoxelModel(VoxelModelName.Pheasant, false);
             loadVoxelModel(VoxelModelName.Arrow, true);
             loadVoxelModel(VoxelModelName.slingstone, true);

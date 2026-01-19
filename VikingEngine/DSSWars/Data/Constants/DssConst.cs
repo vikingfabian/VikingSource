@@ -104,6 +104,9 @@ namespace VikingEngine.DSSWars
         public static int WeaponDamage_SiegeCannonIron = 600;
         public static int WeaponDamage_ManCannonIron = 300;
 
+        public static int WeaponDamage_Dog = 80;
+        public static int WeaponDamage_Hound = 150;
+
         public static float AntiCavalryBonusMultiply = 2;
         public static float ArrowWeaknessBonusMultiply = 1.5f;
 

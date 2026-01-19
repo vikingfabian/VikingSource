@@ -2641,6 +2641,9 @@
 #begin VoxelModel/LfWars/decor_statue.vox
 /copy:VoxelModel/LfWars/decor_statue.vox
 
+#begin VoxelModel/LfWars/dog1.vox
+/copy:VoxelModel/LfWars/dog1.vox
+
 #begin VoxelModel/LfWars/Elephant1.vox
 /copy:VoxelModel/LfWars/Elephant1.vox
 

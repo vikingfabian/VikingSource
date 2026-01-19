@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.ToGG.HeroQuest.Gadgets;
+using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -90,6 +91,13 @@ namespace VikingEngine.DSSWars.GameObject
             }
             model.position = soldier.position;
 
+            createShadow(soldier);
+
+            selectionArea = new Circle(Vector2.Zero, 1.2f);
+        }
+
+        protected void createShadow(AbsSoldierUnit soldier)
+        {
             if (!Ref.gamesett.modelShadow)
             {
                 shadowPlane = new Graphics.Mesh(LoadedMesh.plane, soldier.position,
@@ -97,13 +105,6 @@ namespace VikingEngine.DSSWars.GameObject
                      SpriteName.LittleUnitShadow, Color.Black);
                 shadowPlane.Opacity = 0.5f;
             }
-
-
-            
-
-            
-            selectionArea = new Circle(Vector2.Zero, 1.2f);
-
         }
 
         override public void DeleteMe()

@@ -34,6 +34,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             add(new WarmachineProfile());
             add(new CavalryBuilder());
+            add(new WagonBuilder());
+            add(new HoundBuilder());
 
             //add(new DarkLordBuilder());
             //add(new DarkLordWarshipData());
@@ -288,12 +290,13 @@ namespace VikingEngine.DSSWars.GameObject
         BannerMan = 2,
         ConscriptCavalry = 3,
         ConscriptWagon = 4,
-        ConscriptWarmachine = 5,
+        ConscriptHound = 5,
+        ConscriptWarmachine = 6,
         //DarkLordWarship = 6,
         //DarkLord = 7,
 
-        CityGuard = 6,
-        CityGuardWarship = 7,
+        CityGuard = 7,
+        CityGuardWarship = 8,
         //Soldier =1,
         //Sailor =2,
         //Folkman =3,
