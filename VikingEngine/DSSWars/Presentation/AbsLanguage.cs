@@ -220,7 +220,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Lobby_MapSizeDesc { get; }
         public abstract string Lobby_ExitGame { get; }
 
-        public abstract string Lobby_GameVersion { get; }
+        //public abstract string Lobby_GameVersion { get; }
 
         public abstract string Player_DefaultName { get; }
 

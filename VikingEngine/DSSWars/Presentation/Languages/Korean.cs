@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Game name and version number
         /// </summary>
-        public override string Lobby_GameVersion => "DSS War Party - 버전 {0}";
+        //public override string Lobby_GameVersion => "DSS War Party - 버전 {0}";
 
         public override string FlagEditor_Description => "자신의 깃발을 꾸미고 병사의 색상을 선택하세요.";
 

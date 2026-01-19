@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 游戏名称和版本号
         /// </summary>
-        public override string Lobby_GameVersion => "DSS 战争派对 - 版本 {0}";
+        //public override string Lobby_GameVersion => "DSS 战争派对 - 版本 {0}";
 
         public override string FlagEditor_Description => "绘制你的旗帜并为你的士兵选择颜色。";
 

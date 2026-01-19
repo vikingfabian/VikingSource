@@ -1236,6 +1236,8 @@ namespace VikingEngine
         Turkish,
         Italian,
         Korean,
+        Polish,
+        Thai,
     }
 
     enum ThreeOptions

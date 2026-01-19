@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Nombre del juego y número de versión
         /// </summary>
-        public override string Lobby_GameVersion => "DSS war party - ver {0}";
+        //public override string Lobby_GameVersion => "DSS war party - ver {0}";
 
         public override string FlagEditor_Description => "Pinta tu bandera y selecciona colores para tus soldados.";
 

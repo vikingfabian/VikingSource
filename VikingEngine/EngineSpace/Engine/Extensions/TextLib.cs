@@ -36,6 +36,10 @@ namespace VikingEngine
         public static NTStringBuilder TextLine = new NTStringBuilder();
         static NTStringBuilder test = new NTStringBuilder();
 
+        public static string ThaiConv(string text)
+        {
+            return text.Replace('|', ZeroWidthSpaceChar);
+        }
         public static int GetDeterministicHashCode(this string str)
         {
             unchecked

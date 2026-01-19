@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// ゲーム名とバージョン番号
         /// </summary>
-        public override string Lobby_GameVersion => "DSS ウォーパーティー - ver {0}";
+        //public override string Lobby_GameVersion => "DSS ウォーパーティー - ver {0}";
 
         /// <summary>
         /// フラッグを塗り、軍隊の色を選択します。

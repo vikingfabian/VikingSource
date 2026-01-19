@@ -7,9 +7,6 @@ namespace VikingEngine.DSSWars.Presentation
     partial class English : AbsLanguage
     {
 
-        //##Settings
-        
-        
         //## Spring update
 
         public override string InputAction_SkipAutomated => "Skip automated";
@@ -248,7 +245,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Game name and version number
         /// </summary>
-        public override string Lobby_GameVersion => "DSS war party - ver {0}";
+        //public override string Lobby_GameVersion => "DSS war party - ver {0}";
 
         public override string FlagEditor_Description => "Paint your flag and select colors for your army men.";
 
