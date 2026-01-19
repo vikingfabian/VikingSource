@@ -481,6 +481,11 @@ namespace VikingEngine.DSSWars.GameObject
                     barracks.writeGameState(w);
                 }
 
+                if (myIndex == 153)
+                {
+                    lib.DoNothing();
+                }
+
                 w.Write((ushort)deliveryServices.Count);
                 foreach (var delivery in deliveryServices)
                 {
@@ -622,7 +627,11 @@ namespace VikingEngine.DSSWars.GameObject
                     conscriptBuildings.Add(barrack);
                 }
             }
-
+            
+            if (myIndex == 153)
+            {
+                lib.DoNothing();
+            }
             deliveryServices.Clear();
             int deliveryServicesCount = r.ReadUInt16();
             for (int i = 0; i < deliveryServicesCount; i++)
@@ -3989,16 +3998,18 @@ namespace VikingEngine.DSSWars.GameObject
             if (DssRef.world != null)
             {
                 DssRef.world.BordersUpdated = true;
-                
-                haltConscriptAndDelivery();
-                
+
+                if (!convert)
+                {
+                    haltConscriptAndDelivery();
+                }
+
                 Ref.update.AddSyncAction(new SyncAction(() =>
                 {
                     if (overviewModel != null)
                     {
                         createOverViewModel();
                     }
-
 
                     if (convert)
                     {
