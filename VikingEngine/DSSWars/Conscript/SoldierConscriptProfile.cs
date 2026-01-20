@@ -186,7 +186,11 @@ namespace VikingEngine.DSSWars.Conscript
 
             soldierData.modelData.specialization = conscript.specialization;
 
-            if (conscript.animal != ItemResourceType.NONE)
+            if (conscript.vehicle != ItemResourceType.NONE)
+            {
+                soldierData.WagonSetup();
+            }
+            else if (conscript.animal != ItemResourceType.NONE)
             {
                 var animalProperties = Resource.ItemPropertyColl.Get(conscript.animal);
                 if (animalProperties.Filter_IsRidingAnimal)

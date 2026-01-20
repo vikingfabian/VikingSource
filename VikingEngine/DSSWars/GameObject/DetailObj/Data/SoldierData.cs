@@ -161,6 +161,15 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
             boundRadius = DssVar.StandardBoundRadius * 2.5f;
         }
 
+        public void WagonSetup()
+        {
+            rowWidth = 2;
+            columnsDepth = 1;
+            groupSpacing = DssVar.DefaultGroupSpacing * 2.5f;
+            boundRadius = DssVar.StandardBoundRadius * 2f;
+            upkeepMultiplier *= 4;
+        }
+
         //public int Upkeep()
         //{
         //    return Convert.ToInt32(rowWidth * columnsDepth * upkeepPerSoldier);
