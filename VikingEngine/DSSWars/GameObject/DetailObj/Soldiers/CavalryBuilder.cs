@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
+using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -62,19 +63,72 @@ namespace VikingEngine.DSSWars.GameObject
         public CavalryModel(AbsSoldierUnit soldier)
            : base(soldier)
         {
+            AnimalModel(soldier.group.soldierConscript.conscript.animal, out VoxelModelName modelName, out float modelScale, out walkingAnimation, out float riderY);
+            animalmodel = DssRef.models.ModelInstance_drawbatch(modelName, modelScale);
+            //switch (soldier.group.soldierConscript.conscript.animal)
+            //{
+            //    default:
+            //        animalmodel = DssRef.models.ModelInstance_drawbatch(Ref.rnd.Chance(0.2) ? VoxelModelName.horse_white : VoxelModelName.horse_brown, DssConst.Men_StandardModelScale * 1.1f);
+            //        walkingAnimation = new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames * 2f);
+            //        riderY = 0.018f;
+            //        break;
+                
+            //    case Resource.ItemResourceType.WildPig:
+            //    case Resource.ItemResourceType.WildHog:
+            //    case Resource.ItemResourceType.StagHog:
+            //        animalmodel = DssRef.models.ModelInstance_drawbatch(VoxelModelName.hog1, DssConst.Men_StandardModelScale * 1.1f);
+            //        walkingAnimation = new WalkingAnimation(1, 5, WalkingAnimation.StandardMoveFrames * 2f);
+            //        riderY = 0.013f;
+            //        break;
 
-            switch (soldier.group.soldierConscript.conscript.animal)
+            //    case Resource.ItemResourceType.Wolf:
+            //    case Resource.ItemResourceType.Warg:
+            //    case Resource.ItemResourceType.AlphaWarg:
+            //        animalmodel = DssRef.models.ModelInstance_drawbatch(VoxelModelName.wolf1, DssConst.Men_StandardModelScale * 1.1f);
+            //        walkingAnimation = new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
+            //        riderY = 0.018f;
+            //        break;
+
+            //    case Resource.ItemResourceType.WildCat:
+            //    case Resource.ItemResourceType.Lion:
+            //    case Resource.ItemResourceType.WarLion:
+            //        animalmodel = DssRef.models.ModelInstance_drawbatch(VoxelModelName.lion1, DssConst.Men_StandardModelScale * 1.1f);
+            //        walkingAnimation = new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
+            //        riderY = 0.018f;
+            //        break;
+
+            //    case Resource.ItemResourceType.Elephant:
+            //    case Resource.ItemResourceType.WarElephant:
+            //    case Resource.ItemResourceType.Oliphant:
+            //        float scale = DssConst.Men_StandardModelScale * 1.9f;
+            //        animalmodel = DssRef.models.ModelInstance_drawbatch(VoxelModelName.Elephant1, scale);
+            //        walkingAnimation = new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames * 2);
+            //        riderY = 0.38f * scale;
+            //        break;
+            //}
+
+            var soldierProfile = soldier.Profile();
+            walkingAnimation.attackframe = CharacterModelBuilder.AttackFrame;
+            walkingAnimation.idleframe = CharacterModelBuilder.IdleFrame;
+            walkingAnimation.idleblinkframe = CharacterModelBuilder.IdleBlinkFrame;
+        }
+
+        public static void AnimalModel(Resource.ItemResourceType animal, out VoxelModelName modelName, out float modelScale, out WalkingAnimation walkingAnimation, out float riderY)
+        {
+            switch (animal)
             {
                 default:
-                    animalmodel = DssRef.models.ModelInstance_drawbatch(Ref.rnd.Chance(0.2) ? VoxelModelName.horse_white : VoxelModelName.horse_brown, DssConst.Men_StandardModelScale * 1.1f);
+                    modelName = Ref.rnd.Chance(0.2) ? VoxelModelName.horse_white : VoxelModelName.horse_brown;
+                    modelScale = DssConst.Men_StandardModelScale * 1.1f;
                     walkingAnimation = new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames * 2f);
                     riderY = 0.018f;
                     break;
-                
+
                 case Resource.ItemResourceType.WildPig:
                 case Resource.ItemResourceType.WildHog:
                 case Resource.ItemResourceType.StagHog:
-                    animalmodel = DssRef.models.ModelInstance_drawbatch(VoxelModelName.hog1, DssConst.Men_StandardModelScale * 1.1f);
+                    modelName = VoxelModelName.hog1;
+                    modelScale = DssConst.Men_StandardModelScale * 1.1f;
                     walkingAnimation = new WalkingAnimation(1, 5, WalkingAnimation.StandardMoveFrames * 2f);
                     riderY = 0.013f;
                     break;
@@ -82,7 +136,8 @@ namespace VikingEngine.DSSWars.GameObject
                 case Resource.ItemResourceType.Wolf:
                 case Resource.ItemResourceType.Warg:
                 case Resource.ItemResourceType.AlphaWarg:
-                    animalmodel = DssRef.models.ModelInstance_drawbatch(VoxelModelName.wolf1, DssConst.Men_StandardModelScale * 1.1f);
+                    modelName = VoxelModelName.wolf1;
+                    modelScale = DssConst.Men_StandardModelScale * 1.1f;
                     walkingAnimation = new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
                     riderY = 0.018f;
                     break;
@@ -90,7 +145,8 @@ namespace VikingEngine.DSSWars.GameObject
                 case Resource.ItemResourceType.WildCat:
                 case Resource.ItemResourceType.Lion:
                 case Resource.ItemResourceType.WarLion:
-                    animalmodel = DssRef.models.ModelInstance_drawbatch(VoxelModelName.lion1, DssConst.Men_StandardModelScale * 1.1f);
+                    modelName = VoxelModelName.lion1;
+                    modelScale = DssConst.Men_StandardModelScale * 1.1f;
                     walkingAnimation = new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
                     riderY = 0.018f;
                     break;
@@ -98,17 +154,12 @@ namespace VikingEngine.DSSWars.GameObject
                 case Resource.ItemResourceType.Elephant:
                 case Resource.ItemResourceType.WarElephant:
                 case Resource.ItemResourceType.Oliphant:
-                    float scale = DssConst.Men_StandardModelScale * 1.9f;
-                    animalmodel = DssRef.models.ModelInstance_drawbatch(VoxelModelName.Elephant1, scale);
+                    modelScale = DssConst.Men_StandardModelScale * 1.9f;
+                    modelName = VoxelModelName.Elephant1;
                     walkingAnimation = new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames * 2);
-                    riderY = 0.38f * scale;
+                    riderY = 0.38f * modelScale;
                     break;
             }
-
-            var soldierProfile = soldier.Profile();
-            walkingAnimation.attackframe = CharacterModelBuilder.AttackFrame;
-            walkingAnimation.idleframe = CharacterModelBuilder.IdleFrame;
-            walkingAnimation.idleblinkframe = CharacterModelBuilder.IdleBlinkFrame;
         }
 
         public override void update(AbsSoldierUnit soldier)

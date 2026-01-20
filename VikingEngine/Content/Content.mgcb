@@ -2758,6 +2758,9 @@
 #begin VoxelModel/LfWars/unclaimed_icon.vox
 /copy:VoxelModel/LfWars/unclaimed_icon.vox
 
+#begin VoxelModel/LfWars/wagon_light.vox
+/copy:VoxelModel/LfWars/wagon_light.vox
+
 #begin VoxelModel/LfWars/war_archer_i2.vox
 /copy:VoxelModel/LfWars/war_archer_i2.vox
 

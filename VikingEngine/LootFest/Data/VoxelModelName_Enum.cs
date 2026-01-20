@@ -265,6 +265,8 @@ namespace VikingEngine.LootFest
         hog1, wolf1,
         lion1, Elephant1,
         
+        wagon_light,
+
         stupid_board,
         stupid_gate,
         little_flag,

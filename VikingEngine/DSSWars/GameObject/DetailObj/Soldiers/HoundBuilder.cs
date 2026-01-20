@@ -36,10 +36,8 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
     class HoundModel : AbsDetailUnitAdvancedModel
     {
         protected WalkingAnimation walkingAnimation;
-        //Graphics.VoxelModelInstance animalmodel;
-        //float riderY;
+        
         public HoundModel(AbsSoldierUnit soldier)
-           //: base(soldier)
         {
 
             switch (soldier.group.soldierConscript.conscript.animal)
@@ -47,7 +45,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                 default:
                     model = DssRef.models.ModelInstance_drawbatch(VoxelModelName.dog1, DssConst.Men_StandardModelScale * 0.6f);
                     walkingAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1.1f);
-                    //riderY = 0.018f;
+                    
                     break;
 
             }
@@ -64,12 +62,10 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
         {
             base.update(soldier);
             updateAnimation(soldier);
-            //model.position.Y += riderY;
         }
 
         protected void updateAnimation(AbsSoldierUnit soldier)
-        {
-            
+        {           
 
             if (soldier.state.walking)
             {
@@ -91,11 +87,5 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
             WP.Rotation1DToQuaterion(model, soldier.rotation.Radians);
         }
-
-        //public override void DeleteMe()
-        //{
-        //    base.DeleteMe();
-            
-        //}
     }
 }
