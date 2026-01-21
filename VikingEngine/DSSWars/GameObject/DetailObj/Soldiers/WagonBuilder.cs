@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
     class WagonRiderModel : AbsDetailUnitAdvancedModel
     {
-        int firstUpdate = 2;
+        int firstUpdate = 10;
         float wagonGoalDistance;
         Vector3 wagonPos;
         float wagonY;
@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
             wagonGoalDistance = modelScale * 0.5f;
 
-            wagonPos = VectorExt.AddXZ(soldier.position, soldier.rotation.Direction(-wagonGoalDistance));
+            wagonPos = VectorExt.AddXZ(soldier.position, -soldier.rotation.Direction(wagonGoalDistance));
             wagonY = 0.02f * wagonScale;
 
             var faction = soldier.GetFaction_NoChecks();
@@ -111,15 +111,24 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                 animalmodel_right.position = animalmodel_left.Rotation.TranslateAlongAxis(
                     rightAnimalPosDiff, center);
 
+                if (firstUpdate > 0)
+                {
+                    wagonPos = animalmodel_left.Rotation.TranslateAlongAxis(
+                        new Vector3(0, 0, -wagonGoalDistance), center);
+                    model.Rotation = animalmodel_left.Rotation;
+                }
+                else
+                {
+                    Vector3 offset = wagonPos - center;
+                    offset.Y = 0;
 
-                Vector3 offset = wagonPos - center;
-                offset.Y = 0;
-
-                offset.Normalize();
-                wagonPos = offset * wagonGoalDistance + center;
-                wagonPos.Y = center.Y + wagonY;
+                    offset.Normalize();
+                    wagonPos = offset * wagonGoalDistance + center;
+                    wagonPos.Y = center.Y + wagonY;
+                    WP.Rotation1DToQuaterion(model, lib.V3XZToAngle(-offset));
+                }
                 model.position = wagonPos;
-                WP.Rotation1DToQuaterion(model, lib.V3XZToAngle(-offset));
+                
                 soldierLeft.position = model.Rotation.TranslateAlongAxis(leftSoldierPosDiff, wagonPos);
                 soldierRight.position = model.Rotation.TranslateAlongAxis(rightSoldierPosDiff, wagonPos);
                 soldierLeft.Rotation = model.Rotation;

@@ -115,6 +115,9 @@ https://www.shadertoy.com/view/4ltcRB
 Most of what I use can be found here: 
 https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping 
 
+Pixel perfect font:
+https://github.com/FontStashSharp/FontStashSharp/wiki/Using-FontStashSharp-in-MonoGame-or-FNA
+
 #Export
 cd VikingEngine
 dotnet publish -c Release -r win-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained

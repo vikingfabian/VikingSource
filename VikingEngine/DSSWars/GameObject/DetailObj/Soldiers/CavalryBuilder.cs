@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.GameObject
         public CavalryModel(AbsSoldierUnit soldier)
            : base(soldier)
         {
-            AnimalModel(soldier.group.soldierConscript.conscript.animal, out VoxelModelName modelName, out float modelScale, out walkingAnimation, out float riderY);
+            AnimalModel(soldier.group.soldierConscript.conscript.animal, out VoxelModelName modelName, out float modelScale, out walkingAnimation, out riderY);
             animalmodel = DssRef.models.ModelInstance_drawbatch(modelName, modelScale);
             //switch (soldier.group.soldierConscript.conscript.animal)
             //{
@@ -120,16 +120,17 @@ namespace VikingEngine.DSSWars.GameObject
                 default:
                     modelName = Ref.rnd.Chance(0.2) ? VoxelModelName.horse_white : VoxelModelName.horse_brown;
                     modelScale = DssConst.Men_StandardModelScale * 1.1f;
-                    walkingAnimation = new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames * 2f);
+                    walkingAnimation = new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames * 1f);
                     riderY = 0.018f;
                     break;
 
                 case Resource.ItemResourceType.WildPig:
                 case Resource.ItemResourceType.WildHog:
+                case Resource.ItemResourceType.WarHog:
                 case Resource.ItemResourceType.StagHog:
                     modelName = VoxelModelName.hog1;
                     modelScale = DssConst.Men_StandardModelScale * 1.1f;
-                    walkingAnimation = new WalkingAnimation(1, 5, WalkingAnimation.StandardMoveFrames * 2f);
+                    walkingAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1f);
                     riderY = 0.013f;
                     break;
 
