@@ -285,7 +285,7 @@ namespace VikingEngine.Input
             }
             else
             {
-                returnEvent.Invoke(result, 0);
+                returnEvent.Invoke(result, tag);
             }
         }
     }
