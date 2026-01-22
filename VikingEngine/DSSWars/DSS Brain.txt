@@ -1,17 +1,5 @@
 ﻿Change log:
-* Voxel editor: name layers
-* Added another 25% increase of orchard upkeep/gain, but slightly cheaper in water use
-* adapted casual mode to orchards
-* reduced default work prio for fuel, food and farm fuel
-* adjusted tag placements on map units
-* Fixed: load crash if going from first version directly to this
-
-TUTORIAL
-* Tutorial will cancel settler start
-* added info "The work is automatic"
-* removed all mentions of raw food
-* moved educate burners mission to be part of iron tutorial 
-* advisor start with settler mission + includes city hall upgrading, if only one city
+* 
 
 
 #Event timers (are slightly random)#
