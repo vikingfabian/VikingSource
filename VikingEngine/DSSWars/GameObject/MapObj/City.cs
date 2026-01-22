@@ -1012,8 +1012,10 @@ namespace VikingEngine.DSSWars.GameObject
                 read(CityResoureIndex.CopperOre);
                 read(CityResoureIndex.LeadOre);
                 read(CityResoureIndex.SilverOre);
-                read(CityResoureIndex.GoldOre);
-
+                if (subversion >= 70)
+                {
+                    read(CityResoureIndex.GoldOre);
+                }
                 // Refined metals and materials
                 read(CityResoureIndex.iron);
                 read(CityResoureIndex.Tin);
@@ -1031,7 +1033,10 @@ namespace VikingEngine.DSSWars.GameObject
                 read(CityResoureIndex.Mithril);
 
                 // Tools / construction
-                read(CityResoureIndex.Palisade);
+                if (subversion >= 49)
+                {
+                    read(CityResoureIndex.Palisade);
+                }
                 read(CityResoureIndex.Toolkit);
                 read(CityResoureIndex.Wagon2Wheel);
                 read(CityResoureIndex.Wagon4Wheel);
@@ -1328,7 +1333,7 @@ namespace VikingEngine.DSSWars.GameObject
                                             ++totalWorkerHutAndLevelCount;
 
                                             //Place farm curlutures
-                                            const int CulturesPerFarm = 9;
+                                            const int CulturesPerFarm = 10;
                                             int cultureCount = 0;
 
                                             ForXYEdgeLoop farmLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(subPos, 1));

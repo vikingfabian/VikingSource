@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Interface
     class CityTagMapMember
     {
         const float BgScale = 0.8f;
-        static readonly float BgHScale = BgHScale * 0.5f;
+        static readonly float BgHalfScale = BgScale * 0.5f;
 
         //Vector2 bgSize;
 
@@ -110,17 +110,19 @@ namespace VikingEngine.DSSWars.Interface
             Vector3 wp = mapObj.position;
             
             
-            if (mapObj.gameobjectType() == GameObjectType.Army)
-            {
+            //if (mapObj.gameobjectType() == GameObjectType.Army)
+            //{
                 
-            }
-            else
-            {
-                wp.X += 0.2f;
-                wp.Z += 0.2f;
-            }
+            //}
+            //else
+            //{
+            //    wp.X += 0.4f;
+            //    wp.Z += 0.4f;
+            //}
+            wp.X += 0.02f;
+            wp.Z += -0.2f;
 
-            position = player.playerData.view.From3DToScreenPos(wp) + Engine.Screen.IconSizeV2  * BgHScale;
+            position = player.playerData.view.From3DToScreenPos(wp) + Engine.Screen.IconSizeV2  * BgHalfScale;
 
             bool viewBounds = DssRef.state.localPlayers.Count > 1;
             

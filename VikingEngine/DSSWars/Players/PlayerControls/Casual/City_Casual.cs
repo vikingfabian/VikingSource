@@ -39,7 +39,7 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case CasualBuildType.WorkerHut:
                     queuePlaceBuilding(BuildAndExpandType.WorkerHut);
-                    queuePlaceBuilding(BuildAndExpandType.WheatFarm);
+                    queuePlaceBuilding(BuildAndExpandType.OrchardApple);
                     queuePlaceBuilding(BuildAndExpandType.LinenFarm);
                     break;
                 case CasualBuildType.Barracks:
