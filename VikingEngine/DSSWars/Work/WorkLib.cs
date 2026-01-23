@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.Work
         public static WorkExperienceType WorkToExperienceType(WorkType work, int workSubType, byte bonus, IntVector2 subTileEnd, City city, 
             out ExperienceLevel requiredLvl, out int requiredXp, out int maxXp)
         {
-            WorkExperienceType gainXp = WorkExperienceType.NONE;
+            WorkExperienceType gainXpType = WorkExperienceType.NONE;
             maxXp = int.MaxValue;
             requiredXp = 0;
             requiredLvl = ExperienceLevel.Beginner_1;
@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.Work
                             case TerrainSubFoilType.TreeSoft:
                             case TerrainSubFoilType.TreeHard:
                             case TerrainSubFoilType.DryWood:
-                                gainXp = WorkExperienceType.WoodWork;
+                                gainXpType = WorkExperienceType.WoodWork;
                                 break;
 
                             case TerrainSubFoilType.TreeApple:
@@ -77,17 +77,17 @@ namespace VikingEngine.DSSWars.Work
                             case TerrainSubFoilType.LinenFarm:
                             case TerrainSubFoilType.RapeSeedFarm:
                             case TerrainSubFoilType.HempFarm:
-                                gainXp = WorkExperienceType.Farm;
+                                gainXpType = WorkExperienceType.Farm;
                                 break;
 
 
                             case TerrainSubFoilType.StoneBlock:
                             case TerrainSubFoilType.Stones:
-                                gainXp = WorkExperienceType.StoneCutter;
+                                gainXpType = WorkExperienceType.StoneCutter;
                                 break;
 
                             case TerrainSubFoilType.BogIron:
-                                gainXp = WorkExperienceType.Mining;
+                                gainXpType = WorkExperienceType.Mining;
                                 break;
 
                             
@@ -100,39 +100,39 @@ namespace VikingEngine.DSSWars.Work
                 //    break;
 
                 case WorkType.Plant:
-                    gainXp = WorkExperienceType.Farm;
+                    gainXpType = WorkExperienceType.Farm;
                     break;
 
                 case WorkType.PickUpProduce:
-                    gainXp = WorkExperienceType.AnimalCare;
+                    gainXpType = WorkExperienceType.AnimalCare;
                     break;
 
                 case WorkType.DropOff:
                 case WorkType.PickUpResource:
-                    gainXp = WorkExperienceType.Transport;
+                    gainXpType = WorkExperienceType.Transport;
                     break;
 
                 case WorkType.Mine:
-                    gainXp = WorkExperienceType.Mining;
+                    gainXpType = WorkExperienceType.Mining;
                     break;
 
                 case WorkType.Craft:
                     ItemResourceType item = (ItemResourceType)workSubType;
                     ItemPropertyColl.Blueprint(item, out CraftBlueprint bp1, out var bp2);
-                    gainXp = bp1.experienceType;
+                    gainXpType = bp1.experienceType;
                     requiredLvl = bp1.levelRequirement;
                     requiredXp = DssConst.WorkXpToLevel * (int)requiredLvl;
                     break;
 
                 case WorkType.Build:
                     var build = BuildLib.BuildOptions[workSubType];
-                    gainXp = build.experienceType();
+                    gainXpType = build.experienceType();
                     requiredLvl = build.blueprint.levelRequirement;
                     requiredXp = DssConst.WorkXpToLevel * (int)requiredLvl;
                     break;
 
                 case WorkType.School:
-                    gainXp = (WorkExperienceType)workSubType;
+                    gainXpType = (WorkExperienceType)workSubType;
                     maxXp = bonus * DssConst.WorkXpToLevel;
                     //lock (city.schoolBuildings)
                     //{
@@ -145,7 +145,7 @@ namespace VikingEngine.DSSWars.Work
                     break;
             }
 
-            return gainXp;
+            return gainXpType;
         }
 
         

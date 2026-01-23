@@ -9,8 +9,9 @@ namespace VikingEngine.DSSWars.Presentation
 {
     abstract partial class AbsLanguage
     {
-        
-        //Spring patch
+        public abstract string Help_Work_Automatic { get; }
+        public abstract string Tutorial_SecondCity { get; }
+//Spring patch
 
         public abstract string InputAction_SkipAutomated { get; }
 

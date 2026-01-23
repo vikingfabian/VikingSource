@@ -9,8 +9,9 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Portuguese : AbsLanguage
     {
-        
 
+        public override string Help_Work_Automatic=> "O trabalho é feito automaticamente";
+        public override string Tutorial_SecondCity => "Obtenha uma segunda cidade";
         //## Spring update
 
         public override string InputAction_SkipAutomated => "Pular automáticos";

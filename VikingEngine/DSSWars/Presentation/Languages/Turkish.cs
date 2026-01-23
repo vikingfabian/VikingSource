@@ -12,8 +12,9 @@ namespace VikingEngine.DSSWars.Presentation
     //Licenesed 2025 Sep 11, "Astro: you can remix our work freely, any platform"
     partial class Turkish : AbsLanguage
     {
-        
 
+        public override string Help_Work_Automatic => "Çalışma otomatiktir";
+        public override string Tutorial_SecondCity => "İkinci bir şehir ele geçir";
         //## Spring update
 
         public override string InputAction_SkipAutomated => "Otomatikleri atla";

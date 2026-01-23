@@ -5,6 +5,8 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Polish : AbsLanguage
     {
+        public override string Help_Work_Automatic => "Praca odbywa się automatycznie";
+        public override string Tutorial_SecondCity => "Zdobądź drugie miasto";
         public override string InputAction_SkipAutomated => "Pomiń automatyzację";
 
         public override string Resource_WaterReason => "Woda ogranicza liczbę jednostek, które możesz utrzymać, oraz wielkość Twojej produkcji";

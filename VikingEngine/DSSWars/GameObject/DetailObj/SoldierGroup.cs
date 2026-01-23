@@ -1120,14 +1120,14 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (faction != args.player.faction &&
                 args.player.gameControls.map.selection.obj != null &&
-                args.player.gameControls.map.selection.obj.IsSoldiers())
+                args.player.gameControls.map.selection.obj.IsSoldiers() &&
+                !DssRef.diplomacy.InWar(faction, args.player.faction))
             {
                 args.content.Add(new RbImage(SpriteName.RedErrorCross));
                 args.content.hspace();
                 args.content.Add(new RbText(DssRef.lang.Battle_DeclarWarReminder, HudLib.NotAvailableColor));
                 args.content.Add(new RbSeperationLine());
             }
-
 
             args.content.Add(new RbBeginTitle(tooltipOrGroup? 2 : 1));
             args.content.Add(faction.FlagTextureToHud());
@@ -2220,7 +2220,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float strengthValue()
         {
-            return AllUnits.GroupStrengh(soldierData.UnitCount(), ref soldierData, !isShip);
+            
+            return AllUnits.GroupStrengh(soldierCount, ref soldierData, !isShip);
             
         }
 

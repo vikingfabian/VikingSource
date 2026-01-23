@@ -8,7 +8,8 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Russian : AbsLanguage
     {
-        
+        public override string Help_Work_Automatic => "Работа выполняется автоматически";
+        public override string Tutorial_SecondCity => "Захватите второй город";
         //## Spring update
 
         public override string InputAction_SkipAutomated => "Пропустить автоматику";

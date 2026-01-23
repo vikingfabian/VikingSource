@@ -13,7 +13,6 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
-        public string Help_Work_Automatic => "The work is automatic";
-        public string Tutorial_SecondCity => "Gain a second city";
+        
     }
 }

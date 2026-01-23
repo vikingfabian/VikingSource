@@ -32,6 +32,8 @@ Translate all strings to French.
 Use an accessable language, that doesnt use very niche words, so the translation feels natural and player-friendly.
 The game is a strategy wargame, with medieval and low fantasy theme.
 Where English is used in gaming, use a “hybrid” translation.
+For Thai, use a pipe (|) between words, example: "สวัสดี|ตอน|เช้า"
+
 
 https://discord.com/verification
 

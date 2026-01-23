@@ -8,6 +8,8 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Thai : AbsLanguage
     {
+        public override string Help_Work_Automatic => TextLib.ThaiConv("การ|ทำ|งาน|เป็น|ไป|โดย|อัตโนมัติ");
+        public override string Tutorial_SecondCity => TextLib.ThaiConv("ครอบ|ครอง|เมือง|ที่|สอง");
         public override string InputAction_SkipAutomated => TextLib.ThaiConv("ข้าม|อัตโนมัติ");
 
         public override string Resource_WaterReason => TextLib.ThaiConv("น้ำ|จะ|จำกัด|จำนวน|ยูนิต|ที่|คุณ|รอง|รับ|ได้|และ|จำกัด|ขนาด|การ|ผลิต|ของ|คุณ");

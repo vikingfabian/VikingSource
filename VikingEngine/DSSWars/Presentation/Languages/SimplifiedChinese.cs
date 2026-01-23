@@ -8,7 +8,8 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class SimplifiedChinese : AbsLanguage
     {
-        
+        public override string Help_Work_Automatic => "工作将自动进行";
+        public override string Tutorial_SecondCity => "获得第二座城市";
 
         //## Spring update
 

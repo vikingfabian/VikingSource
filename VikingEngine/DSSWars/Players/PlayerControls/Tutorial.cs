@@ -494,7 +494,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     content.newParagraph();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(DssRef.todoLang.Help_Work_Automatic, HudLib.InfoYellow_VeryLight));
+                    content.Add(new RbText(DssRef.lang.Help_Work_Automatic, HudLib.InfoYellow_VeryLight));
                     break;
 
                 case TutorialMission.CasualBuildBarracks:
@@ -619,7 +619,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case TutorialMission.SecondCity:
                     content.iconicontext(HudLib.CheckImage(secondCity_conscriptTab.Value1), SpriteName.WarsHudTabSelected, string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title));
                     content.iconicontext(HudLib.CheckImage(secondCity_buySettler.Value1), SpriteName.WarsSettler, string.Format(DssRef.lang.HudAction_BuyItem, DssRef.lang.UnitType_Settler));
-                    content.iconicontext(HudLib.CheckImage(secondCity_getCity.Value1), SpriteName.WarsTutorialCity, DssRef.todoLang.Tutorial_SecondCity);
+                    content.iconicontext(HudLib.CheckImage(secondCity_getCity.Value1), SpriteName.WarsTutorialCity, DssRef.lang.Tutorial_SecondCity);
 
                     break;
                                     
