@@ -22,14 +22,19 @@ namespace VikingEngine.CardDesign
         const string Menu_Image = "image";
         const string Menu_Cost = "cost";
         const string Menu_UnitProperties = "u properties";
+        const string Menu_Trigger = "trigger";
+        public const string Menu_Action = "action";
 
         public RichMenu menu;
         EditorBackground bg;
         EditorState editorState = EditorState.EditGame;
         CreatureCard card = new CreatureCard();
+        int editTriggerIndex = -1;
+        public int editActionIndex = -1;
         public CardDesignPlayState()
             : base()
         {
+            CardRef.playState = this;
             DSSWars.HudLib.Init();
             bg = new EditorBackground();
             openMenu();
@@ -39,7 +44,6 @@ namespace VikingEngine.CardDesign
         {
             if (menu == null)
             {
-
                 var objectMenuArea = Screen.SafeArea;
                 objectMenuArea.Width = (int)(Engine.Screen.IconSize * 9f);
 
@@ -116,9 +120,17 @@ namespace VikingEngine.CardDesign
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Add trigger") },
                 new RbAction(() => { card.eventTriggers.Add(new Trigger()); })));
             content.newLine();
+
             for (int i = 0; i < card.eventTriggers.Count; i++)
-            { 
-                
+            {
+                card.eventTriggers[i].ToMenu(content);
+                content.space();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
+                    new RbAction1Arg<int>((int index) => { editTriggerIndex = index; menu.menuStack.Add(Menu_Trigger); }, i)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("X") },
+                    new RbAction1Arg<int>((int index) => { card.eventTriggers.RemoveAt(index); }, i)));
+
+                content.newLine();
             }
 
             Refresh(content);
@@ -172,7 +184,6 @@ namespace VikingEngine.CardDesign
                 IconName.Resource(resource, out var icon, out var name);
                 content.newLine();
                 content.Add(new RbImage(icon));
-                //content.hspace();
                 content.Add(new RbText(name));
                 content.Add(new RbTab(0.3f));
                 RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Const.PositiveBounds, 1),
@@ -190,7 +201,24 @@ namespace VikingEngine.CardDesign
             card.unitProperties.ToEditor(content, menu);
             Refresh(content);
         }
-        
+
+        void triggerMenu()
+        {
+            RichBoxContent content = new RichBoxContent();
+            DSSWars.HudLib.returnButton(content, menu, true, null);
+            content.h1("Trigger", DSSWars.HudLib.TitleColor_Head);
+            card.eventTriggers[editTriggerIndex].ToEditor(content, menu);
+            Refresh(content);
+        }
+
+        void triggerActionMenu()
+        {
+            RichBoxContent content = new RichBoxContent();
+            DSSWars.HudLib.returnButton(content, menu, true, null);
+            content.h1("Action", DSSWars.HudLib.TitleColor_Head);
+            card.eventTriggers[editTriggerIndex].actionList[editActionIndex].ToEditor(content, menu);
+            Refresh(content);
+        }
 
         public void Refresh(RichBoxContent content)
         {
@@ -237,6 +265,12 @@ namespace VikingEngine.CardDesign
                             break;
                         case Menu_UnitProperties:
                             unitPropertiesMenu();
+                            break;
+                        case Menu_Trigger: 
+                            triggerMenu();
+                            break;
+                        case Menu_Action:
+                            triggerActionMenu();
                             break;
                     }
                     break;
