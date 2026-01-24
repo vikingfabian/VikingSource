@@ -703,7 +703,7 @@ namespace VikingEngine.DSSWars.Delivery
             set(currentStatus);
         }
 
-        int MaxProperty(bool _set, int value)
+        int MaxProperty(object tag, bool _set, int value)
         {
             var currentStatus = get();
             if (_set)
@@ -713,7 +713,7 @@ namespace VikingEngine.DSSWars.Delivery
             }
             return currentStatus.recieverMax;
         }
-        int MinProperty(bool _set, int value)
+        int MinProperty(object tag, bool _set, int value)
         {
             var currentStatus = get();
             if (_set)

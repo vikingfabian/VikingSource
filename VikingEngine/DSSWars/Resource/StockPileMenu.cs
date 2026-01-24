@@ -259,11 +259,11 @@ namespace VikingEngine.DSSWars.Resource
 
         void stockPileEdit(RichBoxContent content, ItemResourceType item, GroupedResource res)
         {
-            IntGetSet property;
+            IntGetSetTag property;
 
             if (city != null)
             {
-                property = (bool set, int value) =>
+                property = (object tag, bool set, int value) =>
                 {
 
                     var res = city.GetGroupedResource(item);
@@ -277,7 +277,7 @@ namespace VikingEngine.DSSWars.Resource
             }
             else
             {
-                property = (bool set, int value) =>
+                property = (object tag, bool set, int value) =>
                 {
                     ref var res = ref faction.GetRefResourceOverview(item);
                     if (set)

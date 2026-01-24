@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.Data
         public bool setting_QuickMatch_TwoTeams = false;
 
 
-        public int TechMultiProperty(bool set, int value)
+        public int TechMultiProperty(object tag, bool set, int value)
         {
             if (set)
             {
