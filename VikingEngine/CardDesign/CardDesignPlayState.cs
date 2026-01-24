@@ -11,13 +11,17 @@ using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.Input;
 using VikingEngine.ToGG.HeroQuest.QueAction;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.CardDesign
 {
     class CardDesignPlayState : Engine.GameState
     {
+        const string Menu_Image = "image";
         const string Menu_Cost = "cost";
+        const string Menu_UnitProperties = "u properties";
 
         public RichMenu menu;
         EditorBackground bg;
@@ -50,7 +54,7 @@ namespace VikingEngine.CardDesign
         void mainMenu()
         {
             RichBoxContent content = new RichBoxContent();
-            content.h2("Card Games - Editor");
+            content.h1("Card Games - Editor", DSSWars.HudLib.TitleColor_Head);
 
             content.newLine();
             DSSWars.HudLib.Label(content, "Add card");
@@ -69,46 +73,124 @@ namespace VikingEngine.CardDesign
         void createCardMenu()
         {
             RichBoxContent content = new RichBoxContent();
-            content.h2("Creature");
+            DSSWars.HudLib.returnButton(content, menu, true, null);
+
+            content.h1("Creature", DSSWars.HudLib.TitleColor_Head);
+            content.h2(card.guid.ToString(), Color.DarkGray);
+
+            content.newParagraph();
+            RbText name;
+            if (string.IsNullOrEmpty(card.name))
+            {
+                name = new RbText("Name", Color.Gray);
+            }
+            else
+            {
+                name = new RbText(card.name);
+            }
+            content.Add(new RbButton(new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.InterfaceTextInput),
+                new RbSpace(),
+                name }, new RbAction(beginEditName), null, true, Color.White));
+
+            content.newLine();
+            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbImage(card.image), new RbSpace(), new RbText("Image") },
+                new RbAction(() => { menu.menuStack.Add(Menu_Image); })));
 
             content.newLine();
             DSSWars.HudLib.Label(content, "Cost");
-
+            content.space();
+            card.cost.ToMenu(content);
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
                 new RbAction(() => { menu.menuStack.Add(Menu_Cost); })));
 
+            content.newLine();
+            DSSWars.HudLib.Label(content, "Properties");
+            content.space();
+            card.unitProperties.ToMenu(content);
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
+                new RbAction(() => { menu.menuStack.Add(Menu_UnitProperties); })));
+
+            content.newParagraph();
+            
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Add trigger") },
+                new RbAction(() => { card.eventTriggers.Add(new Trigger()); })));
+            content.newLine();
+            for (int i = 0; i < card.eventTriggers.Count; i++)
+            { 
+                
+            }
 
             Refresh(content);
         }
+        public void beginEditName()
+        {
+            new TextInputState(card.name, nameEditEvent, null);
+        }
+        void nameEditEvent(string result, object tag)
+        {
+            card.name = result;
+            menu.needRefresh = true;
+        }
+        void imageOptions()
+        {
+            RichBoxContent content = new RichBoxContent();
+            DSSWars.HudLib.returnButton(content, menu, true, null);
 
+            content.Add(new RichBoxScale(2f));
+            content.newParagraph();
+            for (SpriteName creature = SpriteName.CardCreatureImageStart; creature < SpriteName.CardCreatureImageEnd; creature++)
+            {
+                option(creature);
+            }
+            content.newLine();
+            for (SpriteName spell = SpriteName.CardSpellImageStart; spell < SpriteName.CardSpellImageEnd; spell++)
+            {
+                option(spell);
+            }
+
+            void option(SpriteName sprite)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(sprite) },
+                    new RbAction1Arg<SpriteName>(selectImage, sprite)));
+            }
+            Refresh(content);
+        }
+
+        void selectImage(SpriteName sprite)
+        { 
+            card.image = sprite;
+            menu.menuBack();
+        }
         void costMenu()
         {
             RichBoxContent content = new RichBoxContent();
             DSSWars.HudLib.returnButton(content, menu, true, null);
-            content.h2("Cost");
+            content.h1("Cost", DSSWars.HudLib.TitleColor_Head);
             for (ResourceType resource = 0; resource < ResourceType.NUM_NONE; resource++)
             {
                 IconName.Resource(resource, out var icon, out var name);
                 content.newLine();
                 content.Add(new RbImage(icon));
-                content.hspace();
+                //content.hspace();
                 content.Add(new RbText(name));
                 content.Add(new RbTab(0.3f));
-                RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Resources.CostBounds, 1),
-                            SeedProperty, false);
+                RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Const.PositiveBounds, 1),
+                            card.CostProperty, false, resource);
             }
 
             Refresh(content);
         }
 
-        int SeedProperty(bool set, int value)
+        void unitPropertiesMenu()
         {
-            if (set)
-            {
-                card.resources.mana = value;
-            }
-            return card.resources.mana;
+            RichBoxContent content = new RichBoxContent();
+            DSSWars.HudLib.returnButton(content, menu, true, null);
+            content.h1("Properties", DSSWars.HudLib.TitleColor_Head);
+            card.unitProperties.ToEditor(content, menu);
+            Refresh(content);
         }
+        
 
         public void Refresh(RichBoxContent content)
         {
@@ -147,8 +229,14 @@ namespace VikingEngine.CardDesign
                         default:
                             createCardMenu();
                             break;
+                        case Menu_Image:
+                            imageOptions();
+                            break;
                         case Menu_Cost:
                             costMenu();
+                            break;
+                        case Menu_UnitProperties:
+                            unitPropertiesMenu();
                             break;
                     }
                     break;

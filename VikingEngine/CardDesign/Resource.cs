@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.CardDesign
 {
     struct Resources
     {
-        public static readonly Range CostBounds = new Range(0, MaxValue);
-        public const int MaxValue = 999999;
+        
 
         public int mana;
         public int redMana;
@@ -58,7 +58,7 @@ namespace VikingEngine.CardDesign
         public void Set(ResourceType type, int value)
         {
             // Clamp the value to ensure it stays within bounds
-            int clampedValue = Math.Clamp(value, -MaxValue, MaxValue);
+            int clampedValue = Math.Clamp(value, -Const.MaxValue, Const.MaxValue);
 
             switch (type)
             {
@@ -90,6 +90,50 @@ namespace VikingEngine.CardDesign
 
             int current = Get(type);
             Set(type, current + add);
+        }
+
+        /// <summary>
+        /// Returns true if any resource field has a non-zero value.
+        /// </summary>
+        public bool HasValue
+        {
+            get
+            {
+                return mana != 0 ||
+                       redMana != 0 ||
+                       greenMana != 0 ||
+                       blueMana != 0 ||
+                       yellowMana != 0 ||
+                       whiteMana != 0 ||
+                       blackMana != 0 ||
+                       wildMana != 0 ||
+                       actionPoint != 0 ||
+                       coin != 0 ||
+                       victoryPoint != 0;
+            }
+        }
+
+        public void ToMenu(RichBoxContent content)
+        {
+            if (HasValue)
+            {
+                for (ResourceType type = 0; type < ResourceType.NUM_NONE; ++type)
+                {
+                    int value = Get(type);
+                    if (value != 0)
+                    {
+                        IconName.Resource(type, out var icon, out _);
+                        content.Add(new RbText(value.ToString()));
+                        content.hspace();
+                        content.Add(new RbImage(icon));
+                        content.space(2);
+                    }
+                }
+            }
+            else
+            {
+                content.Add(new RbText("None"));
+            }
         }
     }
 
