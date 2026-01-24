@@ -127,9 +127,10 @@ namespace VikingEngine.DSSWars.GameObject
                 setDetailLevel(true);
             }
 
-            if (tArmy.GetFaction_NoChecks().player.IsLocalPlayer())
+            var player = tArmy.GetPlayer();
+            if (player != null && player.IsLocalPlayer())
             {
-                tArmy.GetFaction_NoChecks().player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
+                player.GetLocalPlayer().statistics.SoldiersRecruited += soldierCount;
             }
         }
 
@@ -1119,14 +1120,14 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (faction != args.player.faction &&
                 args.player.gameControls.map.selection.obj != null &&
-                args.player.gameControls.map.selection.obj.IsSoldiers())
+                args.player.gameControls.map.selection.obj.IsSoldiers() &&
+                !DssRef.diplomacy.InWar(faction, args.player.faction))
             {
                 args.content.Add(new RbImage(SpriteName.RedErrorCross));
                 args.content.hspace();
                 args.content.Add(new RbText(DssRef.lang.Battle_DeclarWarReminder, HudLib.NotAvailableColor));
                 args.content.Add(new RbSeperationLine());
             }
-
 
             args.content.Add(new RbBeginTitle(tooltipOrGroup? 2 : 1));
             args.content.Add(faction.FlagTextureToHud());
@@ -1919,48 +1920,47 @@ namespace VikingEngine.DSSWars.GameObject
 
             void pathTowardsPosition(Vector3 goalWp)
             {
-                if (goalWp.X <= 0)
+                if (DssRef.world.unitBounds.IntersectPoint(position.X, position.Z) &&
+                    DssRef.world.unitBounds.IntersectPoint(goalWp.X, goalWp.Z))
                 {
-                    return;
-                }
-                
-                tilePos = WP.ToTilePos(position);
-                setGroundY();
-                groupToGroupCollsionUpate_async(pathThreadIndex);
+                    tilePos = WP.ToTilePos(position);
+                    setGroundY();
+                    groupToGroupCollsionUpate_async(pathThreadIndex);
 
-                const float DetailMaxLength = 3.5f;
-                Vector3 diff = goalWp - position;
-                float l = VectorExt.PlaneXZLength(diff);
-                IntVector2 goalSubTile;
-                bool isTravelNode = false;
-                if (l > DetailMaxLength)
-                {
-                    if (path == null)
+                    const float DetailMaxLength = 3.5f;
+                    Vector3 diff = goalWp - position;
+                    float l = VectorExt.PlaneXZLength(diff);
+                    IntVector2 goalSubTile;
+                    bool isTravelNode = false;
+                    if (l > DetailMaxLength)
                     {
-                        pathCalulate(pathThreadIndex, goalWp);
-                    }
+                        if (path == null)
+                        {
+                            pathCalulate(pathThreadIndex, goalWp);
+                        }
 
-                    //pick three tiles ahead
-                    var path_sp = path;
-                    if (path_sp != null)
-                    {
-                        IntVector2 aheadPathTile = path_sp.getNodeAhead(3, tilePos, out isTravelNode);
-                        goalSubTile = WP.ToSubTilePos_Centered(aheadPathTile);
+                        //pick three tiles ahead
+                        var path_sp = path;
+                        if (path_sp != null)
+                        {
+                            IntVector2 aheadPathTile = path_sp.getNodeAhead(3, tilePos, out isTravelNode);
+                            goalSubTile = WP.ToSubTilePos_Centered(aheadPathTile);
+                        }
+                        else
+                        {
+                            return;
+                        }
                     }
                     else
                     {
-                        return;
+                        goalSubTile = WP.ToSubTilePos(goalWp);
                     }
-                }
-                else
-                {
-                    goalSubTile = WP.ToSubTilePos(goalWp);
-                }
 
-                if (l >= WorldData.SubTileWidth &&
-                    (detailPath == null || detailPath.goal != goalSubTile))
-                {
-                    pathCalulate_detail(goalSubTile, isTravelNode, pathThreadIndex);
+                    if (l >= WorldData.SubTileWidth &&
+                        (detailPath == null || detailPath.goal != goalSubTile))
+                    {
+                        pathCalulate_detail(goalSubTile, isTravelNode, pathThreadIndex);
+                    }
                 }
             }
         }
@@ -2220,7 +2220,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public float strengthValue()
         {
-            return AllUnits.GroupStrengh(soldierData.UnitCount(), ref soldierData, !isShip);
+            
+            return AllUnits.GroupStrengh(soldierCount, ref soldierData, !isShip);
             
         }
 

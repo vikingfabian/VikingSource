@@ -56,6 +56,19 @@ namespace VikingEngine.DSSWars.Resource
         //    }
 
         //}
+        public UseResource GetResourceCost(ItemResourceType item)
+        {
+            foreach (var r in resources)
+            {
+                if (r.type == item)
+                {
+                    return r;
+                }
+            }
+
+            return UseResource.Empty;
+        }
+
         public bool available(City city)
         {
             foreach (var r in resources)
@@ -482,6 +495,8 @@ namespace VikingEngine.DSSWars.Resource
 
     struct UseResource
     {
+        public static readonly UseResource Empty = new UseResource(ItemResourceType.NONE, 0);
+
         public ItemResourceType type;
         public int amount;
 

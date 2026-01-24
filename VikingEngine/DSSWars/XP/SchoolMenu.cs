@@ -167,15 +167,19 @@ namespace VikingEngine.DSSWars.XP
                 for (int i = 0; i < city.schoolBuildings.Count; ++i)
                 {
                     var status = city.schoolBuildings[i];
-                    if (count == 1)
+
+                    if (status.learnExperience != WorkExperienceType.NONE)
                     {
-                        status.que++;
+                        if (count == 1)
+                        {
+                            status.que++;
+                        }
+                        else
+                        {
+                            status.que = count;
+                        }
+                        city.schoolBuildings[i] = status;
                     }
-                    else
-                    {
-                        status.que = count;
-                    }
-                    city.schoolBuildings[i] = status;
                 }
             }
         }

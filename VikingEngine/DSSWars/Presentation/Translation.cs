@@ -23,9 +23,11 @@ namespace VikingEngine.DSSWars.Presentation
                 LanguageType.Spanish,
                 LanguageType.Portuguese,
                 LanguageType.Italian,
+                LanguageType.Polish,
                 LanguageType.Turkish,
                 LanguageType.Russian,
                 LanguageType.Chinese,
+                LanguageType.Thai,
                 LanguageType.Korean,
                 LanguageType.Japanese,              
                 
@@ -46,11 +48,17 @@ namespace VikingEngine.DSSWars.Presentation
                 case LanguageType.German:
                     return SpriteName.LangButton_German;
 
+                case LanguageType.Polish:
+                    return SpriteName.LangButton_Polish;
+
                 case LanguageType.Chinese:
                     return SpriteName.LangButton_Chinese;
 
                 case LanguageType.Japanese:
                     return SpriteName.LangButton_Japanese;
+
+                case LanguageType.Thai:
+                    return SpriteName.LangButton_Thai;
 
                 case LanguageType.Korean:
                     return SpriteName.LangButton_Korean;
@@ -145,9 +153,26 @@ namespace VikingEngine.DSSWars.Presentation
                     }
                     break;
 
+                case LanguageType.Thai:
+                    DssRef.lang = new Thai();
+                    Ref.langOpt = new OptionsLanguage_Thai();
+                    LoadContent.setFontLanguage(FontLanguage.Thai);
+
+                    if (onChange)
+                    {
+                        Ref.gamesett.UiScale = Math.Max(Ref.gamesett.UiScale, 1.1f);
+                    }
+                    break;
+
                 case LanguageType.German:
                     DssRef.lang = new German();
                     Ref.langOpt = new OptionsLanguage_German();
+                    LoadContent.setFontLanguage(FontLanguage.Western);
+                    break;
+
+                case LanguageType.Polish:
+                    DssRef.lang = new Polish();
+                    Ref.langOpt = new OptionsLanguage_Polish();
                     LoadContent.setFontLanguage(FontLanguage.Western);
                     break;
 

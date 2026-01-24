@@ -32,17 +32,9 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
-using VikingEngine.LootFest;
-using VikingEngine.LootFest.Data;
-using VikingEngine.LootFest.GO.Characters.Monster3;
-using VikingEngine.LootFest.GO.WeaponAttack;
 using VikingEngine.Network;
-using VikingEngine.PJ;
-using VikingEngine.PJ.CarBall;
-using VikingEngine.PJ.Strategy;
 using VikingEngine.Sound;
 using VikingEngine.Timer;
-using VikingEngine.ToGG.Commander.UnitsData;
 
 namespace VikingEngine.DSSWars
 {
@@ -1450,6 +1442,10 @@ namespace VikingEngine.DSSWars
                         {
                             if (DssRef.storage.gameRuleset.factionStartSize != size)
                             {
+                                if (size == FactionStartSize.Settler)
+                                {
+                                    DssRef.storage.runTutorial = false;
+                                }
                                 DssRef.storage.gameRuleset.factionStartSize = size;
                                 DssRef.storage.Save(null);
                                 underMenu.CloseDropDown();
@@ -1548,6 +1544,11 @@ namespace VikingEngine.DSSWars
                 if (set)
                 {
                     DssRef.storage.runTutorial = value;
+                    if (value && DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+                    {
+                        DssRef.storage.gameRuleset.factionStartSize = FactionStartSize.OneCity;
+                        restartBackgroundLoading();
+                    }
 
                     DssRef.storage.Save(null);
                 }

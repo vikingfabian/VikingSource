@@ -33,6 +33,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float strengthValue=-1;
         public IntVector2 tilePos;
         public TimeStamp lastNetUpdate = new TimeStamp();
+        public int previousIncome_copp = 0;
         public Money money = new Money(0);
 
         public AbsMapObject()

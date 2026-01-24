@@ -90,6 +90,7 @@ namespace VikingEngine.DSSWars.Resource
             consumed = 0;
         }
 
+        public int Change => prevProduced - prevConsumed;
         
     }
 }

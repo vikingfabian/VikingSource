@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars.Delivery
                     break;
             }
             w.Write(idAndPosition);
-            w.Write((byte)que);
+            w.Write(Bound.Byte(que));
 
             w.Write((byte)level);
             

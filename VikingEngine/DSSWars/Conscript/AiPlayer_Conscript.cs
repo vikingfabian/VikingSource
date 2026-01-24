@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.Players
             barracksCount = 0;
             barracksType = BuildAndExpandType.NUM_NONE;
 
-            if ((AutoConscriptLib.HasEnoughFood(city) || guard) &&
+            if (AutoConscriptLib.HasEnoughFoodAndGold(faction, city, guard, aggresive) &&
                 city.conscriptBuildings.Count > 0)
             {
                 AutoWeaponOption weapon = new AutoWeaponOption(ItemResourceType.NONE, false, BuildAndExpandType.SoldierBarracks);
@@ -180,11 +180,6 @@ namespace VikingEngine.DSSWars.Players
 
         protected bool buySoldiersBalanceCheck_asynch(City city, bool aggresive, double overrideChance, out bool guardOnly)
         {
-            if (city.myIndex == 101)
-            {
-                lib.DoNothing();
-            }
-
             guardOnly = false;
 
             if (!Ref.rnd.Chance(overrideChance))

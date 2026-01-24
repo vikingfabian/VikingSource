@@ -370,6 +370,9 @@ namespace VikingEngine.DSSWars.Resource
                 case ItemResourceType.ElfCoin:
                     return SpriteName.WarsResource_ElfCoin;
 
+                case ItemResourceType.Settler:
+                    return SpriteName.WarsSettler;
+
                 case ItemResourceType.NONE:
                     return SpriteName.BluePrintSquareFull;
 
