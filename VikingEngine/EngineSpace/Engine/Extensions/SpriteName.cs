@@ -2973,11 +2973,36 @@ namespace VikingEngine
         //rtsFactionCityIconStart,
         //rtsFactionCityIconEnd = rtsFactionCityIconStart + RTS.RTSlib.MaxFactions,
 
-        //rtsFactionArmyIconStart,
-        //rtsFactionArmyIconEnd = rtsFactionArmyIconStart + RTS.RTSlib.MaxFactions, 
+//rtsFactionArmyIconStart,
+//rtsFactionArmyIconEnd = rtsFactionArmyIconStart + RTS.RTSlib.MaxFactions, 
 
-        #endregion
+#endregion
 
+#if CARD
+        
+#endif
+        CardBack,
+        CardFront,
+        CardIconHealth,
+        CardIconShield,
+        CardIconAttack,
+        CardIconDefence,
+        CardIconAttackDefence,
+        CardIconCoin,
+        CardIconVictoryPoint,
+        CardIconMana,
+        CardIconStrength,
+        CardIconManaGreen,
+        CardIconManaWhite,
+        CardIconManaRed,
+        CardIconManaBlack,
+        CardIconManaBlue,
+        CardIconManaYellow,
+
+        CardCreatureImageStart,
+        CardCreatureImageEnd = CardCreatureImageStart + CardDesign.SpriteSheet.CreatureCount,
+        CardSpellImageStart,
+        CardSpellImageEnd = CardSpellImageStart + CardDesign.SpriteSheet.SpellCount,
         NUM
     }
 

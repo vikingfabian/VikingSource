@@ -311,7 +311,7 @@ namespace VikingEngine
 
         BirdJoustBG,
         cmdTiles,
-        ccgTiles,
+        CardTiles,
         NUM
     };
 

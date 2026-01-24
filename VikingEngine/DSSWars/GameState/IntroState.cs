@@ -69,7 +69,8 @@ namespace VikingEngine.DSSWars
             part++;
             Engine.LoadContent.LoadTextures(new List<LoadedTexture> {
                     LoadedTexture.particle3,
-                    });            
+                    });
+#if !CARD
             part++;
             DssRef.ambience = new Ambience();
             part++;
@@ -78,7 +79,7 @@ namespace VikingEngine.DSSWars
 
             new Models().loadContent();
             part++;
-
+#endif
             Engine.LoadContent.LoadMesh(LoadedMesh.cube_repeating, Engine.LoadContent.ModelPath + "cube_repeating");
             Engine.LoadContent.LoadMesh(LoadedMesh.plane, Engine.LoadContent.ModelPath + "plane");
             Engine.LoadContent.LoadMesh(LoadedMesh.sphere, Engine.LoadContent.ModelPath + "sphere");
@@ -139,6 +140,10 @@ namespace VikingEngine.DSSWars
             dataProcessPart++;
             WaterEdgeBuilder.Init();
             dataProcessPart++;
+
+#if CARD
+            new CardDesign.LoadContent();
+#endif
         }
 
         protected override void asyncLoading_OnRestart(ref int part)
@@ -191,6 +196,11 @@ namespace VikingEngine.DSSWars
             new Achievements();
             new GameStats();
             DssRef.stats.startUp.addOne();
+
+#if CARD
+            new CardDesign.CardDesignPlayState();
+            return;
+#endif
 
             if (Ref.gamesett.language == LanguageType.NONE)
             {
