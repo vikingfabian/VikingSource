@@ -1410,15 +1410,15 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         }
 
 
-        int redProperty(bool set, int value)
+        int redProperty(object tag, bool set, int value)
         {
             return colorProperty(set, Dimensions.X, value);
         }
-        int greenProperty(bool set, int value)
+        int greenProperty(object tag, bool set, int value)
         {
             return colorProperty(set, Dimensions.Y, value);
         }
-        int blueProperty(bool set, int value)
+        int blueProperty(object tag, bool set, int value)
         {
             return colorProperty(set, Dimensions.Z, value);
         }
@@ -1432,34 +1432,34 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             return designer.SelectedMaterial.GetColor(dim);
         }
 
-        int pencilSizeProperty(bool set, int value)
+        int pencilSizeProperty(object tag, bool set, int value)
         {
             if (set) { designer.Settings.paintSettings.pencilSize = value; }
             return designer.Settings.paintSettings.pencilSize;
         }
 
-        float radiusToleranceProperty(bool set, float value)
+        float radiusToleranceProperty(object tag, bool set, float value)
         {
             if (set) { designer.Settings.paintSettings.radiusTolerance = value; }
             return designer.Settings.paintSettings.radiusTolerance;
         }
 
-        int RoadUpwardClearProperty(bool set, int value)
+        int RoadUpwardClearProperty(object tag, bool set, int value)
         {
             if (set) { designer.Settings.paintSettings.roadUpwardClear = value; }
             return designer.Settings.paintSettings.roadUpwardClear;
         }
-        int RoadBelowFillProperty(bool set, int value)
+        int RoadBelowFillProperty(object tag, bool set, int value)
         {
             if (set) { designer.Settings.paintSettings.roadBelowFill = value; }
             return designer.Settings.paintSettings.roadBelowFill;
         }
-        int RoadEdgeSizeProperty(bool set, int value)
+        int RoadEdgeSizeProperty(object tag, bool set, int value)
         {
             if (set) { designer.Settings.paintSettings.roadEdgeSize = value; }
             return designer.Settings.paintSettings.roadEdgeSize;
         }
-        int RoadPercentFillProperty(bool set, int value)
+        int RoadPercentFillProperty(object tag, bool set, int value)
         {
             if (set) { designer.Settings.paintSettings.roadPercentFill = value; }
             return designer.Settings.paintSettings.roadPercentFill;
