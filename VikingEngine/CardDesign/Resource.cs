@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.CardDesign.CardGraphics;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.CardDesign
@@ -134,6 +136,34 @@ namespace VikingEngine.CardDesign
             {
                 content.Add(new RbText("None"));
             }
+        }
+
+        public void ToCard(List<Graphics.AbsDraw> images, Vector2 pos, float width)
+        {
+            float startX = pos.X;
+            float right = pos.X + width;
+            for (ResourceType type = 0; type < ResourceType.NUM_NONE; ++type)
+            {
+                int value = Get(type);
+                if (value != 0)
+                {
+                    IconName.Resource(type, out var icon, out _);
+                    Graphics.Image iconImg = new Graphics.Image(icon, pos, new Vector2(CardFace.IconSize), ImageLayers.Top4, false, false);
+                    var valueText = new SpriteText(value.ToString(), iconImg.Area.PercentToPosition(0.7f, 0.7f), CardFace.IconSize * 0.6f, ImageLayers.Top0, new Vector2(0.5f), Color.White);
+
+                    pos.X += Math.Max(CardFace.IconSize * 1.2f, CardFace.IconSize * 0.8f + valueText.size.X * 0.5f);
+                    if (pos.X > right)
+                    {
+                        pos.X = startX;
+                        pos.Y += CardFace.IconSize * 1.2f;
+                    }
+
+
+                    images.Add(iconImg);
+                    images.AddRange(valueText.letters);
+                }
+            }
+            
         }
     }
 

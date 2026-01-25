@@ -2369,15 +2369,13 @@ namespace VikingEngine.DSSWars
             underMenu.Refresh(content);
         }
 
-       
-        
-
         public override void OnResolutionChange()
         {
             base.OnResolutionChange();
             Ref.gamesett.Save();
             new LobbyState(bgTex).openUnderMenu(UnderMenu_Options, StackOption.ClearStack);
         }
+
         public override void LostFocus()
         {
             base.LostFocus();

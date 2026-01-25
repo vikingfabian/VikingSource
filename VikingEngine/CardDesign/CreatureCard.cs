@@ -11,6 +11,7 @@ namespace VikingEngine.CardDesign
     {
         public Guid guid = Guid.NewGuid();
         public string name = null;
+        public string flavor = null;
         public SpriteName image = SpriteName.MissingImage;
 
         public Resources cost = new Resources();

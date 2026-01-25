@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.CardDesign.CardGraphics;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
@@ -49,6 +51,33 @@ namespace VikingEngine.CardDesign
                     content.Add(new RbSeperationLine());
                 }
             }
+        }
+
+        public void ToCard(List<Graphics.AbsDraw> images, Vector2 pos, float width)
+        {
+            float startX = pos.X;
+            float right = pos.X + width;
+            for (int i = 0; i < properties.Length; i++)
+            {
+                AbsUnitProperty property = properties[i];
+                if (property != null && property.enabled && property.MainProperty)
+                {
+                    
+                    Graphics.Image iconImg = new Graphics.Image(property.Icon, pos, new Vector2(CardFace.IconSize * 1.1f), ImageLayers.Top4, false, false);
+                    var valueText = new SpriteText(property.StartValue.ToString(), iconImg.Area.PercentToPosition(0.5f, 0.5f), CardFace.IconSize * 0.6f, ImageLayers.Top0, new Vector2(0.5f), Color.White);
+
+                    pos.X += Math.Max(CardFace.IconSize * 1.2f, CardFace.IconSize * 0.8f + valueText.size.X * 0.5f);
+                    if (pos.X > right)
+                    {
+                        pos.X = startX;
+                        pos.Y += CardFace.IconSize * 1.2f;
+                    }
+
+                    images.Add(iconImg);
+                    images.AddRange(valueText.letters);
+                }
+            }
+
         }
 
         public bool Enabled(object tag, bool set, bool val)
@@ -123,6 +152,9 @@ namespace VikingEngine.CardDesign
 
         abstract public UnitPropertyType Type { get; }
         virtual public bool HasVariables => true;
+
+        virtual public bool MainProperty => false;
+        abstract public SpriteName Icon { get; }
     }
 
     class HealthProperty : AbsUnitProperty
@@ -169,7 +201,9 @@ namespace VikingEngine.CardDesign
         }
 
         public override UnitPropertyType Type => UnitPropertyType.Health;
+        public override bool MainProperty => true;
 
+        public override SpriteName Icon => SpriteName.CardIconHealth;
         
     }
 
@@ -193,6 +227,8 @@ namespace VikingEngine.CardDesign
         }
 
         public override UnitPropertyType Type => UnitPropertyType.Attack;
+        public override bool MainProperty => true;
+        public override SpriteName Icon => SpriteName.CardIconAttack;
     }
     class DefenceProperty : AbsUnitProperty
     {
@@ -204,6 +240,8 @@ namespace VikingEngine.CardDesign
             content.space(2);
         }
         public override UnitPropertyType Type => UnitPropertyType.Defence;
+        public override bool MainProperty => true;
+        public override SpriteName Icon => SpriteName.CardIconDefence;
     }
     class ShieldProperty : AbsUnitProperty
     {
@@ -223,6 +261,8 @@ namespace VikingEngine.CardDesign
             //}
         }
         public override UnitPropertyType Type => UnitPropertyType.Shield;
+        public override bool MainProperty => true;
+        public override SpriteName Icon => SpriteName.CardIconShield;
     }
     class Pierce : AbsUnitProperty
     {
@@ -234,6 +274,7 @@ namespace VikingEngine.CardDesign
         
         public override UnitPropertyType Type => UnitPropertyType.Pierce;
         public override bool HasVariables => false;
+        public override SpriteName Icon => SpriteName.MissingImage;
     }
     class Ranged : AbsUnitProperty
     {
@@ -245,6 +286,7 @@ namespace VikingEngine.CardDesign
         
         public override UnitPropertyType Type => UnitPropertyType.Ranged;
         public override bool HasVariables => false;
+        public override SpriteName Icon => SpriteName.MissingImage;
     }
 
 
