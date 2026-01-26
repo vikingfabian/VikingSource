@@ -10,8 +10,6 @@ namespace VikingEngine.Voxels
 {
     class VoxelObjGridDataHD
     {
-        //public static readonly IntVector3[] AllFaces = new IntVector3[] { IntVector3.NegativeX,  }
-
         public int Rotation;
         public IntVector3 Size
         {
@@ -135,36 +133,7 @@ namespace VikingEngine.Voxels
                 }
             }
         }
-        //public void BucketFill(IntVector3 pos, ushort find, ushort replace, bool continious)
-        //{
-        //    if (continious)
-        //    {
-        //        ReplaceMaterial(find, replace);
-        //    }
-        //    else
-        //    {
-        //        recursiveFill(pos, CubeFace.NUM);
-
-        //        void recursiveFill(IntVector3 pos, CubeFace fromdir)
-        //        {
-        //            if (MaterialGrid[pos.X, pos.Y, pos.Z] == find)
-        //            {
-        //                MaterialGrid[pos.X, pos.Y, pos.Z] = replace;
-        //                for (CubeFace face = 0; face < CubeFace.NUM; ++face)
-        //                {
-        //                    if (face != fromdir)
-        //                    {
-        //                        IntVector3 adj = new IntVector3(face) + pos;
-        //                        if (InBounds(adj))
-        //                        {
-        //                            recursiveFill(adj, conv.Invert(face));
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+        
         public void BucketFill(IntVector3 pos, ushort find, ushort replace, bool continious)
         {
             if (continious)
@@ -727,6 +696,7 @@ namespace VikingEngine.Voxels
         {
             return this.Rotate(rotationSteps, new IntervalIntV3(IntVector3.Zero, limits), replaceOriginalData);
         }
+
         /// <param name="rotationSteps">a value between 1-3, representing 90degree steps</param>
         /// <param name="limits"></param>
         public VoxelObjGridDataHD Rotate(int rotationSteps, IntervalIntV3 limits, bool replaceOriginalData)

@@ -2941,6 +2941,8 @@ namespace VikingEngine
                     
                     add(SpriteName.MenuIconPerformanceCold, 2, 2);
                     add(SpriteName.MenuIconPerformanceHot, 2, 2);
+                    add(SpriteName.LangButton_Polish, 8, 2);
+                    add(SpriteName.LangButton_Thai, 8, 2);
                     //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }
 

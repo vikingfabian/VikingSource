@@ -13,19 +13,20 @@ using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Delivery;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
-using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.LootFest;
+using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.DSSWars.Stockpile;
 
 namespace VikingEngine.DSSWars.GameObject
@@ -511,6 +512,11 @@ namespace VikingEngine.DSSWars.GameObject
                     barracks.writeGameState(w);
                 }
 
+                if (myIndex == 153)
+                {
+                    lib.DoNothing();
+                }
+
                 w.Write((ushort)deliveryServices.Count);
                 foreach (var delivery in deliveryServices)
                 {
@@ -647,7 +653,11 @@ namespace VikingEngine.DSSWars.GameObject
                     conscriptBuildings.Add(barrack);
                 }
             }
-
+            
+            if (myIndex == 153)
+            {
+                lib.DoNothing();
+            }
             deliveryServices.Clear();
             int deliveryServicesCount = r.ReadUInt16();
             for (int i = 0; i < deliveryServicesCount; i++)
@@ -1356,7 +1366,7 @@ namespace VikingEngine.DSSWars.GameObject
                                             ++totalWorkerHutAndLevelCount;
 
                                             //Place farm curlutures
-                                            const int CulturesPerFarm = 12;
+                                            const int CulturesPerFarm = 10;
                                             int cultureCount = 0;
 
                                             ForXYEdgeLoop farmLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(subPos, 1));
@@ -1751,12 +1761,13 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         DssRef.world.clearCityResources(this);
 
-                        const int TentCount = 2;
+                        const int TentCount = 4;
                         foreach (var item in Build.CraftBuildingLib.WorkerTent.resources)
                         {
                             SetGroupedResource(item.type, TentCount * item.amount);
                         }
-                        SetGroupedResource(ItemResourceType.Food_G, ConscriptDataLib.CraftSettlerFood / 2);
+                        SetGroupedResource(ItemResourceType.Iron_G, 20);
+                        SetGroupedResource(ItemResourceType.Food_G, ConscriptDataLib.CraftSettlerFood);
                     }
                     catch (Exception ex)
                     {
@@ -1786,38 +1797,6 @@ namespace VikingEngine.DSSWars.GameObject
 
                 createCampSite(subtile);
 
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        int radius = 3;
-                        Rectangle2 tileArea = new Rectangle2(tilePos, radius);
-                        bool foundTile = true;
-                        Map.Tile checkTile;
-                        while (foundTile)
-                        {
-                            radius++;
-                            ForXYEdgeLoop loop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(tilePos, radius));
-                            while (loop.Next())
-                            {
-                                if (DssRef.world.tileGrid.TryGet(loop.Position, out checkTile) && checkTile.CityIndex == this.myIndex)
-                                {
-                                    foundTile = true;
-                                    tileArea.includeTile(loop.Position);
-                                    //break;
-                                }
-                            }
-                        }
-                        cityTileArea = tileArea;
-                        //cityTileRadius = radius;
-                    }
-                    catch (Exception ex)
-                    {
-                        BlueScreen.ThreadException = ex;
-                    }
-                });
-
-                
                 setFaction(faction, false, false);
                 refreshCitySize();
 
@@ -1974,8 +1953,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             CityEconomyData cityEconomy = new CityEconomyData(this);
             
-
             int income = GetCasual()? cityEconomy.IncomeAndUpkeep_Total_Casual() : cityEconomy.IncomeAndUpkeep_Total();
+            previousIncome_copp = income;
             money.copper += income;
 
             return income;
@@ -4125,16 +4104,18 @@ namespace VikingEngine.DSSWars.GameObject
             if (DssRef.world != null)
             {
                 DssRef.world.BordersUpdated = true;
-                
-                haltConscriptAndDelivery();
-                
+
+                if (!convert)
+                {
+                    haltConscriptAndDelivery();
+                }
+
                 Ref.update.AddSyncAction(new SyncAction(() =>
                 {
                     if (overviewModel != null)
                     {
                         createOverViewModel();
                     }
-
 
                     if (convert)
                     {

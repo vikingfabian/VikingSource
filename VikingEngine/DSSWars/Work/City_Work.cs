@@ -298,7 +298,7 @@ namespace VikingEngine.DSSWars.GameObject
                         WorkExperienceType experienceType = WorkLib.WorkToExperienceType(work.work, work.subWork, work.workBonus, work.subTile, this,
                            out ExperienceLevel requiredLvl, out int xpRequired, out int maxXp);
 
-                        if (requiredLvl == ExperienceLevel.Beginner_1 || requiredLvl <= (ExperienceLevel)cityExperienceLevels.Get(experienceType).maxLevel/*GetTopSkill(experienceType)*/)
+                        if (requiredLvl == ExperienceLevel.Beginner_1 || requiredLvl <= (ExperienceLevel)cityExperienceLevels.Get(experienceType).maxLevel)
                         {
 
                             int bestWorkerListIx = -1;

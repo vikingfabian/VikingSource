@@ -242,7 +242,7 @@ namespace VikingEngine.DSSWars.Data
                 content.icontext(SpriteName.WarsResource_WaterAdd, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(difficulty.setting_waterMulti)));
                 content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(difficulty.setting_childMulti)));
                 content.icontext(SpriteName.WarsHammer, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(difficulty.setting_craftMulti)));
-                content.icontext(SpriteName.WarsTechnology_Unlocked, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_TechMultiplier, difficulty.TechMultiProperty(false, 0)));
+                content.icontext(SpriteName.WarsTechnology_Unlocked, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_TechMultiplier, difficulty.TechMultiProperty(null, false, 0)));
 
                 var time = HudLib.TimeSpan_LongText(gameTime);
                 content.text(string.Format(DssRef.lang.EndGameStatistics_Time, time));

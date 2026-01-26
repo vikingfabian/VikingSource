@@ -12,8 +12,9 @@ namespace VikingEngine.DSSWars.Presentation
     //Licenesed 2025 Sep 11, "Astro: you can remix our work freely, any platform"
     partial class Turkish : AbsLanguage
     {
-        
 
+        public override string Help_Work_Automatic => "Çalışma otomatiktir";
+        public override string Tutorial_SecondCity => "İkinci bir şehir ele geçir";
         //## Spring update
 
         public override string InputAction_SkipAutomated => "Otomatikleri atla";
@@ -227,7 +228,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Game name and version number
         /// </summary>
-        public override string Lobby_GameVersion => "DSS war party - ver {0}";
+        //public override string Lobby_GameVersion => "DSS war party - ver {0}";
 
         public override string FlagEditor_Description => "Bayrağını oluştur ve ordun için bir renk seç.";
 

@@ -32,17 +32,9 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
-using VikingEngine.LootFest;
-using VikingEngine.LootFest.Data;
-using VikingEngine.LootFest.GO.Characters.Monster3;
-using VikingEngine.LootFest.GO.WeaponAttack;
 using VikingEngine.Network;
-using VikingEngine.PJ;
-using VikingEngine.PJ.CarBall;
-using VikingEngine.PJ.Strategy;
 using VikingEngine.Sound;
 using VikingEngine.Timer;
-using VikingEngine.ToGG.Commander.UnitsData;
 
 namespace VikingEngine.DSSWars
 {
@@ -740,7 +732,7 @@ namespace VikingEngine.DSSWars
                 DssRef.storage.speed5x = true;
                 Screen.WindowScalePerc = 90;
                 Screen.PcDisplayMode = WindowDisplayMode.Windowed;
-                Ref.gamesett.masterVolProperty(true, 0.1f);
+                Ref.gamesett.masterVolProperty(null, true, 0.1f);
                 Screen.ApplyScreenSettings();
 
                 Ref.gamesett.graphicsHasChanged = true;
@@ -1450,6 +1442,10 @@ namespace VikingEngine.DSSWars
                         {
                             if (DssRef.storage.gameRuleset.factionStartSize != size)
                             {
+                                if (size == FactionStartSize.Settler)
+                                {
+                                    DssRef.storage.runTutorial = false;
+                                }
                                 DssRef.storage.gameRuleset.factionStartSize = size;
                                 DssRef.storage.Save(null);
                                 underMenu.CloseDropDown();
@@ -1548,6 +1544,11 @@ namespace VikingEngine.DSSWars
                 if (set)
                 {
                     DssRef.storage.runTutorial = value;
+                    if (value && DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+                    {
+                        DssRef.storage.gameRuleset.factionStartSize = FactionStartSize.OneCity;
+                        restartBackgroundLoading();
+                    }
 
                     DssRef.storage.Save(null);
                 }
@@ -1577,7 +1578,7 @@ namespace VikingEngine.DSSWars
                 return DssRef.storage.mapSettings.customSeed;
             }
 
-            int SeedProperty(bool set, int value)
+            int SeedProperty(object tag, bool set, int value)
             {
 
                 if (set)
@@ -1590,7 +1591,7 @@ namespace VikingEngine.DSSWars
                 return DssRef.storage.mapSettings.seed;
             }
 
-            int quickPlayerCountProperty(bool set, int value)
+            int quickPlayerCountProperty(object tag, bool set, int value)
             {
                 if (set)
                 {
@@ -1672,7 +1673,7 @@ namespace VikingEngine.DSSWars
 
                     content.space(2);
                     content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("= 0") },
-                        new RbAction(() => { splitAdj1Property(true, 0); })));
+                        new RbAction(() => { splitAdj1Property(null, true, 0); })));
                 }
                 if (adjustCount >= 2)
                 {
@@ -1682,7 +1683,7 @@ namespace VikingEngine.DSSWars
                     content.Add(new RbDragButton(new DragButtonSettings(-MaxAdjust, MaxAdjust, 0.1f), splitAdj2Property, true, null));
                     content.space(2);
                     content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("= 0") },
-                        new RbAction(() => { splitAdj2Property(true, 0); })));
+                        new RbAction(() => { splitAdj2Property(null, true, 0); })));
                 }
                 if (adjustCount >= 3)
                 {
@@ -1692,7 +1693,7 @@ namespace VikingEngine.DSSWars
                     content.Add(new RbDragButton(new DragButtonSettings(-MaxAdjust, MaxAdjust, 0.1f), splitAdj3Property, true, null));
                     content.space(2);
                     content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("= 0") },
-                        new RbAction(() => { splitAdj3Property(true, 0); })));
+                        new RbAction(() => { splitAdj3Property(null, true, 0); })));
                 }
             }
 
@@ -1747,7 +1748,7 @@ namespace VikingEngine.DSSWars
                 content.Add(new RbText(DssRef.lang.MustTurnOffSteamInput, HudLib.InfoYellow_Light));
             }
 
-            float splitAdj1Property(bool set, float value)
+            float splitAdj1Property(object tag, bool set, float value)
             {
                 if (set)
                 {
@@ -1756,7 +1757,7 @@ namespace VikingEngine.DSSWars
                 }
                 return Screen.splitScreenDivideAdjustment1;
             }
-            float splitAdj2Property(bool set, float value)
+            float splitAdj2Property(object tag, bool set, float value)
             {
                 if (set)
                 {
@@ -1765,7 +1766,7 @@ namespace VikingEngine.DSSWars
                 }
                 return Screen.splitScreenDivideAdjustment2;
             }
-            float splitAdj3Property(bool set, float value)
+            float splitAdj3Property(object tag, bool set, float value)
             {
                 if (set)
                 {
@@ -1985,20 +1986,20 @@ namespace VikingEngine.DSSWars
         //    refreshDifficultyLevel();
         //}
 
-        public float FoodMultiProperty(bool set, float value)
+        public float FoodMultiProperty(object tag, bool set, float value)
         {
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_foodMulti, value);
         }
-        public float WaterMultiProperty(bool set, float value)
+        public float WaterMultiProperty(object tag, bool set, float value)
         {
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_waterMulti, value);
         }
 
-        public float ChildMultiProperty(bool set, float value)
+        public float ChildMultiProperty(object tag, bool set, float value)
         {
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_childMulti, value);
         }
-        public float CraftMultiProperty(bool set, float value)
+        public float CraftMultiProperty(object tag, bool set, float value)
         {
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_craftMulti, value);
         }

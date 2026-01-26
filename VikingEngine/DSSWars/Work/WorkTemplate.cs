@@ -25,6 +25,13 @@ namespace VikingEngine.DSSWars.Work
         public const byte MaxPrio = 5;
         public const int SafeGuardPrio = MaxPrio + 1;
 
+        public WorkPriority move = new WorkPriority(3);
+        public WorkPriority wood = new WorkPriority(2);
+        public WorkPriority stone = new WorkPriority(2);
+        public WorkPriority craft_fuel = new WorkPriority(1);
+        public WorkPriority craft_food = new WorkPriority(0);
+        public WorkPriority craft_beer = new WorkPriority(0);
+        public WorkPriority craft_coolingfluid = new WorkPriority(0);
         public static readonly int COUNT = (int)WorkPriorityType.NUM_NONE;
 
         //public WorkPriority move = new WorkPriority(3);
@@ -72,15 +79,14 @@ namespace VikingEngine.DSSWars.Work
             work[startIndex + (int)WorkPriorityType.move].value = 3;
             work[startIndex + (int)WorkPriorityType.wood].value = 2;
             work[startIndex + (int)WorkPriorityType.stone].value = 2;
-            work[startIndex + (int)WorkPriorityType.craftFuel].value = 4;
-            work[startIndex + (int)WorkPriorityType.craftFood].value = 4;
+            work[startIndex + (int)WorkPriorityType.craftFuel].value = 1;
+            work[startIndex + (int)WorkPriorityType.farmFood].value = 4;
+            work[startIndex + (int)WorkPriorityType.farmRawFood].value = 1;
             work[startIndex + (int)WorkPriorityType.craftBeer].value = 1;
 
             work[startIndex + (int)WorkPriorityType.smeltIron].value = 3;
             work[startIndex + (int)WorkPriorityType.craftSharpStick].value = 1;
             work[startIndex + (int)WorkPriorityType.craftPaddedArmor].value = 1;
-            work[startIndex + (int)WorkPriorityType.farmFood].value = 3;
-            //work[startIndex + (int)WorkPriorityType.farmRawFood].value = 2;
             work[startIndex + (int)WorkPriorityType.farmfuel].value = 2;
             work[startIndex + (int)WorkPriorityType.farmlinen].value = 1;
             work[startIndex + (int)WorkPriorityType.bogiron].value = 1;

@@ -8,7 +8,8 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class SimplifiedChinese : AbsLanguage
     {
-        
+        public override string Help_Work_Automatic => "工作将自动进行";
+        public override string Tutorial_SecondCity => "获得第二座城市";
 
         //## Spring update
 
@@ -221,7 +222,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 游戏名称和版本号
         /// </summary>
-        public override string Lobby_GameVersion => "DSS 战争派对 - 版本 {0}";
+        //public override string Lobby_GameVersion => "DSS 战争派对 - 版本 {0}";
 
         public override string FlagEditor_Description => "绘制你的旗帜并为你的士兵选择颜色。";
 

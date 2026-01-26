@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VikingEngine.DSSWars.Map.Generate;
-using VikingEngine.PJ;
-using VikingEngine.ToGG.HeroQuest.Players.Ai;
+
 
 namespace VikingEngine.DSSWars.Presentation
 {
     partial class English : AbsLanguage
     {
+        public override string Help_Work_Automatic => "The work is automatic";
+        public override string Tutorial_SecondCity => "Gain a second city";
 
-        //##Settings
-        
-        
         //## Spring update
 
         public override string InputAction_SkipAutomated => "Skip automated";
@@ -253,7 +247,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Game name and version number
         /// </summary>
-        public override string Lobby_GameVersion => "DSS war party - ver {0}";
+        //public override string Lobby_GameVersion => "DSS war party - ver {0}";
 
         public override string FlagEditor_Description => "Paint your flag and select colors for your army men.";
 

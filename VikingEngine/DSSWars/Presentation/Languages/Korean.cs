@@ -11,7 +11,8 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Korean : AbsLanguage
     {
-        
+        public override string Help_Work_Automatic => "작업은 자동으로 진행됩니다";
+        public override string Tutorial_SecondCity => "두 번째 도시 확보";
         //## Spring update
 
         public override string InputAction_SkipAutomated => "자동화 건너뛰기";
@@ -223,7 +224,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Game name and version number
         /// </summary>
-        public override string Lobby_GameVersion => "DSS War Party - 버전 {0}";
+        //public override string Lobby_GameVersion => "DSS War Party - 버전 {0}";
 
         public override string FlagEditor_Description => "자신의 깃발을 꾸미고 병사의 색상을 선택하세요.";
 

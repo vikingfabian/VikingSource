@@ -46,7 +46,7 @@ namespace VikingEngine.HUD.RichBox
         /// A drag button sourronded by + - buttons
         /// </summary>
         /// <param name="options">Positive values, low to high</param>
-        public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, IntGetSet intValue, bool useSymbols)
+        public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, IntGetSetTag intValue, bool useSymbols, object tag = null)
         {
             var dragButton = new RbDragButton(settings, intValue);
 
@@ -63,7 +63,7 @@ namespace VikingEngine.HUD.RichBox
             }
         }
 
-        public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, FloatGetSet floatValue, bool oneDecimal = true)
+        public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, FloatGetSetTag floatValue, bool oneDecimal = true, object tag = null)
         {
             var dragButton = new RbDragButton(settings, floatValue, oneDecimal);
 
@@ -82,16 +82,18 @@ namespace VikingEngine.HUD.RichBox
 
         DragButtonSettings settings;
         DragValueType valueType;
-        IntGetSet intValue;
-        FloatGetSet floatValue;
+        object tag;
+        IntGetSetTag intValue;
+        FloatGetSetTag floatValue;
 
         RbText textPointer;
         ThreeSplitTexture_Hori texture;
         
-        public RbDragButton(DragButtonSettings settings, IntGetSet intValue, AbsRbAction enter = null)
+        public RbDragButton(DragButtonSettings settings, IntGetSetTag intValue, AbsRbAction enter = null, object tag = null)
         {
             this.enter = enter;
             this.settings = settings;
+            this.tag = tag;
             this.intValue = intValue;
             valueType = DragValueType.Int;
 
@@ -102,10 +104,11 @@ namespace VikingEngine.HUD.RichBox
             //refreshValueDisplay();
         }
 
-        public RbDragButton(DragButtonSettings settings, FloatGetSet floatValue, bool oneDecimal, AbsRbAction enter = null)
+        public RbDragButton(DragButtonSettings settings, FloatGetSetTag floatValue, bool oneDecimal, AbsRbAction enter = null, object tag = null)
         {
             this.enter = enter;
             this.settings = settings;
+            this.tag = tag;
             this.floatValue = floatValue;
             valueType = oneDecimal? DragValueType.Float_1Dec : DragValueType.Float_2Dec;
 
@@ -164,13 +167,13 @@ namespace VikingEngine.HUD.RichBox
 
                 if (valueType == DragValueType.Int)
                 {
-                    int value = intValue.Invoke(false, 0);
+                    int value = intValue.Invoke(tag, false, 0);
 
                     int prev = value;
                     value = Convert.ToInt32(Bound.Set(value + change, settings.min, settings.max));
                     if (prev != value)
                     {
-                        intValue.Invoke(true, value);
+                        intValue.Invoke(tag, true, value);
 
                         textPointer.pointer.TextString = TextLib.LargeNumber(value);
 
@@ -179,13 +182,13 @@ namespace VikingEngine.HUD.RichBox
                 }
                 else
                 {
-                    float value = floatValue.Invoke(false, 0);
+                    float value = floatValue.Invoke(tag, false, 0);
 
                     float prev = value;
                     value = Bound.Set(value + change, settings.min, settings.max);
                     if (prev != value)
                     {
-                        floatValue.Invoke(true, value);
+                        floatValue.Invoke(tag, true, value);
 
                         textPointer.pointer.TextString = valueType == DragValueType.Float_1Dec ? TextLib.OneDecimal(value) : TextLib.TwoDecimal(value);
 
@@ -212,7 +215,7 @@ namespace VikingEngine.HUD.RichBox
                 {
                     if (intValue != null)
                     {
-                        int value = intValue.Invoke(false, 0);
+                        int value = intValue.Invoke(tag, false, 0);
 
                         textPointer.pointer.TextString = TextLib.LargeNumber(value);
                     }
@@ -221,7 +224,7 @@ namespace VikingEngine.HUD.RichBox
                 {
                     if (floatValue != null)
                     {
-                        float value = floatValue.Invoke(false, 0);
+                        float value = floatValue.Invoke(tag, false, 0);
 
                         textPointer.pointer.TextString = valueType == DragValueType.Float_1Dec ? TextLib.OneDecimal(value) : TextLib.TwoDecimal(value);
                     }

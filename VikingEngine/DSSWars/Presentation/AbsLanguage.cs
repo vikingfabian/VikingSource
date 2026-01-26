@@ -9,8 +9,9 @@ namespace VikingEngine.DSSWars.Presentation
 {
     abstract partial class AbsLanguage
     {
-        
-        //Spring patch
+        public abstract string Help_Work_Automatic { get; }
+        public abstract string Tutorial_SecondCity { get; }
+//Spring patch
 
         public abstract string InputAction_SkipAutomated { get; }
 
@@ -220,7 +221,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Lobby_MapSizeDesc { get; }
         public abstract string Lobby_ExitGame { get; }
 
-        public abstract string Lobby_GameVersion { get; }
+        //public abstract string Lobby_GameVersion { get; }
 
         public abstract string Player_DefaultName { get; }
 

@@ -162,8 +162,8 @@ namespace VikingEngine.DSSWars.Build
             1,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Wood_Group, 100),
-                new UseResource(ItemResourceType.SkinLinen_Group, 100),
+                new UseResource(ItemResourceType.Wood_Group, 60),
+                new UseResource(ItemResourceType.SkinLinen_Group, 30),
             },
             XP.WorkExperienceType.Transport
         );
@@ -198,11 +198,10 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-                new UseResource(ItemResourceType.Wood_Group, 60),
-                new UseResource(ItemResourceType.Stone_G, 60),
-                new UseResource(ItemResourceType.Iron_G, 10)
+                new UseResource(ItemResourceType.Wood_Group, 40),
+                new UseResource(ItemResourceType.Stone_G, 40),
            },
-           XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
+           XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
        );
 
         public static readonly CraftBlueprint GreatHall = new CraftBlueprint(

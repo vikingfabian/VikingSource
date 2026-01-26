@@ -29,10 +29,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void async_deliveryUpdate()
         {
-            //if (debugTagged || myIndex == 744)
-            //{
-            //    lib.DoNothing();
-            //}
+            if (debugTagged || myIndex == 153)
+            {
+                lib.DoNothing();
+            }
 
             var f = GetFaction();
             if (f == null)

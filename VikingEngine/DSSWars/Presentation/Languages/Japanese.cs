@@ -8,7 +8,8 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Japanese : AbsLanguage
     {
-        
+        public override string Help_Work_Automatic => "作業は自動で行われます";
+        public override string Tutorial_SecondCity => "2つ目の都市を獲得する";
         //## Spring update
 
         public override string InputAction_SkipAutomated => "自動化をスキップ";
@@ -221,7 +222,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// ゲーム名とバージョン番号
         /// </summary>
-        public override string Lobby_GameVersion => "DSS ウォーパーティー - ver {0}";
+        //public override string Lobby_GameVersion => "DSS ウォーパーティー - ver {0}";
 
         /// <summary>
         /// フラッグを塗り、軍隊の色を選択します。

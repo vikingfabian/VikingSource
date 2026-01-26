@@ -2335,6 +2335,11 @@ namespace VikingEngine.DSSWars.Players
         City cityCloseToOpponent(int opponent)
         {
             Faction otherFaction = DssRef.world.faction(opponent);
+            if (otherFaction == null)
+            { 
+                return null;
+            }
+
             City myClosestCity = null;
             float closestDistance = float.MaxValue;
            

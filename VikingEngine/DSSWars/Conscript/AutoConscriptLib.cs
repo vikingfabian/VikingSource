@@ -125,18 +125,46 @@ namespace VikingEngine.DSSWars.Conscript
             return city.workForce.amount < city.HousingCount_Workers - DssConst.SoldierGroup_DefaultCount;
         }
 
-        public static bool HasEnoughFood(City city)
+        public static bool HasEnoughFoodAndGold(Faction faction, City city, bool guard, bool aggresive)
         {
-            var res_food = city.GetRefGroupedResource(EntityComponent.CityResoureIndex.food);
-
-            switch (city.warAutoQuality)
+            if (faction.GetGold(city) > DssConst.Gold_RichStatus)
             {
-                default:
-                    return res_food.amount > 20;
-                case WarAutoQuality.Medium:
-                    return res_food.amount > 50;
-                case WarAutoQuality.High:
-                    return res_food.amount > res_food.stockPileLimit / 2;
+                //Too rich to care
+                return true;
+            }
+               
+
+            if (guard)
+            {
+                if (DssRef.storage.gameRuleset.centralGold)
+                {
+                    return faction.money.copper > 0 && (aggresive || faction.GoldSecDiff() > -(DssConst.UpkeepPerGuard_copp * Money.CopperToGold * 50));
+                }
+                else
+                {
+                    return city.money.GetGold() > 0 && (aggresive || city.previousIncome_copp > -(DssConst.UpkeepPerGuard_copp * 10));
+                }
+            }
+            else
+            {
+                var res_food = city.GetRefGroupedResource(EntityComponent.CityResoureIndex.food);
+
+                if (aggresive || res_food.changeRate.Change > -20)
+                {
+                    switch (city.warAutoQuality)
+                    {
+                        default:
+                            return res_food.amount > 50;
+                        case WarAutoQuality.Medium:
+                            return res_food.amount > 200;
+                        case WarAutoQuality.High:
+                            return res_food.amount > res_food.stockPileLimit / 2;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 

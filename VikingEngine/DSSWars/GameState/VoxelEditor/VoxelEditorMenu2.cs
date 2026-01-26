@@ -382,6 +382,16 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             designer.onFileNameChange(result, tag);
             menu.needRefresh = true;
         }
+        public void beginEditLayerName(int layer)
+        {
+            new TextInputState(designer.voxelProject.layers.list[layer].name, LayerNameEditEvent, layer);
+        }
+        void LayerNameEditEvent(string result, object tag)
+        {
+            int layer = (int)tag;
+            designer.voxelProject.layers.list[layer].name = result;
+            menu.needRefresh = true;
+        }
 
         public void CanvasMenu()
         {
@@ -536,8 +546,10 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                      new RbAction1Arg<int>(toggleLayerVisible, layerIx, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.Editor_ToggleVisible)));
                 content.Add(new ArtOption(layerIx == designer.voxelProject.layers.selectedIndex, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.EditorLayer),
-                    new RbText(string.Format( DssRef.lang.Editor_LayerNumber, TextLib.IndexToString(layerIx))) },
+                    new RbText(layer.Name(layerIx)) },
                     new RbAction1Arg<int>(selectLayer, layerIx, RbSoundType.Option)));
+                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
+                    new RbAction1Arg<int>(beginEditLayerName, layerIx), null));
                 content.Add(new ArtToggle(layer.animatedLayer, new List<AbsRichBoxMember> {  
                     new RbText(layer.animationFrames.Frames.Count.ToString()),
                     new RbImage(layer.animatedLayer? SpriteName.VoxelEditorAllFrames : SpriteName.VoxelEditorFrameLocked) },
@@ -1398,15 +1410,15 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         }
 
 
-        int redProperty(bool set, int value)
+        int redProperty(object tag, bool set, int value)
         {
             return colorProperty(set, Dimensions.X, value);
         }
-        int greenProperty(bool set, int value)
+        int greenProperty(object tag, bool set, int value)
         {
             return colorProperty(set, Dimensions.Y, value);
         }
-        int blueProperty(bool set, int value)
+        int blueProperty(object tag, bool set, int value)
         {
             return colorProperty(set, Dimensions.Z, value);
         }
@@ -1420,34 +1432,34 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             return designer.SelectedMaterial.GetColor(dim);
         }
 
-        int pencilSizeProperty(bool set, int value)
+        int pencilSizeProperty(object tag, bool set, int value)
         {
             if (set) { designer.Settings.paintSettings.pencilSize = value; }
             return designer.Settings.paintSettings.pencilSize;
         }
 
-        float radiusToleranceProperty(bool set, float value)
+        float radiusToleranceProperty(object tag, bool set, float value)
         {
             if (set) { designer.Settings.paintSettings.radiusTolerance = value; }
             return designer.Settings.paintSettings.radiusTolerance;
         }
 
-        int RoadUpwardClearProperty(bool set, int value)
+        int RoadUpwardClearProperty(object tag, bool set, int value)
         {
             if (set) { designer.Settings.paintSettings.roadUpwardClear = value; }
             return designer.Settings.paintSettings.roadUpwardClear;
         }
-        int RoadBelowFillProperty(bool set, int value)
+        int RoadBelowFillProperty(object tag, bool set, int value)
         {
             if (set) { designer.Settings.paintSettings.roadBelowFill = value; }
             return designer.Settings.paintSettings.roadBelowFill;
         }
-        int RoadEdgeSizeProperty(bool set, int value)
+        int RoadEdgeSizeProperty(object tag, bool set, int value)
         {
             if (set) { designer.Settings.paintSettings.roadEdgeSize = value; }
             return designer.Settings.paintSettings.roadEdgeSize;
         }
-        int RoadPercentFillProperty(bool set, int value)
+        int RoadPercentFillProperty(object tag, bool set, int value)
         {
             if (set) { designer.Settings.paintSettings.roadPercentFill = value; }
             return designer.Settings.paintSettings.roadPercentFill;

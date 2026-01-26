@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.Data
 
         public float manFoodUpkeep;
 
-        public int TechMultiProperty(bool set, int value)
+        public int TechMultiProperty(object tag, bool set, int value)
         {
             if (set)
             {

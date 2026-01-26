@@ -485,7 +485,7 @@ namespace VikingEngine
             return waterFoam;
         }
 
-        public float brightnessProperty(bool set, float value)
+        public float brightnessProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -558,13 +558,13 @@ namespace VikingEngine
 
         void volumeOptions(GuiLayout layout)
         {
-            if (Ref.music != null)
-            {
-                new GuiFloatSlider(SpriteName.MenuPixelIconMusicVol, Ref.langOpt.SoundOption_MusicVolume, musicVolProperty, new IntervalF(0, 4), false, layout);
-            }
-            new GuiFloatSlider(SpriteName.MenuPixelIconSoundVol, Ref.langOpt.SoundOption_SoundVolume, soundVolProperty, new IntervalF(0, 4), false, layout);
+            //if (Ref.music != null)
+            //{
+            //    new GuiFloatSlider(SpriteName.MenuPixelIconMusicVol, Ref.langOpt.SoundOption_MusicVolume, musicVolProperty, new IntervalF(0, 4), false, layout);
+            //}
+            //new GuiFloatSlider(SpriteName.MenuPixelIconSoundVol, Ref.langOpt.SoundOption_SoundVolume, soundVolProperty, new IntervalF(0, 4), false, layout);
 
-            new GuiCheckbox(Ref.langOpt.ReversedStereo, null, ReversedStereoProperty, layout);
+            //new GuiCheckbox(Ref.langOpt.ReversedStereo, null, ReversedStereoProperty, layout);
         }
 
         public void volumeOptions(RichBoxContent content)
@@ -944,10 +944,10 @@ namespace VikingEngine
 
         public void setResolutionPercProperty(int res)
         {
-            windowScaleProperty(true, res);  
+            windowScaleProperty(null, true, res);  
         }
 
-        public int bloodProperty(bool set, int value)
+        public int bloodProperty(object tag, bool set, int value)
         {
             if (set)
             {
@@ -957,7 +957,7 @@ namespace VikingEngine
             return Blood;
         }
 
-        public int windowScaleProperty(bool set, int res)
+        public int windowScaleProperty(object tag, bool set, int res)
         {
             if (set)
             {
@@ -1063,7 +1063,7 @@ namespace VikingEngine
 #endif
         }
 
-        public float scrollMenuProperty(bool set, float value)
+        public float scrollMenuProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1072,7 +1072,7 @@ namespace VikingEngine
             }
             return scrollWheelSensitivity_menu;
         }
-        public float scrollGameProperty(bool set, float value)
+        public float scrollGameProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1081,7 +1081,7 @@ namespace VikingEngine
             }
             return scrollWheelSensitivity_game;
         }
-        public float panSpeedProperty(bool set, float value)
+        public float panSpeedProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1091,7 +1091,7 @@ namespace VikingEngine
             return keyPanSpeed;
         }
 
-        public float musicVolProperty(bool set, float value)
+        public float musicVolProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1101,7 +1101,7 @@ namespace VikingEngine
             }
             return MusicMasterVolume;
         }
-        public float soundVolProperty(bool set, float value)
+        public float soundVolProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1110,7 +1110,7 @@ namespace VikingEngine
             }
             return SoundVolume;
         }
-        public float masterVolProperty(bool set, float value)
+        public float masterVolProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1120,7 +1120,7 @@ namespace VikingEngine
             }
             return MasterVolume;
         }
-        public float ambientVolProperty(bool set, float value)
+        public float ambientVolProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1130,7 +1130,7 @@ namespace VikingEngine
             return AmbientVolume;
         }
 
-        public float BattleMelodyVolProperty(bool set, float value)
+        public float BattleMelodyVolProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1140,7 +1140,7 @@ namespace VikingEngine
             return BattleMelodyVolume;
         }
 
-        public float uiScaleProperty(bool set, float value)
+        public float uiScaleProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1152,7 +1152,7 @@ namespace VikingEngine
             return UiScale;
         }
 
-        public float IngameMenuWProperty(bool set, float value)
+        public float IngameMenuWProperty(object tag,bool set, float value)
         {
             if (set)
             {
@@ -1163,7 +1163,7 @@ namespace VikingEngine
             return IngameMenuWidth;
         }
 
-        public int vibrationProperty(bool set, int value)
+        public int vibrationProperty(object tag, bool set, int value)
         {
             if (set)
             {
@@ -1236,6 +1236,8 @@ namespace VikingEngine
         Turkish,
         Italian,
         Korean,
+        Polish,
+        Thai,
     }
 
     enum ThreeOptions

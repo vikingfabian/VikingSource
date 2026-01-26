@@ -139,6 +139,7 @@ namespace VikingEngine.DSSWars
         //OTHER
         public static float Livestock_WalkingSpeed = Men_StandardWalkingSpeed * 0.2f;
         public static int DeliveryMaxDistance = 80;
+        public const int Gold_RichStatus = 1000000;
 
         //CITY
         public static int TaxPerWorker_copp = 8;
@@ -237,7 +238,7 @@ namespace VikingEngine.DSSWars
         public static float WorkTime_GatherFoil_TreeSoft = 12;
         public static float WorkTime_GatherFoil_TreeHard = 15;
         public static float WorkTime_GatherFoil_DryWood = 6;
-        public static float WorkTime_PluckOrchards = 60;
+        public static float WorkTime_PluckOrchards = 80;
         public static float WorkTime_GatherFoil_FarmCulture = 22;
         public static float WorkTime_GatherFoil_Stones = 7;
         //public static float WorkTime_Till = 34;
@@ -266,7 +267,7 @@ namespace VikingEngine.DSSWars
         public static int Worker_MaxEnergy = 500;
         public static int Worker_Starvation = -Worker_MaxEnergy;
 
-        public static int OrchidFoodAmount = 20;
+        public static int OrchidFoodAmount = 30;
         public static int WheatFoodAmount = 30;
         public static int PenBreedingStockCount = 8;
         //public static int AnimalFoodAmount = 60;
@@ -286,7 +287,7 @@ namespace VikingEngine.DSSWars
         public static float WorkTeamEnergyCost_WhenIdle = WorkTeamEnergyCost * 0.5f;
         public static int FoodEnergy = 100;
         public static int PlantWaterCost = 1;
-        public static int OrchardWaterCost = 8;
+        public static int OrchardWaterCost = 10;
 
         public static float CasualSoldierDefaultCost_Copp = 4f * TaxPerWorker_copp /* / SoldierGroup_DefaultCount*/;
         //public static int PlantFoodCost = 6;

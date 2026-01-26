@@ -1984,6 +1984,27 @@
 /processorParam:TextureFormat=Compressed
 /build:Font/Regular.spritefont
 
+#begin Font/ThaiBold.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/ThaiBold.spritefont
+
+#begin Font/ThaiConsole.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/ThaiConsole.spritefont
+
+#begin Font/ThaiRegular.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Font/ThaiRegular.spritefont
+
 #begin Modding/ModConst.txt
 /copy:Modding/ModConst.txt
 

@@ -401,6 +401,7 @@ namespace VikingEngine.DSSWars.Resource
 
         struct LimitTooltipArgs
         {
+            IntGetSetTag property;
             public StockpileLimitOption limit;
             public GroupedResource res;
         }

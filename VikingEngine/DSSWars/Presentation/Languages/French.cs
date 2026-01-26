@@ -11,8 +11,9 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class French : AbsLanguage
     {
-        
 
+        public override string Help_Work_Automatic => "Le travail est automatique";
+        public override string Tutorial_SecondCity => "Obtenir une deuxième ville";
         //## Spring update
 
         public override string InputAction_SkipAutomated => "Passer l'automatisé";
@@ -228,7 +229,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Game name and version number
         /// </summary>
-        public override string Lobby_GameVersion => "DSS war party - ver {0}";
+        //public override string Lobby_GameVersion => "DSS war party - ver {0}";
 
         public override string FlagEditor_Description => "Dessinez votre drapeau ainsi que les couleurs des soldats de votre armée.";
 

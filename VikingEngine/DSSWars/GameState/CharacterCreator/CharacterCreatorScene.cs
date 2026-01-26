@@ -614,7 +614,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         //}
 
 
-        float ScaleProperty(bool set, float value)
+        float ScaleProperty(object tag, bool set, float value)
         {
             var profile = GetProfile();
             if (set) { 
