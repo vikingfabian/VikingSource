@@ -82,6 +82,9 @@ namespace VikingEngine.CardDesign
 
             content.newLine();
             content.Add(new RbSeperationLine());
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Restart game state") },
+                new RbAction(() => { new CardDesignPlayState(); })));
+            content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DSSWars.DssRef.lang.Hud_Exit) },
                 new RbAction(Ref.update.ExitToDash)));
 
@@ -102,7 +105,6 @@ namespace VikingEngine.CardDesign
         void createCardMenu()
         {
             RichBoxContent content = new RichBoxContent();
-            //DSSWars.HudLib.returnButton(content, menu, true, null);
 
             content.h1("Creature", DSSWars.HudLib.TitleColor_Head);
             content.h2(card.guid.ToString(), Color.DarkGray);
@@ -175,6 +177,8 @@ namespace VikingEngine.CardDesign
 
             content.newLine();
             content.Add(new RbSeperationLine());
+
+            
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DSSWars.DssRef.lang.Hud_Exit) },
                 new RbAction(() => { editorState = EditorState.EditGame; })));
 
