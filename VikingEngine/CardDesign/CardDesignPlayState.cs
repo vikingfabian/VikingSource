@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.CardDesign.CardData;
 using VikingEngine.CardDesign.CardGraphics;
 using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.Data;
@@ -15,7 +16,6 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.ToGG.HeroQuest.QueAction;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.CardDesign
 {
@@ -31,7 +31,7 @@ namespace VikingEngine.CardDesign
         public RichMenu menu;
         EditorBackground bg;
         EditorState editorState = EditorState.EditGame;
-        CreatureCard card = new CreatureCard();
+        FieldUnit card = new FieldUnit();
         CardGraphics.CardFace cardPreview = null;
         int editTriggerIndex = -1;
         public int editActionIndex = -1;
@@ -238,14 +238,14 @@ namespace VikingEngine.CardDesign
             RichBoxContent content = new RichBoxContent();
             DSSWars.HudLib.returnButton(content, menu, true, null);
             content.h1("Cost", DSSWars.HudLib.TitleColor_Head);
-            for (ResourceType resource = 0; resource < ResourceType.NUM_NONE; resource++)
+            for (DefaultResourceType resource = 0; resource < DefaultResourceType.NUM_NONE; resource++)
             {
                 IconName.Resource(resource, out var icon, out var name);
                 content.newLine();
                 content.Add(new RbImage(icon));
                 content.Add(new RbText(name));
                 content.Add(new RbTab(0.3f));
-                RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Const.PositiveBounds, 1),
+                RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Number.PositiveBounds, 1),
                             card.CostProperty, false, resource);
             }
 

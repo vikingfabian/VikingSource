@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.CardDesign.CardData;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 
@@ -34,7 +35,7 @@ namespace VikingEngine.CardDesign
             content.newLine();
             DSSWars.HudLib.Label(content, "Amount");
             content.space();
-            RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Const.Bounds, 1),
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Number.Bounds, 1),
                 AmountProperty, false);
         }
         public int AmountProperty(object tag, bool set, int value)
@@ -47,6 +48,14 @@ namespace VikingEngine.CardDesign
         }
         public abstract ActionType Type { get; }
     }
+
+    class KeyWordAction : AbsAction
+    {
+        public Number x;
+
+    }
+
+
     class DamageAction : AbsAction
     {
         public DamageAction()
@@ -65,7 +74,7 @@ namespace VikingEngine.CardDesign
     }
     class CollectAction : AbsAction
     {
-        ResourceType resourceType = ResourceType.Coin;
+        DefaultResourceType resourceType = DefaultResourceType.Coin;
         public CollectAction()
         {
 
@@ -78,11 +87,11 @@ namespace VikingEngine.CardDesign
 
             DropDownBuilder dropdown = new DropDownBuilder("resource");
             {
-                for (ResourceType res = 0; res < ResourceType.NUM_NONE; res++)
+                for (DefaultResourceType res = 0; res < DefaultResourceType.NUM_NONE; res++)
                 {
                     IconName.Resource(res, out SpriteName icon, out string name);
                     dropdown.AddOption(icon, name, res == resourceType, false,
-                        new RbAction1Arg<ResourceType>((ResourceType type) => { resourceType = type; menu.CloseDropDown(); }, res), null);
+                        new RbAction1Arg<DefaultResourceType>((DefaultResourceType type) => { resourceType = type; menu.CloseDropDown(); }, res), null);
                 }
 
                 dropdown.Build(content, SpriteName.NO_IMAGE, "Resource", menu);
@@ -211,6 +220,7 @@ namespace VikingEngine.CardDesign
 
     enum ActionType
     {
+        Keyword,
         Damage,
         Heal,
         Collect,

@@ -17,7 +17,7 @@ namespace VikingEngine.CardDesign
 
     class Target
     {
-        public TargetType type = TargetType.Default;
+        public TargetFilterType type = TargetFilterType.Default;
         public TargetSide side = TargetSide.Enemy;
         public bool includeSelf = false;
 
@@ -27,10 +27,10 @@ namespace VikingEngine.CardDesign
             content.newLine();
             DropDownBuilder dropdown = new DropDownBuilder("target type");
             {
-                for (TargetType val = 0; val < TargetType.NUM; val++)
+                for (TargetFilterType val = 0; val < TargetFilterType.NUM; val++)
                 {
                     dropdown.AddOption(val.ToString(), val == type, false,
-                        new RbAction1Arg<TargetType>((TargetType value) => { type = value; menu.CloseDropDown(); }, val), null);
+                        new RbAction1Arg<TargetFilterType>((TargetFilterType value) => { type = value; menu.CloseDropDown(); }, val), null);
                 }
 
                 dropdown.Build(content, SpriteName.NO_IMAGE, "Type", menu);
@@ -64,7 +64,7 @@ namespace VikingEngine.CardDesign
 
         public void ToAttackMenu(RichBoxContent content)
         {
-            if (type != TargetType.Default &&
+            if (type != TargetFilterType.Default &&
                 side !=  TargetSide.Enemy)
             {
                 content.Add(new RbText("Attack " + Description()));
@@ -83,17 +83,78 @@ namespace VikingEngine.CardDesign
         }
     }
 
-    enum TargetType
-    { 
-        Default,
+
+    
+    enum TargetSelectType //Iclusive or exclusive
+    {
+        First,
         Self,
-        Any,
+        ManualSelect,
+        Area,
+        Row,
+        Lane,
+        All,
+        Random, //may repeat?
+        Closest,
+        Opposite, //may target two?
+        LeftMost,
+        CenterMost,
+        RightMost,
+        Flank,
         Adjacent,
-        Creature,
-        Hero,
-        Player,
+        LeftOfMe,
+        RightOfMe,
+        FrontOfMe,
+        BehindMe,
+    }
+
+    enum TargetFilterType //Iclusive or exclusive
+    {
+        HasTag,
+        HasHealth,
+        HasAttack,
+        HasResource,
+        Friendly,
+        Enemy,
         NUM
     }
+    enum SplashType //How many repeats
+    {
+        None,
+        AllOfSameTag,
+        AllOfSamePropertyAmount,
+        Adjacent,
+        OfTargetType,
+    }
+
+    enum SplashFallOff
+    {
+        Equal,
+        Stepping, //+-value 
+        Set, //Specified value
+        Remaining, //example healing that wasnt used
+    }
+
+    //enum TargetSelectType
+    //{ 
+    //    Self,
+    //    Adjacent,
+    //    Area,
+    //    Row,
+    //    Lane,
+    //    All,
+    //    ManualSelect,
+    //    ManualSelectArea,
+    //    ManualSelectRow,
+    //    ManualSelectLane,
+
+
+        //    ManualSelectFlank,
+        //    ManualSelectCenter,
+
+        //}
+
+
 
     enum TargetPlacementType
     { 
@@ -109,4 +170,6 @@ namespace VikingEngine.CardDesign
         Enemy,
         NUM
     }
+
+    
 }

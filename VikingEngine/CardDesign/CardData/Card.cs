@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VikingEngine.CardDesign
+namespace VikingEngine.CardDesign.CardData
 {
-    static class Const
+    class Card : AbsEntity
     {
-        
+
     }
 }

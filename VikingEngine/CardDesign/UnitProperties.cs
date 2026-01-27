@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.CardDesign.CardData;
 using VikingEngine.CardDesign.CardGraphics;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
@@ -137,7 +138,7 @@ namespace VikingEngine.CardDesign
         abstract public void ToMenu(RichBoxContent content, RichBoxContent clarify);
         virtual public void ToEditor(RichBoxContent content, HUD.RichMenu.RichMenu menu) 
         {
-            RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Const.PositiveBounds, 1),
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Number.PositiveBounds, 1),
                 ValueProperty, false);
         }
 

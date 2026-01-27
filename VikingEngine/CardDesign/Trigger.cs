@@ -119,11 +119,14 @@ namespace VikingEngine.CardDesign
 
         BeforeAttack,
         AfterAttack,
+        BeforeActivation,
         AfterActivation,
         AfterAction,
 
         DamageGiven,
         DamageRecieved,
+        BattleDamageGiven,
+        BattleDamageRecieved,
         HealRecieved,
 
         BeforeCollect,
