@@ -22,7 +22,7 @@ namespace VikingEngine.CardDesign.CardEditor
                     if (kv.Value.IsTag == isTag)
                     {
                         //IconName.Resource(res, out SpriteName icon, out string name);
-                        dropdown.AddOption(kv.Value.icon, kv.Value.name, kv.Key == current, false,
+                        dropdown.AddOption(kv.Value.icon, kv.Value.name.ToString(), kv.Key == current, false,
                             new RbAction1Arg<Id>(onSelect/*(Id type) => { resourceType = type; menu.CloseDropDown(); }*/, kv.Key), null);
                     }
                 }

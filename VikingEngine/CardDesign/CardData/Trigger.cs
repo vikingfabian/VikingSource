@@ -10,7 +10,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.PJ.CarBall;
 
-namespace VikingEngine.CardDesign
+namespace VikingEngine.CardDesign.CardData
 {
     class Trigger
     {
@@ -34,7 +34,7 @@ namespace VikingEngine.CardDesign
                 for (EventType ev = 0; ev < EventType.NUM; ev++)
                 {
                     dropdown.AddOption(ev.ToString(), eventTrigger == ev, false,
-                        new RbAction1Arg<EventType>((EventType eventType)=> {
+                        new RbAction1Arg<EventType>((eventType)=> {
                             menu.CloseDropDown();
                             eventTrigger = eventType; }, ev), null);
                 }
@@ -56,9 +56,9 @@ namespace VikingEngine.CardDesign
                 actionList[i].ToMenu(content);
                 content.space();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
-                    new RbAction1Arg<int>((int index) => { CardRef.playState.editActionIndex = index; menu.menuStack.Add(CardDesignPlayState.Menu_Action); }, i)));
+                    new RbAction1Arg<int>((index) => { CardRef.playState.editActionIndex = index; menu.menuStack.Add(CardDesignPlayState.Menu_Action); }, i)));
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("X") },
-                    new RbAction1Arg<int>((int index) => { actionList.RemoveAt(index); }, i)));
+                    new RbAction1Arg<int>((index) => { actionList.RemoveAt(index); }, i)));
 
                 content.newLine();
             }

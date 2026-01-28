@@ -33,7 +33,12 @@ namespace VikingEngine.CardDesign.CardData
             {
                 return "-None-";
             }
-            return GameDb.Current.tagDic[id].name;
+            return GameDb.Current.tagDic[id].name.ToString();
+        }
+
+        public void Set(int value)
+        { 
+            amount.value = value;
         }
 
         public string ToAmountNameString()
@@ -58,89 +63,7 @@ namespace VikingEngine.CardDesign.CardData
             :base(4)
         { }
 
-        //public int mana;
-        //public int redMana;
-        //public int greenMana;
-        //public int blueMana;
-        //public int yellowMana;
-        //public int whiteMana;
-        //public int blackMana;
-        //public int coin;
-        //public int victoryPoint;
-        //public int wildMana;
-        //public int actionPoint;
-
-        /// <summary>
-        /// Returns the current value of the specified resource type.
-        /// </summary>
-        //public int Get(DefaultResourceType type)
-        //{
-        //    switch (type)
-        //    {
-        //        case DefaultResourceType.Mana: return mana;
-        //        case DefaultResourceType.RedMana: return redMana;
-        //        case DefaultResourceType.GreenMana: return greenMana;
-        //        case DefaultResourceType.BlueMana: return blueMana;
-        //        case DefaultResourceType.YellowMana: return yellowMana;
-        //        case DefaultResourceType.WhiteMana: return whiteMana;
-        //        case DefaultResourceType.BlackMana: return blackMana;
-
-        //        // New Cases
-        //        case DefaultResourceType.WildMana: return wildMana;
-        //        case DefaultResourceType.ActionPoint: return actionPoint;
-
-        //        case DefaultResourceType.Coin: return coin;
-        //        case DefaultResourceType.VictoryPoint: return victoryPoint;
-
-        //        case DefaultResourceType.NUM_NONE:
-        //        default:
-        //            return 0;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Sets the resource to a specific value, clamped between -MaxValue and +MaxValue.
-        ///// </summary>
-        //public void Set(DefaultResourceType type, int value)
-        //{
-        //    // Clamp the value to ensure it stays within bounds
-        //    int clampedValue = Math.Clamp(value, -Number.MaxValue, Number.MaxValue);
-
-        //    switch (type)
-        //    {
-        //        case DefaultResourceType.Mana: mana = clampedValue; break;
-        //        case DefaultResourceType.RedMana: redMana = clampedValue; break;
-        //        case DefaultResourceType.GreenMana: greenMana = clampedValue; break;
-        //        case DefaultResourceType.BlueMana: blueMana = clampedValue; break;
-        //        case DefaultResourceType.YellowMana: yellowMana = clampedValue; break;
-        //        case DefaultResourceType.WhiteMana: whiteMana = clampedValue; break;
-        //        case DefaultResourceType.BlackMana: blackMana = clampedValue; break;
-
-        //        // New Cases
-        //        case DefaultResourceType.WildMana: wildMana = clampedValue; break;
-        //        case DefaultResourceType.ActionPoint: actionPoint = clampedValue; break;
-
-        //        case DefaultResourceType.Coin: coin = clampedValue; break;
-        //        case DefaultResourceType.VictoryPoint: victoryPoint = clampedValue; break;
-
-        //        default: break;
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Adds (or subtracts if negative) the amount to the specified resource.
-        ///// </summary>
-        //public void Add(DefaultResourceType type, int add)
-        //{
-        //    if (type == DefaultResourceType.NUM_NONE) return;
-
-        //    int current = Get(type);
-        //    Set(type, current + add);
-        //}
-
-        ///// <summary>
-        ///// Returns true if any resource field has a non-zero value.
-        ///// </summary>
+        
         public bool HasValue
         {
             get
@@ -155,20 +78,7 @@ namespace VikingEngine.CardDesign.CardData
                 return false;
             }
         }
-        //        return mana != 0 ||
-        //               redMana != 0 ||
-        //               greenMana != 0 ||
-        //               blueMana != 0 ||
-        //               yellowMana != 0 ||
-        //               whiteMana != 0 ||
-        //               blackMana != 0 ||
-        //               wildMana != 0 ||
-        //               actionPoint != 0 ||
-        //               coin != 0 ||
-        //               victoryPoint != 0;
-        //    }
-        //}
-
+       
         public void ToMenu(RichBoxContent content)
         {
             if (HasValue)
@@ -215,21 +125,26 @@ namespace VikingEngine.CardDesign.CardData
             }
             
         }
+
+
+        public int CostProperty(object tag, bool set, int value)
+        {
+            Id id = (Id)tag;
+
+            for (int index = 0; index < Count; index++)
+            {
+                if (this[index].id == id)
+                {
+                    if (set)
+                    {
+                        this[index].Set(value);
+                    }
+                    return this[index].amount.value;
+                }
+            }
+
+            return 0;
+        }
     }
 
-    //enum DefaultResourceType
-    //{
-    //    ActionPoint,
-    //    Mana,
-    //    RedMana,
-    //    GreenMana,
-    //    BlueMana,
-    //    YellowMana,
-    //    WhiteMana,
-    //    BlackMana,
-    //    WildMana,
-    //    Coin,
-    //    VictoryPoint,
-    //    NUM_NONE
-    //}
 }

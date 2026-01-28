@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.CardDesign.CardData;
 using VikingEngine.PJ.CarBall;
 
-namespace VikingEngine.CardDesign.CardData
+namespace VikingEngine.CardDesign.Entity
 {
     class FieldUnit : AbsEntity
     {
@@ -21,15 +22,6 @@ namespace VikingEngine.CardDesign.CardData
         //Add activation action
 
 
-        public int CostProperty(object tag, bool set, int value)
-        {
-            DefaultResourceType resource = (DefaultResourceType)tag;
-            if (set)
-            {
-                cost.Set(resource, value);
-            }
-            return cost.Get(resource);
-        }
 
     }
 }

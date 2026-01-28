@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.CardDesign.CardData;
 using VikingEngine.CardDesign.CardEditor;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 
-namespace VikingEngine.CardDesign
+namespace VikingEngine.CardDesign.CardData
 {
 
     abstract class AbsAction
@@ -43,12 +42,15 @@ namespace VikingEngine.CardDesign
         public abstract ActionType Type { get; }
     }
 
-    class KeyWordAction : AbsAction
+    class KeyWordAction : AbsAction, IHasId
     {
+        Id id;
+
         string name;
         AbsAction action;
         //public Number x;
         public override ActionType Type => action.Type;
+        public Id Id { get { return id; } }
     }
 
 
@@ -94,7 +96,7 @@ namespace VikingEngine.CardDesign
             //    dropdown.Build(content, SpriteName.NO_IMAGE, "Resource", menu);
             //}
             EditorLib.SelectGameTagMenu(content, menu, false, resource.id, 
-                (Id id) => { resource.id = id; menu.CloseDropDown(); });
+                (id) => { resource.id = id; menu.CloseDropDown(); });
 
             content.newParagraph();
 
@@ -133,7 +135,7 @@ namespace VikingEngine.CardDesign
                 for (UnitPropertyType res = 0; res < UnitPropertyType.NUM_NONE; res++)
                 {
                     dropdown.AddOption(res.ToString(), res == unitPropertyType, false,
-                        new RbAction1Arg<UnitPropertyType>((UnitPropertyType type) => { unitPropertyType = type; menu.CloseDropDown(); }, res), null);
+                        new RbAction1Arg<UnitPropertyType>((type) => { unitPropertyType = type; menu.CloseDropDown(); }, res), null);
                 }
 
                 dropdown.Build(content, SpriteName.NO_IMAGE, "Property", menu);

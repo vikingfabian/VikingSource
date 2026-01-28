@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.CardDesign.CardData;
+using VikingEngine.CardDesign.Entity;
 
 namespace VikingEngine.CardDesign.CardGraphics
 {
     class CardFace : Graphics.RenderTargetImage
     {
-        FieldUnit card;
+        CardEntity card;
 
         public const float IconSize = 16 * TextureSizeMultiply;
         const int TextureSizeMultiply = 4;
@@ -21,7 +21,7 @@ namespace VikingEngine.CardDesign.CardGraphics
         const float CardOutLineSpace = 32 * TextureSizeMultiply;
         public static readonly Vector2 FullTargetSize = CardBgSize + new Vector2(CardOutLineSpace * 2);
 
-        public CardFace(FieldUnit card) 
+        public CardFace(CardEntity card) 
             :base(Vector2.Zero, FullTargetSize, ImageLayers.Lay0)
         { 
             this.card = card;

@@ -14,6 +14,8 @@ namespace VikingEngine.CardDesign.CardData
 
     struct Id
     {
+        public static readonly Id Empty = new Id() { empty = true };
+
         public bool empty;
         public int hash;
         public NameAndDate created;

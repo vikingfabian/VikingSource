@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.CardDesign.Entity;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.CardDesign.CardData
@@ -30,20 +31,20 @@ namespace VikingEngine.CardDesign.CardData
             //{
             //    return "-None-";
             //}
-            return GameDb.Current.tagDic[id].name;
+            return GameDb.Current.tagDic[id].name.ToString();
         }
     }
 
     abstract class AbsTagType : AbsEntity
     {
         public SpriteName icon;
-        public string name;
+        public Name name;
         public List<Id> masterTo = null;
 
         public AbsTagType(SpriteName icon, string name, List<Id> masterTo, Id? id)
         {
             this.icon = icon;
-            this.name = name;
+            this.name = new Name(name);
             this.masterTo = masterTo;
             if (id == null)
             {
