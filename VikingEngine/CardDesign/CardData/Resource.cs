@@ -12,7 +12,7 @@ namespace VikingEngine.CardDesign.CardData
 {
     struct Resource
     {
-        public Guid id;
+        public Id id;
         public Number amount;
         public AbsTagType Get()
         {
@@ -26,11 +26,25 @@ namespace VikingEngine.CardDesign.CardData
             content.hspace();
             content.Add(new RbImage(tag.icon));
         }
+
+        public string ToNameString()
+        {
+            if (id.empty)
+            {
+                return "-None-";
+            }
+            return GameDb.Current.tagDic[id].name;
+        }
+
+        public string ToAmountNameString()
+        {
+            return amount.ToString() + " " + ToNameString();
+        }
     }
 
     class ResourceType : AbsTagType
     {
-        public ResourceType(SpriteName icon, string name, List<Guid> masterTo, Id? id) :
+        public ResourceType(SpriteName icon, string name, List<Id> masterTo, Id? id) :
             base(icon, name, masterTo, id)
         {
         }
@@ -38,9 +52,9 @@ namespace VikingEngine.CardDesign.CardData
     }
 
 
-    class Resources : List<Resource>
+    class ResourceList : List<Resource>
     {
-        public Resources() 
+        public ResourceList() 
             :base(4)
         { }
 
@@ -203,19 +217,19 @@ namespace VikingEngine.CardDesign.CardData
         }
     }
 
-    enum DefaultResourceType
-    {
-        ActionPoint,
-        Mana,
-        RedMana,
-        GreenMana,
-        BlueMana,
-        YellowMana,
-        WhiteMana,
-        BlackMana,
-        WildMana,
-        Coin,
-        VictoryPoint,
-        NUM_NONE
-    }
+    //enum DefaultResourceType
+    //{
+    //    ActionPoint,
+    //    Mana,
+    //    RedMana,
+    //    GreenMana,
+    //    BlueMana,
+    //    YellowMana,
+    //    WhiteMana,
+    //    BlackMana,
+    //    WildMana,
+    //    Coin,
+    //    VictoryPoint,
+    //    NUM_NONE
+    //}
 }

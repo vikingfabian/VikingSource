@@ -48,6 +48,7 @@ namespace VikingEngine.SteamWrapping
         public bool inOverlay = false;
         public SteamApplicationSettings applicationSettings;
 
+        public CSteamID userId = CSteamID.Nil;
         public string UserCloudPath = "unknown_user";
 
         Callback<GameOverlayActivated_t> gameOverlayActivatedCB;
@@ -77,7 +78,8 @@ namespace VikingEngine.SteamWrapping
                 applicationSettings = SetupSteamApplicationSettings(PlatformSettings.RunProgram);
 
                 SetupSubsystems(applicationSettings);
-                UserCloudPath = SteamUser.GetSteamID().ToString();
+                userId = SteamUser.GetSteamID();
+                UserCloudPath = userId.ToString();
 
                 if (PlatformSettings.RunProgram == StartProgram.LootFest3)
                 {

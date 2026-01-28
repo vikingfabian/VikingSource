@@ -117,33 +117,11 @@ namespace VikingEngine.DataStream
             }
         }
 
-
-        
-
-        
-
         public static string StorageDirectory()
         {
 #if PCGAME
             if (PlatformSettings.ReleaseBuild && PlatformSettings.PC_platform)
             {
-                //if (Config.PcStoragePath == null)
-                //{
-                //    PcStoragePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + 
-                //        "\\My Games\\" +
-                //        StorageFolderName;
-                //}
-//#if PJ
-//                "PartyJousting";}
-//#elif CCG
-//                "PickHero";}
-//#elif DSS
-//                "LootfestWars"; }
-//#elif TOGG
-//                "TowardsGoldAndGlory"; }
-//#else
-//                "Lootfest";}
-//#endif
                 return Config.PcStoragePath;
             }
             else

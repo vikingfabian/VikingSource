@@ -8,6 +8,6 @@ namespace VikingEngine.CardDesign.CardData
 {
     class Card : AbsEntity
     {
-
+        public ResourceList cost;
     }
 }

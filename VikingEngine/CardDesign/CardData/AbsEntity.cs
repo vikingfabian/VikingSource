@@ -10,6 +10,8 @@ namespace VikingEngine.CardDesign.CardData
     {
         public Id id;
 
+        public HashSet<Id> tags = new HashSet<Id>(4);
+
         public Id Id { get { return id; } }
     }
 }

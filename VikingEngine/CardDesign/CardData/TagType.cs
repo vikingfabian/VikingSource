@@ -3,15 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.CardDesign.CardData
 {
     struct Tag
     {
-        public Guid id;
-        public AbsTagType Get(GameDb game)
+        public Id id;
+        public AbsTagType Get()
         {
-            return game.tagDic[id];
+            return GameDb.Current.tagDic[id];
+        }
+
+        public void ToMenu(RichBoxContent content)
+        {
+            var tag = Get();            
+            
+            content.Add(new RbImage(tag.icon));
+            content.hspace();
+            content.Add(new RbText(tag.ToString()));
+        }
+
+        public string ToNameString()
+        {
+            //if (id.empty)
+            //{
+            //    return "-None-";
+            //}
+            return GameDb.Current.tagDic[id].name;
         }
     }
 
@@ -28,7 +47,7 @@ namespace VikingEngine.CardDesign.CardData
             this.masterTo = masterTo;
             if (id == null)
             {
-                id = Id.CreateNew();
+                id = Id.CreateNew(true);
             }
             else 
             {

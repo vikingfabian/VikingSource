@@ -14,6 +14,21 @@ namespace VikingEngine.CardDesign.CardData
 
         public int value;
 
+        public Number()
+        { }
+
+        public Number(int value) 
+        { this.value = value; }
+
+        public int UiProperty(object tag, bool set, int value)
+        {
+            if (set)
+            {
+                this.value = value;
+            }
+            return this.value;
+        }
+
         public bool IsInfinite => Math.Abs(value) > MaxValue;
 
         public override string ToString()
@@ -25,6 +40,23 @@ namespace VikingEngine.CardDesign.CardData
             else if (value < -MaxValue)
             {
                 return "-∞";
+            }
+            return value.ToString();
+        }
+
+        public string PlusMinusString()
+        {
+            if (value > MaxValue)
+            {
+                return "+∞";
+            }
+            else if (value < -MaxValue)
+            {
+                return "-∞";
+            }
+            if (value > 0)
+            { 
+                return "+" + value.ToString();
             }
             return value.ToString();
         }

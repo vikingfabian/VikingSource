@@ -4,11 +4,39 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.CardDesign.CardData;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.CardDesign.CardEditor
 {
     static class EditorLib
     {
+        public static void SelectGameTagMenu(RichBoxContent content, HUD.RichMenu.RichMenu menu, bool isTag, Id current, Action<Id> onSelect)
+        {
+            
+            DropDownBuilder dropdown = new DropDownBuilder("game tags");
+            {
+                //for (DefaultResourceType res = 0; res < DefaultResourceType.NUM_NONE; res++)
+                foreach (var kv in GameDb.Current.tagDic)
+                {
+                    if (kv.Value.IsTag == isTag)
+                    {
+                        //IconName.Resource(res, out SpriteName icon, out string name);
+                        dropdown.AddOption(kv.Value.icon, kv.Value.name, kv.Key == current, false,
+                            new RbAction1Arg<Id>(onSelect/*(Id type) => { resourceType = type; menu.CloseDropDown(); }*/, kv.Key), null);
+                    }
+                }
+
+                dropdown.Build(content, SpriteName.NO_IMAGE, isTag? "Tag" : "Resource", menu);
+            }
+
+            //content.newParagraph();
+
+            //DSSWars.HudLib.Label(content, "Preview");
+            //content.space();
+            //ToMenu(content);
+        }
+
         public static List<AbsTagType> PremadeTags(bool isTag)
         {
             if (isTag)
@@ -61,7 +89,7 @@ namespace VikingEngine.CardDesign.CardEditor
                     new TagType(SpriteName.LfMenuMoreMenusArrow, "Action Point", null, null),
                     new TagType(SpriteName.CardIconCoin, "Coin", null, null),
                     new TagType(SpriteName.CardIconVictoryPoint, "Victory Point", null, null),
-};
+                };
             }
         }
     }

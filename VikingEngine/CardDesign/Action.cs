@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.CardDesign.CardData;
+using VikingEngine.CardDesign.CardEditor;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 
@@ -14,11 +15,11 @@ namespace VikingEngine.CardDesign
     {
         public Target target;
 
-        public int amount = 1;
+        public Number Xamount = new Number(1);
 
         virtual public void ToMenu(RichBoxContent content)
         {
-            content.Add(new RbText(amount.ToString() + " " + Type.ToString() + " to " + target.Description()));
+            content.Add(new RbText(Xamount.ToString() + " " + Type.ToString() + " to " + target.Description()));
         }
         virtual public void ToEditor(RichBoxContent content, HUD.RichMenu.RichMenu menu)
         {
@@ -36,23 +37,18 @@ namespace VikingEngine.CardDesign
             DSSWars.HudLib.Label(content, "Amount");
             content.space();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Number.Bounds, 1),
-                AmountProperty, false);
+               Xamount.UiProperty, false);
         }
-        public int AmountProperty(object tag, bool set, int value)
-        {
-            if (set)
-            {
-                this.amount = value;
-            }
-            return this.amount;
-        }
+       
         public abstract ActionType Type { get; }
     }
 
     class KeyWordAction : AbsAction
     {
-        public Number x;
-
+        string name;
+        AbsAction action;
+        //public Number x;
+        public override ActionType Type => action.Type;
     }
 
 
@@ -74,7 +70,8 @@ namespace VikingEngine.CardDesign
     }
     class CollectAction : AbsAction
     {
-        DefaultResourceType resourceType = DefaultResourceType.Coin;
+        Resource resource;
+        //DefaultResourceType resourceType = DefaultResourceType.Coin;
         public CollectAction()
         {
 
@@ -85,17 +82,19 @@ namespace VikingEngine.CardDesign
             AmountToEditor(content);
             content.newLine();
 
-            DropDownBuilder dropdown = new DropDownBuilder("resource");
-            {
-                for (DefaultResourceType res = 0; res < DefaultResourceType.NUM_NONE; res++)
-                {
-                    IconName.Resource(res, out SpriteName icon, out string name);
-                    dropdown.AddOption(icon, name, res == resourceType, false,
-                        new RbAction1Arg<DefaultResourceType>((DefaultResourceType type) => { resourceType = type; menu.CloseDropDown(); }, res), null);
-                }
+            //DropDownBuilder dropdown = new DropDownBuilder("resource");
+            //{
+            //    for (DefaultResourceType res = 0; res < DefaultResourceType.NUM_NONE; res++)
+            //    {
+            //        IconName.Resource(res, out SpriteName icon, out string name);
+            //        dropdown.AddOption(icon, name, res == resourceType, false,
+            //            new RbAction1Arg<DefaultResourceType>((DefaultResourceType type) => { resourceType = type; menu.CloseDropDown(); }, res), null);
+            //    }
 
-                dropdown.Build(content, SpriteName.NO_IMAGE, "Resource", menu);
-            }
+            //    dropdown.Build(content, SpriteName.NO_IMAGE, "Resource", menu);
+            //}
+            EditorLib.SelectGameTagMenu(content, menu, false, resource.id, 
+                (Id id) => { resource.id = id; menu.CloseDropDown(); });
 
             content.newParagraph();
 
@@ -106,7 +105,7 @@ namespace VikingEngine.CardDesign
 
         public override void ToMenu(RichBoxContent content)
         {
-            content.Add(new RbText("Collect " + amount.ToString() + " " + resourceType.ToString()));
+            content.Add(new RbText("Collect " + resource.ToAmountNameString() /*+ Xamount.ToString() + " " + resourceType.ToString()*/));
         }
         public override ActionType Type => ActionType.Collect;
     }
@@ -152,7 +151,7 @@ namespace VikingEngine.CardDesign
 
         public override void ToMenu(RichBoxContent content)
         {
-            content.Add(new RbText(TextLib.PlusMinus(amount) + " " + unitPropertyType.ToString() + " to " + target.Description()));
+            content.Add(new RbText(Xamount.PlusMinusString() + " " + unitPropertyType.ToString() + " to " + target.Description()));
         }
         public override ActionType Type => ActionType.ChangeProperty;
     }

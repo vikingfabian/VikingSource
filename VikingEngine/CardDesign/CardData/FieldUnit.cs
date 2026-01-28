@@ -7,9 +7,8 @@ using VikingEngine.PJ.CarBall;
 
 namespace VikingEngine.CardDesign.CardData
 {
-    class FieldUnit
+    class FieldUnit : AbsEntity
     {
-        public Guid guid = Guid.NewGuid();
         public string name = null;
         public string flavor = null;
         public SpriteName image = SpriteName.MissingImage;
@@ -31,5 +30,6 @@ namespace VikingEngine.CardDesign.CardData
             }
             return cost.Get(resource);
         }
+
     }
 }

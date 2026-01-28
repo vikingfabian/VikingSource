@@ -10,7 +10,7 @@ namespace VikingEngine.CardDesign.CardData
     {
         public static GameDb Current = new GameDb(); 
 
-        public Dictionary<Guid, AbsTagType> tagDic = new Dictionary<Guid, AbsTagType>(8);
+        public Dictionary<Id, AbsTagType> tagDic = new Dictionary<Id, AbsTagType>(8);
 
     }
 }
