@@ -11,6 +11,8 @@ namespace VikingEngine.CardDesign.CardEditor
 {
     static class EditorLib
     {
+        public static Id CurrentCard = Id.Empty;
+
         public static void SelectGameTagMenu(RichBoxContent content, HUD.RichMenu.RichMenu menu, bool isTag, Id current, Action<Id> onSelect)
         {
             

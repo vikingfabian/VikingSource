@@ -12,6 +12,7 @@ namespace VikingEngine.CardDesign.CardData
         public static readonly Range Bounds = new Range(-MaxValue, MaxValue);
         public const int MaxValue = 999999;
 
+        public static readonly Number Endless = new Number(MaxValue + 1);
         public int value;
 
         public Number()

@@ -8,17 +8,19 @@ namespace VikingEngine.CardDesign.CardData
 {
     abstract class AbsCardAction
     {
-
+        //abstract public Name GetName();
+        //abstract public void SetName(Name name);
     }
 
     class CardActionTrigger : AbsCardAction
     {
-        Name name = Name.Empty;
+        Text name = Text.Empty;
         AbsAction action = null;
+
     }
     class CardActionFieldUnit : AbsCardAction
     {
-        Id unit = Id.Empty;
+        public Id unitId = Id.Empty;
     }
 
 

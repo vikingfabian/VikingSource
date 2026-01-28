@@ -38,13 +38,13 @@ namespace VikingEngine.CardDesign.CardData
     abstract class AbsTagType : AbsEntity
     {
         public SpriteName icon;
-        public Name name;
+        public Text name;
         public List<Id> masterTo = null;
 
         public AbsTagType(SpriteName icon, string name, List<Id> masterTo, Id? id)
         {
             this.icon = icon;
-            this.name = new Name(name);
+            this.name = new Text(name);
             this.masterTo = masterTo;
             if (id == null)
             {
@@ -56,6 +56,9 @@ namespace VikingEngine.CardDesign.CardData
             }
         }
         abstract public bool IsTag { get; }
+
+        public Text GetName() { return name; }
+        public void SetName(Text name) { this.name = name; }
     }
     class TagType : AbsTagType
     {

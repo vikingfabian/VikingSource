@@ -6,20 +6,28 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.CardDesign.CardData
 {
-    interface IHasName
+    interface IHasText
     {
-        Name GetName();
-        void SetName(Name name);
+        Text GetName(TextType type);
+        void SetName(TextType type, Text name);
     }
 
-    struct Name
+
+    enum TextType
+    { 
+        Name,
+        Description,
+        Flavor,
+    }
+
+    struct Text
     {
-        public static readonly Name Empty = new Name();
+        public static readonly Text Empty = new Text();
 
         public string custom;
-        public Name()
+        public Text()
         { }
-        public Name(string custom)
+        public Text(string custom)
         { this.custom = custom; }
 
         public override string ToString() { return custom; }

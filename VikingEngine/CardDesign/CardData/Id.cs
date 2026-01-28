@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DataStream;
+using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.CardDesign.CardData
 {
@@ -38,6 +39,17 @@ namespace VikingEngine.CardDesign.CardData
                 updated = nameAndDate,
             };
         }
+
+        public void toMenu(RichBoxContent content)
+        {
+            content.text("id " + hash.ToString(), DSSWars.HudLib.SecondaryTextColor);
+            DSSWars.HudLib.BulletSeperationPoint(content);
+            content.text("Created: " + created.date.ToString(), DSSWars.HudLib.SecondaryTextColor);
+            DSSWars.HudLib.BulletSeperationPoint(content);
+            content.text("Updated: " + updated.date.ToString(), DSSWars.HudLib.SecondaryTextColor);
+
+        }
+
         public override bool Equals(object obj)
         {
             if (empty)

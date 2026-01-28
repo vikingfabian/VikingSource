@@ -140,8 +140,10 @@ namespace VikingEngine.CardDesign
         void refreshPage()
         {
             if (editorMenu != null)
-            { 
-                editorMenu.refreshPage();
+            {
+                RichBoxContent content = new RichBoxContent();
+                editorMenu.refreshPage(content);
+                Refresh(content);
             }
             else
             {

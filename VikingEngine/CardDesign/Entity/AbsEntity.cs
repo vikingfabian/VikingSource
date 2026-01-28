@@ -14,5 +14,13 @@ namespace VikingEngine.CardDesign.Entity
         public HashSet<Id> tags = new HashSet<Id>(4);
 
         public Id Id { get { return id; } }
+        public AbsEntity() { }
+        public AbsEntity(bool createNew) 
+        {
+            if (createNew)
+            {
+                id = Id.CreateNew(false);
+            }
+        }
     }
 }

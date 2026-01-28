@@ -19,9 +19,8 @@ namespace VikingEngine.CardDesign.Entity
         public UnitProperties unitProperties = new UnitProperties();//public AbsUnitProperty[] unitProperties = new AbsUnitProperty[(int)UnitPropertyType.NUM_NONE];
         public List<Trigger> eventTriggers = new List<Trigger>();
 
-        //Add activation action
-
-
-
+        public FieldUnit(bool createNew)
+            :base(createNew)
+        { }
     }
 }
