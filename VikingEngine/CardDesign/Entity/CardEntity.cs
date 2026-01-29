@@ -8,7 +8,12 @@ using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.CardDesign.Entity
 {
-    class CardEntity : AbsEntity
+    interface ICardContent : IHasText
+    { 
+    
+    }
+
+    class CardEntity : AbsEntity, ICardContent
     {
         public ResourceList cost = new ResourceList();
         public AbsCardAction action;

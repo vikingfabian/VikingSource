@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.CardDesign.Entity;
 
 namespace VikingEngine.CardDesign.CardData
 {
-    abstract class AbsCardAction
+    abstract class AbsCardAction : ICardContent
     {
         //abstract public Name GetName();
         //abstract public void SetName(Name name);

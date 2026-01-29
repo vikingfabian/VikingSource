@@ -37,7 +37,7 @@ namespace VikingEngine.CardDesign.CardEditor
             switch (menu.menuStack.LastOrDefault())
             {
                 default:
-                    createCardMenu(content);
+                    editCardMenu(content);
                     break;
                 case Menu_Image:
                     imageOptions(content);
@@ -102,40 +102,49 @@ namespace VikingEngine.CardDesign.CardEditor
 
 
 
-        void createCardMenu(RichBoxContent content)
+        void editCardMenu(RichBoxContent content)
         {
-            content.h1("Creature", DSSWars.HudLib.TitleColor_Head);
+            CardEntity card = GameDb.Current.cards[EditorLib.CurrentCard];
+
+
+
+            content.h1("Edit card", DSSWars.HudLib.TitleColor_Head);
             content.h2(card.Id.ToString(), Color.DarkGray);
 
             content.newParagraph();
-            RbText name;
-            if (string.IsNullOrEmpty(card.name))
-            {
-                name = new RbText("Name", Color.Gray);
-            }
-            else
-            {
-                name = new RbText(card.name);
-            }
-            content.Add(new RbButton(new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.InterfaceTextInput),
-                new RbSpace(),
-                name }, new RbAction(beginEditName), null, true, Color.White));
+            new TextEditor(card, TextType.Name).ToEditor(content, menu, "Name");
 
             content.newLine();
-            RbText flavor;
-            if (string.IsNullOrEmpty(card.flavor))
-            {
-                flavor = new RbText("Flavor text", Color.Gray);
-            }
-            else
-            {
-                flavor = new RbText(card.flavor);
-            }
-            content.Add(new RbButton(new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.InterfaceTextInput),
-                new RbSpace(),
-                flavor }, new RbAction(beginEditFlavor), null, true, Color.White));
+            new TextEditor(GameDb.Current, TextType.Flavor).ToEditor(content, menu, "Flavor text");
+
+            //RbText name;
+            //if (string.IsNullOrEmpty(card.name))
+            //{
+            //    name = new RbText("Name", Color.Gray);
+            //}
+            //else
+            //{
+            //    name = new RbText(card.name);
+            //}
+            //content.Add(new RbButton(new List<AbsRichBoxMember> {
+            //    new RbImage(SpriteName.InterfaceTextInput),
+            //    new RbSpace(),
+            //    name }, new RbAction(beginEditName), null, true, Color.White));
+
+            //content.newLine();
+            //RbText flavor;
+            //if (string.IsNullOrEmpty(card.flavor))
+            //{
+            //    flavor = new RbText("Flavor text", Color.Gray);
+            //}
+            //else
+            //{
+            //    flavor = new RbText(card.flavor);
+            //}
+            //content.Add(new RbButton(new List<AbsRichBoxMember> {
+            //    new RbImage(SpriteName.InterfaceTextInput),
+            //    new RbSpace(),
+            //    flavor }, new RbAction(beginEditFlavor), null, true, Color.White));
 
             content.newLine();
             content.Add(new RbButton(new List<AbsRichBoxMember> { new RbImage(card.image), new RbSpace(), new RbText("Image") },
