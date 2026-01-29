@@ -74,22 +74,26 @@ namespace VikingEngine.DSSWars.Players.Profile
             viewStuckBuildOrdersOnMap = r.ReadBoolean();
         }
 
-        public void toHud(RichBoxContent content, bool city)
+        public void toHud(RichBoxContent content, bool city, bool casual)
         {
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
                 new RbImage( SpriteName.warsFolder_carton), new RbSpace(), new RbText(DssRef.lang.MenuTab_Tag) }, viewTagsOnMapProperty));
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
-                new RbImage( SpriteName.WarsResource_FoodEmpty), new RbSpace(), new RbText(DssRef.lang.Message_OutOfFood_Title) }, viewLowFoodOnMapProperty));
-            
-            if (city)
+
+            if (!casual)
             {
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
-                new RbImage( SpriteName.WarsIcon_WorkQueueIdle), new RbSpace(), new RbText(DssRef.lang.WorkQueue_IdleWorkers) }, viewIdleWorkOnMapProperty));
-                content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
-                new RbImage( SpriteName.WarsConstructBuildingIcon), new RbSpace(), new RbText(DssRef.lang.ObjectUi_StuckBuildOrders) }, viewStuckBuildOrdersOnMapProperty));
+                new RbImage( SpriteName.WarsResource_FoodEmpty), new RbSpace(), new RbText(DssRef.lang.Message_OutOfFood_Title) }, viewLowFoodOnMapProperty));
+
+                if (city)
+                {
+                    content.newLine();
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                    new RbImage( SpriteName.WarsIcon_WorkQueueIdle), new RbSpace(), new RbText(DssRef.lang.WorkQueue_IdleWorkers) }, viewIdleWorkOnMapProperty));
+                        content.newLine();
+                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
+                    new RbImage( SpriteName.WarsConstructBuildingIcon), new RbSpace(), new RbText(DssRef.lang.ObjectUi_StuckBuildOrders) }, viewStuckBuildOrdersOnMapProperty));
+                }
             }
         }
 
