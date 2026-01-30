@@ -8,10 +8,7 @@ using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.CardDesign.Entity
 {
-    interface ICardContent : IHasText
-    { 
     
-    }
 
     class CardEntity : AbsEntity, ICardContent
     {
@@ -41,5 +38,7 @@ namespace VikingEngine.CardDesign.Entity
         {
 
         }
+
+        public CardContent CardContent => action.CardContent;
     }
 }

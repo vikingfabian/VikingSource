@@ -20,7 +20,7 @@ namespace VikingEngine.CardDesign.CardEditor
         const string Menu_EditCard = "edit card";
         const string Menu_Image = "image";
         const string Menu_Cost = "cost";
-        const string Menu_UnitProperties = "u properties";
+        public const string Menu_UnitProperties = "u properties";
         const string Menu_Trigger = "trigger";
         public const string Menu_Action = "action";
 
@@ -112,10 +112,11 @@ namespace VikingEngine.CardDesign.CardEditor
             content.h2(card.Id.ToString(), Color.DarkGray);
 
             content.newParagraph();
-            new TextEditor(card, TextType.Name).ToEditor(content, menu, "Name");
+            card.CardContent.toEditor(content, menu);
+            //new TextEditor(card, TextType.Name).ToEditor(content, menu, "Name");
 
-            content.newLine();
-            new TextEditor(GameDb.Current, TextType.Flavor).ToEditor(content, menu, "Flavor text");
+            //content.newLine();
+            //new TextEditor(GameDb.Current, TextType.Flavor).ToEditor(content, menu, "Flavor text");
 
             //RbText name;
             //if (string.IsNullOrEmpty(card.name))
@@ -147,7 +148,7 @@ namespace VikingEngine.CardDesign.CardEditor
             //    flavor }, new RbAction(beginEditFlavor), null, true, Color.White));
 
             content.newLine();
-            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbImage(card.image), new RbSpace(), new RbText("Image") },
+            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbImage(card.CardContent.image), new RbSpace(), new RbText("Image") },
                 new RbAction(() => { menu.menuStack.Add(Menu_Image); })));
 
             content.newLine();
@@ -158,29 +159,16 @@ namespace VikingEngine.CardDesign.CardEditor
                 new RbAction(() => { menu.menuStack.Add(Menu_Cost); })));
 
             content.newLine();
-            DSSWars.HudLib.Label(content, "Properties");
-            content.space();
-            card.unitProperties.ToMenu(content);
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
-                new RbAction(() => { menu.menuStack.Add(Menu_UnitProperties); })));
+            card.action.toEditor(content, menu);
+            //DSSWars.HudLib.Label(content, "Properties");
+            //content.space();
+            //card.unitProperties.ToMenu(content);
+            //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
+            //    new RbAction(() => { menu.menuStack.Add(Menu_UnitProperties); })));
 
-            content.newParagraph();
+            
 
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Add trigger") },
-                new RbAction(() => { card.eventTriggers.Add(new Trigger()); })));
-            content.newLine();
-
-            for (int i = 0; i < card.eventTriggers.Count; i++)
-            {
-                card.eventTriggers[i].ToMenu(content);
-                content.space();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
-                    new RbAction1Arg<int>((int index) => { editTriggerIndex = index; menu.menuStack.Add(Menu_Trigger); }, i)));
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("X") },
-                    new RbAction1Arg<int>((int index) => { card.eventTriggers.RemoveAt(index); }, i)));
-
-                content.newLine();
-            }
+           
 
             content.newLine();
             content.Add(new RbSeperationLine());

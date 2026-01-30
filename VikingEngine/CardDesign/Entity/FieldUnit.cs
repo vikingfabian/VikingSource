@@ -10,9 +10,10 @@ namespace VikingEngine.CardDesign.Entity
 {
     class FieldUnit : AbsEntity
     {
-        public string name = null;
-        public string flavor = null;
-        public SpriteName image = SpriteName.MissingImage;
+        //public string name = null;
+        //public string flavor = null;
+        //public SpriteName image = SpriteName.MissingImage;
+        public CardContent cardContent = new CardContent();
 
         //public Resources cost = new Resources();
         public UnitActivationStatus Enter = UnitActivationStatus.Sleeping;
