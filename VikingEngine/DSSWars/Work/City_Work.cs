@@ -840,7 +840,7 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
-                    if (hostUpdate)
+                    if (hostUpdate && (faction.player.IsBot() || automateCity))
                     {
                         workAutoBuild();
                     }

@@ -457,7 +457,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             HudLib.Label(content, DssRef.lang.ObjectUi_ViewOnMap + string.Format(" ({0})", DssRef.lang.Hud_AllArmies));
             content.newLine();
-            player.armyHudSettings.toHud(content, false);
+            player.armyHudSettings.toHud(content, false, player.profile.casualControls);
             //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tag_ViewOnMap) }, player.ArmyTagsOnMapProperty));
             content.newParagraph();
 

@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
+using VikingEngine.LootFest.GO.NPC;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -213,10 +214,10 @@ namespace VikingEngine.DSSWars.GameObject
             base.Time_Update(time_ms);
         }
 
-        override protected int modelFrame()
-        {
-            return 0;
-        }
+        //override protected int modelFrame()
+        //{
+        //    return 0;
+        //}
 
         protected override void completeTransform()
         {
@@ -231,6 +232,11 @@ namespace VikingEngine.DSSWars.GameObject
                     group.DeleteMe(DeleteReason.Transform, true);
                 }
             }
+        }
+
+        override protected int modelFrame()
+        {
+            return 4;
         }
     }
 }

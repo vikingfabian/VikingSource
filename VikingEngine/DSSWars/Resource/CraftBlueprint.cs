@@ -217,6 +217,17 @@ namespace VikingEngine.DSSWars.Resource
             return true;
         }
 
+        public void addResources(City city)
+        {
+            foreach (var r in resources)
+            {
+                city.AddGroupedResource(r.type, r.amount);
+            }
+
+            //return resultAmount;
+        }
+
+        //string name()
         void iconName(int resultNumber, out SpriteName icon, out string name)
         {
 

@@ -3058,6 +3058,8 @@ namespace VikingEngine.DSSWars.GameObject
                         HudLib.InfoButton(content, new RbTooltip(HudLib.guardUpkeepInfo));
                     }
                 }
+
+                if (!player.profile.casualControls)
                 {
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsResource_RawFoodRemove));

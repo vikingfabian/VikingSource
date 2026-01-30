@@ -375,6 +375,12 @@ namespace VikingEngine.DSSWars.GameObject
             conscriptSettler(null, false);
         }
 
+        public void conscriptSettlerLink_Free()
+        {
+            SettlerBp().addResources(this);
+            conscriptSettlerLink();
+        }
+
         public CraftBlueprint SettlerBp()
         {
             return Culture == CityCulture.Nomads ? ConscriptDataLib.CraftNomadSettler : ConscriptDataLib.CraftSettler;
@@ -560,6 +566,8 @@ namespace VikingEngine.DSSWars.GameObject
         public void createStartupBarracks()
         {
             if (conscriptBuildings.Count == 0 &&
+                cityType > CityType.Campsite &&
+                barracksReservedSpot.X > 0 &&
                 !DssRef.storage.runTutorial)
             {
                 ref var subTile = ref DssRef.world.subTileGrid.GetRef(barracksReservedSpot);
