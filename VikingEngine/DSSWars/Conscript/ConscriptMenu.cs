@@ -464,6 +464,13 @@ namespace VikingEngine.DSSWars.Conscript
                     new RbAction(city.conscriptSettlerLink),
                     new RbTooltip(settlerTooltip),
                      city.SettlerBp().available(city)));
+
+                if (DssRef.difficulty.GodPowers() || StartupSettings.EndlessResources)
+                {
+                    content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsSettlerAdd) },
+                       new RbAction(city.conscriptSettlerLink_Free),
+                       null, true));
+                }
             }
 
             void queueToAll(int count)

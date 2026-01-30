@@ -209,6 +209,16 @@ namespace VikingEngine.DSSWars.Resource
             return resultAmount;
         }
 
+        public int addResources(City city)
+        {
+            foreach (var r in resources)
+            {
+                city.AddGroupedResource(r.type, r.amount);
+            }
+
+            return resultAmount;
+        }
+
         string name()
         {
             switch (resultType)

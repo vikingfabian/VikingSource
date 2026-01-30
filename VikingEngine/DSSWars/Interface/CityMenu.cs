@@ -258,7 +258,8 @@ namespace VikingEngine.DSSWars.Interface
                 buySoldierOption(city.casualCityProfile.rangedMen, CasualSoldierType.Ranged);
                 buySoldierOption(city.casualCityProfile.riderMen, CasualSoldierType.Rider);
                 buySoldierOption(city.casualCityProfile.siegeMen, CasualSoldierType.Siege);
-
+                content.newParagraph();
+                buySoldierOption(city.casualCityProfile.settler, CasualSoldierType.Settler);
 
                 city.GetCasualProgress().RecruitToHud(player, city, content);
             }
@@ -1314,42 +1315,53 @@ namespace VikingEngine.DSSWars.Interface
 
         public void tagsToMenu(RichBoxContent content)
         {
-            for (TagSubTab subTabType = 0; subTabType < TagSubTab.NUM; ++subTabType)
+            if (player.profile.casualControls)
             {
-                var tabContent = new RichBoxContent();
-                string description = null;
-                //string text = null;
-                switch (subTabType)
-                {
-                    case TagSubTab.Tag:
-                        tabContent.Add(new RbImage(SpriteName.warsFolder_carton, 0.7f));
-                        tabContent.space(0.6f);
-                        tabContent.Add(new RbText(DssRef.lang.MenuTab_Tag));
-                        description = DssRef.lang.ObjectTag_Description;
-                        break;
-
-                    case TagSubTab.HudPin:
-                        tabContent.Add(new RbImage(SpriteName.HudPinIcon, 0.7f));
-                        tabContent.space(0.6f);
-                        tabContent.Add(new RbText(DssRef.lang.HudPins));
-                        description = DssRef.lang.HudPins_Description;
-                        break;
-
-                    case TagSubTab.TagSettings:
-                        tabContent.Add(new RbImage(SpriteName.WarsHudIconSettings, 0.7f));
-                        tabContent.space(0.6f);
-                        tabContent.Add(new RbText(Ref.langOpt.Options_title));
-                        break;
-                }
-
-                var subTab = new ArtButton(player.tagSubTab == subTabType ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, tabContent,
-                    new RbAction1Arg<TagSubTab>((TagSubTab subTabType) =>
-                    {
-                        player.tagSubTab = subTabType;
-                    }, subTabType, RbSoundType.Tab), description == null? null : new RbTooltip_Text(description));
-                content.Add(subTab);
+                player.tagSubTab = TagSubTab.Tag;
+                HudLib.Label(content, DssRef.lang.ObjectUi_ViewOnMap + string.Format(" ({0})", DssRef.lang.Hud_AllCities));
+                content.newLine();
+                player.cityHudSettings.toHud(content, true, true);
+                content.newParagraph();
             }
-            content.newParagraph();
+            else
+            {
+                for (TagSubTab subTabType = 0; subTabType < TagSubTab.NUM; ++subTabType)
+                {
+                    var tabContent = new RichBoxContent();
+                    string description = null;
+                    //string text = null;
+                    switch (subTabType)
+                    {
+                        case TagSubTab.Tag:
+                            tabContent.Add(new RbImage(SpriteName.warsFolder_carton, 0.7f));
+                            tabContent.space(0.6f);
+                            tabContent.Add(new RbText(DssRef.lang.MenuTab_Tag));
+                            description = DssRef.lang.ObjectTag_Description;
+                            break;
+
+                        case TagSubTab.HudPin:
+                            tabContent.Add(new RbImage(SpriteName.HudPinIcon, 0.7f));
+                            tabContent.space(0.6f);
+                            tabContent.Add(new RbText(DssRef.lang.HudPins));
+                            description = DssRef.lang.HudPins_Description;
+                            break;
+
+                        case TagSubTab.TagSettings:
+                            tabContent.Add(new RbImage(SpriteName.WarsHudIconSettings, 0.7f));
+                            tabContent.space(0.6f);
+                            tabContent.Add(new RbText(Ref.langOpt.Options_title));
+                            break;
+                    }
+
+                    var subTab = new ArtButton(player.tagSubTab == subTabType ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, tabContent,
+                        new RbAction1Arg<TagSubTab>((TagSubTab subTabType) =>
+                        {
+                            player.tagSubTab = subTabType;
+                        }, subTabType, RbSoundType.Tab), description == null ? null : new RbTooltip_Text(description));
+                    content.Add(subTab);
+                }
+                content.newParagraph();
+            }
 
             switch (player.tagSubTab)
             {
@@ -1357,23 +1369,7 @@ namespace VikingEngine.DSSWars.Interface
 
                     HudLib.Label(content, DssRef.lang.ObjectUi_ViewOnMap + string.Format(" ({0})", DssRef.lang.Hud_AllCities));
                     content.newLine();
-                    player.cityHudSettings.toHud(content, true);
-                    //HudLib.Label(content, ".View on map" + string.Format(" ({0})", DssRef.lang.Hud_AllCities));
-                    //content.newLine();
-                    //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { 
-                    //    new RbImage( SpriteName.warsFolder_carton), new RbSpace(), new RbText(DssRef.lang.MenuTab_Tag) }, player.CityTagsOnMapProperty));
-                    //content.newLine();
-                    //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
-                    //    new RbImage( SpriteName.WarsResource_FoodEmpty), new RbSpace(), new RbText(DssRef.lang.Message_OutOfFood_Title) }, player.CityTagsOnMapProperty));
-                    //content.newLine();
-                    //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
-                    //    new RbImage( SpriteName.WarsIcon_WorkQueueIdle), new RbSpace(), new RbText(DssRef.lang.WorkQueue_IdleWorkers) }, player.CityTagsOnMapProperty));
-                    //content.newLine();
-                    //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> {
-                    //    new RbImage( SpriteName.WarsConstructBuildingIcon), new RbSpace(), new RbText(".Stuck build orders") }, player.CityTagsOnMapProperty));
-
-                    //content.newParagraph();
-                    //content.text(DssRef.lang.Hud_AllCities);
+                    player.cityHudSettings.toHud(content, true, false);
                     break;
 
                 default:
