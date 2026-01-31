@@ -13,6 +13,8 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
-        
+        public string Tutorial_SeeThisInThat = "See {0} in {1}";
+
+
     }
 }

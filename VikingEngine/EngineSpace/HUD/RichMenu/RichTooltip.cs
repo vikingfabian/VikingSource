@@ -53,7 +53,8 @@ namespace VikingEngine.HUD.RichMenu
                 float borderW = settings.windowBackground.BorderWidth();
                 float width = Engine.Screen.IconSize * 8;
 
-                bool rightSide = buttonArea.Right + ButtonSpaceing + borderW * 2 + width < playerScreen.Right;
+                float totalW = /*ButtonSpaceing +*/ borderW * 2 + width;
+                bool rightSide = buttonArea.Right + totalW < playerScreen.Right;
                 //Vector2 pos = new Vector2(0, buttonArea.Position.Y);
                 //if (rightSide)
                 //{
@@ -63,9 +64,15 @@ namespace VikingEngine.HUD.RichMenu
                 //{
                 //    pos.X = buttonArea.Position.X - ButtonSpaceing - width - borderW * 2;
                 //}
+
                 Vector2 pos = buttonArea.RightBottom;//.PercentToPosition(1f, 1f);//.CenterBottom;
                 pos.X += ButtonSpaceing;
                 pos.Y += ButtonSpaceing;
+
+                if (!rightSide)
+                {
+                    pos.X = buttonArea.X - totalW/* - ButtonSpaceing*/;
+                }
 
 
                 richBox = new RichBoxGroup(pos, width, layer - 1, settings, content);

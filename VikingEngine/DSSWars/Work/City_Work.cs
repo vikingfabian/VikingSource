@@ -244,7 +244,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
                 {
-                    if (myIndex == 715 || debugTagged)
+                    if (myIndex == 249 || debugTagged)
                     {
                         lib.DoNothing();
                     }
