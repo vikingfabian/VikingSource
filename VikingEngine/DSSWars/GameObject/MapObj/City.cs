@@ -2518,7 +2518,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string ToString()
         {
-            return "City" + myIndex.ToString();
+            return "City" + myIndex.ToString() + " \"" + Name(out _) + "\"";
         }
 
         public override string Name(out bool mayEdit)
@@ -4266,14 +4266,30 @@ namespace VikingEngine.DSSWars.GameObject
                 //freeServiceMen.amount -= serviceHouses_required;
                 cityType++;
                 TerrainBuildingType hall;
-                if (cityType == CityType.Town)
+
+                switch (cityType)
                 {
-                    hall = TerrainBuildingType.CityHall_Town;
+                    default:
+                    case CityType.Village:
+                        hall = TerrainBuildingType.CityHall_Village;
+                        break;
+                    case CityType.Town:
+                        hall = TerrainBuildingType.CityHall_Town;
+                        break;
+                    case CityType.Capital:
+                        hall = TerrainBuildingType.CityHall_Capital;
+                        break;
+
                 }
-                else
-                {
-                    hall = TerrainBuildingType.CityHall_Capital;
-                }
+
+                //if (cityType == CityType.Town)
+                //{
+                //    hall = TerrainBuildingType.CityHall_Town;
+                //}
+                //else
+                //{
+                //    hall = TerrainBuildingType.CityHall_Capital;
+                //}
                 SubTile subTile = new SubTile();
                 subTile.SetType(TerrainMainType.Building, (int)hall, 1);
                 new EditSubTile(cityHallSubtilePos, subTile, true, false, false).Submit();

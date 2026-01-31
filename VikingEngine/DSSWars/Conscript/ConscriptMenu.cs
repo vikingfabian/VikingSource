@@ -588,6 +588,10 @@ namespace VikingEngine.DSSWars.Conscript
             content.h2(SpriteName.WarsSettler, DssRef.lang.UnitType_Settler, HudLib.TitleColor_TypeName);
             content.text(DssRef.lang.UnitType_Settler_Description, HudLib.InfoYellow_Light);
             city.SettlerBp().toMenu(content, city);
+
+            content.Add(new RbSeperationLine());
+            content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn, HudLib.TitleColor_Head2);
+            city.SettlerBp().listResources(content, city);
         }
 
         public static void resourcesToMenu(RichBoxContent content, City city, BarracksStatus currentStatus)
