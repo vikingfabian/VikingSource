@@ -25,6 +25,26 @@ namespace VikingEngine.CardDesign.CardData
         public Id()
         {
             empty = true;
+
+        }
+
+        public Id(int hash)
+        {
+            empty = false;
+            this.hash = hash;
+
+            NameAndDate nameAndDate = NameAndDate.Now(true);
+            created = nameAndDate;
+            updated = nameAndDate;
+        }
+
+        public override string ToString()
+        {
+            if (empty)
+            {
+                return "Empty ID";
+            }
+            return "Id " + hash.ToString();
         }
 
         public static Id CreateNew(bool gameContent) 
@@ -34,7 +54,7 @@ namespace VikingEngine.CardDesign.CardData
             return new Id()
             {
                 empty = false,
-                hash = HashCode.Combine(nameAndDate.date, nameAndDate.userId, Ref.rnd.Uint()),
+                hash = Math.Abs(HashCode.Combine(nameAndDate.date, nameAndDate.userId, Ref.rnd.Uint())),
                 created = nameAndDate,
                 updated = nameAndDate,
             };

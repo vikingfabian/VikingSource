@@ -14,5 +14,6 @@ namespace VikingEngine.CardDesign.CardEditor
         public CardEntity card = null;
         public int editTriggerIndex = -1;
         public int editActionIndex = -1;
+        public bool editIsTag = false;
     }
 }

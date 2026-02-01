@@ -35,7 +35,7 @@ namespace VikingEngine.CardDesign.CardData
         }
     }
 
-    abstract class AbsTagType : AbsEntity
+    abstract class AbsTagType : AbsEntity, IHasText
     {
         public SpriteName icon;
         public Text name;
@@ -57,8 +57,8 @@ namespace VikingEngine.CardDesign.CardData
         }
         abstract public bool IsTag { get; }
 
-        public Text GetName() { return name; }
-        public void SetName(Text name) { this.name = name; }
+        public Text GetText(TextType type) { return name; }
+        public void SetText(TextType type, Text name) { this.name = name; }
     }
     class TagType : AbsTagType
     {

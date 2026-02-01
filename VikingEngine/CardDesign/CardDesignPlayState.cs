@@ -80,7 +80,9 @@ namespace VikingEngine.CardDesign
             {
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(game.meta.name.ToString()) },
-                new RbAction(() => { cref.current.game = game; editorMenu = new EditorMenu(menu); })));
+                    new RbAction(() => { cref.current.game = game; editorMenu = new EditorMenu(menu); }),
+                    
+                    game.meta.description.IsEmpty? null : new RbTooltip_Text(game.meta.description.ToString())));
             }
             if (gameList.Count == 0)
             {

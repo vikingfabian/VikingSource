@@ -8,8 +8,8 @@ namespace VikingEngine.CardDesign.CardData
 {
     interface IHasText
     {
-        Text GetName(TextType type);
-        void SetName(TextType type, Text name);
+        Text GetText(TextType type);
+        void SetText(TextType type, Text name);
     }
 
 

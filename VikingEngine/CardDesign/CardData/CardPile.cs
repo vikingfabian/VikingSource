@@ -26,8 +26,8 @@ namespace VikingEngine.CardDesign.CardData
             this.name = new Text(pileType.ToString());
         }
 
-        public Text GetName(TextType type) { return name; }
-        public void SetName(TextType type, Text name) { this.name = name; }
+        public Text GetText(TextType type) { return name; }
+        public void SetText(TextType type, Text name) { this.name = name; }
     }
 
 

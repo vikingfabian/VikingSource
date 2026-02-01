@@ -12,6 +12,7 @@ namespace VikingEngine.CardDesign.CardData
         public Id id;
 
         public Text name = Text.Empty;
+        public Text description = Text.Empty;
 
         public int cardCount = 0;
 
@@ -21,7 +22,17 @@ namespace VikingEngine.CardDesign.CardData
         }
         
 
-        public Text GetName(TextType type) { return name; }
-        public void SetName(TextType type, Text name) { this.name = name; }
+        public Text GetText(TextType type) { return type == TextType.Name? name : description; }
+        public void SetText(TextType type, Text name) 
+        {
+            if (type == TextType.Name)
+            {
+                this.name = name;
+            }
+            else
+            {
+                this.description = name;
+            }
+        }
     }
 }

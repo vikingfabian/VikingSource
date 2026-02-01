@@ -23,7 +23,7 @@ namespace VikingEngine.CardDesign.CardData
             content.newLine();
             new TextEditor(this, TextType.Flavor).ToEditor(content, menu, "Flavor text");
         }
-        public Text GetName(TextType type) {
+        public Text GetText(TextType type) {
             switch (type)
             { 
                 case TextType.Name:
@@ -34,7 +34,7 @@ namespace VikingEngine.CardDesign.CardData
                     throw new NotImplementedException();
             }
         }
-        public void SetName(TextType type, Text name) 
+        public void SetText(TextType type, Text name) 
         {
             switch (type)
             {

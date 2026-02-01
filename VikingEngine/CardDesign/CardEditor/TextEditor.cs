@@ -23,9 +23,17 @@ namespace VikingEngine.CardDesign.CardEditor
         public void ToEditor(RichBoxContent content, RichMenu menu, string defaultName)
         {
             this.menu = menu;
-            Text name = textEntity.GetName(type);
-            RbText text = new RbText(name.ToString());
-            
+            Text name = textEntity.GetText(type);
+            RbText text;
+            if (name.IsEmpty && !string.IsNullOrEmpty(defaultName))
+            {
+                text = new RbText(defaultName, DSSWars.HudLib.SecondaryTextColor);
+            }
+            else
+            {
+                text = new RbText(name.ToString());
+            }
+
             content.Add(new RbButton(new List<AbsRichBoxMember> {
                 new RbImage(SpriteName.InterfaceTextInput),
                 new RbSpace(),
@@ -35,11 +43,11 @@ namespace VikingEngine.CardDesign.CardEditor
         public void beginEditName()
         {
             new TextInputState(
-                textEntity.GetName(type).ToString(), nameEditEvent, null);
+                textEntity.GetText(type).ToString(), nameEditEvent, null);
         }
         void nameEditEvent(string result, object tag)
         {
-            textEntity.SetName(type, new Text(result));
+            textEntity.SetText(type, new Text(result));
            
             menu.needRefresh = true;
         }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.CardDesign.CardData;
 using VikingEngine.CardDesign.Entity;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
@@ -23,6 +24,7 @@ namespace VikingEngine.CardDesign.CardEditor
         public const string Menu_UnitProperties = "u properties";
         public const string Menu_Trigger = "trigger";
         public const string Menu_Action = "action";
+        public const string Menu_GameTags = "game tags";
 
         RichMenu menu;
 
@@ -38,6 +40,10 @@ namespace VikingEngine.CardDesign.CardEditor
             {
                 default:
                     gameSetupMenu(content);
+                    break;
+                case Menu_GameTags:
+                    DSSWars.HudLib.returnButton(content, menu, true, null);
+                    new TagEditor().AllToEditor(content, menu, cref.current.editIsTag);
                     break;
                 case Menu_Image:
                     imageOptions(content);
@@ -65,16 +71,29 @@ namespace VikingEngine.CardDesign.CardEditor
             cref.current.game.Id.toMenu(content);
 
             content.newLine();
-
             new TextEditor(cref.current.game, TextType.Name).ToEditor(content, menu, null);
+            content.newLine();
             new TextEditor(cref.current.game, TextType.Description).ToEditor(content, menu, "Description");
 
 
             content.newParagraph();
-            content.h2("Map type", DSSWars.HudLib.TitleColor_Head2);
+            //content.h2("Map type", DSSWars.HudLib.TitleColor_Head2);
+            DropDownBuilder mapDropDown = new DropDownBuilder("Map type");
+            {
+                for (MapType map = 0; map < MapType.NUM; map++)
+                {
+                    mapDropDown.AddOption(map.ToString(), cref.current.game.mapType == map, MapType.Lanes == map,
+                        new RbAction1Arg<MapType>((MapType value) => { cref.current.game.mapType = value; menu.CloseDropDown(); }, map), null);
+                }
+                mapDropDown.Build(content, SpriteName.NO_IMAGE, "Map type", menu);
+            }
 
             content.newParagraph();
-            content.h2("Resources", DSSWars.HudLib.TitleColor_Head2);
+            //content.h2("Resources", DSSWars.HudLib.TitleColor_Head2);
+            new TagEditor().AllToEditButton(content, false);
+
+            content.newLine();
+            new TagEditor().AllToEditButton(content, true);
 
 
             content.newParagraph();
@@ -100,6 +119,12 @@ namespace VikingEngine.CardDesign.CardEditor
                 content.newLine();
                 kv.Value.toEditButton(content);
             }
+
+            content.newLine();
+            content.Add(new RbSeperationLine());
+
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DSSWars.DssRef.lang.Hud_Exit) },
+                new RbAction(() => { cref.playState.closeEditor(); })));
 
             void createCard(CardActionType actionType)
             { 
@@ -180,12 +205,7 @@ namespace VikingEngine.CardDesign.CardEditor
 
            
 
-            content.newLine();
-            content.Add(new RbSeperationLine());
-
-
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DSSWars.DssRef.lang.Hud_Exit) },
-                new RbAction(() => { cref.playState.closeEditor(); })));
+            
 
         }
         //public void beginEditName()

@@ -12,8 +12,6 @@ namespace VikingEngine.CardDesign.CardData
 {
     class GameDb : IHasId, IHasText
     {
-        //public static GameDb Current = new GameDb();
-
         public GameMeta meta = new GameMeta();
 
         /// <summary>
@@ -35,7 +33,7 @@ namespace VikingEngine.CardDesign.CardData
 
         public Id Id { get { return meta.id; } }
 
-        public Text GetName(TextType type) { return meta.GetName(type); }
-        public void SetName(TextType type, Text name) { meta.GetName(type); }
+        public Text GetText(TextType type) { return meta.GetText(type); }
+        public void SetText(TextType type, Text name) { meta.SetText(type, name); }
     }
 }
