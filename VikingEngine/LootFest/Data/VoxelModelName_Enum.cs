@@ -26,7 +26,7 @@ namespace VikingEngine.LootFest
             return (int)name * 100 + rotation;
         }
     }
-    
+
     enum VoxelModelName
     {
         //--
@@ -42,7 +42,7 @@ namespace VikingEngine.LootFest
         modsoldier_hat_soldier_all,
         modsoldier_hat_custom_all,
         modsoldier_leg1,
-        
+
         modsoldier_larm_empty1,
         modsoldier_larm_shield1,
         modsoldier_rarm_sword1,
@@ -60,7 +60,7 @@ namespace VikingEngine.LootFest
         modshield_javelin,
         modshield_roman,
         modshield_knightsmallside,
-        
+
         modweapon_blunderbuss,
         modweapon_crossbow,
         modweapon_culvertin,
@@ -93,7 +93,7 @@ namespace VikingEngine.LootFest
 
         //--
         CATEGORY_WARS_1,
-#region LFWARS
+        #region LFWARS
         ErrorCube,
         party_restbar,
         Arrow,
@@ -107,14 +107,14 @@ namespace VikingEngine.LootFest
         little_kingorc,
         little_hirdman,
         little_hirdorc,
-        
+
         little_archerman,
         little_archerorc,
         little_crossbowman,
         wars_crossbow,
         little_javelinman,
         little_javelinorc,
-        
+
         little_dogman,
         little_dogorc,
         war_dogneutral,
@@ -194,7 +194,7 @@ namespace VikingEngine.LootFest
         little_rocketlauncherorc,
         little_ramman,
         little_ramorc,
-        
+
         war_ballista_proj,
         war_cannonball,
         war_gunblast,
@@ -264,8 +264,12 @@ namespace VikingEngine.LootFest
         horse_white, horse_brown,
         hog1, wolf1,
         lion1, Elephant1,
-        
+
         wagon_light,
+        wagon_light4,
+        wagon_coach,
+        wagon_ironcoach,
+
 
         stupid_board,
         stupid_gate,

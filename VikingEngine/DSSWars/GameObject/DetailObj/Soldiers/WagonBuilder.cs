@@ -41,6 +41,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
     class WagonRiderModel : AbsDetailUnitAdvancedModel
     {
+        bool chariot = false;
         int firstUpdate = 10;
         float wagonGoalDistance;
         Vector3 wagonPos;
@@ -50,13 +51,35 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
         WalkingAnimation horseWalkingAnimation;
         WalkingAnimation wagonRollAnimation;
 
-        Graphics.VoxelModelInstance soldierLeft, soldierRight;
-        Vector3 leftSoldierPosDiff, rightSoldierPosDiff;
+        Graphics.VoxelModelInstance soldierLeft, soldierRight, soldierBackLeft, soldierBackRight;
+        Vector3 leftSoldierPosDiff, rightSoldierPosDiff, backleftSoldierPosDiff, backrightSoldierPosDiff;
         public WagonRiderModel(AbsSoldierUnit soldier)
         {
             CavalryModel.AnimalModel(soldier.group.soldierConscript.conscript.animal, out VoxelModelName modelName, out float modelScale, out horseWalkingAnimation, out float riderY);
             animalmodel_left = DssRef.models.ModelInstance_drawbatch(modelName, modelScale);
             animalmodel_right = DssRef.models.ModelInstance_drawbatch(modelName, modelScale);
+
+            
+            LootFest.VoxelModelName wagonModelName;
+            switch (soldier.group.soldierConscript.conscript.vehicle)
+            {
+                default:
+                case Resource.ItemResourceType.Wagon2Wheel:
+                    wagonModelName = VoxelModelName.wagon_light;
+                    chariot = true;
+                    break;
+                case Resource.ItemResourceType.Wagon4Wheel:
+                    wagonModelName = VoxelModelName.wagon_light4;
+                    break;
+                case Resource.ItemResourceType.WagonClosed:
+                    wagonModelName = VoxelModelName.wagon_coach;
+                    break;
+                case Resource.ItemResourceType.WagonIron:
+                case Resource.ItemResourceType.WagonSteel:
+                    wagonModelName = VoxelModelName.wagon_ironcoach;
+                    break;
+
+            }
 
             wagonRollAnimation = new WalkingAnimation(0, 3, WalkingAnimation.StandardMoveFrames * 1f);
 
@@ -65,9 +88,9 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             rightAnimalPosDiff.X = -rightAnimalPosDiff.X;
 
             float wagonScale = DssConst.Men_StandardModelScale * 2f;
-            model = DssRef.models.ModelInstance_drawbatch( LootFest.VoxelModelName.wagon_light, wagonScale);
+            model = DssRef.models.ModelInstance_drawbatch(wagonModelName, wagonScale);
 
-            wagonGoalDistance = modelScale * 0.5f;
+            wagonGoalDistance = modelScale * (chariot? 0.5f : 0.65f);
 
             wagonPos = VectorExt.AddXZ(soldier.position, -soldier.rotation.Direction(wagonGoalDistance));
             wagonY = 0.02f * wagonScale;
@@ -78,10 +101,34 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             soldierRight = faction.AutoLoadModelInstance_character(
                         soldier.soldierData.modelData, soldier.soldierData.modelScale * faction.player.profile.character.soldierScale);
 
-            leftSoldierPosDiff = new Vector3(-0.08f, 0.1f, -0.12f) * wagonScale;
-            rightSoldierPosDiff = leftSoldierPosDiff;
-            rightSoldierPosDiff.X = -rightSoldierPosDiff.X;
-            rightSoldierPosDiff.Z *= 0.6f;
+            if (chariot)
+            {
+                leftSoldierPosDiff = new Vector3(-0.08f, 0.1f, -0.12f) * wagonScale;
+                rightSoldierPosDiff = leftSoldierPosDiff;
+                rightSoldierPosDiff.X = -rightSoldierPosDiff.X;
+                rightSoldierPosDiff.Z *= 0.6f;
+            }
+            else 
+            {
+                soldierBackLeft = faction.AutoLoadModelInstance_character(
+                        soldier.soldierData.modelData, soldier.soldierData.modelScale * faction.player.profile.character.soldierScale);
+                soldierBackRight = faction.AutoLoadModelInstance_character(
+                            soldier.soldierData.modelData, soldier.soldierData.modelScale * faction.player.profile.character.soldierScale);
+
+                Vector3 offset = new Vector3(0.03f, 0.1f, 0.03f) * wagonScale;
+                float zStep = -0.12f * wagonScale;
+
+                rightSoldierPosDiff = offset;
+
+                offset.Z += zStep;
+                leftSoldierPosDiff = VectorExt.FlipX(offset);
+
+                offset.Z += zStep;
+                backrightSoldierPosDiff = offset;
+
+                offset.Z += zStep;
+                backleftSoldierPosDiff = VectorExt.FlipX(offset);
+            }
 
             update(soldier);
         }
@@ -94,6 +141,12 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             animalmodel_right.preRemoveFromDrawBatch();
             soldierLeft.preRemoveFromDrawBatch();
             soldierRight.preRemoveFromDrawBatch();
+
+            if (soldierBackLeft != null)
+            {
+                soldierBackLeft.preRemoveFromDrawBatch();
+                soldierBackRight.preRemoveFromDrawBatch();
+            }
         }
 
         public override void update(AbsSoldierUnit soldier)
@@ -131,8 +184,28 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                 
                 soldierLeft.position = model.Rotation.TranslateAlongAxis(leftSoldierPosDiff, wagonPos);
                 soldierRight.position = model.Rotation.TranslateAlongAxis(rightSoldierPosDiff, wagonPos);
-                soldierLeft.Rotation = model.Rotation;
-                soldierRight.Rotation = model.Rotation;
+                
+                if (chariot)
+                {
+                    soldierLeft.Rotation = model.Rotation;
+                    soldierRight.Rotation = model.Rotation;
+                }
+                else
+                {
+                    soldierBackLeft.position = model.Rotation.TranslateAlongAxis(backleftSoldierPosDiff, wagonPos);
+                    soldierBackRight.position = model.Rotation.TranslateAlongAxis(backrightSoldierPosDiff, wagonPos);
+
+                    const float RotateSoldier = 0.5f;
+                    RotationQuarterion left = model.Rotation;
+                    left.RotateWorldX(RotateSoldier);
+                    RotationQuarterion right = model.Rotation;
+                    right.RotateWorldX(-RotateSoldier);
+
+                    soldierLeft.Rotation = left;
+                    soldierRight.Rotation = right;
+                    soldierBackLeft.Rotation = left;
+                    soldierBackRight.Rotation = right;
+                }
 
                 //Animation
                 float move = soldier.walkingSpeedWithModifiers(Ref.DeltaGameTimeMs);

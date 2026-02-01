@@ -2779,8 +2779,17 @@
 #begin VoxelModel/LfWars/unclaimed_icon.vox
 /copy:VoxelModel/LfWars/unclaimed_icon.vox
 
+#begin VoxelModel/LfWars/wagon_coach.vox
+/copy:VoxelModel/LfWars/wagon_coach.vox
+
+#begin VoxelModel/LfWars/wagon_ironcoach.vox
+/copy:VoxelModel/LfWars/wagon_ironcoach.vox
+
 #begin VoxelModel/LfWars/wagon_light.vox
 /copy:VoxelModel/LfWars/wagon_light.vox
+
+#begin VoxelModel/LfWars/wagon_light4.vox
+/copy:VoxelModel/LfWars/wagon_light4.vox
 
 #begin VoxelModel/LfWars/war_archer_i2.vox
 /copy:VoxelModel/LfWars/war_archer_i2.vox

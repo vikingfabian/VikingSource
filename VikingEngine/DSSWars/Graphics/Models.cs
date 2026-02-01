@@ -243,6 +243,9 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.lion1, false);
             loadVoxelModel(VoxelModelName.Elephant1, false);
             loadVoxelModel(VoxelModelName.wagon_light, false);
+            loadVoxelModel(VoxelModelName.wagon_light4, false);
+            loadVoxelModel(VoxelModelName.wagon_coach, false);
+            loadVoxelModel(VoxelModelName.wagon_ironcoach, false);
             loadVoxelModel(VoxelModelName.wars_shipmelee, false);
             loadVoxelModel(VoxelModelName.buildarea, false);
             loadVoxelModel(VoxelModelName.godfire, false);
