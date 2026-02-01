@@ -15,6 +15,10 @@ namespace VikingEngine.CardDesign.CardData
 
         public int cardCount = 0;
 
+        public GameMeta()
+        {
+            id = Id.CreateNew(false);
+        }
         
 
         public Text GetName(TextType type) { return name; }

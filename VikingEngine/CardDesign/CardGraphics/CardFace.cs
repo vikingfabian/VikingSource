@@ -37,13 +37,16 @@ namespace VikingEngine.CardDesign.CardGraphics
 
             Vector2 imageCenter = topLeft + CardBgSize * new Vector2(0.5f, 0.27f);
             Vector2 imageSize = new Vector2(CardBgSize.X * 0.6f);
-            Graphics.Image image = new Graphics.Image(card.image, imageCenter, imageSize, ImageLayers.Lay1, true, false);
+            Graphics.Image image = new Graphics.Image(card.CardContent.image, imageCenter, imageSize, ImageLayers.Lay1, true, false);
             images.Add(image);
 
             card.cost.ToCard(images, VectorExt.AddY( topLeft, -IconSize * 0.5f), CardBgSize.X);
 
-            card.unitProperties.ToCard(images, VectorExt.AddY( topLeft, CardBgSize.Y * 0.44f), CardBgSize.X);
-
+            if (card.action.ActionType == CardData.CardActionType.FieldUnit)
+            {
+                var unit = card.action.GetUnit();
+                unit.unitProperties.ToCard(images, VectorExt.AddY(topLeft, CardBgSize.Y * 0.44f), CardBgSize.X);
+            }
             DrawImagesToTarget(images, true);
         }
     }

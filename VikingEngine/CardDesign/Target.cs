@@ -17,7 +17,7 @@ namespace VikingEngine.CardDesign
 
     class Target
     {
-        public TargetFilterType type = TargetFilterType.Default;
+        public TargetFilterType type = TargetFilterType.Friendly;
         public TargetSide side = TargetSide.Enemy;
         public bool includeSelf = false;
 
@@ -64,7 +64,7 @@ namespace VikingEngine.CardDesign
 
         public void ToAttackMenu(RichBoxContent content)
         {
-            if (type != TargetFilterType.Default &&
+            if (type != TargetFilterType.Friendly &&
                 side !=  TargetSide.Enemy)
             {
                 content.Add(new RbText("Attack " + Description()));

@@ -11,7 +11,7 @@ namespace VikingEngine.CardDesign.CardEditor
 {
     static class EditorLib
     {
-        public static Id CurrentCard = Id.Empty;
+        //public static Id CurrentCard = Id.Empty;
 
         public static void SelectGameTagMenu(RichBoxContent content, HUD.RichMenu.RichMenu menu, bool isTag, Id current, Action<Id> onSelect)
         {
@@ -19,7 +19,7 @@ namespace VikingEngine.CardDesign.CardEditor
             DropDownBuilder dropdown = new DropDownBuilder("game tags");
             {
                 //for (DefaultResourceType res = 0; res < DefaultResourceType.NUM_NONE; res++)
-                foreach (var kv in GameDb.Current.tagDic)
+                foreach (var kv in cref.current.game.tagDic)
                 {
                     if (kv.Value.IsTag == isTag)
                     {

@@ -21,7 +21,7 @@ namespace VikingEngine.CardDesign.CardEditor
         const string Menu_Image = "image";
         const string Menu_Cost = "cost";
         public const string Menu_UnitProperties = "u properties";
-        const string Menu_Trigger = "trigger";
+        public const string Menu_Trigger = "trigger";
         public const string Menu_Action = "action";
 
         RichMenu menu;
@@ -37,7 +37,7 @@ namespace VikingEngine.CardDesign.CardEditor
             switch (menu.menuStack.LastOrDefault())
             {
                 default:
-                    editCardMenu(content);
+                    gameSetupMenu(content);
                     break;
                 case Menu_Image:
                     imageOptions(content);
@@ -46,13 +46,13 @@ namespace VikingEngine.CardDesign.CardEditor
                     costMenu(content);
                     break;
                 case Menu_UnitProperties:
-                    unitPropertiesMenu(content);
+                    //unitPropertiesMenu(content);
                     break;
                 case Menu_Trigger:
-                    triggerMenu(content);
+                    //triggerMenu(content);
                     break;
                 case Menu_Action:
-                    triggerActionMenu(content);
+                    //triggerActionMenu(content);
                     break;
             }
             
@@ -61,18 +61,27 @@ namespace VikingEngine.CardDesign.CardEditor
         void gameSetupMenu(RichBoxContent content)
         {
             content.h1("Game editor", DSSWars.HudLib.TitleColor_Head);
+            content.newLine();
+            cref.current.game.Id.toMenu(content);
 
             content.newLine();
-            new TextEditor(GameDb.Current, TextType.Name).ToEditor(content, menu, null);
 
-            content.newLine();
-            GameDb.Current.Id.toMenu(content);
+            new TextEditor(cref.current.game, TextType.Name).ToEditor(content, menu, null);
+            new TextEditor(cref.current.game, TextType.Description).ToEditor(content, menu, "Description");
 
-            content.newParagraph();
-            GameDb.Current.commonSupply.ToEditor(content, menu, "Common supply");
 
             content.newParagraph();
-            GameDb.Current.playerSupply.ToEditor(content, menu, "Player supply");
+            content.h2("Map type", DSSWars.HudLib.TitleColor_Head2);
+
+            content.newParagraph();
+            content.h2("Resources", DSSWars.HudLib.TitleColor_Head2);
+
+
+            content.newParagraph();
+            cref.current.game.commonSupply.ToEditor(content, menu, "Common supply");
+
+            content.newParagraph();
+            cref.current.game.playerSupply.ToEditor(content, menu, "Player supply");
 
             content.newParagraph();
             content.h2("Cards", DSSWars.HudLib.TitleColor_Head2);
@@ -86,7 +95,7 @@ namespace VikingEngine.CardDesign.CardEditor
                 new RbAction1Arg<CardActionType>(createCard, CardActionType.ActionTrigger), new RbTooltip_Text("For casting spells")));
 
             content.newParagraph();
-            foreach (var kv in GameDb.Current.cards)
+            foreach (var kv in cref.current.game.cards)
             {
                 content.newLine();
                 kv.Value.toEditButton(content);
@@ -95,7 +104,7 @@ namespace VikingEngine.CardDesign.CardEditor
             void createCard(CardActionType actionType)
             { 
                 var card = new CardEntity(actionType);
-                EditorLib.CurrentCard = card.id;
+                cref.current.card = card;
                 menu.menuStack.Add(Menu_EditCard);
             }
         }
@@ -104,7 +113,8 @@ namespace VikingEngine.CardDesign.CardEditor
 
         void editCardMenu(RichBoxContent content)
         {
-            CardEntity card = GameDb.Current.cards[EditorLib.CurrentCard];
+            //CardEntity card = cref.current.game.cards[EditorLib.CurrentCard];
+            CardEntity card = cref.current.card;
 
 
 
@@ -116,7 +126,7 @@ namespace VikingEngine.CardDesign.CardEditor
             //new TextEditor(card, TextType.Name).ToEditor(content, menu, "Name");
 
             //content.newLine();
-            //new TextEditor(GameDb.Current, TextType.Flavor).ToEditor(content, menu, "Flavor text");
+            //new TextEditor(cref.current.game, TextType.Flavor).ToEditor(content, menu, "Flavor text");
 
             //RbText name;
             //if (string.IsNullOrEmpty(card.name))
@@ -175,28 +185,28 @@ namespace VikingEngine.CardDesign.CardEditor
 
 
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DSSWars.DssRef.lang.Hud_Exit) },
-                new RbAction(() => { editorState = EditorState.EditGame; })));
+                new RbAction(() => { cref.playState.closeEditor(); })));
 
         }
-        public void beginEditName()
-        {
-            new TextInputState(card.name, nameEditEvent, null);
-        }
-        void nameEditEvent(string result, object tag)
-        {
-            card.name = result;
-            menu.needRefresh = true;
-        }
+        //public void beginEditName()
+        //{
+        //    new TextInputState(cref.current.card.name, nameEditEvent, null);
+        //}
+        //void nameEditEvent(string result, object tag)
+        //{
+        //    card.name = result;
+        //    menu.needRefresh = true;
+        //}
 
-        public void beginEditFlavor()
-        {
-            new TextInputState(card.flavor, flavorEditEvent, null);
-        }
-        void flavorEditEvent(string result, object tag)
-        {
-            card.flavor = result;
-            menu.needRefresh = true;
-        }
+        //public void beginEditFlavor()
+        //{
+        //    new TextInputState(card.flavor, flavorEditEvent, null);
+        //}
+        //void flavorEditEvent(string result, object tag)
+        //{
+        //    card.flavor = result;
+        //    menu.needRefresh = true;
+        //}
         void imageOptions(RichBoxContent content)
         {
             DSSWars.HudLib.returnButton(content, menu, true, null);
@@ -222,47 +232,47 @@ namespace VikingEngine.CardDesign.CardEditor
 
         void selectImage(SpriteName sprite)
         {
-            card.image = sprite;
+            cref.current.card.CardContent.image = sprite;
             menu.menuBack();
         }
         void costMenu(RichBoxContent content)
         {
             DSSWars.HudLib.returnButton(content, menu, true, null);
             content.h1("Cost", DSSWars.HudLib.TitleColor_Head);
-            for (DefaultResourceType resource = 0; resource < DefaultResourceType.NUM_NONE; resource++)
-            {
-                IconName.Resource(resource, out var icon, out var name);
-                content.newLine();
-                content.Add(new RbImage(icon));
-                content.Add(new RbText(name));
-                content.Add(new RbTab(0.3f));
-                RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Number.PositiveBounds, 1),
-                            card.CostProperty, false, resource);
-            }
+            //for (DefaultResourceType resource = 0; resource < DefaultResourceType.NUM_NONE; resource++)
+            //{
+            //    IconName.Resource(resource, out var icon, out var name);
+            //    content.newLine();
+            //    content.Add(new RbImage(icon));
+            //    content.Add(new RbText(name));
+            //    content.Add(new RbTab(0.3f));
+            //    RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Number.PositiveBounds, 1),
+            //                card.CostProperty, false, resource);
+            //}
         }
 
-        void unitPropertiesMenu(RichBoxContent content)
-        {
-            DSSWars.HudLib.returnButton(content, menu, true, null);
-            content.h1("Properties", DSSWars.HudLib.TitleColor_Head);
-            card.unitProperties.ToEditor(content, menu);
+        //void unitPropertiesMenu(RichBoxContent content)
+        //{
+        //    DSSWars.HudLib.returnButton(content, menu, true, null);
+        //    content.h1("Properties", DSSWars.HudLib.TitleColor_Head);
+        //    cref.current.card.unitProperties.ToEditor(content, menu);
           
-        }
+        //}
 
-        void triggerMenu(RichBoxContent content)
-        {
-            DSSWars.HudLib.returnButton(content, menu, true, null);
-            content.h1("Trigger", DSSWars.HudLib.TitleColor_Head);
-            card.eventTriggers[editTriggerIndex].ToEditor(content, menu);
+        //void triggerMenu(RichBoxContent content)
+        //{
+        //    DSSWars.HudLib.returnButton(content, menu, true, null);
+        //    content.h1("Trigger", DSSWars.HudLib.TitleColor_Head);
+        //    card.eventTriggers[editTriggerIndex].ToEditor(content, menu);
             
-        }
+        //}
 
-        void triggerActionMenu(RichBoxContent content)
-        {
-            DSSWars.HudLib.returnButton(content, menu, true, null);
-            content.h1("Action", DSSWars.HudLib.TitleColor_Head);
-            card.eventTriggers[editTriggerIndex].actionList[editActionIndex].ToEditor(content, menu);
+        //void triggerActionMenu(RichBoxContent content)
+        //{
+        //    DSSWars.HudLib.returnButton(content, menu, true, null);
+        //    content.h1("Action", DSSWars.HudLib.TitleColor_Head);
+        //    card.eventTriggers[editTriggerIndex].actionList[editActionIndex].ToEditor(content, menu);
          
-        }
+        //}
     }
 }

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace VikingEngine.CardDesign
 {
-    static class CardRef
+    static class cref
     {
+        public static CardEditor.CurrentEdit current = new CardEditor.CurrentEdit();
         public static CardDesignPlayState playState;
     }
 }

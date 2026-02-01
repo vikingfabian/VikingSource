@@ -19,7 +19,7 @@ namespace VikingEngine.CardDesign.CardData
 
         public void ToEditor(RichBoxContent content, HUD.RichMenu.RichMenu menu, string title)
         {
-
+            content.h2(title, DSSWars.HudLib.TitleColor_Head2);
         }
     }
 }

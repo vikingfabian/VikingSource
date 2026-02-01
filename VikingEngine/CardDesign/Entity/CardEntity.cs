@@ -24,7 +24,7 @@ namespace VikingEngine.CardDesign.Entity
                     CardActionFieldUnit cardActionFieldUnit = new CardActionFieldUnit();
                     FieldUnit unit = new FieldUnit(true);
                     cardActionFieldUnit.unitId = unit.id;
-                    GameDb.Current.unitTypes.Add(unit.id, unit);
+                    cref.current.game.unitTypes.Add(unit.id, unit);
                     action = cardActionFieldUnit;
                     break;
                 case CardActionType.ActionTrigger:
@@ -32,7 +32,7 @@ namespace VikingEngine.CardDesign.Entity
                     break;
             }
 
-            GameDb.Current.cards.Add(id, this);
+            cref.current.game.cards.Add(id, this);
         }
         public void toEditButton(RichBoxContent content)
         {

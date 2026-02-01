@@ -12,7 +12,7 @@ namespace VikingEngine.CardDesign.CardData
 {
     class GameDb : IHasId, IHasText
     {
-        public static GameDb Current = new GameDb();
+        //public static GameDb Current = new GameDb();
 
         public GameMeta meta = new GameMeta();
 
@@ -26,6 +26,7 @@ namespace VikingEngine.CardDesign.CardData
 
         public PlayerSupply playerSupply = new PlayerSupply();
         public PlayerSupply commonSupply = new PlayerSupply();
+        public MapType mapType = MapType.Lanes;
 
         public GameDb() 
         {

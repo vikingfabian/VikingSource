@@ -16,7 +16,7 @@ namespace VikingEngine.CardDesign.CardData
         public Number amount;
         public AbsTagType Get()
         {
-            return GameDb.Current.tagDic[id];
+            return cref.current.game.tagDic[id];
         }
 
         public void ToMenu(RichBoxContent content)
@@ -33,7 +33,7 @@ namespace VikingEngine.CardDesign.CardData
             {
                 return "-None-";
             }
-            return GameDb.Current.tagDic[id].name.ToString();
+            return cref.current.game.tagDic[id].name.ToString();
         }
 
         public void Set(int value)

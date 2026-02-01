@@ -24,6 +24,10 @@ namespace VikingEngine.CardDesign.CardData
         abstract public void toEditor(RichBoxContent content, RichMenu menu);
         
         abstract public CardContent CardContent { get; }
+
+        abstract public CardActionType ActionType { get; }
+
+        virtual public FieldUnit GetUnit() { return null; }
     }
 
     class CardActionTrigger : AbsCardAction
@@ -38,6 +42,8 @@ namespace VikingEngine.CardDesign.CardData
         }
         public override CardContent CardContent => cardContent;
 
+        public override CardActionType ActionType => CardActionType.ActionTrigger;
+
     }
     class CardActionFieldUnit : AbsCardAction
     {
@@ -45,7 +51,7 @@ namespace VikingEngine.CardDesign.CardData
 
         public override void toEditor(RichBoxContent content, RichMenu menu)
         {
-            var unit = GameDb.Current.unitTypes[unitId];
+            var unit = GetUnit();
 
             DSSWars.HudLib.Label(content, "Properties");
             content.space();
@@ -63,14 +69,22 @@ namespace VikingEngine.CardDesign.CardData
                 unit.eventTriggers[i].ToMenu(content);
                 content.space();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
-                    new RbAction1Arg<int>((int index) => { editTriggerIndex = index; menu.menuStack.Add(Menu_Trigger); }, i)));
+                    new RbAction1Arg<int>((int index) => { cref.current.editTriggerIndex = index; menu.menuStack.Add(EditorMenu.Menu_Trigger); }, i)));
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("X") },
-                    new RbAction1Arg<int>((int index) => { card.eventTriggers.RemoveAt(index); }, i)));
+                    new RbAction1Arg<int>((int index) => { cref.current.card.action.GetUnit().eventTriggers.RemoveAt(index); }, i)));
 
                 content.newLine();
             }
         }
-        public override CardContent CardContent => GameDb.Current.unitTypes[unitId].cardContent;
+        public override FieldUnit GetUnit()
+        {
+            return cref.current.game.unitTypes[unitId];
+        }
+        public override CardContent CardContent => cref.current.game.unitTypes[unitId].cardContent;
+
+        public override CardActionType ActionType => CardActionType.FieldUnit;
+
+        
     }
 
 

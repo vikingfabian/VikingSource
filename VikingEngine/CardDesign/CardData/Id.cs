@@ -43,10 +43,10 @@ namespace VikingEngine.CardDesign.CardData
         public void toMenu(RichBoxContent content)
         {
             content.text("id " + hash.ToString(), DSSWars.HudLib.SecondaryTextColor);
-            DSSWars.HudLib.BulletSeperationPoint(content);
-            content.text("Created: " + created.date.ToString(), DSSWars.HudLib.SecondaryTextColor);
-            DSSWars.HudLib.BulletSeperationPoint(content);
-            content.text("Updated: " + updated.date.ToString(), DSSWars.HudLib.SecondaryTextColor);
+            //DSSWars.HudLib.BulletSeperationPoint(content);
+            //content.text("Created: " + created.date.ToString(), DSSWars.HudLib.SecondaryTextColor);
+            //DSSWars.HudLib.BulletSeperationPoint(content);
+            //content.text("Updated: " + updated.date.ToString(), DSSWars.HudLib.SecondaryTextColor);
 
         }
 

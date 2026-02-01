@@ -5,6 +5,7 @@ using System.Net;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.CardDesign.CardEditor;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -56,7 +57,7 @@ namespace VikingEngine.CardDesign.CardData
                 actionList[i].ToMenu(content);
                 content.space();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
-                    new RbAction1Arg<int>((index) => { CardRef.playState.editActionIndex = index; menu.menuStack.Add(CardDesignPlayState.Menu_Action); }, i)));
+                    new RbAction1Arg<int>((index) => { cref.current.editActionIndex = index; menu.menuStack.Add(EditorMenu.Menu_Action); }, i)));
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("X") },
                     new RbAction1Arg<int>((index) => { actionList.RemoveAt(index); }, i)));
 

@@ -30,14 +30,18 @@ namespace VikingEngine.CardDesign
         EditorBackground bg;
         //EditorState editorState = EditorState.EditGame;
         EditorMenu editorMenu = null;
-        CardEntity card = new CardEntity();
+        //CardEntity card = new CardEntity();
+        //public CardEntity card = null;
         CardGraphics.CardFace cardPreview = null;
-        int editTriggerIndex = -1;
-        public int editActionIndex = -1;
+        
+        
+
+        public List<GameDb> gameList = new List<GameDb>();
+
         public CardDesignPlayState()
             : base()
         {
-            CardRef.playState = this;
+            cref.playState = this;
             DSSWars.HudLib.Init();
             bg = new EditorBackground();
             openMenu();
@@ -58,21 +62,45 @@ namespace VikingEngine.CardDesign
             }
         }
 
+        public void closeEditor()
+        {
+            editorMenu = null;
+            cref.current = new CurrentEdit();
+            mainMenu();
+        }
+
         void mainMenu()
         {
             RichBoxContent content = new RichBoxContent();
             content.h1("Card Games - Editor", DSSWars.HudLib.TitleColor_Head);
 
             content.newLine();
-            DSSWars.HudLib.Label(content, "Add card");
-            content.newLine();
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("+ Creature") },
-                new RbAction(() => { editorMenu = new EditorMenu(menu); })));
+            DSSWars.HudLib.Label(content, "Games");
+            foreach (var game in gameList)
+            {
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(game.meta.name.ToString()) },
+                new RbAction(() => { cref.current.game = game; editorMenu = new EditorMenu(menu); })));
+            }
+            if (gameList.Count == 0)
+            {
+                content.newLine();
+            }
+            else
+            {
+                content.newParagraph();
+            }
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("+ New game") },
+                new RbAction(() => {
+                    cref.current.game = new GameDb();
+                    gameList.Add(cref.current.game);
+                    editorMenu = new EditorMenu(menu); 
+                })));
 
             content.newParagraph();
-            content.Add(new RbText("You can only modify one card", DSSWars.HudLib.InfoYellow_Light));
+            content.Add(new RbText("Corrent prototype state: You can only test the tools, no save, no play", DSSWars.HudLib.InfoYellow_Light));
             content.newLine();
-            content.Add(new RbText("Proof of concept - prototype 2", Color.LightGray));
+            content.Add(new RbText("Proof of concept - prototype 3", Color.LightGray));
 
             content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
@@ -120,20 +148,25 @@ namespace VikingEngine.CardDesign
                 refreshPage();
                 menu.needRefresh = false;
 
-                if (card != null)
-                {
-                    if (cardPreview == null)
-                    {
-                        cardPreview = new CardGraphics.CardFace(card);
-                        cardPreview.position = menu.backgroundArea.RightTop;
-                        cardPreview.size = CardFace.FullTargetSize * 1f;
+                //if (cr != null && !EditorLib.CurrentCard.empty)
+                //{
+                //    var card = GameDb.Current.cards[EditorLib.CurrentCard];
 
+                    if (cref.current.card != null)
+                    {
+                        if (cardPreview == null)
+                        {
+                            cardPreview = new CardGraphics.CardFace(cref.current.card);
+                            cardPreview.position = menu.backgroundArea.RightTop;
+                            cardPreview.size = CardFace.FullTargetSize * 1f;
+
+                        }
+                        else
+                        {
+                            cardPreview.generateTexture();
+                        }
                     }
-                    else
-                    { 
-                        cardPreview.generateTexture();  
-                    }
-                }
+                //}
             }            
         }
 
