@@ -18,7 +18,14 @@ namespace VikingEngine.CardDesign.CardData
         {
             id = Id.Empty;
         }
-        
+
+        public Resource(Id id, int startAmount)
+        {
+            this.id = id;
+            amount.value = startAmount;
+        }
+
+
         public AbsTagType Get()
         {
             if (id.empty)

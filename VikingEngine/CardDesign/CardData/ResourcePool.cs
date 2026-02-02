@@ -15,8 +15,8 @@ namespace VikingEngine.CardDesign.CardData
         public Number startCount = new Number(0);
         public Number maxCount = Number.Endless;
 
-        AbsAction emptyEvent = null;
-        AbsAction fullEvent = null;
+        ActionList emptyEvent = new ActionList();
+        ActionList fullEvent = new ActionList();
 
         public void ToEditor(RichBoxContent content, RichMenu menu)
         {
@@ -27,6 +27,14 @@ namespace VikingEngine.CardDesign.CardData
             new NumberEditor().DragButton(content, menu, "Start count", Number.EndlessPositiveBounds, StartProperty);
             content.newLine();
             new NumberEditor().DragButton(content, menu, "Max count", Number.EndlessPositiveBounds, MaxProperty);
+
+            content.newParagraph();
+            emptyEvent.StaticTriggerTitle(content, "Empty");
+            emptyEvent.ToEditor(content, menu);
+
+            content.newParagraph();
+            fullEvent.StaticTriggerTitle(content, "Full");
+            fullEvent.ToEditor(content, menu);
         }
 
         public void ToEditButton(RichBoxContent content, PlayerSupply supply)
@@ -157,10 +165,23 @@ namespace VikingEngine.CardDesign.CardData
                 {
                     if (set)
                     {
-                        this[index].Set(value);
+                        if (value == 0)
+                        {
+                            RemoveAt(index);
+                            return 0;
+                        }
+                        var res = this[index];
+                        res.Set(value);
+                        this[index] = res;
                     }
                     return this[index].amount.value;
                 }
+            }
+
+            if (set)
+            { 
+                Add(new Resource(id, value));
+                return value;
             }
 
             return 0;

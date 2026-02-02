@@ -57,6 +57,8 @@ namespace VikingEngine.CardDesign.CardData
         }
         abstract public bool IsTag { get; }
 
+        public bool IsResource => !IsTag;
+
         public Text GetText(TextType type) { return name; }
         public void SetText(TextType type, Text name) { this.name = name; }
     }

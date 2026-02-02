@@ -19,8 +19,6 @@ namespace VikingEngine.CardDesign.CardData
 
     abstract class AbsCardAction : ICardContent
     {
-        //abstract public Name GetName();
-        //abstract public void SetName(Name name);
         abstract public void toEditor(RichBoxContent content, RichMenu menu);
         
         abstract public CardContent CardContent { get; }
@@ -34,11 +32,11 @@ namespace VikingEngine.CardDesign.CardData
     {
         public CardContent cardContent = new CardContent();
 
-        AbsAction action = null;
+        ActionList action = new ActionList();
 
         public override void toEditor(RichBoxContent content, RichMenu menu)
         {
-            
+            action.ToEditor(content, menu);
         }
         public override CardContent CardContent => cardContent;
 
@@ -74,7 +72,7 @@ namespace VikingEngine.CardDesign.CardData
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("X") },
                     new RbAction1Arg<int>((int index) => { cref.current.card.action.GetUnit().eventTriggers.RemoveAt(index); }, i)));
 
-                trigger.ActionsToMenu(content);
+                trigger.actionList.ToMenu(content);
                 content.Add(new RbSeperationLine());
                 content.newLine();
             }
@@ -85,9 +83,7 @@ namespace VikingEngine.CardDesign.CardData
         }
         public override CardContent CardContent => cref.current.game.unitTypes[unitId].cardContent;
 
-        public override CardActionType ActionType => CardActionType.FieldUnit;
-
-        
+        public override CardActionType ActionType => CardActionType.FieldUnit;        
     }
 
 

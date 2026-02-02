@@ -24,6 +24,9 @@ namespace VikingEngine.CardDesign.CardData
         public PileAddOrder drawOrder = PileAddOrder.Top;
         public PileAddOrder dicardOrder = PileAddOrder.Top;
 
+        ActionList emptyEvent = new ActionList();
+        ActionList emptyDrawEvent = new ActionList();
+
         public CardPile(CardPileType pileType)
         {
             this.pileType = pileType;
@@ -91,6 +94,14 @@ namespace VikingEngine.CardDesign.CardData
                     new RbAction1Arg<PileAddOrder>((PileAddOrder value) => { dicardOrder = value; }, t), null);
             }
             discardDropDown.Build(content, SpriteName.NO_IMAGE, "Discard order", menu);
+
+            content.newParagraph();
+            emptyEvent.StaticTriggerTitle(content, "Empty");
+            emptyEvent.ToEditor(content, menu);
+
+            content.newParagraph();
+            emptyDrawEvent.StaticTriggerTitle(content, "Empty draw");
+            emptyDrawEvent.ToEditor(content, menu);
         }
         
 

@@ -76,7 +76,7 @@ namespace VikingEngine.CardDesign.CardEditor
                     triggerMenu(content);
                     break;
                 case Menu_Action:
-                    //triggerActionMenu(content);
+                    triggerActionMenu(content);
                     break;
                 case Menu_ListCards:
                     listCardsMenu(content);
@@ -292,15 +292,25 @@ namespace VikingEngine.CardDesign.CardEditor
             DSSWars.HudLib.returnButton(content, menu, true, null);
             content.h1("Cost", DSSWars.HudLib.TitleColor_Head);
             //for (DefaultResourceType resource = 0; resource < DefaultResourceType.NUM_NONE; resource++)
-            //{
-            //    IconName.Resource(resource, out var icon, out var name);
-            //    content.newLine();
-            //    content.Add(new RbImage(icon));
-            //    content.Add(new RbText(name));
-            //    content.Add(new RbTab(0.3f));
-            //    RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Number.PositiveBounds, 1),
-            //                card.CostProperty, false, resource);
-            //}
+            foreach (var resource in cref.current.game.tagDic.Values)
+            {
+                if (resource.IsResource)
+                {
+                    //IconName.Resource(resource, out var icon, out var name);
+                    content.newLine();
+                    content.Add(new RbImage(resource.icon));
+                    content.Add(new RbText(resource.name.ToString()));
+                    content.Add(new RbTab(0.3f));
+                    RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Number.PositiveBounds, 1),
+                                cref.current.card.cost.CostProperty, false, resource.id);
+                }
+            }
+
+            if (cref.current.game.tagDic.Count == 0)
+            { 
+                content.newLine();
+                content.text("Please add resources", DSSWars.HudLib.InfoYellow_Light);
+            }
         }
 
         void unitPropertiesMenu(RichBoxContent content)
@@ -319,12 +329,12 @@ namespace VikingEngine.CardDesign.CardEditor
 
         }
 
-        //void triggerActionMenu(RichBoxContent content)
-        //{
-        //    DSSWars.HudLib.returnButton(content, menu, true, null);
-        //    content.h1("Action", DSSWars.HudLib.TitleColor_Head);
-        //    card.eventTriggers[editTriggerIndex].actionList[editActionIndex].ToEditor(content, menu);
+        void triggerActionMenu(RichBoxContent content)
+        {
+            DSSWars.HudLib.returnButton(content, menu, true, null);
+            content.h1(cref.current.editAction.Type.ToString() + " action", DSSWars.HudLib.TitleColor_Head);
+            cref.current.editAction.ToEditor(content, menu, cref.current.card.action.ActionType == CardActionType.FieldUnit);
 
-        //}
+        }
     }
 }

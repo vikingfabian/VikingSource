@@ -21,7 +21,7 @@ namespace VikingEngine.CardDesign
         public TargetSide side = TargetSide.Enemy;
         public bool includeSelf = false;
 
-        public void ToEditor(RichBoxContent content, HUD.RichMenu.RichMenu menu)
+        public void ToEditor(RichBoxContent content, HUD.RichMenu.RichMenu menu, bool fromUnit)
         {
             DSSWars.HudLib.Label(content, "Target");
             content.newLine();
@@ -47,10 +47,12 @@ namespace VikingEngine.CardDesign
 
                 sidedropdown.Build(content, SpriteName.NO_IMAGE, "Type", menu);
             }
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("including self") },
-                selfProperty));
-
+            if (fromUnit)
+            {
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText("including self") },
+                    selfProperty));
+            }
         }
 
         public bool selfProperty(object tag, bool set, bool value)

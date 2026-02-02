@@ -27,7 +27,7 @@ namespace VikingEngine.CardDesign.CardEditor
                  action));
         }
 
-        public static void DeleteButton(RichBoxContent content, RbAction action)
+        public static void DeleteButton(RichBoxContent content, AbsRbAction action)
         {
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                 new RbText("X") },

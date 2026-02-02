@@ -20,25 +20,39 @@ namespace VikingEngine.CardDesign.CardData
         {
             content.Add(new RbText(Xamount.ToString() + " " + Type.ToString() + " to " + target.Description()));
         }
-        virtual public void ToEditor(RichBoxContent content, HUD.RichMenu.RichMenu menu)
+        virtual public void ToEditor(RichBoxContent content, HUD.RichMenu.RichMenu menu, bool fromUnit)
         {
-            AmountToEditor(content);
+            AmountToEditor(content, menu);
+            
             content.newLine();
-            target.ToEditor(content, menu);
-
+            if (target != null)
+            {
+                target.ToEditor(content, menu, fromUnit);
+            }
             DSSWars.HudLib.Label(content, "Preview");
             content.space();
             ToMenu(content);
         }
-        protected void AmountToEditor(RichBoxContent content)
+        protected void AmountToEditor(RichBoxContent content, HUD.RichMenu.RichMenu menu)
         {
-            content.newLine();
-            DSSWars.HudLib.Label(content, "Amount");
-            content.space();
-            NumberDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Number.Bounds, 1),
-               Xamount.UiProperty, false);
+            new NumberEditor().DragButton(content, menu, "Amount", Number.EndlessPositiveBounds, AmountProperty);
         }
-       
+
+        int AmountProperty(object tag, bool set, int value)
+        {
+            if (set)
+            {
+                Xamount.value = value;
+            }
+            return Xamount.value;
+        }
+        //    content.newLine();
+        //    DSSWars.HudLib.Label(content, "Amount");
+        //    content.space();
+        //    NumberDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Number.Bounds, 1),
+        //       Xamount.UiProperty, false);
+        //}
+
         public abstract ActionType Type { get; }
     }
 
@@ -79,9 +93,9 @@ namespace VikingEngine.CardDesign.CardData
 
         }
 
-        override public void ToEditor(RichBoxContent content, HUD.RichMenu.RichMenu menu)
+        override public void ToEditor(RichBoxContent content, HUD.RichMenu.RichMenu menu, bool fromUnit)
         {
-            AmountToEditor(content);
+            AmountToEditor(content, menu);
             content.newLine();
 
             //DropDownBuilder dropdown = new DropDownBuilder("resource");
@@ -119,15 +133,15 @@ namespace VikingEngine.CardDesign.CardData
             target = new Target();
         }
 
-        override public void ToEditor(RichBoxContent content, HUD.RichMenu.RichMenu menu)
+        override public void ToEditor(RichBoxContent content, HUD.RichMenu.RichMenu menu, bool fromUnit)
         {
-            AmountToEditor(content);
+            AmountToEditor(content, menu);
             content.newLine();
 
-            ToEditorBase(content, menu);
+            ToEditorBase(content, menu, fromUnit);
         }
 
-        protected void ToEditorBase(RichBoxContent content, HUD.RichMenu.RichMenu menu)
+        protected void ToEditorBase(RichBoxContent content, HUD.RichMenu.RichMenu menu, bool fromUnit)
         {
 
             DropDownBuilder dropdown = new DropDownBuilder("property");
@@ -142,7 +156,7 @@ namespace VikingEngine.CardDesign.CardData
             }
 
             content.newLine();
-            target.ToEditor(content, menu);
+            target.ToEditor(content, menu, fromUnit);
 
             content.newParagraph();
 
@@ -166,9 +180,9 @@ namespace VikingEngine.CardDesign.CardData
             unitPropertyType = UnitPropertyType.Health;
         }
 
-        override public void ToEditor(RichBoxContent content, HUD.RichMenu.RichMenu menu)
+        override public void ToEditor(RichBoxContent content, HUD.RichMenu.RichMenu menu, bool fromUnit)
         {
-            ToEditorBase(content, menu);
+            ToEditorBase(content, menu, fromUnit);
         }
 
         public override void ToMenu(RichBoxContent content)

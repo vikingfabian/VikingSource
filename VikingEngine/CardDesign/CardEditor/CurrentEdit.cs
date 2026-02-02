@@ -16,7 +16,7 @@ namespace VikingEngine.CardDesign.CardEditor
         public CardPile cardPile = null;
         public PlayerSupply supply = null;
         public Trigger editTrigger = null;
-        public int editActionIndex = -1;
+        public AbsAction editAction = null;
         public bool editIsTag = false;
     }
 }
