@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.CardDesign.CardData;
+using VikingEngine.CardDesign.CardEditor;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.HUD.RichMenu;
 
 namespace VikingEngine.CardDesign.Entity
 {
@@ -34,9 +37,16 @@ namespace VikingEngine.CardDesign.Entity
 
             cref.current.game.cards.Add(id, this);
         }
-        public void toEditButton(RichBoxContent content)
+        public void toEditButton(RichBoxContent content, RichMenu menu)
         {
+            RichBoxContent buttonContent = new RichBoxContent();
+            cost.ToMenu(buttonContent, "Free");
+            action.CardContent.toMenu(buttonContent);
 
+            content.Add(new ArtButton(RbButtonStyle.Primary, buttonContent,
+                new RbAction(() => { cref.current.card = this; menu.menuStack.Add(EditorMenu.Menu_EditCard); }),
+                new RbAction(()=> { cref.current.card = this; menu.needRefresh = true; }))
+            { fillWidth = true });
         }
 
         public CardContent CardContent => action.CardContent;

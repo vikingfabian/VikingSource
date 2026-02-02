@@ -100,7 +100,7 @@ namespace VikingEngine.CardDesign
                 })));
 
             content.newParagraph();
-            content.Add(new RbText("Corrent prototype state: You can only test the tools, no save, no play", DSSWars.HudLib.InfoYellow_Light));
+            content.Add(new RbText("Current prototype state: You can only test the tools, no save, no play", DSSWars.HudLib.InfoYellow_Light));
             content.newLine();
             content.Add(new RbText("Proof of concept - prototype 3", Color.LightGray));
 
@@ -165,7 +165,8 @@ namespace VikingEngine.CardDesign
                         }
                         else
                         {
-                            cardPreview.generateTexture();
+
+                            cardPreview.update(cref.current.card);
                         }
                     }
                 //}

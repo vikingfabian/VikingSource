@@ -16,6 +16,17 @@ namespace VikingEngine.CardDesign.CardData
         public Text flavor = Text.Empty;
         public SpriteName image = SpriteName.MissingImage;
 
+
+        public void toMenu(RichBoxContent content)
+        {
+            content.Add(new RbImage(image));
+            if (name.HasValue)
+            {
+                content.hspace();
+                content.Add(new RbText(name.ToString()));
+            }
+        }
+
         public void toEditor(RichBoxContent content, RichMenu menu)
         {
             new TextEditor(this, TextType.Name).ToEditor(content, menu, "Name");

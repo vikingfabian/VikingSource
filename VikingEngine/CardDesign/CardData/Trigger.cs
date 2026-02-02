@@ -20,10 +20,28 @@ namespace VikingEngine.CardDesign.CardData
 
         public void ToMenu(RichBoxContent content)
         {
-            content.Add(new RbText(eventTrigger.ToString() + ":"));
+            //content.Add(new RbText(eventTrigger.ToString() + ":"));
+            EventTriggerToMenu(content);
             content.space();
+            ActionsToMenu(content);
+            //foreach (var action in actionList)
+            //{
+            //    content.newLine();
+            //    DSSWars.HudLib.BulletSeperationPoint(content);
+            //    action.ToMenu(content);
+            //}
+        }
+
+        public void EventTriggerToMenu(RichBoxContent content)
+        {
+            content.Add(new RbText(eventTrigger.ToString() + ":"));
+            
+        }
+        public void ActionsToMenu(RichBoxContent content)
+        {   
             foreach (var action in actionList)
             {
+                content.newLine();
                 DSSWars.HudLib.BulletSeperationPoint(content);
                 action.ToMenu(content);
             }

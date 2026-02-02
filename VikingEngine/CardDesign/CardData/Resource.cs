@@ -14,17 +14,33 @@ namespace VikingEngine.CardDesign.CardData
     {
         public Id id;
         public Number amount;
+        public Resource()
+        {
+            id = Id.Empty;
+        }
+        
         public AbsTagType Get()
         {
+            if (id.empty)
+            {
+                return null;
+            }
             return cref.current.game.tagDic[id];
         }
 
         public void ToMenu(RichBoxContent content)
-        {            
+        {
             var tag = Get();
             content.Add(new RbText(amount.ToString()));
             content.hspace();
-            content.Add(new RbImage(tag.icon));
+            if (tag == null)
+            {
+                content.Add(new RbImage(SpriteName.MissingImage));
+            }
+            else
+            {
+                content.Add(new RbImage(tag.icon));
+            }
         }
 
         public string ToNameString()

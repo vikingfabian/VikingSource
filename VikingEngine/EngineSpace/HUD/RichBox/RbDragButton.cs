@@ -82,11 +82,11 @@ namespace VikingEngine.HUD.RichBox
 
         DragButtonSettings settings;
         DragValueType valueType;
-        object tag;
-        IntGetSetTag intValue;
+        protected object tag;
+        protected IntGetSetTag intValue;
         FloatGetSetTag floatValue;
 
-        RbText textPointer;
+        protected RbText textPointer;
         ThreeSplitTexture_Hori texture;
         
         public RbDragButton(DragButtonSettings settings, IntGetSetTag intValue, AbsRbAction enter = null, object tag = null)
@@ -153,7 +153,7 @@ namespace VikingEngine.HUD.RichBox
             new DragButtonInteraction(menu, this);
         }
 
-        public void valueChangeInput(float change, bool dragStep)
+        virtual public void valueChangeInput(float change, bool dragStep)
         {
             if (change != 0)
             {
@@ -207,7 +207,7 @@ namespace VikingEngine.HUD.RichBox
             }
         }
 
-        public void refreshValueDisplay()
+        virtual public void refreshValueDisplay()
         {
             if (textPointer != null && textPointer.pointer != null)
             {
@@ -255,15 +255,6 @@ namespace VikingEngine.HUD.RichBox
     {
         RbDragButton parent;
         float add;
-
-        //public RbDragOptionButton(RbDragButton parent, float add)
-        //{
-        //    this.parent = parent;
-        //    this.buttonStyle = Artistic.RbButtonStyle.Primary;
-        //    this.add = add;
-
-        //    content = new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(add)) };            
-        //}
 
         public RbDragOptionButton(RbDragButton parent, float add, bool useSymbols)
         {

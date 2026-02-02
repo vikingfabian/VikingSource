@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.CardDesign.CardData;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
@@ -12,6 +13,25 @@ namespace VikingEngine.CardDesign.CardEditor
 {
     class TagEditor
     {
+        public void SelectTagToEditor(RichBoxContent content, RichMenu menu, bool isTag, Id selected, Action<Id> selectEvent)
+        {
+            DropDownBuilder dropDown = new DropDownBuilder("tag to edit " + isTag.ToString());
+            selectEvent += new Action<Id>((Id id) => { menu.CloseDropDown(); });
+
+            dropDown.AddOption(SpriteName.NO_IMAGE, "- None -", selected.empty, false,
+                        new RbAction1Arg<Id>(selectEvent, Id.Empty), null);
+
+            foreach (var tag in cref.current.game.tagDic.Values)
+            {
+                if (tag.IsTag == isTag)
+                {                    
+                    dropDown.AddOption(tag.icon, tag.name.ToString(), tag.id == selected, false, 
+                        new RbAction1Arg<Id>(selectEvent, tag.Id), null);
+                }
+            }
+            dropDown.Build(content, SpriteName.NO_IMAGE, isTag? "Tag": "Resource", menu);
+        }
+
         public void AllToEditButton(RichBoxContent content, bool isTag)
         {
             int count = 0;

@@ -62,6 +62,12 @@ with.
 
       </CharacterRegion>
 
+	<!-- ∞ -->
+	<CharacterRegion>
+		<Start>&#x221E;</Start>
+		<End>&#x221E;</End>
+	</CharacterRegion>
+
       <!-- Thai -->
       <CharacterRegion>
 

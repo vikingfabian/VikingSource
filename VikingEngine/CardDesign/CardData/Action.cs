@@ -35,7 +35,7 @@ namespace VikingEngine.CardDesign.CardData
             content.newLine();
             DSSWars.HudLib.Label(content, "Amount");
             content.space();
-            RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Number.Bounds, 1),
+            NumberDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Number.Bounds, 1),
                Xamount.UiProperty, false);
         }
        

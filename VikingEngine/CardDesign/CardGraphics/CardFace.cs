@@ -28,6 +28,12 @@ namespace VikingEngine.CardDesign.CardGraphics
             generateTexture();
         }
 
+        public void update(CardEntity card)
+        {
+            this.card = card;
+            generateTexture();
+        }
+
         public void generateTexture()
         {
             var images = new List<Graphics.AbsDraw>(8);

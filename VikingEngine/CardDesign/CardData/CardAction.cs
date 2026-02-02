@@ -66,13 +66,16 @@ namespace VikingEngine.CardDesign.CardData
 
             for (int i = 0; i < unit.eventTriggers.Count; i++)
             {
-                unit.eventTriggers[i].ToMenu(content);
+                var trigger = unit.eventTriggers[i];
+                trigger.EventTriggerToMenu(content);
                 content.space();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudIconSettings) },
-                    new RbAction1Arg<int>((int index) => { cref.current.editTriggerIndex = index; menu.menuStack.Add(EditorMenu.Menu_Trigger); }, i)));
+                    new RbAction1Arg<int>((int index) => { cref.current.editTrigger = unit.eventTriggers[index]; menu.menuStack.Add(EditorMenu.Menu_Trigger); }, i)));
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("X") },
                     new RbAction1Arg<int>((int index) => { cref.current.card.action.GetUnit().eventTriggers.RemoveAt(index); }, i)));
 
+                trigger.ActionsToMenu(content);
+                content.Add(new RbSeperationLine());
                 content.newLine();
             }
         }

@@ -12,7 +12,10 @@ namespace VikingEngine.CardDesign.CardEditor
     {
         public GameDb game = null;
         public CardEntity card = null;
-        public int editTriggerIndex = -1;
+        public ResourcePool resourcePool = null;
+        public CardPile cardPile = null;
+        public PlayerSupply supply = null;
+        public Trigger editTrigger = null;
         public int editActionIndex = -1;
         public bool editIsTag = false;
     }

@@ -62,6 +62,8 @@ namespace VikingEngine.CardDesign.CardData
     }
     class TagType : AbsTagType
     {
+       
+
         public TagType(SpriteName icon, string name, List<Id> masterTo, Id? id) : 
             base(icon, name, masterTo, id)
         {

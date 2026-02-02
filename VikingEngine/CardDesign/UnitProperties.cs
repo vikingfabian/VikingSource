@@ -138,7 +138,7 @@ namespace VikingEngine.CardDesign
         abstract public void ToMenu(RichBoxContent content, RichBoxContent clarify);
         virtual public void ToEditor(RichBoxContent content, HUD.RichMenu.RichMenu menu) 
         {
-            RbDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Number.PositiveBounds, 1),
+            NumberDragButton.RbDragButtonGroup(content, new List<float> { 1f }, new DragButtonSettings(Number.PositiveBounds, 1),
                 ValueProperty, false);
         }
 

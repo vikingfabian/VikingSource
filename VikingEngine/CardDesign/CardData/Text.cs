@@ -48,5 +48,7 @@ namespace VikingEngine.CardDesign.CardData
         }
 
         public bool IsEmpty => string.IsNullOrEmpty(custom);
+
+        public bool HasValue => !IsEmpty;
     }
 }

@@ -1,20 +1,81 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using VikingEngine.CardDesign.CardEditor;
 using VikingEngine.CardDesign.CardGraphics;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichMenu;
 
 namespace VikingEngine.CardDesign.CardData
 {
     class ResourcePool
     {
-        public Resource resource;
+        public Id id = Id.CreateNew(false);
+        public Resource resource = new Resource();
         public Number startCount = new Number(0);
         public Number maxCount = Number.Endless;
 
         AbsAction emptyEvent = null;
         AbsAction fullEvent = null;
 
+        public void ToEditor(RichBoxContent content, RichMenu menu)
+        {
+            DSSWars.HudLib.Label(content, "Resource pool");
+            content.newLine();
+            new TagEditor().SelectTagToEditor(content, menu, false, resource.id, (Id id)=> { resource.id = id; });
+            content.newLine();
+            new NumberEditor().DragButton(content, menu, "Start count", Number.EndlessPositiveBounds, StartProperty);
+            content.newLine();
+            new NumberEditor().DragButton(content, menu, "Max count", Number.EndlessPositiveBounds, MaxProperty);
+        }
+
+        public void ToEditButton(RichBoxContent content, PlayerSupply supply)
+        {
+            ToMenu(content);
+            content.space();
+            
+            cHud.EditButton(content, new RbAction(()=> {
+                cref.current.resourcePool = this;
+                cref.playState.menu.menuStack.Add(CardEditor.EditorMenu.Menu_ResourcePool);
+            }));
+            content.space(2);
+            cHud.DeleteButton(content, new RbAction(() => {
+                supply.resources.Remove(id);
+            }));
+        }
+
+        public void ToMenu(RichBoxContent content)
+        {
+            resource.ToMenu(content);
+            content.space();
+            content.Add(new RbText($"/{maxCount.ToString()}"));
+            content.space();
+        }
+
+        int StartProperty(object tag, bool set, int value)
+        {
+            if (set)
+            {
+                startCount.value = value;
+                refresh();
+            }
+            return startCount.value;
+        }
+
+        int MaxProperty(object tag, bool set, int value)
+        {
+            if (set)
+            {
+                maxCount.value = value;
+                
+            }
+            return maxCount.value;
+        }
+
+        void refresh()
+        {
+            resource.amount = startCount;
+        }
     }
 
     class ResourceList : List<Resource>
@@ -39,7 +100,7 @@ namespace VikingEngine.CardDesign.CardData
             }
         }
 
-        public void ToMenu(RichBoxContent content)
+        public void ToMenu(RichBoxContent content, string emptyText)
         {
             if (HasValue)
             {
@@ -58,7 +119,7 @@ namespace VikingEngine.CardDesign.CardData
             }
             else
             {
-                content.Add(new RbText("None"));
+                content.Add(new RbText(emptyText, DSSWars.HudLib.SecondaryTextColor));
             }
         }
 
