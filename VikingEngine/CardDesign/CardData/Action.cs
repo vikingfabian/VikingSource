@@ -27,6 +27,7 @@ namespace VikingEngine.CardDesign.CardData
             content.newLine();
             if (target != null)
             {
+                content.newParagraph();
                 target.ToEditor(content, menu, fromUnit);
             }
             DSSWars.HudLib.Label(content, "Preview");

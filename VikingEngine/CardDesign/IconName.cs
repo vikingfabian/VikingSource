@@ -9,6 +9,50 @@ namespace VikingEngine.CardDesign
 {
     static class IconName
     {
+        public static string Select(TargetSelectType type)
+        {
+            return type switch
+            {
+                TargetSelectType.First => "First available",
+                TargetSelectType.Self => "Self",
+                TargetSelectType.All => "All",
+                TargetSelectType.ManualSelect => "Manual selection",
+                TargetSelectType.Area => "Area",
+                TargetSelectType.Row => "Entire row",
+                TargetSelectType.Lane => "Entire lane",
+                TargetSelectType.Random => "Random",
+                TargetSelectType.Closest => "Closest",
+                TargetSelectType.Opposite => "Directly opposite",
+                TargetSelectType.LeftMost => "Left-most",
+                TargetSelectType.CenterMost => "Center-most",
+                TargetSelectType.RightMost => "Right-most",
+                TargetSelectType.Flank => "Flanks",
+                TargetSelectType.Adjacent => "Adjacents",
+                TargetSelectType.LeftOfMe => "Target to the left",
+                TargetSelectType.RightOfMe => "Target to the right",
+                TargetSelectType.FrontOfMe => "Target in front",
+                TargetSelectType.BehindMe => "Target behind",
+                _ => "Unknown Selection"
+            };
+        }
+
+        public static string Filter(TargetFilterType type)
+        {
+            return type switch
+            {
+                TargetFilterType.HasTag => "Has tag",
+                TargetFilterType.HasResource => "Has resource",
+                TargetFilterType.HasHealth => "Has health",
+                TargetFilterType.HasAttack => "Has attack",
+                TargetFilterType.Friendly => "Friendly",
+                TargetFilterType.Enemy => "Enemy",
+                _ => "Unknown Filter"
+            };
+        }
+
+
+
+
         //public static void Resource(DefaultResourceType type, out SpriteName icon, out string name)
         //{
         //    switch (type)

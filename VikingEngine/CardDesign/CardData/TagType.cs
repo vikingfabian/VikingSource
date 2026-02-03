@@ -61,6 +61,11 @@ namespace VikingEngine.CardDesign.CardData
 
         public Text GetText(TextType type) { return name; }
         public void SetText(TextType type, Text name) { this.name = name; }
+
+        public override string ToString()
+        {
+            return "Tag " + name.ToString();
+        }
     }
     class TagType : AbsTagType
     {
