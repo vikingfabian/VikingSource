@@ -1,5 +1,5 @@
 ﻿Change log:
-* 
+* event empty player crash fix
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
@@ -57,6 +57,8 @@ dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=
 
 #LINUX
 dotnet publish -c Release -r linux-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained
+-c Release -r linux-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained --property:RuntimeIdentifier=win-x64
+storage Environment app location
 
 (högerklick i Publish "open git bash here")
 chmod +x VikingEngine
@@ -64,5 +66,3 @@ chmod +x VikingEngine
 tar -czf VikingEngine-linux-x64.tar.gz -C bin/Release/net8.0/linux-x64/publish .
 (hamnar i Repo\VikingSource\VikingEngine)
 
-
-"cross of SIM City & RTSs and Hearts of Iron IV"

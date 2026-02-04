@@ -455,7 +455,8 @@ namespace VikingEngine.DSSWars.Event
                         }
 
                         var player = check.GetPlayer();
-                        if (player.IsBot() &&
+                        if (player != null &&
+                            player.IsBot() &&
                             player.faction.diplomaticSide != DiplomaticSide.Dark &&
                             check.cityType < CityType.Capital &&
                             DssRef.diplomacy.GetRelationType(check.GetFaction(), p.faction) >= RelationType.RelationType0_Neutral)
