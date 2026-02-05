@@ -862,8 +862,18 @@ namespace VikingEngine.DSSWars.Players
         }
         public bool armyMayAttackHoverObj()
         {
-            return hover.obj != null &&
-                 hover.obj.GetFaction() != player.faction;
+            if (hover.obj != null)
+            {
+                if (hover.obj.gameobjectType() == GameObjectType.City &&
+                    hover.obj.GetCity().cityType == CityType.UnClaimed)
+                {
+                    return false;
+                }
+                return hover.obj.GetFaction() != player.faction;
+
+            }
+
+            return false;
         }
 
 
