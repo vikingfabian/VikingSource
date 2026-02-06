@@ -13,11 +13,13 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
+
         public string Tutorial_SeeThisInThat = "See {0} in {1}";
 
 
         //## Mounted update ##
-     
+        public string Editor_ExportFrame => "Export current frame";
+
         public string Economy_AnimalPenUpkeep => "Pen upkeep: {0}";
         public string Work_SlaughterX => "Slaughter {0}";
 

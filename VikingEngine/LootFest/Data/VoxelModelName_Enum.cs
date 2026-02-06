@@ -269,7 +269,13 @@ namespace VikingEngine.LootFest
         wagon_light4,
         wagon_coach,
         wagon_ironcoach,
-
+        cannonwagon_siegebronze,
+        cannonwagon_manuballista,
+        cannonwagon_catapult,
+        cannonwagon_ballista,
+        cannonwagon_manbronze,
+        cannonwagon_maniron,
+        cannon4wagon_maniron,
 
         stupid_board,
         stupid_gate,

@@ -61,15 +61,36 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
             
             LootFest.VoxelModelName wagonModelName;
+            float wagonMScale = 2f;
+            float MGoalDistance = 0.65f;
             switch (soldier.group.soldierConscript.conscript.vehicle)
             {
                 default:
                 case Resource.ItemResourceType.Wagon2Wheel:
-                    wagonModelName = VoxelModelName.wagon_light;
-                    chariot = true;
+                    switch (soldier.group.soldierConscript.conscript.weapon)
+                    {
+                        default:
+                            wagonModelName = VoxelModelName.wagon_light;
+                            chariot = true;
+                            MGoalDistance = 0.5f;
+                            break;
+                        case Resource.ItemResourceType.ManCannonIron:
+                            wagonModelName = VoxelModelName.cannonwagon_maniron;
+                            break;
+                    }
                     break;
                 case Resource.ItemResourceType.Wagon4Wheel:
-                    wagonModelName = VoxelModelName.wagon_light4;
+                    switch (soldier.group.soldierConscript.conscript.weapon)
+                    {
+                        default:
+                            wagonModelName = VoxelModelName.wagon_light4;                            
+                            break;
+                        case Resource.ItemResourceType.ManCannonIron:
+                            wagonMScale = 3f;
+                            MGoalDistance = 0.8f;
+                            wagonModelName = VoxelModelName.cannon4wagon_maniron;
+                            break;
+                    }
                     break;
                 case Resource.ItemResourceType.WagonClosed:
                     wagonModelName = VoxelModelName.wagon_coach;
@@ -87,10 +108,10 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             rightAnimalPosDiff = leftAnimalPosDiff;
             rightAnimalPosDiff.X = -rightAnimalPosDiff.X;
 
-            float wagonScale = DssConst.Men_StandardModelScale * 2f;
+            float wagonScale = DssConst.Men_StandardModelScale * wagonMScale;
             model = DssRef.models.ModelInstance_drawbatch(wagonModelName, wagonScale);
 
-            wagonGoalDistance = modelScale * (chariot? 0.5f : 0.65f);
+            wagonGoalDistance = modelScale * MGoalDistance;
 
             wagonPos = VectorExt.AddXZ(soldier.position, -soldier.rotation.Direction(wagonGoalDistance));
             wagonY = 0.02f * wagonScale;
@@ -225,6 +246,14 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                 animalmodel_right.Frame = 0;
                 
             }
+        }
+
+        enum WagonManType
+        { 
+            Wagon,
+            Chariot,
+            Riding,
+            Coach,
         }
     }
 }

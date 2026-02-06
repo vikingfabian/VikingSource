@@ -270,7 +270,19 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
                 new RbImage(SpriteName.WarsHudIconSave, DefaultIconScale), new RbSpace(), 
                 new RbText(DssRef.lang.Hud_Save) }, new RbAction(((Action)designer.storage.save) + closeMenu), 
-               new RbTooltip_Text(LoadContent.CheckCharsSafety(designer.storage.SavePath().CompletePath(true), LoadedFont.Regular))));
+               new RbTooltip_Text(LoadContent.CheckCharsSafety(designer.storage.VoxSavePath().CompletePath(true), LoadedFont.Regular))));
+            
+            if (designer.voxelProject.HaveAnimation)
+            {
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.WarsHudIconExport, DefaultIconScale),
+                new RbSpace(0.5f),
+                new RbImage(SpriteName.VoxelEditorFrame)
+                },
+                new RbAction(beginExportCurrentFrame),
+                new RbTooltip_Text(DssRef.todoLang.Editor_ExportFrame)));
+            }
+
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
                 new RbImage(SpriteName.WarsHudIconExport, DefaultIconScale), new RbSpace(), 
                 new RbText("OBJ") }, new RbAction(((Action)designer.exportObjModel) + closeMenu), 
@@ -386,6 +398,19 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             new TextInputState(designer.voxelProject.layers.list[layer].name, LayerNameEditEvent, layer);
         }
+
+        void beginExportCurrentFrame()
+        {
+            new TextInputState(designer.storage.saveFileName + "_Frame" + TextLib.IndexToString(designer.voxelProject.currentFrame.Value), exportCurrentFrameEvent, null);
+        }
+        void exportCurrentFrameEvent(string result, object tag)
+        {
+            if (!string.IsNullOrEmpty(result))
+            {
+                designer.storage.saveCurrentFrame(designer.voxelProject.currentFrame.Value, result);
+            }
+        }
+
         void LayerNameEditEvent(string result, object tag)
         {
             int layer = (int)tag;

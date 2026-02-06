@@ -246,6 +246,15 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.wagon_light4, false);
             loadVoxelModel(VoxelModelName.wagon_coach, false);
             loadVoxelModel(VoxelModelName.wagon_ironcoach, false);
+
+            loadVoxelModel(VoxelModelName.cannonwagon_siegebronze, false);
+            loadVoxelModel(VoxelModelName.cannonwagon_manuballista, false);
+            loadVoxelModel(VoxelModelName.cannonwagon_catapult, false);
+            loadVoxelModel(VoxelModelName.cannonwagon_ballista, false);
+            loadVoxelModel(VoxelModelName.cannonwagon_manbronze, false);
+            loadVoxelModel(VoxelModelName.cannonwagon_maniron, false);
+            loadVoxelModel(VoxelModelName.cannon4wagon_maniron, false);
+
             loadVoxelModel(VoxelModelName.wars_shipmelee, false);
             loadVoxelModel(VoxelModelName.buildarea, false);
             loadVoxelModel(VoxelModelName.godfire, false);

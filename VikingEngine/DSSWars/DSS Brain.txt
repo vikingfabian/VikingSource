@@ -30,6 +30,9 @@ USER INTERFACE
 x Menu for cesspits
 * Limit toggle for stockpile
 
+VOXEL EDITOR
+* Added frame export
+
 SYSTEMS
 * Animal pens have upkeep
 * Resource collecting is limited by storage
@@ -38,6 +41,7 @@ SYSTEMS
 
 PERFORMANCE
 * Diplomacy is converted to a component system, removing around a 1000 references
+* made a cleaner exit of the multicore process
 
 QUESTIONS
 * Do it need some type of hunter cottage to collect the first animals?

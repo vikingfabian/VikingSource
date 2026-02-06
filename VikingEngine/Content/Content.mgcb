@@ -2539,6 +2539,27 @@
 #begin VoxelModel/LfWars/buildarea.vox
 /copy:VoxelModel/LfWars/buildarea.vox
 
+#begin VoxelModel/LfWars/cannon4wagon_iron.vox
+/copy:VoxelModel/LfWars/cannon4wagon_iron.vox;VoxelModel/LfWars/cannon4wagon_maniron.vox
+
+#begin VoxelModel/LfWars/cannonwagon_ballista.vox
+/copy:VoxelModel/LfWars/cannonwagon_ballista.vox
+
+#begin VoxelModel/LfWars/cannonwagon_catapult.vox
+/copy:VoxelModel/LfWars/cannonwagon_catapult.vox
+
+#begin VoxelModel/LfWars/cannonwagon_manbronze.vox
+/copy:VoxelModel/LfWars/cannonwagon_manbronze.vox
+
+#begin VoxelModel/LfWars/cannonwagon_maniron.vox
+/copy:VoxelModel/LfWars/cannonwagon_maniron.vox
+
+#begin VoxelModel/LfWars/cannonwagon_manuballista.vox
+/copy:VoxelModel/LfWars/cannonwagon_manuballista.vox
+
+#begin VoxelModel/LfWars/cannonwagon_siegebronze.vox
+/copy:VoxelModel/LfWars/cannonwagon_siegebronze.vox
+
 #begin VoxelModel/LfWars/city_bank.vox
 /copy:VoxelModel/LfWars/city_bank.vox
 
