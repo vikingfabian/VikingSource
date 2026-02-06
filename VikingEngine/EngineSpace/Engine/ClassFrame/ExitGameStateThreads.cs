@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VikingEngine.EngineSpace.Engine.ClassFrame
+namespace VikingEngine.Engine
 {
     class ExitGameStateThreads : AbsUpdateable
     {
