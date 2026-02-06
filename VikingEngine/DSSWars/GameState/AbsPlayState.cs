@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.GameState
 
         public Stack<SpriteText3D> Text3DPool = new Stack<SpriteText3D>();
        
-
+        protected ExitGameStateThreads exitGameStateThreads;
 
         public AbsPlayState() 
             :base() 
@@ -296,15 +296,20 @@ namespace VikingEngine.DSSWars.GameState
                     }
                 }
 
-                Mouse.Hide();//Mouse.Visible = false;
+                Mouse.Hide();
             }
         }
 
-        public void exit()
+        public void beginExit()
         {
             Ref.music.stop(true);
             exitThreads = true;
             DssRef.ambience.gameEnd();
+
+            exitGameStateThreads = new ExitGameStateThreads(exit);
+        }
+        void exit()
+        {            
             new ExitToLobby(false);
         }
 

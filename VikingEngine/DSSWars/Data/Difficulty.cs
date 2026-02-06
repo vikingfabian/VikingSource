@@ -127,6 +127,18 @@ namespace VikingEngine.DSSWars.Data
             return setting_gameMode == GameModeMainType.Spectator;
         }
 
+        public static bool ModeSupportsTutorial(GameModeMainType gameMode)
+        {
+            switch (gameMode)
+            {
+                case GameModeMainType.Spectator:
+                case GameModeMainType.QuickMatch:
+                    return false;
+
+                default: return true;
+            }
+        }
+
         public static void OptionsRb(RichBoxContent content, RichMenu menu, Action<int> callback)
         {
             DropDownBuilder mapSzOptions = new DropDownBuilder("difficulty");

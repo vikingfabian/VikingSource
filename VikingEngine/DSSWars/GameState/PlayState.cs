@@ -364,8 +364,7 @@ namespace VikingEngine.DSSWars
                 new AsynchUpdateable_TryCatch(asynchNearObjectsUpdate, "DSS near objects update", 56, System.Threading.ThreadPriority.BelowNormal);
             }
 
-            startMapThreads();
-            
+            startMapThreads();            
             
             if (host)
             {
@@ -432,15 +431,12 @@ namespace VikingEngine.DSSWars
         public override void Time_Update(float time)
         {
             base.Time_Update(time);
-            //detailUpdateChanges = 0;
-            //MayChangeDetail_OnNewUpdate();
             Sound.SoundStackManager.Update();
 
             if (Ref.music != null)
             {
                 Ref.music.Update();
-            }
-            
+            }            
 
             if (Ref.steam.inOverlay)
             {
@@ -462,6 +458,10 @@ namespace VikingEngine.DSSWars
                 return;
             }
 
+            if (exitGameStateThreads != null)
+            {
+                return;
+            }
             
             if (Ref.DeltaGameTimeMs > 0)
             {
@@ -533,15 +533,11 @@ namespace VikingEngine.DSSWars
                 overviewMap.bRefreshTimer = true;
             }
 
-            //detailMap.update();
             overviewMap.update();
 
             updatePauseInput();
 
             Engine.ParticleHandler.Update(time);
-
-
-            //asynchMapGenerating(0, time);
         }
 
         const float AutoSaveTimeSec = 15 * TimeExt.MinuteInSeconds;

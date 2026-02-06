@@ -200,7 +200,7 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                DssRef.state.exit();
+                DssRef.state.beginExit();
             }
         }
 
@@ -211,7 +211,7 @@ namespace VikingEngine.DSSWars.Interface
                 Ref.steam.stats.upload();
             }
             closeMenu();
-            DssRef.state.exit();
+            DssRef.state.beginExit();
         }
 
         public void controllerDisconnectMenu()

@@ -92,6 +92,12 @@ namespace VikingEngine.DSSWars
             if (loadMeta == null)
             {
                 // new game
+
+                if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode) == false)
+                {
+                    DssRef.storage.runTutorial = false;
+                }
+                                    
                 switch (DssRef.difficulty.setting_gameMode)
                 {
                     case GameModeMainType.FullStory:

@@ -44,6 +44,7 @@ namespace VikingEngine.DSSWars.GameState
 
         virtual protected void launch()
         {
+            DssRef.state = null;
             DssRef.world = null;
             var lobby = new LobbyState(bgTex, startLoadingMap);
 
