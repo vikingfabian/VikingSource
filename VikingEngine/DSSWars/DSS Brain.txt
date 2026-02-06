@@ -1,9 +1,7 @@
 ﻿Change log:
-* event empty player crash fix
-* blocks tutorial from quick match
-* fixed start spectator mode in tutorial setup bug
-* removed: war declare popup on unclaimed city 
-
+* fixed faction spawn on empty main city crash
+* fixed ai settler model crash
+* 
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

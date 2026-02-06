@@ -381,6 +381,10 @@ namespace VikingEngine.DSSWars.GameObject
             return Culture == CityCulture.Nomads ? ConscriptDataLib.CraftNomadSettler : ConscriptDataLib.CraftSettler;
         }
 
+        public void aiConscriptSettler(City settleArea)
+        {
+            conscriptSettler(settleArea, true);
+        }
         public Army conscriptSettler(City settleArea, bool checkIfExists)
         {
             Army army = recruitToClosestArmy();

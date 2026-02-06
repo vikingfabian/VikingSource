@@ -1201,6 +1201,14 @@ namespace VikingEngine.DSSWars.Players
                 {
                     return;
                 }
+                if (faction.mainCity == null)
+                {
+                    faction.refreshMainCity();
+                    if (faction.mainCity == null)
+                    {
+                        return;
+                    }
+                }
 
                 Army mainArmy = null;
 
@@ -1426,6 +1434,7 @@ namespace VikingEngine.DSSWars.Players
 
             Army startMainArmy()
             {
+                
                 IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
                 return faction.NewArmy(onTile);
             }
@@ -1681,7 +1690,8 @@ namespace VikingEngine.DSSWars.Players
                         {
                             if (nCity.cityType == CityType.UnClaimed && Ref.peRnd.ChanceF(0.5f))
                             {
-                                city.conscriptSettler(nCity, true);
+                                Ref.update.AddSyncAction(new SyncAction1Arg<City>(city.aiConscriptSettler, nCity));
+                                //city.conscriptSettler(nCity, true);
                                 return;
                             }
                         }
