@@ -1,6 +1,4 @@
 ﻿Change log:
-* fixed faction spawn on empty main city crash
-* fixed ai settler model crash
 * 
 
 #Event timers (are slightly random)#
