@@ -313,15 +313,24 @@ namespace VikingEngine.Engine
             return Convert.ToInt32(ms / Ref.TargetDeltaTimeMs);
         }
 
-        public void AbortThreads() 
+        public int AbortThreads() 
         {
+            int count = 0;
             var upateC = updateLists[(int)UpdateType.Full].counter();
             
             while (upateC.Next())
             {
                 var updateable= upateC.sel as AbsUpdateable;
-                updateable?.AbortThreads();
+                if (updateable != null)
+                {
+                    if (updateable.AbortThreads())
+                    {
+                        count++;
+                    }
+                }
             }
+
+            return count;
         }
 
         public bool HaveLiveThreads()

@@ -1,7 +1,7 @@
 ﻿Change log:
 * fixed faction spawn on empty main city crash
 * fixed ai settler model crash
-* 
+* made a cleaner exit of the multicore process
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

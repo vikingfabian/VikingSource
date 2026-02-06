@@ -211,7 +211,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
 
             content.newLine();
             content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_ExitGame, ButtonCaptionColor) },
-                    new RbAction(DssRef.state.exit, RbSoundType.Back))
+                    new RbAction(DssRef.state.beginExit, RbSoundType.Back))
             { overrideBgColor = ButtonColor });
             //content.Button(DssRef.lang.GameMenu_ExitGame, new RbAction(DssRef.state.exit, RbSoundType.Back), null, true);
 
