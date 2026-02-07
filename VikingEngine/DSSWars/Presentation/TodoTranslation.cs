@@ -18,6 +18,7 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         //## Mounted update ##
+        public string Progress_ClosingCores => "Closing CPU cores {0}";
         public string Editor_ExportFrame => "Export current frame";
 
         public string Economy_AnimalPenUpkeep => "Pen upkeep: {0}";

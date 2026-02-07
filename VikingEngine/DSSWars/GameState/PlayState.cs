@@ -464,6 +464,7 @@ namespace VikingEngine.DSSWars
 
             if (exitGameStateThreads != null)
             {
+                new ExitScene(exitGameStateThreads);
                 return;
             }
             

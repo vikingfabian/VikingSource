@@ -177,7 +177,8 @@ namespace VikingEngine.DSSWars.Conscript
 
         public SoldierData init()
         {
-            SoldierData soldierData = ItemPropertyColl.Get(conscript.weapon).soldierData;
+            var weaponProperties = ItemPropertyColl.Get(conscript.weapon);
+            SoldierData soldierData = weaponProperties.soldierData;
             soldierData.applySkillBonus(skillBonus);
 
             var armorData = ItemPropertyColl.Get(conscript.armorLevel).soldierData;
@@ -189,6 +190,12 @@ namespace VikingEngine.DSSWars.Conscript
             if (conscript.vehicle != ItemResourceType.NONE)
             {
                 soldierData.WagonSetup();
+                //var vProperties = Resource.ItemPropertyColl.Get(conscript.vehicle);
+                if (conscript.vehicle == ItemResourceType.Wagon4Wheel &&
+                   weaponProperties.Filter_IsSiegeWeapon)//vProperties.Filter_IsRidingWagon)
+                {
+                    soldierData.modelData.riding = true;
+                }
             }
             else if (conscript.animal != ItemResourceType.NONE)
             {

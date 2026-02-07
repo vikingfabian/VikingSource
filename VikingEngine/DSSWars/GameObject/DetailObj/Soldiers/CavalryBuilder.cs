@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.GameObject
         public CavalryModel(AbsSoldierUnit soldier)
            : base(soldier)
         {
-            AnimalModel(soldier.group.soldierConscript.conscript.animal, out VoxelModelName modelName, out float modelScale, out walkingAnimation, out riderY);
+            AnimalModel(soldier.group.soldierConscript.conscript.animal, out VoxelModelName modelName, out float modelScale, out walkingAnimation, out riderY, out _);
             animalmodel = DssRef.models.ModelInstance_drawbatch(modelName, modelScale);
             //switch (soldier.group.soldierConscript.conscript.animal)
             //{
@@ -113,8 +113,9 @@ namespace VikingEngine.DSSWars.GameObject
             walkingAnimation.idleblinkframe = CharacterModelBuilder.IdleBlinkFrame;
         }
 
-        public static void AnimalModel(Resource.ItemResourceType animal, out VoxelModelName modelName, out float modelScale, out WalkingAnimation walkingAnimation, out float riderY)
+        public static void AnimalModel(Resource.ItemResourceType animal, out VoxelModelName modelName, out float modelScale, out WalkingAnimation walkingAnimation, out float riderY, out float wagonPullDistance)
         {
+            wagonPullDistance = 0;
             switch (animal)
             {
                 default:
@@ -128,6 +129,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case Resource.ItemResourceType.WildHog:
                 case Resource.ItemResourceType.WarHog:
                 case Resource.ItemResourceType.StagHog:
+                    wagonPullDistance = 0.2f;
                     modelName = VoxelModelName.hog1;
                     modelScale = DssConst.Men_StandardModelScale * 1.1f;
                     walkingAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1f);

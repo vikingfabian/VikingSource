@@ -125,6 +125,7 @@ namespace VikingEngine.DSSWars.Resource
         public bool Filter_IsSiegeWeapon = false;
         public bool Filter_IsTwoHandWeapon = true;
         public bool Filter_IsRidingAnimal = false;
+        //public bool Filter_IsRidingWagon = false;
         public WagonPull wagonPull = WagonPull.None;
         public ArmorCarry armorCarry = ArmorCarry.None;
         public int cityResourceIndex;
