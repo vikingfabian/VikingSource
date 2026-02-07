@@ -153,9 +153,15 @@ namespace VikingEngine
         public SpottedPointerArray(int length)
         {
             Array = new int[length];
+            clearPointers();
+        }
+
+        void clearPointers()
+        {
             for (int i = 0; i < Array.Length; ++i)
                 Array[i] = NullPointer;
         }
+
 
         /// <returns>At array index</returns>
         public int Add(int value)
@@ -459,29 +465,62 @@ namespace VikingEngine
             return NullPointer;
         }
 
+        //public void write_ushort_compressed(System.IO.BinaryWriter w)
+        //{ 
+        //    w.Write((ushort)Count);
+
+        //    if (Count > 0)
+        //    {
+        //        int realcount = 0;
+        //        for (int i = 0; i < Array.Length; ++i)
+        //        {
+        //            int pointer = Array[i];
+        //            if (pointer != NullPointer)
+        //            {
+        //                w.Write((ushort)pointer);
+        //                realcount++;
+        //                if (realcount >= Count)
+        //                { 
+        //                    break;
+        //                }
+        //            }
+        //        }
+
+        //        realcount -= Count;
+        //        for (int i = 0; i < realcount; ++i)
+        //        {
+        //            w.Write(ushort.MaxValue);
+        //        }
+        //    }
+        //}
         public void write_ushort_compressed(System.IO.BinaryWriter w)
-        { 
+        {
             w.Write((ushort)Count);
 
             if (Count > 0)
             {
-                int realcount = 0;
+                int validItemsWritten = 0;
+
+                // 1. Write valid items
                 for (int i = 0; i < Array.Length; ++i)
                 {
                     int pointer = Array[i];
                     if (pointer != NullPointer)
                     {
                         w.Write((ushort)pointer);
-                        realcount++;
-                        if (realcount >= Count)
-                        { 
+                        validItemsWritten++;
+                        // If we hit the promised Count, stop immediately
+                        if (validItemsWritten >= Count)
+                        {
                             break;
                         }
                     }
                 }
 
-                realcount -= Count;
-                for (int i = 0; i < realcount; ++i)
+                // 2. Pad the remaining slots if we didn't find enough valid items
+                //    to match the 'Count' we wrote in the header.
+                int paddingNeeded = Count - validItemsWritten;
+                for (int i = 0; i < paddingNeeded; ++i)
                 {
                     w.Write(ushort.MaxValue);
                 }
@@ -493,6 +532,7 @@ namespace VikingEngine
             if (readCount > Array.Length)
             {
                 Array = new int[readCount];
+                clearPointers();
             }
 
             for (int i = 0; i < readCount; ++i)
@@ -504,6 +544,28 @@ namespace VikingEngine
                 }                
             }
         }
+
+        //public void read_ushort_compressed(System.IO.BinaryReader r, int adjustCount)
+        //{
+        //    int readCount = r.ReadUInt16();
+        //    readCount += adjustCount;
+        //    if (readCount > Array.Length)
+        //    {
+        //        Array = new int[readCount];
+        //        clearPointers();
+        //    }
+
+        //    for (int i = 0; i < readCount; ++i)
+        //    {
+        //        int pointer = r.ReadUInt16();
+        //        if (pointer != ushort.MaxValue)
+        //        {
+                    
+        //            Add(pointer);
+                    
+        //        }
+        //    }
+        //}
 
         public void read_ushort(System.IO.BinaryReader r)
         {

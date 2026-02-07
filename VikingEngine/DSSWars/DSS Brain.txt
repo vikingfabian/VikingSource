@@ -74,6 +74,7 @@ Mountain (Hog breeding)
 Desert (Elephant breeding, drying meat, drying salt)
 
 
+
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
 - Bot peace time: 30 min
