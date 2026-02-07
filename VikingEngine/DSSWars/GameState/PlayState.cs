@@ -172,7 +172,7 @@ namespace VikingEngine.DSSWars
             SaveGamestate.MainProgress++;
             events.writeGameState(w);
             SaveGamestate.MainProgress++;
-            //progress.writeGameState(w);
+            w.Write(NextArmyId);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
@@ -182,6 +182,10 @@ namespace VikingEngine.DSSWars
             if (subversion >= 16)
             {
                 progress.readGameState(r, subversion, pointers);
+            }
+            if (subversion >= 105)
+            { 
+                NextArmyId = r.ReadInt32();
             }
         }
 

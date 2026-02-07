@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars
             w.Write(money.copper);
             Debug.WriteCheck(w);
 
-            cities.write_ushort_compressed(w);
+            //cities.write_ushort_compressed(w);
             //var cityList = cities.toList(DssRef.world.cities);
             //w.Write((ushort)cityList.Count);
             //foreach(var city in cityList)
@@ -216,11 +216,16 @@ namespace VikingEngine.DSSWars
             //{
             //    int cityIx = r.ReadUInt16();
             //    var city = DssRef.world.cities[cityIx];
-                    
+
             //    city.setFaction(this, true, false);
-                
+
             //}
-            cities.read_ushort(r);
+
+            if (subVersion < 105)
+            {
+                cities.read_ushort_compressed(r/*, myIndex == 4? -1 : 0*/);
+            }
+            
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
@@ -374,7 +379,7 @@ namespace VikingEngine.DSSWars
 
         public void readMapFile(System.IO.BinaryReader r, int mapVersion, WorldData world)
         {
-            cities.read_ushort_compressed(r);
+            cities.read_ushort_compressed(r/*, myIndex == 4? -1 : 0*/);
             //int cityCount = r.ReadUInt16();
 
             //for (int i = 0; i < cityCount; ++i)

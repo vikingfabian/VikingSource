@@ -226,7 +226,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            w.Write(Debug.Ushort_OrCrash(id));
+            w.Write(id);
             name.write(w);
             WP.WritePosXZPercentU16(w, position);
 
@@ -253,7 +253,14 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.factionIndex = faction.myIndex;
 
-            id = r.ReadUInt16();
+            if (subVersion < 105)
+            {
+                id = r.ReadUInt16();
+            }
+            else
+            {
+                id = r.ReadInt32();
+            }
             name.read(r, subVersion);
             if (!name.custom)
             {
