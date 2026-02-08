@@ -14,8 +14,10 @@ using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.Input;
 using VikingEngine.LootFest.GO.Characters.CastleEnemy;
 using VikingEngine.Network;
 
@@ -23,7 +25,8 @@ namespace VikingEngine.DSSWars.GameState
 {
     abstract class AbsPlayState : AbsDssState
     {
-       
+        public bool isReady = false;
+        public bool hasManorLords = false;
         public WorldResources resources = new WorldResources();
         public Map.MapLayer_Factions factionsMap;
         protected Map.MapLayer_Overview overviewMap;
@@ -49,6 +52,10 @@ namespace VikingEngine.DSSWars.GameState
         public int NextArmyId = 0;
         protected int stepFramesCount = 0;
         public Ambience ambience;
+        public bool importedWorld = false;
+
+        public Stack<SpriteText3D> Text3DPool = new Stack<SpriteText3D>();
+       
 
 
         public AbsPlayState() 
@@ -85,6 +92,7 @@ namespace VikingEngine.DSSWars.GameState
 
         protected void prePlayerInit()
         {
+            XpLib.Unlock = new TechnologyUnlock(DssRef.difficulty.setting_techMulti);
             DssRef.storage.profileStorage.refreshProfiles();
             CityMenu.InitGame();
         }
@@ -145,7 +153,6 @@ namespace VikingEngine.DSSWars.GameState
             return false;
         }
 
-        
 
         protected bool asynchArmyAiUpdate(int id, float time)
         {
@@ -267,6 +274,30 @@ namespace VikingEngine.DSSWars.GameState
             }
             pathUpdates[count] = new PathUpdateThread_Player(count);
 
+        }
+
+        public void updateMouseVisible()
+        {
+            if (menuSystem != null && menuSystem.IsOpen())
+            {
+                Input.Mouse.View();//Mouse.Visible = true;
+            }
+            else 
+            {
+                if (localPlayers != null)
+                {
+                    foreach (var player in localPlayers)
+                    {
+                        if (player.gameControls.input.inputSource.HasMouse)
+                        {
+                            Input.Mouse.View();//Mouse.Visible = true;
+                            return;
+                        }
+                    }
+                }
+
+                Mouse.Hide();//Mouse.Visible = false;
+            }
         }
 
         public void exit()

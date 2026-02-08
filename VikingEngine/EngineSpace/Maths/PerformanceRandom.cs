@@ -15,6 +15,8 @@ namespace VikingEngine.EngineSpace.Maths
         private int index = 0;
         private readonly float[] percValuesF;
 
+        int lowChanceCounter = 0;
+
         public PerformanceRandom()
         {
             Random rng = new Random();
@@ -71,6 +73,31 @@ namespace VikingEngine.EngineSpace.Maths
         {
             if (++index >= VALUE_SIZE) index = 0;
             return percValuesF[index] < chance;
+        }
+
+        /// <param name="chance">Must be less than 0.1</param>
+        public bool ChanceF_Low(float chance)
+        {            
+            if (++lowChanceCounter >= 100) lowChanceCounter = 0;
+
+            if (chance < 0.01f)
+            {
+                if (lowChanceCounter == 0)
+                {
+                    if (++index >= VALUE_SIZE) index = 0;
+                    return percValuesF[index] < chance * 100; 
+                }
+            }
+            else
+            {
+                if (lowChanceCounter < 10)
+                {
+                    if (++index >= VALUE_SIZE) index = 0;
+                    return percValuesF[index] < chance * 10;
+                }
+            }
+
+            return false;
         }
 
         public bool Chance_CheckForZero(float chance)

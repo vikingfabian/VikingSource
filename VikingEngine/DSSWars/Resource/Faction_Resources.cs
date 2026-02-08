@@ -9,13 +9,13 @@ using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.ToGG.MoonFall;
+using VikingEngine.DSSWars.EntityComponent;
 
 namespace VikingEngine.DSSWars
 {
     //RESOURCES
     partial class Faction
     {
-        //public int gold = 40;
         public Money money = new Money(4000);
         Money storeMoney = Money.Zero;
         Money previuosMoney = Money.Zero;
@@ -35,84 +35,21 @@ namespace VikingEngine.DSSWars
         public int CityFoodSpending = 0;
         public int CitySoldResources = 0;
 
-        public ResourceOverview res_wood = new ResourceOverview();
-        public ResourceOverview res_fuel = new ResourceOverview();
-        public ResourceOverview res_stone = new ResourceOverview();
-        public ResourceOverview res_rawFood = new ResourceOverview();
-        public ResourceOverview res_food = new ResourceOverview();
-        public ResourceOverview res_beer = new ResourceOverview();
-        public ResourceOverview res_coolingfluid = new ResourceOverview();
-        public ResourceOverview res_skinLinnen = new ResourceOverview();
+        public int resourceComponentStartIndex;
 
-        public ResourceOverview res_ironore = new ResourceOverview();
-        public ResourceOverview res_TinOre = new ResourceOverview();
-        public ResourceOverview res_CupperOre = new ResourceOverview();
-        public ResourceOverview res_LeadOre = new ResourceOverview();
-        public ResourceOverview res_SilverOre = new ResourceOverview();
-        public ResourceOverview res_GoldOre = new ResourceOverview();
+        public int WorkForceInCityCount()
+        { 
+            return totalWorkForce / DssConst.HeadCityStartMaxWorkForce;
+        }
 
-        public ResourceOverview res_iron = new ResourceOverview();
-        public ResourceOverview res_Tin = new ResourceOverview();
-        public ResourceOverview res_Cupper = new ResourceOverview();
-        public ResourceOverview res_Lead = new ResourceOverview();
-        public ResourceOverview res_Silver = new ResourceOverview();
-        public ResourceOverview res_RawMithril = new ResourceOverview();
-        public ResourceOverview res_Sulfur = new ResourceOverview();
-
-        public ResourceOverview res_Bronze = new ResourceOverview();
-        public ResourceOverview res_Steel = new ResourceOverview();
-        public ResourceOverview res_CastIron = new ResourceOverview();
-        public ResourceOverview res_BloomeryIron = new ResourceOverview();
-        public ResourceOverview res_Mithril = new ResourceOverview();
-
-        public ResourceOverview res_Palisade = new ResourceOverview();
-        public ResourceOverview res_Toolkit = new ResourceOverview();
-        public ResourceOverview res_Wagon2Wheel = new ResourceOverview();
-        public ResourceOverview res_Wagon4Wheel = new ResourceOverview();
-        public ResourceOverview res_BlackPowder = new ResourceOverview();
-        public ResourceOverview res_GunPowder = new ResourceOverview();
-        public ResourceOverview res_LedBullet = new ResourceOverview();
-
-        public ResourceOverview res_sharpstick = new ResourceOverview();
-        public ResourceOverview res_BronzeSword = new ResourceOverview();
-        public ResourceOverview res_shortsword = new ResourceOverview();
-        public ResourceOverview res_Sword = new ResourceOverview();
-        public ResourceOverview res_LongSword = new ResourceOverview();
-        public ResourceOverview res_HandSpear = new ResourceOverview();
-        public ResourceOverview res_MithrilSword = new ResourceOverview();
-
-        public ResourceOverview res_Warhammer = new ResourceOverview();
-        public ResourceOverview res_twohandsword = new ResourceOverview();
-        public ResourceOverview res_knightslance = new ResourceOverview();
-        public ResourceOverview res_SlingShot = new ResourceOverview();
-        public ResourceOverview res_ThrowingSpear = new ResourceOverview();
-        public ResourceOverview res_bow = new ResourceOverview();
-        public ResourceOverview res_longbow = new ResourceOverview();
-        public ResourceOverview res_crossbow = new ResourceOverview();
-        public ResourceOverview res_MithrilBow = new ResourceOverview();
-
-        public ResourceOverview res_HandCannon = new ResourceOverview();
-        public ResourceOverview res_HandCulvertin = new ResourceOverview();
-        public ResourceOverview res_Rifle = new ResourceOverview();
-        public ResourceOverview res_Blunderbuss = new ResourceOverview();
-
-        public ResourceOverview res_BatteringRam = new ResourceOverview();
-        public ResourceOverview res_ballista = new ResourceOverview();
-        public ResourceOverview res_Manuballista = new ResourceOverview();
-        public ResourceOverview res_Catapult = new ResourceOverview();
-        public ResourceOverview res_SiegeCannonBronze = new ResourceOverview();
-        public ResourceOverview res_ManCannonBronze = new ResourceOverview();
-        public ResourceOverview res_SiegeCannonIron = new ResourceOverview();
-        public ResourceOverview res_ManCannonIron = new ResourceOverview();
-
-        public ResourceOverview res_paddedArmor = new ResourceOverview();
-        public ResourceOverview res_HeavyPaddedArmor = new ResourceOverview();
-        public ResourceOverview res_BronzeArmor = new ResourceOverview();
-        public ResourceOverview res_mailArmor = new ResourceOverview();
-        public ResourceOverview res_heavyMailArmor = new ResourceOverview();
-        public ResourceOverview res_LightPlateArmor = new ResourceOverview();
-        public ResourceOverview res_FullPlateArmor = new ResourceOverview();
-        public ResourceOverview res_MithrilArmor = new ResourceOverview();
+        /// <summary>
+        /// To measure the strength a faction could muster
+        /// </summary>
+        /// <returns></returns>
+        public float PotensialMilitaryStrength()
+        {
+            return militaryStrength + totalWorkForce / DssConst.SoldierGroup_DefaultCount;
+        }
 
         public long GoldSecDiff()
         {
@@ -130,12 +67,10 @@ namespace VikingEngine.DSSWars
             for (ResourcesSubTab resourcesSubTab = 0; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
             {
                 var tabContent = new RichBoxContent();
-                //string text = null;
+                
                 switch (resourcesSubTab)
                 {
                     case ResourcesSubTab.Overview_Resources:
-                        //tabContent.Add(new RbText(DssRef.lang.Resource_Tab_Overview));
-                        //tabContent.space();
                         tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                         break;
 
@@ -165,137 +100,162 @@ namespace VikingEngine.DSSWars
                     {
                         player.resourcesSubTab = resourcesSubTab;
                     }, resourcesSubTab, RbSoundType.Tab));
-                //subTab.setGroupSelectionColor(HudLib.RbSettings, );
+
                 content.Add(subTab);
-                //content.space();
             }
+
+            ItemResourceType[] items = null;
 
             switch (player.resourcesSubTab)
             {
                 case ResourcesSubTab.Overview_Resources:
-                    content.Add(new RbSeperationLine());
-                    res_wood.toMenu(content, ItemResourceType.Wood_Group);
-                    res_fuel.toMenu(content, ItemResourceType.Fuel_G);
-                    content.Add(new RbSeperationLine());
-                    res_stone.toMenu(content, ItemResourceType.Stone_G);
-                    res_rawFood.toMenu(content, ItemResourceType.RawFood_Group);
-                    content.Add(new RbSeperationLine());
-                    res_food.toMenu(content, ItemResourceType.Food_G);
-                    res_beer.toMenu(content, ItemResourceType.Beer);
-                    content.Add(new RbSeperationLine());
-                    res_coolingfluid.toMenu(content, ItemResourceType.CoolingFluid);
-                    res_skinLinnen.toMenu(content, ItemResourceType.SkinLinen_Group);
-                    content.Add(new RbSeperationLine());
-
-                    res_Palisade.toMenu(content, ItemResourceType.Palisade);
-                    res_Toolkit.toMenu(content, ItemResourceType.Toolkit);
-                    res_Wagon2Wheel.toMenu(content, ItemResourceType.Wagon2Wheel);
-                    content.Add(new RbSeperationLine());
-                    res_Wagon4Wheel.toMenu(content, ItemResourceType.Wagon4Wheel);
-                    res_BlackPowder.toMenu(content, ItemResourceType.BlackPowder);
-                    content.Add(new RbSeperationLine());
-                    res_GunPowder.toMenu(content, ItemResourceType.GunPowder);
-                    res_LedBullet.toMenu(content, ItemResourceType.LedBullet);
+                    items = City.MovableCityResource_Misc;
                     break;
 
                 case ResourcesSubTab.Overview_Metals:
-                    content.Add(new RbSeperationLine());
-                    res_ironore.toMenu(content, ItemResourceType.IronOre_G);
-                    res_TinOre.toMenu(content, ItemResourceType.TinOre);
-                    content.Add(new RbSeperationLine());
-                    res_CupperOre.toMenu(content, ItemResourceType.CopperOre);
-                    res_LeadOre.toMenu(content, ItemResourceType.LeadOre);
-                    content.Add(new RbSeperationLine());
-                    res_SilverOre.toMenu(content, ItemResourceType.SilverOre);
-                    res_GoldOre.toMenu(content, ItemResourceType.GoldOre);
-
-                    content.Add(new RbSeperationLine());
-                    res_iron.toMenu(content, ItemResourceType.Iron_G);
-                    res_Tin.toMenu(content, ItemResourceType.Tin);
-                    content.Add(new RbSeperationLine());
-                    res_Cupper.toMenu(content, ItemResourceType.Copper);
-                    res_Lead.toMenu(content, ItemResourceType.Lead);
-                    content.Add(new RbSeperationLine());
-                    res_Silver.toMenu(content, ItemResourceType.Silver);                    
-                    res_RawMithril.toMenu(content, ItemResourceType.RawMithril);
-                    content.Add(new RbSeperationLine());
-                    res_Sulfur.toMenu(content, ItemResourceType.Sulfur);
-                    res_Bronze.toMenu(content, ItemResourceType.Bronze);
-                    content.Add(new RbSeperationLine());
-                    res_Steel.toMenu(content, ItemResourceType.Steel);
-                    res_CastIron.toMenu(content, ItemResourceType.CastIron);
-                    content.Add(new RbSeperationLine());
-                    res_BloomeryIron.toMenu(content, ItemResourceType.BloomeryIron);
-                    res_Mithril.toMenu(content, ItemResourceType.Mithril);
+                    items = City.MovableCityResource_Metals;
                     break;
 
                 case ResourcesSubTab.Overview_Weapons:
-                    content.Add(new RbSeperationLine());
-                    res_sharpstick.toMenu(content, ItemResourceType.SharpStick);
-                    res_BronzeSword.toMenu(content, ItemResourceType.BronzeSword);
-                    content.Add(new RbSeperationLine());
-                    res_shortsword.toMenu(content, ItemResourceType.ShortSword);
-                    res_Sword.toMenu(content, ItemResourceType.Sword);
-                    content.Add(new RbSeperationLine());
-                    res_LongSword.toMenu(content, ItemResourceType.LongSword);
-                    res_HandSpear.toMenu(content, ItemResourceType.HandSpear);
-                    content.Add(new RbSeperationLine());
-                    res_MithrilSword.toMenu(content, ItemResourceType.MithrilSword);
-
-                    res_Warhammer.toMenu(content, ItemResourceType.Warhammer);
-                    content.Add(new RbSeperationLine());
-                    res_twohandsword.toMenu(content, ItemResourceType.TwoHandSword);
-                    res_knightslance.toMenu(content, ItemResourceType.KnightsLance);
+                    items = City.MovableCityResource_WeaponMelee;
                     break;
 
                 case ResourcesSubTab.Overview_Projectile:
-                    content.Add(new RbSeperationLine());
-                    res_SlingShot.toMenu(content, ItemResourceType.SlingShot);
-                    res_ThrowingSpear.toMenu(content, ItemResourceType.ThrowingSpear);
-                    content.Add(new RbSeperationLine());
-                    res_bow.toMenu(content, ItemResourceType.Bow);
-                    res_longbow.toMenu(content, ItemResourceType.LongBow);
-                    content.Add(new RbSeperationLine());
-                    res_crossbow.toMenu(content, ItemResourceType.Crossbow);
-                    res_MithrilBow.toMenu(content, ItemResourceType.MithrilBow);
-                    content.Add(new RbSeperationLine());
-
-                    res_HandCannon.toMenu(content, ItemResourceType.HandCannon);
-                    res_HandCulvertin.toMenu(content, ItemResourceType.HandCulverin);
-                    content.Add(new RbSeperationLine());
-                    res_Rifle.toMenu(content, ItemResourceType.Rifle);
-                    res_Blunderbuss.toMenu(content, ItemResourceType.Blunderbuss);
-                    content.Add(new RbSeperationLine());
-
-                    //res_BatteringRam.toMenu(content, ItemResourceType.UN_BatteringRam);
-                    res_ballista.toMenu(content, ItemResourceType.Ballista);
-                    res_Manuballista.toMenu(content, ItemResourceType.Manuballista);
-                    content.Add(new RbSeperationLine());
-                    res_Catapult.toMenu(content, ItemResourceType.Catapult);
-                    res_SiegeCannonBronze.toMenu(content, ItemResourceType.SiegeCannonBronze);
-                    content.Add(new RbSeperationLine());
-                    res_ManCannonBronze.toMenu(content, ItemResourceType.ManCannonBronze);
-                    res_SiegeCannonIron.toMenu(content, ItemResourceType.SiegeCannonIron);
-                    content.Add(new RbSeperationLine());
-                    res_ManCannonIron.toMenu(content, ItemResourceType.ManCannonIron);
+                    items = City.MovableCityResource_WeaponRanged;
                     break;
 
                 case ResourcesSubTab.Overview_Armor:
-                    content.Add(new RbSeperationLine());
-                    res_paddedArmor.toMenu(content, ItemResourceType.PaddedArmor);
-                    res_HeavyPaddedArmor.toMenu(content, ItemResourceType.HeavyPaddedArmor);
-                    content.Add(new RbSeperationLine());
-                    res_BronzeArmor.toMenu(content, ItemResourceType.BronzeArmor);
-                    res_mailArmor.toMenu(content, ItemResourceType.IronArmor);
-                    content.Add(new RbSeperationLine());
-                    res_heavyMailArmor.toMenu(content, ItemResourceType.HeavyIronArmor);
-                    res_LightPlateArmor.toMenu(content, ItemResourceType.LightPlateArmor);
-                    content.Add(new RbSeperationLine());
-                    res_FullPlateArmor.toMenu(content, ItemResourceType.FullPlateArmor);
-                    res_MithrilArmor.toMenu(content, ItemResourceType.MithrilArmor);
+                    items = City.MovableCityResource_Armor;
                     break;
 
             }
+
+            
+            CircleCounterUp lineCounter = new CircleCounterUp(1, 1);
+            foreach (var item in items)
+            {
+                if (lineCounter.Next_IsReset())
+                {
+                    content.Add(new RbSeperationLine());
+                }
+                int itemIndex = ItemPropertyColl.CityIndex(item);
+                var resource = DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIndex];
+
+                resource.toFactionOverViewMenu(content, item);
+            }
+        }
+
+        public void stockPileTab(LocalPlayer player, RichBoxContent content)
+        {
+            switch (player.resourcesSubTab)
+            {
+                
+                case ResourcesSubTab.Overview_Resources:
+                case ResourcesSubTab.Work_Resources:
+                    player.resourcesSubTab = ResourcesSubTab.Stockpile_Resources;
+                    break;
+
+                case ResourcesSubTab.Overview_Metals:
+                case ResourcesSubTab.Work_Metals:
+                    player.resourcesSubTab = ResourcesSubTab.Stockpile_Metals;
+                    break;
+
+                case ResourcesSubTab.Overview_Weapons:
+                case ResourcesSubTab.Work_Weapons:
+                    player.resourcesSubTab = ResourcesSubTab.Stockpile_Weapons;
+                    break;
+
+                case ResourcesSubTab.Overview_Projectile:
+                case ResourcesSubTab.Work_Projectile:
+                    player.resourcesSubTab = ResourcesSubTab.Stockpile_Projectile;
+                    break;
+
+                case ResourcesSubTab.Overview_Armor:
+                case ResourcesSubTab.Work_Armor:
+                    player.resourcesSubTab = ResourcesSubTab.Stockpile_Armor;
+                    break;
+            }
+            
+
+            content.newLine();
+            content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
+            content.newLine();
+
+            for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Stockpile_Resources; resourcesSubTab <= ResourcesSubTab.Stockpile_Armor; ++resourcesSubTab)
+            {
+                var tabContent = new RichBoxContent();
+                
+                switch (resourcesSubTab)
+                {
+                    case ResourcesSubTab.Stockpile_Resources:
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
+                        break;
+
+                    case ResourcesSubTab.Stockpile_Metals:
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Iron));
+                        break;
+                    case ResourcesSubTab.Stockpile_Weapons:
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Sword));
+                        break;
+
+                    case ResourcesSubTab.Stockpile_Projectile:
+                        tabContent.Add(new RbImage(SpriteName.WarsResource_Bow));
+                        break;
+
+                    case ResourcesSubTab.Stockpile_Armor:
+                        tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
+                        break;
+
+                }
+                var subTab = new ArtButton(player.resourcesSubTab == resourcesSubTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, tabContent,
+                    new RbAction1Arg<ResourcesSubTab>((ResourcesSubTab resourcesSubTab) =>
+                    {
+                        player.resourcesSubTab = resourcesSubTab;
+                    }, resourcesSubTab, RbSoundType.Tab));
+
+                content.Add(subTab);
+            }
+
+            new StockPileMenu(content, null, this).toHud(player, player.resourcesSubTab);
+            //ItemResourceType[] items = null;
+
+            //switch (player.resourcesSubTab)
+            //{
+            //    case ResourcesSubTab.Stockpile_Resources:
+            //        items = City.MovableCityResource_Misc;
+            //        break;
+
+            //    case ResourcesSubTab.Stockpile_Metals:
+            //        items = City.MovableCityResource_Metals;
+            //        break;
+
+            //    case ResourcesSubTab.Stockpile_Weapons:
+            //        items = City.MovableCityResource_WeaponMelee;
+            //        break;
+
+            //    case ResourcesSubTab.Stockpile_Projectile:
+            //        items = City.MovableCityResource_WeaponRanged;
+            //        break;
+
+            //    case ResourcesSubTab.Stockpile_Armor:
+            //        items = City.MovableCityResource_Armor;
+            //        break;
+
+            //}
+
+
+            ////CircleCounterUp lineCounter = new CircleCounterUp(1, 1);
+            //foreach (var item in items)
+            //{
+            //    //if (lineCounter.Next_IsReset())
+            //    //{
+            //    //    content.Add(new RbSeperationLine());
+            //    //}
+            //    int itemIndex = ItemPropertyColl.CityIndex(item);
+            //    ResourceOverview resource = DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIndex];
+
+            //    resource.toMenu(content, item);
+            //}
         }
 
         public void workTab(RichBoxContent content)
@@ -316,7 +276,6 @@ namespace VikingEngine.DSSWars
                 switch (resourcesSubTab)
                 {
                     case ResourcesSubTab.Work_Resources:
-                        //tabContent.Add(new RbText(DssRef.lang.Work_OrderPrioTitle));
                         tabContent.Add(new RbImage(SpriteName.WarsResource_Wood));
                         break;
 
@@ -339,9 +298,8 @@ namespace VikingEngine.DSSWars
                     {
                         p.resourcesSubTab = resourcesSubTab;
                     }, resourcesSubTab, RbSoundType.Tab));
-                //subTab.setGroupSelectionColor(HudLib.RbSettings, p.resourcesSubTab == resourcesSubTab);
+
                 content.Add(subTab);
-                //content.space(resourcesSubTab == ResourcesSubTab.Work_Armor ? 2 : 1);
             }
             
             content.Add(new RbSeperationLine());
@@ -363,10 +321,13 @@ namespace VikingEngine.DSSWars
             else
             { 
                 tradeTemplate.changeResourcePrice(change, resourceType);
-                var cityCounter = cities.counter();
-                while (cityCounter.Next())
+                //var cityCounter = cities.counter();
+                //while (cityCounter.Next())
+                //{
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
                 {
-                    cityCounter.sel.tradeTemplate.onFactionValueChange(tradeTemplate);
+                    citySel.tradeTemplate.onFactionValueChange(tradeTemplate);
                 }
             }
         }
@@ -391,11 +352,14 @@ namespace VikingEngine.DSSWars
         }
 
         public void refreshCityWork()
-        { 
-            var cityCounter = cities.counter();
-            while (cityCounter.Next())
+        {
+            //var cityCounter = cities.counter();
+            //while (cityCounter.Next())
+            //{
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
             {
-                cityCounter.sel.workTemplate.onFactionChange(cityCounter.sel, workTemplate);
+                citySel.workTemplate.onFactionChange(citySel, workTemplate);
             }
         }
 
@@ -424,7 +388,7 @@ namespace VikingEngine.DSSWars
 
         public long GetGold(City city)
         {
-            if (DssRef.storage.centralGold)
+            if (DssRef.storage.gameRuleset.centralGold)
             {
                 return money.GetGold();
             }
@@ -434,57 +398,45 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public bool hasGold(int cost, City city)
+        public bool hasGold(int cost, AbsMapObject mapObj)
         {
-            if (DssRef.storage.centralGold)
+            if (DssRef.storage.gameRuleset.centralGold)
             {
                 return money.GetGold() >= cost;
             }
             else
             {
-                return city.money.GetGold() >= cost;
+                return mapObj.money.GetGold() >= cost;
             }
         }
 
         public bool payGold(int cost, bool allowDept, City city)
         {
+#if DEBUG
             if (player.IsLocalPlayer() && StartupSettings.EndlessResources)
             {
                 return true;
             }
+#endif
 
-            //if (player.IsLocalPlayer())
-            //{
-            //    lib.DoNothing();
-            //}
-
-            if (DssRef.storage.centralGold)
-            {
-                if (allowDept || money.GetGold() >= cost)
-                {
-                    money.AddGold(-cost);
-                    return true;
-                }
+            if (DssRef.storage.gameRuleset.centralGold)
+            { 
+                return money.PayGold(cost, allowDept);                
             }
             else
             {
-                if (allowDept || city.money.GetGold() >= cost)
-                {
-                    city.money.AddGold(-cost);
-                    return true;
-                }
+                return city.money.PayGold(cost, allowDept);                
             }
-            return false;
         }
-        public int payMoney_MuchAsPossible(int cost, City city)
+        public int payGold_MuchAsPossible(int cost, City city)
         {
-            if (DssRef.storage.centralGold)
+            if (DssRef.storage.gameRuleset.centralGold)
             {
-                return money.payGold_MuchAsPossible(cost);//pay(ref gold);
+                return (int)money.payGold_MuchAsPossible(cost);//pay(ref gold);
             }
             else
             {
-                return city.money.payGold_MuchAsPossible(cost);
+                return (int)city.money.payGold_MuchAsPossible(cost);
             }
 
             //int pay(ref int gold)
@@ -500,15 +452,9 @@ namespace VikingEngine.DSSWars
         }
 
 
-        public void addGold(int value, City city)
+        public void addGold(long value, City city)
         {
-
-            //if (player.IsLocalPlayer())
-            //{
-            //    lib.DoNothing();
-            //}
-
-            if (DssRef.storage.centralGold)
+            if (DssRef.storage.gameRuleset.centralGold)
             {
                 money.AddGold(value);
             }
@@ -526,10 +472,13 @@ namespace VikingEngine.DSSWars
             {
                 int perCity = value / cityCount;
 
-                var citiesC = cities.counter();
-                while (citiesC.Next())
+                //var citiesC = cities.counter();
+                //while (citiesC.Next())
+                //{
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
                 {
-                    citiesC.sel.money.AddGold(perCity);
+                    citySel.money.AddGold(perCity);
                 }
             }           
         }
@@ -541,25 +490,29 @@ namespace VikingEngine.DSSWars
             //int cityIncomeCount = 0;
             int workForceCount = 0;
             //int nobel = 0;
-            var citiesC = cities.counter();
+            
             CityEconomyData newCitiesEconomy = new CityEconomyData();
             float citiesFoodProduce = 0;
             float citiesFoodSpend = 0;
             float soldResources = 0;
             citiesMilitaryStrenght = 0;
 
-            while (citiesC.Next())
+            //var citiesC = cities.counter();
+            //            while (citiesC.Next())
+            //            {
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
             {
                 //citiesC.sel.updateIncome_asynch();
                 //CityEconomyData data = citiesC.sel.calcIncome_async();
-                CityEconomyData data = new CityEconomyData(citiesC.sel);
+                CityEconomyData data = new CityEconomyData(citySel);
                 newCitiesEconomy.Add(data);
                 //cityIncomeCount += data.total();
-                workForceCount += citiesC.sel.workForce.amount;
-                citiesFoodProduce += citiesC.sel.foodProduction.displayValue_gold_sec;
-                citiesFoodSpend += citiesC.sel.foodSpending.displayValue_gold_sec;
-                soldResources += citiesC.sel.soldResources.displayValue_gold_sec;
-                citiesMilitaryStrenght += citiesC.sel.strengthValue;
+                workForceCount += citySel.workForce.amount;
+                citiesFoodProduce += citySel.foodProduction.displayValue_gold_sec;
+                citiesFoodSpend += citySel.foodSpending.displayValue_gold_sec;
+                soldResources += citySel.soldResources.displayValue_gold_sec;
+                citiesMilitaryStrenght += citySel.strengthValue;
                 //if (citiesC.sel.nobelHouse)
                 //{
                 //    ++nobel;
@@ -570,6 +523,13 @@ namespace VikingEngine.DSSWars
             citiesEconomy = newCitiesEconomy;
             //cityIncome = newCitiesEconomy.total();
             //nobelHouseCount = nobel;
+
+#if DEBUG
+            if (Debug.CorruptValue(citiesFoodSpend))
+            {
+                lib.DoNothing();
+            }
+#endif
 
             CityFoodProduction = Convert.ToInt32(citiesFoodProduce);
             CityFoodSpending = Convert.ToInt32(citiesFoodSpend);
@@ -583,6 +543,11 @@ namespace VikingEngine.DSSWars
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
+                //if (armiesC.sel.debugTagged)
+                //{
+                //    lib.DoNothing();
+                //}
+
                 float manUpkeepCount = 0;
                 float moneyCarry = 0;
                 //float armyUpkeep = 0;
@@ -641,252 +606,322 @@ namespace VikingEngine.DSSWars
             armyUpkeep = Convert.ToInt32(totalArmiesUpkeep);
         }
 
+        public ref GroupedResource GetRefResourceOverview(ItemResourceType item)
+        {
+            int itemIndex = ItemPropertyColl.CityIndex(item);
+            return ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIndex];
+        }
+
+        public GroupedResource GetResourceOverview(ItemResourceType item)
+        {
+            int itemIndex = ItemPropertyColl.CityIndex(item);
+            return DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIndex];
+        }
+
+        int resourceSecondUpdates = 0;
+
         public void resourceOverviewOneSecondUpdate()
         {
-            res_wood.oneSecondUpdate();
-            res_fuel.oneSecondUpdate();
-            res_stone.oneSecondUpdate();
-            res_rawFood.oneSecondUpdate();
-            res_food.oneSecondUpdate();
-            res_beer.oneSecondUpdate();
-            res_coolingfluid.oneSecondUpdate();
-            res_skinLinnen.oneSecondUpdate();
+            resourceSecondUpdates++;
+            
 
-            res_ironore.oneSecondUpdate();
-            res_TinOre.oneSecondUpdate();
-            res_CupperOre.oneSecondUpdate();
-            res_LeadOre.oneSecondUpdate();
-            res_SilverOre.oneSecondUpdate();
-            res_GoldOre.oneSecondUpdate();
+            //int end = resourceComponentStartIndex + CityResoureIndex.COUNT;
+            //for (int itemIx = resourceComponentStartIndex; itemIx < end; itemIx++)
+            //{
+            //    //ref ResourceOverview overview = ref DssRef.world.factionResourceOverviews[itemIx];
+            //    //overview.oneSecondUpdate();
+            //    DssRef.world.factionResourceOverviews[itemIx].changeRate.oneSecondUpdate();
+            //}
+            //res_wood.oneSecondUpdate();
+            //res_fuel.oneSecondUpdate();
+            //res_stone.oneSecondUpdate();
+            //res_rawFood.oneSecondUpdate();
+            //res_food.oneSecondUpdate();
+            //res_beer.oneSecondUpdate();
+            //res_coolingfluid.oneSecondUpdate();
+            //res_skinLinnen.oneSecondUpdate();
 
-            res_iron.oneSecondUpdate();
-            res_Tin.oneSecondUpdate();
-            res_Cupper.oneSecondUpdate();
-            res_Lead.oneSecondUpdate();
-            res_Silver.oneSecondUpdate();
-            res_RawMithril.oneSecondUpdate();
-            res_Sulfur.oneSecondUpdate();
+            //res_ironore.oneSecondUpdate();
+            //res_TinOre.oneSecondUpdate();
+            //res_CupperOre.oneSecondUpdate();
+            //res_LeadOre.oneSecondUpdate();
+            //res_SilverOre.oneSecondUpdate();
+            //res_GoldOre.oneSecondUpdate();
 
-            res_Bronze.oneSecondUpdate();
-            res_Steel.oneSecondUpdate();
-            res_CastIron.oneSecondUpdate();
-            res_BloomeryIron.oneSecondUpdate();
-            res_Mithril.oneSecondUpdate();
+            //res_iron.oneSecondUpdate();
+            //res_Tin.oneSecondUpdate();
+            //res_Cupper.oneSecondUpdate();
+            //res_Lead.oneSecondUpdate();
+            //res_Silver.oneSecondUpdate();
+            //res_RawMithril.oneSecondUpdate();
+            //res_Sulfur.oneSecondUpdate();
 
-            res_Palisade.oneSecondUpdate();
-            res_Toolkit.oneSecondUpdate();
-            res_Wagon2Wheel.oneSecondUpdate();
-            res_Wagon4Wheel.oneSecondUpdate();
-            res_BlackPowder.oneSecondUpdate();
-            res_GunPowder.oneSecondUpdate();
-            res_LedBullet.oneSecondUpdate();
+            //res_Bronze.oneSecondUpdate();
+            //res_Steel.oneSecondUpdate();
+            //res_CastIron.oneSecondUpdate();
+            //res_BloomeryIron.oneSecondUpdate();
+            //res_Mithril.oneSecondUpdate();
 
-            res_sharpstick.oneSecondUpdate();
-            res_BronzeSword.oneSecondUpdate();
-            res_shortsword.oneSecondUpdate();
-            res_Sword.oneSecondUpdate();
-            res_LongSword.oneSecondUpdate();
-            res_HandSpear.oneSecondUpdate();
-            res_MithrilSword.oneSecondUpdate();
+            //res_Palisade.oneSecondUpdate();
+            //res_Toolkit.oneSecondUpdate();
+            //res_Wagon2Wheel.oneSecondUpdate();
+            //res_Wagon4Wheel.oneSecondUpdate();
+            //res_BlackPowder.oneSecondUpdate();
+            //res_GunPowder.oneSecondUpdate();
+            //res_LedBullet.oneSecondUpdate();
 
-            res_Warhammer.oneSecondUpdate();
-            res_twohandsword.oneSecondUpdate();
-            res_knightslance.oneSecondUpdate();
-            res_SlingShot.oneSecondUpdate();
-            res_ThrowingSpear.oneSecondUpdate();
-            res_bow.oneSecondUpdate();
-            res_longbow.oneSecondUpdate();
-            res_crossbow.oneSecondUpdate();
-            res_MithrilBow.oneSecondUpdate();
+            //res_sharpstick.oneSecondUpdate();
+            //res_BronzeSword.oneSecondUpdate();
+            //res_shortsword.oneSecondUpdate();
+            //res_Sword.oneSecondUpdate();
+            //res_LongSword.oneSecondUpdate();
+            //res_HandSpear.oneSecondUpdate();
+            //res_MithrilSword.oneSecondUpdate();
 
-            res_HandCannon.oneSecondUpdate();
-            res_HandCulvertin.oneSecondUpdate();
-            res_Rifle.oneSecondUpdate();
-            res_Blunderbuss.oneSecondUpdate();
+            //res_Warhammer.oneSecondUpdate();
+            //res_twohandsword.oneSecondUpdate();
+            //res_knightslance.oneSecondUpdate();
+            //res_SlingShot.oneSecondUpdate();
+            //res_ThrowingSpear.oneSecondUpdate();
+            //res_bow.oneSecondUpdate();
+            //res_longbow.oneSecondUpdate();
+            //res_crossbow.oneSecondUpdate();
+            //res_MithrilBow.oneSecondUpdate();
 
-            res_BatteringRam.oneSecondUpdate();
-            res_ballista.oneSecondUpdate();
-            res_Manuballista.oneSecondUpdate();
-            res_Catapult.oneSecondUpdate();
-            res_SiegeCannonBronze.oneSecondUpdate();
-            res_ManCannonBronze.oneSecondUpdate();
-            res_SiegeCannonIron.oneSecondUpdate();
-            res_ManCannonIron.oneSecondUpdate();
+            //res_HandCannon.oneSecondUpdate();
+            //res_HandCulvertin.oneSecondUpdate();
+            //res_Rifle.oneSecondUpdate();
+            //res_Blunderbuss.oneSecondUpdate();
 
-            res_paddedArmor.oneSecondUpdate();
-            res_HeavyPaddedArmor.oneSecondUpdate();
-            res_BronzeArmor.oneSecondUpdate();
-            res_mailArmor.oneSecondUpdate();
-            res_heavyMailArmor.oneSecondUpdate();
-            res_LightPlateArmor.oneSecondUpdate();
-            res_FullPlateArmor.oneSecondUpdate();
-            res_MithrilArmor.oneSecondUpdate();
+            //res_BatteringRam.oneSecondUpdate();
+            //res_ballista.oneSecondUpdate();
+            //res_Manuballista.oneSecondUpdate();
+            //res_Catapult.oneSecondUpdate();
+            //res_SiegeCannonBronze.oneSecondUpdate();
+            //res_ManCannonBronze.oneSecondUpdate();
+            //res_SiegeCannonIron.oneSecondUpdate();
+            //res_ManCannonIron.oneSecondUpdate();
+
+            //res_paddedArmor.oneSecondUpdate();
+            //res_HeavyPaddedArmor.oneSecondUpdate();
+            //res_BronzeArmor.oneSecondUpdate();
+            //res_mailArmor.oneSecondUpdate();
+            //res_heavyMailArmor.oneSecondUpdate();
+            //res_LightPlateArmor.oneSecondUpdate();
+            //res_FullPlateArmor.oneSecondUpdate();
+            //res_MithrilArmor.oneSecondUpdate();
         }
 
         public void updateResourceOverview_async()
         {
-            res_wood.clearCurrent();
-            res_fuel.clearCurrent();
-            res_stone.clearCurrent();
-            res_rawFood.clearCurrent();
-            res_food.clearCurrent();
-            res_beer.clearCurrent();
-            res_coolingfluid.clearCurrent();
-            res_skinLinnen.clearCurrent();
-
-            res_ironore.clearCurrent();
-            res_TinOre.clearCurrent();
-            res_CupperOre.clearCurrent();
-            res_LeadOre.clearCurrent();
-            res_SilverOre.clearCurrent();
-            res_GoldOre.clearCurrent();
-
-            res_iron.clearCurrent();
-            res_Tin.clearCurrent();
-            res_Cupper.clearCurrent();
-            res_Lead.clearCurrent();
-            res_Silver.clearCurrent();
-            res_RawMithril.clearCurrent();
-            res_Sulfur.clearCurrent();
-
-            res_Bronze.clearCurrent();
-            res_Steel.clearCurrent();
-            res_CastIron.clearCurrent();
-            res_BloomeryIron.clearCurrent();
-            res_Mithril.clearCurrent();
-
-            res_Palisade.clearCurrent();
-            res_Toolkit.clearCurrent();
-            res_Wagon2Wheel.clearCurrent();
-            res_Wagon4Wheel.clearCurrent();
-            res_BlackPowder.clearCurrent();
-            res_GunPowder.clearCurrent();
-            res_LedBullet.clearCurrent();
-
-            res_sharpstick.clearCurrent();
-            res_BronzeSword.clearCurrent();
-            res_shortsword.clearCurrent();
-            res_Sword.clearCurrent();
-            res_LongSword.clearCurrent();
-            res_HandSpear.clearCurrent();
-            res_MithrilSword.clearCurrent();
-
-            res_Warhammer.clearCurrent();
-            res_twohandsword.clearCurrent();
-            res_knightslance.clearCurrent();
-            res_SlingShot.clearCurrent();
-            res_ThrowingSpear.clearCurrent();
-            res_bow.clearCurrent();
-            res_longbow.clearCurrent();
-            res_crossbow.clearCurrent();
-            res_MithrilBow.clearCurrent();
-
-            res_HandCannon.clearCurrent();
-            res_HandCulvertin.clearCurrent();
-            res_Rifle.clearCurrent();
-            res_Blunderbuss.clearCurrent();
-
-            res_BatteringRam.clearCurrent();
-            res_ballista.clearCurrent();
-            res_Manuballista.clearCurrent();
-            res_Catapult.clearCurrent();
-            res_SiegeCannonBronze.clearCurrent();
-            res_ManCannonBronze.clearCurrent();
-            res_SiegeCannonIron.clearCurrent();
-            res_ManCannonIron.clearCurrent();
-
-            res_paddedArmor.clearCurrent();
-            res_HeavyPaddedArmor.clearCurrent();
-            res_BronzeArmor.clearCurrent();
-            res_mailArmor.clearCurrent();
-            res_heavyMailArmor.clearCurrent();
-            res_LightPlateArmor.clearCurrent();
-            res_FullPlateArmor.clearCurrent();
-            res_MithrilArmor.clearCurrent();
-
-            var citiesC = cities.counter();
-            while (citiesC.Next())
+            if (resourceSecondUpdates > 0)
             {
-                res_wood.current += citiesC.sel.res_wood.amount;
-                res_fuel.current += citiesC.sel.res_fuel.amount;
-                res_stone.current += citiesC.sel.res_stone.amount;
-                res_rawFood.current += citiesC.sel.res_rawFood.amount;
-                res_food.current += citiesC.sel.res_food.amount;
-                res_beer.current += citiesC.sel.res_beer.amount;
-                res_coolingfluid.current += citiesC.sel.res_coolingfluid.amount;
-                res_skinLinnen.current += citiesC.sel.res_skinLinnen.amount;
+                resourceSecondUpdates--;
 
-                res_ironore.current += citiesC.sel.res_ironore.amount;
-                res_TinOre.current += citiesC.sel.res_TinOre.amount;
-                res_CupperOre.current += citiesC.sel.res_CupperOre.amount;
-                res_LeadOre.current += citiesC.sel.res_LeadOre.amount;
-                res_SilverOre.current += citiesC.sel.res_SilverOre.amount;
-                res_GoldOre.current += citiesC.sel.res_GoldOre.amount;
+                int end = resourceComponentStartIndex + CityResoureIndex.COUNT;
+                for (int itemIx = resourceComponentStartIndex; itemIx < end; itemIx++)
+                {
+                    DssRef.world.factionResourceOverviews[itemIx].clearFactionOverView();
+                }
 
-                res_iron.current += citiesC.sel.res_iron.amount;
-                res_Tin.current += citiesC.sel.res_Tin.amount;
-                res_Cupper.current += citiesC.sel.res_Cupper.amount;
-                res_Lead.current += citiesC.sel.res_Lead.amount;
-                res_Silver.current += citiesC.sel.res_Silver.amount;
-                res_RawMithril.current += citiesC.sel.res_RawMithril.amount;
-                res_Sulfur.current += citiesC.sel.res_Sulfur.amount;
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref cities))
+                {
+                    int start = citiesC.sel * CityResoureIndex.COUNT;
 
-                res_Bronze.current += citiesC.sel.res_Bronze.amount;
-                res_Steel.current += citiesC.sel.res_Steel.amount;
-                res_CastIron.current += citiesC.sel.res_CastIron.amount;
-                res_BloomeryIron.current += citiesC.sel.res_BloomeryIron.amount;
-                res_Mithril.current += citiesC.sel.res_Mithril.amount;
+                    for (int index = 0; index < CityResoureIndex.COUNT; index++)
+                    {
+                        ref var cityResource = ref DssRef.world.cityResouces[start + index];
+                        cityResource.changeRate.oneSecondUpdate();
 
-                res_Palisade.current += citiesC.sel.res_Palisade.amount;
-                res_Toolkit.current += citiesC.sel.res_Toolkit.amount;
-                res_Wagon2Wheel.current += citiesC.sel.res_Wagon2Wheel.amount;
-                res_Wagon4Wheel.current += citiesC.sel.res_Wagon4Wheel.amount;
-                res_BlackPowder.current += citiesC.sel.res_BlackPowder.amount;
-                res_GunPowder.current += citiesC.sel.res_GunPowder.amount;
-                res_LedBullet.current += citiesC.sel.res_LedBullet.amount;
-
-                res_sharpstick.current += citiesC.sel.res_sharpstick.amount;
-                res_BronzeSword.current += citiesC.sel.res_BronzeSword.amount;
-                res_shortsword.current += citiesC.sel.res_shortsword.amount;
-                res_Sword.current += citiesC.sel.res_Sword.amount;
-                res_LongSword.current += citiesC.sel.res_LongSword.amount;
-                res_HandSpear.current += citiesC.sel.res_HandSpear.amount;
-                res_MithrilSword.current += citiesC.sel.res_MithrilSword.amount;
-
-                res_Warhammer.current += citiesC.sel.res_Warhammer.amount;
-                res_twohandsword.current += citiesC.sel.res_twohandsword.amount;
-                res_knightslance.current += citiesC.sel.res_knightslance.amount;
-                res_SlingShot.current += citiesC.sel.res_SlingShot.amount;
-                res_ThrowingSpear.current += citiesC.sel.res_ThrowingSpear.amount;
-                res_bow.current += citiesC.sel.res_bow.amount;
-                res_longbow.current += citiesC.sel.res_longbow.amount;
-                res_crossbow.current += citiesC.sel.res_crossbow.amount;
-                res_MithrilBow.current += citiesC.sel.res_MithrilBow.amount;
-
-                res_HandCannon.current += citiesC.sel.res_HandCannon.amount;
-                res_HandCulvertin.current += citiesC.sel.res_HandCulvertin.amount;
-                res_Rifle.current += citiesC.sel.res_Rifle.amount;
-                res_Blunderbuss.current += citiesC.sel.res_Blunderbuss.amount;
-
-                res_BatteringRam.current += citiesC.sel.res_BatteringRam.amount;
-                res_ballista.current += citiesC.sel.res_ballista.amount;
-                res_Manuballista.current += citiesC.sel.res_Manuballista.amount;
-                res_Catapult.current += citiesC.sel.res_Catapult.amount;
-                res_SiegeCannonBronze.current += citiesC.sel.res_SiegeCannonBronze.amount;
-                res_ManCannonBronze.current += citiesC.sel.res_ManCannonBronze.amount;
-                res_SiegeCannonIron.current += citiesC.sel.res_SiegeCannonIron.amount;
-                res_ManCannonIron.current += citiesC.sel.res_ManCannonIron.amount;
-
-                res_paddedArmor.current += citiesC.sel.res_paddedArmor.amount;
-                res_HeavyPaddedArmor.current += citiesC.sel.res_HeavyPaddedArmor.amount;
-                res_BronzeArmor.current += citiesC.sel.res_BronzeArmor.amount;
-                res_mailArmor.current += citiesC.sel.res_mailArmor.amount;
-                res_heavyMailArmor.current += citiesC.sel.res_heavyMailArmor.amount;
-                res_LightPlateArmor.current += citiesC.sel.res_LightPlateArmor.amount;
-                res_FullPlateArmor.current += citiesC.sel.res_FullPlateArmor.amount;
-                res_MithrilArmor.current += citiesC.sel.res_MithrilArmor.amount;
-
+                        ref var factionOverview = ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + index];
+                        factionOverview.amount += cityResource.amount;
+                        factionOverview.changeRate.prevConsumed += cityResource.changeRate.prevConsumed;
+                        factionOverview.changeRate.prevProduced += cityResource.changeRate.prevProduced;
+                    }
+                }
             }
+
+            //var citiesC = cities.counter();
+
+            //for (int itemIx = 0; itemIx < CityResoureIndex.COUNT; itemIx++)
+            //{
+            //    ref ResourceFactionOverview overview = ref DssRef.world.factionResourceOverviews[resourceComponentStartIndex + itemIx];
+            //    overview.clearCurrent();
+
+            //    //citiesC.Reset();
+            //    //while (citiesC.Next())
+            //    //{
+            //    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            //    while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
+            //    {
+            //        overview.current += DssRef.world.cityResouces[citySel.resourceComponentStartIndex + itemIx].amount;
+            //    }
+            //}
+
+
+            //res_wood.clearCurrent();
+            //res_fuel.clearCurrent();
+            //res_stone.clearCurrent();
+            //res_rawFood.clearCurrent();
+            //res_food.clearCurrent();
+            //res_beer.clearCurrent();
+            //res_coolingfluid.clearCurrent();
+            //res_skinLinnen.clearCurrent();
+
+            //res_ironore.clearCurrent();
+            //res_TinOre.clearCurrent();
+            //res_CupperOre.clearCurrent();
+            //res_LeadOre.clearCurrent();
+            //res_SilverOre.clearCurrent();
+            //res_GoldOre.clearCurrent();
+
+            //res_iron.clearCurrent();
+            //res_Tin.clearCurrent();
+            //res_Cupper.clearCurrent();
+            //res_Lead.clearCurrent();
+            //res_Silver.clearCurrent();
+            //res_RawMithril.clearCurrent();
+            //res_Sulfur.clearCurrent();
+
+            //res_Bronze.clearCurrent();
+            //res_Steel.clearCurrent();
+            //res_CastIron.clearCurrent();
+            //res_BloomeryIron.clearCurrent();
+            //res_Mithril.clearCurrent();
+
+            //res_Palisade.clearCurrent();
+            //res_Toolkit.clearCurrent();
+            //res_Wagon2Wheel.clearCurrent();
+            //res_Wagon4Wheel.clearCurrent();
+            //res_BlackPowder.clearCurrent();
+            //res_GunPowder.clearCurrent();
+            //res_LedBullet.clearCurrent();
+
+            //res_sharpstick.clearCurrent();
+            //res_BronzeSword.clearCurrent();
+            //res_shortsword.clearCurrent();
+            //res_Sword.clearCurrent();
+            //res_LongSword.clearCurrent();
+            //res_HandSpear.clearCurrent();
+            //res_MithrilSword.clearCurrent();
+
+            //res_Warhammer.clearCurrent();
+            //res_twohandsword.clearCurrent();
+            //res_knightslance.clearCurrent();
+            //res_SlingShot.clearCurrent();
+            //res_ThrowingSpear.clearCurrent();
+            //res_bow.clearCurrent();
+            //res_longbow.clearCurrent();
+            //res_crossbow.clearCurrent();
+            //res_MithrilBow.clearCurrent();
+
+            //res_HandCannon.clearCurrent();
+            //res_HandCulvertin.clearCurrent();
+            //res_Rifle.clearCurrent();
+            //res_Blunderbuss.clearCurrent();
+
+            //res_BatteringRam.clearCurrent();
+            //res_ballista.clearCurrent();
+            //res_Manuballista.clearCurrent();
+            //res_Catapult.clearCurrent();
+            //res_SiegeCannonBronze.clearCurrent();
+            //res_ManCannonBronze.clearCurrent();
+            //res_SiegeCannonIron.clearCurrent();
+            //res_ManCannonIron.clearCurrent();
+
+            //res_paddedArmor.clearCurrent();
+            //res_HeavyPaddedArmor.clearCurrent();
+            //res_BronzeArmor.clearCurrent();
+            //res_mailArmor.clearCurrent();
+            //res_heavyMailArmor.clearCurrent();
+            //res_LightPlateArmor.clearCurrent();
+            //res_FullPlateArmor.clearCurrent();
+            //res_MithrilArmor.clearCurrent();
+
+            //var citiesC = cities.counter();
+            //while (citiesC.Next())
+            //{
+            //    res_wood.current += citiesC.sel.res_wood.amount;
+            //    res_fuel.current += citiesC.sel.res_fuel.amount;
+            //    res_stone.current += citiesC.sel.res_stone.amount;
+            //    res_rawFood.current += citiesC.sel.res_rawFood.amount;
+            //    res_food.current += citiesC.sel.res_food.amount;
+            //    res_beer.current += citiesC.sel.res_beer.amount;
+            //    res_coolingfluid.current += citiesC.sel.res_coolingfluid.amount;
+            //    res_skinLinnen.current += citiesC.sel.res_skinLinnen.amount;
+
+            //    res_ironore.current += citiesC.sel.res_ironore.amount;
+            //    res_TinOre.current += citiesC.sel.res_TinOre.amount;
+            //    res_CupperOre.current += citiesC.sel.res_CupperOre.amount;
+            //    res_LeadOre.current += citiesC.sel.res_LeadOre.amount;
+            //    res_SilverOre.current += citiesC.sel.res_SilverOre.amount;
+            //    res_GoldOre.current += citiesC.sel.res_GoldOre.amount;
+
+            //    res_iron.current += citiesC.sel.res_iron.amount;
+            //    res_Tin.current += citiesC.sel.res_Tin.amount;
+            //    res_Cupper.current += citiesC.sel.res_Cupper.amount;
+            //    res_Lead.current += citiesC.sel.res_Lead.amount;
+            //    res_Silver.current += citiesC.sel.res_Silver.amount;
+            //    res_RawMithril.current += citiesC.sel.res_RawMithril.amount;
+            //    res_Sulfur.current += citiesC.sel.res_Sulfur.amount;
+
+            //    res_Bronze.current += citiesC.sel.res_Bronze.amount;
+            //    res_Steel.current += citiesC.sel.res_Steel.amount;
+            //    res_CastIron.current += citiesC.sel.res_CastIron.amount;
+            //    res_BloomeryIron.current += citiesC.sel.res_BloomeryIron.amount;
+            //    res_Mithril.current += citiesC.sel.res_Mithril.amount;
+
+            //    res_Palisade.current += citiesC.sel.res_Palisade.amount;
+            //    res_Toolkit.current += citiesC.sel.res_Toolkit.amount;
+            //    res_Wagon2Wheel.current += citiesC.sel.res_Wagon2Wheel.amount;
+            //    res_Wagon4Wheel.current += citiesC.sel.res_Wagon4Wheel.amount;
+            //    res_BlackPowder.current += citiesC.sel.res_BlackPowder.amount;
+            //    res_GunPowder.current += citiesC.sel.res_GunPowder.amount;
+            //    res_LedBullet.current += citiesC.sel.res_LedBullet.amount;
+
+            //    res_sharpstick.current += citiesC.sel.res_sharpstick.amount;
+            //    res_BronzeSword.current += citiesC.sel.res_BronzeSword.amount;
+            //    res_shortsword.current += citiesC.sel.res_shortsword.amount;
+            //    res_Sword.current += citiesC.sel.res_Sword.amount;
+            //    res_LongSword.current += citiesC.sel.res_LongSword.amount;
+            //    res_HandSpear.current += citiesC.sel.res_HandSpear.amount;
+            //    res_MithrilSword.current += citiesC.sel.res_MithrilSword.amount;
+
+            //    res_Warhammer.current += citiesC.sel.res_Warhammer.amount;
+            //    res_twohandsword.current += citiesC.sel.res_twohandsword.amount;
+            //    res_knightslance.current += citiesC.sel.res_knightslance.amount;
+            //    res_SlingShot.current += citiesC.sel.res_SlingShot.amount;
+            //    res_ThrowingSpear.current += citiesC.sel.res_ThrowingSpear.amount;
+            //    res_bow.current += citiesC.sel.res_bow.amount;
+            //    res_longbow.current += citiesC.sel.res_longbow.amount;
+            //    res_crossbow.current += citiesC.sel.res_crossbow.amount;
+            //    res_MithrilBow.current += citiesC.sel.res_MithrilBow.amount;
+
+            //    res_HandCannon.current += citiesC.sel.res_HandCannon.amount;
+            //    res_HandCulvertin.current += citiesC.sel.res_HandCulvertin.amount;
+            //    res_Rifle.current += citiesC.sel.res_Rifle.amount;
+            //    res_Blunderbuss.current += citiesC.sel.res_Blunderbuss.amount;
+
+            //    res_BatteringRam.current += citiesC.sel.res_BatteringRam.amount;
+            //    res_ballista.current += citiesC.sel.res_ballista.amount;
+            //    res_Manuballista.current += citiesC.sel.res_Manuballista.amount;
+            //    res_Catapult.current += citiesC.sel.res_Catapult.amount;
+            //    res_SiegeCannonBronze.current += citiesC.sel.res_SiegeCannonBronze.amount;
+            //    res_ManCannonBronze.current += citiesC.sel.res_ManCannonBronze.amount;
+            //    res_SiegeCannonIron.current += citiesC.sel.res_SiegeCannonIron.amount;
+            //    res_ManCannonIron.current += citiesC.sel.res_ManCannonIron.amount;
+
+            //    res_paddedArmor.current += citiesC.sel.res_paddedArmor.amount;
+            //    res_HeavyPaddedArmor.current += citiesC.sel.res_HeavyPaddedArmor.amount;
+            //    res_BronzeArmor.current += citiesC.sel.res_BronzeArmor.amount;
+            //    res_mailArmor.current += citiesC.sel.res_mailArmor.amount;
+            //    res_heavyMailArmor.current += citiesC.sel.res_heavyMailArmor.amount;
+            //    res_LightPlateArmor.current += citiesC.sel.res_LightPlateArmor.amount;
+            //    res_FullPlateArmor.current += citiesC.sel.res_FullPlateArmor.amount;
+            //    res_MithrilArmor.current += citiesC.sel.res_MithrilArmor.amount;
+
+            //}
         }
     }
 }

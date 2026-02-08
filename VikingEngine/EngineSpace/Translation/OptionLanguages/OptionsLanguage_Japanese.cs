@@ -9,6 +9,25 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Japanese : AbsOptionsLanguage
     {
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "レイヤーのフェード";
+        public override string SplitScreen_HorizontalFirst => "横方向を優先";
+        public override string SplitScreen_VerticalFirst => "縦方向を優先";
+        public override string SplitScreen_HorizontalOnly => "横分割のみ";
+        public override string SplitScreen_VerticalOnly => "縦分割のみ";
+        public override string SplitScreen_Title => "スプリットスクリーン";
+        public override string SplitScreen_AdjustSplit => "分割の調整 {0}";
+
+        public override string Settings_ControllerVibration => "コントローラーの振動";
+        public override string GraphicsOption_IngameMenuWidth => "ゲーム内メニューの幅";
+        public override string DisplayMode => "表示モード";
+        public override string DisplayMode_Windowed => "ウィンドウモード";
+        public override string DisplayMode_BorderlessFullscreen => "ボーダーレスフルスクリーン";
+        public override string GameSettings_RenderedMouseCursor => "レンダーされたカーソル";
+
+        //--
+        public override string GraphicsOption_FarViewDistance => "遠距離ビュー";
+
         public override string Hud_Cancel => "キャンセル";
         public override string Hud_Back => "戻る";
 
@@ -132,6 +151,21 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string Settings_KeyMapPanSpeed => "パン速度";
         public override string Settings_StoreCameraPosition => "カメラ位置を保存";
         public override string Settings_LoadCameraPosition => "位置を読み込む";
+
+
+        //Shadow update
+        public override string Settings_ModelWaterFoam => "水の泡";
+        public override string Settings_ModelShadow => "影";
+        public override string Settings_ModelShadowMapSize => "シャドウマップのサイズ";
+        public override string Settings_Brightness => "明るさ";
+        public override string Settings_Mode_No_Achivements => "実績は利用できません。";
+        public override string Settings_FrameRate => "フレームレート";
+
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public override string Settings_ImportNoAchievement => "インポートしたセーブデータでは実績をブロックする";
+
 
     }
 }

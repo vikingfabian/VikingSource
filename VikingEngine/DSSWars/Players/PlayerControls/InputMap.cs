@@ -13,7 +13,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.HeroQuest.Display;
 using VikingEngine.DataStream;
 using VikingEngine.EngineSpace.HUD.RichBox;
-using Valve.Steamworks;
+
 using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars
@@ -26,11 +26,12 @@ namespace VikingEngine.DSSWars
         public IDirectionalMap move; //Do not save
         IDirectionalMap dpadMove; //Do not save
         public IDirectionalMap cameraTiltZoom; //Do not save
+        public IDirectionalMap cameraTiltUpSmooth;
 
         public IButtonMap zoomInKey, zoomOutKey;
 
         //public IButtonMap ControllerSelect;
-        IButtonMap CancelKey;
+        public IButtonMap CancelKey;
         public IButtonMap QuickSelect;
         public IButtonMap ControllerFocus;
         public IButtonMap ControllerFaction;
@@ -58,11 +59,12 @@ namespace VikingEngine.DSSWars
 
         public IButtonMap NextArmy;
         public IButtonMap NextCity;
-        public IButtonMap NextBattle;
+        public IButtonMap NextWar;
         public IButtonMap Options;
         public IButtonMap Menu;
 
         public IButtonMap ToggleHudDetail;
+        public IButtonMap ToggleMinimap;
         public IButtonMap GameSpeed;
         public IButtonMap PauseGame;
 
@@ -71,7 +73,7 @@ namespace VikingEngine.DSSWars
         public IButtonMap FlagDesign_PaintBucket;
         public IButtonMap Controller_FlagDesign_Colorpicker;
         public IButtonMap Controller_TabLeft, Controller_TabRight;
-        public IButtonMap Controller_SubTabLeft, Controller_SubTabRight;
+        //public IButtonMap Controller_SubTabLeft, Controller_SubTabRight;
 
         public Voxels.EditorInputMap editorInput = new Voxels.EditorInputMap();
         
@@ -166,7 +168,7 @@ namespace VikingEngine.DSSWars
             cameraTiltLeft = new KeyboardButtonMap(Keys.Q);
             cameraTiltRight = new KeyboardButtonMap(Keys.E);
             cameraTiltUp = new KeyboardButtonMap(Keys.R);
-
+            cameraTiltUpSmooth = null;
 
             //ControllerSelect = new MouseButtonMap(MouseButton.Left);
             //Execute = new MouseButtonMap(MouseButton.Right);
@@ -184,6 +186,7 @@ namespace VikingEngine.DSSWars
 
             Menu = new KeyboardButtonMap(Keys.Escape);
             ToggleHudDetail = new KeyboardButtonMap(Keys.U);
+            ToggleMinimap  = new KeyboardButtonMap(Keys.M);
             GameSpeed = new KeyboardButtonMap(Keys.Tab);
             PauseGame = new KeyboardButtonMap(Keys.Space);
 
@@ -193,7 +196,7 @@ namespace VikingEngine.DSSWars
 
             NextCity = new KeyboardButtonMap(Keys.D1);
             NextArmy = new KeyboardButtonMap(Keys.D2);
-            NextBattle = new KeyboardButtonMap(Keys.D3);
+            NextWar = new KeyboardButtonMap(Keys.D3);
 
             FlagDesign_ToggleColor_Prev = new TwoCombinedButtonsMap(new KeyboardButtonMap(Keys.LeftShift), new KeyboardButtonMap(Keys.Tab));
             FlagDesign_ToggleColor_Next = new KeyboardButtonMap(Keys.Tab);
@@ -285,6 +288,7 @@ namespace VikingEngine.DSSWars
             move = new DirectionalXboxMap(ThumbStickType.Left, false, inputSource.controllerIndex);
             dpadMove = new DirectionalXboxMap(ThumbStickType.D, false, inputSource.controllerIndex);  
             cameraTiltZoom =new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex);
+            cameraTiltUpSmooth = new KeyPlusDirectionalMap(new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex), new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex));
 
             mouseSelect = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex);
             mouseOrder = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex);
@@ -292,28 +296,34 @@ namespace VikingEngine.DSSWars
             ControllerFaction = new XboxButtonMap_TriggerAlts(Buttons.Back, inputSource.controllerIndex);
             CancelKey = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex);
 
-            StopStart = new XboxButtonMap(Buttons.DPadLeft, inputSource.controllerIndex);
+
+            StopStart = new XboxButtonMap_TriggerAlts(Buttons.Start, inputSource.controllerIndex, true);
             //AutomationSetting = new XboxButtonMap(Buttons.Back, inputSource.controllerIndex);
 
             //DragPan = new NoButtonMap();//new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
             //Home = new XboxButtonMap(Buttons.DPadRight, inputSource.controllerIndex);
-            Menu = new XboxButtonMap(Buttons.Start, inputSource.controllerIndex);
+            Menu = new XboxButtonMap_TriggerAlts(Buttons.Start, inputSource.controllerIndex);
             //ToggleHudDetail = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex);
-            ToggleHudDetail = new XboxButtonMap(Buttons.DPadDown, inputSource.controllerIndex);//new NoButtonMap();
-
+            ToggleHudDetail = new XboxButtonMap_TriggerAlts(Buttons.DPadDown, inputSource.controllerIndex);//new NoButtonMap();
+            ToggleMinimap = new XboxButtonMap_TriggerAlts(Buttons.DPadDown, inputSource.controllerIndex, true);
 
             Controller_TabLeft = new XboxButtonMap(Buttons.LeftShoulder, inputSource.controllerIndex);
             Controller_TabRight = new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
-            Controller_SubTabLeft = new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex);
-            Controller_SubTabRight = new XboxButtonMap(Buttons.RightTrigger, inputSource.controllerIndex);
+            //Controller_SubTabLeft = new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex);
+            //Controller_SubTabRight = new XboxButtonMap(Buttons.RightTrigger, inputSource.controllerIndex);
+            QuickSelect = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex, true);
+            Build = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex, true);
+            Copy = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex, true);
+            Paste = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex, true);
 
             GameSpeed = new NoButtonMap();//
-            PauseGame = new NoButtonMap();//new XboxButtonMap(Buttons.LeftShoulder, inputSource.controllerIndex);
+            PauseGame = new NoButtonMap();//
 
             menuInput?.xboxSetup(inputSource.controllerIndex);
 
-            NextCity = new XboxButtonMap(Buttons.DPadLeft, inputSource.controllerIndex);// new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex, true, false);
+            NextCity = new XboxButtonMap_TriggerAlts(Buttons.DPadLeft, inputSource.controllerIndex);// new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex, true, false);
             NextArmy = new XboxButtonMap(Buttons.DPadRight, inputSource.controllerIndex);//new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex, true, false);
+            NextWar = new XboxButtonMap_TriggerAlts(Buttons.DPadLeft, inputSource.controllerIndex, true);
             //NextBattle = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex, true, false);
 
             ControllerMessageClick = new XboxButtonMap(Buttons.DPadUp, inputSource.controllerIndex);//new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex, true, true);
@@ -330,7 +340,7 @@ namespace VikingEngine.DSSWars
 
         public void write(System.IO.BinaryWriter w)
         {
-            const int InputVersion = 6;
+            const int InputVersion = 7;
             w.Write(InputVersion);
 
 
@@ -340,11 +350,12 @@ namespace VikingEngine.DSSWars
                 StopStart.write(w);
 
                 ToggleHudDetail.write(w);
+                ToggleMinimap.write(w);
                 GameSpeed.write(w);
                 PauseGame.write(w);
                 NextCity.write(w);
                 NextArmy.write(w);
-                NextBattle.write(w);
+                NextWar.write(w);
 
                 wasd_up.write(w);
                 wasd_down.write(w);
@@ -398,11 +409,15 @@ namespace VikingEngine.DSSWars
 
                 //Home = MapRead.Button(r, inputSource.controllerIndex);
                 ToggleHudDetail = MapRead.Button(r, inputSource.controllerIndex);
+                if (inputVersion >= 7)
+                { 
+                    ToggleMinimap = MapRead.Button(r, inputSource.controllerIndex);
+                }
                 GameSpeed = MapRead.Button(r, inputSource.controllerIndex);
                 PauseGame = MapRead.Button(r, inputSource.controllerIndex);
                 NextCity = MapRead.Button(r, inputSource.controllerIndex);
                 NextArmy = MapRead.Button(r, inputSource.controllerIndex);
-                NextBattle = MapRead.Button(r, inputSource.controllerIndex);
+                NextWar = MapRead.Button(r, inputSource.controllerIndex);
 
                 wasd_up = MapRead.Button(r, inputSource.controllerIndex);
                 wasd_down = MapRead.Button(r, inputSource.controllerIndex);
@@ -505,8 +520,10 @@ namespace VikingEngine.DSSWars
                 InputActionType.PauseGame,
                 InputActionType.NextCity,
                 InputActionType.NextArmy,
-                InputActionType.NextBattle,
+                InputActionType.NextWar,
                 InputActionType.ToggleHudDetail,
+                InputActionType.ToggleMiniMap,
+
             });
 
             return result;
@@ -555,6 +572,16 @@ namespace VikingEngine.DSSWars
                     else
                     {
                         buttonMap = StopStart;
+                    }
+                    break;
+                case InputActionType.ToggleMiniMap:
+                    if (set)
+                    {
+                        ToggleMinimap = buttonMap;
+                    }
+                    else
+                    {
+                        buttonMap = ToggleMinimap;
                     }
                     break;
 
@@ -613,14 +640,14 @@ namespace VikingEngine.DSSWars
                     }
                     break;
 
-                case InputActionType.NextBattle:
+                case InputActionType.NextWar:
                     if (set)
                     {
-                        NextBattle = buttonMap;
+                        NextWar = buttonMap;
                     }
                     else
                     {
-                        buttonMap = NextBattle;
+                        buttonMap = NextWar;
                     }
                     break;
 
@@ -798,11 +825,12 @@ namespace VikingEngine.DSSWars
     {
         StopStart,
         ToggleHudDetail,
+        ToggleMiniMap,
         GameSpeed,
         PauseGame,
         NextCity,
         NextArmy,
-        NextBattle,
+        NextWar,
         Build,
         Copy,
         Paste,

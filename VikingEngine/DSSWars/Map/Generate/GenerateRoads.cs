@@ -24,28 +24,27 @@ namespace VikingEngine.DSSWars.Map.Generate
             DssRef.world = world;
             PcgRandom rnd = new PcgRandom(world.metaData.seed * city.myIndex);
 
-
-
-
-            //if (city.cityType == CityType.Capital)
-            //{
-            foreach (var n in city.neighborCities)
+            EcsStaticArrayCounter neighbors = city.CityNeighbors();
+            while (neighbors.Next(out int n))//foreach (var n in city.neighborCities)
             {
                 //Low index cities track to higher
                 if (city.myIndex < n)
                 {
-
-                    //if (city.parentArrayIndex == 139 || n == 139) 
-                    //&&
-                    //if (city.parentArrayIndex == 80 && n == 139)
-                    //{
-                    //    lib.DoNothing();
-                    //}
-
-                    //Debug.Log($"From {city.parentArrayIndex} to {n}");
                     var nCity = world.cities[n];
 
-                    double chance = (city.cityType == CityType.Capital || nCity.cityType == CityType.Capital) ? 0.6 : 0.2f;
+                    double chance= 0.2f;
+
+                    if (lib.EqualToAny(CityType.UnClaimed, city.cityType, nCity.cityType))
+                    {
+                        chance = 0.02f;
+                    }
+                    else if (lib.EqualToAny(CityType.Capital, city.cityType, nCity.cityType))
+                    {
+                        chance = 0.6f;
+                    }
+                    //= (city.cityType == CityType.Capital || nCity.cityType == CityType.Capital) ? 0.6 : 0.2f;
+
+
 
                     if (rnd.Chance(chance) &&
                        (nCity.factionIndex == city.factionIndex || rnd.Chance(0.1)))
@@ -85,47 +84,6 @@ namespace VikingEngine.DSSWars.Map.Generate
                             }
                         }
 
-
-                        //RoadPathFinding roadPath = new RoadPathFinding();
-                        //var path = roadPath.FindPath(city.cityHallSubtilePos, nCity.cityHallSubtilePos);
-                        //if (path != null)
-                        //{
-                        //    foreach (var node in path.nodes)
-                        //    {
-                        //        if (!node.ship)
-                        //        {
-                        //            ref SubTile subTile = ref world.subTileGrid.array[node.position.X, node.position.Y];
-
-                        //            bool canBuild = false;
-                        //            switch (subTile.mainTerrain)
-                        //            {
-                        //                case TerrainMainType.Destroyed:
-                        //                case TerrainMainType.DefaultLand:
-                        //                    canBuild = true;
-                        //                    break;
-
-                        //                case TerrainMainType.Foil:
-                        //                    switch (subTile.GetFoilType())
-                        //                    {
-                        //                        case TerrainSubFoilType.TreeHardSprout:
-                        //                        case TerrainSubFoilType.TreeSoftSprout:
-                        //                        case TerrainSubFoilType.TreeHard:
-                        //                        case TerrainSubFoilType.TreeSoft:
-                        //                        case TerrainSubFoilType.DryWood:
-                        //                            canBuild = true;
-                        //                            break;
-                        //                    }
-                        //                    break;
-                        //            }
-
-                        //            if (canBuild)
-                        //            {
-                        //                subTile.SetType(TerrainMainType.Road, 0, 1);
-                        //                subTile.groundY += RoadHeight;
-                        //            }
-                        //        }
-                        //    }
-                        //}
 
                         void placeOnSubTile(IntVector2 pos)
                         {

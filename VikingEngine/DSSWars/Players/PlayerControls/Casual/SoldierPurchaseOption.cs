@@ -17,6 +17,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         Ranged,
         Rider,
         Siege,
+        Settler,
     }
 
     struct SoldierPurchaseOption

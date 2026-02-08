@@ -7,6 +7,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Presentation;
@@ -34,6 +35,7 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 WorkBench_pos;
         public IntVector2 Smith_pos;
         public IntVector2 Carpenter_pos;
+        public IntVector2 Orchard_pos;
         public IntVector2 WheatFarm_pos;
         public IntVector2 LinenFarm_pos;
         public IntVector2 HempFarm_pos;
@@ -68,6 +70,7 @@ namespace VikingEngine.DSSWars.Build
         {
             switch (type)
             {
+                case BuildAndExpandType.WorkerTent:
                 case BuildAndExpandType.WorkerHut:
                 case BuildAndExpandType.WorkerHutLarge:
                     return WorkerHuts_pos;
@@ -96,6 +99,10 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WorkBench: return WorkBench_pos;
                 case BuildAndExpandType.Smith: return Smith_pos;
                 case BuildAndExpandType.Carpenter: return Carpenter_pos;
+
+                case BuildAndExpandType.OrchardApple:
+                case BuildAndExpandType.OrchidBanana:
+                    return Orchard_pos;
 
                 case BuildAndExpandType.WheatFarm:
                 case BuildAndExpandType.WheatFarmUpgraded:
@@ -152,6 +159,22 @@ namespace VikingEngine.DSSWars.Build
 
     struct TerrainStructure
     {
+        public static readonly ItemResourceType[] AllTerrainResources = {
+            ItemResourceType.Wood_Group,
+            ItemResourceType.Stone_G,
+            ItemResourceType.Coal,
+
+            ItemResourceType.BogIron,
+            ItemResourceType.IronOre_G,
+            ItemResourceType.TinOre,
+            ItemResourceType.CopperOre,
+            ItemResourceType.LeadOre,
+            ItemResourceType.SilverOre,
+            ItemResourceType.GoldOre,
+            ItemResourceType.RawMithril,
+            ItemResourceType.Sulfur,
+        };
+
         public int mineCount_bogIron;
 
         public int mineCount_iron;
@@ -164,7 +187,31 @@ namespace VikingEngine.DSSWars.Build
         public int mineCount_sulfur;
         public int mineCount_coal;
 
-        public void miningOverviewHud(RichBoxContent content)
+        public int resourceCount_stone;
+        public int resourceCount_wood;
+
+        static readonly SubTile TerrainType_wood = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeSoft);
+        static readonly SubTile TerrainType_stone = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.Stones);
+
+        static readonly SubTile TerrainType_bogiron = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.BogIron);
+        static readonly SubTile TerrainType_iron = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.IronOre);
+        static readonly SubTile TerrainType_tin = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.TinOre);
+        static readonly SubTile TerrainType_copper = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.CopperOre);
+        static readonly SubTile TerrainType_lead = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.LeadOre);
+        static readonly SubTile TerrainType_silver = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.SilverOre);
+        static readonly SubTile TerrainType_gold = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.GoldOre);
+        static readonly SubTile TerrainType_mithril = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Mithril);
+        static readonly SubTile TerrainType_sulfur = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Sulfur);
+        static readonly SubTile TerrainType_coal = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Coal);
+
+        public bool HasIndependantResources()
+        {
+            return mineCount_bogIron + mineCount_bogIron >= 1 &&
+                resourceCount_wood >= 3 &&
+                resourceCount_stone >= 1;
+        }
+
+        public void miningOverviewHud(LocalPlayer player, RichBoxContent content)
         {
             content.newLine();
 
@@ -173,16 +220,18 @@ namespace VikingEngine.DSSWars.Build
 
             int totalCount = 0;
 
-            mine(content, mineCount_coal, ItemResourceType.Coal, ref totalCount);
-            mine(content, mineCount_bogIron, ItemResourceType.BogIron, ref totalCount);
-            mine(content, mineCount_iron, ItemResourceType.Iron_G, ref totalCount);
-            mine(content, mineCount_tin, ItemResourceType.Tin, ref totalCount);
-            mine(content, mineCount_copper, ItemResourceType.Copper, ref totalCount);
-            mine(content, mineCount_lead, ItemResourceType.Lead, ref totalCount);
-            mine(content, mineCount_silver, ItemResourceType.Silver, ref totalCount);
-            mine(content, mineCount_gold, ItemResourceType.Gold, ref totalCount);
-            mine(content, mineCount_mithril, ItemResourceType.Mithril, ref totalCount);
-            mine(content, mineCount_sulfur, ItemResourceType.Sulfur, ref totalCount);
+            naturalResource(player, content, resourceCount_wood, ItemResourceType.Wood_Group, TerrainType_wood, ref totalCount);
+            naturalResource(player, content, resourceCount_stone, ItemResourceType.Stone_G, TerrainType_stone, ref totalCount);
+            mine(player, content, mineCount_coal, ItemResourceType.Coal, TerrainType_coal, ref totalCount);
+            mine(player, content, mineCount_bogIron, ItemResourceType.BogIron, TerrainType_bogiron, ref totalCount);
+            mine(player, content, mineCount_iron, ItemResourceType.Iron_G, TerrainType_iron, ref totalCount);
+            mine(player, content, mineCount_tin, ItemResourceType.Tin, TerrainType_tin, ref totalCount);
+            mine(player, content, mineCount_copper, ItemResourceType.Copper, TerrainType_copper, ref totalCount);
+            mine(player, content, mineCount_lead, ItemResourceType.Lead, TerrainType_lead, ref totalCount);
+            mine(player, content, mineCount_silver, ItemResourceType.Silver, TerrainType_silver, ref totalCount);
+            mine(player, content, mineCount_gold, ItemResourceType.Gold, TerrainType_gold, ref totalCount);
+            mine(player, content, mineCount_mithril, ItemResourceType.Mithril, TerrainType_mithril, ref totalCount);
+            mine(player, content, mineCount_sulfur, ItemResourceType.Sulfur, TerrainType_sulfur, ref totalCount);
 
 
             if (totalCount == 0)
@@ -192,7 +241,53 @@ namespace VikingEngine.DSSWars.Build
             
         }
 
-        public void mine(RichBoxContent content, int count, ItemResourceType resource, ref int totalCount)
+        
+
+        public int Get(ItemResourceType type)
+        {
+            switch (type)
+            {
+                case ItemResourceType.BogIron:
+                    return mineCount_bogIron;
+                case ItemResourceType.IronOre_G:
+                    return mineCount_iron;
+                case ItemResourceType.TinOre:
+                    return mineCount_tin;
+                case ItemResourceType.CopperOre:
+                    return mineCount_copper;
+                case ItemResourceType.LeadOre:
+                    return mineCount_lead;
+                case ItemResourceType.SilverOre:
+                    return mineCount_silver;
+                case ItemResourceType.GoldOre:
+                    return mineCount_gold;
+                case ItemResourceType.RawMithril:
+                    return mineCount_mithril;
+                case ItemResourceType.Sulfur:
+                    return mineCount_sulfur;
+                case ItemResourceType.Coal:
+                    return mineCount_coal;
+                case ItemResourceType.Stone_G:
+                    return resourceCount_stone;
+                case ItemResourceType.Wood_Group:
+                    return resourceCount_wood;
+                default:
+                    return 0;
+            }
+        }
+
+
+        public void naturalResource(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, SubTile terrainType, ref int totalCount)
+        {
+            resourceHoverButton(player, content, count, resource, DssRef.lang.Work_GatherXResource, SpriteName.WarsWorkCollect, terrainType, false, ref totalCount);
+        }
+
+        public void mine(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, SubTile terrainType, ref int totalCount)
+        {
+            resourceHoverButton(player, content, count, resource, DssRef.lang.BuildingType_ResourceMine, SpriteName.WarsWorkMine, terrainType, terrainType.mainTerrain != TerrainMainType.NUM, ref totalCount);
+        }
+
+        public void resourceHoverButton(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, string categoryName, SpriteName workIcon, SubTile terrainType, bool clickable, ref int totalCount)
         {
             totalCount += count;
             if (count > 0)
@@ -201,36 +296,33 @@ namespace VikingEngine.DSSWars.Build
                 string resourceName = LangLib.Item(resource);
                 var infoContent = new RichBoxContent();
 
-                infoContent.Add(new RbOverlapImage(new RbImage(icon), SpriteName.WarsWorkMine, VectorExt.V2FromX(-0.2f), 0.8f));
+                infoContent.Add(new RbOverlapImage(new RbImage(icon), workIcon, VectorExt.V2FromX(-0.2f), 0.8f));
                 infoContent.space();
                 var countText = new RbText(count.ToString());
                 countText.overrideColor = Color.White;
                 infoContent.Add(countText);
 
-                var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null,
+                var infoButton = new ArtButton(clickable? RbButtonStyle.Outline : RbButtonStyle.HoverArea, infoContent, clickable? new RbAction1Arg<SubTile>( player.gameControls.map.terrainSearchClick, terrainType) : null,
                     new RbTooltip((RichBoxContent content, object tag) =>
                     {
-                        //RichBoxContent content = new RichBoxContent();
-                        content.Add(new RbOverlapImage(new RbImage(icon), SpriteName.WarsWorkMine, Vector2.Zero, 0.8f));
-                        //content.Add(new RbImage(icon));
+                        content.Add(new RbOverlapImage(new RbImage(icon), workIcon, Vector2.Zero, 0.8f));
                         content.space();
-                        var mineString = string.Format(DssRef.lang.BuildingType_ResourceMine, resourceName);
+                        var mineString = string.Format(categoryName, resourceName);
                         content.Add(new RbText(TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XCountIsY, mineString, count))));
 
-
-                        //player.hud.tooltip.create(player, content, true);
                     }));
 
-                //infoButton.overrideBgColor = HudLib.InfoYellow_BG;
                 content.Add(infoButton);
-                //content.space();
             }
         }
     }
 
     struct BuildingStructure
     {
+        
+        public bool manorLord;
         public int buildingLevel_logistics;
+        public int TentHuts_count;
         public int WorkerHuts_count;
         public int WorkerHuts_Large_count;
         public int ServiceMenHouse_count;
@@ -252,6 +344,7 @@ namespace VikingEngine.DSSWars.Build
         public int WorkBench_count;
         public int Smith_count;
         public int Carpenter_count;
+        public int Orchard_count;
         public int WheatFarm_count;
         public int LinenFarm_count;
         public int HempFarm_count;
@@ -281,12 +374,14 @@ namespace VikingEngine.DSSWars.Build
         public int School_count;
         public int ResearchCenter_count;
         public int BookPress_count;
-        
+
+        public int wallCount;
 
         public int getCount(BuildAndExpandType type)
         {
             switch (type)
             {
+                case BuildAndExpandType.WorkerTent: return TentHuts_count;
                 case BuildAndExpandType.WorkerHut: return WorkerHuts_count;
                 case BuildAndExpandType.WorkerHutLarge: return WorkerHuts_Large_count;
 
@@ -312,6 +407,8 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Smith: return Smith_count;
                 case BuildAndExpandType.Carpenter: return Carpenter_count;
 
+                case BuildAndExpandType.OrchardApple: return Orchard_count;
+                case BuildAndExpandType.OrchidBanana: return Orchard_count;
                 case BuildAndExpandType.WheatFarm: return WheatFarm_count;
                 case BuildAndExpandType.WheatFarmUpgraded: return WheatFarm_count;
                 case BuildAndExpandType.LinenFarm: return LinenFarm_count;
@@ -384,6 +481,10 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WorkBench: WorkBench_count += add; break;
                 case BuildAndExpandType.Smith: Smith_count += add; break;
                 case BuildAndExpandType.Carpenter: Carpenter_count += add; break;
+
+                case BuildAndExpandType.OrchardApple:
+                case BuildAndExpandType.OrchidBanana:
+                    Orchard_count += add; break;
 
                 case BuildAndExpandType.WheatFarm:
                 case BuildAndExpandType.WheatFarmUpgraded:

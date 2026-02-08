@@ -43,6 +43,7 @@ namespace VikingEngine.DSSWars.Conscript
         {
             switch (weapon)
             {
+                case ItemResourceType.Settler:
                 case ItemResourceType.SharpStick:
                 case ItemResourceType.BronzeSword:
                 case ItemResourceType.ShortSword:
@@ -121,40 +122,6 @@ namespace VikingEngine.DSSWars.Conscript
             }
         }
 
-        //public bool RangedManUnit()
-        //{
-        //    return weapon == ItemResourceType.Bow || weapon == ItemResourceType.Crossbow;    
-        //}
-
-        //public bool MeleeSoldier()
-        //{
-        //    return weapon == ItemResourceType.SharpStick || weapon == ItemResourceType.Sword || weapon == ItemResourceType.TwoHandSword;
-        //}
-
-        //public bool KnightUnit()
-        //{
-        //    return weapon == ItemResourceType.TwoHandSword || weapon == ItemResourceType.KnightsLance;
-        //}
-
-        //public bool Warmashine()
-        //{
-        //    return weapon == ItemResourceType.Ballista;
-        //}
-
-        //public int DefaultArmyRow()
-        //{
-        //    switch (weapon)
-        //    {
-        //        case MainWeapon.Bow:
-        //        case MainWeapon.CrossBow:
-        //            return ArmyPlacementGrid.Row_Second;
-        //        case MainWeapon.Ballista:
-        //            return ArmyPlacementGrid.Row_Behind;
-        //        default:
-        //            return ArmyPlacementGrid.Row_Body;
-        //    }
-        //}
-
         public double armySpeedBonus(bool land)
         {
             if (land)
@@ -184,32 +151,32 @@ namespace VikingEngine.DSSWars.Conscript
             return 0;
         }
 
-        public void defaultSetup(BuildAndExpandType barrackType)
-        {
-            switch (barrackType)
-            {
-                case BuildAndExpandType.SoldierBarracks:
-                    weapon = ItemResourceType.SharpStick;
-                    break;
-                case BuildAndExpandType.ArcherBarracks:
-                    weapon = ItemResourceType.SlingShot;
-                    break;
-                case BuildAndExpandType.WarmachineBarracks:
-                    weapon = ItemResourceType.Ballista;
-                    break;
-                case BuildAndExpandType.KnightsBarracks:
-                    weapon = ItemResourceType.Warhammer;
-                    training = TrainingLevel.Basic;
-                    break;
-                case BuildAndExpandType.GunBarracks:
-                    weapon = ItemResourceType.HandCannon;
-                    break;
-                case BuildAndExpandType.CannonBarracks:
-                    weapon = ItemResourceType.ManCannonBronze;
-                    break;
-            }
+        //public void defaultSetup(BuildAndExpandType barrackType)
+        //{
+        //    switch (barrackType)
+        //    {
+        //        case BuildAndExpandType.SoldierBarracks:
+        //            weapon = ItemResourceType.SharpStick;
+        //            break;
+        //        case BuildAndExpandType.ArcherBarracks:
+        //            weapon = ItemResourceType.SlingShot;
+        //            break;
+        //        case BuildAndExpandType.WarmachineBarracks:
+        //            weapon = ItemResourceType.Ballista;
+        //            break;
+        //        case BuildAndExpandType.KnightsBarracks:
+        //            weapon = ItemResourceType.Warhammer;
+        //            training = TrainingLevel.Basic;
+        //            break;
+        //        case BuildAndExpandType.GunBarracks:
+        //            weapon = ItemResourceType.HandCannon;
+        //            break;
+        //        case BuildAndExpandType.CannonBarracks:
+        //            weapon = ItemResourceType.ManCannonBronze;
+        //            break;
+        //    }
 
-        }
+        //}
 
         public string TypeName()
         {
@@ -227,6 +194,9 @@ namespace VikingEngine.DSSWars.Conscript
                 default:
                     switch (weapon)
                     {
+                        case ItemResourceType.Settler:
+                            return DssRef.lang.UnitType_Settler;
+
                         case ItemResourceType.SharpStick:
                             return DssRef.lang.UnitType_Folkman;
                         case ItemResourceType.Pike:
@@ -518,7 +488,11 @@ namespace VikingEngine.DSSWars.Conscript
                 case TrainingLevel.Skillful: return DssConst.TrainingAttackSpeed_Skillful;
                 case TrainingLevel.Professional: return DssConst.TrainingAttackSpeed_Professional;
                 case TrainingLevel.Champion: return DssConst.TrainingAttackSpeed_Champion;
+#if DEBUG
                 default: throw new NotImplementedException();
+#else
+                default: return DssConst.TrainingAttackSpeed_Basic; 
+#endif
             }
         }
 

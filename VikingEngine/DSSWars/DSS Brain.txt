@@ -1,181 +1,38 @@
-﻿UPDATE
-Change Log:
+﻿Change log:
 * 
 
 
-Story:
-* 
-
-ACHIEVEMENTS
-* 
-
-Language change log:
-* 
-
-Spectator mode:
-* 
-
-Casual:
-* 
-
-Event timers (are slightly random)
-- Ai delay: 8 minutes
-- Ai peace time: 30 min
-- The first attack: 50min
+#Event timers (are slightly random)#
+- Bot delay: 8 minutes
+- Bot peace time: 30 min
+- The first attack: 35min
 - War manager start: 40min
-- Barbarians: 3 hours
-- Mercenaries: 8 hours (total 12 hours by now)
-- The cohalition: 12 hours (or when the player grabs 5 to 7 cities)
-- Boss warning: 25 hours
+- Barbarians: 1.5 hours
+- Mercenaries: 4 hours (total 7 hours by now)
+- The cohalition: 6 hours (or when the player grabs 5 to 7 cities)
+- Boss warning: 12 hours
 - Boss; 1 hour
 Plus the boss fight: about 10 hours
-(total: about 65 hours)
-
-#Pics
-build building icon
-
-#must do#
-
-x ambience is heard on zero volume
-x broken music message gone
-x music should not play when master = 0
-x test all achievements
-x full game achievements + translations
-
-
-#Todo#
-x clickable cities in diplomacy
-x have a button to make all masters guilds to focus on diffrent things
-
-x guard to wall tutorial
-x the ui scale might be overtuned, 0.5 feels more like 0.05
-X match casual to save
-x multiplayer is broken in battle lab
-x small map editor size crash
-x Pen stroke size on map editor
-x Guards are never clearing move orders
-x Merge army button dont update the hud
-x Should try prioritise towers for guards
-x Guard controls suck
-x loading bar in map editor
-
-x casual missing some way to increase Diplomacy
-x Soldiers update their target too often (shaking)
-x all schools/postals/conscripts should have "set all to", and next/previous buttons. Plus +1 queue to all
-x copy paste city setups
-
-x show connected research, next to experience overview types
-x describe work group count
-x Rock thrower guard
-x Ballista, har warmachine crew, guards
-x removing soldiers cancels move order
-x drag slider needs description
-x god mode where you can edit all nations? Like giving money, spawning units, deleting buildings etc.
-x adjustable faction sizes in map editor
-x add pause all bulding button
-x faction setting for stockpile
-x OBS dont record fullscreen
-x go fullscreen in langugage select screen
-- make music youtube safe
-- use VLC as music player?
-
--Diplomacy, timer to reduce relation. Affect others. View relations teo all on select. Reduce ralations.
-x Declaring war needs warning
-x save custom map, cant load, should save in user content folder
-x a player onboarding, extended tutorial
-X a tab so you can see who you are at war with
--låt inte dread anfalla spelaren
--lock camera on army
--show all resources option
-
--new game plus, skip story, end me now option
--list cities
-
-(-house variants)
-+  ports can speed up how much u can send or recieve
-* annoyed by the deliveries being inefficient
--Embassy expansion för att unlocka diplomacy
-* soldier level
-* wall crusher
-* diplomat, med politic / spy upgrade
-* horse farm
-* ox farm, also incread farming area
-* go legendary, bonus building
- farm - apple tree
-x Where do I find the "Dark horde" in the tutorial? I can't find it
-* fire lance weapon
-x tatoo color -add voxel model texture
-x world peace victory condition
-x there should be some "breaing the bank" achivement 🙂 > passing an int
-x rich menu sound system
-
-#Todo (xmas patch)#
-krig varning på ally
-new maps
-dölj carry amount
-save count på end screen, +min difficulty
-
-lamps - förbättrar produktion i area, måste fyllas med fuel
-förvaringsbyggnader som ökar max stack av olika typer, vapen hus, kylrum osv
-
-
---Efter release polish--
--
-
-pilar med resurser från delivery
-Factories modeller
-city economy
-visa antal byggnader i bygg meny
-menu scroll
-
-
-Error
--back button in menues 
-
-Retreat system
--retreat av de sista motståndarna
--light taunt units (slingers, light cavalry)
--reassemble av flydd arme
-
-
-Polish
-- full auto option
-
--döda av faktion som bara har en soldat kvar
--Missing file error på load
--(mercenaries cost increase bort)
--cost mercenaries på tooltip
--I should improve the diplomacy so peace agreements are shared with allies
--större radie på köpa till armeer
--attack warning -Battle notification
--diplomacy toggle/relation heatmap/units
--AI sök fiende armeer som passerar
--krig icon på karta
--the horses dont load when paused, plus rotation error
--dölj move path OnHud 
--start war popup
--attack ally yes/no warning
-
-#OPT#
-monogame fork, titta på OGG filer
-
-# WORKER PATH #
-Ha en loop som går! igenom tiles, om det finns 1+ byggnader, räkna tid från hall till slumpad byggnad, tid till närmast mat och avlämning
-Plus räkna tid att passera i verti hori riktning (gör en path som fram, diagonal up ner, till har gått 4 tiles - kanske upp ner)
-Gissat avstånd är lägsta av att passera centrum eller snabbast verti hori
-Alternativt ha en hash dictionary mellan alla tiles i en stad
-Alternativt ha en path historik av 8 tiles från varje tile (eller center + 7 tiles)
-
-#Voxel
-
+(total: about 45 hours)
 
 #current
-English, Simplified Chinese, Japanese, Russian, Spanish, German, French, Turkish, Portuguese
+English, Simplified Chinese, Japanese, Korean, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian, Polish, Thai
 
 Fully translate all the strings in the file to Brazilian Portuguese and save into a new file, that I can download. Translate all of them, do not stop.
 Brazilians are used to English in gaming, use a “hybrid” translation.
 Use an accessable language, that doesnt use very niche words, so the translation feels natural and player-friendly.
 The game is a strategy wargame, with medieval and low fantasy theme.
+
+Where English is used in gaming, use a “hybrid” translation.
+For Thai, use a pipe (|) between words, example: "สวัสดี|ตอน|เช้า"
+
+
+##
+Translate all strings to French.
+Use an accessable language, that doesnt use very niche words, so the translation feels natural and player-friendly.
+The game is a strategy wargame, with medieval and low fantasy theme.
+Where English is used in gaming, use a “hybrid” translation.
+For Thai, use a pipe (|) between words, example: "สวัสดี|ตอน|เช้า"
 
 
 https://discord.com/verification
@@ -194,13 +51,19 @@ https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping
 
 #Export
 cd VikingEngine
+dotnet publish -c Release -r win-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained
+
+old:
 dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
 
 #LINUX
 dotnet publish -c Release -r linux-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained
+-c Release -r linux-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained --property:RuntimeIdentifier=win-x64
+storage Environment app location
 
 (högerklick i Publish "open git bash here")
 chmod +x VikingEngine
 
 tar -czf VikingEngine-linux-x64.tar.gz -C bin/Release/net8.0/linux-x64/publish .
 (hamnar i Repo\VikingSource\VikingEngine)
+

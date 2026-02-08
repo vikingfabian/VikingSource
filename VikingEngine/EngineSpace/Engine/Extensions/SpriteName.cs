@@ -206,6 +206,9 @@ namespace VikingEngine
 
         ButtonDisabledCross,
         TextureWaterMap,
+        WaterEdgeMask_coast,
+        WaterEdgeMask_ship,
+
         TextureHueSaturation,
         TextureDarknessGradient,
         ColorPickerCircle,
@@ -220,6 +223,9 @@ namespace VikingEngine
         LangButton_Chinese,
         LangButton_Turkish,
         LangButton_Italian,
+        LangButton_Korean,
+        LangButton_Polish,
+        LangButton_Thai,
 
         IconBuildArrow,
         IconBuildSelection,
@@ -2296,8 +2302,9 @@ namespace VikingEngine
         MenuIconMonitorFrame,
         MenuIconMonitorArrowsOut,
         MenuIconMonitorArrowsIn,
+        MenuIconPerformanceHot,
+        MenuIconPerformanceCold,
 
-        
         MousePointer,
         ClickCirkleEffect,
 
@@ -2416,8 +2423,12 @@ namespace VikingEngine
         WarsHudToolDownButton,
         WarsHudFlagBorder,
         WarsHudHeadBarBg,
+        WarsHudMinimapBorder,
         WarsHudToolUpButton,
         WarsHudTutorialBg,
+        WarsHudFlapMinimize,
+        WarsHudFlapMaximize,
+       
 
         WarsHudDropDownArrow,
         WarsHudYellowDot,
@@ -2448,6 +2459,13 @@ namespace VikingEngine
         WarsHudIconCrop,
         WarsHudIconSaveProject,
         WarsHudIconOpenProject,
+        WarsHudIconNext,
+        WarsHudIconPrevious,
+        WarsHudIconProgress,
+        WarsHudIconSpeed_Pause,
+        WarsHudIconSpeed_Low,
+        WarsHudIconSpeed_Medium,
+        WarsHudIconSpeed_High,
 
 
         DSS2MainMenu,
@@ -2473,6 +2491,7 @@ namespace VikingEngine
         warsWorkerPromoHammer,
         warsWorkerPromoBox,
         warsWorkerPromoCannon,
+        UpdatePromo_SnowFlake,
 
         warsCheckYes,
         warsCheckNo,
@@ -2495,6 +2514,7 @@ namespace VikingEngine
         warsBuildCategorySearch,
         warsBuildCategoryMilitaryWall,
         warsBuildCategoryHouse,
+        warsBuildCategoryFarm,
         warsBuildCategoryAdvanced,
         warsBuildCategoryDecorTree,
         warsBuildCategoryAutomation,
@@ -2523,10 +2543,19 @@ namespace VikingEngine
         WarsRelationEnemy,
         WarsRelationWar,
         WarsRelationTotalWar,
+        WarsRelationServant,
         WarsRelationFlagOutline,
         WarsRelationFlag,
-        
+        WarsRelationArrowWar,
+        WarsRelationArrowAlly,
+
         WarsMapIcon,
+        WarsMapFilterFactions,
+        WarsMapFilterWorkers,
+        WarsMapFilterMinimap,
+        WarsMapFilterStrength,
+        WarsMapFilterTerrain,
+        WarsMapFilterResources,
         WarsTechnology_Unlocked,
         WarsTechnology_Locked,
         WarsGovernmentIcon,
@@ -2566,19 +2595,23 @@ namespace VikingEngine
         WarsDiplomaticAddTime,
         WarsDiplomaticSub,
         WarsDiplomaticSubTime,
-
+        
         WarsArmy,
         WarsGuard,
         WarsGuardAdd,
         WarsWorker,
         WarsWorkerAdd,
         WarsWorkerSub,
+        WarsSettler,
+        WarsSettlerAdd,
         WarsServiceMen,
         WarsServiceMenTotal,
         WarsGuardPostIcon,
         WarsHammer,
         WarsHammerAdd,
         WarsHammerSub,
+        WarsConstructBuildingIcon,
+
         WarsIncreaseArrowUp,
         WarsDecreaseArrowDown,
 
@@ -2624,6 +2657,7 @@ namespace VikingEngine
         WarsSpecializeTradition,
 
         WarsCityHall,
+        WarsBuild_TentHut,
         WarsBuild_WorkerHuts,
         WarsBuild_WorkerHutLarge,
         WarsBuild_Postal,
@@ -2663,6 +2697,7 @@ namespace VikingEngine
         WarsBuild_PavementFlowers,
 
         WarsBuild_Logistics,
+        WarsBuild_ManorLord,
         WarsBuild_Smelter,
         WarsBuild_WoodCutter,
         WarsBuild_StoneCutter,
@@ -2716,6 +2751,8 @@ namespace VikingEngine
         WarsBuild_Bookpress,
         WarsBuild_TreeHard,
         WarsBuild_TreeSoft,
+        WarsBuild_TreeApple,
+        WarsBuild_TreeBanana,
         WarsBuild_TreeSeedlingHard,
         WarsBuild_TreeSeedlingSoft,
 
@@ -2756,6 +2793,10 @@ namespace VikingEngine
         WarsResource_FoodAdd,
         WarsResource_FoodSub,
         WarsResource_FoodEmpty,
+        WarsIcon_Resources,
+        WarsIcon_WorkQueueTotal,
+        WarsIcon_WorkQueueIdle,
+        WarsIcon_WorkQueueActive,
         WarsResource_Wood,
         WarsResource_Fuel,
         WarsResource_Wheat,
@@ -2785,6 +2826,10 @@ namespace VikingEngine
 
         WarsResource_Wagon2Wheel,
         WarsResource_Wagon4Wheel,
+        WarsResource_WagonClosed,
+        WarsResource_WagonIron,
+        WarsResource_WagonSteel,
+
         WarsResource_ShortSword,
         WarsResource_HandSpear,
         WarsResource_Longsword,
@@ -2890,6 +2935,7 @@ namespace VikingEngine
         rtsRelationAllied,
         rtsRelationAtWar,
         rtsRelationNemesis,
+        
 
         rtsLoading0of8,
         rtsLoading1of8,

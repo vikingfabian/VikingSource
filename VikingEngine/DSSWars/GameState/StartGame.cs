@@ -28,11 +28,15 @@ namespace VikingEngine.DSSWars
                new Vector2(Engine.Screen.SafeArea.X, Engine.Screen.SafeArea.Bottom - Engine.Screen.IconSize * 2),
                new Vector2(Engine.Screen.TextSize * 2f),
                Graphics.Align.Zero, "...", Color.White, ImageLayers.Lay1);
+            
             Ref.music.stop(true);
+            Ref.music.DelayBetweenSongs_minutes = new IntervalF(5, 8);
+            Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
 
             new PlaySettings();
-        }
 
+            DssRef.storage.meta.gameOverResultCollection = null;
+        }
 
         public override void Time_Update(float time)
         {
@@ -78,16 +82,29 @@ namespace VikingEngine.DSSWars
             DssRef.settings.playType = PlayStateType.Play;
             this.host = host;
             this.loadMeta = loadMeta;
-            
-            
+
+            var pStorage = DssRef.storage.localPlayers[0];
+            if (DssRef.storage.profileStorage.profiles[pStorage.profileIndex].casualControls)
+            {
+                DssRef.stats.startnew_casual.addOne();
+            }
 
             if (loadMeta == null)
             {
                 // new game
+
+                if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode) == false)
+                {
+                    DssRef.storage.runTutorial = false;
+                }
+                                    
                 switch (DssRef.difficulty.setting_gameMode)
                 {
                     case GameModeMainType.FullStory:
                         DssRef.stats.startNewStory.addOne();
+                        break;
+                    case GameModeMainType.QuickMatch:
+                        DssRef.stats.startQuickMatch.addOne();
                         break;
                     case GameModeMainType.Sandbox:
                         DssRef.stats.startNewSandbox.addOne();
@@ -97,6 +114,19 @@ namespace VikingEngine.DSSWars
                         break;
                     case GameModeMainType.Spectator:
                         DssRef.stats.startNewSpectator.addOne();
+                        break;
+                }
+
+                switch (DssRef.storage.gameRuleset.factionStartSize)
+                {
+                    case FactionStartSize.Full:
+                        DssRef.stats.startnewsize_full.addOne();
+                        break;
+                    case FactionStartSize.OneCity:
+                        DssRef.stats.startnewsize_onecity.addOne();
+                        break;
+                    case FactionStartSize.Settler:
+                        DssRef.stats.startnewsize_settler.addOne();
                         break;
                 }
 
@@ -126,28 +156,40 @@ namespace VikingEngine.DSSWars
                     case 200:
                         DssRef.stats.startNew200perc.addOne();
                         break;
+                    case 300:
+                        DssRef.stats.startNew300perc.addOne();
+                        break;
 
                 }
 
                 if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
                 {
-                    switch (DssRef.storage.runTutorial_1short_2normal)
+                    //switch (DssRef.storage.runTutorial_1short_2normal)
+                    //{
+                    //    case 0:
+                    //        if (PlatformSettings.STEAM_DEMO)
+                    //        {
+                    //            DssRef.stats.startNewDemo.addOne();
+                    //        }
+                    //        break;
+
+                    //    case 1:
+                    //        //DssRef.stats.startShortTutorial.addOne();
+                    //        break;
+
+                    //    case 2:
+                    //        DssRef.stats.startTutorial.addOne();
+                    //        break;
+
+                    //}
+
+                    if (DssRef.storage.runTutorial)
+                    { 
+                        DssRef.stats.startTutorial.addOne();
+                    }
+                    else if (PlatformSettings.STEAM_DEMO)
                     {
-                        case 0:
-                            if (PlatformSettings.STEAM_DEMO)
-                            {
-                                DssRef.stats.startNewDemo.addOne();
-                            }
-                            break;
-
-                        case 1:
-                            DssRef.stats.startShortTutorial.addOne();
-                            break;
-
-                        case 2:
-                            DssRef.stats.startTutorial.addOne();
-                            break;
-
+                        DssRef.stats.startNewDemo.addOne();
                     }
                 }
 
@@ -165,7 +207,7 @@ namespace VikingEngine.DSSWars
                     DssRef.stats.keyboard_user.addOne();
                 }
 
-                switch (DssRef.storage.mapSize)
+                switch (DssRef.storage.gameRuleset.mapSize)
                 {
                     case MapSize.Tiny:
                     case MapSize.Small:

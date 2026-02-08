@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.GameObject;
@@ -29,7 +29,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
         public override bool updateObjectDisplay()
         {
-            if (hud.detailLevel == Interface.HudDetailLevel.Normal)
+            if (hud.maximizedHud)
             {
 
                 hud.objMenu.createMenu(this);

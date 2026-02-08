@@ -9,6 +9,184 @@ namespace VikingEngine.DSSWars.Presentation
 {
     abstract partial class AbsLanguage
     {
+        public abstract string Help_Work_Automatic { get; }
+        public abstract string Tutorial_SecondCity { get; }
+//Spring patch
+
+        public abstract string InputAction_SkipAutomated { get; }
+
+        public abstract string Resource_WaterReason { get; }
+        public abstract string BuildingType_Orchard { get; }
+        public abstract string BuildingType_ManorLord { get; }
+        public abstract string BuildingType_ManorLord_Description { get; }
+
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public abstract string Diplomacy_EndRelations { get; }
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public abstract string ItemSource { get; }
+
+        public abstract string ItemSource_Terrain { get; }
+        public abstract string ItemSource_Farm { get; }
+        public abstract string ItemSource_CraftStation { get; }
+        public abstract string ItemSource_Gathering { get; }
+
+        public abstract string CityCulture_Nomad { get; }
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public abstract string Hud_ChangeFactor { get; }
+
+        public abstract string Hud_Purchase_LowXCost { get; }
+
+        public abstract string WorkQueue_Title { get; }
+        public abstract string WorkQueue_Length { get; }
+        public abstract string WorkQueue_ActiveWorkers { get; }
+        public abstract string WorkQueue_IdleWorkers { get; }
+
+        public abstract string WorkTeam_Size { get; }
+
+        public abstract string ObjectUi_ViewOnMap { get; }
+        public abstract string ObjectUi_StuckBuildOrders { get; }
+        public abstract string Hud_AllArmies { get; }
+
+        public abstract string Hud_CurrentPage { get; }
+        public abstract string Hud_AllPages { get; }
+        public abstract string Hud_ToAllCities { get; }
+        public abstract string Hud_ToFaction { get; }
+        public abstract string Hud_FromFaction { get; }
+        public abstract string Hud_FactionWide { get; }
+
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public abstract string Action_PlaceSettlement { get; }
+
+        public abstract string Editor_Animation_RemoveAllFramesButThis { get; }
+
+
+        //Winter patch 3
+        public abstract string Hud_Purchase_AllBuildings { get; }
+        public abstract string Hud_Purchase_AllTech { get; }
+        public abstract string BuildingType_CasualBarracks_Description { get; }
+
+
+        //Winter update patch + spring
+
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public abstract string Hud_Purchase_ResourceCost { get; }
+
+        public abstract string DisplayMode { get; }
+        public abstract string DisplayMode_Windowed { get; }
+        public abstract string DisplayMode_BorderlessFullscreen { get; }
+
+        public abstract string GameSettings_RenderedMouseCursor { get; }
+        public abstract string GameSettings_MuteControllerDisconnect { get; }
+
+        public abstract string Delivery_MaxDistance { get; }
+        public abstract string Tutorial_WillTakeAWhile { get; }
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public abstract string Tutorial_WaitFor { get; }
+        public abstract string GameOverResults { get; }
+
+        public abstract string UnitType_UnclaimedLand { get; }
+        public abstract string UnitType_Settler { get; }
+        public abstract string UnitType_Settler_Description { get; }
+        public abstract string Resource_ConsumedProduced { get; }
+        public abstract string InputActionName_PlaceTarget { get; }
+
+        public abstract string FactionStartSize { get; }
+        public abstract string FactionStartSize_Full { get; }
+        public abstract string FactionStartSize_OneCity { get; }
+        public abstract string FactionStartSize_Settler { get; }
+
+        //Winter update
+        public abstract string Error_SoundInitFailure { get; }
+        public abstract string Resource_StockpileLimit { get; }
+        public abstract string GameMode_QuickMatch { get; }
+        public abstract string GameMode_QuickMatch_Description { get; }
+        public abstract string Lobby_PlayerCount { get; }
+        public abstract string Lobby_TwoTeams { get; }
+        public abstract string Hud_Produce { get; }
+        public abstract string Tutorial_WaitForWorkerLevel { get; }
+
+        /// <summary>
+        /// 0: Production item, 1: School
+        /// </summary>
+        public abstract string Tutorial_PracticeOrSchool { get; }
+        public abstract string Tutorial_AddTag { get; }
+        public abstract string Tutorial_AddPin { get; }
+        public abstract string Tutorial_SelectMostTrees { get; }
+        public abstract string Tutorial_SelectACityWithX { get; }
+
+        /// <summary>
+        /// Will continue on another sentence "Select a city"
+        /// </summary>
+        public abstract string Tutorial_Select_NotCapital { get; }
+
+        public abstract string Tutorial_HighPriority { get; }
+
+        public abstract string Tutorial_SetXPriorityToY { get; }
+        public abstract string Tutorial_AdvisorMission { get; }
+
+        public abstract string Tutorial_AdvisorDescription { get; }
+
+        public abstract string Tutorial_EndAdvisor { get; }
+
+        public abstract string Tutorial_AdvisorCompleteTitle { get; }
+        public abstract string Tutorial_AdvisorCompleteMessage { get; }
+
+        public abstract string Hud_Search { get; }
+
+        public abstract string DifficultyDescription_ExtremeAggression { get; }
+
+        public abstract string MapFilter { get; }
+
+        public abstract string Settings_TechMultiplier { get; }
+
+        public abstract string EndScreen_MatchComplete { get; }
+
+        /// <summary>
+        /// Theme: Four headed dragon symbol. Known for having an unpenetrable castle.
+        /// </summary>
+        public abstract string FactionName_DragonGem { get; }
+
+        /// <summary>
+        /// Theme: Easter egg for december. "Tomten" is an old nordic name for father christmas
+        /// </summary>
+        public abstract string FactionName_Tomten { get; }
+
+        /// <summary>
+        /// Theme: The blessed folk. A horde like farmers faction.
+        /// </summary>
+        public abstract string FactionName_Hælfolc { get; }
+
+        /// <summary>
+        /// The Iron Saints, people who guard a mountain pass against evil.
+        /// </summary>
+        public abstract string FactionName_AerimAngren { get; }
+
+        public abstract string HUD_NotAvailbleInX { get; }
+
+        public abstract string InputActionName_MiniMap { get; }
+        //-
+        public abstract string GameMenu_ControllerDisconnected { get; }
+        public abstract string BuildingType_Wall_Description { get; }
+        public abstract string BuildingType_Wall_Siege { get; }
+        public abstract string Conscript_BlockChance { get; }
+        public abstract string Battle_DeclarWarReminder { get; }
+        //--
+
         public abstract string MyLanguage { get; }
 
         public abstract string Language_ItemCountPresentation { get; }
@@ -43,7 +221,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Lobby_MapSizeDesc { get; }
         public abstract string Lobby_ExitGame { get; }
 
-        public abstract string Lobby_GameVersion { get; }
+        //public abstract string Lobby_GameVersion { get; }
 
         public abstract string Player_DefaultName { get; }
 
@@ -1026,7 +1204,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Hud_AddX { get; }
         public abstract string Hud_Both { get; }
         public abstract string Hud_Direction { get; }
-        public abstract string MusicIsBroken { get; }
+        //public abstract string MusicIsBroken { get; }
         public abstract string Hud_ObjectsAndCount { get; }
         public abstract string Hud_EffectDoesNotStack { get; }
         public abstract string Work_SmeltX { get; }
@@ -1671,6 +1849,52 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string EventMessage_DesertersText_Food { get; }
 
         public abstract string Tutorial_CasualRecruitSoldiers { get; }
+
+        //Shadow update
+        public abstract string Technology_CannotReassign { get; }
+
+        public abstract string Diplomacy_DeclareWarAgainst { get; }
+        public abstract string Diplomacy_AllyCount { get; }
+        public abstract string Diplomacy_CostPerAlly { get; }
+
+        public abstract string Event_ChanceOfFailure { get; }
+        public abstract string EventMessage_Event_Title { get; }
+        public abstract string EventMessage_TheCohalition { get; }
+
+        public abstract string EventMessage_DarkHorde { get; }
+        public abstract string EventMessage_DarkHordeKiller_Title { get; }
+        public abstract string EventMessage_DarkHordeKiller_Message { get; }
+
+        public abstract string GodPower { get; }
+
+        public abstract string Building_TreeSprout_Description { get; }
+        public abstract string Building_TreeSprout_Soft { get; }
+        public abstract string Building_TreeSprout_Hard { get; }
+
+        public abstract string GeneralSetting_SetAll { get; }
+
+        public abstract string Hud_All { get; }
+        public abstract string Hud_Previous { get; }
+        public abstract string Hud_EffectWillStack { get; }
+
+        public abstract string Info_WhenFoodRunsOut { get; }
+
+        //Launch test
+        
+
+        public abstract string InputActionName_NextWar { get; }
+
+        public abstract string EngineHud_SymbolFor100 { get; }
+        public abstract string EngineHud_SymbolFor1000 { get; }
+        public abstract string EngineHud_SymbolFor10000 { get; }
+
+        public abstract string GameMenu_BlockImportAchievements { get; }
+
+        public abstract string EndScreen_PeaceVictoryQuote { get; }
+
+        public abstract string VictoryType_DefeatBoss { get; }
+        public abstract string VictoryType_Domination { get; }
+        public abstract string VictoryType_WorldPeace { get; }
 
     }
 }

@@ -71,7 +71,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (soldier.soldierData.factionColoredModel)
             {
-                var faction = soldier.GetFaction();
+                var faction = soldier.GetFaction_NoChecks();
 
                 if (soldier.soldierData.modelData.modelType == ModelType.Soldier)
                 {
@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.GameObject
         override public void DeleteMe()
         {
             //base.DeleteMe();
-            model.preRemoveFromDrawBatch();
+            model?.preRemoveFromDrawBatch();
             shadowPlane?.DeleteMe();
         }
     }
@@ -155,7 +155,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 WP.Rotation1DToQuaterion(model, soldier.rotation.Radians + jiggleAdd);
 
-                if (Ref.TimePassed16ms && Ref.peRnd.Chance(0.5))
+
+                if (/*Ref.TimePassed16ms && */Ref.peRnd.Chance(0.5 / Ref.UpdateTimes60FPS))
                 {
                     Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, Ref.peRnd.Vector3_SqXZ( soldier.position, 0.02f));
                     //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, soldier.position);

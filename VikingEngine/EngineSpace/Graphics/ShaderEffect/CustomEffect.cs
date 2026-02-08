@@ -21,20 +21,16 @@ namespace VikingEngine.Graphics
             base.shader.Parameters["SourcePos"].SetValue(Vector2.Zero);
             base.shader.Parameters["SourceSize"].SetValue(Vector2.One);
 
-            Ref.draw.worldMatrix = Matrix.CreateScale(obj.scale) * Matrix.CreateFromQuaternion(obj.Rotation.QuadRotation) * Matrix.CreateTranslation(obj.position);//Matrix.CreateTranslation(obj.Position);
+            Ref.draw.worldMatrix = Matrix.CreateScale(obj.scale) * Matrix.CreateFromQuaternion(obj.Rotation.QuadRotation) * Matrix.CreateTranslation(obj.position);
             if (usesWorldPos)
             {
                 const string CameraPositionSetting = "CameraPosition";
                 base.shader.Parameters[CameraPositionSetting].SetValue(Ref.draw.Camera.Position);
                 base.shader.Parameters["world"].SetValue(Ref.draw.worldMatrix);
             }
-            base.shader.Parameters["wvp"].SetValue(Ref.draw.worldMatrix * Ref.draw.Camera.ViewProjection);
+            base.shader.Parameters["wvp"].SetValue(Ref.draw.worldMatrix * Ref.draw.Camera.ViewProjection);            
         }
 
-        public void SetColor(Vector4 color)
-        {
-            base.shader.Parameters[CustomEffect.ColorArgument].SetValue(color);
-        }
     }
 
     class CustomEffect : AbsEffect
@@ -52,10 +48,8 @@ namespace VikingEngine.Graphics
             shader = Engine.Draw.effectBR;
             this.usesWorldPos = usesWorldPos;
             this.TechniqueName = TechniqueName;
-            //shader.CurrentTechnique = shader.Techniques[TechniqueName];
-            
-            
         }
+
         public override void Draw(Mesh obj)
         {
             shader.CurrentTechnique = shader.Techniques[TechniqueName];

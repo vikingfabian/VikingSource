@@ -15,19 +15,25 @@ namespace VikingEngine.Input
 
         public static void Update()
         {
+            if (Ref.update.textInput != null)
+            {
+                currentState = new KeyboardState();
+                previousState = currentState;
+                return;
+            }
             previousState = currentState;
             currentState =  Microsoft.Xna.Framework.Input.Keyboard.GetState();
 
-            if (currentState.IsKeyDown(Keys.Escape))
-            {
-                holdEscTime += Ref.DeltaTimeSec;
-                if (holdEscTime > 3f)
-                { Ref.update.exitApplication = true; }
-            }
-            else
-            {
-                holdEscTime = 0;
-            }
+            //if (currentState.IsKeyDown(Keys.Escape))
+            //{
+            //    holdEscTime += Ref.DeltaTimeSec;
+            //    if (holdEscTime > 3f)
+            //    { Ref.update.exitApplication = true; }
+            //}
+            //else
+            //{
+            //    holdEscTime = 0;
+            //}
         }
 
         public static void ClearInput()

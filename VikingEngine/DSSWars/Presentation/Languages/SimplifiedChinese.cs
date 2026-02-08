@@ -8,6 +8,167 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class SimplifiedChinese : AbsLanguage
     {
+        public override string Help_Work_Automatic => "工作将自动进行";
+        public override string Tutorial_SecondCity => "获得第二座城市";
+
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "跳过自动化";
+
+        public override string Resource_WaterReason => "水源将限制您的单位上限及生产规模";
+        public override string BuildingType_Orchard => "果园";
+        public override string BuildingType_ManorLord => "领主府"; // "Lord's Manor/House"
+        public override string BuildingType_ManorLord_Description => "解锁食品加工";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "断绝关系";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "物品来源";
+
+        public override string ItemSource_Terrain => "地形";
+        public override string ItemSource_Farm => "农场";
+        public override string ItemSource_CraftStation => "制作台";
+        public override string ItemSource_Gathering => "采集";
+
+        public override string CityCulture_Nomad => "游牧";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "按变动系数：{0}";
+
+        public override string Hud_Purchase_LowXCost => "低 {0} 成本";
+
+        public override string WorkQueue_Title => "工作队列";
+        public override string WorkQueue_Length => "剩余工作目标";
+        public override string WorkQueue_ActiveWorkers => "活跃工作队";
+        public override string WorkQueue_IdleWorkers => "空闲工作队";
+
+        public override string WorkTeam_Size => "村民以 {0} 人为一组工作";
+
+        public override string ObjectUi_ViewOnMap => "在地图上查看";
+        public override string ObjectUi_StuckBuildOrders => "受阻的建造指令";
+        public override string Hud_AllArmies => "所有军队";
+
+        public override string Hud_CurrentPage => "当前页";
+        public override string Hud_AllPages => "所有页";
+        public override string Hud_ToAllCities => "至所有城市";
+        public override string Hud_ToFaction => "至势力";
+        public override string Hud_FromFaction => "从势力";
+        public override string Hud_FactionWide => "使用势力全局设置";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "放置定居点";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "移除除此以外的所有帧";
+        //Winter patch 3
+        public override string Hud_Purchase_AllBuildings => "所有建筑加入队列";
+        public override string Hud_Purchase_AllTech => "所有科技加入队列";
+        public override string BuildingType_CasualBarracks_Description => "士兵招募时间由所有兵营分摊";
+        //Winter update patch + spring
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+
+        public override string DisplayMode => "显示模式";
+        public override string DisplayMode_Windowed => "窗口模式";
+        public override string DisplayMode_BorderlessFullscreen => "无边框窗口";
+
+        public override string GameSettings_RenderedMouseCursor => "游戏内光标"; // Implies a cursor rendered by the game
+        public override string GameSettings_MuteControllerDisconnect => "屏蔽手柄断开提示";
+
+        public override string Delivery_MaxDistance => "最大运输距离：{0}";
+        public override string Tutorial_WillTakeAWhile => "这需要一些时间，请稍后再来。";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "等待 {0} 完成";
+        public override string GameOverResults => "游戏历史记录";
+
+        public override string UnitType_UnclaimedLand => "无主之地"; // "Land without a master" - standard gaming term
+        public override string UnitType_Settler => "开拓者"; // The standard term in Civ 6 for Settler
+        public override string UnitType_Settler_Description => "建立新城市";
+        public override string Resource_ConsumedProduced => "消耗 / 产出";
+        public override string InputActionName_PlaceTarget => "放置目标";
+
+        public override string FactionStartSize => "势力初始规模";
+        public override string FactionStartSize_Full => "完整";
+        public override string FactionStartSize_OneCity => "一座城市";
+        public override string FactionStartSize_Settler => "一个开拓者";
+
+        //Winter update
+        public override string Resource_StockpileLimit => "库存上限";
+        public override string GameMode_QuickMatch => "Quick Match";
+        public override string GameMode_QuickMatch_Description =>
+            "更短的游戏模式。投入与敌对国家之间的全面战争吧。";
+        public override string Lobby_PlayerCount => "玩家人数";
+        public override string Lobby_TwoTeams => "两支队伍";
+        public override string Hud_Produce => "生产:";
+        public override string Tutorial_WaitForWorkerLevel => "等待一名工人达到：";
+
+        public override string Tutorial_PracticeOrSchool => "在 {0} 上练习，或使用 {1}";
+        public override string Tutorial_AddTag => "添加标签 (tag):";
+        public override string Tutorial_AddPin => "添加图钉 (pin):";
+        public override string Tutorial_SelectMostTrees => "找到你树木最多的城市";
+        public override string Tutorial_SelectACityWithX => "选择一个拥有 {0} 的城市";
+
+        public override string Tutorial_Select_NotCapital => "。不是你的首都。";
+
+        public override string Tutorial_SetXPriorityToY => "将 {0} 的优先级设置为 {1}";
+        public override string Tutorial_AdvisorMission => "Advisor 任务";
+
+        public override string Tutorial_AdvisorDescription =>
+            "完整游戏已开始。Advisor 将通过更多有用的任务扩展教程。";
+
+        public override string Tutorial_EndAdvisor => "结束 Advisor";
+
+        public override string Tutorial_AdvisorCompleteTitle => "Advisor 完成！";
+        public override string Tutorial_AdvisorCompleteMessage => "愿你接下来的一天被祝福！";
+
+        public override string Hud_Search => "搜索";
+
+        public override string DifficultyDescription_ExtremeAggression => "极端侵略性";
+
+        public override string MapFilter => "地图过滤器";
+
+        public override string Settings_TechMultiplier => "Tech 研究速度";
+
+        public override string EndScreen_MatchComplete => "比赛结果";
+
+        public override string FactionName_DragonGem => "Dragon Gem";
+        public override string FactionName_Tomten => "Tomten";
+        public override string FactionName_Hælfolc => "Hælfolc";
+        public override string FactionName_AerimAngren => "Aerim Angren";
+
+        public override string HUD_NotAvailbleInX => "在 {0} 中不可用";
+
+        public override string InputActionName_MiniMap => "Mini-map";
+
+        //--
+        public override string Error_SoundInitFailure => "声音初始化失败";
+
+        public override string GameMenu_ControllerDisconnected => "控制器已断开连接";
+
+        public override string Tutorial_HighPriority => "你的士兵会优先完成高优先级的任务。";
+
+        public override string BuildingType_Wall_Description => "城墙可以保护部队免受攻击，并提供少量攻击力加成（Boost）。";
+
+        public override string BuildingType_Wall_Siege => "攻城武器会削弱城墙的防御力。";
+
+        public override string Conscript_BlockChance => "{0}% 几率格挡攻击（Block）。";
+
+        public override string Battle_DeclarWarReminder => "攻击前必须先宣战。";
+
+        //--
+
+
         /// <summary>
         /// 本语言的名称
         /// </summary>
@@ -61,7 +222,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 游戏名称和版本号
         /// </summary>
-        public override string Lobby_GameVersion => "DSS 战争派对 - 版本 {0}";
+        //public override string Lobby_GameVersion => "DSS 战争派对 - 版本 {0}";
 
         public override string FlagEditor_Description => "绘制你的旗帜并为你的士兵选择颜色。";
 
@@ -1820,8 +1981,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_AddX => "添加 {0}";
         public override string Hud_Both => "两个";
         public override string Hud_Direction => "方向";
-        public override string MusicIsBroken => "音乐目前无法播放";
-
+        
         /// <summary>
         /// 0: 对象类型名称，1: 对象数量
         /// </summary>
@@ -2173,7 +2333,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Settings_Mode_Spectator => "观战模式";
 
-        public override string Settings_Mode_Spectator_Description => "仅观看";
+        //public override string Settings_Mode_Spectator_Description => "仅观看";
 
         public override string Automation_AutomationFocus_NoFocus_Description => "会平均建造各种设施";
 
@@ -2493,6 +2653,62 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Tutorial_CasualRecruitSoldiers => "招募一个士兵小队";
 
+
+        //Shadow update
+
+        public override string Technology_CannotReassign => "在研究完成之前，Tech 不能重新分配";
+        public override string Diplomacy_DeclareWarAgainst => "你将向以下对象宣战";
+        public override string Diplomacy_AllyCount => "盟友数量";
+        public override string Diplomacy_CostPerAlly => "每个盟友成本增加 {0}";
+
+        public override string Event_ChanceOfFailure => "{0}% 失败几率";
+        public override string EventMessage_Event_Title => "事件";
+        public override string EventMessage_TheCohalition => "联盟";
+
+        public override string EventMessage_DarkHorde => "黑暗部落";
+        public override string EventMessage_DarkHordeKiller_Title => "黑暗部落杀手";
+        public override string EventMessage_DarkHordeKiller_Message => "冠军骑士加入了你的阵营";
+
+        public override string Settings_Mode_Spectator_Description => "只观看，或者使用 God Powers 进行干预。";
+        public override string GodPower => "God Power";
+
+        public override string Building_TreeSprout_Description => "种下一棵树";
+        public override string Building_TreeSprout_Soft => "软木树苗";
+        public override string Building_TreeSprout_Hard => "硬木树苗";
+
+        public override string GeneralSetting_SetAll => "应用到全部";
+
+        public override string Hud_All => "全部";
+
+        public override string Hud_Previous => "上一个";
+
+        public override string Hud_EffectWillStack => "效果会叠加";
+
+        public override string Info_WhenFoodRunsOut => "当食物耗尽时，城市和军队会自动从黑市购买。";
+
+        //Launch test
+        
+
+        public override string InputActionName_NextWar => "下一个交战中的阵营";
+
+        /// <summary>
+        /// These symbols are needed to fit large numbers on the HUD,
+        /// there will be a tooltip to explain what number it represents
+        /// </summary>
+        public override string EngineHud_SymbolFor100 => "百";
+        public override string EngineHud_SymbolFor1000 => "千";
+        public override string EngineHud_SymbolFor10000 => "万";
+
+        /// <summary>
+        /// When loading files from other players, you won’t get their achievement progress
+        /// </summary>
+        public override string GameMenu_BlockImportAchievements => "在导入的存档中禁用成就";
+
+        public override string EndScreen_PeaceVictoryQuote => "让我们放下宝剑，迎接更美好的未来";
+
+        public override string VictoryType_DefeatBoss => "Boss 击败";
+        public override string VictoryType_Domination => "统治";
+        public override string VictoryType_WorldPeace => "世界和平";
 
     }
 }

@@ -22,23 +22,23 @@ namespace VikingEngine.Voxels
         public const string VoxelProjectFolder = "Voxel Project";
         public static bool[] HasChatergory;
 
-        public static void InitFolderStructure()
-        {
-            HasChatergory = new bool[(int)SaveCategory.NUM];
+        //public static void InitFolderStructure()
+        //{
+        //    HasChatergory = new bool[(int)SaveCategory.NUM];
 
-            for (int i = 0; i < HasChatergory.Length; ++i)
-            {
-                var path = TemplatePath(i, null);
-                if (DataLib.SaveLoad.FolderExistAndHaveFilesInit(path.LocalDirectoryPath))
-                {
-                    HasChatergory[i] = true;
-                }
-                else
-                {
-                    FilePath.CreateStorageFolder(TemplateFolder(i));
-                }
-            }
-        }
+        //    for (int i = 0; i < HasChatergory.Length; ++i)
+        //    {
+        //        var path = TemplatePath(i, null);
+        //        if (DataLib.SaveLoad.FolderExistAndHaveFilesInit(path.LocalDirectoryPath))
+        //        {
+        //            HasChatergory[i] = true;
+        //        }
+        //        else
+        //        {
+        //            FilePath.CreateStorageFolder(TemplateFolder(i));
+        //        }
+        //    }
+        //}
 
         static string randomName()
         {
@@ -194,9 +194,19 @@ namespace VikingEngine.Voxels
 
 
             const int Size = 64;
-            using (FileStream stream = new FileStream(iconPath.CompleteLocalPath(true), FileMode.Create))
+
+            try
             {
-                renderModel().SaveAsPng(stream, Size, Size);
+                using (FileStream stream = new FileStream(iconPath.CompleteLocalPath(true), FileMode.Create))
+                {
+                    renderModel().SaveAsPng(stream, Size, Size);
+                }
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                throw;
+#endif
             }
 
             RenderTarget2D renderModel()

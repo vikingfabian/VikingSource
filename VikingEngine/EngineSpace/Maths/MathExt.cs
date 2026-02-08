@@ -69,6 +69,18 @@ namespace VikingEngine
             return Convert.ToInt32(Math.Pow(value, power));
         }
 
+        public static int NextPowerOfTen(int value)
+        {
+            if (value <= 0)
+                return 1;
+
+            int power = 1;
+            while (power <= value)
+                power *= 10;
+
+            return power;
+        }
+
         /// <summary>
         /// Linear interpolation
         /// </summary>

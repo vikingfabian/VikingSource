@@ -19,9 +19,7 @@ namespace VikingEngine.Graphics
     {
         public Vector3 position = Vector3.Zero;
         public Vector3 scale = Vector3.One;
-#if DEBUG
-        public string DebugName = null;
-#endif
+
         public static void ModelData(Model model)
         {
             ModelMeshPart part = model.Meshes[0].MeshParts[0];

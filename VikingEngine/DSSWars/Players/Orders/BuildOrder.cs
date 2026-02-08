@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.Players.Orders
 {
     abstract class AbsBuildOrder : AbsOrder
     {
-        protected City city;
+        public City city;
         protected IntVector2 subTile;
         protected VoxelModelInstance model;
 
@@ -107,6 +107,8 @@ namespace VikingEngine.DSSWars.Players.Orders
             HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
             content.space();
             content.Add(new RbText(priority.ToString()));
+
+            BuildControls.buildTooltip_YouOwn(city, content, buildingType);
 
             return content;
         }

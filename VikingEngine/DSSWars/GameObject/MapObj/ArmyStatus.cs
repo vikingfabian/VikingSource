@@ -13,37 +13,26 @@ namespace VikingEngine.DSSWars.GameObject
         public Dictionary<UnitFilterType, int> getTypeCounts(Faction faction)
         {
             Dictionary<UnitFilterType, int> result = new Dictionary<UnitFilterType, int>();
-            for (int i = 0; i < typeCount.Length; i++) 
-            {
-                if (typeCount[i] > 0)
-                {
-                    result.Add((UnitFilterType)i, typeCount[i]);
-                }
-            }
 
-            if (faction.player.IsLocalPlayer())
+            if (typeCount != null && typeCount.Length > 0)
             {
-                if (result.ContainsKey(UnitFilterType.MithrilKnight) && result.ContainsKey(UnitFilterType.MithrilBow))
+
+                for (int i = 0; i < typeCount.Length; i++)
                 {
-                    DssRef.achieve.UnlockAchievement(AchievementIndex.knights_of_lumini);
+                    if (typeCount[i] > 0)
+                    {
+                        result.Add((UnitFilterType)i, typeCount[i]);
+                    }
                 }
 
-                //int farmers = 0;
-                //if (result.TryGetValue(UnitFilterType.SharpStick, out int folkmen))
-                //{
-                //    farmers = folkmen;
-                //}
-                //if (result.TryGetValue(UnitFilterType.Skirmisher, out int folkmen))
-                //{
-                //    farmers = folkmen;
-                //}
+                if (faction != null && faction.player.IsLocalPlayer())
+                {
+                    if (result.ContainsKey(UnitFilterType.MithrilKnight) && result.ContainsKey(UnitFilterType.MithrilBow))
+                    {
+                        DssRef.achieve.UnlockAchievement(AchievementIndex.knights_of_lumini);
+                    }
+                }
             }
-
-            //if (result.Count >= Achievements.AllUnitTypesCount &&
-            //    faction.player.IsLocalPlayer())
-            //{
-            //    DssRef.achieve.UnlockAchievement(AchievementIndex.all_unit_types);
-            //}
 
             return result;
         }

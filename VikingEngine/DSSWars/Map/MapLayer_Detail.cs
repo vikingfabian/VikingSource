@@ -4,6 +4,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using VikingEngine.Engine;
 using VikingEngine.EngineSpace.Graphics.DrawProcess;
 using VikingEngine.Graphics;
 using VikingEngine.ToGG.Commander.UnitsData;
@@ -19,7 +20,8 @@ namespace VikingEngine.DSSWars.Map
 
         const int MaxRemoveCount = 32;
         int MaxSychToRenderCount;
-        public List<Graphics.PolygonColor> polygons = new List<Graphics.PolygonColor>(256);
+        public List<Graphics.PolygonColor> terrainPolygons = new List<Graphics.PolygonColor>(256);
+        public List<Graphics.PolygonColor> waterEdgePolygons = new List<Graphics.PolygonColor>(64);
 
         public static Graphics.CustomEffect_NoColor ModelEffect = new Graphics.CustomEffect_NoColor("FlatVerticeColor", false);
         
@@ -40,10 +42,10 @@ namespace VikingEngine.DSSWars.Map
 
         }
 
-        public OceanProcess createOceanProcess()
-        {
-            return new OceanProcess(waterSurface);
-        }
+        //public OceanProcess createOceanProcess()
+        //{
+        //    return new OceanProcess(waterSurface);
+        //}
 
         public void refreshLoadSpeed()
         {
@@ -101,6 +103,28 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
+        public void drawWaterEdges(int cameraIndex)
+        {
+            //LoadContent.Textures[(int)LoadedTexture.waterEdge] = texture;
+            WaveXzEffect.GetWaveSingletonSafe().beginDraw();
+
+            //ModelEffect.SetColor(Vector4.One);
+
+            var tilesC = tiles.counter();
+            while (tilesC.Next())
+            {
+                if (tilesC.sel.renderState == DetailMapTileState.InRender)
+                {
+                    var model = tilesC.sel.waterEdgeModel;
+                    if (model != null)
+                    {
+                        
+                        model.Draw(cameraIndex);
+                    }
+                }
+            }
+        }
+
         public void Update_outOfFocus()
         {
             pauseEvent.Set();
@@ -108,8 +132,6 @@ namespace VikingEngine.DSSWars.Map
 
         public void asynchUpdate()
         {
-           
-
             var tileC = tiles.counter();
             while (tileC.Next())
             {

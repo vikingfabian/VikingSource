@@ -8,6 +8,167 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Japanese : AbsLanguage
     {
+        public override string Help_Work_Automatic => "作業は自動で行われます";
+        public override string Tutorial_SecondCity => "2つ目の都市を獲得する";
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "自動化をスキップ";
+
+        public override string Resource_WaterReason => "水資源は、維持可能なユニット数と生産規模を制限します";
+        public override string BuildingType_Orchard => "果樹園";
+        public override string BuildingType_ManorLord => "領主の館";
+        public override string BuildingType_ManorLord_Description => "食料加工をアンロック";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "関係の解消";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "アイテムの入手元";
+
+        public override string ItemSource_Terrain => "地形";
+        public override string ItemSource_Farm => "農場";
+        public override string ItemSource_CraftStation => "製作所";
+        public override string ItemSource_Gathering => "採集";
+
+        public override string CityCulture_Nomad => "遊牧民";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "変動係数: {0}";
+
+        public override string Hud_Purchase_LowXCost => "低{0}コスト";
+
+        public override string WorkQueue_Title => "作業キュー";
+        public override string WorkQueue_Length => "残りの作業目標";
+        public override string WorkQueue_ActiveWorkers => "稼働中のチーム";
+        public override string WorkQueue_IdleWorkers => "待機中のチーム";
+
+        public override string WorkTeam_Size => "村人は{0}人のチームで働きます";
+
+        public override string ObjectUi_ViewOnMap => "マップで見る";
+        public override string ObjectUi_StuckBuildOrders => "停滞中の建設指示";
+        public override string Hud_AllArmies => "全軍";
+
+        public override string Hud_CurrentPage => "現在のページ";
+        public override string Hud_AllPages => "全ページ";
+        public override string Hud_ToAllCities => "全都市へ";
+        public override string Hud_ToFaction => "自勢力へ";
+        public override string Hud_FromFaction => "自勢力から";
+        public override string Hud_FactionWide => "勢力全体の設定を使用";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "入植地を配置";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "他のフレームを全て削除";
+        //Winter patch 3
+        public override string Hud_Purchase_AllBuildings => "全建造物を予約";
+        public override string Hud_Purchase_AllTech => "全技術を予約";
+        public override string BuildingType_CasualBarracks_Description => "兵士の採用時間が兵舎間で分割されます";
+
+        //Winter update patch + spring
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+
+        public override string DisplayMode => "画面モード";
+        public override string DisplayMode_Windowed => "ウィンドウ";
+        public override string DisplayMode_BorderlessFullscreen => "ボーダーレスウィンドウ";
+
+        public override string GameSettings_RenderedMouseCursor => "カーソル描画";
+        public override string GameSettings_MuteControllerDisconnect => "コントローラー切断通知をミュート";
+
+        public override string Delivery_MaxDistance => "最大配送距離: {0}";
+        public override string Tutorial_WillTakeAWhile => "時間がかかります。後で戻ってきてください。";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "{0}の完了を待機中";
+        public override string GameOverResults => "ゲーム履歴";
+
+        public override string UnitType_UnclaimedLand => "未開拓地";
+        public override string UnitType_Settler => "開拓者";
+        public override string UnitType_Settler_Description => "新しい都市を建設する";
+        public override string Resource_ConsumedProduced => "消費 / 生産";
+        public override string InputActionName_PlaceTarget => "ターゲットを配置";
+
+        public override string FactionStartSize => "勢力の初期規模";
+        public override string FactionStartSize_Full => "最大";
+        public override string FactionStartSize_OneCity => "１都市";
+        public override string FactionStartSize_Settler => "開拓者１人";
+
+        //Winter update
+        public override string Resource_StockpileLimit => "備蓄上限";
+        public override string GameMode_QuickMatch => "Quick Match";
+        public override string GameMode_QuickMatch_Description =>
+            "短めのゲームモードです。ライバル国家との本格的な戦争に突入しましょう。";
+        public override string Lobby_PlayerCount => "プレイヤー数";
+        public override string Lobby_TwoTeams => "2チーム";
+        public override string Hud_Produce => "生産:";
+        public override string Tutorial_WaitForWorkerLevel => "作業者が到達するまで待機:";
+
+        public override string Tutorial_PracticeOrSchool => "{0}で練習する、または{1}を使う";
+        public override string Tutorial_AddTag => "タグを追加:";
+        public override string Tutorial_AddPin => "ピンを追加:";
+        public override string Tutorial_SelectMostTrees => "最も木が多い自分の都市を探す";
+        public override string Tutorial_SelectACityWithX => "{0}を持つ都市を選択";
+
+        public override string Tutorial_Select_NotCapital => "。首都以外で。";
+
+        public override string Tutorial_SetXPriorityToY => "{0}の優先度を{1}に設定";
+        public override string Tutorial_AdvisorMission => "Advisorミッション";
+
+        public override string Tutorial_AdvisorDescription =>
+            "本編が始まりました。Advisorが役立つミッションでチュートリアルを拡張します。";
+
+        public override string Tutorial_EndAdvisor => "Advisorを終了";
+
+        public override string Tutorial_AdvisorCompleteTitle => "Advisor完了！";
+        public override string Tutorial_AdvisorCompleteMessage => "次の日が祝福されますように！";
+
+        public override string Hud_Search => "検索";
+
+        public override string DifficultyDescription_ExtremeAggression => "極端な攻撃性";
+
+        public override string MapFilter => "マップフィルター";
+
+        public override string Settings_TechMultiplier => "Tech研究速度";
+
+        public override string EndScreen_MatchComplete => "マッチ結果";
+
+        public override string FactionName_DragonGem => "Dragon Gem";
+        public override string FactionName_Tomten => "Tomten";
+        public override string FactionName_Hælfolc => "Hælfolc";
+        public override string FactionName_AerimAngren => "Aerim Angren";
+
+        public override string HUD_NotAvailbleInX => "{0}では利用できません";
+
+        public override string InputActionName_MiniMap => "Mini-map";
+
+        //--
+        public override string Error_SoundInitFailure => "サウンドの初期化に失敗しました";
+
+        public override string GameMenu_ControllerDisconnected => "コントローラーが切断されました";
+
+        public override string Tutorial_HighPriority => "部下たちは優先度の高い任務から先に実行します。";
+
+        public override string BuildingType_Wall_Description => "壁は部隊を攻撃から守り、わずかな攻撃ブーストを与えます。";
+
+        public override string BuildingType_Wall_Siege => "攻城兵器は壁の防御力を低下させます。";
+
+        public override string Conscript_BlockChance => "攻撃をブロックする確率：{0}%";
+
+        public override string Battle_DeclarWarReminder => "攻撃する前に宣戦布告する必要があります。";
+
+        //--
+
+
         /// <summary>
         /// この言語の名前
         /// </summary>
@@ -61,7 +222,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// ゲーム名とバージョン番号
         /// </summary>
-        public override string Lobby_GameVersion => "DSS ウォーパーティー - ver {0}";
+        //public override string Lobby_GameVersion => "DSS ウォーパーティー - ver {0}";
 
         /// <summary>
         /// フラッグを塗り、軍隊の色を選択します。
@@ -1824,8 +1985,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_AddX => "{0} を追加";
         public override string Hud_Both => "両方";
         public override string Hud_Direction => "方向";
-        public override string MusicIsBroken => "現在、音楽が再生できません";
-
+       
         /// <summary>
         /// 0: オブジェクトの種類名, 1: 数量
         /// </summary>
@@ -2178,7 +2338,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Settings_Mode_Spectator => "観戦モード";
 
-        public override string Settings_Mode_Spectator_Description => "観戦のみ";
+        //public override string Settings_Mode_Spectator_Description => "観戦のみ";
 
         public override string Automation_AutomationFocus_NoFocus_Description => "すべてを少しずつ建設します";
 
@@ -2505,6 +2665,61 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Tutorial_CasualRecruitSoldiers => "兵士グループを1つ購入する";
 
+
+        //Shadow update
+        public override string Technology_CannotReassign => "研究が完了するまで Tech を再割り当てできません";
+        public override string Diplomacy_DeclareWarAgainst => "あなたは次の相手に宣戦布告します:";
+        public override string Diplomacy_AllyCount => "同盟国の数";
+        public override string Diplomacy_CostPerAlly => "コストは同盟国ごとに {0} 増加します";
+
+        public override string Event_ChanceOfFailure => "{0}% 失敗の可能性";
+        public override string EventMessage_Event_Title => "イベント";
+        public override string EventMessage_TheCohalition => "連合";
+
+        public override string EventMessage_DarkHorde => "闇の軍勢";
+        public override string EventMessage_DarkHordeKiller_Title => "闇の軍勢キラー";
+        public override string EventMessage_DarkHordeKiller_Message => "チャンピオン騎士があなたの軍に加わりました";
+
+        public override string Settings_Mode_Spectator_Description => "ただ観戦するか、God Powers で干渉することができます。";
+        public override string GodPower => "God Power";
+
+        public override string Building_TreeSprout_Description => "木を植える";
+        public override string Building_TreeSprout_Soft => "軟木の苗木";
+        public override string Building_TreeSprout_Hard => "硬木の苗木";
+
+        public override string GeneralSetting_SetAll => "すべてに適用";
+
+        public override string Hud_All => "すべて";
+
+        public override string Hud_Previous => "前へ";
+
+        public override string Hud_EffectWillStack => "効果はスタックされます";
+
+        public override string Info_WhenFoodRunsOut => "食料が尽きると、都市や軍隊は自動的に闇市から購入します。";
+
+
+        //Launch test
+        
+        public override string InputActionName_NextWar => "次の交戦中の勢力";
+
+        /// <summary>
+        /// These symbols are needed to fit large numbers on the HUD,
+        /// there will be a tooltip to explain what number it represents
+        /// </summary>
+        public override string EngineHud_SymbolFor100 => "百";
+        public override string EngineHud_SymbolFor1000 => "千";
+        public override string EngineHud_SymbolFor10000 => "万";
+
+        /// <summary>
+        /// When loading files from other players, you won’t get their achievement progress
+        /// </summary>
+        public override string GameMenu_BlockImportAchievements => "インポートしたセーブデータでは実績が反映されません";
+
+        public override string EndScreen_PeaceVictoryQuote => "剣を置き、より良い未来を受け入れよう";
+
+        public override string VictoryType_DefeatBoss => "Boss 撃破";
+        public override string VictoryType_Domination => "支配";
+        public override string VictoryType_WorldPeace => "世界平和";
 
     }
 }

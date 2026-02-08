@@ -61,7 +61,14 @@ namespace VikingEngine.DSSWars
 
         public void asynch_update(float time)
         {
+            
             asynch_updateTiles();
+            
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.unitsPixelTexture.asynch_Begin();
+                }
+            
 
             var factions = DssRef.world.factions.counter();
             while (factions.Next())
@@ -76,8 +83,15 @@ namespace VikingEngine.DSSWars
 
             foreach (var lp in DssRef.state.localPlayers)
             {
-                lp.asynchCullingUpdate(time,cullingStateA);
+                lp.asynchCullingUpdate(time, cullingStateA);
             }
+
+            
+                foreach (var p in DssRef.state.localPlayers)
+                {
+                    p.unitsPixelTexture.complete();
+                }
+            
         }
 
         void asynch_updateTiles()
@@ -161,18 +175,21 @@ namespace VikingEngine.DSSWars
 
         public void InRender_Asynch(ref bool enterRender_overviewLayer, ref bool enterRender_detailLayer, bool bStateA, ref Vector2 minpos, ref Vector2 maxpos)
         {
-            enterRender_overviewLayer = false;
-            enterRender_detailLayer = false;
+            bool enterOverview = false;
+            bool enterDetail = false;
 
             for (int cameraIndex = 0; cameraIndex < Ref.draw.ActivePlayerScreens.Count; ++cameraIndex)
             {
                 var state = bStateA ? players[cameraIndex].stateA : players[cameraIndex].stateB;
                 if (state.enterArea.IntersectRect(minpos, maxpos))
                 {
-                    enterRender_overviewLayer |= state.midLayer;
-                    enterRender_detailLayer |= state.detailLayer;                    
+                    enterOverview |= state.midLayer;
+                    enterDetail |= state.detailLayer;                    
                 }
             }
+
+            enterRender_overviewLayer = enterOverview;
+            enterRender_detailLayer = enterDetail;
            
         }
 

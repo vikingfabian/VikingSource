@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.Sound;
 using VikingEngine.Timer;
 
 namespace VikingEngine.DSSWars.Work
@@ -43,7 +44,7 @@ namespace VikingEngine.DSSWars.Work
             factionIndex = mapObject.factionIndex;
             this.status = status;
             myIndex = statusIndex;
-            model = mapObject.GetFaction().AutoLoadModelInstance_batched(
+            model = mapObject.GetFaction_NoChecks().AutoLoadModelInstance_batched(
                  DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f);
 
             model.position = WP.SubtileToWorldPosXZ(status.subTileStart);
@@ -115,9 +116,18 @@ namespace VikingEngine.DSSWars.Work
                             }
                         }
 
-                        if (!isShip)
+                        if (isShip)
+                        {
+                            if (/*Ref.TimePassed16ms &&*/ Ref.peRnd.ChanceF(0.3f/Ref.UpdateTimes60FPS))
+                            {
+                                Engine.ParticleHandler.AddParticleAreaFlat(Graphics.ParticleSystemType.WaterFoam, VectorExt.SetY(model.position, Tile.WaterSurfaceY),
+                                    DssConst.Men_StandardModelScale * 0.2f, 4);
+                            }
+                        }
+                        else
                         {
                             walkingAnimation.update(speed, model);
+                           
                         }
 
                     }
@@ -141,6 +151,8 @@ namespace VikingEngine.DSSWars.Work
                                     case TerrainSubFoilType.TreeHard:
                                         SoundLib.woodcut.Play(model.position);
                                         break;
+                                    case TerrainSubFoilType.TreeApple:
+                                    case TerrainSubFoilType.TreeBanana:
                                     case TerrainSubFoilType.WheatFarm:
                                     case TerrainSubFoilType.WheatFarmUpgraded:
                                     case TerrainSubFoilType.LinenFarm:
@@ -149,14 +161,20 @@ namespace VikingEngine.DSSWars.Work
                                     case TerrainSubFoilType.RapeSeedFarmUpgraded:
                                     case TerrainSubFoilType.HempFarm:
                                     case TerrainSubFoilType.HempFarmUpgraded:
-                                        SoundLib.scythe.Play(model.position);
+                                        if (SoundStackManager.RareAvailable())
+                                        {
+                                            SoundLib.scythe.Play(model.position);
+                                        }
                                         break;
                                     case TerrainSubFoilType.StoneBlock:
                                         SoundLib.pickaxe.Play(model.position);
                                         break;
                                     case TerrainSubFoilType.BogIron:
                                     case TerrainSubFoilType.Stones:
-                                        SoundLib.dig.Play(model.position);
+                                        if (SoundStackManager.RareAvailable())
+                                        {
+                                            SoundLib.dig.Play(model.position);
+                                        }
                                         break;
                                 }
                             }
@@ -168,7 +186,7 @@ namespace VikingEngine.DSSWars.Work
                             }
                             break;
                         case WorkType.Plant:
-                            if (workAnimation_soundframe())
+                            if (workAnimation_soundframe() && SoundStackManager.RareAvailable())
                             {
                                 SoundLib.dig.Play(model.position);
                             }
@@ -185,10 +203,16 @@ namespace VikingEngine.DSSWars.Work
                                     case TerrainBuildingType.Brewery:
                                     case TerrainBuildingType.Work_Bench:
                                     case TerrainBuildingType.Work_Cook:
-                                        SoundLib.genericWork.Play(model.position);
+                                        if (SoundStackManager.RareAvailable())
+                                        {
+                                            SoundLib.genericWork.Play(model.position);
+                                        }
                                         break;
                                     case TerrainBuildingType.Work_Smith:
-                                        SoundLib.anvil.Play(model.position);
+                                        if (SoundStackManager.RareAvailable())
+                                        {
+                                            SoundLib.anvil.Play(model.position);
+                                        }
                                         break;
                                 }
                             }
@@ -207,7 +231,7 @@ namespace VikingEngine.DSSWars.Work
                         case WorkType.Upgrade:
                         case WorkType.Demolish:
                         case WorkType.School:
-                            if (workAnimation_soundframe())
+                            if (workAnimation_soundframe() && SoundStackManager.RareAvailable())
                             {
                                 SoundLib.hammer.Play(model.position);
                             }
@@ -232,18 +256,33 @@ namespace VikingEngine.DSSWars.Work
                                         break;
 
                                     case TerrainSubFoilType.Stones:
-                                        SoundLib.pickup.Play(model.position);
+                                        if (SoundStackManager.RareAvailable())
+                                        {
+                                            SoundLib.pickup.Play(model.position);
+                                        }
                                         break;
                                 }
+                                EditSubTile.OntileChange(WP.SubtileToTilePos(status.subTileEnd));
                                 break;
                             case WorkType.Plant:
+                                int waterCost;
+                                switch ((TerrainSubFoilType)DssRef.world.subTileGrid.Get(status.subTileEnd).subTerrain)
+                                {
+                                    case TerrainSubFoilType.TreeApple:
+                                    case TerrainSubFoilType.TreeBanana:
+                                        waterCost = DssConst.OrchardWaterCost;
+                                        break;
+                                    default:
+                                        waterCost = DssConst.PlantWaterCost;
+                                        break;
+                                }
                                 SoundLib.drop_item.Play(model.position);
-                                new ResourceEffect(ItemResourceType.Water_G, -DssConst.PlantWaterCost, model.position, ResourceEffectType.Add);
+                                /*new ResourceEffect*/
+                                SpriteText3D.GetOrCreate().init(ItemResourceType.Water_G, -waterCost, model.position, ResourceEffectType.Add);
+                                EditSubTile.OntileChange(WP.SubtileToTilePos(status.subTileEnd));
                                 break;
                             case WorkType.DropOff:
                                 SoundLib.drop_item.Play(model.position);
-
-
                                 break;
                             case WorkType.LocalTrade:
                                 SoundLib.buy.Play(model.position);
@@ -546,7 +585,7 @@ namespace VikingEngine.DSSWars.Work
 
                         if (maxAdd > 0)
                         {
-                            status.addExperience(xp, args.player.gameControls.map.selection.obj.GetCity(), (byte)Bound.Max(DssConst.WorkLevel_Expert, maxAdd));
+                            status.addExperience(xp, args.player.gameControls.map.selection.obj.GetCity(), (byte)Bound.Max(DssConst.WorkLevel_Master, maxAdd));
                         }
                     }, exp)));
                     args.content.space();
@@ -559,7 +598,7 @@ namespace VikingEngine.DSSWars.Work
                 }
 
                 args.content.newLine();
-                HudLib.Label(args.content, DssRef.todoLang.GeneralSetting_SetAll);
+                HudLib.Label(args.content, DssRef.lang.GeneralSetting_SetAll);
                 args.content.space();
                 args.content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.WarsUnitLevelMinimal),  new RbSpace(), new RbText(DssRef.lang.ExperienceLevel_1, HudLib.GodPower_Color),  

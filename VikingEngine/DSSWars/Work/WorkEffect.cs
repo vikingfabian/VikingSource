@@ -29,10 +29,13 @@ namespace VikingEngine.DSSWars.Work
         public override void update()
         {
             //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
-            if (Ref.TimePassed16ms && Ref.peRnd.Chance(0.5))
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
             {
-                Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, emitterPos);
-                Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
+                if (Ref.peRnd.Chance(0.5))
+                {
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, emitterPos);
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
+                }
             }
         }
     }
@@ -52,10 +55,13 @@ namespace VikingEngine.DSSWars.Work
         public override void update()
         {
             //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
-            if (Ref.TimePassed16ms && Ref.peRnd.Chance(0.2))
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
             {
-                Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, emitterPos);
-                Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
+                if (Ref.peRnd.Chance(0.2))
+                {
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, emitterPos);
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
+                }
             }
         }
     }
@@ -76,7 +82,7 @@ namespace VikingEngine.DSSWars.Work
         public override void update()
         {
             //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
-            if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
             {
                 Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, AreaSz));
                 Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, AreaSz));
@@ -100,10 +106,13 @@ namespace VikingEngine.DSSWars.Work
         public override void update()
         {
             //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
-            if (Ref.TimePassed16ms && Ref.peRnd.Chance(0.5))
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
             {
-                Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, emitterPos);
-                Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
+                if (/*Ref.TimePassed16ms &&*/ Ref.peRnd.Chance(0.5))
+                {
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, emitterPos);
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
+                }
             }
         }
     }
@@ -123,11 +132,14 @@ namespace VikingEngine.DSSWars.Work
         public override void update()
         {
             //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
-            if (Ref.TimePassed16ms && Ref.peRnd.Chance(0.5))
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
             {
-                Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, emitterPos);
-                Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
-                Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
+                if (Ref.peRnd.Chance(0.5))
+                {
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, emitterPos);
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
+                }
             }
         }
     }
@@ -147,7 +159,7 @@ namespace VikingEngine.DSSWars.Work
         public override void update()
         {
             //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
-            if (Ref.TimePassed16ms && Ref.peRnd.Chance(0.5))
+            if (/*Ref.TimePassed16ms && */Ref.peRnd.Chance(0.5 / Ref.UpdateTimes60FPS))
             {
                 Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, emitterPos);
                 Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));

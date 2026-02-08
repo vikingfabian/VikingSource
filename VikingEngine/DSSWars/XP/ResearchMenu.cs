@@ -9,6 +9,8 @@ using VikingEngine.HUD.RichBox;
 using static System.Net.Mime.MediaTypeNames;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
+using VikingEngine.HUD.RichMenu;
 
 namespace VikingEngine.DSSWars.XP
 {
@@ -18,37 +20,93 @@ namespace VikingEngine.DSSWars.XP
 
         City city;
         LocalPlayer player;
-        public void ToHud(City city, LocalPlayer player, RichBoxContent content)
+        public void ToHud(City city, LocalPlayer player, RichBoxContent content, RichMenu menu)
         {
             this.city = city;
             this.player = player;
 
+            var available = city.technology.availableTech();
+
+            if (available.Count > 0 && !available.Contains(player.selectedTech))
+            {
+                player.selectedTech = available.First();
+            }
+
+            bool hasUnAssignedBookPress = false;
+            bool hasUnassignedResearchCenter = false;
+
+            if (city.researchBuildings != null)
+            {
+                lock (city.researchBuildings)
+                {
+                    for (int i = 0; i < city.researchBuildings.Count; i++)
+                    {
+                        var building =  city.researchBuildings[i];
+                        var assigned = building.assignedTech;
+
+                        if (assigned == TechnologyTreeType.NUM_NONE)
+                        {
+                            if (building.isResearchCenter)
+                            {
+                                hasUnassignedResearchCenter = true;
+                            }
+                            else
+                            {
+                                hasUnAssignedBookPress = true;
+                            }
+                        }
+                        else if (!available.Contains(assigned))
+                        {
+                            //Unlock
+                            building.assignedTech = TechnologyTreeType.NUM_NONE;
+                            city.researchBuildings[i] = building;
+                        }
+                    }
+                }
+            }
+
             if (arraylib.InBound(city.researchBuildings, city.selectedResearchBuilding))
             {
                 var building = city.researchBuildings[city.selectedResearchBuilding];
-                content.Add(new RbBeginTitle(1));
+                //content.Add(new RbBeginTitle(1));
 
                 LangLib.ResearchType(building.isResearchCenter, out string caption, out SpriteName icon);
 
-                content.Add(new RbImage(icon));
-                content.space();
-                var title = new RbText(caption + " " + building.idAndPosition.ToString());
-                title.overrideColor = HudLib.TitleColor_TypeName;
-                content.Add(title);
-                content.space();
-                HudLib.CloseButton(content, new RbAction(() => { city.selectedResearchBuilding = -1; }, RbSoundType.Back));
+                //content.Add(new RbImage(icon));
+                //content.space();
+                //var title = new RbText(caption + " " + building.idAndPosition.ToString());
+                //title.overrideColor = HudLib.TitleColor_TypeName;
+                //content.Add(title);
+                //content.space();
+                //HudLib.CloseButton(content, new RbAction(() => { city.selectedResearchBuilding = -1; }, RbSoundType.Back));
+                HudLib.buildingMenuTitle(content, icon, caption, building.idAndPosition, city.selectedResearchBuilding, city.researchBuildings.Count,
+                    () => { city.selectedResearchBuilding = -1; },
+                    (int next) => {
+                        city.selectedResearchBuilding = Bound.SetRollover(city.selectedResearchBuilding + next, 0, city.researchBuildings.Count - 1);
+                    });
 
                 content.newParagraph();
-                HudLib.BulletPoint(content);
-                string desc = building.isResearchCenter ? string.Format( DssRef.lang.BuildingType_ResearchCenter_Description, DssConst.TechnologyGain_ResearchCenter) : DssRef.lang.BuildingType_Bookpress_Description;
-                content.Add(new RbText( desc, HudLib.InfoYellow_Light));
+                if (building.isResearchCenter)
+                {
+                    HudLib.BulletPoint(content);
+                    string desc = string.Format(DssRef.lang.BuildingType_ResearchCenter_Description, DssConst.TechnologyGain_ResearchCenter);
+                    content.Add(new RbText(desc, HudLib.InfoYellow_Light));
 
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(DssRef.lang.Hud_EffectWillStack, HudLib.InfoYellow_Light));
+                }
+                else
+                {
+                    HudLib.BulletPoint(content);
+                    string desc = string.Format(DssRef.lang.BuildingType_Bookpress_Description, DssRef.lang.BuildingType_ReseachCenter);
+                    content.Add(new RbText(desc, HudLib.InfoYellow_Light));
+                }
 
                 content.newParagraph();
                 if (building.assignedTech == TechnologyTreeType.NUM_NONE)
                 {
-                    var available = city.technology.availableTech();
-
+                    
                     if (available.Count == 0)
                     {
                         content.newLine();
@@ -56,11 +114,6 @@ namespace VikingEngine.DSSWars.XP
                     }
                     else
                     {
-                        if (!available.Contains(player.selectedTech))
-                        {
-                            player.selectedTech = available.First();
-                        }
-
                         foreach (var techType in available)
                         {
                             //for (TechnologyTreeType techType = 0; techType < TechnologyTreeType.NUM_NONE; techType++)
@@ -76,13 +129,16 @@ namespace VikingEngine.DSSWars.XP
                         }
 
                         content.newLine();
-                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_CommitAssignment) }, new RbAction(() =>
-                        {
-                            //Assign selected tech
-                            var building = city.researchBuildings[city.selectedResearchBuilding];
-                            building.assignedTech = player.selectedTech;
-                            city.researchBuildings[city.selectedResearchBuilding] = building;
-                        })));
+                        player.gameControls.input.StopStart.ToRichContent(content);
+                        content.space(0.5f);
+                        content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_CommitAssignment) },
+                            new RbAction1Arg<LocalPlayer>(city._commitResearch, player, RbSoundType.Start)));
+                        //{
+                        //    //Assign selected tech
+                        //    var building = city.researchBuildings[city.selectedResearchBuilding];
+                        //    building.assignedTech = player.selectedTech;
+                        //    city.researchBuildings[city.selectedResearchBuilding] = building;
+                        //)));
                     }
                 }
                 else
@@ -93,13 +149,58 @@ namespace VikingEngine.DSSWars.XP
                     content.Add(new RbText(techname));
                 }
                 content.newParagraph();
-                content.Add(new RbText("Tech cannot be reassigned until the research is done", HudLib.InfoYellow_Light));
+                content.Add(new RbText(DssRef.lang.Technology_CannotReassign, HudLib.InfoYellow_Light));
             }
             else
             {
                 //List buildings
                 if (arraylib.HasMembers(city.researchBuildings))
                 {
+                    if (available.Count > 0 && (hasUnAssignedBookPress || hasUnassignedResearchCenter))
+                    {
+                        //content.h2(DssRef.lang.GeneralSetting_SetAll, HudLib.TitleColor_Head2);
+
+                        DropDownBuilder techDropDown = new DropDownBuilder("select tech");
+                        {
+                            foreach (var techType in available)
+                            {
+                                LangLib.Technology(techType, out SpriteName techicon, out string techname);
+                                techDropDown.AddOption(techname, techType == player.selectedTech, false,
+                                     new RbAction1Arg<TechnologyTreeType>((TechnologyTreeType type) => { 
+                                         player.selectedTech = type;
+                                         menu.CloseDropDown();
+                                     }, techType),
+                                     null);
+                            }
+                        } techDropDown.Build(content, SpriteName.WarsTechnology_Unlocked, DssRef.lang.Technology_Title, menu);
+
+                        content.newLine();
+                        if (hasUnassignedResearchCenter)
+                        {
+                            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                            new RbImage(SpriteName.WarsBuild_ResearchCenter),
+                                new RbSpace(),
+                                new RbText(DssRef.lang.GeneralSetting_SetAll + ":", HudLib.TitleColor_Label),
+                                new RbSpace(),
+                                new RbText(DssRef.lang.Hud_CommitAssignment) },
+                                new RbAction2Arg<LocalPlayer, bool>(city._commitResearchAll, player, true, RbSoundType.Start),
+                                new RbTooltip_Text(DssRef.lang.BuildingType_ReseachCenter)));
+                        }
+                        if (hasUnAssignedBookPress)
+                        {
+                            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                                new RbImage(SpriteName.WarsBuild_Bookpress), 
+                                new RbSpace(),
+                                new RbText(DssRef.lang.GeneralSetting_SetAll + ":", HudLib.TitleColor_Label),
+                                new RbSpace(),
+                                new RbText(DssRef.lang.Hud_CommitAssignment) },
+                                new RbAction2Arg<LocalPlayer, bool>(city._commitResearchAll, player, false, RbSoundType.Start),
+                                new RbTooltip_Text(DssRef.lang.BuildingType_Bookpress)));
+                        }
+                        
+                        content.newLine();
+                        content.Add(new RbSeperationLine());
+                    }
                     listBuildings(true);
                     listBuildings(false);
 
@@ -124,8 +225,9 @@ namespace VikingEngine.DSSWars.XP
                                         new RbText(building.assignmentString(), HudLib.InfoYellow_Dark),
                                     };
 
-                                    
+
                                     //button.setGroupSelectionColor(HudLib.RbSettings, );
+                                    content.newLine();
                                     content.Add(new ArtButton(RbButtonStyle.Primary, 
                                         buttonContent, new RbAction1Arg<int>((int ix)=> { city.selectedResearchBuilding = ix; }, i)));
                                 }

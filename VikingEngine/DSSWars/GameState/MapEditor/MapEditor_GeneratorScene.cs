@@ -25,6 +25,10 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
             display = new MapGeneratorDisplay(this);
             new Interface.EditorBackground();
             map = new GeneratorMap(display.topRight);
+
+            DssRef.stats.start_mapgenerator.addOne_ifUnset();
+
+            Ref.draw.CurrentRenderLayer = 0;
         }
 
         public override void Time_Update(float time)

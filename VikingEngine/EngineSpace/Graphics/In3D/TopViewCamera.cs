@@ -78,7 +78,7 @@ namespace VikingEngine.Graphics
             const float MinChaseSpeed = 0.05f;
             if (l > MinChaseSpeed)
             {
-                if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
                 {
                     currentChaseLength = l * positionChaseLengthPercentage;
                     currentChaseLength = Bound.Set(currentChaseLength, MinChaseSpeed, maxChaseLength);

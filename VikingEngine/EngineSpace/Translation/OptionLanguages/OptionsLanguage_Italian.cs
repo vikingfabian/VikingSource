@@ -9,6 +9,24 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Italian : AbsOptionsLanguage
     {
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "Dissolvenza livelli";
+        public override string SplitScreen_HorizontalFirst => "Orizzontale prima";
+        public override string SplitScreen_VerticalFirst => "Verticale prima";
+        public override string SplitScreen_HorizontalOnly => "Solo orizzontale";
+        public override string SplitScreen_VerticalOnly => "Solo verticale";
+        public override string SplitScreen_Title => "Schermo condiviso";
+        public override string SplitScreen_AdjustSplit => "Regola divisione {0}";
+
+        public override string Settings_ControllerVibration => "Vibrazione controller";
+        public override string GraphicsOption_IngameMenuWidth => "Larghezza del menu di gioco";
+        public override string DisplayMode => "Modalità di visualizzazione";
+        public override string DisplayMode_Windowed => "Finestra";
+        public override string DisplayMode_BorderlessFullscreen => "Schermo intero senza bordi";
+        public override string GameSettings_RenderedMouseCursor => "Cursore renderizzato";
+
+        //--
+        public override string GraphicsOption_FarViewDistance => "Vista a lunga distanza";
 
 
         public override string Hud_Cancel => "Annulla";
@@ -135,6 +153,21 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string Settings_KeyMapPanSpeed => "Velocità panoramica";
         public override string Settings_StoreCameraPosition => "Memorizza posizione camera";
         public override string Settings_LoadCameraPosition => "Carica posizione";
+
+
+        //Shadow update
+
+        public override string Settings_ModelWaterFoam => "Schiuma dell’acqua";
+        public override string Settings_ModelShadow => "Ombre";
+        public override string Settings_ModelShadowMapSize => "Dimensione della Shadow Map";
+        public override string Settings_Brightness => "Luminosità";
+        public override string Settings_Mode_No_Achivements => "Obiettivi non disponibili.";
+        public override string Settings_FrameRate => "Frame rate";
+
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public override string Settings_ImportNoAchievement => "Blocca gli obiettivi per i salvataggi importati";
 
     }
 }

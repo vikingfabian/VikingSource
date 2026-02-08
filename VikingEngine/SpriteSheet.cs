@@ -44,6 +44,8 @@ namespace VikingEngine
 
         public SpriteSheet()
         {
+            addTexture(SpriteName.WaterEdgeMask_coast, 32, 32, LoadedTexture.waterEdge);
+
             this.Settings(4096, 128);
             this.TileSheetIx = LoadedTexture.SpriteSheet;
 
@@ -2077,7 +2079,9 @@ namespace VikingEngine
                     add(SpriteName.hqAlarmBell, 2, 3);
 
                     add(SpriteName.WarsRelationFlagOutline, 2, 3);
-                    add(SpriteName.WarsRelationFlag, 2, 3);                            
+                    add(SpriteName.WarsRelationFlag, 2, 3);
+
+                    add(SpriteName.WarsBuild_TentHut, 3, 3);
                 }
             }
 
@@ -2158,11 +2162,19 @@ namespace VikingEngine
                 }
 
 
-                //currentIndex = numTilesWidth * 85;
-                //{
-                //    add(SpriteName.rtsCardBg, currentIndex, DSSCardSz.X, DSSCardSz.Y);
-                //}
             }
+
+            currentIndex = numTilesWidth * 85;
+            currentIndex += 12;
+            {
+                add(SpriteName.WarsIcon_WorkQueueTotal);
+                add(SpriteName.WarsIcon_WorkQueueIdle);
+                add(SpriteName.WarsIcon_WorkQueueActive);
+                add(SpriteName.WarsSettler);
+                add(SpriteName.WarsSettlerAdd);
+                add(SpriteName.warsBuildCategoryFarm);
+            }
+
             currentIndex = numTilesWidth * 86;
             {
                 add(SpriteName.WarsHudPopUpButton);
@@ -2222,6 +2234,37 @@ namespace VikingEngine
                 add(SpriteName.warsBuildCategorySearch);
                 add(SpriteName.WarsHudGodPowerButton);
                 add(SpriteName.WarsGodPowerIcon);
+                add(SpriteName.WarsConstructBuildingIcon);                
+                add(SpriteName.WarsHudIconPrevious);
+                add(SpriteName.WarsHudIconNext);
+                add(SpriteName.WarsHudIconProgress);
+                add(SpriteName.WarsRelationServant);
+                                
+                add(SpriteName.WarsMapFilterFactions);
+                add(SpriteName.WarsMapFilterWorkers);
+                add(SpriteName.WarsMapFilterMinimap);
+                add(SpriteName.WarsMapFilterStrength);
+                add(SpriteName.WarsMapFilterTerrain);
+
+                add(SpriteName.WarsRelationArrowAlly);
+                add(SpriteName.WarsRelationArrowWar);
+                add(SpriteName.WarsHudMinimapBorder);
+
+                add(SpriteName.WarsHudFlapMinimize);
+                add(SpriteName.WarsHudFlapMaximize);
+
+                add(SpriteName.WarsIcon_Resources);
+                add(SpriteName.WarsMapFilterResources);
+
+                add(SpriteName.WarsBluePrint);
+
+                add(SpriteName.WarsHudIconSpeed_Pause);
+                add(SpriteName.WarsHudIconSpeed_Low);
+                add(SpriteName.WarsHudIconSpeed_High);
+                add(SpriteName.WarsHudIconSpeed_Medium);
+                add(SpriteName.UpdatePromo_SnowFlake);
+
+
             }
 
             currentIndex = numTilesWidth * 87;
@@ -2241,7 +2284,9 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_TreeSoft, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_TreeSeedlingHard, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_TreeSeedlingSoft, currentIndex, 3, 3);
-
+                add(SpriteName.WarsBuild_TreeApple, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_TreeBanana, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_ManorLord, currentIndex, 3, 3);
             }
             currentIndex = numTilesWidth * 90;
             {
@@ -2419,7 +2464,8 @@ namespace VikingEngine
                     add(SpriteName.LangButton_Japanese, 8, 2);
                     add(SpriteName.LangButton_Frensh, 8, 2);
                     add(SpriteName.LangButton_Chinese, 8, 2);
-                    add(SpriteName.WarsBluePrint, 2, 2);
+                    //add(SpriteName.WarsBluePrint_old, 2, 2);
+                    currentIndex += 2;
                     add(SpriteName.WarsUnitIcon_TwoHand, 2, 2);
                     add(SpriteName.WarsBattleIcon, 2, 2);
                     add(SpriteName.WarsWorker, 2, 2);
@@ -2796,6 +2842,14 @@ namespace VikingEngine
                     add(SpriteName.WarsRelationEnemy, 2, 2);
                     add(SpriteName.LangButton_Turkish, 8, 2);
                     add(SpriteName.LangButton_Italian, 8, 2);
+                    add(SpriteName.LangButton_Korean, 8, 2);
+
+                    add(SpriteName.WaterEdgeMask_ship, 1, 2);
+                    
+                    add(SpriteName.MenuIconPerformanceCold, 2, 2);
+                    add(SpriteName.MenuIconPerformanceHot, 2, 2);
+                    add(SpriteName.LangButton_Polish, 8, 2);
+                    add(SpriteName.LangButton_Thai, 8, 2);
                     //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }
 

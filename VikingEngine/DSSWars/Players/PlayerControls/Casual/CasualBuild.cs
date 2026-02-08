@@ -42,6 +42,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         UnlockGunPower,
         UnlockFarming2,
         UnlockFarming3,
+        Embassy,
         NUM
     }
 
@@ -96,7 +97,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 icon = SpriteName.WarsBuild_WorkerHuts,
                 price = 400,
                 buildtime_sec = (int)DssConst.WorkTime_Building_Default,
-                //allowMultiBuild = true
             });
             add(new CasualBuildOption 
             {
@@ -106,7 +106,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 icon = SpriteName.WarsBuild_Barracks,
                 price = 600,
                 buildtime_sec = (int)DssConst.WorkTime_Building_Default * 2,
-                //allowMultiBuild = true
             });
             add(new CasualBuildOption
             {
@@ -136,8 +135,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 icon = SpriteName.WarsBuild_Logistics,
                 price = 1000,
                 buildtime_sec = (int)DssConst.WorkTime_Building_Large,
-                //allowMultiBuild = false
             });
+
+            add(new CasualBuildOption
+            {
+                category = CasualBuildCategory.UpgradeBuilding,
+                Type = CasualBuildType.Embassy,
+                Name = DssRef.lang.BuildingType_Embassy,
+                icon = SpriteName.WarsBuild_Embassy,
+                price = 2000,
+                buildtime_sec = (int)DssConst.WorkTime_Building_Large,
+            });
+
             add(new CasualBuildOption
             {
                 category = CasualBuildCategory.UpgradeBuilding,
@@ -159,6 +168,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 price = 2000,
                 buildtime_sec = (int)(DssConst.WorkTime_CasualResearch_Level2_Minutes * TimeExt.MinuteInSeconds),
             });
+
             add(new CasualBuildOption
             {
                 category = CasualBuildCategory.Technology,
@@ -256,107 +266,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
         //static readonly int[] BuildCountOptions = [4, 8, 20];
 
+
+
         public static void ToHud(LocalPlayer player, RichBoxContent content, City city)
         {
-            List<CasualBuildType> available = new List<CasualBuildType>(8);
-            List<CasualBuildType> complete = new List<CasualBuildType>(8);
-
             var profile = city.casualCityProfile;
             var progress = city.GetCasualProgress();
-
-            if (profile.unlock_logistics)
-            {
-                available.Add(CasualBuildType.Tent);
-            }
-            available.Add(CasualBuildType.WorkerHut);
-            available.Add(CasualBuildType.Barracks);
-
-            available.Add(CasualBuildType.GuardTower_Wood);
-
-            if (profile.unlock_logistics)
-            {
-                complete.Add(CasualBuildType.Logistics);
-                available.Add(CasualBuildType.GuardTower_Stone);
-
-                if (profile.unlock_research)
-                {
-                    complete.Add(CasualBuildType.ResearchCenter);
-
-                    switch (profile.unlock_armor)
-                    {
-                        case 0:
-                            available.Add(CasualBuildType.UnlockIronArmor);
-                            break;
-                        case 1:
-                            complete.Add(CasualBuildType.UnlockIronArmor);
-                            available.Add(CasualBuildType.UnlockSteelArmor);
-                            break;
-                        default:
-                            complete.Add(CasualBuildType.UnlockIronArmor);
-                            complete.Add(CasualBuildType.UnlockSteelArmor);
-                            break;
-                    }
-
-                    switch (profile.unlock_sword)
-                    {
-                        case 0:
-                            available.Add(CasualBuildType.UnlockSword);
-                            break;
-                        case 1:
-                            complete.Add(CasualBuildType.UnlockSword);
-                            available.Add(CasualBuildType.UnlockSteelSword);
-                            break;
-                        default:
-                            complete.Add(CasualBuildType.UnlockSword);
-                            complete.Add(CasualBuildType.UnlockSteelSword);
-                            break;
-                    }
-
-                    switch (profile.unlock_projectile)
-                    {
-                        case 0:
-                            available.Add(CasualBuildType.UnlockCatapult);
-                            break;
-                        case 1:
-                            complete.Add(CasualBuildType.UnlockCatapult);
-                            available.Add(CasualBuildType.UnlockBlackPower);
-                            break;
-                        case 2:
-                            complete.Add(CasualBuildType.UnlockCatapult);
-                            complete.Add(CasualBuildType.UnlockBlackPower);
-                            available.Add(CasualBuildType.UnlockGunPower);
-                            break;
-                        default:
-                            complete.Add(CasualBuildType.UnlockCatapult);
-                            complete.Add(CasualBuildType.UnlockBlackPower);
-                            complete.Add(CasualBuildType.UnlockGunPower);
-                            break;
-                    }
-
-                    switch (profile.unlock_farming)
-                    {
-                        case 0:
-                            available.Add(CasualBuildType.UnlockFarming2);
-                            break;
-                        case 1:
-                            complete.Add(CasualBuildType.UnlockFarming2);
-                            available.Add(CasualBuildType.UnlockFarming3);
-                            break;
-                        default:
-                            complete.Add(CasualBuildType.UnlockFarming2);
-                            complete.Add(CasualBuildType.UnlockFarming3);
-                            break;
-                    }
-                }
-                else
-                {
-                    available.Add(CasualBuildType.ResearchCenter);
-                }
-            }
-            else
-            {
-                available.Add(CasualBuildType.Logistics);
-            }
+            profile.availableBuildings(city, out List<CasualBuildType> available, out List<CasualBuildType> complete);
 
             foreach (var buildType in available)
             {
@@ -366,6 +282,25 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     AddBuildButton(option, false);
                 }
             }
+
+            content.newParagraph();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember>
+                    {
+                        new RbImage( SpriteName.AutomationGearIcon),
+                        new RbSpace(0.5f),
+                        new RbImage( SpriteName.WarsConstructBuildingIcon),
+                        new RbSpace(),
+                        new RbText(DssRef.lang.Hud_Purchase_AllBuildings) },
+                        new RbAction(queueAllCasualBuildings), null));
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember>
+                    {
+                        new RbImage( SpriteName.AutomationGearIcon),
+                        new RbSpace(0.5f),
+                        new RbImage( SpriteName.WarsTechnology_Unlocked),
+                        new RbSpace(),
+                        new RbText(DssRef.lang.Hud_Purchase_AllTech) },
+                        new RbAction(queueAllCasualProgress), null));
 
             //CURRENT PROGRESS
             city.GetCasualProgress().BuildToHud(player, city, content);
@@ -458,12 +393,72 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 }
             }
 
+            void queueAllCasualProgress()
+            {
+                /*
+                Tent,
+                WorkerHut,
+                Barracks,
+                GuardTower_Wood,
+                GuardTower_Stone,
+                StartUpBarracks,
+                Logistics,
+                ResearchCenter,
+        
+                UnlockIronArmor,
+                UnlockSteelArmor,
+                UnlockSword,
+                UnlockSteelSword,
+                UnlockCatapult,
+                UnlockBlackPower,
+                UnlockGunPower,
+                UnlockFarming2,
+                UnlockFarming3,
+                Embassy,
+                NUM
+                 */
+                List<CasualBuildType> allProgress = [
+                    CasualBuildType.Logistics,
+                    CasualBuildType.ResearchCenter,
+                    CasualBuildType.UnlockIronArmor,
+                    CasualBuildType.UnlockSword,
+                    CasualBuildType.UnlockCatapult,
+                    CasualBuildType.UnlockFarming2,
+                    CasualBuildType.UnlockSteelArmor,
+                    CasualBuildType.UnlockSteelSword,
+                    CasualBuildType.UnlockBlackPower,
+                    CasualBuildType.UnlockGunPower,
+                    CasualBuildType.UnlockFarming3,
+                ];
+
+                city.CasualBuild(allProgress);
+            }
+            void queueAllCasualBuildings()
+            {
+                List< CasualBuildType> allBuildings = new List< CasualBuildType >(64);
+
+                allBuildings.Add(CasualBuildType.Logistics);
+                for (int i = 0; i < 8; i++)
+                {
+                    allBuildings.Add(CasualBuildType.WorkerHut);
+                    allBuildings.Add(CasualBuildType.WorkerHut);
+                    allBuildings.Add(CasualBuildType.Barracks);
+                    //allBuildings.Add(CasualBuildType.Tent);
+                    allBuildings.Add(CasualBuildType.GuardTower_Stone);
+                    if (i == 2)
+                    {
+                        allBuildings.Add(CasualBuildType.Embassy);
+                    }
+                }
+                city.CasualBuild(allBuildings);
+            }
+
+            
+
             void buildTooltip(RichBoxContent content, object tag)
             {
                 var buildPurchase = (CasualBuildPurchase)tag;
-                //CasualBuildOption option = (CasualBuildOption)tag;
                 CasualBuildOption option = CasualBuildOptionList[(int)buildPurchase.buildType];
-
 
                 content.h1(option.Name, HudLib.TitleColor_Head);
                 content.h2(DssRef.lang.Hud_PurchaseTitle_Cost, HudLib.TitleColor_Label);
@@ -477,8 +472,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 content.Add(new RbImage(SpriteName.IconSandGlass));
                 content.space();
                 content.Add(new RbText(DssRef.lang.BuildHud_BuildTime + ": " + new TimeLength(option.buildtime_sec).LongString()));
-
-               
+                               
                 content.newParagraph();
                 
                 switch (buildPurchase.buildType)
@@ -505,7 +499,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                         content.h2(DssRef.lang.Hud_PurchaseTitle_Gain, HudLib.TitleColor_Label);
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(".Soldier recruit time is divided among the barracks"));
+                        content.Add(new RbText(DssRef.lang.BuildingType_CasualBarracks_Description));
                         break;
 
                     case CasualBuildType.GuardTower_Wood:
@@ -517,7 +511,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                         content.space();
                         content.Add(new RbText(DssRef.lang.Defence_GuardPost));
                         break;
-
 
                     case CasualBuildType.Logistics:
                         content.h2(DssRef.lang.Hud_Unlock, HudLib.TitleColor_Label);
@@ -539,6 +532,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                         content.Add(new RbText(DssRef.lang.XP_UnlockBuilding));
                         content.Add(new RbImage(SpriteName.WarsBuild_ResearchCenter));
                         content.Add(new RbText(DssRef.lang.BuildingType_ReseachCenter));
+                        break;
+
+                    case CasualBuildType.Embassy:
+                        content.h2(DssRef.lang.Hud_Unlock, HudLib.TitleColor_Label);
+                        content.newLine();
+                        Build.BuildControls.EmbassyDescription(content);
                         break;
 
                     case CasualBuildType.ResearchCenter:
@@ -590,7 +589,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                         HudLib.BulletPoint(content);
                         content.Add(new RbImage(SpriteName.rtsIncomeTime));
                         content.space();
-                        content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, "+" + TextLib.TwoDecimal(DssConst.Casual_Farm2TaxIncreasePercUnits_copp))));
+                        content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, "+" + TextLib.TwoDecimal(Money.CopperToGold * DssConst.Casual_Farm2TaxIncreasePercUnits_copp))));
                         break;
 
                     case CasualBuildType.UnlockFarming3:
@@ -599,7 +598,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                         HudLib.BulletPoint(content);
                         content.Add(new RbImage(SpriteName.rtsIncomeTime));
                         content.space();
-                        content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, "+" + TextLib.TwoDecimal(DssConst.Casual_Farm3TaxIncreasePercUnits_copp))));
+                        content.Add(new RbText(string.Format(DssRef.lang.Economy_TaxIncome, "+" + TextLib.TwoDecimal(Money.CopperToGold * DssConst.Casual_Farm3TaxIncreasePercUnits_copp))));
                         break;
 
                 }

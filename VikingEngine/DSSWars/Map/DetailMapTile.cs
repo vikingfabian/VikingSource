@@ -3,12 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using VikingEngine.DSSWars.GameObject.Animal;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.EngineSpace;
 using VikingEngine.Graphics;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Map.Terrain;
 
 namespace VikingEngine.DSSWars.Map
@@ -38,7 +37,9 @@ namespace VikingEngine.DSSWars.Map
                 LootFest.VoxelModelName.fol_tree_hard,
                 LootFest.VoxelModelName.fol_tree_soft,
                 LootFest.VoxelModelName.fol_tree_dry,
-                 LootFest.VoxelModelName.fol_tree_hard_lava,
+                LootFest.VoxelModelName.tree_apple,
+                LootFest.VoxelModelName.tree_banana,
+                LootFest.VoxelModelName.fol_tree_hard_lava,
                 LootFest.VoxelModelName.fol_tree_soft_lava,
                 LootFest.VoxelModelName.fol_tree_hard_snow,
                 LootFest.VoxelModelName.fol_tree_soft_snow,
@@ -64,7 +65,9 @@ namespace VikingEngine.DSSWars.Map
            
         public IntVector2 pos;
         VerticeDataColorTexture verticeData;
+        VerticeDataColorTexture waterEdgeVerticeData;
         public Graphics.VoxelModel model = new Graphics.VoxelModel(false);
+        public Graphics.VoxelModel waterEdgeModel = new Graphics.VoxelModel(false) { colorAndAlpha = new Vector4(1, 1, 1, WaterEdgeBuilder.Opacity) };
         StructList<FoliageModel> foliageModels = new StructList<FoliageModel>(32);
         List<AnimalData> animalData;
         bool hasPolygons;
@@ -76,7 +79,10 @@ namespace VikingEngine.DSSWars.Map
         public DetailMapTile()
         {            
             model.Effect = MapLayer_Detail.ModelEffect;
-            model.Visible = false;            
+            model.Visible = false;
+
+            waterEdgeModel.Effect = WaveXzEffect.GetWaveSingletonSafe();
+            waterEdgeModel.Visible = false;
         }
         
         public void generateModel_async(IntVector2 pos, Tile tile)
@@ -87,12 +93,15 @@ namespace VikingEngine.DSSWars.Map
             if (hasPolygons)
             {
                 model.position = WP.ToWorldPos(pos);
+                waterEdgeModel.position = model.position;
+                waterEdgeModel.PositionY = Tile.WaterFoamY;
 
 #if DEBUG
                 model.DebugName = "Detail map tile " + pos.ToString();
+                waterEdgeModel.DebugName = "Detail map - water edge" + pos.ToString();
 #endif
 
-                DssRef.state.detailMap.polygons.Clear();
+                DssRef.state.detailMap.terrainPolygons.Clear();
 
                 Vector2 topLeft = VectorExt.V2NegHalf;
                 IntVector2 subTileStart = pos * WorldData.TileSubDivitions;
@@ -186,8 +195,15 @@ namespace VikingEngine.DSSWars.Map
                     }
                 }
 
+
                 verticeData = PolygonLib.BuildVDFromPolygons(
-                    new Graphics.PolygonsAndTrianglesColor(DssRef.state.detailMap.polygons, null));
+                    new Graphics.PolygonsAndTrianglesColor(DssRef.state.detailMap.terrainPolygons, null));
+
+                if (tile.IsLand())
+                {
+                    generateWaterEdge_async(pos, tile);
+                }
+                
 
                 void block(Vector2 subTopLeft, SpriteName texture, Color color, ref SubTile subTile)
                 {
@@ -236,13 +252,45 @@ namespace VikingEngine.DSSWars.Map
                     front.V3ne.Color = bottomCol;
 
 
-                    DssRef.state.detailMap.polygons.Add(top);
-                    DssRef.state.detailMap.polygons.Add(front);
-                    DssRef.state.detailMap.polygons.Add(left);
-                    DssRef.state.detailMap.polygons.Add(right);
+                    DssRef.state.detailMap.terrainPolygons.Add(top);
+                    DssRef.state.detailMap.terrainPolygons.Add(front);
+                    DssRef.state.detailMap.terrainPolygons.Add(left);
+                    DssRef.state.detailMap.terrainPolygons.Add(right);
                 }
 
                
+            }
+        }
+
+        public void generateWaterEdge_async(IntVector2 pos, Tile tile)
+        {
+            //const float WaveModelWidth = 0.25f;
+            //const float WaveModelHalSize = WaveModelWidth * 0.5f;
+
+            DssRef.state.detailMap.waterEdgePolygons.Clear();
+
+            for (Dir4 dir = 0; dir < Dir4.NUM_NON; ++dir)//each (var dir in IntVector2.Dir4Array)
+            {
+                
+                if (DssRef.world.tileGrid.TryGet(pos + IntVector2.Dir4Array[(int)dir], out var nTile) && nTile.IsWater())
+                {
+                    //Vector2 center = dirVec.Vec * (0.5f + WorldData.SubTileHalfWidth);
+
+                    //var top = Graphics.PolygonColor.QuadXZ(
+                    //   center - new Vector2(WorldData.SubTileHalfWidth),
+                    //   WorldData.SubTileWidthV2, false, 0,
+                    //   SpriteName.WarsResource_Food,
+                    //   dir,
+                    //   Color.White);
+                    
+                    DssRef.state.detailMap.waterEdgePolygons.AddRange(WaterEdgeBuilder.Get(dir));
+                }
+            }
+
+            if (DssRef.state.detailMap.waterEdgePolygons.Count > 0)
+            {
+                waterEdgeVerticeData = PolygonLib.BuildVDFromPolygons(
+                   new Graphics.PolygonsAndTrianglesColor(DssRef.state.detailMap.waterEdgePolygons, null));
             }
         }
 
@@ -336,7 +384,7 @@ namespace VikingEngine.DSSWars.Map
 
                             straw.setSprite(SpriteName.WhiteArea_LFtiles, Dir4.N);
 
-                            DssRef.state.detailMap.polygons.Add(straw);
+                            DssRef.state.detailMap.terrainPolygons.Add(straw);
                         }
                     }
                     break;
@@ -351,7 +399,7 @@ namespace VikingEngine.DSSWars.Map
                                 
                             Color color = ColorExt.ChangeBrighness(tileColor, rnd.Int(-6, 20));
 
-                            DssRef.state.detailMap.polygons.Add(
+                            DssRef.state.detailMap.terrainPolygons.Add(
                                 PolygonColor.QuadXZ(pos, SandSize, true,
                                 center.Y + 0.001f, SpriteName.WhiteArea_LFtiles, Dir4.N,
                                 color));
@@ -418,11 +466,22 @@ namespace VikingEngine.DSSWars.Map
                     surfaceSprite = SpriteName.warsFoliageRoundShadow;
                     foliageModels.Add(new FoliageModel(biom.treeHard, rnd, wp, 0.03f + 0.0012f * sizeValue));
                     break;
+
+                case TerrainSubFoilType.TreeApple:
+                    manMade = true;
+                    orchid(LootFest.VoxelModelName.tree_apple);
+                    break;
+                case TerrainSubFoilType.TreeBanana:
+                    manMade = false;
+                    orchid(LootFest.VoxelModelName.tree_banana);
+                    break;
+
                 case TerrainSubFoilType.DryWood:
                     manMade = false;
                     surfaceSprite = SpriteName.warsFoliageRoundShadow;
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.fol_tree_dry, rnd, wp, 0.12f));
                     break;
+
                 case TerrainSubFoilType.TreeSoftSprout:
                 case TerrainSubFoilType.TreeHardSprout:
                     manMade = false;
@@ -471,6 +530,28 @@ namespace VikingEngine.DSSWars.Map
                     throw new NotImplementedException();
             }
 
+            void orchid(LootFest.VoxelModelName model)
+            {
+                int frame = 0;
+
+                if (sizeValue >= TerrainContent.OrchardReady)
+                {
+                    frame = 5;
+                }
+                else if (sizeValue == TerrainContent.OrchardPlucked)
+                {
+                    frame = 3;
+                }
+                else if (sizeValue < TerrainContent.OrchardPlucked)
+                {
+                    frame = MathExt.MultiplyInt((double)sizeValue / TerrainContent.OrchardPlucked, 3.0);
+                }
+                else
+                {
+                    frame = 4;
+                }
+                foliageModels.Add(new FoliageModel(model, frame, wp, 0.1f));
+            }
 
             void farm(int readyFrame, bool upgraded)
             {
@@ -562,6 +643,9 @@ namespace VikingEngine.DSSWars.Map
                     animals(tile, ref subTile, ref wp, AnimalType.Hen, TerrainContent.HenMaxSize);
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
+                case TerrainBuildingType.WorkerTent:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_tenthut, rnd, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
                 case TerrainBuildingType.WorkerHut:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workerhut, rnd, wp, WorldData.SubTileWidth * 1.0f));
                     break;
@@ -637,9 +721,27 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_barracks, 6, wp, WorldData.SubTileWidth * 1f));
                     break;
 
-                case TerrainBuildingType.CityHall_Village:
+                case TerrainBuildingType.CityHall_Unclaimed:
                     {
                         foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 0, wp, WorldData.SubTileWidth * 1.4f));
+                    }
+                    break;
+                case TerrainBuildingType.CityHall_Tent:
+                    {
+                        foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 1, wp, WorldData.SubTileWidth * 1.4f));
+
+                        var faction = tile.Faction_Safe();
+                        if (faction != null)
+                        {
+                            var flag = new FoliageModel(
+                            faction, 8, wp + new Vector3(0.013f, -0.008f, 0.07f), WorldData.SubTileWidth * 1.1f);
+                            foliageModels.Add(flag);
+                        }
+                    }
+                    break;
+                case TerrainBuildingType.CityHall_Village:
+                    {
+                        foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 2, wp, WorldData.SubTileWidth * 1.4f));
                     
                         var faction = tile.Faction_Safe();
                         if (faction != null)
@@ -652,7 +754,7 @@ namespace VikingEngine.DSSWars.Map
                     break;
                 case TerrainBuildingType.CityHall_Town:
                     {
-                        foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 1, wp, WorldData.SubTileWidth * 1.4f));
+                        foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 3, wp, WorldData.SubTileWidth * 1.4f));
 
                         var faction = tile.Faction_Safe();
                         if (faction != null)
@@ -665,7 +767,7 @@ namespace VikingEngine.DSSWars.Map
                     break;
                 case TerrainBuildingType.CityHall_Capital:
                     {
-                        foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 2, wp, WorldData.SubTileWidth * 1.4f));
+                        foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_stonehall, 4, wp, WorldData.SubTileWidth * 1.4f));
 
                         var faction = tile.Faction_Safe();
                         if (faction != null)
@@ -739,7 +841,9 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.Logistics:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_logistic, subTile.terrainAmount - 1, wp, WorldData.SubTileWidth * 1.0f));
                     break;
-
+                case TerrainBuildingType.ManorLord:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_logistic, 3, wp, WorldData.SubTileWidth * 1f));
+                    break;
                 case TerrainBuildingType.Bank:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_bank, 0, wp, WorldData.SubTileWidth * 1.0f));
                     break;
@@ -1098,6 +1202,21 @@ namespace VikingEngine.DSSWars.Map
                 
                 PolygonLib.VerticeDataPool.Push(verticeData);
                 verticeData = null;
+
+                if (waterEdgeVerticeData != null && waterEdgeVerticeData.Vertices.count > 0)
+                {
+                    waterEdgeModel.BuildFromVerticeData(waterEdgeVerticeData,
+                    new List<int> { waterEdgeVerticeData.DrawData.numTriangles / 2 },
+                     LoadedTexture.waterEdge);
+
+                    PolygonLib.VerticeDataPool.Push(waterEdgeVerticeData);
+                    waterEdgeVerticeData = null;
+
+                    waterEdgeModel.Visible = true;
+                    //waterEdgeModel.Color = Color.DarkGray;
+                }
+
+                model.Visible = true;
             }
 
             for (int i = 0; i < foliageModels.Count; ++i)
@@ -1114,9 +1233,9 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
 
-            model.Visible = true;
 
             renderState = DetailMapTileState.InRender;
+
             //return add;
         }
         public void recycle()
@@ -1128,6 +1247,10 @@ namespace VikingEngine.DSSWars.Map
         public void DeleteMe()
         {
             model.Visible = false;
+            if (waterEdgeModel != null)
+            {
+                waterEdgeModel.Visible = false;
+            }
 
             for (int i = 0; i < foliageModels.Count; ++i)
             {

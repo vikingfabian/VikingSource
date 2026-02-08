@@ -5,6 +5,8 @@ using System.Reflection.Metadata;
 using System.Text;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -63,12 +65,12 @@ namespace VikingEngine.DSSWars.Interface
             this.player = player;
             this.army = army;
 
-            if (!DssRef.storage.centralGold)
+            if (!DssRef.storage.gameRuleset.centralGold)
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsMoney));
                 content.space();
-                content.Add(new RbText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(army.gold), HudLib.NegativeRed(army.gold)));
+                content.Add(new RbText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(army.money.GetGold()), HudLib.NegativeRed(army.money.GetGold())));
                 content.Add(new RbNewLine());
             }
 
@@ -191,14 +193,59 @@ namespace VikingEngine.DSSWars.Interface
         {
             army.basicInfoHud(new ObjectHudArgs( content, player, true));
 
+            content.newLine();
+            ColumnWidth(content, army);
+
+            content.newLine();
+            if (army.HasSettler(out var unit))
+            {
+                settlerButton(player, content, unit);
+            }
+
             var haltButton = new ArtButton( RbButtonStyle.Primary,
                         new List<AbsRichBoxMember>
                         {
                         new HUD.RichBox.RbText(DssRef.lang.ArmyOption_Halt),
                         },
                         new RbAction(halt), null);
-            //haltButton.addShortCutButton(player.input.Stop, false);
+            
             content.Add(haltButton);
+
+            
+        }
+
+        public static void ColumnWidth(RichBoxContent content, AbsArmy army)
+        {
+            HudLib.Label(content, DssRef.lang.ArmyStructure_ColumnWidth);
+            content.newLine();
+            for (int w = Army.MinColumnWidth; w <= Army.MaxColumnWidth; w += 2)
+            {
+                var button = new ArtOption(w == army.armyColumnWidth,
+                    new List<AbsRichBoxMember> { new RbText(w.ToString()) },
+                    new RbAction1Arg<int>(army.armyColumnWidthClick, w, RbSoundType.Option));
+
+                content.Add(button);
+            }
+        }
+
+        public static void settlerButton(LocalPlayer player, RichBoxContent content, SoldierGroup unit)
+        {
+            if (DssRef.world.tileGrid.TryGet(unit.tilePos, out var tile))
+            {
+                bool unclaimedLand = tile.City().cityType == CityType.UnClaimed;
+
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{
+                        new RbText(DssRef.lang.Action_PlaceSettlement) }, new RbAction(() =>
+                        {
+                            if (!unit.isDeleted)
+                            {
+                                new SettlerCommandTarget(player, unit);
+                            }
+                        }), null, unclaimedLand));
+
+                content.newLine();
+            }
         }
 
         void divideTab(RichBoxContent content)
@@ -407,8 +454,10 @@ namespace VikingEngine.DSSWars.Interface
 
         public void tagsToMenu(RichBoxContent content)
         {
+            HudLib.Label(content, DssRef.lang.ObjectUi_ViewOnMap + string.Format(" ({0})", DssRef.lang.Hud_AllArmies));
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tag_ViewOnMap) }, player.ArmyTagsOnMapProperty));
+            player.armyHudSettings.toHud(content, false, player.profile.casualControls);
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tag_ViewOnMap) }, player.ArmyTagsOnMapProperty));
             content.newParagraph();
 
             for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)

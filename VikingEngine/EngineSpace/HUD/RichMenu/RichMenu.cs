@@ -53,6 +53,7 @@ namespace VikingEngine.HUD.RichMenu
             this.playerData = playerData;
             this.layer = layer;
             this.settings = settings;
+            edgeArea.Size = Bound.Min(edgeArea.Size, new Vector2(20));
             this.edgeArea = edgeArea;
             backgroundArea = edgeArea;
             renderArea = edgeArea;
@@ -67,7 +68,11 @@ namespace VikingEngine.HUD.RichMenu
             scrollerWidth = Screen.MinClickSize;
 
             renderList = new RenderTargetDrawContainer(renderArea.Position, renderArea.Size, layer, new List<AbsDraw>());
-            
+#if DEBUG
+            renderList.DebugName = "RichMenu target";
+#endif
+
+
             scrollBar = new RichScrollbar(HudLib.HudMenuScollButton, HudLib.HudMenuScollBackground, edgeArea, scrollerWidth, layer -2);
             mouseScrollArea = scrollBar.IncludeScrollArea(edgeArea);
         }
@@ -352,10 +357,30 @@ namespace VikingEngine.HUD.RichMenu
         {
             if (interaction != null)
             {
-                if (interaction.updateController(pointer, this, false, out needRefresh, out _))
+                
+
+                if (interaction.updateController(pointer, this, false, out needRefresh, out _, out float pushScroll))
                 {
                     needRefresh = true;
                 }
+
+                if (scrollBar.IsVisible())
+                {
+                    if (scrollBar.updateControllerScroll(pointer.inputMap))
+                    {
+                        updateContentScroll();
+                    }
+                    else if (pushScroll != 0)
+                    {
+                        float scroll = scrollBar.scrollInput(-pushScroll);
+                        if (scroll != 0)
+                        {
+                            pointer.pointer.position.Y -= scroll;
+                            updateContentScroll();
+                        }
+                    }
+                }
+                
 
                 this.needRefresh |= needRefresh;
             }

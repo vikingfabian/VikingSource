@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.GameObject
     class AllUnits
     {
         public static float AverageGroupStrength;
-        public const float HealthToStrengthConvertion = 0.5f;
+        public const float HealthToStrengthConvertion = 0.36f;
 
         AbsSoldierBuilder[] profiles = new AbsSoldierBuilder[(int)UnitType.NUM];
         //public CityDetailProfile city;
@@ -64,7 +64,19 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static float GroupStrengh(int soldierCount, ref SoldierData data, bool land)
         {
+            //int damage;
+            //if (land)
+            //{ 
+            
+            //}
+            //else
+            //{
+            //    crewCount = MathExt.Div_Ceiling(this.health, data.basehealth);
+
+            //}
+
             var raw = GroupStrengh_Raw(soldierCount, DPS(land? data.attackDamage : data.attackDamageSea, data.attackTimePlusCoolDown), data.basehealth);
+            
             return raw / AverageGroupStrength;
         }
 
@@ -154,6 +166,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             switch (filterType)
             {
+                case UnitFilterType.Settler:
+                    return SpriteName.WarsSettler;
                 case UnitFilterType.SharpStick:
                     return SpriteName.WarsUnitIcon_Folkman;
 
@@ -227,6 +241,7 @@ namespace VikingEngine.DSSWars.GameObject
 
     enum UnitFilterType
     { 
+        Settler,
         SharpStick,
         Sword,
         LongSword,

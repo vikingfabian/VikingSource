@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.GameObject
                     else
                     {
                         args.content.newLine();
-                        objects[i].toGroupHud(args.content);
+                        objects[i].toGroupHud(args);
                         if (i < objects.Count - 1)
                         {
                             args.content.Add(new RbSeperationLine());
@@ -254,6 +254,15 @@ namespace VikingEngine.DSSWars.GameObject
         public override int CollectionCount()
         {
             return armyGroups.Count + guardGroups.Count;
+        }
+
+        public override bool IsGuardGroup()
+        {
+            return guardGroups.Count > 0;
+        }
+        public override bool IsSoldiers()
+        {
+            return true;
         }
 
         public override string TypeName()

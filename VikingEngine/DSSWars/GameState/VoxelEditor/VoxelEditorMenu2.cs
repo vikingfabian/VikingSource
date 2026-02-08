@@ -50,6 +50,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         VoxelDesigner designer;
         public RichMenu menu;
         FileIndex fileIndex = null;
+        public string modelSearchFilter = null;
         public VoxelEditorMenu2(VoxelDesigner designer)
         { 
             this.designer = designer;
@@ -189,7 +190,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                     content.newLine();
                     content.Add(new RbText(DssRef.lang.Editor_Tool_PencilSize + ":", HudLib.TitleColor_Label));
                     content.Add(new RbTab(TabLength));
-                    RbDragButton.RbDragButtonGroup(content, new List<float> { 1 }, new DragButtonSettings(1, 17, 1), pencilSizeProperty);
+                    RbDragButton.RbDragButtonGroup(content, new List<float> { 1 }, new DragButtonSettings(1, 17, 1), pencilSizeProperty, false);
 
                     content.newLine();
                     content.Add(new RbText(DssRef.lang.Editor_Tool_SizeTolerance + ":", HudLib.TitleColor_Label));
@@ -204,22 +205,22 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                         content.newLine();
                         content.Add(new RbText(DssRef.lang.Editor_Tool_EdgeSize + ":", HudLib.TitleColor_Label));
                         content.Add(new RbTab(TabLength));
-                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1 }, new DragButtonSettings(0, 5, 1), RoadEdgeSizeProperty);
+                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1 }, new DragButtonSettings(0, 5, 1), RoadEdgeSizeProperty, false);
 
                         content.newLine();
                         content.Add(new RbText(DssRef.lang.Editor_Tool_PercentFill + ":", HudLib.TitleColor_Label));
                         content.Add(new RbTab(TabLength));
-                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 20 }, new DragButtonSettings(1, 100, 1), RoadPercentFillProperty);
+                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 20 }, new DragButtonSettings(1, 100, 1), RoadPercentFillProperty, false);
 
                         content.newLine();
                         content.Add(new RbText(DssRef.lang.Editor_Tool_ClearAbove + ":", HudLib.TitleColor_Label));
                         content.Add(new RbTab(TabLength));
-                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 10 }, new DragButtonSettings(0, 32, 1), RoadUpwardClearProperty);
+                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 10 }, new DragButtonSettings(0, 32, 1), RoadUpwardClearProperty, false);
 
                         content.newLine();
                         content.Add(new RbText(DssRef.lang.Editor_Tool_FillBelow + ":", HudLib.TitleColor_Label));
                         content.Add(new RbTab(TabLength));
-                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 10 }, new DragButtonSettings(0, 32, 1), RoadBelowFillProperty);
+                        RbDragButton.RbDragButtonGroup(content, new List<float> { 1, 10 }, new DragButtonSettings(0, 32, 1), RoadBelowFillProperty, false);
 
                     }
                     break;
@@ -293,7 +294,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameRemove) }, new RbAction(designer.RemoveCurrentFrame), new RbTooltip_Text(DssRef.lang.Editor_Animation_RemoveCurrentFrame), designer.voxelProject.HaveAnimation));
-            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameRemoveAll) }, new RbAction(designer.RemoveAllFramesButThis), new RbTooltip_Text(".remove all other frames"), designer.voxelProject.HaveAnimation));
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameRemoveAll) }, new RbAction(designer.RemoveAllFramesButThis), new RbTooltip_Text(DssRef.lang.Editor_Animation_RemoveAllFramesButThis), designer.voxelProject.HaveAnimation));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameAddCopy) }, new RbAction1Arg<bool>(designer.AddFrame, true), new RbTooltip_Text(DssRef.lang.Editor_Animation_AddFrameCopy)));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameAddEmpty) }, new RbAction1Arg<bool>(designer.AddFrame, false), new RbTooltip_Text(DssRef.lang.Editor_Animation_AddEmptyFrame)));
             
@@ -374,11 +375,21 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         public void beginEditName()
         {
-            new TextInput(designer.storage.saveFileName, NameEditEvent, null);
+            new TextInputState(designer.storage.saveFileName, NameEditEvent, null);
         }
         void NameEditEvent(string result, object tag)
         {
             designer.onFileNameChange(result, tag);
+            menu.needRefresh = true;
+        }
+        public void beginEditLayerName(int layer)
+        {
+            new TextInputState(designer.voxelProject.layers.list[layer].name, LayerNameEditEvent, layer);
+        }
+        void LayerNameEditEvent(string result, object tag)
+        {
+            int layer = (int)tag;
+            designer.voxelProject.layers.list[layer].name = result;
             menu.needRefresh = true;
         }
 
@@ -535,8 +546,10 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                      new RbAction1Arg<int>(toggleLayerVisible, layerIx, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.Editor_ToggleVisible)));
                 content.Add(new ArtOption(layerIx == designer.voxelProject.layers.selectedIndex, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.EditorLayer),
-                    new RbText(string.Format( DssRef.lang.Editor_LayerNumber, TextLib.IndexToString(layerIx))) },
+                    new RbText(layer.Name(layerIx)) },
                     new RbAction1Arg<int>(selectLayer, layerIx, RbSoundType.Option)));
+                content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.InterfaceTextInput) },
+                    new RbAction1Arg<int>(beginEditLayerName, layerIx), null));
                 content.Add(new ArtToggle(layer.animatedLayer, new List<AbsRichBoxMember> {  
                     new RbText(layer.animationFrames.Frames.Count.ToString()),
                     new RbImage(layer.animatedLayer? SpriteName.VoxelEditorAllFrames : SpriteName.VoxelEditorFrameLocked) },
@@ -1041,7 +1054,15 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         void updateMouseVisible()
         {
-            Input.Mouse.Visible = menu != null;
+            if (menu == null)
+            {
+                Input.Mouse.CenterLockAndHide();
+            }
+            else
+            {
+                Input.Mouse.View();
+            }
+            //Input.Mouse.Visible = menu != null;
         }
 
         override public bool InMenu { get { return menu != null; } }
@@ -1078,7 +1099,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             //--
             new Timer.AsynchActionTrigger(() => {
-                fileIndex = new FileIndex(DesignerStorage.VoxelProjectFolder,
+                fileIndex = new FileIndex(DesignerStorage.VoxelProjectFolder, false,
                     "*" + VoxelLib.VoxelProjectEnding, true, designer.Settings.SortSettings)
                 { 
                     projectType = true,
@@ -1109,13 +1130,18 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
                             if (path.Exists())
                             {
-                                using (FileStream stream = new FileStream(path.CompleteLocalPath(false), FileMode.Open))
+                                try
                                 {
-                                    var texture = Texture2D.FromStream(Draw.graphicsDeviceManager.GraphicsDevice, stream);
-                                    file.Tag = texture;
+                                    using (FileStream stream = new FileStream(path.CompleteLocalPath(false), FileMode.Open))
+                                    {
+                                        var texture = Texture2D.FromStream(Draw.graphicsDeviceManager.GraphicsDevice, stream);
+                                        file.Tag = texture;
 
-                                    menu_sp.needRefresh = true;
+                                        menu_sp.needRefresh = true;
+                                    }
                                 }
+                                catch
+                                { }
                             }
                             //VoxelObjGridDataAnimHD animationFrames = new VoxelObjGridDataAnimHD();
                             //BeginReadWrite.BinaryIO(false, path, null, animationFrames.ReadBinaryStream, null, false);
@@ -1170,7 +1196,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             //--
             new Timer.AsynchActionTrigger(()=> {
-                fileIndex = new FileIndex(userModels? DesignerStorage.VoxelModelFolder : LfLib.ModelsCategoryWars, 
+                fileIndex = new FileIndex(userModels? DesignerStorage.VoxelModelFolder : LfLib.ModelsCategoryWars, false, 
                     VoxelDesigner.searchPattern(false), userModels, designer.Settings.SortSettings);
                 
                 Ref.update.AddSyncAction(new SyncAction1Arg<bool>((userModels) =>
@@ -1252,39 +1278,73 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
             HudLib.returnButton(content, menu, true, closeMenu);
 
+            
+
+            if (Ref.update.textInput != null &&
+                    !Ref.update.textInput.Exiting)
+            {
+                content.Add(new RbButton(new List<AbsRichBoxMember> {
+                    new RbImage(SpriteName.cmdSpyglass),
+                    new RbSpace(),
+                    new RbText(Ref.update.textInput.DisplayText(), Color.Black), 
+                },
+                null) { overrideBgColor = Color.White, fillWidth = true });            
+            }
+            else
+            {
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdSpyglass) },
+                    new RbAction(() => { new SearchInput(this); }), new RbTooltip_Text(DssRef.lang.Hud_Search))
+                { overrideBgColor = Color.White });
+
+                if (!string.IsNullOrEmpty(modelSearchFilter))
+                {
+                    content.space();
+                    content.Add(new RbText(modelSearchFilter));
+
+                    content.space();
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_EndSessionIcon, HudLib.NotAvailableColor_Dark) },
+                        new RbAction(() => { modelSearchFilter = null; }), new RbTooltip_Text(DssRef.lang.Hud_Close)));
+                }
+            }
+
             content.Add(new RichBoxScale(1.2f));
 
             foreach (var file in fileIndex.Files)
             {
                 content.newLine();
 
-                AbsRichBoxMember previewImage;
-
-                if (file.Tag == null)
+                if (string.IsNullOrEmpty(modelSearchFilter) ||
+                    file.Name.ToLower().Contains(modelSearchFilter.ToLower()))
                 {
-                    previewImage = new RbImage(SpriteName.IconSandGlass);
-                }
-                else
-                { 
-                    previewImage = new RbTexture((Texture2D)file.Tag);
-                }
 
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
+                    AbsRichBoxMember previewImage;
+
+                    if (file.Tag == null)
+                    {
+                        previewImage = new RbImage(SpriteName.IconSandGlass);
+                    }
+                    else
+                    {
+                        previewImage = new RbTexture((Texture2D)file.Tag);
+                    }
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                             previewImage,
                             new RbSpace(),
                             new RbText(file.Name)
                         }, new RbAction4Arg<string, int, bool, bool>(loadUserModelLink, file.Name, listModels_0proj_1user_2retail, false, false),
-                new RbTooltip_Text(LoadContent.CheckCharsSafety(file.Date.ToString(), LoadedFont.Regular))));
+                    new RbTooltip_Text(LoadContent.CheckCharsSafety(file.Date.ToString(), LoadedFont.Regular))));
 
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.cmdSpyglass),
                         }, new RbAction4Arg<string, int, bool, bool>(loadUserModelLink, file.Name, listModels_0proj_1user_2retail, true, false),
-                new RbTooltip_Text(DssRef.lang.Editor_Preview)));
+                    new RbTooltip_Text(DssRef.lang.Editor_Preview)));
 
-                content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
                             new RbImage(SpriteName.cmdPlus),
                         }, new RbAction4Arg<string, int, bool, bool>(loadUserModelLink, file.Name, listModels_0proj_1user_2retail, false, true),
-                new RbTooltip_Text(DssRef.lang.Editor_CombineWithCurrent), false));
+                    new RbTooltip_Text(DssRef.lang.Editor_CombineWithCurrent), false));
+                }
             }
 
             menu.menuStack.Clear();
@@ -1350,15 +1410,15 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         }
 
 
-        int redProperty(bool set, int value)
+        int redProperty(object tag, bool set, int value)
         {
             return colorProperty(set, Dimensions.X, value);
         }
-        int greenProperty(bool set, int value)
+        int greenProperty(object tag, bool set, int value)
         {
             return colorProperty(set, Dimensions.Y, value);
         }
-        int blueProperty(bool set, int value)
+        int blueProperty(object tag, bool set, int value)
         {
             return colorProperty(set, Dimensions.Z, value);
         }
@@ -1372,34 +1432,34 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             return designer.SelectedMaterial.GetColor(dim);
         }
 
-        int pencilSizeProperty(bool set, int value)
+        int pencilSizeProperty(object tag, bool set, int value)
         {
             if (set) { designer.Settings.paintSettings.pencilSize = value; }
             return designer.Settings.paintSettings.pencilSize;
         }
 
-        float radiusToleranceProperty(bool set, float value)
+        float radiusToleranceProperty(object tag, bool set, float value)
         {
             if (set) { designer.Settings.paintSettings.radiusTolerance = value; }
             return designer.Settings.paintSettings.radiusTolerance;
         }
 
-        int RoadUpwardClearProperty(bool set, int value)
+        int RoadUpwardClearProperty(object tag, bool set, int value)
         {
             if (set) { designer.Settings.paintSettings.roadUpwardClear = value; }
             return designer.Settings.paintSettings.roadUpwardClear;
         }
-        int RoadBelowFillProperty(bool set, int value)
+        int RoadBelowFillProperty(object tag, bool set, int value)
         {
             if (set) { designer.Settings.paintSettings.roadBelowFill = value; }
             return designer.Settings.paintSettings.roadBelowFill;
         }
-        int RoadEdgeSizeProperty(bool set, int value)
+        int RoadEdgeSizeProperty(object tag, bool set, int value)
         {
             if (set) { designer.Settings.paintSettings.roadEdgeSize = value; }
             return designer.Settings.paintSettings.roadEdgeSize;
         }
-        int RoadPercentFillProperty(bool set, int value)
+        int RoadPercentFillProperty(object tag, bool set, int value)
         {
             if (set) { designer.Settings.paintSettings.roadPercentFill = value; }
             return designer.Settings.paintSettings.roadPercentFill;

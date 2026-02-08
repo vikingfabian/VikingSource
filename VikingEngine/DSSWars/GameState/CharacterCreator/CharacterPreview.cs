@@ -134,7 +134,17 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
             if (mouseDown)
             {
-                camera.TiltX += Input.Mouse.MoveDistance.X * 0.01f;
+                
+                if (Input.Keyboard.Shift)
+                {
+                    float move = Input.Mouse.MoveDistance.Y * -0.01f;
+                    camera.TiltY += move;
+                }
+                else
+                {
+                    float move = Input.Mouse.MoveDistance.X * 0.01f;
+                    camera.TiltX += move;
+                }
                 camera.RecalculateMatrices();
 
                 if (!Input.Mouse.IsButtonDown(MouseButton.Left))

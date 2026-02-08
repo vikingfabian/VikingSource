@@ -57,6 +57,8 @@ namespace VikingEngine.DSSWars.Map.Generate
         public bool cleanUpSingleTiles = false;
         public bool factionsOnMap = true;
 
+        public float percentageUnclaimed = 0.25f;
+
         public MapSettingsStorage storage;
 
         public MapGenerateSettings()
@@ -85,7 +87,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             return cleanUpSingleTiles;
         }
 
-        public int MapXProperty(bool set, int value)
+        public int MapXProperty(object tag, bool set, int value)
         {
             if (set)
             {
@@ -93,7 +95,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             }
             return customMapSize.X;
         }
-        public int MapYProperty(bool set, int value)
+        public int MapYProperty(object tag, bool set, int value)
         {
             if (set)
             {

@@ -25,7 +25,7 @@ namespace VikingEngine.DSSWars.Map
             factions = DssRef.world.factions.counter();
             model = new Graphics.VoxelModel(false);
             model.Effect = ModelEffect;
-            model.AddToRender(DrawGame.TerrainLayer);
+            model.AddToRender(DrawGame.MidLayer);
             model.Visible = false;
         }
 
@@ -70,7 +70,15 @@ namespace VikingEngine.DSSWars.Map
                                 var groups = armies.sel.groups.counter();
                                 while (groups.Next())
                                 {
-                                    var poly = Graphics.PolygonColor.QuadXZ(VectorExt.AddY(groups.sel.position, 0.02f),
+                                    Vector3 pos = groups.sel.position;
+                                    pos.Y += 0.02f;
+
+                                    if (pos.Y < Tile.UnitQuadMinY)
+                                    {
+                                        pos.Y = Tile.UnitQuadMinY;
+                                    }
+
+                                    var poly = Graphics.PolygonColor.QuadXZ(pos,
                                         new Vector2(groups.sel.groupRadius), groups.sel.rotation.radians,
                                         SpriteName.WhiteArea_LFtiles, Dir4.N,
                                         faction_sp.Color());

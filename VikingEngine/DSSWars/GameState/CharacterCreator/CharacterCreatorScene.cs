@@ -42,13 +42,14 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         ListCirkleCounter<FrameTime> autoAnimateCounter;
         Time autoAnimateTimer = new Time(2000);
         List<FrameTime> autoAnimate;
-
+        EditorBackground bg;
         public CharacterCreatorScene()
             : base()
         {
+            bg = new Interface.EditorBackground();
             openMenu();
 
-            new Interface.EditorBackground();
+            
 
             float backWidth = Engine.Screen.SafeArea.Width - menu.backgroundArea.Width;
             Vector2 previewSz = new Vector2(backWidth * 0.4f);
@@ -182,18 +183,33 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
             content.newLine();
             var weapons = ConscriptMenu.AllHandWeapons();
+
+            weaponOption(ItemResourceType.Settler);
+
             foreach (var wepArray in weapons)
             {
-                foreach (var weapon in wepArray)
+                foreach (ItemResourceType weapon in wepArray)
                 {
-                    var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
+                    weaponOption(weapon);
+                    //var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
+                    //    {
+                    //        new RbImage(ResourceLib.Icon(weapon))
+                    //    },
+                    //new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, RbSoundType.Option)
+                    //);
+                    //content.Add(button);
+                }
+            }
+
+            void weaponOption(ItemResourceType weapon)
+            {
+                var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
                         {
                             new RbImage(ResourceLib.Icon(weapon))
                         },
                     new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, RbSoundType.Option)
                     );
-                    content.Add(button);
-                }
+                content.Add(button);
             }
 
             content.newLine();
@@ -456,6 +472,12 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             //    new RbText("Add accessory")
             //}, new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Accessory, StackOption.Stack)));
             content.Add(new RbSeperationLine());
+
+            //DssRef.lang.Editor_Settings_BackgroundColor
+
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_Settings_BackgroundColor) },
+                bg.visibleProperty_inv));
+
             content.newParagraph();
             
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
@@ -507,7 +529,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             {
                 for (int i = 0; i < DssRef.storage.characterStorage.profiles.Count; ++i)
                 {
-                    flagOptions.AddSubOption(DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, false), i == DssRef.storage.characterStorage.selectedIx, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
+                    flagOptions.AddSubOption((DropDownOption)DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, false), i == DssRef.storage.characterStorage.selectedIx, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
                 }
                 flagOptions.menuCaption = DssRef.storage.characterStorage.Selected().RbButton(DssRef.storage.flagStorage.selectedIx, false);
                 
@@ -591,7 +613,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         //}
 
 
-        float ScaleProperty(bool set, float value)
+        float ScaleProperty(object tag, bool set, float value)
         {
             var profile = GetProfile();
             if (set) { 

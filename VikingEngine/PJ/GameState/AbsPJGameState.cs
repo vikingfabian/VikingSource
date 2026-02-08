@@ -171,7 +171,7 @@ namespace VikingEngine.PJ
                 }
                 closeMenu();
 
-                Input.Mouse.Visible = false;
+                Input.Mouse.Hide();//Input.Mouse.Visible = false;
             }
         }
 
@@ -191,7 +191,7 @@ namespace VikingEngine.PJ
                     Ref.isPaused = true;
                 }
 
-                Input.Mouse.Visible = true;
+                Input.Mouse.View();//Input.Mouse.Hide();//Input.Mouse.Visible = true;
             }
         }
 

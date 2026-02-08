@@ -106,7 +106,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         override public void Time_Update(float time)
         {
             base.Time_Update(time);
-            //switch (state_0Hold_1Save_2meta_3Done)
+
             if (StartupSettings.Saves)
             {
 
@@ -118,8 +118,11 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                             //Begin save
                             state_0Hold_1Save_2meta_3Done++;
                             meta = new SaveStateMeta(autoSave);
+                            meta.storageSetup();
                             saveGamestate = new SaveGamestate(meta);
                             saveGamestate.save();
+
+                            DssRef.storage.Save(null);
                         }
                         break;
                     case 1:

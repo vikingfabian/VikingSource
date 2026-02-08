@@ -22,7 +22,21 @@ namespace VikingEngine.DSSWars.Map
             this.editAmount = editAmount;
             this.editCollection = editCollection;
         }
-               
+
+        public void SubmitOrExecute()
+        {
+            if (DssRef.state != null)
+            {
+                Submit();
+            }
+            else
+            {
+                //During map generating
+                ExecuteEdit();
+            }
+        }
+
+
         public void Submit()
         { 
             DssRef.state.resources.editSubTiles.Enqueue(this);
@@ -36,7 +50,7 @@ namespace VikingEngine.DSSWars.Map
                 subTile.mainTerrain = value.mainTerrain;
                 subTile.subTerrain = value.subTerrain;
 
-                if (DssRef.state.culling.insidePlayerAttension_sub(position))
+                if (DssRef.state != null && DssRef.state.culling.insidePlayerAttension_sub(position))
                 {
                     DssRef.world.tileGrid.GetRef(WP.SubtileToTilePos(position)).subtileVisualEdits++;
                 }

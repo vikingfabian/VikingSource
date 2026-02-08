@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Presentation;
@@ -23,9 +23,12 @@ namespace VikingEngine.DSSWars.Presentation
                 LanguageType.Spanish,
                 LanguageType.Portuguese,
                 LanguageType.Italian,
+                LanguageType.Polish,
                 LanguageType.Turkish,
                 LanguageType.Russian,
                 LanguageType.Chinese,
+                LanguageType.Thai,
+                LanguageType.Korean,
                 LanguageType.Japanese,              
                 
             };
@@ -35,17 +38,30 @@ namespace VikingEngine.DSSWars.Presentation
         {
             switch (language)
             {
+                default:
+#if DEBUG
+                    throw new NotImplementedException();
+#endif
                 case LanguageType.English:
                     return SpriteName.LangButton_English;
 
                 case LanguageType.German:
                     return SpriteName.LangButton_German;
 
+                case LanguageType.Polish:
+                    return SpriteName.LangButton_Polish;
+
                 case LanguageType.Chinese:
                     return SpriteName.LangButton_Chinese;
 
                 case LanguageType.Japanese:
                     return SpriteName.LangButton_Japanese;
+
+                case LanguageType.Thai:
+                    return SpriteName.LangButton_Thai;
+
+                case LanguageType.Korean:
+                    return SpriteName.LangButton_Korean;
 
                 case LanguageType.Russian:
                     return SpriteName.LangButton_Russian;
@@ -65,8 +81,8 @@ namespace VikingEngine.DSSWars.Presentation
                 case LanguageType.Turkish:
                     return SpriteName.LangButton_Turkish;
 
-                default:
-                    throw new NotImplementedException();
+                //default:
+                //    throw new NotImplementedException();
             }
         }
 
@@ -126,9 +142,37 @@ namespace VikingEngine.DSSWars.Presentation
                     }
                     break;
 
+                case LanguageType.Korean:
+                    DssRef.lang = new Korean();
+                    Ref.langOpt = new OptionsLanguage_Korean();
+                    LoadContent.setFontLanguage(FontLanguage.Korean);
+
+                    if (onChange)
+                    {
+                        Ref.gamesett.UiScale = Math.Max(Ref.gamesett.UiScale, 1.2f);
+                    }
+                    break;
+
+                case LanguageType.Thai:
+                    DssRef.lang = new Thai();
+                    Ref.langOpt = new OptionsLanguage_Thai();
+                    LoadContent.setFontLanguage(FontLanguage.Thai);
+
+                    if (onChange)
+                    {
+                        Ref.gamesett.UiScale = Math.Max(Ref.gamesett.UiScale, 1.1f);
+                    }
+                    break;
+
                 case LanguageType.German:
                     DssRef.lang = new German();
                     Ref.langOpt = new OptionsLanguage_German();
+                    LoadContent.setFontLanguage(FontLanguage.Western);
+                    break;
+
+                case LanguageType.Polish:
+                    DssRef.lang = new Polish();
+                    Ref.langOpt = new OptionsLanguage_Polish();
                     LoadContent.setFontLanguage(FontLanguage.Western);
                     break;
 

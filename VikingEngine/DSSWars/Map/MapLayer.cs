@@ -12,14 +12,14 @@ namespace VikingEngine.DSSWars.Map
     
     class MapLayerManager
     {
-        public static readonly float SelectUnitZoomIn = FactionZoom.Min - 0.4f;
+        //public static readonly float SelectUnitZoomIn = FactionZoom.Min - 0.4f;
         public static MapLayerManager[] CameraIndexToView;        
 
         List2<MapLayer> layers;
         public MapLayer current;
         public MapLayer prevLayer;
 
-        public static readonly IntervalF FullZoomRange = new IntervalF(0.05f, 2500);
+        public static readonly IntervalF FullZoomRange = new IntervalF(1.5f, 2500);
         public static IntervalF MidToDetailZoomRange;
 
         public const float OverviewZoomStart = 80f;
@@ -32,9 +32,9 @@ namespace VikingEngine.DSSWars.Map
         public const float NormalCamAngle = 0.78f;
         const float OverviewCamAngle = 0.65f;
 
-        static readonly IntervalF DetailZoom = new IntervalF(2f, 4f) + FullZoomRange.Min;
-        static readonly IntervalF OverviewZoom = new IntervalF(OverviewZoomStart - 2f, OverviewZoomStart);
-        static readonly IntervalF FactionZoom = new IntervalF(-1.5f, 0f) + UnitMaxZoom;
+        //static readonly IntervalF DetailZoom = new IntervalF(2f, 4f) + FullZoomRange.Min;
+        //static readonly IntervalF OverviewZoom = new IntervalF(OverviewZoomStart - 2f, OverviewZoomStart);
+        //static readonly IntervalF FactionZoom = new IntervalF(-1.5f, 0f) + UnitMaxZoom;
 
         
         Engine.PlayerData player;
@@ -49,12 +49,36 @@ namespace VikingEngine.DSSWars.Map
         {
             this.player = player;
 
+            refreshLayers();
+
+            updateCamIndex();
+            new AsynchUpdateable(asynchUpdate, "Units cam culling, " + player.localPlayerIndex.ToString(), player.localPlayerIndex);
+            
+        }
+
+        public void refreshLayers()
+        {
             layers = new List2<MapLayer>((int)MapDetailLayerType.NUM);
             {
                 float zoomBuffer = FullZoomRange.Difference * 0.0025f;
 
                 float minZoom = FullZoomRange.Min;
-                float maxZoom = 40;//FullZoomRange.GetFromPercent(0.08f);
+
+                float maxZoom;// = Ref.gamesett.farViewDistance? 38 : 26;
+
+                switch (Ref.gamesett.farViewDistance)
+                {
+                    default:
+                        maxZoom = 38;
+                        break;
+                    case ThreeOptions.Medium:
+                        maxZoom = 26;
+                        break;
+                    case ThreeOptions.Low:
+                        maxZoom = 14;
+                        break;
+
+                }
 
                 layers.Add(new MapLayer(MapDetailLayerType.UnitDetail1, minZoom, maxZoom, zoomBuffer));
 
@@ -77,11 +101,8 @@ namespace VikingEngine.DSSWars.Map
             }
 
             setNewLayer();
-
-            updateCamIndex();
-            new AsynchUpdateable(asynchUpdate, "Units cam culling, " + player.localPlayerIndex.ToString(), player.localPlayerIndex);
-            
         }
+
         public bool DoUpdateDetailLayer()
         {
             //Debug.Log(mapLayersManager.ToString());
@@ -144,11 +165,26 @@ namespace VikingEngine.DSSWars.Map
         {
             if (prevLayer != null)
             {
-                prevLayer.opacity -= 3f * Ref.DeltaTimeSec;
-                if (prevLayer.opacity <= 0.2f)
+                prevLayer.fadeDelay -= 3f * Ref.DeltaTimeSec;
+
+                if (prevLayer.fadeDelay <= 0)
                 {
-                    prevLayer.opacity = 0;
-                    prevLayer = null;
+                    if (Ref.gamesett.fadeMapLayers)
+                    {
+                        prevLayer.opacity -= 3f * Ref.DeltaTimeSec;
+
+                        if (prevLayer.opacity <= 0.2f)
+                        {
+                            prevLayer.opacity = 0;
+                            prevLayer = null;
+                        }
+                    }
+                    else
+                    {
+
+                        prevLayer = null;
+
+                    }
                 }
             }
 
@@ -192,6 +228,11 @@ namespace VikingEngine.DSSWars.Map
         {
             return $"Current: {current}, prev {prevLayer}";
         }
+
+        public MapLayer GetLayer(MapDetailLayerType layerType)
+        {
+            return layers[(int)layerType];
+        }
     }
 
     class MapLayer
@@ -208,6 +249,7 @@ namespace VikingEngine.DSSWars.Map
         public IntervalF zoom;
 
         public float opacity = 1f;
+        public float fadeDelay = 1f;
 
         public MapDetailLayerType type;
 

@@ -100,6 +100,7 @@ namespace VikingEngine.DSSWars.Players
                                     case TerrainMainType.Building:
                                         switch ((TerrainBuildingType)subTile.subTerrain)
                                         {
+                                            case Map.TerrainBuildingType.CityHall_Tent:
                                             case Map.TerrainBuildingType.CityHall_Village:
                                             case Map.TerrainBuildingType.CityHall_Town:
                                             case Map.TerrainBuildingType.CityHall_Capital:
@@ -114,6 +115,11 @@ namespace VikingEngine.DSSWars.Players
                                             case Map.TerrainBuildingType.RecruitmentLevel2:
                                             case Map.TerrainBuildingType.RecruitmentLevel3:
                                                 selectTileResult = SelectTileResult.Recruitment;
+                                                break;
+                                            case Map.TerrainBuildingType.GoldDeliveryLevel1:
+                                            case Map.TerrainBuildingType.GoldDeliveryLevel2:
+                                            case Map.TerrainBuildingType.GoldDeliveryLevel3:
+                                                selectTileResult = SelectTileResult.GoldDeliver;
                                                 break;
 
                                             case Map.TerrainBuildingType.SoldierBarracks:
@@ -268,7 +274,7 @@ namespace VikingEngine.DSSWars.Players
                     
                         if (city.GetPlayer() == player || DssRef.difficulty.GodPowers())
                         {
-                            if (subTilePos != city.cityStorageCenter && subTilePos != city.cityHallSubtilePos) //center tile is protected
+                            if (subTilePos != city.citySquareSubtilePos && subTilePos != city.cityHallSubtilePos) //center tile is protected
                             {
                                 var buildingType = BuildLib.GetType(subTile.mainTerrain, subTile.subTerrain);
                                 if (buildingType != BuildAndExpandType.NUM_NONE)
@@ -327,6 +333,7 @@ namespace VikingEngine.DSSWars.Players
         CityHall,
         Postal,
         Recruitment,
+        GoldDeliver,
         Conscript,
         School,
         ResearchCenter,

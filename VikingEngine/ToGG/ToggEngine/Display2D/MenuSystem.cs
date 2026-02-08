@@ -199,7 +199,7 @@ namespace VikingEngine.ToGG
                     //new GuiTextButton("*Reset progress*", "Will remove all progress", lib.Combine(cmdRef.storage.debugResetProgress, resetGameAndSave), false, layout);
                 }
                 new GuiLabel("*There is currently no Sound or Music", layout);
-                Ref.gamesett.optionsMenu(layout);
+                //Ref.gamesett.optionsMenu(layout);
                 if (Ref.gamesett.bannedPeers.HasMembers)
                 {
                     new GuiTextButton("Banned players", null, listBlockedPlayers, true, layout);
@@ -424,8 +424,8 @@ namespace VikingEngine.ToGG
         void hitChanceLabel(string attackType, float hit, float retreat, GuiLayout layout)
         {
             new GuiLabel("Basic " + attackType + " attack: " +
-                        TextLib.PercentText(hit) + " Hit, " +
-                        TextLib.PercentText(retreat) + " Retreat chance", true, layout.gui.style.textFormat, layout); 
+                        TextLib.PercentTextWithSymbol(hit) + " Hit, " +
+                        TextLib.PercentTextWithSymbol(retreat) + " Retreat chance", true, layout.gui.style.textFormat, layout); 
         }
 
         void ListTerrainMenu()

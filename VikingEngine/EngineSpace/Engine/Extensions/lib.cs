@@ -992,8 +992,11 @@ namespace VikingEngine
         public static Vector2 AngleToV2(float angle, float lenght)
         {
             Vector2 direction = Vector2.Zero;
-            direction.X = (float)(Math.Sin(angle) * lenght);
-            direction.Y = (float)(Math.Cos(angle) * -lenght);
+            if (lenght != 0)
+            {
+                direction.X = (float)(Math.Sin(angle) * lenght);
+                direction.Y = (float)(Math.Cos(angle) * -lenght);
+            }
             return direction;
         }
         public static float V2ToAngle(Vector2 direction)
@@ -1632,6 +1635,15 @@ namespace VikingEngine
         {
             a1 += a2;
             return a1;
+        }
+
+        public static bool EqualToAny<T>(T value, T compare1, T compare2)
+        { 
+            return value.Equals(compare1) || value.Equals(compare2);
+        }
+        public static bool EqualToAny<T>(T value, T compare1, T compare2, T compare3)
+        {
+            return value.Equals(compare1) || value.Equals(compare2) || value.Equals(compare3);
         }
     }
 }

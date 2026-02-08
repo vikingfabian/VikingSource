@@ -65,7 +65,7 @@ namespace VikingEngine.ToGG.ToggEngine.Map
     {
         public override string Name => "Damaging";
 
-        public override string Desc => TextLib.PercentText(toggLib.DamagingTerrainHitChance) + 
+        public override string Desc => TextLib.PercentTextWithSymbol(toggLib.DamagingTerrainHitChance) + 
             " chance to take one hit each time a unit move to this square";
 
         public override TerrainPropertyType Type => TerrainPropertyType.Damageing;

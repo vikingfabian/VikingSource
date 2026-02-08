@@ -27,10 +27,10 @@ namespace VikingEngine.DSSWars.Players
 
     partial class AbsPlayer
     {
-        static readonly AutoWeaponOption[] ConscriptWeaponPrioOrder =
+        protected static readonly AutoWeaponOption[] ConscriptWeaponPrioOrder =
         {
-            new AutoWeaponOption(ItemResourceType.MithrilSword, true, BuildAndExpandType.KnightsBarracks),
-            new AutoWeaponOption( ItemResourceType.MithrilBow,false, BuildAndExpandType.KnightsBarracks),
+             new AutoWeaponOption(ItemResourceType.MithrilSword, true, BuildAndExpandType.KnightsBarracks),
+             new AutoWeaponOption(ItemResourceType.MithrilBow,false, BuildAndExpandType.KnightsBarracks),
              new AutoWeaponOption(ItemResourceType.KnightsLance,true, BuildAndExpandType.KnightsBarracks),
              new AutoWeaponOption(ItemResourceType.TwoHandSword,true, BuildAndExpandType.KnightsBarracks),
              new AutoWeaponOption(ItemResourceType.Warhammer,true, BuildAndExpandType.KnightsBarracks),
@@ -40,27 +40,29 @@ namespace VikingEngine.DSSWars.Players
 
              new AutoWeaponOption(ItemResourceType.Blunderbuss,true, BuildAndExpandType.GunBarracks),
              new AutoWeaponOption(ItemResourceType.Rifle,false, BuildAndExpandType.GunBarracks),
-            new AutoWeaponOption( ItemResourceType.HandCulverin,true, BuildAndExpandType.GunBarracks),
+             new AutoWeaponOption(ItemResourceType.HandCulverin,true, BuildAndExpandType.GunBarracks),
              new AutoWeaponOption(ItemResourceType.HandCannon,false, BuildAndExpandType.GunBarracks),
              new AutoWeaponOption(ItemResourceType.Crossbow,false, BuildAndExpandType.ArcherBarracks),
+             new AutoWeaponOption(ItemResourceType.LongBow,false, BuildAndExpandType.ArcherBarracks),
 
              new AutoWeaponOption(ItemResourceType.ManCannonIron,false, BuildAndExpandType.CannonBarracks),
              new AutoWeaponOption(ItemResourceType.ManCannonBronze,false, BuildAndExpandType.CannonBarracks),
              new AutoWeaponOption(ItemResourceType.SiegeCannonIron,false, BuildAndExpandType.CannonBarracks),
              new AutoWeaponOption(ItemResourceType.SiegeCannonIron,false, BuildAndExpandType.CannonBarracks),
              new AutoWeaponOption(ItemResourceType.Catapult,false, BuildAndExpandType.WarmachineBarracks),
-             new AutoWeaponOption(ItemResourceType.Ballista,false, BuildAndExpandType.WarmachineBarracks),
-
-             new AutoWeaponOption(ItemResourceType.LongBow,false, BuildAndExpandType.ArcherBarracks),
              new AutoWeaponOption(ItemResourceType.Manuballista,false, BuildAndExpandType.WarmachineBarracks),
+             
              new AutoWeaponOption(ItemResourceType.ShortSword,true, BuildAndExpandType.SoldierBarracks),
              new AutoWeaponOption(ItemResourceType.BronzeSword,true, BuildAndExpandType.SoldierBarracks),
              new AutoWeaponOption(ItemResourceType.ThrowingSpear,true, BuildAndExpandType.ArcherBarracks),
              new AutoWeaponOption(ItemResourceType.Bow,false, BuildAndExpandType.ArcherBarracks),
-            new AutoWeaponOption( ItemResourceType.SharpStick,true, BuildAndExpandType.SoldierBarracks),
+             new AutoWeaponOption(ItemResourceType.Ballista,false, BuildAndExpandType.WarmachineBarracks),
+
+             new AutoWeaponOption( ItemResourceType.SlingShot,false, BuildAndExpandType.ArcherBarracks),
+             new AutoWeaponOption( ItemResourceType.SharpStick,true, BuildAndExpandType.SoldierBarracks),
         };
 
-        static readonly ItemResourceType[] conscriptArmorPrioOrder =
+        protected static readonly ItemResourceType[] conscriptArmorPrioOrder =
         {
             ItemResourceType.MithrilArmor,
             ItemResourceType.FullPlateArmor,
@@ -74,21 +76,24 @@ namespace VikingEngine.DSSWars.Players
 
        
 
-        int setupConscriptAi_async(City city, bool aggresive, out ConscriptProfile profile, out int manCount, out int unitCount)
+        void setupConscriptAi_async(City city, bool aggresive, out ConscriptProfile profile, out BuildAndExpandType barracksType, out int barracksCount, out int manCount, out int unitCount)
         {
-            if (city.myIndex == 500)
-            {
-                lib.DoNothing();
-            }
+            //if (city.myIndex == 500)
+            //{
+            //    lib.DoNothing();
+            //}
 
             bool guard = false;
-            if (!aggresive && city.AvailableGuardHousing() >= DssConst.SoldierGroup_GuardCount)
+
+            int minGuardCount = 2 + (int)city.cityType * 2;
+
+            if ((!aggresive || city.groups.Count < minGuardCount) && city.AvailableGuardHousing() >= DssConst.SoldierGroup_GuardCount)
             {
                 lock (city.defenceBuildings.array)
                 {
                     for (int i = 0; i < city.defenceBuildings.Count; i++)
                     {
-                        if (city.defenceBuildings[i].AvailableForAutoAssign())
+                        if (city.defenceBuildings[i].AvailableForAutoAssign(city, IsBot()))
                         {
                             guard = true;
                             break;
@@ -99,8 +104,10 @@ namespace VikingEngine.DSSWars.Players
 
             manCount = 0;
             unitCount = 0;
+            barracksCount = 0;
+            barracksType = BuildAndExpandType.NUM_NONE;
 
-            if (AutoConscriptLib.HasEnoughFood(city) &&
+            if (AutoConscriptLib.HasEnoughFoodAndGold(faction, city, guard, aggresive) &&
                 city.conscriptBuildings.Count > 0)
             {
                 AutoWeaponOption weapon = new AutoWeaponOption(ItemResourceType.NONE, false, BuildAndExpandType.SoldierBarracks);
@@ -137,7 +144,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     //Item is too low quality
                     profile = ConscriptProfile.Empty;
-                    return 0;
+                    return;
                 }
 
                 profile = new ConscriptProfile()
@@ -148,14 +155,15 @@ namespace VikingEngine.DSSWars.Players
                     specialization = guard? SpecializationType.CityGuard : SpecializationType.None,
                 };
 
-                
+                barracksType = weapon.barracks;
+
                 lock (city.conscriptBuildings)
                 {
-                    for (int i = 0; i < city.conscriptBuildings.Count; ++i)//each (var c in city.conscriptBuildings)
+                    for (int i = 0; i < city.conscriptBuildings.Count; ++i)
                     {
                         if (city.conscriptBuildings[i].type == weapon.barracks)
                         {
-                            ++manCount;
+                            ++barracksCount;
                             var conscript = city.conscriptBuildings[i];
                             conscript.profile = profile;
                             city.conscriptBuildings[i] = conscript;
@@ -168,18 +176,66 @@ namespace VikingEngine.DSSWars.Players
             {
                 profile = new ConscriptProfile();
             }
-
-            return manCount;
         }
 
-        virtual protected bool buySoldiers(City city, bool aggresive, bool commit)
+        protected bool buySoldiersBalanceCheck_asynch(City city, bool aggresive, double overrideChance, out bool guardOnly)
         {
-            if (!aggresive && !AutoConscriptLib.HasEnoughMen(city))//city.workForce.amount < city.HousingCount_Workers - DssConst.SoldierGroup_DefaultCount)
+            guardOnly = false;
+
+            if (!Ref.rnd.Chance(overrideChance))
+            {
+                if (aggressionLevel == AggressionLevel0_Passive)
+                {
+                    guardOnly = true;
+                }
+                else
+                {
+                    float multiply = 0.2f + 0.3f * aggressionLevel;
+                    if (aggresive)
+                    {
+                        multiply += 0.5f;
+                    }
+
+                    int maxCount = Convert.ToInt32(city.workForce.amount * multiply);
+
+                    var armiesC = faction.armies.counter();
+                    while (armiesC.Next())
+                    {
+                        if (DssRef.world.tileGrid.Get(armiesC.sel.tilePos).CityIndex == city.myIndex)
+                        {
+                            maxCount -= armiesC.sel.soldiersCount;
+                            if (maxCount < 0)
+                            {
+                               guardOnly = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return buySoldiers(city, aggresive, guardOnly, false);
+        }
+
+        virtual protected bool buySoldiers(City city, bool aggresive, bool guardOnly, bool commit)
+        {
+            
+            if (!aggresive && !AutoConscriptLib.HasEnoughMen(city))
             {
                 return false;
             }
 
-            int barracksCount = setupConscriptAi_async(city, aggresive, out ConscriptProfile profile, out int manCount, out int unitCount);
+            if (city.factionIndex != faction.myIndex)
+            {
+                return false;
+            }
+
+            setupConscriptAi_async(city, aggresive, out ConscriptProfile profile, out BuildAndExpandType barracksType, out int barracksCount, out int manCount, out int unitCount);
+
+            if (guardOnly && profile.specialization != SpecializationType.CityGuard)
+            {
+                return false;
+            }
+
            
             if (profile.weapon == ItemResourceType.NONE ||
                 barracksCount == 0)
@@ -243,7 +299,7 @@ namespace VikingEngine.DSSWars.Players
                 
                 city.conscriptArmy(profile, city.defaultConscriptPos(), get);
 
-                city.nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic / barracksCount);
+                city.nextAutoConscriptTime.setTimeFromNow(ConscriptProfile.TrainingTime(profile.training, barracksType) / barracksCount);
             }
 
             return get > 0;

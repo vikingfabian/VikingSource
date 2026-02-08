@@ -7,7 +7,7 @@ namespace VikingEngine.PJ.SpaceWar
     {
         public Draw()
         {
-            horizontalSplit = false;
+            //horizontalSplit = false;
         }
 
         protected override void drawEvent()

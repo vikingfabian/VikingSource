@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.PJ.Joust;
@@ -36,12 +36,12 @@ namespace VikingEngine.DSSWars.Map.Generate
         WorldDataStorage storage;
         protected LoadingState loadingState = 0;
         bool abort = false;
-        GenerateMap dataGenerate = null;
+        public GenerateMap dataGenerate = null;
         GenerateMap postGenerate;
         int failCount = 0;
         bool generateSuccess =false;
         CancellationTokenSource tokenSource;
-        SaveStateMeta loadMeta;
+        public SaveStateMeta loadMeta;
         public MapGenerateSettings generateSettings = new MapGenerateSettings();
 
         public MapBackgroundLoading()
@@ -62,11 +62,12 @@ namespace VikingEngine.DSSWars.Map.Generate
             if (loadMeta != null)
             {
                 DssRef.storage.generateNewMaps = loadMeta.worldmeta.IsGenerated;
-                DssRef.storage.mapSize = loadMeta.worldmeta.mapSize;
+                DssRef.storage.gameRuleset.mapSize = loadMeta.worldmeta.mapSize;
             }
 
             if (GenerateNewMap())
             {
+
                 loadingState = LoadingState.StorageDone;
                 generateLoopUntilSuccess(loadMeta, GenerateMapPass.All, false);
             }
@@ -78,7 +79,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                 if (loadMeta == null)
                 {
-                    worldMeta = new WorldMetaData(0, DssRef.storage.mapSize, loadingNumber);
+                    worldMeta = new WorldMetaData(0, DssRef.storage.gameRuleset.mapSize, loadingNumber);
                 }
                 else
                 {
@@ -90,7 +91,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
                 if (StartupSettings.SaveLoadSpecificMap.HasValue)
                 {
-                    DssRef.storage.mapSize = StartupSettings.SaveLoadSpecificMap.Value;
+                    DssRef.storage.gameRuleset.mapSize = StartupSettings.SaveLoadSpecificMap.Value;
                     loadingNumber = 1;
                 }
                 storage.loadMap(worldMeta);
@@ -136,7 +137,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         }
                         else
                         {
-                            worldmeta = new WorldMetaData(Ref.rnd.Ushort(), DssRef.storage.mapSize, -1);
+                            worldmeta = new WorldMetaData(Ref.rnd.Ushort(), DssRef.storage.gameRuleset.mapSize, -1);
                             worldmeta.customEditorMap = customEditorMap;
                             seed = Ref.rnd.Ushort();
                         }
@@ -145,7 +146,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         if (generatePass == GenerateMapPass.All)
                         {
                             List<Task> tasks = new List<Task>();
-                            success = dataGenerate.Generate(false, worldmeta, generateSettings, tasks);
+                            success = dataGenerate.Generate(false, worldmeta, generateSettings, tasks).Result;
                             await Task.WhenAll(tasks);
                         }
                         else
@@ -218,13 +219,17 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                 if (loadingState <= LoadingState.StorageDone)
                 {
-                    loadingState = LoadingState.Post1Started;
-                    postGenerate = new Map.Generate.GenerateMap();
-                    postGenerate.postLoadGenerate_Part1(dataGenerate.world);
+                    //TODO WHY NULL
+                    if (dataGenerate != null)
+                    {
+                        loadingState = LoadingState.Post1Started;
+                        //postGenerate = new Map.Generate.GenerateMap();
+                        //postGenerate.generateSubTiles(dataGenerate.world);
+                    }
                 }
                 else if (loadingState == LoadingState.Post1Started)
                 {
-                    if (postGenerate.postComplete)
+                    //if (postGenerate.postComplete)
                     {
                         loadingState = LoadingState.Post2Started;
                         postGenerate = new Map.Generate.GenerateMap();

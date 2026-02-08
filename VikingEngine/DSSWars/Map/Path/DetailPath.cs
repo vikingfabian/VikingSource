@@ -101,7 +101,11 @@ namespace VikingEngine.DSSWars.Map.Path
             * 3.Varje kollad center ruta ska till en sluten lista
             * 4.Varje ny ruta ska till en öppen lista
             */
-            if (center == goal)
+            if (center == goal ||
+                !DssRef.world.subTileGrid.InBounds(center) ||
+                !DssRef.world.subTileGrid.InBounds(goal) ||
+                center.X <= 0 ||
+                (goal - center).SideLength() >= MaxTileRadius)
             {
                 return null;
             }
@@ -119,8 +123,20 @@ namespace VikingEngine.DSSWars.Map.Path
                 DetailPathNode startNode = new DetailPathNode(center, conv.ToDir8_INT(startDir), startAsShip);
                 {
                     IntVector2 gridPos = center - area.pos;
+#if DEBUG
+                try
+                {
+#endif
+
                     nodeGrid[gridPos.X, gridPos.Y] = startNode;
-                    nodeUseTopLeft = gridPos;
+#if DEBUG
+                }
+                catch (Exception ex)
+                {
+                    lib.DoNothing();
+                }
+#endif
+                        nodeUseTopLeft = gridPos;
                     nodeUseBottomRight = gridPos;
                 }
                 //bool endAsShip = DssRef.world.subTileGrid.Get(goal).IsWater();
@@ -277,7 +293,7 @@ namespace VikingEngine.DSSWars.Map.Path
         public IntVector2 goal;
         public List<DetailPathNodeResult> nodes = new List<DetailPathNodeResult>(64);
         public bool blockedPath;
-        public int timeStamp;
+        public double timeStamp;
         public void recycle()
         { 
             nodes.Clear();

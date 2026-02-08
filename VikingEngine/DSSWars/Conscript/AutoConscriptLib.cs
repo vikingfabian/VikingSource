@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
+using Microsoft.Xna.Framework.Content;
 
 namespace VikingEngine.DSSWars.Conscript
 {
@@ -122,22 +123,104 @@ namespace VikingEngine.DSSWars.Conscript
             return city.workForce.amount < city.HousingCount_Workers - DssConst.SoldierGroup_DefaultCount;
         }
 
-        public static bool HasEnoughFood(City city)
+        public static bool HasEnoughFoodAndGold(Faction faction, City city, bool guard, bool aggresive)
         {
-            switch (city.warAutoQuality)
+            if (faction.GetGold(city) > DssConst.Gold_RichStatus)
             {
-                default:
-                    return city.res_food.amount > 20;
-                case WarAutoQuality.Medium:
-                    return city.res_food.amount > 50;
-                case WarAutoQuality.High:
-                    return city.res_food.amount > city.res_food.goalBuffer / 2;
+                //Too rich to care
+                return true;
+            }
+               
+
+            if (guard)
+            {
+                if (DssRef.storage.gameRuleset.centralGold)
+                {
+                    return faction.money.copper > 0 && (aggresive || faction.GoldSecDiff() > -(DssConst.UpkeepPerGuard_copp * Money.CopperToGold * 50));
+                }
+                else
+                {
+                    return city.money.GetGold() > 0 && (aggresive || city.previousIncome_copp > -(DssConst.UpkeepPerGuard_copp * 10));
+                }
+            }
+            else
+            {
+                var res_food = city.GetRefGroupedResource(EntityComponent.CityResoureIndex.food);
+
+                if (aggresive || res_food.changeRate.Change > -20)
+                {
+                    switch (city.warAutoQuality)
+                    {
+                        default:
+                            return res_food.amount > 50;
+                        case WarAutoQuality.Medium:
+                            return res_food.amount > 200;
+                        case WarAutoQuality.High:
+                            return res_food.amount > res_food.stockPileLimit / 2;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 
         public static void WorkPriority(City city, ref WorkTemplate workTemplate)
         {
-            if (city.warAutoQuality >= WarAutoQuality.Medium)
+            int weaponPrio = city.automationFocus == AutomationFocus.Military ? 2 : 1;
+
+            int lowQuality = weaponPrio;
+            int mediumQuality = weaponPrio;
+
+            int gunPrio = weaponPrio;
+            int meleePrio = weaponPrio;
+            int rangedPrio = weaponPrio;
+            int warmashinePrio = weaponPrio;
+
+            if (city.automationFocus == AutomationFocus.Military)
+            {
+                if (city.warAutoWeaponType != WarAutoWeaponType.Mix)
+                {
+
+                    switch (city.warAutoWeaponType)
+                    {
+                        case WarAutoWeaponType.Melee:
+
+                            //workTemplate.craft_blackpowder.set(0);
+                            //workTemplate.craft_gunpowder.set(0);
+                            //workTemplate.craft_bullet.set(0);
+                            gunPrio = 0;
+                            rangedPrio = 0;
+                            warmashinePrio = 0;
+                            //setRanged(ref workTemplate);
+                            //setWarmachines(ref workTemplate);
+                            break;
+
+                        case WarAutoWeaponType.Ranged:
+                            meleePrio = 0;
+                            warmashinePrio = 0;
+                            //setMelee(ref workTemplate);
+                            //setWarmachines(ref workTemplate);
+                            break;
+                        case WarAutoWeaponType.Warmachine:
+                            meleePrio = 0;
+                            rangedPrio = 0;
+                            //setMelee(ref workTemplate);
+                            //setRanged(ref workTemplate);
+                            break;
+                    }
+                }
+            }
+
+            setGunPowder(ref workTemplate, gunPrio);
+            setMelee(ref workTemplate, meleePrio);
+            setRanged(ref workTemplate, rangedPrio);
+            setWarmachines(ref workTemplate, warmashinePrio);
+
+
+            if (city.automationFocus == AutomationFocus.Military &&
+                city.warAutoQuality >= WarAutoQuality.Medium)
             {
                 workTemplate.craft_slingshot.set(0);
                 workTemplate.craft_sharpstick.set(0);
@@ -147,76 +230,58 @@ namespace VikingEngine.DSSWars.Conscript
                     workTemplate.craft_throwingspear.set(0);
                 }
             }
+            
 
-            if (city.warAutoWeaponType != WarAutoWeaponType.Mix)
+            void setGunPowder(ref WorkTemplate workTemplate, int prio)
             {
-
-                switch (city.warAutoWeaponType)
-                {
-                    case WarAutoWeaponType.Melee:
-
-                        workTemplate.craft_blackpowder.set(0);
-                        workTemplate.craft_gunpowder.set(0);
-                        workTemplate.craft_bullet.set(0);
-
-                        removeRanged(ref workTemplate);
-                        removeWarmachines(ref workTemplate);
-                        break;
-
-                    case WarAutoWeaponType.Ranged:
-                        removeMelee(ref workTemplate);
-                        removeWarmachines(ref workTemplate);
-                        break;
-                    case WarAutoWeaponType.Warmachine:
-                        removeMelee(ref workTemplate);
-                        removeRanged(ref workTemplate);
-                        break;
-                }
-
-
-                void removeMelee(ref WorkTemplate workTemplate)
-                {
-                    workTemplate.craft_sharpstick.set(0);
-                    workTemplate.craft_bronzesword.set(0);
-                    workTemplate.craft_shortsword.set(0);
-                    workTemplate.craft_sword.set(0);
-                    workTemplate.craft_longsword.set(0);
-                    workTemplate.craft_handspear.set(0);
-                    workTemplate.craft_mithrilsword.set(0);
-                    workTemplate.craft_warhammer.set(0);
-                    workTemplate.craft_twohandsword.set(0);
-                    workTemplate.craft_knightslance.set(0);
-                }
-
-                void removeRanged(ref WorkTemplate workTemplate)
-                {
-                    workTemplate.craft_slingshot.set(0);
-                    workTemplate.craft_throwingspear.set(0);
-                    workTemplate.craft_bow.set(0);
-                    workTemplate.craft_longbow.set(0);
-                    workTemplate.craft_crossbow.set(0);
-                    workTemplate.craft_mithrilbow.set(0);
-
-                    workTemplate.craft_handcannon.set(0);
-                    workTemplate.craft_handculverin.set(0);
-                    workTemplate.craft_rifle.set(0);
-                    workTemplate.craft_blunderbus.set(0);
-                }
-
-                void removeWarmachines(ref WorkTemplate workTemplate)
-                {
-                    workTemplate.craft_ballista.set(0);
-                    workTemplate.craft_manuballista.set(0);
-                    workTemplate.craft_catapult.set(0);
-                    workTemplate.craft_batteringram.set(0);
-
-                    workTemplate.craft_siegecannonbronze.set(0);
-                    workTemplate.craft_mancannonbronze.set(0);
-                    workTemplate.craft_siegecannoniron.set(0);
-                    workTemplate.craft_mancannoniron.set(0);
-                }
-
+                workTemplate.craft_blackpowder.set(prio);
+                workTemplate.craft_gunpowder.set(prio);
+                workTemplate.craft_bullet.set(prio);
             }
+
+            void setMelee(ref WorkTemplate workTemplate, int prio)
+            {
+                workTemplate.craft_sharpstick.set(prio);
+                workTemplate.craft_bronzesword.set(prio);
+                workTemplate.craft_shortsword.set(prio);
+                workTemplate.craft_sword.set(prio);
+                workTemplate.craft_longsword.set(prio);
+                workTemplate.craft_handspear.set(prio);
+                workTemplate.craft_mithrilsword.set(prio);
+                workTemplate.craft_warhammer.set(prio);
+                workTemplate.craft_twohandsword.set(prio);
+                workTemplate.craft_knightslance.set(prio);
+            }
+
+            void setRanged(ref WorkTemplate workTemplate, int prio)
+            {
+                workTemplate.craft_slingshot.set(prio);
+                workTemplate.craft_throwingspear.set(prio);
+                workTemplate.craft_bow.set(prio);
+                workTemplate.craft_longbow.set(prio);
+                workTemplate.craft_crossbow.set(prio);
+                workTemplate.craft_mithrilbow.set(prio);
+
+                workTemplate.craft_handcannon.set(prio);
+                workTemplate.craft_handculverin.set(prio);
+                workTemplate.craft_rifle.set(prio);
+                workTemplate.craft_blunderbus.set(prio);
+            }
+
+            void setWarmachines(ref WorkTemplate workTemplate, int prio)
+            {
+                workTemplate.craft_ballista.set(prio);
+                workTemplate.craft_manuballista.set(prio);
+                workTemplate.craft_catapult.set(prio);
+                workTemplate.craft_batteringram.set(prio);
+
+                workTemplate.craft_siegecannonbronze.set(prio);
+                workTemplate.craft_mancannonbronze.set(prio);
+                workTemplate.craft_siegecannoniron.set(prio);
+                workTemplate.craft_mancannoniron.set(prio);
+            }
+
+            
 
         }
     }

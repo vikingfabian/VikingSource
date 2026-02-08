@@ -8,6 +8,25 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
     // Keep a distinct class name so it can live side-by-side with English
     class OptionsLanguage_Portuguese : AbsOptionsLanguage
     {
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "Desvanecer camadas";
+        public override string SplitScreen_HorizontalFirst => "Horizontal primeiro";
+        public override string SplitScreen_VerticalFirst => "Vertical primeiro";
+        public override string SplitScreen_HorizontalOnly => "Apenas horizontal";
+        public override string SplitScreen_VerticalOnly => "Apenas vertical";
+        public override string SplitScreen_Title => "Tela dividida";
+        public override string SplitScreen_AdjustSplit => "Ajustar divisão {0}";
+
+        public override string Settings_ControllerVibration => "Vibração do controle";
+        public override string GraphicsOption_IngameMenuWidth => "Largura do menu in-game";
+        public override string DisplayMode => "Modo de exibição";
+        public override string DisplayMode_Windowed => "Janela";
+        public override string DisplayMode_BorderlessFullscreen => "Tela cheia sem bordas";
+        public override string GameSettings_RenderedMouseCursor => "Cursor renderizado";
+
+        //--
+        public override string GraphicsOption_FarViewDistance => "Visão de longa distância";
+
         public override string Hud_Cancel => "Cancelar";
         public override string Hud_Back => "Voltar";
 
@@ -100,5 +119,20 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string Settings_KeyMapPanSpeed => "Velocidade do pan";
         public override string Settings_StoreCameraPosition => "Salvar posição da câmera";
         public override string Settings_LoadCameraPosition => "Carregar posição";
+
+
+        //Shadow update
+        public override string Settings_ModelWaterFoam => "Espuma da água";
+        public override string Settings_ModelShadow => "Sombras";
+        public override string Settings_ModelShadowMapSize => "Tamanho do Shadow Map";
+        public override string Settings_Brightness => "Brilho";
+        public override string Settings_Mode_No_Achivements => "Conquistas não disponíveis.";
+        public override string Settings_FrameRate => "Taxa de quadros";
+
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public override string Settings_ImportNoAchievement => "Bloquear conquistas para arquivos de salvamento importados";
+
     }
 }

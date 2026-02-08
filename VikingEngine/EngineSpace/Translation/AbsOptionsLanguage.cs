@@ -9,6 +9,19 @@ namespace VikingEngine.EngineSpace.Translation
 {
     abstract class AbsOptionsLanguage
     {
+
+        //Spring patch
+
+        public abstract string Settings_Particles_FadeMapLayers { get; }
+        public abstract string SplitScreen_HorizontalFirst { get; }
+        public abstract string SplitScreen_VerticalFirst { get; }
+        public abstract string SplitScreen_HorizontalOnly { get; }
+        public abstract string SplitScreen_VerticalOnly { get; }
+        public abstract string SplitScreen_Title { get; }
+        public abstract string SplitScreen_AdjustSplit { get; }
+        //
+        public abstract string Settings_ControllerVibration { get; }
+        //
         public abstract string Hud_Cancel { get; }
         public abstract string Hud_Back { get; }
         public abstract string Hud_AreYouSure { get; }
@@ -77,6 +90,25 @@ namespace VikingEngine.EngineSpace.Translation
         public abstract string Settings_StoreCameraPosition { get; }
         public abstract string Settings_LoadCameraPosition { get; }
 
+        //Shadow update
+        public abstract string Settings_ModelWaterFoam { get; }
+        public abstract string Settings_ModelShadow { get; }
+        public abstract string Settings_ModelShadowMapSize { get; }
+        public abstract string Settings_Brightness { get; }
+        public abstract string Settings_Mode_No_Achivements { get; }
+        public abstract string Settings_FrameRate { get; }
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public abstract string Settings_ImportNoAchievement { get; }
+        public abstract string GraphicsOption_FarViewDistance { get; }
+
+        //Winter update
+        public abstract string GraphicsOption_IngameMenuWidth { get; }
+        public abstract string DisplayMode { get; }
+        public abstract string DisplayMode_Windowed { get; }
+        public abstract string DisplayMode_BorderlessFullscreen { get; }
+        public abstract string GameSettings_RenderedMouseCursor { get; }
 
         public string ThreeOption(ThreeOptions option)
         {

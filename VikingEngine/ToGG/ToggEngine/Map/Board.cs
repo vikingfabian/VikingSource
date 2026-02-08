@@ -137,11 +137,14 @@ namespace VikingEngine.ToGG.ToggEngine.Map
                     new QueAndSynchTask(collectMetaData_asynch, onCollectMetaDataComplete);
                 }
 
-                if (model.content != null && Ref.TimePassed16ms)
+                if (model.content != null/* && Ref.TimePassed16ms*/)
                 {
-                    foreach (var m in model.content.emitters)
+                    for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
                     {
-                        m.update();
+                        foreach (var m in model.content.emitters)
+                        {
+                            m.update();
+                        }
                     }
                 }
             }

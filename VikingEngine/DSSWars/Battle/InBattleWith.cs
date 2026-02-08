@@ -8,6 +8,7 @@ namespace VikingEngine.DSSWars.Battle
 {
     struct InBattleWith
     {
+        public bool attackingCity;
         public int faction1;
         public int faction2;
         public int faction3;
@@ -52,6 +53,34 @@ namespace VikingEngine.DSSWars.Battle
         { 
             return faction1 == faction || faction2 == faction || faction3 == faction; 
         }
+        public bool ContainsFaction(FactionType factionType)
+        {
+            if (faction1 >= 0)
+            {
+                var f = DssRef.world.faction(faction1);
+                if (f != null && f.factiontype == factionType)
+                {
+                    return true;
+                }
+            }
+            if (faction2 >= 0)
+            {
+                var f = DssRef.world.faction(faction2);
+                if (f != null && f.factiontype == factionType)
+                {
+                    return true;
+                }
+            }
+            if (faction3 >= 0)
+            {
+                var f = DssRef.world.faction(faction3);
+                if (f != null && f.factiontype == factionType)
+                {
+                    return true;
+                }
+            }
 
+            return false;
+        }
     }
 }

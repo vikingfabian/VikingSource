@@ -109,6 +109,26 @@ namespace VikingEngine.Engine
                         Fonts[(int)LoadedFont.Bold] = japanese_bold;
                         Fonts[(int)LoadedFont.Console] = japanese_console;
                         break;
+
+                    case FontLanguage.Thai:
+                        var thai_regular = Content.Load<SpriteFont>("Font\\ThaiRegular");
+                        var thai_bold = Content.Load<SpriteFont>("Font\\ThaiBold");
+                        var thai_console = Content.Load<SpriteFont>("Font\\ThaiConsole");
+
+                        Fonts[(int)LoadedFont.Regular] = thai_regular;
+                        Fonts[(int)LoadedFont.Bold] = thai_bold;
+                        Fonts[(int)LoadedFont.Console] = thai_console;
+                        break;
+
+                    case FontLanguage.Korean:
+                        var korean_regular = Content.Load<SpriteFont>("Font\\KoreanRegular");
+                        var korean_bold = Content.Load<SpriteFont>("Font\\KoreanBold");
+                        var korean_console = Content.Load<SpriteFont>("Font\\KoreanConsole");
+
+                        Fonts[(int)LoadedFont.Regular] = korean_regular;
+                        Fonts[(int)LoadedFont.Bold] = korean_bold;
+                        Fonts[(int)LoadedFont.Console] = korean_console;
+                        break;
                 }
             }
         }
@@ -199,7 +219,10 @@ namespace VikingEngine.Engine
 
         public static void LoadSound(LoadedSound sound, string dir)
         {
-            SoundEffects[(int)sound] = Content.Load<SoundEffect>(dir);
+            if (VikingEngine.Sound.SoundManager.SoundInitializeSuccess)
+            {
+                SoundEffects[(int)sound] = Content.Load<SoundEffect>(dir);
+            }
         }
         
         public static void SetTextureFromTarget(Texture2D texture, LoadedTexture name)
@@ -284,7 +307,7 @@ namespace VikingEngine
         particle3,
         ccg_piece_particle,
         realistic_particle,
-
+        waterEdge,
 
         BirdJoustBG,
         cmdTiles,
@@ -298,5 +321,7 @@ namespace VikingEngine
         Western,
         Chinese,
         Japanese,
+        Thai,
+        Korean,
     }
 }

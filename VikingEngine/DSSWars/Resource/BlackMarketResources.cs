@@ -41,7 +41,8 @@ namespace VikingEngine.DSSWars.Resource
             int count = 5;
             if (faction.payGold(count * Cost_Wood, false, city))
             {
-                city.res_wood.amount += count;
+                city.AddGroupedResource(EntityComponent.CityResoureIndex.wood, count);
+                //city.res_wood.amount += count;
             }
         }
         public static bool AiPurchaseIron(City city, Faction faction)
@@ -49,7 +50,8 @@ namespace VikingEngine.DSSWars.Resource
             int count = CraftBuildingLib.CraftSmith_IronUse;
             if (faction.payGold(count * Cost_Iron, false, city))
             {
-                city.res_iron.amount += count;
+                city.AddGroupedResource(EntityComponent.CityResoureIndex.iron, count);
+                //city.res_iron.amount += count;
                 return true;
             }
             return false;
@@ -66,7 +68,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public static void ToHud(LocalPlayer player, RichBoxContent content, City city)
         {
-            if (city.Culture == CityCulture.Lawbiding)
+            if (city.Culture == CityCulture.Lawbiding && player.tutorial == null)
             {
                 city.cultureToHud(player, content, false);
                 return;
@@ -93,7 +95,7 @@ namespace VikingEngine.DSSWars.Resource
             content.space();
             content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
             content.space();
-            HudLib.InfoButton(content, new RbTooltip_Text(DssRef.todoLang.Info_WhenFoodRunsOut));
+            HudLib.InfoButton(content, new RbTooltip_Text(DssRef.lang.Info_WhenFoodRunsOut));
 
         }
 
@@ -170,8 +172,8 @@ namespace VikingEngine.DSSWars.Resource
 
                         content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn).overrideColor = HudLib.TitleColor_Label;
                         bool reachedBuffer = false;
-                        bool safeGuard = city.foodSafeGuardIsActive(resourceType);
-                        city.GetGroupedResource(resourceType).toMenu(content, resourceType, safeGuard, ref reachedBuffer);
+                        //bool safeGuard = city.foodSafeGuardIsActive(resourceType);
+                        city.GetGroupedResource(resourceType).toMenu(content, resourceType, ref reachedBuffer);
                         
                         //player.hud.tooltip.create(player, content, true);
 

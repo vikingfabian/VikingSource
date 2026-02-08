@@ -8,7 +8,25 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Turkish : AbsOptionsLanguage
     {
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "Katmanları soldur";
+        public override string SplitScreen_HorizontalFirst => "Önce yatay";
+        public override string SplitScreen_VerticalFirst => "Önce dikey";
+        public override string SplitScreen_HorizontalOnly => "Sadece yatay";
+        public override string SplitScreen_VerticalOnly => "Sadece dikey";
+        public override string SplitScreen_Title => "Bölünmüş ekran";
+        public override string SplitScreen_AdjustSplit => "Bölmeyi ayarla {0}";
 
+        public override string Settings_ControllerVibration => "Gamepad titreşimi";
+        //Winter update settings
+        public override string GraphicsOption_IngameMenuWidth => "Oyun menüsü genişliği";
+        public override string DisplayMode => "Görüntüleme moud";
+        public override string DisplayMode_Windowed => "Pencere";
+        public override string DisplayMode_BorderlessFullscreen => "Çerçevesiz Tam Ekran";
+        public override string GameSettings_RenderedMouseCursor => "Dahili imleç";
+
+        //--
+        public override string GraphicsOption_FarViewDistance => "Uzun mesafe görüşü";
 
         public override string Hud_Cancel => "İptal";
         public override string Hud_Back => "Geri";
@@ -134,6 +152,21 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string Settings_KeyMapPanSpeed => "Kaydırma hızı";
         public override string Settings_StoreCameraPosition => "Kamera Konumunu Kaydet";
         public override string Settings_LoadCameraPosition => "Kaydedilen Konumu Yükle";
+
+
+        //Shadow update
+        public override string Settings_ModelWaterFoam => "Su köpüğü";
+        public override string Settings_ModelShadow => "Gölgeler";
+        public override string Settings_ModelShadowMapSize => "Shadow Map boyutu";
+        public override string Settings_Brightness => "Parlaklık";
+        public override string Settings_Mode_No_Achivements => "Başarımlar kullanılamaz.";
+        public override string Settings_FrameRate => "Kare hızı";
+
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public override string Settings_ImportNoAchievement => "İçe aktarılan kayıt dosyaları için başarımları engelle";
+
 
     }
 }

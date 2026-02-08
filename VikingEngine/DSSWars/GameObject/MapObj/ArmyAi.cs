@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
@@ -343,7 +343,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             waitForRegroup = true;
             stateTime = 0;
-            //refreshNextWalkingNode();
+            
         }
 
         public void Ai_Order_MoveTo(IntVector2 goalTilePos)
@@ -514,42 +514,45 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
 
-            var tile = DssRef.world.tileGrid.Get(goal);
-            if (tile.tileContent == TileContent.City)
+            if (DssRef.world.tileGrid.TryGet(goal, out var tile))
             {
-                IntVector2 dir = walkGoal - tilePos;
-                if (dir.HasValue())
-                {   
-                    IntVector2 adjusted = goal - dir.Normal();
-                    if (DssRef.world.tileGrid.Get(adjusted).IsWater())
+                if (tile.tileContent == TileContent.City)
+                {
+                    IntVector2 dir = walkGoal - tilePos;
+                    if (dir.HasValue())
                     {
-                        int closestDist = 10;
-                        
-                        for (Dir8 d = 0; d < Dir8.NUM; d++)
+                        IntVector2 adjusted = goal - dir.Normal();
+                        if (DssRef.world.tileGrid.Get(adjusted).IsWater())
                         {
-                            IntVector2 pos = IntVector2.FromDir8(d) + goal;
-                            if (DssRef.world.tileGrid.Get(pos).IsLand())
+                            int closestDist = 10;
+
+                            for (Dir8 d = 0; d < Dir8.NUM; d++)
                             {
-                                var l = goal.SideLength(pos);
-                                if (l < closestDist)
-                                { 
-                                    adjusted = pos;
+                                IntVector2 pos = IntVector2.FromDir8(d) + goal;
+                                if (DssRef.world.tileGrid.Get(pos).IsLand())
+                                {
+                                    var l = goal.SideLength(pos);
+                                    if (l < closestDist)
+                                    {
+                                        adjusted = pos;
+                                    }
                                 }
                             }
                         }
+
+                        goal = adjusted;
                     }
-
-                    goal = adjusted;
                 }
+
+
+                walkGoal = goal;
+
+                walkGoalAsShip = DssRef.world.tileGrid.Get(goal).IsWater();
+                refreshGroupPlacements2(goal, true, teleport);
+
+                goalId++;
             }
-
-            walkGoal = goal;
-
-            walkGoalAsShip = DssRef.world.tileGrid.Get(goal).IsWater();
-            refreshGroupPlacements2(goal, true, teleport);
-
-            //path = null;
-            goalId++;
+            
         }
 
         public void clearObjective()

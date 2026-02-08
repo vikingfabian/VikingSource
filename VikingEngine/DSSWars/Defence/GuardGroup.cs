@@ -100,9 +100,11 @@ namespace VikingEngine.DSSWars.Defence
         {
             IntVector2 subPos = conv.IntToIntVector2(assignedToPost_IdAndPosition);
             Vector3 center = WP.SubtileToWorldPosXZgroundY_Centered(subPos);
-            var tile = DssRef.world.subTileGrid.Get(subPos);
-            postYPos = center.Y + tile.BuildingHeight();
-            setArmyPlacement2(center, false, true);
+            if (DssRef.world.subTileGrid.TryGet(subPos, out var tile))
+            {
+                postYPos = center.Y + tile.BuildingHeight();
+                setArmyPlacement2(center, false, true);
+            }
         }
 
         public void onEnterGuard(City city, int IdAndPosition)
@@ -121,29 +123,31 @@ namespace VikingEngine.DSSWars.Defence
                 {
                     soldierAttackRangeBonus = 0.03f;
                 }
-                soldierAttackDamageBonus = 3;
 
-                switch (subTile.GetWallType())
-                {
-                    case Map.TerrainWallType.NUM_NONE:
-                        damageBlockChance_fromTerrain = 0;
-                        break;
-                    case Map.TerrainWallType.Palisade:
-                        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Palisade;
-                        soldierAttackDamageBonus = 2;
-                        break;
-                    case Map.TerrainWallType.DirtWall:
-                    case Map.TerrainWallType.DirtTower:
-                        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Dirt;
-                        break;
-                    case Map.TerrainWallType.WoodWall:
-                    case Map.TerrainWallType.WoodTower:
-                        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Wood;
-                        break;
-                    default:
-                        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Stone;
-                        break;
-                }
+                damageBlockChance_fromTerrain = DefenceStatus.WallDefenceChance(subTile.GetWallType(), out soldierAttackDamageBonus);
+                //soldierAttackDamageBonus = 3;
+
+                //switch (subTile.GetWallType())
+                //{
+                //    case Map.TerrainWallType.NUM_NONE:
+                //        damageBlockChance_fromTerrain = 0;
+                //        break;
+                //    case Map.TerrainWallType.Palisade:
+                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Palisade;
+                //        soldierAttackDamageBonus = 2;
+                //        break;
+                //    case Map.TerrainWallType.DirtWall:
+                //    case Map.TerrainWallType.DirtTower:
+                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Dirt;
+                //        break;
+                //    case Map.TerrainWallType.WoodWall:
+                //    case Map.TerrainWallType.WoodTower:
+                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Wood;
+                //        break;
+                //    default:
+                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Stone;
+                //        break;
+                //}
             }
         }
 
@@ -234,10 +238,14 @@ namespace VikingEngine.DSSWars.Defence
 
         private void refillGuardUnits(AbsSoldierBuilder typeProfile, int count, bool createModels)
         {
+
             for (int i = 0; i < count; ++i)
             {
-                AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.AllDiagonalsArray[i], tilePos, ref soldierData, createModels);
-                unit.firstUpdate();
+                if (i < IntVector2.AllDiagonalsArray.Length)
+                {
+                    AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.AllDiagonalsArray[i], tilePos, ref soldierData, createModels);
+                    unit.firstUpdate();
+                }
             }
         }
 

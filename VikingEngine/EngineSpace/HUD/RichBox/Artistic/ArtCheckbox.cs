@@ -43,7 +43,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
 
                 checkImage = new RbImage(value ? checkOn : checkOff, 0.76f);
                 checkImage.Create(group);
-                group.position.X += 4;
+                group.position.X += 6;
             }
         }
 

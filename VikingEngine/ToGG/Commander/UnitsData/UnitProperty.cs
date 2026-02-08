@@ -60,7 +60,7 @@ namespace VikingEngine.ToGG.Commander.UnitsData
     {
         public override UnitPropertyType Type => UnitPropertyType.Leader;
 
-        public override string Desc => "Adjacent friendly units will ignore one retreat and gains +" + TextLib.PercentText(toggLib.LeaderPropertyRetreatBonus) + " chance to force opponent retreat";
+        public override string Desc => "Adjacent friendly units will ignore one retreat and gains +" + TextLib.PercentTextWithSymbol(toggLib.LeaderPropertyRetreatBonus) + " chance to force opponent retreat";
     }
 
     class Valuable : AbsUnitProperty
@@ -81,7 +81,7 @@ namespace VikingEngine.ToGG.Commander.UnitsData
     {
         public override UnitPropertyType Type => UnitPropertyType.Shield_dash;
 
-        public override string Desc => "Plus " + TextLib.PercentText(toggLib.ShieldDashPropertyRetreatBonus) + " chance to force opponent retreat";
+        public override string Desc => "Plus " + TextLib.PercentTextWithSymbol(toggLib.ShieldDashPropertyRetreatBonus) + " chance to force opponent retreat";
     }
 
     class Static_target : AbsUnitProperty
@@ -138,7 +138,7 @@ namespace VikingEngine.ToGG.Commander.UnitsData
     {
         public override UnitPropertyType Type => UnitPropertyType.Fear_support;
 
-        public override string Desc => "Supported attacks will gain +" + TextLib.PercentText(toggLib.FearSupportPropertyRetreatBonus) + " chance to force retreats";
+        public override string Desc => "Supported attacks will gain +" + TextLib.PercentTextWithSymbol(toggLib.FearSupportPropertyRetreatBonus) + " chance to force retreats";
     }
 
     class Necromancer : AbsUnitProperty
@@ -225,7 +225,7 @@ namespace VikingEngine.ToGG.Commander.UnitsData
     {
         public override UnitPropertyType Type => UnitPropertyType.Catapult_Plus;
 
-        public override string Desc => CatapultDesc + " " + TextLib.PercentText(toggLib.CatapultPlusCenterHitChance) + " chance to hit center tile.";
+        public override string Desc => CatapultDesc + " " + TextLib.PercentTextWithSymbol(toggLib.CatapultPlusCenterHitChance) + " chance to hit center tile.";
     }
 
     class Pierce : AbsUnitProperty

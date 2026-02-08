@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Work;
 
 namespace VikingEngine.DSSWars.XP
 {
@@ -23,20 +24,45 @@ namespace VikingEngine.DSSWars.XP
             WorkExperienceType.CastMetal,
             WorkExperienceType.CraftMetal,
             WorkExperienceType.CraftArmor,
-            WorkExperienceType.CraftWeapon,
+            //WorkExperienceType.CraftWeapon,
             WorkExperienceType.CraftFuel,
             WorkExperienceType.Chemistry,
         };
 
+        public static TechnologyUnlock Unlock;
+
+        public static readonly int XpLevelCount = (int)ExperienceLevel.NUM;
+        public static readonly int MaxXpLevel = XpLevelCount - 1;
         public static ExperienceLevel ToLevel(byte xp)
         {
             ExperienceLevel level = (ExperienceLevel)(xp / DssConst.WorkXpToLevel);
             return level;
         }
 
+        //public static int ToLevel_int(byte xp)
+        //{
+        //    ExperienceLevel level = xp / DssConst.WorkXpToLevel;
+        //    return level;
+        //}
+
         public static string TechnologyName_BlackPowder()
         {
             return DssRef.lang.Resource_TypeName_BlackPowder;
+        }
+
+        public static void AdjustVersion80Skill(ref WorkExperienceType experienceType)
+        {
+            if (experienceType >= WorkExperienceType.CraftFuel)
+            {
+                if (experienceType == WorkExperienceType.CraftFuel)
+                {
+                    experienceType = WorkExperienceType.CraftMetal;
+                }
+                else
+                {
+                    --experienceType;
+                }
+            }
         }
 
         //    tech(technology.advancedBuilding, TechnologyTemplate.AdvancedBuildingUnlock, SpriteName.WarsBuild_Nobelhouse, DssRef.lang.Technology_AdvancedBuildings);
@@ -50,6 +76,8 @@ namespace VikingEngine.DSSWars.XP
         //tech(technology.gunPowder, TechnologyTemplate.GunPowderUnlock, SpriteName.WarsResource_IronRifle, DssRef.lang.Resource_TypeName_GunPowder);
 
     }
+
+    
 
     enum WorkExperienceType : byte
     {
@@ -67,7 +95,7 @@ namespace VikingEngine.DSSWars.XP
         CastMetal,
         CraftMetal,
         CraftArmor,
-        CraftWeapon,
+        //CraftWeapon,
         CraftFuel,
         Chemistry,
         //GodPower,

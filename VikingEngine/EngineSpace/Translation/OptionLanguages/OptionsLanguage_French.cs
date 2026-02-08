@@ -8,7 +8,23 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_French : AbsOptionsLanguage
     {
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "Fondu des calques";
+        public override string SplitScreen_HorizontalFirst => "Horizontal en premier";
+        public override string SplitScreen_VerticalFirst => "Vertical en premier";
+        public override string SplitScreen_HorizontalOnly => "Horizontal seulement";
+        public override string SplitScreen_VerticalOnly => "Vertical seulement";
+        public override string SplitScreen_Title => "Écran scindé";
+        public override string SplitScreen_AdjustSplit => "Ajuster la séparation {0}";
 
+        public override string Settings_ControllerVibration => "Vibration de la manette";
+        public override string GraphicsOption_IngameMenuWidth => "Largeur du menu en jeu";
+        public override string DisplayMode => "Mode d’affichage";
+        public override string DisplayMode_Windowed => "Fenêtré";
+        public override string DisplayMode_BorderlessFullscreen => "Plein écran sans bordure";
+        public override string GameSettings_RenderedMouseCursor => "Curseur rendu";
+        //-
+        public override string GraphicsOption_FarViewDistance => "Vue longue distance";
 
         public override string Hud_Cancel => "Annuler";
         public override string Hud_Back => "Retour";
@@ -134,6 +150,21 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string Settings_KeyMapPanSpeed => "Vitesse de descente";
         public override string Settings_StoreCameraPosition => "Enregistrer la position caméra";
         public override string Settings_LoadCameraPosition => "Charger la position";
+
+
+        //Shadow update
+        public override string Settings_ModelWaterFoam => "Écume de l’eau";
+        public override string Settings_ModelShadow => "Ombres";
+        public override string Settings_ModelShadowMapSize => "Taille de la Shadow Map";
+        public override string Settings_Brightness => "Luminosité";
+        public override string Settings_Mode_No_Achivements => "Succès non disponibles.";
+        public override string Settings_FrameRate => "Taux de rafraîchissement";
+
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public override string Settings_ImportNoAchievement => "Bloquer les succès pour les fichiers de sauvegarde importés";
+
 
     }
 }

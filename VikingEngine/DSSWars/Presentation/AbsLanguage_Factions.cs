@@ -79,5 +79,139 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string FactionName_FjornfellWarhowl { get; }
         public abstract string FactionName_AshgroveWard { get; }
         public abstract string FactionName_HragmarHorncarvers { get; }
+
+        //Shadow update
+
+        /// <summary>
+        /// Theme: Wood-elves who guard enchanted forests. Secretive, druidic, tied to nature spirits
+        /// </summary>
+        public abstract string FactionName_SylvaranGlade { get; }
+
+        /// <summary>
+        /// Theme: Marsh-dwellers, human clans who thrive in bogs and waterways, masters of ambush.
+        /// </summary>
+        public abstract string FactionName_DrelmirePact { get; }
+
+        /// <summary>
+        /// Theme: Stubborn mountain dwarves, famed for masterwork steel and siegecraft.
+        /// </summary>
+        public abstract string FactionName_KhazrunForgeclan { get; }
+
+        /// <summary>
+        /// Nomadic steppe riders, swift raiders and proud cavalry culture.
+        /// </summary>
+        public abstract string FactionName_VeylanHorselords { get; }
+
+        /// <summary>
+        /// Theme: A human religious order devoted to the Eternal Flame. Zealous and uncompromising.
+        /// </summary>
+        public abstract string FactionName_ThalosCovenant { get; }
+
+        /// <summary>
+        /// Theme: Coastal defenders, human mariners and sea-watchers, sworn to protect against pirates.
+        /// </summary>
+        public abstract string FactionName_NerathianTideguard { get; }
+
+        /// <summary>
+        /// Theme: Desert-dwellers, scarred nomads once driven from their homeland. Fierce survivalists.
+        /// </summary>
+        public abstract string FactionName_SkaruunExiles { get; }
+
+        /// <summary>
+        /// Theme: Dragon-worshipping cult/kingdom, ruled by dragonblooded warlords.
+        /// </summary>
+        public abstract string FactionName_DraktharDominion { get; }
+
+        /// <summary>
+        /// Theme: Brutal mercenary brotherhood, sellswords bound by strict contracts.
+        /// </summary>
+        public abstract string FactionName_MalrekIronbound { get; }
+
+        // -----
+
+        /// <summary>
+        /// Theme: A modest barony nestled in fertile valleys, proud of its ancient stone keeps.
+        /// </summary>
+        public abstract string FactionName_BranthollowBarony { get; }
+
+        /// <summary>
+        /// Theme: Grain-rich plains kingdom, known for horse-breeding and wheat harvests.
+        /// </summary>
+        public abstract string FactionName_DunwadeHold { get; }
+
+        /// <summary>
+        /// Theme: Borderland march-lords, stern folk living in fortified towns along contested lands.
+        /// </summary>
+        public abstract string FactionName_CaerwynMarches { get; }
+
+        /// <summary>
+        /// Theme: Mining folk in a rugged valley, semi-independent but loyal to their lords.
+        /// </summary>
+        public abstract string FactionName_StonevaleFreehold { get; }
+
+        /// <summary>
+        /// Theme: Small forested domain, famed for herbalists and bowmen.
+        /// </summary>
+        public abstract string FactionName_GlenmereLordship { get; }
+
+        /// <summary>
+        /// Theme: A minor princely house clinging to its old glory, proud but weakened.
+        /// </summary>
+        public abstract string FactionName_ArveldonPrincipality { get; }
+
+        /// <summary>
+        /// Theme: Coastal duchy of fisherfolk and shipwrights, always at odds with pirates.
+        /// </summary>
+        public abstract string FactionName_WestmereReaches { get; }
+
+        /// <summary>
+        /// Theme: Small marcher state, thorny hedges and palisades mark their borders.
+        /// </summary>
+        public abstract string FactionName_ThornwickWardens { get; }
+
+        /// <summary>
+        /// Theme: A sleepy lakeside domain, romanticized in ballads but of little power.
+        /// </summary>
+        public abstract string FactionName_EvermereFief { get; }
+
+        /// <summary>
+        /// Theme: Forest hillfolk, stubborn and hearty, famed for boar-hunting feasts.
+        /// </summary>
+        public abstract string FactionName_BryndralHollow { get; }
+
+        /// <summary>
+        /// Theme: Warrior tribe from a desert coastal region
+        /// </summary>
+        public abstract string FactionName_Mendog { get; }
+
+        /// <summary>
+        /// Theme: Warrior tribe from a desert coastal region
+        /// </summary>
+        public abstract string FactionName_Minde { get; }
+
+        /// <summary>
+        /// A proud family of royal knights
+        /// </summary>
+        public abstract string FactionName_FloKingdom { get; }
+
+        /// <summary>
+        /// A macon family with the secrets to advanced buildings
+        /// </summary>
+        public abstract string FactionName_CarolusKeksenmark { get; }
+
+        /// <summary>
+        /// Theme: A confederation of hobbit villages along winding streams, known for gardens, festivals, and fiercely defended borders when threatened.
+        /// </summary>
+        public abstract string FactionName_BramblebrookHill { get; }
+
+        /// <summary>
+        /// Theme: Hill-dwelling hobbits in cozy burrows, famous for cider, storytelling, and their legendary hospitality (and occasional trickery).
+        /// </summary>
+        public abstract string FactionName_Tumblehill { get; }
+
+        /// <summary>
+        /// Theme: A democracy run house with focus on politics and military might. Looks down on any outsiders.
+        /// </summary>
+        public abstract string FactionName_Etheleorthe { get; }
     }
 }

@@ -72,7 +72,7 @@ namespace VikingEngine.LootFest.Effects
 
             public override void Time_Update(float time_ms)
             {
-                if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
                 {
                     v.Y += Gravity;
                 }

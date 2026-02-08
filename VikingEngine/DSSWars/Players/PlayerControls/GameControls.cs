@@ -6,10 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichMenu;
@@ -27,11 +29,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         public SoldierControls soldier = null;
         public DiplomacyMap diplomacy = null;
         public Build.BuildControls build;
+        public AbsCommandTarget commandTarget = null;
         LocalPlayer player;
         public InputMap input;
         bool cityUpdate;
         int tabCity = -1;
         SpottedArrayCounter<Army> tabArmy;
+        int tabWarFaction = -1;
         public int[] GameSpeedOptions;
         public InputHelpState inputHelpState = InputHelpState.Map;
         public RichMenuControllerPointer controllerPointer = null;
@@ -41,10 +45,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         Vector2 controllerPointer_storedPos_defaultObject;
         Vector2 controllerPointer_storedPos_faction;
         Vector2 controllerPointer_storedPos_diplomacy;
-
-
+       
         public GameControls(LocalPlayer player, InputMap input)
-        { 
+        {
+            
             this.player = player;
             this.input = input;
             player.gameControls = this;
@@ -63,7 +67,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
             {
-                GameSpeedOptions = new int[] { 1, 2, 5, 20 };
+                GameSpeedOptions = new int[] { 1, 2, 5, 15 };
             }
             else if (DssRef.storage.speed5x)
             {
@@ -119,13 +123,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     player.hud.needRefresh |= menu.needRefresh;
                     
                 }
-                player.hud.update(out uiRefresh);
+                player.hud.update(out uiRefresh, true);
             }
             else
             {
-                if (!map.overridingDrag())
+                if (map.overridingDrag())
                 {
-                    player.hud.update(out uiRefresh);
+                    player.hud.update(out uiRefresh, false);
+                }
+                else
+                {
+                    player.hud.update(out uiRefresh, true);
                     hudState = player.hud.mouseOverHud;
                 }
             }
@@ -140,6 +148,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {   
                 map.mapControlsUpdate();
                 player.hud.updateToolTip_menu();
+
+                if (input.QuickSelect.DownEvent)
+                {
+                    //lib.DoNothing();
+                    player.hud.objMenu.diplomacy.quickSelect();
+                }
+
+                player.hud.updateToolTip_diplomacy(uiRefresh);
                 //diplomacy.update();
             }
             else
@@ -147,12 +163,20 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 inputHelpState = InputHelpState.Map;
                 map.focusedUpdate();
 
-                if ((map.hover.subTile.hasSelection && InBuildOrdersMode()) || build.buildKeyDown)
+                if (commandTarget != null)
+                {
+                    inputHelpState = InputHelpState.CommandTarget;
+                    if (commandTarget.update(player))
+                    {
+                        commandTarget.DeleteMe();
+                        commandTarget = null;
+                    }
+                }
+                else if ((map.hover.subTile.hasSelection && InBuildOrdersMode()) || build.buildKeyDown)
                 {
                     inputHelpState = InputHelpState.Build;
                     map.cancelRectangleSelect();
-                    build.updateBuildMode();
-                    
+                    build.updateBuildMode();                    
                 }
                 else
                 {
@@ -164,6 +188,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     if (input.QuickSelect.DownEvent)
                     {
                         selectAreaCity();
+
+                        if (input.inputSource.IsController)
+                        {
+                            setMenuFocus(true, true);
+                        }
                     }
 
                     if (input.mouseOrder.DownEvent)
@@ -257,14 +286,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 {
                     controllerTabbing(1, true);
                 }
-                if (input.Controller_SubTabLeft.DownEvent)
-                {
-                    controllerTabbing(-1, false);
-                }
-                if (input.Controller_SubTabRight.DownEvent)
-                {
-                    controllerTabbing(1, false);
-                }
+                //if (input.Controller_SubTabLeft.DownEvent)
+                //{
+                //    controllerTabbing(-1, false);
+                //}
+                //if (input.Controller_SubTabRight.DownEvent)
+                //{
+                //    controllerTabbing(1, false);
+                //}
 
                 if (input.ControllerMessageClick.DownEvent)
                 {
@@ -399,7 +428,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     case ControllerTabFocus.Pause_GamePlay:
                         if (dir < 0)
                         {
-                            Ref.TogglePause();
+                            if (DssRef.difficulty.setting_allowPauseCommand)
+                            {
+                                Ref.TogglePause();
+                            }
                         }
                         else
                         {
@@ -657,6 +689,41 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             player.hud.needRefresh = true;
                         }
                         break;
+                    case MenuTab.Progress:
+                        switch (player.progressSubTab)
+                        {
+                            case ProgressSubTab.Schools:
+                                if (input.StopStart.DownEvent)
+                                {
+                                    bool start = city.toggleSchoolStop(city.selectedSchool);
+                                    player.hud.needRefresh = true;
+                                    (start ? SoundLib.start : SoundLib.stop).Play();
+                                }
+                                if (input.Copy.DownEvent)
+                                {
+                                    city.copySchool(player);
+                                    SoundLib.copy.Play();
+                                }
+                                if (input.Paste.DownEvent)
+                                {
+                                    city.pasteSchool(player);
+                                    SoundLib.paste.Play();
+                                    player.hud.needRefresh = true;
+                                }
+                                break;
+                            case ProgressSubTab.Research:
+                                if (input.StopStart.DownEvent)
+                                {
+                                    if (city.commitResearch(player))
+                                    {
+                                        player.hud.needRefresh = true;
+                                        SoundLib.start.Play();
+                                    }
+                                }
+                                break;
+                        }
+                        break;
+
                 }
             }
         }
@@ -758,6 +825,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             map.cameraFocus = obj;
             mapSelect(obj.GetWorldObject());
+            
+            if (input.inputSource.IsController && obj.gameobjectType() != GameObjectType.City)
+            {
+                setMenuFocus(false, false);
+            }
         }
 
         public void selectAreaCity()
@@ -778,7 +850,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             //CITY
             if (input.NextCity.DownEvent && player.faction.cities.Count > 0)
             {
-                nextCity(!Input.Keyboard.Shift);
+                nextCity();
+                if (input.inputSource.IsController)
+                {
+                    setMenuFocus(true, true);
+                }
             }
 
             //ARMY
@@ -788,6 +864,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
          
             }
 
+            if (input.NextWar.DownEvent)
+            {
+                nextWar(!Input.Keyboard.Shift);
+            }
         }
 
         public void nextCity(City city)
@@ -797,41 +877,79 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.hud.needRefresh = true;
         }
 
-        public void nextCity(bool forward)
+        public void nextCity()
         {
             player.hud.needRefresh = true;
-            if (forward)
+
+            int dir = 1;
+            if (Input.Keyboard.Shift &&
+                player.gameControls.input.inputSource.HasKeyBoard)
             {
-                tabCity++;
-                if (tabCity >= player.faction.cities.Count)
-                {
-                    tabCity = 0;
-                }
-            }
-            else
-            {
-                tabCity--;
-                if (tabCity < 0)
-                {
-                    tabCity = player.faction.cities.Count - 1;
-                }
+                dir = -1;
             }
 
-
-            int current = 0;
-            var citiesC = player.faction.cities.counter();
-            while (citiesC.Next())
+            int loops = 0;
+            do
             {
-                if (current == tabCity)
-                {
-                    //focus on city
-                    map.cameraFocus = citiesC.sel;
-                    mapSelect(citiesC.sel);
+                tabCity = Bound.SetRollover(tabCity + dir, 0, player.faction.cities.Array.Length-1);
 
-                    return;
+                var cIx = player.faction.cities.Array[tabCity];
+                if (cIx >= 0)
+                {
+                    var city = DssRef.world.cities[cIx];
+                    if (city.factionIndex == player.faction.myIndex)
+                    {
+                        if (city.automateCity &&
+                            player.gameControls.input.inputSource.HasKeyBoard &&
+                            Input.Keyboard.Alt)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            //focus on city
+                            map.cameraFocus = city;
+                            mapSelect(city);
+                            return;
+                        }
+                    }
                 }
-                current++;
-            }
+
+            } while (++loops < player.faction.cities.Array.Length);
+
+            //if (forward)
+            //{
+            //    tabCity++;
+            //    if (tabCity >= player.faction.cities.Count)
+            //    {
+            //        tabCity = 0;
+            //    }
+            //}
+            //else
+            //{
+            //    tabCity--;
+            //    if (tabCity < 0)
+            //    {
+            //        tabCity = player.faction.cities.Count - 1;
+            //    }
+            //}
+
+
+            //int current = 0;
+            
+            //SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            //while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
+            //{
+            //    if (current == tabCity)
+            //    {
+            //        //focus on city
+            //        map.cameraFocus = citySel;
+            //        mapSelect(citySel);
+
+            //        return;
+            //    }
+            //    current++;
+            //}
             
         }
         public void nextArmy(bool forward)
@@ -859,6 +977,79 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
             
         }
+
+        public void nextWar(bool forward)
+        {
+            tabWarFaction++;
+            for (int i = tabWarFaction; i < player.faction.diplomaticRelations.Length; i++)
+            {
+                if (checkRelation(i))
+                {
+                    tabWarFaction = i;
+                    return;
+                }
+                //var rel = player.faction.diplomaticRelations[i];
+                //if (rel != null && rel.Relation <= RelationType.RelationTypeN3_War)
+                //{
+                //    var enemy = DssRef.world.factions.GetIndex_Safe(i);
+                //    if (enemy != null)
+                //    {
+                //        if (enemy.mainCity != null)
+                //        {
+                //            map.cameraFocus = enemy.mainCity;
+
+                //            return;
+                //        }
+
+                //        var army = enemy.armies.First();
+                //        if (army != null)
+                //        {
+                //            map.cameraFocus = army;
+
+                //            return;
+                //        }
+                //    }                    
+                //}
+            }
+
+            for (int i = 0; i < tabWarFaction; i++)
+            {
+                if (checkRelation(i))
+                {
+                    tabWarFaction = i;
+                    return;
+                }
+            }
+
+            bool checkRelation(int i)
+            {
+                var rel = player.faction.diplomaticRelations[i];
+                if (rel != null && rel.Relation <= RelationType.RelationTypeN3_War)
+                {
+                    var enemy = DssRef.world.faction(i);
+                    if (enemy != null)
+                    {
+                        if (enemy.mainCity != null)
+                        {
+                            map.cameraFocus = enemy.mainCity;
+
+                            return true;
+                        }
+
+                        var army = enemy.armies.First();
+                        if (army != null)
+                        {
+                            map.cameraFocus = army;
+
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            }
+        }
+
         public bool clearSelection()
         {
             bool bClear = false;
@@ -885,7 +1076,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             if (army != null)
             {
                 army.mapExecute();
-                army.moveOrderEffect();
+                
 
                 if (input.inputSource.IsController)
                 {

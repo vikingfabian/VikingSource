@@ -86,7 +86,7 @@ namespace VikingEngine.Voxels
             pencilMoveSpeed = r.ReadSingle();
         }
 
-        public float moveSpeedProperty(bool set, float value)
+        public float moveSpeedProperty(object tag, bool set, float value)
         {
             if (set)
             {

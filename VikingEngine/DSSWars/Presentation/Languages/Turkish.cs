@@ -9,8 +9,172 @@ using VikingEngine.ToGG.HeroQuest.Players.Ai;
 
 namespace VikingEngine.DSSWars.Presentation
 {
+    //Licenesed 2025 Sep 11, "Astro: you can remix our work freely, any platform"
     partial class Turkish : AbsLanguage
     {
+
+        public override string Help_Work_Automatic => "Çalışma otomatiktir";
+        public override string Tutorial_SecondCity => "İkinci bir şehir ele geçir";
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "Otomatikleri atla";
+
+        public override string Resource_WaterReason => "Su, destekleyebileceğiniz birlik sayısını ve üretim kapasitenizi sınırlar";
+        public override string BuildingType_Orchard => "Meyve Bahçesi";
+        public override string BuildingType_ManorLord => "Malikane Lordu";
+        public override string BuildingType_ManorLord_Description => "Gıda işlemeyi açar";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "İlişkileri sonlandır";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "Eşya kaynağı";
+
+        public override string ItemSource_Terrain => "Arazi";
+        public override string ItemSource_Farm => "Çiftlik";
+        public override string ItemSource_CraftStation => "Zanaat istasyonu";
+        public override string ItemSource_Gathering => "Toplayıcılık";
+
+        public override string CityCulture_Nomad => "Göçebe";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "Değişim katsayısı: {0}";
+
+        public override string Hud_Purchase_LowXCost => "Düşük {0} maliyeti";
+
+        public override string WorkQueue_Title => "İş kuyruğu";
+        public override string WorkQueue_Length => "Kalan iş hedefleri";
+        public override string WorkQueue_ActiveWorkers => "Aktif iş ekipleri";
+        public override string WorkQueue_IdleWorkers => "Boşta iş ekipleri";
+
+        public override string WorkTeam_Size => "Köylüler {0} kişilik ekipler halinde çalışır";
+
+        public override string ObjectUi_ViewOnMap => "Haritada göster";
+        public override string ObjectUi_StuckBuildOrders => "Takılan inşa emirleri";
+        public override string Hud_AllArmies => "Tüm ordular";
+
+        public override string Hud_CurrentPage => "Mevcut sayfa";
+        public override string Hud_AllPages => "Tüm sayfalar";
+        public override string Hud_ToAllCities => "Tüm şehirlere";
+        public override string Hud_ToFaction => "Fraksiyona";
+        public override string Hud_FromFaction => "Fraksiyondan";
+        public override string Hud_FactionWide => "Fraksiyon genelindeki ayarı kullan";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "Yerleşim yeri kur";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "Diğer tüm kareleri kaldır";
+
+        //Winter patch 3
+        public override string Hud_Purchase_AllBuildings => "Tüm binaları sıraya al";
+        public override string Hud_Purchase_AllTech => "Tüm teknolojileri sıraya al";
+        public override string BuildingType_CasualBarracks_Description => "Asker toplama süresi kışlalar arasında bölünür";
+
+        //Winter update patch + spring
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+
+        public override string DisplayMode => "Görüntü Modu";
+        public override string DisplayMode_Windowed => "Pencere";
+        public override string DisplayMode_BorderlessFullscreen => "Çerçevesiz Tam Ekran";
+
+        public override string GameSettings_RenderedMouseCursor => "Yazılımsal İmleç"; // "Software cursor" - standard tech term
+        public override string GameSettings_MuteControllerDisconnect => "Gamepad kopma uyarısını sustur";
+
+        public override string Delivery_MaxDistance => "Maks. teslimat mesafesi: {0}";
+        public override string Tutorial_WillTakeAWhile => "Bu biraz sürecek, daha sonra tekrar gel.";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "{0} tamamlanmasını bekle";
+        public override string GameOverResults => "Oyun Geçmişi";
+
+        public override string UnitType_UnclaimedLand => "Sahipsiz Topraklar";
+        public override string UnitType_Settler => "Yerleşimci";
+        public override string UnitType_Settler_Description => "Yeni bir şehir kur";
+        public override string Resource_ConsumedProduced => "Tüketilen/Üretilen";
+        public override string InputActionName_PlaceTarget => "Hedef yerleştir";
+
+        public override string FactionStartSize => "Fraksiyon başlangıç boyutu";
+        public override string FactionStartSize_Full => "Tam";
+        public override string FactionStartSize_OneCity => "Tek şehir";
+        public override string FactionStartSize_Settler => "Tek yerleşimci";
+
+
+        //Winter update
+        public override string Resource_StockpileLimit => "Depo limiti";
+        public override string GameMode_QuickMatch => "Hızlı Eşleşme";
+        public override string GameMode_QuickMatch_Description =>
+            "Daha kısa süren bir oyun formatı. Rakip uluslara karşı topyekün savaşa girin.";
+        public override string Lobby_PlayerCount => "Oyuncu sayısı";
+        public override string Lobby_TwoTeams => "İki takım";
+        public override string Hud_Produce => "Üret:";
+        public override string Tutorial_WaitForWorkerLevel => "İşçi şu seviyeye ulaşana kadar bekle:";
+
+        public override string Tutorial_PracticeOrSchool => "{0} üzerinde pratik yap veya bir {1} kullan";
+        public override string Tutorial_AddTag => "Etiket ekle:";
+        public override string Tutorial_AddPin => "işaret ekle:";
+        public override string Tutorial_SelectMostTrees => "En çok ağaca sahip şehrini bul";
+        public override string Tutorial_SelectACityWithX => "{0} bulunan bir şehir seç";
+
+        public override string Tutorial_Select_NotCapital => ". Bu senin başkentin değil.";
+
+        public override string Tutorial_SetXPriorityToY => "{0} önceliğini {1} olarak ayarla";
+        public override string Tutorial_AdvisorMission => "Danışman görevi";
+
+        public override string Tutorial_AdvisorDescription =>
+            "Esas oyun başladı. Danışman, eğitimine yararlı görevler ekleyecek.";
+
+        public override string Tutorial_EndAdvisor => "Danışman görevini bitir";
+
+        public override string Tutorial_AdvisorCompleteTitle => "Danışman görevi tamamlandı!";
+        public override string Tutorial_AdvisorCompleteMessage => "Güzel günler dileriz!";
+
+        public override string Hud_Search => "Ara";
+
+        public override string DifficultyDescription_ExtremeAggression => "Aşırı saldırganlık";
+
+        public override string MapFilter => "Harita filtresi";
+
+        public override string Settings_TechMultiplier => "Teknoloji araştırma hızı";
+
+        public override string EndScreen_MatchComplete => "Maç sonucu";
+
+        public override string FactionName_DragonGem => "Ejder Mücevheri";
+        public override string FactionName_Tomten => "Tomten";
+        public override string FactionName_Hælfolc => "Hælfolc";
+        public override string FactionName_AerimAngren => "Aerim Angren";
+
+        public override string HUD_NotAvailbleInX => "{0} içerisinde kullanılamaz";
+
+        public override string InputActionName_MiniMap => "Mini-harita";
+       
+        //--
+        public override string Error_SoundInitFailure => "Ses başlatılamadı";
+
+        public override string GameMenu_ControllerDisconnected => "Kontrolcü bağlantısı kesildi";
+
+        public override string Tutorial_HighPriority => "Askerlerin önce yüksek öncelikli görevleri tamamlayacak.";
+
+        public override string BuildingType_Wall_Description => "Duvarlar birliklerini saldırılardan korur ve küçük bir saldırı boost'u sağlar.";
+
+        public override string BuildingType_Wall_Siege => "Kuşatma silahları duvarların savunmasını azaltır.";
+
+        public override string Conscript_BlockChance => "Bir saldırıyı bloklama olasılığı: %{0}";
+
+        public override string Battle_DeclarWarReminder => "Saldırmadan önce savaş ilan etmelisin.";
+
+        //--
+
         /// <summary>
         /// Name of this language
         /// </summary>
@@ -64,7 +228,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Game name and version number
         /// </summary>
-        public override string Lobby_GameVersion => "DSS war party - ver {0}";
+        //public override string Lobby_GameVersion => "DSS war party - ver {0}";
 
         public override string FlagEditor_Description => "Bayrağını oluştur ve ordun için bir renk seç.";
 
@@ -406,12 +570,12 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         ///  In game settings menu.Difficulty option. Block the ability to play the game while paused.
         /// </summary>
-        public override string Settings_AllowPause => "Allow pause and command Oyun duraksayınca emir verebilmek";
+        public override string Settings_AllowPause => "Oyun duraksatılmışken emir verebilme";
 
         /// <summary>
         ///  In game settings menu.Difficulty option. Have bosses that enter the game.
         /// </summary>
-        public override string Settings_BossEvents => "Boss events Baş Düşman etkinliği";
+        public override string Settings_BossEvents => "Baş Düşman etkinliği";
 
         /// <summary>
         ///  In game settings menu.Difficulty option. No Boss description.
@@ -1266,7 +1430,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_DefaultName => "Yapılar";
         public override string BuildingType_WorkerHut => "İşçi kulübesi";
-        //public override string BuildingType_Tavern => "Taverna";
+        public override string BuildingType_Tavern => "Taverna";
         public override string BuildingType_Brewery => "Biracı";
         public override string BuildingType_Postal => "Postane";
         public override string BuildingType_Recruitment => "Asker alım merkezi";
@@ -1856,9 +2020,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_AddX => "Ekle: {0}";
         public override string Hud_Both => "Her ikisi de";
         public override string Hud_Direction => "Yön";
-        public override string MusicIsBroken => "Müzik şu anda kullanılamaz";
-
-
+        
         /// <summary>
         /// 0: object collection type name, 1: number of objects
         /// </summary>
@@ -1936,10 +2098,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Technology_Title => "Teknoloji";
         public override string Technology_ShareField => "Paylaşılan teknoloji alanı";
 
-        public override string Technology_GainByNeigborRelation => "For each neighbor city with the technology. And your relation is {0}: {1} Teknolojiye sahip her komşu şehir için, ilişkiniz";
-        public override string Technology_ForEachMaster => "When a {0} reaches an experience level of {1}, in the technology field: {2} Bir {0}, {2} teknoloji alanında {1} deneyim seviyesine ulaştığında";
-        public override string Technology_CitySpread => "Your cities will share technology when adjacent: Şehirleriniz bitişik olduğunda teknoloji paylaşır: {0}";
-        public override string Technology_CityCapture => "Most technolgies are destroyed when a city is captured in battle Bir şehir savaşta ele geçirildiğinde teknolojilerin çoğu yok edilir.";
+        public override string Technology_GainByNeigborRelation => "{0} Teknolojiye sahip her komşu şehir için, ilişkiniz";
+        public override string Technology_ForEachMaster => "Bir {0}, {2} teknoloji alanında {1} deneyim seviyesine ulaştığında";
+        public override string Technology_CitySpread => "Şehirleriniz bitişik olduğunda teknoloji paylaşır: {0}";
+        public override string Technology_CityCapture => "Bir şehir savaşta ele geçirildiğinde teknolojilerin çoğu yok edilir.";
 
         public override string Technology_AdvancedBuildings => "Gelişmiş Yapılar";
         public override string Technology_AdvancedFarming => "Gelişmiş çiftçilik";
@@ -2218,7 +2380,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Settings_Mode_Spectator => "İzleyici modu";
 
-        public override string Settings_Mode_Spectator_Description => "Arkana yaslan ve izle";
+        //public override string Settings_Mode_Spectator_Description => "Arkana yaslan ve izle";
 
         public override string Automation_AutomationFocus_NoFocus_Description => "Her şeyden biraz inşa eder";
 
@@ -2468,7 +2630,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildCategory_Decoration => "Dekorasyon";
         public override string BuildCategory_Upgrade => "Geliştir";
         public override string Work_NoMines => "Hiç maden yok";
-        
+
         public override string HUD_DisplayName => "Görüntüleme adı";
         public override string HUD_Filter => "Filtre";
         public override string HUD_Scale => "Boyut";
@@ -2498,7 +2660,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Editor_HatGenre_Uniform => "Üniforma";
         public override string Editor_CopyPasteSelectedColor => "Seçili rengi yapıştır";
 
-        public override string Character_Accessories=> "Aksesuar";
+        public override string Character_Accessories => "Aksesuar";
         public override string Character_Hat => "Şapka";
         public override string Character_Head => "Kafa";
         public override string Character_Body => "Gövde";
@@ -2506,11 +2668,11 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Character_Back => "Sırt";
         public override string Character_Face => "Yüz";
 
-        public override string BuildingType_Tavern => "Taverna";
+        //public override string BuildingType_Tavern => "Taverna";
 
         public override string Settings_CraftMultiplier => "Üretim hızı çarpanı";
         public override string Settings_ChildMultiplier_Description => "Yeni işçilerin eklenme hızını artırır";
-        
+
         public override string Settings_CasualControls => "Basit kontrol";
         public override string Settings_CasualControls_Description => "Kilit kararları azaltarak oynanışı basitleştirir. Yalnızca sikke bir kaynak olarak kalır.";
 
@@ -2545,6 +2707,63 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         public override string Tutorial_CasualRecruitSoldiers => "Bir asker grubu alımı yap";
+
+
+        //Shadow update
+        public override string Technology_CannotReassign => "Araştırma tamamlanana kadar Teknoloji yeniden atanamaz";
+        public override string Diplomacy_DeclareWarAgainst => "Şuna savaş ilan edeceksin:";
+        public override string Diplomacy_AllyCount => "Müttefik sayısı";
+        public override string Diplomacy_CostPerAlly => "Maliyet, müttefik başına {0} artar";
+
+        public override string Event_ChanceOfFailure => "%{0} başarısızlık ihtimali";
+        public override string EventMessage_Event_Title => "Olay";
+        public override string EventMessage_TheCohalition => "Koalisyon";
+
+        public override string EventMessage_DarkHorde => "Karanlık Ordu";
+        public override string EventMessage_DarkHordeKiller_Title => "Karanlık Ordu Katili";
+        public override string EventMessage_DarkHordeKiller_Message => "Şampiyon şövalyeler artık hizmetinde";
+
+        public override string Settings_Mode_Spectator_Description => "Ya olanlara seyirci dur ya da İlahi Güçler ile müdahale et.";
+        public override string GodPower => "İlahi Güçler";
+
+        public override string Building_TreeSprout_Description => "Ağaç dik";
+        public override string Building_TreeSprout_Soft => "Yumuşak ağaç fidanı";
+        public override string Building_TreeSprout_Hard => "Sert ağaç fidanı";
+
+        public override string GeneralSetting_SetAll => "Hepsine uygula";
+
+        public override string Hud_All => "Tümü";
+
+        public override string Hud_Previous => "Önceki";
+
+        public override string Hud_EffectWillStack => "Birikecek etkiler";
+
+        public override string Info_WhenFoodRunsOut => "Yemek bittiğinde, şehirler ve ordular onu otomatik olarak karaborsadan satın alır.";
+
+        //Launch test
+
+
+        public override string InputActionName_NextWar => "Savaşmakta olan sıradaki taraf";
+
+        /// <summary>
+        /// These symbols are needed to fit large numbers on the HUD,
+        /// there will be a tooltip to explain what number it represents
+        /// </summary>
+        public override string EngineHud_SymbolFor100 => "c";
+        public override string EngineHud_SymbolFor1000 => "k";
+        public override string EngineHud_SymbolFor10000 => "10k";
+
+        /// <summary>
+        /// When loading files from other players, you won’t get their achievement progress
+        /// </summary>
+        public override string GameMenu_BlockImportAchievements => "İçe aktarılan dosyalardaki başarımları engelle";
+
+        public override string EndScreen_PeaceVictoryQuote => "Kılıçlarımızı bırakalım ve daha iyi bir geleceğe sarılalım";
+
+        public override string VictoryType_DefeatBoss => "Baş düşman yenildi";
+        public override string VictoryType_Domination => "Hakimiyet";
+        public override string VictoryType_WorldPeace => "Dünya barışı";
+
 
 
     }

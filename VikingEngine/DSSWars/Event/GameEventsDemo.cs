@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Event
 {
@@ -28,11 +29,17 @@ namespace VikingEngine.DSSWars.Event
 
             if (!DssRef.state.LocalHost().profile.casualControls)
             {
-                var citiesC = DssRef.state.LocalHost().faction.cities.counter();
-                while (citiesC.Next())
+                //var citiesC = DssRef.state.LocalHost().faction.cities.counter();
+                //while (citiesC.Next())
+                //{
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref DssRef.state.LocalHost().faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    citiesC.sel.res_Palisade.amount += 20;
-                    citiesC.sel.res_food.amount += 500;
+                    citySel.AddGroupedResource(EntityComponent.CityResoureIndex.Palisade, 20);
+                    citySel.AddGroupedResource(EntityComponent.CityResoureIndex.food, 500);
+
+                    //citiesC.sel.res_Palisade.amount += 20;
+                    //citiesC.sel.res_food.amount += 500;
                 }
 
                 var enemy = DssRef.state.LocalHost().getPin("enemy");
@@ -110,7 +117,7 @@ namespace VikingEngine.DSSWars.Event
                
                 Ref.update.AddSyncAction(new SyncAction(()=>
                 {
-                    viewEndScreen(GameEndReason.TimesUp);
+                    triggerGameEnd(GameEndReason.TimesUp, VictoryType.None, null);
                 }));
             }
 
@@ -163,7 +170,7 @@ namespace VikingEngine.DSSWars.Event
                 Ref.update.AddSyncAction(new SyncAction(() =>
                 {
                     DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_Complete_Title, DssRef.lang.Demo_EndInOneMinuteDescription);
-                    new Timer.TimedAction1ArgTrigger_InGame<GameEndReason>(viewEndScreen, victory? GameEndReason.Victory : GameEndReason.Defeat, TimeExt.MinuteInSeconds * 1f);
+                    new Timer.TimedAction3ArgTrigger_InGame<GameEndReason, VictoryType, MatchResult>(triggerGameEnd, victory? GameEndReason.Victory : GameEndReason.Defeat, VictoryType.None, null, TimeExt.MinuteInSeconds * 1f);
                 }));
             }
         }

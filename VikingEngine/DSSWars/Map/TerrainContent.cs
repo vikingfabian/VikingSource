@@ -8,6 +8,13 @@ namespace VikingEngine.DSSWars.Map
 {
     class TerrainContent
     {
+        public const int OrchardSproutMaxSize = 6;
+        public const int OrchardPlucked = OrchardSproutMaxSize + 1;
+        public const int OrchardWatered = OrchardPlucked + 1;
+        public const int OrchardReady = OrchardPlucked + 6;
+        public const int OrchardMax = OrchardReady + 1;
+
+
         public const int SproutMaxSize = 5;
         public const int TreeMaxSize = 100;
         public const int TreeReadySize = 50;
@@ -19,12 +26,12 @@ namespace VikingEngine.DSSWars.Map
         public const int FarmCulture_ReadySize = FarmCulture_MaxSize - 1;
         public const int FarmCulture_HalfSize = FarmCulture_ReadySize / 2;
 
-        public const int PigMaxSize = 3;
+        public const int PigMaxSize = 4;
         public const int PigMaxCount = 4;
         const int PigMaxTotal = PigMaxSize * PigMaxCount;
         public const int PigReady = PigMaxSize * 3;
 
-        public const int HenMaxSize = 2;
+        public const int HenMaxSize = 3;
         public const int HenMaxCount = 6;
         const int HenMaxTotal = HenMaxSize * HenMaxCount;
         public const int HenReady = HenMaxSize * 3;
@@ -70,15 +77,20 @@ namespace VikingEngine.DSSWars.Map
                         }
                     }
                     break;
-
+                case TerrainSubFoilType.TreeApple:
+                case TerrainSubFoilType.TreeBanana:
+                    if (subtile.terrainAmount < OrchardMax &&
+                        subtile.terrainAmount != OrchardPlucked)
+                    {
+                        subtile.terrainAmount++;
+                    }
+                    break;
                 case Map.TerrainSubFoilType.TreeHardSprout:
                     {
                         if (++subtile.terrainAmount > SproutMaxSize)
                         {
                             subtile.SetType(Map.TerrainMainType.Foil, (int)Map.TerrainSubFoilType.TreeHard, 1);
                         }
-
-                        //DssRef.world.subTileGrid.Set(pos, subtile);
                     }
                     break;
 
@@ -94,7 +106,6 @@ namespace VikingEngine.DSSWars.Map
                         subtile.terrainAmount < FarmCulture_MaxSize)
                     {
                         subtile.terrainAmount++;
-                        //DssRef.world.subTileGrid.Set(pos, subtile);
                     }
                     break;
             }

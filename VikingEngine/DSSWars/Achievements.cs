@@ -7,7 +7,9 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
@@ -34,11 +36,11 @@ namespace VikingEngine.DSSWars
         public const float Defeating_victory_strengthLost = 40;
 
         public const int FriendshipAllyCount = 8;
-        double difficultyPerc;
+        public double difficultyPerc;
 
-        public const int LargePopulationCount_Tier1 = 5000;
-        public const int LargePopulationCount_Tier2 = 20000;
-        public const int LargePopulationCount_Tier3 = 50000;
+        public const int LargePopulationCount_Tier1 = 4000;
+        public const int LargePopulationCount_Tier2 = 10000;
+        public const int LargePopulationCount_Tier3 = 16000;
         
 
         public Achievements()
@@ -51,17 +53,23 @@ namespace VikingEngine.DSSWars
         {
             if (Ref.peRnd.ChanceF(0.1f))
             {
+                if (achivementsAreModeBlocked())
+                {
+                    //Modes not available 
+                    return;
+                }
+
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    if (p.faction.militaryStrength > 100)
+                    if (p.faction.militaryStrength > 200)
                     {
                         UnlockAchievement_async(AchievementIndex.military_might_tier1);
 
-                        if (p.faction.militaryStrength > 200)
+                        if (p.faction.militaryStrength > 500)
                         {
                             UnlockAchievement_async(AchievementIndex.military_might_tier2);
 
-                            if (p.faction.militaryStrength > 400)
+                            if (p.faction.militaryStrength > 1500)
                             {
                                 UnlockAchievement_async(AchievementIndex.military_might_tier3);
                             }
@@ -73,18 +81,18 @@ namespace VikingEngine.DSSWars
                         UnlockAchievement_async(AchievementIndex.gold_64bit);
                     }
 
-                    var citiesC = p.faction.cities.counter();
-                    while (citiesC.Next())
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref p.faction.cities, DssRef.world.cities, out City city))
                     {
-                        if (citiesC.sel.workForce.amount > LargePopulationCount_Tier1)
+                        if (city.workForce.amount > LargePopulationCount_Tier1)
                         {
                             UnlockAchievement_async(AchievementIndex.large_population_tier1);
 
-                            if (citiesC.sel.workForce.amount > LargePopulationCount_Tier2)
+                            if (city.workForce.amount > LargePopulationCount_Tier2)
                             {
                                 UnlockAchievement_async(AchievementIndex.large_population_tier2);
 
-                                if (citiesC.sel.workForce.amount > LargePopulationCount_Tier3)
+                                if (city.workForce.amount > LargePopulationCount_Tier3)
                                 {
                                     UnlockAchievement_async(AchievementIndex.large_population_tier3);
                                 }
@@ -95,7 +103,7 @@ namespace VikingEngine.DSSWars
                         int posted_stone = 0;
 
 
-                        var groupsC = citiesC.sel.groups.counter();
+                        var groupsC = city.groups.counter();
                         while (groupsC.Next())
                         {
                             int post = groupsC.sel.GetGuardGroup().assignedToPost_IdAndPosition;
@@ -127,7 +135,6 @@ namespace VikingEngine.DSSWars
                                 if (posted >= 80)
                                 {
                                     UnlockAchievement_async(AchievementIndex.fortress_tier3);
-
                                 }
                             }
 
@@ -196,13 +203,21 @@ namespace VikingEngine.DSSWars
 #if DEBUG
             System.Diagnostics.Debug.WriteLine("[!] Achievement: " + achievement.ToString());
 #endif
+            if (DssRef.state.importedWorld && DssRef.storage.blockImportAchievements)
+            {
+                return;
+            }
+
             if (Ref.steam.isInitialized)
             {
                 Ref.steam.Achievements.SetAchievement((int)achievement);
             }
             else if (PlatformSettings.DebugLevel < BuildDebugLevel.Release)
             {
-                DssRef.state.localPlayers?[0].hud.messages.Add("Achivement", achievement.ToString());
+                if (SteamAchievements.DebugSetAchievement_Local((int)achievement))
+                {
+                    DssRef.state.LocalHost().hud.messages.Add("Achivement", achievement.ToString());
+                }
             }
         }
 
@@ -211,6 +226,11 @@ namespace VikingEngine.DSSWars
 #if DEMO
             return;
 #endif
+            if (DssRef.state.importedWorld && DssRef.storage.blockImportAchievements)
+            {
+                return;
+            }
+
             if (Ref.steam.isInitialized)
             {
                 Ref.steam.Achievements.SetAchievement_async((int)achievement);
@@ -270,16 +290,21 @@ namespace VikingEngine.DSSWars
                     if (allies >= 16)
                     {
                         UnlockAchievement_async(AchievementIndex.friendship_tier3);
-
                     }
                 }
             }
         }
 
+        public bool achivementsAreModeBlocked()
+        {
+            return DssRef.state.PlayType() != GameState.PlayStateType.Play ||
+                DssRef.difficulty.setting_gameMode == GameModeMainType.Peaceful ||
+                DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator;
+        }
+
         public void onVictory(VictoryType victoryType)
         {
-            if (DssRef.difficulty.setting_gameMode == GameModeMainType.Peaceful ||
-                DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
+            if (achivementsAreModeBlocked())
             {
                 //Modes not available 
                 return;
@@ -291,33 +316,33 @@ namespace VikingEngine.DSSWars
                     UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_boss_any, AchievementIndex.victory_boss_50, AchievementIndex.victory_boss_100, AchievementIndex.victory_boss_150);
                     break;
                 case VictoryType.WorldPeace:
-                    UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_worldpeace_any, AchievementIndex.victory_worldpeace_50, AchievementIndex.victory_worldpeace_100, AchievementIndex.victory_worldpeace_150);
+                    UnlockAchievement(AchievementIndex.victory_worldpeace_any);
 
 
                     break;
                 case VictoryType.Domination:
                     UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_mini_domination_sandbox_any, AchievementIndex.victory_mini_domination_sandbox_50, AchievementIndex.victory_mini_domination_sandbox_100, AchievementIndex.victory_mini_domination_sandbox_150);
 
-                    if (DssRef.world.metaData.mapSize >= MapSize.Medium)
-                    {
-                        UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_domination_sandbox_any, AchievementIndex.victory_domination_sandbox_50, AchievementIndex.victory_domination_sandbox_100, AchievementIndex.victory_domination_sandbox_150);  
-                    }
+                    //if (DssRef.world.metaData.mapSize >= MapSize.Medium)
+                    //{
+                    //    UnlockAchievement_onAny_50_100_150(AchievementIndex.victory_domination_sandbox_any, AchievementIndex.victory_domination_sandbox_50, AchievementIndex.victory_domination_sandbox_100, AchievementIndex.victory_domination_sandbox_150);  
+                    //}
 
                     if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
                     {
-                        if (DssRef.world.metaData.mapSize < MapSize.Medium)
-                        {
+                        //if (DssRef.world.metaData.mapSize < MapSize.Medium)
+                        //{
                             UnlockAchievement_onAny_100(AchievementIndex.victory_mini_domination_story_any, AchievementIndex.victory_mini_domination_story_100);
-                        }
-                        else
-                        {
-                            UnlockAchievement_onAny_100(AchievementIndex.victory_domination_story_any, AchievementIndex.victory_domination_story_100);
+                        //}
+                        //else
+                        //{
+                        //    UnlockAchievement_onAny_100(AchievementIndex.victory_domination_story_any, AchievementIndex.victory_domination_story_100);
 
-                            if (DssRef.world.metaData.mapSize >= MapSize.Large)
-                            {
-                                UnlockAchievement_on75(AchievementIndex.massive_victory_domination);
-                            }
-                        }
+                        //    if (DssRef.world.metaData.mapSize >= MapSize.Large)
+                        //    {
+                        //        UnlockAchievement_on75(AchievementIndex.massive_victory_domination);
+                        //    }
+                        //}
                     }
 
                     break;
@@ -328,22 +353,21 @@ namespace VikingEngine.DSSWars
                 UnlockAchievement_onAny_50_100_150(AchievementIndex.no_pause_any, AchievementIndex.no_pause_50, AchievementIndex.no_pause_100, AchievementIndex.no_pause_150);
             }
 
-
             foreach (var p in DssRef.state.localPlayers)
             {
                 if (p.statistics.WarsStartedByYou == 0)
                 {
                     UnlockAchievement_onAny_50_100_150(AchievementIndex.no_war_started_any, AchievementIndex.no_war_started_50, AchievementIndex.no_war_started_100, AchievementIndex.no_war_started_150);
 
-                    if (victoryType == VictoryType.WorldPeace)
-                    {
-                        UnlockAchievement_onAny_100(AchievementIndex.peace_and_love_any, AchievementIndex.peace_and_love_100);
+                    //if (victoryType == VictoryType.WorldPeace)
+                    //{
+                    //    UnlockAchievement_onAny_100(AchievementIndex.peace_and_love_any, AchievementIndex.peace_and_love_100);
 
-                        if (DssRef.world.metaData.mapSize >= MapSize.Large)
-                        {
-                            UnlockAchievement_on75(AchievementIndex.massive_peace_and_love);
-                        }
-                    }
+                    //    if (DssRef.world.metaData.mapSize >= MapSize.Large)
+                    //    {
+                    //        UnlockAchievement_on75(AchievementIndex.massive_peace_and_love);
+                    //    }
+                    //}
                 }
                 else if (p.statistics.WarsStartedByYou >= 10)
                 {
@@ -361,18 +385,7 @@ namespace VikingEngine.DSSWars
                 findHonorGuard(p);
             }
 
-            if (DssRef.state.events.maxWars > 6)
-            {
-                UnlockAchievement(AchievementIndex.warjuggler_tier1);
-                if (DssRef.state.events.maxWars > 9)
-                {
-                    UnlockAchievement(AchievementIndex.warjuggler_tier2);
-                    if (DssRef.state.events.maxWars > 12)
-                    {
-                        UnlockAchievement(AchievementIndex.warjuggler_tier3);
-                    }
-                }
-            }
+            
 
             int hill_Factions = 0;
             var factionsC = DssRef.world.factions.counter();
@@ -477,14 +490,236 @@ namespace VikingEngine.DSSWars
     }
 
     /// <summary>
-    /// i = implemented, t = tested
+    /// i = implemented, t = tested, a = art
     /// </summary>
     enum AchievementIndex
     {
         /// <summary>
+        /// just to test that achivements run
+        /// </summary>
+        first_game,//i, t, a
+
+        /// <summary>
+        /// have 4 allies, then 8, then 16
+        /// </summary>
+        friendship_tier1,//i, t, a
+        friendship_tier2,
+        friendship_tier3,
+
+        /// <summary>
+        /// Declare war on an ally.
+        /// </summary>
+        traitor,//i, t, a
+
+        /// <summary>
+        /// Glory to me: contruct the "sword raising player" statue
+        /// </summary>
+        statue_of_player,//i, t, a
+
+        /// <summary>
+        /// Decorations: Constuct 20 decorative buildings, including at least 4 statues, then 40/8, then 80/16
+        /// </summary>
+        decorations_tier1,//i, t, a
+        decorations_tier2,
+        decorations_tier3,
+
+        /// <summary>
+        /// Large population: Reach a workforce of a 4000 men in one city, then 10k, then 16k
+        /// </summary>
+        large_population_tier1,//i, t, a
+        large_population_tier2,
+        large_population_tier3,
+
+        /// <summary>
+        /// Fortress: Own a city with 20 posted guards, then 40, then 80
+        /// </summary>
+        fortress_tier1,//i, t, a
+        fortress_tier2,
+        fortress_tier3,
+
+        /// <summary>
+        /// Stone Fortress: Own a city with 20 stone wall posted guards, then 40, then 80
+        /// </summary>
+        stone_fortress_tier1,//i, t, a
+        stone_fortress_tier2,
+        stone_fortress_tier3,
+
+        /// <summary>
+        /// Military might: Have an army power greater than 200, then 500, then 1500
+        /// </summary>
+        military_might_tier1,//i, t, a
+        military_might_tier2,
+        military_might_tier3,
+
+        /// <summary>
+        /// Go 64bit: break the 16 bit limit of gold.
+        /// </summary>
+        gold_64bit,//i, t, a
+        
+
+        /// <summary>
+        /// Purge: Wipe out 1 nation, then 4, then 12. story, 75% difficulty
+        /// </summary>
+        purge_nation_tier1,//i, t, a
+        purge_nation_tier2,
+        purge_nation_tier3,
+
+        /// <summary>
+        /// Max out - casual: gain all tech using casual controls
+        /// </summary>
+        maxout_casual,//i, t, a
+
+        /// <summary>
+        ///  fully research all technologies
+        /// </summary>
+        techtree,//i, t, a
+
+        /// <summary>
+        /// The people rise: 16 group army of only folkmen and slingers
+        /// </summary>
+        folkmen_rise,//i, t, a
+
+        /// <summary>
+        /// Vikings: Have a fleet with 16 ships with sea specialization.
+        /// </summary>
+        vikings,//i, t, a
+
+        /// <summary>
+        /// Slaughtered: Loose 100 soldiers in a battle
+        /// </summary>
+        slaughtered,//i, t, a
+
+        /// <summary>
+        /// Defeating victory: Win after loosing 40 military strength
+        /// </summary>
+        defeating_victory,//i, t, a
+
+        /// <summary>
+        /// Rear flanking: Make a cavalry charge against siege weapons
+        /// </summary>
+        rear_flanking,//i, t, a (can be cheesed)
+
+        /// <summary>
+        /// Bane of the barbarians: get the Dark Horde reward 
+        /// </summary>
+        barbarian_bane_any,//i, t, a
+        barbarian_bane_100,
+
+        /// <summary>
+        /// Deliver gold
+        /// </summary>
+        gold_deliver,//i, t, a        
+
+        /// <summary>
+        /// Terminate the first faction to attack you
+        /// </summary>
+        destroy_first_attacker_any,//i, t, a
+        destroy_first_attacker_100,
+
+        /// <summary>
+        /// destroy the mercenaries on sea
+        /// </summary>
+        early_hara_any,//i, t, a
+        early_hara_100,
+
+        /// <summary>
+        /// Destroy servants of dread, before the end boss
+        /// </summary>
+        early_dread_any,//i, t, a
+        early_dread_100,
+
+        /// <summary>
+        /// Destroy the united kingdom, before the end boss
+        /// </summary>
+        early_uk_any,//i, t, a
+        early_uk_100,
+
+        /// <summary>
+        /// Ally with both the "hill" factions
+        /// </summary>
+        worthy_friends,//i, t, a
+
+        /// <summary>
+        /// Reach victory with both the "hill" factions still alive
+        /// </summary>
+        worth_saving_any,//i, t, a
+        worth_saving_100,
+
+
+        /// <summary>
+        /// Produce soldiers with an iron cannon
+        /// </summary>
+        iron_cannon,//i, t, a
+
+        /// <summary>
+        /// The Ottoman - defeat a city with bronze siege cannons
+        /// </summary>
+        ottoman,//i, t, a
+
+        /// <summary>
+        /// Knights: Produce cavalry knights
+        /// </summary>
+        knights,//i, t, a
+
+        /// <summary>
+        /// Men of steel: Produce soldiers with steel sword and armor.
+        /// </summary>
+        men_of_steel,//i, t, a
+
+        /// <summary>
+        /// Knights of Lunimari: Produce an army with fully mithril equipped swordsmen and archers
+        /// </summary>
+        knights_of_lumini,//i, a
+
+        /// <summary>
+        /// reach victory without starting a single war
+        /// </summary>
+        no_war_started_any,//i, t, a
+        no_war_started_50,
+        no_war_started_100,
+        no_war_started_150,
+
+        /// <summary>
+        /// reach victory, and have started (10, 20, 40) wars, min 75%
+        /// </summary>
+        warstarter_tier1,//i, t, a
+        warstarter_tier2,
+        warstarter_tier3,
+
+        /// <summary>
+        ///  Reach victory with honor guards alive. Any difficulty.
+        /// </summary>
+        honorguards_any, //i, t, a
+        honorguards_50,
+        honorguards_100,
+        honorguards_150,
+
+        /// <summary>
+        ///  be in open war with 6 nations, then 9, then 12. Achieved on boss enter.
+        /// </summary>
+        warjuggler_tier1,//i, t, a
+        warjuggler_tier2,
+        warjuggler_tier3,
+
+        /// <summary>
+        /// Reach victory with locked pause command 
+        /// </summary>
+        no_pause_any,//i, t, a
+        no_pause_50,
+        no_pause_100,
+        no_pause_150,
+
+
+        /// <summary>
+        /// Begin the final battle
+        /// </summary>
+        reach_boss_any,//i, t, a
+        reach_boss_100,
+
+        /// <summary>
         /// defeat the boss
         /// </summary>
-        victory_boss_any,//i
+        victory_boss_any,//i, t, a
         victory_boss_50,
         victory_boss_100,
         victory_boss_150,
@@ -492,264 +727,41 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// have good relations with all nations who speaks to you
         /// </summary>
-        victory_worldpeace_any,//i
-        victory_worldpeace_50,
-        victory_worldpeace_100,
-        victory_worldpeace_150,
+        victory_worldpeace_any,//i, t, a
 
         /// <summary>
         /// Grab the whole world to yourself - in sandbox
         /// </summary>
-        victory_mini_domination_sandbox_any,//i
+        victory_mini_domination_sandbox_any,//i, t, a
         victory_mini_domination_sandbox_50,
         victory_mini_domination_sandbox_100,
         victory_mini_domination_sandbox_150,
 
         /// <summary>
-        /// Grab the whole world to yourself - in sandbox, medium world size
-        /// </summary>
-        victory_domination_sandbox_any,//i
-        victory_domination_sandbox_50,
-        victory_domination_sandbox_100,
-        victory_domination_sandbox_150,
-
-        /// <summary>
         /// Grab the whole world to yourself - in story
         /// </summary>
-        victory_mini_domination_story_any,//i
+        victory_mini_domination_story_any,//i, t, a
         victory_mini_domination_story_100,
 
         /// <summary>
-        /// Grab the whole world to yourself - in story, medium world size
+        /// Taste the impossible: Defeat the first attacker in 300% difficulty 
         /// </summary>
-        victory_domination_story_any,//i
-        victory_domination_story_100,
+        destroy_first_attacker_300, //i, a
 
         /// <summary>
-        /// Grab the whole world to yourself - in story, large world size, min 75%
+        /// Win a quick match
         /// </summary>
-        massive_victory_domination,//i
+        quick_victory_any, //i, a
+        quick_victory_50,
+        quick_victory_100,
+        quick_victory_150,
 
         /// <summary>
-        /// reach victory without starting a single war
+        /// Found 1, 3, 9 new cities
         /// </summary>
-        no_war_started_any,//i
-        no_war_started_50,
-        no_war_started_100,
-        no_war_started_150,
-
-        /// <summary>
-        /// reach world peace victory without starting a single war
-        /// </summary>
-        peace_and_love_any,//i
-        peace_and_love_100,
-
-        /// <summary>
-        /// reach world peace victory without starting a single war, large world size, min 75%
-        /// </summary>
-        massive_peace_and_love,//i
-
-        /// <summary>
-        /// reach victory, and have started (10, 20, 40) wars, min 75%
-        /// </summary>
-        warstarter_tier1,//i
-        warstarter_tier2,
-        warstarter_tier3,
-
-        /// <summary>
-        ///  be in open war with 6 nations, then 9, then 12. Achieved on game victory.
-        /// </summary>
-        warjuggler_tier1,//i
-        warjuggler_tier2,
-        warjuggler_tier3,
-
-        /// <summary>
-        /// have 4 allies, then 8, then 16
-        /// </summary>
-        friendship_tier1,//i
-        friendship_tier2,
-        friendship_tier3,
-
-        /// <summary>
-        ///  reach victory, and still have your honor guards
-        /// </summary>
-        honorguards_any, //i
-        honorguards_50,
-        honorguards_100,
-        honorguards_150,
-
-        /// <summary>
-        /// Declare war on an ally.
-        /// </summary>
-        traitor,//i
-
-        /// <summary>
-        /// destroy the mercenaries on sea
-        /// </summary>
-        early_hara,//i
-
-
-        /// <summary>
-        /// Glory to me: contruct the "sword raising player" statue
-        /// </summary>
-        statue_of_player,//i
-
-        /// <summary>
-        /// Decorations: Constuct 20 decorative buildings, including at least 4 statues, then 40/8, then 80/16
-        /// </summary>
-        decorations_tier1,//i
-        decorations_tier2,
-        decorations_tier3,
-
-
-        /// <summary>
-        /// Knights: Produce cavalry knights
-        /// </summary>
-        knights,//i
-
-        /// <summary>
-        /// Men of steel: Produce soldiers with steel sword and armor.
-        /// </summary>
-        men_of_steel,//i
-
-        /// <summary>
-        /// Knights of Lunimari: Produce an army with fully mithril equipped swordsmen and archers
-        /// </summary>
-        knights_of_lumini,//i
-
-        /// <summary>
-        /// Large population: Reach a workforce of a 5000 men in one city, then 20k, then 50k
-        /// </summary>
-        large_population_tier1,//i
-        large_population_tier2,
-        large_population_tier3,
-
-        /// <summary>
-        /// Fortress: Own a city with 20 posted guards, then 40, then 80
-        /// </summary>
-        fortress_tier1,//i
-        fortress_tier2,
-        fortress_tier3,
-
-        /// <summary>
-        /// Stone Fortress: Own a city with 20 stone wall posted guards, then 40, then 80
-        /// </summary>
-        stone_fortress_tier1,//i
-        stone_fortress_tier2,
-        stone_fortress_tier3,
-
-        /// <summary>
-        /// Military might: Have an army power greater than 100, then 200, then 400
-        /// </summary>
-        military_might_tier1,//i
-        military_might_tier2,
-        military_might_tier3,
-
-        /// <summary>
-        /// Go 64bit: break the 16 bit limit of gold.
-        /// </summary>
-        gold_64bit,//i
-
-        /// <summary>
-        /// The Ottoman - defeat a city with bronze siege cannons
-        /// </summary>
-        ottoman,//i
-
-        /// <summary>
-        /// Purge: Wipe out 1 nation, then 4, then 12. story, 75% difficulty
-        /// </summary>
-        purge_nation_tier1,//i
-        purge_nation_tier2,
-        purge_nation_tier3,
-
-        /// <summary>
-        /// Max out - casual: gain all tech using casual controls
-        /// </summary>
-        maxout_casual,//i
-
-        /// <summary>
-        ///  fully research all technologies
-        /// </summary>
-        techtree,//i
-
-        /// <summary>
-        /// The people rise: 16 group army of only folkmen and slingers
-        /// </summary>
-        folkmen_rise,//i
-
-        /// <summary>
-        /// Vikings: Have a fleet with 16 ships with sea specialization.
-        /// </summary>
-        vikings,//i
-
-        /// <summary>
-        /// Slaughtered: Loose 100 soldiers in a battle
-        /// </summary>
-        slaughtered,//i
-
-        /// <summary>
-        /// Defeating victory: Win after loosing 40 military strength
-        /// </summary>
-        defeating_victory,//i
-
-        /// <summary>
-        /// Rear flanking: Make a cavalry charge against siege weapons
-        /// </summary>
-        rear_flanking,//i
-
-        /// <summary>
-        /// Bane of the barbarians: get the Dark Horde reward 
-        /// </summary>
-        barbarian_bane_any,//i
-        barbarian_bane_100,
-
-        /// <summary>
-        /// Deliver gold
-        /// </summary>
-        gold_deliver,//i
-
-        /// <summary>
-        /// Reach victory with locked pause command 
-        /// </summary>
-        no_pause_any,//i
-        no_pause_50,
-        no_pause_100,
-        no_pause_150,
-
-        /// <summary>
-        /// Destroy servants of dread, before the end boss
-        /// </summary>
-        early_dread_any,//i
-        early_dread_100,
-
-        /// <summary>
-        /// Destroy the united kingdom, before the end boss
-        /// </summary>
-        early_uk_any,//i
-        early_uk_100,
-
-        /// <summary>
-        /// just to test that achivements run
-        /// </summary>
-        first_game,//i, t
-
-        /// <summary>
-        /// Terminate the first faction to attack you
-        /// </summary>
-        destroy_first_attacker_any,//i
-        destroy_first_attacker_100,
-
-        /// <summary>
-        /// Reach victory with both the "hill" factions still alive
-        /// </summary>
-        worth_saving_any,//i
-        worth_saving_100,
-
-        /// <summary>
-        /// Ally with both the "hill" factions
-        /// </summary>
-        worthy_friends,//i
-
+        colonizer_tier1,
+        colonizer_tier2,
+        colonizer_tier3,
 
         NUM_ACHIEVEMENTS
     }

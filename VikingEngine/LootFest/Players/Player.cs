@@ -301,7 +301,7 @@ namespace VikingEngine.LootFest.Players
                         break;
                     }
                 }
-                Input.Mouse.Visible = false;
+                Input.Mouse.CenterLockAndHide();//Input.Mouse.Visible = false;
             }
         }
 
@@ -820,7 +820,7 @@ namespace VikingEngine.LootFest.Players
 
         public void updateCameraTargetChasing()
         {
-            if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
             {
                 const float TargetInfront = 1f / AngleSamplesCount;
                 if (hero != null)
@@ -839,10 +839,10 @@ namespace VikingEngine.LootFest.Players
 
                 camGoalAngle = Vector2.Zero;
                 camGoalAngleLength = 0f;
-                for (int i = 0; i < AngleSamplesCount; i++)
+                for (int j = 0; j < AngleSamplesCount; j++)
                 {
-                    camGoalAngle += characterGoalAngleSamples[i].direction;
-                    camGoalAngleLength += characterGoalAngleSamples[i].distance;
+                    camGoalAngle += characterGoalAngleSamples[j].direction;
+                    camGoalAngleLength += characterGoalAngleSamples[j].distance;
                 }
 
                 Vector3 target = hero.Position;

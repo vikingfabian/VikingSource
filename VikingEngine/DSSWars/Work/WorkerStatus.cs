@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall;
+using VikingEngine.DSSWars.EntityComponent;
 
 namespace VikingEngine.DSSWars.Work
 {
@@ -106,6 +107,14 @@ namespace VikingEngine.DSSWars.Work
             xpType1 = (WorkExperienceType)r.ReadByte();
             xpType2 = (WorkExperienceType)r.ReadByte();
             xpType3 = (WorkExperienceType)r.ReadByte();
+
+            if (subversion < 80)
+            {
+                XpLib.AdjustVersion80Skill(ref xpType1);
+                XpLib.AdjustVersion80Skill(ref xpType2);
+                XpLib.AdjustVersion80Skill(ref xpType3);
+            }
+
             xp1 = r.ReadByte();
             xp2 = r.ReadByte();
             xp3 = r.ReadByte();
@@ -171,8 +180,7 @@ namespace VikingEngine.DSSWars.Work
                     return DssRef.lang.WorkerStatus_PickUpResource;
                 case WorkType.Plant:
                     return DssRef.lang.WorkerStatus_Plant;
-                //case WorkType.Till:
-                //    return DssRef.lang.WorkerStatus_Till;
+                
                 case WorkType.Starving:
                 case WorkType.Exit:
                     return DssRef.lang.WorkerStatus_Exit;
@@ -180,6 +188,8 @@ namespace VikingEngine.DSSWars.Work
                     return DssRef.lang.WorkerStatus_TrossReturnToArmy;
                 case WorkType.Demolish:
                     return DssRef.lang.Build_DestroyBuilding;
+                case WorkType.School:
+                    return DssRef.lang.BuildingType_School;
 
                 default:
                     return TextLib.Error;
@@ -205,9 +215,14 @@ namespace VikingEngine.DSSWars.Work
 
         }
 
-        int farmGrowthMultiplier(int terrainAmount, City city)
+        int farmGrowthMultiplier(int terrainAmount, City city, bool upgraded)
         {
-            terrainAmount *= 5;
+            //terrainAmount *= 5;
+            if (upgraded)
+            {
+                terrainAmount *= 2;
+            }
+
             if (city.Culture == CityCulture.FertileGround)
             {
                 return terrainAmount * 2;
@@ -217,7 +232,8 @@ namespace VikingEngine.DSSWars.Work
 
         void workComplete(City city, bool visualUnit)
         {
-            var faction = city.GetFaction();
+            var faction = city.GetFaction_NoChecks();
+            
 
             WorkExperienceType gainXp= WorkExperienceType.NONE;
 
@@ -235,19 +251,21 @@ namespace VikingEngine.DSSWars.Work
             {
                 case WorkType.Eat:
                     int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssRef.difficulty.FoodEnergySett);
-                    city.res_food.amount -= eatAmount;
+
+                    city.AddGroupedResource(CityResoureIndex.food, -eatAmount);
+                    //city.res_food.amount -= eatAmount;
                     city.foodSpending.add(eatAmount);
-                    faction.res_food.onChange(-eatAmount);
+                    //faction.res_food.onChange(-eatAmount);
                     energy += eatAmount * DssRef.difficulty.FoodEnergySett;
                     break;
 
-                
+
 
                 case WorkType.GatherFoil:
                     {
                         //Resource.ItemResourceType resourceType;
-
-                        switch (subTile.GetFoilType())
+                        TerrainSubFoilType foilType = subTile.GetFoilType();
+                        switch (foilType)
                         {
                             case TerrainSubFoilType.TreeSoft:
                                 gatherWood(Resource.ItemResourceType.SoftWood, ref subTile, city);
@@ -264,16 +282,29 @@ namespace VikingEngine.DSSWars.Work
                                 gainXp = WorkExperienceType.WoodWork;
                                 break;
 
+                            case TerrainSubFoilType.TreeApple:
+                            case TerrainSubFoilType.TreeBanana:
+                                carry = new Resource.ItemResource(
+                                        ItemResourceType.Food_G,
+                                        subTile.terrainQuality,
+                                        Convert.ToInt32(processTimeLengthSec),
+                                        farmGrowthMultiplier(DssConst.OrchidFoodAmount, city, false));
+
+                                subTile.terrainAmount = TerrainContent.OrchardPlucked;
+
+                                gainXp = WorkExperienceType.Farm;
+                                break;
+
                             case TerrainSubFoilType.WheatFarm:
                             case TerrainSubFoilType.WheatFarmUpgraded:
                                 carry = new Resource.ItemResource(
                                         ItemResourceType.Wheat,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(subTile.terrainAmount, city));
+                                        farmGrowthMultiplier(DssConst.WheatFoodAmount, city, foilType == TerrainSubFoilType.WheatFarmUpgraded));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
-                                //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
+
                                 gainXp = WorkExperienceType.Farm;
                                 break;
 
@@ -284,7 +315,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Linen,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(subTile.terrainAmount, city));
+                                        farmGrowthMultiplier(DssConst.LinenHarvestAmount, city, foilType == TerrainSubFoilType.LinenFarmUpgraded));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -298,7 +329,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Rapeseed,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(subTile.terrainAmount, city));
+                                        farmGrowthMultiplier(DssConst.RapeSeedFuelAmount, city, foilType == TerrainSubFoilType.RapeSeedFarmUpgraded));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -313,7 +344,7 @@ namespace VikingEngine.DSSWars.Work
                                         ItemResourceType.Hemp,
                                         subTile.terrainQuality,
                                         Convert.ToInt32(processTimeLengthSec),
-                                        farmGrowthMultiplier(subTile.terrainAmount, city));
+                                        farmGrowthMultiplier(DssConst.HempLinenAndFuelAmount, city, foilType == TerrainSubFoilType.HempFarmUpgraded));
 
                                 subTile.terrainAmount = TerrainContent.FarmCulture_Empty;
                                 //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
@@ -325,7 +356,7 @@ namespace VikingEngine.DSSWars.Work
                             case TerrainSubFoilType.Stones:
                                 int amount = 4;
                                 if (workBonus > 0)
-                                { 
+                                {
                                     amount = MathExt.AddPercentage(amount, workBonus);
                                 }
 
@@ -352,29 +383,29 @@ namespace VikingEngine.DSSWars.Work
                     }
                     break;
 
-                //case WorkType.Till:
-                //    if (subTile.mainTerrain == TerrainMainType.DefaultLand ||
-                //        subTile.mainTerrain == TerrainMainType.Destroyed)
-                //    {
-                //        subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.WheatFarm, 0);
-                //        DssRef.world.subTileGrid.Set(subTileEnd, subTile);
-                //        gainXp = WorkExperienceType.Farm;
-                //    }
-
-                //    // work = WorkType.Idle;
-                //    break;
-
                 case WorkType.Plant:
-                    if (subTile.terrainAmount == TerrainContent.FarmCulture_Empty)
-                    {
-                        subTile.terrainAmount++;
-                        //DssRef.world.subTileGrid.Set(subTileEnd, subTile);
-                        city.res_water.amount -= DssConst.PlantWaterCost;
-
-                        gainXp = WorkExperienceType.Farm;
+                    bool available;
+                    int waterCost;
+                    switch ((TerrainSubFoilType)subTile.subTerrain)
+                    {                       
+                        case TerrainSubFoilType.TreeApple:
+                        case TerrainSubFoilType.TreeBanana:
+                            available = subTile.terrainAmount == TerrainContent.OrchardPlucked;
+                            waterCost = DssConst.OrchardWaterCost;
+                            break;
+                        default:
+                            available = subTile.terrainAmount == TerrainContent.FarmCulture_Empty;
+                            waterCost = DssConst.PlantWaterCost;
+                            break;
                     }
 
-                    //work = WorkType.Idle;
+                    if (available)
+                    {
+                        subTile.terrainAmount++;
+                        city.res_water.amount -= waterCost;
+
+                        gainXp = WorkExperienceType.Farm;                        
+                    }
                     break;
 
                 case WorkType.PickUpResource:
@@ -453,10 +484,12 @@ namespace VikingEngine.DSSWars.Work
                     if (visualUnit)
                     {
                         Vector3 pos = VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f);
-                        new ResourceEffect(convert1.type, convert1.amount, pos, ResourceEffectType.Add);
+                        /*new ResourceEffect*/
+                        SpriteText3D.GetOrCreate().init(convert1.type, convert1.amount, pos, ResourceEffectType.Add);
                         if (convert2.amount > 0)
                         {
-                            new ResourceEffect(convert2.type, convert2.amount, VectorExt.AddY(pos, 0.08f), ResourceEffectType.Add);
+                            /*new ResourceEffect*/
+                            SpriteText3D.GetOrCreate().init(convert2.type, convert2.amount, VectorExt.AddY(pos, 0.08f), ResourceEffectType.Add);
                         }
                     }
 
@@ -548,7 +581,7 @@ namespace VikingEngine.DSSWars.Work
                         }
                         if (add == 0)
                         {
-                            add = bp1.tryPayResources(city);
+                            add = bp1.payResources(city);
                         }
                         gainXp = bp1.experienceType;
                         
@@ -590,6 +623,7 @@ namespace VikingEngine.DSSWars.Work
                                     break;
 
                                 case ItemResourceType.PaddedArmor:
+                                case ItemResourceType.HeavyPaddedArmor:
                                     if (city.Culture == CityCulture.Weavers)
                                     {
                                         add += 1;
@@ -598,6 +632,8 @@ namespace VikingEngine.DSSWars.Work
 
                                 case ItemResourceType.IronArmor:
                                 case ItemResourceType.HeavyIronArmor:
+                                case ItemResourceType.LightPlateArmor:
+                                case ItemResourceType.FullPlateArmor:
                                     if (city.Culture == CityCulture.Armorsmith)
                                     {
                                         add += 1;
@@ -605,10 +641,18 @@ namespace VikingEngine.DSSWars.Work
                                     break;
                                 case ItemResourceType.Bronze:
                                 case ItemResourceType.BronzeSword:
-                                case ItemResourceType.BronzeArmor:
+                                
                                     if (city.Culture == CityCulture.BronzeCasters)
                                     {
                                         add *= 2;
+                                    }
+                                    break;
+
+                                case ItemResourceType.BronzeArmor:
+                                    if (city.Culture == CityCulture.Armorsmith ||
+                                        city.Culture == CityCulture.BronzeCasters)
+                                    {
+                                        add += 1;
                                     }
                                     break;
 
@@ -618,6 +662,10 @@ namespace VikingEngine.DSSWars.Work
                                 case ItemResourceType.SilverCoin:
                                 case ItemResourceType.ElfCoin:
                                     alwaysNeedMore = true;
+                                    break;
+
+                                case ItemResourceType.TwoHandSword:
+                                    lib.DoNothing();
                                     break;
                             }
 
@@ -639,7 +687,7 @@ namespace VikingEngine.DSSWars.Work
 
                             if (visualUnit)
                             {
-                                new ResourceEffect(item, add, VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f), ResourceEffectType.Add);
+                                /*new ResourceEffect*/SpriteText3D.GetOrCreate().init(item, add, VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f), ResourceEffectType.Add);
                             }
                         }
                     }
@@ -647,13 +695,19 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.Upgrade:
                 case WorkType.Build:
-                   
+#if DEBUG
+                    if (BuildLib.BuildOptions[workSubType].buildType == BuildAndExpandType.OrchardApple)
+                    {
+                        lib.DoNothing();
+                    }
+#endif
                     if (orderIsActive(city))
                     {
                         bool upgrade = work == WorkType.Upgrade;
                         var build = BuildLib.BuildOptions[workSubType];
                         if (build.execute_async(city, subTileEnd, ref subTile, upgrade))
                         {
+
                             EditSubTile edit = new EditSubTile(subTileEnd, subTile, true, true, false);
                             edit.Submit();
                         }
@@ -758,20 +812,73 @@ namespace VikingEngine.DSSWars.Work
                     switch (lowIx)
                     {
                         case 0:
-                            xpType1 = type;
-                            xp1 = 0;
-                            addTo(ref type, ref xp1, add);
+                            if (shouldReplace(xpType1, xp1, type))
+                            {
+                                xpType1 = type;
+                                xp1 = 0;
+                                addTo(ref type, ref xp1, add);
+                            }
                             break;
                         case 1:
-                            xpType2 = type;
-                            xp2 = 0;
-                            addTo(ref type, ref xp2, add); 
+                            if (shouldReplace(xpType1, xp2, type))
+                            {
+                                xpType2 = type;
+                                xp2 = 0;
+                                addTo(ref type, ref xp2, add);
+                            }
                             break;
                         case 2:
-                            xpType3 = type;
-                            xp3 = 0;
-                            addTo(ref type, ref xp3, add); 
+                            if (shouldReplace(xpType1, xp3, type))
+                            {
+                                xpType3 = type;
+                                xp3 = 0;
+                                addTo(ref type, ref xp3, add);
+                            }
                             break;
+                    }
+
+                    bool shouldReplace(WorkExperienceType previous, byte previousXp, WorkExperienceType newXp)
+                    {
+                        if (previous == WorkExperienceType.NONE)
+                        {
+                            return true;
+                        }
+                        if (newXp == WorkExperienceType.Transport)
+                        {
+                            return false;
+                        }
+
+                        if (previous == WorkExperienceType.HouseBuilding &&
+                            skillPriority(newXp) <= 1)
+                        {
+                            //Extra protection for building skill
+                            return false;
+                        }
+
+                        //Expert levels cannot be replaced with low priority skills (skills that are never required like animal care)
+                        return previousXp < DssConst.WorkLevel_Expert || skillPriority(newXp) >= skillPriority(previous);
+                    }
+
+                    int skillPriority(WorkExperienceType experienceType)
+                    {
+                        switch (experienceType)
+                        {
+                            case WorkExperienceType.Transport:
+                                return 0;
+
+                            case WorkExperienceType.AnimalCare:
+                            case WorkExperienceType.Cook:
+                            case WorkExperienceType.Farm:
+                            case WorkExperienceType.Mining:
+                            case WorkExperienceType.StoneCutter:
+                                return 1;
+
+                            default: 
+                                return 2;
+
+                            case WorkExperienceType.HouseBuilding:
+                                return 3;
+                        }
                     }
                 }
             }
@@ -780,8 +887,8 @@ namespace VikingEngine.DSSWars.Work
 
             void addTo(ref XP.WorkExperienceType type, ref byte xp, byte add = 0)
             {
-                bool expert = false;
-                bool master = false;
+                //bool expert = false;
+                //bool master = false;
                 ExperienceLevel level = XpLib.ToLevel(xp);
 
                 if (add == 0)
@@ -790,25 +897,35 @@ namespace VikingEngine.DSSWars.Work
                     {
                         case ExperienceLevel.Beginner_1:
                             add = WorkLib.WorkToXPTable[(int)type];
-                            add += 1;
+                            add += 2;
+                            break;
+                        case ExperienceLevel.Practitioner_2:
+                            add = WorkLib.WorkToXPTable[(int)type];
                             break;
                         case ExperienceLevel.Expert_3:
-                            expert = true;
+                            //expert = true;
                             if (Ref.peRnd.Chance(0.5))
                             {
                                 add = WorkLib.WorkToXPTable[(int)type];
                             }
+                            else
+                            {
+                                return;
+                            }
                             break;
                         case ExperienceLevel.Master_4:
-                            master = true;
+                            //master = true;
                             if (Ref.peRnd.Chance(0.1))
                             {
                                 add = WorkLib.WorkToXPTable[(int)type];
                             }
+                            else
+                            {
+                                return;
+                            }
                             break;
                         case ExperienceLevel.Legendary_5:
-                            //add = 0;
-                            break;
+                            return;
                     }
                 }
                 xp += add;
@@ -820,16 +937,6 @@ namespace VikingEngine.DSSWars.Work
                         level>= ExperienceLevel.Master_4 ? DssConst.TechnologyGain_MasterLevelUp : DssConst.TechnologyGain_AnyLevelUp, 
                         TechnologyGainReason.WorkerLevel);
                 }
-                //if (xp >= DssConst.WorkLevel_Expert &&
-                //    !expert)
-                //{
-                //    city.onLevelUp(type, DssConst.TechnologyGain_Expert);
-                //}
-                //else if (xp >= DssConst.WorkLevel_Master &&
-                //    !master)
-                //{
-                //    city.onLevelUp(type, DssConst.TechnologyGain_Master);
-                //}
             }
         }
 
@@ -1067,6 +1174,12 @@ namespace VikingEngine.DSSWars.Work
                         case TerrainSubFoilType.DryWood:
                             timeSec = DssConst.WorkTime_GatherFoil_DryWood;
                             break;
+
+                        case TerrainSubFoilType.TreeApple:
+                        case TerrainSubFoilType.TreeBanana:
+                            timeSec = DssConst.WorkTime_PluckOrchards;
+                            break;
+
                         case TerrainSubFoilType.WheatFarm:
                         case TerrainSubFoilType.WheatFarmUpgraded:
                         case TerrainSubFoilType.LinenFarm:

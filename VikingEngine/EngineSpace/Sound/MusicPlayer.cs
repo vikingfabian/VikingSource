@@ -35,6 +35,7 @@ namespace VikingEngine.Sound
         public bool useDelay = true;
 
         NVorbisPlayer player;
+        public bool randomPlayList = true;
 
         public MusicPlayer()
         {
@@ -85,19 +86,34 @@ namespace VikingEngine.Sound
             {
                 resetPlayList();
             }
+            shuffleSongsLeftToPlay--;
 
             int rndIx;
-            int loops = 0;
-            do
+
+            if (randomPlayList)
             {
-                rndIx = random.Int(playList.Count);
-                if (++loops > playList.Count * 8)
+                int loops = 0;
+                do
                 {
-                    resetPlayList();
-                    loops = 0;
+                    rndIx = random.Int(playList.Count);
+                    if (++loops > playList.Count * 8)
+                    {
+                        resetPlayList();
+                        loops = 0;
+                    }
+                } while (playList[rndIx].played);
+            }
+            else
+            {
+                for (rndIx = 0; rndIx < playList.Count; rndIx++)
+                {
+                    if (!playList[rndIx].played)
+                    {
+                        break;
+                    }
                 }
-            } while (playList[rndIx].played);
-            
+            }
+
             SongData songdata = playList[rndIx];
             songdata.played = true;
             nextSongData = songdata;
@@ -121,8 +137,9 @@ namespace VikingEngine.Sound
             }
         }
 
-        public void SetPlaylist(List<SongData> playList, bool startPlaying)
+        public void SetPlaylist(List<SongData> playList, bool startPlaying, bool random = true)
         {
+            randomPlayList = random;
             this.playList = playList;
             shuffleSongsLeftToPlay = playList.Count;
             if (startPlaying)
@@ -250,7 +267,7 @@ namespace VikingEngine.Sound
                 else
                 {
                     currentSong = nextSongData;
-                    playTime.MilliSeconds = PlayMusic(nextSongData, currentSong.seamlessLoop);
+                    playTime.MilliSeconds = PlayMusic(nextSongData);
 
                     if (currentSong.seamlessLoop)
                     {
@@ -332,7 +349,7 @@ namespace VikingEngine.Sound
 
         public PlaySongState PlaySongState { get { return playSongState; } }
 
-        public int PlayMusic(SongData song, bool loop)
+        public int PlayMusic(SongData song)
         {
             if (!string.IsNullOrEmpty( song.filePath))
             {
@@ -343,7 +360,7 @@ namespace VikingEngine.Sound
 
                     //currentMedia = s;
                     currentMedia = song;
-                    player.IsRepeating = loop;
+                    player.IsRepeating = song.seamlessLoop;
                     //FilePath path = new FilePath(
                     string path = Engine.LoadContent.Content.RootDirectory + FilePath.Dir + song.filePath + ".ogg";
 
@@ -435,21 +452,24 @@ namespace VikingEngine.Sound
 
     class SongData
     {
+        //public bool play = true;
         public string filePath;
         public bool seamlessLoop;
         public float volume;
         public bool played;
         public string name;
-        Song storedSong;
+        public string artist;
+        //Song storedSong;
 
         public SongData(string filePath, bool seamlessLoop, float volume)
-            : this(filePath, null, seamlessLoop, volume)
+            : this(filePath, null, null, seamlessLoop, volume)
         { }
 
-        public SongData(string filePath, string name, bool seamlessLoop, float volume)
+        public SongData(string filePath, string name, string artist, bool seamlessLoop, float volume)
         {
             this.filePath = filePath;
             this.name = name;
+            this.artist = artist;
             this.seamlessLoop = seamlessLoop;
             this.volume = volume;
             played = false;
@@ -457,7 +477,12 @@ namespace VikingEngine.Sound
 
         public void LoadAndStore()
         {
-            storedSong = Engine.LoadContent.Content.Load<Song>(filePath);
+            //storedSong = Engine.LoadContent.Content.Load<Song>(filePath);
+        }
+
+        public int Hash()
+        {
+            return name.GetDeterministicHashCode();
         }
 
         public void PlayStored()

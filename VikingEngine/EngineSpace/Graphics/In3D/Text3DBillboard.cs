@@ -87,7 +87,7 @@ namespace VikingEngine.Graphics
         public override void DeleteMe()
         {
             base.DeleteMe();
-            renderTarget.renderTarget.Dispose();
+            renderTarget?.renderTarget.Dispose();
             renderTarget = null;
         }
     }

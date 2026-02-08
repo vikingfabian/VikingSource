@@ -33,7 +33,7 @@ namespace VikingEngine
             StartProgram.LootFest3;
 #endif
 
-        public static readonly bool Debug_SteamAPI = true;
+        public static readonly bool Debug_SteamAPI = false;
 
         public static readonly bool Debug_SteamStats = false;
 
@@ -80,6 +80,8 @@ namespace VikingEngine
         const bool Debug_DebugOptions = true;
 
         public const int SteamNetworkVersion = 101; //fungerar som nätverks spärr mellan versioner
+
+        
 
         public static readonly bool RunningWindows =
 #if PCGAME

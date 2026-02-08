@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.PickUp;
+using VikingEngine.ToGG.HeroQuest.Display;
 
 namespace VikingEngine.Input
 {
@@ -31,6 +34,9 @@ namespace VikingEngine.Input
         float Value { get; }
         SpriteName Icon { get; }
         void ListIcons(List<SpriteName> list);
+
+        void ToRichContent(RichBoxContent content);
+
         string ButtonName { get; }
         bool IsMouse { get; }
 
@@ -139,6 +145,12 @@ namespace VikingEngine.Input
         public bool UpEvent { get { return false; } }
         public float Value { get { return 0f; } }
         public SpriteName Icon { get { return SpriteName.MissingImage; } }
+
+        public void ToRichContent(RichBoxContent content)
+        {
+            content.Add(new RbImage(SpriteName.NO_IMAGE));
+        }
+
         public int buttonIndex { get { return -1; } }
         public int ControllerIndex { get { return -1; } set { } }
         
@@ -200,6 +212,14 @@ namespace VikingEngine.Input
             button1.ListIcons(list);
             button2.ListIcons(list);
         }
+
+        public void ToRichContent(RichBoxContent content)
+        {
+            button1.ToRichContent(content);
+            content.Add(new RbText(", "));
+            button2.ToRichContent(content);
+        }
+
         public string ButtonName { get { return button1.ButtonName + ", " + button2.ButtonName; } }
         public bool IsMouse { get { return button1.IsMouse || button2.IsMouse; } }
 
@@ -370,6 +390,17 @@ namespace VikingEngine.Input
             button1.ListIcons(list);
             //button2.ListIcons(list);
         }
+        public void ToRichContent(RichBoxContent content)
+        {
+            button1.ToRichContent(content);
+            content.Add(new RbText(", "));
+            button2.ToRichContent(content);
+            content.Add(new RbText(", "));
+            button3.ToRichContent(content);
+            content.Add(new RbText(", "));
+            button4.ToRichContent(content);
+
+        }
         public string ButtonName { get { return button1.ButtonName; } }
         public bool IsMouse { get { return button1.IsMouse; } }
 
@@ -419,6 +450,7 @@ namespace VikingEngine.Input
             plusKeyIcon = plusKey.Icon;
         }
 
+
         public void write(System.IO.BinaryWriter w)
         {
             w.Write((byte)DirectionalMapType.KeyPlusDirectionalMap);
@@ -449,6 +481,13 @@ namespace VikingEngine.Input
         {
             list.Add(altKey.Icon);
             list.Add(key.Icon);
+        }
+
+        public void ToRichContent(RichBoxContent content)
+        {
+            altKey.ToRichContent(content);
+            content.Add(new RbText("+"));
+            key.ToRichContent(content);
         }
 
         public bool IsDown { get { return altKey.IsDown && key.IsDown; } }
@@ -632,7 +671,12 @@ namespace VikingEngine.Input
         {
             list.Add(GetKeySprite(key));
         }
-        
+
+        public void ToRichContent(RichBoxContent content)
+        {
+            content.Add(new RbImage(GetKeySprite(key)));
+        }
+
         public bool IsDown { get { return Keyboard.IsKeyDown(key); } }
         public bool DownEvent { get { 
             if (key == Keys.Tab && Input.Keyboard.Shift) 
@@ -736,6 +780,11 @@ namespace VikingEngine.Input
             list.Add(Icon);
         }
 
+        public void ToRichContent(RichBoxContent content)
+        {
+            content.Add(new RbImage(Icon));
+        }
+
         public void write(System.IO.BinaryWriter w)
         {
             w.Write((byte)ButtonMapType.Mouse);
@@ -755,7 +804,18 @@ namespace VikingEngine.Input
     struct XboxButtonMap : IButtonMap
     {
         public bool IsDown { get { return Input.XInput.Instance(controllerIx).IsButtonDown(button); } }
-        public bool DownEvent { get { return Input.XInput.Instance(controllerIx).KeyDownEvent(button); } }
+        public bool DownEvent 
+        { 
+            get
+            {
+                var ins = Input.XInput.Instance(controllerIx);
+                if (ins != null)
+                {
+                    return ins.KeyDownEvent(button);
+                }
+                return false;
+            }
+        }
 
         public bool DownEvent_AnyInstance
         {
@@ -765,7 +825,19 @@ namespace VikingEngine.Input
             }
         }
 
-        public bool UpEvent { get { return Input.XInput.Instance(controllerIx).KeyUpEvent(button); } }
+        public bool UpEvent
+        {
+            get
+            {
+                var ins = Input.XInput.Instance(controllerIx);
+                if (ins != null)
+                {
+                    return ins.KeyUpEvent(button);
+                }
+                return false;
+            }
+        }
+
         public float Value
         {
             get
@@ -807,6 +879,11 @@ namespace VikingEngine.Input
         public void ListIcons(List<SpriteName> list)
         {
             list.Add(Icon);
+        }
+
+        public void ToRichContent(RichBoxContent content)
+        {
+            content.Add(new RbImage(XboxInputLib.ButtonSprite(button)));
         }
 
         public void write(System.IO.BinaryWriter w)
@@ -916,6 +993,21 @@ namespace VikingEngine.Input
             }
 
             list.Add(Icon);
+        }
+
+        public void ToRichContent(RichBoxContent content)
+        {
+            if (leftTrigger)
+            {
+                content.Add(new RbImage(SpriteName.ButtonLT));
+                content.Add(new RbText("+"));
+            }
+            if (rightTrigger)
+            {
+                content.Add(new RbImage(SpriteName.ButtonRT));
+                content.Add(new RbText("+"));
+            }
+            content.Add(new RbImage(XboxInputLib.ButtonSprite(button)));
         }
 
         public override bool Equals(object obj)

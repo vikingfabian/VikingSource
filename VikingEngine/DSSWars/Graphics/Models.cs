@@ -30,6 +30,8 @@ namespace VikingEngine.DSSWars
 
         public Texture2D[] waterTextures;
         public Texture2D[] seaTextures;
+        //public Texture2D[] waterEdgeTextures;
+        public Stack<Mesh> shipWaveModels = new Stack<Mesh>(64);
 
         public Models()
         {
@@ -49,6 +51,7 @@ namespace VikingEngine.DSSWars
             {
                 seaTextures[i - 1] = Ref.main.Content.Load<Texture2D>(DssLib.ContentDir + "seatex_i" + i);
             }
+
             //RAW
             List<VoxelModelName> loadRawModels = new List<VoxelModelName>
             {
@@ -109,6 +112,7 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modweapon_mithrilsword,
                 VoxelModelName.modweapon_rifle,
                 VoxelModelName.modweapon_sharpstick,
+                VoxelModelName.modweapon_settler,
                 VoxelModelName.modweapon_shortbow,
                 VoxelModelName.modweapon_sling,
                 VoxelModelName.modweapon_spear,
@@ -166,6 +170,8 @@ namespace VikingEngine.DSSWars
 
 
             //VOXEL
+            loadVoxelModel(VoxelModelName.ErrorCube, false);
+            loadVoxelModel(VoxelModelName.unclaimed_icon, false);
             loadVoxelModel(VoxelModelName.war_town1, false);
             loadVoxelModel(VoxelModelName.war_town2, false);
             loadVoxelModel(VoxelModelName.war_town3, false);
@@ -183,6 +189,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.city_stonetower, false);
 
             loadVoxelModel(VoxelModelName.city_stonehall, false);
+            loadVoxelModel(VoxelModelName.city_tenthut, false);
             loadVoxelModel(VoxelModelName.city_workerhut, false);
             loadVoxelModel(VoxelModelName.city_workerhut_long, false);
             loadVoxelModel(VoxelModelName.city_guard_house, false);
@@ -350,6 +357,11 @@ namespace VikingEngine.DSSWars
             return instance;        
         }
 
+        public Graphics.VoxelModelInstance ErrorModel(float scale = 1f)
+        {
+            return new Graphics.VoxelModelInstance(voxelModels[VoxelModelName.ErrorCube], false) { scale = new Vector3(scale) };
+        }
+
         public Graphics.VoxelModelInstance ModelInstance(            
             VoxelModelName name,
             bool detailLayer,
@@ -376,7 +388,7 @@ namespace VikingEngine.DSSWars
                 {                    
                     if (!detailLayer)
                     {
-                        int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
+                        int lay = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.MidLayer;
 
                         if (async)
                         {

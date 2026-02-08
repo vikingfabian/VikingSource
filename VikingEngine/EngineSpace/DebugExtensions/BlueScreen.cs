@@ -6,7 +6,7 @@ using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using Microsoft.Xna.Framework.Input;
 using VikingEngine.HUD;
-using Valve.Steamworks;
+
 using VikingEngine.SteamWrapping;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Data;
@@ -230,16 +230,16 @@ namespace VikingEngine.DebugExtensions
 
         public static void TryCatch(Action method, TryMethodType methodType)
         {
-            if (PlatformSettings.BlueScreen || Engine.Screen.PcTargetFullScreen)
+            if (PlatformSettings.BlueScreen || Engine.Screen.PcDisplayMode == WindowDisplayMode.HardwareFullscreen)
             {
                 try
                 {
                     method();
                 }
-                catch (AbsSteamException e) 
-                {
-                    new SteamBlueScreen(ErrorMessage(e, methodType));
-                }
+                //catch (AbsSteamException e) 
+                //{
+                //    new SteamBlueScreen(ErrorMessage(e, methodType));
+                //}
                 catch (Exception e)
                 {
                     new BlueScreen(ErrorMessage(e, methodType));
@@ -258,6 +258,12 @@ namespace VikingEngine.DebugExtensions
         {
             if (ThreadException != null)
             {
+#if DEBUG
+                if (!PlatformSettings.BlueScreen)
+                {
+                    throw new Exception();
+                }
+#endif
                 if (Ref.gamestate is BlueScreen == false)
                 {
                     new BlueScreen(ErrorMessage(ThreadException, TryMethodType.A));
@@ -265,7 +271,7 @@ namespace VikingEngine.DebugExtensions
                 ThreadException = null;
             }
         }
-        
+
         public static string ErrorMessage(Exception e, TryMethodType methodType)
         {
             string gametypeCode = "-";
@@ -291,6 +297,10 @@ namespace VikingEngine.DebugExtensions
             if (methodType == TryMethodType.U)
             {
                 type += " N" + ((int)Network.NetLib.PacketType).ToString();
+            }
+            if (!Ref.steam.isInitialized)
+            {
+                type += "-P";
             }
 
             string stacktrace = string.Empty;

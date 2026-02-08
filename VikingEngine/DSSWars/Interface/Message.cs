@@ -129,8 +129,15 @@ namespace VikingEngine.DSSWars.Interface
         {
             this.player = player;
         }
+
+        bool highEconomyWarningBlock()
+        { 
+            return DssRef.storage.gameRuleset.centralGold && player.faction.money.GetGold() > DssConst.Gold_RichStatus;
+        }
+
         public void blockFoodWarning(bool block)
         {
+            //Blocked during tutorial
             if (block)
             {
                 cityLowFoodMessageCooldown.start(new TimeLength(100000));
@@ -157,6 +164,10 @@ namespace VikingEngine.DSSWars.Interface
         public void onGameStart()
         { 
             screenAreaBottom = player.playerData.view.DrawArea.Bottom + Engine.Screen.SmallIconSize;
+            //if (player.hud.head.Right > player.playerData.view.DrawArea.Width / 2)
+            //{
+                
+            //}
         }
 
         
@@ -172,7 +183,8 @@ namespace VikingEngine.DSSWars.Interface
 
         public void cityLowFoodMessage(City city)
         {   
-            if (DssRef.storage.runTutorial_1short_2normal == 0 && 
+            if (!highEconomyWarningBlock() &&
+                DssRef.storage.runTutorial == false && 
                 cityLowFoodMessageCooldown.TimeOut())
             {
                 cityLowFoodMessageCooldown.start();
@@ -196,7 +208,8 @@ namespace VikingEngine.DSSWars.Interface
 
         public void armyLowFoodMessage(Army army)
         {
-            if (DssRef.storage.runTutorial_1short_2normal == 0 &&
+            if (!highEconomyWarningBlock() &&
+                DssRef.storage.runTutorial == false &&
                 armyLowFoodMessageCooldown.TimeOut())
             {
                 armyLowFoodMessageCooldown.start();
@@ -237,14 +250,18 @@ namespace VikingEngine.DSSWars.Interface
             Add(content);
         }
 
-        public void Add(RichBoxContent content)
+        public void Add(RichBoxContent content, bool vibrate = true)
         {
             if (StartupSettings.BlockMessages)
                 return;
 
             SoundLib.message.Play(Pan.Right);
+            if (vibrate)
+            {
+                player.gameControls.input.Vibrate(300, 0, 1);
+            }
 
-            if (player.hud.detailLevel == HudDetailLevel.Minimal)
+            if (player.hud.maximizedHud == false)
             {
                 RichBoxContent compact = new RichBoxContent();
                 foreach (var m in content)

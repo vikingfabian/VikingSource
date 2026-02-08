@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                     area.Size, ImageLayers.Bottom5));
             }
 
-            updateImageGrid();
+            
 
             pointer = new Image(SpriteName.ColorPickerCircle,
                     paintArea.Center, Screen.SmallIconSizeV2, ImageLayers.Lay1_Front, true);
@@ -98,6 +98,8 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
             setColorType(ProfileColorType.Main);
             //new Timer.AsynchActionTrigger(load_asynch, true);
             new Interface.EditorBackground();
+
+            updateImageGrid();
         }
         
         void setControllerMode(bool value)
@@ -204,27 +206,29 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                     hud.refresh();
                 }
 
-                foreach (var ins in XInput.controllers)
+                if (XInput.controllers != null)
                 {
-                    if (ins.Connected)
+                    foreach (var ins in XInput.controllers)
                     {
-                        if (ins.bLeftStick)
+                        if (ins.Connected)
                         {
-                            pointer.position += 0.4f * paintArea.Width * Ref.DeltaGameTimeSec * ins.JoyStickValue(ThumbStickType.Left).Direction;
-                            pointer.position = paintArea.KeepPointInsideBound_Position(pointer.position);
-                        }
+                            if (ins.bLeftStick)
+                            {
+                                pointer.position += 0.4f * paintArea.Width * Ref.DeltaGameTimeSec * ins.JoyStickValue(ThumbStickType.Left).Direction;
+                                pointer.position = paintArea.KeepPointInsideBound_Position(pointer.position);
+                            }
 
-                        if (ins.IsButtonDown(Buttons.A))
-                        {
-                            paintInput(pointer.position, true, false);
-                        }
-                        else if (ins.IsButtonDown(Buttons.X))
-                        {
-                            paintInput(pointer.position, true, true);
+                            if (ins.IsButtonDown(Buttons.A))
+                            {
+                                paintInput(pointer.position, true, false);
+                            }
+                            else if (ins.IsButtonDown(Buttons.X))
+                            {
+                                paintInput(pointer.position, true, true);
+                            }
                         }
                     }
                 }
-
                 //if (controllerInput.Select.DownEvent_AnyInstance)
                 //{
 
@@ -463,6 +467,14 @@ namespace VikingEngine.DSSWars.GameState.FlagEditor
                 imageGrid.LoopValueGet().Color = profile.getColor((ProfileColorType)profile.flagDesign.Get(imageGrid.LoopPosition));
                 setTexturePos(imageGrid.LoopPosition);
             }
+
+           
+            hud.previewImageSmall.Texture = profile.flagDesign.CreateTexture(profile);
+            hud.previewImageSmall.SetFullTextureSource();
+
+            hud.previewImageLarge.Texture = hud.previewImageSmall.Texture;
+            hud.previewImageLarge.ImageSource = hud.previewImageSmall.ImageSource;
+
         }
 
 

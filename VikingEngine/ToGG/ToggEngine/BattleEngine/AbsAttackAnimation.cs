@@ -216,7 +216,7 @@ namespace VikingEngine.ToGG.ToggEngine.BattleEngine
         {
             Graphics.Image hitIcon = new Graphics.Image(icon, pos, new Vector2(infoHeight), HudLib.AttackWheelLayer);
             Graphics.TextG hitPercText = new Graphics.TextG(LoadedFont.Regular, hitIcon.RightCenter, Vector2.One,
-                Graphics.Align.CenterHeight, TextLib.PercentText(percent), Color.Black, HudLib.AttackWheelLayer);
+                Graphics.Align.CenterHeight, TextLib.PercentTextWithSymbol(percent), Color.Black, HudLib.AttackWheelLayer);
             hitPercText.SetHeight(percInfoHeight);
 
             images.Add(hitIcon);

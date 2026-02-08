@@ -40,6 +40,22 @@ namespace VikingEngine.EngineSpace.DebugExtensions
                     return sentryEvent;
                 });
 
+                options.NetworkStatusListener = null;
+                options.AutoSessionTracking = false;
+                options.InitCacheFlushTimeout = TimeSpan.FromSeconds(30);
+
+                //if (Config.SentryMode >= 1)
+                //{
+                //    options.NetworkStatusListener = null;
+                //    if (Config.SentryMode >= 2)
+                //    {
+                //        options.AutoSessionTracking = false;
+                //        if (Config.SentryMode >= 3)
+                //        {
+                //            options.InitCacheFlushTimeout = TimeSpan.FromSeconds(30);
+                //        }
+                //    }
+                //}
             });
 
         }

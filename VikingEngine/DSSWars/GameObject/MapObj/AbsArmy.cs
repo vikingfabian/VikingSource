@@ -95,9 +95,9 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 if (battles.groupsInBattle == 0)
                 {
-                    DssRef.state.events.onBattleEnd_async(this, inBattleWith);
+                    DssRef.state.events?.onBattleEnd_async(this, inBattleWith);
                     inBattle = false;
-                    if (GetPlayer().IsLocalPlayer())
+                    if (GetPlayer().IsLocalPlayer() && !DssRef.achieve.achivementsAreModeBlocked())
                     {
                         float strengthLost = strengthBeforeBattle - strengthValue;
                         if (strengthLost >= Achievements.Defeating_victory_strengthLost && groups.Count > 0)
@@ -109,6 +109,19 @@ namespace VikingEngine.DSSWars.GameObject
                         if (menLost >= Achievements.SlaughteredCount)
                         {
                             DssRef.achieve.UnlockAchievement_async(AchievementIndex.slaughtered);
+                        }
+
+                        if (battles.attackingCity)
+                        {
+                            groupsC.Reset();
+                            while (groupsC.Next())
+                            {
+                                if (groupsC.sel.soldierConscript.conscript.weapon == Resource.ItemResourceType.SiegeCannonBronze)
+                                {
+                                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.ottoman);
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
@@ -142,47 +155,9 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        
 
-        //protected void net_writeGroups(System.IO.BinaryWriter w)
-        //{
-        //    w.Write((ushort)groups.Count);
-        //    var groupsC = groups.counter();
-        //    while (groupsC.Next())
-        //    {
-        //        w.Write((ushort)groupsC.sel.parentArrayIndex);
-        //        groupsC.sel.writeNet(w);
-        //    }
-        //}
-
-        //protected void net_readGroups(System.IO.BinaryReader r)
-        //{
-        //    int groupsCount = r.ReadUInt16();
-        //    for (int i = 0; i < groupsCount; i++)
-        //    {
-        //        int index = r.ReadUInt16();
-        //        var group = groups.GetIndex_Safe(index);
-        //        bool needInit = false;
-        //        if (group == null)
-        //        {
-        //            needInit = true;
-        //            if (IsCity())
-        //            {
-        //                group = new GuardGroup(this);
-        //            }
-        //            else
-        //            {
-        //                group = new SoldierGroup(this);
-        //            }
-        //            groups.HardSet(group, index);
-        //        }
-
-        //        group.readNet(r, needInit);
-        //        group.net_onUpdate();
-        //        group.net_updateclient(DssRef.state.culling.playerInDetailView);
-        //    }
-        //}
-
-        protected void writeGroups(System.IO.BinaryWriter w)
+        protected void writeSoldierGroups(System.IO.BinaryWriter w)
         {
             w.Write((ushort)groups.Count);
             var groupsC = groups.counter();
@@ -193,7 +168,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             Debug.WriteCheck(w);
         }
-        public void readGroups(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        public void readSoldierGroups(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             int groupsCount = r.ReadUInt16();
 

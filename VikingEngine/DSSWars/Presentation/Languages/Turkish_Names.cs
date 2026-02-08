@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// A way to merge to random words
         /// </summary>
-        public override string NameGenerator_AOfTheB => "{0} of the {1}";
+        public override string NameGenerator_AOfTheB => "{1} {0}";
 
         static readonly List<string> adjectives = new List<string> {
             "Yiğit", "Mistik", "Karanlık", "Altın", "Antik", "Donmuş", "Ebedi",

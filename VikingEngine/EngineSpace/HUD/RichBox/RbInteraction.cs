@@ -14,7 +14,7 @@ namespace VikingEngine.HUD.RichBox
     abstract class AbsRbInteraction
     {
 
-        abstract public bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction);
+        abstract public bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction, out float pushScroll);
 
         abstract public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction);
         abstract public void end(float pointerX, out bool needRefresh);
@@ -52,12 +52,31 @@ namespace VikingEngine.HUD.RichBox
         }
 
        
-        override public bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction)
+        override public bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction, out float pushScroll)
         {
+            pushScroll = 0;
             if (interactionStack == null)
             {
-                pointer.pointer.position += pointer.accelerateInput(pointer.inputMap.move.direction);
+                var moveInput = pointer.inputMap.move.direction;
+                pointer.pointer.position += pointer.accelerateInput(moveInput);
                 pointer.pointer.position = pointer.menu.renderArea.KeepPointInsideBound_Position(pointer.pointer.position);
+
+                if (moveInput.Y < 0)
+                { 
+                    float scrollTop = pointer.menu.renderArea.Position.Y + Engine.Screen.IconSize * 2;
+                    if (pointer.pointer.position.Y < scrollTop)
+                    {
+                        pushScroll = pointer.pointer.position.Y - scrollTop;
+                    }
+                }
+                else if (moveInput.Y > 0)
+                {
+                    float scrollBottom = pointer.menu.renderArea.Bottom - Engine.Screen.IconSize * 2;
+                    if (pointer.pointer.position.Y > scrollBottom)
+                    {
+                        pushScroll = pointer.pointer.position.Y - scrollBottom;
+                    }
+                }
 
                 refreshControllerHover(pointer);
                 needRefresh = false;
@@ -66,7 +85,7 @@ namespace VikingEngine.HUD.RichBox
             }
             else
             {
-                var result = interactionStack.updateController(pointer, menu, useClickInput, out needRefresh, out endInteraction);
+                var result = interactionStack.updateController(pointer, menu, useClickInput, out needRefresh, out endInteraction, out pushScroll);
                 if (endInteraction)
                 {
                     interactionStack.end(pointer.pointer.Xpos, out needRefresh);

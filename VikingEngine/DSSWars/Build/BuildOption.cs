@@ -20,8 +20,9 @@ namespace VikingEngine.DSSWars.Build
         public BuildAndExpandType buildType;
         public CraftBlueprint blueprint;
         public CraftBlueprint altBlueprint = null;
-        public TerrainMainType mainType;
-        public int subType;
+        //public TerrainMainType mainType;
+        //public int subType;
+        public SubTile terrainType;
         public SpriteName sprite;
         public bool uniqueBuilding = false;
         public bool canAutoBuild;
@@ -45,8 +46,7 @@ namespace VikingEngine.DSSWars.Build
             this.sprite = sprite;
             this.buildType = buildType;
             this.blueprint = blueprint;
-            this.mainType = mainType;
-            this.subType = subType;
+            terrainType = new SubTile(mainType, subType) { terrainAmount = 1 };
             //this.experienceType = experienceType;
             this.buildCategory = buildCategory;
             this.filterTag1 = filterTag1;
@@ -56,6 +56,7 @@ namespace VikingEngine.DSSWars.Build
             this.paintToolCategory = paintToolCategory;
             this.buildTimeSec = buildTimeSec;
         }
+
 
         public bool Contains(BuildFilterTag filterTag)
         { 
@@ -68,21 +69,22 @@ namespace VikingEngine.DSSWars.Build
         }
         public string Label()
         {
-            return LangLib.TerrainName(mainType, subType);
+            IconName.Building(buildType, out _, out string name);//LangLib.TerrainName(mainType, subType);
+            return name;
         }
         public string Description()
         {
-            switch (mainType)
+            switch (terrainType.mainTerrain)
             {
                 case TerrainMainType.Building:
-                    return LangLib.BuildingDescription((TerrainBuildingType)subType);
+                    return LangLib.BuildingDescription((TerrainBuildingType)terrainType.subTerrain);
                 case TerrainMainType.Foil:
                     return DssRef.lang.BuildingType_Farm_Description;
                 case TerrainMainType.Decor:
                 case TerrainMainType.Road:
                     return DssRef.lang.BuildingType_Decor_Description;
                 case TerrainMainType.Wall:
-                    switch ((TerrainWallType)subType)
+                    switch ((TerrainWallType)terrainType.subTerrain)
                     {
                         case TerrainWallType.StoneHouse:
                             return DssRef.lang.Defence_WallDescription_Movement;
@@ -98,14 +100,14 @@ namespace VikingEngine.DSSWars.Build
         public void destroy_async(City city, IntVector2 subPos)
         {
             var sutile = new SubTile();
-            city.executeBuildEffectsOnCity(false, subPos, ref sutile, mainType, subType);
+            city.executeBuildEffectsOnCity(false, subPos, ref sutile, terrainType.mainTerrain, terrainType.subTerrain);
 
         }
 
         public bool execute_async(City city, IntVector2 subPos, ref SubTile subTile, bool upgrade, bool payResources = true)
         {
             
-            if (city.executeBuildEffectsOnCity(true, subPos, ref subTile, mainType, subType))
+            if (city.executeBuildEffectsOnCity(true, subPos, ref subTile, terrainType.mainTerrain, terrainType.subTerrain))
             {
                 if (payResources)
                 {
@@ -128,7 +130,7 @@ namespace VikingEngine.DSSWars.Build
                         bp.payResources_BuildAndUpgrade(city);
                     }
                 }
-                subTile.SetType(mainType, subType, 1);
+                subTile.SetType(terrainType.mainTerrain, terrainType.subTerrain, 1);
                 return true;
 
             }
@@ -138,6 +140,11 @@ namespace VikingEngine.DSSWars.Build
         public bool availableBlueprintResources(City city)
         {
             return blueprint.hasResources(city) || (altBlueprint != null && altBlueprint.hasResources(city));
+        }
+
+        public bool availableBlueprintResources_ignorewater(City city)
+        {
+            return blueprint.hasResources_ignorewater(city) || (altBlueprint != null && altBlueprint.hasResources_ignorewater(city));
         }
     }
 }

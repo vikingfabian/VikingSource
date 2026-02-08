@@ -61,11 +61,18 @@ namespace VikingEngine.Graphics
             }
             else
             {
-                SourceF = new VectorRect(
-                    (float)Source.X / tex.Width,
-                    (float)Source.Y / tex.Height,
-                    (float)Source.Width / tex.Width,
-                    (float)Source.Height / tex.Height);
+                if (tex == null)
+                {
+                    SourceF = VectorRect.ZeroOne;
+                }
+                else
+                {
+                    SourceF = new VectorRect(
+                        (float)Source.X / tex.Width,
+                        (float)Source.Y / tex.Height,
+                        (float)Source.Width / tex.Width,
+                        (float)Source.Height / tex.Height);
+                }
             }
         }
 

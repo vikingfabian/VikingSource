@@ -9,12 +9,22 @@ namespace VikingEngine.Sound
 {
     class SoundManager
     {
+        public static bool SoundInitializeSuccess = true;
+        public static Exception SoundInitializeException = null;
+
         public float Sound3DMaxLength = 30;
         public float Sound3DVolumeMultiplier = 1f;
 
         public SoundManager()
         {
             Ref.sound = this;
+        }
+
+        public static void OnLaunchException(Exception ex)
+        {
+            SoundInitializeSuccess = false;
+            SoundInitializeException = ex;
+            Ref.gamesett.setSoundLevelsOnError();
         }
     }
 

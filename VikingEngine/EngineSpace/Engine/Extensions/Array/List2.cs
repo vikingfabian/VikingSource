@@ -43,6 +43,7 @@ namespace VikingEngine
 
         public void SelectIndex(int index)
         {
+
             sel = this[index];
             selIndex = index;
         }

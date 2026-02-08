@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+using Steamworks;
 
 namespace VikingEngine.SteamWrapping
 {
@@ -22,7 +22,7 @@ namespace VikingEngine.SteamWrapping
                     return true;
                 }
 
-                bool isActive = SteamAPI.SteamRemoteStorage().IsCloudEnabledForAccount();
+                bool isActive = SteamRemoteStorage.IsCloudEnabledForAccount();
                 return !isActive;
             }
 

@@ -50,7 +50,7 @@ namespace VikingEngine.LootFest
 
             if (PlatformSettings.PC_platform)
             {
-                Input.Mouse.Visible = false;
+                Input.Mouse.CenterLockAndHide();//Input.Mouse.Visible = false;
             }
         }
         
@@ -840,9 +840,9 @@ namespace VikingEngine.LootFest
                     break;
 
 #if PCGAME
-                case Network.PacketType.VoiceChat:
-                    Ref.steam.VOIP.readVoice(packet);
-                    break;
+                //case Network.PacketType.VoiceChat:
+                //    Ref.steam.VOIP.readVoice(packet);
+                //    break;
 #endif
                 case Network.PacketType.RequestMapSeed:
                     if (Ref.netSession.IsHost)

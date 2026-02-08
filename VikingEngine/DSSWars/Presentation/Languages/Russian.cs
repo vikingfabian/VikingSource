@@ -8,6 +8,167 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Russian : AbsLanguage
     {
+        public override string Help_Work_Automatic => "Работа выполняется автоматически";
+        public override string Tutorial_SecondCity => "Захватите второй город";
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "Пропустить автоматику";
+
+        public override string Resource_WaterReason => "Вода ограничивает максимальное число юнитов и размер производства";
+        public override string BuildingType_Orchard => "Фруктовый сад";
+        public override string BuildingType_ManorLord => "Лорд поместья";
+        public override string BuildingType_ManorLord_Description => "Открывает переработку пищи";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "Разорвать отношения";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "Источник предмета";
+
+        public override string ItemSource_Terrain => "Местность";
+        public override string ItemSource_Farm => "Ферма";
+        public override string ItemSource_CraftStation => "Мастерская";
+        public override string ItemSource_Gathering => "Собирательство";
+
+        public override string CityCulture_Nomad => "Кочевник";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "Коэффициент изменения: {0}";
+
+        public override string Hud_Purchase_LowXCost => "Низкие затраты: {0}";
+
+        public override string WorkQueue_Title => "Очередь работ";
+        public override string WorkQueue_Length => "Осталось задач";
+        public override string WorkQueue_ActiveWorkers => "Активные бригады";
+        public override string WorkQueue_IdleWorkers => "Свободные бригады";
+
+        public override string WorkTeam_Size => "Жители работают группами по {0}";
+
+        public override string ObjectUi_ViewOnMap => "Показать на карте";
+        public override string ObjectUi_StuckBuildOrders => "Застрявшие приказы";
+        public override string Hud_AllArmies => "Все армии";
+
+        public override string Hud_CurrentPage => "Текущая страница";
+        public override string Hud_AllPages => "Все страницы";
+        public override string Hud_ToAllCities => "Во все города";
+        public override string Hud_ToFaction => "Во фракцию";
+        public override string Hud_FromFaction => "Из фракции";
+        public override string Hud_FactionWide => "Исп. настройки фракции";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "Разместить поселение";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "Удалить все кадры, кроме этого";
+        //Winter patch 3
+        public override string Hud_Purchase_AllBuildings => "В очередь: все здания";
+        public override string Hud_Purchase_AllTech => "В очередь: все технологии";
+        public override string BuildingType_CasualBarracks_Description => "Время найма солдат распределяется между казармами";
+
+        //Winter update patch + spring
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+
+        public override string DisplayMode => "Режим экрана";
+        public override string DisplayMode_Windowed => "В окне";
+        public override string DisplayMode_BorderlessFullscreen => "Окно без рамки";
+
+        public override string GameSettings_RenderedMouseCursor => "Программный курсор";
+        public override string GameSettings_MuteControllerDisconnect => "Скрыть ошибки геймпада";
+
+        public override string Delivery_MaxDistance => "Макс. дальность доставки: {0}";
+        public override string Tutorial_WillTakeAWhile => "Это займет время, вернитесь позже.";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "Дождитесь постройки: {0}";
+        public override string GameOverResults => "История партии";
+
+        public override string UnitType_UnclaimedLand => "Ничья земля";
+        public override string UnitType_Settler => "Поселенец";
+        public override string UnitType_Settler_Description => "Основать новый город";
+        public override string Resource_ConsumedProduced => "Потреблено/Произведено";
+        public override string InputActionName_PlaceTarget => "Разместить цель";
+
+        public override string FactionStartSize => "Стартовый размер";
+        public override string FactionStartSize_Full => "Полный";
+        public override string FactionStartSize_OneCity => "Один город";
+        public override string FactionStartSize_Settler => "Один поселенец";
+
+        //Winter update
+        public override string Resource_StockpileLimit => "Лимит запасов";
+        public override string GameMode_QuickMatch => "Quick Match";
+        public override string GameMode_QuickMatch_Description =>
+            "Более короткий формат игры. Вступите в полномасштабную войну против соперничающих наций.";
+        public override string Lobby_PlayerCount => "Количество игроков";
+        public override string Lobby_TwoTeams => "Две команды";
+        public override string Hud_Produce => "Производить:";
+        public override string Tutorial_WaitForWorkerLevel => "Подождите, пока рабочий достигнет:";
+
+        public override string Tutorial_PracticeOrSchool => "Тренируйтесь на {0} или используйте {1}";
+        public override string Tutorial_AddTag => "Добавить tag:";
+        public override string Tutorial_AddPin => "Добавить pin:";
+        public override string Tutorial_SelectMostTrees => "Найдите ваш город с наибольшим количеством деревьев";
+        public override string Tutorial_SelectACityWithX => "Выберите город с {0}";
+
+        public override string Tutorial_Select_NotCapital => ". Не ваша столица.";
+
+        public override string Tutorial_SetXPriorityToY => "Установите приоритет {0} на {1}";
+        public override string Tutorial_AdvisorMission => "Миссия Advisor";
+
+        public override string Tutorial_AdvisorDescription =>
+            "Полная игра началась. Advisor продолжит обучение полезными миссиями.";
+
+        public override string Tutorial_EndAdvisor => "Завершить Advisor";
+
+        public override string Tutorial_AdvisorCompleteTitle => "Advisor завершён!";
+        public override string Tutorial_AdvisorCompleteMessage => "Пусть следующий день будет благословенным!";
+
+        public override string Hud_Search => "Поиск";
+
+        public override string DifficultyDescription_ExtremeAggression => "Экстремальная агрессия";
+
+        public override string MapFilter => "Фильтр карты";
+
+        public override string Settings_TechMultiplier => "Скорость исследования tech";
+
+        public override string EndScreen_MatchComplete => "Результат матча";
+
+        public override string FactionName_DragonGem => "Dragon Gem";
+        public override string FactionName_Tomten => "Tomten";
+        public override string FactionName_Hælfolc => "Hælfolc";
+        public override string FactionName_AerimAngren => "Aerim Angren";
+
+        public override string HUD_NotAvailbleInX => "Недоступно в {0}";
+
+        public override string InputActionName_MiniMap => "Mini-map";
+
+        //--
+        public override string Error_SoundInitFailure => "Не удалось инициализировать звук";
+
+        public override string GameMenu_ControllerDisconnected => "Контроллер отключён";
+
+        public override string Tutorial_HighPriority => "Ваши люди сначала выполнят задачи с высоким приоритетом";
+
+        public override string BuildingType_Wall_Description => "Стены защищают от атак и дают небольшой буст к атаке.";
+
+        public override string BuildingType_Wall_Siege => "Осадные орудия снижают защиту стен.";
+
+        public override string Conscript_BlockChance => "{0}% шанс заблокировать атаку.";
+
+        public override string Battle_DeclarWarReminder => "Вы должны объявить войну, прежде чем атаковать.";
+
+        //--
+
+
         /// <summary>
         /// Название этого языка
         /// </summary>
@@ -61,7 +222,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Название игры и номер версии
         /// </summary>
-        public override string Lobby_GameVersion => "DSS war party - версия {0}";
+        //public override string Lobby_GameVersion => "DSS war party - версия {0}";
 
         public override string FlagEditor_Description => "Нарисуйте свой флаг и выберите цвета для своих солдат.";
 
@@ -1817,8 +1978,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_AddX => "Добавить {0}";
         public override string Hud_Both => "Оба";
         public override string Hud_Direction => "Направление";
-        public override string MusicIsBroken => "Музыка сейчас не работает";
-
+        
         /// <summary>
         /// 0: тип объектов, 1: количество
         /// </summary>
@@ -2172,7 +2332,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Settings_Mode_Spectator => "Наблюдатель";
 
-        public override string Settings_Mode_Spectator_Description => "Только наблюдать";
+        //public override string Settings_Mode_Spectator_Description => "Только наблюдать";
 
         public override string Automation_AutomationFocus_NoFocus_Description => "Будет понемногу строить всё";
 
@@ -2495,79 +2655,65 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         public override string Tutorial_CasualRecruitSoldiers => "Купите одну группу солдат";
-        //public override string HUD_DisplayName => "Отображаемое имя";
-        //public override string HUD_Filter => "Фильтр";
-        //public override string HUD_Scale => "Масштаб";
-        //public override string HUD_Tags => "Теги";
-        //public override string HUD_ClickToCancel => "Нажмите, чтобы отменить";
-
-        //public override string ObjectTag_Description => "Добавить символ на карту";
-        //public override string HudPins => "Закрепки HUD";
-        //public override string HudPins_Description => "Закрепить информацию на экране";
-
-        //public override string Lobby_PlayerProfileNumbered => "Профиль {0}";
-        //public override string Lobby_CharacterCreationNumbered => "Персонаж {0}";
-        //public override string Lobby_PlayerProfileEdit => "Редактировать профиль игрока";
-
-        //public override string Editor_ConvertAnimationToLayers => "Преобразовать анимацию в слои";
-        //public override string Editor_StampAllFrames => "Применить ко всем кадрам";
-
-        //public override string Editor_DisplayOptions => "Параметры отображения";
-        //public override string Editor_CharacterCreator => "Редактор персонажа";
-        //public override string Editor_CharacterCreator_Description => "Редактор внешности военных моделей";
-        //public override string Editor_HatGenre => "Режим отображения головных уборов";
-        //public override string Editor_HatGenre_FollowWeapon => "Следовать за оружием";
-        //public override string Editor_HatGenre_Uniform => "Униформа";
-        //public override string Editor_CopyPasteSelectedColor => "Скопировать из выбранного цвета";
-
-        //public override string Character_Accessories => "Аксессуары";
-        //public override string Character_Hat => "Головной убор";
-        //public override string Character_Head => "Голова";
-        //public override string Character_Body => "Тело";
-        //public override string Character_Arms => "Руки";
-        //public override string Character_Back => "Спина";
-        //public override string Character_Face => "Лицо";
-
-        //public override string BuildingType_Tavern => "Общий зал";
-
-        //public override string Settings_CraftMultiplier => "Множитель времени крафта";
-        //public override string Settings_ChildMultiplier_Description => "Увеличивает скорость появления новых рабочих";
-
-        //public override string Settings_CasualControls => "Управление для казуальных игроков";
-        //public override string Settings_CasualControls_Description => "Упрощает игру, сводя выбор к ключевым решениям. В качестве ресурса используется только деньги.";
-
-        //public override string Settings_AdvancedControls => "Продвинутое управление";
-        //public override string Settings_AdvancedControls_Description => "Полный опыт управления ресурсами.";
-
-        //public override string WarsResourceGroup_Metal => "Металл";
-        //public override string Work_Craft => "Производство";
-        //public override string Work_OnlyCraftOnFullStock => "Производить только при полном складе";
-
-        //public override string ExperienceType_Smelting => "Плавка";
-        //public override string Category_Optimize => "Оптимизация";
-        //public override string BuildCategory_Road => "Дорога";
-        //public override string XP_UnlockBuildPrio => "Разблокировать приоритет строительства: {0}";
-        //public override string Technology_ModernFarming => "Современное сельское хозяйство";
-
-        //public override string ExportImportDescription => "Для обмена сохранениями с другими игроками все файлы находятся в этой папке: {0}";
-
-        //public override string CityCultureDescription => "Культура даёт городу особый бонус";
-
-        //public override string UnitType_CloseRangeRifle => "Аркебузир";
-        //public override string UnitType_LongRangeRifle => "Мушкетёр";
-        //public override string UnitType_Skirmisher => "Стрелок-бродяга";
-
-        ////From lumen (light)
-        //public override string UnitType_MithrilArcher => "Лунарийский лучник";
-        //public override string UnitType_MithrilSwordsman => "Лунарийский рыцарь";
-
-        //public override string Defence_AutoAssign_Towers => "Назначить башни";
-
-        //public override string EventMessage_DesertersText_Food => "Голодные солдаты дезертируют из вашей армии";
-
-        //public override string Tutorial_CasualRecruitSoldiers => "Купить одну группу солдат";
+       
 
         public override string EventMessage_DesertersText_Money => "Неполучившие оплату солдаты дезертируют из вашей армии";
 
+
+        //Shadow update
+        public override string Technology_CannotReassign => "Tech нельзя переназначить, пока исследование не завершено";
+        public override string Diplomacy_DeclareWarAgainst => "Вы объявите войну против";
+        public override string Diplomacy_AllyCount => "Количество союзников";
+        public override string Diplomacy_CostPerAlly => "Стоимость увеличивается на {0} за союзника";
+
+        public override string Event_ChanceOfFailure => "{0}% шанс неудачи";
+        public override string EventMessage_Event_Title => "Событие";
+        public override string EventMessage_TheCohalition => "Коалиция";
+
+        public override string EventMessage_DarkHorde => "Тёмная Орда";
+        public override string EventMessage_DarkHordeKiller_Title => "Убийца Тёмной Орды";
+        public override string EventMessage_DarkHordeKiller_Message => "Рыцари-чемпионы вступили на вашу службу";
+
+        public override string Settings_Mode_Spectator_Description => "Просто наблюдайте — или вмешайтесь с помощью God Powers.";
+        public override string GodPower => "God Power";
+
+        public override string Building_TreeSprout_Description => "Посадить дерево";
+        public override string Building_TreeSprout_Soft => "Саженец мягкой древесины";
+        public override string Building_TreeSprout_Hard => "Саженец твёрдой древесины";
+
+        public override string GeneralSetting_SetAll => "Применить ко всем";
+
+        public override string Hud_All => "Все";
+
+        public override string Hud_Previous => "Назад";
+
+        public override string Hud_EffectWillStack => "Эффект будет складываться";
+
+        public override string Info_WhenFoodRunsOut => "Когда еда закончится, города и армии автоматически купят её на чёрном рынке.";
+
+        //Launch test
+        
+        public override string InputActionName_NextWar => "Следующая воюющая фракция";
+
+        /// <summary>
+        /// These symbols are needed to fit large numbers on the HUD,
+        /// there will be a tooltip to explain what number it represents
+        /// </summary>
+        public override string EngineHud_SymbolFor100 => "c";
+        public override string EngineHud_SymbolFor1000 => "k";
+        public override string EngineHud_SymbolFor10000 => "10k";
+
+        /// <summary>
+        /// When loading files from other players, you won’t get their achievement progress
+        /// </summary>
+        public override string GameMenu_BlockImportAchievements => "Блокировать достижения в импортированных файлах";
+
+        public override string EndScreen_PeaceVictoryQuote => "Давайте сложим мечи и обнимем лучшее будущее";
+
+        public override string VictoryType_DefeatBoss => "Boss повержен";
+        public override string VictoryType_Domination => "Доминирование";
+        public override string VictoryType_WorldPeace => "Мир во всём мире";
+
+        
     }
 }

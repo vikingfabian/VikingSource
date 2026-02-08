@@ -8,6 +8,167 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Spanish : AbsLanguage
     {
+        public override string Help_Work_Automatic => "El trabajo se realiza automáticamente";
+        public override string Tutorial_SecondCity => "Consigue una segunda ciudad";
+
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "Saltar automatizados";
+
+        public override string Resource_WaterReason => "El agua limitará cuántas unidades puedes mantener y el tamaño de tu producción";
+        public override string BuildingType_Orchard => "Huerto";
+        public override string BuildingType_ManorLord => "Señor del Solar"; // "Lord of the Manor/Estate"
+        public override string BuildingType_ManorLord_Description => "Desbloquea procesamiento de alimentos";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "Terminar relaciones";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "Fuente del objeto";
+
+        public override string ItemSource_Terrain => "Terreno";
+        public override string ItemSource_Farm => "Granja";
+        public override string ItemSource_CraftStation => "Puesto de artesanía";
+        public override string ItemSource_Gathering => "Recolección";
+
+        public override string CityCulture_Nomad => "Nómada";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "Por factor de cambio: {0}";
+
+        public override string Hud_Purchase_LowXCost => "Bajo coste de {0}";
+
+        public override string WorkQueue_Title => "Cola de trabajo";
+        public override string WorkQueue_Length => "Objetivos de trabajo restantes";
+        public override string WorkQueue_ActiveWorkers => "Equipes de trabajo activos";
+        public override string WorkQueue_IdleWorkers => "Equipos de trabajo inactivos";
+
+        public override string WorkTeam_Size => "Los aldeanos trabajan en equipos de {0}";
+
+        public override string ObjectUi_ViewOnMap => "Ver en el mapa";
+        public override string ObjectUi_StuckBuildOrders => "Órdenes de construcción bloqueadas";
+        public override string Hud_AllArmies => "Todos los ejércitos";
+
+        public override string Hud_CurrentPage => "Página actual";
+        public override string Hud_AllPages => "Todas las páginas";
+        public override string Hud_ToAllCities => "A todas las ciudades";
+        public override string Hud_ToFaction => "A la facción";
+        public override string Hud_FromFaction => "De la facción";
+        public override string Hud_FactionWide => "Usar configuración de facción";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "Colocar asentamiento";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "Eliminar el resto de fotogramas";
+
+        //Winter patch 3
+        public override string Hud_Purchase_AllBuildings => "Encolar todos los edificios";
+        public override string Hud_Purchase_AllTech => "Encolar toda la tecnología";
+        public override string BuildingType_CasualBarracks_Description => "El tiempo de reclutamiento se divide entre los cuarteles";
+        //Winter update patch + spring
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+
+        public override string DisplayMode => "Modo de visualización";
+        public override string DisplayMode_Windowed => "Modo ventana";
+        public override string DisplayMode_BorderlessFullscreen => "Pantalla completa sin bordes";
+
+        public override string GameSettings_RenderedMouseCursor => "Cursor renderizado";
+        public override string GameSettings_MuteControllerDisconnect => "Silenciar desconexión del mando";
+
+        public override string Delivery_MaxDistance => "Distancia máx. de entrega: {0}";
+        public override string Tutorial_WillTakeAWhile => "Esto llevará un tiempo, vuelve más tarde.";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "Espera a que se complete: {0}";
+        public override string GameOverResults => "Historial de la partida";
+
+        public override string UnitType_UnclaimedLand => "Tierra de nadie";
+        public override string UnitType_Settler => "Colono";
+        public override string UnitType_Settler_Description => "Fundar una nueva ciudad";
+        public override string Resource_ConsumedProduced => "Consumido/Producido";
+        public override string InputActionName_PlaceTarget => "Colocar objetivo";
+
+        public override string FactionStartSize => "Tamaño inicial de la facción";
+        public override string FactionStartSize_Full => "Completo";
+        public override string FactionStartSize_OneCity => "Una ciudad";
+        public override string FactionStartSize_Settler => "Un colono";
+
+        //Winter update
+        public override string Resource_StockpileLimit => "Límite de reservas";
+        public override string GameMode_QuickMatch => "Quick Match";
+        public override string GameMode_QuickMatch_Description =>
+            "Un formato de partida más corto. Entra en una guerra a gran escala contra naciones rivales.";
+        public override string Lobby_PlayerCount => "Cantidad de jugadores";
+        public override string Lobby_TwoTeams => "Dos equipos";
+        public override string Hud_Produce => "Producir:";
+        public override string Tutorial_WaitForWorkerLevel => "Espera a que un trabajador alcance:";
+
+        public override string Tutorial_PracticeOrSchool => "Entrena en {0}, o usa una {1}";
+        public override string Tutorial_AddTag => "Agregar tag:";
+        public override string Tutorial_AddPin => "Agregar pin:";
+        public override string Tutorial_SelectMostTrees => "Encuentra tu ciudad con más árboles";
+        public override string Tutorial_SelectACityWithX => "Selecciona una ciudad con {0}";
+
+        public override string Tutorial_Select_NotCapital => ". No tu capital.";
+
+        public override string Tutorial_SetXPriorityToY => "Configura la prioridad de {0} a {1}";
+        public override string Tutorial_AdvisorMission => "Misión del Advisor";
+
+        public override string Tutorial_AdvisorDescription =>
+            "El juego completo ha comenzado. El Advisor ampliará el tutorial con misiones útiles.";
+
+        public override string Tutorial_EndAdvisor => "Terminar Advisor";
+
+        public override string Tutorial_AdvisorCompleteTitle => "¡Advisor completado!";
+        public override string Tutorial_AdvisorCompleteMessage => "¡Que tu próximo día sea bendecido!";
+
+        public override string Hud_Search => "Buscar";
+
+        public override string DifficultyDescription_ExtremeAggression => "Agresión extrema";
+
+        public override string MapFilter => "Filtro de mapa";
+
+        public override string Settings_TechMultiplier => "Velocidad de investigación tech";
+
+        public override string EndScreen_MatchComplete => "Resultado de la partida";
+
+        public override string FactionName_DragonGem => "Dragon Gem";
+        public override string FactionName_Tomten => "Tomten";
+        public override string FactionName_Hælfolc => "Hælfolc";
+        public override string FactionName_AerimAngren => "Aerim Angren";
+
+        public override string HUD_NotAvailbleInX => "No disponible en {0}";
+
+        public override string InputActionName_MiniMap => "Mini-map";
+
+        //--
+        public override string Error_SoundInitFailure => "Error al inicializar el sonido";
+
+        public override string GameMenu_ControllerDisconnected => "Control desconectado";
+
+        public override string Tutorial_HighPriority => "Tus soldados completarán primero las tareas de alta prioridad.";
+
+        public override string BuildingType_Wall_Description => "Las murallas protegen a tus tropas de los ataques y dan un pequeño boost de ataque.";
+
+        public override string BuildingType_Wall_Siege => "Las armas de asedio reducen la defensa de las murallas.";
+
+        public override string Conscript_BlockChance => "{0}% de probabilidad de bloquear un ataque.";
+
+        public override string Battle_DeclarWarReminder => "Debes declarar la guerra antes de atacar.";
+
+        //--
+
         /// <summary>
         /// Nombre de este idioma
         /// </summary>
@@ -61,7 +222,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Nombre del juego y número de versión
         /// </summary>
-        public override string Lobby_GameVersion => "DSS war party - ver {0}";
+        //public override string Lobby_GameVersion => "DSS war party - ver {0}";
 
         public override string FlagEditor_Description => "Pinta tu bandera y selecciona colores para tus soldados.";
 
@@ -1823,8 +1984,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_AddX => "Agregar {0}";
         public override string Hud_Both => "Ambos";
         public override string Hud_Direction => "Dirección";
-        public override string MusicIsBroken => "La música no funciona actualmente";
-
+        
         /// <summary>
         /// 0: nombre del tipo de colección de objetos, 1: número de objetos
         /// </summary>
@@ -2179,7 +2339,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Settings_Mode_Spectator => "Espectador";
 
-        public override string Settings_Mode_Spectator_Description => "Solo mirar";
+        //public override string Settings_Mode_Spectator_Description => "Solo mirar";
 
         public override string Automation_AutomationFocus_NoFocus_Description => "Construirá un poco de todo";
 
@@ -2501,6 +2661,62 @@ namespace VikingEngine.DSSWars.Presentation
         public override string EventMessage_DesertersText_Food => "Los soldados hambrientos están desertando de tu ejército";
 
         public override string Tutorial_CasualRecruitSoldiers => "Comprar un grupo de soldados";
+
+
+        //Shadow update
+        public override string Technology_CannotReassign => "La Tech no se puede reasignar hasta que la investigación esté completa";
+        public override string Diplomacy_DeclareWarAgainst => "Declararás la guerra a";
+        public override string Diplomacy_AllyCount => "Número de aliados";
+        public override string Diplomacy_CostPerAlly => "El costo aumenta en {0} por aliado";
+
+        public override string Event_ChanceOfFailure => "{0}% de probabilidad de fallo";
+        public override string EventMessage_Event_Title => "Evento";
+        public override string EventMessage_TheCohalition => "La Coalición";
+
+        public override string EventMessage_DarkHorde => "Horda Oscura";
+        public override string EventMessage_DarkHordeKiller_Title => "Asesino de la Horda Oscura";
+        public override string EventMessage_DarkHordeKiller_Message => "Caballeros campeones se han unido a tu servicio";
+
+        public override string Settings_Mode_Spectator_Description => "Solo mirar, o intervenir con los God Powers.";
+        public override string GodPower => "God Power";
+
+        public override string Building_TreeSprout_Description => "Plantar un árbol";
+        public override string Building_TreeSprout_Soft => "Brote de madera blanda";
+        public override string Building_TreeSprout_Hard => "Brote de madera dura";
+
+        public override string GeneralSetting_SetAll => "Aplicar a todos";
+
+        public override string Hud_All => "Todos";
+
+        public override string Hud_Previous => "Anterior";
+
+        public override string Hud_EffectWillStack => "El efecto se acumulará";
+
+        public override string Info_WhenFoodRunsOut => "Cuando se acabe la comida, las ciudades y ejércitos la comprarán automáticamente en el mercado negro.";
+
+        //Launch test
+        
+
+        public override string InputActionName_NextWar => "Siguiente facción en guerra";
+
+        /// <summary>
+        /// These symbols are needed to fit large numbers on the HUD,
+        /// there will be a tooltip to explain what number it represents
+        /// </summary>
+        public override string EngineHud_SymbolFor100 => "c";
+        public override string EngineHud_SymbolFor1000 => "k";
+        public override string EngineHud_SymbolFor10000 => "10k";
+
+        /// <summary>
+        /// When loading files from other players, you won’t get their achievement progress
+        /// </summary>
+        public override string GameMenu_BlockImportAchievements => "Bloquear logros en archivos importados";
+
+        public override string EndScreen_PeaceVictoryQuote => "Dejemos las espadas y abracemos un futuro mejor";
+
+        public override string VictoryType_DefeatBoss => "Boss derrotado";
+        public override string VictoryType_Domination => "Dominación";
+        public override string VictoryType_WorldPeace => "Paz mundial";
 
     }
 }

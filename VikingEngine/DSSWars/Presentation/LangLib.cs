@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Net.Security;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
@@ -24,10 +25,50 @@ namespace VikingEngine.DSSWars.Presentation
 {
     static class LangLib
     {
-        //public static string WorkPrio(WorkPriorityType workPriority)
-        //{ 
+        //public static void MapFilter(FactionMapFilter filter, out SpriteName icon, out string caption)
+        //{
+        //    caption = TextLib.Error;
 
+        //    switch (filter)
+        //    {
+        //        default:                    
+        //            icon = SpriteName.MissingImage; break;
+
+        //        case FactionMapFilter.FactionCols:
+        //            icon = SpriteName.WarsMapFilterFactions;
+        //            break;
+        //        case FactionMapFilter.Terrain:
+        //            icon = SpriteName.WarsMapFilterTerrain;
+        //            break;
+        //        case FactionMapFilter.Minimap:
+        //            icon = SpriteName.WarsMapFilterMinimap;
+        //            break;
+
+        //        case FactionMapFilter.PopulationHeatmap:
+        //            caption = DssRef.lang.worker;
+        //            icon = SpriteName.WarsMapFilterWorkers;
+        //            break;
+        //        case FactionMapFilter.StrengthHeatmap:
+        //            caption = DssRef.lang.UnitType_Faction;
+        //            icon = SpriteName.WarsMapFilterStrength;
+        //            break;
+
+        //    }
         //}
+
+        public static string FactionStartSizeName(FactionStartSize size)
+        {
+            switch (size)
+            {
+                default:
+                    return DssRef.lang.FactionStartSize_Full;
+                case FactionStartSize.OneCity:
+                    return DssRef.lang.FactionStartSize_OneCity;
+                case FactionStartSize.Settler:
+                    return DssRef.lang.FactionStartSize_Settler;
+            }
+        }
+
         public static void GameModeText(GameModeMainType mode, out string caption, out string desc)
         {
             caption = null;
@@ -38,17 +79,21 @@ namespace VikingEngine.DSSWars.Presentation
                     caption = DssRef.lang.Settings_Mode_Story;
                     desc = DssRef.lang.Settings_Mode_IncludeBoss + " " + DssRef.lang.Settings_Mode_IncludeAttacks;
                     break;
+                case GameModeMainType.QuickMatch:
+                    caption = DssRef.lang.GameMode_QuickMatch;
+                    desc = DssRef.lang.GameMode_QuickMatch_Description;
+                    break;
                 case GameModeMainType.Sandbox:
                     caption = DssRef.lang.Settings_Mode_Sandbox;
                     desc = DssRef.lang.Settings_Mode_IncludeAttacks;
                     break;
                 case GameModeMainType.Peaceful:
                     caption = DssRef.lang.Settings_Mode_Peaceful;
-                    desc = DssRef.lang.Settings_Mode_Peaceful_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
+                    desc = DssRef.lang.Settings_Mode_Peaceful_Description + " " + Ref.langOpt.Settings_Mode_No_Achivements;
                     break;
                 case GameModeMainType.Spectator:
                     caption = DssRef.lang.Settings_Mode_Spectator;
-                    desc = DssRef.todoLang.Settings_Mode_Spectator_Description + " " + DssRef.todoLang.Settings_Mode_No_Achivements;
+                    desc = DssRef.lang.Settings_Mode_Spectator_Description + " " + Ref.langOpt.Settings_Mode_No_Achivements;
                     break;
             }
         }
@@ -378,7 +423,7 @@ namespace VikingEngine.DSSWars.Presentation
                     typeIcon = SpriteName.WarsResource_IronRifle;
                     break;
 
-                case WorkPriorityType.craftBlunderbus:
+                case WorkPriorityType.craftBlunderbuss:
                     name = string.Format(DssRef.lang.Work_CraftX, DssRef.lang.Resource_TypeName_Blunderbuss);
                     workIcon = SpriteName.WarsHammer;
                     typeIcon = SpriteName.WarsResource_IronShotgun;
@@ -565,7 +610,7 @@ namespace VikingEngine.DSSWars.Presentation
                     break;
                 case WorkExperienceType.Smelting:
                     name = DssRef.lang.ExperienceType_RefineOre;
-                    icon = SpriteName.WarsResource_CastIron;
+                    icon = SpriteName.WarsWorkSmelting;
                     break;
                 case WorkExperienceType.CastMetal:
                     name = DssRef.lang.ExperienceType_Casting;
@@ -579,10 +624,10 @@ namespace VikingEngine.DSSWars.Presentation
                     name = DssRef.lang.ExperienceType_CraftArmor;
                     icon = SpriteName.WarsResource_IronArmor;
                     break;
-                case WorkExperienceType.CraftWeapon:
-                    name = DssRef.lang.ExperienceType_CraftWeapon;
-                    icon = SpriteName.WarsResource_Sword;
-                    break;
+                //case WorkExperienceType.CraftWeapon:
+                //    name = DssRef.lang.ExperienceType_CraftWeapon;
+                //    icon = SpriteName.WarsResource_Sword;
+                //    break;
                 case WorkExperienceType.CraftFuel:
                     name = DssRef.lang.ExperienceType_CraftFuel;
                     icon = SpriteName.WarsResource_Fuel;
@@ -599,6 +644,35 @@ namespace VikingEngine.DSSWars.Presentation
             }
         }
 
+        public static string ValueSymbol(int value)
+        {
+            string result;
+            var abs = Math.Abs(value);
+            switch (abs)
+            {
+                case 100:
+                    result = DssRef.lang.EngineHud_SymbolFor100;
+                    break;
+                case 1000:
+                    result = DssRef.lang.EngineHud_SymbolFor1000;
+                    break;
+                case 10000:
+                    result = DssRef.lang.EngineHud_SymbolFor10000;
+                    break;
+                default:
+                    result = abs.ToString();
+                    break;
+            }
+
+            if (value >= 0)
+            {
+                return "+" + result;
+            }
+            else
+            {
+                return "-" + result;
+            }
+        }
         public static SpriteName ExperienceLevelIcon(ExperienceLevel level)
         {
             if (level >= XP.ExperienceLevel.Legendary_5)
@@ -648,6 +722,8 @@ namespace VikingEngine.DSSWars.Presentation
                     return DssRef.lang.InputActionName_StopStart;
                 case InputActionType.ToggleHudDetail:
                     return DssRef.lang.InputActionName_ToggleHudDetail;
+                case InputActionType.ToggleMiniMap:
+                    return DssRef.lang.InputActionName_MiniMap;
                 case InputActionType.GameSpeed:
                     return DssRef.lang.Input_GameSpeed;
                 case InputActionType.PauseGame:
@@ -656,8 +732,8 @@ namespace VikingEngine.DSSWars.Presentation
                     return DssRef.lang.InputActionName_NextCity;
                 case InputActionType.NextArmy:
                     return DssRef.lang.InputActionName_NextArmy;
-                case InputActionType.NextBattle:
-                    return DssRef.lang.InputActionName_NextBattle;
+                case InputActionType.NextWar:
+                    return DssRef.lang.InputActionName_NextWar;
                 case InputActionType.Build:
                     return DssRef.lang.InputActionName_Build;
                 case InputActionType.Copy:
@@ -886,299 +962,304 @@ namespace VikingEngine.DSSWars.Presentation
                 case MenuTab.Casual_Build:
                     description = DssRef.lang.MenuTab_Build_Description;
                     return DssRef.lang.MenuTab_Build;
+                case MenuTab.StockPile:
+                    description = DssRef.lang.Resource_StockPile_Info;
+                    return DssRef.lang.Resource_Tab_Stockpile;
                 default:
                     throw new NotImplementedException();
             }
         }
 
-        public static string TerrainName(TerrainMainType mainType, int subType)
-        {
-            switch (mainType)
-            {
-                case TerrainMainType.Building:
-                    switch ((TerrainBuildingType)subType)
-                    {
-                        case TerrainBuildingType.Logistics:
-                            return DssRef.lang.BuildingType_Logistics;
-                        case TerrainBuildingType.SoldierBarracks:
-                            return DssRef.lang.BuildingType_SoldierBarracks;
-                        case TerrainBuildingType.Bank:
-                            return DssRef.lang.BuildingType_Bank;
-                        case TerrainBuildingType.CoinMinter:
-                            return DssRef.lang.BuildingType_CoinMaker;
-                        case TerrainBuildingType.Brewery:
-                            return DssRef.lang.BuildingType_Brewery;
-                        case TerrainBuildingType.Carpenter:
-                            return DssRef.lang.BuildingType_Carpenter;
-                        case TerrainBuildingType.Work_CoalPit:
-                            return DssRef.lang.BuildingType_CoalPit;
-                        case TerrainBuildingType.Work_Cook:
-                            return DssRef.lang.BuildingType_Cook;
-                        case TerrainBuildingType.HenPen:
-                            return DssRef.lang.BuildingType_HenPen;
-                        case TerrainBuildingType.Nobelhouse:
-                            return DssRef.lang.Building_NobleHouse;
-                        case TerrainBuildingType.ImmigrationTent:
-                            return DssRef.lang.BuildingType_ImmigrationTent;
-                        case TerrainBuildingType.PigPen:
-                            return DssRef.lang.BuildingType_PigPen;
+        //public static string TerrainName(TerrainMainType mainType, int subType)
+        //{
+        //    switch (mainType)
+        //    {
+        //        case TerrainMainType.Building:
+        //            switch ((TerrainBuildingType)subType)
+        //            {
+        //                case TerrainBuildingType.Logistics:
+        //                    return DssRef.lang.BuildingType_Logistics;
+        //                case TerrainBuildingType.SoldierBarracks:
+        //                    return DssRef.lang.BuildingType_SoldierBarracks;
+        //                case TerrainBuildingType.Bank:
+        //                    return DssRef.lang.BuildingType_Bank;
+        //                case TerrainBuildingType.CoinMinter:
+        //                    return DssRef.lang.BuildingType_CoinMaker;
+        //                case TerrainBuildingType.Brewery:
+        //                    return DssRef.lang.BuildingType_Brewery;
+        //                case TerrainBuildingType.Carpenter:
+        //                    return DssRef.lang.BuildingType_Carpenter;
+        //                case TerrainBuildingType.Work_CoalPit:
+        //                    return DssRef.lang.BuildingType_CoalPit;
+        //                case TerrainBuildingType.Work_Cook:
+        //                    return DssRef.lang.BuildingType_Cook;
+        //                case TerrainBuildingType.HenPen:
+        //                    return DssRef.lang.BuildingType_HenPen;
+        //                case TerrainBuildingType.Nobelhouse:
+        //                    return DssRef.lang.Building_NobleHouse;
+        //                case TerrainBuildingType.ImmigrationTent:
+        //                    return DssRef.lang.BuildingType_ImmigrationTent;
+        //                case TerrainBuildingType.PigPen:
+        //                    return DssRef.lang.BuildingType_PigPen;
 
-                        case TerrainBuildingType.Postal:
-                            return DssRef.lang.BuildingType_Postal;
-                        case TerrainBuildingType.PostalLevel2:
-                        case TerrainBuildingType.PostalLevel3:
-                            return string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Postal);
+        //                case TerrainBuildingType.Postal:
+        //                    return DssRef.lang.BuildingType_Postal;
+        //                case TerrainBuildingType.PostalLevel2:
+        //                case TerrainBuildingType.PostalLevel3:
+        //                    return string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Postal);
 
-                        case TerrainBuildingType.GoldDeliveryLevel1:
-                            return DssRef.lang.BuildingType_GoldDelivery;
-                        case TerrainBuildingType.GoldDeliveryLevel2:
-                        case TerrainBuildingType.GoldDeliveryLevel3:
-                            return string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_GoldDelivery);
+        //                case TerrainBuildingType.GoldDeliveryLevel1:
+        //                    return DssRef.lang.BuildingType_GoldDelivery;
+        //                case TerrainBuildingType.GoldDeliveryLevel2:
+        //                case TerrainBuildingType.GoldDeliveryLevel3:
+        //                    return string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_GoldDelivery);
 
-                        case TerrainBuildingType.Recruitment:
-                            return DssRef.lang.BuildingType_Recruitment;
-                        case TerrainBuildingType.RecruitmentLevel2:
-                        case TerrainBuildingType.RecruitmentLevel3:
-                            return string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Recruitment);
+        //                case TerrainBuildingType.Recruitment:
+        //                    return DssRef.lang.BuildingType_Recruitment;
+        //                case TerrainBuildingType.RecruitmentLevel2:
+        //                case TerrainBuildingType.RecruitmentLevel3:
+        //                    return string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Recruitment);
 
-                        case TerrainBuildingType.Work_Smith:
-                            return DssRef.lang.BuildingType_Smith;                       
-                        case TerrainBuildingType.Storehouse:
-                            return DssRef.lang.BuildingType_Storage;
-                        case TerrainBuildingType.Tavern:
-                            return DssRef.lang.BuildingType_Tavern;
-                        case TerrainBuildingType.Work_Bench:
-                            return DssRef.lang.BuildingType_WorkBench;
-                        case TerrainBuildingType.WorkerHut:
-                        case TerrainBuildingType.WorkerHutLarge:
-                            return DssRef.lang.BuildingType_WorkerHut;
+        //                case TerrainBuildingType.Work_Smith:
+        //                    return DssRef.lang.BuildingType_Smith;                       
+        //                case TerrainBuildingType.Storehouse:
+        //                    return DssRef.lang.BuildingType_Storage;
+        //                case TerrainBuildingType.Tavern:
+        //                    return DssRef.lang.BuildingType_Tavern;
+        //                case TerrainBuildingType.Work_Bench:
+        //                    return DssRef.lang.BuildingType_WorkBench;
+        //                case TerrainBuildingType.WorkerHut:
+        //                case TerrainBuildingType.WorkerHutLarge:
+        //                    return DssRef.lang.BuildingType_WorkerHut;
 
-                        case TerrainBuildingType.Smelter:
-                            return DssRef.lang.BuildingType_SmeltingFurnace;
-                        case TerrainBuildingType.WoodCutter:
-                            return DssRef.lang.BuildingType_WoodCutter;
-                        case TerrainBuildingType.StoneCutter:
-                            return DssRef.lang.BuildingType_StoneCutter;
-                        case TerrainBuildingType.Embassy:
-                            return DssRef.lang.BuildingType_Embassy;
-                        case TerrainBuildingType.WaterResovoir:
-                            return DssRef.lang.BuildingType_WaterResovoir;
+        //                case TerrainBuildingType.Smelter:
+        //                    return DssRef.lang.BuildingType_SmeltingFurnace;
+        //                case TerrainBuildingType.WoodCutter:
+        //                    return DssRef.lang.BuildingType_WoodCutter;
+        //                case TerrainBuildingType.StoneCutter:
+        //                    return DssRef.lang.BuildingType_StoneCutter;
+        //                case TerrainBuildingType.Embassy:
+        //                    return DssRef.lang.BuildingType_Embassy;
+        //                case TerrainBuildingType.WaterResovoir:
+        //                    return DssRef.lang.BuildingType_WaterResovoir;
 
-                        case TerrainBuildingType.GuardHouse_Small:
-                        case TerrainBuildingType.GuardHouse_Large:
-                            return DssRef.lang.BuildingType_GuardOffice;
+        //                case TerrainBuildingType.GuardHouse_Small:
+        //                case TerrainBuildingType.GuardHouse_Large:
+        //                    return DssRef.lang.BuildingType_GuardOffice;
                         
-                        case TerrainBuildingType.ArcherBarracks:
-                            return DssRef.lang.BuildingType_ArcherBarracks;
-                        case TerrainBuildingType.WarmachineBarracks:
-                            return DssRef.lang.BuildingType_WarmachineBarracks;
-                        case TerrainBuildingType.GunBarracks:
-                            return DssRef.lang.BuildingType_GunBarracks;
-                        case TerrainBuildingType.CannonBarracks:
-                            return DssRef.lang.BuildingType_CannonBarracks;
-                        case TerrainBuildingType.KnightsBarracks:
-                            return DssRef.lang.BuildingType_KnightsBarracks;
-                        case TerrainBuildingType.Foundry:
-                            return DssRef.lang.BuildingType_Foundry;
-                        case TerrainBuildingType.Armory:
-                            return DssRef.lang.BuildingType_Armory;
-                        case TerrainBuildingType.Chemist:
-                            return DssRef.lang.BuildingType_Chemist;
-                        case TerrainBuildingType.Gunmaker:
-                            return DssRef.lang.BuildingType_Gunmaker;
-                        case TerrainBuildingType.School:
-                            return DssRef.lang.BuildingType_School;
-                        case TerrainBuildingType.ResearchCenter:
-                            return DssRef.lang.BuildingType_ReseachCenter;
-                        case TerrainBuildingType.BookPress:
-                            return DssRef.lang.BuildingType_Bookpress;
+        //                case TerrainBuildingType.ArcherBarracks:
+        //                    return DssRef.lang.BuildingType_ArcherBarracks;
+        //                case TerrainBuildingType.WarmachineBarracks:
+        //                    return DssRef.lang.BuildingType_WarmachineBarracks;
+        //                case TerrainBuildingType.GunBarracks:
+        //                    return DssRef.lang.BuildingType_GunBarracks;
+        //                case TerrainBuildingType.CannonBarracks:
+        //                    return DssRef.lang.BuildingType_CannonBarracks;
+        //                case TerrainBuildingType.KnightsBarracks:
+        //                    return DssRef.lang.BuildingType_KnightsBarracks;
+        //                case TerrainBuildingType.Foundry:
+        //                    return DssRef.lang.BuildingType_Foundry;
+        //                case TerrainBuildingType.Armory:
+        //                    return DssRef.lang.BuildingType_Armory;
+        //                case TerrainBuildingType.Chemist:
+        //                    return DssRef.lang.BuildingType_Chemist;
+        //                case TerrainBuildingType.Gunmaker:
+        //                    return DssRef.lang.BuildingType_Gunmaker;
+        //                case TerrainBuildingType.School:
+        //                    return DssRef.lang.BuildingType_School;
+        //                case TerrainBuildingType.ResearchCenter:
+        //                    return DssRef.lang.BuildingType_ReseachCenter;
+        //                case TerrainBuildingType.BookPress:
+        //                    return DssRef.lang.BuildingType_Bookpress;
 
-                        case TerrainBuildingType.ServiceMenHouse_small:
-                        case TerrainBuildingType.ServiceMenHouse_Large:
-                            return DssRef.lang.BuildingType_ServiceHouse;
+        //                case TerrainBuildingType.ServiceMenHouse_small:
+        //                case TerrainBuildingType.ServiceMenHouse_Large:
+        //                    return DssRef.lang.BuildingType_ServiceHouse;
                         
-                        default:
-                            return DssRef.lang.BuildingType_DefaultName;
-                    }
+        //                default:
+        //                    return DssRef.lang.BuildingType_DefaultName;
+        //            }
 
-                case TerrainMainType.Foil:
-                    switch ((TerrainSubFoilType)subType)
-                    {
-                        default:
-                            return DssRef.lang.LandType_Flatland;
+        //        case TerrainMainType.Foil:
+        //            switch ((TerrainSubFoilType)subType)
+        //            {
+        //                default:
+        //                    return DssRef.lang.LandType_Flatland;
                                                   
 
-                        case TerrainSubFoilType.TreeHard:
-                        case TerrainSubFoilType.TreeSoft:
-                        case TerrainSubFoilType.DryWood:
-                            return DssRef.lang.Resource_TypeName_Wood;
+        //                case TerrainSubFoilType.TreeHard:
+        //                case TerrainSubFoilType.TreeSoft:
+        //                case TerrainSubFoilType.DryWood:
+        //                    return DssRef.lang.Resource_TypeName_Wood;
 
-                        case TerrainSubFoilType.TreeSoftSprout:
-                            return DssRef.todoLang.Building_TreeSprout_Soft;
-                        case TerrainSubFoilType.TreeHardSprout:
-                            return DssRef.todoLang.Building_TreeSprout_Hard;
+        //                case TerrainSubFoilType.TreeSoftSprout:
+        //                    return DssRef.lang.Building_TreeSprout_Soft;
+        //                case TerrainSubFoilType.TreeHardSprout:
+        //                    return DssRef.lang.Building_TreeSprout_Hard;
 
-                        case TerrainSubFoilType.StoneBlock:
-                        case TerrainSubFoilType.Stones:
-                            return DssRef.lang.Resource_TypeName_Stone;
+        //                case TerrainSubFoilType.StoneBlock:
+        //                case TerrainSubFoilType.Stones:
+        //                    return DssRef.lang.Resource_TypeName_Stone;
 
-                        case TerrainSubFoilType.LinenFarm:
-                            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen);
-                        case TerrainSubFoilType.LinenFarmUpgraded:
-                            return string.Format(DssRef.lang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen));
+        //                case TerrainSubFoilType.LinenFarm:
+        //                    return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen);
+        //                case TerrainSubFoilType.LinenFarmUpgraded:
+        //                    return string.Format(DssRef.lang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Linen));
 
-                        case TerrainSubFoilType.WheatFarm:
-                            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat);
-                        case TerrainSubFoilType.WheatFarmUpgraded:
-                            return string.Format(DssRef.lang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat));
+        //                case TerrainSubFoilType.WheatFarm:
+        //                    return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat);
+        //                case TerrainSubFoilType.WheatFarmUpgraded:
+        //                    return string.Format(DssRef.lang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Wheat));
 
-                        case TerrainSubFoilType.RapeSeedFarm:
-                            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed);
-                        case TerrainSubFoilType.RapeSeedFarmUpgraded:
-                            return string.Format(DssRef.lang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed));
+        //                case TerrainSubFoilType.RapeSeedFarm:
+        //                    return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed);
+        //                case TerrainSubFoilType.RapeSeedFarmUpgraded:
+        //                    return string.Format(DssRef.lang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Rapeseed));
 
-                        case TerrainSubFoilType.HempFarm:
-                            return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp);
-                        case TerrainSubFoilType.HempFarmUpgraded:
-                            return string.Format(DssRef.lang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp));
+        //                case TerrainSubFoilType.HempFarm:
+        //                    return string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp);
+        //                case TerrainSubFoilType.HempFarmUpgraded:
+        //                    return string.Format(DssRef.lang.BuildingType_IsUpgraded, string.Format(DssRef.lang.BuildingType_ResourceFarm, DssRef.lang.Resource_TypeName_Hemp));
 
-                        case TerrainSubFoilType.BogIron:
-                            return DssRef.lang.Resource_TypeName_BogIron;
-                    }
-                    //break;
+        //                case TerrainSubFoilType.BogIron:
+        //                    return DssRef.lang.Resource_TypeName_BogIron;
+        //            }
+        //            //break;
 
-                case TerrainMainType.Mine:
-                    switch ((TerrainMineType)subType)
-                    {
-                        case TerrainMineType.IronOre:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Iron);
-                        case TerrainMineType.Coal:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Coal);
-                        case TerrainMineType.GoldOre:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.ResourceType_Gold);
+        //        case TerrainMainType.Mine:
+        //            switch ((TerrainMineType)subType)
+        //            {
+        //                case TerrainMineType.IronOre:
+        //                    return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Iron);
+        //                case TerrainMineType.Coal:
+        //                    return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Coal);
+        //                case TerrainMineType.GoldOre:
+        //                    return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.ResourceType_Gold);
 
-                        case TerrainMineType.TinOre:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Tin);
-                        case TerrainMineType.CopperOre:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Copper);
-                        case TerrainMineType.SilverOre:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Silver);
-                        case TerrainMineType.LeadOre:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Lead);
-                        case TerrainMineType.Mithril:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Mithril);
-                        case TerrainMineType.Sulfur:
-                            return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Sulfur);
+        //                case TerrainMineType.TinOre:
+        //                    return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Tin);
+        //                case TerrainMineType.CopperOre:
+        //                    return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Copper);
+        //                case TerrainMineType.SilverOre:
+        //                    return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Silver);
+        //                case TerrainMineType.LeadOre:
+        //                    return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Lead);
+        //                case TerrainMineType.Mithril:
+        //                    return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Mithril);
+        //                case TerrainMineType.Sulfur:
+        //                    return string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Sulfur);
 
-                    }
-                    break;
+        //            }
+        //            break;
 
-                case TerrainMainType.Road:
-                    switch ((TerrainRoadType)subType)
-                    {
-                        case TerrainRoadType.DirtRoad:
-                            return DssRef.lang.BuildingType_DirtRoad;
-                    }
-                    break;
+        //        case TerrainMainType.Road:
+        //            switch ((TerrainRoadType)subType)
+        //            {
+        //                case TerrainRoadType.DirtRoad:
+        //                    return DssRef.lang.BuildingType_DirtRoad;
+        //            }
+        //            break;
 
-                case TerrainMainType.Decor:
-                    switch ((TerrainDecorType)subType)
-                    {
-                        case TerrainDecorType.Pavement:
-                            return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Pavement);
-                        case TerrainDecorType.PavementFlower:
-                            return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Pavement);
-                        case TerrainDecorType.PavementRectFlower:
-                            return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Pavement);
-                        case TerrainDecorType.PavementLamp: 
-                            return string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Pavement);
-                        case TerrainDecorType.PavemenFountain: 
-                            return string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Pavement);
+        //        case TerrainMainType.Decor:
+        //            switch ((TerrainDecorType)subType)
+        //            {
+        //                case TerrainDecorType.Pavement:
+        //                    return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Pavement);
+        //                case TerrainDecorType.PavementFlower:
+        //                    return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Pavement);
+        //                case TerrainDecorType.PavementRectFlower:
+        //                    return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Pavement);
+        //                case TerrainDecorType.PavementLamp: 
+        //                    return string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Pavement);
+        //                case TerrainDecorType.PavemenFountain: 
+        //                    return string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Pavement);
                         
 
-                        case TerrainDecorType.Statue_ThePlayer:
-                            return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Statue);
+        //                case TerrainDecorType.Statue_ThePlayer:
+        //                    return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Statue);
 
-                        case TerrainDecorType.GardenFourBushes: return string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Garden); 
-                        case TerrainDecorType.GardenLongTree: return string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Garden);
-                        case TerrainDecorType.GardenWalledBush: return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Garden); 
-                        case TerrainDecorType.GardenGrass: return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Garden);
-                        case TerrainDecorType.GardenBird: return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Garden);
-
-
-                        case TerrainDecorType.GardenMemoryStone: return string.Format(DssRef.lang.VariantType_F, DssRef.lang.DecorType_Garden);
-                        case TerrainDecorType.Statue_Leader: return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Statue);
-                        case TerrainDecorType.Statue_Lion: return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Statue);
-                        case TerrainDecorType.Statue_Horse: return string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Statue);
-                        case TerrainDecorType.Statue_Pillar: return string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Statue);
-
-                        case TerrainDecorType.FlagPole_LongBanner:
-                            return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Banner);
-                        case TerrainDecorType.FlagPole_Banner:
-                            return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Banner);
-                        case TerrainDecorType.FlagPole_SlimBanner:
-                            return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Banner);
-
-                        case TerrainDecorType.FlagPole_Flag:
-                            return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Flag);
-                        case TerrainDecorType.FlagPole_FlagRound:
-                            return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Flag);
-                        case TerrainDecorType.FlagPole_FlagLarge:
-                            return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Flag);
-                        case TerrainDecorType.FlagPole_Streamer:
-                            return string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Flag);
-                        case TerrainDecorType.FlagPole_Triangle:
-                            return string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Flag);
-
-                        case TerrainDecorType.CobbleStones:
-                            return DssRef.lang.DecorType_CobbleStones;
-                        case TerrainDecorType.Square:
-                            return DssRef.lang.DecorType_Square;
-                    }
-                    break;
-
-                case TerrainMainType.Destroyed:
-                case TerrainMainType.DefaultLand:
-                    return DssRef.lang.LandType_Flatland;
-                case TerrainMainType.DefaultSea:
-                    return DssRef.lang.LandType_Water;
-
-                case TerrainMainType.Resourses:
-                    return DssRef.lang.Resource;
-
-                case TerrainMainType.Wall:
-
-                    switch ((TerrainWallType)subType)
-                    {
-                        case TerrainWallType.Palisade: return DssRef.lang.BuildingType_Palisade;
-                        case TerrainWallType.DirtWall:
-                            return DssRef.lang.BuildingType_DirtWall;
-                        case TerrainWallType.DirtTower:
-                            return DssRef.lang.BuildingType_DirtTower;
-                        case TerrainWallType.WoodWall: return DssRef.lang.BuildingType_WoodWall;
-                        case TerrainWallType.WoodTower: return DssRef.lang.BuildingType_WoodTower;
-                        case TerrainWallType.StoneWall: return string.Format(DssRef.lang.VariantType_A, DssRef.lang.BuildingType_StoneWall);
-                        case TerrainWallType.StoneTower: return DssRef.lang.BuildingType_StoneTower;
-                        case TerrainWallType.StoneWallGreen: return string.Format(DssRef.lang.VariantType_B, DssRef.lang.BuildingType_StoneWall);
-                        case TerrainWallType.StoneWallBlueRoof: return string.Format(DssRef.lang.VariantType_C, DssRef.lang.BuildingType_StoneWall);
-                        case TerrainWallType.StoneWallWoodHouse: return string.Format(DssRef.lang.VariantType_D, DssRef.lang.BuildingType_StoneWall);
-                        case TerrainWallType.StoneGate: return DssRef.lang.BuildingType_StoneGate;
-                        case TerrainWallType.StoneHouse: return DssRef.lang.BuildingType_StoneHouse;
-                    }
-
-                    return DssRef.lang.BuildingType_Wall;
-            }
+        //                case TerrainDecorType.GardenFourBushes: return string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Garden); 
+        //                case TerrainDecorType.GardenLongTree: return string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Garden);
+        //                case TerrainDecorType.GardenWalledBush: return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Garden); 
+        //                case TerrainDecorType.GardenGrass: return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Garden);
+        //                case TerrainDecorType.GardenBird: return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Garden);
 
 
-            return TextLib.Error + " (" + mainType.ToString() + " " + subType.ToString()+ ")";
-        }
+        //                case TerrainDecorType.GardenMemoryStone: return string.Format(DssRef.lang.VariantType_F, DssRef.lang.DecorType_Garden);
+        //                case TerrainDecorType.Statue_Leader: return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Statue);
+        //                case TerrainDecorType.Statue_Lion: return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Statue);
+        //                case TerrainDecorType.Statue_Horse: return string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Statue);
+        //                case TerrainDecorType.Statue_Pillar: return string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Statue);
 
+        //                case TerrainDecorType.FlagPole_LongBanner:
+        //                    return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Banner);
+        //                case TerrainDecorType.FlagPole_Banner:
+        //                    return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Banner);
+        //                case TerrainDecorType.FlagPole_SlimBanner:
+        //                    return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Banner);
+
+        //                case TerrainDecorType.FlagPole_Flag:
+        //                    return string.Format(DssRef.lang.VariantType_A, DssRef.lang.DecorType_Flag);
+        //                case TerrainDecorType.FlagPole_FlagRound:
+        //                    return string.Format(DssRef.lang.VariantType_B, DssRef.lang.DecorType_Flag);
+        //                case TerrainDecorType.FlagPole_FlagLarge:
+        //                    return string.Format(DssRef.lang.VariantType_C, DssRef.lang.DecorType_Flag);
+        //                case TerrainDecorType.FlagPole_Streamer:
+        //                    return string.Format(DssRef.lang.VariantType_D, DssRef.lang.DecorType_Flag);
+        //                case TerrainDecorType.FlagPole_Triangle:
+        //                    return string.Format(DssRef.lang.VariantType_E, DssRef.lang.DecorType_Flag);
+
+        //                case TerrainDecorType.CobbleStones:
+        //                    return DssRef.lang.DecorType_CobbleStones;
+        //                case TerrainDecorType.Square:
+        //                    return DssRef.lang.DecorType_Square;
+        //            }
+        //            break;
+
+        //        case TerrainMainType.Destroyed:
+        //        case TerrainMainType.DefaultLand:
+        //            return DssRef.lang.LandType_Flatland;
+        //        case TerrainMainType.DefaultSea:
+        //            return DssRef.lang.LandType_Water;
+
+        //        case TerrainMainType.Resourses:
+        //            return DssRef.lang.Resource;
+
+        //        case TerrainMainType.Wall:
+
+        //            switch ((TerrainWallType)subType)
+        //            {
+        //                case TerrainWallType.Palisade: return DssRef.lang.BuildingType_Palisade;
+        //                case TerrainWallType.DirtWall:
+        //                    return DssRef.lang.BuildingType_DirtWall;
+        //                case TerrainWallType.DirtTower:
+        //                    return DssRef.lang.BuildingType_DirtTower;
+        //                case TerrainWallType.WoodWall: return DssRef.lang.BuildingType_WoodWall;
+        //                case TerrainWallType.WoodTower: return DssRef.lang.BuildingType_WoodTower;
+        //                case TerrainWallType.StoneWall: return string.Format(DssRef.lang.VariantType_A, DssRef.lang.BuildingType_StoneWall);
+        //                case TerrainWallType.StoneTower: return DssRef.lang.BuildingType_StoneTower;
+        //                case TerrainWallType.StoneWallGreen: return string.Format(DssRef.lang.VariantType_B, DssRef.lang.BuildingType_StoneWall);
+        //                case TerrainWallType.StoneWallBlueRoof: return string.Format(DssRef.lang.VariantType_C, DssRef.lang.BuildingType_StoneWall);
+        //                case TerrainWallType.StoneWallWoodHouse: return string.Format(DssRef.lang.VariantType_D, DssRef.lang.BuildingType_StoneWall);
+        //                case TerrainWallType.StoneGate: return DssRef.lang.BuildingType_StoneGate;
+        //                case TerrainWallType.StoneHouse: return DssRef.lang.BuildingType_StoneHouse;
+        //            }
+
+        //            return DssRef.lang.BuildingType_Wall;
+        //    }
+
+
+        //    return TextLib.Error + " (" + mainType.ToString() + " " + subType.ToString()+ ")";
+        //}
+        
         public static string BuildingDescription(TerrainBuildingType buildingType)
         {
             switch (buildingType)
             {
                 case TerrainBuildingType.Logistics:
                     return DssRef.lang.BuildingType_Logistics_Description;
+                case TerrainBuildingType.ManorLord:
+                    return DssRef.lang.BuildingType_ManorLord_Description;
                 case TerrainBuildingType.Tavern:
                     return DssRef.lang.BuildingType_Tavern_Description;
                 case TerrainBuildingType.Storehouse:
@@ -1187,6 +1268,8 @@ namespace VikingEngine.DSSWars.Presentation
                     return DssRef.lang.BuildingType_PigPen_Description;
                 case TerrainBuildingType.HenPen:
                     return DssRef.lang.BuildingType_HenPen_Description;
+                case TerrainBuildingType.WorkerTent:
+                    return string.Format(DssRef.lang.BuildingType_WorkerHut_DescriptionLimitX, DssConst.HousingCount_WorkerTent);
                 case TerrainBuildingType.WorkerHut:
                     return string.Format(DssRef.lang.BuildingType_WorkerHut_DescriptionLimitX, DssConst.HousingCount_WorkerHut);
                 case TerrainBuildingType.WorkerHutLarge:
@@ -1377,7 +1460,7 @@ namespace VikingEngine.DSSWars.Presentation
             //tech(technology.blackPowder.points, TechnologyTemplate.BlackPowderUnlock, SpriteName.WarsResource_BronzeRifle, XpLib.TechnologyName_BlackPowder());
             //tech(technology.gunPowder.points, TechnologyTemplate.GunPowderUnlock, SpriteName.WarsResource_IronRifle, DssRef.lang.Resource_TypeName_GunPowder);
         }
-
+        //old
         public static string Item(ItemResourceType item)
         {
             switch (item)
@@ -1563,6 +1646,9 @@ namespace VikingEngine.DSSWars.Presentation
                     return DssRef.lang.ResourceType_Workers;
                 case ItemResourceType.ServiceMen:
                     return DssRef.lang.ResourceType_ServiceMen;
+                case ItemResourceType.Settler:
+                    return DssRef.lang.UnitType_Settler;
+
 
                 case ItemResourceType.CopperCoin:
                 case ItemResourceType.BronzeCoin:
@@ -1620,6 +1706,9 @@ namespace VikingEngine.DSSWars.Presentation
                 case DSSWars.CityCulture.Apprentices:
                     return title ? DssRef.lang.CityCulture_Apprentices : DssRef.lang.CityCulture_Apprentices_Description;
 
+                case DSSWars.CityCulture.Nomads:
+                    return title ? DssRef.lang.CityCulture_Nomad : string.Format( DssRef.lang.Hud_Purchase_LowXCost, DssRef.lang.UnitType_Settler);
+
                 default: return TextLib.Error;
             }
         }
@@ -1628,9 +1717,11 @@ namespace VikingEngine.DSSWars.Presentation
         {
             switch (filterType)
             {
+                case UnitFilterType.Settler:
+                    return DssRef.lang.UnitType_Settler;
                 case UnitFilterType.SharpStick:
                     return DssRef.lang.UnitType_Folkman;
-                
+
                 case UnitFilterType.Sword:
                 case UnitFilterType.LongSword:
                     return DssRef.lang.UnitType_Soldier;

@@ -18,6 +18,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
         {
             initGameState();
             onGameStart();
+            DssRef.stats.start_battle_lab.addOne_ifUnset();
         }
 
         public void initGameState()
@@ -60,7 +61,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             int playerCount = 1;
 
             localPlayers = new List<Players.LocalPlayer>(playerCount);
-            Engine.Screen.SetupSplitScreen(playerCount, !DssRef.storage.verticalScreenSplit);
+            Engine.Screen.SetupSplitScreen(playerCount);
             for (var i = 0; i < playerCount; ++i)
             {
                 var startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
@@ -132,6 +133,10 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
             if (Ref.steam.inOverlay)
             {
+                if (!menuSystem.IsOpen())
+                {
+                    menuSystem.pauseMenu();
+                }
                 return;
             }
 

@@ -266,12 +266,12 @@ namespace VikingEngine.EngineSpace.Graphics.DeferredRendering
                 Camera = p.view.Camera;
                 Camera.updateBillboard();
                 graphicsDeviceManager.GraphicsDevice.Viewport = p.view.Viewport;
-                if (DebugSett.Debug3DParticles)
-                {
-                    // TODO(Martin): This only works for in single client mode
-                    // Also, lots more to fix on particle system
-                    instancing.Draw(ref Camera.ViewMatrix, ref Camera.Projection);
-                }
+                //if (DebugSett.Debug3DParticles)
+                //{
+                //    // TODO(Martin): This only works for in single client mode
+                //    // Also, lots more to fix on particle system
+                //    instancing.Draw(ref Camera.ViewMatrix, ref Camera.Projection);
+                //}
                 Engine.ParticleHandler.Draw(Camera);
             }
             graphicsDeviceManager.GraphicsDevice.Viewport = savedViewport;

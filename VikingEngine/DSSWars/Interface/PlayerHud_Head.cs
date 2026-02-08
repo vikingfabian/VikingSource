@@ -1,20 +1,21 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.Graphics;
-using VikingEngine.HUD.RichMenu;
-using VikingEngine.HUD;
-using Microsoft.Xna.Framework;
-using VikingEngine.HUD.RichBox;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
+using VikingEngine.Graphics;
+using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG.MoonFall;
-using System.Globalization;
-using System.Reflection.Metadata;
-using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.DSSWars.Presentation;
 
 namespace VikingEngine.DSSWars.Interface
 {
@@ -30,45 +31,54 @@ namespace VikingEngine.DSSWars.Interface
         LocalPlayer player;
 
         public static readonly MenuTab[] CasualTabs = { MenuTab.Economy };
-        public static readonly MenuTab[] Tabs = { MenuTab.Economy, MenuTab.Resources, MenuTab.Work, /*MenuTab.Automation*/ MenuTab.Progress };
+        public static readonly MenuTab[] Tabs = { MenuTab.Economy, MenuTab.Resources, MenuTab.Work, MenuTab.StockPile,  /*MenuTab.Automation*/ MenuTab.Progress };
         public static readonly MenuTab[] TutorialTabs = { MenuTab.Economy };
 
         public PlayerHud_Head(LocalPlayer player)
         {
             this.player = player;
-            float headWidth = HudLib.HeadDisplayWidth * 1.6f;
+            float headWidth = HudLib.HeadDisplayWidth * 1.75f;
             var headMenuArea = player.playerData.view.safeScreenArea;
             headMenuArea.Width = headWidth;
             menu = new RichMenu(HudLib.RbSettings_Head, headMenuArea, new Vector2(HudLib.MenuEdgeSize), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
-            refreshFaction(player);
+            refreshFaction(player, true);
             menu.updateHeightFromContent();
 
-            VectorRect flagBgArea = new VectorRect(headMenuArea.Position, new Vector2(menu.backgroundArea.Height * 1.1f));
-            var flagBgTexSett = new NineSplitSettings(SpriteName.WarsHudFlagBorder, 1, 8, 1f, true, true);
-            flagBg = new NineSplitAreaTexture(flagBgTexSett, flagBgArea, HudLib.GUILayer + 2);
-            menu.move(VectorExt.V2FromX(flagBgArea.Size.X - 4));
-            flagBgArea.AddRadius(-(flagBgTexSett.BorderWidth() + 6));
-            flag = new ImageAdvanced(SpriteName.NO_IMAGE, flagBgArea.Position, flagBgArea.Size, HudLib.GUILayer, false);
-            flag.Texture = player.flagTexture;
-            flag.SetFullTextureSource();
+            if (DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
+            {
+                VectorRect flagBgArea = new VectorRect(headMenuArea.Position, new Vector2(menu.backgroundArea.Height * 1.1f));
+                var flagBgTexSett = new NineSplitSettings(SpriteName.WarsHudFlagBorder, 1, 8, 1f, true, true);
+                flagBg = new NineSplitAreaTexture(flagBgTexSett, flagBgArea, HudLib.GUILayer + 2);
+                menu.move(VectorExt.V2FromX(flagBgArea.Size.X - 4));
+                flagBgArea.AddRadius(-(flagBgTexSett.BorderWidth() + 6));
+                flag = new ImageAdvanced(SpriteName.NO_IMAGE, flagBgArea.Position, flagBgArea.Size, HudLib.GUILayer, false);
+                flag.Texture = player.flagTexture;
+                flag.SetFullTextureSource();
 
-            var headBgTex = menu.addBackground(new NineSplitSettings(SpriteName.WarsHudHeadBarBg, 1, 16, 1f, true, true), HudLib.GUILayer + 4);
-            headBgTex.SetOpacity(0.95f);
+                var headBgTex = menu.addBackground(new NineSplitSettings(SpriteName.WarsHudHeadBarBg, 1, 16, 1f, true, true), HudLib.GUILayer + 4);
+                headBgTex.SetOpacity(0.95f);
+
+                if (player.hud.MessageStart.X < menu.backgroundArea.Right)
+                {
+                    player.hud.MessageStart.Y = Math.Max(menu.backgroundArea.Bottom + Engine.Screen.IconSize * 0.5f, player.hud.MessageStart.Y);
+                }
+            }
+                       
 
             Bottom = menu.backgroundArea.Bottom;
             Right = menu.backgroundArea.Right;
 
             factionMenuStart = new Vector2(menu.backgroundArea.X, Bottom);
         }
-        public void refreshFaction(Players.LocalPlayer player)
+        public void refreshFaction(Players.LocalPlayer player, bool prepareLayout)
         {
             var content = new RichBoxContent();
-            headMenu(content, false);
+            headMenu(content, prepareLayout);
             menu.Refresh(content, player.gameControls.controllerPointer);
         }
         public void refreshUpdate(LocalPlayer player)
         {
-            refreshFaction(player);
+            refreshFaction(player, false);
         }
 
         /// <returns>need refresh</returns>
@@ -86,13 +96,18 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                return DssRef.storage.runTutorial_1short_2normal == 0 ? Tabs : TutorialTabs;
+                return DssRef.storage.runTutorial ? TutorialTabs : Tabs;
             }
         }
 
         public void headMenu(RichBoxContent content, bool prepareLayout)
         {
             //LocalPlayer localPlayer = player.GetLocalPlayer();
+
+            if (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator)
+            {
+                return;
+            }
 
             long gold;
             long income;
@@ -194,33 +209,13 @@ namespace VikingEngine.DSSWars.Interface
                 content.space(0.5f);
             }
 
-            MenuTab[] tabOptions = factionTabOptions();
-            for (int i = 0; i < tabOptions.Length; ++i)
+            if (player.mapLayer() >= Map.MapDetailLayerType.FactionColors3 && !prepareLayout)
             {
-                var tab = tabOptions[i];
-                SpriteName icon = SpriteName.NO_IMAGE;
-                switch (tab)
-                {
-                    case MenuTab.Info:
-                        icon = SpriteName.WarsHudInfoIcon; break;
-                    case MenuTab.Economy:
-                        icon = SpriteName.rtsMoney; break;
-                    case MenuTab.Resources:
-                        icon = SpriteName.WarsResource_Wood; break;
-                    case MenuTab.Work:
-                        icon = SpriteName.WarsHammer; break;
-                    case MenuTab.Automation:
-                        icon = SpriteName.AutomationGearIcon; break;
-                    case MenuTab.Progress:
-                        icon = SpriteName.WarsTechnology_Unlocked; break;
-
-                }
-
-                content.Add(new ArtOption(tab == player.factionTab,
-                    new List<AbsRichBoxMember>
-                    {
-                        new RbImage(icon)
-                    }, new RbAction1Arg<MenuTab>(TabClick, tab, RbSoundType.Option), new RbTooltip(TabTip, tab)));
+                mapFilterTabs(content);
+            }
+            else
+            {
+                factionTabs(content);
             }
 
             if (viewControllerTabs)
@@ -240,7 +235,7 @@ namespace VikingEngine.DSSWars.Interface
                 buttonContent.Add(new RbImage(SpriteName.WarsCityHall));
                 buttonContent.space(0.5f);
                 buttonContent.Add(new RbText(cityCount.ToString()));
-                content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<bool>(player.gameControls.nextCity, true),
+                content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction(player.gameControls.nextCity),
                     new RbTooltip(nextCityTip)));
             }
             {
@@ -256,6 +251,109 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<bool>(player.gameControls.nextArmy, true),
                     new RbTooltip(nextArmyTip)));
             }
+            {
+
+                RichBoxContent buttonContent = new RichBoxContent();
+                string toolTip;
+                if (player.warCount == 0 && !prepareLayout)
+                {
+                    buttonContent.Add(new RbImage(SpriteName.WarsRelationPeace));
+                    toolTip = DssRef.lang.WorkForce_Peace;
+                }
+                else
+                {
+                    if (player.gameControls.input.inputSource.IsController)
+                    {
+                        player.gameControls.input.NextWar.ToRichContent(buttonContent);
+                        buttonContent.space(0.5f);
+                    }
+                    buttonContent.Add(new RbImage(SpriteName.WarsRelationWar));
+                    toolTip = DssRef.lang.InputActionName_NextWar;
+                }
+                buttonContent.space(0.5f);
+                buttonContent.Add(new RbText(player.warCount.ToString()));
+
+                content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<bool>(player.gameControls.nextWar, true),
+                    new RbTooltip_Text(toolTip)));
+            }
+
+        }
+
+        void factionTabs(RichBoxContent content)
+        {
+            MenuTab[] tabOptions = factionTabOptions();
+            for (int i = 0; i < tabOptions.Length; ++i)
+            {
+                var tab = tabOptions[i];
+                SpriteName icon = SpriteName.NO_IMAGE;
+                switch (tab)
+                {
+                    case MenuTab.Info:
+                        icon = SpriteName.WarsHudInfoIcon; break;
+                    case MenuTab.Economy:
+                        icon = SpriteName.rtsMoney; break;
+                    case MenuTab.Resources:
+                        icon = SpriteName.WarsIcon_Resources; break;
+                    case MenuTab.StockPile:
+                        icon = SpriteName.WarsStockpileAdd; break;
+                    case MenuTab.Work:
+                        icon = SpriteName.WarsHammer; break;
+                    case MenuTab.Automation:
+                        icon = SpriteName.AutomationGearIcon; break;
+                    case MenuTab.Progress:
+                        icon = SpriteName.WarsTechnology_Unlocked; break;
+                }
+
+                content.Add(new ArtOption(tab == player.factionTab,
+                    new List<AbsRichBoxMember>
+                    {
+                        new RbImage(icon)
+                    }, new RbAction1Arg<MenuTab>(TabClick, tab, RbSoundType.Tab), new RbTooltip(TabTip, tab)));
+            }
+        }
+
+        void mapFilterTabs(RichBoxContent content)
+        {
+            for (FactionMapFilter filter = 0; filter < FactionMapFilter.NUM; filter++)
+            {
+                SpriteName icon;
+
+                switch (filter)
+                {
+                    default: icon = SpriteName.MissingImage; break;
+
+                    case FactionMapFilter.FactionCols:
+                        icon = SpriteName.WarsMapFilterFactions;
+                        break;
+                    case FactionMapFilter.Terrain:
+                        icon = SpriteName.WarsMapFilterTerrain;
+                        break;
+                    case FactionMapFilter.Minimap:
+                        icon = SpriteName.WarsMapFilterMinimap;
+                        break;
+                    case FactionMapFilter.PopulationHeatmap:
+                        icon = SpriteName.WarsMapFilterWorkers;
+                        break;
+                    case FactionMapFilter.StrengthHeatmap:
+                        icon = SpriteName.WarsMapFilterStrength;
+                        break;
+                    case FactionMapFilter.ResourceHeatmap:
+                        icon = SpriteName.WarsIcon_Resources;
+                        break;
+                }
+
+                content.Add(new ArtOption(filter == player.factionPixelTexture.filter,
+                   new List<AbsRichBoxMember>
+                   {
+                        new RbImage(icon)
+                   }, new RbAction1Arg<FactionMapFilter>((FactionMapFilter filter)=>
+                       { 
+                            player.factionPixelTexture.filter = filter;
+                            DssRef.world.BordersUpdated = true;
+                       }
+                   , filter, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.MapFilter)));
+            }
+            
         }
 
         public void TabClick(MenuTab tab)
@@ -281,9 +379,6 @@ namespace VikingEngine.DSSWars.Interface
             content.h2(DssRef.lang.FactionSettings_Titel);
             content.newLine();
             content.Add(new RbText(DssRef.lang.FactionSettings_Description, HudLib.InfoYellow_Light));
-            
-            //content.newLine();
-            //content.Add(new RbText(description, HudLib.InfoYellow_Light));
         }
 
         void nextCityTip(RichBoxContent content, object tag)
@@ -292,6 +387,9 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new RbText(string.Format(DssRef.lang.Hud_CityCount, player.faction.cities.Count), HudLib.InfoYellow_Light));
             content.newParagraph();
             content.ButtonDescription(player.gameControls.input.NextCity, DssRef.lang.InputActionName_NextCity);
+            content.ButtonDescription(SpriteName.KeyShift, DssRef.lang.Hud_Previous);
+            content.ButtonDescription(SpriteName.KeyAlt, DssRef.lang.InputAction_SkipAutomated);
+
         }
         void nextArmyTip(RichBoxContent content, object tag)
         {
@@ -357,9 +455,6 @@ namespace VikingEngine.DSSWars.Interface
         }
         void foodTip(RichBoxContent content, object tag)
         {
-
-            //foodAdd = faction.CityFoodProduction;
-            //foodSub = faction.CityFoodSpending;
             content.Add(new RbImage(SpriteName.WarsResource_FoodAdd));
             content.space();
             content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Info_TotalFoodProduction, player.faction.CityFoodProduction),

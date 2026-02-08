@@ -10,15 +10,10 @@ namespace VikingEngine.Graphics
 {
     class FlagWaveEffect : CustomEffect
     {
-        public static FlagWaveEffect Singleton;
+        public static FlagWaveEffect FlagSingleton;
         // Some default wave settings
-        public float Time { get; set; } = 0.0f;
-        public float WaveSpeed { get; set; } = 4f;
-        public float WaveFrequency { get; set; } = 250.0f;
-        public float WaveAmplitude { get; set; } = 0.0015f;
-
-        // Secondary “flutter” wave for amplitude modulation
-        public float AmplitudeModFrequency { get; set; } = 5f;
+        public float Time = 0.0f;
+        
 
         
         public FlagWaveEffect()
@@ -27,12 +22,18 @@ namespace VikingEngine.Graphics
             shader = Engine.Draw.effectFlag;
             shader.CurrentTechnique = shader.Techniques[TechniqueName];
 
+
+            float WaveSpeed = 4f;
+            float WaveFrequency = 250.0f;
+            float WaveAmplitude = 0.0015f;
+
+            // Secondary “flutter” wave for amplitude modulation
+            float AmplitudeModFrequency = 5f;
+
             shader.Parameters["WaveSpeed"]?.SetValue(WaveSpeed);
             shader.Parameters["WaveFrequency"]?.SetValue(WaveFrequency);
             shader.Parameters["WaveAmplitude"]?.SetValue(WaveAmplitude);
             shader.Parameters["AmplitudeModFrequency"]?.SetValue(AmplitudeModFrequency);
-            //shader.Parameters["LightColor"]?.SetValue(new Vector3(1f));
-            //shader.Parameters["AmplitudeModRange"]?.SetValue(AmplitudeModRange);
         }
 
         public override void DrawVB(int frame, AbsVoxelObj obj, AbsVertexAndIndexBuffer VB)
@@ -72,14 +73,16 @@ namespace VikingEngine.Graphics
 
         }
 
-        public static FlagWaveEffect GetSingletonSafe()
+        public static FlagWaveEffect GetFlagSingletonSafe()
         {
-            if (Singleton == null)
+            if (FlagSingleton == null)
             {
-                Singleton = new FlagWaveEffect();
+                FlagSingleton = new FlagWaveEffect();                
             }
 
-            return Singleton;
+            return FlagSingleton;
         }
+
+        
     }
 }

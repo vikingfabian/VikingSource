@@ -30,6 +30,7 @@ namespace VikingEngine.DSSWars.Interface
         public const string UnderMenu_Options_Mouse = "options_mouse";
         public const string UnderMenu_Options_Keyboard = "options_keyboard";
         public const string UnderMenu_Options_Keyboard_Key = "options_keyboard_key";
+        public const string UnderMenu_ControllerDisconnected = "controller disconnected";
         bool gameWasPaused;
         Graphics.Image blackFade;
         protected ImageLayers layer = ImageLayers.Foreground7;
@@ -66,8 +67,8 @@ namespace VikingEngine.DSSWars.Interface
                 menuArea.X = Engine.Screen.CenterScreen.X - menuArea.Width / 2;
 
                 menu = new RichMenu(HudLib.RbSettings, menuArea, new Vector2(8), RichMenu.DefaultRenderEdge, layer, new PlayerData(PlayerData.AllPlayers));
-                
-                //base.openMenu();
+
+                DssRef.state.updateMouseVisible();
             }
         }
 
@@ -104,10 +105,12 @@ namespace VikingEngine.DSSWars.Interface
                     return false;
 
                 case UnderMenu_Options:
-                    RichBoxContent content = new RichBoxContent();
-                    HudLib.returnButton(content, menu, true, lobby ? null : DssRef.state.menuSystem.closeMenu);
-                    SettingsToMenu(content, menu, false);
-                    menu.Refresh(content);
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        HudLib.returnButton(content, menu, true, lobby ? null : DssRef.state.menuSystem.closeMenu);
+                        SettingsToMenu(content, menu, false);
+                        menu.Refresh(content);
+                    }
                     break;
                 
                 case UnderMenu_Options_Mouse:
@@ -120,6 +123,20 @@ namespace VikingEngine.DSSWars.Interface
 
                 case UnderMenu_Options_Keyboard_Key:
                     listMapOptions(menu, lobby);
+                    break;
+
+                case UnderMenu_ControllerDisconnected:
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        HudLib.returnButton(content, menu, true, DssRef.state.menuSystem.closeMenu);
+
+                        content.h1(DssRef.lang.GameMenu_ControllerDisconnected, HudLib.TitleColor_Head);
+
+                        content.newLine();
+                        muteDisconnect(content);
+
+                        menu.Refresh(content);
+                    }
                     break;
             }
 
@@ -152,6 +169,7 @@ namespace VikingEngine.DSSWars.Interface
                 menu.DeleteMe();
                 menu = null;
 
+                DssRef.state.updateMouseVisible();
                 GC.Collect();
             }
         }
@@ -196,6 +214,32 @@ namespace VikingEngine.DSSWars.Interface
             DssRef.state.exit();
         }
 
+        public void controllerDisconnectMenu()
+        {
+            pauseMenu();
+            menu.menuStack.Add(UnderMenu_ControllerDisconnected);
+            refreshPage(menu, false);
+        }
+
+        public void TutorialCompleteMenu()
+        {
+            openMenu();
+            RichBoxContent content = new RichBoxContent();
+
+            content.h1(DssRef.lang.Tutorial_CompleteTitle, HudLib.TitleColor_Head);
+            content.text(DssRef.lang.Tutorial_AdvisorDescription);
+
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_Resume) }, new RbAction(closeMenu))
+            {
+                fillWidth = true
+            });
+
+            endTutorialButton(content);
+
+            completeMenu(content);
+        }
+
         public void pauseMenu()
         {
             openMenu();
@@ -213,13 +257,11 @@ namespace VikingEngine.DSSWars.Interface
             if (!PlatformSettings.STEAM_DEMO && 
                 DssRef.settings.playType == GameState.PlayStateType.Play)
             {
-                if (DssRef.storage.runTutorial_1short_2normal != 0)
+                if (DssRef.storage.runTutorial)
                 { //TODO yes no dialogue
-                    content.newLine();
-                    content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_EndTutorial) }, new RbAction(endTutorial))
-                    {
-                        fillWidth = true
-                    });
+                    endTutorialButton(content);
+                   
+                    
                 }
 
                 content.newLine();
@@ -263,8 +305,21 @@ namespace VikingEngine.DSSWars.Interface
             });
 
             //SettingsToMenu(content, menu, false);
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                if (DssRef.state.localPlayers.Count > 1)
+                {
+                    content.h2(p.Name, HudLib.TitleColor_Name);
+                }
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_ToggleHudDetail) },
+                    p.hud.maxHudProperty));
+                content.newLine();
+                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.InputActionName_MiniMap) },
+                    p.hud.minimapProperty));
+            }
 
-            content.newLine();
+            content.newParagraph();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                 new RbImage(SpriteName.InterfaceIconCamera),
                 new RbSpace(),
@@ -307,7 +362,26 @@ namespace VikingEngine.DSSWars.Interface
            
         }
 
+        void endTutorialButton(RichBoxContent content)
+        {
+            content.newLine();
 
+            bool inAdvisorMode = true;
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                if (p.tutorial != null)
+                {
+                    inAdvisorMode = p.tutorial.AdvisorMode();
+                    break;
+                }
+            }
+
+            content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> {
+                        new RbText(inAdvisorMode? DssRef.lang.Tutorial_EndAdvisor : DssRef.lang.Tutorial_EndTutorial) }, new RbAction(endTutorial))
+            {
+                fillWidth = true
+            });
+        }
 
 
         public static void SettingsToMenu(RichBoxContent content, RichMenu menu, bool lobby)
@@ -367,20 +441,32 @@ namespace VikingEngine.DSSWars.Interface
             {
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_AutoSave) }, autoSaveProperty));
+
                 if (lobby)
                 {
+                    if (DssRef.storage.metaProgression.totalGameTimeMinutes >= 15)
+                    {
+                        content.newLine();
+                        content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, DssConst.MaxSpeedOption)) }, speed5Property));
+                    }
                     content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, DssConst.MaxSpeedOption)) }, speed5Property));
-                    //content.newLine();
-                    //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_LongerBuildQueue) }, longerBuildQueueProperty));
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_BlockImportAchievements) }, blockImportAchievementsProperty));
                 }
             }
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Low memory garbarge collecting") }, Ref.gamesett.lowGCProperty));
+            //content.newLine();
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Low memory garbarge collecting") }, Ref.gamesett.lowGCProperty));
             content.newLine();
             content.Add(new RbText(DssRef.lang.Settings_Blood + ":", HudLib.TitleColor_Label));
             content.space();
-            RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty);
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty, false);
+
+            content.newLine();
+            muteDisconnect(content);
+
+            content.newLine();
+            content.Add(new RbText(Ref.langOpt.Settings_ControllerVibration + ":", HudLib.TitleColor_Label));
+            content.space();
+            RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, 100, 10), Ref.gamesett.vibrationProperty, false);
 
             bool autoSaveProperty(object tag, bool set, bool value)
             {
@@ -404,19 +490,38 @@ namespace VikingEngine.DSSWars.Interface
                 return DssRef.storage.speed5x;
             }
 
-            
-
-            bool longerBuildQueueProperty(object tag, bool set, bool value)
+            bool blockImportAchievementsProperty(object tag, bool set, bool value)
             {
                 if (set)
                 {
-                    DssRef.storage.longerBuildQueue = value;
+                    DssRef.storage.blockImportAchievements = value;
 
                     DssRef.storage.Save(null);
                 }
-                return DssRef.storage.longerBuildQueue;
+                return DssRef.storage.blockImportAchievements;
             }
+
+            //bool longerBuildQueueProperty(object tag, bool set, bool value)
+            //{
+            //    if (set)
+            //    {
+            //        DssRef.storage.longerBuildQueue = value;
+
+            //        DssRef.storage.Save(null);
+            //    }
+            //    return DssRef.storage.longerBuildQueue;
+            //}
         }
+
+        static void muteDisconnect(RichBoxContent content)
+        {
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember>{
+                new RbImage(SpriteName.PixController1),
+                new RbSpace(0.5f),
+                new RbText(DssRef.lang.GameSettings_MuteControllerDisconnect)
+            }, Ref.gamesett.muteControllerDisconnectProperty));
+        }
+
 
         static InputActionType CurrentEditInput;
 
@@ -562,11 +667,9 @@ namespace VikingEngine.DSSWars.Interface
 
         void endTutorial()
         {
-            DssRef.stats.skipTutorial.addOne();
-
             foreach (var p in DssRef.state.localPlayers)
             {
-                p.tutorial?.EndTutorial();
+                p.tutorial?.EndCurrentTutorialMode();
             }
             closeMenu();
         }
