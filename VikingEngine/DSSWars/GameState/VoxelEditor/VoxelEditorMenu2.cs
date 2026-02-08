@@ -401,14 +401,18 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         void beginExportCurrentFrame()
         {
+            menu.deleteTooltip();
+            menu.blockToolTip = true;
             new TextInputState(designer.storage.saveFileName + "_Frame" + TextLib.IndexToString(designer.voxelProject.currentFrame.Value), exportCurrentFrameEvent, null);
         }
         void exportCurrentFrameEvent(string result, object tag)
         {
+            
             if (!string.IsNullOrEmpty(result))
             {
                 designer.storage.saveCurrentFrame(designer.voxelProject.currentFrame.Value, result);
             }
+            menu.blockToolTip = false;
         }
 
         void LayerNameEditEvent(string result, object tag)

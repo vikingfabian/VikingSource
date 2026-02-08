@@ -47,6 +47,7 @@ namespace VikingEngine.HUD.RichMenu
         public List<string> menuStack = new List<string>();
 
         public Action OnPageDelete = null;
+        public bool blockToolTip = false;
 
         public RichMenu(RichBoxSettings settings, VectorRect edgeArea, Vector2 edgeThickness, Vector2 renderEdge, ImageLayers layer, PlayerData playerData)
         { 
@@ -108,8 +109,11 @@ namespace VikingEngine.HUD.RichMenu
             //Debug.Log("deleteTooltip: add");
             deleteTooltip();
             //Debug.Log("add Tooltip");
-            buttonArea.Position += renderList.position;
-            tooltip = new RichTooltip(content, HudLib.TooltipSettings, buttonArea, playerData.view.safeScreenArea, layer -5);
+            if (!blockToolTip)
+            {
+                buttonArea.Position += renderList.position;
+                tooltip = new RichTooltip(content, HudLib.TooltipSettings, buttonArea, playerData.view.safeScreenArea, layer - 5);
+            }
         }
 
         public void deleteTooltip()

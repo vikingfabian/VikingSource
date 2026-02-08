@@ -83,6 +83,28 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                             wagonModelName = VoxelModelName.cannonwagon_maniron;
                             manType = WagonManType.Riding;
                             break;
+                        case Resource.ItemResourceType.ManCannonBronze:
+                            wagonMScale = 2.7f;
+                            wagonModelName = VoxelModelName.cannonwagon_manbronze;
+                            manType = WagonManType.Riding;
+                            break;
+                        case Resource.ItemResourceType.Ballista:
+                            wagonMScale = 2.7f;
+                            wagonModelName = VoxelModelName.cannonwagon_ballista;
+                            manType = WagonManType.Riding;
+                            break;
+                        case Resource.ItemResourceType.Manuballista:
+                            wagonMScale = 2.7f;
+                            wagonModelName = VoxelModelName.cannonwagon_manuballista;
+                            manType = WagonManType.Riding;
+                            break;
+                        case Resource.ItemResourceType.Catapult:
+                            wagonMScale = 2.7f;
+                            wagonModelName = VoxelModelName.cannonwagon_catapult;
+                            manType = WagonManType.Riding;
+                            break;
+                       
+
                     }
                     break;
                 case Resource.ItemResourceType.Wagon4Wheel:
@@ -98,6 +120,32 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                             wagonModelName = VoxelModelName.cannon4wagon_maniron;
                             manType = WagonManType.Coach;
                             break;
+                        case Resource.ItemResourceType.ManCannonBronze:
+                            wagonMScale = 3.5f;
+                            MGoalDistance = 0.9f;
+                            wagonModelName = VoxelModelName.cannon4wagon_maniron;
+                            manType = WagonManType.Coach;
+                            break;
+                        case Resource.ItemResourceType.Ballista:
+                            wagonMScale = 3.5f;
+                            MGoalDistance = 0.9f;
+                            wagonModelName = VoxelModelName.cannon4wagon_maniron;
+                            manType = WagonManType.Coach;
+                            break;
+                        case Resource.ItemResourceType.Manuballista:
+                            wagonMScale = 3.5f;
+                            MGoalDistance = 0.9f;
+                            wagonModelName = VoxelModelName.cannon4wagon_maniron;
+                            manType = WagonManType.Coach;
+                            break;
+                        case Resource.ItemResourceType.Catapult:
+                            wagonMScale = 3.5f;
+                            MGoalDistance = 0.9f;
+                            wagonModelName = VoxelModelName.cannon4wagon_maniron;
+                            manType = WagonManType.Coach;
+                            break;
+
+
                     }
                     break;
                 case Resource.ItemResourceType.WagonClosed:
