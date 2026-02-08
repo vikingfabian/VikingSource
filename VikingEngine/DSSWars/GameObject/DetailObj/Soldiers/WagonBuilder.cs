@@ -42,7 +42,6 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
     class WagonRiderModel : AbsDetailUnitAdvancedModel
     {
-        //bool chariot = false;
         int firstUpdate = 10;
         float wagonGoalDistance;
         Vector3 wagonPos;
@@ -149,13 +148,47 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                     }
                     break;
                 case Resource.ItemResourceType.WagonClosed:
-                    wagonModelName = VoxelModelName.wagon_coach;
-                    manType = WagonManType.Wagon;
+                    switch (soldier.group.soldierConscript.conscript.weapon)
+                    {
+                        default:
+                            wagonModelName = VoxelModelName.wagon_coach;
+                            manType = WagonManType.Wagon;
+                            break;
+                        case Resource.ItemResourceType.ManCannonIron:
+                            wagonModelName = VoxelModelName.cannoncoach_maniron;
+                            manType = WagonManType.Gunner;
+                            break;
+                        case Resource.ItemResourceType.ManCannonBronze:
+                            wagonModelName = VoxelModelName.cannoncoach_manbronze;
+                            manType = WagonManType.Gunner;
+                            break;
+                        case Resource.ItemResourceType.SiegeCannonIron:
+                            wagonModelName = VoxelModelName.cannoncoach_siegeiron;
+                            manType = WagonManType.Gunner;
+                            break;
+                    }
                     break;
                 case Resource.ItemResourceType.WagonIron:
                 case Resource.ItemResourceType.WagonSteel:
-                    wagonModelName = VoxelModelName.wagon_ironcoach;
-                    manType = WagonManType.Wagon;
+                    switch (soldier.group.soldierConscript.conscript.weapon)
+                    {
+                        default:
+                            wagonModelName = VoxelModelName.wagon_ironcoach;
+                            manType = WagonManType.Wagon;
+                            break;
+                        case Resource.ItemResourceType.ManCannonIron:
+                            wagonModelName = VoxelModelName.cannoncoach_maniron;
+                            manType = WagonManType.Gunner;
+                            break;
+                        case Resource.ItemResourceType.ManCannonBronze:
+                            wagonModelName = VoxelModelName.cannoncoach_manbronze;
+                            manType = WagonManType.Gunner;
+                            break;
+                        case Resource.ItemResourceType.SiegeCannonIron:
+                            wagonModelName = VoxelModelName.cannoncoach_siegeiron;
+                            manType = WagonManType.Gunner;
+                            break;
+                    }
                     break;
 
             }
@@ -184,6 +217,10 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                     break;
                 case WagonManType.Coach:
                     rightSoldierPosDiff = new Vector3(0.02f, 0.08f, 0.025f) * wagonScale;
+                    soldierRight = createSoldier();
+                    break;
+                case WagonManType.Gunner:
+                    rightSoldierPosDiff = new Vector3(0.02f, 0.08f, -0.3f) * wagonScale;
                     soldierRight = createSoldier();
                     break;
                 case WagonManType.Chariot:
@@ -319,7 +356,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                         soldierLeft.Rotation = model.Rotation;
                         soldierRight.Rotation = model.Rotation;
                         break;
-
+                    case WagonManType.Gunner:
                     case WagonManType.Coach:
                         soldierRight.position = model.Rotation.TranslateAlongAxis(rightSoldierPosDiff, wagonPos);
                         soldierRight.Rotation = model.Rotation;
@@ -354,6 +391,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             Chariot,
             Riding,
             Coach,
+            Gunner,
         }
     }
 }

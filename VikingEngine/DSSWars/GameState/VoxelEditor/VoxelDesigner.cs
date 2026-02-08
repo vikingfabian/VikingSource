@@ -721,10 +721,13 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         protected override void pickColor()
         {
-            base.pickColor();
-            if (drawCoordMaterial.HasMaterial())
+            //base.pickColor();
+            BlockHD pickMaterial = BlockHD.Empty;
+            pickMaterial.BlockValue = PickSafe(designerInterface.drawCoord);
+
+            if (pickMaterial.HasMaterial())
             {
-                SelectedMaterial = drawCoordMaterial;
+                SelectedMaterial = pickMaterial;
                 //if (inGame)
                 //{
                 //    parent.Print("Picked: " + Settings.Material.ToString());

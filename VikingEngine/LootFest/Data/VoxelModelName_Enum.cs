@@ -276,6 +276,9 @@ namespace VikingEngine.LootFest
         cannonwagon_manbronze,
         cannonwagon_maniron,
         cannon4wagon_maniron,
+        cannoncoach_maniron,
+        cannoncoach_manbronze,
+        cannoncoach_siegeiron,
 
         stupid_board,
         stupid_gate,

@@ -32,6 +32,7 @@ x Menu for cesspits
 
 VOXEL EDITOR
 * Added frame export
+* Pick works with layers
 
 SYSTEMS
 * Animal pens have upkeep

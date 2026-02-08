@@ -827,6 +827,26 @@ namespace VikingEngine.Voxels
             return voxelProject.layers.Selected().GetFrame(voxelProject.currentFrame.Value).GetSafe(drawPoint);
         }
 
+        public ushort PickSafe(IntVector3 drawPoint)
+        {
+            var selectedLayerCol = voxelProject.layers.Selected().GetFrame(voxelProject.currentFrame.Value).GetSafe(drawPoint);
+            if (selectedLayerCol == BlockHD.EmptyBlock)
+            {
+                for (int layerIx = 0; layerIx < voxelProject.layers.list.Count; ++layerIx)
+                {
+                    if (layerIx != voxelProject.layers.selectedIndex)
+                    {
+                        selectedLayerCol = voxelProject.layers.list[layerIx].GetFrame(voxelProject.currentFrame.Value).GetSafe(drawPoint);
+                        if (selectedLayerCol != BlockHD.EmptyBlock)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            return selectedLayerCol;//voxelProject.layers.Selected().GetFrame(voxelProject.currentFrame.Value).GetSafe(drawPoint);
+        }
+
         virtual public void SetVoxel(int frame, IntVector3 drawPoint, ushort material)
         {
             voxelProject.layers.Selected().GetFrame(frame).SetSafe(drawPoint, material);
