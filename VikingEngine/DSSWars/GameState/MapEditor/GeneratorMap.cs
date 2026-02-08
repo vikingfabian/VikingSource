@@ -61,14 +61,19 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
         public void generate2(Map.Map2.WorldData2 world)
         {
-            texture.texture = new Graphics.PixelTexture(world.tileGrid.Size);
+            texture.texture = new Graphics.PixelTexture(world.iconGrid.Size);
 
-            var loop = world.tileGrid.LoopInstance();
+            var loop = world.iconGrid.LoopInstance();
             while (loop.Next())
             {
-                var t = world.tileGrid.Get(loop.Position);
+                var t = world.iconGrid.Get(loop.Position);
                 texture.texture.SetPixel(loop.Position, t.color);
+
+                //texture.texture.SetPixel(loop.Position, Color.Beige);
             }
+
+
+
             texture.texture.ApplyPixelsToTexture();
             //if (arraylib.HasMembers(DssRef.world.cities))
             //{

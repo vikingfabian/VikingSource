@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor2
     {
         MapEditor2Display display;
         bool loadingState = false;
-        Generator2 generator = new Generator2();
+        Generator3 generator = new Generator3();
         GeneratorMap map;
         public MapEditor2_Scene()
             : base()

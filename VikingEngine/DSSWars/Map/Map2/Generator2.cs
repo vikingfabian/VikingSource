@@ -23,6 +23,8 @@ namespace VikingEngine.DSSWars.Map.Map2
         public float flatRadius;
         public float hillRadius;
         public float flatness;
+        public bool noise;
+        public float noiseStrength;
 
         public void refreshRadius()
         {
@@ -104,7 +106,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 while (world.tileGrid.LoopNext())
                 {
                     var tile = world.tileGrid.Get(world.tileGrid.LoopPosition);
-                    //tile.color = Color.Black;
+                    
                     tile.groundY = Height_WaterBottom;
                     world.tileGrid.Set(world.tileGrid.LoopPosition, tile);
                 }

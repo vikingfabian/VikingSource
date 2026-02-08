@@ -10,6 +10,7 @@ namespace VikingEngine.DSSWars.Map.Map2
     class WorldData2
     {
         public ushort seed = Ref.rnd.Ushort();
+        public Grid2D<Tile2> iconGrid;
         public Grid2D<Tile2> tileGrid;
         public PcgRandom rnd;
 
@@ -17,9 +18,11 @@ namespace VikingEngine.DSSWars.Map.Map2
         { 
             rnd = new PcgRandom(seed);
 
-            IntVector2 tileSz = WorldData.SizeDimentions(size) * 8;
+            IntVector2 tileSz = WorldData.SizeDimentions(size) * 8 * 2;
 
-            tileGrid = new Grid2D<Tile2>(tileSz);
+            iconGrid = new Grid2D<Tile2>(tileSz / 16);
+            //tileGrid = new Grid2D<Tile2>(tileSz);
+            
         }
 
     }

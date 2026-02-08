@@ -37,11 +37,16 @@ namespace VikingEngine.EngineSpace.Maths
         // Seeded simplex noise in 2d (a shame higher dimensions are patented...)
         public SimplexNoise2D(int seed)
         {
+            setSeed(seed);
+        }
+
+        public void setSeed(int seed)
+        {
             this.seed = seed;
             Random prng = new Random(seed);
 
             perm = new int[2 * PERMUTATION_COUNT];
-            for(int i = 0; i < PERMUTATION_COUNT; ++i)
+            for (int i = 0; i < PERMUTATION_COUNT; ++i)
             {
                 int val = prng.Next(512);
                 perm[i] = val;
