@@ -25,8 +25,6 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         const float LayerAddHeight = 0.15f;
         const float Height_PostNoise = LayerAddHeight * 2.4f;
-        const float Height_PostNoiseEdges = Height_PostNoise * 3;
-        const float Height_NoiseEdgesAdd = LayerAddHeight;
 
         LoadingState loadingState = LoadingState.None;
         public WorldData2 world;
@@ -96,9 +94,16 @@ namespace VikingEngine.DSSWars.Map.Map2
                 await Task.WhenAll(tasks);
                 tasks.Clear();
 
-                for (int i = 0; i < 16; i++)
+                for (int i = 0; i < 20; i++)
                 {
                     generateLandChains(5, false, true);
+                }
+                await Task.WhenAll(tasks);
+                tasks.Clear();
+
+                for (int i = 0; i < 20; i++)
+                {
+                    generateLandChains(2, false, true);
                 }
                 await Task.WhenAll(tasks);
                 tasks.Clear();
@@ -107,10 +112,8 @@ namespace VikingEngine.DSSWars.Map.Map2
                 await Task.WhenAll(tasks);
                 tasks.Clear();
 
-                scaleUp4();
-                scaleUp8();
-                scaleUp4();
-                scaleUp4();
+                SmoothMap();
+                scaleUp16x();
 
                 postProcessPixels();
 
@@ -119,45 +122,128 @@ namespace VikingEngine.DSSWars.Map.Map2
                 loadingState = LoadingState.Complete;
             });
         }
-
-        void scaleUp4()
+        void SmoothMap()
         {
-            // Initialize the new grid with double the dimensions
-            Grid2D<Tile2> largeGrid = new Grid2D<Tile2>(dataGrid.Size * 2);
+            // Create a temporary grid to store the smoothed results
+            // We must read from 'dataGrid' and write to 'tempGrid' to avoid race conditions
+            Grid2D<Tile2> tempGrid = new Grid2D<Tile2>(dataGrid.Size);
 
-            // Loop through the original grid coordinates
-            for (int x = 0; x < dataGrid.Size.X; x++)
+            // Thresholds
+            float heightDiffThreshold = 0.2f; // How "bumpy" it needs to be to trigger smoothing
+            float minHeight = Height_WaterPlane;           // Don't smooth below this (e.g., Water)
+            float maxHeight = Height_MountainStart;           // Don't smooth above this (e.g., Peaks)
+
+            Parallel.For(0, dataGrid.Size.X, x =>
             {
                 for (int y = 0; y < dataGrid.Size.Y; y++)
                 {
-                    // 1. Identify the 2x2 block position in the new grid
+                    float currentH = dataGrid.array[x, y].groundY;
+
+                    // CONSTRAINT 1: Value Range Check
+                    // If value is too low (water) or too high (mountain peaks), skip it.
+                    if (currentH <= minHeight || currentH > maxHeight)
+                    {
+                        tempGrid.array[x, y] = dataGrid.array[x, y];
+                        continue;
+                    }
+
+                    // Check neighbors to calculate average and see if we need to smooth
+                    float totalHeight = 0;
+                    int count = 0;
+                    bool needsSmoothing = false;
+
+                    // Loop through 3x3 block (Moore neighborhood)
+                    for (int nx = x - 1; nx <= x + 1; nx++)
+                    {
+                        for (int ny = y - 1; ny <= y + 1; ny++)
+                        {
+                            // Boundary check
+                            if (nx >= 0 && nx < dataGrid.Size.X && ny >= 0 && ny < dataGrid.Size.Y)
+                            {
+                                float neighborH = dataGrid.array[nx, ny].groundY;
+
+                                // CONSTRAINT 2: Difference Check
+                                // If ANY neighbor is significantly different, we flag this tile for smoothing
+                                if (Math.Abs(neighborH - currentH) > heightDiffThreshold)
+                                {
+                                    needsSmoothing = true;
+                                }
+
+                                totalHeight += neighborH;
+                                count++;
+                            }
+                        }
+                    }
+
+                    // Apply smoothing if conditions met
+                    if (needsSmoothing)
+                    {
+                        // "Even them out" -> Average of all neighbors
+                        float average = totalHeight / count;
+                        tempGrid.array[x, y] = new Tile2 { groundY = average };
+                    }
+                    else
+                    {
+                        // If it's already smooth enough, keep original value
+                        tempGrid.array[x, y] = dataGrid.array[x, y];
+                    }
+                }
+            });
+
+            // Apply the smoothed result back to the main data
+            dataGrid = tempGrid;
+            world.iconGrid = tempGrid;
+        }
+
+        void scaleUp16x()
+        { 
+            bool[] scalePassesIs4 = {  true, false, true, true };
+            foreach (bool pass4 in scalePassesIs4)
+            {
+                if (pass4)
+                {
+                    scaleUp4();
+                }
+                else
+                {
+                    scaleUp8();
+                }                    
+            }
+        }
+       
+        void scaleUp4()
+        {
+            Grid2D<Tile2> largeGrid = new Grid2D<Tile2>(dataGrid.Size * 2);
+
+            // Parallel.For handles the splitting automatically.
+            // We iterate over the X-axis in parallel, and let each thread handle a full column (Y-loop).
+            Parallel.For(0, dataGrid.Size.X, x =>
+            {
+                for (int y = 0; y < dataGrid.Size.Y; y++)
+                {
+                    // --- Standard Interpolation Logic ---
+
                     int lgX = x * 2;
                     int lgY = y * 2;
 
-                    // 2. Get neighbor indices (Clamp to edges to avoid IndexOutOfRange)
                     int nextX = (x + 1 < dataGrid.Size.X) ? x + 1 : x;
                     int nextY = (y + 1 < dataGrid.Size.Y) ? y + 1 : y;
 
-                    // 3. Get the height values of the 4 surrounding source tiles
-                    float hTL = dataGrid.array[x, y].groundY;          // Top-Left (Current)
-                    float hTR = dataGrid.array[nextX, y].groundY;      // Top-Right
-                    float hBL = dataGrid.array[x, nextY].groundY;      // Bottom-Left
-                    float hBR = dataGrid.array[nextX, nextY].groundY;  // Bottom-Right
+                    float hTL = dataGrid.array[x, y].groundY;
+                    float hTR = dataGrid.array[nextX, y].groundY;
+                    float hBL = dataGrid.array[x, nextY].groundY;
+                    float hBR = dataGrid.array[nextX, nextY].groundY;
 
-                    // 4. Calculate interpolated heights
                     float avgTop = (hTL + hTR) * 0.5f;
                     float avgLeft = (hTL + hBL) * 0.5f;
-                    float avgCenter = (hTL + hTR + hBL + hBR) * 0.25f; // Average of 4 surrounding
+                    float avgCenter = (hTL + hTR + hBL + hBR) * 0.25f;
 
-                    // 5. Assign to the 2x2 block in largeGrid
-                    // Note: We create new structs since Tile2 is a value type
-                    largeGrid.array[lgX, lgY] = new Tile2 { groundY = hTL };           // Original
-                    largeGrid.array[lgX + 1, lgY] = new Tile2 { groundY = avgTop };    // Right gap
-                    largeGrid.array[lgX, lgY + 1] = new Tile2 { groundY = avgLeft };   // Bottom gap
-                    largeGrid.array[lgX + 1, lgY + 1] = new Tile2 { groundY = avgCenter }; // Center
+                    largeGrid.array[lgX, lgY] = new Tile2 { groundY = hTL };
+                    largeGrid.array[lgX + 1, lgY] = new Tile2 { groundY = avgTop };
+                    largeGrid.array[lgX, lgY + 1] = new Tile2 { groundY = avgLeft };
+                    largeGrid.array[lgX + 1, lgY + 1] = new Tile2 { groundY = avgCenter };
                 }
-            }
-            
+            });
 
             dataGrid = largeGrid;
             world.iconGrid = largeGrid;
@@ -166,7 +252,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         {
             Grid2D<Tile2> largeGrid = new Grid2D<Tile2>(dataGrid.Size * 2);
 
-            for (int x = 0; x < dataGrid.Size.X; x++)
+            Parallel.For(0, dataGrid.Size.X, x =>
             {
                 for (int y = 0; y < dataGrid.Size.Y; y++)
                 {
@@ -191,9 +277,10 @@ namespace VikingEngine.DSSWars.Map.Map2
                     largeGrid.array[lgX, lgY + 1] = new Tile2 { groundY = avgLeft };
                     largeGrid.array[lgX + 1, lgY + 1] = new Tile2 { groundY = avgCenter };
                 }
-            }
+            });
 
             dataGrid = largeGrid;
+            world.iconGrid = largeGrid;
         }
 
         // Helper to get average of a tile and its 8 neighbors
@@ -225,16 +312,16 @@ namespace VikingEngine.DSSWars.Map.Map2
 
         void addNoiseTexture()
         {
-            const int PostProcessDivs = 8;
+            const int LoopDivs = 8;
 
             EngineSpace.Maths.SimplexNoise2D noiseMap = new EngineSpace.Maths.SimplexNoise2D(world.seed + 11);
             NoiseOptions postNoise = new NoiseOptions(true, 0.1f, 4, 1f, 30f);
             //NoiseOptions islandNoise = new NoiseOptions(true, 0.1f, 4, 1f, 5f);
 
             Rectangle2 area = new Rectangle2(dataGrid.Size);
-            area.size.X /= 8;
+            area.size.X /= LoopDivs;
 
-            for (int divIx = 0; divIx < PostProcessDivs; divIx++)
+            for (int divIx = 0; divIx < LoopDivs; divIx++)
             {
                 Rectangle2 divArea = area;
                 tasks.Add(Task.Run(() =>
@@ -266,7 +353,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             //NoiseOptions islandNoise = new NoiseOptions(true, 0.1f, 4, 1f, 5f);
 
             Rectangle2 area = new Rectangle2(dataGrid.Size);
-            area.size.X /= 8;
+            area.size.X /= PostProcessDivs;
 
             for (int divIx = 0; divIx < PostProcessDivs; divIx++)
             {
@@ -548,7 +635,7 @@ namespace VikingEngine.DSSWars.Map.Map2
         void generateLandChains(Vector2 center, float MaxRadius, bool noise)
         {
 
-            Range chainLengthRange2 = new Range(2, 20);
+            Range chainLengthRange2 = new Range(8, 20);
             if (MaxRadius < 6)
             {
                 chainLengthRange2.Max = 40;
@@ -568,7 +655,7 @@ namespace VikingEngine.DSSWars.Map.Map2
             };
             draw = drawAddCalc(center, draw);
 
-            int fractals = 2 + (int)(draw.radius / 10);
+            int fractals = 2 + (int)(draw.radius / 1);
 
             float smoothness = world.rnd.Float();
             int connectedChains = world.rnd.Int(1, 2);
@@ -606,7 +693,7 @@ namespace VikingEngine.DSSWars.Map.Map2
                 }
             }
 
-            if (world.rnd.Chance(0.5))
+            if (world.rnd.Chance(0.3))
             {
                 int islandCount = world.rnd.Int(1, 8);
                 for (int i = 0; i < islandCount; ++i)
@@ -638,13 +725,13 @@ namespace VikingEngine.DSSWars.Map.Map2
                     noiseStrength = world.rnd.Float(0.1f, 1.5f),
                     noise = true,
                     add = true,
-                    radius = world.rnd.Float(0.2f, 1.1f) * landRadius,
+                    radius = world.rnd.Float(0.2f, 0.6f) * landRadius,
                     flatness = 0.4f,
                     addHeight = LayerAddHeight * 0.5f,
                 };
                 draw = drawAddCalc(center, draw);
 
-                startTask_placeDotWithOptions(center, draw, false, 1/*, generateNoise(world.rnd, true)*/);
+                startTask_placeDotWithOptions(center, draw, false, 8/*, generateNoise(world.rnd, true)*/);
             }
         }
 
