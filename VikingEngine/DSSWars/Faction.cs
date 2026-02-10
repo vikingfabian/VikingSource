@@ -140,6 +140,14 @@ namespace VikingEngine.DSSWars
             w.Write(money.copper);
             Debug.WriteCheck(w);
 
+            if (mainCity == null)
+            {
+                w.Write(ushort.MaxValue);
+            }
+            else
+            {
+                w.Write((ushort)mainCity.myIndex);
+            }
             //cities.write_ushort_compressed(w);
             //var cityList = cities.toList(DssRef.world.cities);
             //w.Write((ushort)cityList.Count);
@@ -209,6 +217,23 @@ namespace VikingEngine.DSSWars
             if (subVersion >= 77)
             {
                 Debug.ReadCheck(r);
+            }
+
+            if (subVersion < 106)
+            {
+                refreshMainCity();
+            }
+            else
+            {
+                int mainIndex = r.ReadUInt16();
+                if (mainIndex == ushort.MaxValue)
+                {
+                    refreshMainCity();
+                }
+                else
+                {
+                    mainCity = DssRef.world.cities[mainIndex];
+                }
             }
 
             //int citiesCount = r.ReadUInt16();

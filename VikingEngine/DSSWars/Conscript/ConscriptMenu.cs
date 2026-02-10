@@ -269,7 +269,7 @@ namespace VikingEngine.DSSWars.Conscript
                     HudLib.InfoButton(content, new RbTooltip_Text(string.Format(DssRef.lang.Conscript_SpecializationDescription, TextLib.PercentTextWithSymbol(DssConst.Conscript_SpecializePercentage))));
                     content.newLine();
 
-                    SpecializationType[] specializationTypes = currentStatus.profile.avaialableSpecializations();
+                    SpecializationType[] specializationTypes = currentStatus.profile.avaialableSpecializations( BuildAndExpandType.NUM_NONE, out _);
 
 
                     foreach (var specialization in specializationTypes)
@@ -770,12 +770,15 @@ namespace VikingEngine.DSSWars.Conscript
 
         void set(BarracksStatus profile)
         {
-            var spec = profile.profile.avaialableSpecializations();
-            if (profile.profile.specialization != SpecializationType.CityGuard &&
-                !spec.Contains(profile.profile.specialization))
-            {
-                profile.profile.specialization = spec[0];
-            }
+            //var spec = profile.profile.avaialableSpecializations(profile.type, out bool mayGuard);
+
+            //if ((profile.profile.specialization == SpecializationType.CityGuard && !mayGuard)
+            //    ||
+            //    !spec.Contains(profile.profile.specialization))
+            //{
+            //    profile.profile.specialization = spec[0];
+            //}
+            profile.checkSpecialization();
 
             city.conscriptBuildings[city.selectedConscript] = profile;
 

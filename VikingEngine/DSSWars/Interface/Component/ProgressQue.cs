@@ -14,7 +14,7 @@ namespace VikingEngine.DSSWars.Interface.Component
 {
     class ProgressQue
     {
-        public const int NoLimit = 255;
+        public const int NoLimit = 200;
         public void labelToHud(RichBoxContent content)
         {
             HudLib.Label(content, DssRef.lang.Hud_ProductionQueue);
@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars.Interface.Component
             {
                 var button = new ArtToggle(currentQue > maxQue, new List<AbsRichBoxMember>{
                        new RbText(DssRef.lang.Hud_NoLimit)
-                    }, new RbAction1Arg<int>(queClick, 255, RbSoundType.Start));
+                    }, new RbAction1Arg<int>(queClick, NoLimit, RbSoundType.Start));
                 //button.setGroupSelectionColor(HudLib.RbSettings, currentQue > maxQue);
                 content.Add(button);
             }

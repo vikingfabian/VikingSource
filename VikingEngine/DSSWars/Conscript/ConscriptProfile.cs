@@ -267,27 +267,58 @@ namespace VikingEngine.DSSWars.Conscript
             }
         }
 
-        public SpecializationType[] avaialableSpecializations()
-        {
-            SpecializationType[] specializationTypes;
-            if (weapon == ItemResourceType.TwoHandSword)
-            {
-                specializationTypes = new SpecializationType[] { SpecializationType.AntiCavalry };
-            }
-            else if (weapon == ItemResourceType.Ballista)
-            {
-                specializationTypes = new SpecializationType[] { SpecializationType.Siege };
-            }
-            else
-            {
-                specializationTypes = new SpecializationType[]
-                    {
+        static readonly SpecializationType[] Specializations_AntiCavalry = { SpecializationType.AntiCavalry };
+        static readonly SpecializationType[] Specializations_Siege = { SpecializationType.Siege };
+        static readonly SpecializationType[] Specializations_Default = {
                             SpecializationType.None,
                             SpecializationType.Field,
                             SpecializationType.Sea,
                             SpecializationType.Siege,
-                    };
+        };
+
+
+        public SpecializationType[] avaialableSpecializations(BuildAndExpandType barrackType, out bool mayGuard)
+        {
+            SpecializationType[] specializationTypes;
+
+            switch (weapon)
+            {
+               
+                case ItemResourceType.TwoHandSword:
+                    specializationTypes = Specializations_AntiCavalry;
+                    break;
+
+                case ItemResourceType.Ballista:
+                case ItemResourceType.SiegeCannonIron:
+                case ItemResourceType.SiegeCannonBronze:
+                    specializationTypes = Specializations_Siege;
+                    break;
+
+                default:
+                    specializationTypes = Specializations_Default;
+                    break;
+
             }
+
+            //if (weapon == ItemResourceType.TwoHandSword)
+            //{
+            //    specializationTypes = new SpecializationType[] { SpecializationType.AntiCavalry };
+            //}
+            //else if (weapon == ItemResourceType.Ballista)
+            //{
+            //    specializationTypes = new SpecializationType[] { SpecializationType.Siege };
+            //}
+            //else
+            //{
+            //    specializationTypes = new SpecializationType[]
+            //        {
+            //                SpecializationType.None,
+            //                SpecializationType.Field,
+            //                SpecializationType.Sea,
+            //                SpecializationType.Siege,
+            //        };
+            //}
+            mayGuard = barrackType != BuildAndExpandType.KnightsBarracks;
 
             return specializationTypes;
         }
