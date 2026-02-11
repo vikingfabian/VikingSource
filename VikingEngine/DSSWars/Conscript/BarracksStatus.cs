@@ -69,9 +69,14 @@ namespace VikingEngine.DSSWars.Conscript
         {
             var spec = profile.avaialableSpecializations(type, out bool mayGuard);
 
-            if ((profile.specialization == SpecializationType.CityGuard && !mayGuard)
-                ||
-                !spec.Contains(profile.specialization))
+            if (profile.specialization == SpecializationType.CityGuard)
+            {
+                if (!mayGuard)
+                {
+                    profile.specialization = spec[0];
+                }
+            }
+            else if (!spec.Contains(profile.specialization))
             {
                 profile.specialization = spec[0];
             }
