@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars.Players
 
                     if (city.GetGroupedResource(w.item).amount >= unitCount &&
                         city.buildingStructure.getBarracksCount(w.barracks) > 0 &&
-                        AutoConscriptLib.MayUseItemInConscript(city, w.item, true))
+                        AutoConscriptLib.MayUseItemInConscript(city, w.item, true, guard))
                     {  
                         weapon = w;                        
                         break;
@@ -140,7 +140,7 @@ namespace VikingEngine.DSSWars.Players
                 }
 
                 if (weapon.item == ItemResourceType.NONE ||
-                    !AutoConscriptLib.MayUseItemInConscript(city, armorLevel, false))                   
+                    !AutoConscriptLib.MayUseItemInConscript(city, armorLevel, false, guard))                   
                 {
                     //Item is too low quality
                     profile = ConscriptProfile.Empty;
@@ -166,6 +166,7 @@ namespace VikingEngine.DSSWars.Players
                             ++barracksCount;
                             var conscript = city.conscriptBuildings[i];
                             conscript.profile = profile;
+                            conscript.checkSpecialization();
                             city.conscriptBuildings[i] = conscript;
                         }
                     }

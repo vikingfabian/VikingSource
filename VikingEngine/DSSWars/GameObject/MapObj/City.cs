@@ -242,12 +242,13 @@ namespace VikingEngine.DSSWars.GameObject
         {
             lock (conscriptBuildings)
             {
-                for (int i = 0; i < conscriptBuildings.Count; i++)
-                {
-                    BarracksStatus status = conscriptBuildings[i];
-                    status.halt(this);
-                    conscriptBuildings[i] = status;
-                }
+                //for (int i = 0; i < conscriptBuildings.Count; i++)
+                //{
+                //    BarracksStatus status = conscriptBuildings[i];
+                //    status.halt(this);
+                //    conscriptBuildings[i] = status;
+                //}
+                queueToAllConscripts(0, null);
             }
 
             for (int i = 0; i < deliveryServices.Count; i++)
@@ -472,6 +473,11 @@ namespace VikingEngine.DSSWars.GameObject
         {
             try
             {
+                if (myIndex == 153)
+                {
+                    lib.DoNothing();
+                }
+
                 w.Write((byte)cityType);
 
                 //w.Write(Bound.UShort(workForce.amount));
@@ -512,10 +518,7 @@ namespace VikingEngine.DSSWars.GameObject
                     barracks.writeGameState(w);
                 }
 
-                if (myIndex == 153)
-                {
-                    lib.DoNothing();
-                }
+                
 
                 w.Write((ushort)deliveryServices.Count);
                 foreach (var delivery in deliveryServices)
@@ -654,10 +657,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
             
-            if (myIndex == 153)
-            {
-                lib.DoNothing();
-            }
+           
             deliveryServices.Clear();
             int deliveryServicesCount = r.ReadUInt16();
             for (int i = 0; i < deliveryServicesCount; i++)
@@ -4088,10 +4088,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                 factionIndex = newFaction.myIndex;
                 
-                queueToAllConscripts(0, null);
+                
 
                 if (!duringStartup)
                 {
+                    
                     newFaction.AddCity(this, false);
                     EditSubTile.OntileChange(tilePos);
                 }
@@ -4175,16 +4176,33 @@ namespace VikingEngine.DSSWars.GameObject
             string supportedWorkersString;
             int addGuardHousing;
             CityType toSize = cityType + 1;
-            if (toSize == CityType.Town)
+            switch (toSize)
             {
-                supportedWorkersString = DssConst.TownHall_MaxWorkForce.ToString();
-                addGuardHousing = DssConst.TownHall_GuardHousing - DssConst.VillageHall_GuardHousing;
+                case CityType.Village:
+                    supportedWorkersString = DssConst.VillageHall_MaxWorkForce.ToString();
+                    addGuardHousing = DssConst.VillageHall_GuardHousing - DssConst.CampHall_GuardHousing;
+                    break;
+                case CityType.Town:
+                    supportedWorkersString = DssConst.TownHall_MaxWorkForce.ToString();
+                    addGuardHousing = DssConst.TownHall_GuardHousing - DssConst.VillageHall_GuardHousing;
+                    break;
+                default:
+                case CityType.Capital:
+                    supportedWorkersString = DssRef.lang.Hud_NoLimit;
+                    addGuardHousing = DssConst.CapitalHall_GuardHousing - DssConst.TownHall_GuardHousing;
+                    break;
+
             }
-            else
-            {
-                supportedWorkersString = DssRef.lang.Hud_NoLimit;
-                addGuardHousing = DssConst.CapitalHall_GuardHousing - DssConst.TownHall_GuardHousing;
-            }
+            //if (toSize == CityType.Town)
+            //{
+            //    supportedWorkersString = DssConst.TownHall_MaxWorkForce.ToString();
+            //    addGuardHousing = DssConst.TownHall_GuardHousing - DssConst.VillageHall_GuardHousing;
+            //}
+            //else
+            //{
+            //    supportedWorkersString = DssRef.lang.Hud_NoLimit;
+            //    addGuardHousing = DssConst.CapitalHall_GuardHousing - DssConst.TownHall_GuardHousing;
+            //}
             HudLib.BulletPoint(content);
             content.Add(new RbText(string.Format(DssRef.lang.CityHall_MaxSupportedWorkers, supportedWorkersString)));
 

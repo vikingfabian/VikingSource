@@ -65,6 +65,23 @@ namespace VikingEngine.DSSWars.Conscript
             maxTrainingLevel = TrainingLevel.Skillful;
         }
 
+        public void checkSpecialization()
+        {
+            var spec = profile.avaialableSpecializations(type, out bool mayGuard);
+
+            if (profile.specialization == SpecializationType.CityGuard)
+            {
+                if (!mayGuard)
+                {
+                    profile.specialization = spec[0];
+                }
+            }
+            else if (!spec.Contains(profile.specialization))
+            {
+                profile.specialization = spec[0];
+            }
+        }
+
         //public void reseet()
         //{ 
             
@@ -156,7 +173,7 @@ namespace VikingEngine.DSSWars.Conscript
             }
             w.Write((byte)type);
             w.Write(idAndPosition);
-            w.Write((byte)que);
+            w.Write(Bound.Byte(que));
             w.Write((byte)maxTrainingLevel);
 
 
@@ -209,6 +226,8 @@ namespace VikingEngine.DSSWars.Conscript
             requireMaxFood = bools.Get(1);
 
             Debug.ReadCheck(r);
+
+            checkSpecialization();
         }
         public bool CountDownQue()
         {

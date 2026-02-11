@@ -50,119 +50,120 @@ namespace VikingEngine.DSSWars.GameObject
             //EMPTY
             //if (checkAutoBuildAvailable())
             //{
-               
 
-                AutoBuildList.Clear();
-                int safeGuardBuildCount = 1;
 
-                BuildAndExpandType safeGuardBuild = BuildAndExpandType.NUM_NONE;
-                //if (fuelSafeGuard && CityStructure.WorkInstance.fuelSpots < 4)
-                //{
-                //    ++CityStructure.WorkInstance.fuelSpots;
-                //    safeGuardBuild = BuildAndExpandType.RapeSeedFarm;
-                //    safeGuardBuildCount = 2;
-                //}
-                //else if (rawFoodSafeGuard && CityStructure.WorkInstance.foodspots < 4)
-                //{
-                //    ++CityStructure.WorkInstance.foodspots;
-                //    safeGuardBuild = BuildAndExpandType.OrchardApple;
-                //    safeGuardBuildCount = 4;
-                //}
+            AutoBuildList.Clear();
+            int safeGuardBuildCount = 1;
 
-                if (buildingStructure.Orchard_count + buildingStructure.WheatFarm_count + buildingStructure.HenPen_count < 2)
+            BuildAndExpandType safeGuardBuild = BuildAndExpandType.NUM_NONE;
+            //if (fuelSafeGuard && CityStructure.WorkInstance.fuelSpots < 4)
+            //{
+            //    ++CityStructure.WorkInstance.fuelSpots;
+            //    safeGuardBuild = BuildAndExpandType.RapeSeedFarm;
+            //    safeGuardBuildCount = 2;
+            //}
+            //else if (rawFoodSafeGuard && CityStructure.WorkInstance.foodspots < 4)
+            //{
+            //    ++CityStructure.WorkInstance.foodspots;
+            //    safeGuardBuild = BuildAndExpandType.OrchardApple;
+            //    safeGuardBuildCount = 4;
+            //}
+
+            if (buildingStructure.Orchard_count + buildingStructure.WheatFarm_count + buildingStructure.HenPen_count < 2)
+            {
+                safeGuardBuild = BuildAndExpandType.OrchardApple;
+                safeGuardBuildCount = 2;
+            }
+            else if (cityType == CityType.Campsite && buildingStructure.TentHuts_count < 2)
+            {
+                safeGuardBuild = BuildAndExpandType.WorkerTent;
+            }
+            else if (cityType == CityType.Campsite && buildingStructure.LinenFarm_count < 2)
+            {
+                safeGuardBuild = BuildAndExpandType.LinenFarm;
+            }
+            else if (cityType == CityType.Campsite && buildingStructure.Orchard_count < 6)
+            {
+                safeGuardBuild = BuildAndExpandType.OrchardApple;
+                safeGuardBuildCount = 2;
+            }
+            else if (buildingStructure.WorkBench_count < 1)
+            {
+                safeGuardBuild = BuildAndExpandType.WorkBench;
+            }
+            else if (cityType == CityType.Campsite && TryGetFaction(out var faction) && faction.cities.Count == 1 &&
+                buildingStructure.SoldierBarracks_count + buildingStructure.ArcherBarracks_count < 1)
+            {
+                if (freeServiceMen.amount < 1)
                 {
-                    safeGuardBuild = BuildAndExpandType.OrchardApple;
-                    safeGuardBuildCount = 2;
+                    safeGuardBuild = BuildAndExpandType.ServiceHouse_Small;
                 }
-                else if (cityType == CityType.Campsite && buildingStructure.TentHuts_count < 2)
+                else if (GetGroupedResource(EntityComponent.CityResoureIndex.sharpstick).amount >
+                    GetGroupedResource(EntityComponent.CityResoureIndex.ThrowingSpear).amount)
                 {
-                    safeGuardBuild = BuildAndExpandType.WorkerTent;
+                    safeGuardBuild = BuildAndExpandType.SoldierBarracks;
                 }
-                else if (cityType == CityType.Campsite && buildingStructure.LinenFarm_count < 2)
+                else
                 {
-                    safeGuardBuild = BuildAndExpandType.LinenFarm;
+                    safeGuardBuild = BuildAndExpandType.ArcherBarracks;
                 }
-                else if (cityType == CityType.Campsite && buildingStructure.Orchard_count < 6)
-                {
-                    safeGuardBuild = BuildAndExpandType.OrchardApple;
-                    safeGuardBuildCount = 2;
-                }
-                else if (buildingStructure.WorkBench_count < 1)
-                {
-                    safeGuardBuild = BuildAndExpandType.WorkBench;
-                }
-                else if (cityType == CityType.Campsite && TryGetFaction(out var faction) && faction.cities.Count == 1 && 
-                    buildingStructure.SoldierBarracks_count + buildingStructure.ArcherBarracks_count < 1)
-                {
-                    if (freeServiceMen.amount < 1)
-                    {
-                        safeGuardBuild = BuildAndExpandType.ServiceHouse_Small;
-                    }
-                    else if (GetGroupedResource(EntityComponent.CityResoureIndex.sharpstick).amount >
-                        GetGroupedResource(EntityComponent.CityResoureIndex.ThrowingSpear).amount)
-                    {
-                        safeGuardBuild = BuildAndExpandType.SoldierBarracks;
-                    }
-                    else
-                    {
-                        safeGuardBuild = BuildAndExpandType.ArcherBarracks;
-                    }
-                }
-                else if (CityStructure.WorkInstance.fuelSpots < 2)
-                {
-                    ++CityStructure.WorkInstance.fuelSpots;
-                    safeGuardBuild = BuildAndExpandType.RapeSeedFarm;
-                    safeGuardBuildCount = 2;
-                }
+            }
+            else if (CityStructure.WorkInstance.fuelSpots < 2)
+            {
+                ++CityStructure.WorkInstance.fuelSpots;
+                safeGuardBuild = BuildAndExpandType.RapeSeedFarm;
+                safeGuardBuildCount = 2;
+            }
 
             if (safeGuardBuild != BuildAndExpandType.NUM_NONE)
+            {
+                for (int i = 0; i < safeGuardBuildCount; i++)
                 {
-                    for (int i = 0; i < safeGuardBuildCount; i++)
+                    AutoBuildList.Add(safeGuardBuild);
+                }
+            }
+            else if (player.IsBot())
+            {
+                var aiPlayer = player.GetAiPlayer();
+                automationFocus = AutomationFocus.NoFocus;
+
+                bool warCity = aiPlayer.IsWarBorderCity(this, aiPlayer.aggressionLevel < AbsPlayer.AggressionLevel2_RandomAttacks);
+                if (warCity)
+                {
+                    automationFocus = AutomationFocus.Military;
+                }
+                commit_automateCityBuilding();
+
+            }
+            else if (automateCity)
+            {
+                autoAdjustResourcesToCitySize(false);
+                commit_automateCityBuilding();
+            }
+            else //Player default
+            {
+
+                AutoExpandType(out bool work, out Build.BuildAndExpandType buildType);
+                if (work)
+                {
+                    buildType = autoBuild_Farm ? autoExpandFarmType : Build.BuildAndExpandType.NUM_NONE;
+
+                    if (work && workForce.amount >= HousingCount_Workers)
                     {
-                        AutoBuildList.Add(safeGuardBuild);
+                        buildType = BuildAndExpandType.WorkerHut;
                     }
-                }
-                else if (player.IsBot())
-                {
-                    var aiPlayer = player.GetAiPlayer();
-                    automationFocus = AutomationFocus.NoFocus;
 
-                    bool warCity = aiPlayer.IsWarBorderCity(this, aiPlayer.aggressionLevel < AbsPlayer.AggressionLevel2_RandomAttacks);
-                    if (warCity)
+                    if (buildType != BuildAndExpandType.NUM_NONE)
                     {
-                        automationFocus = AutomationFocus.Military;
-                    }
-                    commit_automateCityBuilding();
-
-                }
-                else if (automateCity)
-                {
-                    autoAdjustResourcesToCitySize(false);
-                    commit_automateCityBuilding();
-                }
-                else //Player default
-                {
-
-                    AutoExpandType(out bool work, out Build.BuildAndExpandType buildType);
-                    if (work)
-                    {
-                        buildType = autoBuild_Farm ? autoExpandFarmType : Build.BuildAndExpandType.NUM_NONE;
-                        
-                        if (work && workForce.amount >= HousingCount_Workers)
+                        for (int i = 0; i < 4; i++)
                         {
-                            buildType = BuildAndExpandType.WorkerHut;
-                        }
-                        
-                        if (buildType != BuildAndExpandType.NUM_NONE)
-                        {
-                            for (int i = 0; i < 4; i++)
-                            {
-                                AutoBuildList.Add(buildType);
-                            }
+                            AutoBuildList.Add(buildType);
                         }
                     }
                 }
+            }
 
+            AutoUpgradeCityHall();
             //int buildCount = lib.SmallestValue(AutoBuildList.Count, CityStructure.WorkInstance.EmptyLand.Count);
 
             for (int i = 0; i < AutoBuildList.Count; ++i)
@@ -272,6 +273,39 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
+        private void AutoUpgradeCityHall()
+        {
+            if (homeUsers() >= WorkersMaxLimit - 10 || cityType == CityType.Campsite)
+            {
+                double upgradeChance;
+                switch (cityType)
+                {
+                    default:
+                    case CityType.Campsite:
+                        upgradeChance = 1;
+                        break;
+                    case CityType.Village:
+                        upgradeChance = 0.2;
+                        break;
+                    case CityType.Town:
+                        upgradeChance = 0.05;
+                        break;
+                    case CityType.Capital:
+                        upgradeChance = 0.0;
+                        break;
+
+                }
+                if (automationFocus == AutomationFocus.Grow)
+                {
+                    upgradeChance += 0.5;
+                }
+                if (Ref.rnd.Chance(upgradeChance))
+                {
+                    upgradeCityHall();
+                }
+            }
+        }
+
         bool findAdjacentFreeSpot(ForXYEdgeLoopRandomPicker edgeRandomizer, IntVector2 center, ref IntVector2 result)
         {
             for (int r = 1; r <= 2; r++)
@@ -320,10 +354,10 @@ namespace VikingEngine.DSSWars.GameObject
                     auto_addBuildingType(BuildAndExpandType.WheatFarm);
                     auto_addBuildingType(BuildAndExpandType.WorkBench);
                     auto_addBuildingType(BuildAndExpandType.ServiceHouse_Small);
-                    if (homeUsers() >= WorkersMaxLimit - 10)
-                    {
-                        upgradeCityHall();
-                    }
+                    //if (homeUsers() >= WorkersMaxLimit - 10)
+                    //{
+                    //    upgradeCityHall();
+                    //}
                     break;
                 case AutomationFocus.Export:
                     auto_addBuildingType(BuildAndExpandType.Postal);

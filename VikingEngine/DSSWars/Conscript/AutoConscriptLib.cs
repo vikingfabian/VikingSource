@@ -55,13 +55,18 @@ namespace VikingEngine.DSSWars.Conscript
             }
         }
 
-        public static bool MayUseItemInConscript(City city, ItemResourceType item, bool isWeapon)
+        public static bool MayUseItemInConscript(City city, ItemResourceType item, bool isWeapon, bool guard)
         {
             
             if (isWeapon && city.warAutoWeaponType != WarAutoWeaponType.Mix)
             {
                 ConscriptProfile profile = new ConscriptProfile() { weapon = item };
                 profile.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
+
+                if (guard && knight)
+                {
+                    return false;
+                }
 
                 switch (city.warAutoWeaponType)
                 {
