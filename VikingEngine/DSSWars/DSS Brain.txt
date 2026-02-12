@@ -1,5 +1,6 @@
 ﻿Change log:
-* 
+* Fixed profile flag reading crash
+
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
