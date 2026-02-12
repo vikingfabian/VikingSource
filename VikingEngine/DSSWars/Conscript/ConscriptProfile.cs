@@ -489,7 +489,7 @@ namespace VikingEngine.DSSWars.Conscript
             //                SpecializationType.Siege,
             //        };
             //}
-            mayGuard = barrackType != BuildAndExpandType.KnightsBarracks;
+            mayGuard = true;//barrackType != BuildAndExpandType.KnightsBarracks;
 
             return specializationTypes;
         }

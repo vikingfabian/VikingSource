@@ -1929,7 +1929,7 @@ namespace VikingEngine.DSSWars.Interface
             switch (resourceGroup)
             {
                 case ResourceGroupType.Resources:
-
+                    content.newLine();
                     city.waterToHud(content, true);
 
                     //bool foodSafeGuard = city.foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);

@@ -63,10 +63,10 @@ namespace VikingEngine.DSSWars.Conscript
                 ConscriptProfile profile = new ConscriptProfile() { weapon = item };
                 profile.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
 
-                if (guard && knight)
-                {
-                    return false;
-                }
+                //if (guard && knight)
+                //{
+                //    return false;
+                //}
 
                 switch (city.warAutoWeaponType)
                 {
