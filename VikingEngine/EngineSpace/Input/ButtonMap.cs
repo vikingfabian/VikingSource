@@ -21,6 +21,7 @@ namespace VikingEngine.Input
         XController,
         GenericController,
         XController_TriggerAlts,
+        SteamInput,
     }
     
     interface IButtonMap

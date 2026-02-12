@@ -38,6 +38,7 @@ namespace VikingEngine.SteamWrapping
         public SteamP2PManager P2PManager = null;
         //public SteamVOIP VOIP = null;
         public SteamDLC DLC = null;
+        public SInput input = null;
 
         /* Fields */
         public bool isInitialized = false;
@@ -183,6 +184,7 @@ namespace VikingEngine.SteamWrapping
             gameOverlayActivatedCB = new Callback<GameOverlayActivated_t>(OnGameOverlayActivated, false);
             UserStatsRecievedCallback = new Callback<UserStatsReceived_t>(OnUserStatsRecieved, false);
             UserStatsStoredCallback = new Callback<UserStatsStored_t>(OnUserStatsStored, false);
+            input = new SInput();
 
             if (PlatformSettings.RunProgram == StartProgram.LootFest3 ||
                 PlatformSettings.RunProgram == StartProgram.DSS ||

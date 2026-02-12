@@ -174,7 +174,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public static void ControllerInputIcons(LocalPlayer player, List<AbsRichBoxMember> button)
         {
-            if (player.gameControls.input.inputSource.IsController)
+            if (player.gameControls.input.inputSource.IsControllerOnly)
             {
                 RichBoxContent.ButtonMap(player.gameControls.input.ControllerMessageClick, button);
                 button.Add(new RbSpace());

@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.Interface
 
             var content = new RichBoxContent();
             InputMap map = player.gameControls.input;
-            bool ct = map.inputSource.IsController;
+            bool ct = map.inputSource.IsControllerOnly;
             bool mouse = map.inputSource.HasMouse;
             bool casual = player.profile.casualControls;
            

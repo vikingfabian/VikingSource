@@ -198,7 +198,7 @@ namespace VikingEngine.DSSWars
                     DssRef.stats.startNewLocalMultiplayer.addOne();
                 }
 
-                if (DssRef.storage.localPlayers[0].inputSource.IsController)
+                if (DssRef.storage.localPlayers[0].inputSource.IsControllerOnly)
                 {
                     DssRef.stats.controller_user.addOne();
                 }

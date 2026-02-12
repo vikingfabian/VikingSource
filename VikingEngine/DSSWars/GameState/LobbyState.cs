@@ -1717,7 +1717,7 @@ namespace VikingEngine.DSSWars
                     DropDownBuilder inputOptions = new DropDownBuilder($"inputOptions{playerNum}");
                     foreach (var m in available)
                     {
-                        inputOptions.AddOption(m.IsController ? SpriteName.birdControllerIcon : SpriteName.Keyboard, m.ToString(),
+                        inputOptions.AddOption(m.IsControllerOnly ? SpriteName.birdControllerIcon : SpriteName.Keyboard, m.ToString(),
                             playerData.inputSource.Equals(m), m.HasMouse,
                             new RbAction1Arg<InputSource>((InputSource inputSource) =>
                             {

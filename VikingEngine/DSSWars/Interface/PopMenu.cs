@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             player.hud.tooltip.clear();
 
-            if (player.gameControls.input.inputSource.IsController)
+            if (player.gameControls.input.inputSource.IsControllerOnly)
             {
                 overHud = true;
 
@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.Interface
             nextarea.Width = w;
             nextarea.Y += nextarea.Height;
 
-            if (player.gameControls.input.inputSource.IsController)
+            if (player.gameControls.input.inputSource.IsControllerOnly)
             {
                 int optionIndex = buttons.Count;
                 SpriteName input = SpriteName.NO_IMAGE;

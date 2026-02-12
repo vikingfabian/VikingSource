@@ -1,0 +1,473 @@
+﻿using Steamworks;
+using System;
+using System.Collections.Generic;
+using VikingEngine.Input;
+
+namespace VikingEngine.SteamWrapping
+{
+    class SInput
+    {
+        public InputHandle_t[] controllerHandles = new InputHandle_t[Constants.STEAM_INPUT_MAX_COUNT];
+        public SteamControllerInstance[] controllers = new SteamControllerInstance[Constants.STEAM_INPUT_MAX_COUNT];
+        
+        InputActionSetHandle_t[] actionSets;
+
+        InputDigitalActionHandle_t[] digitalHandles;
+        InputAnalogActionHandle_t[] analogHandles;
+        public SInput()
+        {
+            SteamInput.Init(false);
+            
+            for (int i = 0; i < controllers.Length; i++)
+            {
+                controllers[i] = new SteamControllerInstance(i);
+            }
+
+            actionSets = new InputActionSetHandle_t[(int)SteamActionSet.NUM];
+            for (SteamActionSet aset = 0; aset < SteamActionSet.NUM; aset++)
+            {                
+                actionSets[(int)aset] = SteamInput.GetActionSetHandle(aset.ToString());
+            }
+
+            // Fetch handles
+            digitalHandles = new InputDigitalActionHandle_t[(int)SteamDigitalAction.NUM];
+            for (SteamDigitalAction da = 0; da < SteamDigitalAction.NUM; da++)
+            {
+                digitalHandles[(int)da] = SteamInput.GetDigitalActionHandle(da.ToString());
+            }
+            
+            analogHandles = new InputAnalogActionHandle_t[(int)SteamAnalogAction.NUM];
+            for (SteamAnalogAction aa = 0; aa < SteamAnalogAction.NUM; aa++)
+            {
+                analogHandles[(int)aa] = SteamInput.GetAnalogActionHandle(aa.ToString());
+            }
+        }
+
+        public SpriteName actionIcon(int controllerIx, SteamActionSet actionSet, SteamDigitalAction actionType)
+        {
+
+            InputHandle_t controller = controllerHandles[controllerIx];
+
+            EInputActionOrigin[] origins = new EInputActionOrigin[Constants.STEAM_INPUT_MAX_ORIGINS];
+
+            // Remember: You MUST use the Action Set where this action is active (e.g., _setGameplay)
+            int count = SteamInput.GetDigitalActionOrigins(controller, actionSets[(int)actionSet], digitalHandles[(int)actionType], origins);
+
+            if (count == 0) return SpriteName.NO_IMAGE;
+
+            return actionOriginIcon(origins[0]);
+        }
+
+        public SpriteName actionIcon(int controllerIx, SteamActionSet actionSet, SteamAnalogAction actionType)
+        {
+
+            InputHandle_t controller = controllerHandles[controllerIx];
+
+            EInputActionOrigin[] origins = new EInputActionOrigin[Constants.STEAM_INPUT_MAX_ORIGINS];
+
+            // Remember: You MUST use the Action Set where this action is active (e.g., _setGameplay)
+            int count = SteamInput.GetAnalogActionOrigins(controller, actionSets[(int)actionSet], analogHandles[(int)actionType], origins);
+
+            if (count == 0) return SpriteName.NO_IMAGE;
+
+            return actionOriginIcon(origins[0]);
+        }
+
+        SpriteName actionOriginIcon(EInputActionOrigin origin)
+        {
+            // Switch on the physical button to decide which of YOUR textures to draw
+            switch (origin)
+            {
+                // ========================================================================
+                // FACE BUTTONS (Mapped by Label)
+                // ========================================================================
+                // Note: Switch A is Physically Right (East), Xbox A is Physically Down (South).
+                // Steam Input handles the logical input swapping, you just show the label.
+
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_A:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_A:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_A:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_A:
+                    return SpriteName.ButtonA;
+
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_B:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_B:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_B:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_B:
+                    return SpriteName.ButtonB;
+
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_X:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_X:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_X:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_X:
+                    return SpriteName.ButtonX;
+
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_Y:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_Y:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_Y:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_Y:
+                    return SpriteName.ButtonY;
+
+
+                // ========================================================================
+                // BUMPERS & TRIGGERS
+                // ========================================================================
+
+                // Switch L / Xbox LB
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_LeftBumper:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_LeftBumper:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_LeftBumper:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_L1:
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_LeftBumper:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_LeftBumper:
+                    return SpriteName.ButtonLB;
+
+                // Switch R / Xbox RB
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_RightBumper:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_RightBumper:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_RightBumper:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_R1:
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_RightBumper:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_RightBumper:
+                    return SpriteName.ButtonRB;
+
+                // Switch ZL / Xbox LT
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_LeftTrigger_Pull:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_LeftTrigger_Pull:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_LeftTrigger_Pull:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_L2:
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_LeftTrigger_Pull:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_LeftTrigger_Pull:
+                    return SpriteName.ButtonLT;
+
+                // Switch ZR / Xbox RT
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_RightTrigger_Pull:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_RightTrigger_Pull:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_RightTrigger_Pull:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_R2:
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_RightTrigger_Pull:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_RightTrigger_Pull:
+                    return SpriteName.ButtonRT;
+
+
+                // ========================================================================
+                // STICKS & CLICKS
+                // ========================================================================
+
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_LeftStick_Move:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_LeftStick_Move:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_LeftStick_Move:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_LeftStick_Move:
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_LeftStick_Move:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_LeftStick_Move:
+                    return SpriteName.LeftStick;
+
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_LeftStick_Click:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_LeftStick_Click:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_LeftStick_Click:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_L3:
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_LeftStick_Click:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_LeftStick_Click:
+                    return SpriteName.LSClick;
+
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_RightStick_Move:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_RightStick_Move:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_RightStick_Move:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_RightStick_Move:
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_RightStick_Move:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_RightStick_Move:
+                    return SpriteName.RightStick;
+
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_RightStick_Click:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_RightStick_Click:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_RightStick_Click:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_R3:
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_RightStick_Click:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_RightStick_Click:
+                    return SpriteName.RSClick;
+
+
+                // ========================================================================
+                // D-PAD
+                // ========================================================================
+
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_DPad_North:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_DPad_North:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_DPad_North:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_DPad_North:
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_DPad_North:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_DPad_North:
+                    return SpriteName.DpadUp;
+
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_DPad_South:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_DPad_South:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_DPad_South:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_DPad_South:
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_DPad_South:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_DPad_South:
+                    return SpriteName.DpadDown;
+
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_DPad_West:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_DPad_West:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_DPad_West:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_DPad_West:
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_DPad_West:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_DPad_West:
+                    return SpriteName.DpadLeft;
+
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_DPad_East:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_DPad_East:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_DPad_East:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_DPad_East:
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_DPad_East:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_DPad_East:
+                    return SpriteName.DpadRight;
+
+
+                // ========================================================================
+                // MENU / SYSTEM BUTTONS
+                // ========================================================================
+
+                // Start / Menu / Plus (+)
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_Plus:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_Menu:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_Start:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_Menu:
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_Options:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_Option:
+                    return SpriteName.ButtonMENU;
+
+                // Back / View / Minus (-)
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_Minus:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_View:
+                case EInputActionOrigin.k_EInputActionOrigin_XBox360_Back:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_View:
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_Share:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_Create:
+                    return SpriteName.ButtonVIEW;
+
+
+                // ========================================================================
+                // PLAYSTATION SPECIFICS (Unique shapes)
+                // ========================================================================
+
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_X:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_X:
+                    return SpriteName.PsButtonCross;
+
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_Circle:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_Circle:
+                    return SpriteName.PsButtonCirkle;
+
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_Triangle:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_Triangle:
+                    return SpriteName.PsButtonTriangle;
+
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_Square:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_Square:
+                    return SpriteName.PsButtonSquare;
+
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_CenterPad_Touch:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_CenterPad_Touch:
+                    return SpriteName.PsTouchPad;
+
+
+                // ========================================================================
+                // STEAM DECK SPECIFICS
+                // ========================================================================
+
+                // Gyro
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_Gyro_Move:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_Gyro_Pitch:
+                    return SpriteName.GyroPitch;
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_Gyro_Yaw:
+                    return SpriteName.GyroYaw;
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_Gyro_Roll:
+                    return SpriteName.GyroRoll;
+
+                // Back Grips
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_L4:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_L5:
+                    return SpriteName.ButtonLG;
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_R4:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_R5:
+                    return SpriteName.ButtonRG;
+
+                // Trackpads
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_LeftPad_Touch:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_LeftPad_Swipe:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_LeftPad_Click:
+                    return SpriteName.TouchSurface1;
+
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_RightPad_Touch:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_RightPad_Swipe:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_RightPad_Click:
+                    return SpriteName.TouchSurface2;
+
+               
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_LeftTrigger_Click:
+                    return SpriteName.ButtonLT;
+
+                
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_RightTrigger_Click:
+                    return SpriteName.ButtonRT;
+
+                // --- Sticks ---
+               
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_Share:
+                    return SpriteName.PsButtonShare; // Mapping Xbox Share to your generic Share sprite
+
+                // --- Elite Controller Paddles (Grips) ---
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_LeftGrip_Lower:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_LeftGrip_Upper:
+                    return SpriteName.ButtonLG; // Left Grip
+
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_RightGrip_Lower:
+                case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_RightGrip_Upper:
+                    return SpriteName.ButtonRG; // Right Grip
+
+
+                // ========================================================================
+                // STEAM DECK
+                // ========================================================================
+
+                
+
+                // Left Pad used as D-Pad (Directional)
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_LeftPad_DPadNorth:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_LeftPad_DPadSouth:
+                    return SpriteName.TouchSurface1UpDown; // Visual cue to swipe/press up/down on pad
+
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_LeftPad_DPadWest:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_LeftPad_DPadEast:
+                    return SpriteName.TouchSurface1LeftRight;
+
+
+                // Right Pad used as D-Pad
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_RightPad_DPadNorth:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_RightPad_DPadSouth:
+                    return SpriteName.TouchSurface2UpDown;
+
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_RightPad_DPadWest:
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_RightPad_DPadEast:
+                    return SpriteName.TouchSurface2LeftRight;
+
+            }
+            return SpriteName.MissingImage;
+        }
+
+        public void update()
+        {
+            int count = SteamInput.GetConnectedControllers(controllerHandles);
+            for (int controllerIx = 0; controllerIx < count; controllerIx++)
+            {
+                InputHandle_t controllerHandle = controllerHandles[controllerIx];
+                
+                var ins = controllers[controllerIx];
+                SteamInput.ActivateActionSet(controllerHandle, actionSets[(int)ins.actionSet]);
+
+                for (int daIx = 0; daIx < digitalHandles.Length; daIx++)
+                {
+                    ins.digital_isDown_previous[daIx] = ins.digital_isDown_current[daIx];
+                    InputDigitalActionData_t actionData = SteamInput.GetDigitalActionData(controllerHandle, digitalHandles[daIx]);
+                    ins.digital_isDown_current[daIx] = actionData.bState == 1 && actionData.bActive == 1;
+                }
+
+                for (int aaIx = 0; aaIx < analogHandles.Length; aaIx++)
+                {
+                    InputAnalogActionData_t analogData = SteamInput.GetAnalogActionData(controllerHandle, analogHandles[aaIx]);
+
+                    ins.analog_current[aaIx] = analogData;
+                }
+            }
+        }
+
+        public void ListConneted(List<InputSource> sources)
+        {
+            int count = SteamInput.GetConnectedControllers(controllerHandles);
+            for (int controllerIx = 0; controllerIx < count; controllerIx++)
+            {
+                var handle = controllerHandles[controllerIx];
+                var type = SteamInput.GetInputTypeForHandle(handle);
+                sources.Add(new InputSource(InputSourceType.SteamInput, controllerIx)
+                {
+                    hasTouch = type == ESteamInputType.k_ESteamInputType_MobileTouch ||
+                        type == ESteamInputType.k_ESteamInputType_SteamController ||
+                        type == ESteamInputType.k_ESteamInputType_SteamDeckController,
+                });
+
+            }
+        }
+    }
+
+    enum SteamActionSet
+    {
+        InGameControls,
+        MenuControls,
+        NUM
+    }
+    enum SteamDigitalAction
+    {
+        // InGameControls
+        select,
+        quick_select,
+        cancel,
+        stop_start,
+        menu,
+        toggle_hud_detail,
+        toggle_minimap,
+        tab_left,
+        tab_right,
+        build,
+        copy,
+        paste,
+        gamespeed,
+        pause,
+        next_city,
+        next_army,
+        next_war,
+        controller_focus,
+        controller_faction,
+        controller_message,
+
+        // MenuControls
+        menu_select,
+        menu_cancel,
+        pause_menu,
+
+        NUM
+    }
+    enum SteamAnalogAction
+    {
+        // InGameControls
+        PanCamera,
+        TiltCameraUpDown,
+        TiltCameraLeftRight,
+        MoveCursor,
+
+        // MenuControls
+        Scroll,
+
+        NUM
+    }
+
+    class SteamControllerInstance
+    {
+        public int index;
+        
+        public bool[] digital_isDown_previous;
+        public bool[] digital_isDown_current;
+        public InputAnalogActionData_t[] analog_current;
+        public SteamActionSet actionSet = 0;
+
+        public SteamControllerInstance(int index)
+        {
+            this.index = index;
+            digital_isDown_previous = new bool[(int)SteamDigitalAction.NUM];
+            digital_isDown_current = new bool[(int)SteamDigitalAction.NUM];
+
+            analog_current = new InputAnalogActionData_t[(int)SteamAnalogAction.NUM];
+        }
+    }
+
+}

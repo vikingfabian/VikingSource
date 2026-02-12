@@ -197,7 +197,7 @@ namespace VikingEngine.DSSWars.Interface
 
             content.newLine();
 
-            if (player.gameControls.input.inputSource.IsController)
+            if (player.gameControls.input.inputSource.IsControllerOnly)
             {
                 content.Add(new RbImage(player.gameControls.input.ControllerFaction.Icon) { color = player.gameControls.controller_mayUseHeadDisplay()? Color.White : Color.Black });
                 content.space();                
@@ -227,7 +227,7 @@ namespace VikingEngine.DSSWars.Interface
             content.space(2);
             {
                 RichBoxContent buttonContent = new RichBoxContent();
-                if (player.gameControls.input.inputSource.IsController)
+                if (player.gameControls.input.inputSource.IsControllerOnly)
                 {
                     buttonContent.Add(new RbImage(player.gameControls.input.NextCity.Icon));
                     buttonContent.space(0.5f);
@@ -240,7 +240,7 @@ namespace VikingEngine.DSSWars.Interface
             }
             {
                 RichBoxContent buttonContent = new RichBoxContent();
-                if (player.gameControls.input.inputSource.IsController)
+                if (player.gameControls.input.inputSource.IsControllerOnly)
                 {
                     buttonContent.Add(new RbImage(player.gameControls.input.NextArmy.Icon));
                     buttonContent.space(0.5f);
@@ -262,7 +262,7 @@ namespace VikingEngine.DSSWars.Interface
                 }
                 else
                 {
-                    if (player.gameControls.input.inputSource.IsController)
+                    if (player.gameControls.input.inputSource.IsControllerOnly)
                     {
                         player.gameControls.input.NextWar.ToRichContent(buttonContent);
                         buttonContent.space(0.5f);

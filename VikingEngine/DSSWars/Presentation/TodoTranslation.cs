@@ -13,6 +13,11 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
+        //options
+        public string InputSteam = "Steam input";
+
+
+        //regular
         public string Tutorial_SeeThisInThat = "See {0} in {1}";
 
 

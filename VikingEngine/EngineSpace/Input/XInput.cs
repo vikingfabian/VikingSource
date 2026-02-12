@@ -49,6 +49,11 @@ namespace VikingEngine.Input
         
         public static void Update()
         {
+            if (Ref.steam.isInitialized)
+            {
+                Ref.steam.input.update();
+            }
+
             if (controllers == null)
             {
                 return;

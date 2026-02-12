@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.Players
             //lightcamera.TiltX = MathHelper.PiOver2;
             player.playerData.view.LightCamera= lightcamera;
 
-            controllerInput = player.gameControls.input.inputSource.IsController;
+            controllerInput = player.gameControls.input.inputSource.IsControllerOnly;
 
             rectangleBound = new ScreenToSpaceRectangleBound(player.playerData.view, Map.Settings.Height.DeepWaterHeight-1, Map.Settings.Height.MaxHeight +1);
 
@@ -1126,7 +1126,7 @@ namespace VikingEngine.DSSWars.Players
 
         private void zoomInput()
         {
-            if (player.gameControls.input.inputSource.IsController &&
+            if (player.gameControls.input.inputSource.IsControllerOnly &&
                 player.gameControls.input.inputSource.Controller.IsButtonDown(Buttons.LeftTrigger))
             { return; }
 
@@ -1253,7 +1253,7 @@ namespace VikingEngine.DSSWars.Players
                     toggleCameraTiltUp();
                 }
             }
-            else if (player.gameControls.input.inputSource.IsController)
+            else if (player.gameControls.input.inputSource.IsControllerOnly)
             {
                 controllerCameraUp();
             }

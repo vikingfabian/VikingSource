@@ -54,6 +54,9 @@ namespace VikingEngine.Input
                 case InputSourceType.KeyboardMouse:
                     keyboardSetup();
                     break;
+                case InputSourceType.SteamInput:
+                    steamSetup();
+                    break;
                 case InputSourceType.XController:
                     xboxSetup();
                     break;
@@ -71,6 +74,8 @@ namespace VikingEngine.Input
         
         abstract public void keyboardSetup();
         abstract public void xboxSetup();
+
+        virtual public void steamSetup(){ }
         //abstract public void ps4Setup();
         abstract public void genericControllerSetup();
 

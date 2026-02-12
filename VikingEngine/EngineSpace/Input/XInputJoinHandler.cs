@@ -31,21 +31,23 @@ namespace VikingEngine.Input
         }
 
         public List<InputSource> ListConneted()
-        {
-            
-
+        {   
             List<InputSource> result = new List<InputSource>();
 
-            if (XInput.controllers == null)
+            if (Ref.steam.isInitialized)
             {
-                return result;
+                Ref.steam.input.ListConneted(result);
             }
 
-            for (int i = 0; i < XInput.controllers.Count; ++i)
+            if (result.Count == 0 &&
+                XInput.controllers != null)
             {
-                if (XInput.controllers[i].Connected)
+                for (int i = 0; i < XInput.controllers.Count; ++i)
                 {
-                    result.Add(new InputSource(InputSourceType.XController, i));
+                    if (XInput.controllers[i].Connected)
+                    {
+                        result.Add(new InputSource(InputSourceType.XController, i));
+                    }
                 }
             }
 

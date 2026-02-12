@@ -1,19 +1,19 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using VikingEngine.Input;
-using Microsoft.Xna.Framework.Input;
-using VikingEngine.Graphics;
-using VikingEngine.ToGG.HeroQuest.Data;
-using VikingEngine.ToGG.HeroQuest.QueAction;
-using VikingEngine.ToGG.ToggEngine;
-using VikingEngine.PJ.MiniGolf.GO;
-using VikingEngine.HUD.RichBox;
-using VikingEngine.ToGG.HeroQuest.Display;
 using VikingEngine.DataStream;
 using VikingEngine.EngineSpace.HUD.RichBox;
-
+using VikingEngine.Graphics;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.Input;
+using VikingEngine.PJ.MiniGolf.GO;
+using VikingEngine.SteamWrapping;
+using VikingEngine.ToGG.HeroQuest.Data;
+using VikingEngine.ToGG.HeroQuest.Display;
+using VikingEngine.ToGG.HeroQuest.QueAction;
+using VikingEngine.ToGG.ToggEngine;
 using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars
@@ -234,7 +234,7 @@ namespace VikingEngine.DSSWars
             hasPanOrderMix = false;
 
             
-            if (inputSource.HasMouse)
+            if (inputSource.HasMouse && !inputSource.IsSteamInput)
             {
                 mouseSelect = new NoButtonMap();
 
@@ -281,7 +281,62 @@ namespace VikingEngine.DSSWars
                 }
             }
         }
+        public override void steamSetup()
+        {
+            int idx = inputSource.controllerIndex;
 
+            // --- Movement & Camera ---
+            move = new SteamAnalogMap( SteamActionSet.InGameControls, SteamAnalogAction.PanCamera, idx);
+            dpadMove = new SteamAnalogMap(SteamActionSet.InGameControls, SteamAnalogAction.PanCamera, idx); // Usually mapped to same action or separate in VDF
+            cameraTiltZoom = new SteamAnalogMap(SteamActionSet.InGameControls, SteamAnalogAction.TiltCameraUpDown, idx);
+            // Note: cameraTiltUpSmooth is handled by the Steam Input config (e.g. Chorded Press) 
+            // so you just map it to the intended resulting action.
+            cameraTiltUpSmooth = new SteamAnalogMap(SteamActionSet.InGameControls, SteamAnalogAction.TiltCameraUpDown, idx);
+
+            // --- Core Gameplay ---
+            mouseSelect = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.select, idx);
+            mouseOrder = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.quick_select, idx);
+            CancelKey = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.cancel, idx);
+            StopStart = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.stop_start, idx);
+
+            // --- UI & Windows ---
+            Menu = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.menu, idx);
+            ToggleHudDetail = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.toggle_hud_detail, idx);
+            ToggleMinimap = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.toggle_minimap, idx);
+            Controller_TabLeft = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.tab_left, idx);
+            Controller_TabRight = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.tab_right, idx);
+
+            // --- Strategy / RTS Actions ---
+            Build = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.build, idx);
+            Copy = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.copy, idx);
+            Paste = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.paste, idx);
+            GameSpeed = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.gamespeed, idx);
+            PauseGame = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.pause, idx);
+            QuickSelect = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.quick_select, idx);
+
+            // --- Cycling / Focus ---
+            NextCity = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.next_city, idx);
+            NextArmy = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.next_army, idx);
+            NextWar = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.next_war, idx);
+
+            ControllerFocus = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.controller_focus, idx);
+            ControllerFaction = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.controller_faction, idx);
+            ControllerMessageClick = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.controller_message, idx);
+
+            // --- Flag Design / Editor ---
+            // Note: If these share buttons in Steam, they use the same DigitalAction keys
+            FlagDesign_ToggleColor_Prev = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.tab_left, idx);
+            FlagDesign_ToggleColor_Next = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.tab_right, idx);
+            Controller_FlagDesign_Colorpicker = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.controller_focus, idx);
+            FlagDesign_PaintBucket = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.build, idx);
+
+            // --- Menus & Editors ---
+            // Make sure your MenuControls set is handled in the sub-set setups
+            menuInput?.steamSetup(idx);
+            editorInput?.steamSetup(idx, move, cameraTiltZoom);
+
+            refreshMouseInput();
+        }
         public override void xboxSetup()
         {
             //wasd = new DirectionalButtonsMap(null, null, null, null);
@@ -298,10 +353,7 @@ namespace VikingEngine.DSSWars
 
 
             StopStart = new XboxButtonMap_TriggerAlts(Buttons.Start, inputSource.controllerIndex, true);
-            //AutomationSetting = new XboxButtonMap(Buttons.Back, inputSource.controllerIndex);
-
-            //DragPan = new NoButtonMap();//new XboxButtonMap(Buttons.RightShoulder, inputSource.controllerIndex);
-            //Home = new XboxButtonMap(Buttons.DPadRight, inputSource.controllerIndex);
+            
             Menu = new XboxButtonMap_TriggerAlts(Buttons.Start, inputSource.controllerIndex);
             //ToggleHudDetail = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex);
             ToggleHudDetail = new XboxButtonMap_TriggerAlts(Buttons.DPadDown, inputSource.controllerIndex);//new NoButtonMap();
@@ -383,7 +435,7 @@ namespace VikingEngine.DSSWars
                 w.Write((byte)X2MouseAction);
             }
 
-            if (inputSource.IsController)
+            if (inputSource.IsControllerOnly)
             {
                 //Controller_FlagDesign_Colorpicker.write(w);
                 //mouseSelect.write(w);
@@ -397,7 +449,7 @@ namespace VikingEngine.DSSWars
         public void read(System.IO.BinaryReader r)
         {
             int inputVersion = r.ReadInt32();
-            if (inputSource.IsController)
+            if (inputSource.IsControllerOnly)
             {
                 xboxSetup();
             }
@@ -467,7 +519,7 @@ namespace VikingEngine.DSSWars
                 refreshMouseInput();
             }
 
-            if (inputSource.IsController)
+            if (inputSource.IsControllerOnly)
             {
                 //Controller_FlagDesign_Colorpicker = MapRead.Button(r, inputSource.controllerIndex);
                 //mouseSelect = MapRead.Button(r, inputSource.controllerIndex);
@@ -813,7 +865,7 @@ namespace VikingEngine.DSSWars
 
         public IButtonMap RichboxGuiSelect => mouseSelect;
         public IntVector2 RichboxGuiMove() { return move.stepping + dpadMove.stepping; }
-        public bool RichboxGuiUseMove => inputSource.IsController;
+        public bool RichboxGuiUseMove => inputSource.IsControllerOnly;
 
         public override EditorInputMap VoxelEditorInput()
         {
