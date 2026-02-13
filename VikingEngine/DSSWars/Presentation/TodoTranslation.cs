@@ -15,6 +15,7 @@ namespace VikingEngine.DSSWars.Presentation
     {
         //options
         public string InputSteam = "Steam input";
+        public string Input_SimulateMouse = "Simulate mouse";
 
 
         //regular

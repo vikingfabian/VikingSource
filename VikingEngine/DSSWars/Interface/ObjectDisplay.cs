@@ -19,7 +19,8 @@ namespace VikingEngine.DSSWars.Interface
             if (obj != null)
             {
                 beginRefresh();
-                if (obj.CanMenuFocus() && player.gameControls.input.inputSource.IsControllerOnly)
+                if (obj.CanMenuFocus() && player.gameControls.input.inputSource.IsXnaController &&
+                    player.gameControls.input.ControllerFocus.IsActive)
                 {
                     content.Add(new HUD.RichBox.RbImage(player.gameControls.input.ControllerFocus.Icon));
                     content.Add(new HUD.RichBox.RbText(":"));

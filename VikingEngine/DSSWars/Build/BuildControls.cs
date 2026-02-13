@@ -1538,7 +1538,7 @@ namespace VikingEngine.DSSWars.Build
 
         void modeClick(SelectTileResult set)
         {
-            if (player.gameControls.input.inputSource.IsControllerOnly)
+            if (player.gameControls.input.inputSource.ControllerMode)
             {
                 blockBuildUpdate = true;
             }
@@ -1551,7 +1551,7 @@ namespace VikingEngine.DSSWars.Build
 
         public void buildingTypeClick(BuildAndExpandType type)
         {
-            if (player.gameControls.input.inputSource.IsControllerOnly)
+            if (player.gameControls.input.inputSource.ControllerMode)
             {
                 blockBuildUpdate = true;
             }

@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             if (images.HasMembers)
             {
-                if (player.gameControls.input.inputSource.IsControllerOnly)
+                if (player.gameControls.input.inputSource.IsXnaController)
                 {
                     if (!images.HasOffset())
                     {

@@ -278,26 +278,28 @@ namespace VikingEngine.DSSWars.GameState
 
         public void updateMouseVisible()
         {
-            if (menuSystem != null && menuSystem.IsOpen())
-            {
-                Input.Mouse.View();//Mouse.Visible = true;
-            }
-            else 
-            {
-                if (localPlayers != null)
-                {
-                    foreach (var player in localPlayers)
-                    {
-                        if (player.gameControls.input.inputSource.HasMouse)
-                        {
-                            Input.Mouse.View();//Mouse.Visible = true;
-                            return;
-                        }
-                    }
-                }
+            Input.Mouse.SetMenuMode(menuSystem != null && menuSystem.IsOpen());
 
-                Mouse.Hide();//Mouse.Visible = false;
-            }
+            //if (menuSystem != null && menuSystem.IsOpen())
+            //{
+            //    Input.Mouse.ViewAll();//Mouse.Visible = true;
+            //}
+            //else 
+            //{
+            //    if (localPlayers != null)
+            //    {
+            //        foreach (var player in localPlayers)
+            //        {
+            //            if (player.gameControls.input.inputSource.HasMouse)
+            //            {
+            //                Input.Mouse.ViewAll();//Mouse.Visible = true;
+            //                return;
+            //            }
+            //        }
+            //    }
+
+            //    Mouse.HideAll();//Mouse.Visible = false;
+            //}
         }
 
         public void exit()

@@ -79,7 +79,7 @@ namespace VikingEngine.LootFest.Display
 
             //SteamGamepad.SetActionSet_All(ControllerActionSetType.MenuControls);
 
-            Input.Mouse.View();//Input.Mouse.Visible = true;
+            Input.Mouse.ViewAll();//Input.Mouse.Visible = true;
         }
 
         List<ControllerChoice> listControllers()
@@ -110,7 +110,7 @@ namespace VikingEngine.LootFest.Display
         public bool Update()
         {
             if (PlatformSettings.DevBuild && 
-                DebugSett.AutoSelectInputController != InputSourceType.Num_Non &&
+                DebugSett.AutoSelectInputController != InputSourceType.Num_None &&
                 LfRef.gamestate.localPlayers.Count == 1)
             {
                 onSelect(DebugSett.AutoSelectInputController, 0);

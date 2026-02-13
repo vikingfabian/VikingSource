@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Maths;
 using VikingEngine.Graphics;
 using VikingEngine.Physics;
-using VikingEngine.EngineSpace.Maths;
 
 
 namespace VikingEngine //AreaVolyme
@@ -980,6 +981,11 @@ namespace VikingEngine //AreaVolyme
 
         public Rectangle2 Rectangle2
         {
+            get
+            {
+                return new Rectangle2(Convert.ToInt32(Position.X), Convert.ToInt32(Position.X),
+                    Convert.ToInt32(Size.X), Convert.ToInt32(Size.Y));
+            }
             set
             {
                 Position.X = value.X;
@@ -987,6 +993,7 @@ namespace VikingEngine //AreaVolyme
                 Size.X = value.Width;
                 Size.Y = value.Height;
             }
+
         }
 
         public RectangleCentered RectangleCentered

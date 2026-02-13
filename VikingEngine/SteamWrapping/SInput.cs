@@ -7,6 +7,8 @@ namespace VikingEngine.SteamWrapping
 {
     class SInput
     {
+        protected Callback<SteamInputConfigurationLoaded_t> m_InputConfigLoaded;
+
         public InputHandle_t[] controllerHandles = new InputHandle_t[Constants.STEAM_INPUT_MAX_COUNT];
         public SteamControllerInstance[] controllers = new SteamControllerInstance[Constants.STEAM_INPUT_MAX_COUNT];
         
@@ -14,10 +16,15 @@ namespace VikingEngine.SteamWrapping
 
         InputDigitalActionHandle_t[] digitalHandles;
         InputAnalogActionHandle_t[] analogHandles;
+        bool isReady = false;
         public SInput()
         {
             SteamInput.Init(false);
-            
+
+            m_InputConfigLoaded = Callback<SteamInputConfigurationLoaded_t>.Create(OnInputConfigLoaded);
+        }
+        private void OnInputConfigLoaded(SteamInputConfigurationLoaded_t pCallback)
+        {
             for (int i = 0; i < controllers.Length; i++)
             {
                 controllers[i] = new SteamControllerInstance(i);
@@ -41,6 +48,7 @@ namespace VikingEngine.SteamWrapping
             {
                 analogHandles[(int)aa] = SteamInput.GetAnalogActionHandle(aa.ToString());
             }
+            isReady = true;
         }
 
         public SpriteName actionIcon(int controllerIx, SteamActionSet actionSet, SteamDigitalAction actionType)
@@ -358,28 +366,38 @@ namespace VikingEngine.SteamWrapping
 
         public void update()
         {
-            int count = SteamInput.GetConnectedControllers(controllerHandles);
-            for (int controllerIx = 0; controllerIx < count; controllerIx++)
+            if (isReady)
             {
-                InputHandle_t controllerHandle = controllerHandles[controllerIx];
-                
-                var ins = controllers[controllerIx];
-                SteamInput.ActivateActionSet(controllerHandle, actionSets[(int)ins.actionSet]);
-
-                for (int daIx = 0; daIx < digitalHandles.Length; daIx++)
+                int count = SteamInput.GetConnectedControllers(controllerHandles);
+                for (int controllerIx = 0; controllerIx < count; controllerIx++)
                 {
-                    ins.digital_isDown_previous[daIx] = ins.digital_isDown_current[daIx];
-                    InputDigitalActionData_t actionData = SteamInput.GetDigitalActionData(controllerHandle, digitalHandles[daIx]);
-                    ins.digital_isDown_current[daIx] = actionData.bState == 1 && actionData.bActive == 1;
-                }
+                    InputHandle_t controllerHandle = controllerHandles[controllerIx];
 
-                for (int aaIx = 0; aaIx < analogHandles.Length; aaIx++)
-                {
-                    InputAnalogActionData_t analogData = SteamInput.GetAnalogActionData(controllerHandle, analogHandles[aaIx]);
+                    var ins = controllers[controllerIx];
+                    SteamInput.ActivateActionSet(controllerHandle, actionSets[(int)ins.actionSet]);
 
-                    ins.analog_current[aaIx] = analogData;
+                    for (int daIx = 0; daIx < digitalHandles.Length; daIx++)
+                    {
+                        ins.digital_isDown_previous[daIx] = ins.digital_isDown_current[daIx];
+                        InputDigitalActionData_t actionData = SteamInput.GetDigitalActionData(controllerHandle, digitalHandles[daIx]);
+                        ins.digital_isDown_current[daIx] = actionData.bState == 1 && actionData.bActive == 1;
+                    }
+
+                    for (int aaIx = 0; aaIx < analogHandles.Length; aaIx++)
+                    {
+                        InputAnalogActionData_t analogData = SteamInput.GetAnalogActionData(controllerHandle, analogHandles[aaIx]);
+
+                        ins.analog_current[aaIx] = analogData;
+                    }
                 }
             }
+        }
+
+        public bool IsActive(int controllerIx, SteamDigitalAction actionType)
+        {
+            InputHandle_t controllerHandle = controllerHandles[controllerIx];
+            InputDigitalActionData_t actionData = SteamInput.GetDigitalActionData(controllerHandle, digitalHandles[(int)actionType]);
+            return actionData.bActive == 1;
         }
 
         public void ListConneted(List<InputSource> sources)
@@ -389,12 +407,7 @@ namespace VikingEngine.SteamWrapping
             {
                 var handle = controllerHandles[controllerIx];
                 var type = SteamInput.GetInputTypeForHandle(handle);
-                sources.Add(new InputSource(InputSourceType.SteamInput, controllerIx)
-                {
-                    hasTouch = type == ESteamInputType.k_ESteamInputType_MobileTouch ||
-                        type == ESteamInputType.k_ESteamInputType_SteamController ||
-                        type == ESteamInputType.k_ESteamInputType_SteamDeckController,
-                });
+                sources.Add(new InputSource(InputSourceType.SteamInput, controllerIx, type));
 
             }
         }
@@ -429,6 +442,8 @@ namespace VikingEngine.SteamWrapping
         controller_focus,
         controller_faction,
         controller_message,
+        zoomInKey, 
+        zoomOutKey,
 
         // MenuControls
         menu_select,
@@ -441,8 +456,7 @@ namespace VikingEngine.SteamWrapping
     {
         // InGameControls
         PanCamera,
-        TiltCameraUpDown,
-        TiltCameraLeftRight,
+        CameraStick,
         MoveCursor,
 
         // MenuControls

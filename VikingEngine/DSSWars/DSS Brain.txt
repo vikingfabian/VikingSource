@@ -1,6 +1,10 @@
 ﻿Change log:
 * Fixed profile flag reading crash
 
+* Added support for Switch, Steam and PS controllers
+* Will store previous control setup
+* Players can choose between mouse mode or controller mode
+x test edge push mode
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

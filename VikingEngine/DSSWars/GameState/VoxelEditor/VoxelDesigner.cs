@@ -135,7 +135,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         public void setupNewInput(bool controller, int playerIndex)
         {
-            if (dssInput == null || dssInput.inputSource.IsControllerOnly != controller)
+            if (dssInput == null || dssInput.inputSource.HasControllerInput != controller)
             {
                 dssInput = new InputMap(playerIndex);
                 dssInput.setInputSource(controller? InputSourceType.XController : InputSourceType.KeyboardMouse, playerIndex);

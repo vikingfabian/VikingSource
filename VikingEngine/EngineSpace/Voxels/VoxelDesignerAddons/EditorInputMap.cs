@@ -224,7 +224,10 @@ namespace VikingEngine.Voxels
 
             OpenClose = new KeyboardButtonMap(Keys.Tab);
         }
+        public void steamSetup(int controllerIndex, IDirectionalMap gamemove, IDirectionalMap gamecamera)
+        {
 
+        }
         public void xboxSetup(int controllerIndex, IDirectionalMap gamemove, IDirectionalMap gamecamera)
         {
             useMouseInput = false;

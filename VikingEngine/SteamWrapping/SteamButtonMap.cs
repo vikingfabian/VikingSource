@@ -13,14 +13,16 @@ namespace VikingEngine.SteamWrapping
     {
         int controllerIx;
         SteamActionSet actionSet;
+        bool mouseMode;
         SteamAnalogAction actionType;
         DirXYstepping steppingData = new DirXYstepping();
 
-        public SteamAnalogMap(SteamActionSet actionSet, SteamAnalogAction action, int controllerIx)
+        public SteamAnalogMap(SteamActionSet actionSet, bool mouseMode, SteamAnalogAction action, int controllerIx)
         {
             this.actionSet = actionSet;
             this.actionType = action;
             this.controllerIx = controllerIx;
+            this.mouseMode = mouseMode;
         }
         public Vector2 direction
         {
@@ -35,8 +37,8 @@ namespace VikingEngine.SteamWrapping
                 return Vector2.Zero;
             }
         }
-        public Vector2 directionAndTime { get { return direction * Ref.DeltaTimeMs; } }
-        public IntVector2 stepping { get { return steppingData.update(direction); } }
+        public Vector2 directionAndTime { get { return mouseMode ? direction : direction * Ref.DeltaTimeMs; } }
+        public IntVector2 stepping { get { return steppingData.update(direction, false); } }
         public bool plusKeyIsDown { get { return false; } }
 
         public string directionsName { get { return actionType.ToString(); } }
@@ -85,6 +87,13 @@ namespace VikingEngine.SteamWrapping
         {
             this.actionType = action;
             this.controllerIx = controllerIx;
+        }
+        public bool IsActive
+        {
+            get
+            {
+                return Ref.steam.input.IsActive(controllerIx, actionType);
+            }
         }
         public bool IsDown { get { return Ref.steam.input.controllers[controllerIx].digital_isDown_current[(int)actionType]; } }
         public bool DownEvent

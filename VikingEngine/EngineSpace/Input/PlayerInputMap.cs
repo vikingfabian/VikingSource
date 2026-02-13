@@ -24,6 +24,9 @@ namespace VikingEngine.Input
 
         public HUD.MenuInputMap menuInput;
 
+        public MouseInstance mouse = null;
+        IDirectionalMap touchMap;
+
         public PlayerInputMap()
         { }
 
@@ -31,8 +34,7 @@ namespace VikingEngine.Input
         {
             this.playerIndex = player;
             init();
-            setInputSource(InputSourceType.KeyboardMouse, 0);
-            
+            setInputSource(InputSourceType.KeyboardMouse, 0);            
         }
 
         virtual protected void init()

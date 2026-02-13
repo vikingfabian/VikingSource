@@ -301,7 +301,7 @@ namespace VikingEngine.LootFest.Players
                         break;
                     }
                 }
-                Input.Mouse.CenterLockAndHide();//Input.Mouse.Visible = false;
+                Input.Mouse.CenterLockAndHideAll();//Input.Mouse.Visible = false;
             }
         }
 

@@ -104,6 +104,11 @@ namespace VikingEngine.SteamWrapping
             }
         }
 
+        public void OnShutdown()
+        {
+            SteamInput.Shutdown();
+        }
+
         public void GoOffline()
         {
             isInitialized = false;

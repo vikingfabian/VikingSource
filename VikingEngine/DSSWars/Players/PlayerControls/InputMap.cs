@@ -1,19 +1,10 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using VikingEngine.DataStream;
-using VikingEngine.EngineSpace.HUD.RichBox;
-using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
-using VikingEngine.PJ.MiniGolf.GO;
 using VikingEngine.SteamWrapping;
-using VikingEngine.ToGG.HeroQuest.Data;
-using VikingEngine.ToGG.HeroQuest.Display;
-using VikingEngine.ToGG.HeroQuest.QueAction;
-using VikingEngine.ToGG.ToggEngine;
 using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars
@@ -24,8 +15,9 @@ namespace VikingEngine.DSSWars
         IButtonMap cameraTiltLeft, cameraTiltRight;
         public IButtonMap cameraTiltUp;
         public IDirectionalMap move; //Do not save
+        public IDirectionalMap steamCursor;
         IDirectionalMap dpadMove; //Do not save
-        public IDirectionalMap cameraTiltZoom; //Do not save
+        public IDirectionalMap cameraStick; //Do not save
         public IDirectionalMap cameraTiltUpSmooth;
 
         public IButtonMap zoomInKey, zoomOutKey;
@@ -223,7 +215,7 @@ namespace VikingEngine.DSSWars
             var camAlts = new Alternative5DirectionalMap();
             camAlts.add(new DirectionalButtonsMap(null, null, cameraTiltLeft, cameraTiltRight));
             camAlts.add(new DirectionalMouseScrollMap());
-            cameraTiltZoom = camAlts;
+            cameraStick = camAlts;
         }
         void refreshMouseInput()
         {
@@ -286,12 +278,12 @@ namespace VikingEngine.DSSWars
             int idx = inputSource.controllerIndex;
 
             // --- Movement & Camera ---
-            move = new SteamAnalogMap( SteamActionSet.InGameControls, SteamAnalogAction.PanCamera, idx);
-            dpadMove = new SteamAnalogMap(SteamActionSet.InGameControls, SteamAnalogAction.PanCamera, idx); // Usually mapped to same action or separate in VDF
-            cameraTiltZoom = new SteamAnalogMap(SteamActionSet.InGameControls, SteamAnalogAction.TiltCameraUpDown, idx);
+            move = new SteamAnalogMap( SteamActionSet.InGameControls, false, SteamAnalogAction.PanCamera, idx);
+            steamCursor = new SteamAnalogMap(SteamActionSet.InGameControls, true, SteamAnalogAction.MoveCursor, idx);
+            cameraStick = new SteamAnalogMap(SteamActionSet.InGameControls, false, SteamAnalogAction.CameraStick, idx);
             // Note: cameraTiltUpSmooth is handled by the Steam Input config (e.g. Chorded Press) 
             // so you just map it to the intended resulting action.
-            cameraTiltUpSmooth = new SteamAnalogMap(SteamActionSet.InGameControls, SteamAnalogAction.TiltCameraUpDown, idx);
+            cameraTiltUpSmooth = new SteamAnalogMap(SteamActionSet.InGameControls, false, SteamAnalogAction.CameraStick, idx);
 
             // --- Core Gameplay ---
             mouseSelect = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.select, idx);
@@ -333,7 +325,7 @@ namespace VikingEngine.DSSWars
             // --- Menus & Editors ---
             // Make sure your MenuControls set is handled in the sub-set setups
             menuInput?.steamSetup(idx);
-            editorInput?.steamSetup(idx, move, cameraTiltZoom);
+            editorInput?.steamSetup(idx, move, cameraStick);
 
             refreshMouseInput();
         }
@@ -342,7 +334,9 @@ namespace VikingEngine.DSSWars
             //wasd = new DirectionalButtonsMap(null, null, null, null);
             move = new DirectionalXboxMap(ThumbStickType.Left, false, inputSource.controllerIndex);
             dpadMove = new DirectionalXboxMap(ThumbStickType.D, false, inputSource.controllerIndex);  
-            cameraTiltZoom =new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex);
+            
+            cameraStick =new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex);
+            
             cameraTiltUpSmooth = new KeyPlusDirectionalMap(new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex), new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex));
 
             mouseSelect = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex);
@@ -387,7 +381,7 @@ namespace VikingEngine.DSSWars
             refreshMouseInput();
 
             menuInput.xboxSetup(inputSource.controllerIndex);
-            editorInput.xboxSetup(inputSource.controllerIndex, move, cameraTiltZoom);
+            editorInput.xboxSetup(inputSource.controllerIndex, move, cameraStick);
         }
 
         public void write(System.IO.BinaryWriter w)
@@ -435,7 +429,7 @@ namespace VikingEngine.DSSWars
                 w.Write((byte)X2MouseAction);
             }
 
-            if (inputSource.IsControllerOnly)
+            if (inputSource.IsXnaController)
             {
                 //Controller_FlagDesign_Colorpicker.write(w);
                 //mouseSelect.write(w);
@@ -449,7 +443,7 @@ namespace VikingEngine.DSSWars
         public void read(System.IO.BinaryReader r)
         {
             int inputVersion = r.ReadInt32();
-            if (inputSource.IsControllerOnly)
+            if (inputSource.IsXnaController)
             {
                 xboxSetup();
             }
@@ -519,7 +513,7 @@ namespace VikingEngine.DSSWars
                 refreshMouseInput();
             }
 
-            if (inputSource.IsControllerOnly)
+            if (inputSource.IsXnaController)
             {
                 //Controller_FlagDesign_Colorpicker = MapRead.Button(r, inputSource.controllerIndex);
                 //mouseSelect = MapRead.Button(r, inputSource.controllerIndex);
@@ -846,7 +840,7 @@ namespace VikingEngine.DSSWars
         const float KeyZoomSpeed = 10;
         public float ZoomValue()
         {
-            float result = cameraTiltZoom.directionAndTime.Y * Ref.gamesett.scrollWheelSensitivity_game;
+            float result = cameraStick.directionAndTime.Y * Ref.gamesett.scrollWheelSensitivity_game;
             if (inputSource.HasMouse)
             {
                 result += lib.ToLeftRight(Input.Mouse.ScrollValue) * -10f * Ref.gamesett.scrollWheelSensitivity_game;
@@ -865,7 +859,7 @@ namespace VikingEngine.DSSWars
 
         public IButtonMap RichboxGuiSelect => mouseSelect;
         public IntVector2 RichboxGuiMove() { return move.stepping + dpadMove.stepping; }
-        public bool RichboxGuiUseMove => inputSource.IsControllerOnly;
+        public bool RichboxGuiUseMove => inputSource.ControllerMode;
 
         public override EditorInputMap VoxelEditorInput()
         {

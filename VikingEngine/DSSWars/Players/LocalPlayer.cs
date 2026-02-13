@@ -210,7 +210,7 @@ namespace VikingEngine.DSSWars.Players
             InputMap input = new InputMap(playerindex);
             input.setInputSource(pStorage.inputSource.sourceType, pStorage.inputSource.controllerIndex);
 
-            if (pStorage.inputSource.IsControllerOnly)
+            if (pStorage.inputSource.IsXnaController)
             {
                 input.copyDataFrom(Ref.gamesett.controllerMap);
             }

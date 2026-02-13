@@ -15,6 +15,8 @@ namespace VikingEngine.HUD
 
         public IDirectionalMap mouse;
         public IDirectionalMap movement;
+        public IDirectionalMap cursor;
+
         public IDirectionalMap scroll;
         public IButtonMap click;
         public IButtonMap back;

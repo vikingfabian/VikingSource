@@ -197,7 +197,8 @@ namespace VikingEngine.DSSWars.Interface
 
             content.newLine();
 
-            if (player.gameControls.input.inputSource.IsControllerOnly)
+            if (player.gameControls.input.inputSource.IsXnaController &&
+                player.gameControls.input.ControllerFaction.IsActive)
             {
                 content.Add(new RbImage(player.gameControls.input.ControllerFaction.Icon) { color = player.gameControls.controller_mayUseHeadDisplay()? Color.White : Color.Black });
                 content.space();                
@@ -227,7 +228,8 @@ namespace VikingEngine.DSSWars.Interface
             content.space(2);
             {
                 RichBoxContent buttonContent = new RichBoxContent();
-                if (player.gameControls.input.inputSource.IsControllerOnly)
+                if (player.gameControls.input.inputSource.IsXnaController &&
+                    player.gameControls.input.NextCity.IsActive)
                 {
                     buttonContent.Add(new RbImage(player.gameControls.input.NextCity.Icon));
                     buttonContent.space(0.5f);
@@ -240,7 +242,8 @@ namespace VikingEngine.DSSWars.Interface
             }
             {
                 RichBoxContent buttonContent = new RichBoxContent();
-                if (player.gameControls.input.inputSource.IsControllerOnly)
+                if (player.gameControls.input.inputSource.IsXnaController &&
+                    player.gameControls.input.NextArmy.IsActive)
                 {
                     buttonContent.Add(new RbImage(player.gameControls.input.NextArmy.Icon));
                     buttonContent.space(0.5f);
@@ -262,10 +265,13 @@ namespace VikingEngine.DSSWars.Interface
                 }
                 else
                 {
-                    if (player.gameControls.input.inputSource.IsControllerOnly)
+                    if (player.gameControls.input.inputSource.HasControllerInput)
                     {
-                        player.gameControls.input.NextWar.ToRichContent(buttonContent);
-                        buttonContent.space(0.5f);
+                        if (player.gameControls.input.NextWar.IsActive)
+                        {
+                            player.gameControls.input.NextWar.ToRichContent(buttonContent);
+                            buttonContent.space(0.5f);
+                        }
                     }
                     buttonContent.Add(new RbImage(SpriteName.WarsRelationWar));
                     toolTip = DssRef.lang.InputActionName_NextWar;

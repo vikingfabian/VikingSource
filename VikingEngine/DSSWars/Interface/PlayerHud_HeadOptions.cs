@@ -96,7 +96,7 @@ namespace VikingEngine.DSSWars.Interface
             }
 
             
-            if (player.gameControls.input.inputSource.IsControllerOnly)
+            if (player.gameControls.input.inputSource.IsXnaController)
             {
                 content.Add(new RbImage(player.gameControls.input.Menu.Icon));
                 content.space(0.5f);

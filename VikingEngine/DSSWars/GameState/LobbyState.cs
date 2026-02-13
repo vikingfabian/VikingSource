@@ -100,6 +100,7 @@ namespace VikingEngine.DSSWars
             DssRef.storage.profileStorage.refreshProfiles();
             HudLib.Init();
             Ref.isPaused = false;
+            loadPreviousInput();
             Engine.Screen.SetupSplitScreen(1);
             if (startLoadingMap && !StartupSettings.BlockBackgroundLoading)
             {
@@ -148,6 +149,28 @@ namespace VikingEngine.DSSWars
 
 #endif
         }
+
+        void loadPreviousInput()
+        {
+            List<InputSource> available = availableInput();
+            foreach (var p in DssRef.storage.localPlayers)
+            {
+                if (p.prevInputSource.sourceType != InputSourceType.Num_None)
+                {
+                    for (int i = 0; i < available.Count; i++)
+                    {
+                        if (available[i].Equals(p.prevInputSource))
+                        { 
+                            p.inputSource = available[i];
+                            p.prevInputSource = p.inputSource;
+                            available.RemoveAt(i);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         void refreshUnderMenu()
         {
             switch (underMenu.menuStack.LastOrDefault())
@@ -1717,7 +1740,7 @@ namespace VikingEngine.DSSWars
                     DropDownBuilder inputOptions = new DropDownBuilder($"inputOptions{playerNum}");
                     foreach (var m in available)
                     {
-                        inputOptions.AddOption(m.IsControllerOnly ? SpriteName.birdControllerIcon : SpriteName.Keyboard, m.ToString(),
+                        inputOptions.AddOption(m.IsXnaController ? SpriteName.birdControllerIcon : SpriteName.Keyboard, m.ToString(),
                             playerData.inputSource.Equals(m), m.HasMouse,
                             new RbAction1Arg<InputSource>((InputSource inputSource) =>
                             {
@@ -1725,12 +1748,16 @@ namespace VikingEngine.DSSWars
                                 DssRef.storage.checkPlayerDoublettes(0);
                                 refreshSplitScreen();
                                 underMenu.CloseDropDown();
+                                DssRef.storage.Save(null);
                             }, m), null);
                     }
                     inputOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Settings_Title_Input, underMenu);
 
-                    
+                    content.newLine();
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Input_SimulateMouse) },
+                        playerData.SimulateMouseProperty));
                 }
+                
                 listAndEditProfile(content, playerNum, playerData, false);
                 if (DssRef.storage.playerCount > 1)
                 {
@@ -2300,7 +2327,7 @@ namespace VikingEngine.DSSWars
 
             for (int i = 0; i < DssRef.storage.playerCount; ++i)
             {
-                if (DssRef.storage.localPlayers[i].inputSource.sourceType == InputSourceType.Num_Non)
+                if (DssRef.storage.localPlayers[i].inputSource.sourceType == InputSourceType.Num_None)
                 {
                     if (available.Count > 0)
                     {
@@ -2623,7 +2650,7 @@ namespace VikingEngine.DSSWars
         {
             for (int i = 0; i < DssRef.storage.playerCount; ++i)
             {
-                if (DssRef.storage.localPlayers[i].inputSource.sourceType == InputSourceType.Num_Non)
+                if (DssRef.storage.localPlayers[i].inputSource.sourceType == InputSourceType.Num_None)
                 {
                     if (DssRef.storage.playerCount == 1)
                     {

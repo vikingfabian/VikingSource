@@ -270,7 +270,7 @@ namespace VikingEngine.Input
         public JoyStickValue UpdateStepBuffer(Vector2 input)
         {
             this.value.Direction = input;
-            this.value.Stepping = stepping.update(input);
+            this.value.Stepping = stepping.update(input, true);
             return this.value;
         }
 
@@ -283,11 +283,11 @@ namespace VikingEngine.Input
         public DirectionalStepping x;
         public DirectionalStepping y;
 
-        public IntVector2 update(Vector2 input)
+        public IntVector2 update(Vector2 input, bool useTime)
         {
             IntVector2 result = new IntVector2(
-                x.Update(input.X),
-                y.Update(input.Y));
+                x.Update(input.X, useTime),
+                y.Update(input.Y, useTime));
 
             return result;
         }
@@ -301,7 +301,7 @@ namespace VikingEngine.Input
         const float HspeedFalloverVal = 170;
         float fallOver;
 
-        public int Update(float dirInput)
+        public int Update(float dirInput, bool useTime)
         {
             const float InputBuffer = 0.3f;
             if (Math.Abs(dirInput) <= InputBuffer)
@@ -313,7 +313,11 @@ namespace VikingEngine.Input
             }
             else
             {
-                accumulation += dirInput * Ref.DeltaTimeMs;
+                if (useTime)
+                {
+                    dirInput *= Ref.DeltaTimeMs;
+                }
+                accumulation += dirInput;
                 if (!keyDown)
                 {
                     keyDown = true;

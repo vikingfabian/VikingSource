@@ -63,27 +63,27 @@ namespace VikingEngine.DSSWars.Interface
 
             var content = new RichBoxContent();
             InputMap map = player.gameControls.input;
-            bool ct = map.inputSource.IsControllerOnly;
+            bool controllerMode = map.inputSource.ControllerMode;
             bool mouse = map.inputSource.HasMouse;
             bool casual = player.profile.casualControls;
            
             switch (player.gameControls.inputHelpState)
             {
                 case InputHelpState.Map:
-                    input(map.mouseSelect.Icon, DssRef.lang.InputActionName_ControllerSelect);
-                    if (ct)
+                    input_buttonmap(map.mouseSelect, DssRef.lang.InputActionName_ControllerSelect);
+                    if (controllerMode)
                     {
-                        input(map.mouseOrder.Icon, DssRef.lang.Tutorial_MoveInput);
-                        input(map.ControllerFocus.Icon, DssRef.lang.InputActionName_ToggleMenu);
+                        input_buttonmap(map.mouseOrder, DssRef.lang.Tutorial_MoveInput);
+                        input_buttonmap(map.ControllerFocus, DssRef.lang.InputActionName_ToggleMenu);
                     }
-                    input(ct ? SpriteName.RightStick_UD : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
+                    input(controllerMode ? SpriteName.RightStick_UD : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
 
                     if (!casual)
                     {
                         input_buttonmap(map.Build, DssRef.lang.InputActionName_Build);
                     }
 
-                    if (ct)
+                    if (controllerMode)
                     {
                         content.newLine();
                         content.Add(new RbImage(SpriteName.ButtonLT));
@@ -97,35 +97,35 @@ namespace VikingEngine.DSSWars.Interface
                     break;
 
                 case InputHelpState.Army:
-                    input(map.mouseSelect.Icon, DssRef.lang.Hud_Cancel);
-                    input(map.mouseOrder.Icon, DssRef.lang.Tutorial_MoveInput);
-                    if (ct)
+                    input_buttonmap(map.mouseSelect, DssRef.lang.Hud_Cancel);
+                    input_buttonmap(map.mouseOrder, DssRef.lang.Tutorial_MoveInput);
+                    if (controllerMode)
                     {
-                        input(map.ControllerFocus.Icon, DssRef.lang.InputActionName_ToggleMenu);
+                        input_buttonmap(map.ControllerFocus, DssRef.lang.InputActionName_ToggleMenu);
                     }
                     break;
 
                 case InputHelpState.Menu:
-                    input(map.mouseSelect.Icon, DssRef.lang.InputActionName_ControllerSelect);
-                    if (ct)
+                    input_buttonmap(map.mouseSelect, DssRef.lang.InputActionName_ControllerSelect);
+                    if (controllerMode)
                     {
-                        input(map.ControllerFocus.Icon, DssRef.lang.InputActionName_ToggleMenu);
+                        input_buttonmap(map.ControllerFocus, DssRef.lang.InputActionName_ToggleMenu);
                     }
                     break;
                 case InputHelpState.Build:
-                    input(map.mouseSelect.Icon, DssRef.lang.Build_PlaceBuilding);
-                    if (ct)
+                    input_buttonmap(map.mouseSelect, DssRef.lang.Build_PlaceBuilding);
+                    if (controllerMode)
                     {
-                        input(map.ControllerFocus.Icon, DssRef.lang.InputActionName_ToggleMenu);
+                        input_buttonmap(map.ControllerFocus, DssRef.lang.InputActionName_ToggleMenu);
                     }
                     break;
 
                 case InputHelpState.CommandTarget:
-                    input(map.mouseSelect.Icon, DssRef.lang.InputActionName_PlaceTarget);
+                    input_buttonmap(map.mouseSelect, DssRef.lang.InputActionName_PlaceTarget);
                     input(map.cancelIcons().First(), DssRef.lang.Hud_Cancel);
                     break;
             }
-            input(map.ToggleHudDetail.Icon, DssRef.lang.InputActionName_ToggleHudDetail);
+            input_buttonmap(map.ToggleHudDetail, DssRef.lang.InputActionName_ToggleHudDetail);
 
 
             menu.Refresh(content, player.gameControls.controllerPointer);
@@ -140,10 +140,13 @@ namespace VikingEngine.DSSWars.Interface
 
             void input_buttonmap(IButtonMap button, string text)
             {
-                content.newLine();
-                button.ToRichContent(content);
-                content.space();
-                content.Add(new RbText(text, HudLib.TitleColor_Action));
+                if (button.IsActive)
+                {
+                    content.newLine();
+                    button.ToRichContent(content);
+                    content.space();
+                    content.Add(new RbText(text, HudLib.TitleColor_Action));
+                }
             }
         }
     }

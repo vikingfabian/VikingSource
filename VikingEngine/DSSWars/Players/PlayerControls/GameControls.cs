@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             bool uiRefresh = false; 
             //bool buildMode = false;
 
-            if (input.inputSource.IsControllerOnly)
+            if (input.inputSource.ControllerMode)
             {                
                 if (controllerPointer != null)
                 {
@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         selectAreaCity();
 
-                        if (input.inputSource.IsControllerOnly)
+                        if (input.inputSource.ControllerMode)
                         {
                             setMenuFocus(true, true);
                         }
@@ -233,7 +233,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
             }
 
-            if (input.inputSource.IsControllerOnly)
+            if (input.inputSource.ControllerMode)
             {
                 if (input.ControllerFocus.DownEvent)
                 {
@@ -464,7 +464,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public bool tabFocusColor(ControllerTabFocus inFocus, out Color color)
         {
-            if (input.inputSource.IsControllerOnly)
+            if (input.inputSource.ControllerMode)
             {
                 color = tabFocus() == inFocus ? Color.White : Color.Black;
                 return true;
@@ -476,7 +476,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
         public void setMenuFocus(bool set, bool objectMenu)
         {
-            if (input.inputSource.IsControllerOnly) 
+            if (input.inputSource.ControllerMode) 
             {
                 if (set)
                 {
@@ -744,7 +744,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             bool newselection = clickHover(sameMapObject);
 
-            if (newselection && input.inputSource.IsControllerOnly)
+            if (newselection && input.inputSource.ControllerMode)
             {
                 if (input.ControllerFocus.DownEvent || map.focusedObjectMenuState())
                 {
@@ -826,7 +826,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             map.cameraFocus = obj;
             mapSelect(obj.GetWorldObject());
             
-            if (input.inputSource.IsControllerOnly && obj.gameobjectType() != GameObjectType.City)
+            if (input.inputSource.ControllerMode && obj.gameobjectType() != GameObjectType.City)
             {
                 setMenuFocus(false, false);
             }
@@ -851,7 +851,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             if (input.NextCity.DownEvent && player.faction.cities.Count > 0)
             {
                 nextCity();
-                if (input.inputSource.IsControllerOnly)
+                if (input.inputSource.ControllerMode)
                 {
                     setMenuFocus(true, true);
                 }
@@ -1078,7 +1078,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 army.mapExecute();
                 
 
-                if (input.inputSource.IsControllerOnly)
+                if (input.inputSource.ControllerMode)
                 {
                     clearSelection();
                 }

@@ -156,7 +156,7 @@ namespace VikingEngine.DSSWars.Communication
                     {
                         if (visible && !overHud)
                         {
-                            if (player.gameControls.input.inputSource.IsControllerOnly)
+                            if (player.gameControls.input.inputSource.ControllerMode)
                             {
                                 float dist = (player.gameControls.map.XPointerPos() - rel.bg.RealCenter).Length();
                                 if (dist < controller_closestDist)
@@ -305,7 +305,7 @@ namespace VikingEngine.DSSWars.Communication
             SoundLib.select_faction.Play();
             player.hud.needRefresh = true;
 
-            if (player.gameControls.input.inputSource.IsControllerOnly)
+            if (player.gameControls.input.inputSource.ControllerMode)
             {
                 player.gameControls.setMenuFocus(true, true);
             }

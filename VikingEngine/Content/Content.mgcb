@@ -2005,6 +2005,9 @@
 /processorParam:TextureFormat=Compressed
 /build:Font/ThaiRegular.spritefont
 
+#begin game_actions.vdf
+/copy:game_actions.vdf
+
 #begin Modding/ModConst.txt
 /copy:Modding/ModConst.txt
 
@@ -2178,6 +2181,9 @@
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
 /build:Model/sphere.fbx
+
+#begin official_controller_xbox.vdf
+/copy:official_controller_xbox.vdf
 
 #begin Shaders/DeferredRenderer/DepthWriter.fx
 /importer:EffectImporter

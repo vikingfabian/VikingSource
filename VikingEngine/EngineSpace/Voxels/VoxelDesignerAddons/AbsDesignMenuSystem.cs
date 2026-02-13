@@ -127,7 +127,7 @@ namespace VikingEngine.Voxels
                 menu.DeleteMe();
                 menu = null;
                 designer.updateFrameInfo();
-                Input.Mouse.CenterLockAndHide();//Input.Mouse.Visible = false;
+                Input.Mouse.CenterLockAndHideAll();//Input.Mouse.Visible = false;
 
                 //designer.inputMap.SetGameStateLayout(ControllerActionSetType.EditorControls);
             }

@@ -23,7 +23,7 @@ namespace VikingEngine.PJ.MiniGolf
             {
                 menu = new Gui(GuiStyle(), Screen.SafeArea, 0f, ImageLayers.Foreground7, Input.InputSource.DefaultPC);
 
-                Input.Mouse.LockToScreenArea = false;
+                Input.Mouse.SetMenuMode(true);
             }
         }
 
