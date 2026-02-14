@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Steamworks;
 using VikingEngine.DSSWars;
 
 namespace VikingEngine.Input
@@ -32,6 +33,11 @@ namespace VikingEngine.Input
 
         public static bool AnyKeyDownEvent()
         {
+            if (Ref.steam.input != null && Ref.steam.input.AnyKeyDownEvent())
+            {
+                return true;
+            }
+
             foreach (var m in XInput.controllers)
             {
                 if (m.Connected)
@@ -177,6 +183,29 @@ namespace VikingEngine.Input
             return new AlternativeButtonsMap(buttonMap, add);
         }
 
+        public static Vector2 OnlyOneDimentionOut(Vector2 directionValue)
+        {
+            Vector2 result = Vector2.Zero;
+
+            const float Buffer = 0.6f;
+            float absX = Math.Abs(directionValue.X);
+            float absY = Math.Abs(directionValue.Y);
+            if (absX > absY)
+            {
+                if (absX > Buffer)
+                {
+                    result.X = directionValue.X;
+                }
+            }
+            else
+            {
+                if (absY > Buffer)
+                {
+                    result.Y = directionValue.Y;
+                }
+            }
+            return result;
+        }
         //public static bool DownEvent_AnyInstance(IButtonMap buttons)
         //{
         //    if (buttons.inputSource == InputSourceType.XController)

@@ -11,6 +11,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
+using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.HeroQuest.Display;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -18,6 +19,7 @@ namespace VikingEngine.DSSWars.Interface
 {
     class PlayerHud_InputHelp
     {
+        List<SpriteName> iconsBuffer = new List<SpriteName>(3);
         public RichMenu menu;
         Graphics.Image bgTex;
         public PlayerHud_InputHelp(LocalPlayer player, float bottom)
@@ -30,7 +32,7 @@ namespace VikingEngine.DSSWars.Interface
             if (menu == null)
             {
                 var objectMenuArea = new VectorRect(0, 0,
-                    HudLib.HeadDisplayWidth * 0.6f, HudLib.HeadDisplayWidth * 0.54f);
+                    HudLib.HeadDisplayWidth * 0.6f, HudLib.HeadDisplayWidth * (player.gameControls.input.inputSource.HasControllerInput? 0.76f : 0.54f));
                 objectMenuArea.X = player.playerData.view.safeScreenArea.Right - objectMenuArea.Width;
                 objectMenuArea.Y = bottom - objectMenuArea.Height;
 
@@ -64,6 +66,7 @@ namespace VikingEngine.DSSWars.Interface
             var content = new RichBoxContent();
             InputMap map = player.gameControls.input;
             bool controllerMode = map.inputSource.ControllerMode;
+            bool hasController = map.inputSource.HasControllerInput;
             bool mouse = map.inputSource.HasMouse;
             bool casual = player.profile.casualControls;
            
@@ -75,6 +78,7 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         input_buttonmap(map.mouseOrder, DssRef.lang.Tutorial_MoveInput);
                         input_buttonmap(map.ControllerFocus, DssRef.lang.InputActionName_ToggleMenu);
+                        input_buttonmap(map.ControllerFaction, DssRef.lang.FactionSettings_Titel);
                     }
                     input(controllerMode ? SpriteName.RightStick_UD : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
 
@@ -83,14 +87,15 @@ namespace VikingEngine.DSSWars.Interface
                         input_buttonmap(map.Build, DssRef.lang.InputActionName_Build);
                     }
 
-                    if (controllerMode)
+                    if (hasController)
                     {
-                        content.newLine();
-                        content.Add(new RbImage(SpriteName.ButtonLT));
-                        content.space();
-                        content.Add(new RbText("+"));
-                        content.Add(new RbImage(SpriteName.RightStick));
-                        content.Add(new RbText(DssRef.lang.InputActionName_CameraTiltUp, HudLib.TitleColor_Action));
+                        input_directionmap(map.cameraTiltUpSmooth, DssRef.lang.InputActionName_CameraTiltUp);
+                        //content.newLine();
+                        //content.Add(new RbImage(SpriteName.ButtonLT));
+                        //content.space();
+                        //content.Add(new RbText("+"));
+                        //content.Add(new RbImage(SpriteName.RightStick));
+                        //content.Add(new RbText(DssRef.lang.InputActionName_CameraTiltUp, HudLib.TitleColor_Action));
 
                         //input(map.Controller_SubTabRight.Icon, DssRef.lang.InputActionName_CameraTiltUp);
                     }
@@ -146,6 +151,39 @@ namespace VikingEngine.DSSWars.Interface
                     button.ToRichContent(content);
                     content.space();
                     content.Add(new RbText(text, HudLib.TitleColor_Action));
+                }
+            }
+
+            void input_directionmap(IDirectionalMap dir, string text)
+            {
+                //if (dir)
+                {
+                    iconsBuffer.Clear();
+
+                    content.newLine();
+                    dir.ListIcons(iconsBuffer, out SpriteName plusKey, false);//.ToRichContent(content);
+
+                    if (iconsBuffer.Count > 0)
+                    {
+                        if (iconsBuffer[0] == SpriteName.NO_IMAGE)
+                        {
+                            SInput.UnusedLayerToRichContent(content);
+                        }
+                        else
+                        {
+                            content.Add(new RbImage(iconsBuffer[0]));
+                            if (plusKey != SpriteName.NO_IMAGE)
+                            {
+                                content.space();
+                                content.Add(new RbText("+"));
+                                content.Add(new RbImage(iconsBuffer[1]));
+                            }
+                        }
+                    }
+                    
+                        content.space();
+                        content.Add(new RbText(text, HudLib.TitleColor_Action));
+                    
                 }
             }
         }

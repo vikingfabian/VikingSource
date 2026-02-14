@@ -17,6 +17,7 @@ namespace VikingEngine.Voxels
 
         public IDirectionalMap moveXZ;
         public IDirectionalMap cameraXMoveY;
+        
         public IButtonMap toggleCameraMode;
         public IDirectionalMap cameraZoom;
         public IButtonMap draw;
@@ -32,6 +33,9 @@ namespace VikingEngine.Voxels
         public IButtonMap previous;
         public IButtonMap next;
 
+        /// <summary>
+        /// For ingame editing
+        /// </summary>
         public IButtonMap OpenClose;
 
         public IButtonMap keyboardYmovementToggel = new KeyboardButtonMap(Keys.LeftShift);

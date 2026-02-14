@@ -5,6 +5,7 @@
 * Will store previous control setup
 * Players can choose between mouse mode or controller mode
 x test edge push mode
+* reduced move speed during build mode
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

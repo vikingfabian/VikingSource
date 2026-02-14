@@ -124,24 +124,24 @@ namespace VikingEngine.DSSWars.Interface
         {
             if (images.HasMembers)
             {
-                if (player.gameControls.input.inputSource.IsXnaController)
-                {
-                    if (!images.HasOffset())
-                    {
-                        if (menuToolTip)
-                        {
-                            //images.SetOffset(new Vector2(
-                            //    player.hud.displays.headDisplay.area.Right + 10,
-                            //    player.hud.displays.controllerSelectionPos().Y)
-                            //    );
-                        }
-                        else
-                        {
-                            images.SetOffset(player.playerData.view.DrawAreaF.Center + Engine.Screen.SmallIconSizeV2);
-                        }
-                    }
-                }
-                else
+                //if (player.gameControls.input.inputSource.IsXnaController)
+                //{
+                //    if (!images.HasOffset())
+                //    {
+                //        if (menuToolTip)
+                //        {
+                //            //images.SetOffset(new Vector2(
+                //            //    player.hud.displays.headDisplay.area.Right + 10,
+                //            //    player.hud.displays.controllerSelectionPos().Y)
+                //            //    );
+                //        }
+                //        else
+                //        {
+                //            images.SetOffset(player.playerData.view.DrawAreaF.Center + Engine.Screen.SmallIconSizeV2);
+                //        }
+                //    }
+                //}
+                //else
                 {
                     Vector2 offset = Input.Mouse.Position;// + Engine.Screen.SmallIconSizeV2;
                     offset.X += Engine.Screen.SmallIconSize;
@@ -210,6 +210,7 @@ namespace VikingEngine.DSSWars.Interface
                 bool avaialableAction = true;
                 switch (subTile.selectTileResult)
                 {
+
                     case Players.SelectTileResult.Build:
                         var buildOpt = BuildLib.BuildOptions[(int)player.gameControls.build.placeBuildingType];
                         title = new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, buildOpt.Label()));
@@ -223,11 +224,11 @@ namespace VikingEngine.DSSWars.Interface
                         bp.toMenu(content, subTile.city);
 
                         var mayBuild = player.gameControls.map.hover.subTile.mayBuild(player, out bool upgrade);
-                        
+
                         switch (mayBuild)
-                        { 
+                        {
                             case Players.MayBuildResult.Yes_ChangeCity:
-                                content.text(DssRef.lang.BuildHud_OutsideCity).overrideColor = HudLib.InfoYellow_Light; 
+                                content.text(DssRef.lang.BuildHud_OutsideCity).overrideColor = HudLib.InfoYellow_Light;
                                 break;
 
                             case Players.MayBuildResult.No_OutsideRegion:
@@ -291,7 +292,7 @@ namespace VikingEngine.DSSWars.Interface
 
                     case Players.SelectTileResult.Postal:
                         {
-                            title = new RbText(DssRef.lang.BuildingType_Postal);                            
+                            title = new RbText(DssRef.lang.BuildingType_Postal);
                             content.Add(title);
 
                             content.newLine();
@@ -356,12 +357,16 @@ namespace VikingEngine.DSSWars.Interface
                         }
                         break;
                 }
-                title.overrideColor = avaialableAction ? HudLib.TitleColor_Action: HudLib.NotAvailableColor;
+                title.overrideColor = avaialableAction ? HudLib.TitleColor_Action : HudLib.NotAvailableColor;
 
                 content.Add(new RbSeperationLine());
                 content.newParagraph();
-             
+
             }
+            //else
+            //{
+            //    lib.DoNothing();
+            //}
             content.h2(DssRef.lang.TerrainType, HudLib.TitleColor_Label);
             content.text(subTile.subTile.TypeToString());
             

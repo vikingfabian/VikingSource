@@ -15,7 +15,7 @@ namespace VikingEngine.DSSWars
         IButtonMap cameraTiltLeft, cameraTiltRight;
         public IButtonMap cameraTiltUp;
         public IDirectionalMap move; //Do not save
-        public IDirectionalMap steamCursor;
+        public IDirectionalMap moveCursor;
         IDirectionalMap dpadMove; //Do not save
         public IDirectionalMap cameraStick; //Do not save
         public IDirectionalMap cameraTiltUpSmooth;
@@ -279,20 +279,20 @@ namespace VikingEngine.DSSWars
 
             // --- Movement & Camera ---
             move = new SteamAnalogMap( SteamActionSet.InGameControls, false, SteamAnalogAction.PanCamera, idx);
-            steamCursor = new SteamAnalogMap(SteamActionSet.InGameControls, true, SteamAnalogAction.MoveCursor, idx);
+            moveCursor = new SteamAnalogMap(SteamActionSet.InGameControls, true, SteamAnalogAction.MoveCursor, idx);
             cameraStick = new SteamAnalogMap(SteamActionSet.InGameControls, false, SteamAnalogAction.CameraStick, idx);
             // Note: cameraTiltUpSmooth is handled by the Steam Input config (e.g. Chorded Press) 
             // so you just map it to the intended resulting action.
-            cameraTiltUpSmooth = new SteamAnalogMap(SteamActionSet.InGameControls, false, SteamAnalogAction.CameraStick, idx);
+            cameraTiltUpSmooth = new SteamAnalogMap(SteamActionSet.InGameControls, false, SteamAnalogAction.CameraTilt, idx);
 
             // --- Core Gameplay ---
             mouseSelect = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.select, idx);
-            mouseOrder = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.quick_select, idx);
+            mouseOrder = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.order, idx);
             CancelKey = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.cancel, idx);
             StopStart = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.stop_start, idx);
 
             // --- UI & Windows ---
-            Menu = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.menu, idx);
+            Menu = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.open_menu, idx);
             ToggleHudDetail = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.toggle_hud_detail, idx);
             ToggleMinimap = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.toggle_minimap, idx);
             Controller_TabLeft = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.tab_left, idx);
@@ -840,7 +840,8 @@ namespace VikingEngine.DSSWars
         const float KeyZoomSpeed = 10;
         public float ZoomValue()
         {
-            float result = cameraStick.directionAndTime.Y * Ref.gamesett.scrollWheelSensitivity_game;
+
+            float result = InputLib.OnlyOneDimentionOut(cameraStick.directionAndTime).Y * Ref.gamesett.scrollWheelSensitivity_game;
             if (inputSource.HasMouse)
             {
                 result += lib.ToLeftRight(Input.Mouse.ScrollValue) * -10f * Ref.gamesett.scrollWheelSensitivity_game;

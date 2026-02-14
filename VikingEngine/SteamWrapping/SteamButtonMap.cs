@@ -32,7 +32,7 @@ namespace VikingEngine.SteamWrapping
 
                 if (data.bActive == 1)
                 {
-                    return new Vector2(data.x, data.y);
+                    return new Vector2(data.x, -data.y);
                 }
                 return Vector2.Zero;
             }
@@ -49,7 +49,7 @@ namespace VikingEngine.SteamWrapping
         {
             get
             {
-                return Ref.steam.input.actionIcon(controllerIx, actionSet, actionType);//XboxInputLib.ButtonSprite(button);
+                return Ref.steam.input.actionIcon(controllerIx, actionSet, actionType);
             }
         }
         public void ListIcons(List<SpriteName> list)
@@ -164,7 +164,15 @@ namespace VikingEngine.SteamWrapping
 
         public void ToRichContent(RichBoxContent content)
         {
-            content.Add(new RbImage(Ref.steam.input.actionIcon(controllerIx, actionSet, actionType)));
+            var icon = Ref.steam.input.actionIcon(controllerIx, actionSet, actionType);
+            if (icon != SpriteName.NO_IMAGE)
+            {
+                content.Add(new RbImage(icon));
+            }
+            else
+            {
+                SInput.UnusedLayerToRichContent(content);
+            }
         }
 
         public void write(System.IO.BinaryWriter w)

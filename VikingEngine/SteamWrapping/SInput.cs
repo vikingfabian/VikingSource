@@ -1,38 +1,54 @@
-﻿using Steamworks;
+﻿using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Generic;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
+using VikingEngine.ToGG.HeroQuest.HeroStrategy;
 
 namespace VikingEngine.SteamWrapping
 {
     class SInput
     {
+        public static bool InputLayerChange = false;
         protected Callback<SteamInputConfigurationLoaded_t> m_InputConfigLoaded;
 
         public InputHandle_t[] controllerHandles = new InputHandle_t[Constants.STEAM_INPUT_MAX_COUNT];
         public SteamControllerInstance[] controllers = new SteamControllerInstance[Constants.STEAM_INPUT_MAX_COUNT];
-        
+
         InputActionSetHandle_t[] actionSets;
 
         InputDigitalActionHandle_t[] digitalHandles;
         InputAnalogActionHandle_t[] analogHandles;
         bool isReady = false;
+        bool lostFocus = false;
+
+        private InputActionSetHandle_t[][] _previousLayers;
+        private InputActionSetHandle_t[] _currentLayersBuffer = new InputActionSetHandle_t[16];
         public SInput()
         {
             SteamInput.Init(false);
 
+            _previousLayers = new InputActionSetHandle_t[Constants.STEAM_INPUT_MAX_COUNT][];
+            for (int i = 0; i < Constants.STEAM_INPUT_MAX_COUNT; i++)
+            {
+                _previousLayers[i] = new InputActionSetHandle_t[16];
+            }
             m_InputConfigLoaded = Callback<SteamInputConfigurationLoaded_t>.Create(OnInputConfigLoaded);
         }
         private void OnInputConfigLoaded(SteamInputConfigurationLoaded_t pCallback)
         {
-            for (int i = 0; i < controllers.Length; i++)
+            if (!isReady)
             {
-                controllers[i] = new SteamControllerInstance(i);
+                for (int i = 0; i < controllers.Length; i++)
+                {
+                    controllers[i] = new SteamControllerInstance(i);
+                }
             }
 
             actionSets = new InputActionSetHandle_t[(int)SteamActionSet.NUM];
             for (SteamActionSet aset = 0; aset < SteamActionSet.NUM; aset++)
-            {                
+            {
                 actionSets[(int)aset] = SteamInput.GetActionSetHandle(aset.ToString());
             }
 
@@ -42,7 +58,7 @@ namespace VikingEngine.SteamWrapping
             {
                 digitalHandles[(int)da] = SteamInput.GetDigitalActionHandle(da.ToString());
             }
-            
+
             analogHandles = new InputAnalogActionHandle_t[(int)SteamAnalogAction.NUM];
             for (SteamAnalogAction aa = 0; aa < SteamAnalogAction.NUM; aa++)
             {
@@ -50,34 +66,105 @@ namespace VikingEngine.SteamWrapping
             }
             isReady = true;
         }
-
+        EInputActionOrigin[] origins = new EInputActionOrigin[Constants.STEAM_INPUT_MAX_ORIGINS];
+        InputActionSetHandle_t[] activeLayers = new InputActionSetHandle_t[16];
+        
         public SpriteName actionIcon(int controllerIx, SteamActionSet actionSet, SteamDigitalAction actionType)
         {
+            if (isReady)
+            {
+                InputHandle_t controller = controllerHandles[controllerIx];
+                int count = 0;
 
-            InputHandle_t controller = controllerHandles[controllerIx];
+                // 1. Get all currently active layers for this controller
+                int layercount = SteamInput.GetActiveActionSetLayers(controller, activeLayers);
 
-            EInputActionOrigin[] origins = new EInputActionOrigin[Constants.STEAM_INPUT_MAX_ORIGINS];
+                // 2. Check layers first, iterating backwards (top of the stack to the bottom)
+                for (int i = layercount - 1; i >= 0; i--)
+                {
+                    count = SteamInput.GetDigitalActionOrigins(
+                        controller,
+                        activeLayers[i],
+                        digitalHandles[(int)actionType],
+                        origins
+                    );
 
-            // Remember: You MUST use the Action Set where this action is active (e.g., _setGameplay)
-            int count = SteamInput.GetDigitalActionOrigins(controller, actionSets[(int)actionSet], digitalHandles[(int)actionType], origins);
+                    // If we found a mapping in this layer, stop searching
+                    if (count > 0)
+                    {
+                        break;
+                    }
+                }
 
-            if (count == 0) return SpriteName.NO_IMAGE;
+                // 3. If no layers had a mapping (or no layers were active), fall back to the base Action Set
+                if (count == 0)
+                {
+                    count = SteamInput.GetDigitalActionOrigins(
+                        controller,
+                        actionSets[(int)actionSet],
+                        digitalHandles[(int)actionType],
+                        origins
+                    );
+                }
 
-            return actionOriginIcon(origins[0]);
+                // 4. If it's still 0, the action is entirely unmapped for the current input state
+                if (count == 0)
+                {
+                    return SpriteName.NO_IMAGE;
+                }
+
+                // Return the primary bound origin (index 0)
+                return actionOriginIcon(origins[0]);
+            }
+            else
+            {
+                return SpriteName.NO_IMAGE;
+            }
         }
 
         public SpriteName actionIcon(int controllerIx, SteamActionSet actionSet, SteamAnalogAction actionType)
         {
-
             InputHandle_t controller = controllerHandles[controllerIx];
+            int count = 0;
 
-            EInputActionOrigin[] origins = new EInputActionOrigin[Constants.STEAM_INPUT_MAX_ORIGINS];
+            // 1. Get all currently active layers for this controller
+            int layercount = SteamInput.GetActiveActionSetLayers(controller, activeLayers);
 
-            // Remember: You MUST use the Action Set where this action is active (e.g., _setGameplay)
-            int count = SteamInput.GetAnalogActionOrigins(controller, actionSets[(int)actionSet], analogHandles[(int)actionType], origins);
+            // 2. Check layers first, iterating backwards (top of the stack to the bottom)
+            for (int i = layercount - 1; i >= 0; i--)
+            {
+                count = SteamInput.GetAnalogActionOrigins(
+                    controller,
+                    activeLayers[i],
+                    analogHandles[(int)actionType],
+                    origins
+                );
 
-            if (count == 0) return SpriteName.NO_IMAGE;
+                // If we found a mapping in this layer, stop searching
+                if (count > 0)
+                {
+                    break;
+                }
+            }
 
+            // 3. If no layers had a mapping (or no layers were active), fall back to the base Action Set
+            if (count == 0)
+            {
+                count = SteamInput.GetAnalogActionOrigins(
+                    controller,
+                    actionSets[(int)actionSet],
+                    analogHandles[(int)actionType],
+                    origins
+                );
+            }
+
+            // 4. If it's still 0, the action is entirely unmapped for the current input state
+            if (count == 0)
+            {
+                return SpriteName.NO_IMAGE;
+            }
+
+            // Return the primary bound origin (index 0)
             return actionOriginIcon(origins[0]);
         }
 
@@ -312,16 +399,16 @@ namespace VikingEngine.SteamWrapping
                 case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_RightPad_Click:
                     return SpriteName.TouchSurface2;
 
-               
+
                 case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_LeftTrigger_Click:
                     return SpriteName.ButtonLT;
 
-                
+
                 case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_RightTrigger_Click:
                     return SpriteName.ButtonRT;
 
                 // --- Sticks ---
-               
+
                 case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_Share:
                     return SpriteName.PsButtonShare; // Mapping Xbox Share to your generic Share sprite
 
@@ -339,7 +426,7 @@ namespace VikingEngine.SteamWrapping
                 // STEAM DECK
                 // ========================================================================
 
-                
+
 
                 // Left Pad used as D-Pad (Directional)
                 case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_LeftPad_DPadNorth:
@@ -366,31 +453,75 @@ namespace VikingEngine.SteamWrapping
 
         public void update()
         {
-            if (isReady)
+            InputLayerChange = false;
+
+            if (Ref.main.IsActive)
             {
-                int count = SteamInput.GetConnectedControllers(controllerHandles);
-                for (int controllerIx = 0; controllerIx < count; controllerIx++)
+                if (lostFocus)
                 {
-                    InputHandle_t controllerHandle = controllerHandles[controllerIx];
+                    lostFocus = false;
+                    SteamInput.RunFrame();
+                }
 
-                    var ins = controllers[controllerIx];
-                    SteamInput.ActivateActionSet(controllerHandle, actionSets[(int)ins.actionSet]);
-
-                    for (int daIx = 0; daIx < digitalHandles.Length; daIx++)
+                if (isReady)
+                {
+                    int count = SteamInput.GetConnectedControllers(controllerHandles);
+                    for (int controllerIx = 0; controllerIx < count; controllerIx++)
                     {
-                        ins.digital_isDown_previous[daIx] = ins.digital_isDown_current[daIx];
-                        InputDigitalActionData_t actionData = SteamInput.GetDigitalActionData(controllerHandle, digitalHandles[daIx]);
-                        ins.digital_isDown_current[daIx] = actionData.bState == 1 && actionData.bActive == 1;
-                    }
+                        InputHandle_t controllerHandle = controllerHandles[controllerIx];
 
-                    for (int aaIx = 0; aaIx < analogHandles.Length; aaIx++)
-                    {
-                        InputAnalogActionData_t analogData = SteamInput.GetAnalogActionData(controllerHandle, analogHandles[aaIx]);
+                        // Skip disconnected controllers
+                        if (controllerHandle.m_InputHandle == 0) continue;
 
-                        ins.analog_current[aaIx] = analogData;
+                        //INPUT
+                        var ins = controllers[controllerIx];
+
+                        //LAYERS
+                        // Get the current layers for this specific controller
+                        int layerCount = SteamInput.GetActiveActionSetLayers(controllerHandle, _currentLayersBuffer);
+                        if (layerCount != ins.layerCount)
+                        {
+                            InputLayerChange = true;
+                            ins.layerCount = layerCount;
+                        }
+
+                        SteamInput.ActivateActionSet(controllerHandle, actionSets[(int)ins.actionSet]);
+
+                        for (int daIx = 0; daIx < digitalHandles.Length; daIx++)
+                        {
+                            ins.digital_isDown_previous[daIx] = ins.digital_isDown_current[daIx];
+                            InputDigitalActionData_t actionData = SteamInput.GetDigitalActionData(controllerHandle, digitalHandles[daIx]);
+                            ins.digital_isDown_current[daIx] = actionData.bState == 1 && actionData.bActive == 1;
+                        }
+
+                        for (int aaIx = 0; aaIx < analogHandles.Length; aaIx++)
+                        {
+                            InputAnalogActionData_t analogData = SteamInput.GetAnalogActionData(controllerHandle, analogHandles[aaIx]);
+
+                            ins.analog_current[aaIx] = analogData;
+                        }
                     }
                 }
             }
+            else
+            {
+                lostFocus = true;
+            }
+        }
+
+        public bool AnyKeyDownEvent()
+        {
+            if (isReady)
+            {
+                foreach (var c in controllers)
+                {
+                    if (c.AnyKeyDownEvent())
+                    { 
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         public bool IsActive(int controllerIx, SteamDigitalAction actionType)
@@ -411,22 +542,42 @@ namespace VikingEngine.SteamWrapping
 
             }
         }
+
+        public void SetActionSet(SteamActionSet actionSet)
+        {
+            if (isReady)
+            {
+                foreach (var c in controllers)
+                {
+                    c.actionSet = actionSet;
+                }
+            }
+        }
+        public static void UnusedLayerToRichContent(RichBoxContent content)
+        {
+                content.Add(new RbText("(ALT)", Color.DarkGray));
+                content.hspace();
+           
+        }
     }
 
     enum SteamActionSet
     {
         InGameControls,
         MenuControls,
+        EditorControls,
         NUM
     }
+
     enum SteamDigitalAction
     {
-        // InGameControls
+        // InGameControls & Shared
         select,
+        order,
         quick_select,
         cancel,
         stop_start,
-        menu,
+        open_menu,
         toggle_hud_detail,
         toggle_minimap,
         tab_left,
@@ -442,25 +593,39 @@ namespace VikingEngine.SteamWrapping
         controller_focus,
         controller_faction,
         controller_message,
-        zoomInKey, 
+        zoomInKey,
         zoomOutKey,
 
         // MenuControls
-        menu_select,
-        menu_cancel,
-        pause_menu,
+        close_menu,
+
+        // EditorControls
+        draw,
+        erase,
+        colorPick,
+        mirrorX,
+        mirrorY,
+        undo,
+        YmovementToggle,
 
         NUM
     }
+
     enum SteamAnalogAction
     {
         // InGameControls
         PanCamera,
         CameraStick,
+        CameraTilt,
         MoveCursor,
 
         // MenuControls
         Scroll,
+
+        // EditorControls
+        moveXZ,
+        cameraXMoveY,
+        cameraZoom,
 
         NUM
     }
@@ -468,11 +633,14 @@ namespace VikingEngine.SteamWrapping
     class SteamControllerInstance
     {
         public int index;
-        
+        public int layerCount  =0;
+
+
         public bool[] digital_isDown_previous;
         public bool[] digital_isDown_current;
         public InputAnalogActionData_t[] analog_current;
-        public SteamActionSet actionSet = 0;
+        public SteamActionSet actionSet = SteamActionSet.MenuControls;
+        
 
         public SteamControllerInstance(int index)
         {
@@ -481,6 +649,22 @@ namespace VikingEngine.SteamWrapping
             digital_isDown_current = new bool[(int)SteamDigitalAction.NUM];
 
             analog_current = new InputAnalogActionData_t[(int)SteamAnalogAction.NUM];
+        }
+
+
+        
+        
+
+        public bool AnyKeyDownEvent()
+        {
+            for (int i = 0; i < digital_isDown_current.Length; i++)
+            {
+                if (digital_isDown_current[i] && !digital_isDown_previous[i])
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 

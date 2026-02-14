@@ -228,6 +228,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 if (InBuildOrdersMode(false))
                 {
                     player.hud.needRefresh = true;
+                    player.hud.tooltip.clear();
+                    player.gameControls.map.hover.subTile.clear();
                     build.buildMode = SelectTileResult.None;
                     map.selection.subTile.selectTileResult = SelectTileResult.None;
                 }
@@ -1136,9 +1138,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             mapSelect(city);
             player.cityTab = MenuTab.Build;
+            
+                build.buildMode = SelectTileResult.Build;
             if (type != BuildAndExpandType.NUM_NONE)
             {
-                build.buildMode = SelectTileResult.Build;
                 build.placeBuildingType = type;
             }
         }

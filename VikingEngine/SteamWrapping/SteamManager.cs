@@ -90,12 +90,12 @@ namespace VikingEngine.SteamWrapping
                 new PJ.PjEngine.GameStats();
 #endif
                 }
-                else if (PlatformSettings.RunProgram == StartProgram.DSS)
-                {
-#if DSS
-                    new DSSWars.Data.GameStats();
-#endif
-                }
+//                else if (PlatformSettings.RunProgram == StartProgram.DSS)
+//                {
+//#if DSS
+//                    new DSSWars.Data.GameStats();
+//#endif
+//                }
             }
             else
             {
@@ -106,7 +106,10 @@ namespace VikingEngine.SteamWrapping
 
         public void OnShutdown()
         {
-            SteamInput.Shutdown();
+            if (Ref.steam.isInitialized)
+            {
+                SteamInput.Shutdown();
+            }
         }
 
         public void GoOffline()
@@ -208,6 +211,7 @@ namespace VikingEngine.SteamWrapping
             else if (PlatformSettings.RunProgram == StartProgram.DSS)
             {
 #if DSS
+                new DSSWars.Data.GameStats();
                 gamestats = DssRef.stats;
 #endif
             }

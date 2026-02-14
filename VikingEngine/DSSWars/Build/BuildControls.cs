@@ -48,8 +48,9 @@ namespace VikingEngine.DSSWars.Build
 
         public static readonly MapPaintToolShape[] AvailableToolShapes = { MapPaintToolShape.Free, MapPaintToolShape.Line, MapPaintToolShape.LShape, MapPaintToolShape.Area };
 
+        
         public SelectTileResult buildMode = SelectTileResult.None;
-        public BuildAndExpandType placeBuildingType = BuildAndExpandType.WorkerHut;
+        public BuildAndExpandType placeBuildingType = BuildAndExpandType.OrchardApple;
         public MapPaintToolShape toolShape = MapPaintToolShape.Area;
         LocalPlayer player;
         City city;

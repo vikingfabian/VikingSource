@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Reflection.Metadata.Ecma335;
-using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
+using VikingEngine.Input;
 using VikingEngine.Physics;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.ToggEngine;
@@ -1156,7 +1157,7 @@ namespace VikingEngine.DSSWars.Players
                     {
                         var mousePosition2 = screenPosToWorldPos(Input.Mouse.Position);
                         Vector3 diff = mousePosition2 - pointerPosWP;
-                        panCamera(VectorExt.V3XZtoV2( diff), true);
+                        panCamera(VectorExt.V3XZtoV2( -diff), true);
                     }
                 }
             }
@@ -1177,9 +1178,10 @@ namespace VikingEngine.DSSWars.Players
             const float RotationSpeed = 0.00006f;
             const float TargetRotationSpeed = 0.005f;
 
-            if (Math.Abs(player.gameControls.input.cameraStick.direction.X) > XBuffer)
+            var camStick = InputLib.OnlyOneDimentionOut(player.gameControls.input.cameraStick.directionAndTime);
+            if (camStick.X != 0)
             {
-                lastRotationDir = player.gameControls.input.cameraStick.directionAndTime.X;
+                lastRotationDir = camStick.X;
                 camRotationKeyDownTime += Ref.DeltaTimeMs;
                 camRotation.Value += RotationSpeed * Ref.DeltaTimeMs * lastRotationDir;
             }
@@ -1290,7 +1292,12 @@ namespace VikingEngine.DSSWars.Players
 
             if (controllerMode)
             {
-                return Ref.gamesett.keyPanSpeed * 0.0003f * Bound.Min(targetZoom, MinZoomAffect);
+                float result = Ref.gamesett.keyPanSpeed * 0.0003f * Bound.Min(targetZoom, MinZoomAffect);
+                if (player.gameControls.InBuildOrdersMode())
+                {
+                    result *= 0.6f;
+                }
+                return result;
             }
             else
             {
@@ -1335,7 +1342,7 @@ namespace VikingEngine.DSSWars.Players
 
                     Vector3 diff = pointerPosWP - prevMousePosition;
 
-                    panCamera(VectorExt.V3XZtoV2(diff), false);
+                    panCamera(VectorExt.V3XZtoV2(-diff), false);
 
                     return;
                 }
@@ -1406,7 +1413,7 @@ namespace VikingEngine.DSSWars.Players
                     pan = VectorExt.RotateVector(pan, camera.Tilt.X - CamStartRotation);
                 }
 
-                camera.MoveLookTargetXZ(VectorExt.FlipY(pan));
+                camera.MoveLookTargetXZ(pan);
                 onPan();
             }
         }

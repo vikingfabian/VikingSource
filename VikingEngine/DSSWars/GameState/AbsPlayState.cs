@@ -65,7 +65,12 @@ namespace VikingEngine.DSSWars.GameState
             
         }
 
-        
+        virtual protected void onGameStart(bool newGame)
+        {
+            Input.Mouse.SetMenuMode(SteamWrapping.SteamActionSet.InGameControls);
+        }
+
+
         public void stepFrames(int frameCount)
         {
             stepFramesCount = frameCount;

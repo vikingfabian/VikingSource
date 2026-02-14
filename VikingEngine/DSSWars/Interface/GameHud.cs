@@ -207,6 +207,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 refresh |= player.gameControls.map.selection.isNew ||
                     player.gameControls.map.hover.isNew ||
+                    SteamWrapping.SInput.InputLayerChange ||
                     needRefresh;
 
 

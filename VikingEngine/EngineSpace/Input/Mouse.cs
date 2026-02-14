@@ -9,148 +9,6 @@ using System.Runtime.CompilerServices;
 
 namespace VikingEngine.Input
 {
-    class MouseInstance
-    {
-        public Vector2 Position, PrevPosition, MoveDistance;
-
-        bool isMouse;
-        bool inUse = false;
-        Rectangle2 bounds;
-        public IDirectionalMap directionalMap1, directionalMap2;
-        public bool centerlockAndHide = false;
-        bool hide = false;
-        Graphics.Image customMousePointer = null;
-
-        public MouseInstance()
-        {
-            bounds = Engine.Screen.Area.Rectangle2;
-            isMouse = true;
-        }
-
-        public MouseInstance(PlayerData playerData, IDirectionalMap directionalMap1 = null, IDirectionalMap directionalMap2 = null)
-        { 
-            SetPlayer(playerData);
-            isMouse = directionalMap1 == null;
-            this.directionalMap1 = directionalMap1;
-            this.directionalMap2 = directionalMap2;
-        }
-
-        public void SetPlayer(PlayerData playerData)
-        {
-            bounds.Rect = playerData.view.DrawArea;
-            inUse = true;
-        }
-
-
-        public void Update()
-        {
-            if (isMouse)
-            {
-                Position = Mouse.Position;
-                PrevPosition = Mouse.Position;
-                MoveDistance = Mouse.MoveDistance;
-            }
-            else
-            { 
-                PrevPosition = Position;
-                Position += directionalMap1.directionAndTime;
-                if (directionalMap1 != null)
-                {
-                    Position += directionalMap2.directionAndTime;
-                }
-            }
-
-            if (MainGame.GameIsActive)
-            {
-                if (centerlockAndHide)
-                {
-                    SetPosition(Engine.Screen.MonitorCenter);
-                }
-            }
-        }
-
-        public void Draw()
-        {
-            if (customMousePointer != null && RenderMouseCursor())
-            {
-                customMousePointer.position = Input.Mouse.Position;
-                customMousePointer.Draw(0);
-            }
-        }
-
-        public void SetPosition(IntVector2 position)
-        {
-#if PCGAME
-            Position = position.Vec;
-            if (isMouse)
-            {
-                Microsoft.Xna.Framework.Input.Mouse.SetPosition(position.X, position.Y);
-            }
-#endif
-        }
-
-        public void RestoreDefault()
-        {
-            centerlockAndHide = false;
-            hide = false;
-            RefreshMouseVisible();
-        }
-
-        public void Hide()
-        {
-            hide = true;
-            RefreshMouseVisible();
-        }
-
-        public void View()
-        {
-            centerlockAndHide = false;
-            hide = false;
-            RefreshMouseVisible();
-        }
-        public void CenterLockAndHide()
-        {
-            centerlockAndHide = true;
-            RefreshMouseVisible();
-        }
-        public bool RenderMouseCursor()
-        {
-            return !centerlockAndHide && !hide && (Mouse.MenuMode || inUse);
-        }
-        public void RefreshMouseVisible()
-        {
-            bool visible = RenderMouseCursor();
-
-            if (isMouse && !Ref.gamesett.customCursor)
-            {
-                Ref.main.IsMouseVisible = visible;
-            }
-            else
-            {   
-                if (visible && customMousePointer == null) 
-                {
-                    customMousePointer = new Graphics.Image(SpriteName.cmdPointer, Vector2.Zero, Engine.Screen.IconSizeV2, ImageLayers.AbsoluteTopLayer, true, false);
-                }
-
-                if (customMousePointer != null)
-                {
-                    customMousePointer.Visible = visible;
-                }
-            }
-        }
-
-        //public void refreshCursor()
-        //{
-        //    customMousePointer = null;
-
-        //    if (Ref.gamesett.customCursor)
-        //    {
-        //        customMousePointer = new Graphics.Image(SpriteName.cmdPointer, Vector2.Zero, Engine.Screen.IconSizeV2, ImageLayers.AbsoluteTopLayer, true, false);
-        //    }
-        //    RefreshMouseVisible();// = !Ref.gamesett.customMouse;
-        //}
-    }
-
     static class Mouse
     {
         static MouseState previousMouseState;
@@ -163,7 +21,7 @@ namespace VikingEngine.Input
         public static List<MouseInstance> Instances = new List<MouseInstance>(4);
         
         /// <summary>
-        /// Will display mouse even if unused
+        /// Will display mouse even if unused, and everyone shares one pointer
         /// </summary>
         public static bool MenuMode = true;
 
@@ -178,11 +36,22 @@ namespace VikingEngine.Input
         }
 
         public static void SetMenuMode(bool menu)
+        {
+            SetMenuMode(menu? SteamWrapping.SteamActionSet.MenuControls : SteamWrapping.SteamActionSet.InGameControls);
+        }
+
+        public static void SetMenuMode(SteamWrapping.SteamActionSet actionSet)
         { 
-            MenuMode = menu;
+            MenuMode = actionSet == SteamWrapping.SteamActionSet.MenuControls;
             foreach (var ins in Instances)
             {
                 ins.RefreshMouseVisible();
+            }
+
+            Ref.steam.input?.SetActionSet(actionSet);
+            if (Input.Keyboard.Ctrl)
+            {
+                lib.DoNothing();
             }
         }
 
