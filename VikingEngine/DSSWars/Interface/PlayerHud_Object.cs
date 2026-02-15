@@ -15,7 +15,7 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Interface
 {
-    class PlayerHud_Object
+    class PlayerHud_Object : IPlayerHud_Menu
     {
         List<GameObject.AbsGameObject> selectHistory = new List<AbsGameObject>();
         
@@ -23,6 +23,8 @@ namespace VikingEngine.DSSWars.Interface
         public RichMenu menu;
         public AbsArmy otherArmy;
 
+        public RichMenu Menu => menu;
+        public bool IsFactionMenu { get { return false; } }
         public PlayerHud_Object(LocalPlayer player)
         {
             diplomacy = new DiplomacyDisplay(player);

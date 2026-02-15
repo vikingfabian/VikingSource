@@ -16,6 +16,7 @@ namespace VikingEngine.Input
         bool isMouse;
         bool inUse = false;
         Rectangle2 bounds;
+        VectorRect MousePushEdge, MousePushEdgeMax;
         public IDirectionalMap inGameMap, inMenuMap;
         public bool centerlockAndHide = false;
         bool hide = false;
@@ -38,6 +39,10 @@ namespace VikingEngine.Input
         public void SetPlayer(PlayerData playerData)
         {
             bounds.Rect = playerData.view.DrawArea;
+            MousePushEdge = new VectorRect(bounds);
+            MousePushEdge.AddRadius(-4);
+            MousePushEdgeMax = MousePushEdge;
+            MousePushEdgeMax.AddRadius(10);
             inUse = true;
         }
 
@@ -88,6 +93,18 @@ namespace VikingEngine.Input
             }
         }
 
+        public void SetPosition(Vector2 position)
+        {
+            Position = position;
+            if (isMouse)
+            {
+                Microsoft.Xna.Framework.Input.Mouse.SetPosition(Convert.ToInt32( position.X), Convert.ToInt32(position.Y));
+            }
+            else
+            {
+                Position = position;
+            }
+        }
         public void SetPosition(IntVector2 position)
         {
 #if PCGAME
@@ -157,6 +174,49 @@ namespace VikingEngine.Input
             }
         }
 
+        public Vector2 EdgePush()
+        {
+            Vector2 result = Vector2.Zero;
+            //if (Engine.Screen.Area.IntersectPoint(Position))
+            //{
+                if (Position.X < MousePushEdge.X &&
+                    Position.X > MousePushEdgeMax.X)
+                {
+                    result.X = -1;
+                }
+                else if (Position.X >MousePushEdge.Right &&
+                    Position.X < MousePushEdgeMax.Right)
+                {
+                    result.X = 1;
+                }
+
+                if (Position.Y < MousePushEdge.Y &&
+                    Position.Y > MousePushEdgeMax.Y)
+                {
+                    result.Y = -1;
+                }
+                else if (Position.Y > MousePushEdge.Bottom &&
+                    Position.Y < MousePushEdgeMax.Bottom)
+                {
+                    result.Y = 1;
+                }
+            //}
+            return result;
+        }
+
+
+        public bool HasEdgePush()
+        {
+            return !Mouse.MenuMode && Ref.gamesett.lockMouseToWindow && Ref.gamesett.edgePush != MouseEdgePush.None && !MousePushEdge.IntersectPoint(Position);
+        }
+
+        public bool bMoveInput
+        {
+            get
+            {
+                return MoveDistance.X != 0 || MoveDistance.Y != 0;//currentMouseState.X != previousMouseState.X || currentMouseState.Y != previousMouseState.Y;
+            }
+        }
         //public void refreshCursor()
         //{
         //    customMousePointer = null;

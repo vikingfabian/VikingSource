@@ -25,8 +25,8 @@ namespace VikingEngine.DSSWars
         //public IButtonMap ControllerSelect;
         public IButtonMap CancelKey;
         public IButtonMap QuickSelect;
-        public IButtonMap ControllerFocus;
-        public IButtonMap ControllerFaction;
+        public IButtonMap Controller_ObjectMenuToggle;
+        public IButtonMap Controller_Faction;
         public IButtonMap ControllerMessageClick;
         //public IButtonMap Execute;
         public IButtonMap StopStart;
@@ -149,7 +149,7 @@ namespace VikingEngine.DSSWars
         override public void keyboardSetup()
         {
             //ControllerCancel = new NoButtonMap();
-            ControllerFocus = new NoButtonMap();
+            Controller_ObjectMenuToggle = new NoButtonMap();
             ControllerMessageClick = new NoButtonMap();
 
             wasd_up = new KeyboardButtonMap(Keys.W);
@@ -311,8 +311,8 @@ namespace VikingEngine.DSSWars
             NextArmy = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.next_army, idx);
             NextWar = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.next_war, idx);
 
-            ControllerFocus = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.controller_focus, idx);
-            ControllerFaction = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.controller_faction, idx);
+            Controller_ObjectMenuToggle = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.controller_focus, idx);
+            Controller_Faction = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.controller_faction, idx);
             ControllerMessageClick = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.controller_message, idx);
 
             // --- Flag Design / Editor ---
@@ -341,8 +341,8 @@ namespace VikingEngine.DSSWars
 
             mouseSelect = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex);
             mouseOrder = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex);
-            ControllerFocus = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex);
-            ControllerFaction = new XboxButtonMap_TriggerAlts(Buttons.Back, inputSource.controllerIndex);
+            Controller_ObjectMenuToggle = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex);
+            Controller_Faction = new XboxButtonMap_TriggerAlts(Buttons.Back, inputSource.controllerIndex);
             CancelKey = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex);
 
 
@@ -700,11 +700,11 @@ namespace VikingEngine.DSSWars
                 case InputActionType.ControllerFocus:
                     if (set)
                     {
-                        ControllerFocus = buttonMap;
+                        Controller_ObjectMenuToggle = buttonMap;
                     }
                     else
                     {
-                        buttonMap = ControllerFocus;
+                        buttonMap = Controller_ObjectMenuToggle;
                     }
                     break;
 

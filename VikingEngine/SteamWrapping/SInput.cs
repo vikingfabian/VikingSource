@@ -600,14 +600,20 @@ namespace VikingEngine.SteamWrapping
         close_menu,
 
         // EditorControls
-        draw,
-        erase,
-        colorPick,
-        mirrorX,
-        mirrorY,
-        undo,
-        YmovementToggle,
+        editor_draw,
+        editor_erase,
+        editor_select,
+        editor_cancel,
+        editor_colorPick,
+        editor_undo,
+        editor_YmovementToggle,
+        editor_tab_left,
+        editor_tab_right,
 
+        editor_selection_mirrorX,
+        editor_selection_mirrorY,
+        editor_selection_rotateCCW,
+        editor_selection_rotateCW,
         NUM
     }
 
@@ -623,9 +629,9 @@ namespace VikingEngine.SteamWrapping
         Scroll,
 
         // EditorControls
-        moveXZ,
-        cameraXMoveY,
-        cameraZoom,
+        editor_moveXZ,
+        editor_cameraXMoveY,
+        editor_cameraZoom,
 
         NUM
     }
@@ -650,10 +656,6 @@ namespace VikingEngine.SteamWrapping
 
             analog_current = new InputAnalogActionData_t[(int)SteamAnalogAction.NUM];
         }
-
-
-        
-        
 
         public bool AnyKeyDownEvent()
         {

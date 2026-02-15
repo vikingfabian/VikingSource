@@ -197,10 +197,10 @@ namespace VikingEngine.DSSWars.Interface
 
             content.newLine();
 
-            if (player.gameControls.input.inputSource.IsXnaController &&
-                player.gameControls.input.ControllerFaction.IsActive)
+            if (player.gameControls.input.inputSource.HasControllerInput &&
+                player.gameControls.input.Controller_Faction.IsActive)
             {
-                content.Add(new RbImage(player.gameControls.input.ControllerFaction.Icon) { color = player.gameControls.controller_mayUseHeadDisplay()? Color.White : Color.Black });
+                content.Add(new RbImage(player.gameControls.input.Controller_Faction.Icon) { color = player.gameControls.controller_mayUseHeadDisplay()? Color.White : Color.Black });
                 content.space();                
             }
             bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Headmenu, out Color focusColor);

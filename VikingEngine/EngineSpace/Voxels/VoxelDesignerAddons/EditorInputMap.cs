@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Input;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.Voxels
 {
@@ -32,6 +33,8 @@ namespace VikingEngine.Voxels
         public IButtonMap undo;
         public IButtonMap previous;
         public IButtonMap next;
+        public IButtonMap rotateCCW;
+        public IButtonMap rotateCW;
 
         /// <summary>
         /// For ingame editing
@@ -230,7 +233,23 @@ namespace VikingEngine.Voxels
         }
         public void steamSetup(int controllerIndex, IDirectionalMap gamemove, IDirectionalMap gamecamera)
         {
+            moveXZ = new SteamAnalogMap(SteamActionSet.EditorControls, false, SteamAnalogAction.editor_moveXZ, controllerIndex);
+            cameraXMoveY = new SteamAnalogMap(SteamActionSet.EditorControls, false, SteamAnalogAction.editor_cameraXMoveY, controllerIndex);
+            toggleCameraMode = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_YmovementToggle, controllerIndex);
+            cameraZoom = new SteamAnalogMap(SteamActionSet.EditorControls, false, SteamAnalogAction.editor_cameraZoom, controllerIndex);
 
+            draw = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_draw, controllerIndex);
+            erase = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_erase, controllerIndex);
+            select = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_select, controllerIndex);
+            colorPick = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_colorPick, controllerIndex);
+            cancel = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_cancel, controllerIndex);
+            mirrorX = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_selection_mirrorX, controllerIndex);
+            mirrorY = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_selection_mirrorY, controllerIndex);
+            rotateCCW = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_selection_rotateCCW, controllerIndex);
+            rotateCW = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_selection_rotateCW, controllerIndex);
+            undo = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_undo, controllerIndex);
+            previous = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_tab_left, controllerIndex);
+            next = new SteamButtonMap(SteamActionSet.EditorControls, SteamDigitalAction.editor_tab_right, controllerIndex);
         }
         public void xboxSetup(int controllerIndex, IDirectionalMap gamemove, IDirectionalMap gamecamera)
         {
@@ -238,8 +257,7 @@ namespace VikingEngine.Voxels
 
             moveXZ = gamemove;
             cameraXMoveY = gamecamera;
-            cameraZoom =
-                new DirectionalButtonsMap(new XboxButtonMap(Buttons.DPadUp, controllerIndex), new XboxButtonMap(Buttons.DPadDown, controllerIndex), new NoButtonMap(), new NoButtonMap());
+            cameraZoom = new DirectionalButtonsMap(new XboxButtonMap(Buttons.DPadUp, controllerIndex), new XboxButtonMap(Buttons.DPadDown, controllerIndex), new NoButtonMap(), new NoButtonMap());
             toggleCameraMode = new XboxButtonMap(Buttons.LeftTrigger, controllerIndex);
 
             draw = new XboxButtonMap(Buttons.RightShoulder, controllerIndex);

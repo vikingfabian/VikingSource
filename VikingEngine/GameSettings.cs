@@ -13,6 +13,7 @@ using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.Input;
 using VikingEngine.LootFest.Music;
 using VikingEngine.PJ.Strategy;
 
@@ -26,7 +27,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 34;
+        const int Version = 35;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -68,6 +69,8 @@ namespace VikingEngine
         public bool panOnZoom = true;
         public int controlLayout = 0;
 
+        public MouseEdgePush edgePush = MouseEdgePush.Active;
+        public bool lockMouseToWindow = true;
         public float scrollWheelSensitivity_menu = 1;
         public float scrollWheelSensitivity_game = 1;
         public float keyPanSpeed = 1f;
@@ -88,9 +91,9 @@ namespace VikingEngine
         public GameSettings()
         {
             controllerMap = new InputMap(false);
-            controllerMap.setInputSource(Input.InputSourceType.XController, 0);
+            controllerMap.setInputSource(new Input.InputSource( Input.InputSourceType.XController, 0));
             keyboardMap = new InputMap(true);
-            keyboardMap.setInputSource(Input.InputSourceType.KeyboardMouse, 0);
+            keyboardMap.setInputSource(new Input.InputSource(Input.InputSourceType.KeyboardMouse, 0));
             Ref.gamesett = this;
         }
 
@@ -154,6 +157,9 @@ namespace VikingEngine
 
             w.Write(customCursor);
             w.Write(muteControllerDisconnect);
+
+            w.Write(lockMouseToWindow);
+            w.Write((byte)edgePush);
 
             Debug.WriteCheck(w);
         }
@@ -269,6 +275,12 @@ namespace VikingEngine
             if (version >= 30)
             {
                 muteControllerDisconnect = r.ReadBoolean();
+            }
+
+            if (version >= 35)
+            { 
+                lockMouseToWindow = r.ReadBoolean();
+                edgePush = (MouseEdgePush)r.ReadByte();
             }
 
             Debug.ReadCheck(r);
@@ -1247,4 +1259,6 @@ namespace VikingEngine
         High,
         NUM
     }
+
+
 }

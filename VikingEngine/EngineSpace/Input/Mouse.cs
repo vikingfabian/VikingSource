@@ -200,41 +200,7 @@ namespace VikingEngine.Input
             }
         }
 
-        public static Vector2 EdgePush()
-        {
-            Vector2 result = Vector2.Zero;
-            if (Engine.Screen.Area.IntersectPoint(Position))
-            {
-                if (Position.X < Engine.Screen.MousePushEdge.X &&
-                    Position.X > Engine.Screen.MousePushEdgeMax.X)
-                {
-                    result.X = -1;
-                }
-                else if (Position.X > Engine.Screen.MousePushEdge.Right &&
-                    Position.X < Engine.Screen.MousePushEdgeMax.Right)
-                {
-                    result.X = 1;
-                }
-
-                if (Position.Y < Engine.Screen.MousePushEdge.Y &&
-                    Position.Y > Engine.Screen.MousePushEdgeMax.Y)
-                {
-                    result.Y = -1;
-                }
-                else if (Position.Y > Engine.Screen.MousePushEdge.Bottom &&
-                    Position.Y < Engine.Screen.MousePushEdgeMax.Bottom)
-                {
-                    result.Y = 1;
-                }
-            }
-            return result;
-        }
-
-
-        public static bool HasEdgePush()
-        {
-            return Engine.Screen.PcDisplayMode != Engine.WindowDisplayMode.Windowed && !Engine.Screen.MousePushEdge.IntersectPoint(Position);
-        }
+       
 
 
 //        public static void SetPosition(IntVector2 position)

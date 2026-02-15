@@ -55,7 +55,7 @@ namespace VikingEngine.Engine
         public static RenderScale3D renderScale3D = RenderScale3D.One;
 
         public static VectorRect SafeArea;
-        public static VectorRect MousePushEdge, MousePushEdgeMax;
+        
         public static IntVector2 RenderingResolution;
         public static Vector2 ResolutionVec;
         public static IntVector2 MonitorTargetResolution;
@@ -216,10 +216,7 @@ namespace VikingEngine.Engine
             SafeArea.AddXRadius(-safeEdge.X);
             SafeArea.AddYRadius(-safeEdge.Y);
 
-            MousePushEdge = new VectorRect(Vector2.Zero, RenderingResolution.Vec);
-            MousePushEdge.AddRadius(-2);
-            MousePushEdgeMax = MousePushEdge;
-            MousePushEdgeMax.AddRadius(10);
+           
 
             ResolutionVec = RenderingResolution.Vec;
             MonitorCenter = MonitorTargetResolution / 2;

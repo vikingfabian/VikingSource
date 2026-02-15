@@ -223,12 +223,10 @@ namespace VikingEngine.LootFest.Display
             }
             selectionFrame.DeleteMe();
 
-            player.inputMap.setInputSource(inputSource, controllerIndex);
+            player.inputMap.setInputSource(new InputSource( inputSource, controllerIndex));
             player.selectSaveFile();
         }
     }
-
-    
 
     class SelectControllerMenuMember
     {
@@ -242,7 +240,7 @@ namespace VikingEngine.LootFest.Display
             //, icon;
 
         public SelectControllerMenuMember(Vector2 center, Vector2 sz, float borderSz, PlayerControllerSelection controller,
-            ControllerChoice controllerChoice)//, bool isAlreadyInUse)
+            ControllerChoice controllerChoice)
         {
             mouseClickArea = VectorRect.FromCenterSize(center, sz);
             selectionArea = new VectorRect(center, sz + new Vector2(borderSz));

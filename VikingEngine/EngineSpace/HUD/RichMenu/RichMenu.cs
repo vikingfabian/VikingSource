@@ -17,6 +17,11 @@ using VikingEngine.Input;
 
 namespace VikingEngine.HUD.RichMenu
 {
+    //interface IContainsRichMenu
+    //{
+        
+    //}
+
     /// <summary>
     /// Creates a scrollable container of richbox content. Will update input, and create tooltips.
     /// </summary>
@@ -312,13 +317,28 @@ namespace VikingEngine.HUD.RichMenu
             scrollBar.DeleteMe();
         }
 
+        MouseInstance Mouse()
+        {
+            if (playerData.inputMap != null &&
+                playerData.inputMap.mouse != null)
+            {
+                return playerData.inputMap.mouse;
+            }
+            return Input.Mouse.Instances[0];
+        }
+
+        public bool intersectCursor()
+        {
+            return backgroundArea.IntersectPoint(Mouse().Position/*Input.Mouse.Position*/)
+                     ||
+                     interaction.interactionStack != null;
+        }
+
         public void updateMouseInput(ref bool mouseOver)
         {     
             if (interaction != null)
             {      
-                if (backgroundArea.IntersectPoint(Input.Mouse.Position)
-                    ||
-                    interaction.interactionStack != null)
+                if (intersectCursor())
                 {
                     mouseOver = true;
                     if (interaction.update(-renderArea.Position, this, true, out bool interactRefresh, out _))
@@ -334,7 +354,7 @@ namespace VikingEngine.HUD.RichMenu
                     interaction.clearSelection();
                 }
 
-                if (scrollBar.IsVisible() && ( mouseScrollArea.IntersectPoint(Input.Mouse.Position) || scrollBar.mouseDown))
+                if (scrollBar.IsVisible() && ( mouseScrollArea.IntersectPoint(Mouse().Position) || scrollBar.mouseDown))
                 {
                     mouseOver = true;
                     if (interaction.interactionStack == null && scrollBar.updateMouseInput())

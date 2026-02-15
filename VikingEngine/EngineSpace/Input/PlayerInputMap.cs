@@ -34,7 +34,7 @@ namespace VikingEngine.Input
         {
             this.playerIndex = player;
             init();
-            setInputSource(InputSourceType.KeyboardMouse, 0);            
+            setInputSource(new InputSource(InputSourceType.KeyboardMouse));            
         }
 
         virtual protected void init()
@@ -44,12 +44,12 @@ namespace VikingEngine.Input
 
         abstract public IButtonMap MenuClick { get; }
 
-        public void setInputSource(InputSourceType inputSource, int index)
+        public void setInputSource(InputSource source)
         {
-            this.inputSource = new InputSource(inputSource, index);
+            this.inputSource = source;
             //this.controllerIndex = index;
 
-            switch (inputSource)
+            switch (inputSource.sourceType)
             {
                 case InputSourceType.Mouse:
                 case InputSourceType.Keyboard:

@@ -77,8 +77,8 @@ namespace VikingEngine.DSSWars.Interface
                     if (controllerMode)
                     {
                         input_buttonmap(map.mouseOrder, DssRef.lang.Tutorial_MoveInput);
-                        input_buttonmap(map.ControllerFocus, DssRef.lang.InputActionName_ToggleMenu);
-                        input_buttonmap(map.ControllerFaction, DssRef.lang.FactionSettings_Titel);
+                        input_buttonmap(map.Controller_ObjectMenuToggle, DssRef.lang.InputActionName_ToggleMenu);
+                        input_buttonmap(map.Controller_Faction, DssRef.lang.FactionSettings_Titel);
                     }
                     input(controllerMode ? SpriteName.RightStick_UD : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
 
@@ -106,7 +106,7 @@ namespace VikingEngine.DSSWars.Interface
                     input_buttonmap(map.mouseOrder, DssRef.lang.Tutorial_MoveInput);
                     if (controllerMode)
                     {
-                        input_buttonmap(map.ControllerFocus, DssRef.lang.InputActionName_ToggleMenu);
+                        input_buttonmap(map.Controller_ObjectMenuToggle, DssRef.lang.InputActionName_ToggleMenu);
                     }
                     break;
 
@@ -114,14 +114,14 @@ namespace VikingEngine.DSSWars.Interface
                     input_buttonmap(map.mouseSelect, DssRef.lang.InputActionName_ControllerSelect);
                     if (controllerMode)
                     {
-                        input_buttonmap(map.ControllerFocus, DssRef.lang.InputActionName_ToggleMenu);
+                        input_buttonmap(map.Controller_ObjectMenuToggle, DssRef.lang.InputActionName_ToggleMenu);
                     }
                     break;
                 case InputHelpState.Build:
                     input_buttonmap(map.mouseSelect, DssRef.lang.Build_PlaceBuilding);
                     if (controllerMode)
                     {
-                        input_buttonmap(map.ControllerFocus, DssRef.lang.InputActionName_ToggleMenu);
+                        input_buttonmap(map.Controller_ObjectMenuToggle, DssRef.lang.InputActionName_ToggleMenu);
                     }
                     break;
 

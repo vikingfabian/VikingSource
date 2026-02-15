@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             if (dssInput == null || dssInput.inputSource.HasControllerInput != controller)
             {
                 dssInput = new InputMap(playerIndex);
-                dssInput.setInputSource(controller? InputSourceType.XController : InputSourceType.KeyboardMouse, playerIndex);
+                dssInput.setInputSource(new InputSource( controller? InputSourceType.XController : InputSourceType.KeyboardMouse, playerIndex));
                 if (controller)
                 {
                     dssInput.copyDataFrom(Ref.gamesett.controllerMap);

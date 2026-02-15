@@ -13,7 +13,7 @@ using VikingEngine.HUD.RichMenu;
 
 namespace VikingEngine.DSSWars.Interface
 {
-    class PlayerHud_Faction
+    class PlayerHud_Faction: IPlayerHud_Menu
     {
         public RichMenu menu;
         RichBoxContent content;
@@ -31,6 +31,9 @@ namespace VikingEngine.DSSWars.Interface
                 bgTex.SetOpacity(0.95f);
             }
         }
+
+        public RichMenu Menu => menu;
+        public bool IsFactionMenu { get { return true; } }
 
         void deleteMenu()
         {

@@ -245,8 +245,13 @@ namespace VikingEngine.Input
         }
     }
 
-   
 
+    enum MouseEdgePush
+    { 
+        None,
+        Passive,
+        Active,
+    }
    
 
     enum PlayerControllerSelection

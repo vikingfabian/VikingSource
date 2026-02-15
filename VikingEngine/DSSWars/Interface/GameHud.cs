@@ -14,6 +14,12 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Interface
 {
+    interface IPlayerHud_Menu
+    {
+        RichMenu Menu { get; }
+        bool IsFactionMenu { get; }
+    }
+
     class GameHud
     {
         LocalPlayer player;

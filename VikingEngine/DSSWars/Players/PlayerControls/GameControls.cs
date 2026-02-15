@@ -235,73 +235,80 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
             }
 
-            if (input.inputSource.ControllerMode)
+            if (input.inputSource.HasControllerInput)
             {
-                if (input.ControllerFocus.DownEvent)
+                if (input.Controller_ObjectMenuToggle.DownEvent)
                 {
-                    //Toggle menu focus
-                    bool toFocus = controllerPointer == null;
-                    bool objectMenu = true;
+                    if (input.inputSource.useTouchAsMouseSim)
+                    {
+                        togglePointerToMenu(player.hud.objMenu);
+                    }
+                    else
+                    {
+                        //Toggle menu focus
+                        bool toFocus = controllerPointer == null;
+                        bool objectMenu = true;
 
-                    if (toFocus && player.hud.factionMenu.IsOpen())
-                    {
-                        objectMenu = false;
+                        if (toFocus && player.hud.factionMenu.IsOpen())
+                        {
+                            objectMenu = false;
+                        }
+                        else if (toFocus && map.selection.obj == null)
+                        {
+                            mapSelect();
+                        }
+                        setMenuFocus(toFocus, objectMenu);
                     }
-                    else if (toFocus && map.selection.obj == null)
-                    {
-                        mapSelect();
-                    }
-                    setMenuFocus(toFocus, objectMenu);
                 }
 
-                if (input.ControllerFaction.DownEvent &&
+                if (input.Controller_Faction.DownEvent &&
                     controller_mayUseHeadDisplay())
                 {
-                    if (controllerPointer != null && controllerPointer.menu == player.hud.factionMenu.menu)
+                    if (input.inputSource.useTouchAsMouseSim)
                     {
-                        setMenuFocus(false, false);
+                        togglePointerToMenu(player.hud.factionMenu);
                         
                     }
                     else
                     {
-                        setMenuFocus(false, false);
+                        if (controllerPointer != null && controllerPointer.menu == player.hud.factionMenu.menu)
+                        {
+                            setMenuFocus(false, false);
 
-                        player.hud.head.TabClick(player.hud.head.factionTabOptions()[0]);
-                        player.hud.factionMenu.createMenu(player);
-                        player.hud.objMenu.deleteMenu();
-                        map.hover.obj = null;
-                        setMenuFocus(true, false);
+                        }
+                        else
+                        {
+                            setMenuFocus(false, false);
+
+                            quickOpenFactionMenu();
+                            setMenuFocus(true, false);
+                        }
                     }
                 }
 
-                if (input.cancelDownEvent())
+                if (input.inputSource.useTouchAsMouseSim)
                 {
-                    setMenuFocus(false, true);
-                    clearSelection();
-                }
+                    if (input.cancelDownEvent())
+                    {
+                        setMenuFocus(false, true);
+                        clearSelection();
+                    }
 
-                if (input.Controller_TabLeft.DownEvent)
-                {
-                    controllerTabbing(-1, true);
+                    if (input.Controller_TabLeft.DownEvent)
+                    {
+                        controllerTabbing(-1, true);
+                    }
+                    if (input.Controller_TabRight.DownEvent)
+                    {
+                        controllerTabbing(1, true);
+                    }
                 }
-                if (input.Controller_TabRight.DownEvent)
-                {
-                    controllerTabbing(1, true);
-                }
-                //if (input.Controller_SubTabLeft.DownEvent)
-                //{
-                //    controllerTabbing(-1, false);
-                //}
-                //if (input.Controller_SubTabRight.DownEvent)
-                //{
-                //    controllerTabbing(1, false);
-                //}
 
                 if (input.ControllerMessageClick.DownEvent)
                 {
                     player.hud.messages.onControllerClick();
                 }
-
+                
             }
 
             //if (input.inputSource.IsController)
@@ -354,6 +361,41 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             return diplomacy == null;
         }
 
+        void togglePointerToMenu(IPlayerHud_Menu hud_Menu)
+        {
+            var menu = hud_Menu.Menu;
+
+            if (menu != null &&
+                menu.intersectCursor())
+            {
+                //Jump to map
+                input.mouse.SetPosition(map.CursorCenterPos());
+            }
+            else
+            {
+                //Jump to menu
+                if (menu != null)
+                {
+                    if (hud_Menu.IsFactionMenu)
+                    {
+                        quickOpenFactionMenu();
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                input.mouse.SetPosition(VectorExt.AddY(hud_Menu.Menu.backgroundArea.CenterTop, Engine.Screen.IconSize));
+            }
+        }
+
+        void quickOpenFactionMenu()
+        {
+            player.hud.head.TabClick(player.hud.head.factionTabOptions()[0]);
+            player.hud.factionMenu.createMenu(player);
+            player.hud.objMenu.deleteMenu();
+            map.hover.obj = null;
+        }
 
         public ControllerTabFocus tabFocus()
         {            
@@ -748,7 +790,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             if (newselection && input.inputSource.ControllerMode)
             {
-                if (input.ControllerFocus.DownEvent || map.focusedObjectMenuState())
+                if (input.Controller_ObjectMenuToggle.DownEvent || map.focusedObjectMenuState())
                 {
                     setMenuFocus(true, true);
                 }

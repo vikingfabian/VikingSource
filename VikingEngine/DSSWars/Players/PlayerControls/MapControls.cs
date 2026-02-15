@@ -96,9 +96,13 @@ namespace VikingEngine.DSSWars.Players
 
             if (controllerMode)
             {
-                controllerPointer = new Image(SpriteName.cmdPointer, player.playerData.view.DrawAreaF.PercentToPosition(0.6f, 0.5f), Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
-
+                controllerPointer = new Image(SpriteName.cmdPointer, CursorCenterPos(), Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
             }
+        }
+
+        public Vector2 CursorCenterPos()
+        {
+            return player.playerData.view.DrawAreaF.PercentToPosition(0.6f, 0.5f);
         }
 
         public void terrainSearchClick(SubTile terrain)
@@ -373,7 +377,7 @@ namespace VikingEngine.DSSWars.Players
             }
             else
             {
-                return Input.Mouse.Position;
+                return player.gameControls.input.mouse.Position;
             }
         }
 
@@ -432,7 +436,7 @@ namespace VikingEngine.DSSWars.Players
                 }
                 else
                 {
-                    multiSelectMoveLenght += Input.Mouse.MoveDistance.Length();
+                    multiSelectMoveLenght += player.gameControls.input.mouse.MoveDistance.Length();
                 }
                 multiSelectHoldTime += Ref.DeltaTimeMs;
 
@@ -1155,7 +1159,7 @@ namespace VikingEngine.DSSWars.Players
                     camera.RecalculateMatrices();
                     if (Ref.gamesett.panOnZoom)
                     {
-                        var mousePosition2 = screenPosToWorldPos(Input.Mouse.Position);
+                        var mousePosition2 = screenPosToWorldPos(player.gameControls.input.mouse.Position);
                         Vector3 diff = mousePosition2 - pointerPosWP;
                         panCamera(VectorExt.V3XZtoV2( -diff), true);
                     }
@@ -1338,7 +1342,7 @@ namespace VikingEngine.DSSWars.Players
                 if (panDownInput && hasMouseMapPanInput())
                 {
                     //bool hasValue;
-                    Vector3 prevMousePosition = screenPosToWorldPos(Input.Mouse.Position - Input.Mouse.MoveDistance);
+                    Vector3 prevMousePosition = screenPosToWorldPos(player.gameControls.input.mouse.Position - player.gameControls.input.mouse.MoveDistance);
 
                     Vector3 diff = pointerPosWP - prevMousePosition;
 
@@ -1351,9 +1355,9 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (!player.gameControls.input.mousePan.IsDown &&
                         //!player.gameControls.input.ControllerSelect.IsDown &&
-                        Input.Mouse.HasEdgePush())
+                        player.gameControls.input.mouse.HasEdgePush())
                     {
-                        panCamera(-Input.Mouse.EdgePush() * Ref.DeltaTimeMs * PanSpeed(), true);
+                        panCamera(-player.gameControls.input.mouse.EdgePush() * Ref.DeltaTimeMs * PanSpeed(), true);
 
                     }
                 }
@@ -1454,7 +1458,7 @@ namespace VikingEngine.DSSWars.Players
             return player.gameControls.input.inputSource.HasMouse &&
                 rectangleLines == null &&
                 player.gameControls.input.mousePan.IsDown &&
-                Input.Mouse.bMoveInput;
+                player.gameControls.input.mouse.bMoveInput;
         }
 
         private void updateCamera()
