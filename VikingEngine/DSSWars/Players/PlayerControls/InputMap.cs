@@ -280,6 +280,12 @@ namespace VikingEngine.DSSWars
             // --- Movement & Camera ---
             move = new SteamAnalogMap( SteamActionSet.InGameControls, false, SteamAnalogAction.PanCamera, idx);
             moveCursor = new SteamAnalogMap(SteamActionSet.InGameControls, true, SteamAnalogAction.MoveCursor, idx);
+
+            if (inputSource.ControllerMode)
+            { 
+                move = new AlternativeDirectionalMap(move, moveCursor);
+            }
+
             cameraStick = new SteamAnalogMap(SteamActionSet.InGameControls, false, SteamAnalogAction.CameraStick, idx);
             // Note: cameraTiltUpSmooth is handled by the Steam Input config (e.g. Chorded Press) 
             // so you just map it to the intended resulting action.

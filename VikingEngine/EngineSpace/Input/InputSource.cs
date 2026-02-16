@@ -54,8 +54,7 @@ namespace VikingEngine.Input
         {
             get
             {
-                return sourceType == InputSourceType.KeyboardMouse || sourceType == InputSourceType.Any ||
-                    (sourceType == InputSourceType.SteamInput && useTouchAsMouseSim);
+                return sourceType == InputSourceType.KeyboardMouse ||  useTouchAsMouseSim;
             }
         }
 

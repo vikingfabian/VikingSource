@@ -1206,6 +1206,16 @@ namespace VikingEngine
             }
             return lowLatencyGarbageCollecting;
         }
+
+        public bool LockMouseProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                lockMouseToWindow = value;
+                settingsHasChanged = true;
+            }
+            return lockMouseToWindow;
+        }
         //string SongTitleProperty(bool set, string value)
         //{
         //    return "Playing: \n" + Ref.music.GetSongName();

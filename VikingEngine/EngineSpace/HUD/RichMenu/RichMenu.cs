@@ -317,7 +317,7 @@ namespace VikingEngine.HUD.RichMenu
             scrollBar.DeleteMe();
         }
 
-        MouseInstance Mouse()
+        public MouseInstance Mouse()
         {
             if (playerData.inputMap != null &&
                 playerData.inputMap.mouse != null)

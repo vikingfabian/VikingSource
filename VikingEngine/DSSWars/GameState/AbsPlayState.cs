@@ -150,7 +150,7 @@ namespace VikingEngine.DSSWars.GameState
         {
             foreach (var local in localPlayers)
             {
-                if (local.gameControls.input.Menu.DownEvent)
+                if (local.gameControls.input.menuInput.openCloseInputEvent())
                 {
                     return true;
                 }

@@ -245,7 +245,7 @@ namespace VikingEngine.DSSWars.Interface
                 }
 
 
-                if (player.gameControls.input.inputSource.HasMouse)
+                if (player.gameControls.input.inputSource.HasMouseInstance)
                 {
                     if (head != null)
                     {

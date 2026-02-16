@@ -374,7 +374,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             else
             {
                 //Jump to menu
-                if (menu != null)
+                if (menu == null)
                 {
                     if (hud_Menu.IsFactionMenu)
                     {

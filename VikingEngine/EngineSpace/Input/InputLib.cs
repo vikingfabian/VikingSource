@@ -251,6 +251,7 @@ namespace VikingEngine.Input
         None,
         Passive,
         Active,
+        NUM
     }
    
 

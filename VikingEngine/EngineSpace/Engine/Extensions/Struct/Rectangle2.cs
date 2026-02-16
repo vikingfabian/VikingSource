@@ -537,6 +537,42 @@ namespace VikingEngine
             return point;
         }
 
+        public void KeepTilePointInArea(Vector2 point, out Vector2 result, out bool offBounds, out Vector2 rest)
+        {
+            result = point;
+            rest = Vector2.Zero;
+
+            float maxX = pos.X + size.X - 1;
+            float maxY = pos.Y + size.Y - 1;
+
+            // Horizontal logic
+            if (point.X < pos.X)
+            {
+                rest.X = point.X - pos.X;
+                result.X = pos.X;
+            }
+            else if (point.X > maxX)
+            {
+                rest.X = point.X - maxX;
+                result.X = maxX;
+            }
+
+            // Vertical logic
+            if (point.Y < pos.Y)
+            {
+                rest.Y = point.Y - pos.Y;
+                result.Y = pos.Y;
+            }
+            else if (point.Y > maxY)
+            {
+                rest.Y = point.Y - maxY;
+                result.Y = maxY;
+            }
+
+            // It's off-bounds if the rest vector isn't zero
+            offBounds = rest.X != 0 || rest.Y != 0;
+        }
+
         public bool IntersectRect(Rectangle2 otherRect)
         {
             if (this.pos.X + size.X > otherRect.X &&

@@ -177,10 +177,10 @@ namespace VikingEngine.Engine
 
         public void refreshCursor()
         {
-            foreach (var ins in Input.Mouse.Instances)
-            { 
-                ins.RefreshMouseVisible();
-            }
+            //foreach (var ins in Input.Mouse.Instances)
+            //{ 
+            //    ins.RefreshMouseVisible();
+            //}
             //customMousePointer = null;
 
             //if (Ref.gamesett.customCursor)

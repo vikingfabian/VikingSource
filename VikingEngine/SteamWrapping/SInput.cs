@@ -482,7 +482,7 @@ namespace VikingEngine.SteamWrapping
                         if (layerCount != ins.layerCount)
                         {
                             InputLayerChange = true;
-                            ins.layerCount = layerCount;
+                            ins.layerCount = layerCount;                            
                         }
 
                         SteamInput.ActivateActionSet(controllerHandle, actionSets[(int)ins.actionSet]);
@@ -492,6 +492,16 @@ namespace VikingEngine.SteamWrapping
                             ins.digital_isDown_previous[daIx] = ins.digital_isDown_current[daIx];
                             InputDigitalActionData_t actionData = SteamInput.GetDigitalActionData(controllerHandle, digitalHandles[daIx]);
                             ins.digital_isDown_current[daIx] = actionData.bState == 1 && actionData.bActive == 1;
+                        }
+
+                        if (ins.muteKeyChange > 0)
+                        {
+                            ins.muteKeyChange -= Ref.DeltaTimeMs;
+                            //Kill all key change events
+                            for (int daIx = 0; daIx < digitalHandles.Length; daIx++)
+                            {
+                                ins.digital_isDown_previous[daIx] = ins.digital_isDown_current[daIx];
+                            }
                         }
 
                         for (int aaIx = 0; aaIx < analogHandles.Length; aaIx++)
@@ -549,15 +559,18 @@ namespace VikingEngine.SteamWrapping
             {
                 foreach (var c in controllers)
                 {
-                    c.actionSet = actionSet;
+                    if (c.actionSet != actionSet)
+                    {
+                        c.actionSet = actionSet;
+                        c.muteKeyChange = 120;
+                    }
                 }
             }
         }
         public static void UnusedLayerToRichContent(RichBoxContent content)
         {
                 content.Add(new RbText("(ALT)", Color.DarkGray));
-                content.hspace();
-           
+                content.hspace();           
         }
     }
 
@@ -640,7 +653,7 @@ namespace VikingEngine.SteamWrapping
     {
         public int index;
         public int layerCount  =0;
-
+        public float muteKeyChange = 0;
 
         public bool[] digital_isDown_previous;
         public bool[] digital_isDown_current;

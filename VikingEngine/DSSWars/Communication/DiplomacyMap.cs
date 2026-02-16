@@ -169,7 +169,7 @@ namespace VikingEngine.DSSWars.Communication
                             else
                             {
                                 var area = rel.bg.RealArea();
-                                if (area.IntersectPoint(Input.Mouse.Position))
+                                if (area.IntersectPoint(player.gameControls.input.mouse.Position))
                                 {
                                     newHover = rel;
                                     hoverArea = area;

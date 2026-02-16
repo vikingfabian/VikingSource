@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Interface
                 //}
                 //else
                 {
-                    Vector2 offset = Input.Mouse.Position;// + Engine.Screen.SmallIconSizeV2;
+                    Vector2 offset = player.gameControls.input.mouse.Position;// + Engine.Screen.SmallIconSizeV2;
                     offset.X += Engine.Screen.SmallIconSize;
                     if (aboveMouse)
                     {

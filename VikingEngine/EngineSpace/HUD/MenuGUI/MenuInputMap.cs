@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Input;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.HUD
 {
@@ -85,8 +86,9 @@ namespace VikingEngine.HUD
         }
 
         public void steamSetup(int controllerIndex)
-        { 
-            
+        {
+            scroll = new SteamAnalogMap(SteamActionSet.MenuControls, false, SteamAnalogAction.Scroll, controllerIndex);
+            OpenCloseController = new SteamButtonMap(SteamActionSet.MenuControls, SteamDigitalAction.close_menu, controllerIndex);
         }
 
         //public void ps4Setup(int controllerIndex)

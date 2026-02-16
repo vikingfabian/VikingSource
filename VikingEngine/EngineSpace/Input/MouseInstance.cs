@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace VikingEngine.Input
 {
+
     class MouseInstance
     {
         public Vector2 Position, PrevPosition, MoveDistance;
@@ -16,11 +17,19 @@ namespace VikingEngine.Input
         bool isMouse;
         bool inUse = false;
         Rectangle2 bounds;
+        public bool inBounds = true;
+        
         VectorRect MousePushEdge, MousePushEdgeMax;
         public IDirectionalMap inGameMap, inMenuMap;
         public bool centerlockAndHide = false;
         bool hide = false;
         Graphics.Image customMousePointer = null;
+        Vector2 offEdgeMovement = Vector2.Zero;
+
+        /// <summary>
+        /// Can be turned off for game mode with no mouse pointer
+        /// </summary>
+        public bool isActive = true;
 
         public MouseInstance()
         {
@@ -29,7 +38,7 @@ namespace VikingEngine.Input
         }
 
         public MouseInstance(PlayerData playerData, IDirectionalMap inGameMap = null, IDirectionalMap inMenuMap = null)
-        {
+        {            
             SetPlayer(playerData);
             isMouse = inGameMap == null;
             this.inGameMap = inGameMap;
@@ -38,57 +47,82 @@ namespace VikingEngine.Input
 
         public void SetPlayer(PlayerData playerData)
         {
+            isActive = playerData.inputMap.inputSource.HasMouseInstance;
             bounds.Rect = playerData.view.DrawArea;
             MousePushEdge = new VectorRect(bounds);
             MousePushEdge.AddRadius(-4);
             MousePushEdgeMax = MousePushEdge;
             MousePushEdgeMax.AddRadius(10);
             inUse = true;
-        }
+            RefreshMouseVisible();
 
+            if (!isMouse)
+            {
+                SetPosition(bounds.Center);
+            }
+        }
 
         public void Update()
         {
-            if (isMouse)
+            if (isActive)
             {
-                Position = Mouse.Position;
-                PrevPosition = Mouse.Position;
-                MoveDistance = Mouse.MoveDistance;
-            }
-            else if (Mouse.MenuMode)
-            {
-                //Everyone moves the mouse cursor
-                var pos = Mouse.Position;
-                if (inMenuMap != null)
+
+                if (isMouse)
                 {
-                    pos += inMenuMap.directionAndTime;
-                    Microsoft.Xna.Framework.Input.Mouse.SetPosition(Convert.ToInt32(pos.X), Convert.ToInt32(pos.Y));
+                    Position = Mouse.Position;
+                    PrevPosition = Mouse.Position;
+                    MoveDistance = Mouse.MoveDistance;
                 }
-            }
-            else
-            {
-                PrevPosition = Position;
-                if (inGameMap != null)
+                else if (Mouse.MenuMode)
                 {
-                    Position += inGameMap.directionAndTime;
+                    //Everyone moves the mouse cursor
+                    var pos = Mouse.Position;
+                    if (inMenuMap != null)
+                    {
+                        pos += inMenuMap.directionAndTime;
+                        Microsoft.Xna.Framework.Input.Mouse.SetPosition(Convert.ToInt32(pos.X), Convert.ToInt32(pos.Y));
+                    }
+                }
+                else
+                {
+                    PrevPosition = Position;
+                    if (inGameMap != null)
+                    {
+                        Position += inGameMap.directionAndTime;
+                    }
+
                 }
 
-            }
+                offEdgeMovement = Vector2.Zero;
 
-            if (MainGame.GameIsActive)
-            {
-                if (centerlockAndHide)
+                if (MainGame.GameIsActive)
                 {
-                    SetPosition(Engine.Screen.MonitorCenter);
+                    inBounds = true;
+                    if (centerlockAndHide)
+                    {
+                        SetPosition(Engine.Screen.MonitorCenter);
+                    }
+                    else if (LockToArea())
+                    {
+                        bounds.KeepTilePointInArea(Position, out Position, out bool offBounds, out offEdgeMovement);
+                        if (offBounds)
+                        {
+                            SetPosition(Position);
+                        }
+                    }
+                    else
+                    {
+                        inBounds = bounds.IntersectPoint(Position);
+                    }
                 }
             }
         }
 
         public void Draw()
         {
-            if (customMousePointer != null && RenderMouseCursor())
+            if (isActive && customMousePointer != null && RenderMouseCursor())
             {
-                customMousePointer.position = Input.Mouse.Position;
+                customMousePointer.position = Position;
                 customMousePointer.Draw(0);
             }
         }
@@ -162,7 +196,7 @@ namespace VikingEngine.Input
             }
             else
             {
-                if (visible && customMousePointer == null)
+                if (customMousePointer == null)
                 {
                     customMousePointer = new Graphics.Image(SpriteName.cmdPointer, Vector2.Zero, Engine.Screen.IconSizeV2, ImageLayers.AbsoluteTopLayer, true, false);
                 }
@@ -174,34 +208,45 @@ namespace VikingEngine.Input
             }
         }
 
-        public Vector2 EdgePush()
+        public Vector2 EdgePush(float passiveSpeed, float activeSpeed)
         {
-            Vector2 result = Vector2.Zero;
-            //if (Engine.Screen.Area.IntersectPoint(Position))
-            //{
-                if (Position.X < MousePushEdge.X &&
-                    Position.X > MousePushEdgeMax.X)
-                {
-                    result.X = -1;
-                }
-                else if (Position.X >MousePushEdge.Right &&
-                    Position.X < MousePushEdgeMax.Right)
-                {
-                    result.X = 1;
-                }
+            switch (Ref.gamesett.edgePush)
+            {
+                case MouseEdgePush.Passive:
+                    Vector2 result = Vector2.Zero;
+                    //if (Engine.Screen.Area.IntersectPoint(Position))
+                    //{
+                    if (Position.X < MousePushEdge.X &&
+                        Position.X > MousePushEdgeMax.X)
+                    {
+                        result.X = -passiveSpeed;
+                    }
+                    else if (Position.X > MousePushEdge.Right &&
+                        Position.X < MousePushEdgeMax.Right)
+                    {
+                        result.X = passiveSpeed;
+                    }
 
-                if (Position.Y < MousePushEdge.Y &&
-                    Position.Y > MousePushEdgeMax.Y)
-                {
-                    result.Y = -1;
-                }
-                else if (Position.Y > MousePushEdge.Bottom &&
-                    Position.Y < MousePushEdgeMax.Bottom)
-                {
-                    result.Y = 1;
-                }
-            //}
-            return result;
+                    if (Position.Y < MousePushEdge.Y &&
+                        Position.Y > MousePushEdgeMax.Y)
+                    {
+                        result.Y = -passiveSpeed;
+                    }
+                    else if (Position.Y > MousePushEdge.Bottom &&
+                        Position.Y < MousePushEdgeMax.Bottom)
+                    {
+                        result.Y = passiveSpeed;
+                    }
+                    //}
+                    return result;
+
+                case MouseEdgePush.Active:
+                    return offEdgeMovement * activeSpeed;
+
+                default:
+                    return Vector2.Zero;
+            }
+
         }
 
 
@@ -217,15 +262,11 @@ namespace VikingEngine.Input
                 return MoveDistance.X != 0 || MoveDistance.Y != 0;//currentMouseState.X != previousMouseState.X || currentMouseState.Y != previousMouseState.Y;
             }
         }
-        //public void refreshCursor()
-        //{
-        //    customMousePointer = null;
 
-        //    if (Ref.gamesett.customCursor)
-        //    {
-        //        customMousePointer = new Graphics.Image(SpriteName.cmdPointer, Vector2.Zero, Engine.Screen.IconSizeV2, ImageLayers.AbsoluteTopLayer, true, false);
-        //    }
-        //    RefreshMouseVisible();// = !Ref.gamesett.customMouse;
-        //}
+        bool LockToArea()
+        {
+            return !isMouse || (Ref.gamesett.lockMouseToWindow && !Mouse.MenuMode);
+        }
+       
     } 
 }

@@ -162,7 +162,9 @@ namespace VikingEngine.DSSWars
                         if (available[i].Equals(p.prevInputSource))
                         { 
                             p.inputSource = available[i];
+                            p.inputSource.useTouchAsMouseSim = p.prevInputSource.useTouchAsMouseSim;
                             p.prevInputSource = p.inputSource;
+                            
                             available.RemoveAt(i);
                             break;
                         }

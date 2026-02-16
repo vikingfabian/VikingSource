@@ -25,8 +25,6 @@ namespace VikingEngine.Input
         /// </summary>
         public static bool MenuMode = true;
 
-
-
         public static void Reset()
         {
             mouse = new MouseInstance();
@@ -57,8 +55,8 @@ namespace VikingEngine.Input
 
         public static void AddPlayer(PlayerData playerData, IDirectionalMap directionalMap1 = null, IDirectionalMap directionalMap2 = null)
         {
-            if (playerData.inputMap.inputSource.HasMouseInstance)
-            {
+            //if (playerData.inputMap.inputSource.HasMouseInstance)
+            //{
                 if (playerData.inputMap.inputSource.HasMouse)
                 {
                     mouse.SetPlayer(playerData);
@@ -70,55 +68,9 @@ namespace VikingEngine.Input
                     Instances.Add(instance);
                     playerData.inputMap.mouse = instance;
                 }
-            }
+            //}
         }
 
-//        public static bool LockToScreenArea
-//        {
-//            set
-//            {
-//#if PCGAME
-//                if (!PlatformSettings.DevBuild)
-//                {
-//                    if (value)
-//                    {
-//                        var bounds = Ref.main.Window.ClientBounds;
-//                        //System.Windows.Forms.Cursor.Clip = new System.Drawing.Rectangle(bounds.X, bounds.Y, bounds.Width, bounds.Height);// .form.RectangleToScreen(Ref.main.form.ClientRectangle);
-//                    }
-//                    else
-//                    {
-//                        //System.Windows.Forms.Cursor.Clip = System.Drawing.Rectangle.Empty;
-//                    }
-//                }
-//#endif
-//            }
-//        }
-
-        //        public static void Init(MainGame _main)
-        //        {
-        //            //main = _main;
-
-        ////#if PCGAME
-        ////            var key = Registry.CurrentUser.CreateSubKey("Control Panel\\Mouse\\");
-        ////            var newValue = key.GetValue("SwapMouseButtons");
-        ////            if (newValue != null)
-        ////            {
-        ////                swapLeftRightButtons = Convert.ToInt32(newValue) != 0;
-        ////            }
-        ////#endif
-        //        }
-
-        //public static bool Visible
-        //{
-        //    get {
-        //        return PlatformSettings.PC_platform && Ref.main.IsMouseVisible && !Ref.gamesett.customMouse;
-        //    }
-        //    set { 
-
-        //        if (PlatformSettings.PC_platform && (PlatformSettings.Debug_HideMouse || !PlatformSettings.DevBuild))
-        //            Ref.main.IsMouseVisible = value; 
-        //    }
-        //}
         public static void CenterLockAndHideAll()
         {
             foreach (var ins in Instances)
@@ -200,20 +152,9 @@ namespace VikingEngine.Input
             }
         }
 
-       
-
-
-//        public static void SetPosition(IntVector2 position)
-//        {
-//#if PCGAME
-//            Position = position.Vec;
-//            Microsoft.Xna.Framework.Input.Mouse.SetPosition(position.X, position.Y);
-//#endif
-//        }
-
         static bool IsActive
         {
-            get { return MainGame.GameIsActive && Engine.Screen.Area.IntersectPoint(Position); }
+            get { return MainGame.GameIsActive && mouse.inBounds; }
         }
 
         public static bool IsButtonDown(MouseButton button)

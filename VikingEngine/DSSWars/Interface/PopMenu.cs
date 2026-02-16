@@ -82,7 +82,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 foreach (var b in buttons)
                 {
-                    if (b.area.IntersectPoint(Input.Mouse.Position))
+                    if (b.area.IntersectPoint(player.gameControls.input.mouse.Position))
                     {
                         if (b != sel)
                         {

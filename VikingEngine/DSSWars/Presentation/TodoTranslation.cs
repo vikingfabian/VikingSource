@@ -16,6 +16,12 @@ namespace VikingEngine.DSSWars.Presentation
         //options
         public string InputSteam = "Steam input";
         public string Input_SimulateMouse = "Simulate mouse";
+        public string Input_LockMouseToWindow => "Lock mouse to window";
+        public string Input_MouseEdgePush_Title=> "Mouse edge push";
+        public string Input_NoControl => "None";
+        public string Input_ActiveControl => "Active";
+        public string Input_PassiveControl => "Passive";
+
 
 
         //regular

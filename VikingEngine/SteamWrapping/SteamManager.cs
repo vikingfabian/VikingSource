@@ -99,6 +99,7 @@ namespace VikingEngine.SteamWrapping
             }
             else
             {
+                alwaysInit();
                 Debug.LogError("SteamAPI_Init() failed.");
                 Debug.LogError("Next to the EXE, there must be steam_api.dll, steam_api64.dll & steam_appid.txt");
             }
@@ -184,16 +185,8 @@ namespace VikingEngine.SteamWrapping
             return result;
         }
 
-        void SetupSubsystems(SteamApplicationSettings settings)
+        void alwaysInit()
         {
-            //warningHook = SteamAPIDebugTextHook;
-            //SteamAPI.SteamClient().SetWarningMessageHook(warningHook);
-            
-            gameOverlayActivatedCB = new Callback<GameOverlayActivated_t>(OnGameOverlayActivated, false);
-            UserStatsRecievedCallback = new Callback<UserStatsReceived_t>(OnUserStatsRecieved, false);
-            UserStatsStoredCallback = new Callback<UserStatsStored_t>(OnUserStatsStored, false);
-            input = new SInput();
-
             if (PlatformSettings.RunProgram == StartProgram.LootFest3 ||
                 PlatformSettings.RunProgram == StartProgram.DSS ||
                 PlatformSettings.RunProgram == StartProgram.ToGG ||
@@ -201,6 +194,26 @@ namespace VikingEngine.SteamWrapping
             {
                 Achievements = new SteamAchievements();
             }
+            if (PlatformSettings.RunProgram == StartProgram.DSS)
+            {
+#if DSS
+                new DSSWars.Data.GameStats();
+#endif
+            }
+        }
+
+        void SetupSubsystems(SteamApplicationSettings settings)
+        {
+            alwaysInit();
+            //warningHook = SteamAPIDebugTextHook;
+            //SteamAPI.SteamClient().SetWarningMessageHook(warningHook);
+
+            gameOverlayActivatedCB = new Callback<GameOverlayActivated_t>(OnGameOverlayActivated, false);
+            UserStatsRecievedCallback = new Callback<UserStatsReceived_t>(OnUserStatsRecieved, false);
+            UserStatsStoredCallback = new Callback<UserStatsStored_t>(OnUserStatsStored, false);
+            input = new SInput();
+
+            
             leaderBoards = new SteamLeaderBoard();
 
             AbsGameStats gamestats = null;
@@ -211,7 +224,6 @@ namespace VikingEngine.SteamWrapping
             else if (PlatformSettings.RunProgram == StartProgram.DSS)
             {
 #if DSS
-                new DSSWars.Data.GameStats();
                 gamestats = DssRef.stats;
 #endif
             }

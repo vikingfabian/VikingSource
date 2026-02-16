@@ -362,8 +362,9 @@ namespace VikingEngine.DSSWars.Players
             keypPanInput();
             cameraFocusUpdate();
             updateCamera();
-            if (!player.gameControls.input.mousePan.IsDown)
+            if (panDownInput && !player.gameControls.input.mousePan.IsDown)
             {
+                bool isa = Ref.main.IsActive;
                 panDownInput = false;
             }
         }
@@ -1351,16 +1352,16 @@ namespace VikingEngine.DSSWars.Players
                     return;
                 }
 
-                if (DssRef.state.localPlayers.Count == 1)
-                {
-                    if (!player.gameControls.input.mousePan.IsDown &&
-                        //!player.gameControls.input.ControllerSelect.IsDown &&
+                //if (DssRef.state.localPlayers.Count == 1)
+                //{
+                    if (!panDownInput &&
                         player.gameControls.input.mouse.HasEdgePush())
                     {
-                        panCamera(-player.gameControls.input.mouse.EdgePush() * Ref.DeltaTimeMs * PanSpeed(), true);
+                        var speed = PanSpeed();
+                        panCamera(player.gameControls.input.mouse.EdgePush(Ref.DeltaTimeMs * speed, speed), true);
 
                     }
-                }
+                //}
             }
             //}
         }

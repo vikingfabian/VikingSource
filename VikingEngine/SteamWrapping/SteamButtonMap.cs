@@ -32,7 +32,7 @@ namespace VikingEngine.SteamWrapping
 
                 if (data.bActive == 1)
                 {
-                    return new Vector2(data.x, -data.y);
+                    return new Vector2(data.x, data.y);
                 }
                 return Vector2.Zero;
             }
