@@ -204,7 +204,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.space();                
             }
             bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Headmenu, out Color focusColor);
-            if (viewControllerTabs)
+            if (viewControllerTabs && player.gameControls.input.Controller_TabLeft.IsActive)
             {
                 content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
                 content.space(0.5f);
@@ -219,7 +219,7 @@ namespace VikingEngine.DSSWars.Interface
                 factionTabs(content);
             }
 
-            if (viewControllerTabs)
+            if (viewControllerTabs && player.gameControls.input.Controller_TabRight.IsActive)
             {
                 content.space(0.5f);
                 content.Add(new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor });

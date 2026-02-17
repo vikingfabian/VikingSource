@@ -1,18 +1,18 @@
 "controller_mappings"
 {
 	"version"		"3"
-	"revision"		"158"
-	"title"		"DSS 2 Xbox Controller"
-	"description"		"Official controller layout for xbox one controller"
+	"revision"		"151"
+	"title"		"DSS 2 Steam Deck"
+	"description"		"Official steam deck"
 	"creator"		"76561198046251956"
 	"progenitor"		""
-	"url"		"autosave://C:\\Program Files (x86)\\Steam\\steamapps\\common\\Steam Controller Configs\\85986228\\config\\3582440-beta_test\\controller_xboxone.vdf"
+	"url"		"autosave:///home/deck/.local/share/Steam/steamapps/common/Steam Controller Configs/85986228/config/3582440-beta_test/controller_neptune.vdf"
 	"export_type"		"personal_local"
-	"controller_type"		"controller_xboxone"
-	"controller_caps"		"1590271"
+	"controller_type"		"controller_neptune"
+	"controller_caps"		"23117823"
 	"major_revision"		"0"
 	"minor_revision"		"0"
-	"Timestamp"		"1771338160"
+	"Timestamp"		"0"
 	"actions"
 	{
 		"InGameControls"
@@ -31,11 +31,6 @@
 					"title"		"#Action_CameraStick"
 					"input_mode"		"joystick_move"
 				}
-				"CameraTilt"
-				{
-					"title"		"#Action_CameraTilt"
-					"input_mode"		"joystick_move"
-				}
 				"MoveCursor"
 				{
 					"title"		"#Action_Cursor"
@@ -49,7 +44,7 @@
 				"quick_select"		"#Action_quick_select"
 				"cancel"		"#Action_cancel"
 				"stop_start"		"#Action_stop_start"
-				"open_menu"		"#Action_menu"
+				"Menu"		"#Action_menu"
 				"toggle_hud_detail"		"#Action_toggle_hud"
 				"toggle_minimap"		"#Action_toggle_map"
 				"tab_left"		"#Action_tab_l"
@@ -75,6 +70,11 @@
 			"legacy_set"		"0"
 			"StickPadGyro"
 			{
+				"MoveCursor"
+				{
+					"title"		"#Action_Cursor"
+					"input_mode"		"absolute_mouse"
+				}
 				"Scroll"
 				{
 					"title"		"#Action_ScrollMenu"
@@ -83,82 +83,36 @@
 			}
 			"Button"
 			{
-				"close_menu"		"#Action_ReturnToGame"
-			}
-		}
-		"EditorControls"
-		{
-			"title"		"#Set_Editor"
-			"legacy_set"		"0"
-			"StickPadGyro"
-			{
-				"editor_moveXZ"
-				{
-					"title"		"#Action_moveXZ"
-					"input_mode"		"joystick_move"
-				}
-				"editor_cameraXMoveY"
-				{
-					"title"		"#Action_cameraXMoveY"
-					"input_mode"		"joystick_move"
-				}
-				"editor_cameraZoom"
-				{
-					"title"		"#Action_cameraZoom"
-					"input_mode"		"joystick_move"
-				}
-			}
-			"Button"
-			{
-				"editor_open_menu"		"#Action_menu"
-				"editor_draw"		"#Action_draw"
-				"editor_erase"		"#Action_erase"
-				"editor_select"		"#Action_select"
-				"editor_colorPick"		"#Action_colorPick"
-				"editor_cancel"		"#Action_cancel"
-				"editor_undo"		"#Action_undo"
-				"editor_tab_left"		"#Action_tab_l"
-				"editor_tab_right"		"#Action_tab_r"
-				"editor_YmovementToggle"		"#Action_YmovementToggle"
+				"menu_select"		"#Menu_Select"
+				"menu_cancel"		"#Menu_Cancel"
+				"pause_menu"		"#Action_ReturnToGame"
+				"tab_left"		"#Action_tab_l"
+				"tab_right"		"#Action_tab_r"
 			}
 		}
 	}
 	"action_layers"
 	{
-		"InGameAlt1"
+		"Preset_1000002"
 		{
-			"title"		"#Layer_InGame_Alt1"
-			"legacy_set"		"0"
+			"title"		"Alt 1"
+			"legacy_set"		"1"
 			"set_layer"		"1"
 			"parent_set_name"		"InGameControls"
 		}
-		"InGameAlt2"
+		"Preset_1000003"
 		{
-			"title"		"#Layer_InGame_Alt2"
-			"legacy_set"		"0"
+			"title"		"Alt 2"
+			"legacy_set"		"1"
 			"set_layer"		"1"
 			"parent_set_name"		"InGameControls"
 		}
-		"InGameAlt1And2"
+		"Preset_1000004"
 		{
-			"title"		"#Layer_InGame_Alt1And2"
-			"legacy_set"		"0"
+			"title"		"Alt1 + Alt2"
+			"legacy_set"		"1"
 			"set_layer"		"1"
 			"parent_set_name"		"InGameControls"
-		}
-		"editor_selection"
-		{
-			"title"		"#Layer_Editor_Selection"
-			"legacy_set"		"0"
-			"set_layer"		"1"
-			"parent_set_name"		"EditorControls"
-			"Button"
-			{
-				"editor_selection_mirrorX"		"#Action_mirrorX"
-				"editor_selection_mirrorY"		"#Action_mirrorY"
-				"editor_selection_rotateCCW"		"#Action_rotateCCW"
-				"editor_selection_rotateCW"		"#Action_rotateCW"
-			}
 		}
 	}
 	"localization"
@@ -1404,7 +1358,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"controller_action hold_layer 4 1 1, , "
+							"binding"		"controller_action add_layer 3 1 1, , "
 						}
 						"settings"
 						{
@@ -1436,22 +1390,6 @@
 		"description"		""
 		"inputs"
 		{
-			"button_a"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"mouse_button LEFT, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
 		}
 	}
 	"group"
@@ -1599,6 +1537,10 @@
 		"inputs"
 		{
 		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+		}
 	}
 	"group"
 	{
@@ -1719,15 +1661,11 @@
 			{
 				"activators"
 				{
-					"Full_Press"
+					"release"
 					{
 						"bindings"
 						{
-							"binding"		"controller_action hold_layer 5 1 1, , "
-						}
-						"settings"
-						{
-							"haptic_intensity"		"2"
+							"binding"		"controller_action remove_layer 3 1 1, , "
 						}
 					}
 				}
@@ -1913,401 +1851,99 @@
 		"settings"
 		{
 			"layer"		"1"
-			"requires_click"		"0"
-			"haptic_intensity_override"		"0"
-		}
-	}
-	"group"
-	{
-		"id"		"50"
-		"mode"		"four_buttons"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-			"button_b"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action EditorControls editor_cancel, Cancel, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"button_x"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action EditorControls editor_colorPick, Pick Color, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"button_y"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action EditorControls editor_undo, Undo, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-		}
-	}
-	"group"
-	{
-		"id"		"51"
-		"mode"		"trigger"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
 		}
 	}
 	"group"
 	{
 		"id"		"52"
-		"mode"		"trigger"
+		"mode"		"absolute_mouse"
 		"name"		""
 		"description"		""
 		"inputs"
 		{
-		}
-	}
-	"group"
-	{
-		"id"		"54"
-		"mode"		"four_buttons"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-			"button_a"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action InGameControls quick_select, Quick Select, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"button_b"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action InGameControls paste, Paste, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"button_x"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action InGameControls build, Build, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"button_y"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action InGameControls copy, Copy, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-		}
-		"settings"
-		{
-			"layer"		"1"
 		}
 	}
 	"group"
 	{
 		"id"		"55"
-		"mode"		"trigger"
+		"mode"		"absolute_mouse"
 		"name"		""
 		"description"		""
 		"inputs"
 		{
-		}
-		"settings"
-		{
-			"layer"		"1"
 		}
 	}
 	"group"
 	{
 		"id"		"56"
-		"mode"		"trigger"
+		"mode"		"absolute_mouse"
 		"name"		""
 		"description"		""
 		"inputs"
 		{
+			"click"
+			{
+				"activators"
+				{
+					"Soft_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls SELECT, Select, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
 		}
 		"settings"
 		{
-			"layer"		"1"
+			"virtual_mode"		"1"
+		}
+		"gameactions"
+		{
+			"InGameControls"		"MoveCursor"
+		}
+	}
+	"group"
+	{
+		"id"		"57"
+		"mode"		"joystick_move"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+			"click"
+			{
+				"activators"
+				{
+					"Soft_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls SELECT, Select, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+		}
+		"gameactions"
+		{
+			"InGameControls"		"PanCamera"
 		}
 	}
 	"group"
 	{
 		"id"		"58"
-		"mode"		"four_buttons"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"59"
-		"mode"		"trigger"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"60"
-		"mode"		"trigger"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"62"
-		"mode"		"four_buttons"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"63"
-		"mode"		"trigger"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"64"
-		"mode"		"trigger"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"66"
-		"mode"		"four_buttons"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-			"button_x"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action editor_selection editor_selection_mirrorX, Mirror X, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"button_y"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action editor_selection editor_selection_mirrorY, Mirror Y, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-		}
-		"settings"
-		{
-			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"67"
-		"mode"		"trigger"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"68"
-		"mode"		"trigger"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"69"
-		"mode"		"dpad"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-			"dpad_south"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action InGameControls toggle_minimap, Toggle Minimap, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"dpad_east"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action InGameControls next_war, Next War, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-		}
-		"settings"
-		{
-			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"70"
 		"mode"		"joystick_move"
 		"name"		""
 		"description"		""
@@ -2325,7 +1961,7 @@
 	}
 	"group"
 	{
-		"id"		"71"
+		"id"		"59"
 		"mode"		"joystick_move"
 		"name"		""
 		"description"		""
@@ -2338,68 +1974,7 @@
 		}
 		"gameactions"
 		{
-			"MenuControls"		"Scroll"
-		}
-	}
-	"group"
-	{
-		"id"		"72"
-		"mode"		"joystick_mouse"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"output_joystick"		"2"
-		}
-	}
-	"group"
-	{
-		"id"		"73"
-		"mode"		"dpad"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-			"dpad_east"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action EditorControls editor_tab_right, Next Tab, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"dpad_west"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action EditorControls editor_tab_left, Previous Tab, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-		}
-		"settings"
-		{
-			"requires_click"		"0"
-			"haptic_intensity_override"		"0"
+			"InGameControls"		"PanCamera"
 		}
 	}
 	"group"
@@ -2492,7 +2067,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"game_action InGameControls open_menu, Menu, , "
+							"binding"		"game_action InGameControls Menu, Menu, , "
 						}
 					}
 				}
@@ -2524,7 +2099,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"game_action InGameControls tab_left, Previous Tab, , "
+							"binding"		"game_action InGameControls order, Order, , "
 						}
 					}
 				}
@@ -2533,6 +2108,38 @@
 				}
 			}
 			"right_bumper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls SELECT, Select, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_back_left_upper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls tab_left, Previous Tab, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_back_right_upper"
 			{
 				"activators"
 				{
@@ -2566,7 +2173,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"game_action MenuControls close_menu, Close, , "
+							"binding"		"game_action MenuControls pause_menu, Close, , "
 						}
 					}
 				}
@@ -2574,7 +2181,7 @@
 				{
 				}
 			}
-			"right_bumper"
+			"button_back_left_upper"
 			{
 				"activators"
 				{
@@ -2582,7 +2189,23 @@
 					{
 						"bindings"
 						{
-							"binding"		"mouse_button LEFT, , "
+							"binding"		"game_action MenuControls tab_left, Previous Tab, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_back_right_upper"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action MenuControls tab_right, Next Tab, , "
 						}
 					}
 				}
@@ -2634,188 +2257,6 @@
 			"layer"		"1"
 		}
 	}
-	"group"
-	{
-		"id"		"49"
-		"mode"		"switches"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-			"button_escape"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action EditorControls editor_open_menu, Menu, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"left_bumper"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action EditorControls editor_erase, Erase, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"right_bumper"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action EditorControls editor_draw, Draw, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-		}
-	}
-	"group"
-	{
-		"id"		"53"
-		"mode"		"switches"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"57"
-		"mode"		"switches"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"61"
-		"mode"		"switches"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"65"
-		"mode"		"switches"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-			"left_bumper"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action editor_selection editor_selection_rotateCCW, Rotate CCW, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"right_bumper"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action editor_selection editor_selection_rotateCW, Rotate CW, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-		}
-		"settings"
-		{
-			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"74"
-		"mode"		"joystick_move"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"virtual_mode"		"1"
-		}
-		"gameactions"
-		{
-			"EditorControls"		"editor_cameraXMoveY"
-		}
-	}
-	"group"
-	{
-		"id"		"75"
-		"mode"		"joystick_move"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"virtual_mode"		"1"
-		}
-		"gameactions"
-		{
-			"EditorControls"		"editor_moveXZ"
-		}
-	}
 	"preset"
 	{
 		"id"		"0"
@@ -2833,8 +2274,13 @@
 			"30"		"right_joystick inactive modeshift"
 			"31"		"right_joystick inactive modeshift"
 			"32"		"right_joystick inactive"
-			"70"		"right_joystick active"
+			"58"		"right_joystick active"
+			"59"		"right_joystick active modeshift"
 			"34"		"dpad active"
+			"52"		"gyro inactive"
+			"57"		"left_trackpad active"
+			"55"		"right_trackpad inactive"
+			"56"		"right_trackpad active"
 		}
 	}
 	"preset"
@@ -2847,72 +2293,43 @@
 			"19"		"button_diamond active"
 			"20"		"left_trigger active"
 			"21"		"right_trigger active"
-			"72"		"joystick active"
-			"71"		"right_joystick active"
 		}
 	}
 	"preset"
 	{
 		"id"		"2"
-		"name"		"EditorControls"
+		"name"		"Preset_1000002"
 		"group_source_bindings"
 		{
-			"49"		"switch active"
-			"50"		"button_diamond active"
-			"51"		"left_trigger active"
-			"52"		"right_trigger active"
-			"75"		"joystick active"
-			"74"		"right_joystick active"
-			"73"		"dpad active"
+			"38"		"switch active"
+			"35"		"button_diamond active"
+			"36"		"left_trigger active"
+			"37"		"right_trigger active"
+			"48"		"dpad active"
 		}
 	}
 	"preset"
 	{
 		"id"		"3"
-		"name"		"InGameAlt1"
+		"name"		"Preset_1000003"
 		"group_source_bindings"
 		{
-			"53"		"switch active"
-			"54"		"button_diamond active"
-			"55"		"left_trigger active"
-			"56"		"right_trigger active"
-			"69"		"dpad active"
+			"42"		"switch active"
+			"39"		"button_diamond active"
+			"40"		"left_trigger active"
+			"41"		"right_trigger active"
 		}
 	}
 	"preset"
 	{
 		"id"		"4"
-		"name"		"InGameAlt2"
+		"name"		"Preset_1000004"
 		"group_source_bindings"
 		{
-			"57"		"switch active"
-			"58"		"button_diamond active"
-			"59"		"left_trigger active"
-			"60"		"right_trigger active"
-		}
-	}
-	"preset"
-	{
-		"id"		"5"
-		"name"		"InGameAlt1And2"
-		"group_source_bindings"
-		{
-			"61"		"switch active"
-			"62"		"button_diamond active"
-			"63"		"left_trigger active"
-			"64"		"right_trigger active"
-		}
-	}
-	"preset"
-	{
-		"id"		"6"
-		"name"		"editor_selection"
-		"group_source_bindings"
-		{
-			"65"		"switch active"
-			"66"		"button_diamond active"
-			"67"		"left_trigger active"
-			"68"		"right_trigger active"
+			"47"		"switch active"
+			"44"		"button_diamond active"
+			"45"		"left_trigger active"
+			"46"		"right_trigger active"
 		}
 	}
 	"settings"

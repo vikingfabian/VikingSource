@@ -1,18 +1,18 @@
 "controller_mappings"
 {
 	"version"		"3"
-	"revision"		"158"
-	"title"		"DSS 2 Xbox Controller"
-	"description"		"Official controller layout for xbox one controller"
+	"revision"		"146"
+	"title"		"DSS 2 Controller"
+	"description"		"Official controller layout for controller without touch pad"
 	"creator"		"76561198046251956"
-	"progenitor"		""
-	"url"		"autosave://C:\\Program Files (x86)\\Steam\\steamapps\\common\\Steam Controller Configs\\85986228\\config\\3582440-beta_test\\controller_xboxone.vdf"
+	"progenitor"		"game://official_controller_xbox.vdf"
+	"url"		"autosave://C:\\Program Files (x86)\\Steam\\steamapps\\common\\Steam Controller Configs\\85986228\\config\\3582440-beta_test\\controller_switch_pro.vdf"
 	"export_type"		"personal_local"
-	"controller_type"		"controller_xboxone"
-	"controller_caps"		"1590271"
+	"controller_type"		"controller_switch_pro"
+	"controller_caps"		"613772287"
 	"major_revision"		"0"
 	"minor_revision"		"0"
-	"Timestamp"		"1771338160"
+	"Timestamp"		"1771326766"
 	"actions"
 	{
 		"InGameControls"
@@ -44,7 +44,7 @@
 			}
 			"Button"
 			{
-				"SELECT"		"#Action_select"
+				"select"		"#Action_select"
 				"order"		"#Action_order"
 				"quick_select"		"#Action_quick_select"
 				"cancel"		"#Action_cancel"
@@ -177,10 +177,10 @@
 			"Action_CameraTilt"		"Camera Tilt"
 			"Action_Cursor"		"Move Cursor"
 			"Action_ScrollMenu"		"Scroll Menu"
-			"Action_Select"		"Select"
+			"Action_select"		"Select"
 			"Action_order"		"Order"
 			"Action_quick_select"		"Quick Select"
-			"Action_Cancel"		"Cancel"
+			"Action_cancel"		"Cancel"
 			"Action_stop_start"		"Stop/Start"
 			"Action_menu"		"Menu"
 			"Action_toggle_hud"		"Toggle HUD Details"
@@ -224,10 +224,10 @@
 			"Action_CameraTilt"		"Inclinaison caméra"
 			"Action_Cursor"		"Déplacer le curseur"
 			"Action_ScrollMenu"		"Filer le menu"
-			"Action_Select"		"Sélectionner"
+			"Action_select"		"Sélectionner"
 			"Action_order"		"Donner un ordre"
 			"Action_quick_select"		"Sélection rapide"
-			"Action_Cancel"		"Annuler"
+			"Action_cancel"		"Annuler"
 			"Action_stop_start"		"Arrêter/Démarrer"
 			"Action_menu"		"Menu"
 			"Action_toggle_hud"		"Afficher/Masquer le HUD"
@@ -269,10 +269,10 @@
 			"Action_CameraTilt"		"镜头倾斜"
 			"Action_Cursor"		"移动光标"
 			"Action_ScrollMenu"		"滚动菜单"
-			"Action_Select"		"选择"
+			"Action_select"		"选择"
 			"Action_order"		"下令"
 			"Action_quick_select"		"快速选择"
-			"Action_Cancel"		"取消"
+			"Action_cancel"		"取消"
 			"Action_stop_start"		"停止/开始"
 			"Action_menu"		"菜单"
 			"Action_toggle_hud"		"切换HUD详情"
@@ -314,10 +314,10 @@
 			"Action_CameraTilt"		"カメラチルト"
 			"Action_Cursor"		"カーソル移動"
 			"Action_ScrollMenu"		"メニュースクロール"
-			"Action_Select"		"選択"
+			"Action_select"		"選択"
 			"Action_order"		"命令"
 			"Action_quick_select"		"クイック選択"
-			"Action_Cancel"		"キャンセル"
+			"Action_cancel"		"キャンセル"
 			"Action_stop_start"		"停止/開始"
 			"Action_menu"		"メニュー"
 			"Action_toggle_hud"		"HUD詳細切り替え"
@@ -359,10 +359,10 @@
 			"Action_CameraTilt"		"Kamera neigen"
 			"Action_Cursor"		"Cursor bewegen"
 			"Action_ScrollMenu"		"Menü scrollen"
-			"Action_Select"		"Auswählen"
+			"Action_select"		"Auswählen"
 			"Action_order"		"Befehl"
 			"Action_quick_select"		"Schnellauswahl"
-			"Action_Cancel"		"Abbrechen"
+			"Action_cancel"		"Abbrechen"
 			"Action_stop_start"		"Stopp/Start"
 			"Action_menu"		"Menü"
 			"Action_toggle_hud"		"HUD-Details umschalten"
@@ -404,10 +404,10 @@
 			"Action_CameraTilt"		"Inclinación de cámara"
 			"Action_Cursor"		"Mover cursor"
 			"Action_ScrollMenu"		"Desplazar menú"
-			"Action_Select"		"Seleccionar"
+			"Action_select"		"Seleccionar"
 			"Action_order"		"Dar orden"
 			"Action_quick_select"		"Selección rápida"
-			"Action_Cancel"		"Cancelar"
+			"Action_cancel"		"Cancelar"
 			"Action_stop_start"		"Detener/Iniciar"
 			"Action_menu"		"Menú"
 			"Action_toggle_hud"		"Alternar detalles del HUD"
@@ -449,10 +449,10 @@
 			"Action_CameraTilt"		"ปรับมุมเงยกล้อง"
 			"Action_Cursor"		"เลื่อนเคอร์เซอร์"
 			"Action_ScrollMenu"		"เลื่อนเมนู"
-			"Action_Select"		"เลือก"
+			"Action_select"		"เลือก"
 			"Action_order"		"ออกคำสั่ง"
 			"Action_quick_select"		"เลือกด่วน"
-			"Action_Cancel"		"ยกเลิก"
+			"Action_cancel"		"ยกเลิก"
 			"Action_stop_start"		"หยุด/เริ่ม"
 			"Action_menu"		"เมนู"
 			"Action_toggle_hud"		"เปิด/ปิด รายละเอียด HUD"
@@ -494,10 +494,10 @@
 			"Action_CameraTilt"		"Наклон камеры"
 			"Action_Cursor"		"Переместить курсор"
 			"Action_ScrollMenu"		"Прокрутка меню"
-			"Action_Select"		"Выбрать"
+			"Action_select"		"Выбрать"
 			"Action_order"		"Приказ"
 			"Action_quick_select"		"Быстрый выбор"
-			"Action_Cancel"		"Отмена"
+			"Action_cancel"		"Отмена"
 			"Action_stop_start"		"Стоп/Старт"
 			"Action_menu"		"Меню"
 			"Action_toggle_hud"		"Показать/скрыть интерфейс"
@@ -539,10 +539,10 @@
 			"Action_CameraTilt"		"Inclinar Câmera"
 			"Action_Cursor"		"Mover Cursor"
 			"Action_ScrollMenu"		"Rolar Menu"
-			"Action_Select"		"Selecionar"
+			"Action_select"		"Selecionar"
 			"Action_order"		"Dar Ordem"
 			"Action_quick_select"		"Seleção Rápida"
-			"Action_Cancel"		"Cancelar"
+			"Action_cancel"		"Cancelar"
 			"Action_stop_start"		"Parar/Iniciar"
 			"Action_menu"		"Menu"
 			"Action_toggle_hud"		"Alternar Detalhes do HUD"
@@ -584,10 +584,10 @@
 			"Action_CameraTilt"		"Kamera Eğimi"
 			"Action_Cursor"		"İmleci Hareket Ettir"
 			"Action_ScrollMenu"		"Menüyü Kaydır"
-			"Action_Select"		"Seç"
+			"Action_select"		"Seç"
 			"Action_order"		"Emir Ver"
 			"Action_quick_select"		"Hızlı Seçim"
-			"Action_Cancel"		"İptal"
+			"Action_cancel"		"İptal"
 			"Action_stop_start"		"Durdur/Başlat"
 			"Action_menu"		"Menü"
 			"Action_toggle_hud"		"HUD Detaylarını Aç/Kapat"
@@ -629,10 +629,10 @@
 			"Action_CameraTilt"		"Inclinazione visuale"
 			"Action_Cursor"		"Muovi cursore"
 			"Action_ScrollMenu"		"Scorri menu"
-			"Action_Select"		"Seleziona"
+			"Action_select"		"Seleziona"
 			"Action_order"		"Dai un ordine"
 			"Action_quick_select"		"Selezione rapida"
-			"Action_Cancel"		"Annulla"
+			"Action_cancel"		"Annulla"
 			"Action_stop_start"		"Ferma/Avvia"
 			"Action_menu"		"Menu"
 			"Action_toggle_hud"		"Mostra/Nascondi HUD"
@@ -674,10 +674,10 @@
 			"Action_CameraTilt"		"Nachylenie kamery"
 			"Action_Cursor"		"Ruch kursorem"
 			"Action_ScrollMenu"		"Przewijanie menu"
-			"Action_Select"		"Wybierz"
+			"Action_select"		"Wybierz"
 			"Action_order"		"Wydaj rozkaz"
 			"Action_quick_select"		"Szybki wybór"
-			"Action_Cancel"		"Anuluj"
+			"Action_cancel"		"Anuluj"
 			"Action_stop_start"		"Stop/Start"
 			"Action_menu"		"Menu"
 			"Action_toggle_hud"		"Przełącz szczegóły HUD"
@@ -718,26 +718,6 @@
 		"description"		""
 		"inputs"
 		{
-			"button_a"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"key_press SPACE, Jump, , "
-						}
-						"settings"
-						{
-							"repeat_rate"		"99"
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
 			"button_b"
 			{
 				"activators"
@@ -758,7 +738,7 @@
 				{
 				}
 			}
-			"button_x"
+			"button_a"
 			{
 				"activators"
 				{
@@ -766,7 +746,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"key_press R, Reload, , "
+							"binding"		"key_press SPACE, Jump, , "
 						}
 						"settings"
 						{
@@ -787,6 +767,26 @@
 						"bindings"
 						{
 							"binding"		"key_press F, Flashlight, , "
+						}
+						"settings"
+						{
+							"repeat_rate"		"99"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_x"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"key_press R, Reload, , "
 						}
 						"settings"
 						{
@@ -1404,7 +1404,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"controller_action hold_layer 4 1 1, , "
+							"binding"		"controller_action add_layer 4 1 1, , "
 						}
 						"settings"
 						{
@@ -1436,22 +1436,6 @@
 		"description"		""
 		"inputs"
 		{
-			"button_a"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"mouse_button LEFT, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
 		}
 	}
 	"group"
@@ -1514,22 +1498,6 @@
 		"description"		""
 		"inputs"
 		{
-			"button_a"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action InGameControls SELECT, Select Unit, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
 			"button_b"
 			{
 				"activators"
@@ -1538,7 +1506,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"game_action InGameControls cancel, Cancel/Deselect, , "
+							"binding"		"game_action InGameControls select, Select, , "
 						}
 					}
 				}
@@ -1546,7 +1514,7 @@
 				{
 				}
 			}
-			"button_x"
+			"button_a"
 			{
 				"activators"
 				{
@@ -1554,7 +1522,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"game_action InGameControls order, Order, , "
+							"binding"		"game_action InGameControls cancel, Cancel, , "
 						}
 					}
 				}
@@ -1570,7 +1538,23 @@
 					{
 						"bindings"
 						{
-							"binding"		"game_action InGameControls controller_focus, Menu Focus, , "
+							"binding"		"game_action InGameControls order, Order, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
+			"button_x"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"game_action InGameControls controller_focus, Object Menu Toggle, , "
 						}
 					}
 				}
@@ -1925,54 +1909,6 @@
 		"description"		""
 		"inputs"
 		{
-			"button_b"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action EditorControls editor_cancel, Cancel, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"button_x"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action EditorControls editor_colorPick, Pick Color, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"button_y"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action EditorControls editor_undo, Undo, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
 		}
 	}
 	"group"
@@ -2003,7 +1939,7 @@
 		"description"		""
 		"inputs"
 		{
-			"button_a"
+			"button_b"
 			{
 				"activators"
 				{
@@ -2019,7 +1955,7 @@
 				{
 				}
 			}
-			"button_b"
+			"button_a"
 			{
 				"activators"
 				{
@@ -2035,7 +1971,7 @@
 				{
 				}
 			}
-			"button_x"
+			"button_y"
 			{
 				"activators"
 				{
@@ -2051,7 +1987,7 @@
 				{
 				}
 			}
-			"button_y"
+			"button_x"
 			{
 				"activators"
 				{
@@ -2081,6 +2017,26 @@
 		"description"		""
 		"inputs"
 		{
+			"click"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"controller_action remove_layer 4 1 1, , "
+						}
+						"settings"
+						{
+							"haptic_intensity"		"2"
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
 		}
 		"settings"
 		{
@@ -2193,38 +2149,6 @@
 		"description"		""
 		"inputs"
 		{
-			"button_x"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action editor_selection editor_selection_mirrorX, Mirror X, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"button_y"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action editor_selection editor_selection_mirrorY, Mirror Y, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
 		}
 		"settings"
 		{
@@ -2261,28 +2185,30 @@
 	}
 	"group"
 	{
-		"id"		"69"
+		"id"		"70"
+		"mode"		"joystick_move"
+		"name"		""
+		"description"		""
+		"inputs"
+		{
+		}
+		"settings"
+		{
+			"virtual_mode"		"1"
+		}
+		"gameactions"
+		{
+			"InGameControls"		"CameraStick"
+		}
+	}
+	"group"
+	{
+		"id"		"71"
 		"mode"		"dpad"
 		"name"		""
 		"description"		""
 		"inputs"
 		{
-			"dpad_south"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action InGameControls toggle_minimap, Toggle Minimap, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
 			"dpad_east"
 			{
 				"activators"
@@ -2303,103 +2229,6 @@
 		"settings"
 		{
 			"layer"		"1"
-		}
-	}
-	"group"
-	{
-		"id"		"70"
-		"mode"		"joystick_move"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"virtual_mode"		"1"
-		}
-		"gameactions"
-		{
-			"InGameControls"		"CameraStick"
-		}
-	}
-	"group"
-	{
-		"id"		"71"
-		"mode"		"joystick_move"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"virtual_mode"		"1"
-		}
-		"gameactions"
-		{
-			"MenuControls"		"Scroll"
-		}
-	}
-	"group"
-	{
-		"id"		"72"
-		"mode"		"joystick_mouse"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"output_joystick"		"2"
-		}
-	}
-	"group"
-	{
-		"id"		"73"
-		"mode"		"dpad"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-			"dpad_east"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action EditorControls editor_tab_right, Next Tab, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"dpad_west"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action EditorControls editor_tab_left, Previous Tab, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-		}
-		"settings"
-		{
-			"requires_click"		"0"
-			"haptic_intensity_override"		"0"
 		}
 	}
 	"group"
@@ -2548,6 +2377,22 @@
 				{
 				}
 			}
+			"button_capture"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"controller_action SCREENSHOT, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
 		}
 	}
 	"group"
@@ -2574,7 +2419,7 @@
 				{
 				}
 			}
-			"right_bumper"
+			"button_capture"
 			{
 				"activators"
 				{
@@ -2582,7 +2427,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"mouse_button LEFT, , "
+							"binding"		"controller_action SCREENSHOT, , "
 						}
 					}
 				}
@@ -2600,6 +2445,22 @@
 		"description"		""
 		"inputs"
 		{
+			"button_capture"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"controller_action SCREENSHOT, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
 		}
 		"settings"
 		{
@@ -2614,6 +2475,22 @@
 		"description"		""
 		"inputs"
 		{
+			"button_capture"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"controller_action SCREENSHOT, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
 		}
 		"settings"
 		{
@@ -2628,6 +2505,22 @@
 		"description"		""
 		"inputs"
 		{
+			"button_capture"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"controller_action SCREENSHOT, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
 		}
 		"settings"
 		{
@@ -2642,7 +2535,7 @@
 		"description"		""
 		"inputs"
 		{
-			"button_escape"
+			"button_capture"
 			{
 				"activators"
 				{
@@ -2650,39 +2543,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"game_action EditorControls editor_open_menu, Menu, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"left_bumper"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action EditorControls editor_erase, Erase, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"right_bumper"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action EditorControls editor_draw, Draw, , "
+							"binding"		"controller_action SCREENSHOT, , "
 						}
 					}
 				}
@@ -2700,6 +2561,22 @@
 		"description"		""
 		"inputs"
 		{
+			"button_capture"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"controller_action SCREENSHOT, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
 		}
 		"settings"
 		{
@@ -2714,6 +2591,22 @@
 		"description"		""
 		"inputs"
 		{
+			"button_capture"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"controller_action SCREENSHOT, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
 		}
 		"settings"
 		{
@@ -2728,6 +2621,22 @@
 		"description"		""
 		"inputs"
 		{
+			"button_capture"
+			{
+				"activators"
+				{
+					"Full_Press"
+					{
+						"bindings"
+						{
+							"binding"		"controller_action SCREENSHOT, , "
+						}
+					}
+				}
+				"disabled_activators"
+				{
+				}
+			}
 		}
 		"settings"
 		{
@@ -2742,7 +2651,7 @@
 		"description"		""
 		"inputs"
 		{
-			"left_bumper"
+			"button_capture"
 			{
 				"activators"
 				{
@@ -2750,23 +2659,7 @@
 					{
 						"bindings"
 						{
-							"binding"		"game_action editor_selection editor_selection_rotateCCW, Rotate CCW, , "
-						}
-					}
-				}
-				"disabled_activators"
-				{
-				}
-			}
-			"right_bumper"
-			{
-				"activators"
-				{
-					"Full_Press"
-					{
-						"bindings"
-						{
-							"binding"		"game_action editor_selection editor_selection_rotateCW, Rotate CW, , "
+							"binding"		"controller_action SCREENSHOT, , "
 						}
 					}
 				}
@@ -2782,7 +2675,7 @@
 	}
 	"group"
 	{
-		"id"		"74"
+		"id"		"73"
 		"mode"		"joystick_move"
 		"name"		""
 		"description"		""
@@ -2795,25 +2688,7 @@
 		}
 		"gameactions"
 		{
-			"EditorControls"		"editor_cameraXMoveY"
-		}
-	}
-	"group"
-	{
-		"id"		"75"
-		"mode"		"joystick_move"
-		"name"		""
-		"description"		""
-		"inputs"
-		{
-		}
-		"settings"
-		{
-			"virtual_mode"		"1"
-		}
-		"gameactions"
-		{
-			"EditorControls"		"editor_moveXZ"
+			"MenuControls"		"Scroll"
 		}
 	}
 	"preset"
@@ -2847,8 +2722,7 @@
 			"19"		"button_diamond active"
 			"20"		"left_trigger active"
 			"21"		"right_trigger active"
-			"72"		"joystick active"
-			"71"		"right_joystick active"
+			"73"		"right_joystick active"
 		}
 	}
 	"preset"
@@ -2861,9 +2735,6 @@
 			"50"		"button_diamond active"
 			"51"		"left_trigger active"
 			"52"		"right_trigger active"
-			"75"		"joystick active"
-			"74"		"right_joystick active"
-			"73"		"dpad active"
 		}
 	}
 	"preset"
@@ -2876,7 +2747,7 @@
 			"54"		"button_diamond active"
 			"55"		"left_trigger active"
 			"56"		"right_trigger active"
-			"69"		"dpad active"
+			"71"		"dpad active"
 		}
 	}
 	"preset"

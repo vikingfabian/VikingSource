@@ -1,12 +1,12 @@
 ﻿Change log:
 * Fixed profile flag reading crash
 
-* Added support for Switch, Steam and PS controllers
+* Added support for Switch, Steam and PS controllers (layouts not done)
 * Will store previous control setup
 * Players can choose between mouse mode (free cursor) or controller mode (lock cursor to center)
 * reduced move speed during build mode
 * option to lock mouse to window
-x options for edge push, and added active push
+* options for edge push, and added active push
 * mouse pointers are instanced (for split screen)
 
 

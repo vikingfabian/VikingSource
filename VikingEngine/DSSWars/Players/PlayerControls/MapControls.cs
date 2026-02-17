@@ -1324,6 +1324,9 @@ namespace VikingEngine.DSSWars.Players
             }
 
             movePanLength = player.gameControls.input.move.directionAndTime * PanSpeed();
+            Debug.Log("---");
+            Debug.Log(player.gameControls.input.move.direction.ToString());
+            Debug.Log(player.gameControls.input.moveCursor.direction.ToString());
             panCamera(movePanLength, true);
         }
 

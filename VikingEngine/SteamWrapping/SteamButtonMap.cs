@@ -32,7 +32,14 @@ namespace VikingEngine.SteamWrapping
 
                 if (data.bActive == 1)
                 {
-                    return new Vector2(data.x, data.y);
+                    if (mouseMode)
+                    {
+                        return new Vector2(data.x, data.y);
+                    }
+                    else
+                    {
+                        return new Vector2(data.x, -data.y);
+                    }
                 }
                 return Vector2.Zero;
             }

@@ -897,7 +897,7 @@ namespace VikingEngine.DSSWars.Build
         void buildOptionsToHud(RichBoxContent content)
         {
             bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Build, out Color focusColor);
-            if (viewControllerTabs)
+            if (viewControllerTabs && player.gameControls.input.Controller_TabLeft.IsActive && player.gameControls.input.Controller_TabRight.IsActive)
             {
                 content.newLine();
                 content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });

@@ -55,7 +55,8 @@ namespace VikingEngine.DSSWars.Interface
 
                 
                     bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Pause_GamePlay, out Color focusColor);
-                    if (viewControllerTabs && DssRef.difficulty.setting_allowPauseCommand)
+                    if (viewControllerTabs && DssRef.difficulty.setting_allowPauseCommand &&
+                        player.gameControls.input.Controller_TabLeft.IsActive)
                     {
                         content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
                         content.space(0.5f);

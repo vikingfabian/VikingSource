@@ -286,13 +286,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     }
                 }
 
-                if (input.inputSource.useTouchAsMouseSim)
+                if (input.inputSource.HasControllerInput)
                 {
                     if (input.cancelDownEvent())
                     {
                         setMenuFocus(false, true);
                         clearSelection();
                     }
+                
 
                     if (input.Controller_TabLeft.DownEvent)
                     {

@@ -13,6 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin controller_switch_pro.vdf
+/copy:controller_switch_pro.vdf
+
 #begin DSS/darkforest_bg.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -2274,6 +2277,9 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/WaveXzEffect.fx
+
+#begin steam deck.vdf
+/copy:steam deck.vdf
 
 #begin Texture/Lf3Tiles2.tga
 /importer:TextureImporter
