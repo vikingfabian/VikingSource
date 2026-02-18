@@ -83,9 +83,9 @@ namespace VikingEngine.DSSWars.Interface
                         player.faction.workTab(content);
                         break;
 
-                    case MenuTab.Trade:
-                        player.faction.tradeTab(content);
-                        break;
+                    //case MenuTab.Trade:
+                    //    player.faction.tradeTab(content);
+                    //    break;
                     case MenuTab.Progress:
                         progressTab(player);
                         break;
@@ -158,8 +158,6 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), player.faction.CityFoodSpending), HudLib.NotAvailableColor));
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
-
-               
             }
             
             {

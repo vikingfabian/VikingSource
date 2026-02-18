@@ -175,7 +175,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //cullingBottomRight = WP.SubtileToTilePos(minMax.max);
                 workerCullingMinMax = new Intvector2MinMax(WP.SubtileToTilePos(minMax.min), WP.SubtileToTilePos(minMax.max));
 
-                int workTeamCount = workForce.amount / WorkTeamSize;
+                int workTeamCount = Bound.Min(workForce.amount / WorkTeamSize, 1);
 
                 if (workerStatusActiveCount < workTeamCount)
                 {
@@ -242,12 +242,14 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
+                if (myIndex == 692 || debugTagged)
+                {
+                    lib.DoNothing();
+                }
+
                 if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
                 {
-                    if (myIndex == 249 || debugTagged)
-                    {
-                        lib.DoNothing();
-                    }
+                    
 
                     CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
                     buildWorkQue2();
@@ -796,9 +798,9 @@ namespace VikingEngine.DSSWars.GameObject
 
                     void craftBench(IntVector2 pos, int distanceValue, ItemResourceType[] types, int prioAdd = 0)
                     {
-                        int topPrioValue = WorkTemplate.NoPrio;
-                        ItemResourceType topItem = ItemResourceType.NONE;
-                        WorkPriority topPrio = WorkPriority.Empty;
+                        //int topPrioValue = WorkTemplate.NoPrio;
+                        //ItemResourceType topItem = ItemResourceType.NONE;
+                        //WorkPriority topPrio = WorkPriority.Empty;
                         //bool waitForFullStock = false;
 
                         foreach (var item in types)
@@ -806,7 +808,7 @@ namespace VikingEngine.DSSWars.GameObject
                             WorkPriority template = workTemplate.GetWorkPriority(item, out _);
                             
 
-                            if (template.unlocked && template.value > topPrioValue)
+                            if (template.unlocked &&  template.value > WorkTemplate.NoPrio/*&& template.value > topPrioValue*/)
                             {
                                 //if (item == ItemResourceType.Gold)
                                 //{
@@ -821,20 +823,25 @@ namespace VikingEngine.DSSWars.GameObject
                                     available = bp2.available(this);
                                 }
 
-                                if (available && GetGroupedResource(item).needMore())
+                                if (available && 
+                                    GetGroupedResource(item).needMore() &&
+                                    work_isFreeTile(pos))
                                 {
-                                    topPrioValue = template.value;
-                                    topItem = item;
-                                    topPrio = template;
+                                    //topPrioValue = template.value;
+                                    //topItem = item;
+                                    //topPrio = template;
+                                    workQue.Add(new WorkQueMember(WorkType.Craft, (int)item, 0, pos, template.value, prioAdd, distanceValue));
                                 }
+
+                                //if (topPrioValue > WorkTemplate.NoPrio &&
+                                //    work_isFreeTile(pos))
+                                //{
+                                   
+                                //}
                             }
                         }
 
-                        if (topPrioValue > WorkTemplate.NoPrio &&
-                            work_isFreeTile(pos))
-                        {
-                            workQue.Add(new WorkQueMember(WorkType.Craft, (int)topItem, 0, pos, topPrioValue, prioAdd, distanceValue));
-                        }
+                        
                     }
 
                     void coinMint(IntVector2 pos, int distanceValue)

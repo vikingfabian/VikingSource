@@ -218,8 +218,8 @@ namespace VikingEngine.SteamWrapping
 
             AbsGameStats gamestats = null;
             if (PlatformSettings.RunProgram == StartProgram.LootFest3)
-            { 
-                gamestats = LootFest.LfRef.stats; 
+            {
+                gamestats = LootFest.LfRef.stats;
             }
             else if (PlatformSettings.RunProgram == StartProgram.DSS)
             {
@@ -252,12 +252,12 @@ namespace VikingEngine.SteamWrapping
                     isNetworkInitialized = true;
                 }
             }
-            
+
             DLC = new SteamDLC();
 
             //RequestStats();
         }
-        
+
         public void Update()
         {
             if (isInitialized)

@@ -169,9 +169,9 @@ namespace VikingEngine.DSSWars.Interface
                         deliveryTab(content);
                         break;
                                            
-                    case MenuTab.Trade:
-                        tradeTab(content);
-                        break;
+                    //case MenuTab.Trade:
+                    //    tradeTab(content);
+                    //    break;
 
                     case MenuTab.Build:
                         player.gameControls.build.toHud(player, content, city);
@@ -2442,10 +2442,10 @@ namespace VikingEngine.DSSWars.Interface
             
         //}
 
-        void tradeTab(RichBoxContent content)
-        {
-            city.tradeTemplate.toHud(player,content, city.GetFaction(), city);
-        }
+        //void tradeTab(RichBoxContent content)
+        //{
+        //    city.tradeTemplate.toHud(player,content, city.GetFaction(), city);
+        //}
 
         //void tabClick(int tab)
         //{
