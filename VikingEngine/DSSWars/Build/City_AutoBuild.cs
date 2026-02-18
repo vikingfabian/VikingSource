@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Steamworks;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
@@ -652,6 +653,16 @@ namespace VikingEngine.DSSWars.GameObject
             if (set)
             {
                 automateCity = value;
+                if (automateCity == false)
+                {
+                    //Pull faction settings
+                    var player = GetPlayer().GetLocalPlayer();
+                    if (player != null)
+                    {
+                        DssRef.world.copyStockPile(player, player.faction, this, CopyPasteOption.FactionToCity, ResourceGroupType.NUM);
+                        workTemplate.setAllToFollowFactionAndUpdate(this, player.faction.workTemplate);
+                    }
+                }
                 (value ? SoundLib.click : SoundLib.back).Play();
             }
             return automateCity;

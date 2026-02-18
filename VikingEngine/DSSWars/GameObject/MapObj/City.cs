@@ -4023,8 +4023,8 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
-                workTemplate.onFactionChange(this, newFaction.workTemplate);
-                tradeTemplate.onFactionValueChange(newFaction.tradeTemplate);
+                workTemplate.setAllToFollowFactionAndUpdate(this, newFaction.workTemplate);
+                //tradeTemplate.onFactionValueChange(newFaction.tradeTemplate);
                 technology.addFactionUnlocked(newFaction.technology, true, false);
 
                 if (newFaction.player != null && newFaction.player.IsLocalPlayer())

@@ -1116,7 +1116,7 @@ namespace VikingEngine.DSSWars.Work
                     {
                         ItemResourceType tradeForItem = (ItemResourceType)workSubType;
                         var toCity = DssRef.world.tileGrid.Get(targetSubTile / WorldData.TileSubDivitions).City();
-                        int goldCost = toCity.SellCost(tradeForItem);
+                        int goldCost = DssConst.FoodGoldValue;// toCity.SellCost(tradeForItem);
 
                         carry = new ItemResource(ItemResourceType.Gold, 1, 1, goldCost * DssConst.Worker_TrossWorkerCarryWeight);
                     }
@@ -1125,7 +1125,7 @@ namespace VikingEngine.DSSWars.Work
                 case WorkType.TrossCityTrade:
                     {
                         var toCity = DssRef.world.tileGrid.Get(targetSubTile / WorldData.TileSubDivitions).City();
-                        int goldCost = toCity.SellCost(ItemResourceType.Food_G);
+                        int goldCost = DssConst.FoodGoldValue;//toCity.SellCost(ItemResourceType.Food_G);
 
                         carry = new ItemResource(ItemResourceType.Gold, 1, 1, goldCost);
                     }
