@@ -2213,7 +2213,14 @@ namespace VikingEngine.DSSWars
         List<InputSource> availableInput()
         {
             var result = joinHandler.ListConneted();
-            result.Insert(0, InputSource.DefaultPC);
+            if (Ref.steam.isDeck)
+            {
+                result.Add(InputSource.DefaultPC);
+            }
+            else
+            {
+                result.Insert(0, InputSource.DefaultPC);
+            }
             return result;
         }
 

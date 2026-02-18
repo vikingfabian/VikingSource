@@ -90,12 +90,7 @@ namespace VikingEngine.SteamWrapping
                 new PJ.PjEngine.GameStats();
 #endif
                 }
-//                else if (PlatformSettings.RunProgram == StartProgram.DSS)
-//                {
-//#if DSS
-//                    new DSSWars.Data.GameStats();
-//#endif
-//                }
+            
             }
             else
             {
@@ -202,11 +197,21 @@ namespace VikingEngine.SteamWrapping
             }
         }
 
+        public bool isDeck = false;
+
         void SetupSubsystems(SteamApplicationSettings settings)
         {
+            isDeck = SteamUtils.IsSteamRunningOnSteamDeck();
+       
+            if (isDeck)
+            {
+                if (Ref.gamesett != null && !Ref.gamesett.HasSaveFile)
+                {
+                    Ref.gamesett.UiScale = 1.5f;
+                }
+            }
+
             alwaysInit();
-            //warningHook = SteamAPIDebugTextHook;
-            //SteamAPI.SteamClient().SetWarningMessageHook(warningHook);
 
             gameOverlayActivatedCB = new Callback<GameOverlayActivated_t>(OnGameOverlayActivated, false);
             UserStatsRecievedCallback = new Callback<UserStatsReceived_t>(OnUserStatsRecieved, false);

@@ -326,6 +326,14 @@ namespace VikingEngine.HUD.RichMenu
             }
             return Input.Mouse.Instances[0];
         }
+        public IButtonMap MouseClick()
+        {
+            if (playerData.inputMap != null)
+            {
+                return playerData.inputMap.MenuClick;
+            }
+            return new MouseButtonMap(MouseButton.Left);
+        }
 
         public bool intersectCursor()
         {

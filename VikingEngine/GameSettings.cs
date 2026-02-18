@@ -32,7 +32,7 @@ namespace VikingEngine
         const string FileEnd = ".set";
 
         DataStream.FilePath path = new DataStream.FilePath(null, FileName, FileEnd, true, true);
-
+        public bool HasSaveFile = false;
         public int ChunkLoadRadius = LootFest.Map.World.StandardOpenRadius;
         public ThreeOptions MapLoadingSpeed = ThreeOptions.Medium;
         static readonly int[] FrameRateOptions = new int[] { 30, 60, 75, 100, 120, 144, 165, 240, 360 };
@@ -95,6 +95,10 @@ namespace VikingEngine
             keyboardMap = new InputMap(true);
             keyboardMap.setInputSource(new Input.InputSource(Input.InputSourceType.KeyboardMouse, 0));
             Ref.gamesett = this;
+            if (Ref.steam.isDeck)
+            {
+                UiScale = 1.5f;
+            }
         }
 
         public void Save()
@@ -172,6 +176,7 @@ namespace VikingEngine
 
         public void readSettings(System.IO.BinaryReader r, int version)
         {
+            HasSaveFile = true;
             if (version > Version || version == 32) return;
 
             Engine.Screen.ReadSettings(r, version);
