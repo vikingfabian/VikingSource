@@ -1,6 +1,7 @@
 ﻿Change log:
 * Fixed profile flag reading crash
-
+* There is always room for one worker (dead city fix)
+* 
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

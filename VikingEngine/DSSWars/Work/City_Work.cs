@@ -175,7 +175,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //cullingBottomRight = WP.SubtileToTilePos(minMax.max);
                 workerCullingMinMax = new Intvector2MinMax(WP.SubtileToTilePos(minMax.min), WP.SubtileToTilePos(minMax.max));
 
-                int workTeamCount = workForce.amount / WorkTeamSize;
+                int workTeamCount = Bound.Min(workForce.amount / WorkTeamSize, 1);
 
                 if (workerStatusActiveCount < workTeamCount)
                 {
