@@ -159,6 +159,22 @@ namespace VikingEngine
         TouchSurface2UpDown,
         TouchSurface1LeftRight,
         TouchSurface2LeftRight,
+
+        GyroMove,
+        GyroPitch,
+        GyroYaw,
+        GyroRoll,
+        
+        //Playstatation
+        PsButtonTriangle,
+        PsButtonCirkle,
+        PsButtonSquare,
+        PsButtonCross,
+        PsTouchPad,
+        PsButtonShare,
+        PsButtonOptions,
+        PsGuideButton,
+
         ControllerIconP1,
         ControllerIconP2,
         ControllerIconP3,
@@ -173,10 +189,7 @@ namespace VikingEngine
 
         DisconnectSquare,
 
-        GyroMove,
-        GyroPitch,
-        GyroYaw,
-        GyroRoll,
+        
 
         GenericButton0,
         GenericButton1,
@@ -195,14 +208,7 @@ namespace VikingEngine
         GenericButton14,
         GenericButtonAny,
 
-        PsButtonTriangle,
-        PsButtonCirkle,
-        PsButtonSquare,
-        PsButtonCross,
-        PsTouchPad,
-        PsButtonShare,
-        PsButtonOptions,
-        PsGuideButton,
+        
 
         ButtonDisabledCross,
         TextureWaterMap,

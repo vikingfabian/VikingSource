@@ -21,7 +21,7 @@ namespace VikingEngine.PJ
             : base()
         {
 
-            Input.Mouse.View();//Input.Mouse.Hide();//Input.Mouse.Visible = true;
+            Input.Mouse.ViewAll();//Input.Mouse.Hide();//Input.Mouse.Visible = true;
             draw.ClrColor = new Color(137, 191, 245);//Color.CornflowerBlue;
 
             //Calc order

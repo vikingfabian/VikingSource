@@ -210,12 +210,13 @@ namespace VikingEngine.DSSWars.Players
             faction.diplomaticSide = DiplomaticSide.Light;
 
             InputMap input = new InputMap(playerindex);
-            input.setInputSource(pStorage.inputSource.sourceType, pStorage.inputSource.controllerIndex);
-            if (pStorage.inputSource.IsController)
+            input.setInputSource(pStorage.inputSource);
+
+            if (pStorage.inputSource.IsXnaController)
             {
                 input.copyDataFrom(Ref.gamesett.controllerMap);
             }
-            else
+            else if (pStorage.inputSource.HasKeyBoard)
             {
                 input.copyDataFrom(Ref.gamesett.keyboardMap);
             }

@@ -136,12 +136,13 @@ namespace VikingEngine.HUD.RichBox
             //Debug.Log($"Menu content offset: {menu.richBox.GetOffset()}");
             unused1 = false;
             needRefresh = false;
+            var mouse = menu.Mouse();
             if (interactionStack != null)
             {
                 var result = interactionStack.update(mousePosOffSet, menu, useClickInput, out needRefresh, out bool endInteraction);
                 if (endInteraction)
                 {
-                    interactionStack.end(Input.Mouse.Position.X, out needRefresh);
+                    interactionStack.end(mouse.Position.X, out needRefresh);
                     interactionStack = null;
                 }
                 return result;
@@ -152,9 +153,9 @@ namespace VikingEngine.HUD.RichBox
             VectorRect area = VectorRect.Zero;
             //VectorRect area2 = VectorRect.Zero;
             //int hoverIx = 0;
-            if (clickInput.IsMouse)
+            //if (clickInput.IsMouse)
             {
-                Vector2 pos = Input.Mouse.Position + mousePosOffSet;
+                Vector2 pos = mouse.Position + mousePosOffSet;
                 //Debug.Log($"mouse pos: {pos}");
                 hover = null;
                 

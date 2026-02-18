@@ -14,6 +14,12 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Interface
 {
+    interface IPlayerHud_Menu
+    {
+        RichMenu Menu { get; }
+        bool IsFactionMenu { get; }
+    }
+
     class GameHud
     {
         LocalPlayer player;
@@ -207,6 +213,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 refresh |= player.gameControls.map.selection.isNew ||
                     player.gameControls.map.hover.isNew ||
+                    SteamWrapping.SInput.InputLayerChange ||
                     needRefresh;
 
 
@@ -238,7 +245,7 @@ namespace VikingEngine.DSSWars.Interface
                 }
 
 
-                if (player.gameControls.input.inputSource.HasMouse)
+                if (player.gameControls.input.inputSource.HasMouseInstance)
                 {
                     if (head != null)
                     {

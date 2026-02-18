@@ -13,6 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin controller_switch_pro.vdf
+/copy:controller_switch_pro.vdf
+
 #begin DSS/darkforest_bg.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -2005,6 +2008,9 @@
 /processorParam:TextureFormat=Compressed
 /build:Font/ThaiRegular.spritefont
 
+#begin game_actions.vdf
+/copy:game_actions.vdf
+
 #begin Modding/ModConst.txt
 /copy:Modding/ModConst.txt
 
@@ -2179,6 +2185,9 @@
 /processorParam:TextureFormat=Compressed
 /build:Model/sphere.fbx
 
+#begin official_controller_xbox.vdf
+/copy:official_controller_xbox.vdf
+
 #begin Shaders/DeferredRenderer/DepthWriter.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -2268,6 +2277,9 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/WaveXzEffect.fx
+
+#begin steam deck.vdf
+/copy:steam deck.vdf
 
 #begin Texture/Lf3Tiles2.tga
 /importer:TextureImporter

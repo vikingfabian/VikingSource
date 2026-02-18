@@ -398,7 +398,11 @@ namespace VikingEngine.DSSWars.Work
             }
         }
 
-
+        public void setAllToFollowFactionAndUpdate(City city, WorkTemplate factionTemplate)
+        {
+            setAllToFollowFaction();
+            onFactionChange(city, factionTemplate);
+        }
 
         public void onFactionChange(City city, WorkTemplate factionTemplate)
         {

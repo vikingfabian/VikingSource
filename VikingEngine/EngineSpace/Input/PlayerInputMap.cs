@@ -24,6 +24,9 @@ namespace VikingEngine.Input
 
         public HUD.MenuInputMap menuInput;
 
+        public MouseInstance mouse = null;
+        IDirectionalMap touchMap;
+
         public PlayerInputMap()
         { }
 
@@ -31,8 +34,7 @@ namespace VikingEngine.Input
         {
             this.playerIndex = player;
             init();
-            setInputSource(InputSourceType.KeyboardMouse, 0);
-            
+            setInputSource(new InputSource(InputSourceType.KeyboardMouse));            
         }
 
         virtual protected void init()
@@ -42,17 +44,20 @@ namespace VikingEngine.Input
 
         abstract public IButtonMap MenuClick { get; }
 
-        public void setInputSource(InputSourceType inputSource, int index)
+        public void setInputSource(InputSource source)
         {
-            this.inputSource = new InputSource(inputSource, index);
+            this.inputSource = source;
             //this.controllerIndex = index;
 
-            switch (inputSource)
+            switch (inputSource.sourceType)
             {
                 case InputSourceType.Mouse:
                 case InputSourceType.Keyboard:
                 case InputSourceType.KeyboardMouse:
                     keyboardSetup();
+                    break;
+                case InputSourceType.SteamInput:
+                    steamSetup();
                     break;
                 case InputSourceType.XController:
                     xboxSetup();
@@ -71,6 +76,8 @@ namespace VikingEngine.Input
         
         abstract public void keyboardSetup();
         abstract public void xboxSetup();
+
+        virtual public void steamSetup(){ }
         //abstract public void ps4Setup();
         abstract public void genericControllerSetup();
 

@@ -17,6 +17,7 @@ using VikingEngine.Input;
 using VikingEngine.LootFest.BlockMap.Level;
 using VikingEngine.LootFest.GO.PickUp;
 using VikingEngine.LootFest.Players;
+using VikingEngine.PJ;
 using VikingEngine.PJ.Display;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.HeroQuest;
@@ -405,6 +406,43 @@ namespace VikingEngine.DSSWars.Interface
             content.h2(DssRef.lang.Settings_Title_Input, HudLib.TitleColor_Head);
             content.newLine();
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_PanOnZoom) }, Ref.gamesett.panOnZoomProperty));
+
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Input_LockMouseToWindow) },
+                Ref.gamesett.LockMouseProperty));
+            
+            if (Screen.PcDisplayMode != WindowDisplayMode.Windowed || Ref.gamesett.lockMouseToWindow)
+            {
+                var edgePushOptions = new DropDownBuilder("edge push");
+                
+                for (MouseEdgePush opt = 0; opt < MouseEdgePush.NUM; opt++)
+                {
+                    string caption;
+                    switch (opt)
+                    {
+                        default:
+                            caption = DssRef.todoLang.Input_NoControl;
+                            break;
+                        case MouseEdgePush.Passive:
+                            caption = DssRef.todoLang.Input_PassiveControl;
+                            break;
+                        case MouseEdgePush.Active:
+                            caption = DssRef.todoLang.Input_ActiveControl;
+                            break;
+
+                    }
+
+                    edgePushOptions.AddOption(caption, opt == Ref.gamesett.edgePush, opt == MouseEdgePush.Active,
+                        new RbAction1Arg<MouseEdgePush>((MouseEdgePush opt) =>
+                        {
+                            Ref.gamesett.edgePush = opt;
+                            Ref.gamesett.settingsHasChanged = true;
+                            menu.CloseDropDown();
+                        }, opt), null);
+                }
+                edgePushOptions.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.Input_MouseEdgePush_Title, menu);
+
+            }
 
             content.newLine();
             content.Add(new RbImage(SpriteName.MouseScroll));

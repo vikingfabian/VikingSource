@@ -1085,11 +1085,11 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         {
             if (menu == null)
             {
-                Input.Mouse.CenterLockAndHide();
+                Input.Mouse.CenterLockAndHideAll();
             }
             else
             {
-                Input.Mouse.View();
+                Input.Mouse.ViewAll();
             }
             //Input.Mouse.Visible = menu != null;
         }

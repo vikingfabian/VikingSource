@@ -214,6 +214,17 @@ namespace VikingEngine
             return value;
         }
 
+        public static Vector2 FlipX(Vector2 value)
+        {
+            value.X = -value.X;
+            return value;
+        }
+        public static Vector2 FlipY(Vector2 value)
+        {
+            value.Y = -value.Y;
+            return value;
+        }
+
         public static Vector3 FlipX(Vector3 value)
         {
             value.X = -value.X;

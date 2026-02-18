@@ -303,7 +303,7 @@ namespace VikingEngine.HUD.RichBox
         DirXYstepping controllerStepping = new DirXYstepping();
         public DragButtonInteraction(RichMenu.RichMenu menu, RbDragButton dragButton) 
         {
-            prevMousePos = Input.Mouse.Position;
+            prevMousePos = menu.playerData.inputMap.mouse.Position;
             this.dragButton = dragButton;
             menu.interaction.interactionStack = this;
             timeStamp = TimeStamp.Now();
@@ -314,21 +314,21 @@ namespace VikingEngine.HUD.RichBox
         }
         public override bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClick, out bool needRefresh, out bool endInteraction)
         {
-            
-            float move = Input.Mouse.Position.X - prevMousePos.X;
+            var mouse = menu.playerData.inputMap.mouse;
+            float move = mouse.Position.X - prevMousePos.X;
             if (Math.Abs(move) > moveLengthForValueChange)
             {
                 float change = (int)(move / moveLengthForValueChange);
                 prevMousePos.X += change * moveLengthForValueChange;
                 
-                if (Input.Mouse.Position.X < mouseXRange.Min)
+                if (mouse.Position.X < mouseXRange.Min)
                 {
-                    Input.Mouse.SetPosition(new IntVector2(mouseXRange.Max, Input.Mouse.Position.Y));
+                    mouse.SetPosition(new IntVector2(mouseXRange.Max, Input.Mouse.Position.Y));
                     prevMousePos.X = mouseXRange.Max;
                 }
                 else if (Input.Mouse.Position.X > mouseXRange.Max)
                 {
-                    Input.Mouse.SetPosition(new IntVector2(mouseXRange.Min, Input.Mouse.Position.Y));
+                    mouse.SetPosition(new IntVector2(mouseXRange.Min, Input.Mouse.Position.Y));
                     prevMousePos.X = mouseXRange.Min;
                 }
                 needRefresh = true;
@@ -349,7 +349,7 @@ namespace VikingEngine.HUD.RichBox
             pushScroll = 0;
             pointer.pointer.Visible = false;
 
-            int steps = controllerStepping.update(pointer.inputMap.move.direction).X;
+            int steps = controllerStepping.update(pointer.inputMap.move.direction, true).X;
             //pointer.inputMap.move.
             //controllerMove += pointer.accelerateInput(pointer.inputMap.move.direction).X * 0.2f;
 

@@ -47,8 +47,9 @@ namespace VikingEngine.DSSWars.Build
 
         public static readonly MapPaintToolShape[] AvailableToolShapes = { MapPaintToolShape.Free, MapPaintToolShape.Line, MapPaintToolShape.LShape, MapPaintToolShape.Area };
 
+        
         public SelectTileResult buildMode = SelectTileResult.None;
-        public BuildAndExpandType placeBuildingType = BuildAndExpandType.WorkerHut;
+        public BuildAndExpandType placeBuildingType = BuildAndExpandType.OrchardApple;
         public MapPaintToolShape toolShape = MapPaintToolShape.Area;
         LocalPlayer player;
         City city;
@@ -896,7 +897,7 @@ namespace VikingEngine.DSSWars.Build
         void buildOptionsToHud(RichBoxContent content)
         {
             bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Build, out Color focusColor);
-            if (viewControllerTabs)
+            if (viewControllerTabs && player.gameControls.input.Controller_TabLeft.IsActive && player.gameControls.input.Controller_TabRight.IsActive)
             {
                 content.newLine();
                 content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
@@ -1638,7 +1639,7 @@ namespace VikingEngine.DSSWars.Build
 
         void modeClick(SelectTileResult set)
         {
-            if (player.gameControls.input.inputSource.IsController)
+            if (player.gameControls.input.inputSource.ControllerMode)
             {
                 blockBuildUpdate = true;
             }
@@ -1651,7 +1652,7 @@ namespace VikingEngine.DSSWars.Build
 
         public void buildingTypeClick(BuildAndExpandType type)
         {
-            if (player.gameControls.input.inputSource.IsController)
+            if (player.gameControls.input.inputSource.ControllerMode)
             {
                 blockBuildUpdate = true;
             }

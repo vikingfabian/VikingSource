@@ -50,7 +50,7 @@ namespace VikingEngine.LootFest
 
             if (PlatformSettings.PC_platform)
             {
-                Input.Mouse.CenterLockAndHide();//Input.Mouse.Visible = false;
+                Input.Mouse.CenterLockAndHideAll();//Input.Mouse.Visible = false;
             }
         }
         

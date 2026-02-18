@@ -113,13 +113,13 @@ namespace VikingEngine.DSSWars.Interface
                     }
 
                     bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.ArmyMenu, out Color focusColor);
-                    if (viewControllerTabs)
+                    if (viewControllerTabs && player.gameControls.input.Controller_TabLeft.IsActive)
                     {
                         content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
                         content.space(0.5f);
                     }
                     var tabGroup = new ArtTabgroup(tabs, tabSel, player.armyTabClick);
-                    if (viewControllerTabs)
+                    if (viewControllerTabs && player.gameControls.input.Controller_TabRight.IsActive)
                     {
                         tabGroup.endAttach = new List<AbsRichBoxMember> { new RbSpace(0.5f), new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor } };
                     }

@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Reflection.Metadata.Ecma335;
-using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.DSSWars.Players.PlayerControls;
 using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
+using VikingEngine.Input;
 using VikingEngine.Physics;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.ToggEngine;
@@ -56,7 +57,7 @@ namespace VikingEngine.DSSWars.Players
 
         public Selection hover;
         public Selection selection;
-        bool controllerInput;
+        bool controllerMode;
         public bool unlockEdgePush = false;
 
         public AbsGameObject cameraFocus = null;
@@ -89,15 +90,19 @@ namespace VikingEngine.DSSWars.Players
             //lightcamera.TiltX = MathHelper.PiOver2;
             player.playerData.view.LightCamera= lightcamera;
 
-            controllerInput = player.gameControls.input.inputSource.IsController;
+            controllerMode = player.gameControls.input.inputSource.ControllerMode;
 
             rectangleBound = new ScreenToSpaceRectangleBound(player.playerData.view, Map.Settings.Height.DeepWaterHeight-1, Map.Settings.Height.MaxHeight +1);
 
-            if (controllerInput)
+            if (controllerMode)
             {
-                controllerPointer = new Image(SpriteName.cmdPointer, player.playerData.view.DrawAreaF.PercentToPosition(0.6f, 0.5f), Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
-
+                controllerPointer = new Image(SpriteName.cmdPointer, CursorCenterPos(), Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
             }
+        }
+
+        public Vector2 CursorCenterPos()
+        {
+            return player.playerData.view.DrawAreaF.PercentToPosition(0.6f, 0.5f);
         }
 
         public void terrainSearchClick(SubTile terrain)
@@ -357,8 +362,9 @@ namespace VikingEngine.DSSWars.Players
             keypPanInput();
             cameraFocusUpdate();
             updateCamera();
-            if (!player.gameControls.input.mousePan.IsDown)
+            if (panDownInput && !player.gameControls.input.mousePan.IsDown)
             {
+                bool isa = Ref.main.IsActive;
                 panDownInput = false;
             }
         }
@@ -366,13 +372,13 @@ namespace VikingEngine.DSSWars.Players
 
         public Vector2 pointerPos()
         {
-            if (controllerInput)
+            if (controllerMode)
             {
                 return controllerPointer.position;
             }
             else
             {
-                return Input.Mouse.Position;
+                return player.gameControls.input.mouse.Position;
             }
         }
 
@@ -425,13 +431,13 @@ namespace VikingEngine.DSSWars.Players
             }
             else
             {
-                if (controllerInput)
+                if (controllerMode)
                 {
                     multiSelectMoveLenght += movePanLength.Length();
                 }
                 else
                 {
-                    multiSelectMoveLenght += Input.Mouse.MoveDistance.Length();
+                    multiSelectMoveLenght += player.gameControls.input.mouse.MoveDistance.Length();
                 }
                 multiSelectHoldTime += Ref.DeltaTimeMs;
 
@@ -740,7 +746,7 @@ namespace VikingEngine.DSSWars.Players
                     return;
                 }
 
-                if (controllerInput)
+                if (controllerMode)
                 {
                     controllerNearHoverUpdate(nearMapObjects, ref intersectObj);
                 }
@@ -1008,7 +1014,7 @@ namespace VikingEngine.DSSWars.Players
         public bool focusedObjectMenuState()
         {
             return selection.obj != null &&
-                controllerInput &&
+                controllerMode &&
                 selection.obj.gameobjectType() == GameObjectType.City;
         }
 
@@ -1073,7 +1079,7 @@ namespace VikingEngine.DSSWars.Players
             bool bClear = selection.clear();
             
             player.hud.objMenu.menu?.clearState();
-            if (controllerInput)
+            if (controllerMode)
             {
                 controllerPointer.Visible = true;
             }
@@ -1133,7 +1139,7 @@ namespace VikingEngine.DSSWars.Players
 
         private void zoomInput()
         {
-            if (player.gameControls.input.inputSource.IsController &&
+            if (player.gameControls.input.inputSource.IsXnaController &&
                 player.gameControls.input.inputSource.Controller.IsButtonDown(Buttons.LeftTrigger))
             { return; }
 
@@ -1155,15 +1161,15 @@ namespace VikingEngine.DSSWars.Players
                 {
                     camera.CurrentZoom = targetZoom;
                 }
-                if (!controllerInput)
+                if (!controllerMode)
                 {
                     camera.positionFromRotation();
                     camera.RecalculateMatrices();
                     if (Ref.gamesett.panOnZoom)
                     {
-                        var mousePosition2 = screenPosToWorldPos(Input.Mouse.Position);
+                        var mousePosition2 = screenPosToWorldPos(player.gameControls.input.mouse.Position);
                         Vector3 diff = mousePosition2 - pointerPosWP;
-                        panCamera(VectorExt.V3XZtoV2( diff), true);
+                        panCamera(VectorExt.V3XZtoV2( -diff), true);
                     }
                 }
             }
@@ -1184,9 +1190,10 @@ namespace VikingEngine.DSSWars.Players
             const float RotationSpeed = 0.00006f;
             const float TargetRotationSpeed = 0.005f;
 
-            if (Math.Abs(player.gameControls.input.cameraTiltZoom.direction.X) > XBuffer)
+            var camStick = InputLib.OnlyOneDimentionOut(player.gameControls.input.cameraStick.directionAndTime);
+            if (camStick.X != 0)
             {
-                lastRotationDir = player.gameControls.input.cameraTiltZoom.directionAndTime.X;
+                lastRotationDir = camStick.X;
                 camRotationKeyDownTime += Ref.DeltaTimeMs;
                 camRotation.Value += RotationSpeed * Ref.DeltaTimeMs * lastRotationDir;
             }
@@ -1253,14 +1260,19 @@ namespace VikingEngine.DSSWars.Players
 
             camera.TiltX = camRotation.Value;
 
-            if (player.gameControls.input.inputSource.HasKeyBoard)
+            if (player.gameControls.input.inputSource.IsSteamInput)
+            {
+                player.mapLayersManager.TiltYAdd = Bound.Set(player.mapLayersManager.TiltYAdd + player.gameControls.input.cameraTiltUpSmooth.directionAndTime.Y * 0.0012f,
+                    3 * TiltYUpAngle, -1 * TiltYUpAngle);
+            }
+            else if (player.gameControls.input.inputSource.HasKeyBoard)
             {
                 if (player.gameControls.input.cameraTiltUp.DownEvent)
                 {
                     toggleCameraTiltUp();
                 }
             }
-            else if (player.gameControls.input.inputSource.IsController)
+            else if (player.gameControls.input.inputSource.IsXnaController)
             {
                 controllerCameraUp();
             }
@@ -1290,9 +1302,14 @@ namespace VikingEngine.DSSWars.Players
         {
             const float MinZoomAffect = 1.5f;
 
-            if (controllerInput)
+            if (controllerMode)
             {
-                return Ref.gamesett.keyPanSpeed * 0.0003f * Bound.Min(targetZoom, MinZoomAffect);
+                float result = Ref.gamesett.keyPanSpeed * 0.0003f * Bound.Min(targetZoom, MinZoomAffect);
+                if (player.gameControls.InBuildOrdersMode())
+                {
+                    result *= 0.6f;
+                }
+                return result;
             }
             else
             {
@@ -1313,7 +1330,10 @@ namespace VikingEngine.DSSWars.Players
                 return;
             }
 
-            movePanLength = -player.gameControls.input.move.directionAndTime * PanSpeed();
+            movePanLength = player.gameControls.input.move.directionAndTime * PanSpeed();
+            //Debug.Log("---");
+            //Debug.Log(player.gameControls.input.move.direction.ToString());
+            //Debug.Log(player.gameControls.input.moveCursor.direction.ToString());
             panCamera(movePanLength, true);
         }
 
@@ -1323,7 +1343,7 @@ namespace VikingEngine.DSSWars.Players
             //{
             //
             //
-            if (!controllerInput)
+            if (!controllerMode)
             {
                 if (player.gameControls.input.mousePan.DownEvent)
                 {
@@ -1333,25 +1353,25 @@ namespace VikingEngine.DSSWars.Players
                 if (panDownInput && hasMouseMapPanInput())
                 {
                     //bool hasValue;
-                    Vector3 prevMousePosition = screenPosToWorldPos(Input.Mouse.Position - Input.Mouse.MoveDistance);
+                    Vector3 prevMousePosition = screenPosToWorldPos(player.gameControls.input.mouse.Position - player.gameControls.input.mouse.MoveDistance);
 
                     Vector3 diff = pointerPosWP - prevMousePosition;
 
-                    panCamera(VectorExt.V3XZtoV2(diff), false);
+                    panCamera(VectorExt.V3XZtoV2(-diff), false);
 
                     return;
                 }
 
-                if (DssRef.state.localPlayers.Count == 1)
-                {
-                    if (!player.gameControls.input.mousePan.IsDown &&
-                        //!player.gameControls.input.ControllerSelect.IsDown &&
-                        Input.Mouse.HasEdgePush())
+                //if (DssRef.state.localPlayers.Count == 1)
+                //{
+                    if (!panDownInput &&
+                        player.gameControls.input.mouse.HasEdgePush())
                     {
-                        panCamera(-Input.Mouse.EdgePush() * Ref.DeltaTimeMs * PanSpeed(), true);
+                        var speed = PanSpeed();
+                        panCamera(player.gameControls.input.mouse.EdgePush(Ref.DeltaTimeMs * speed, speed), true);
 
                     }
-                }
+                //}
             }
             //}
         }
@@ -1408,7 +1428,7 @@ namespace VikingEngine.DSSWars.Players
                     pan = VectorExt.RotateVector(pan, camera.Tilt.X - CamStartRotation);
                 }
 
-                camera.MoveLookTargetXZ( - pan);
+                camera.MoveLookTargetXZ(pan);
                 onPan();
             }
         }
@@ -1449,7 +1469,7 @@ namespace VikingEngine.DSSWars.Players
             return player.gameControls.input.inputSource.HasMouse &&
                 rectangleLines == null &&
                 player.gameControls.input.mousePan.IsDown &&
-                Input.Mouse.bMoveInput;
+                player.gameControls.input.mouse.bMoveInput;
         }
 
         private void updateCamera()

@@ -179,7 +179,7 @@ namespace VikingEngine.DSSWars.Interface
             //JoyStickValue right = controller.JoyStickValue(Stick.Right);
 
             Vector2 left = input.move.direction;
-            Vector2 right = input.cameraTiltZoom.direction + Input.Mouse.MoveDistance;
+            Vector2 right = input.cameraStick.direction + Input.Mouse.MoveDistance;
 
             const float MoveLength = 10;
             LS.Xpos = LSCenter.X +  input.move.direction.X * MoveLength;

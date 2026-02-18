@@ -19,7 +19,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         void init(VoxelDesigner vDesigner)
         {
-            Input.Mouse.CenterLockAndHide();//Input.Mouse.Visible = false;
+            Input.Mouse.CenterLockAndHideAll();//Input.Mouse.Visible = false;
             desinger = vDesigner;
             Ref.draw.ClrColor = Color.CornflowerBlue;
         }

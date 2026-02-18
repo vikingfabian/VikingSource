@@ -34,6 +34,12 @@ namespace VikingEngine.DSSWars.Players
             //model.Visible = false;
         }
 
+        public void clear()
+        {
+            hasSelection = false;
+            selectTileResult = SelectTileResult.None;
+        }
+
         public static Mesh CreateOutlineModel(LocalPlayer player, bool isHover)
         {
             LoadedMesh loadedMesh;

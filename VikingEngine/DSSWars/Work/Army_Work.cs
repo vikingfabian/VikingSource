@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (bufferGoal_minutes > 0 && 
                         (food + conservedFood) < bufferGoalFood && 
                         city.resourceAmount(EntityComponent.CityResoureIndex.food) >= ItemPropertyColl.CarryFood &&                            
-                        faction.hasGold(city.SellCost(ItemResourceType.Food_G) * ItemPropertyColl.CarryFood, this))
+                        faction.hasGold(DssConst.FoodGoldValue * ItemPropertyColl.CarryFood, this))
                     {
                         int statusIx = getOrCreateFreeWorker();
                         var status = workerStatuses[statusIx];

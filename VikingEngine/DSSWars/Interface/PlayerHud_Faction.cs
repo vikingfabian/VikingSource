@@ -13,7 +13,7 @@ using VikingEngine.HUD.RichMenu;
 
 namespace VikingEngine.DSSWars.Interface
 {
-    class PlayerHud_Faction
+    class PlayerHud_Faction: IPlayerHud_Menu
     {
         public RichMenu menu;
         RichBoxContent content;
@@ -31,6 +31,9 @@ namespace VikingEngine.DSSWars.Interface
                 bgTex.SetOpacity(0.95f);
             }
         }
+
+        public RichMenu Menu => menu;
+        public bool IsFactionMenu { get { return true; } }
 
         void deleteMenu()
         {
@@ -80,9 +83,9 @@ namespace VikingEngine.DSSWars.Interface
                         player.faction.workTab(content);
                         break;
 
-                    case MenuTab.Trade:
-                        player.faction.tradeTab(content);
-                        break;
+                    //case MenuTab.Trade:
+                    //    player.faction.tradeTab(content);
+                    //    break;
                     case MenuTab.Progress:
                         progressTab(player);
                         break;
@@ -155,8 +158,6 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), player.faction.CityFoodSpending), HudLib.NotAvailableColor));
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
-
-               
             }
             
             {

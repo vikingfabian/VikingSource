@@ -185,7 +185,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
 
-        public TradeTemplate tradeTemplate = new TradeTemplate();
+        //public TradeTemplate tradeTemplate = new TradeTemplate();
         public const int DefaultFoodBuffer = 500;
        
         public void defaultResourceBuffer(WorldData world)
@@ -1167,35 +1167,35 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
-        public int SellCost(ItemResourceType itemResourceType)
-        {
-            TradeResource resource;
-            switch (itemResourceType)
-            {
-                case ItemResourceType.Food_G:
-                    resource = tradeTemplate.food;
-                    break;
+        //public int SellCost(ItemResourceType itemResourceType)
+        //{
+        //    TradeResource resource;
+        //    switch (itemResourceType)
+        //    {
+        //        case ItemResourceType.Food_G:
+        //            resource = tradeTemplate.food;
+        //            break;
 
-                case ItemResourceType.HardWood:
-                case ItemResourceType.SoftWood:
-                    resource = tradeTemplate.wood;
-                    break;
-                case ItemResourceType.Stone_G:
-                    resource = tradeTemplate.stone;
-                    break;
+        //        case ItemResourceType.HardWood:
+        //        case ItemResourceType.SoftWood:
+        //            resource = tradeTemplate.wood;
+        //            break;
+        //        case ItemResourceType.Stone_G:
+        //            resource = tradeTemplate.stone;
+        //            break;
                 
-                case ItemResourceType.Iron_G:
-                    resource = tradeTemplate.iron;
-                    break;
+        //        case ItemResourceType.Iron_G:
+        //            resource = tradeTemplate.iron;
+        //            break;
 
-                default:
-                    throw new NotImplementedException(itemResourceType.ToString());
-            }
+        //        default:
+        //            throw new NotImplementedException(itemResourceType.ToString());
+        //    }
 
-            int goldCost = (int)Math.Ceiling( ItemPropertyColl.CarryAmount(itemResourceType) * resource.price);
+        //    int goldCost = (int)Math.Ceiling( ItemPropertyColl.CarryAmount(itemResourceType) * resource.price);
 
-            return goldCost;
-        }
+        //    return goldCost;
+        //}
 
         public ItemResource MakeTrade(ItemResourceType itemResourceType, int payment, float maxWeight = 1f)
         {

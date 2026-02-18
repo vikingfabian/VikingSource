@@ -65,7 +65,12 @@ namespace VikingEngine.DSSWars.GameState
             
         }
 
-        
+        virtual protected void onGameStart(bool newGame)
+        {
+            Input.Mouse.SetMenuMode(SteamWrapping.SteamActionSet.InGameControls);
+        }
+
+
         public void stepFrames(int frameCount)
         {
             stepFramesCount = frameCount;
@@ -145,7 +150,7 @@ namespace VikingEngine.DSSWars.GameState
         {
             foreach (var local in localPlayers)
             {
-                if (local.gameControls.input.Menu.DownEvent)
+                if (local.gameControls.input.menuInput.openCloseInputEvent())
                 {
                     return true;
                 }
@@ -278,26 +283,10 @@ namespace VikingEngine.DSSWars.GameState
 
         public void updateMouseVisible()
         {
-            if (menuSystem != null && menuSystem.IsOpen())
-            {
-                Input.Mouse.View();//Mouse.Visible = true;
-            }
-            else 
-            {
-                if (localPlayers != null)
-                {
-                    foreach (var player in localPlayers)
-                    {
-                        if (player.gameControls.input.inputSource.HasMouse)
-                        {
-                            Input.Mouse.View();//Mouse.Visible = true;
-                            return;
-                        }
-                    }
-                }
+            Input.Mouse.SetMenuMode(menuSystem != null && menuSystem.IsOpen());
 
-                Mouse.Hide();
-            }
+            //Mouse.Hide();
+            
         }
 
         public void beginExit()

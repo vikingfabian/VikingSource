@@ -130,14 +130,14 @@ namespace VikingEngine.DSSWars.Interface
                 }
 
                 bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.CityMenu, out Color focusColor);
-                if (viewControllerTabs)
+                if (viewControllerTabs && player.gameControls.input.Controller_TabLeft.IsActive)
                 {
                     content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
                     content.space(0.5f);
                 }
                
                 var tabGroup = new ArtTabgroup(tabs, tabSel, player.cityTabClick);
-                if (viewControllerTabs)
+                if (viewControllerTabs && player.gameControls.input.Controller_TabRight.IsActive)
                 {
                     tabGroup.endAttach = new List<AbsRichBoxMember> { new RbSpace(0.5f), new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor } };
                 }
@@ -170,9 +170,9 @@ namespace VikingEngine.DSSWars.Interface
                         deliveryTab(content);
                         break;
                                            
-                    case MenuTab.Trade:
-                        tradeTab(content);
-                        break;
+                    //case MenuTab.Trade:
+                    //    tradeTab(content);
+                    //    break;
 
                     case MenuTab.Build:
                         player.gameControls.build.toHud(player, content, city);
@@ -2609,10 +2609,10 @@ namespace VikingEngine.DSSWars.Interface
             
         //}
 
-        void tradeTab(RichBoxContent content)
-        {
-            city.tradeTemplate.toHud(player,content, city.GetFaction(), city);
-        }
+        //void tradeTab(RichBoxContent content)
+        //{
+        //    city.tradeTemplate.toHud(player,content, city.GetFaction(), city);
+        //}
 
         //void tabClick(int tab)
         //{
