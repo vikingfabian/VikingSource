@@ -1,11 +1,5 @@
 ﻿Change log:
-* Fixed profile flag reading crash
-* There is always room for one worker (dead city fix)
-* fixed: switching automated cities back to manual doesn't set their work priorities to the faction default.
-* city capture will set all work to "follow faction"
-* removed the unused trade system
-* fixed: army bundle merge doesn't remove the old armies 
-* work stations will queue all work and not just top priority one (fixes low skill worker lock) 
+* 
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
