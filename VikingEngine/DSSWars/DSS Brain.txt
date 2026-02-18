@@ -4,7 +4,7 @@
 * steam deck starts at ui scale 1.5, and puts the deck controls as first suggestion
 * fixed drag button crash
 
-x added button icons for the deck
+* added button icons for the deck
 x scroller dont work
 x minimap dont work
 
