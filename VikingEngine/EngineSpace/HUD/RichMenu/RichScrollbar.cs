@@ -122,7 +122,7 @@ namespace VikingEngine.HUD.RichMenu
             return ar;
         }
 
-        public bool updateMouseInput()
+        public bool updateMouseInput(IRichMenuInputMap inputMap)
         {
             bool viewOutline = false;
             bool result = false;
@@ -133,9 +133,9 @@ namespace VikingEngine.HUD.RichMenu
                 if (mouseDown)
                 {
                     viewOutline = true;
-                    if (Input.Mouse.IsButtonDown(MouseButton.Left))
+                    if (inputMap.RbClick().IsDown/*Input.Mouse.IsButtonDown(MouseButton.Left)*/)
                     {
-                        float diff = Input.Mouse.Position.Y - mouseDownY;
+                        float diff = inputMap.RbMouseInstance().Position.Y - mouseDownY;
                         sliderGroup.ParentY = Bound.Set(diff + mouseDown_SliderY, 0, slideRange);
                         scrollResult = -valuerange.GetFromPercent(sliderGroup.ParentY / slideRange);
 
@@ -149,14 +149,14 @@ namespace VikingEngine.HUD.RichMenu
                 }
                 else
                 {
-                    if (SliderArea(true).IntersectPoint(Input.Mouse.Position))
+                    if (SliderArea(true).IntersectPoint(inputMap.RbMouseInstance().Position))
                     {
                         viewOutline = true;
 
-                        if (Input.Mouse.ButtonDownEvent(MouseButton.Left))
+                        if (inputMap.RbClick().DownEvent/*Input.Mouse.ButtonDownEvent(MouseButton.Left)*/)
                         {
                             mouseDown = true;
-                            mouseDownY = Input.Mouse.Position.Y;
+                            mouseDownY = inputMap.RbMouseInstance().Position.Y/*Input.Mouse.Position.Y*/;
                             mouseDown_SliderY = sliderGroup.ParentY;
                             slider.SetColor(RichBox.Artistic.ArtButton.MouseDownCol);
                         }
@@ -189,41 +189,42 @@ namespace VikingEngine.HUD.RichMenu
             selectionOutline = null;
         }
 
-        public bool updateScrollWheel()
+        public bool updateScrollWheel(IRichMenuInputMap inputMap)
         {
-            if (Input.Mouse.Scroll)
+            var scroll = inputMap.RbScroll().directionAndTime.Y;
+            if (scroll != 0)
             {
                 //scrollResult = -valuerange.SetBounds(-scrollResult - Input.Mouse.ScrollValue * rowHeight * 0.1f * Ref.gamesett.scrollWheelSensitivity_menu);
                 //sliderGroup.ParentY = slideRange * valuerange.GetValuePercentPos(-scrollResult);
                 //selectionOutline?.Refresh(SliderArea(true));
-                scrollInput(Input.Mouse.ScrollValue * rowHeight * 0.1f * Ref.gamesett.scrollWheelSensitivity_menu);
+                scrollInput(scroll * rowHeight * (inputMap.RbHasController? 0.1f : 1.5f) * Ref.gamesett.scrollWheelSensitivity_menu);
                 return true;
             }
 
             return false;
         }
 
-        public bool updateControllerScroll(InputMap inputMap)
-        {
-            //if (Input.Mouse.Scroll)
-            //{
-            float value = -Input.XInput.Instance(inputMap.inputSource.controllerIndex).JoyStickValue(ThumbStickType.Right).DirAndTime.Y * 1.5f * Ref.gamesett.scrollWheelSensitivity_menu;
-            if (value != 0)
-            {
-                scrollInput(value);
-                return true;
-            }
+        //public bool updateControllerScroll(InputMap inputMap)
+        //{
+        //    //if (Input.Mouse.Scroll)
+        //    //{
+        //    float value = Input.XInput.Instance(inputMap.inputSource.controllerIndex).JoyStickValue(ThumbStickType.Right).DirAndTime.Y * 1.5f * Ref.gamesett.scrollWheelSensitivity_menu;
+        //    if (value != 0)
+        //    {
+        //        scrollInput(value);
+        //        return true;
+        //    }
 
-            return false;
-                //return true;
-            //}
+        //    return false;
+        //        //return true;
+        //    //}
 
-            //return false;
-        }
+        //    //return false;
+        //}
 
         public float scrollInput(float move)
         {
-            var result = -valuerange.SetBounds(-scrollResult - move);
+            var result = -valuerange.SetBounds(-scrollResult + move);
             if (result != scrollResult)
             {
                 float diff = scrollResult - result;

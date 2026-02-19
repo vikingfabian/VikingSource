@@ -1,14 +1,5 @@
 ﻿Change log:
-* removed logs for performance
-* added patches
-* steam deck starts at ui scale 1.5, and puts the deck controls as first suggestion
-* fixed drag button crash
-
-* added button icons for the deck
-x scroller dont work
-x minimap dont work
-
-! editors do not work with steam input
+* 
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

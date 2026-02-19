@@ -739,7 +739,6 @@ namespace VikingEngine.Input
 
     struct MouseButtonMap : IButtonMap
     {
-        /* Properties */
         public bool IsDown { get { return Input.Mouse.IsButtonDown(button); } }
         public bool DownEvent { get { return Input.Mouse.ButtonDownEvent(button); } }
 
@@ -758,11 +757,9 @@ namespace VikingEngine.Input
         public InputSourceType inputSource { get { return InputSourceType.Mouse; } }
         public int buttonIndex { get { return (int)button; } }
         public int ControllerIndex { get { return -1; } set { } }
-        /* Fields */
+        
         MouseButton button;
-        //SpriteName[] icons;
-
-        /* Constructors */
+        
         public MouseButtonMap(MouseButton button)
         {
             this.button = button;

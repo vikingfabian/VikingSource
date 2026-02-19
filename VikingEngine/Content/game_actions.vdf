@@ -16,13 +16,13 @@
 				"path" "controller_switch_pro.vdf"
 			}
 		}
-		//"controller_neptune"
-		//{
-			//"0"
-			//{
+		"controller_neptune"
+		{
+			"0"
+			{
 				"path" "steam deck.vdf"
-			//}
-		//}
+			}
+		}
 	}
 	"actions"
 	{
@@ -50,6 +50,12 @@
 				"MoveCursor"
 				{
 					"title"			"#Action_Cursor"
+					"input_mode"	"absolute_mouse"
+				}
+			
+				"GameScroll"
+				{
+					"title"		"#Action_ScrollMenu"
 					"input_mode"	"absolute_mouse"
 				}
 			}

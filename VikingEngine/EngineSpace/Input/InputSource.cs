@@ -194,6 +194,10 @@ namespace VikingEngine.Input
             steamInputType =  (ESteamInputType)r.ReadInt32();
             controllerIndex = r.ReadInt32();
             useTouchAsMouseSim = r.ReadBoolean();
+            if (sourceType == InputSourceType.KeyboardMouse)
+            {
+                useTouchAsMouseSim = true;
+            }
         }
     }
 

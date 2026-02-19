@@ -51,12 +51,8 @@ namespace VikingEngine.DSSWars
         XInputJoinHandler joinHandler = new XInputJoinHandler();
         bool controllerStartGameUpdate = false;
         Graphics.TextG maploading;
-        //GuiLabel difficultyLevelText = null;
-
         StartGameMode startGameMode = StartGameMode.Play;
         InputActionType mappingFor;
-        //bool inKeyMapsMenu = false;
-        //List<Keys> availableKeyboardKeys;
 
         VectorRect underMenuArea;
         //RichMenu richmenu;
@@ -65,14 +61,6 @@ namespace VikingEngine.DSSWars
 
         RichMenu topMenu, underMenu, reportsMenu;
 
-        //static readonly string LobbyAmbienceDir = Ambience.AmbienceDir + "lobby" + DataStream.FilePath.Dir;
-
-        //static readonly LoopingSoundData[] AmbienceSounds = new LoopingSoundData[]
-        //   {
-        //        new LoopingSoundData(LobbyAmbienceDir + "mystery_amb_v1_fear1_loop", 0.04f),
-        //        new LoopingSoundData(LobbyAmbienceDir + "mystery_amb_v1_theme1_loop", 0.04f),
-        //   };
-        //LoopingSound lobbyAmbienceLoop;
 
         const string UnderMenu_NewGame = "newgame";
         const string UnderMenu_ListEditors = "editors";
@@ -104,10 +92,6 @@ namespace VikingEngine.DSSWars
             Engine.Screen.SetupSplitScreen(1);
             if (startLoadingMap && !StartupSettings.BlockBackgroundLoading)
             {
-                //if (PlatformSettings.STEAM_DEMO)
-                //{
-                //    DssRef.storage.mapSize = MapSize.Medium;
-                //}
                 mapBackgroundLoading = new MapBackgroundLoading(null as SaveStateMeta);
             }
 
@@ -124,8 +108,6 @@ namespace VikingEngine.DSSWars
                 Engine.Screen.TextSizeV2, new Align(new Vector2(0, 1f)), "...",
                 Color.DarkGray, ImageLayers.Background2);
 
-            //new Timer.AsynchActionTrigger(load_asynch, true);
-            //new Timer.TimedAction0ArgTrigger(playMusic, 1000);
             Ref.music.DelayBetweenSongs_minutes = new IntervalF(0);
             Ref.music.SetPlaylist(Music.MenuPlayList(out bool randomOrder), PlatformSettings.PlayMusic, randomOrder);
             Ref.music.DelayBetweenSongs_minutes = IntervalF.NoInterval(TimeExt.SecondsToMinutes(2));

@@ -9,7 +9,7 @@ using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars
 {
-    class InputMap : PlayerInputMap, IRichboxGuiInputMap
+    class InputMap : PlayerInputMap
     {
         IButtonMap wasd_up, wasd_down, wasd_left, wasd_right;
         IButtonMap cameraTiltLeft, cameraTiltRight;
@@ -19,6 +19,7 @@ namespace VikingEngine.DSSWars
         IDirectionalMap dpadMove; //Do not save
         public IDirectionalMap cameraStick; //Do not save
         public IDirectionalMap cameraTiltUpSmooth;
+        public IDirectionalMap guiScroll;
 
         public IButtonMap zoomInKey, zoomOutKey;
 
@@ -37,6 +38,7 @@ namespace VikingEngine.DSSWars
 
         public IButtonMap mousePan; //Do not save
         public IButtonMap mouseSelect; //Do not save
+        public IButtonMap mouseSelect_InMenuMode;
         public IButtonMap mouseOrder; //Do not save
         public IButtonMap mouseCancel; //Do not save
         public bool hasPanOrderMix; //Do not save
@@ -68,7 +70,12 @@ namespace VikingEngine.DSSWars
         //public IButtonMap Controller_SubTabLeft, Controller_SubTabRight;
 
         public Voxels.EditorInputMap editorInput = new Voxels.EditorInputMap();
-        
+
+        override public IButtonMap RbClick() { return Input.Mouse.MenuMode? mouseSelect_InMenuMode : mouseSelect; }
+        override public IDirectionalMap RbScroll() { return Input.Mouse.MenuMode? menuInput.scroll : guiScroll; }
+        override public IntVector2 RbMoveSteps() { return move.stepping + dpadMove.stepping; }
+        override public bool RbControllerMode => inputSource.ControllerMode;
+        public override bool RbHasController => inputSource.HasControllerInput;
 
         public MouseButtonAction GetMouseAction(MouseButton MouseButton)
         {
@@ -151,6 +158,9 @@ namespace VikingEngine.DSSWars
             //ControllerCancel = new NoButtonMap();
             Controller_ObjectMenuToggle = new NoButtonMap();
             ControllerMessageClick = new NoButtonMap();
+            Controller_TabLeft = new NoButtonMap();
+            Controller_TabRight = new NoButtonMap();
+            Controller_Faction  = new NoButtonMap();
 
             wasd_up = new KeyboardButtonMap(Keys.W);
             wasd_down = new KeyboardButtonMap(Keys.S);
@@ -161,6 +171,8 @@ namespace VikingEngine.DSSWars
             cameraTiltRight = new KeyboardButtonMap(Keys.E);
             cameraTiltUp = new KeyboardButtonMap(Keys.R);
             cameraTiltUpSmooth = null;
+
+            guiScroll = new DirectionalMouseScrollMap();
 
             //ControllerSelect = new MouseButtonMap(MouseButton.Left);
             //Execute = new MouseButtonMap(MouseButton.Right);
@@ -217,6 +229,16 @@ namespace VikingEngine.DSSWars
             camAlts.add(new DirectionalMouseScrollMap());
             cameraStick = camAlts;
         }
+
+        public override void SetMouse(MouseInstance mouse)
+        {
+            base.SetMouse(mouse);
+            if (mouse.linkToMouse)
+            {
+                refreshMouseInput();
+            }
+        }
+
         void refreshMouseInput()
         {
 
@@ -226,7 +248,7 @@ namespace VikingEngine.DSSWars
             hasPanOrderMix = false;
 
             
-            if (inputSource.HasMouse && !inputSource.IsSteamInput)
+            if ((inputSource.HasMouse && !inputSource.IsSteamInput) || (mouse != null && mouse.linkToMouse))
             {
                 mouseSelect = new NoButtonMap();
 
@@ -272,6 +294,58 @@ namespace VikingEngine.DSSWars
                     }
                 }
             }
+
+            if (inputSource.HasControllerInput)
+            {
+                IButtonMap c_mouseSelect;
+                IButtonMap c_mouseOrder;
+                IButtonMap c_mouseCancel;
+                if (inputSource.sourceType == InputSourceType.SteamInput)
+                {
+                    c_mouseSelect = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.select, inputSource.controllerIndex);
+                    c_mouseOrder = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.order, inputSource.controllerIndex);
+                    c_mouseCancel = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.cancel, inputSource.controllerIndex);
+                }
+                else
+                {
+                    c_mouseSelect = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex);
+                    c_mouseOrder = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex);
+                    c_mouseCancel = null;
+                }
+
+                if (mouse != null && mouse.linkToMouse)
+                {
+                    mouseSelect = InputLib.CombineButtons(c_mouseSelect, mouseSelect);
+                    mouseOrder = InputLib.CombineButtons(c_mouseOrder, mouseOrder);
+                    if (c_mouseCancel != null)
+                    {
+                        mouseCancel = InputLib.CombineButtons(c_mouseCancel, mouseCancel);
+                    }
+                }
+                else
+                {
+                    mouseSelect = c_mouseSelect;
+                    mouseOrder = c_mouseOrder;
+                    if (c_mouseCancel != null)
+                    {
+                        mouseCancel = c_mouseCancel;
+                    }
+                    else
+                    {
+                        mouseCancel = new NoButtonMap();
+                    }
+                }
+            }
+
+            if (inputSource.HasMouse || (mouse != null && mouse.linkToMouse))
+            {
+                mouseSelect_InMenuMode = mouseSelect;
+            }
+            else
+            {
+                mouseSelect_InMenuMode = InputLib.CombineButtons(mouseSelect, new MouseButtonMap(MouseButton.Left));
+                
+            }
         }
         public override void steamSetup()
         {
@@ -281,6 +355,7 @@ namespace VikingEngine.DSSWars
             move = new SteamAnalogMap( SteamActionSet.InGameControls, false, SteamAnalogAction.PanCamera, idx);
             moveCursor = new SteamAnalogMap(SteamActionSet.InGameControls, true, SteamAnalogAction.MoveCursor, idx);
 
+            guiScroll = new SteamAnalogMap(SteamActionSet.InGameControls, true, SteamAnalogAction.GameScroll, idx);
             //if (inputSource.ControllerMode)
             //{ 
             //    move = new AlternativeDirectionalMap(move, moveCursor);
@@ -292,9 +367,9 @@ namespace VikingEngine.DSSWars
             cameraTiltUpSmooth = new SteamAnalogMap(SteamActionSet.InGameControls, false, SteamAnalogAction.CameraTilt, idx);
 
             // --- Core Gameplay ---
-            mouseSelect = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.select, idx);
-            mouseOrder = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.order, idx);
-            CancelKey = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.cancel, idx);
+            //mouseSelect = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.select, idx);
+            //mouseOrder = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.order, idx);
+            //CancelKey = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.cancel, idx);
             StopStart = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.stop_start, idx);
 
             // --- UI & Windows ---
@@ -339,14 +414,15 @@ namespace VikingEngine.DSSWars
         {
             //wasd = new DirectionalButtonsMap(null, null, null, null);
             move = new DirectionalXboxMap(ThumbStickType.Left, false, inputSource.controllerIndex);
-            dpadMove = new DirectionalXboxMap(ThumbStickType.D, false, inputSource.controllerIndex);  
-            
+            dpadMove = new DirectionalXboxMap(ThumbStickType.D, false, inputSource.controllerIndex);
+
+            guiScroll = new EmptyDirectionalMap();
             cameraStick =new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex);
             
             cameraTiltUpSmooth = new KeyPlusDirectionalMap(new XboxButtonMap(Buttons.LeftTrigger, inputSource.controllerIndex), new DirectionalXboxMap(ThumbStickType.Right, false, inputSource.controllerIndex));
 
-            mouseSelect = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex);
-            mouseOrder = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex);
+            //mouseSelect = new XboxButtonMap_TriggerAlts(Buttons.A, inputSource.controllerIndex);
+            //mouseOrder = new XboxButtonMap_TriggerAlts(Buttons.X, inputSource.controllerIndex);
             Controller_ObjectMenuToggle = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex);
             Controller_Faction = new XboxButtonMap_TriggerAlts(Buttons.Back, inputSource.controllerIndex);
             CancelKey = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex);
@@ -368,8 +444,8 @@ namespace VikingEngine.DSSWars
             Copy = new XboxButtonMap_TriggerAlts(Buttons.Y, inputSource.controllerIndex, true);
             Paste = new XboxButtonMap_TriggerAlts(Buttons.B, inputSource.controllerIndex, true);
 
-            GameSpeed = new NoButtonMap();//
-            PauseGame = new NoButtonMap();//
+            GameSpeed = Controller_TabRight;//
+            PauseGame = Controller_TabLeft;//
 
             menuInput?.xboxSetup(inputSource.controllerIndex);
 
@@ -864,9 +940,8 @@ namespace VikingEngine.DSSWars
             return result;            
         }
 
-        public IButtonMap RichboxGuiSelect => mouseSelect;
-        public IntVector2 RichboxGuiMove() { return move.stepping + dpadMove.stepping; }
-        public bool RichboxGuiUseMove => inputSource.ControllerMode;
+        
+        
 
         public override EditorInputMap VoxelEditorInput()
         {

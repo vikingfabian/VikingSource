@@ -144,7 +144,7 @@ namespace VikingEngine.DSSWars.Interface
                 //else
                 {
                     Vector2 offset = player.gameControls.input.mouse.Position;// + Engine.Screen.SmallIconSizeV2;
-                    offset.X += Engine.Screen.SmallIconSize;
+                    offset.X += Engine.Screen.IconSize;
                     if (aboveMouse)
                     {
                         offset.Y -= 5 + size.Y;
@@ -159,7 +159,7 @@ namespace VikingEngine.DSSWars.Interface
 
                     if (maxPos.X > Engine.Screen.SafeArea.Right)
                     { 
-                        offset.X = Engine.Screen.SafeArea.Right - (Engine.Screen.SmallIconSize + size.X);
+                        offset.X = player.gameControls.input.mouse.Position.X - (Engine.Screen.IconSize + size.X);
                     }
 
                     if (offset.Y < Engine.Screen.SafeArea.Y)

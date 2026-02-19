@@ -26,14 +26,14 @@ namespace VikingEngine.HUD.RichBox
         public ImageLayers layer;
 
         Graphics.RectangleLines selectionOutline = null;
-        Input.IButtonMap clickInput;
+        IRichMenuInputMap inputMap;
         public RenderTargetDrawContainer drawContainer = null;
         public AbsRbInteraction interactionStack = null;
 
-        public RbInteraction(List<AbsRichBoxMember> content, ImageLayers layer,  Input.IButtonMap clickInput)
+        public RbInteraction(List<AbsRichBoxMember> content, ImageLayers layer, IRichMenuInputMap inputMap)
         {
             this.layer = layer;
-            this.clickInput = clickInput;
+            this.inputMap = inputMap;
 
             //foreach (var m in content)
             //{
@@ -136,7 +136,7 @@ namespace VikingEngine.HUD.RichBox
             //Debug.Log($"Menu content offset: {menu.richBox.GetOffset()}");
             unused1 = false;
             needRefresh = false;
-            var mouse = menu.Mouse();
+            var mouse = menu.InputMap().RbMouseInstance();
             if (interactionStack != null)
             {
                 var result = interactionStack.update(mousePosOffSet, menu, useClickInput, out needRefresh, out bool endInteraction);
@@ -197,13 +197,13 @@ namespace VikingEngine.HUD.RichBox
         {
             if (hover != null)
             {
-                if (clickInput.DownEvent && useClickInput)
+                if (inputMap.RbClick().DownEvent/*clickInput.DownEvent*/ && useClickInput)
                 {
                     hover.onClick(menu);
                     hover?.clickAnimation(true);
                     return true;
                 }
-                else if (clickInput.UpEvent)
+                else if (inputMap.RbClick().UpEvent/*clickInput.UpEvent*/)
                 {
                     hover.clickAnimation(false);
                 }

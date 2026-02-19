@@ -207,7 +207,7 @@ namespace VikingEngine.SteamWrapping
             {
                 if (Ref.gamesett != null && !Ref.gamesett.HasSaveFile)
                 {
-                    Ref.gamesett.UiScale = 1.5f;
+                    Ref.gamesett.SteamDeckSetup();
                 }
             }
 

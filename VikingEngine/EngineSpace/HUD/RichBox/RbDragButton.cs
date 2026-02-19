@@ -303,7 +303,7 @@ namespace VikingEngine.HUD.RichBox
         DirXYstepping controllerStepping = new DirXYstepping();
         public DragButtonInteraction(RichMenu.RichMenu menu, RbDragButton dragButton) 
         {
-            prevMousePos = menu.Mouse().Position;
+            prevMousePos = menu.InputMap().RbMouseInstance().Position;
             this.dragButton = dragButton;
             menu.interaction.interactionStack = this;
             timeStamp = TimeStamp.Now();
@@ -314,7 +314,7 @@ namespace VikingEngine.HUD.RichBox
         }
         public override bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClick, out bool needRefresh, out bool endInteraction)
         {
-            var mouse = menu.Mouse();
+            var mouse = menu.InputMap().RbMouseInstance();
             float move = mouse.Position.X - prevMousePos.X;
             if (Math.Abs(move) > moveLengthForValueChange)
             {
@@ -339,7 +339,7 @@ namespace VikingEngine.HUD.RichBox
                 needRefresh = false;
             }
 
-            endInteraction = menu.MouseClick().UpEvent;//Input.Mouse.ButtonUpEvent(MouseButton.Left);
+            endInteraction = menu.InputMap().RbClick().UpEvent;//Input.Mouse.ButtonUpEvent(MouseButton.Left);
 
             return false;
         }

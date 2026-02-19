@@ -80,7 +80,8 @@ namespace VikingEngine.DSSWars.Interface
                         input_buttonmap(map.Controller_ObjectMenuToggle, DssRef.lang.InputActionName_ToggleMenu);
                         input_buttonmap(map.Controller_Faction, DssRef.lang.FactionSettings_Titel);
                     }
-                    input(controllerMode ? SpriteName.RightStick_UD : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
+                    //input(controllerMode ? SpriteName.RightStick_UD : SpriteName.MouseScroll, DssRef.lang.Tutorial_ZoomInput);
+                    input_directionmap(map.RbScroll(), DssRef.lang.Tutorial_ZoomInput);
 
                     if (!casual)
                     {

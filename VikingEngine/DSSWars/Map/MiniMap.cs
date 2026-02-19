@@ -29,8 +29,8 @@ namespace VikingEngine.DSSWars.Map
         bool viewCameraBound = true;
         public MiniMap(LocalPlayer player, bool runtime)
         {
-            bMouseInput = player.gameControls.input.inputSource.HasMouse;
-            Vector2 sz = Engine.Screen.IconSizeV2 * 5f;
+            bMouseInput = player.gameControls.input.inputSource.useTouchAsMouseSim;
+            Vector2 sz = Engine.Screen.IconSizeV2 * 5f * Ref.gamesett.MinimapScale;
             Vector2 pos = player.playerData.view.safeScreenArea.RightBottom - sz;
             area = new VectorRect(pos, sz);
             area.Round();

@@ -674,6 +674,7 @@ namespace VikingEngine.SteamWrapping
         CameraStick,
         CameraTilt,
         MoveCursor,
+        GameScroll,
 
         // MenuControls
         Scroll,

@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Input_NoControl => "None";
         public string Input_ActiveControl => "Active";
         public string Input_PassiveControl => "Passive";
-
+        public string Setting_MinimapScale => "Mini map scale";
 
 
         //regular

@@ -10,7 +10,7 @@ namespace VikingEngine.DSSWars.Data
 {
     class LocalPlayerStorage
     {
-        public InputSource prevInputSource;
+        public InputSource prevInputSource = InputSource.Empty;
         public InputSource inputSource;
         public int controllerIndex = 0;
         public int screenIndex = 0;

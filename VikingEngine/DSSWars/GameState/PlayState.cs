@@ -297,7 +297,7 @@ namespace VikingEngine.DSSWars
             for (var i = 0; i < playerCount; ++i)
             {
                 var pdata = localPlayers[i].playerData;
-                Mouse.AddPlayer(pdata, localPlayers[i].gameControls.input.moveCursor, localPlayers[i].gameControls.input.menuInput.cursor);
+                Mouse.AddPlayer(pdata, playerCount, localPlayers[i].gameControls.input.moveCursor, localPlayers[i].gameControls.input.menuInput.cursor);
 
                 localPlayers[i].initPlayerToPlayer(i, playerCount);
             }

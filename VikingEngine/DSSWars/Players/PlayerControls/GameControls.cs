@@ -471,17 +471,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         }
                         break;
                     case ControllerTabFocus.Pause_GamePlay:
-                        if (dir < 0)
-                        {
-                            if (DssRef.difficulty.setting_allowPauseCommand)
-                            {
-                                Ref.TogglePause();
-                            }
-                        }
-                        else
-                        {
-                            setNextGameSpeed();
-                        }
+                        //if (dir < 0)
+                        //{
+                        //    if (DssRef.difficulty.setting_allowPauseCommand)
+                        //    {
+                        //        Ref.TogglePause();
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    setNextGameSpeed();
+                        //}
                         break;
                 }
             }
@@ -1157,9 +1157,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 if (Ref.isPaused)
                 {
-                    //Ref.isPaused = false;
-                    //Ref.GameTimeSpeed = 1f;
                     Ref.SetPause(false);
+                    player.hud.needRefresh = true;
                 }
                 else
                 {
