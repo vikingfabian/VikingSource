@@ -740,6 +740,10 @@ namespace VikingEngine.DSSWars
                 Ref.gamesett.settingsHasChanged = true;
 
             }), null, true);
+            content.Button("Achive", new RbAction(() =>
+            {
+                DssRef.achieve.UnlockAchievement(AchievementIndex.rear_flanking);
+            }), null, true);
 #endif
 
 #if DEMO

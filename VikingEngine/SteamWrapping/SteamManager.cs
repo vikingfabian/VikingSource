@@ -58,6 +58,7 @@ namespace VikingEngine.SteamWrapping
         public bool initError = false;
         public ESteamAPIInitResult steamInitResult;
         public string steamInitErrorMsg;
+        public bool statsNeedUpdate = false;
 
         static void SteamAPIDebugTextHook(int severity, StringBuilder builder)
         {
@@ -258,7 +259,7 @@ namespace VikingEngine.SteamWrapping
             }
 
             DLC = new SteamDLC();
-
+            
             //RequestStats();
         }
 
@@ -273,6 +274,15 @@ namespace VikingEngine.SteamWrapping
                     //VOIP.Update();
 
                     P2PManager.update();
+                }
+
+                if (statsNeedUpdate)
+                {
+                    //Updated after achievements
+                    bool bSuccess = SteamUserStats.StoreStats();
+                    // If this failed, we never sent anything to the server, try
+                    // again later.
+                    statsNeedUpdate = !bSuccess;
                 }
             }
         }

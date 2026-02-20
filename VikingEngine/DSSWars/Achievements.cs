@@ -42,6 +42,7 @@ namespace VikingEngine.DSSWars
         public const int LargePopulationCount_Tier2 = 10000;
         public const int LargePopulationCount_Tier3 = 16000;
         
+        
 
         public Achievements()
         {
@@ -203,7 +204,7 @@ namespace VikingEngine.DSSWars
 #if DEBUG
             System.Diagnostics.Debug.WriteLine("[!] Achievement: " + achievement.ToString());
 #endif
-            if (DssRef.state.importedWorld && DssRef.storage.blockImportAchievements)
+            if (DssRef.state != null && DssRef.state.importedWorld && DssRef.storage.blockImportAchievements)
             {
                 return;
             }
