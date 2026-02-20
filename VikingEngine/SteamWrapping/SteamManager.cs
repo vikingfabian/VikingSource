@@ -56,6 +56,10 @@ namespace VikingEngine.SteamWrapping
         Callback<UserStatsStored_t> UserStatsStoredCallback;
         //SteamWarningMessageHookDelegate warningHook;
 
+        public bool initError = false;
+        public ESteamAPIInitResult steamInitResult;
+        public string steamInitErrorMsg;
+
         static void SteamAPIDebugTextHook(int severity, StringBuilder builder)
         {
             string msg = builder.ToString();
@@ -71,32 +75,48 @@ namespace VikingEngine.SteamWrapping
         {
             Ref.steam = this;
 
-            if (PlatformSettings.SteamAPI && SteamAPI.Init())
+            if (PlatformSettings.SteamAPI)
             {
-                isInitialized = true;
-
-                applicationSettings = SetupSteamApplicationSettings(PlatformSettings.RunProgram);
-
-                SetupSubsystems(applicationSettings);
-                UserCloudPath = SteamUser.GetSteamID().ToString();
-
-                if (PlatformSettings.RunProgram == StartProgram.LootFest3)
+                if (SteamAPI.Init(out steamInitResult, out steamInitErrorMsg))
                 {
-                    new LootFest.Data.GameStats();
-                }
-                else if (PlatformSettings.RunProgram == StartProgram.PartyJousting)
-                {
+                    isInitialized = true;
+
+                    applicationSettings = SetupSteamApplicationSettings(PlatformSettings.RunProgram);
+
+                    SetupSubsystems(applicationSettings);
+                    UserCloudPath = SteamUser.GetSteamID().ToString();
+
+                    if (PlatformSettings.RunProgram == StartProgram.LootFest3)
+                    {
+                        new LootFest.Data.GameStats();
+                    }
+                    else if (PlatformSettings.RunProgram == StartProgram.PartyJousting)
+                    {
 #if PJ
-                new PJ.PjEngine.GameStats();
+                        new PJ.PjEngine.GameStats();
 #endif
+                    }
+                    else if (PlatformSettings.RunProgram == StartProgram.DSS)
+                    {
+#if DSS
+                        new DSSWars.Data.GameStats();
+#endif
+                    }
+                    steamInitErrorMsg = null;
+                
                 }
             
+                else
+                {
+                    initError = true;
+
+                }
             }
-            else
+
+            if (!isInitialized)
             {
                 alwaysInit();
-                Debug.LogError("SteamAPI_Init() failed.");
-                Debug.LogError("Next to the EXE, there must be steam_api.dll, steam_api64.dll & steam_appid.txt");
+                
             }
         }
 
