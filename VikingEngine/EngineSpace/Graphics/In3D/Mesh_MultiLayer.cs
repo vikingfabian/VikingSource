@@ -21,12 +21,24 @@ namespace VikingEngine.Graphics
 
         public void AddToLayer1(int layer)
         {
+#if DEBUG
+            if (layer1Index >= 0)
+            {
+                throw new Exception();
+            }
+#endif
             layer1 = layer;
             Ref.draw.AddToRenderList(this, ref layer1Index, layer1, true);
             inRenderList = true;
         }
         public void AddToLayer2(int layer)
         {
+#if DEBUG
+            if (layer2Index >= 0)
+            {
+                throw new Exception();
+            }
+#endif
             layer2 = layer;
             Ref.draw.AddToRenderList(this, ref layer2Index, layer2, true);
             inRenderList = true;

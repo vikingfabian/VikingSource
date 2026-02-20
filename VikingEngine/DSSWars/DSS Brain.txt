@@ -1,5 +1,6 @@
 ﻿Change log:
-* 
+* Fixed path vidsuals that dont remove
+* Fixed: guards dont move off-camera
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

@@ -142,6 +142,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     lock (objects)
                     {
+                        objects[i].DeleteMe();
                         objects.RemoveAt(i);
                     }
                 }
