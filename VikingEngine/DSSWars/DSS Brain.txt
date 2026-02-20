@@ -1,5 +1,5 @@
 ﻿Change log:
-* Fixed path vidsuals that dont remove
+* Fixed path visuals that dont remove
 * Fixed: guards dont move off-camera
 
 #Event timers (are slightly random)#
