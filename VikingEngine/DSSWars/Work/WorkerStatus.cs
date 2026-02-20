@@ -188,6 +188,8 @@ namespace VikingEngine.DSSWars.Work
                     return DssRef.lang.WorkerStatus_TrossReturnToArmy;
                 case WorkType.Demolish:
                     return DssRef.lang.Build_DestroyBuilding;
+                case WorkType.School:
+                    return DssRef.lang.BuildingType_School;
 
                 default:
                     return TextLib.Error;
@@ -482,10 +484,12 @@ namespace VikingEngine.DSSWars.Work
                     if (visualUnit)
                     {
                         Vector3 pos = VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f);
-                        new ResourceEffect(convert1.type, convert1.amount, pos, ResourceEffectType.Add);
+                        /*new ResourceEffect*/
+                        SpriteText3D.GetOrCreate().init(convert1.type, convert1.amount, pos, ResourceEffectType.Add);
                         if (convert2.amount > 0)
                         {
-                            new ResourceEffect(convert2.type, convert2.amount, VectorExt.AddY(pos, 0.08f), ResourceEffectType.Add);
+                            /*new ResourceEffect*/
+                            SpriteText3D.GetOrCreate().init(convert2.type, convert2.amount, VectorExt.AddY(pos, 0.08f), ResourceEffectType.Add);
                         }
                     }
 
@@ -683,7 +687,7 @@ namespace VikingEngine.DSSWars.Work
 
                             if (visualUnit)
                             {
-                                new ResourceEffect(item, add, VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f), ResourceEffectType.Add);
+                                /*new ResourceEffect*/SpriteText3D.GetOrCreate().init(item, add, VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(subTileEnd), 0.08f), ResourceEffectType.Add);
                             }
                         }
                     }
@@ -691,13 +695,19 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.Upgrade:
                 case WorkType.Build:
-                   
+#if DEBUG
+                    if (BuildLib.BuildOptions[workSubType].buildType == BuildAndExpandType.OrchardApple)
+                    {
+                        lib.DoNothing();
+                    }
+#endif
                     if (orderIsActive(city))
                     {
                         bool upgrade = work == WorkType.Upgrade;
                         var build = BuildLib.BuildOptions[workSubType];
                         if (build.execute_async(city, subTileEnd, ref subTile, upgrade))
                         {
+
                             EditSubTile edit = new EditSubTile(subTileEnd, subTile, true, true, false);
                             edit.Submit();
                         }
@@ -1106,7 +1116,7 @@ namespace VikingEngine.DSSWars.Work
                     {
                         ItemResourceType tradeForItem = (ItemResourceType)workSubType;
                         var toCity = DssRef.world.tileGrid.Get(targetSubTile / WorldData.TileSubDivitions).City();
-                        int goldCost = toCity.SellCost(tradeForItem);
+                        int goldCost = DssConst.FoodGoldValue;// toCity.SellCost(tradeForItem);
 
                         carry = new ItemResource(ItemResourceType.Gold, 1, 1, goldCost * DssConst.Worker_TrossWorkerCarryWeight);
                     }
@@ -1115,7 +1125,7 @@ namespace VikingEngine.DSSWars.Work
                 case WorkType.TrossCityTrade:
                     {
                         var toCity = DssRef.world.tileGrid.Get(targetSubTile / WorldData.TileSubDivitions).City();
-                        int goldCost = toCity.SellCost(ItemResourceType.Food_G);
+                        int goldCost = DssConst.FoodGoldValue;//toCity.SellCost(ItemResourceType.Food_G);
 
                         carry = new ItemResource(ItemResourceType.Gold, 1, 1, goldCost);
                     }

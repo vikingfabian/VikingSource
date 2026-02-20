@@ -38,7 +38,7 @@ namespace VikingEngine.Engine
 #if PCGAME
                 if (Ref.steam.isInitialized)
                 {
-                    return Valve.Steamworks.SteamAPI.SteamFriends().GetPersonaName();
+                    return Steamworks.SteamFriends.GetPersonaName();
                 }
 #endif
                 return "Player";

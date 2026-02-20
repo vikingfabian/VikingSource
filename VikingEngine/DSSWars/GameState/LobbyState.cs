@@ -10,7 +10,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading;
 using System.Xml.Linq;
-using Valve.Steamworks;
+
 using VikingEngine.DataStream;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
@@ -32,17 +32,10 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
-using VikingEngine.LootFest;
-using VikingEngine.LootFest.Data;
-using VikingEngine.LootFest.GO.Characters.Monster3;
-using VikingEngine.LootFest.GO.WeaponAttack;
 using VikingEngine.Network;
-using VikingEngine.PJ;
-using VikingEngine.PJ.CarBall;
-using VikingEngine.PJ.Strategy;
+using VikingEngine.PJ.SpaceWar.SpaceShip;
 using VikingEngine.Sound;
 using VikingEngine.Timer;
-using VikingEngine.ToGG.Commander.UnitsData;
 
 namespace VikingEngine.DSSWars
 {
@@ -724,9 +717,9 @@ namespace VikingEngine.DSSWars
             {
                 content.Button("wish", new RbAction(() =>
                     {
-                        SteamAPI.SteamFriends().ActivateGameOverlayToStore(
-                        3585100,
-                        EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
+                        Steamworks.SteamFriends.ActivateGameOverlayToStore(
+                            new Steamworks.AppId_t(3585100),
+                            Steamworks.EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
                     }
                 ), null, true);
             }
@@ -740,7 +733,7 @@ namespace VikingEngine.DSSWars
                 DssRef.storage.speed5x = true;
                 Screen.WindowScalePerc = 90;
                 Screen.PcDisplayMode = WindowDisplayMode.Windowed;
-                Ref.gamesett.masterVolProperty(true, 0.1f);
+                Ref.gamesett.masterVolProperty(null, true, 0.1f);
                 Screen.ApplyScreenSettings();
 
                 Ref.gamesett.graphicsHasChanged = true;
@@ -1450,6 +1443,10 @@ namespace VikingEngine.DSSWars
                         {
                             if (DssRef.storage.gameRuleset.factionStartSize != size)
                             {
+                                if (size == FactionStartSize.Settler)
+                                {
+                                    DssRef.storage.runTutorial = false;
+                                }
                                 DssRef.storage.gameRuleset.factionStartSize = size;
                                 DssRef.storage.Save(null);
                                 underMenu.CloseDropDown();
@@ -1465,7 +1462,7 @@ namespace VikingEngine.DSSWars
             content.newParagraph();
             content.h2(DssRef.lang.Settings_AdvancedGameSettings, HudLib.TitleColor_Head);
 
-            if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
+            if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode))//DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
             {
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tutorial_MenuOption) }, tutorialProperty));
@@ -1548,6 +1545,11 @@ namespace VikingEngine.DSSWars
                 if (set)
                 {
                     DssRef.storage.runTutorial = value;
+                    if (value && DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler)
+                    {
+                        DssRef.storage.gameRuleset.factionStartSize = FactionStartSize.OneCity;
+                        restartBackgroundLoading();
+                    }
 
                     DssRef.storage.Save(null);
                 }
@@ -1577,7 +1579,7 @@ namespace VikingEngine.DSSWars
                 return DssRef.storage.mapSettings.customSeed;
             }
 
-            int SeedProperty(bool set, int value)
+            int SeedProperty(object tag, bool set, int value)
             {
 
                 if (set)
@@ -1590,7 +1592,7 @@ namespace VikingEngine.DSSWars
                 return DssRef.storage.mapSettings.seed;
             }
 
-            int quickPlayerCountProperty(bool set, int value)
+            int quickPlayerCountProperty(object tag, bool set, int value)
             {
                 if (set)
                 {
@@ -1630,16 +1632,16 @@ namespace VikingEngine.DSSWars
                         switch (opt)
                         {
                             case SplitScreenOptions.HorizontalFirst:
-                                caption = ".Horizontal first";
+                                caption = Ref.langOpt.SplitScreen_HorizontalFirst;
                                 break;
                             case SplitScreenOptions.VerticalFirst:
-                                caption = ".Vertical first";
+                                caption = Ref.langOpt.SplitScreen_VerticalFirst;
                                 break;
                             case SplitScreenOptions.HorizontalOnly:
-                                caption = ".Horizontal only";
+                                caption = Ref.langOpt.SplitScreen_HorizontalOnly;
                                 break;
                             case SplitScreenOptions.VerticalOnly:
-                                caption = ".Vertical only";
+                                caption = Ref.langOpt.SplitScreen_VerticalOnly;
                                 break;
                         }
                         splitOptions.AddOption(caption, opt == Engine.Screen.splitScreenOptions, opt == SplitScreenOptions.HorizontalOnly,
@@ -1649,7 +1651,7 @@ namespace VikingEngine.DSSWars
                                 refreshSplitScreen();
                             }, opt), null);
                     }
-                }   splitOptions.Build(content, SpriteName.MenuIconScreenResolution, ".Split-screen", underMenu);
+                }   splitOptions.Build(content, SpriteName.MenuIconScreenResolution, Ref.langOpt.SplitScreen_Title, underMenu);
 
                 int adjustCount = 0;
                 if (Engine.Screen.splitScreenOptions <= SplitScreenOptions.HorizontalFirst)
@@ -1665,34 +1667,34 @@ namespace VikingEngine.DSSWars
                 if (adjustCount >= 1)
                 {
                     content.newLine();
-                    content.Add(new RbText(string.Format(".Adjust split {0}", 1), HudLib.TitleColor_Label));
+                    content.Add(new RbText(string.Format(Ref.langOpt.SplitScreen_AdjustSplit, 1), HudLib.TitleColor_Label));
                     
                     content.space();
                     content.Add(new RbDragButton(new DragButtonSettings(-MaxAdjust, MaxAdjust, 0.1f), splitAdj1Property, true, null));
 
                     content.space(2);
                     content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("= 0") },
-                        new RbAction(() => { splitAdj1Property(true, 0); })));
+                        new RbAction(() => { splitAdj1Property(null, true, 0); })));
                 }
                 if (adjustCount >= 2)
                 {
                     content.newLine();
-                    content.Add(new RbText(string.Format(".Adjust split {0}", 2), HudLib.TitleColor_Label));
+                    content.Add(new RbText(string.Format(Ref.langOpt.SplitScreen_AdjustSplit, 2), HudLib.TitleColor_Label));
                     content.space();
                     content.Add(new RbDragButton(new DragButtonSettings(-MaxAdjust, MaxAdjust, 0.1f), splitAdj2Property, true, null));
                     content.space(2);
                     content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("= 0") },
-                        new RbAction(() => { splitAdj2Property(true, 0); })));
+                        new RbAction(() => { splitAdj2Property(null, true, 0); })));
                 }
                 if (adjustCount >= 3)
                 {
                     content.newLine();
-                    content.Add(new RbText(string.Format(".Adjust split {0}", 3), HudLib.TitleColor_Label));
+                    content.Add(new RbText(string.Format(Ref.langOpt.SplitScreen_AdjustSplit, 3), HudLib.TitleColor_Label));
                     content.space();
                     content.Add(new RbDragButton(new DragButtonSettings(-MaxAdjust, MaxAdjust, 0.1f), splitAdj3Property, true, null));
                     content.space(2);
                     content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText("= 0") },
-                        new RbAction(() => { splitAdj3Property(true, 0); })));
+                        new RbAction(() => { splitAdj3Property(null, true, 0); })));
                 }
             }
 
@@ -1747,7 +1749,7 @@ namespace VikingEngine.DSSWars
                 content.Add(new RbText(DssRef.lang.MustTurnOffSteamInput, HudLib.InfoYellow_Light));
             }
 
-            float splitAdj1Property(bool set, float value)
+            float splitAdj1Property(object tag, bool set, float value)
             {
                 if (set)
                 {
@@ -1756,7 +1758,7 @@ namespace VikingEngine.DSSWars
                 }
                 return Screen.splitScreenDivideAdjustment1;
             }
-            float splitAdj2Property(bool set, float value)
+            float splitAdj2Property(object tag, bool set, float value)
             {
                 if (set)
                 {
@@ -1765,7 +1767,7 @@ namespace VikingEngine.DSSWars
                 }
                 return Screen.splitScreenDivideAdjustment2;
             }
-            float splitAdj3Property(bool set, float value)
+            float splitAdj3Property(object tag, bool set, float value)
             {
                 if (set)
                 {
@@ -1985,20 +1987,20 @@ namespace VikingEngine.DSSWars
         //    refreshDifficultyLevel();
         //}
 
-        public float FoodMultiProperty(bool set, float value)
+        public float FoodMultiProperty(object tag, bool set, float value)
         {
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_foodMulti, value);
         }
-        public float WaterMultiProperty(bool set, float value)
+        public float WaterMultiProperty(object tag, bool set, float value)
         {
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_waterMulti, value);
         }
 
-        public float ChildMultiProperty(bool set, float value)
+        public float ChildMultiProperty(object tag, bool set, float value)
         {
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_childMulti, value);
         }
-        public float CraftMultiProperty(bool set, float value)
+        public float CraftMultiProperty(object tag, bool set, float value)
         {
             return GetSet.Do<float>(set, ref DssRef.difficulty.setting_craftMulti, value);
         }
@@ -2365,11 +2367,18 @@ namespace VikingEngine.DSSWars
             content.newParagraph();
             IOLib.FileCheckToHud(content);
 
+            string steamResult = $"steam:{(Ref.steam.isInitialized ? 'T' : 'F')}";
+            
+            HudLib.BulletSeperationPoint(content);
+            content.Add(new RbText(steamResult, HudLib.SecondaryTextColor));
+            if (Ref.steam.initError)
+            {
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("!" + ((int)Ref.steam.steamInitResult).ToString()) },
+                        null,
+                        new RbTooltip_Text(Ref.steam.steamInitErrorMsg)));
+            }
             underMenu.Refresh(content);
         }
-
-       
-        
 
         public override void OnResolutionChange()
         {

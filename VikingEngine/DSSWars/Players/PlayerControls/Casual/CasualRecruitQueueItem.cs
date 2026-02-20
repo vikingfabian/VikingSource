@@ -63,7 +63,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 case CasualSoldierType.Siege:
                     purchaseOption = cityProfile.siegeMen;
                     break;
-
+                case CasualSoldierType.Settler:
+                    purchaseOption = cityProfile.settler;
+                    break;
             }
 
         }

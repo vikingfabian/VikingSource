@@ -54,6 +54,10 @@ namespace VikingEngine.DSSWars.GameState
         public Ambience ambience;
         public bool importedWorld = false;
 
+        public Stack<SpriteText3D> Text3DPool = new Stack<SpriteText3D>();
+       
+
+
         public AbsPlayState() 
             :base() 
         {

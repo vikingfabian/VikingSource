@@ -115,7 +115,16 @@ namespace VikingEngine.DSSWars
 
         public void initDiplomacy(WorldData world)
         {
-            diplomaticRelations = new DiplomaticRelation[world.factions.Array.Length];
+            if (diplomaticRelations == null)
+            {
+                diplomaticRelations = new DiplomaticRelation[world.factions.Array.Length];
+            }
+            else if (diplomaticRelations.Length < world.factions.Array.Length)
+            {
+#if DEBUG
+                throw new Exception();
+#endif
+            }
         }
 
         public void initVisuals(WorldMetaData worldMeta)
@@ -131,7 +140,15 @@ namespace VikingEngine.DSSWars
             w.Write(money.copper);
             Debug.WriteCheck(w);
 
-            cities.write_ushort(w);
+            if (mainCity == null)
+            {
+                w.Write(ushort.MaxValue);
+            }
+            else
+            {
+                w.Write((ushort)mainCity.myIndex);
+            }
+            //cities.write_ushort_compressed(w);
             //var cityList = cities.toList(DssRef.world.cities);
             //w.Write((ushort)cityList.Count);
             //foreach(var city in cityList)
@@ -202,16 +219,38 @@ namespace VikingEngine.DSSWars
                 Debug.ReadCheck(r);
             }
 
+            if (subVersion < 106)
+            {
+                refreshMainCity();
+            }
+            else
+            {
+                int mainIndex = r.ReadUInt16();
+                if (mainIndex == ushort.MaxValue)
+                {
+                    refreshMainCity();
+                }
+                else
+                {
+                    mainCity = DssRef.world.cities[mainIndex];
+                }
+            }
+
             //int citiesCount = r.ReadUInt16();
             //for (int i = 0; i < citiesCount; i++)
             //{
             //    int cityIx = r.ReadUInt16();
             //    var city = DssRef.world.cities[cityIx];
-                    
+
             //    city.setFaction(this, true, false);
-                
+
             //}
-            cities.read_ushort(r);
+
+            if (subVersion < 105)
+            {
+                cities.read_ushort_compressed(r/*, myIndex == 4? -1 : 0*/);
+            }
+            
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
@@ -283,6 +322,8 @@ namespace VikingEngine.DSSWars
 
         void readRelations(System.IO.BinaryReader r, int subVersion)
         {
+            initDiplomacy(DssRef.world);
+
             while (true)
             {
                 DiplomaticRelation relation = new DiplomaticRelation();
@@ -356,20 +397,21 @@ namespace VikingEngine.DSSWars
             //{
             //    w.Write((ushort)c.myIndex);
             //}
-            cities.write_ushort(w);
+            cities.write_ushort_compressed(w);
 
             w.Write(availableForPlayer);
         }
 
         public void readMapFile(System.IO.BinaryReader r, int mapVersion, WorldData world)
         {
-            int cityCount = r.ReadUInt16();
+            cities.read_ushort_compressed(r/*, myIndex == 4? -1 : 0*/);
+            //int cityCount = r.ReadUInt16();
 
-            for (int i = 0; i < cityCount; ++i)
-            {
-                int cityIx = r.ReadUInt16();
-                AddCity(world.cities[cityIx], true);
-            }
+            //for (int i = 0; i < cityCount; ++i)
+            //{
+            //    int cityIx = r.ReadUInt16();
+            //    AddCity(world.cities[cityIx], true);
+            //}
 
             availableForPlayer= r.ReadBoolean();
         }
@@ -735,12 +777,12 @@ namespace VikingEngine.DSSWars
                 City largest = null;
 
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
+                while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
                 {
                     
-                    if (largest == null || city.HousingCount_Workers > largest.HousingCount_Workers)
+                    if (largest == null || citySel.HousingCount_Workers > largest.HousingCount_Workers)
                     {
-                        largest = city;
+                        largest = citySel;
                     }
                 }
 
@@ -990,41 +1032,42 @@ namespace VikingEngine.DSSWars
         //    }
         //}
 
-        public void tradeAllianceWars(Faction otherFaction)
+        public void tradeAllianceWars(Faction enemyFaction, DiplomaticRelation warRelation)
         {
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
-                        foreach (var m in otherFaction.diplomaticRelations)
+                        foreach (var m in diplomaticRelations)
                         {
+
                             if (m != null)
                             {
-                                if (m.Relation <= RelationType.RelationTypeN3_War)
+                                if (m.Relation >= RelationType.RelationType3_Ally)
                                 {
-                                    var thirdFaction = m.opponent(otherFaction);
+                                    var ally = m.opponent(this);
 
-                                    if (thirdFaction != null)
+                                    if (ally != null)
                                     {
-                                        var thisAndThirdRelation = diplomaticRelations[thirdFaction.myIndex];
-                                        if (thisAndThirdRelation == null)
+                                        var allyToEnemyRelation = ally.diplomaticRelations[enemyFaction.myIndex];
+                                        if (allyToEnemyRelation == null)
                                         {
                                             //Gain bad relation
-                                            DssRef.diplomacy.SetRelationType(this, thirdFaction, m.Relation);
+                                            DssRef.diplomacy.SetRelationType(ally, enemyFaction, warRelation.Relation);
                                         }
                                         else
                                         {
-                                            if (thisAndThirdRelation.Relation < RelationType.RelationType3_Ally)
+                                            if (allyToEnemyRelation.Relation < RelationType.RelationType3_Ally)
                                             {
                                                 //share worst relation
-                                                RelationType worst = (RelationType)Math.Min((int)m.Relation, (int)thisAndThirdRelation.Relation);
+                                                RelationType worst = (RelationType)Math.Min((int)warRelation.Relation, (int)allyToEnemyRelation.Relation);
                                                 if (worst <= RelationType.RelationTypeN3_War)
                                                 {
-                                                    DssRef.diplomacy.declareWar(this, thirdFaction);
+                                                    DssRef.diplomacy.declareWar(enemyFaction, ally);
                                                 }
                                                 else
                                                 {
-                                                    DssRef.diplomacy.SetRelationType(this, thirdFaction, worst);
+                                                    DssRef.diplomacy.SetRelationType(enemyFaction, ally, worst);
                                                 }
                                             }
                                         }

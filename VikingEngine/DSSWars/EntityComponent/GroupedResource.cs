@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.EntityComponent
     struct GroupedResource
     {
         public int amount;
-        public int goalBuffer;
+        public int stockPileLimit;
         public int deliverCount;
 
         public ResourceChangeRate changeRate;
@@ -57,37 +57,46 @@ namespace VikingEngine.DSSWars.EntityComponent
         public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write(amount);
-            w.Write((ushort)goalBuffer);
+            w.Write((ushort)stockPileLimit);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion)
         {
             amount = r.ReadInt32();
-            goalBuffer = r.ReadUInt16();
+            stockPileLimit = r.ReadUInt16();
+        }
+
+        public void writeStockPile(System.IO.BinaryWriter w)
+        {
+            w.Write((ushort)stockPileLimit);
+        }
+        public void readStockPile(System.IO.BinaryReader r, int subversion)
+        {
+            stockPileLimit = r.ReadUInt16();
         }
 
         public bool needMore()
         {
-            return amount < goalBuffer;
+            return amount < stockPileLimit;
         }
 
         public bool reachedBuffer()
         {
-            return amount >= goalBuffer;
+            return amount >= stockPileLimit;
         }
 
         public bool almostReachedBuffer()
         {
-            return amount >= goalBuffer - 50;
+            return amount >= stockPileLimit - 50;
         }
 
         public bool needToImport()
         {
-            return amount < goalBuffer;
+            return amount < stockPileLimit;
         }
 
         public bool canTradeAway()
         {
-            return amount >= 30 && amount >= goalBuffer;
+            return amount >= 30 && amount >= stockPileLimit;
         }
 
         public int amountPlusDelivery()
@@ -107,7 +116,7 @@ namespace VikingEngine.DSSWars.EntityComponent
         //    amount = 0;
         //}
 
-        public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer)
+        public void toMenu(RichBoxContent content, ItemResourceType item/*, bool safeGuard*/, ref bool reachedBuffer)
         {
             content.newLine();
 
@@ -120,14 +129,11 @@ namespace VikingEngine.DSSWars.EntityComponent
                 item != ItemResourceType.Men &&
                 item != ItemResourceType.ServiceMen)
             {
-                bool reached = amount >= goalBuffer;
+                bool reached = amount >= stockPileLimit;
                 reachedBuffer |= reached;
                 SpriteName stockIcon;
-                if (safeGuard)
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd_Protected;
-                }
-                else if (reached)
+                
+                if (reached)
                 {
                     stockIcon = SpriteName.WarsStockpileStop;
                 }
@@ -141,27 +147,28 @@ namespace VikingEngine.DSSWars.EntityComponent
 
         }
 
-        public void toMenu(RichBoxContent content, ItemResourceType item, bool safeGuard, ref bool reachedBuffer, LocalPlayer player, City city, ResourcesSubTab stockpileLink)
+        public void toMenu(RichBoxContent content, ItemResourceType item/*, bool safeGuard*/, ref bool reachedBuffer, LocalPlayer player, City city, ResourcesSubTab stockpileLink)
         {
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember>{
                 new RbImage(ResourceLib.Icon(item)),
                 new RbSpace(),
                 new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": " + TextLib.LargeNumber(amount))
-            }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(city, item))));
+            }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(player.faction, city, item))));
 
             if (item != ItemResourceType.Water_G &&
                 item != ItemResourceType.Gold &&
                 item != ItemResourceType.Men)
             {
-                bool reached = amount >= goalBuffer;
+                bool reached = amount >= stockPileLimit;
                 reachedBuffer |= reached;
                 SpriteName stockIcon;
-                if (safeGuard)
-                {
-                    stockIcon = SpriteName.WarsStockpileAdd_Protected;
-                }
-                else if (reached)
+                //if (safeGuard)
+                //{
+                //    stockIcon = SpriteName.WarsStockpileAdd_Protected;
+                //}
+                //else
+                if (reached)
                 {
                     stockIcon = SpriteName.WarsStockpileStop;
                 }
@@ -194,7 +201,7 @@ namespace VikingEngine.DSSWars.EntityComponent
                             content.newLine();
                             content.Add(new RbImage(stockIcon));
                             content.space();
-                            content.Add(new RbText(city.GetGroupedResource(item).goalBuffer.ToString()));
+                            content.Add(new RbText(city.GetGroupedResource(item).stockPileLimit.ToString()));
                         }));
 
                     //content.space();
@@ -250,7 +257,7 @@ namespace VikingEngine.DSSWars.EntityComponent
 
         public override string ToString()
         {
-            return $"Grouped resource {amount}/{goalBuffer}";
+            return $"Grouped resource {amount}/{stockPileLimit}";
         }
     }
 }

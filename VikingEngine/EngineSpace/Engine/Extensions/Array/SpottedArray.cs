@@ -40,8 +40,7 @@ namespace VikingEngine
         /// </summary>
         public bool Next()
         {
-            var safePointer1 = array.NextIteration(ref selIndex);
-            sel = safePointer1;
+            sel = array.NextIteration(ref selIndex);
             return sel != null;
         }
 

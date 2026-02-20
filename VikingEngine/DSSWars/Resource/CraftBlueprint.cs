@@ -56,6 +56,19 @@ namespace VikingEngine.DSSWars.Resource
         //    }
 
         //}
+        public UseResource GetResourceCost(ItemResourceType item)
+        {
+            foreach (var r in resources)
+            {
+                if (r.type == item)
+                {
+                    return r;
+                }
+            }
+
+            return UseResource.Empty;
+        }
+
         public bool available(City city)
         {
             foreach (var r in resources)
@@ -82,6 +95,19 @@ namespace VikingEngine.DSSWars.Resource
             return true;
         }
 
+        public bool hasResources_ignorewater(City city)
+        {
+            foreach (var r in resources)
+            {
+                var res = city.GetGroupedResource(r.type);
+                if (res.amount < r.amount && r.type != ItemResourceType.Water_G)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public bool hasResources_buildAndUpgrade(City city)
         {
             if (upgradeFrom != null && !upgradeFrom.hasResources_buildAndUpgrade(city))
@@ -91,6 +117,22 @@ namespace VikingEngine.DSSWars.Resource
             {
                 var res = city.GetGroupedResource(r.type);
                 if (res.amount < r.amount)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool hasResources_buildAndUpgrade_IgnoreWater(City city)
+        {
+            if (upgradeFrom != null && !upgradeFrom.hasResources_buildAndUpgrade(city))
+            { return false; }
+
+            foreach (var r in resources)
+            {
+                var res = city.GetGroupedResource(r.type);
+                if (res.amount < r.amount && r.type != ItemResourceType.Water_G)
                 {
                     return false;
                 }
@@ -162,6 +204,16 @@ namespace VikingEngine.DSSWars.Resource
             foreach (var r in resources)
             {
                 city.AddGroupedResource(r.type, -r.amount);
+            }
+
+            return resultAmount;
+        }
+
+        public int addResources(City city)
+        {
+            foreach (var r in resources)
+            {
+                city.AddGroupedResource(r.type, r.amount);
             }
 
             return resultAmount;
@@ -292,9 +344,11 @@ namespace VikingEngine.DSSWars.Resource
                 HudLib.Label(content, DssRef.lang.Experience_Required);
                 content.newLine();
 
-                bool gotskill = city.cityExperienceLevels.Get(experienceType).Max() >= levelRequirement;
-                content.Add(new RbImage(gotskill ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
-
+                if (city != null)
+                {
+                    bool gotskill = city.cityExperienceLevels.Get(experienceType).Max() >= levelRequirement;
+                    content.Add(new RbImage(gotskill ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
+                }
                 LangLib.ExperienceType(experienceType, out string expName, out SpriteName expIcon);
                 content.Add(new RbImage(expIcon));
                 content.space();
@@ -425,8 +479,8 @@ namespace VikingEngine.DSSWars.Resource
             foreach (var r in resources)
             {
                 var cityResource = city.GetGroupedResource(r.type);
-                bool safeGuard = city.foodSafeGuardIsActive(r.type);
-                cityResource.toMenu(content, r.type, safeGuard, ref reachedBuffer);
+                //bool safeGuard = city.foodSafeGuardIsActive(r.type);
+                cityResource.toMenu(content, r.type, ref reachedBuffer);
             }
 
             if (optionalBp != null)
@@ -436,8 +490,8 @@ namespace VikingEngine.DSSWars.Resource
                     if (!resources.Contains(r))
                     {
                         var cityResource = city.GetGroupedResource(r.type);
-                        bool safeGuard = city.foodSafeGuardIsActive(r.type);
-                        cityResource.toMenu(content, r.type, safeGuard, ref reachedBuffer);
+                        //bool safeGuard = city.foodSafeGuardIsActive(r.type);
+                        cityResource.toMenu(content, r.type, ref reachedBuffer);
                     }
                 }
             }
@@ -451,6 +505,8 @@ namespace VikingEngine.DSSWars.Resource
 
     struct UseResource
     {
+        public static readonly UseResource Empty = new UseResource(ItemResourceType.NONE, 0);
+
         public ItemResourceType type;
         public int amount;
 

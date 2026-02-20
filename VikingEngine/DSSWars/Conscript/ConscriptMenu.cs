@@ -269,7 +269,7 @@ namespace VikingEngine.DSSWars.Conscript
                     HudLib.InfoButton(content, new RbTooltip_Text(string.Format(DssRef.lang.Conscript_SpecializationDescription, TextLib.PercentTextWithSymbol(DssConst.Conscript_SpecializePercentage))));
                     content.newLine();
 
-                    SpecializationType[] specializationTypes = currentStatus.profile.avaialableSpecializations();
+                    SpecializationType[] specializationTypes = currentStatus.profile.avaialableSpecializations( BuildAndExpandType.NUM_NONE, out _);
 
 
                     foreach (var specialization in specializationTypes)
@@ -460,10 +460,17 @@ namespace VikingEngine.DSSWars.Conscript
 
                 //settler
                 content.Add(new RbSeperationLine());
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.UnitType_Settler) },
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsSettlerAdd), new RbSpace(), new RbText(DssRef.lang.UnitType_Settler) },
                     new RbAction(city.conscriptSettlerLink),
                     new RbTooltip(settlerTooltip),
                      city.SettlerBp().available(city)));
+
+                if (DssRef.difficulty.GodPowers() || StartupSettings.EndlessResources)
+                {
+                    content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsSettlerAdd) },
+                       new RbAction(city.conscriptSettlerLink_Free),
+                       null, true));
+                }
             }
 
             void queueToAll(int count)
@@ -530,9 +537,13 @@ namespace VikingEngine.DSSWars.Conscript
 
         void settlerTooltip(RichBoxContent content, object tag)
         {
-            content.h2(DssRef.lang.UnitType_Settler, HudLib.TitleColor_TypeName);
+            content.h2(SpriteName.WarsSettler, DssRef.lang.UnitType_Settler, HudLib.TitleColor_TypeName);
             content.text(DssRef.lang.UnitType_Settler_Description, HudLib.InfoYellow_Light);
             city.SettlerBp().toMenu(content, city);
+
+            content.Add(new RbSeperationLine());
+            content.h2(DssRef.lang.Hud_PurchaseTitle_CurrentlyOwn, HudLib.TitleColor_Head2);
+            city.SettlerBp().listResources(content, city);
         }
 
         public static void resourcesToMenu(RichBoxContent content, City city, BarracksStatus currentStatus)
@@ -689,7 +700,7 @@ namespace VikingEngine.DSSWars.Conscript
 
             content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
             bool reachedBuffer = false;
-            res.toMenu(content, weapon, false, ref reachedBuffer);
+            res.toMenu(content, weapon, ref reachedBuffer);
             
            
         }
@@ -715,7 +726,7 @@ namespace VikingEngine.DSSWars.Conscript
                 content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
 
                 bool reachedBuffer = false;
-                city.GetGroupedResource(armor).toMenu(content, armor, false, ref reachedBuffer);
+                city.GetGroupedResource(armor).toMenu(content, armor, ref reachedBuffer);
                
             }
         }
@@ -759,12 +770,15 @@ namespace VikingEngine.DSSWars.Conscript
 
         void set(BarracksStatus profile)
         {
-            var spec = profile.profile.avaialableSpecializations();
-            if (profile.profile.specialization != SpecializationType.CityGuard &&
-                !spec.Contains(profile.profile.specialization))
-            {
-                profile.profile.specialization = spec[0];
-            }
+            //var spec = profile.profile.avaialableSpecializations(profile.type, out bool mayGuard);
+
+            //if ((profile.profile.specialization == SpecializationType.CityGuard && !mayGuard)
+            //    ||
+            //    !spec.Contains(profile.profile.specialization))
+            //{
+            //    profile.profile.specialization = spec[0];
+            //}
+            profile.checkSpecialization();
 
             city.conscriptBuildings[city.selectedConscript] = profile;
 

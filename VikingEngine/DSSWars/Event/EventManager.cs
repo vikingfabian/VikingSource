@@ -24,6 +24,7 @@ namespace VikingEngine.DSSWars.Event
         ConcurrentQueue<AbsStoryEvent> mainStory = new ConcurrentQueue<AbsStoryEvent>();
 
         public int maxWarsJuggles = 0;
+        bool gameHasEnded = false;
 
         public EventManager()
         {
@@ -349,6 +350,7 @@ namespace VikingEngine.DSSWars.Event
             //IOLib.WriteBinaryList(w, spawnPos_Player);
             //IOLib.WriteObjectList(w, darkLordAvailableFactions);
             //IOLib.WriteObjectList(w, darkLordAllies);
+            w.Write(gameHasEnded);
 
             var storyArray = mainStory.ToArray();
             w.Write((byte)mainStory.Count);
@@ -381,7 +383,12 @@ namespace VikingEngine.DSSWars.Event
 
             //if (subVersion >= 47)
             //{
-                Ref.TotalGameTimeSec = r.ReadSingle();
+            Ref.TotalGameTimeSec = r.ReadSingle();
+            
+            if (subVersion >= 90)
+            {
+                gameHasEnded = r.ReadBoolean();
+            }
             //}
             if (subVersion < 57)
             {
@@ -1002,10 +1009,9 @@ namespace VikingEngine.DSSWars.Event
             if (mainStory.Count > 0)
             {
                 mainStory.Clear();
-                
-
-                triggerGameEnd(GameEndReason.Victory, vType, null);
             }
+
+            triggerGameEnd(GameEndReason.Victory, vType, null);
         }
 
         public void onPlayerEnterWar(Players.LocalPlayer player, Faction other, bool isAggressor)
@@ -1070,41 +1076,46 @@ namespace VikingEngine.DSSWars.Event
 
         public void triggerGameEnd(GameEndReason endReason, VictoryType vType, MatchResult matchResult)
         {
-            new EndScene(endReason, vType, matchResult);
-
-            new GameOverResult(endReason, vType, matchResult);
-
-            if (!PlatformSettings.STEAM_DEMO &&
-                (endReason == GameEndReason.Victory || DssRef.time.TotalIngameTime().TotalHours > 10))
+            if (!gameHasEnded)
             {
-                if (!DssRef.storage.metaProgression.unlockedDangerousSettings)
+                gameHasEnded = true;
+
+                new EndScene(endReason, vType, matchResult);
+
+                new GameOverResult(endReason, vType, matchResult);
+
+                if (!PlatformSettings.STEAM_DEMO &&
+                    (endReason == GameEndReason.Victory || DssRef.time.TotalIngameTime().TotalHours > 10))
                 {
-                    DssRef.storage.metaProgression.unlockedDangerousSettings = true;
-                   
+                    if (!DssRef.storage.metaProgression.unlockedDangerousSettings)
+                    {
+                        DssRef.storage.metaProgression.unlockedDangerousSettings = true;
+
+                    }
                 }
-            }
 
-            if (endReason == GameEndReason.Victory)
-            {
-                DssRef.achieve.onVictory(vType);
-
-                int difficulty = Convert.ToInt32(DssRef.difficulty.TotalDifficulty() * 100);
-                switch (vType)
+                if (endReason == GameEndReason.Victory)
                 {
-                    case VictoryType.DefeatBoss:
-                        DssRef.storage.metaProgression.Act1_Victory_Boss.addVictory(difficulty);
-                        break;
-                    case VictoryType.Domination:
-                        DssRef.storage.metaProgression.Act1_Victory_Domination.addVictory(difficulty);
-                        break;
-                    case VictoryType.WorldPeace:
-                        DssRef.storage.metaProgression.Act1_Victory_WorldPeace.addVictory(difficulty);
-                        break;
+                    DssRef.achieve.onVictory(vType);
 
+                    int difficulty = Convert.ToInt32(DssRef.difficulty.TotalDifficulty() * 100);
+                    switch (vType)
+                    {
+                        case VictoryType.DefeatBoss:
+                            DssRef.storage.metaProgression.Act1_Victory_Boss.addVictory(difficulty);
+                            break;
+                        case VictoryType.Domination:
+                            DssRef.storage.metaProgression.Act1_Victory_Domination.addVictory(difficulty);
+                            break;
+                        case VictoryType.WorldPeace:
+                            DssRef.storage.metaProgression.Act1_Victory_WorldPeace.addVictory(difficulty);
+                            break;
+
+                    }
                 }
-            }
 
-            DssRef.storage.Save(null);
+                DssRef.storage.Save(null);
+            }
         }
 
        

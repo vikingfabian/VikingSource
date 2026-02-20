@@ -8,6 +8,63 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Russian : AbsLanguage
     {
+        public override string Help_Work_Automatic => "Работа выполняется автоматически";
+        public override string Tutorial_SecondCity => "Захватите второй город";
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "Пропустить автоматику";
+
+        public override string Resource_WaterReason => "Вода ограничивает максимальное число юнитов и размер производства";
+        public override string BuildingType_Orchard => "Фруктовый сад";
+        public override string BuildingType_ManorLord => "Лорд поместья";
+        public override string BuildingType_ManorLord_Description => "Открывает переработку пищи";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "Разорвать отношения";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "Источник предмета";
+
+        public override string ItemSource_Terrain => "Местность";
+        public override string ItemSource_Farm => "Ферма";
+        public override string ItemSource_CraftStation => "Мастерская";
+        public override string ItemSource_Gathering => "Собирательство";
+
+        public override string CityCulture_Nomad => "Кочевник";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "Коэффициент изменения: {0}";
+
+        public override string Hud_Purchase_LowXCost => "Низкие затраты: {0}";
+
+        public override string WorkQueue_Title => "Очередь работ";
+        public override string WorkQueue_Length => "Осталось задач";
+        public override string WorkQueue_ActiveWorkers => "Активные бригады";
+        public override string WorkQueue_IdleWorkers => "Свободные бригады";
+
+        public override string WorkTeam_Size => "Жители работают группами по {0}";
+
+        public override string ObjectUi_ViewOnMap => "Показать на карте";
+        public override string ObjectUi_StuckBuildOrders => "Застрявшие приказы";
+        public override string Hud_AllArmies => "Все армии";
+
+        public override string Hud_CurrentPage => "Текущая страница";
+        public override string Hud_AllPages => "Все страницы";
+        public override string Hud_ToAllCities => "Во все города";
+        public override string Hud_ToFaction => "Во фракцию";
+        public override string Hud_FromFaction => "Из фракции";
+        public override string Hud_FactionWide => "Исп. настройки фракции";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "Разместить поселение";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "Удалить все кадры, кроме этого";
         //Winter patch 3
         public override string Hud_Purchase_AllBuildings => "В очередь: все здания";
         public override string Hud_Purchase_AllTech => "В очередь: все технологии";
@@ -165,7 +222,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Название игры и номер версии
         /// </summary>
-        public override string Lobby_GameVersion => "DSS war party - версия {0}";
+        //public override string Lobby_GameVersion => "DSS war party - версия {0}";
 
         public override string FlagEditor_Description => "Нарисуйте свой флаг и выберите цвета для своих солдат.";
 

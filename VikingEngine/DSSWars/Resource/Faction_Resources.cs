@@ -216,7 +216,7 @@ namespace VikingEngine.DSSWars
                 content.Add(subTab);
             }
 
-            new StockPileMenu(content, null, this).toHud(player.resourcesSubTab);
+            new StockPileMenu(content, null, this).toHud(player, player.resourcesSubTab);
             //ItemResourceType[] items = null;
 
             //switch (player.resourcesSubTab)
@@ -307,30 +307,30 @@ namespace VikingEngine.DSSWars
             workTemplate.toHud(p, content, p.resourcesSubTab, this, null);
         }
 
-        public void tradeTab(RichBoxContent content)
-        {
-            tradeTemplate.toHud(player.GetLocalPlayer(), content, this, null);
-        }
+        //public void tradeTab(RichBoxContent content)
+        //{
+        //    tradeTemplate.toHud(player.GetLocalPlayer(), content, this, null);
+        //}
 
-        public void changeResourcePrice(float change, ItemResourceType resourceType, City city)
-        {
-            if (city != null)
-            {
-                city.tradeTemplate.changeResourcePrice(change, resourceType);
-            }
-            else
-            { 
-                tradeTemplate.changeResourcePrice(change, resourceType);
-                //var cityCounter = cities.counter();
-                //while (cityCounter.Next())
-                //{
-                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
-                {
-                    citySel.tradeTemplate.onFactionValueChange(tradeTemplate);
-                }
-            }
-        }
+        //public void changeResourcePrice(float change, ItemResourceType resourceType, City city)
+        //{
+        //    if (city != null)
+        //    {
+        //        city.tradeTemplate.changeResourcePrice(change, resourceType);
+        //    }
+        //    else
+        //    { 
+        //        tradeTemplate.changeResourcePrice(change, resourceType);
+        //        //var cityCounter = cities.counter();
+        //        //while (cityCounter.Next())
+        //        //{
+        //        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+        //        while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
+        //        {
+        //            citySel.tradeTemplate.onFactionValueChange(tradeTemplate);
+        //        }
+        //    }
+        //}
         public void setWorkPrio(int set, WorkPriorityType priorityType, City city)
         {
             if (city != null)
@@ -363,10 +363,10 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public void tradeFollowFactionClick(ItemResourceType resourceType, City city)
-        {
-            city.tradeTemplate.followFactionClick(resourceType, tradeTemplate);
-        }
+        //public void tradeFollowFactionClick(ItemResourceType resourceType, City city)
+        //{
+        //    city.tradeTemplate.followFactionClick(resourceType, tradeTemplate);
+        //}
 
         public void workFollowFactionClick(WorkPriorityType prioType, City city)
         {
@@ -543,6 +543,11 @@ namespace VikingEngine.DSSWars
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
+                //if (armiesC.sel.debugTagged)
+                //{
+                //    lib.DoNothing();
+                //}
+
                 float manUpkeepCount = 0;
                 float moneyCarry = 0;
                 //float armyUpkeep = 0;

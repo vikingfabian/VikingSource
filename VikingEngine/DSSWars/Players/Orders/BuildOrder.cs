@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars.Players.Orders
 {
     abstract class AbsBuildOrder : AbsOrder
     {
-        protected City city;
+        public City city;
         protected IntVector2 subTile;
         protected VoxelModelInstance model;
 

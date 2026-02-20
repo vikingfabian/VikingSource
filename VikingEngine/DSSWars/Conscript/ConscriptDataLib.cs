@@ -30,9 +30,9 @@ namespace VikingEngine.DSSWars.Conscript
             }
         }
 
-        public const int CraftSettlerFood = 400;
-        public const int CraftSettlerWood = 300;
-        public const int CraftSettlerSkinLinen = 500;
+        public const int CraftSettlerFood = 300;
+        public const int CraftSettlerWood = 150;
+        public const int CraftSettlerSkinLinen = 200;
 
         public static readonly CraftBlueprint CraftSettler = new CraftBlueprint(
             CraftResultType.NoSet,

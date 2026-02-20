@@ -35,6 +35,10 @@ namespace VikingEngine.DSSWars.GameObject
         public IntVector2 recruitToTile;
         public void async_conscriptUpdate(float time)
         {
+            if (myIndex == 153)
+            {
+                lib.DoNothing();
+            }
             if (conscriptDelay.HasTime)
             {
                 conscriptDelay.CountDown(time);
@@ -367,7 +371,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void conscriptSettlerLink()
         {
-            conscriptSettler(null);
+            conscriptSettler(null, false);
+        }
+
+        public void conscriptSettlerLink_Free()
+        {
+            SettlerBp().addResources(this);
+            conscriptSettlerLink();
         }
 
         public CraftBlueprint SettlerBp()
@@ -375,11 +385,16 @@ namespace VikingEngine.DSSWars.GameObject
             return Culture == CityCulture.Nomads ? ConscriptDataLib.CraftNomadSettler : ConscriptDataLib.CraftSettler;
         }
 
-        public Army conscriptSettler(City settleArea)
+        public void aiConscriptSettler(City settleArea)
         {
-            Army army = null;
-
-            if (SettlerBp().tryPayResources(this) > 0)
+            conscriptSettler(settleArea, true);
+        }
+        public Army conscriptSettler(City settleArea, bool checkIfExists)
+        {
+            Army army = recruitToClosestArmy();
+            
+            if ((!checkIfExists || army == null || !army.HasSettler(out _)) &&
+                SettlerBp().tryPayResources(this) > 0)
             {
                 army = conscriptArmy(new ConscriptProfile()
                 {
@@ -554,6 +569,8 @@ namespace VikingEngine.DSSWars.GameObject
         public void createStartupBarracks()
         {
             if (conscriptBuildings.Count == 0 &&
+                cityType > CityType.Campsite &&
+                barracksReservedSpot.X > 0 &&
                 !DssRef.storage.runTutorial)
             {
                 ref var subTile = ref DssRef.world.subTileGrid.GetRef(barracksReservedSpot);

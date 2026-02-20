@@ -301,7 +301,31 @@ namespace VikingEngine.DSSWars.Event
         }
         public override void onStart()
         {
-            init(false, DssRef.difficulty.extremeAggression? new TimeLength(10) : TimeLength.FromMinutes(30));
+            bool settler = DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler;
+            TimeLength time;
+            if (DssRef.difficulty.extremeAggression)
+            {
+                if (settler) 
+                {
+                    time = new TimeLength(10);
+                }
+                else
+                {
+                    time = TimeLength.FromMinutes(5);
+                }
+            }
+            else
+            {
+                if (settler)
+                {
+                    time = TimeLength.FromMinutes(50);
+                }
+                else
+                {
+                    time = TimeLength.FromMinutes(30); //DEFAULT
+                }
+            }
+            init(false, time);
         }
         public override bool RunAi()
         {
@@ -431,7 +455,8 @@ namespace VikingEngine.DSSWars.Event
                         }
 
                         var player = check.GetPlayer();
-                        if (player.IsBot() &&
+                        if (player != null &&
+                            player.IsBot() &&
                             player.faction.diplomaticSide != DiplomaticSide.Dark &&
                             check.cityType < CityType.Capital &&
                             DssRef.diplomacy.GetRelationType(check.GetFaction(), p.faction) >= RelationType.RelationType0_Neutral)
@@ -471,7 +496,8 @@ namespace VikingEngine.DSSWars.Event
             {
                 
                 ForXYEdgeLoopRandomPicker loop = new ForXYEdgeLoopRandomPicker();
-                for (int radius = Bound.Min(city.cityTileRadius - 2, 4); radius < city.cityTileRadius + 2; ++radius)
+                int cityradius = city.cityTileArea.size.SideLength() / 2;
+                for (int radius = Bound.Min(cityradius - 2, 4); radius < cityradius + 2; ++radius)
                 {
                     loop.start(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
                     while (loop.Next())

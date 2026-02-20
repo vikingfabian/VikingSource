@@ -167,7 +167,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     HudLib.Label(content, DssRef.lang.MapGenerator_Terrain_BuildDigLoops);
                     content.space();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 1 }, BuildDigLoopBounds,
-                        (bool set, int value) =>
+                        (object tag, bool set, int value) =>
                         {
 
                             if (set)
@@ -182,7 +182,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     HudLib.Label(content, DssRef.lang.MapGenerator_Terrain_BuildStrokes);
                     content.space();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f }, StrokeCountBounds,
-                        (bool set, float value) =>
+                        (object tag, bool set, float value) =>
                         {
                             if (set)
                             {
@@ -204,7 +204,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     HudLib.Label(content, DssRef.lang.MapGenerator_Terrain_DigStrokes);
                     content.space();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f }, StrokeCountBounds,
-                        (bool set, float value) =>
+                        (object tag, bool set, float value) =>
                         {
                             if (set)
                             {

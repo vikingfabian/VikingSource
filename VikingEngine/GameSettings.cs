@@ -26,7 +26,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 33;
+        const int Version = 34;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -57,7 +57,8 @@ namespace VikingEngine
         public bool ModelLightShaderEffect = true;
         public bool modelShadow = true;
 
-        public bool farViewDistance = true;
+        public ThreeOptions farViewDistance = ThreeOptions.High;
+        public bool fadeMapLayers = true;
         //public bool modelShadow_Soft = true;
         public bool waterFoam = true;
         public float modelBrightness = 1f;
@@ -148,7 +149,8 @@ namespace VikingEngine
             w.Write(modelBrightness);
 
             w.Write(FrameRate);
-            w.Write(farViewDistance);
+            w.Write((byte)farViewDistance);
+            w.Write(fadeMapLayers);
 
             w.Write(customCursor);
             w.Write(muteControllerDisconnect);
@@ -167,106 +169,114 @@ namespace VikingEngine
             if (version > Version || version == 32) return;
 
             Engine.Screen.ReadSettings(r, version);
-                MusicMasterVolume = r.ReadSingle();
-                if (version == 23)
-                {
-                    MusicMasterVolume = 1f;
-                }
-                SoundVolume = r.ReadSingle();
-                VibrationLevel = r.ReadByte();
-                //Engine.Screen.WindowScalePerc = r.ReadInt32();
-                //Engine.Screen.PcTargetResolution.read(r);
-                
-                //Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
+            MusicMasterVolume = r.ReadSingle();
+            if (version == 23)
+            {
+                MusicMasterVolume = 1f;
+            }
+            SoundVolume = r.ReadSingle();
+            VibrationLevel = r.ReadByte();
+            //Engine.Screen.WindowScalePerc = r.ReadInt32();
+            //Engine.Screen.PcTargetResolution.read(r);
 
-                UiScale = r.ReadSingle();
-                if (UiScale < 0.5f)
-                {
-                    UiScale = 1f;
-                }
+            //Engine.Screen.UseRecordingPreset = (Engine.RecordingPresets)r.ReadByte();
 
-                if (version >= 33)
-                {
-                    IngameMenuWidth = r.ReadSingle();
-                }
+            UiScale = r.ReadSingle();
+            if (UiScale < 0.5f)
+            {
+                UiScale = 1f;
+            }
 
-                language = (LanguageType)r.ReadByte();
+            if (version >= 33)
+            {
+                IngameMenuWidth = r.ReadSingle();
+            }
 
-                dyslexiaFont = r.ReadBoolean();
+            language = (LanguageType)r.ReadByte();
 
-                controllerMap.read(r);
-                keyboardMap.read(r);
+            dyslexiaFont = r.ReadBoolean();
 
-
-                bannedPeers.read(r, version);
-
-                ModelLightShaderEffect = r.ReadBoolean();
-
-                MasterVolume = r.ReadSingle();
-                AmbientVolume = r.ReadSingle();
-
-                MapLoadingSpeed = (ThreeOptions)r.ReadByte();
-                Blood = r.ReadInt32();
-
-                panOnZoom = r.ReadBoolean();
-                controlLayout = r.ReadInt32();
-                scrollWheelSensitivity_menu = r.ReadSingle();
-                scrollWheelSensitivity_game = r.ReadSingle();
-                if (version >= 22)
-                {
-                    keyPanSpeed = r.ReadSingle();
-                }
+            controllerMap.read(r);
+            keyboardMap.read(r);
 
 
-                BattleMelodyVolume = r.ReadSingle();
+            bannedPeers.read(r, version);
 
-                ParticlesEffect = r.ReadBoolean();
-                if (version >= 32)
-                {
-                    Debug.ReadCheck(r);
-                }
+            ModelLightShaderEffect = r.ReadBoolean();
 
-                    if (version >= 23)
-                {
-                    lowLatencyGarbageCollecting = r.ReadBoolean();
-                }
+            MasterVolume = r.ReadSingle();
+            AmbientVolume = r.ReadSingle();
 
-           
+            MapLoadingSpeed = (ThreeOptions)r.ReadByte();
+            Blood = r.ReadInt32();
 
-                if (version >= 25)
-                {
-                    shadowResolution = (ShadowResolution)r.ReadByte();
-                    modelShadow = r.ReadBoolean();
-                    waterFoam = r.ReadBoolean();
-                    modelBrightness = r.ReadSingle();
-                }
+            panOnZoom = r.ReadBoolean();
+            controlLayout = r.ReadInt32();
+            scrollWheelSensitivity_menu = r.ReadSingle();
+            scrollWheelSensitivity_game = r.ReadSingle();
+            if (version >= 22)
+            {
+                keyPanSpeed = r.ReadSingle();
+            }
 
-                if (version >= 26)
-                {
-                    FrameRate = r.ReadInt32();
-                }
 
-                if (version >= 27)
-                {
-                    farViewDistance = r.ReadBoolean();
-                }
+            BattleMelodyVolume = r.ReadSingle();
 
-                if (version >= 29)
-                {
-                    customCursor = r.ReadBoolean();
-                }
-
-                if (version >= 30)
-                {
-                    muteControllerDisconnect = r.ReadBoolean();
-                }
-
+            ParticlesEffect = r.ReadBoolean();
+            if (version >= 32)
+            {
                 Debug.ReadCheck(r);
+            }
 
-                Engine.Update.SetFrameRate(FrameRate);
-                setSoundLevelsOnError();
-                //MusicMasterVolume = 0;
-            
+            if (version >= 23)
+            {
+                lowLatencyGarbageCollecting = r.ReadBoolean();
+            }
+
+
+
+            if (version >= 25)
+            {
+                shadowResolution = (ShadowResolution)r.ReadByte();
+                modelShadow = r.ReadBoolean();
+                waterFoam = r.ReadBoolean();
+                modelBrightness = r.ReadSingle();
+            }
+
+            if (version >= 26)
+            {
+                FrameRate = r.ReadInt32();
+            }
+
+            if (version >= 27)
+            {
+                if (version < 34)
+                {
+                    farViewDistance = r.ReadBoolean() ? ThreeOptions.High : ThreeOptions.Medium;
+                }
+                else
+                {
+                    farViewDistance = (ThreeOptions)r.ReadByte();
+                    fadeMapLayers = r.ReadBoolean();
+                }
+            }
+
+            if (version >= 29)
+            {
+                customCursor = r.ReadBoolean();
+            }
+
+            if (version >= 30)
+            {
+                muteControllerDisconnect = r.ReadBoolean();
+            }
+
+            Debug.ReadCheck(r);
+
+            Engine.Update.SetFrameRate(FrameRate);
+            setSoundLevelsOnError();
+            //MusicMasterVolume = 0;
+
         }
 
         public void setSoundLevelsOnError()
@@ -350,25 +360,7 @@ namespace VikingEngine
 //            }
 //        }
 
-        public bool farViewDistanceProperty(object tag, bool set, bool value)
-        {
-            if (set)
-            {
-                if (farViewDistance != value)
-                {
-                    farViewDistance = value;
-                    if (DssRef.state != null)
-                    {
-                        foreach (var p in DssRef.state.localPlayers)
-                        {
-                            p.mapLayersManager.refreshLayers();
-                        }
-                    }
-                    settingsHasChanged = true;
-                }
-            }
-            return farViewDistance;
-        }
+        
 
         public bool muteControllerDisconnectProperty(object tag, bool set, bool value)
         {
@@ -405,7 +397,15 @@ namespace VikingEngine
             }
             return customCursor;
         }
-
+        public bool FadeMapLayersProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                fadeMapLayers = value;
+                settingsHasChanged = true;
+            }
+            return fadeMapLayers;
+        }
         public bool AddSomePixelsProperty(object tag, bool set, bool value)
         {
             if (set)
@@ -485,7 +485,7 @@ namespace VikingEngine
             return waterFoam;
         }
 
-        public float brightnessProperty(bool set, float value)
+        public float brightnessProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -494,6 +494,27 @@ namespace VikingEngine
             }
             return modelBrightness;
         }
+
+        //public bool farViewDistanceProperty(object tag, bool set, bool value)
+        //{
+        //    if (set)
+        //    {
+        //        if (farViewDistance != value)
+        //        {
+        //            farViewDistance = value;
+        //            if (DssRef.state != null)
+        //            {
+        //                foreach (var p in DssRef.state.localPlayers)
+        //                {
+        //                    p.mapLayersManager.refreshLayers();
+        //                }
+        //            }
+        //            settingsHasChanged = true;
+        //        }
+        //    }
+        //    return farViewDistance;
+        //}
+
         public bool particlesProperty(object tag, bool set, bool val)
         {
             if (set)
@@ -537,13 +558,13 @@ namespace VikingEngine
 
         void volumeOptions(GuiLayout layout)
         {
-            if (Ref.music != null)
-            {
-                new GuiFloatSlider(SpriteName.MenuPixelIconMusicVol, Ref.langOpt.SoundOption_MusicVolume, musicVolProperty, new IntervalF(0, 4), false, layout);
-            }
-            new GuiFloatSlider(SpriteName.MenuPixelIconSoundVol, Ref.langOpt.SoundOption_SoundVolume, soundVolProperty, new IntervalF(0, 4), false, layout);
+            //if (Ref.music != null)
+            //{
+            //    new GuiFloatSlider(SpriteName.MenuPixelIconMusicVol, Ref.langOpt.SoundOption_MusicVolume, musicVolProperty, new IntervalF(0, 4), false, layout);
+            //}
+            //new GuiFloatSlider(SpriteName.MenuPixelIconSoundVol, Ref.langOpt.SoundOption_SoundVolume, soundVolProperty, new IntervalF(0, 4), false, layout);
 
-            new GuiCheckbox(Ref.langOpt.ReversedStereo, null, ReversedStereoProperty, layout);
+            //new GuiCheckbox(Ref.langOpt.ReversedStereo, null, ReversedStereoProperty, layout);
         }
 
         public void volumeOptions(RichBoxContent content)
@@ -798,10 +819,48 @@ namespace VikingEngine
                 particlesProperty));
 
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.GraphicsOption_FarViewDistance) },
-                farViewDistanceProperty));
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.Settings_Particles_FadeMapLayers) },
+                FadeMapLayersProperty));
             content.space();
             content.Add(new RbImage(SpriteName.MenuIconPerformanceHot));
+
+            content.newLine();
+            DropDownBuilder viewDistanceDropDown = new DropDownBuilder("view distance");
+            {
+                for (ThreeOptions opt = 0; opt < ThreeOptions.NUM; opt++)
+                {
+                    var dropOpt = viewDistanceDropDown.AddOption(Ref.langOpt.ThreeOption(opt),
+                        opt == farViewDistance, opt == ThreeOptions.High, new RbAction1Arg<ThreeOptions>((ThreeOptions value) =>
+                        {
+                            farViewDistance = value;
+                            settingsHasChanged = true;
+                            menu.CloseDropDown();
+                            if (DssRef.state != null)
+                            {
+                                foreach (var p in DssRef.state.localPlayers)
+                                {
+                                    p.mapLayersManager.refreshLayers();
+                                }
+                            }
+                            //DssRef.state?.detailMap?.refreshLoadSpeed();
+                        }, opt), null);
+
+                    switch (opt)
+                    {
+                        case 0:
+                            dropOpt.iconAfter = SpriteName.MenuIconPerformanceCold;
+                            break;
+                        case ThreeOptions.NUM - 1:
+                            dropOpt.iconAfter = SpriteName.MenuIconPerformanceHot;
+                            break;
+                    }
+                }
+                viewDistanceDropDown.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.GraphicsOption_FarViewDistance, menu);
+            }
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.GraphicsOption_FarViewDistance) },
+            //    farViewDistanceProperty));xx
+            //content.space();
+            //content.Add(new RbImage(SpriteName.MenuIconPerformanceHot));
 
             DropDownBuilder frameRateOptions = new DropDownBuilder("fps");
             {
@@ -885,10 +944,10 @@ namespace VikingEngine
 
         public void setResolutionPercProperty(int res)
         {
-            windowScaleProperty(true, res);  
+            windowScaleProperty(null, true, res);  
         }
 
-        public int bloodProperty(bool set, int value)
+        public int bloodProperty(object tag, bool set, int value)
         {
             if (set)
             {
@@ -898,7 +957,7 @@ namespace VikingEngine
             return Blood;
         }
 
-        public int windowScaleProperty(bool set, int res)
+        public int windowScaleProperty(object tag, bool set, int res)
         {
             if (set)
             {
@@ -1004,7 +1063,7 @@ namespace VikingEngine
 #endif
         }
 
-        public float scrollMenuProperty(bool set, float value)
+        public float scrollMenuProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1013,7 +1072,7 @@ namespace VikingEngine
             }
             return scrollWheelSensitivity_menu;
         }
-        public float scrollGameProperty(bool set, float value)
+        public float scrollGameProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1022,7 +1081,7 @@ namespace VikingEngine
             }
             return scrollWheelSensitivity_game;
         }
-        public float panSpeedProperty(bool set, float value)
+        public float panSpeedProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1032,7 +1091,7 @@ namespace VikingEngine
             return keyPanSpeed;
         }
 
-        public float musicVolProperty(bool set, float value)
+        public float musicVolProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1042,7 +1101,7 @@ namespace VikingEngine
             }
             return MusicMasterVolume;
         }
-        public float soundVolProperty(bool set, float value)
+        public float soundVolProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1051,7 +1110,7 @@ namespace VikingEngine
             }
             return SoundVolume;
         }
-        public float masterVolProperty(bool set, float value)
+        public float masterVolProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1061,7 +1120,7 @@ namespace VikingEngine
             }
             return MasterVolume;
         }
-        public float ambientVolProperty(bool set, float value)
+        public float ambientVolProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1071,7 +1130,7 @@ namespace VikingEngine
             return AmbientVolume;
         }
 
-        public float BattleMelodyVolProperty(bool set, float value)
+        public float BattleMelodyVolProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1081,7 +1140,7 @@ namespace VikingEngine
             return BattleMelodyVolume;
         }
 
-        public float uiScaleProperty(bool set, float value)
+        public float uiScaleProperty(object tag, bool set, float value)
         {
             if (set)
             {
@@ -1093,7 +1152,7 @@ namespace VikingEngine
             return UiScale;
         }
 
-        public float IngameMenuWProperty(bool set, float value)
+        public float IngameMenuWProperty(object tag,bool set, float value)
         {
             if (set)
             {
@@ -1104,7 +1163,7 @@ namespace VikingEngine
             return IngameMenuWidth;
         }
 
-        public int vibrationProperty(bool set, int value)
+        public int vibrationProperty(object tag, bool set, int value)
         {
             if (set)
             {
@@ -1177,6 +1236,8 @@ namespace VikingEngine
         Turkish,
         Italian,
         Korean,
+        Polish,
+        Thai,
     }
 
     enum ThreeOptions

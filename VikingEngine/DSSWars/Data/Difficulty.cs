@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DataStream;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
@@ -58,7 +58,7 @@ namespace VikingEngine.DSSWars.Data
         public bool setting_QuickMatch_TwoTeams = false;
 
 
-        public int TechMultiProperty(bool set, int value)
+        public int TechMultiProperty(object tag, bool set, int value)
         {
             if (set)
             {
@@ -124,6 +124,18 @@ namespace VikingEngine.DSSWars.Data
         public bool GodPowers()
         { 
             return setting_gameMode == GameModeMainType.Spectator;
+        }
+
+        public static bool ModeSupportsTutorial(GameModeMainType gameMode)
+        {
+            switch (gameMode)
+            {
+                case GameModeMainType.Spectator:
+                case GameModeMainType.QuickMatch:
+                    return false;
+
+                default: return true;
+            }
         }
 
         public static void OptionsRb(RichBoxContent content, RichMenu menu, Action<int> callback)

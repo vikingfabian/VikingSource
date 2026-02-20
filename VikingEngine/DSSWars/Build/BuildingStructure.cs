@@ -70,6 +70,7 @@ namespace VikingEngine.DSSWars.Build
         {
             switch (type)
             {
+                case BuildAndExpandType.WorkerTent:
                 case BuildAndExpandType.WorkerHut:
                 case BuildAndExpandType.WorkerHutLarge:
                     return WorkerHuts_pos;
@@ -99,7 +100,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Smith: return Smith_pos;
                 case BuildAndExpandType.Carpenter: return Carpenter_pos;
 
-                case BuildAndExpandType.OrchidApple:
+                case BuildAndExpandType.OrchardApple:
                 case BuildAndExpandType.OrchidBanana:
                     return Orchard_pos;
 
@@ -203,6 +204,12 @@ namespace VikingEngine.DSSWars.Build
         static readonly SubTile TerrainType_sulfur = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Sulfur);
         static readonly SubTile TerrainType_coal = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Coal);
 
+        public bool HasIndependantResources()
+        {
+            return mineCount_bogIron + mineCount_bogIron >= 1 &&
+                resourceCount_wood >= 3 &&
+                resourceCount_stone >= 1;
+        }
 
         public void miningOverviewHud(LocalPlayer player, RichBoxContent content)
         {
@@ -315,6 +322,7 @@ namespace VikingEngine.DSSWars.Build
         
         public bool manorLord;
         public int buildingLevel_logistics;
+        public int TentHuts_count;
         public int WorkerHuts_count;
         public int WorkerHuts_Large_count;
         public int ServiceMenHouse_count;
@@ -366,12 +374,14 @@ namespace VikingEngine.DSSWars.Build
         public int School_count;
         public int ResearchCenter_count;
         public int BookPress_count;
-        
+
+        public int wallCount;
 
         public int getCount(BuildAndExpandType type)
         {
             switch (type)
             {
+                case BuildAndExpandType.WorkerTent: return TentHuts_count;
                 case BuildAndExpandType.WorkerHut: return WorkerHuts_count;
                 case BuildAndExpandType.WorkerHutLarge: return WorkerHuts_Large_count;
 
@@ -397,7 +407,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Smith: return Smith_count;
                 case BuildAndExpandType.Carpenter: return Carpenter_count;
 
-                case BuildAndExpandType.OrchidApple: return Orchard_count;
+                case BuildAndExpandType.OrchardApple: return Orchard_count;
                 case BuildAndExpandType.OrchidBanana: return Orchard_count;
                 case BuildAndExpandType.WheatFarm: return WheatFarm_count;
                 case BuildAndExpandType.WheatFarmUpgraded: return WheatFarm_count;
@@ -472,7 +482,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Smith: Smith_count += add; break;
                 case BuildAndExpandType.Carpenter: Carpenter_count += add; break;
 
-                case BuildAndExpandType.OrchidApple:
+                case BuildAndExpandType.OrchardApple:
                 case BuildAndExpandType.OrchidBanana:
                     Orchard_count += add; break;
 

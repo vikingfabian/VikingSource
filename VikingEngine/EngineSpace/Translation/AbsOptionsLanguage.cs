@@ -9,6 +9,17 @@ namespace VikingEngine.EngineSpace.Translation
 {
     abstract class AbsOptionsLanguage
     {
+
+        //Spring patch
+
+        public abstract string Settings_Particles_FadeMapLayers { get; }
+        public abstract string SplitScreen_HorizontalFirst { get; }
+        public abstract string SplitScreen_VerticalFirst { get; }
+        public abstract string SplitScreen_HorizontalOnly { get; }
+        public abstract string SplitScreen_VerticalOnly { get; }
+        public abstract string SplitScreen_Title { get; }
+        public abstract string SplitScreen_AdjustSplit { get; }
+        //
         public abstract string Settings_ControllerVibration { get; }
         //
         public abstract string Hud_Cancel { get; }

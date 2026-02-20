@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Valve.Steamworks;
+using Steamworks;
 using VikingEngine.Network;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -29,8 +29,8 @@ namespace VikingEngine.SteamWrapping
 
         public bool IsHostingSession => Ref.steamlobby.InLobby && hostSession;
 
-        SteamCallback<P2PSessionConnectFail_t> connectFailCallback;
-        SteamCallback<P2PSessionRequest_t> sessionRequestCallback;
+        Callback<P2PSessionConnectFail_t> connectFailCallback;
+        Callback<P2PSessionRequest_t> sessionRequestCallback;
 
         const int LobbyTimeRefreshRateSec = 3;
         public const int LobbyTimeOut = LobbyTimeRefreshRateSec + 3;
@@ -44,8 +44,8 @@ namespace VikingEngine.SteamWrapping
             autoAcceptSessionRequests = true;
             remoteGamers = new List<AbsNetworkPeer>();
             
-            connectFailCallback = new SteamCallback<P2PSessionConnectFail_t>(OnConnectionFail, false);
-            sessionRequestCallback = new SteamCallback<P2PSessionRequest_t>(OnSessionRequest, false);
+            connectFailCallback = new Callback<P2PSessionConnectFail_t>(OnConnectionFail, false);
+            sessionRequestCallback = new Callback<P2PSessionRequest_t>(OnSessionRequest, false);
         }
 
         public void update()
@@ -109,13 +109,13 @@ namespace VikingEngine.SteamWrapping
         void ReadAllPackets()
         {
             uint msgSize = 0;
-            while (SteamAPI.SteamNetworking().IsP2PPacketAvailable(out msgSize, 0))
+            while (SteamNetworking.IsP2PPacketAvailable(out msgSize, 0))
             {
                 byte[] data = new byte[msgSize];
                 uint bytesRead;
-                ulong senderId;
+                CSteamID senderId;
 
-                if (SteamAPI.SteamNetworking().ReadP2PPacket(data, msgSize, out bytesRead, out senderId, 0))
+                if (SteamNetworking.ReadP2PPacket(data, msgSize, out bytesRead, out senderId, 0))
                 {
                     DataStream.MemoryStreamHandler stream = new DataStream.MemoryStreamHandler();
                     stream.SetByteArray(data);
@@ -137,7 +137,7 @@ namespace VikingEngine.SteamWrapping
                             case PacketType.Steam_SendRoundtrip:
                                 {
                                     float timestamp = packet.r.ReadSingle();
-                                    var w = Ref.netSession.BeginWritingPacket(PacketType.Steam_ReturnRoundtrip, senderId, PacketReliability.Reliable, null);
+                                    var w = Ref.netSession.BeginWritingPacket(PacketType.Steam_ReturnRoundtrip, senderId.m_SteamID, PacketReliability.Reliable, null);
                                     w.Write(timestamp);
                                 }
                                 break;
@@ -163,7 +163,7 @@ namespace VikingEngine.SteamWrapping
                                 break;
                             case PacketType.Steam_SuccesfulJoinPing:
                                 {
-                                    var w = Ref.netSession.BeginWritingPacket(PacketType.Steam_ReturnRoundtrip, senderId, PacketReliability.Reliable, packet.sender.id);
+                                    var w = Ref.netSession.BeginWritingPacket(PacketType.Steam_ReturnRoundtrip, senderId.m_SteamID, PacketReliability.Reliable, packet.sender.id);
                                     w.Write(0f);
                                 }
                                 break;
@@ -181,7 +181,7 @@ namespace VikingEngine.SteamWrapping
                                 }
                                 break;
                             case Network.PacketType.PlayerDisconnected:
-                                RemovePeer(packet.sender.fullId);
+                                RemovePeer(packet.sender.SteamID);
                                 break;
                             case PacketType.Basic_MapLoadedAndReady:
                                 packet.sender.mapLoadedAndReady = true;
@@ -229,7 +229,7 @@ namespace VikingEngine.SteamWrapping
             }
         }
 
-        public AbsNetworkPeer getOrCreatePeer(ulong playerId)
+        public AbsNetworkPeer getOrCreatePeer(CSteamID playerId)
         {
             AbsNetworkPeer peer = GetPeer(playerId);
             if (peer == null)
@@ -240,19 +240,19 @@ namespace VikingEngine.SteamWrapping
             return peer;
         }
 
-        public AbsNetworkPeer AddPeer(ulong peerId)
+        public AbsNetworkPeer AddPeer(CSteamID peerId)
         {
             if (localPeer == null)
             {
                 createLocalPeer();
             }
 
-            if (peerId == 0)
+            if (peerId == CSteamID.Nil)
             {
                 throw new Exception();
             }
 
-            if (peerId == localPeer.fullId)
+            if (peerId == localPeer.SteamID)
             {
                 //local gamer, never add
                 return null;
@@ -260,7 +260,7 @@ namespace VikingEngine.SteamWrapping
 
             for (int i = 0; i < remoteGamers.Count; ++i)
             {
-                if (peerId == remoteGamers[i].fullId) // already added
+                if (peerId == remoteGamers[i].SteamID) // already added
                     return remoteGamers[i];
             }
             
@@ -309,24 +309,24 @@ namespace VikingEngine.SteamWrapping
 
         void createLocalPeer()
         {
-            localPeer = new SteamNetworkPeer(SteamAPI.SteamUser().GetSteamID(), true);
+            localPeer = new SteamNetworkPeer(SteamUser.GetSteamID(), true);
         }
 
         public void RemovePeer(AbsNetworkPeer peer)
         {
             peer.approved = false;
 
-            RemovePeer(peer.FullId);
+            RemovePeer(peer.SteamID);
         }
 
-        public void RemovePeer(ulong steamId)
+        public void RemovePeer(CSteamID steamId)
         {
-            SteamAPI.SteamNetworking().CloseP2PSessionWithUser(steamId);
+            SteamNetworking.CloseP2PSessionWithUser(steamId);
 
             for (int i = 0; i < remoteGamers.Count; ++i)
             {
                 var peer = remoteGamers[i];
-                if (peer.fullId == steamId)
+                if (peer.SteamID == steamId)
                 {
                     remoteGamers.RemoveAt(i);
                     Ref.NetUpdateReciever().NetEvent_PeerLost(peer);
@@ -334,7 +334,7 @@ namespace VikingEngine.SteamWrapping
                 }
             }
 
-            if (Host == null || Host.FullId == steamId)
+            if (Host == null || Host.SteamID == steamId)
             {
                 Ref.netSession.Disconnect("Lost host");
             }
@@ -439,15 +439,15 @@ namespace VikingEngine.SteamWrapping
             return myId;
         }
 
-        public AbsNetworkPeer GetPeer(ulong peerId)
+        public AbsNetworkPeer GetPeer(CSteamID peerId)
         {
             foreach (var peer in remoteGamers)
             {
-                if (peer.fullId == peerId)
+                if (peer.SteamID == peerId)
                     return peer;
             }
 
-            if (localPeer.fullId == peerId)
+            if (localPeer.SteamID == peerId)
                 return localPeer;
 
             return null;
@@ -464,7 +464,7 @@ namespace VikingEngine.SteamWrapping
         }
 
 
-        public void Send(byte[] data, VikingEngine.Network.PacketReliability rely, SendPacketTo to, ulong specificGamerID)
+        public void Send(byte[] data, VikingEngine.Network.PacketReliability rely, SendPacketTo to, CSteamID specificGamerID)
         {
 #if DEBUG
             if (data.Length > SteamPackageByteLimit)
@@ -489,20 +489,20 @@ namespace VikingEngine.SteamWrapping
             if (to == SendPacketTo.OneSpecific)
             {
 
-                bool result = SteamAPI.SteamNetworking().SendP2PPacket(specificGamerID, data, (uint)data.Length, sendType, 0);
+                bool result = SteamNetworking.SendP2PPacket(specificGamerID, data, (uint)data.Length, sendType, 0);
             }
             else if (to == SendPacketTo.Host)
             {
                 if (Host != null)
                 {
-                    SteamAPI.SteamNetworking().SendP2PPacket(Host.fullId, data, (uint)data.Length, sendType, 0);
+                    SteamNetworking.SendP2PPacket(Host.SteamID, data, (uint)data.Length, sendType, 0);
                 }
             }
             else
             {
                 foreach (SteamNetworkPeer peer in remoteGamers)
                 {
-                    SteamAPI.SteamNetworking().SendP2PPacket(peer.fullId, data, (uint)data.Length, sendType, 0);
+                    SteamNetworking.SendP2PPacket(peer.SteamID, data, (uint)data.Length, sendType, 0);
                 }
             }
 
@@ -516,7 +516,7 @@ namespace VikingEngine.SteamWrapping
             }
             foreach (var peer in remoteGamers)
             {
-                SteamAPI.SteamNetworking().SendP2PPacket(peer.fullId, data, (uint)data.Length, EP2PSend.k_EP2PSendUnreliable, 0);
+                SteamNetworking.SendP2PPacket(peer.SteamID, data, (uint)data.Length, EP2PSend.k_EP2PSendUnreliable, 0);
             }
         }
 
@@ -528,7 +528,7 @@ namespace VikingEngine.SteamWrapping
             }
             foreach (var peer in remoteGamers)
             {
-                SteamAPI.SteamNetworking().SendP2PPacket(peer.fullId, data, (uint)data.Length, EP2PSend.k_EP2PSendUnreliableNoDelay, 0);
+                SteamNetworking.SendP2PPacket(peer.SteamID, data, (uint)data.Length, EP2PSend.k_EP2PSendUnreliableNoDelay, 0);
             }
         }
 
@@ -536,7 +536,7 @@ namespace VikingEngine.SteamWrapping
         {
             foreach (var peer in remoteGamers)
             {
-                SteamAPI.SteamNetworking().SendP2PPacket(peer.fullId, data, (uint)data.Length, EP2PSend.k_EP2PSendReliable, 0);
+                SteamNetworking.SendP2PPacket(peer.SteamID, data, (uint)data.Length, EP2PSend.k_EP2PSendReliable, 0);
             }
         }
 
@@ -544,7 +544,7 @@ namespace VikingEngine.SteamWrapping
         {
             foreach (var peer in remoteGamers)
             {
-                SteamAPI.SteamNetworking().SendP2PPacket(peer.fullId, data, (uint)data.Length, EP2PSend.k_EP2PSendReliableWithBuffering, 0);
+                SteamNetworking.SendP2PPacket(peer.SteamID, data, (uint)data.Length, EP2PSend.k_EP2PSendReliableWithBuffering, 0);
             }
         }
 
@@ -572,7 +572,7 @@ namespace VikingEngine.SteamWrapping
             localPeer = null;
             Host = null;
             endSession();
-            SteamAPI.clearMem();
+            //SteamAPI.clearMem();
 
             disconnectTime.Seconds = 6f;
         }
@@ -587,12 +587,12 @@ namespace VikingEngine.SteamWrapping
         {
             if (autoAcceptSessionRequests && disconnectTime.TimeOut)
             {
-                ulong peerID = sessionRequestInfo.m_steamIDRemote;
-                SteamAPI.SteamNetworking().AcceptP2PSessionWithUser(peerID);
+                CSteamID peerID = sessionRequestInfo.m_steamIDRemote;
+                SteamNetworking.AcceptP2PSessionWithUser(peerID);
 
                 for (int i = 0; i < remoteGamers.Count; ++i)
                 {
-                    if (remoteGamers[i].fullId == peerID)
+                    if (remoteGamers[i].SteamID == peerID)
                     {
                         return; // already added
                     }
@@ -604,21 +604,21 @@ namespace VikingEngine.SteamWrapping
 
         public void OnConnectionFail(P2PSessionConnectFail_t connectionFailInfo)
         {
-            ulong peerID = connectionFailInfo.m_steamIDRemote;
+            CSteamID peerID = connectionFailInfo.m_steamIDRemote;
             EP2PSessionError error = (EP2PSessionError)connectionFailInfo.m_eP2PSessionError;
             switch (error)
             {
                 case EP2PSessionError.k_EP2PSessionErrorNone:
                     break;
-                case EP2PSessionError.k_EP2PSessionErrorNotRunningApp:
-                    Debug.LogWarning("The remote user isn't running the same game (appID) as you are.");
-                    break;
+                //case EP2PSessionError.k_EP2PSessionErrorNotRunningApp:
+                //    Debug.LogWarning("The remote user isn't running the same game (appID) as you are.");
+                //    break;
                 case EP2PSessionError.k_EP2PSessionErrorNoRightsToApp:
                     Debug.LogWarning("The local user doesn't own this game.");
                     break;
-                case EP2PSessionError.k_EP2PSessionErrorDestinationNotLoggedIn:
-                    Debug.LogWarning("The remote user doesn't have a connection to Steam.");
-                    break;
+                //case EP2PSessionError.k_EP2PSessionErrorDestinationNotLoggedIn:
+                //    Debug.LogWarning("The remote user doesn't have a connection to Steam.");
+                //    break;
                 case EP2PSessionError.k_EP2PSessionErrorTimeout:
                     Debug.LogWarning("The remote user isn't responding. This could be because no physical connection could be made, or the remote end isn't calling AcceptP2PSessionWithUser()");
                     break;
@@ -629,7 +629,7 @@ namespace VikingEngine.SteamWrapping
 
             for (int i = 0; i < remoteGamers.Count; ++i)
             {
-                if (remoteGamers[i].fullId == peerID)
+                if (remoteGamers[i].SteamID == peerID)
                 {
                     Ref.NetUpdateReciever().NetEvent_PeerLost(remoteGamers[i]);
                     remoteGamers.RemoveAt(i--);

@@ -9,6 +9,66 @@ namespace VikingEngine.DSSWars.Presentation
 {
     abstract partial class AbsLanguage
     {
+        public abstract string Help_Work_Automatic { get; }
+        public abstract string Tutorial_SecondCity { get; }
+//Spring patch
+
+        public abstract string InputAction_SkipAutomated { get; }
+
+        public abstract string Resource_WaterReason { get; }
+        public abstract string BuildingType_Orchard { get; }
+        public abstract string BuildingType_ManorLord { get; }
+        public abstract string BuildingType_ManorLord_Description { get; }
+
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public abstract string Diplomacy_EndRelations { get; }
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public abstract string ItemSource { get; }
+
+        public abstract string ItemSource_Terrain { get; }
+        public abstract string ItemSource_Farm { get; }
+        public abstract string ItemSource_CraftStation { get; }
+        public abstract string ItemSource_Gathering { get; }
+
+        public abstract string CityCulture_Nomad { get; }
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public abstract string Hud_ChangeFactor { get; }
+
+        public abstract string Hud_Purchase_LowXCost { get; }
+
+        public abstract string WorkQueue_Title { get; }
+        public abstract string WorkQueue_Length { get; }
+        public abstract string WorkQueue_ActiveWorkers { get; }
+        public abstract string WorkQueue_IdleWorkers { get; }
+
+        public abstract string WorkTeam_Size { get; }
+
+        public abstract string ObjectUi_ViewOnMap { get; }
+        public abstract string ObjectUi_StuckBuildOrders { get; }
+        public abstract string Hud_AllArmies { get; }
+
+        public abstract string Hud_CurrentPage { get; }
+        public abstract string Hud_AllPages { get; }
+        public abstract string Hud_ToAllCities { get; }
+        public abstract string Hud_ToFaction { get; }
+        public abstract string Hud_FromFaction { get; }
+        public abstract string Hud_FactionWide { get; }
+
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public abstract string Action_PlaceSettlement { get; }
+
+        public abstract string Editor_Animation_RemoveAllFramesButThis { get; }
+
 
         //Winter patch 3
         public abstract string Hud_Purchase_AllBuildings { get; }
@@ -161,7 +221,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Lobby_MapSizeDesc { get; }
         public abstract string Lobby_ExitGame { get; }
 
-        public abstract string Lobby_GameVersion { get; }
+        //public abstract string Lobby_GameVersion { get; }
 
         public abstract string Player_DefaultName { get; }
 

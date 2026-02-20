@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.Build
             ItemResourceType.Bronze, ItemResourceType.CastIron, ItemResourceType.LedBullet, ItemResourceType.BloomeryIron, ItemResourceType.Mithril };
 
         public static readonly ItemResourceType[] BenchCraftTypes = {
-            ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.SharpStick, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear };
+            ItemResourceType.Fuel_G, ItemResourceType.PaddedArmor, ItemResourceType.SharpStick, ItemResourceType.HandSpear, ItemResourceType.SlingShot, ItemResourceType.ThrowingSpear };
 
         public static readonly ItemResourceType[] CarpenterCraftTypes = {
             ItemResourceType.Palisade,

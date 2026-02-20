@@ -1,16 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VikingEngine.DSSWars.Map.Generate;
-using VikingEngine.PJ;
-using VikingEngine.ToGG.HeroQuest.Players.Ai;
+
 
 namespace VikingEngine.DSSWars.Presentation
 {
     partial class English : AbsLanguage
     {
+        public override string Help_Work_Automatic => "The work is automatic";
+        public override string Tutorial_SecondCity => "Gain a second city";
+
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "Skip automated";
+
+        public override string Resource_WaterReason => "Water will limit how many units you can support and the size of your production";
+        public override string BuildingType_Orchard => "Orchard";
+        public override string BuildingType_ManorLord => "Manor Lord";
+        public override string BuildingType_ManorLord_Description => "Unlock food processing";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "End relations";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "Item source";
+
+        public override string ItemSource_Terrain => "Terrain";
+        public override string ItemSource_Farm => "Farm";
+        public override string ItemSource_CraftStation => "Crafting station";
+        public override string ItemSource_Gathering => "Gathering";
+
+        public override string CityCulture_Nomad => "Nomad";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "By change factor: {0}";
+
+        public override string Hud_Purchase_LowXCost => "Low {0} cost";
+
+        public override string WorkQueue_Title => "Work queue";
+        public override string WorkQueue_Length => "Remaining work objectives";
+        public override string WorkQueue_ActiveWorkers => "Active work teams";
+        public override string WorkQueue_IdleWorkers => "Idle work teams";
+
+        public override string WorkTeam_Size => "Villagers work in teams of {0}";
+
+        public override string ObjectUi_ViewOnMap => "View on map";
+        public override string ObjectUi_StuckBuildOrders => "Stuck build orders";
+        public override string Hud_AllArmies => "All armies";
+
+        public override string Hud_CurrentPage => "Current page";
+        public override string Hud_AllPages => "All pages";
+        public override string Hud_ToAllCities => "To all cities";
+        public override string Hud_ToFaction => "To faction";
+        public override string Hud_FromFaction => "From faction";
+        public override string Hud_FactionWide => "Use the faction-wide setting";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "Place settlement";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "Remove all other frames";
+
+
         //Winter patch 3
         public override string Hud_Purchase_AllBuildings => "Queue all buildings";
         public override string Hud_Purchase_AllTech => "Queue all tech";
@@ -87,6 +142,8 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Tutorial_AdvisorCompleteMessage => "May your next day be blessed!";
 
         public override string Hud_Search => "Search";
+
+        
 
         public override string DifficultyDescription_ExtremeAggression => "Extreme aggression";
 
@@ -190,7 +247,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Game name and version number
         /// </summary>
-        public override string Lobby_GameVersion => "DSS war party - ver {0}";
+        //public override string Lobby_GameVersion => "DSS war party - ver {0}";
 
         public override string FlagEditor_Description => "Paint your flag and select colors for your army men.";
 

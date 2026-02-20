@@ -1201,6 +1201,14 @@ namespace VikingEngine.DSSWars.Players
                 {
                     return;
                 }
+                if (faction.mainCity == null)
+                {
+                    faction.refreshMainCity();
+                    if (faction.mainCity == null)
+                    {
+                        return;
+                    }
+                }
 
                 Army mainArmy = null;
 
@@ -1426,6 +1434,7 @@ namespace VikingEngine.DSSWars.Players
 
             Army startMainArmy()
             {
+                
                 IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
                 return faction.NewArmy(onTile);
             }
@@ -1669,7 +1678,7 @@ namespace VikingEngine.DSSWars.Players
             if (faction.cities.Count > 0)
             {
                 City city = faction.cities.GetRandom(Ref.rnd, DssRef.world.cities);
-
+                                
                 if (city != null &&
                     city.cityType > CityType.Campsite &&
                     city.homesUnused() < 20)
@@ -1681,7 +1690,8 @@ namespace VikingEngine.DSSWars.Players
                         {
                             if (nCity.cityType == CityType.UnClaimed && Ref.peRnd.ChanceF(0.5f))
                             {
-                                city.conscriptSettler(nCity);
+                                Ref.update.AddSyncAction(new SyncAction1Arg<City>(city.aiConscriptSettler, nCity));
+                                //city.conscriptSettler(nCity, true);
                                 return;
                             }
                         }
@@ -2333,6 +2343,11 @@ namespace VikingEngine.DSSWars.Players
         City cityCloseToOpponent(int opponent)
         {
             Faction otherFaction = DssRef.world.faction(opponent);
+            if (otherFaction == null)
+            { 
+                return null;
+            }
+
             City myClosestCity = null;
             float closestDistance = float.MaxValue;
            

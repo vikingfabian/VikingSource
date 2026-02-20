@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars.Build
     {
         static readonly Build.BuildAndExpandType[] AutoBuildOptions =
         {
-            Build.BuildAndExpandType.OrchidApple,
+            Build.BuildAndExpandType.OrchardApple,
             Build.BuildAndExpandType.WheatFarm,
             Build.BuildAndExpandType.LinenFarm,
             Build.BuildAndExpandType.RapeSeedFarm,
@@ -440,7 +440,7 @@ namespace VikingEngine.DSSWars.Build
                 {
                     List<IntVector2> positions = new List<IntVector2>(count);
                     CityStructure structure = new CityStructure();
-                    structure.update(city, 1);
+                    structure.update( DssRef.world, city, 1);
 
                     findBuildPositons_AutoBuilder(positions);
                     if (count > 0)
@@ -473,7 +473,7 @@ namespace VikingEngine.DSSWars.Build
 
                                 while (Auto_EdgeRandomizer.Next())
                                 {
-                                    if (structure.MayAutoBuildHere(city, Auto_EdgeRandomizer.Position) &&
+                                    if (city.MayAutoBuildHere(Auto_EdgeRandomizer.Position) &&
                                         !player.orders.orderConflictingSubTile(Auto_EdgeRandomizer.Position, false))
                                     {
                                         result.Add(Auto_EdgeRandomizer.Position);
@@ -492,7 +492,8 @@ namespace VikingEngine.DSSWars.Build
                         IntVector2 topleft;
                         ForXYLoop subTileLoop;
 
-                        for (int radius = 1; radius <= city.cityTileRadius; ++radius)
+                        int cityradius = city.cityTileArea.size.SideLength() / 2;
+                        for (int radius = 1; radius <= cityradius; ++radius)
                         {
                             int distanceValue = -radius;
                             ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
@@ -1089,6 +1090,22 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.Logistics:
+
+                    HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbImage(SpriteName.WarsResource_Food));
+                    content.space();
+                    bool canBuild = city.CanBuildLogistics(1);
+                    content.Add(new RbImage(canBuild ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+                    content.hspace();
+                    var reqText = new RbText(string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, DssConst.Logistics1FoodStorage));
+                    reqText.overrideColor = canBuild ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                    content.Add(reqText);
+
+                    content.newParagraph();
+                    HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Gain);
+                    content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(SpriteName.birdUnLock));
                     if (city.CanBuildLogistics(2))
@@ -1110,16 +1127,9 @@ namespace VikingEngine.DSSWars.Build
                         content.space();
                         content.Add(new RbText(opt.Label()));
                     }
-                    content.newParagraph();
+                    //content.newParagraph();
 
-                    HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbImage(SpriteName.WarsResource_Food));
-                    content.space();
-                    var reqText = new RbText(string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, DssConst.Logistics1FoodStorage));
-                    reqText.overrideColor = city.CanBuildLogistics(1) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                    content.Add(reqText);
+                    
                     break;
 
                 case BuildAndExpandType.ManorLord:
@@ -1171,7 +1181,7 @@ namespace VikingEngine.DSSWars.Build
                     //content.newLine();
                     break;
 
-                case BuildAndExpandType.OrchidApple:
+                case BuildAndExpandType.OrchardApple:
                 case BuildAndExpandType.OrchidBanana:
                     farmHud_any(false, new ItemResource(ItemResourceType.Food_G, DssConst.OrchidFoodAmount), ItemResource.Empty, 
                         TerrainContent.OrchardReady - TerrainContent.OrchardWatered, DssConst.WorkTime_PluckOrchards, DssConst.OrchardWaterCost);
@@ -1474,7 +1484,7 @@ namespace VikingEngine.DSSWars.Build
             if (type == BuildAndExpandType.Logistics)
             {
                 bool reachedBuffer = false;
-                city.GetGroupedResource(EntityComponent.CityResoureIndex.food)/*res_food*/.toMenu(content, ItemResourceType.Food_G, false, ref reachedBuffer);
+                city.GetGroupedResource(EntityComponent.CityResoureIndex.food)/*res_food*/.toMenu(content, ItemResourceType.Food_G, ref reachedBuffer);
             }
 
             if (build.blueprint.levelRequirement > XP.ExperienceLevel.Beginner_1)

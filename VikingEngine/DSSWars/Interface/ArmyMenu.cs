@@ -236,7 +236,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{
-                        new RbText(".Place Settlement") }, new RbAction(() =>
+                        new RbText(DssRef.lang.Action_PlaceSettlement) }, new RbAction(() =>
                         {
                             if (!unit.isDeleted)
                             {
@@ -454,8 +454,10 @@ namespace VikingEngine.DSSWars.Interface
 
         public void tagsToMenu(RichBoxContent content)
         {
+            HudLib.Label(content, DssRef.lang.ObjectUi_ViewOnMap + string.Format(" ({0})", DssRef.lang.Hud_AllArmies));
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tag_ViewOnMap) }, player.ArmyTagsOnMapProperty));
+            player.armyHudSettings.toHud(content, false, player.profile.casualControls);
+            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tag_ViewOnMap) }, player.ArmyTagsOnMapProperty));
             content.newParagraph();
 
             for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)

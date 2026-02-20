@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
-using Valve.Steamworks;
+
 using VikingEngine.DataLib;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
@@ -675,7 +675,7 @@ namespace VikingEngine.DSSWars
         public static void CityResource(RichBoxContent content, City city, ItemResourceType type)
         {
             bool buffer = false;
-            city.GetGroupedResource(type).toMenu(content, type, city.foodSafeGuardIsActive(type), ref buffer);
+            city.GetGroupedResource(type).toMenu(content, type, ref buffer);
         }
 
         public static List<AbsRichBoxMember> AddLockOnDemo(List<AbsRichBoxMember> buttonContent)
@@ -695,9 +695,9 @@ namespace VikingEngine.DSSWars
                 content.newLine();
                 var wishlistBtn = new RbButton(new List<AbsRichBoxMember> { new RbTab(0.21f), new RbText(DssRef.lang.LobbyDemoMode_WishlistOn, Color.White), new RbSpace(), new RbImage(SpriteName.SteamIcon) }, new RbAction(() =>
                 {
-                    SteamAPI.SteamFriends().ActivateGameOverlayToStore(
-                    3585100,
-                    EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
+                    Steamworks.SteamFriends.ActivateGameOverlayToStore(
+                    new Steamworks.AppId_t( 3585100),
+                    Steamworks.EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
                 }), null, true);
                 wishlistBtn.overrideBgColor = Color.Green;
                 wishlistBtn.fillWidth = true;

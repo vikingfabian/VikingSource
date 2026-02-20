@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Steamworks;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Work;
@@ -44,6 +45,15 @@ namespace VikingEngine.DSSWars.GameObject
         public bool HasFaction()
         { 
             return factionIndex >= 0 && factionIndex < DssRef.world.factions.Count;
+        }
+
+        public bool HasAliveFaction()
+        {
+            if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
+            { 
+                return DssRef.world.factions.Array[factionIndex] != null && DssRef.world.factions.Array[factionIndex].isAlive; 
+            }
+            return false;
         }
 
         virtual public Faction GetFaction_NoChecks()
@@ -92,6 +102,20 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             return DssRef.world.factions.Array[factionIndex]?.player;
+        }
+
+        public bool TryGetPlayer(out Players.AbsPlayer player)
+        {
+
+            if (factionIndex < 0)
+            {
+                player = null;
+            }
+            else
+            {
+                player = DssRef.world.factions.Array[factionIndex]?.player;
+            }
+            return player != null;
         }
 
         public bool GetCasual()

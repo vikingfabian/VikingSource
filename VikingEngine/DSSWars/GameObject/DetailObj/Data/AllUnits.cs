@@ -167,7 +167,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (filterType)
             {
                 case UnitFilterType.Settler:
-                    return SpriteName.MissingImage;
+                    return SpriteName.WarsSettler;
                 case UnitFilterType.SharpStick:
                     return SpriteName.WarsUnitIcon_Folkman;
 

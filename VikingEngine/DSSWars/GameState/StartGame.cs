@@ -92,6 +92,12 @@ namespace VikingEngine.DSSWars
             if (loadMeta == null)
             {
                 // new game
+
+                if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode) == false)
+                {
+                    DssRef.storage.runTutorial = false;
+                }
+                                    
                 switch (DssRef.difficulty.setting_gameMode)
                 {
                     case GameModeMainType.FullStory:
@@ -108,6 +114,19 @@ namespace VikingEngine.DSSWars
                         break;
                     case GameModeMainType.Spectator:
                         DssRef.stats.startNewSpectator.addOne();
+                        break;
+                }
+
+                switch (DssRef.storage.gameRuleset.factionStartSize)
+                {
+                    case FactionStartSize.Full:
+                        DssRef.stats.startnewsize_full.addOne();
+                        break;
+                    case FactionStartSize.OneCity:
+                        DssRef.stats.startnewsize_onecity.addOne();
+                        break;
+                    case FactionStartSize.Settler:
+                        DssRef.stats.startnewsize_settler.addOne();
                         break;
                 }
 

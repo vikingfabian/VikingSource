@@ -8,6 +8,64 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class SimplifiedChinese : AbsLanguage
     {
+        public override string Help_Work_Automatic => "工作将自动进行";
+        public override string Tutorial_SecondCity => "获得第二座城市";
+
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "跳过自动化";
+
+        public override string Resource_WaterReason => "水源将限制您的单位上限及生产规模";
+        public override string BuildingType_Orchard => "果园";
+        public override string BuildingType_ManorLord => "领主府"; // "Lord's Manor/House"
+        public override string BuildingType_ManorLord_Description => "解锁食品加工";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "断绝关系";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "物品来源";
+
+        public override string ItemSource_Terrain => "地形";
+        public override string ItemSource_Farm => "农场";
+        public override string ItemSource_CraftStation => "制作台";
+        public override string ItemSource_Gathering => "采集";
+
+        public override string CityCulture_Nomad => "游牧";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "按变动系数：{0}";
+
+        public override string Hud_Purchase_LowXCost => "低 {0} 成本";
+
+        public override string WorkQueue_Title => "工作队列";
+        public override string WorkQueue_Length => "剩余工作目标";
+        public override string WorkQueue_ActiveWorkers => "活跃工作队";
+        public override string WorkQueue_IdleWorkers => "空闲工作队";
+
+        public override string WorkTeam_Size => "村民以 {0} 人为一组工作";
+
+        public override string ObjectUi_ViewOnMap => "在地图上查看";
+        public override string ObjectUi_StuckBuildOrders => "受阻的建造指令";
+        public override string Hud_AllArmies => "所有军队";
+
+        public override string Hud_CurrentPage => "当前页";
+        public override string Hud_AllPages => "所有页";
+        public override string Hud_ToAllCities => "至所有城市";
+        public override string Hud_ToFaction => "至势力";
+        public override string Hud_FromFaction => "从势力";
+        public override string Hud_FactionWide => "使用势力全局设置";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "放置定居点";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "移除除此以外的所有帧";
         //Winter patch 3
         public override string Hud_Purchase_AllBuildings => "所有建筑加入队列";
         public override string Hud_Purchase_AllTech => "所有科技加入队列";
@@ -164,7 +222,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 游戏名称和版本号
         /// </summary>
-        public override string Lobby_GameVersion => "DSS 战争派对 - 版本 {0}";
+        //public override string Lobby_GameVersion => "DSS 战争派对 - 版本 {0}";
 
         public override string FlagEditor_Description => "绘制你的旗帜并为你的士兵选择颜色。";
 

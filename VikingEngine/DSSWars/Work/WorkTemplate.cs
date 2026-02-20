@@ -28,9 +28,9 @@ namespace VikingEngine.DSSWars.Work
         public WorkPriority move = new WorkPriority(3);
         public WorkPriority wood = new WorkPriority(2);
         public WorkPriority stone = new WorkPriority(2);
-        public WorkPriority craft_fuel = new WorkPriority(4);
-        public WorkPriority craft_food = new WorkPriority(4);
-        public WorkPriority craft_beer = new WorkPriority(1);
+        public WorkPriority craft_fuel = new WorkPriority(1);
+        public WorkPriority craft_food = new WorkPriority(0);
+        public WorkPriority craft_beer = new WorkPriority(0);
         public WorkPriority craft_coolingfluid = new WorkPriority(0);
 
         public WorkPriority craft_iron = new WorkPriority(3);
@@ -95,8 +95,8 @@ namespace VikingEngine.DSSWars.Work
         public WorkPriority craft_fullplatearmor = new WorkPriority(0);
         public WorkPriority craft_mithrilarmor = new WorkPriority(0);
 
-        public WorkPriority farm_food = new WorkPriority(2);
-        public WorkPriority farm_fuel = new WorkPriority(2);
+        public WorkPriority farm_food = new WorkPriority(4);
+        public WorkPriority farm_fuel = new WorkPriority(1);
         public WorkPriority farm_linen = new WorkPriority(1);
         public WorkPriority bogiron = new WorkPriority(1);
         public WorkPriority mining_iron = new WorkPriority(3);
@@ -388,7 +388,11 @@ namespace VikingEngine.DSSWars.Work
             }
         }
 
-
+        public void setAllToFollowFactionAndUpdate(City city, WorkTemplate factionTemplate)
+        {
+            setAllToFollowFaction();
+            onFactionChange(city, factionTemplate);
+        }
 
         public void onFactionChange(City city, WorkTemplate factionTemplate)
         {
@@ -1787,7 +1791,7 @@ namespace VikingEngine.DSSWars.Work
             {
                 infoContent.Add(new RbImage(sprite2));
             }
-            var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null, new RbTooltip(workTooltip, new WorkTooltipArgs() { City = city, Name = name, resourceInfo = resourceInfo, mineCount = mineCount }));
+            var infoButton = new ArtButton(RbButtonStyle.HoverArea, infoContent, null, new RbTooltip(workTooltip, new WorkTooltipArgs() { Faction = player.faction, City = city, Name = name, resourceInfo = resourceInfo, mineCount = mineCount }));
                
 
             content.Add(infoButton);
@@ -1805,6 +1809,7 @@ namespace VikingEngine.DSSWars.Work
 
         struct WorkTooltipArgs
         { 
+            public Faction Faction;
             public City City;
             public string Name;
 
@@ -1829,7 +1834,7 @@ namespace VikingEngine.DSSWars.Work
                     content.newLine();
                 }
                 content.Add(new RbSeperationLine());
-                ResourceLib.FullResourceInfo(args.City, args.resourceInfo, content);
+                ResourceLib.FullResourceInfo(args.Faction, args.City, args.resourceInfo, content);
             }
         }
 

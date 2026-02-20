@@ -65,6 +65,23 @@ namespace VikingEngine.DSSWars.Conscript
             maxTrainingLevel = TrainingLevel.Skillful;
         }
 
+        public void checkSpecialization()
+        {
+            var spec = profile.avaialableSpecializations(type, out bool mayGuard);
+
+            if (profile.specialization == SpecializationType.CityGuard)
+            {
+                if (!mayGuard)
+                {
+                    profile.specialization = spec[0];
+                }
+            }
+            else if (!spec.Contains(profile.specialization))
+            {
+                profile.specialization = spec[0];
+            }
+        }
+
         //public void reseet()
         //{ 
             
@@ -122,7 +139,7 @@ namespace VikingEngine.DSSWars.Conscript
             if (requireMaxFood)
             {
                 var res_food = city.GetRefGroupedResource(EntityComponent.CityResoureIndex.food);
-                food = res_food.amount >= res_food.goalBuffer - 50;
+                food = res_food.amount >= res_food.stockPileLimit - 50;
             }
             else
             {
@@ -154,7 +171,7 @@ namespace VikingEngine.DSSWars.Conscript
             }
             w.Write((byte)type);
             w.Write(idAndPosition);
-            w.Write((byte)que);
+            w.Write(Bound.Byte(que));
             w.Write((byte)maxTrainingLevel);
 
 
@@ -207,6 +224,8 @@ namespace VikingEngine.DSSWars.Conscript
                 requireMaxPopulation = bools.Get(0);
                 requireMaxFood = bools.Get(1);
             }
+
+            checkSpecialization();
         }
         public bool CountDownQue()
         {

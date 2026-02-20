@@ -11,6 +11,63 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Korean : AbsLanguage
     {
+        public override string Help_Work_Automatic => "작업은 자동으로 진행됩니다";
+        public override string Tutorial_SecondCity => "두 번째 도시 확보";
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "자동화 건너뛰기";
+
+        public override string Resource_WaterReason => "물은 지원 가능한 유닛 수와 생산 규모를 제한합니다";
+        public override string BuildingType_Orchard => "과수원";
+        public override string BuildingType_ManorLord => "영주 관저"; // "Lord's Manor/Residence"
+        public override string BuildingType_ManorLord_Description => "식품 가공 잠금 해제";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "관계 단절";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "아이템 출처";
+
+        public override string ItemSource_Terrain => "지형";
+        public override string ItemSource_Farm => "농장";
+        public override string ItemSource_CraftStation => "제작소";
+        public override string ItemSource_Gathering => "채집";
+
+        public override string CityCulture_Nomad => "유목민";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "변동 계수: {0}";
+
+        public override string Hud_Purchase_LowXCost => "낮은 {0} 비용";
+
+        public override string WorkQueue_Title => "작업 대기열";
+        public override string WorkQueue_Length => "남은 작업 목표";
+        public override string WorkQueue_ActiveWorkers => "활동 중인 작업팀";
+        public override string WorkQueue_IdleWorkers => "대기 중인 작업팀";
+
+        public override string WorkTeam_Size => "주민들은 {0}명 단위로 일합니다";
+
+        public override string ObjectUi_ViewOnMap => "지도에서 보기";
+        public override string ObjectUi_StuckBuildOrders => "중단된 건설 명령";
+        public override string Hud_AllArmies => "모든 군대";
+
+        public override string Hud_CurrentPage => "현재 페이지";
+        public override string Hud_AllPages => "전체 페이지";
+        public override string Hud_ToAllCities => "모든 도시로";
+        public override string Hud_ToFaction => "세력으로"; // "To Faction/Power"
+        public override string Hud_FromFaction => "세력에서";
+        public override string Hud_FactionWide => "세력 전체 설정 사용";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "정착지 배치";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "다른 프레임 모두 제거";
         //Winter patch 3
         public override string Hud_Purchase_AllBuildings => "모든 건물 대기열 등록";
         public override string Hud_Purchase_AllTech => "모든 기술 대기열 등록";
@@ -167,7 +224,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Game name and version number
         /// </summary>
-        public override string Lobby_GameVersion => "DSS War Party - 버전 {0}";
+        //public override string Lobby_GameVersion => "DSS War Party - 버전 {0}";
 
         public override string FlagEditor_Description => "자신의 깃발을 꾸미고 병사의 색상을 선택하세요.";
 

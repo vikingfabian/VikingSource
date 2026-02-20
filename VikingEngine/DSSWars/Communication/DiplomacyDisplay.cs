@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Presentation;
@@ -150,7 +150,7 @@ namespace VikingEngine.DSSWars.Interface
                             forgeRelationString = DssRef.lang.Hud_WardeclarationTitle;
                             break;
                         case RelationType.RelationType0_Neutral:
-                            forgeRelationString = DssRef.todoLang.Diplomacy_EndRelations;
+                            forgeRelationString = DssRef.lang.Diplomacy_EndRelations;
                             break;
                         default:
                             forgeRelationString = string.Format(DssRef.lang.Diplomacy_ForgeNewRelationTo, Diplomacy.RelationString(opt.toRelation));
@@ -201,6 +201,9 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
             content.space(0.5f);
             content.Add(new RbText(faction.PlayerName, HudLib.TitleColor_Name));
+
+            content.space(1);
+            content.Add(new RbText(string.Format(DssRef.lang.UnitId, faction.myIndex), HudLib.SecondaryTextColor));
 
             content.Add(new RbSeperationLine());
 

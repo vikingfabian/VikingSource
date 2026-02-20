@@ -8,6 +8,15 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Turkish : AbsOptionsLanguage
     {
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "Katmanları soldur";
+        public override string SplitScreen_HorizontalFirst => "Önce yatay";
+        public override string SplitScreen_VerticalFirst => "Önce dikey";
+        public override string SplitScreen_HorizontalOnly => "Sadece yatay";
+        public override string SplitScreen_VerticalOnly => "Sadece dikey";
+        public override string SplitScreen_Title => "Bölünmüş ekran";
+        public override string SplitScreen_AdjustSplit => "Bölmeyi ayarla {0}";
+
         public override string Settings_ControllerVibration => "Gamepad titreşimi";
         //Winter update settings
         public override string GraphicsOption_IngameMenuWidth => "Oyun menüsü genişliği";

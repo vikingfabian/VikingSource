@@ -132,7 +132,7 @@ namespace VikingEngine.DSSWars.Interface
 
         bool highEconomyWarningBlock()
         { 
-            return DssRef.storage.gameRuleset.centralGold && player.faction.money.GetGold() > 1000000;
+            return DssRef.storage.gameRuleset.centralGold && player.faction.money.GetGold() > DssConst.Gold_RichStatus;
         }
 
         public void blockFoodWarning(bool block)

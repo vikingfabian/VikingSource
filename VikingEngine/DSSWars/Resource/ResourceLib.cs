@@ -15,27 +15,42 @@ namespace VikingEngine.DSSWars.Resource
 {
     struct ResourceInfoTag
     {
-        public ResourceInfoTag(City city, ItemResourceType item)
+        public ResourceInfoTag(Faction faction, City city, ItemResourceType item)
         {
+            this.faction = faction;
             this.city = city;
             this.item = item;
         }
+        public Faction faction;
         public City city;
         public ItemResourceType item;
     }
 
     static class ResourceLib
-    {        
+    {
+
+        public static ItemResourceType[] ResourceGroupList(ResourceGroupType group)
+        {
+            switch (group)
+            {
+                default: return City.MovableCityResource_Misc;
+                case ResourceGroupType.Metals: return City.MovableCityResource_Metals;
+                //case ResourceGroupType.Animals: return City.MovableCityResource_Animals;
+                case ResourceGroupType.Weapons: return City.MovableCityResource_WeaponMelee;
+                case ResourceGroupType.Projectile: return City.MovableCityResource_WeaponRanged;
+                case ResourceGroupType.Armor: return City.MovableCityResource_Armor;
+            }
+        }
 
         public static void FullResourceInfo(RichBoxContent content, object tag)
         {
             ResourceInfoTag args = (ResourceInfoTag)tag;
-            FullResourceInfo(args.city, args.item, content); 
+            FullResourceInfo(args.faction, args.city, args.item, content); 
         }
 
-        public static void FullResourceInfo(City city, ItemResourceType item, RichBoxContent content)
+        public static void FullResourceInfo(Faction faction, City city, ItemResourceType item, RichBoxContent content)
         {
-            var resources = city.GetGroupedResource(item);
+            EntityComponent.GroupedResource resources = city != null? city.GetGroupedResource(item) : faction.GetRefResourceOverview(item);
 
             content.Add(new RbBeginTitle());
 
@@ -50,7 +65,7 @@ namespace VikingEngine.DSSWars.Resource
             resources.changeRate.toMenu(content);
 
             SpriteName stockIcon;
-            if (resources.amount >= resources.goalBuffer)
+            if (resources.amount >= resources.stockPileLimit)
             {
                 stockIcon = SpriteName.WarsStockpileStop;
             }
@@ -64,9 +79,10 @@ namespace VikingEngine.DSSWars.Resource
             content.space();
             content.Add(new RbImage(stockIcon));
             content.space();
-            content.Add(new RbText(TextLib.LargeNumber(resources.goalBuffer)));
+            content.Add(new RbText(TextLib.LargeNumber(resources.stockPileLimit)));
 
-            var priority = city.workTemplate.GetWorkPriority(item, out bool hasPriority);
+            bool hasPriority;
+            Work.WorkPriority priority = city != null? city.workTemplate.GetWorkPriority(item, out hasPriority) : faction.workTemplate.GetWorkPriority(item, out hasPriority);
             if (hasPriority)
             {
                 content.newLine();
@@ -86,7 +102,7 @@ namespace VikingEngine.DSSWars.Resource
 
             content.Add(new RbSeperationLine());
 
-            content.h1(DssRef.todoLang.ItemSource, HudLib.TitleColor_Head2);
+            content.h1(DssRef.lang.ItemSource, HudLib.TitleColor_Head2);
             content.newLine();
             properties.ItemSourceToHud(content);
 
@@ -354,6 +370,9 @@ namespace VikingEngine.DSSWars.Resource
                 case ItemResourceType.ElfCoin:
                     return SpriteName.WarsResource_ElfCoin;
 
+                case ItemResourceType.Settler:
+                    return SpriteName.WarsSettler;
+
                 case ItemResourceType.NONE:
                     return SpriteName.BluePrintSquareFull;
 
@@ -373,5 +392,27 @@ namespace VikingEngine.DSSWars.Resource
         Item,
         MercenaryOnMarket,
         NUM
+    }
+
+
+    enum ResourceGroupType
+    {
+        Resources,
+        Metals,
+        Weapons,
+        Projectile,
+        Armor,
+        //Animals,
+        Mint,
+        NUM,
+        Auto,
+    }
+
+    enum ResourceManagementType
+    {
+        Overview,
+        Work,
+        Stockpile,
+        Auto,
     }
 }

@@ -232,7 +232,10 @@ namespace VikingEngine.DSSWars.Players.Profile
             if (customFlag)
             {
                 int index = r.ReadUInt16();
-                flag = DssRef.storage.flagStorage.flagDesigns[index];
+                if (arraylib.InBound(DssRef.storage.flagStorage.flagDesigns, index))
+                {
+                    flag = DssRef.storage.flagStorage.flagDesigns[index];
+                }
             }
             else
             { 

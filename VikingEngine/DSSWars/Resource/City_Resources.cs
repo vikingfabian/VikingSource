@@ -227,23 +227,23 @@ namespace VikingEngine.DSSWars.GameObject
         bool followFaction_Stockpile_Projectile = true;
         bool followFaction_Stockpile_Armor = true;
 
-        public bool foodSafeGuardIsActive(ItemResourceType item)
-        {
-            bool food = foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
-            switch (item)
-            {
-                case ItemResourceType.Food_G:
-                    return food;
-                case ItemResourceType.Fuel_G:
-                    return fuelSafeGuard;
-                case ItemResourceType.RawFood_Group:
-                    return rawFoodSafeGuard;
-                case ItemResourceType.Wood_Group:
-                    return woodSafeGuard;
-            }
+        //public bool foodSafeGuardIsActive(ItemResourceType item)
+        //{
+        //    bool food = foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
+        //    switch (item)
+        //    {
+        //        case ItemResourceType.Food_G:
+        //            return food;
+        //        case ItemResourceType.Fuel_G:
+        //            return fuelSafeGuard;
+        //        case ItemResourceType.RawFood_Group:
+        //            return rawFoodSafeGuard;
+        //        case ItemResourceType.Wood_Group:
+        //            return woodSafeGuard;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
         public int resourceAmount(int cityResourceIndex)
         { 
@@ -256,26 +256,31 @@ namespace VikingEngine.DSSWars.GameObject
             resource.amount = amount;
         }
 
-        public bool foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard)
+        //public bool foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard)
+        //{
+        //    if (res_food_safeguard && resourceAmount(CityResoureIndex.food) <= DssConst.WorkSafeGuardAmount)
+        //    {
+        //        fuelSafeGuard = resourceAmount(CityResoureIndex.fuel) <= DssConst.WorkSafeGuardAmount;
+        //        rawFoodSafeGuard = resourceAmount(CityResoureIndex.rawFood) <= DssConst.WorkSafeGuardAmount;
+        //        woodSafeGuard = fuelSafeGuard && resourceAmount(CityResoureIndex.wood) <= DssConst.WorkSafeGuardAmount;
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        fuelSafeGuard = false;
+        //        rawFoodSafeGuard = false;
+        //        woodSafeGuard = false;
+        //        return false;
+        //    }
+        //}
+
+        override public bool lowFood()
         {
-            if (res_food_safeguard && resourceAmount(CityResoureIndex.food) <= DssConst.WorkSafeGuardAmount)
-            {
-                fuelSafeGuard = resourceAmount(CityResoureIndex.fuel) <= DssConst.WorkSafeGuardAmount;
-                rawFoodSafeGuard = resourceAmount(CityResoureIndex.rawFood) <= DssConst.WorkSafeGuardAmount;
-                woodSafeGuard = fuelSafeGuard && resourceAmount(CityResoureIndex.wood) <= DssConst.WorkSafeGuardAmount;
-                return true;
-            }
-            else
-            {
-                fuelSafeGuard = false;
-                rawFoodSafeGuard = false;
-                woodSafeGuard = false;
-                return false;
-            }
+            return resourceAmount(CityResoureIndex.food) <= workForce.amount;//DssConst.WorkSafeGuardAmount;
         }
 
 
-        public TradeTemplate tradeTemplate = new TradeTemplate();
+        //public TradeTemplate tradeTemplate = new TradeTemplate();
         public const int DefaultFoodBuffer = 500;
        
         public void defaultResourceBuffer(WorldData world)
@@ -295,7 +300,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (properties.cityResourceIndex >= 0)
                     {
                         ref GroupedResource resource = ref world.cityResouces[resourceComponentStartIndex + properties.cityResourceIndex];
-                        resource.goalBuffer = properties.defaultStockPile;
+                        resource.stockPileLimit = properties.defaultStockPile;
                     }
                 }
             }
@@ -471,7 +476,7 @@ namespace VikingEngine.DSSWars.GameObject
                 switch (type)
                 {
                     case ItemResourceType.Gold:
-                        return new GroupedResource() { amount = (int)(DssRef.storage.gameRuleset.centralGold ? GetFaction_NoChecks().money.GetGold() : money.GetGold()), goalBuffer = int.MaxValue };
+                        return new GroupedResource() { amount = (int)(DssRef.storage.gameRuleset.centralGold ? GetFaction_NoChecks().money.GetGold() : money.GetGold()), stockPileLimit = int.MaxValue };
                     case ItemResourceType.Men:
                         return workForce;
                     case ItemResourceType.ServiceMen:
@@ -836,39 +841,39 @@ namespace VikingEngine.DSSWars.GameObject
 
 
 
-        public bool needMore(ItemResourceType type, bool rawfoodSafeGuard, bool woodSafeGuard, out bool usesSafeGuard)
+        public bool needMore(ItemResourceType type/*, bool rawfoodSafeGuard, bool woodSafeGuard, out bool usesSafeGuard*/)
         {
-            usesSafeGuard = false;
+            //usesSafeGuard = false;
             switch (type)
             {
                 case ItemResourceType.RawFood_Group:
                 case ItemResourceType.Wheat:
                 case ItemResourceType.Egg:
                 case ItemResourceType.Hen:
-                    if (rawfoodSafeGuard)
-                    {
-                        usesSafeGuard = true;
-                        return true;
-                    }
+                    //if (rawfoodSafeGuard)
+                    //{
+                    //    usesSafeGuard = true;
+                    //    return true;
+                    //}
                     return needMore(CityResoureIndex.rawFood);//res_rawFood.needMore();
 
                 case ItemResourceType.Pig:
-                    if (rawfoodSafeGuard)
-                    {
-                        usesSafeGuard = true;
-                        return true;
-                    }
+                    //if (rawfoodSafeGuard)
+                    //{
+                    //    usesSafeGuard = true;
+                    //    return true;
+                    //}
                     return needMore(CityResoureIndex.food) || needMore(CityResoureIndex.skinLinnen);//res_food.needMore() || res_skinLinnen.needMore();
 
                 case ItemResourceType.Wood_Group:
                 case ItemResourceType.DryWood:
                 case ItemResourceType.SoftWood:
                 case ItemResourceType.HardWood:
-                    if (woodSafeGuard)
-                    {
-                        usesSafeGuard = true;
-                        return true;
-                    }
+                    //if (woodSafeGuard)
+                    //{
+                    //    usesSafeGuard = true;
+                    //    return true;
+                    //}
                     return needMore(CityResoureIndex.wood);//res_wood.needMore();
 
                 case ItemResourceType.NONE:
@@ -1219,35 +1224,35 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
-        public int SellCost(ItemResourceType itemResourceType)
-        {
-            TradeResource resource;
-            switch (itemResourceType)
-            {
-                case ItemResourceType.Food_G:
-                    resource = tradeTemplate.food;
-                    break;
+        //public int SellCost(ItemResourceType itemResourceType)
+        //{
+        //    TradeResource resource;
+        //    switch (itemResourceType)
+        //    {
+        //        case ItemResourceType.Food_G:
+        //            resource = tradeTemplate.food;
+        //            break;
 
-                case ItemResourceType.HardWood:
-                case ItemResourceType.SoftWood:
-                    resource = tradeTemplate.wood;
-                    break;
-                case ItemResourceType.Stone_G:
-                    resource = tradeTemplate.stone;
-                    break;
+        //        case ItemResourceType.HardWood:
+        //        case ItemResourceType.SoftWood:
+        //            resource = tradeTemplate.wood;
+        //            break;
+        //        case ItemResourceType.Stone_G:
+        //            resource = tradeTemplate.stone;
+        //            break;
                 
-                case ItemResourceType.Iron_G:
-                    resource = tradeTemplate.iron;
-                    break;
+        //        case ItemResourceType.Iron_G:
+        //            resource = tradeTemplate.iron;
+        //            break;
 
-                default:
-                    throw new NotImplementedException(itemResourceType.ToString());
-            }
+        //        default:
+        //            throw new NotImplementedException(itemResourceType.ToString());
+        //    }
 
-            int goldCost = (int)Math.Ceiling( ItemPropertyColl.CarryAmount(itemResourceType) * resource.price);
+        //    int goldCost = (int)Math.Ceiling( ItemPropertyColl.CarryAmount(itemResourceType) * resource.price);
 
-            return goldCost;
-        }
+        //    return goldCost;
+        //}
 
         public ItemResource MakeTrade(ItemResourceType itemResourceType, int payment, float maxWeight = 1f)
         {

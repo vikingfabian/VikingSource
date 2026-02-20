@@ -21,23 +21,7 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public TechnologyTemplate technology = new TechnologyTemplate();
         public CityExperienceLevels cityExperienceLevels = new CityExperienceLevels();
-        //public ExperienceLevel topskill_Farm = 0;
-        //public ExperienceLevel topskill_AnimalCare = 0;
-        //public ExperienceLevel topskill_HouseBuilding = 0;
-        //public ExperienceLevel topskill_WoodCutter = 0;
-        //public ExperienceLevel topskill_StoneCutter = 0;
-        //public ExperienceLevel topskill_Mining = 0;
-        //public ExperienceLevel topskill_Transport = 0;
-        //public ExperienceLevel topskill_Cook = 0;
-        //public ExperienceLevel topskill_Fletcher = 0;
-        //public ExperienceLevel topskill_Smelting = 0;
-        //public ExperienceLevel topskill_Casting = 0;
-        //public ExperienceLevel topskill_CraftMetal = 0;
-        //public ExperienceLevel topskill_CraftArmor = 0;
-        ////public ExperienceLevel topskill_CraftWeapon = 0;
-        //public ExperienceLevel topskill_CraftFuel = 0;
-        //public ExperienceLevel topskill_Chemistry = 0;
-
+      
         public ExperienceOrDistancePrio experenceOrDistance = ExperienceOrDistancePrio.Mix;
 
         public int selectedSchool = -1;
@@ -342,16 +326,23 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool commitResearch(LocalPlayer player)
         {
-            lock (researchBuildings)
+            if ( researchBuildings != null)
             {
-                var building = researchBuildings[selectedResearchBuilding];
-                if (building.assignedTech == TechnologyTreeType.NUM_NONE)
+                lock (researchBuildings)
                 {
-                    building.assignedTech = player.selectedTech;
-                    researchBuildings[selectedResearchBuilding] = building;
-                    return true;
+                    if (arraylib.InBound(researchBuildings, selectedResearchBuilding))
+                    {
+                        var building = researchBuildings[selectedResearchBuilding];
+                        if (building.assignedTech == TechnologyTreeType.NUM_NONE)
+                        {
+                            building.assignedTech = player.selectedTech;
+                            researchBuildings[selectedResearchBuilding] = building;
+                            return true;
+                        }
+                    }
                 }
             }
+            
             return false;
         }
         //void onTechnologyGain(TechnologyTreeType techType, int gained, TechnologyGainReason reason)

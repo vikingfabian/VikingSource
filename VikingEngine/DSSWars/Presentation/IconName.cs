@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars
                     itemName = DssRef.lang.ResourceType_ServiceMen;
                     break;
                 case ItemResourceType.Settler:
-                    itemIcon = SpriteName.WarsWorker; // Defaulting to worker icon
+                    itemIcon = SpriteName.WarsSettler; // Defaulting to worker icon
                     itemName = DssRef.lang.UnitType_Settler;
                     break;
 
@@ -602,7 +602,7 @@ namespace VikingEngine.DSSWars
                             name = DssRef.lang.BuildingType_Logistics;
                             break;
                         case TerrainBuildingType.ManorLord:
-                            name = DssRef.todoLang.BuildingType_ManorLord;
+                            name = DssRef.lang.BuildingType_ManorLord;
                             break;
                         case TerrainBuildingType.SoldierBarracks:
                             name = DssRef.lang.BuildingType_SoldierBarracks;
@@ -787,11 +787,11 @@ namespace VikingEngine.DSSWars
 
                         case TerrainSubFoilType.TreeApple:
                             icon = SpriteName.WarsBuild_TreeApple;
-                            name = DssRef.todoLang.BuildingType_Orchard;
+                            name = DssRef.lang.BuildingType_Orchard;
                             break;
                         case TerrainSubFoilType.TreeBanana:
                             icon = SpriteName.WarsBuild_TreeBanana;
-                            name = DssRef.todoLang.BuildingType_Orchard;
+                            name = DssRef.lang.BuildingType_Orchard;
                             break;
 
                         case TerrainSubFoilType.WheatFarm:

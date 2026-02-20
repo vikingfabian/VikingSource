@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
+	<Asset Type="Graphics:FontDescription">
+
+		<FontName>Leelawadee UI Bold</FontName>
+
+		<Size>30</Size>
+		<Spacing>0</Spacing>
+		<UseKerning>true</UseKerning>
+		<Style>Regular</Style>
+
+		<CharacterRegions>
+
+			<CharacterRegion>
+				<Start>&#32;</Start>
+				<End>&#126;</End>
+			</CharacterRegion>
+
+			<CharacterRegion>
+				<Start>&#x0E00;</Start>
+				<End>&#x0E7F;</End>
+			</CharacterRegion>
+
+			<CharacterRegion>
+				<Start>&#x200B;</Start>
+				<End>&#x200B;</End>
+			</CharacterRegion>
+
+			<CharacterRegion>
+				<Start>&#x4E00;</Start>
+				<End>&#x9FFF;</End>
+			</CharacterRegion>
+
+			<CharacterRegion>
+				<Start>&#x3000;</Start>
+				<End>&#x303F;</End>
+			</CharacterRegion>
+			<CharacterRegion>
+				<Start>&#xFF00;</Start>
+				<End>&#xFFEF;</End>
+			</CharacterRegion>
+
+		</CharacterRegions>
+	</Asset>
+</XnaContent>

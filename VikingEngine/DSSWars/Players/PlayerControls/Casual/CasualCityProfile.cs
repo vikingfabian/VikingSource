@@ -30,6 +30,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         public SoldierPurchaseOption rangedMen;
         public SoldierPurchaseOption riderMen;
         public SoldierPurchaseOption siegeMen;
+        public SoldierPurchaseOption settler = new SoldierPurchaseOption(4000, ItemResourceType.NONE, ItemResourceType.Settler, TrainingLevel.Minimal);
+
 
         public bool unlock_logistics;
         public bool unlock_research;
@@ -37,6 +39,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         public int unlock_sword;
         public int unlock_projectile;
         public int unlock_farming;
+
+        public CasualCityProfile()
+        { }
 
         public void onCasualUpgrade()
         {
@@ -213,6 +218,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             riderMen = new SoldierPurchaseOption(0, ItemResourceType.IronArmor, ItemResourceType.KnightsLance, TrainingLevel.Skillful);
             siegeMen = new SoldierPurchaseOption(1, ItemResourceType.NONE, ItemResourceType.Ballista, TrainingLevel.Basic);
 
+            
+
             if (city.cityType >= CityType.Capital)
             {
                 if (culture.percPlains > 0.2)
@@ -275,6 +282,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     break;
             }
         }
+
+       
 
         public void refreshTech()
         {

@@ -6,12 +6,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Xsl;
-using Valve.Steamworks;
+
 using VikingEngine.DebugExtensions;
 
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
@@ -98,6 +99,11 @@ namespace VikingEngine.DSSWars.GameObject
             bound = new BoundingSphere(Vector3.Zero, 0.5f);
             asynchCullingUpdate(1f, DssRef.state.culling.cullingStateA);
             faction.AddArmy(this, overrideIx);
+        }
+
+        override public bool lowFood()
+        {
+            return food <= 10;//DssConst.WorkSafeGuardAmount;
         }
 
         public static void NetWriteArmy(System.IO.BinaryWriter w, Army army)
@@ -220,7 +226,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            w.Write(Debug.Ushort_OrCrash(id));
+            w.Write(id);
             name.write(w);
             WP.WritePosXZPercentU16(w, position);
 
@@ -247,7 +253,14 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.factionIndex = faction.myIndex;
 
-            id = r.ReadUInt16();
+            if (subVersion < 105)
+            {
+                id = r.ReadUInt16();
+            }
+            else
+            {
+                id = r.ReadInt32();
+            }
             name.read(r, subVersion);
             if (!name.custom)
             {
@@ -647,7 +660,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int desertSoldiers()
         {
-            int count = MathExt.MultiplyInt(Ref.peRnd.Double(0.2, 0.4), groups.Count);
+            int count = Bound.Min( MathExt.MultiplyInt(Ref.peRnd.Double(0.2, 0.4), groups.Count), 2);
             int soldiersDeserted = 0;
 
             for (int i = 0; i < count; i++)
@@ -959,6 +972,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected void async_SoldiersUpdate(float time, bool oneMinute)
         {
+            //if (debugTagged)
+            //{
+            //    lib.DoNothing();
+            //}
+
+            if (!HasAliveFaction())
+            {
+                lib.DoNothing();
+            }
+
             if (groups.Count > 0)
             {
                 int count = 0;
@@ -1027,6 +1050,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     totalStrength += groupsC.sel.strengthValue();/*AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip)*/;//(dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
 
+                    
                 }
 
                 army_isIdle = allGropsAreIdle && IdleObjetive();

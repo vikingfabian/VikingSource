@@ -597,7 +597,7 @@ namespace VikingEngine.DSSWars
             //DebugWriteSize citiesSz = new DebugWriteSize();
             //DebugWriteSize factionsSz = new DebugWriteSize();
 
-            const int SaveMapVersion = 9;
+            const int SaveMapVersion = 10;
             w.Write(SaveMapVersion);
 
             w.Write(metaData.seed);
@@ -717,6 +717,12 @@ namespace VikingEngine.DSSWars
 
                     for (int i = 0; i < factionLength; ++i)
                     {
+//#if DEBUG
+//                        if (i == 25)
+//                        {
+//                            lib.DoNothing();
+//                        }
+//#endif
                         if (r.ReadBoolean())
                         {
                             FactionType factionType = (FactionType)r.ReadByte();

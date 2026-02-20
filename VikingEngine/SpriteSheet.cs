@@ -2162,11 +2162,19 @@ namespace VikingEngine
                 }
 
 
-                //currentIndex = numTilesWidth * 85;
-                //{
-                //    add(SpriteName.rtsCardBg, currentIndex, DSSCardSz.X, DSSCardSz.Y);
-                //}
             }
+
+            currentIndex = numTilesWidth * 85;
+            currentIndex += 12;
+            {
+                add(SpriteName.WarsIcon_WorkQueueTotal);
+                add(SpriteName.WarsIcon_WorkQueueIdle);
+                add(SpriteName.WarsIcon_WorkQueueActive);
+                add(SpriteName.WarsSettler);
+                add(SpriteName.WarsSettlerAdd);
+                add(SpriteName.warsBuildCategoryFarm);
+            }
+
             currentIndex = numTilesWidth * 86;
             {
                 add(SpriteName.WarsHudPopUpButton);
@@ -2278,6 +2286,7 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_TreeSeedlingSoft, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_TreeApple, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_TreeBanana, currentIndex, 3, 3);
+                add(SpriteName.WarsBuild_ManorLord, currentIndex, 3, 3);
             }
             currentIndex = numTilesWidth * 90;
             {
@@ -2839,6 +2848,8 @@ namespace VikingEngine
                     
                     add(SpriteName.MenuIconPerformanceCold, 2, 2);
                     add(SpriteName.MenuIconPerformanceHot, 2, 2);
+                    add(SpriteName.LangButton_Polish, 8, 2);
+                    add(SpriteName.LangButton_Thai, 8, 2);
                     //add(SpriteName.DSS2MainMenu, DSS2Logo.X, DSS2Logo.Y); x = 5
                 }
 

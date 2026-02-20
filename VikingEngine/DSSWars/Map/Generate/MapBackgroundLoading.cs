@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.PJ.Joust;
@@ -146,7 +146,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         if (generatePass == GenerateMapPass.All)
                         {
                             List<Task> tasks = new List<Task>();
-                            success = dataGenerate.Generate(false, worldmeta, generateSettings, tasks);
+                            success = dataGenerate.Generate(false, worldmeta, generateSettings, tasks).Result;
                             await Task.WhenAll(tasks);
                         }
                         else
@@ -223,13 +223,13 @@ namespace VikingEngine.DSSWars.Map.Generate
                     if (dataGenerate != null)
                     {
                         loadingState = LoadingState.Post1Started;
-                        postGenerate = new Map.Generate.GenerateMap();
-                        postGenerate.postLoadGenerate_Part1(dataGenerate.world);
+                        //postGenerate = new Map.Generate.GenerateMap();
+                        //postGenerate.generateSubTiles(dataGenerate.world);
                     }
                 }
                 else if (loadingState == LoadingState.Post1Started)
                 {
-                    if (postGenerate.postComplete)
+                    //if (postGenerate.postComplete)
                     {
                         loadingState = LoadingState.Post2Started;
                         postGenerate = new Map.Generate.GenerateMap();

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Delivery;
 using VikingEngine.DSSWars.Interface.Component;
@@ -29,10 +29,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void async_deliveryUpdate()
         {
-            //if (debugTagged || myIndex == 744)
-            //{
-            //    lib.DoNothing();
-            //}
+            if (debugTagged || myIndex == 153)
+            {
+                lib.DoNothing();
+            }
 
             var f = GetFaction();
             if (f == null)
@@ -97,7 +97,8 @@ namespace VikingEngine.DSSWars.GameObject
                                             {
                                                 Ref.update.AddSyncAction(new SyncAction(() =>
                                                 {
-                                                    new ResourceEffect(status.inProgress.type, status.inProgress.SendAmount,
+                                                    /*new ResourceEffect*/
+                                                    SpriteText3D.GetOrCreate().init(status.inProgress.type, status.inProgress.SendAmount,
                                                        VectorExt.AddY(WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition)), DssConst.Men_StandardModelScale * 2f),
                                                        ResourceEffectType.Deliver);
                                                 }));

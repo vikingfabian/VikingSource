@@ -235,7 +235,7 @@ namespace VikingEngine.DSSWars.Interface
                 buttonContent.Add(new RbImage(SpriteName.WarsCityHall));
                 buttonContent.space(0.5f);
                 buttonContent.Add(new RbText(cityCount.ToString()));
-                content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction1Arg<bool>(player.gameControls.nextCity, true),
+                content.Add(new ArtButton(RbButtonStyle.Outline, buttonContent, new RbAction(player.gameControls.nextCity),
                     new RbTooltip(nextCityTip)));
             }
             {
@@ -387,6 +387,9 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new RbText(string.Format(DssRef.lang.Hud_CityCount, player.faction.cities.Count), HudLib.InfoYellow_Light));
             content.newParagraph();
             content.ButtonDescription(player.gameControls.input.NextCity, DssRef.lang.InputActionName_NextCity);
+            content.ButtonDescription(SpriteName.KeyShift, DssRef.lang.Hud_Previous);
+            content.ButtonDescription(SpriteName.KeyAlt, DssRef.lang.InputAction_SkipAutomated);
+
         }
         void nextArmyTip(RichBoxContent content, object tag)
         {

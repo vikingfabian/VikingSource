@@ -11,6 +11,63 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Italian : AbsLanguage
     {
+        public override string Help_Work_Automatic => "Il lavoro si svolge automaticamente";
+        public override string Tutorial_SecondCity => "Ottieni una seconda città";
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "Salta automatici";
+
+        public override string Resource_WaterReason => "L'acqua limiterà il numero di unità supportate e la dimensione della produzione";
+        public override string BuildingType_Orchard => "Frutteto";
+        public override string BuildingType_ManorLord => "Signore del Maniero";
+        public override string BuildingType_ManorLord_Description => "Sblocca la lavorazione del cibo";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "Termina relazioni";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "Fonte oggetto";
+
+        public override string ItemSource_Terrain => "Terreno";
+        public override string ItemSource_Farm => "Fattoria";
+        public override string ItemSource_CraftStation => "Stazione artigianale";
+        public override string ItemSource_Gathering => "Raccolta";
+
+        public override string CityCulture_Nomad => "Nomade";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "Per fattore di modifica: {0}";
+
+        public override string Hud_Purchase_LowXCost => "Costo {0} ridotto";
+
+        public override string WorkQueue_Title => "Coda di lavoro";
+        public override string WorkQueue_Length => "Obiettivi di lavoro rimanenti";
+        public override string WorkQueue_ActiveWorkers => "Squadre di lavoro attive";
+        public override string WorkQueue_IdleWorkers => "Squadre di lavoro inattive";
+
+        public override string WorkTeam_Size => "I paesani lavorano in squadre da {0}";
+
+        public override string ObjectUi_ViewOnMap => "Vedi sulla mappa";
+        public override string ObjectUi_StuckBuildOrders => "Ordini di costruzione bloccati";
+        public override string Hud_AllArmies => "Tutti gli eserciti";
+
+        public override string Hud_CurrentPage => "Pagina attuale";
+        public override string Hud_AllPages => "Tutte le pagine";
+        public override string Hud_ToAllCities => "A tutte le città";
+        public override string Hud_ToFaction => "Alla fazione";
+        public override string Hud_FromFaction => "Dalla fazione";
+        public override string Hud_FactionWide => "Usa impostazione di fazione";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "Posiziona insediamento";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "Rimuovi tutti gli altri fotogrammi";
         //Winter patch 3
         public override string Hud_Purchase_AllBuildings => "Metti in coda tutti gli edifici";
         public override string Hud_Purchase_AllTech => "Metti in coda tutte le tecnologie";
@@ -168,7 +225,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Game name and version number
         /// </summary>
-        public override string Lobby_GameVersion => "DSS war party - ver {0}";
+        //public override string Lobby_GameVersion => "DSS war party - ver {0}";
 
         public override string FlagEditor_Description => "Dipingi la bandiera e scegli i colori per i tuoi soldati.";
 
