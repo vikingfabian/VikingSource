@@ -33,6 +33,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.Network;
+using VikingEngine.PJ.SpaceWar.SpaceShip;
 using VikingEngine.Sound;
 using VikingEngine.Timer;
 
@@ -2366,11 +2367,18 @@ namespace VikingEngine.DSSWars
             content.newParagraph();
             IOLib.FileCheckToHud(content);
 
+            string steamResult = $"steam:{(Ref.steam.isInitialized ? 'T' : 'F')}";
+            
+            HudLib.BulletSeperationPoint(content);
+            content.Add(new RbText(steamResult, HudLib.SecondaryTextColor));
+            if (Ref.steam.initError)
+            {
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("!" + ((int)Ref.steam.steamInitResult).ToString()) },
+                        null,
+                        new RbTooltip_Text(Ref.steam.steamInitErrorMsg)));
+            }
             underMenu.Refresh(content);
         }
-
-       
-        
 
         public override void OnResolutionChange()
         {
