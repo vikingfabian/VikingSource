@@ -2581,6 +2581,7 @@ namespace VikingEngine
         WarsFollowFactionYes,
         WarsFollowFactionNo,
         WarsBogIron,
+        WarsClayPit,
         WarsBedIcon,
         WarsGodPowerIcon,
 

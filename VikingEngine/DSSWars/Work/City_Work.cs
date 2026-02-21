@@ -373,7 +373,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (faction == null)
                         return;
 
-                    IntVector2 center = WP.ToSubTilePos_Centered(tilePos);
+                    IntVector2 center = citySquareSubtilePos;
                     workQue.Clear();
 
                     //if (debugTagged || parentArrayIndex == 218)
@@ -552,7 +552,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     //MINING
                     if (workTemplate.Get(WorkPriorityType.bogiron).HasPrio() &&
-                        needMore(CityResoureIndex.ironore)/*res_ironore.needMore()*/)
+                        needMore(CityResoureIndex.ironore))
                     {
                         foreach (var pos in CityStructure.WorkInstance.BogIron)
                         {
@@ -560,6 +560,18 @@ namespace VikingEngine.DSSWars.GameObject
                             {
                                 int distanceValue = -center.SideLength(pos);
                                 workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, 0, pos, workTemplate.Get(WorkPriorityType.bogiron).value, 0, distanceValue));
+                            }
+                        }
+                    }
+                    if (workTemplate.Get(WorkPriorityType.collectClay).HasPrio() &&
+                        needMore(CityResoureIndex.Clay))
+                    {
+                        foreach (var pos in CityStructure.WorkInstance.ClayPit)
+                        {
+                            if (work_isFreeTile(pos))
+                            {
+                                int distanceValue = -center.SideLength(pos);
+                                workQue.Add(new WorkQueMember(WorkType.GatherFoil, NoSubWork, 0, pos, workTemplate.Get(WorkPriorityType.collectClay).value, 0, distanceValue));
                             }
                         }
                     }

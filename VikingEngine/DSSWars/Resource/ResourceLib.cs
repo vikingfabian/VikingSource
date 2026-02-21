@@ -200,6 +200,7 @@ namespace VikingEngine.DSSWars.Resource
         {
             EntityComponent.GroupedResource resources = city != null? city.GetGroupedResource(item) : faction.GetRefResourceOverview(item);
             IconName.Item(item, out SpriteName itemIcon, out string itemName);
+            var properties = ItemPropertyColl.Get(item);
 
             content.Add(new RbBeginTitle());
 
@@ -222,13 +223,22 @@ namespace VikingEngine.DSSWars.Resource
             {
                 stockIcon = SpriteName.WarsStockpileAdd;
             }
-            content.newLine();
             
+
+            content.newLine();
+
             content.Add(new RbText(DssRef.lang.Resource_StockpileLimit + ": ", HudLib.TitleColor_Label));
             content.space();
             content.Add(new RbImage(stockIcon));
             content.space();
             content.Add(new RbText(TextLib.LargeNumber(resources.stockPileLimit)));
+
+
+            content.newLine();
+            IconName.Storage(properties.storageType, out var storeIcon, out var storeText);
+            content.Add(new RbImage(storeIcon));
+            content.space();
+            content.Add(new RbText(storeText, HudLib.SecondaryTextColor));
 
             bool hasPriority;
             Work.WorkPriority priority = city != null? city.workTemplate.GetWorkPriority(item, out hasPriority) : faction.workTemplate.GetWorkPriority(item, out hasPriority);
@@ -246,7 +256,7 @@ namespace VikingEngine.DSSWars.Resource
                 content.Add(new RbText(priority.value.ToString(), priority.HasPrio() ? null : HudLib.NotAvailableColor));
             }
 
-            var properties = ItemPropertyColl.Get(item);
+            
 
             content.Add(new RbSeperationLine());
 

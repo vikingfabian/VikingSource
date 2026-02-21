@@ -83,6 +83,7 @@ namespace VikingEngine.DSSWars.Work
 
                             case TerrainSubFoilType.StoneBlock:
                             case TerrainSubFoilType.Stones:
+                            case TerrainSubFoilType.ClayPit:
                                 gainXpType = WorkExperienceType.StoneCutter;
                                 break;
 

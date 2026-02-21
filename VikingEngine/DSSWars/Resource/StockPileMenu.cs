@@ -288,29 +288,16 @@ namespace VikingEngine.DSSWars.Resource
                     new RbTooltip((RichBoxContent content, object tag) =>
                     {
                         ResourceLib.FullResourceInfo(player.faction, city, item, content);
-                        //if (city != null)
-                        //{
-                            
-                        //    //bool buffer = false;
-                        //    //city.GetGroupedResource(item).toMenu(content, item, false, ref buffer);
-                        //}
-                        //else
-                        //{
-                        //    content.Add(new RbImage(itemIcon));
-                        //    content.space();
-                        //    content.Add(new RbText(itemName));
-                        //}
                     }
                     )));
 
-            //content.space();
 
             for (StockpileLimitOption limit = 0; limit < StockpileLimitOption.NUM; limit++)
             {
                 int max = ResourceLib.Limit(limit);
 
                 List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(2);
-                SpriteName storage;
+                SpriteName storageIcon;
 
                 Color? numberCol = null;
                 if (ResourceLib.Limit(limit) > res.stockPileLimit)
@@ -321,27 +308,28 @@ namespace VikingEngine.DSSWars.Resource
                 switch (limit)
                 {                    
                     case StockpileLimitOption.NoLimit:
-                        switch (ItemPropertyColl.Get(item).storageType)
-                        { 
-                            default:
-                            case StorageType.MaterialStorage:
-                                storage = SpriteName.WarsBuild_MaterialStorage;
-                                break;
-                            case StorageType.FoodStorage:
-                                storage = SpriteName.WarsBuild_FoodStorage;
-                                break;
-                            case StorageType.WeaponStorage:
-                                storage = SpriteName.WarsBuild_WeaponStorage;
-                                break;
-                            case StorageType.ArmorStorage:
-                                storage = SpriteName.WarsBuild_ArmorStorage;
-                                break;
-                            case StorageType.AnimalStorage:
-                                storage = SpriteName.WarsBuild_AnimalStorage;
-                                break;
+                        //switch (ItemPropertyColl.Get(item).storageType)
+                        //{ 
+                        //    default:
+                        //    case StorageType.MaterialStorage:
+                        //        storage = SpriteName.WarsBuild_MaterialStorage;
+                        //        break;
+                        //    case StorageType.FoodStorage:
+                        //        storage = SpriteName.WarsBuild_FoodStorage;
+                        //        break;
+                        //    case StorageType.WeaponStorage:
+                        //        storage = SpriteName.WarsBuild_WeaponStorage;
+                        //        break;
+                        //    case StorageType.ArmorStorage:
+                        //        storage = SpriteName.WarsBuild_ArmorStorage;
+                        //        break;
+                        //    case StorageType.AnimalStorage:
+                        //        storage = SpriteName.WarsBuild_AnimalStorage;
+                        //        break;
 
-                        }
-                        buttonContent.Add(new RbImage(storage));
+                        //}
+                        IconName.Storage(ItemPropertyColl.Get(item).storageType, out storageIcon, out _);
+                        buttonContent.Add(new RbImage(storageIcon));
                         buttonContent.Add(new RbSpace());
                         if (city == null)
                         {

@@ -741,7 +741,11 @@ namespace VikingEngine.DSSWars.Work
 
                                 gainXp = WorkExperienceType.Mining;
                                 break;
+                            case TerrainSubFoilType.ClayPit:
+                                carry = new ItemResource(ItemResourceType.Clay, 1, Convert.ToInt32(processTimeLengthSec), TerrainContent.DefaultMineAmount);
 
+                                gainXp = WorkExperienceType.StoneCutter;
+                                break;
 
                         }
 
@@ -1668,6 +1672,9 @@ namespace VikingEngine.DSSWars.Work
 
                         case TerrainSubFoilType.BogIron:
                             timeSec = DssConst.WorkTime_BogIron;
+                            break;
+                        case TerrainSubFoilType.ClayPit:
+                            timeSec = DssConst.WorkTime_ClayPit;
                             break;
                         default:
                             return -1;//throw new NotImplementedException();

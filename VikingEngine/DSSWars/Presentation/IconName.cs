@@ -14,6 +14,8 @@ using VikingEngine.DSSWars.Work;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.GO.Gadgets;
+using VikingEngine.PJ;
 using VikingEngine.PJ.GameState;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.HeroQuest.GO;
@@ -22,6 +24,35 @@ namespace VikingEngine.DSSWars
 {
     static class IconName
     {
+        public static void Storage(StorageType storage, out SpriteName storeIcon, out string storeText)
+        {
+            switch (storage)
+            {
+                default:
+                case StorageType.MaterialStorage:
+                    storeIcon = SpriteName.WarsBuild_MaterialStorage;
+                    storeText = DssRef.todoLang.BuildingType_MaterialStorage;
+                    break;
+                case StorageType.FoodStorage:
+                    storeIcon = SpriteName.WarsBuild_FoodStorage;
+                    storeText = DssRef.todoLang.BuildingType_FoodStorage;
+                    break;
+                case StorageType.WeaponStorage:
+                    storeIcon = SpriteName.WarsBuild_WeaponStorage;
+                    storeText = DssRef.todoLang.BuildingType_WeaponStorage;
+                    break;
+                case StorageType.ArmorStorage:
+                    storeIcon = SpriteName.WarsBuild_ArmorStorage;
+                    storeText = DssRef.todoLang.BuildingType_ArmorStorage;
+                    break;
+                case StorageType.AnimalStorage:
+                    storeIcon = SpriteName.WarsBuild_AnimalStorage;
+                    storeText = DssRef.todoLang.BuildingType_AnimalStorage;
+                    break;
+
+            }
+        }
+
         public static void Priority(int priority, out SpriteName prioIcon, out string prioText)
         {
             switch (priority)
@@ -1421,6 +1452,7 @@ namespace VikingEngine.DSSWars
                             break;
 
                         case TerrainSubFoilType.ClayPit:
+                            icon = SpriteName.WarsClayPit;
                             name = DssRef.todoLang.BuildingType_ClayPit;
                             break;
                     }

@@ -395,6 +395,11 @@ namespace VikingEngine.DSSWars.Map
                                 subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.BogIron, 1);
                                 return;
                             }
+                            else if (rndBog < 0.008)
+                            {
+                                subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.ClayPit, 1);
+                                return;
+                            }
                         }
 
                         if (stonenoise > 0.6f)
