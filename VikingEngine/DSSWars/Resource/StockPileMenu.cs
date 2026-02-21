@@ -44,6 +44,7 @@ namespace VikingEngine.DSSWars.Resource
                     groupType = ResourceGroupType.Resources;
                     stockpile(player, ItemResourceType.Wood_Group);
                     stockpile(player, ItemResourceType.Stone_G);
+                    stockpile(player, ItemResourceType.Clay);
                     stockpile(player, ItemResourceType.Brick);
                     stockpile(player, ItemResourceType.RawFood_Group);
                     stockpile(player, ItemResourceType.SkinLinen_Group);

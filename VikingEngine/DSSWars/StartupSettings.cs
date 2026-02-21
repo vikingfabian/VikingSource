@@ -8,6 +8,8 @@ namespace VikingEngine.DSSWars
 {
     static class StartupSettings 
     {
+   
+
         public static bool AutoStartLevel = false;
 
         //## DEFAULT TRUE ##
