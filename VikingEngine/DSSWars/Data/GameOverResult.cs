@@ -61,7 +61,7 @@ namespace VikingEngine.DSSWars.Data
         List<GameOverResultPlayer> players;
         public GameOverResult(GameEndReason endReason, VictoryType vType, MatchResult matchResult)
         {
-            if (!int.TryParse(Engine.LoadContent.SteamVersion, out steamVersion))
+            if (!int.TryParse(Engine.LoadContent.EngineVersion, out steamVersion))
             {
                 steamVersion = -1;
             }

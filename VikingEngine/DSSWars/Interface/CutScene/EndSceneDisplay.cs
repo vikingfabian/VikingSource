@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
 
             content.newParagraph();
             content.text(HudLib.Date(DateTime.Now));
-            content.text(string.Format(HudLib.EngineVersionString, Engine.LoadContent.SteamVersion));
+            content.text(string.Format(HudLib.EngineVersionString, Engine.LoadContent.EngineVersion));
             
             Vector2 pos = Engine.Screen.SafeArea.CenterTop;
             pos.X -= HudLib.cutsceneGui.width * 1.5f + Engine.Screen.IconSize;

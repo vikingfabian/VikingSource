@@ -17,7 +17,7 @@ namespace VikingEngine.Engine
 {
     static class LoadContent
     {
-        public static string SteamVersion = "-"; 
+        public static string EngineVersion = "-"; 
         public static bool BaseContentLoaded = false;
         public static ContentManager Content;
         public static Texture2D[] Textures = new Texture2D[(int)LoadedTexture.NUM];
@@ -157,7 +157,7 @@ namespace VikingEngine.Engine
             var versionFile = DataLib.SaveLoad.LoadTextFile(Engine.LoadContent.Content.RootDirectory + "\\Version Number.txt");
             if (versionFile != null && versionFile.Count > 0)
             {
-                SteamVersion = versionFile[0];
+                EngineVersion = versionFile[0];
                 //PlatformSettings.SteamVersion = "Version " + versionFile[0];
             }
         }

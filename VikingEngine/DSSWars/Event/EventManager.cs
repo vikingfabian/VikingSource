@@ -1080,6 +1080,8 @@ namespace VikingEngine.DSSWars.Event
             {
                 gameHasEnded = true;
 
+                new Data.VictoryLeaderBoard(endReason, vType);
+
                 new EndScene(endReason, vType, matchResult);
 
                 new GameOverResult(endReason, vType, matchResult);

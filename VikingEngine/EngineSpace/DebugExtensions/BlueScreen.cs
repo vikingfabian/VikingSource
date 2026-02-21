@@ -43,9 +43,9 @@ namespace VikingEngine.DebugExtensions
         {
             cleanUp();
 
-            logError(Engine.LoadContent.SteamVersion + (AttachMessage== null? string.Empty : AttachMessage + Environment.NewLine) + errorMessageDetailed);
+            logError(Engine.LoadContent.EngineVersion + (AttachMessage== null? string.Empty : AttachMessage + Environment.NewLine) + errorMessageDetailed);
             
-            errorMessageDetailed = Engine.LoadContent.SteamVersion + errorMessageDetailed;
+            errorMessageDetailed = Engine.LoadContent.EngineVersion + errorMessageDetailed;
 
 
             Engine.StateHandler.ReplaceGamestate(this);

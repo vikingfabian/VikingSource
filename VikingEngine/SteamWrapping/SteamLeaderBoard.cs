@@ -56,7 +56,7 @@ namespace VikingEngine.SteamWrapping
 
     class SteamLeaderBoardLocal : AbsSteamLeaderBoardInstance
     {        
-        string name;
+        protected string name;
         bool uploadOnFind;
 
         Action<List<SteamLeaderBoardRemote>> downloadCallback = null;
@@ -64,12 +64,15 @@ namespace VikingEngine.SteamWrapping
         CallResult<LeaderboardFindResult_t> findLeaderboardCallback;
         CallResult<LeaderboardScoreUploaded_t> leaderboardScoreUploadedCallback;
         CallResult<LeaderboardScoresDownloaded_t> leaderboardScoreDownloadedCallback;
+
+        public SteamLeaderBoardLocal()
+        { }
         public SteamLeaderBoardLocal(string name)
         {
             this.name = name;
         }
         
-        public void BeginUpload()
+        virtual public void BeginUpload()
         {
             uploadOnFind = true;
             find();
