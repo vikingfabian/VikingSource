@@ -16,5 +16,9 @@ namespace VikingEngine.DSSWars.Presentation
         public string Tutorial_SeeThisInThat = "See {0} in {1}";
 
 
+        /// <summary>
+        /// Generelized for any object, like skills, resources and buildings
+        /// </summary>
+        public string Culture_AffectedItems => "Affected items";
     }
 }

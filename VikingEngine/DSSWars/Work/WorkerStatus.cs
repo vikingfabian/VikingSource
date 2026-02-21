@@ -634,6 +634,7 @@ namespace VikingEngine.DSSWars.Work
                                 case ItemResourceType.HeavyIronArmor:
                                 case ItemResourceType.LightPlateArmor:
                                 case ItemResourceType.FullPlateArmor:
+                                case ItemResourceType.MithrilArmor:
                                     if (city.Culture == CityCulture.Armorsmith)
                                     {
                                         add += 1;

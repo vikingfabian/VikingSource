@@ -3882,8 +3882,26 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 content.text(string.Format(DssRef.lang.Hud_ChangeFactor, factor + "%"));
             }
+
+            var items = DssLib.CultureAffectedItems(Culture);
+            if (items != null)
+            {
+                content.newParagraph();
+                HudLib.Label(content, DssRef.todoLang.Culture_AffectedItems);
+                foreach (var iconText in items)
+                {
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbImage(iconText.Icon));
+                    content.hspace();
+                    content.Add(new RbText(iconText.Text));
+                }
+            }
+
             content.newParagraph();
             content.text(DssRef.lang.CityCultureDescription, HudLib.InfoYellow_Light);
+
+           
            
         }
 
@@ -3985,6 +4003,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (!convert)
                 {
                     haltConscriptAndDelivery();
+                    workTemplate.setAllToFollowFactionAndUpdate(this, newFaction.workTemplate);
                 }
 
                 Ref.update.AddSyncAction(new SyncAction(() =>
@@ -4023,8 +4042,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
-                workTemplate.setAllToFollowFactionAndUpdate(this, newFaction.workTemplate);
-                //tradeTemplate.onFactionValueChange(newFaction.tradeTemplate);
+                
                 technology.addFactionUnlocked(newFaction.technology, true, false);
 
                 if (newFaction.player != null && newFaction.player.IsLocalPlayer())
