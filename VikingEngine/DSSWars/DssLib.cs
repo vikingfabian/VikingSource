@@ -1,15 +1,17 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
+using VikingEngine.LootFest.GO.Gadgets;
 
 
 namespace VikingEngine.DSSWars
@@ -319,6 +321,55 @@ namespace VikingEngine.DSSWars
 
                 default:
                     return -1;
+            }
+        }
+
+        public static List<IconAndText> CultureAffectedItems(CityCulture culture)
+        {
+            List<IconAndText> result = null;
+
+
+            switch (culture)
+            {
+                case CityCulture.Armorsmith:
+                    result = new List<IconAndText>(8);
+                    addItem(ItemResourceType.BronzeArmor);
+                    addItem(ItemResourceType.IronArmor);
+                    addItem(ItemResourceType.HeavyIronArmor);
+                    addItem(ItemResourceType.LightPlateArmor);
+                    addItem(ItemResourceType.FullPlateArmor);
+                    addItem(ItemResourceType.MithrilArmor);
+                    break;
+
+                case CityCulture.FertileGround:
+                    result = new List<IconAndText>(8);
+                    addBuilding(Build.BuildAndExpandType.OrchardApple);
+                    addBuilding(Build.BuildAndExpandType.WheatFarm);
+                    addBuilding(Build.BuildAndExpandType.LinenFarm);
+                    addBuilding(Build.BuildAndExpandType.RapeSeedFarm);
+                    addBuilding(Build.BuildAndExpandType.HempFarm);
+                    break;
+            }
+
+            return result;
+
+            void addItem(ItemResourceType item)
+            {
+                if (result == null)
+                {
+                    result = new List<IconAndText>(8);
+                }
+                IconName.Item(item, out var ic, out var nm);
+                result.Add(new IconAndText(ic, nm));
+            }
+            void addBuilding(Build.BuildAndExpandType build)
+            {
+                if (result == null)
+                {
+                    result = new List<IconAndText>(8);
+                }
+                IconName.Building(build, out var ic, out var nm);
+                result.Add(new IconAndText(ic, nm));
             }
         }
     }

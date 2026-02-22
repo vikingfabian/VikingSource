@@ -2650,6 +2650,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void CityDetailsHud(bool minimal, LocalPlayer player, RichBoxContent content)
         {
             Faction faction = GetFaction();
+            bool interactive = player.faction == faction;
 
             if (faction == null)
             {
@@ -2666,16 +2667,60 @@ namespace VikingEngine.DSSWars.GameObject
                 content.Add(new RbImage(SpriteName.WarsWorker));
                 content.space(0.5f);
                 content.Add(new RbText(TextLib.LargeNumber(workForce.amount)));
-                //content.space();
-                HudLib.BulletSeperationPoint(content);
-                //content.space();
-                content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-                content.space(0.5f);
-                content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
+
+                if (interactive)
+                {
+                    
+
+
+                    content.Add(new RbText("/" + HousingCount_Workers.ToString(), HudLib.SecondaryTextColor));
+                    if (children() == 0)
+                    {
+                        content.Add(new RbText("!", HudLib.NotAvailableColor));
+                    }
+
+                    if (WorkerStats_IdleCount >= 10)
+                    {
+                        HudLib.BulletSeperationPoint(content);
+                        content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueIdle));
+                        content.hspace();
+                        content.Add(new RbText(WorkerStats_IdleCount.ToString()));
+                    }
+
+
+                    HudLib.BulletSeperationPoint(content);
+                    content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+                    content.space(0.5f);
+                    content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
+                    
+                    lowResource(ItemResourceType.Water_G, 1);
+                    lowResource(ItemResourceType.Food_G);
+
+                    lowResource(ItemResourceType.Wood_Group);
+                    lowResource(ItemResourceType.Stone_G);
+                    lowResource(ItemResourceType.SkinLinen_Group);
+                    lowResource(ItemResourceType.Fuel_G);
+                    lowResource(ItemResourceType.Iron_G);
+                    lowResource(ItemResourceType.ServiceMen, 2);
+
+
+                    void lowResource(ItemResourceType resourceType, int low = 10)
+                    {
+                        var res = GetGroupedResource(resourceType);
+                        if (res.amount <= low)
+                        {
+                            HudLib.BulletSeperationPoint(content);
+                            IconName.Item(resourceType, out var icon, out _);
+                            content.Add(new RbImage(icon));
+                            content.space(0.5f);
+                            content.Add(new RbText(res.amount.ToString(), res.amount <= 0 ? HudLib.NotAvailableColor : null));
+                        }
+                    }
+                }
             }
             else
             {
-                bool interactive = player.faction == faction;
+                
 
                 if (interactive && !player.profile.casualControls)
                 {
@@ -3882,8 +3927,26 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 content.text(string.Format(DssRef.lang.Hud_ChangeFactor, factor + "%"));
             }
+
+            var items = DssLib.CultureAffectedItems(Culture);
+            if (items != null)
+            {
+                content.newParagraph();
+                HudLib.Label(content, DssRef.todoLang.Culture_AffectedItems);
+                foreach (var iconText in items)
+                {
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbImage(iconText.Icon));
+                    content.hspace();
+                    content.Add(new RbText(iconText.Text));
+                }
+            }
+
             content.newParagraph();
             content.text(DssRef.lang.CityCultureDescription, HudLib.InfoYellow_Light);
+
+           
            
         }
 
@@ -3985,6 +4048,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (!convert)
                 {
                     haltConscriptAndDelivery();
+                    workTemplate.setAllToFollowFactionAndUpdate(this, newFaction.workTemplate);
                 }
 
                 Ref.update.AddSyncAction(new SyncAction(() =>
@@ -4023,8 +4087,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 nextAutoConscriptTime.setTimeFromNow(DssConst.TrainingTimeSec_Basic);
-                workTemplate.setAllToFollowFactionAndUpdate(this, newFaction.workTemplate);
-                //tradeTemplate.onFactionValueChange(newFaction.tradeTemplate);
+                
                 technology.addFactionUnlocked(newFaction.technology, true, false);
 
                 if (newFaction.player != null && newFaction.player.IsLocalPlayer())

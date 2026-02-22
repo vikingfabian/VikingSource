@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars
                     break;
                 case ItemResourceType.Linen:
                 case ItemResourceType.SkinLinen_Group:
-                    itemIcon = SpriteName.WarsResource_Linen;
+                    itemIcon = SpriteName.WarsResource_LinenCloth;
                     itemName = DssRef.lang.Resource_TypeName_Linen;
                     break;
 
