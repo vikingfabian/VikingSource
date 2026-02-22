@@ -2701,7 +2701,7 @@ namespace VikingEngine.DSSWars.GameObject
                     lowResource(ItemResourceType.SkinLinen_Group);
                     lowResource(ItemResourceType.Fuel_G);
                     lowResource(ItemResourceType.Iron_G);
-                    lowResource(ItemResourceType.ServiceMen, 2);
+                    lowResource(ItemResourceType.ServiceMen, 5);
 
 
                     void lowResource(ItemResourceType resourceType, int low = 10)
