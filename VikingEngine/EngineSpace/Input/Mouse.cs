@@ -53,20 +53,20 @@ namespace VikingEngine.Input
             }
         }
 
-        public static void AddPlayer(PlayerData playerData, IDirectionalMap directionalMap1 = null, IDirectionalMap directionalMap2 = null)
+        public static void AddPlayer(PlayerData playerData, int playerCount, IDirectionalMap directionalMap1 = null, IDirectionalMap directionalMap2 = null)
         {
             //if (playerData.inputMap.inputSource.HasMouseInstance)
             //{
                 if (playerData.inputMap.inputSource.HasMouse)
                 {
-                    mouse.SetPlayer(playerData);
+                    mouse.SetPlayer(playerData, playerCount);
                     playerData.inputMap.mouse = mouse;
                 }
                 else
                 {
-                    MouseInstance instance = new MouseInstance(playerData, directionalMap1, directionalMap2);
+                    MouseInstance instance = new MouseInstance(playerData, playerCount, directionalMap1, directionalMap2);
                     Instances.Add(instance);
-                    playerData.inputMap.mouse = instance;
+                    playerData.inputMap.SetMouse(instance);
                 }
             //}
         }

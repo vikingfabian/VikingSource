@@ -15,6 +15,7 @@ namespace VikingEngine.Input
         public Vector2 Position, PrevPosition, MoveDistance;
 
         bool isMouse;
+        public bool linkToMouse = false; 
         bool inUse = false;
         Rectangle2 bounds;
         public bool inBounds = true;
@@ -37,15 +38,15 @@ namespace VikingEngine.Input
             isMouse = true;
         }
 
-        public MouseInstance(PlayerData playerData, IDirectionalMap inGameMap = null, IDirectionalMap inMenuMap = null)
+        public MouseInstance(PlayerData playerData, int playerCount, IDirectionalMap inGameMap = null, IDirectionalMap inMenuMap = null)
         {            
-            SetPlayer(playerData);
+            SetPlayer(playerData, playerCount);
             isMouse = inGameMap == null;
             this.inGameMap = inGameMap;
             this.inMenuMap = inMenuMap;
         }
 
-        public void SetPlayer(PlayerData playerData)
+        public void SetPlayer(PlayerData playerData, int playerCount)
         {
             isActive = playerData.inputMap.inputSource.HasMouseInstance;
             bounds.Rect = playerData.view.DrawArea;
@@ -59,6 +60,10 @@ namespace VikingEngine.Input
             if (!isMouse)
             {
                 SetPosition(bounds.Center);
+                if (playerCount == 1)
+                { 
+                    linkToMouse = true;
+                }
             }
         }
 
@@ -88,7 +93,21 @@ namespace VikingEngine.Input
                     PrevPosition = Position;
                     if (inGameMap != null)
                     {
-                        Position += inGameMap.directionAndTime;
+                        var move = inGameMap.directionAndTime;
+                        if (VectorExt.HasValue(move))
+                        {
+                            Position += move;
+                            MoveDistance = move;
+                            if (linkToMouse)
+                            {
+                                Mouse.Instances[0].SetPosition(Position);
+                            }
+                        }
+                        else if (linkToMouse)
+                        {
+                            Position = Mouse.Instances[0].Position;
+                            MoveDistance = Mouse.Instances[0].MoveDistance;
+                        }
                     }
 
                 }
@@ -137,6 +156,10 @@ namespace VikingEngine.Input
             else
             {
                 Position = position;
+                if (linkToMouse)
+                {
+                    Mouse.Instances[0].SetPosition(position);
+                }
             }
         }
         public void SetPosition(IntVector2 position)
@@ -150,6 +173,10 @@ namespace VikingEngine.Input
             else
             {
                 Position = position.Vec;
+                if (linkToMouse)
+                {
+                    Mouse.Instances[0].SetPosition(position);
+                }
             }
 #endif
         }

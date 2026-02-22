@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,31 @@ using VikingEngine.Input;
 
 namespace VikingEngine.HUD.RichMenu
 {
+    interface IRichMenuInputMap
+    {
+        MouseInstance RbMouseInstance();
+        IButtonMap RbClick();
+        IDirectionalMap RbScroll();
+        IntVector2 RbMoveSteps();
+        bool RbControllerMode { get; }
+        bool RbHasController { get; }
+    }
+
+    class DefaultRichMenuInputMap : IRichMenuInputMap
+    { 
+        public static DefaultRichMenuInputMap Singleton = new DefaultRichMenuInputMap();
+
+        public MouseInstance RbMouseInstance() { return Input.Mouse.Instances[0]; }
+        public IButtonMap RbClick() { return new MouseButtonMap(MouseButton.Left); }
+        public IDirectionalMap RbScroll() { return new DirectionalMouseScrollMap(); }
+
+        public IntVector2 RbMoveSteps() { return IntVector2.Zero; }
+        public bool RbControllerMode => false;
+        public bool RbHasController => false;
+    }
     //interface IContainsRichMenu
     //{
-        
+
     //}
 
     /// <summary>
@@ -267,7 +290,7 @@ namespace VikingEngine.HUD.RichMenu
             //updateContentScroll();
             if (interaction == null || interaction.drawContainer != renderList)
             {
-                interaction = new RbInteraction(content, layer, playerData.inputMap== null? new Input.MouseButtonMap(MouseButton.Left): playerData.inputMap.MenuClick);
+                interaction = new RbInteraction(content, layer, playerData.inputMap== null? DefaultRichMenuInputMap.Singleton: playerData.inputMap);
 
                 interaction.drawContainer = renderList;
             }
@@ -321,19 +344,36 @@ namespace VikingEngine.HUD.RichMenu
             scrollBar.DeleteMe();
         }
 
-        public MouseInstance Mouse()
+        public IRichMenuInputMap InputMap()
         {
-            if (playerData.inputMap != null &&
-                playerData.inputMap.mouse != null)
+            if (playerData.inputMap != null)
             {
-                return playerData.inputMap.mouse;
+                return playerData.inputMap;
             }
-            return Input.Mouse.Instances[0];
+            return DefaultRichMenuInputMap.Singleton;
         }
+
+        //public MouseInstance Mouse()
+        //{
+        //    if (playerData.inputMap != null &&
+        //        playerData.inputMap.mouse != null)
+        //    {
+        //        return playerData.inputMap.mouse;
+        //    }
+        //    return Input.Mouse.Instances[0];
+        //}
+        //public IButtonMap MouseClick()
+        //{
+        //    if (playerData.inputMap != null)
+        //    {
+        //        return playerData.inputMap.MenuClick;
+        //    }
+        //    return new MouseButtonMap(MouseButton.Left);
+        //}
 
         public bool intersectCursor()
         {
-            return backgroundArea.IntersectPoint(Mouse().Position/*Input.Mouse.Position*/)
+            return backgroundArea.IntersectPoint(InputMap().RbMouseInstance().Position/*Input.Mouse.Position*/)
                      ||
                      interaction.interactionStack != null;
         }
@@ -358,14 +398,14 @@ namespace VikingEngine.HUD.RichMenu
                     interaction.clearSelection();
                 }
 
-                if (scrollBar.IsVisible() && ( mouseScrollArea.IntersectPoint(Mouse().Position) || scrollBar.mouseDown))
+                if (scrollBar.IsVisible() && ( mouseScrollArea.IntersectPoint(InputMap().RbMouseInstance().Position) || scrollBar.mouseDown))
                 {
                     mouseOver = true;
-                    if (interaction.interactionStack == null && scrollBar.updateMouseInput())
+                    if (interaction.interactionStack == null && scrollBar.updateMouseInput(InputMap()))
                     {
                         updateContentScroll();
                     }
-                    if (scrollBar.updateScrollWheel())
+                    if (scrollBar.updateScrollWheel(InputMap()))
                     {
                         updateContentScroll();
                     }
@@ -390,7 +430,7 @@ namespace VikingEngine.HUD.RichMenu
 
                 if (scrollBar.IsVisible())
                 {
-                    if (scrollBar.updateControllerScroll(pointer.inputMap))
+                    if (scrollBar.updateScrollWheel(pointer.inputMap))
                     {
                         updateContentScroll();
                     }

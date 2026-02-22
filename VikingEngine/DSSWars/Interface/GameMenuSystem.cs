@@ -444,24 +444,15 @@ namespace VikingEngine.DSSWars.Interface
 
             }
 
-            content.newLine();
-            content.Add(new RbImage(SpriteName.MouseScroll));
-            content.space();
-            content.Add(new RbText(DssRef.lang.Settings_ScrollSensitivity_Game));
+            HudLib.Label(content, SpriteName.MouseScroll, DssRef.lang.Settings_ScrollSensitivity_Game);
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollGameProperty, true));
 
-            content.newLine();
-            content.Add(new RbImage(SpriteName.MouseScroll));
-            content.space();
-            content.Add(new RbText(DssRef.lang.Settings_ScrollSensitivity_Menu));
+            HudLib.Label(content, SpriteName.MouseScroll, DssRef.lang.Settings_ScrollSensitivity_Menu);
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollMenuProperty, true));
 
-            content.newLine();
-            content.Add(new RbImage(SpriteName.ArrowKeys));
-            content.space();
-            content.Add(new RbText(Ref.langOpt.Settings_KeyMapPanSpeed));
+            HudLib.Label(content, SpriteName.ArrowKeys, Ref.langOpt.Settings_KeyMapPanSpeed);
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 4, 0.1f), Ref.gamesett.panSpeedProperty, true));
 
@@ -491,10 +482,12 @@ namespace VikingEngine.DSSWars.Interface
                     content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_BlockImportAchievements) }, blockImportAchievementsProperty));
                 }
             }
+
+            
             //content.newLine();
             //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Low memory garbarge collecting") }, Ref.gamesett.lowGCProperty));
             content.newLine();
-            content.Add(new RbText(DssRef.lang.Settings_Blood + ":", HudLib.TitleColor_Label));
+            HudLib.Label(content, DssRef.lang.Settings_Blood);
             content.space();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty, false);
 

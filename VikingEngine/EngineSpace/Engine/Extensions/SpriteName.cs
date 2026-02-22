@@ -130,6 +130,7 @@ namespace VikingEngine
         ButtonRB,
         ButtonLT,
         ButtonRT,
+        
         LeftStick,
         RightStick,
         LeftStick_LR,
@@ -159,6 +160,29 @@ namespace VikingEngine
         TouchSurface2UpDown,
         TouchSurface1LeftRight,
         TouchSurface2LeftRight,
+
+        ButtonL4,
+        ButtonR4,
+        ButtonL5,
+        ButtonR5,
+        ButtonSwitchMinus,
+        ButtonSwitchPlus,
+        DeckTouchL_Up,
+        DeckTouchR_Up,
+        DeckTouchL_Down,
+        DeckTouchR_Down,
+        DeckTouchL_Left,
+        DeckTouchR_Left,
+        DeckTouchL_Right,
+        DeckTouchR_Right,
+        DeckTouchL_Click,
+        DeckTouchR_Click,
+        DeckTouchL,
+        DeckTouchR,
+        ButtonRZ,
+        ButtonLZ,
+        
+
 
         GyroMove,
         GyroPitch,

@@ -21,13 +21,17 @@ namespace VikingEngine.DSSWars.Presentation
         public string Input_NoControl => "None";
         public string Input_ActiveControl => "Active";
         public string Input_PassiveControl => "Passive";
-
+        public string Setting_MinimapScale => "Mini map scale";
 
 
         //regular
         public string Tutorial_SeeThisInThat = "See {0} in {1}";
 
 
+        /// <summary>
+        /// Generelized for any object, like skills, resources and buildings
+        /// </summary>
+        public string Culture_AffectedItems => "Affected items";
         //## Mounted update ##
         public string Progress_ClosingCores => "Closing CPU cores {0}";
         public string Editor_ExportFrame => "Export current frame";

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis.Text;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
@@ -652,9 +653,19 @@ namespace VikingEngine.DSSWars
             content.text("\"" + description + "\"").overrideColor = InfoYellow_Light;
         }
 
+        public static void Label(RichBoxContent content, SpriteName icon, string text)
+        {
+            content.newLine();
+            content.Add(new RbImage(icon));
+            content.space();
+            content.Add(new RbText(text + ":", TitleColor_Label));
+        }
+
         public static void Label(RichBoxContent content, string text)
         {
-            content.text(text + ":").overrideColor = TitleColor_Label;
+            content.newLine();
+            content.Add(new RbText(text + ":", TitleColor_Label));
+            //content.text(text + ":").overrideColor = TitleColor_Label;
         }
 
         public static void CloseButton(RichBoxContent content, AbsRbAction click)

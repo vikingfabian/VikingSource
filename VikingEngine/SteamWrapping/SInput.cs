@@ -226,8 +226,8 @@ namespace VikingEngine.SteamWrapping
                 case EInputActionOrigin.k_EInputActionOrigin_PS5_RightBumper:
                     return SpriteName.ButtonRB;
 
-                // Switch ZL / Xbox LT
-                case EInputActionOrigin.k_EInputActionOrigin_Switch_LeftTrigger_Pull:
+                // Xbox LT
+                
                 case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_LeftTrigger_Pull:
                 case EInputActionOrigin.k_EInputActionOrigin_XBox360_LeftTrigger_Pull:
                 case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_L2:
@@ -235,14 +235,18 @@ namespace VikingEngine.SteamWrapping
                 case EInputActionOrigin.k_EInputActionOrigin_PS5_LeftTrigger_Pull:
                     return SpriteName.ButtonLT;
 
-                // Switch ZR / Xbox RT
-                case EInputActionOrigin.k_EInputActionOrigin_Switch_RightTrigger_Pull:
+                // Xbox RT
                 case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_RightTrigger_Pull:
                 case EInputActionOrigin.k_EInputActionOrigin_XBox360_RightTrigger_Pull:
                 case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_R2:
                 case EInputActionOrigin.k_EInputActionOrigin_PS4_RightTrigger_Pull:
                 case EInputActionOrigin.k_EInputActionOrigin_PS5_RightTrigger_Pull:
                     return SpriteName.ButtonRT;
+
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_LeftTrigger_Pull:
+                    return SpriteName.ButtonLZ;
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_RightTrigger_Pull:
+                    return SpriteName.ButtonRZ;
 
 
                 // ========================================================================
@@ -324,23 +328,33 @@ namespace VikingEngine.SteamWrapping
                 // ========================================================================
 
                 // Start / Menu / Plus (+)
-                case EInputActionOrigin.k_EInputActionOrigin_Switch_Plus:
                 case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_Menu:
                 case EInputActionOrigin.k_EInputActionOrigin_XBox360_Start:
                 case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_Menu:
-                case EInputActionOrigin.k_EInputActionOrigin_PS4_Options:
-                case EInputActionOrigin.k_EInputActionOrigin_PS5_Option:
                     return SpriteName.ButtonMENU;
 
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_Options:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_Option:
+                    return SpriteName.PsButtonOptions;
+
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_Plus:
+                    return SpriteName.ButtonSwitchPlus;
+
                 // Back / View / Minus (-)
-                case EInputActionOrigin.k_EInputActionOrigin_Switch_Minus:
+
                 case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_View:
                 case EInputActionOrigin.k_EInputActionOrigin_XBox360_Back:
                 case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_View:
-                case EInputActionOrigin.k_EInputActionOrigin_PS4_Share:
-                case EInputActionOrigin.k_EInputActionOrigin_PS5_Create:
                     return SpriteName.ButtonVIEW;
 
+                case EInputActionOrigin.k_EInputActionOrigin_PS4_Share:
+                case EInputActionOrigin.k_EInputActionOrigin_PS5_Create:
+                    return SpriteName.PsButtonShare;
+
+                case EInputActionOrigin.k_EInputActionOrigin_Switch_Minus:
+                    return SpriteName.ButtonSwitchMinus;
+
+                
 
                 // ========================================================================
                 // PLAYSTATION SPECIFICS (Unique shapes)
@@ -382,23 +396,46 @@ namespace VikingEngine.SteamWrapping
 
                 // Back Grips
                 case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_L4:
-                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_L5:
-                    return SpriteName.ButtonLG;
+                    return SpriteName.ButtonL4;
                 case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_R4:
+                    return SpriteName.ButtonR4;
+                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_L5:
+                    return SpriteName.ButtonL5;
                 case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_R5:
+                    return SpriteName.ButtonR5;
+
+                case EInputActionOrigin.k_EInputActionOrigin_SteamController_LeftGrip:
+                    return SpriteName.ButtonLG;
+                case EInputActionOrigin.k_EInputActionOrigin_SteamController_RightGrip:
                     return SpriteName.ButtonRG;
 
                 // Trackpads
                 case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_LeftPad_Touch:
+                    return SpriteName.DeckTouchL;
+
                 case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_LeftPad_Swipe:
+                    return SpriteName.DeckTouchL_Right;
+
                 case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_LeftPad_Click:
-                    return SpriteName.TouchSurface1;
+                    return SpriteName.DeckTouchL_Click;
 
-                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_RightPad_Touch:
-                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_RightPad_Swipe:
-                case EInputActionOrigin.k_EInputActionOrigin_SteamDeck_RightPad_Click:
-                    return SpriteName.TouchSurface2;
+                case EInputActionOrigin.k_EInputActionOrigin_LenovoLegionGo_LeftPad_DPadWest:
+                    return SpriteName.DeckTouchL_Right;
+                case EInputActionOrigin.k_EInputActionOrigin_LenovoLegionGo_LeftPad_DPadEast:
+                    return SpriteName.DeckTouchL_Left;
+                case EInputActionOrigin.k_EInputActionOrigin_LenovoLegionGo_LeftPad_DPadNorth:
+                    return SpriteName.DeckTouchL_Up;
+                case EInputActionOrigin.k_EInputActionOrigin_LenovoLegionGo_LeftPad_DPadSouth:
+                    return SpriteName.DeckTouchL_Down;
 
+                case EInputActionOrigin.k_EInputActionOrigin_LenovoLegionGo_RightPad_DPadWest:
+                    return SpriteName.DeckTouchR_Right;
+                case EInputActionOrigin.k_EInputActionOrigin_LenovoLegionGo_RightPad_DPadEast:
+                    return SpriteName.DeckTouchR_Left;
+                case EInputActionOrigin.k_EInputActionOrigin_LenovoLegionGo_RightPad_DPadNorth:
+                    return SpriteName.DeckTouchR_Up;
+                case EInputActionOrigin.k_EInputActionOrigin_LenovoLegionGo_RightPad_DPadSouth:
+                    return SpriteName.DeckTouchR_Down;
 
                 case EInputActionOrigin.k_EInputActionOrigin_XBoxOne_LeftTrigger_Click:
                     return SpriteName.ButtonLT;
@@ -637,6 +674,7 @@ namespace VikingEngine.SteamWrapping
         CameraStick,
         CameraTilt,
         MoveCursor,
+        GameScroll,
 
         // MenuControls
         Scroll,

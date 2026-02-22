@@ -180,6 +180,10 @@ namespace VikingEngine.Input
             {
                 return add;
             }
+            if (add is NoButtonMap)
+            {
+                return buttonMap;
+            }
             return new AlternativeButtonsMap(buttonMap, add);
         }
 

@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Input;
+using VikingEngine.HUD.RichMenu;
 
 namespace VikingEngine.Input
 {
-    abstract class PlayerInputMap
+    abstract class PlayerInputMap : IRichMenuInputMap
     {
         /* Static readonlies */
         public static readonly DirectionalButtonsMap arrowKeys = new DirectionalButtonsMap(
@@ -36,6 +37,20 @@ namespace VikingEngine.Input
             init();
             setInputSource(new InputSource(InputSourceType.KeyboardMouse));            
         }
+
+        virtual public void SetMouse(MouseInstance mouse)
+        { 
+            this.mouse = mouse;
+        }
+
+        virtual public MouseInstance RbMouseInstance() { return mouse != null? mouse: Input.Mouse.Instances[0]; }
+        virtual public IButtonMap RbClick() { return new MouseButtonMap(MouseButton.Left); }
+        virtual public IDirectionalMap RbScroll() { return new DirectionalMouseScrollMap(); }
+
+        virtual public IntVector2 RbMoveSteps() { return IntVector2.Zero; }
+        virtual public bool RbControllerMode => false;
+
+        virtual public bool RbHasController => false;
 
         virtual protected void init()
         {

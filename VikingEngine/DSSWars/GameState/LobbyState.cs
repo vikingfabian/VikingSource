@@ -33,6 +33,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.Network;
+using VikingEngine.PJ.SpaceWar.SpaceShip;
 using VikingEngine.Sound;
 using VikingEngine.Timer;
 
@@ -41,6 +42,7 @@ namespace VikingEngine.DSSWars
     class LobbyState : AbsDssState
     {    
         Interface.MenuSystem menuSystem;
+        LeaderboardMenu leaderboardMenu;
         MapBackgroundLoading mapBackgroundLoading;
         NetworkLobby netLobby = new NetworkLobby();
         GameTimer emitTimer = new GameTimer(0.1f);
@@ -51,12 +53,8 @@ namespace VikingEngine.DSSWars
         XInputJoinHandler joinHandler = new XInputJoinHandler();
         bool controllerStartGameUpdate = false;
         Graphics.TextG maploading;
-        //GuiLabel difficultyLevelText = null;
-
         StartGameMode startGameMode = StartGameMode.Play;
         InputActionType mappingFor;
-        //bool inKeyMapsMenu = false;
-        //List<Keys> availableKeyboardKeys;
 
         VectorRect underMenuArea;
         //RichMenu richmenu;
@@ -65,14 +63,6 @@ namespace VikingEngine.DSSWars
 
         RichMenu topMenu, underMenu, reportsMenu;
 
-        //static readonly string LobbyAmbienceDir = Ambience.AmbienceDir + "lobby" + DataStream.FilePath.Dir;
-
-        //static readonly LoopingSoundData[] AmbienceSounds = new LoopingSoundData[]
-        //   {
-        //        new LoopingSoundData(LobbyAmbienceDir + "mystery_amb_v1_fear1_loop", 0.04f),
-        //        new LoopingSoundData(LobbyAmbienceDir + "mystery_amb_v1_theme1_loop", 0.04f),
-        //   };
-        //LoopingSound lobbyAmbienceLoop;
 
         const string UnderMenu_NewGame = "newgame";
         const string UnderMenu_ListEditors = "editors";
@@ -87,7 +77,7 @@ namespace VikingEngine.DSSWars
         const string UnderMenu_Options_Language = "lang";
         const string UnderMenu_GameOverResults = "gameresults";
         const string UnderMenu_GameOverResults_View = "gameresults_view";
-
+        const string UnderMenu_leaderboards = "leaderboard";
 
         const float MoreArrowTabbing = 0.9f;
         const float MoreArrowScale = 0.4f;
@@ -104,10 +94,6 @@ namespace VikingEngine.DSSWars
             Engine.Screen.SetupSplitScreen(1);
             if (startLoadingMap && !StartupSettings.BlockBackgroundLoading)
             {
-                //if (PlatformSettings.STEAM_DEMO)
-                //{
-                //    DssRef.storage.mapSize = MapSize.Medium;
-                //}
                 mapBackgroundLoading = new MapBackgroundLoading(null as SaveStateMeta);
             }
 
@@ -117,15 +103,13 @@ namespace VikingEngine.DSSWars
             DssRef.storage.checkConnected();
            
             Graphics.TextG version = new Graphics.TextG(LoadedFont.Console, Screen.SafeArea.RightBottom,
-                Engine.Screen.TextSizeV2, new Align(Vector2.One), string.Format(HudLib.EngineVersionString, Engine.LoadContent.SteamVersion),
+                Engine.Screen.TextSizeV2, new Align(Vector2.One), string.Format(HudLib.EngineVersionString, Engine.LoadContent.EngineVersion),
                 Color.LightYellow, ImageLayers.Background2);
 
             maploading = new Graphics.TextG(LoadedFont.Console, Screen.SafeArea.LeftBottom,
                 Engine.Screen.TextSizeV2, new Align(new Vector2(0, 1f)), "...",
                 Color.DarkGray, ImageLayers.Background2);
 
-            //new Timer.AsynchActionTrigger(load_asynch, true);
-            //new Timer.TimedAction0ArgTrigger(playMusic, 1000);
             Ref.music.DelayBetweenSongs_minutes = new IntervalF(0);
             Ref.music.SetPlaylist(Music.MenuPlayList(out bool randomOrder), PlatformSettings.PlayMusic, randomOrder);
             Ref.music.DelayBetweenSongs_minutes = IntervalF.NoInterval(TimeExt.SecondsToMinutes(2));
@@ -144,6 +128,7 @@ namespace VikingEngine.DSSWars
             this.bgTex = bgTex;
             createBackground();
             messages = new MessageGroup_Editor();
+            
 #if DEBUG
             //new TimedAction0ArgTrigger(collectReports, 600);
 
@@ -202,6 +187,14 @@ namespace VikingEngine.DSSWars
                     break;
                 case UnderMenu_GameOverResults_View:
 
+                    break;
+
+                case UnderMenu_leaderboards:
+                    if (leaderboardMenu == null)
+                    {
+                        leaderboardMenu = new LeaderboardMenu(underMenu);
+                    }
+                    leaderboardMenu.toMenu();
                     break;
 
 
@@ -279,7 +272,11 @@ namespace VikingEngine.DSSWars
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.GameOverResults) }),
                             new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_GameOverResults, StackOption.Stack), null, !PlatformSettings.STEAM_DEMO));
+                        
+                        content.newLine();
 
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(".Leaderboards") }),
+                            new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_leaderboards, StackOption.Stack), null, !PlatformSettings.STEAM_DEMO));
 
                         content.newLine();
 
@@ -301,6 +298,9 @@ namespace VikingEngine.DSSWars
 #if DEBUG
                         if (Ref.steam.isInitialized)
                         {
+                            content.newLine();
+                            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Create leaderboards") }, new RbAction(AbsLeaderBoard.CreateLeaderBoards)));
+
                             content.newLine();
                             content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Initialize steam stats") }, new RbAction(Ref.steam.stats.initializeAllStatsOnSteam)));
                             content.newLine();
@@ -763,6 +763,10 @@ namespace VikingEngine.DSSWars
                 Ref.gamesett.graphicsHasChanged = true;
                 Ref.gamesett.settingsHasChanged = true;
 
+            }), null, true);
+            content.Button("Achive", new RbAction(() =>
+            {
+                DssRef.achieve.UnlockAchievement(AchievementIndex.rear_flanking);
             }), null, true);
 #endif
 
@@ -2213,7 +2217,14 @@ namespace VikingEngine.DSSWars
         List<InputSource> availableInput()
         {
             var result = joinHandler.ListConneted();
-            result.Insert(0, InputSource.DefaultPC);
+            if (Ref.steam.isDeck)
+            {
+                result.Add(InputSource.DefaultPC);
+            }
+            else
+            {
+                result.Insert(0, InputSource.DefaultPC);
+            }
             return result;
         }
 
@@ -2395,11 +2406,18 @@ namespace VikingEngine.DSSWars
             content.newParagraph();
             IOLib.FileCheckToHud(content);
 
+            string steamResult = $"steam:{(Ref.steam.isInitialized ? 'T' : 'F')}";
+            
+            HudLib.BulletSeperationPoint(content);
+            content.Add(new RbText(steamResult, HudLib.SecondaryTextColor));
+            if (Ref.steam.initError)
+            {
+                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("!" + ((int)Ref.steam.steamInitResult).ToString()) },
+                        null,
+                        new RbTooltip_Text(Ref.steam.steamInitErrorMsg)));
+            }
             underMenu.Refresh(content);
         }
-
-       
-        
 
         public override void OnResolutionChange()
         {

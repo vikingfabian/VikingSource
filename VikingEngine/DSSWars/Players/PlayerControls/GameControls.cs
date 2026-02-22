@@ -2,9 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Data;
@@ -15,10 +13,6 @@ using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Players.Orders;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichMenu;
-using VikingEngine.Input;
-using VikingEngine.LootFest.Players;
-using VikingEngine.ToGG;
-using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls
 {
@@ -471,17 +465,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         }
                         break;
                     case ControllerTabFocus.Pause_GamePlay:
-                        if (dir < 0)
-                        {
-                            if (DssRef.difficulty.setting_allowPauseCommand)
-                            {
-                                Ref.TogglePause();
-                            }
-                        }
-                        else
-                        {
-                            setNextGameSpeed();
-                        }
+                        //if (dir < 0)
+                        //{
+                        //    if (DssRef.difficulty.setting_allowPauseCommand)
+                        //    {
+                        //        Ref.TogglePause();
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    setNextGameSpeed();
+                        //}
                         break;
                 }
             }
@@ -1158,9 +1152,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 if (Ref.isPaused)
                 {
-                    //Ref.isPaused = false;
-                    //Ref.GameTimeSpeed = 1f;
                     Ref.SetPause(false);
+                    player.hud.needRefresh = true;
                 }
                 else
                 {

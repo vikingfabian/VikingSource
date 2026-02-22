@@ -96,6 +96,7 @@ namespace VikingEngine.DSSWars.Players
 
             if (controllerMode)
             {
+                //controllerPointer = new Image(SpriteName.cmdPointer, player.playerData.view.DrawAreaF.PercentToPosition(0.6f, 0.5f), Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
                 controllerPointer = new Image(SpriteName.cmdPointer, CursorCenterPos(), Engine.Screen.SmallIconSizeV2, ImageLayers.Lay1, true);
             }
         }
@@ -107,10 +108,13 @@ namespace VikingEngine.DSSWars.Players
 
         public void terrainSearchClick(SubTile terrain)
         {
-           Vector3 pos = TerrainTypeSearch.FindNext(selection.obj.GetCity(), terrain);
-            cameraFocus = new EmptyPoint(pos);
+            var city = selection.obj?.GetCity();
+            if (city != null)
+            {
+                Vector3 pos = TerrainTypeSearch.FindNext(city, terrain);
+                cameraFocus = new EmptyPoint(pos);
+            }
         }
-
         public void battleModeCamBound()
         {
             ZoomRange = MapLayerManager.MidToDetailZoomRange;

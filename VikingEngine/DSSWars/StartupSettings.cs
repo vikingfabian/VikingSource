@@ -8,7 +8,8 @@ namespace VikingEngine.DSSWars
 {
     static class StartupSettings 
     {
-   
+        public static string LeaderboardVersion = "nov2025";
+        public static bool LeaderboardInBeta = true;
 
         public static bool AutoStartLevel = false;
 

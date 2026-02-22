@@ -42,6 +42,7 @@ namespace VikingEngine.DSSWars
         public const int LargePopulationCount_Tier2 = 10000;
         public const int LargePopulationCount_Tier3 = 16000;
         
+        
 
         public Achievements()
         {
@@ -81,6 +82,7 @@ namespace VikingEngine.DSSWars
                         UnlockAchievement_async(AchievementIndex.gold_64bit);
                     }
 
+                    bool uploadLeaderBoard = false;
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                     while (citiesC.Next(ref p.faction.cities, DssRef.world.cities, out City city))
                     {
@@ -97,6 +99,12 @@ namespace VikingEngine.DSSWars
                                     UnlockAchievement_async(AchievementIndex.large_population_tier3);
                                 }
                             }
+                        }
+
+                        if (city.workForce.amount > CitySizeLeaderBoard.SizeUploaded)
+                        {
+                            CitySizeLeaderBoard.SizeUploaded = city.workForce.amount;
+                            uploadLeaderBoard = true;
                         }
 
                         int posted = 0;
@@ -158,6 +166,15 @@ namespace VikingEngine.DSSWars
                         
                     }
 
+                    if (uploadLeaderBoard)
+                    {
+                        Ref.update.AddSyncAction(new SyncAction(() =>
+                        {
+                            new CitySizeLeaderBoard(CitySizeLeaderBoard.SizeUploaded);
+                        }));
+                    }
+
+
                     var armiesC = p.faction.armies.counter();
                     while (armiesC.Next())
                     {
@@ -203,7 +220,7 @@ namespace VikingEngine.DSSWars
 #if DEBUG
             System.Diagnostics.Debug.WriteLine("[!] Achievement: " + achievement.ToString());
 #endif
-            if (DssRef.state.importedWorld && DssRef.storage.blockImportAchievements)
+            if (DssRef.state != null && DssRef.state.importedWorld && DssRef.storage.blockImportAchievements)
             {
                 return;
             }

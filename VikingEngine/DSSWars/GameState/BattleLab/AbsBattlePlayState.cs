@@ -68,6 +68,8 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 var local = createLocalPlayer(startFaction);
                 local.assignPlayer(i, playerCount, true);
                 localPlayers.Add(local);
+
+                Mouse.AddPlayer(local.playerData, playerCount, local.gameControls.input.moveCursor, local.gameControls.input.menuInput.cursor);
             }
         }
 

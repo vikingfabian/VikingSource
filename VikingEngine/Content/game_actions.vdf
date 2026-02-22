@@ -52,6 +52,12 @@
 					"title"			"#Action_Cursor"
 					"input_mode"	"absolute_mouse"
 				}
+			
+				"GameScroll"
+				{
+					"title"		"#Action_ScrollMenu"
+					"input_mode"	"absolute_mouse"
+				}
 			}
 			"Button"
 			{
