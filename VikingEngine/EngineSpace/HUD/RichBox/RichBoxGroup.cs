@@ -9,6 +9,9 @@ namespace VikingEngine.HUD.RichBox
 {
     class RichBoxGroup : ImageGroup
     {
+        static int NextId = 1;
+        public int PageId = NextId++;
+
         public VectorRect area;
         public VectorRect maxArea;
         

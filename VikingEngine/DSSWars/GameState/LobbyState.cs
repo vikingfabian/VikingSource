@@ -42,6 +42,7 @@ namespace VikingEngine.DSSWars
     class LobbyState : AbsDssState
     {    
         Interface.MenuSystem menuSystem;
+        LeaderboardMenu leaderboardMenu;
         MapBackgroundLoading mapBackgroundLoading;
         NetworkLobby netLobby = new NetworkLobby();
         GameTimer emitTimer = new GameTimer(0.1f);
@@ -76,7 +77,7 @@ namespace VikingEngine.DSSWars
         const string UnderMenu_Options_Language = "lang";
         const string UnderMenu_GameOverResults = "gameresults";
         const string UnderMenu_GameOverResults_View = "gameresults_view";
-
+        const string UnderMenu_leaderboards = "leaderboard";
 
         const float MoreArrowTabbing = 0.9f;
         const float MoreArrowScale = 0.4f;
@@ -127,6 +128,7 @@ namespace VikingEngine.DSSWars
             this.bgTex = bgTex;
             createBackground();
             messages = new MessageGroup_Editor();
+            
 #if DEBUG
             //new TimedAction0ArgTrigger(collectReports, 600);
 
@@ -185,6 +187,14 @@ namespace VikingEngine.DSSWars
                     break;
                 case UnderMenu_GameOverResults_View:
 
+                    break;
+
+                case UnderMenu_leaderboards:
+                    if (leaderboardMenu == null)
+                    {
+                        leaderboardMenu = new LeaderboardMenu(underMenu);
+                    }
+                    leaderboardMenu.toMenu();
                     break;
 
 
@@ -262,7 +272,11 @@ namespace VikingEngine.DSSWars
 
                         content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.GameOverResults) }),
                             new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_GameOverResults, StackOption.Stack), null, !PlatformSettings.STEAM_DEMO));
+                        
+                        content.newLine();
 
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(".Leaderboards") }),
+                            new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_leaderboards, StackOption.Stack), null, !PlatformSettings.STEAM_DEMO));
 
                         content.newLine();
 
@@ -284,6 +298,9 @@ namespace VikingEngine.DSSWars
 #if DEBUG
                         if (Ref.steam.isInitialized)
                         {
+                            content.newLine();
+                            content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Create leaderboards") }, new RbAction(AbsLeaderBoard.CreateLeaderBoards)));
+
                             content.newLine();
                             content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText("Initialize steam stats") }, new RbAction(Ref.steam.stats.initializeAllStatsOnSteam)));
                             content.newLine();

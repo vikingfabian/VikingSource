@@ -87,14 +87,21 @@ namespace VikingEngine.SteamWrapping
 
         void find()
         {
-            if (Ref.steam.isInitialized && Ref.steam.leaderboardsInitialized)
+            if (Ref.steam.isInitialized /*&& Ref.steam.leaderboardsInitialized*/)
             {
                 findLeaderboardCallback = new CallResult<LeaderboardFindResult_t>(onFindLeaderboard);
                 var apiCall = SteamUserStats.FindLeaderboard(name);//"Error");
                 findLeaderboardCallback.Set(apiCall);
             }
         }
-        
+        //void findOrCreate()
+        //{
+        //    if (Ref.steam.isInitialized /*&& Ref.steam.leaderboardsInitialized*/)
+        //    {
+               
+        //    }
+        //}
+
         void onFindLeaderboard(LeaderboardFindResult_t caller, bool ioFailure)
         {
             if (caller.m_bLeaderboardFound != byte.MinValue)
@@ -105,7 +112,7 @@ namespace VikingEngine.SteamWrapping
                 {
                     leaderboardScoreUploadedCallback = new CallResult<LeaderboardScoreUploaded_t>(onLeaderboardScoreUploaded);
                     SteamAPICall_t apiCall = SteamUserStats.UploadLeaderboardScore(leaderboard,
-                        ELeaderboardUploadScoreMethod.k_ELeaderboardUploadScoreMethodForceUpdate,
+                        ELeaderboardUploadScoreMethod.k_ELeaderboardUploadScoreMethodKeepBest,
                         score, scoreDetails.Array, scoreDetails.Count);
                     leaderboardScoreUploadedCallback.Set(apiCall);
                 }

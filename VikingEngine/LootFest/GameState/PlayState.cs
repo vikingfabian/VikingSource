@@ -114,10 +114,10 @@ namespace VikingEngine.LootFest
                 LfRef.gamestate.readyToJoinMessage();
             }
 
-#if PCGAME
-            if (Ref.steam.leaderboardsInitialized)
-            { Ref.steam.leaderBoards.uploadlastplayed(); }
-#endif
+//#if PCGAME
+//            if (Ref.steam.leaderboardsInitialized)
+//            { Ref.steam.leaderBoards.uploadlastplayed(); }
+//#endif
 
             if (PlatformSettings.DevBuild && DebugSett.DebugChunkLoading)
             { new DebugChunkLoading(); }

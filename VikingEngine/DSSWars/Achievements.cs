@@ -82,6 +82,7 @@ namespace VikingEngine.DSSWars
                         UnlockAchievement_async(AchievementIndex.gold_64bit);
                     }
 
+                    bool uploadLeaderBoard = false;
                     SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                     while (citiesC.Next(ref p.faction.cities, DssRef.world.cities, out City city))
                     {
@@ -98,6 +99,12 @@ namespace VikingEngine.DSSWars
                                     UnlockAchievement_async(AchievementIndex.large_population_tier3);
                                 }
                             }
+                        }
+
+                        if (city.workForce.amount > CitySizeLeaderBoard.SizeUploaded)
+                        {
+                            CitySizeLeaderBoard.SizeUploaded = city.workForce.amount;
+                            uploadLeaderBoard = true;
                         }
 
                         int posted = 0;
@@ -158,6 +165,15 @@ namespace VikingEngine.DSSWars
 
                         
                     }
+
+                    if (uploadLeaderBoard)
+                    {
+                        Ref.update.AddSyncAction(new SyncAction(() =>
+                        {
+                            new CitySizeLeaderBoard(CitySizeLeaderBoard.SizeUploaded);
+                        }));
+                    }
+
 
                     var armiesC = p.faction.armies.counter();
                     while (armiesC.Next())

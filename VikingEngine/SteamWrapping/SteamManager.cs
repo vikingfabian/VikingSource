@@ -44,7 +44,7 @@ namespace VikingEngine.SteamWrapping
         public bool isInitialized = false;
         public bool isNetworkInitialized = false;
         public bool statsInitialized = false;
-        public bool leaderboardsInitialized = false;
+        //public bool leaderboardsInitialized = false;
 
         public bool inOverlay = false;
         public SteamApplicationSettings applicationSettings;
@@ -134,7 +134,7 @@ namespace VikingEngine.SteamWrapping
             isInitialized = false;
             isNetworkInitialized = false;
             statsInitialized = false;
-            leaderboardsInitialized = false;
+            //leaderboardsInitialized = false;
         }
 
         /// <summary>
@@ -344,11 +344,11 @@ namespace VikingEngine.SteamWrapping
                         {
                             Achievements.OnUserStatsRecieved(caller);
                         }
-                        if (leaderBoards != null)
-                        {
-                            leaderboardsInitialized = true;
-                            //leaderBoards.OnUserStatsRecieved(caller);
-                        }
+                        //if (leaderBoards != null)
+                        //{
+                        //    leaderboardsInitialized = true;
+                        //    //leaderBoards.OnUserStatsRecieved(caller);
+                        //}
                         if (stats != null)
                         {
                             stats.OnUserStatsRecieved(caller);
@@ -407,7 +407,7 @@ namespace VikingEngine.SteamWrapping
 
         public void debugInfoToMenu(HUD.GuiLayout layout)
         {
-            new HUD.GuiLabel("Leaderboards Init: " + Ref.steam.leaderboardsInitialized.ToString(), layout);
+            //new HUD.GuiLabel("Leaderboards Init: " + Ref.steam.leaderboardsInitialized.ToString(), layout);
             new HUD.GuiLabel("Stats Init: " + Ref.steam.statsInitialized.ToString(), layout);
         }
 

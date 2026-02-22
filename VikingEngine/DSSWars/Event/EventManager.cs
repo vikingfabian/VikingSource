@@ -1080,7 +1080,16 @@ namespace VikingEngine.DSSWars.Event
             {
                 gameHasEnded = true;
 
-                new Data.VictoryLeaderBoard(endReason, vType);
+                if (endReason == GameEndReason.Victory)
+                {
+                    new Data.VictoryLeaderBoard(endReason, vType);
+                }
+
+                if (endReason != GameEndReason.TimesUp &&
+                    DssRef.difficulty.TotalDifficulty() >= 300)
+                {
+                    new SurviveLeaderBoard(DssRef.time.TotalIngameTime());
+                }
 
                 new EndScene(endReason, vType, matchResult);
 

@@ -4,6 +4,7 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using VikingEngine.DSSWars;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichMenu;
@@ -13,9 +14,7 @@ namespace VikingEngine.HUD.RichBox
 {
     abstract class AbsRbInteraction
     {
-
         abstract public bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction, out float pushScroll);
-
         abstract public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction);
         abstract public void end(float pointerX, out bool needRefresh);
     }
@@ -136,7 +135,16 @@ namespace VikingEngine.HUD.RichBox
             //Debug.Log($"Menu content offset: {menu.richBox.GetOffset()}");
             unused1 = false;
             needRefresh = false;
-            var mouse = menu.InputMap().RbMouseInstance();
+            Input.MouseInstance mouse;
+            if (menu != null)
+            {
+                mouse = menu.InputMap().RbMouseInstance();
+            }
+            else
+            {
+                mouse = DssRef.state.LocalHost().gameControls.input.mouse;
+            }
+
             if (interactionStack != null)
             {
                 var result = interactionStack.update(mousePosOffSet, menu, useClickInput, out needRefresh, out bool endInteraction);

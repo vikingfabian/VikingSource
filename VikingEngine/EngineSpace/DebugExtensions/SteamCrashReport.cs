@@ -24,7 +24,7 @@ namespace VikingEngine.DebugExtensions
             {
                 try
                 {
-                    if (Ref.steam.isInitialized && Ref.steam.leaderboardsInitialized)
+                    if (Ref.steam.isInitialized /*&& Ref.steam.leaderboardsInitialized*/)
                     {
                         exceptionToLeaderboard(e, methodType).BeginUpload();
                     }
