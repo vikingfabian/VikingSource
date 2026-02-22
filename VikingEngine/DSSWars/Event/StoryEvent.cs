@@ -921,6 +921,7 @@ namespace VikingEngine.DSSWars.Event
             int totalSize = neighbor.totalWorkForce;
             List<Faction> search = adjacentFactions(neighbor);
             List<Faction> has_searched = new List<Faction>();
+            //HashSet<Faction> visited = new HashSet<Faction>();
 
             int maxLoops = 100;
             while (--maxLoops > 0 && totalSize < player.faction.totalWorkForce * 1.5f)
@@ -1014,7 +1015,7 @@ namespace VikingEngine.DSSWars.Event
                 }
             }));
 
-            new Timer.TimedAction2ArgTrigger_InGame<List<Faction>, LocalPlayer>((attackers, player) =>
+            new Timer.TimedAction2ArgTrigger_InGame<Faction[], LocalPlayer>((attackers, player) =>
             {
                 attackers.First().player.setAggression(Players.AbsPlayer.AggressionLevel3_FocusedAttacks);
                 foreach (var faction in attackers)
@@ -1024,7 +1025,7 @@ namespace VikingEngine.DSSWars.Event
                 }
 
                 player.hud.messages.Add(DssRef.lang.EventMessage_Event_Title, DssRef.lang.EventMessage_TheCohalition);
-            }, attackers, player, TimeExt.MinuteInSeconds * DssConst.DominationWarTimeDelay_Minutes.GetRandom());
+            }, attackers.ToArray(), player, TimeExt.MinuteInSeconds * DssConst.DominationWarTimeDelay_Minutes.GetRandom());
 
 
             List<Faction> adjacentFactions(Faction faction)
@@ -1035,11 +1036,8 @@ namespace VikingEngine.DSSWars.Event
                 while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                 {
                     EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
-                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var nCityIx in city.neighborCities)
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))
                     {
-                        //foreach (var n in citySel.neighborCities)
-                    
-                       // var ncity = DssRef.world.cities[DssRef.world.neighborCities.array[ncaIx]];
                         var nCityFaction = nCity.GetFaction();
 
                         if (nCityFaction != faction &&
