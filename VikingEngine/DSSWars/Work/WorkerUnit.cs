@@ -585,7 +585,7 @@ namespace VikingEngine.DSSWars.Work
                         (WorkExperienceType xp) =>
                     {
                         var current = status.getXpFor(xp);
-                        int maxAdd = DssConst.WorkLevel_Master - current;
+                        int maxAdd = DssConst.WorkLevel_Master - current.xp;
 
                         if (maxAdd > 0)
                         {
@@ -601,26 +601,26 @@ namespace VikingEngine.DSSWars.Work
                     //content.space();
                 }
 
-                args.content.newLine();
-                HudLib.Label(args.content, DssRef.lang.GeneralSetting_SetAll);
-                args.content.space();
-                args.content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> {
-                    new RbImage(SpriteName.WarsUnitLevelMinimal),  new RbSpace(), new RbText(DssRef.lang.ExperienceLevel_1, HudLib.GodPower_Color),  
-                },
-                    new RbAction(() => {
+                //args.content.newLine();
+                //HudLib.Label(args.content, DssRef.lang.GeneralSetting_SetAll);
+                //args.content.space();
+                //args.content.Add(new ArtButton(RbButtonStyle.GodPower, new List<AbsRichBoxMember> {
+                //    new RbImage(SpriteName.WarsUnitLevelMinimal),  new RbSpace(), new RbText(DssRef.lang.ExperienceLevel_1, HudLib.GodPower_Color),  
+                //},
+                //    new RbAction(() => {
                         
-                        status.xp1 = 0;
-                        status.xp2 = 0;
-                        status.xp3 = 0;
+                //        status.xp1 = 0;
+                //        status.xp2 = 0;
+                //        status.xp3 = 0;
 
-                    })));
+                //    })));
             }
 
-#if DEBUG
-            args.content.text(string.Format("XP1: {0} {1}", status.xpType1, status.xp1));
-            args.content.text(string.Format("XP2: {0} {1}", status.xpType2, status.xp2));
-            args.content.text(string.Format("XP3: {0} {1}", status.xpType3, status.xp3));
-#endif
+//#if DEBUG
+//            args.content.text(string.Format("XP1: {0} {1}", status.xpType1, status.xp1));
+//            args.content.text(string.Format("XP2: {0} {1}", status.xpType2, status.xp2));
+//            args.content.text(string.Format("XP3: {0} {1}", status.xpType3, status.xp3));
+//#endif
         }
 
         //public void toolTip(RichBoxContent content)

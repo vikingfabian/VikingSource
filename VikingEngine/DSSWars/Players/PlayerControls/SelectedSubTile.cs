@@ -104,6 +104,7 @@ namespace VikingEngine.DSSWars.Players
                                 switch (subTile.mainTerrain)
                                 {
                                     case TerrainMainType.Building:
+                                        tileOfInterest = true;
                                         switch ((TerrainBuildingType)subTile.subTerrain)
                                         {
                                             case Map.TerrainBuildingType.CityHall_Tent:
@@ -160,15 +161,23 @@ namespace VikingEngine.DSSWars.Players
                                     case TerrainMainType.Foil:
                                         switch ((TerrainSubFoilType)subTile.subTerrain)
                                         {
-                                            case TerrainSubFoilType.BogIron:
+                                            //case TerrainSubFoilType.WheatFarm:
+                                            //case TerrainSubFoilType.WheatFarmUpgraded:
+                                            //case TerrainSubFoilType.ClayPit:
+                                            //case TerrainSubFoilType.BogIron:
+                                            default:
                                                 tileOfInterest = true;
                                                 break;
                                         }
                                         break;
                                     case TerrainMainType.Wall:
                                         selectTileResult = SelectTileResult.Wall;
+                                        tileOfInterest = true;
                                         //hasSelection = true;
                                         //model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
+                                        break;
+                                    case TerrainMainType.Decor:
+                                        tileOfInterest = true;
                                         break;
                                 }
 

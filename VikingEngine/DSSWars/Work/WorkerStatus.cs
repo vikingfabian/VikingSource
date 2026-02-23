@@ -19,14 +19,16 @@ using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Work
 {
+    
+
     struct WorkerStatus
     {
         static readonly IntervalF EnergyBounds = new IntervalF(DssConst.Worker_Starvation, DssConst.Worker_MaxEnergy);
 
-
-        public WorkExperienceType xpType1, xpType2, xpType3;
-        //5 levels, using 50xp each
-        public byte xp1, xp2, xp3;
+        public int XpEntityIndex;
+        //public WorkExperienceType xpType1, xpType2, xpType3;
+        ////5 levels, using 50xp each
+        //public byte xp1, xp2, xp3;
         public byte workBonus;
 
         public WorkType work;
@@ -41,27 +43,40 @@ namespace VikingEngine.DSSWars.Work
 
         public ItemResource carry;
         public float energy;
-        //public bool isDeleted;
+
+
+        public WorkerStatus(bool reserveIndex)
+        {
+            if (reserveIndex)
+            {
+                XpEntityIndex = DssRef.world.ReserveNextWorkXpIndex();
+            }
+            else
+            {
+                XpEntityIndex = -1;
+            }
+        }
 
         public void xpToHud(RichBoxContent content)
         {
             // Pair the XP values with their respective types
-            var xpPairs = new List<(byte xp, WorkExperienceType type)>
-            {
-                (xp1, xpType1),
-                (xp2, xpType2),
-                (xp3, xpType3)
-            };
+            var xpPairs = DssRef.world.listWorkXp(XpEntityIndex);
+            //    new List<(byte xp, WorkExperienceType type)>
+            //{
+            //    (xp1, xpType1),
+            //    (xp2, xpType2),
+            //    (xp3, xpType3)
+            //};
 
             // Sort the list by XP in descending order
-            xpPairs.Sort((a, b) => b.xp.CompareTo(a.xp));
+            //xpPairs.Sort((a, b) => b.xp.CompareTo(a.xp));
 
             foreach (var xpPair in xpPairs)
             {
-                if (xpPair.xp > 0 && xpPair.type != WorkExperienceType.NONE)
-                {
+                /*if (xpPair.xp > 0 && xpPair.type != WorkExperienceType.NUM_NONE*/
+                //{
                     LangLib.ExperienceType(xpPair.type, out string typeName, out SpriteName typeIcon);
-                    var level = XpLib.ToLevel(xpPair.xp);
+                    var level = xpPair.xp.Level();
 
                     content.newLine();
                     content.Add(new RbImage(typeIcon));
@@ -73,7 +88,7 @@ namespace VikingEngine.DSSWars.Work
                     content.Add(new RbTab(0.2f));
                     content.Add(new RbImage(LangLib.ExperienceLevelIcon(level)));
                     content.Add(new RbText(LangLib.ExperienceLevel(level)));
-                }
+                //}
             }
         }
 
@@ -81,12 +96,13 @@ namespace VikingEngine.DSSWars.Work
 
         public void writeGameState(City city, System.IO.BinaryWriter w, bool netPacket)
         {
-            w.Write((byte)xpType1);
-            w.Write((byte)xpType2);
-            w.Write((byte)xpType3);
-            w.Write(xp1);
-            w.Write(xp2);
-            w.Write(xp3);
+            //w.Write((byte)xpType1);
+            //w.Write((byte)xpType2);
+            //w.Write((byte)xpType3);
+            //w.Write(xp1);
+            //w.Write(xp2);
+            //w.Write(xp3);
+            DssRef.world.writeWorkXp(XpEntityIndex, w);
 
             byte saveEnergy = EnergyBounds.GetValueBytePercentPos_WithBound(energy);
             w.Write(saveEnergy);
@@ -105,33 +121,24 @@ namespace VikingEngine.DSSWars.Work
         }
         public void readGameState(City city, System.IO.BinaryReader r, bool netPacket, int subversion)
         {
-            xpType1 = (WorkExperienceType)r.ReadByte();
-            xpType2 = (WorkExperienceType)r.ReadByte();
-            xpType3 = (WorkExperienceType)r.ReadByte();
+            //xpType1 = (WorkExperienceType)r.ReadByte();
+            //xpType2 = (WorkExperienceType)r.ReadByte();
+            //xpType3 = (WorkExperienceType)r.ReadByte();
 
-            if (subversion < 80)
-            {
-                XpLib.AdjustVersion80Skill(ref xpType1);
-                XpLib.AdjustVersion80Skill(ref xpType2);
-                XpLib.AdjustVersion80Skill(ref xpType3);
-            }
+            //if (subversion < 80)
+            //{
+            //    XpLib.AdjustVersion80Skill(ref xpType1);
+            //    XpLib.AdjustVersion80Skill(ref xpType2);
+            //    XpLib.AdjustVersion80Skill(ref xpType3);
+            //}
 
-            xp1 = r.ReadByte();
-            xp2 = r.ReadByte();
-            xp3 = r.ReadByte();
+            //xp1 = r.ReadByte();
+            //xp2 = r.ReadByte();
+            //xp3 = r.ReadByte();
+            DssRef.world.readWorkXp(XpEntityIndex, r, subversion);
 
-            if (subversion < 55)
-            {
-                energy = r.ReadInt16();
-                if (energy < 0)
-                {
-                    energy = 400;
-                }
-            }
-            else
-            {
-                energy = EnergyBounds.GetFromBytePercent(r.ReadByte());
-            }
+            energy = EnergyBounds.GetFromBytePercent(r.ReadByte());
+            
             carry.readGameState(r, subversion);
 
             if (netPacket)
@@ -218,14 +225,22 @@ namespace VikingEngine.DSSWars.Work
                     ItemResource recieved = toCity.MakeTrade(foodType, carry.amount, DssConst.Worker_TrossWorkerCarryWeight);
                     carry = recieved;
 
-                    createWorkOrder(WorkType.TrossReturnToArmy, 0, 0, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(army.tilePos), null);
+                    createWorkOrder(WorkType.TrossReturnToArmy, 0, 0, WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(army.tilePos), null);
                     break;
                 case WorkType.TrossReturnToArmy:
                     army.food += carry.amount;
-                    work = WorkType.IsDeleted;
+                    //work = WorkType.IsDeleted;
+                    DeleteMe();
                     break;
             }
 
+        }
+
+        public void DeleteMe()
+        { 
+            work = WorkType.IsDeleted;
+            DssRef.world.FreeWorkerXp(XpEntityIndex);
+            XpEntityIndex = -1;
         }
 
         int farmGrowthMultiplier(int terrainAmount, City city, bool upgraded)
@@ -349,7 +364,7 @@ namespace VikingEngine.DSSWars.Work
         {
             var faction = city.GetFaction_NoChecks();
             
-            WorkExperienceType gainXp= WorkExperienceType.NONE;
+            WorkExperienceType gainXp= WorkExperienceType.NUM_NONE;
 
             float energyCost = processTimeLengthSec * DssConst.WorkTeamEnergyCost;
             if (city.Culture == CityCulture.CrabMentality)
@@ -1209,7 +1224,8 @@ namespace VikingEngine.DSSWars.Work
                     }
                     break;
                 case WorkType.Exit:
-                    work = WorkType.IsDeleted;
+                    //work = WorkType.IsDeleted;
+                    DeleteMe();
                     break;
             }
 
@@ -1234,277 +1250,341 @@ namespace VikingEngine.DSSWars.Work
 
         }
 
-        public byte getXpFor(XP.WorkExperienceType type)
+        public WorkExperience getXpFor(XP.WorkExperienceType type)
         {
-            if (type == xpType1)
-            {
-                return xp1;
-            }
-            else if (type == xpType2)
-            {
-                return xp2;
-            }
-            else if (type == xpType3)
-            {
-                return xp3;
-            }
+            return DssRef.world.GetWorkXp(XpEntityIndex, type);
+            //if (type == xpType1)
+            //{
+            //    return xp1;
+            //}
+            //else if (type == xpType2)
+            //{
+            //    return xp2;
+            //}
+            //else if (type == xpType3)
+            //{
+            //    return xp3;
+            //}
 
-            return 0;
+            //return 0;
+        }
+
+        public void setXpFor(XP.WorkExperienceType type, byte toXp)
+        {
+            DssRef.world.SetWorkXp(XpEntityIndex, type, toXp);
+            
         }
 
         public void addExperience(XP.WorkExperienceType type, City city, byte add = 0)
         {
-            if (type != XP.WorkExperienceType.NONE)
+            if (type == WorkExperienceType.NUM_NONE)
             {
-                if (type == xpType1)
-                {
-                    addTo(ref type, ref xp1, add);
-                }
-                else if (type == xpType2)
-                {
-                    addTo(ref type, ref xp2, add);
-                }
-                else if (type == xpType3)
-                {
-                    addTo(ref type, ref xp3, add);
-                }
-                else
-                {
-                    int lowIx = 0;
-                    int lowVal = xp1;
-
-                    if (xp2 < lowVal)
-                    { 
-                        lowIx = 1;
-                        lowVal = xp2;
-                    }
-                    if (xp3 < lowVal)
-                    {
-                        lowIx = 2;
-                        lowVal = xp3;
-                    }
-
-                    switch (lowIx)
-                    {
-                        case 0:
-                            if (shouldReplace(xpType1, xp1, type))
-                            {
-                                xpType1 = type;
-                                xp1 = 0;
-                                addTo(ref type, ref xp1, add);
-                            }
-                            break;
-                        case 1:
-                            if (shouldReplace(xpType1, xp2, type))
-                            {
-                                xpType2 = type;
-                                xp2 = 0;
-                                addTo(ref type, ref xp2, add);
-                            }
-                            break;
-                        case 2:
-                            if (shouldReplace(xpType1, xp3, type))
-                            {
-                                xpType3 = type;
-                                xp3 = 0;
-                                addTo(ref type, ref xp3, add);
-                            }
-                            break;
-                    }
-
-                    bool shouldReplace(WorkExperienceType previous, byte previousXp, WorkExperienceType newXp)
-                    {
-                        if (previous == WorkExperienceType.NONE)
-                        {
-                            return true;
-                        }
-                        if (newXp == WorkExperienceType.Transport)
-                        {
-                            return false;
-                        }
-
-                        if (previous == WorkExperienceType.HouseBuilding &&
-                            skillPriority(newXp) <= 1)
-                        {
-                            //Extra protection for building skill
-                            return false;
-                        }
-
-                        //Expert levels cannot be replaced with low priority skills (skills that are never required like animal care)
-                        return previousXp < DssConst.WorkLevel_Expert || skillPriority(newXp) >= skillPriority(previous);
-                    }
-
-                    int skillPriority(WorkExperienceType experienceType)
-                    {
-                        switch (experienceType)
-                        {
-                            case WorkExperienceType.Transport:
-                                return 0;
-
-                            case WorkExperienceType.AnimalCare:
-                            case WorkExperienceType.Cook:
-                            case WorkExperienceType.Farm:
-                            case WorkExperienceType.Mining:
-                            case WorkExperienceType.StoneCutter:
-                                return 1;
-
-                            default: 
-                                return 2;
-
-                            case WorkExperienceType.HouseBuilding:
-                                return 3;
-                        }
-                    }
-                }
+                return;
             }
+            ref var xp = ref DssRef.world.GetRefWorkXp(XpEntityIndex, type);
 
+            ExperienceLevel level = xp.Level();
 
-
-            void addTo(ref XP.WorkExperienceType type, ref byte xp, byte add = 0)
+            if (add == 0)
             {
-                //bool expert = false;
-                //bool master = false;
-                ExperienceLevel level = XpLib.ToLevel(xp);
-
-                if (add == 0)
+                switch (level)
                 {
-                    switch (level)
-                    {
-                        case ExperienceLevel.Beginner_1:
+                    case ExperienceLevel.Beginner_1:
+                        add = WorkLib.WorkToXPTable[(int)type];
+                        add += 2;
+                        break;
+                    case ExperienceLevel.Practitioner_2:
+                        add = WorkLib.WorkToXPTable[(int)type];
+                        break;
+                    case ExperienceLevel.Expert_3:
+                        //expert = true;
+                        if (Ref.peRnd.Chance(0.5))
+                        {
                             add = WorkLib.WorkToXPTable[(int)type];
-                            add += 2;
-                            break;
-                        case ExperienceLevel.Practitioner_2:
-                            add = WorkLib.WorkToXPTable[(int)type];
-                            break;
-                        case ExperienceLevel.Expert_3:
-                            //expert = true;
-                            if (Ref.peRnd.Chance(0.5))
-                            {
-                                add = WorkLib.WorkToXPTable[(int)type];
-                            }
-                            else
-                            {
-                                return;
-                            }
-                            break;
-                        case ExperienceLevel.Master_4:
-                            //master = true;
-                            if (Ref.peRnd.Chance(0.1))
-                            {
-                                add = WorkLib.WorkToXPTable[(int)type];
-                            }
-                            else
-                            {
-                                return;
-                            }
-                            break;
-                        case ExperienceLevel.Legendary_5:
+                        }
+                        else
+                        {
                             return;
-                    }
-                }
-                xp += add;
-                ExperienceLevel nextlevel = XpLib.ToLevel(xp);
-                if (nextlevel > level)
-                {
-                    //Level up
-                    city.addTechPoints(type, 
-                        level>= ExperienceLevel.Master_4 ? DssConst.TechnologyGain_MasterLevelUp : DssConst.TechnologyGain_AnyLevelUp, 
-                        TechnologyGainReason.WorkerLevel);
+                        }
+                        break;
+                    case ExperienceLevel.Master_4:
+                        //master = true;
+                        if (Ref.peRnd.Chance(0.1))
+                        {
+                            add = WorkLib.WorkToXPTable[(int)type];
+                        }
+                        else
+                        {
+                            return;
+                        }
+                        break;
+                    case ExperienceLevel.Legendary_5:
+                        return;
                 }
             }
+            xp.xp += add;
+            ExperienceLevel nextlevel = xp.Level();
+            if (nextlevel > level)
+            {
+                //Level up
+                city.addTechPoints(type,
+                    level >= ExperienceLevel.Master_4 ? DssConst.TechnologyGain_MasterLevelUp : DssConst.TechnologyGain_AnyLevelUp,
+                    TechnologyGainReason.WorkerLevel);
+            }
+
+            //if (type != XP.WorkExperienceType.NUM_NONE)
+            //{
+            //    if (type == xpType1)
+            //    {
+            //        addTo(ref type, ref xp1, add);
+            //    }
+            //    else if (type == xpType2)
+            //    {
+            //        addTo(ref type, ref xp2, add);
+            //    }
+            //    else if (type == xpType3)
+            //    {
+            //        addTo(ref type, ref xp3, add);
+            //    }
+            //    else
+            //    {
+            //        int lowIx = 0;
+            //        int lowVal = xp1;
+
+            //        if (xp2 < lowVal)
+            //        { 
+            //            lowIx = 1;
+            //            lowVal = xp2;
+            //        }
+            //        if (xp3 < lowVal)
+            //        {
+            //            lowIx = 2;
+            //            lowVal = xp3;
+            //        }
+
+            //        switch (lowIx)
+            //        {
+            //            case 0:
+            //                if (shouldReplace(xpType1, xp1, type))
+            //                {
+            //                    xpType1 = type;
+            //                    xp1 = 0;
+            //                    addTo(ref type, ref xp1, add);
+            //                }
+            //                break;
+            //            case 1:
+            //                if (shouldReplace(xpType1, xp2, type))
+            //                {
+            //                    xpType2 = type;
+            //                    xp2 = 0;
+            //                    addTo(ref type, ref xp2, add);
+            //                }
+            //                break;
+            //            case 2:
+            //                if (shouldReplace(xpType1, xp3, type))
+            //                {
+            //                    xpType3 = type;
+            //                    xp3 = 0;
+            //                    addTo(ref type, ref xp3, add);
+            //                }
+            //                break;
+            //        }
+
+            //        bool shouldReplace(WorkExperienceType previous, byte previousXp, WorkExperienceType newXp)
+            //        {
+            //            if (previous == WorkExperienceType.NUM_NONE)
+            //            {
+            //                return true;
+            //            }
+            //            if (newXp == WorkExperienceType.Transport)
+            //            {
+            //                return false;
+            //            }
+
+            //            if (previous == WorkExperienceType.HouseBuilding &&
+            //                skillPriority(newXp) <= 1)
+            //            {
+            //                //Extra protection for building skill
+            //                return false;
+            //            }
+
+            //            //Expert levels cannot be replaced with low priority skills (skills that are never required like animal care)
+            //            return previousXp < DssConst.WorkLevel_Expert || skillPriority(newXp) >= skillPriority(previous);
+            //        }
+
+            //        int skillPriority(WorkExperienceType experienceType)
+            //        {
+            //            switch (experienceType)
+            //            {
+            //                case WorkExperienceType.Transport:
+            //                    return 0;
+
+            //                case WorkExperienceType.AnimalCare:
+            //                case WorkExperienceType.Cook:
+            //                case WorkExperienceType.Farm:
+            //                case WorkExperienceType.Mining:
+            //                case WorkExperienceType.StoneCutter:
+            //                    return 1;
+
+            //                default: 
+            //                    return 2;
+
+            //                case WorkExperienceType.HouseBuilding:
+            //                    return 3;
+            //            }
+            //        }
+            //    }
+            //}
+
+
+
+            //void addTo(ref XP.WorkExperienceType type, ref byte xp, byte add = 0)
+            //{
+            //    //bool expert = false;
+            //    //bool master = false;
+            //    ExperienceLevel level = XpLib.ToLevel(xp);
+
+            //    if (add == 0)
+            //    {
+            //        switch (level)
+            //        {
+            //            case ExperienceLevel.Beginner_1:
+            //                add = WorkLib.WorkToXPTable[(int)type];
+            //                add += 2;
+            //                break;
+            //            case ExperienceLevel.Practitioner_2:
+            //                add = WorkLib.WorkToXPTable[(int)type];
+            //                break;
+            //            case ExperienceLevel.Expert_3:
+            //                //expert = true;
+            //                if (Ref.peRnd.Chance(0.5))
+            //                {
+            //                    add = WorkLib.WorkToXPTable[(int)type];
+            //                }
+            //                else
+            //                {
+            //                    return;
+            //                }
+            //                break;
+            //            case ExperienceLevel.Master_4:
+            //                //master = true;
+            //                if (Ref.peRnd.Chance(0.1))
+            //                {
+            //                    add = WorkLib.WorkToXPTable[(int)type];
+            //                }
+            //                else
+            //                {
+            //                    return;
+            //                }
+            //                break;
+            //            case ExperienceLevel.Legendary_5:
+            //                return;
+            //        }
+            //    }
+            //    xp += add;
+            //    ExperienceLevel nextlevel = XpLib.ToLevel(xp);
+            //    if (nextlevel > level)
+            //    {
+            //        //Level up
+            //        city.addTechPoints(type, 
+            //            level>= ExperienceLevel.Master_4 ? DssConst.TechnologyGain_MasterLevelUp : DssConst.TechnologyGain_AnyLevelUp, 
+            //            TechnologyGainReason.WorkerLevel);
+            //    }
+            //}
         }
 
         void setExperience(XP.WorkExperienceType type, int toLevel)
         {
-            if (type != XP.WorkExperienceType.NONE)
+            if (type != XP.WorkExperienceType.NUM_NONE)
             {
-                if (type == xpType1)
-                {
-                    setTo(ref type, ref xp1);
-                }
-                else if (type == xpType2)
-                {
-                    setTo(ref type, ref xp2);
-                }
-                else if (type == xpType3)
-                {
-                    setTo(ref type, ref xp3);
-                }
-                else
-                {
-                    int lowIx = 0;
-                    int lowVal = xp1;
+                ref var xp = ref DssRef.world.GetRefWorkXp(XpEntityIndex, type);
+                xp.setLevel(toLevel);
+                //if (type == xpType1)
+                //{
+                //    setTo(ref type, ref xp1);
+                //}
+                //else if (type == xpType2)
+                //{
+                //    setTo(ref type, ref xp2);
+                //}
+                //else if (type == xpType3)
+                //{
+                //    setTo(ref type, ref xp3);
+                //}
+                //else
+                //{
+                //    int lowIx = 0;
+                //    int lowVal = xp1;
 
-                    if (xp2 < lowVal)
-                    {
-                        lowIx = 1;
-                        lowVal = xp2;
-                    }
-                    if (xp3 < lowVal)
-                    {
-                        lowIx = 2;
-                        lowVal = xp3;
-                    }
+                //    if (xp2 < lowVal)
+                //    {
+                //        lowIx = 1;
+                //        lowVal = xp2;
+                //    }
+                //    if (xp3 < lowVal)
+                //    {
+                //        lowIx = 2;
+                //        lowVal = xp3;
+                //    }
 
-                    switch (lowIx)
-                    {
-                        case 0:
-                            xpType1 = type;
-                            xp1 = 0;
-                            setTo(ref type, ref xp1);
-                            break;
-                        case 1:
-                            xpType2 = type;
-                            xp2 = 0;
-                            setTo(ref type, ref xp2);
-                            break;
-                        case 2:
-                            xpType3 = type;
-                            xp3 = 0;
-                            setTo(ref type, ref xp3);
-                            break;
-                    }
-                }
+                //    switch (lowIx)
+                //    {
+                //        case 0:
+                //            xpType1 = type;
+                //            xp1 = 0;
+                //            setTo(ref type, ref xp1);
+                //            break;
+                //        case 1:
+                //            xpType2 = type;
+                //            xp2 = 0;
+                //            setTo(ref type, ref xp2);
+                //            break;
+                //        case 2:
+                //            xpType3 = type;
+                //            xp3 = 0;
+                //            setTo(ref type, ref xp3);
+                //            break;
+                //    }
+                //}
             }
 
 
 
-            void setTo(ref XP.WorkExperienceType type, ref byte xp)
-            {
-                xp = (byte)(toLevel * DssConst.WorkXpToLevel);
-            //    bool master = false;
+            //void setTo(ref XP.WorkExperienceType type, ref byte xp)
+            //{
+            //    xp = (byte)(toLevel * DssConst.WorkXpToLevel);
+            ////    bool master = false;
 
-                //    switch (XpLib.ToLevel(xp))
-                //    {
-                //        case ExperienceLevel.Beginner_1:
-                //            add = WorkLib.WorkToXPTable[(int)type];
-                //            add += 1;
-                //            break;
-                //        case ExperienceLevel.Expert_3:
-                //            if (Ref.rnd.Chance(0.5))
-                //            {
-                //                add = WorkLib.WorkToXPTable[(int)type];
-                //            }
-                //            break;
-                //        case ExperienceLevel.Master_4:
-                //            master = true;
-                //            if (Ref.rnd.Chance(0.1))
-                //            {
-                //                add = WorkLib.WorkToXPTable[(int)type];
-                //            }
-                //            break;
-                //        case ExperienceLevel.Legendary_5:
-                //            //add = 0;
-                //            break;
-                //    }
-                //    xp += add;
-                //    if (xp >= DssConst.WorkLevel_Master &&
-                //        !master)
-                //    {
-                //        city.onMasterLevel(type);
-                //    }
-            }
+            //    //    switch (XpLib.ToLevel(xp))
+            //    //    {
+            //    //        case ExperienceLevel.Beginner_1:
+            //    //            add = WorkLib.WorkToXPTable[(int)type];
+            //    //            add += 1;
+            //    //            break;
+            //    //        case ExperienceLevel.Expert_3:
+            //    //            if (Ref.rnd.Chance(0.5))
+            //    //            {
+            //    //                add = WorkLib.WorkToXPTable[(int)type];
+            //    //            }
+            //    //            break;
+            //    //        case ExperienceLevel.Master_4:
+            //    //            master = true;
+            //    //            if (Ref.rnd.Chance(0.1))
+            //    //            {
+            //    //                add = WorkLib.WorkToXPTable[(int)type];
+            //    //            }
+            //    //            break;
+            //    //        case ExperienceLevel.Legendary_5:
+            //    //            //add = 0;
+            //    //            break;
+            //    //    }
+            //    //    xp += add;
+            //    //    if (xp >= DssConst.WorkLevel_Master &&
+            //    //        !master)
+            //    //    {
+            //    //        city.onMasterLevel(type);
+            //    //    }
+            //}
         }
 
         public void cancelWork()
@@ -1729,7 +1809,7 @@ namespace VikingEngine.DSSWars.Work
 #endif
 
                     int toXp = workBonus * DssConst.WorkXpToLevel;
-                    int diff = toXp - getXpFor(experienceType);
+                    int diff = toXp - getXpFor(experienceType).xp;
                     return diff * DssConst.Time_SchoolOneXPSec;
                     //lock (city.schoolBuildings)
                     //{
@@ -1744,7 +1824,7 @@ namespace VikingEngine.DSSWars.Work
                     throw new NotImplementedException();
             }
 
-            timeSec *= WorkLib.WorkTimePerc(getXpFor(experienceType), workBonus);
+            timeSec *= WorkLib.WorkTimePerc(getXpFor(experienceType).xp, workBonus);
             return timeSec;
         }
     }

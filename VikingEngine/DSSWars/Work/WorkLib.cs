@@ -18,8 +18,8 @@ namespace VikingEngine.DSSWars.Work
         public static void Init()
         {
             
-            WorkToXPTable = new byte[(int)WorkExperienceType.NUM];
-            WorkToXPTable[(int)WorkExperienceType.NONE] = byte.MaxValue;
+            WorkToXPTable = new byte[(int)WorkExperienceType.NUM_NONE];
+            //WorkToXPTable[(int)WorkExperienceType.NUM_NONE] = byte.MaxValue;
             WorkToXPTable[(int)WorkExperienceType.Farm] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.AnimalCare] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.HouseBuilding] = (byte)(DssConst.DefaultWorkXpGain * 2);
@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.Work
         public static WorkExperienceType WorkToExperienceType(WorkType work, int workSubType, byte bonus, IntVector2 subTileEnd, City city, 
             out ExperienceLevel requiredLvl, out int requiredXp, out int maxXp)
         {
-            WorkExperienceType gainXpType = WorkExperienceType.NONE;
+            WorkExperienceType gainXpType = WorkExperienceType.NUM_NONE;
             maxXp = int.MaxValue;
             requiredXp = 0;
             requiredLvl = ExperienceLevel.Beginner_1;
@@ -164,11 +164,8 @@ namespace VikingEngine.DSSWars.Work
         Exit,
         Starving,
         Eat,
-
-        //Till,
         Plant,
         GatherFoil,
-        //GatherCityProduce,
         Mine,
         PickUpResource,
         PickUpProduce,

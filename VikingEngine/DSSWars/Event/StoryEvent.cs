@@ -921,7 +921,6 @@ namespace VikingEngine.DSSWars.Event
             int totalSize = neighbor.totalWorkForce;
             List<Faction> search = adjacentFactions(neighbor);
             List<Faction> has_searched = new List<Faction>();
-            //HashSet<Faction> visited = new HashSet<Faction>();
 
             int maxLoops = 100;
             while (--maxLoops > 0 && totalSize < player.faction.totalWorkForce * 1.5f)
@@ -966,7 +965,6 @@ namespace VikingEngine.DSSWars.Event
                 }
 
                 DssRef.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN1_Enemies);
-
 
                 if (attackLeader == null || faction.militaryStrength > attackLeader.militaryStrength)
                 {

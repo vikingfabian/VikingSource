@@ -828,7 +828,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             for (int i = start; i < end; i++)
             {
-                WorkerStatus readWorker = new WorkerStatus()
+                WorkerStatus readWorker = new WorkerStatus(true)
                 {
                     work = WorkType.Idle,
                     processTimeStartStampSec = Ref.TotalGameTimeSec,
@@ -2774,7 +2774,7 @@ namespace VikingEngine.DSSWars.GameObject
                     lowResource(ItemResourceType.SkinLinen_Group);
                     lowResource(ItemResourceType.Fuel_G);
                     lowResource(ItemResourceType.Iron_G);
-                    lowResource(ItemResourceType.ServiceMen, 2);
+                    lowResource(ItemResourceType.ServiceMen, 5);
 
 
                     void lowResource(ItemResourceType resourceType, int low = 10)

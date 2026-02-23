@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.GameObject
                 while (groupsC.Next())
                 {
                     count += groupsC.sel.soldierCount;
-                    allGropsAreIdle &= groupsC.sel.state == GroupState.Idle;
+                    allGropsAreIdle &= groupsC.sel.HasIdleState();
                     totalStrength += AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip);
 
                     minMax.Next(ref groupsC.sel.tilePos);

@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars
 
             if (subVersion < 105)
             {
-                cities.read_ushort_compressed(r/*, myIndex == 4? -1 : 0*/);
+                cities.read_ushort_compressed(r);
             }
             
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();

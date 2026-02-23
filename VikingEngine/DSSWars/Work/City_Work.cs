@@ -148,7 +148,7 @@ namespace VikingEngine.DSSWars.GameObject
                     IntVector2 startPos = WP.ToSubTilePos_Centered(tilePos);
                     for (int i = 0; i < newWorkers; i++)
                     {
-                        var newWorker = new WorkerStatus()
+                        var newWorker = new WorkerStatus(true)
                         {
                             work = WorkType.Idle,
                             processTimeStartStampSec = Ref.TotalGameTimeSec,
@@ -169,19 +169,20 @@ namespace VikingEngine.DSSWars.GameObject
                                 var lvl = (ExperienceLevel)cityExperienceLevels.Get(exp).maxLevel;//XpLib.ToLevel(MaxSkill[(int)exp]);
                                 if (lvl >= ExperienceLevel.Expert_3)
                                 {
-                                    if (xpIx == 0)
-                                    {
-                                        newWorker.xpType1 = exp;
-                                        newWorker.xp1 = DssConst.WorkXpToLevel;
-                                    }
-                                    else
-                                    {
-                                        if (exp != newWorker.xpType1)
-                                        {
-                                            newWorker.xpType2 = exp;
-                                            newWorker.xp2 = DssConst.WorkXpToLevel;
-                                        }
-                                    }
+                                    //if (xpIx == 0)
+                                    //{
+                                    //    newWorker.xpType1 = exp;
+                                    //    newWorker.xp1 = DssConst.WorkXpToLevel;
+                                    //}
+                                    //else
+                                    //{
+                                    //    if (exp != newWorker.xpType1)
+                                    //    {
+                                    //        newWorker.xpType2 = exp;
+                                    //        newWorker.xp2 = DssConst.WorkXpToLevel;
+                                    //    }
+                                    //}
+                                    newWorker.setXpFor(exp, DssConst.WorkXpToLevel);
                                 }
                             }
                         }
@@ -240,7 +241,7 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             --workerStatusActiveCount;
                             
-                            status.createWorkOrder(WorkType.Exit, -1, 0, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
+                            status.createWorkOrder(WorkType.Exit, -1, 0, WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
                         }
                         else if (status.carry.amount > 0)
                         {
@@ -250,14 +251,14 @@ namespace VikingEngine.DSSWars.GameObject
                         else if (status.energy < 0 && (resourceAmount(CityResoureIndex.food)/*res_food.amount*/ > 0 || faction.hasGold(1, this)))
                         {
                             CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
-                            status.createWorkOrder(WorkType.Eat, -1, 0, WorkExperienceType.NONE, -1, CityStructure.WorkInstance.eatPosition(status.subTileEnd), this);
+                            status.createWorkOrder(WorkType.Eat, -1, 0, WorkExperienceType.NUM_NONE, -1, CityStructure.WorkInstance.eatPosition(status.subTileEnd), this);
                         }
                         else if (status.energy <= DssConst.Worker_Starvation)
                         {
                             --workerStatusActiveCount;
                             --workForce.amount;
 
-                            status.createWorkOrder(WorkType.Starving, -1, 0, WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
+                            status.createWorkOrder(WorkType.Starving, -1, 0, WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
                         }
                         else
                         {
@@ -313,10 +314,10 @@ namespace VikingEngine.DSSWars.GameObject
 
                                 var xp = worker.getXpFor(experienceType);
 
-                                if (xp >= xpRequired && xp < maxXp)
+                                if (xp.InBound(xpRequired, maxXp))//xp.xp >= xpRequired && xp.xp < maxXp)
                                 {
                                     var distance = work.subTile.SideLength(worker.subTileEnd);
-                                    int value = distance * distanceValue - xp * experienceValue;
+                                    int value = distance * distanceValue - xp.xp * experienceValue;
 
                                     if (value < bestvalue)
                                     {
@@ -1017,27 +1018,30 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        private WorkerStatus newGameWorkerSkills(WorkerStatus newWorker)
+        WorkerStatus newGameWorkerSkills(WorkerStatus newWorker)
         {
-            newWorker.xpType1 = WorkExperienceType.Farm;
-            newWorker.xp1 = DssConst.WorkXpToLevel;
+            newWorker.setXpFor(WorkExperienceType.Farm, DssConst.WorkXpToLevel);
+            //newWorker.xpType1 = WorkExperienceType.Farm;
+            //newWorker.xp1 = DssConst.WorkXpToLevel;
 
             if (Bound.IsWithin(workerStatuses.Count, 1, 2))
             {
                 if (Ref.rnd.Chance(0.4f))
                 {
-                    newWorker.xpType2 = arraylib.RandomListMember(XpLib.ExperienceTypes);
-                    newWorker.xp2 = DssConst.WorkXpToLevel;
+                    //newWorker.xpType2 = arraylib.RandomListMember(XpLib.ExperienceTypes);
+                    //newWorker.xp2 = DssConst.WorkXpToLevel;
+                    newWorker.setXpFor(arraylib.RandomListMember(XpLib.ExperienceTypes), DssConst.WorkXpToLevel);
                 }
             }
             else if (workerStatuses.Count == 3 && TryGetFaction(out var f) && f.mainCity == this)
             {
-                newWorker.xpType2 = WorkExperienceType.HouseBuilding;
-                newWorker.xp2 = (byte)DssConst.WorkLevel_Expert;
+                //newWorker.xpType2 = WorkExperienceType.HouseBuilding;
+                //newWorker.xp2 = (byte)DssConst.WorkLevel_Expert;
+                newWorker.setXpFor(WorkExperienceType.HouseBuilding, DssConst.WorkXpToLevel);
             }
             else if (workerStatuses.Count == 4)
             {
-                WorkExperienceType cultureWork = WorkExperienceType.NONE;
+                WorkExperienceType cultureWork = WorkExperienceType.NUM_NONE;
                 switch (Culture)
                 {
                     case CityCulture.FertileGround:
@@ -1081,20 +1085,22 @@ namespace VikingEngine.DSSWars.GameObject
 
                 }
 
-                if (cultureWork != WorkExperienceType.NONE)
+                if (cultureWork != WorkExperienceType.NUM_NONE)
                 {
                     if (Ref.rnd.Chance(0.5f))
                     {
-                        newWorker.xpType2 = cultureWork;
-                        newWorker.xp2 = (byte)DssConst.WorkLevel_Expert;
+                        //newWorker.xpType2 = cultureWork;
+                        //newWorker.xp2 = (byte)DssConst.WorkLevel_Expert;
+                        newWorker.setXpFor(cultureWork, DssConst.WorkXpToLevel);
                     }
                 }
                 else
                 {
                     if (Ref.rnd.Chance(0.05f))
                     {
-                        newWorker.xpType2 = arraylib.RandomListMember(XpLib.ExperienceTypes);
-                        newWorker.xp2 = (byte)DssConst.WorkLevel_Expert;
+                        //newWorker.xpType2 = arraylib.RandomListMember(XpLib.ExperienceTypes);
+                        //newWorker.xp2 = (byte)DssConst.WorkLevel_Expert;
+                        newWorker.setXpFor(arraylib.RandomListMember(XpLib.ExperienceTypes), DssConst.WorkXpToLevel);
                     }
                 }
             }

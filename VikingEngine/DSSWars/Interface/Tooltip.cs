@@ -373,8 +373,29 @@ namespace VikingEngine.DSSWars.Interface
             //    lib.DoNothing();
             //}
             content.h2(DssRef.lang.TerrainType, HudLib.TitleColor_Label);
-            content.text(subTile.subTile.TypeToString());
-            
+            content.newLine();
+            IconName.Terrain(subTile.subTile.mainTerrain, subTile.subTile.subTerrain, out SpriteName tileIcon, out string tileName);
+            if (tileIcon != SpriteName.NO_IMAGE)
+            {
+                content.Add(new RbImage(tileIcon));
+                content.hspace();
+            }
+            content.Add(new RbText(tileName));
+
+            if (BuildLib.BuildTypeFromTerrain(subTile.subTile.mainTerrain, subTile.subTile.subTerrain) != BuildAndExpandType.NUM_NONE)
+            {
+                content.newLine();
+                player.gameControls.input.Build.ToRichContent(content);
+                content.hspace();
+                content.Add(new RbImage(SpriteName.WarsConstructBuildingIcon));
+                content.hspace();
+                content.Add(new RbText(DssRef.lang.Hud_Copy));
+                HudLib.BulletSeperationPoint(content);
+                content.Add(new RbText(DssRef.lang.Building_BuildAction));
+            }
+
+            //content.text(subTile.subTile.TypeToString());
+
             create(player, content, false);
 
             void cancelInput()

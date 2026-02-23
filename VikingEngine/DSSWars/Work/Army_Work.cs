@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         int statusIx = getOrCreateFreeWorker();
                         var status = workerStatuses[statusIx];
-                        status.createWorkOrder(WorkType.TrossCityTrade, -1, 0, XP.WorkExperienceType.NONE, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
+                        status.createWorkOrder(WorkType.TrossCityTrade, -1, 0, XP.WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
                         if (city.factionIndex != factionIndex)
                         {
                             foodCosts_import.add(status.carry.amount);
@@ -182,14 +182,16 @@ namespace VikingEngine.DSSWars.GameObject
 
             int getOrCreateFreeWorker()
             {
+                var worker = new WorkerStatus(true) { subTileEnd = WP.ToSubTilePos_Centered(tilePos) };
                 for (int i = 0; i < workerStatuses.Count; i++)
                 {
-                    if (workerStatuses[i].work == WorkType.IsDeleted)
+                    if (workerStatuses.array[i].work == WorkType.IsDeleted)
                     {
+                        workerStatuses.array[i] = worker;
                         return i;
                     }
                 }
-                workerStatuses.Add(new WorkerStatus() { subTileEnd = WP.ToSubTilePos_Centered(tilePos) });
+                workerStatuses.Add(worker);
                 return workerStatuses.Count - 1;
             }
         }

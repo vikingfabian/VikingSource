@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars.Conscript
                 new UseResource(ItemResourceType.Wood_Group, CraftSettlerWood),
                 new UseResource(ItemResourceType.SkinLinen_Group, CraftSettlerSkinLinen)
             },
-            XP.WorkExperienceType.NONE,
+            XP.WorkExperienceType.NUM_NONE,
             XP.ExperienceLevel.Beginner_1,
              BuildAndExpandType.NUM_NONE
         );
@@ -239,7 +239,7 @@ namespace VikingEngine.DSSWars.Conscript
                 new UseResource(ItemResourceType.Wood_Group, CraftSettlerWood /2),
                 new UseResource(ItemResourceType.SkinLinen_Group, CraftSettlerSkinLinen /2)
             },
-            XP.WorkExperienceType.NONE,
+            XP.WorkExperienceType.NUM_NONE,
             XP.ExperienceLevel.Beginner_1,
              BuildAndExpandType.NUM_NONE
         );

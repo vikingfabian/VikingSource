@@ -79,28 +79,7 @@ namespace VikingEngine.DSSWars.XP
 
     
 
-    enum WorkExperienceType : byte
-    {
-        NONE,
-        Farm,
-        AnimalCare,
-        HouseBuilding,
-        WoodWork,
-        StoneCutter,
-        Mining,
-        Transport,
-        Cook,
-        Fletcher,
-        Smelting,
-        CastMetal,
-        CraftMetal,
-        CraftArmor,
-        //CraftWeapon,
-        CraftFuel,
-        Chemistry,
-        //GodPower,
-        NUM
-    }
+    
     enum TechnologyTreeType
     {
         advancedBuilding,

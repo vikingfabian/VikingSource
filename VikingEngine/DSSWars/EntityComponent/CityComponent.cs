@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.DSSWars.XP;
 using VikingEngine.LootFest.Display;
 
 namespace VikingEngine.DSSWars
@@ -19,11 +20,114 @@ namespace VikingEngine.DSSWars
         public WorkPriority[] cityWork;
         public StorageSize[] cityStorage;
 
-        public void InitCity(City city)
-        { 
-            city.resourceComponentStartIndex = CityResoureIndex.COUNT * city.myIndex;
-           
+        const int WorkerXpCOUNT = (int)WorkExperienceType.NUM_NONE;
+        int nextXpIndex = 0;
+        bool[] WorkXpInUse;
+        public WorkExperience[] workerXp;
+        
+        
 
+        public void InitCity(City city)
+        {
+            city.resourceComponentStartIndex = CityResoureIndex.COUNT * city.myIndex;
+        }
+
+        public void initWorkerXp(int cityCount)
+        { 
+            int reserveWorkerCount = cityCount * 100;
+            WorkXpInUse = new bool[reserveWorkerCount];
+            workerXp = new WorkExperience[reserveWorkerCount * WorkerXpCOUNT];
+        }
+
+        /// <returns>Entity index</returns>
+        public int ReserveNextWorkXpIndex()
+        {
+            int loop = 0;
+            while (WorkXpInUse[nextXpIndex])
+            { 
+                ++nextXpIndex;
+                if (nextXpIndex >= WorkXpInUse.Length)
+                {
+                    nextXpIndex = 0;
+                    loop++;
+                    if (loop > 2)
+                    {
+                        throw new Exception("Out of worker xp");
+                    }
+                }
+            }
+
+            WorkXpInUse[nextXpIndex] = true;
+            return nextXpIndex;
+        }
+
+        public void FreeWorkerXp(int index)
+        {
+            ResetWorkerXp(index);
+
+            WorkXpInUse[index] = false;
+        }
+
+        public void ResetWorkerXp(int index)
+        { 
+            int start = index * WorkerXpCOUNT;  
+            //Clear out!
+            for (int i = 0; i < WorkerXpCOUNT; ++i)
+            {
+                workerXp[i + start] = WorkExperience.Empty;
+            }
+        }
+
+        public WorkExperience GetWorkXp(int index, WorkExperienceType type)
+        {
+            return workerXp[index * WorkerXpCOUNT + (int)type];
+        }
+        public void SetWorkXp(int index, WorkExperienceType type, byte xp)
+        {
+            workerXp[index * WorkerXpCOUNT + (int)type].xp = xp;
+        }
+        public ref WorkExperience GetRefWorkXp(int index, WorkExperienceType type)
+        {
+            return ref workerXp[index * WorkerXpCOUNT + (int)type];
+        }
+
+        public void writeWorkXp(int index, System.IO.BinaryWriter w)
+        {
+            int start = index * WorkerXpCOUNT;
+            
+            for (int i = 0; i < WorkerXpCOUNT; ++i)
+            {
+                workerXp[i + start].write(w);
+            }
+        }
+        public void readWorkXp(int index, System.IO.BinaryReader r, int subVersion)
+        {
+            int start = index * WorkerXpCOUNT;
+
+            for (int i = 0; i < WorkerXpCOUNT; ++i)
+            {
+                workerXp[i + start].read(r);
+            }
+        }
+
+        public List<(WorkExperience xp, WorkExperienceType type)> listWorkXp(int index)
+        {
+            var xpPairs = new List<(WorkExperience xp, WorkExperienceType type)>(8);
+
+            int start = index * WorkerXpCOUNT;
+
+            for (int i = 0; i < WorkerXpCOUNT; ++i)
+            {
+                if (workerXp[i + start].xp >= DssConst.WorkXpToLevel)
+                {
+                    xpPairs.Add(new (workerXp[i + start], (WorkExperienceType)i));
+                }
+            }
+            
+            // Sort the list by XP in descending order
+            xpPairs.Sort((a, b) => b.xp.CompareTo(a.xp));
+
+            return xpPairs;
         }
 
         public void clearCityResources(City city)
@@ -40,6 +144,8 @@ namespace VikingEngine.DSSWars
 
         public void Init_CityComponents(int cityCount)
         {
+            initWorkerXp(cityCount);
+
             cityResouces = new GroupedResource[CityResoureIndex.COUNT * cityCount];
             neighborCities = new EcsStaticArray(14, cityCount);
             cityWork = new WorkPriority[WorkTemplate.COUNT * cityCount];

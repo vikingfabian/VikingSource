@@ -383,7 +383,7 @@ namespace VikingEngine.DSSWars.Resource
                     
                 }
             }
-            if (includeLevel && experienceType != WorkExperienceType.NONE)
+            if (includeLevel && experienceType != WorkExperienceType.NUM_NONE)
             {
                 content.newLine();
                 HudLib.Label(content, DssRef.lang.Experience_Required);

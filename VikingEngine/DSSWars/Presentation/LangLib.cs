@@ -573,7 +573,7 @@ namespace VikingEngine.DSSWars.Presentation
         {
             switch (type)
             {
-                case WorkExperienceType.NONE:
+                case WorkExperienceType.NUM_NONE:
                     name = DssRef.lang.Hud_None;
                     icon = SpriteName.BluePrintSquareFull;
                     break;

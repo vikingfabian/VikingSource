@@ -1003,7 +1003,7 @@ namespace VikingEngine.DSSWars.GameObject
                     count += groupsC.sel.soldierCount;
                     //groupsC.sel.setBattleWalkingSpeed();
 
-                    allGropsAreIdle &= groupsC.sel.state == GroupState.Idle;
+                    allGropsAreIdle &= groupsC.sel.HasIdleState();
                     //int health;
 
                     if (groupsC.sel.isShip)
