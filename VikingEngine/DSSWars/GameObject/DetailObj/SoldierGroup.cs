@@ -1085,20 +1085,31 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 if (allIdle &&
+                    HasIdleCommand() &&
                     state == GroupState.GoingIdle &&
                     waitTime >= 5000)
                 {
                     state = GroupState.Idle;
                 }
             }
-
         }
+
+        
 
         public override void OnBecomeAttackTarget()
         {
             enterBattleState(true);
         }
 
+        public bool HasIdleCommand()
+        {
+            var command_sp = command;
+            if (command_sp != null)
+            {
+                return command_sp.haltCommand;
+            }
+            return true;
+        }
 
         public bool HasIdleState()
         {
