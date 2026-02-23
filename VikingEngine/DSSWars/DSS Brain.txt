@@ -1,7 +1,5 @@
 ﻿Change log:
-
-
-
+* City menu top will show max 3 warnings (to avoid jumping menu)
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
