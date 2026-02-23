@@ -1,5 +1,5 @@
 ﻿Change log:
-* fixed off-screen soldiers went idle when waiting for the command animations
+
 
 
 
