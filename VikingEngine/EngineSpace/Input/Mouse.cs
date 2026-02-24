@@ -31,6 +31,7 @@ namespace VikingEngine.Input
             Instances.Clear();
             Instances.Add(mouse);
             Ref.main.IsMouseVisible = true;
+            MenuMode = true;
         }
 
         public static void SetMenuMode(bool menu)

@@ -1,5 +1,5 @@
 ﻿Change log:
-
+* Fixed mouse input on main menu return
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
