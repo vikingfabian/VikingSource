@@ -521,6 +521,20 @@ namespace VikingEngine.DSSWars
 
         NUM_NONE
     }
+
+    enum CityResurceSeed
+    { 
+        HenOrPig,
+        Mount,
+        DogOrOxen,
+        Linnen,
+        Storage,
+        Bronze,
+        Iron,
+        ConservedFood,
+        Brick,
+        NUM
+    }
 }
 
 

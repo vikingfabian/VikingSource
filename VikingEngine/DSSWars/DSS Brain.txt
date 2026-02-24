@@ -40,6 +40,7 @@ SYSTEMS
 * Crafting can produce two item types
 * Orchards have their own priority
 * All worker skills are stored
+* Cities get a "start seed" of resources (mostly animals), depending on biom and some randomness 
 
 PERFORMANCE
 * Diplomacy is converted to a component system, removing around a 1000 references

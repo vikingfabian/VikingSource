@@ -1091,6 +1091,7 @@ namespace VikingEngine.DSSWars
                     switch ((TerrainBuildingType)subType)
                     {
                         case TerrainBuildingType.Logistics:
+                            icon = SpriteName.WarsBuild_Logistics;
                             name = DssRef.lang.BuildingType_Logistics;
                             break;
                         case TerrainBuildingType.ManorLord:
@@ -1098,112 +1099,163 @@ namespace VikingEngine.DSSWars
                             name = DssRef.lang.BuildingType_ManorLord;
                             break;
                         case TerrainBuildingType.SoldierBarracks:
+                            icon = SpriteName.WarsBuild_SoldierBarracks;
                             name = DssRef.lang.BuildingType_SoldierBarracks;
                             break;
                         case TerrainBuildingType.Bank:
+                            icon = SpriteName.WarsBuild_Bank;
                             name = DssRef.lang.BuildingType_Bank;
                             break;
                         case TerrainBuildingType.CoinMinter:
+                            icon = SpriteName.WarsBuild_Coinminter;
                             name = DssRef.lang.BuildingType_CoinMaker;
                             break;
                         case TerrainBuildingType.Brewery:
+                            icon = SpriteName.WarsBuild_Brewery;
                             name = DssRef.lang.BuildingType_Brewery;
                             break;
                         case TerrainBuildingType.Carpenter:
+                            icon = SpriteName.WarsBuild_Carpenter;
                             name = DssRef.lang.BuildingType_Carpenter;
                             break;
                         case TerrainBuildingType.Work_CoalPit:
+                            icon = SpriteName.WarsBuild_CoalPit;
                             name = DssRef.lang.BuildingType_CoalPit;
                             break;
                         case TerrainBuildingType.Work_Cook:
+                            icon = SpriteName.WarsBuild_Cook;
                             name = DssRef.lang.BuildingType_Cook;
                             break;
                         case TerrainBuildingType.HenPen:
+                            icon = SpriteName.WarsBuild_HenPen;
                             name = DssRef.lang.BuildingType_HenPen;
                             break;
                         case TerrainBuildingType.Nobelhouse:
+                            icon = SpriteName.WarsBuild_Nobelhouse;
                             name = DssRef.lang.Building_NobleHouse;
                             break;
                         case TerrainBuildingType.ImmigrationTent:
+                            icon = SpriteName.WarsBuild_Tent;
                             name = DssRef.lang.BuildingType_ImmigrationTent;
                             break;
                         case TerrainBuildingType.PigPen:
+                            icon = SpriteName.WarsBuild_PigPen;
                             name = DssRef.lang.BuildingType_PigPen;
                             break;
 
                         case TerrainBuildingType.Postal:
+                            icon = SpriteName.WarsBuild_Postal;
                             name = DssRef.lang.BuildingType_Postal;
                             break;
                         case TerrainBuildingType.PostalLevel2:
+                            icon = SpriteName.WarsBuild_PostalLevel2;
+                            name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Postal);
+                            break;
                         case TerrainBuildingType.PostalLevel3:
+                            icon = SpriteName.WarsBuild_PostalLevel3;
                             name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Postal);
                             break;
 
                         case TerrainBuildingType.GoldDeliveryLevel1:
+                            icon = SpriteName.WarsBuild_GoldDeliver;
                             name = DssRef.lang.BuildingType_GoldDelivery;
                             break;
                         case TerrainBuildingType.GoldDeliveryLevel2:
+                            icon = SpriteName.WarsBuild_GoldDeliverLevel2;
+                            name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_GoldDelivery);
+                            break;
                         case TerrainBuildingType.GoldDeliveryLevel3:
+                            icon = SpriteName.WarsBuild_GoldDeliverLevel3;
                             name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_GoldDelivery);
                             break;
 
                         case TerrainBuildingType.Recruitment:
+                            icon = SpriteName.WarsBuild_Recruitment;
                             name = DssRef.lang.BuildingType_Recruitment;
                             break;
                         case TerrainBuildingType.RecruitmentLevel2:
+                            icon = SpriteName.WarsBuild_RecruitmentLevel2;
+                            name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Recruitment);
+                            break;
                         case TerrainBuildingType.RecruitmentLevel3:
+                            icon = SpriteName.WarsBuild_RecruitmentLevel3;
                             name = string.Format(DssRef.lang.BuildingType_IsUpgraded, DssRef.lang.BuildingType_Recruitment);
                             break;
 
                         case TerrainBuildingType.Work_Smith:
+                            icon = SpriteName.WarsBuild_Smith;
                             name = DssRef.lang.BuildingType_Smith;
                             break;
                         case TerrainBuildingType.Storehouse:
+                            icon = SpriteName.WarsBuild_Storehouse;
                             name = DssRef.lang.BuildingType_Storage;
                             break;
                         case TerrainBuildingType.Tavern:
+                            icon = SpriteName.WarsBuild_Tavern;
                             name = DssRef.lang.BuildingType_Tavern;
                             break;
                         case TerrainBuildingType.Work_Bench:
+                            icon = SpriteName.WarsBuild_WorkBench;
                             name = DssRef.lang.BuildingType_WorkBench;
                             break;
+
                         case TerrainBuildingType.WorkerTent:
+                            icon = SpriteName.WarsBuild_TentHut;
+                            name = DssRef.lang.BuildingType_WorkerHut;
+                            break;
                         case TerrainBuildingType.WorkerHut:
+                            icon = SpriteName.WarsBuild_WorkerHuts;
+                            name = DssRef.lang.BuildingType_WorkerHut;
+                            break;
                         case TerrainBuildingType.WorkerHutLarge:
+                            icon = SpriteName.WarsBuild_WorkerHutLarge;
                             name = DssRef.lang.BuildingType_WorkerHut;
                             break;
 
                         case TerrainBuildingType.Smelter:
+                            icon = SpriteName.WarsBuild_Smelter;
                             name = DssRef.lang.BuildingType_SmeltingFurnace;
                             break;
                         case TerrainBuildingType.WoodCutter:
+                            icon = SpriteName.WarsBuild_WoodCutter;
                             name = DssRef.lang.BuildingType_WoodCutter;
                             break;
                         case TerrainBuildingType.StoneCutter:
+                            icon = SpriteName.WarsBuild_StoneCutter;
                             name = DssRef.lang.BuildingType_StoneCutter;
                             break;
                         case TerrainBuildingType.Embassy:
+                            icon = SpriteName.WarsBuild_Embassy;
                             name = DssRef.lang.BuildingType_Embassy;
                             break;
                         case TerrainBuildingType.WaterResovoir:
+                            icon = SpriteName.WarsBuild_WaterReservoir;
                             name = DssRef.lang.BuildingType_WaterResovoir;
                             break;
 
                         case TerrainBuildingType.GuardHouse_Small:
+                            icon = SpriteName.WarsBuild_GuardOffice;
+                            name = DssRef.lang.BuildingType_GuardOffice;
+                            break;
                         case TerrainBuildingType.GuardHouse_Large:
+                            icon = SpriteName.WarsBuild_GuardOfficeLarge;
                             name = DssRef.lang.BuildingType_GuardOffice;
                             break;
 
                         case TerrainBuildingType.ArcherBarracks:
+                            icon = SpriteName.WarsBuild_ArcherBarracks;
                             name = DssRef.lang.BuildingType_ArcherBarracks;
                             break;
                         case TerrainBuildingType.WarmachineBarracks:
+                            icon = SpriteName.WarsBuild_WarmachineBarracks;
                             name = DssRef.lang.BuildingType_WarmachineBarracks;
                             break;
                         case TerrainBuildingType.GunBarracks:
+                            icon = SpriteName.WarsBuild_GunBarracks;
                             name = DssRef.lang.BuildingType_GunBarracks;
                             break;
                         case TerrainBuildingType.CannonBarracks:
+                            icon = SpriteName.WarsBuild_CannonBarracks;
                             name = DssRef.lang.BuildingType_CannonBarracks;
                             break;
                         //case TerrainBuildingType.KnightsBarracks:
@@ -1211,35 +1263,45 @@ namespace VikingEngine.DSSWars
                         //    break;
 
                         case TerrainBuildingType.Foundry:
+                            icon = SpriteName.WarsBuild_Foundry;
                             name = DssRef.lang.BuildingType_Foundry;
                             break;
                         case TerrainBuildingType.Armory:
+                            icon = SpriteName.WarsBuild_Armory;
                             name = DssRef.lang.BuildingType_Armory;
                             break;
                         case TerrainBuildingType.Chemist:
+                            icon = SpriteName.WarsBuild_Chemist;
                             name = DssRef.lang.BuildingType_Chemist;
                             break;
                         case TerrainBuildingType.Gunmaker:
+                            icon = SpriteName.WarsBuild_Gunmaker;
                             name = DssRef.lang.BuildingType_Gunmaker;
                             break;
                         case TerrainBuildingType.School:
+                            icon = SpriteName.WarsBuild_School;
                             name = DssRef.lang.BuildingType_School;
                             break;
                         case TerrainBuildingType.ResearchCenter:
+                            icon = SpriteName.WarsBuild_ResearchCenter;
                             name = DssRef.lang.BuildingType_ReseachCenter;
                             break;
                         case TerrainBuildingType.BookPress:
+                            icon = SpriteName.WarsBuild_Bookpress;
                             name = DssRef.lang.BuildingType_Bookpress;
                             break;
 
                         case TerrainBuildingType.ServiceMenHouse_small:
+                            icon = SpriteName.WarsBuild_SmallServiceHouse;
+                            name = DssRef.lang.BuildingType_ServiceHouse;
+                            break;
                         case TerrainBuildingType.ServiceMenHouse_Large:
+                            icon = SpriteName.WarsBuild_BigServiceHouse;
                             name = DssRef.lang.BuildingType_ServiceHouse;
                             break;
 
-
-
-                        case TerrainBuildingType.Pottery: //example
+                        // --- Everything below this line was already set up with icons in your provided block ---
+                        case TerrainBuildingType.Pottery:
                             icon = SpriteName.WarsBuild_Pottery;
                             name = DssRef.todoLang.BuildingType_Pottery;
                             break;
@@ -1496,7 +1558,7 @@ namespace VikingEngine.DSSWars
                             name = string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Mithril);
                             break;
                         case TerrainMineType.Salt:
-                            name = TextLib.LargeFirstLetter( string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Salt));
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Salt));
                             break;
                         case TerrainMineType.Sulfur:
                             name = string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Sulfur);

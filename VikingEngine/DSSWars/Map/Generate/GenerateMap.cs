@@ -1961,7 +1961,24 @@ namespace VikingEngine.DSSWars.Map.Generate
 
 
     class CityCultureCollection
-    { 
+    {
+        public RandomObjects<CityResurceSeed> CitySeedCommoness;
+        //enum CityResurceSeed
+        //{
+        //    Hen,
+        //    Pig,
+        //    Mount,
+        //    Dog,
+        //    Oxen,
+        //    Linnen,
+        //    Storage,
+        //    Bronze,
+        //    Iron,
+        //    ConservedFood,
+        //    Brick,
+        //    NUM
+        //}
+
         public List<City> LargeGreen = new List<City>();
         public List<City> DryEast = new List<City>();
         public List<City> NorthSea = new List<City>();
@@ -1969,6 +1986,21 @@ namespace VikingEngine.DSSWars.Map.Generate
         public List<City> DarkLands = new List<City>();
         public List<City> WestKingdom = new List<City>();
 
+
+        public CityCultureCollection()
+        {
+            CitySeedCommoness = new RandomObjects<CityResurceSeed>();
+            CitySeedCommoness.AddItem(CityResurceSeed.HenOrPig, 50);
+            CitySeedCommoness.AddItem(CityResurceSeed.Mount, 100);
+            CitySeedCommoness.AddItem(CityResurceSeed.DogOrOxen, 50);
+            CitySeedCommoness.AddItem(CityResurceSeed.Linnen, 25);
+            CitySeedCommoness.AddItem(CityResurceSeed.Storage, 25);
+            CitySeedCommoness.AddItem(CityResurceSeed.Bronze, 25);
+            CitySeedCommoness.AddItem(CityResurceSeed.Iron, 25);
+            CitySeedCommoness.AddItem(CityResurceSeed.ConservedFood, 10);
+            CitySeedCommoness.AddItem(CityResurceSeed.Brick, 10);
+
+        }
 
         public static readonly CityCulture[] GeneralCultures =
             {

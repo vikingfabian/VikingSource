@@ -307,7 +307,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void generateCultureAndEconomy(WorldData world, CityCultureCollection cityCultureCollection)
         {
-            initEconomy(/*true,*/ world);
+            initEconomy(world);
 
             CityAreaCulture areaCulture = new CityAreaCulture(this, world);
 
@@ -397,6 +397,88 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             casualCityProfile.InitCulture(this, areaCulture);
+
+            resourcesStartSeed(world, cityCultureCollection, areaCulture);
+        }
+
+        void resourcesStartSeed(WorldData world, CityCultureCollection cityCultureCollection, CityAreaCulture areaCulture)
+        {
+            switch (cityCultureCollection.CitySeedCommoness.GetRandom(world.rnd))
+            {
+                case CityResurceSeed.HenOrPig:
+                    if (Biom == CityBiom.None && areaCulture.percPlains >= 0.25)
+                    {
+                        AddGroupedResource(world,CityResoureIndex.Pig, DssConst.PenBreedingStockCount * 2);
+                    }
+                    else
+                    {
+                        AddGroupedResource(world, CityResoureIndex.Hen, DssConst.PenBreedingStockCount * 4);
+                    }
+                    break;
+                case CityResurceSeed.Mount:
+                    switch (Biom)
+                    {
+                        case CityBiom.Mountain:
+                            AddGroupedResource(world, CityResoureIndex.WildPig, DssConst.PenBreedingStockCount * 2);
+                            break;
+
+                        case CityBiom.Desert:
+                            if (world.rnd.Chance(0.5))
+                            {
+                                AddGroupedResource(world, CityResoureIndex.Elephant, DssConst.PenBreedingStockCount);
+                            }
+                            else
+                            {
+                                AddGroupedResource(world, CityResoureIndex.Horse, DssConst.PenBreedingStockCount);
+                            }
+                            break;
+
+                        case CityBiom.Forest:
+                            AddGroupedResource(world, CityResoureIndex.WildCat, DssConst.PenBreedingStockCount);
+                            break;
+
+                        default:
+                            AddGroupedResource(world, CityResoureIndex.Pony, DssConst.PenBreedingStockCount * 2);
+                            break;
+
+                    }
+                    break;
+                case CityResurceSeed.DogOrOxen:
+                    if (areaCulture.percPlains >= 0.25)
+                    {
+                        AddGroupedResource(world, CityResoureIndex.Oxen, DssConst.PenBreedingStockCount * 2);
+                    }
+                    else
+                    {
+                        AddGroupedResource(world, CityResoureIndex.Dog, DssConst.PenBreedingStockCount * 2);
+                    }
+                    break;
+
+                case CityResurceSeed.ConservedFood:
+                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 800);
+                    break;
+                case CityResurceSeed.Brick:
+                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 2000);
+                    break;
+                case CityResurceSeed.Bronze:
+                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 800);
+                    break;
+                case CityResurceSeed.Iron:
+                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 400);
+                    break;
+                case CityResurceSeed.Storage:
+                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 2000);
+                    break;
+                case CityResurceSeed.Linnen:
+                    AddGroupedResource(world, CityResoureIndex.skinLinnen, 1000);
+                    break;
+
+                default:
+#if DEBUG
+                    throw new NotImplementedException();
+#endif
+                    break;
+            }
         }
 
         public void writeMapFile(System.IO.BinaryWriter w)

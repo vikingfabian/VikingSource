@@ -1412,7 +1412,7 @@ namespace VikingEngine.DSSWars.Build
 
             foreach (var opt in BuildOptions)
             {
-                if (opt.terrainType.EqualTerrain(main, subType))//opt.mainType == main && opt.subType == subType)
+                if (opt != null && opt.terrainType.EqualTerrain(main, subType))//opt.mainType == main && opt.subType == subType)
                 { 
                     return opt.buildType;
                 }

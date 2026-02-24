@@ -360,6 +360,28 @@ namespace VikingEngine.DSSWars.GameObject
             DssRef.world.cityStorage[StorageSize.COUNT * myIndex + (int)storageType].addStorage(this, storageType, add);
         }
 
+        void AddGroupedResource(WorldData world, int itemIndex, int add)
+        {
+#if DEBUG
+            //if (factionIndex < 0)
+            //{
+            //    throw new Exception();
+            //}
+            if (resourceComponentStartIndex + itemIndex >= world.cityResouces.Length)
+            {
+                throw new Exception();
+            }
+            if (itemIndex + factionIndex * CityResoureIndex.COUNT >= world.factionResourceOverviews.Length)
+            {
+                throw new Exception();
+            }
+#endif
+
+            ref GroupedResource resource = ref world.cityResouces[resourceComponentStartIndex + itemIndex];
+            resource.amount += add;
+            
+        }
+
 
         public void AddGroupedResource(int itemIndex, int add)
         {
