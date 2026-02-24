@@ -954,6 +954,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 }
                                 break;
 
+                            case TerrainBuildingType.HenPen:
                             case TerrainBuildingType.PigPen:
                             case TerrainBuildingType.OxenPen:
                             case TerrainBuildingType.KineOxenPen:

@@ -157,6 +157,10 @@ namespace VikingEngine.DSSWars.Presentation
         public string BuildingType_WarElephantCage => "War Elephant Cage";
         public string BuildingType_OliphantCage => "Oliphant Cage";
 
+        public string BuildingDescription_Mounts => "Produces mounts for soldier conscript";
+        public string Pen_Breeding => "Animal breeding";
+        public string Pen_BreedUpChance => "{0}% chance to increase tier";
+        public string Pen_BreedDownChance => "{0}% chance to decrease tier";
 
 
         public string CityCulture_AnimalBreeder2_Description => "Higher chance of successful breeding";

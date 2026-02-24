@@ -1211,7 +1211,7 @@ namespace VikingEngine.DSSWars.Build
 
                     break;
                 case BuildAndExpandType.RapeSeedFarmUpgraded:
-                    farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.RapeSeedFuelAmount), ItemResource.Empty);
+                    farmHud(true, new ItemResource(ItemResourceType.Fuel_G, DssConst.RapeSeedFuelAmount), ItemResource.Empty);
                     break;
 
                 case BuildAndExpandType.HempFarm:
@@ -1232,7 +1232,7 @@ namespace VikingEngine.DSSWars.Build
                     //HudLib.BulletPoint(content);
                     //content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce + DssConst.WorkTime_PickUpResource))));
 
-                    pen(TerrainContent.HenGrowth, ItemResourceType.Hen);
+                    pen(TerrainContent.HenGrowth, ItemResourceType.Hen, false, false);
 
                     content.newLine();
                     HudLib.BulletPoint(content);
@@ -1244,7 +1244,7 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.PigPen:
-                    pen(TerrainContent.PigGrowth, ItemResourceType.Pig);                                    
+                    pen(TerrainContent.PigGrowth, ItemResourceType.Pig, false, false);                                    
                     break;
 
                 //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
@@ -1273,73 +1273,73 @@ namespace VikingEngine.DSSWars.Build
                 //content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
 
                 case BuildAndExpandType.OxenPen:
-                    pen(TerrainContent.OxenGrowth, ItemResourceType.Oxen);
+                    pen(TerrainContent.OxenGrowth, ItemResourceType.Oxen, true, false);
                     break;
                 case BuildAndExpandType.KineOxenPen:
-                    pen(TerrainContent.KineOxenGrowth, ItemResourceType.KineOxen);
+                    pen(TerrainContent.KineOxenGrowth, ItemResourceType.KineOxen, false, true);
                     break;
 
                 case BuildAndExpandType.DogCage:
-                    pen(TerrainContent.DogGrowth, ItemResourceType.Dog);
+                    pen(TerrainContent.DogGrowth, ItemResourceType.Dog, true, false);
                     break;
                 case BuildAndExpandType.HoundCage:
-                    pen(TerrainContent.HoundGrowth, ItemResourceType.Hound);
+                    pen(TerrainContent.HoundGrowth, ItemResourceType.Hound, false, true);
                     break;
 
                 case BuildAndExpandType.PonyPen:
-                    pen(TerrainContent.PonyGrowth, ItemResourceType.Pony);
+                    pen(TerrainContent.PonyGrowth, ItemResourceType.Pony, true, false);
                     break;
                 case BuildAndExpandType.HorsePen:
-                    pen(TerrainContent.HorseGrowth, ItemResourceType.Horse);
+                    pen(TerrainContent.HorseGrowth, ItemResourceType.Horse, true, true);
                     break;
                 case BuildAndExpandType.WarHorsePen:
-                    pen(TerrainContent.WarHorseGrowth, ItemResourceType.WarHorse);
+                    pen(TerrainContent.WarHorseGrowth, ItemResourceType.WarHorse, false, true);
                     break;
                 case BuildAndExpandType.DraftHorsePen:
-                    pen(TerrainContent.DraftHorseGrowth, ItemResourceType.DraftHorse);
+                    pen(TerrainContent.DraftHorseGrowth, ItemResourceType.DraftHorse, false, true);
                     break;
 
                 case BuildAndExpandType.WildPigPen:
-                    pen(TerrainContent.WildPigGrowth, ItemResourceType.WildPig);
+                    pen(TerrainContent.WildPigGrowth, ItemResourceType.WildPig, true, false);
                     break;
                 case BuildAndExpandType.WildHogPen:
-                    pen(TerrainContent.WildHogGrowth, ItemResourceType.WildHog);
+                    pen(TerrainContent.WildHogGrowth, ItemResourceType.WildHog, true, true);
                     break;
                 case BuildAndExpandType.WarHogPen:
-                    pen(TerrainContent.WarHogGrowth, ItemResourceType.WarHog);
+                    pen(TerrainContent.WarHogGrowth, ItemResourceType.WarHog, false, true);
                     break;
                 case BuildAndExpandType.StagHogPen:
-                    pen(TerrainContent.StagHogGrowth, ItemResourceType.StagHog);
+                    pen(TerrainContent.StagHogGrowth, ItemResourceType.StagHog, false, true);
                     break;
 
                 case BuildAndExpandType.WolfCage:
-                    pen(TerrainContent.WolfGrowth, ItemResourceType.Wolf);
+                    pen(TerrainContent.WolfGrowth, ItemResourceType.Wolf, true, false);
                     break;
                 case BuildAndExpandType.WargCage:
-                    pen(TerrainContent.WargGrowth, ItemResourceType.Warg);
+                    pen(TerrainContent.WargGrowth, ItemResourceType.Warg, true, true);
                     break;
                 case BuildAndExpandType.AlphaWargCage:
-                    pen(TerrainContent.AlphaWargGrowth, ItemResourceType.AlphaWarg);
+                    pen(TerrainContent.AlphaWargGrowth, ItemResourceType.AlphaWarg, false, true);
                     break;
 
                 case BuildAndExpandType.WildCatCage:
-                    pen(TerrainContent.WildCatGrowth, ItemResourceType.WildCat);
+                    pen(TerrainContent.WildCatGrowth, ItemResourceType.WildCat, true, false);
                     break;
                 case BuildAndExpandType.LionCage:
-                    pen(TerrainContent.LionGrowth, ItemResourceType.Lion);
+                    pen(TerrainContent.LionGrowth, ItemResourceType.Lion, true, true);
                     break;
                 case BuildAndExpandType.WarLionCage:
-                    pen(TerrainContent.WarLionGrowth, ItemResourceType.WarLion);
+                    pen(TerrainContent.WarLionGrowth, ItemResourceType.WarLion, false, true);
                     break;
 
                 case BuildAndExpandType.ElephantCage:
-                    pen(TerrainContent.ElephantGrowth, ItemResourceType.Elephant);
+                    pen(TerrainContent.ElephantGrowth, ItemResourceType.Elephant, true, false);
                     break;
                 case BuildAndExpandType.WarElephantCage:
-                    pen(TerrainContent.WarElephantGrowth, ItemResourceType.WarElephant);
+                    pen(TerrainContent.WarElephantGrowth, ItemResourceType.WarElephant, true, true);
                     break;
                 case BuildAndExpandType.OliphantCage:
-                    pen(TerrainContent.OliphantGrowth, ItemResourceType.Oliphant);
+                    pen(TerrainContent.OliphantGrowth, ItemResourceType.Oliphant, false, true);
                     break;
 
                 case BuildAndExpandType.Brewery:
@@ -1543,20 +1543,22 @@ namespace VikingEngine.DSSWars.Build
                 content.space();
                 content.Add(new RbText(produce1.amount.ToString()));
                 IconName.Item(produce1.type, out SpriteName itemIcon, out string itemName);
-                content.Add(new RbImage(itemIcon));//SpriteName.WarsResource_RawFood));
-                content.Add(new RbText(itemName));//DssRef.lang.Resource_TypeName_RawFood));
+                content.Add(new RbImage(itemIcon));
+                content.Add(new RbText(itemName));
                 if (produce2.amount > 0)
                 {
                     content.Add(new RbImage(SpriteName.pjNumPlus));
+
+                    IconName.Item(produce2.type, out itemIcon, out itemName);
                     content.Add(new RbText(DssConst.HempLinenAndFuelAmount.ToString()));
-                    content.Add(new RbImage(SpriteName.WarsResource_LinenCloth));
-                    content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
+                    content.Add(new RbImage(itemIcon));
+                    content.Add(new RbText(itemName));
                 }
             }
 
-            void pen(AnimalPenGrowth penGrowth, ItemResourceType resourceType)
+            void pen(AnimalPenGrowth penGrowth, ItemResourceType resourceType, bool canBreedup, bool canBreedDown)
             {
-                content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                content.h2(DssRef.lang.BuildHud_PerCycle, HudLib.TitleColor_Label);
                 content.newLine();
                 HudLib.BulletPoint(content);
                 content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, penGrowth.harvestReady - 1))));
@@ -1573,6 +1575,24 @@ namespace VikingEngine.DSSWars.Build
                 content.Add(new RbImage(itemIcon));
                 content.hspace();
                 content.Add(new RbText(itemName));
+
+                if (canBreedup || canBreedDown)
+                {
+                    content.h2(DssRef.todoLang.Pen_Breeding, HudLib.TitleColor_Label);
+                    content.newLine();
+                    if (canBreedup)
+                    {
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(string.Format(DssRef.todoLang.Pen_BreedUpChance, conv.ToPercentage(DssConst.BreedingUpChance))));
+                    }
+                    if (canBreedDown)
+                    {
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(string.Format(DssRef.todoLang.Pen_BreedDownChance, conv.ToPercentage(DssConst.BreedingDownChance))));
+                    }
+                }
             }
         }
 

@@ -357,8 +357,37 @@ namespace VikingEngine.DSSWars.Work
         //            }
         //        }
         //    }                
-            
+
         //}
+
+        void breedingRndResult(City city, out bool upgrade, out bool downgrade)
+        {
+            double upChance = DssConst.BreedingUpChance;
+            double downChance = DssConst.BreedingDownChance;
+
+            double rnd = Ref.rnd.Double();
+            if (city.Culture == CityCulture.AnimalBreeder2)
+            {
+                upChance *= 2;
+                downChance = 0.6;
+            }
+            
+            if (rnd < upChance)
+            {
+                downgrade = false;
+                upgrade = true;
+            }
+            else if (rnd < downChance)
+            {
+                downgrade = true;
+                upgrade = false;
+            }
+            else
+            {
+                downgrade = false;
+                upgrade = false;
+            }            
+        }
 
         void workComplete(City city, bool visualUnit)
         {
@@ -829,7 +858,7 @@ namespace VikingEngine.DSSWars.Work
 
                         AnimalPenGrowth size;
                         Resource.ItemResourceType resourceType;
-
+                        breedingRndResult(city, out bool upgrade, out bool downgrade);
 
                         switch (building)
                         {
@@ -845,93 +874,284 @@ namespace VikingEngine.DSSWars.Work
                                 break;
 
                             case TerrainBuildingType.OxenPen:
-                                resourceType = Resource.ItemResourceType.Oxen;
+                                if (upgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.KineOxen;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.Oxen;
+                                }
                                 size = TerrainContent.OxenGrowth;
                                 break;
                             case TerrainBuildingType.KineOxenPen:
-                                resourceType = Resource.ItemResourceType.KineOxen;
+                                if (downgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.Oxen;
+                                }
+                                else
+                                { 
+                                    resourceType = Resource.ItemResourceType.KineOxen;
+                                }
                                 size = TerrainContent.KineOxenGrowth;
                                 break;
 
                             case TerrainBuildingType.DogCage:
-                                resourceType = Resource.ItemResourceType.Dog;
+                                if (upgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.Hound;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.Dog;
+                                }
                                 size = TerrainContent.DogGrowth;
                                 break;
+
                             case TerrainBuildingType.HoundCage:
-                                resourceType = Resource.ItemResourceType.Hound;
+                                if (downgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.Dog;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.Hound;
+                                }
                                 size = TerrainContent.HoundGrowth;
                                 break;
 
                             case TerrainBuildingType.PonyPen:
-                                resourceType = Resource.ItemResourceType.Pony;
+                                if (upgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.Horse;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.Pony;
+                                }
                                 size = TerrainContent.PonyGrowth;
                                 break;
                             case TerrainBuildingType.HorsePen:
-                                resourceType = Resource.ItemResourceType.Horse;
+                                if (downgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.Pony;
+                                }
+                                else if (upgrade)
+                                {
+                                    if (Ref.rnd.Chance(0.5))
+                                    {
+                                        resourceType = Resource.ItemResourceType.WarHorse;
+                                    }
+                                    else
+                                    {
+                                        resourceType = Resource.ItemResourceType.DraftHorse;
+                                    }
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.Horse;
+                                }                                
                                 size = TerrainContent.HorseGrowth;
                                 break;
+
                             case TerrainBuildingType.WarHorsePen:
-                                resourceType = Resource.ItemResourceType.WarHorse;
+                                if (downgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.Horse;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.WarHorse;
+                                }
                                 size = TerrainContent.WarHorseGrowth;
                                 break;
+
                             case TerrainBuildingType.DraftHorsePen:
-                                resourceType = Resource.ItemResourceType.DraftHorse;
+                                if (downgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.Horse;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.DraftHorse;
+                                }
                                 size = TerrainContent.DraftHorseGrowth;
                                 break;
 
                             case TerrainBuildingType.WildPigPen:
-                                resourceType = Resource.ItemResourceType.WildPig;
+                                if (upgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.WildHog;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.WildPig;
+                                }
                                 size = TerrainContent.WildPigGrowth;
                                 break;
+
                             case TerrainBuildingType.WildHogPen:
-                                resourceType = Resource.ItemResourceType.WildHog;
+                                if (downgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.WildPig;
+                                }
+                                else if (upgrade)
+                                {
+                                    if (Ref.rnd.Chance(0.5))
+                                    {
+                                        resourceType = Resource.ItemResourceType.WarHog;
+                                    }
+                                    else
+                                    {
+                                        resourceType = Resource.ItemResourceType.StagHog;
+                                    }
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.WildHog;
+                                }
                                 size = TerrainContent.WildHogGrowth;
                                 break;
+
                             case TerrainBuildingType.WarHogPen:
-                                resourceType = Resource.ItemResourceType.WarHog;
+                                if (downgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.WildHog;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.WarHog;
+                                }
                                 size = TerrainContent.WarHogGrowth;
                                 break;
+
                             case TerrainBuildingType.StagHogPen:
-                                resourceType = Resource.ItemResourceType.StagHog;
+                                if (downgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.WildHog;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.StagHog;
+                                }
                                 size = TerrainContent.StagHogGrowth;
                                 break;
 
                             case TerrainBuildingType.WolfCage:
-                                resourceType = Resource.ItemResourceType.Wolf;
+                                if (upgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.Warg;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.Wolf;
+                                }
                                 size = TerrainContent.WolfGrowth;
                                 break;
+
                             case TerrainBuildingType.WargCage:
-                                resourceType = Resource.ItemResourceType.Warg;
+                                if (downgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.Wolf;
+                                }
+                                else if (upgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.AlphaWarg;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.Warg;
+                                }
                                 size = TerrainContent.WargGrowth;
                                 break;
+
                             case TerrainBuildingType.AlphaWargCage:
-                                resourceType = Resource.ItemResourceType.AlphaWarg;
+                                if (downgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.Warg;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.AlphaWarg;
+                                }
                                 size = TerrainContent.AlphaWargGrowth;
                                 break;
 
                             case TerrainBuildingType.WildCatCage:
-                                resourceType = Resource.ItemResourceType.WildCat;
+                                if (upgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.Lion;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.WildCat;
+                                }
                                 size = TerrainContent.WildCatGrowth;
                                 break;
                             case TerrainBuildingType.LionCage:
-                                resourceType = Resource.ItemResourceType.Lion;
+                                if (downgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.WildCat;
+                                }
+                                else if (upgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.WarLion;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.Lion;
+                                }
                                 size = TerrainContent.LionGrowth;
                                 break;
                             case TerrainBuildingType.WarLionCage:
-                                resourceType = Resource.ItemResourceType.WarLion;
+                                if (downgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.Lion;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.WarLion;
+                                }
                                 size = TerrainContent.WarLionGrowth;
                                 break;
 
                             case TerrainBuildingType.ElephantCage:
-                                resourceType = Resource.ItemResourceType.Elephant;
+                                if (upgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.WarElephant;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.Elephant;
+                                }
                                 size = TerrainContent.ElephantGrowth;
                                 break;
+
                             case TerrainBuildingType.WarElephantCage:
-                                resourceType = Resource.ItemResourceType.WarElephant;
+                                if (downgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.Elephant;
+                                }
+                                else if (upgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.Oliphant;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.WarElephant;
+                                }
                                 size = TerrainContent.WarElephantGrowth;
                                 break;
+
                             case TerrainBuildingType.OliphantCage:
-                                resourceType = Resource.ItemResourceType.Oliphant;
+                                if (downgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.WarElephant;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.Oliphant;
+                                }
                                 size = TerrainContent.OliphantGrowth;
                                 break;
                         }
@@ -1282,11 +1502,12 @@ namespace VikingEngine.DSSWars.Work
 
         public void addExperience(XP.WorkExperienceType type, City city, byte add = 0)
         {
-            if (type == WorkExperienceType.NUM_NONE)
+            int entityIx_sp = XpEntityIndex;
+            if (type == WorkExperienceType.NUM_NONE || entityIx_sp < 0)
             {
                 return;
             }
-            ref var xp = ref DssRef.world.GetRefWorkXp(XpEntityIndex, type);
+            ref var xp = ref DssRef.world.GetRefWorkXp(entityIx_sp, type);
 
             ExperienceLevel level = xp.Level();
 

@@ -65,6 +65,10 @@ namespace VikingEngine.DSSWars
         public static float Men_StandardWalkingSpeed = 0.00018f;
         public static float Men_StandardShipSpeed = Men_StandardWalkingSpeed * 2f;
 
+        //ANIMAL
+        public const double BreedingUpChance = 0.01;
+        public const double BreedingDownChance = 0.8;
+
         //CONSCRIPT
         public static float SwordAttackRange = 0.04f;
         public static float MeleeAwareRange = SwordAttackRange * 3f;

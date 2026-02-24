@@ -327,7 +327,7 @@ namespace VikingEngine.DSSWars
                 case CityCulture.Skinner:
                     return 125;
                 case CityCulture.AnimalBreeder2:
-                    return -1;
+                    return 200;
                 
                 case CityCulture.Wainwright:
                     return 125;
@@ -508,8 +508,8 @@ namespace VikingEngine.DSSWars
 
         Butchers, //Larger meat production -implemented
         Skinner,//Larger skin production -implemented
-        AnimalBreeder2, //Higher chance of successful breeding
-        
+        AnimalBreeder2, //Higher chance of successful breeding -implemented
+
         Wainwright, //High wagon production -implemented
         Wheelwright, //Speed bonus to conscripted carts
         ShieldMaker, //High shield production -implemented

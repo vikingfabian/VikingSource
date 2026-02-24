@@ -63,18 +63,24 @@ namespace VikingEngine.DSSWars
 
         public void FreeWorkerXp(int index)
         {
-            ResetWorkerXp(index);
+            if (index >= 0)
+            {
+                ResetWorkerXp(index);
 
-            WorkXpInUse[index] = false;
+                WorkXpInUse[index] = false;
+            }
         }
 
         public void ResetWorkerXp(int index)
-        { 
-            int start = index * WorkerXpCOUNT;  
-            //Clear out!
-            for (int i = 0; i < WorkerXpCOUNT; ++i)
+        {
+            if (index >= 0)
             {
-                workerXp[i + start] = WorkExperience.Empty;
+                int start = index * WorkerXpCOUNT;
+                //Clear out!
+                for (int i = 0; i < WorkerXpCOUNT; ++i)
+                {
+                    workerXp[i + start] = WorkExperience.Empty;
+                }
             }
         }
 
@@ -111,11 +117,21 @@ namespace VikingEngine.DSSWars
 
         public void writeWorkXp(int index, System.IO.BinaryWriter w)
         {
-            int start = index * WorkerXpCOUNT;
-            
-            for (int i = 0; i < WorkerXpCOUNT; ++i)
+            if (index >= 0)
             {
-                workerXp[i + start].write(w);
+                int start = index * WorkerXpCOUNT;
+
+                for (int i = 0; i < WorkerXpCOUNT; ++i)
+                {
+                    workerXp[i + start].write(w);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < WorkerXpCOUNT; ++i)
+                {
+                    WorkExperience.Empty.write(w);
+                }
             }
         }
         public void readWorkXp(int index, System.IO.BinaryReader r, int subVersion)

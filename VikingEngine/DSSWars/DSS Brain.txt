@@ -1,5 +1,7 @@
 ﻿UPDATE
 Change Log: 
+X storage is not saved
+X priority menu broken
 
 # SUMMER UPDATE #
 * Cities have a biom status
@@ -22,6 +24,7 @@ Change Log:
 
 SOLDIER RECRUITING
 x More options in soldier conscript: man type, shield, animal and wagon.
+* Adding up to 12 000 000 possible soldier types
 * Soldiers have gold upkeep, related to their training
 x -conscript ui
 * Extended recruiting to battle lab and god powers
@@ -29,6 +32,9 @@ x -conscript ui
 USER INTERFACE
 x Menu for cesspits
 * Limit toggle for stockpile
+* Added farming tab to buildings
+* Buildings tooltip
+* Improved farms tooltip
 
 VOXEL EDITOR
 * Added frame export
@@ -36,6 +42,7 @@ VOXEL EDITOR
 
 SYSTEMS
 * Animal pens have upkeep
+* Can breed animals to higher tiers
 * Resource collecting is limited by storage
 * Crafting can produce two item types
 * Orchards have their own priority

@@ -282,26 +282,27 @@ namespace VikingEngine.DSSWars
 
         public static void blueprintButton(City city, LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint, CraftBlueprint optionalBp = null, bool roomForAnotherButton = false)
         {
-
-            content.Add(new RbTab(0.65f));//roomForAnotherButton? 0.65f : 0.8f));
-
-            var tooltip = new RbTooltip(blueprintTooltip, new BlueprintTooltipArgs()
+            if (city != null)
             {
-                blueprint = blueprint,
-                optionalBp = optionalBp,
-                city = city.myIndex,
-            });
+                content.Add(new RbTab(0.65f));//roomForAnotherButton? 0.65f : 0.8f));
 
-            if (blueprint == CraftResourceLib.Food1)
-            {
-                tooltip.tagId = Tooltip.Food_BlueprintId;
-            }
+                var tooltip = new RbTooltip(blueprintTooltip, new BlueprintTooltipArgs()
+                {
+                    blueprint = blueprint,
+                    optionalBp = optionalBp,
+                    city = city.myIndex,
+                });
 
-            content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> {
+                if (blueprint == CraftResourceLib.Food1)
+                {
+                    tooltip.tagId = Tooltip.Food_BlueprintId;
+                }
+
+                content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> {
                 new RbImage(SpriteName.WarsBluePrint)
-            },
-            null, tooltip));
-
+                },
+                null, tooltip));
+            }
         }
 
         public static void butcherBlueprintButton(City city, LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint)

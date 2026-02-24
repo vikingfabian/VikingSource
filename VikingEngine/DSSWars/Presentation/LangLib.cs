@@ -19,6 +19,7 @@ using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.GO;
+using VikingEngine.PJ.GameState;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Presentation
@@ -1276,6 +1277,33 @@ namespace VikingEngine.DSSWars.Presentation
                     return DssRef.lang.BuildingType_PigPen_Description;
                 case TerrainBuildingType.HenPen:
                     return DssRef.lang.BuildingType_HenPen_Description;
+
+                case TerrainBuildingType.OxenPen:
+                case TerrainBuildingType.KineOxenPen:
+
+                case TerrainBuildingType.DogCage:
+                case TerrainBuildingType.HoundCage:
+
+                case TerrainBuildingType.PonyPen:
+                case TerrainBuildingType.HorsePen:
+                case TerrainBuildingType.WarHorsePen:
+                case TerrainBuildingType.DraftHorsePen:
+                case TerrainBuildingType.WildPigPen:
+                case TerrainBuildingType.WildHogPen:
+                case TerrainBuildingType.WarHogPen:
+                case TerrainBuildingType.StagHogPen:
+                case TerrainBuildingType.WolfCage:
+                case TerrainBuildingType.WargCage:
+                case TerrainBuildingType.AlphaWargCage:
+                case TerrainBuildingType.WildCatCage:
+                case TerrainBuildingType.LionCage:
+                case TerrainBuildingType.WarLionCage:
+                case TerrainBuildingType.ElephantCage:
+                case TerrainBuildingType.WarElephantCage:
+                case TerrainBuildingType.OliphantCage:
+                    return DssRef.todoLang.BuildingDescription_Mounts;
+
+
                 case TerrainBuildingType.WorkerTent:
                     return string.Format(DssRef.lang.BuildingType_WorkerHut_DescriptionLimitX, DssConst.HousingCount_WorkerTent);
                 case TerrainBuildingType.WorkerHut:

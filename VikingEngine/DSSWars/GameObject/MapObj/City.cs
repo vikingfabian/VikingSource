@@ -3194,7 +3194,7 @@ namespace VikingEngine.DSSWars.GameObject
                     //content.Add(new RbText(DssRef.lang.WorkQueue_Title + ":"));
                     content.Add(new RbImage(SpriteName.WarsBuild_PigPen));
                     content.space();
-                    content.Add(new RbText(string.Format(DssRef.todoLang.Economy_AnimalPenUpkeep, TextLib.OneDecimal(cityEconomy.animalPenUpkeep))));
+                    content.Add(new RbText(string.Format(DssRef.todoLang.Economy_AnimalPenUpkeep, TextLib.TwoDecimal(cityEconomy.animalPenUpkeep))));
 
                 }
 
