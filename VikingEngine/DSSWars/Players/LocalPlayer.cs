@@ -826,7 +826,12 @@ namespace VikingEngine.DSSWars.Players
                     //{
                     //    gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);
                     //}
-                    debugKillCityLess();
+                    //debugKillCityLess();
+                    var factionsC = DssRef.world.factions.counter();
+                    while (factionsC.Next())
+                    {
+                        var result = factionsC.sel.adjacentFactions(true);
+                    }
                 }
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
