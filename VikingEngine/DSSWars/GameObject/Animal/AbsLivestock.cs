@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.GameObject.DetailObj.Soldiers;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
@@ -116,6 +117,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
             }
         }
     }
+    
 
     class Hen : AbsLivestock
     {
@@ -182,6 +184,114 @@ namespace VikingEngine.DSSWars.GameObject.Animal
             //}
         }
     }
+
+    class Horse : AbsLivestock
+    {
+        public Horse(IntVector2 tilepos, Vector3 topCenterWp)
+            : base(tilepos, topCenterWp)
+        { }
+        protected override Graphics.VoxelModelInstance createModel()
+        {
+            walkingAnimation = CavalryModel.HorseAnimation;
+
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.horse_brown,
+                CavalryModel.HorseScale);
+        }
+
+        protected override void sound()
+        {
+        }
+    }
+
+    class Dog : AbsLivestock
+    {
+        public Dog(IntVector2 tilepos, Vector3 topCenterWp)
+            : base(tilepos, topCenterWp)
+        { }
+        protected override Graphics.VoxelModelInstance createModel()
+        {
+            walkingAnimation = HoundModel.DogAnimation;
+
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.dog1,
+                HoundModel.DogScale);
+        }
+
+        protected override void sound()
+        {
+        }
+    }
+
+    class Hog : AbsLivestock
+    {
+        public Hog(IntVector2 tilepos, Vector3 topCenterWp)
+            : base(tilepos, topCenterWp)
+        { }
+        protected override Graphics.VoxelModelInstance createModel()
+        {
+            walkingAnimation = CavalryModel.HogAnimation;
+
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.horse_brown,
+                CavalryModel.HogScale);
+        }
+
+        protected override void sound()
+        {
+        }
+    }
+    class Lion : AbsLivestock
+    {
+        public Lion(IntVector2 tilepos, Vector3 topCenterWp)
+            : base(tilepos, topCenterWp)
+        { }
+        protected override Graphics.VoxelModelInstance createModel()
+        {
+            walkingAnimation = CavalryModel.LionAnimation;
+
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.lion1,
+                CavalryModel.LionScale);
+        }
+
+        protected override void sound()
+        {
+        }
+    }
+    class Wolf : AbsLivestock
+    {
+        public Wolf(IntVector2 tilepos, Vector3 topCenterWp)
+            : base(tilepos, topCenterWp)
+        { }
+        protected override Graphics.VoxelModelInstance createModel()
+        {
+            walkingAnimation = CavalryModel.WolfAnimation;
+
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.wolf1,
+                CavalryModel.WolfScale);
+        }
+
+        protected override void sound()
+        {
+        }
+    }
+
+    class Elephant : AbsLivestock
+    {
+        public Elephant(IntVector2 tilepos, Vector3 topCenterWp)
+            : base(tilepos, topCenterWp)
+        { }
+        protected override Graphics.VoxelModelInstance createModel()
+        {
+            walkingAnimation = CavalryModel.ElephantAnimation;
+
+            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.Elephant1,
+                CavalryModel.ElephantScale);
+        }
+
+        protected override void sound()
+        {
+        }
+    }
+
+
 
     //enum AnimalType
     //{ 

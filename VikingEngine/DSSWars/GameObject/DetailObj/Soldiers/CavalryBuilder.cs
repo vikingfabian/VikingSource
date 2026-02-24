@@ -57,6 +57,18 @@ namespace VikingEngine.DSSWars.GameObject
 
     class CavalryModel : SoldierUnitAdvancedModel
     {
+        public static readonly float HorseScale = DssConst.Men_StandardModelScale * 1.1f;
+        public static readonly float HogScale = DssConst.Men_StandardModelScale * 1.1f;
+        public static readonly float LionScale = DssConst.Men_StandardModelScale * 1.1f;
+        public static readonly float WolfScale = DssConst.Men_StandardModelScale * 1.1f;
+        public static readonly float ElephantScale = DssConst.Men_StandardModelScale * 1.9f;
+
+        public static readonly WalkingAnimation HorseAnimation = new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames* 1f);
+        public static readonly WalkingAnimation HogAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames* 1f);
+        public static readonly WalkingAnimation LionAnimation = new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
+        public static readonly WalkingAnimation WolfAnimation = new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
+        public static readonly WalkingAnimation ElephantAnimation = new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames* 2);
+        
         
         Graphics.VoxelModelInstance animalmodel;
         float riderY;
@@ -121,7 +133,7 @@ namespace VikingEngine.DSSWars.GameObject
                 default:
                     modelName = Ref.rnd.Chance(0.2) ? VoxelModelName.horse_white : VoxelModelName.horse_brown;
                     modelScale = DssConst.Men_StandardModelScale * 1.1f;
-                    walkingAnimation = new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames * 1f);
+                    walkingAnimation = HorseAnimation;//new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames * 1f);
                     riderY = 0.018f;
                     break;
 
@@ -131,8 +143,8 @@ namespace VikingEngine.DSSWars.GameObject
                 case Resource.ItemResourceType.StagHog:
                     wagonPullDistance = 0.2f;
                     modelName = VoxelModelName.hog1;
-                    modelScale = DssConst.Men_StandardModelScale * 1.1f;
-                    walkingAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1f);
+                    modelScale = HogScale;
+                    walkingAnimation = HogAnimation;//new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1f);
                     riderY = 0.013f;
                     break;
 
@@ -140,8 +152,8 @@ namespace VikingEngine.DSSWars.GameObject
                 case Resource.ItemResourceType.Warg:
                 case Resource.ItemResourceType.AlphaWarg:
                     modelName = VoxelModelName.wolf1;
-                    modelScale = DssConst.Men_StandardModelScale * 1.1f;
-                    walkingAnimation = new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
+                    modelScale = WolfScale;
+                    walkingAnimation = WolfAnimation;//new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
                     riderY = 0.018f;
                     break;
 
@@ -149,17 +161,17 @@ namespace VikingEngine.DSSWars.GameObject
                 case Resource.ItemResourceType.Lion:
                 case Resource.ItemResourceType.WarLion:
                     modelName = VoxelModelName.lion1;
-                    modelScale = DssConst.Men_StandardModelScale * 1.1f;
-                    walkingAnimation = new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
+                    modelScale = LionScale;
+                    walkingAnimation = LionAnimation;// new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
                     riderY = 0.018f;
                     break;
 
                 case Resource.ItemResourceType.Elephant:
                 case Resource.ItemResourceType.WarElephant:
                 case Resource.ItemResourceType.Oliphant:
-                    modelScale = DssConst.Men_StandardModelScale * 1.9f;
+                    modelScale = ElephantScale;
                     modelName = VoxelModelName.Elephant1;
-                    walkingAnimation = new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames * 2);
+                    walkingAnimation = ElephantAnimation;//new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames * 2);
                     riderY = 0.38f * modelScale;
                     break;
             }

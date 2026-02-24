@@ -35,6 +35,8 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
     class HoundModel : AbsDetailUnitAdvancedModel
     {
+        public static readonly float DogScale = DssConst.Men_StandardModelScale * 0.6f;
+        public static readonly WalkingAnimation DogAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames* 1.1f);
         protected WalkingAnimation walkingAnimation;
         
         public HoundModel(AbsSoldierUnit soldier)
@@ -43,8 +45,8 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             switch (soldier.group.soldierConscript.conscript.animal)
             {
                 default:
-                    model = DssRef.models.ModelInstance_drawbatch(VoxelModelName.dog1, DssConst.Men_StandardModelScale * 0.6f);
-                    walkingAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1.1f);
+                    model = DssRef.models.ModelInstance_drawbatch(VoxelModelName.dog1, DogScale);
+                    walkingAnimation = DogAnimation;//new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1.1f);
                     
                     break;
 
