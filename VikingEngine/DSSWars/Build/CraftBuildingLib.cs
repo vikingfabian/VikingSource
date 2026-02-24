@@ -139,8 +139,9 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Stone_G, 30)
             },
             XP.WorkExperienceType.HouseBuilding,
-             XP.ExperienceLevel.Beginner_1,
-             BuildAndExpandType.Logistics
+             XP.ExperienceLevel.Beginner_1
+            //,
+             //BuildAndExpandType.f
         );
         public static readonly CraftBlueprint CraftLogisticsLevel2 = new CraftBlueprint(
             CraftResultType.Building,
@@ -153,7 +154,7 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Brick, 10)
             }, XP.WorkExperienceType.HouseBuilding,
              XP.ExperienceLevel.Beginner_1,
-            Build.BuildAndExpandType.LogisticsLevel2
+            Build.BuildAndExpandType.Logistics
         );
 
         public static readonly CraftBlueprint WorkerTent = new CraftBlueprint(

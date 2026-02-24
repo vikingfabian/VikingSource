@@ -39,6 +39,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Economy_AnimalPenUpkeep => "Pen upkeep: {0}";
         public string Work_SlaughterX => "Slaughter {0}";
 
+        public string BuildCategory_Farming => "Farming";
         public string Resource_TypeName_ManType => "man type";
         public string Resource_TypeName_NobelMen => "nobelmen";
         public string Resource_TypeName_ConservedFood => "conserved food";
@@ -108,6 +109,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string BuildingType_Dryer => "Dryer";
         public string BuildingType_Shieldmaker => "Shield maker";
         public string BuildingType_DryingPan => "Drying pan";
+
+
 
         // --- Storage ---
         public string BuildingType_MaterialStorage => "Material Storage";

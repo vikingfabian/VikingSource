@@ -3109,7 +3109,7 @@ namespace VikingEngine.DSSWars.GameObject
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsResource_RawFoodRemove));
                     content.space();
-                    content.Add(new RbText(DssRef.lang.WorkQueue_Title + ":"));
+                    //content.Add(new RbText(DssRef.lang.WorkQueue_Title + ":"));
                     content.Add(new RbImage(SpriteName.WarsBuild_PigPen));
                     content.space();
                     content.Add(new RbText(string.Format(DssRef.todoLang.Economy_AnimalPenUpkeep, TextLib.OneDecimal(cityEconomy.animalPenUpkeep))));
@@ -3120,7 +3120,7 @@ namespace VikingEngine.DSSWars.GameObject
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsHammerAdd));
                     content.space();
-                    content.Add(new RbText(".Work queue" + ":"));
+                    content.Add(new RbText(DssRef.lang.WorkQueue_Title + ":"));
                     content.hspace();
                     content.Add(new RbText(WorkerStats_WorkQueueLength.ToString()));
 

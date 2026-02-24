@@ -848,6 +848,10 @@ namespace VikingEngine.DSSWars
                     tabIcon = SpriteName.warsBuildCategoryHouse;
                     category = DssRef.lang.BuildCategory_General;
                     break;
+                case BuildCategoryTab.Farming:
+                    tabIcon = SpriteName.warsBuildCategoryFarm;
+                    category = DssRef.todoLang.BuildCategory_Farming;
+                    break;
                 case BuildCategoryTab.Advanced:
                     tabIcon = SpriteName.warsBuildCategoryAdvanced;
                     category = DssRef.lang.Hud_Advanced;
@@ -1090,6 +1094,7 @@ namespace VikingEngine.DSSWars
                             name = DssRef.lang.BuildingType_Logistics;
                             break;
                         case TerrainBuildingType.ManorLord:
+                            icon = SpriteName.WarsBuild_ManorLord;
                             name = DssRef.lang.BuildingType_ManorLord;
                             break;
                         case TerrainBuildingType.SoldierBarracks:

@@ -827,6 +827,7 @@ namespace VikingEngine.DSSWars.Build
             List<BuildCategoryTab> buildCategories = new List<BuildCategoryTab>
             {
                 BuildCategoryTab.General,
+                BuildCategoryTab.Farming,
                 BuildCategoryTab.Advanced,
                 BuildCategoryTab.Military,
                 BuildCategoryTab.Decor,

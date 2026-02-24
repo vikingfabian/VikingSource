@@ -80,14 +80,32 @@ namespace VikingEngine.DSSWars
 
         public WorkExperience GetWorkXp(int index, WorkExperienceType type)
         {
+#if DEBUG
+            if (!arraylib.InBound(workerXp, index * WorkerXpCOUNT + (int)type))
+            {
+                throw new Exception();
+            }
+#endif
             return workerXp[index * WorkerXpCOUNT + (int)type];
         }
         public void SetWorkXp(int index, WorkExperienceType type, byte xp)
         {
+#if DEBUG
+            if (!arraylib.InBound(workerXp, index * WorkerXpCOUNT + (int)type))
+            {
+                throw new Exception();
+            }
+#endif
             workerXp[index * WorkerXpCOUNT + (int)type].xp = xp;
         }
         public ref WorkExperience GetRefWorkXp(int index, WorkExperienceType type)
         {
+#if DEBUG
+            if (!arraylib.InBound(workerXp, index * WorkerXpCOUNT + (int)type))
+            {
+                throw new Exception();
+            }
+#endif
             return ref workerXp[index * WorkerXpCOUNT + (int)type];
         }
 

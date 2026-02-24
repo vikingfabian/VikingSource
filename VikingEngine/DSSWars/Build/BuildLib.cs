@@ -345,6 +345,8 @@ namespace VikingEngine.DSSWars.Build
 
             if (logistics1)
             {
+                //list.Add(BuildAndExpandType.MaterialStorage); list.Add(BuildAndExpandType.FoodStorage); list.Add(BuildAndExpandType.WeaponStorage); list.Add(BuildAndExpandType.ArmorStorage); list.Add(BuildAndExpandType.AnimalStorage);
+                
                 // --- Existing ---
                 addAnimalPen(BuildAndExpandType.HenPen, CityResoureIndex.Hen, city.buildingStructure.HenPen_count);
                 addAnimalPen(BuildAndExpandType.PigPen, CityResoureIndex.Pig, city.buildingStructure.PigPen_count);
@@ -812,12 +814,12 @@ namespace VikingEngine.DSSWars.Build
                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.OrchardApple, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeApple, SpriteName.WarsBuild_TreeApple, CraftBuildingLib.Orchard, true,
-                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
             { altBlueprint = CraftBuildingLib.Orchard_Gold };
 
             new BuildOption(BuildAndExpandType.OrchidBanana, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeBanana, SpriteName.WarsBuild_TreeBanana, CraftBuildingLib.Orchard, true,
-                BuildCategoryTab.General, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
             { altBlueprint = CraftBuildingLib.Orchard_Gold };
 
@@ -1146,32 +1148,32 @@ namespace VikingEngine.DSSWars.Build
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.MaterialStorage, TerrainMainType.Building, (int)TerrainBuildingType.MaterialStorage, SpriteName.WarsBuild_MaterialStorage, CraftBuildingLib.MaterialStorage, true,
-                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Upgrade, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             //FoodStorage
             new BuildOption(BuildAndExpandType.FoodStorage, TerrainMainType.Building, (int)TerrainBuildingType.FoodStorage, SpriteName.WarsBuild_FoodStorage, CraftBuildingLib.FoodStorage, true,
-                BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Upgrade, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             //WeaponStorage
             new BuildOption(BuildAndExpandType.WeaponStorage, TerrainMainType.Building, (int)TerrainBuildingType.WeaponStorage, SpriteName.WarsBuild_WeaponStorage, CraftBuildingLib.WeaponStorage, true,
-                BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Upgrade, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             //ArmorStorage
             new BuildOption(BuildAndExpandType.ArmorStorage, TerrainMainType.Building, (int)TerrainBuildingType.ArmorStorage, SpriteName.WarsBuild_ArmorStorage, CraftBuildingLib.ArmorStorage, true,
-                BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Upgrade, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             //AnimalStorage
             new BuildOption(BuildAndExpandType.AnimalStorage, TerrainMainType.Building, (int)TerrainBuildingType.AnimalStorage, SpriteName.WarsBuild_AnimalStorage, CraftBuildingLib.AnimalStorage, true,
-                BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Upgrade, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             
             new BuildOption(BuildAndExpandType.Cesspit, TerrainMainType.Building, (int)TerrainBuildingType.Cesspit, SpriteName.WarsBuild_Cesspit, CraftBuildingLib.Cesspit, true,
-                            BuildCategoryTab.General, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
-                            MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
+                BuildCategoryTab.Upgrade, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
 
             //OxenPen
             new BuildOption(BuildAndExpandType.OxenPen, TerrainMainType.Building, (int)TerrainBuildingType.OxenPen, SpriteName.MissingImage, CraftBuildingLib.OxenPen, true,

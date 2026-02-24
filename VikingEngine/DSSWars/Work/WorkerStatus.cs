@@ -1252,8 +1252,12 @@ namespace VikingEngine.DSSWars.Work
 
         public WorkExperience getXpFor(XP.WorkExperienceType type)
         {
-            return DssRef.world.GetWorkXp(XpEntityIndex, type);
-            //if (type == xpType1)
+            if (XpEntityIndex >= 0)
+            {
+                return DssRef.world.GetWorkXp(XpEntityIndex, type);
+            }
+            return WorkExperience.Empty;
+                //if (type == xpType1)
             //{
             //    return xp1;
             //}
@@ -1268,6 +1272,7 @@ namespace VikingEngine.DSSWars.Work
 
             //return 0;
         }
+
 
         public void setXpFor(XP.WorkExperienceType type, byte toXp)
         {
