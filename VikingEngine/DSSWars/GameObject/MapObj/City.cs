@@ -2825,14 +2825,12 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (interactive)
                 {
-                    
-
-
                     content.Add(new RbText("/" + HousingCount_Workers.ToString(), HudLib.SecondaryTextColor));
                     if (children() == 0)
                     {
                         content.Add(new RbText("!", HudLib.NotAvailableColor));
                     }
+                    int warningCount = 0;
 
                     if (WorkerStats_IdleCount >= 10)
                     {
@@ -2840,6 +2838,7 @@ namespace VikingEngine.DSSWars.GameObject
                         content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueIdle));
                         content.hspace();
                         content.Add(new RbText(WorkerStats_IdleCount.ToString()));
+                        warningCount++;
                     }
 
 
@@ -2862,13 +2861,14 @@ namespace VikingEngine.DSSWars.GameObject
                     void lowResource(ItemResourceType resourceType, int low = 10)
                     {
                         var res = GetGroupedResource(resourceType);
-                        if (res.amount <= low)
+                        if (res.amount <= low && warningCount < 3)
                         {
                             HudLib.BulletSeperationPoint(content);
                             IconName.Item(resourceType, out var icon, out _);
                             content.Add(new RbImage(icon));
                             content.space(0.5f);
                             content.Add(new RbText(res.amount.ToString(), res.amount <= 0 ? HudLib.NotAvailableColor : null));
+                            warningCount++;
                         }
                     }
                 }

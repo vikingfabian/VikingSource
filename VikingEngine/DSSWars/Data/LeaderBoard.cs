@@ -316,7 +316,7 @@ namespace VikingEngine.DSSWars.Data
 
         public override void toMenu(RichBoxContent content, SteamLeaderBoardRemote entry)
         {
-            content.Add(new RbText(HudLib.TimeSpan_LongText(TimeSpan.FromSeconds(entry.score))));
+            content.Add(new RbText(TextLib.LargeNumber(entry.score)));
         }
     }
     class SurviveLeaderBoard : AbsLeaderBoard
