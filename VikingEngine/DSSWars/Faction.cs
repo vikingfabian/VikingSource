@@ -21,6 +21,7 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.Players.Profile;
 using System.Collections.Concurrent;
+using System.Linq;
 
 namespace VikingEngine.DSSWars
 {
@@ -1156,6 +1157,33 @@ namespace VikingEngine.DSSWars
             cities.Clear();
 
             DssRef.world.BordersUpdated = true;
+        }
+
+        public List<Faction> adjacentFactions(bool botsOnly)
+        {
+            //List<Faction> factions = new List<Faction>();
+            HashSet<Faction> factions = new HashSet<Faction>();
+
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
+            {
+                EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
+                while (neighbors.Next(DssRef.world.cities, out City nCity))
+                {
+                    var nCityFaction = nCity.GetFaction();
+
+                    if (nCityFaction != null &&
+                        nCityFaction != this &&
+                        (!botsOnly || nCityFaction.player.IsBot()))
+                        //&&
+                        //!factions.Contains(nCityFaction))
+                    {
+                        factions.Add(nCityFaction);
+                    }
+                }
+            }
+
+            return factions.ToList();
         }
 
         public void SetNeighborToPlayer()

@@ -813,19 +813,24 @@ namespace VikingEngine.DSSWars.Players
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.TestNextEvent();
                     //hud.objMenu.diplomacy?.makeServant();
-                    if (gameControls.map.hover.obj is City)
+                    //if (gameControls.map.hover.obj is City)
+                    //{
+                    //    gameControls.map.hover.obj.GetCity().setFaction(faction, false, false);
+                    //}
+                    //if (gameControls.map.hover.obj is Army)
+                    //{
+                    //    gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);
+                    //}
+                    //if (gameControls.map.hover.obj is Army)
+                    //{
+                    //    gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);
+                    //}
+                    //debugKillCityLess();
+                    var factionsC = DssRef.world.factions.counter();
+                    while (factionsC.Next())
                     {
-                        gameControls.map.hover.obj.GetCity().setFaction(faction, false, false);
+                        var result = factionsC.sel.adjacentFactions(true);
                     }
-                    //if (gameControls.map.hover.obj is Army)
-                    //{
-                    //    gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);
-                    //}
-                    //if (gameControls.map.hover.obj is Army)
-                    //{
-                    //    gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);
-                    //}
-                    debugKillCityLess();
                 }
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {

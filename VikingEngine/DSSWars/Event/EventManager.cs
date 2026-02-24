@@ -431,10 +431,17 @@ namespace VikingEngine.DSSWars.Event
                         }
                     }
                     var ev = CreateEvent(type);
-                    mainStory.Enqueue(ev);
-                    if (r.ReadBoolean())
+                    if (ev != null)
                     {
-                        ev.readGameState(r, subVersion, pointers);
+                        mainStory.Enqueue(ev);
+                        if (r.ReadBoolean())
+                        {
+                            ev.readGameState(r, subVersion, pointers);
+                        }
+                    }
+                    else
+                    {
+                        r.ReadBoolean();
                     }
                 }
             }
@@ -1151,7 +1158,10 @@ namespace VikingEngine.DSSWars.Event
                     return new StoryEvent_QuickMatch();
 
                 default:
+#if DEBUG
                     throw new ArgumentOutOfRangeException(nameof(type), type, "Unhandled event type.");
+#endif
+                    return null;
             }
         }
 
