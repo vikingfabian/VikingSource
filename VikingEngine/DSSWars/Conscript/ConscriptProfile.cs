@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 conscript = this,
             };
-            var data = SoldierProfile.init();
+            var data = SoldierProfile.createSoldierData();
             return data.workForceCount();
         }
 

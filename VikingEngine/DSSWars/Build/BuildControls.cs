@@ -1152,7 +1152,9 @@ namespace VikingEngine.DSSWars.Build
 
 
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
+                    //content.Add(new RbText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
+                    content.Add(new RbText(string.Format(DssRef.todoLang.NobelHouse_HousingCount, DssConst.NobelHouseMenCount)));
+                    
                     content.newLine();
 
                     HudLib.BulletPoint(content);

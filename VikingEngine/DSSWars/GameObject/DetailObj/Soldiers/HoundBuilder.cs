@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
@@ -35,22 +36,28 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
     class HoundModel : AbsDetailUnitAdvancedModel
     {
-        public static readonly float DogScale = DssConst.Men_StandardModelScale * 0.6f;
-        public static readonly WalkingAnimation DogAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames* 1.1f);
+        //public static readonly float DogScale = DssConst.Men_StandardModelScale * 0.6f;
+        //public static readonly WalkingAnimation DogAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1.1f);
+
+        //public static readonly float PigScale = DssConst.Men_StandardModelScale * 0.5f;
+        //public static readonly WalkingAnimation PigAnimation= new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames);
+
         protected WalkingAnimation walkingAnimation;
         
         public HoundModel(AbsSoldierUnit soldier)
         {
-
+            AnimalModelData modelData;
             switch (soldier.group.soldierConscript.conscript.animal)
             {
                 default:
-                    model = DssRef.models.ModelInstance_drawbatch(VoxelModelName.dog1, DogScale);
-                    walkingAnimation = DogAnimation;//new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1.1f);
-                    
+                    modelData = DssVar.dogModel;
                     break;
-
+                case Resource.ItemResourceType.Pig:
+                    modelData = DssVar.pigModel;
+                    break;
             }
+            model = DssRef.models.ModelInstance_drawbatch(modelData.modelName, modelData.scale);
+            walkingAnimation = modelData.animation;
 
             var soldierProfile = soldier.Profile();
             walkingAnimation.attackframe = 0;

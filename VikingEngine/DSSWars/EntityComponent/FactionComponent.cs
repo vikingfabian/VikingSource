@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars
         void initFaction(Faction faction)
         {
             faction.resourceComponentStartIndex = faction.myIndex * CityResoureIndex.COUNT;
-
+            
             runList(ResourceLib.MovableCityResource_Misc);
             runList(ResourceLib.MovableCityResource_Metals);
             runList(ResourceLib.MovableCityResource_WeaponMelee);
@@ -71,7 +71,14 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            faction.workTemplate.initComponents(false, factionWork, faction.myIndex * WorkTemplate.COUNT);
+            int start = faction.myIndex * WorkTemplate.COUNT;
+            int exEnd = start + WorkTemplate.COUNT;
+            for (int i = start; i < exEnd; ++i)
+            {
+                factionWork[i] = new WorkPriority(0);
+            }
+            WorkTemplate.InitComponents(factionWork, start);
+            //faction.workTemplate.initComponents(false, factionWork, faction.myIndex * WorkTemplate.COUNT);
         }
 
         public void writeStockPile(BinaryWriter w, Faction faction)

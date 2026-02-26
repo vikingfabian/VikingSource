@@ -118,7 +118,7 @@ namespace VikingEngine.DSSWars.GameObject
             initPart2();
 
             soldierCount = soldierData.UnitCount();
-            soldierData = soldierConscript.init();
+            soldierData = soldierConscript.createSoldierData();
 
             initPart3(tArmy);
 
@@ -144,7 +144,7 @@ namespace VikingEngine.DSSWars.GameObject
             landBuilder = type;
             shipBuilder = DssRef.units.Get(landBuilder).ShipType();
 
-            soldierData_soldier = soldierConscript.init();
+            soldierData_soldier = soldierConscript.createSoldierData();
             soldierData = soldierData_soldier;
             currentBuilder = landBuilder;
 
@@ -417,7 +417,7 @@ namespace VikingEngine.DSSWars.GameObject
             AbsSoldierBuilder builder = DssRef.units.Get(type);
 
             soldiers = new SpottedArray<AbsSoldierUnit>(count +1);
-            soldierData = soldierConscript.init();
+            soldierData = soldierConscript.createSoldierData();
 
             int xStart;
 
@@ -452,9 +452,9 @@ namespace VikingEngine.DSSWars.GameObject
 
                     case ItemResourceType.Dog:
                     case ItemResourceType.Hound:
+                    case ItemResourceType.Pig:
                         int houndColumnExMax = soldierData.columnsDepth / 2;
                         
-
                         for (int y = houndColumnExMax; y < columnDepth; ++y)
                         {
                             for (int x = 0; x < soldierData.rowWidth; ++x)
@@ -565,13 +565,13 @@ namespace VikingEngine.DSSWars.GameObject
                     shipHealth = soldierData_soldier.basehealth * soldierCount;
                     soldierCount = 1;
                     currentBuilder = shipBuilder;
-                    soldierData = soldierConscript.init();
+                    soldierData = soldierConscript.createSoldierData();
                 }
                 else
                 {
                     soldierCount = shipHealth / soldierData_soldier.basehealth;
                     currentBuilder = landBuilder;
-                    soldierData = soldierConscript.init();
+                    soldierData = soldierConscript.createSoldierData();
                 }
 
                 var soldiers_sp = soldiers;

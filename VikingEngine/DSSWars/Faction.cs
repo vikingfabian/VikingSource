@@ -4,6 +4,8 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Communication;
@@ -22,7 +24,6 @@ using VikingEngine.LootFest.Data;
 using VikingEngine.Network;
 using VikingEngine.ToGG.MoonFall;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
-using System.Linq;
 
 namespace VikingEngine.DSSWars
 {
@@ -66,6 +67,7 @@ namespace VikingEngine.DSSWars
         public Faction(int index)
         {
             this.myIndex = index;
+            workTemplate = new Work.WorkTemplate(false, index);
 
             cities = new SpottedPointerArray(8);
             armies = new SpottedArray<Army>(16);
@@ -93,6 +95,7 @@ namespace VikingEngine.DSSWars
                 this.myIndex = addTo.factions.Add(this);
             }
             factionIndex = myIndex;
+            workTemplate = new Work.WorkTemplate(false, myIndex);
             addTo.factionComponentsAdd(this);
             initVisuals(addTo.metaData);
 

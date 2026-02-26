@@ -256,6 +256,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void init(bool asUpgrade)
         {
+#if DEBUG
+            if (soldierData.basehealth <= 0)
+            {
+                throw new Exception();
+            }
+#endif
             health = soldierData.basehealth;
             radius = soldierData.boundRadius;
 

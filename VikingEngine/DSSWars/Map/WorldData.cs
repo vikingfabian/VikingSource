@@ -276,6 +276,10 @@ namespace VikingEngine.DSSWars
 
             Debug.WriteCheck(w);
 
+            writeComponents(w);
+
+            Debug.WriteCheck(w);
+
             w.Write((ushort)factions.Array.Length);
             foreach (var faction in factions.Array)
             {
@@ -329,6 +333,10 @@ namespace VikingEngine.DSSWars
             {
                 city.readGameState(r, subversion, pointers);
             }
+
+            Debug.ReadCheck(r);
+
+            readComponents(r, subversion);
 
             Debug.ReadCheck(r);
 

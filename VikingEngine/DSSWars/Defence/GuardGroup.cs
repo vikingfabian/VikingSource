@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.Defence
         {
             var typeProfile = DssRef.units.Get(type);
             soldiers = new SpottedArray<AbsSoldierUnit>(count);
-            soldierData = soldierConscript.init();
+            soldierData = soldierConscript.createSoldierData();
 
             if (typeProfile.IsShip())
             {

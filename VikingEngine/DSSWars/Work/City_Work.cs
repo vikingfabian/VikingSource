@@ -207,14 +207,17 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                if (myIndex == 692 || debugTagged)
+                if (myIndex == 107 || debugTagged)
                 {
                     lib.DoNothing();
                 }
 
                 if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
                 {
-                    
+                    if (myIndex == 107 || debugTagged)
+                    {
+                        lib.DoNothing();
+                    }
 
                     CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
                     buildWorkQue2();
@@ -377,10 +380,10 @@ namespace VikingEngine.DSSWars.GameObject
                     IntVector2 center = citySquareSubtilePos;
                     workQue.Clear();
 
-                    //if (debugTagged || parentArrayIndex == 218)
-                    //{
-                    //    lib.DoNothing();
-                    //}
+                    if (debugTagged || myIndex == 45)
+                    {
+                        lib.DoNothing();
+                    }
 
                     //bool foodSafeGuard = foodSafeGuardIsActive(out bool fuelSafeGuard, out bool rawFoodSafeGuard, out bool woodSafeGuard);
 

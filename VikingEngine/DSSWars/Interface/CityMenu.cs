@@ -326,7 +326,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     conscript = conscript,
                 };
-                var data = SoldierProfile.init();
+                var data = SoldierProfile.createSoldierData();
 
 
                 content.h1(string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.UnitType_SoldierGroup, recruitOption.count), HudLib.TitleColor_Head);

@@ -95,12 +95,14 @@ namespace VikingEngine.DSSWars.Conscript
                             new RbSpace(),
                             new RbText(DssRef.lang.Conscript_Soldiers_GuardType) },
                         new RbAction1Arg<bool>(guardTabClick, true, RbSoundType.Option), new RbTooltip_Text(DssRef.lang.Conscript_Soldiers_GuardType_Description)));
+
+                    content.Add(new RbSeperationLine());
                 }
 
                 if (advanced)
                 {
                     content.newParagraph();
-                    HudLib.Label(content, DssRef.todoLang.Resource_TypeName_ManType);
+                    HudLib.Label(content, TextLib.LargeFirstLetter( DssRef.todoLang.Resource_TypeName_ManType));
                     content.space();
                     foreach (var item in ConscriptDataLib.MenTypes)
                     {
@@ -152,7 +154,7 @@ namespace VikingEngine.DSSWars.Conscript
                 if (advanced)
                 {
                     content.newParagraph();
-                    HudLib.Label(content, DssRef.todoLang.Resource_TypeName_Shield);
+                    HudLib.Label(content, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_Shield));
                     content.newLine();
 
                     var shields = currentStatus.profile.AvailableShields();
@@ -203,7 +205,7 @@ namespace VikingEngine.DSSWars.Conscript
                     content.Add(button);
                 }
 
-                if (advanced)
+                if (advanced && !guardTab)
                 {
                     content.newParagraph();
                     HudLib.Label(content, DssRef.todoLang.Resource_TypeName_Animal);
@@ -288,12 +290,28 @@ namespace VikingEngine.DSSWars.Conscript
 
                 HudLib.Label(content, DssRef.lang.Conscript_TrainingTitle);
                 content.newLine();
-                TrainingLevel minLevel = currentStatus.profile.man == ItemResourceType.NobelMen ? TrainingLevel.Basic : TrainingLevel.Minimal;
-
+                TrainingLevel minLevel;
                 TrainingLevel maxLevel = currentStatus.maxTrainingLevel;
                 if (city.Culture == CityCulture.CrabMentality)
                 {
                     maxLevel = TrainingLevel.Basic;
+                }
+
+                if (currentStatus.profile.man == ItemResourceType.NobelMen)
+                {
+                    minLevel = TrainingLevel.Basic;
+                    maxLevel = TrainingLevel.Professional;
+                }
+                else
+                {
+                    minLevel = TrainingLevel.Minimal;
+                }
+
+                if (currentStatus.profile.training < minLevel || currentStatus.profile.training > maxLevel)
+                {
+                    currentStatus.profile.training = minLevel;
+                    //trainingClick(minLevel);
+                    set(currentStatus);
                 }
 
                 for (TrainingLevel training = minLevel; training <= maxLevel; training++)
@@ -312,8 +330,8 @@ namespace VikingEngine.DSSWars.Conscript
                     content.newParagraph();
 
                     HudLib.Label(content, DssRef.lang.Conscript_SpecializationTitle);
-                    content.space();
-                    HudLib.InfoButton(content, new RbTooltip_Text(string.Format(DssRef.lang.Conscript_SpecializationDescription, TextLib.PercentTextWithSymbol(DssConst.Conscript_SpecializePercentage))));
+                    //content.space();
+                    //HudLib.InfoButton(content, new RbTooltip_Text(string.Format(DssRef.lang.Conscript_SpecializationDescription, TextLib.PercentTextWithSymbol(DssConst.Conscript_SpecializePercentage))));
                     content.newLine();
 
                     SpecializationType[] specializationTypes = currentStatus.profile.avaialableSpecializations( BuildAndExpandType.NUM_NONE, out _);
@@ -324,9 +342,11 @@ namespace VikingEngine.DSSWars.Conscript
                         var specText = LangLib.SpecializationTypeName(specialization, out var specIcon);
                         var button = new ArtOption(specialization == currentStatus.profile.specialization, new List<AbsRichBoxMember>{
                             new RbImage(specIcon, 0.8f),
-                            new RbSpace(0.5f),
-                            new RbText(specText)
-                        }, new RbAction1Arg<SpecializationType>(specializationClick, specialization, RbSoundType.Option));
+                            //new RbSpace(0.5f),
+                            //new RbText(specText)
+                        }, 
+                        new RbAction1Arg<SpecializationType>(specializationClick, specialization, RbSoundType.Option),
+                        new RbTooltip(specializationToolTip, specialization));
                         
                         content.Add(button);
                     }
@@ -469,8 +489,6 @@ namespace VikingEngine.DSSWars.Conscript
                         if (player.conscriptSubTab == BuildAndExpandType.ALL ||
                             player.conscriptSubTab == currentProfile.type)
                         {
-                            
-
                             string caption;
                             SpriteName icon;
                             if (currentProfile.profile.specialization == SpecializationType.CityGuard)
@@ -594,6 +612,17 @@ namespace VikingEngine.DSSWars.Conscript
             city.SettlerBp().listResources(content, city);
         }
 
+        void specializationToolTip(RichBoxContent content, object tag)
+        {
+            SpecializationType specialization = (SpecializationType)tag;
+            var specText = LangLib.SpecializationTypeName(specialization, out var specIcon);
+
+            content.icontext(specIcon, specText);
+
+            content.newParagraph();
+            content.text(DssRef.lang.Conscript_SpecializationDescription, HudLib.InfoYellow_Light);
+        }
+
         public static void resourcesToMenu(RichBoxContent content, City city, BarracksStatus currentStatus)
         {
             int menCostNext = currentStatus.profile.menCost();
@@ -685,6 +714,10 @@ namespace VikingEngine.DSSWars.Conscript
             BarracksStatus currentProfile = get();
             BarracksStatus defaultProfile = new BarracksStatus(currentProfile.type);
             currentProfile.profile.specialization = guard? SpecializationType.CityGuard : defaultProfile.profile.specialization;
+            if (guard)
+            {
+                currentProfile.profile.animal = ItemResourceType.NONE;
+            }
             set(currentProfile);
         }
 
@@ -738,7 +771,7 @@ namespace VikingEngine.DSSWars.Conscript
         {
             ItemResourceType weapon = (ItemResourceType)tag;
                         
-            var data = new SoldierConscriptProfile() { conscript = new ConscriptProfile() { weapon = weapon } }.init();
+            var data = new SoldierConscriptProfile() { conscript = new ConscriptProfile() { weapon = weapon } }.createSoldierData();
 
             IconName.Item(weapon, out SpriteName weaponicon, out string weaponname);
             content.h1(weaponname, HudLib.TitleColor_Head);
@@ -788,6 +821,14 @@ namespace VikingEngine.DSSWars.Conscript
         void manTooltip(RichBoxContent content, object tag)
         {
             ItemResourceType item = (ItemResourceType)tag;
+
+            int skillBonus = item == ItemResourceType.NobelMen ? conv.ToPercentage(DssConst.NobelMenSkillBonusAdd) : 0;
+
+            HudLib.Label(content, DssRef.todoLang.Conscript_SkillBonus);
+            content.hspace();
+            content.Add(new RbText($"+{skillBonus}%"));
+
+            content.newParagraph();
 
             ResourceLib.FullResourceInfo(player.faction, city, item, content);
         }

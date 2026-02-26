@@ -64,18 +64,40 @@ namespace VikingEngine.DSSWars.Work
         //public bool coinmaker_mithril_fullStock = true;
 
         bool isCity;
-        public int resourceComponentStartIndex;
-        public void initComponents(bool isCity, WorkPriority[] work, int startIndex)
+        public int workComponentStartIndex;
+        //public void initComponents(bool isCity, WorkPriority[] work, int startIndex)
+        //{
+        //    this.isCity = isCity;
+        //    workComponentStartIndex = startIndex;
+        //    //int exEnd = workComponentStartIndex + COUNT;
+
+        //    //for (int i = workComponentStartIndex; i < exEnd; i++)
+        //    //{
+        //    //     work[i] = new WorkPriority(0);
+        //    //}
+
+        //    //work[startIndex + (int)WorkPriorityType.move].value = 3;
+        //    //work[startIndex + (int)WorkPriorityType.wood].value = 2;
+        //    //work[startIndex + (int)WorkPriorityType.stone].value = 2;
+        //    //work[startIndex + (int)WorkPriorityType.craftFuel].value = 1;
+        //    //work[startIndex + (int)WorkPriorityType.farmFood].value = 4;
+        //    //work[startIndex + (int)WorkPriorityType.farmRawFood].value = 1;
+        //    //work[startIndex + (int)WorkPriorityType.craftBeer].value = 1;
+
+        //    //work[startIndex + (int)WorkPriorityType.smeltIron].value = 3;
+        //    //work[startIndex + (int)WorkPriorityType.craftSharpStick].value = 1;
+        //    //work[startIndex + (int)WorkPriorityType.craftPaddedArmor].value = 1;
+        //    //work[startIndex + (int)WorkPriorityType.farmfuel].value = 2;
+        //    //work[startIndex + (int)WorkPriorityType.farmlinen].value = 1;
+        //    //work[startIndex + (int)WorkPriorityType.bogiron].value = 1;
+        //    //work[startIndex + (int)WorkPriorityType.miningIron].value = 3;
+        //    //work[startIndex + (int)WorkPriorityType.trading].value = 2;
+        //    //work[startIndex + (int)WorkPriorityType.autoBuild].value = 1;
+        //    //work[startIndex + (int)WorkPriorityType.buildOrders].value = 2;
+        //    //work[startIndex + (int)WorkPriorityType.smeltGold].value = 3;
+        //}
+        public static void InitComponents(WorkPriority[] work, int startIndex)
         {
-            this.isCity = isCity;
-            resourceComponentStartIndex = startIndex;
-            int exEnd = resourceComponentStartIndex + COUNT;
-
-            for (int i = resourceComponentStartIndex; i < exEnd; i++)
-            {
-                 work[i] = new WorkPriority(0);
-            }
-
             work[startIndex + (int)WorkPriorityType.move].value = 3;
             work[startIndex + (int)WorkPriorityType.wood].value = 2;
             work[startIndex + (int)WorkPriorityType.stone].value = 2;
@@ -96,7 +118,6 @@ namespace VikingEngine.DSSWars.Work
             work[startIndex + (int)WorkPriorityType.buildOrders].value = 2;
             work[startIndex + (int)WorkPriorityType.smeltGold].value = 3;
         }
-
         WorkPriority[] Work()
         {
             return isCity ? DssRef.world.cityWork : DssRef.world.factionWork;
@@ -107,292 +128,89 @@ namespace VikingEngine.DSSWars.Work
             //new
             WorkPriority[] work = Work();
 
+            //for (int i = 0; i < WorkTemplate.COUNT; ++i)
+            //{ 
+            //    work[
+            //}
+
             // Coinage
-            work[resourceComponentStartIndex + (int)WorkPriorityType.coinmaker_copper].unlocked = unlocks.coinMaking;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.coinmaker_bronze].unlocked = unlocks.coinMaking;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.coinmaker_silver].unlocked = unlocks.coinMaking;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.coinmaker_mithril].unlocked = unlocks.coinMaking;
+            work[workComponentStartIndex + (int)WorkPriorityType.coinmaker_copper].unlocked = unlocks.coinMaking;
+            work[workComponentStartIndex + (int)WorkPriorityType.coinmaker_bronze].unlocked = unlocks.coinMaking;
+            work[workComponentStartIndex + (int)WorkPriorityType.coinmaker_silver].unlocked = unlocks.coinMaking;
+            work[workComponentStartIndex + (int)WorkPriorityType.coinmaker_mithril].unlocked = unlocks.coinMaking;
 
             // Tools
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftToolkit].unlocked = unlocks.item_tools;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftToolkit].unlocked = unlocks.item_tools;
 
             // Advanced Metals
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftCastIron].unlocked = unlocks.item_castIron;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftMithril].unlocked = unlocks.item_castMithril;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftCastIron].unlocked = unlocks.item_castIron;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftMithril].unlocked = unlocks.item_castMithril;
 
             // Iron Tier
-            work[resourceComponentStartIndex + (int)WorkPriorityType.smeltIron].unlocked = unlocks.item_Iron; // Mapped craft_iron to smeltIron
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftShortSword].unlocked = unlocks.item_Sword;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftSword].unlocked = unlocks.item_Sword;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftMailArmor].unlocked = unlocks.item_IronArmor;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftHeavyMailArmor].unlocked = unlocks.item_IronArmor;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftWarhammer].unlocked = unlocks.item_Sword;
+            work[workComponentStartIndex + (int)WorkPriorityType.smeltIron].unlocked = unlocks.item_Iron; // Mapped craft_iron to smeltIron
+            work[workComponentStartIndex + (int)WorkPriorityType.craftShortSword].unlocked = unlocks.item_Sword;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftSword].unlocked = unlocks.item_Sword;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftMailArmor].unlocked = unlocks.item_IronArmor;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftHeavyMailArmor].unlocked = unlocks.item_IronArmor;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftWarhammer].unlocked = unlocks.item_Sword;
 
             // work[resourceComponentStartIndex + (int)WorkPriorityType.craftKnightslance].unlocked = unlocks.item_Sword; // TODO: Add 'craftKnightslance' to Enum
 
             // Steel Tier
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftBloomeryIron].unlocked = unlocks.item_Steel;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftSteel].unlocked = unlocks.item_Steel;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftLongSword].unlocked = unlocks.item_LongSword;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftTwoHandSword].unlocked = unlocks.item_LongSword;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftPlateArmor].unlocked = unlocks.item_SteelArmor;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftFullPlateArmor].unlocked = unlocks.item_SteelArmor;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftBloomeryIron].unlocked = unlocks.item_Steel;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftSteel].unlocked = unlocks.item_Steel;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftLongSword].unlocked = unlocks.item_LongSword;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftTwoHandSword].unlocked = unlocks.item_LongSword;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftPlateArmor].unlocked = unlocks.item_SteelArmor;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftFullPlateArmor].unlocked = unlocks.item_SteelArmor;
 
             // Siege Engines
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftCatapult].unlocked = unlocks.item_catapult;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftManuBallista].unlocked = unlocks.item_catapult;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftCrossbow].unlocked = unlocks.item_crossbow;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftCatapult].unlocked = unlocks.item_catapult;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftManuBallista].unlocked = unlocks.item_catapult;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftCrossbow].unlocked = unlocks.item_crossbow;
 
             // Black Powder
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftBlackPowder].unlocked = unlocks.item_blackPowder;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftBullet].unlocked = unlocks.item_blackPowder;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftHandCannon].unlocked = unlocks.item_blackPowder;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftHandCulverin].unlocked = unlocks.item_blackPowder;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftBlackPowder].unlocked = unlocks.item_blackPowder;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftBullet].unlocked = unlocks.item_blackPowder;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftHandCannon].unlocked = unlocks.item_blackPowder;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftHandCulverin].unlocked = unlocks.item_blackPowder;
 
             // Gunpowder
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftGunPowder].unlocked = unlocks.item_gunPowder;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftRifle].unlocked = unlocks.item_gunPowder;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftBlunderbuss].unlocked = unlocks.item_gunPowder;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftGunPowder].unlocked = unlocks.item_gunPowder;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftRifle].unlocked = unlocks.item_gunPowder;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftBlunderbuss].unlocked = unlocks.item_gunPowder;
 
             // Cannons
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftSiegeCannonBronze].unlocked = unlocks.item_cannon;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftManCannonBronze].unlocked = unlocks.item_cannon;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftSiegeCannonIron].unlocked = unlocks.item_cannon;
-            work[resourceComponentStartIndex + (int)WorkPriorityType.craftManCannonIron].unlocked = unlocks.item_cannon;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftSiegeCannonBronze].unlocked = unlocks.item_cannon;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftManCannonBronze].unlocked = unlocks.item_cannon;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftSiegeCannonIron].unlocked = unlocks.item_cannon;
+            work[workComponentStartIndex + (int)WorkPriorityType.craftManCannonIron].unlocked = unlocks.item_cannon;
         }
 
-        public WorkTemplate()
+        public WorkTemplate(bool isCity, int index)
         {
+            this.isCity = isCity;
+            workComponentStartIndex = index * COUNT;
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
-            //move.writeGameState(w, isCity);
-            //wood.writeGameState(w, isCity);
-            //stone.writeGameState(w, isCity);
-            //craft_fuel.writeGameState(w, isCity);
-            //craft_food.writeGameState(w, isCity);
-            //craft_beer.writeGameState(w, isCity);
-            //craft_coolingfluid.writeGameState(w, isCity);
-
-            //craft_iron.writeGameState(w, isCity);
-            //craft_tin.writeGameState(w, isCity);
-            //craft_cupper.writeGameState(w, isCity);
-            //craft_lead.writeGameState(w, isCity);
-            //craft_silver.writeGameState(w, isCity);
-
-            //craft_bronze.writeGameState(w, isCity);
-            //craft_castiron.writeGameState(w, isCity);
-            //craft_bloomeryiron.writeGameState(w, isCity);
-            //craft_steel.writeGameState(w, isCity);
-            //craft_mithril.writeGameState(w, isCity);
-
-            //craft_palisade.writeGameState(w, isCity);
-            //craft_toolkit.writeGameState(w, isCity);
-            //craft_wagonlight.writeGameState(w, isCity);
-            //craft_wagonheavy.writeGameState(w, isCity);
-            //craft_blackpowder.writeGameState(w, isCity);
-            //craft_gunpowder.writeGameState(w, isCity);
-            //craft_bullet.writeGameState(w, isCity);
-
-            //craft_sharpstick.writeGameState(w, isCity);
-            //craft_bronzesword.writeGameState(w, isCity);
-            //craft_shortsword.writeGameState(w, isCity);
-            //craft_sword.writeGameState(w, isCity);
-            //craft_longsword.writeGameState(w, isCity);
-            //craft_handspear.writeGameState(w, isCity);
-            //craft_mithrilsword.writeGameState(w, isCity);
-            //craft_warhammer.writeGameState(w, isCity);
-            //craft_twohandsword.writeGameState(w, isCity);
-            //craft_knightslance.writeGameState(w, isCity);
-
-            //craft_slingshot.writeGameState(w, isCity);
-            //craft_throwingspear.writeGameState(w, isCity);
-            //craft_bow.writeGameState(w, isCity);
-            //craft_longbow.writeGameState(w, isCity);
-            //craft_crossbow.writeGameState(w, isCity);
-            //craft_mithrilbow.writeGameState(w, isCity);
-
-            //craft_handcannon.writeGameState(w, isCity);
-            //craft_handculverin.writeGameState(w, isCity);
-            //craft_rifle.writeGameState(w, isCity);
-            //craft_blunderbus.writeGameState(w, isCity);
-
-            //craft_ballista.writeGameState(w, isCity);
-            //craft_manuballista.writeGameState(w, isCity);
-            //craft_catapult.writeGameState(w, isCity);
-            //craft_batteringram.writeGameState(w, isCity);
-
-            //craft_siegecannonbronze.writeGameState(w, isCity);
-            //craft_mancannonbronze.writeGameState(w, isCity);
-            //craft_siegecannoniron.writeGameState(w, isCity);
-            //craft_mancannoniron.writeGameState(w, isCity);
-
-            //craft_paddedarmor.writeGameState(w, isCity);
-            //craft_heavypaddedarmor.writeGameState(w, isCity);
-            //craft_bronzearmor.writeGameState(w, isCity);
-            //craft_mailarmor.writeGameState(w, isCity);
-            //craft_heavymailarmor.writeGameState(w, isCity);
-            //craft_platearmor.writeGameState(w, isCity);
-            //craft_fullplatearmor.writeGameState(w, isCity);
-            //craft_mithrilarmor.writeGameState(w, isCity);
-
-            //farm_food.writeGameState(w, isCity);
-            //farm_fuel.writeGameState(w, isCity);
-            //farm_linen.writeGameState(w, isCity);
-            //bogiron.writeGameState(w, isCity);
-            //mining_iron.writeGameState(w, isCity);
-            //mining_tin.writeGameState(w, isCity);
-            //mining_copper.writeGameState(w, isCity);
-            //mining_lead.writeGameState(w, isCity);
-            //mining_silver.writeGameState(w, isCity);
-            //mining_gold.writeGameState(w, isCity);
-            //mining_mithril.writeGameState(w, isCity);
-            //mining_sulfur.writeGameState(w, isCity);
-            //mining_coal.writeGameState(w, isCity);
-
-            //trading.writeGameState(w, isCity);
-            //autoBuild.writeGameState(w, isCity);
-            //buildOrder.writeGameState(w, isCity);
-
-            //smeltgold.writeGameState(w, isCity);
-            //coinmaker_copper.writeGameState(w, isCity);
-            //coinmaker_bronze.writeGameState(w, isCity);
-            //coinmaker_silver.writeGameState(w, isCity);
-            //coinmaker_mithril.writeGameState(w, isCity);
-
-
-
-
             WorkPriority[] work = Work();
-            int exEnd = resourceComponentStartIndex + COUNT;
+            int exEnd = workComponentStartIndex + COUNT;
 
-            for (int i = resourceComponentStartIndex; i < exEnd; i++)
+            for (int i = workComponentStartIndex; i < exEnd; i++)
             {
                 work[i].writeGameState(w, isCity);
             }
-
-            //if (isCity)
-            //{
-            //    EightBit minterBools = new EightBit(coinmaker_copper_fullStock, coinmaker_bronze_fullStock, coinmaker_silver_fullStock, coinmaker_mithril_fullStock);
-            //    minterBools.write(w);
-            //}
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, bool isCity)
-        {
-            //move.readGameState(r, subversion, isCity);
-            //wood.readGameState(r, subversion, isCity);
-            //stone.readGameState(r, subversion, isCity);
-            //craft_fuel.readGameState(r, subversion, isCity);
-            //craft_food.readGameState(r, subversion, isCity);
-            //craft_beer.readGameState(r, subversion, isCity);
-            //craft_coolingfluid.readGameState(r, subversion, isCity);
-
-            //craft_iron.readGameState(r, subversion, isCity);
-            //craft_tin.readGameState(r, subversion, isCity);
-            //craft_cupper.readGameState(r, subversion, isCity);
-            //craft_lead.readGameState(r, subversion, isCity);
-            //craft_silver.readGameState(r, subversion, isCity);
-
-            //craft_bronze.readGameState(r, subversion, isCity);
-            //craft_castiron.readGameState(r, subversion, isCity);
-            //craft_bloomeryiron.readGameState(r, subversion, isCity);
-            //craft_steel.readGameState(r, subversion, isCity);
-            //craft_mithril.readGameState(r, subversion, isCity);
-
-            //if (subversion >= 49)
-            //{
-            //    craft_palisade.readGameState(r, subversion, isCity);
-            //}
-            //craft_toolkit.readGameState(r, subversion, isCity);
-            //craft_wagonlight.readGameState(r, subversion, isCity);
-            //craft_wagonheavy.readGameState(r, subversion, isCity);
-            //craft_blackpowder.readGameState(r, subversion, isCity);
-            //craft_gunpowder.readGameState(r, subversion, isCity);
-            //craft_bullet.readGameState(r, subversion, isCity);
-
-            //craft_sharpstick.readGameState(r, subversion, isCity);
-            //craft_bronzesword.readGameState(r, subversion, isCity);
-            //craft_shortsword.readGameState(r, subversion, isCity);
-            //craft_sword.readGameState(r, subversion, isCity);
-            //craft_longsword.readGameState(r, subversion, isCity);
-            //craft_handspear.readGameState(r, subversion, isCity);
-            //craft_mithrilsword.readGameState(r, subversion, isCity);
-            //craft_warhammer.readGameState(r, subversion, isCity);
-            //craft_twohandsword.readGameState(r, subversion, isCity);
-            //craft_knightslance.readGameState(r, subversion, isCity);
-
-            //craft_slingshot.readGameState(r, subversion, isCity);
-            //craft_throwingspear.readGameState(r, subversion, isCity);
-            //craft_bow.readGameState(r, subversion, isCity);
-            //craft_longbow.readGameState(r, subversion, isCity);
-            //craft_crossbow.readGameState(r, subversion, isCity);
-            //craft_mithrilbow.readGameState(r, subversion, isCity);
-
-            //craft_handcannon.readGameState(r, subversion, isCity);
-            //craft_handculverin.readGameState(r, subversion, isCity);
-            //craft_rifle.readGameState(r, subversion, isCity);
-            //craft_blunderbus.readGameState(r, subversion, isCity);
-
-            //craft_ballista.readGameState(r, subversion, isCity);
-            //craft_manuballista.readGameState(r, subversion, isCity);
-            //craft_catapult.readGameState(r, subversion, isCity);
-            //craft_batteringram.readGameState(r, subversion, isCity);
-
-            //craft_siegecannonbronze.readGameState(r, subversion, isCity);
-            //craft_mancannonbronze.readGameState(r, subversion, isCity);
-            //craft_siegecannoniron.readGameState(r, subversion, isCity);
-            //craft_mancannoniron.readGameState(r, subversion, isCity);
-
-            //craft_paddedarmor.readGameState(r, subversion, isCity);
-            //craft_heavypaddedarmor.readGameState(r, subversion, isCity);
-            //craft_bronzearmor.readGameState(r, subversion, isCity);
-            //craft_mailarmor.readGameState(r, subversion, isCity);
-            //craft_heavymailarmor.readGameState(r, subversion, isCity);
-            //craft_platearmor.readGameState(r, subversion, isCity);
-            //craft_fullplatearmor.readGameState(r, subversion, isCity);
-            //craft_mithrilarmor.readGameState(r, subversion, isCity);
-
-            //farm_food.readGameState(r, subversion, isCity);
-            //farm_fuel.readGameState(r, subversion, isCity);
-            //farm_linen.readGameState(r, subversion, isCity);
-            //bogiron.readGameState(r, subversion, isCity);
-            //mining_iron.readGameState(r, subversion, isCity);
-            //mining_tin.readGameState(r, subversion, isCity);
-            //mining_copper.readGameState(r, subversion, isCity);
-            //mining_lead.readGameState(r, subversion, isCity);
-            //mining_silver.readGameState(r, subversion, isCity);
-            //mining_gold.readGameState(r, subversion, isCity);
-            //mining_mithril.readGameState(r, subversion, isCity);
-            //mining_sulfur.readGameState(r, subversion, isCity);
-            //mining_coal.readGameState(r, subversion, isCity);
-
-            //trading.readGameState(r, subversion, isCity);
-            //autoBuild.readGameState(r, subversion, isCity);
-            //if (subversion >= 70)
-            //{
-            //    buildOrder.readGameState(r, subversion, isCity);
-            //}
-            //if (subversion >= 69)
-            //{
-            //    smeltgold.readGameState(r, subversion, isCity);
-            //}
-            //coinmaker_copper.readGameState(r, subversion, isCity);
-            //coinmaker_bronze.readGameState(r, subversion, isCity);
-            //coinmaker_silver.readGameState(r, subversion, isCity);
-            //coinmaker_mithril.readGameState(r, subversion, isCity);
-
-            //if (isCity && subversion >= 69)
-            //{
-            //    EightBit minterBools = new EightBit(r);
-            //    minterBools.Get(out coinmaker_copper_fullStock, out coinmaker_bronze_fullStock, out coinmaker_silver_fullStock, out coinmaker_mithril_fullStock);
-            //}
+        {   
             this.isCity = isCity;
 
             WorkPriority[] work = Work();
-            int exEnd = resourceComponentStartIndex + COUNT;
+            int exEnd = workComponentStartIndex + COUNT;
 
-            for (int i = resourceComponentStartIndex; i < exEnd; i++)
+            for (int i = workComponentStartIndex; i < exEnd; i++)
             {
                 work[i].readGameState(r, subversion, isCity);
             }
@@ -408,8 +226,8 @@ namespace VikingEngine.DSSWars.Work
         {
             for (int i = 0; i < COUNT; i++)
             {
-                var factionValue = DssRef.world.factionWork[factionTemplate.resourceComponentStartIndex + i];
-                DssRef.world.cityWork[resourceComponentStartIndex + i].onFactionValueChange(factionValue);
+                var factionValue = DssRef.world.factionWork[factionTemplate.workComponentStartIndex + i];
+                DssRef.world.cityWork[workComponentStartIndex + i].onFactionValueChange(factionValue);
             }
 
             //move.onFactionValueChange(factionTemplate.move);
@@ -514,9 +332,9 @@ namespace VikingEngine.DSSWars.Work
         public void setAllToFollowFaction()
         {
             WorkPriority[] work = Work();
-            int exEnd = resourceComponentStartIndex + COUNT;
+            int exEnd = workComponentStartIndex + COUNT;
 
-            for (int i = resourceComponentStartIndex; i < exEnd; i++)
+            for (int i = workComponentStartIndex; i < exEnd; i++)
             {
                 work[i].followFaction = true;
             }
@@ -590,7 +408,7 @@ namespace VikingEngine.DSSWars.Work
             else
             {
                 hasPriority = true;
-                return Work()[resourceComponentStartIndex + (int)priorityType];
+                return Work()[workComponentStartIndex + (int)priorityType];
             }
             //hasPriority = true;
             //switch (item)
@@ -740,12 +558,12 @@ namespace VikingEngine.DSSWars.Work
 
         public ref WorkPriority GetRefWorkPriority(WorkPriorityType priorityType)
         {
-            return ref Work()[resourceComponentStartIndex + (int)priorityType];
+            return ref Work()[workComponentStartIndex + (int)priorityType];
         }
 
         public WorkPriority Get(WorkPriorityType priorityType)
         {
-            return Work()[resourceComponentStartIndex + (int)priorityType];
+            return Work()[workComponentStartIndex + (int)priorityType];
             //switch (priorityType)
             //{
             //    case WorkPriorityType.move:
@@ -937,7 +755,7 @@ namespace VikingEngine.DSSWars.Work
             var priorityType = ItemPropertyColl.Get(item).work;
             if (priorityType != WorkPriorityType.NUM_NONE)
             {
-                Work()[resourceComponentStartIndex + (int)priorityType] = work;
+                Work()[workComponentStartIndex + (int)priorityType] = work;
             }
             //switch (item)
             //{
@@ -1236,7 +1054,7 @@ namespace VikingEngine.DSSWars.Work
 
         void SetWorkPriority(WorkPriorityType priorityType, WorkPriority value)
         {
-            Work()[resourceComponentStartIndex + (int)priorityType] = value;
+            Work()[workComponentStartIndex + (int)priorityType] = value;
             //switch (priorityType)
             //{
             //    case WorkPriorityType.move:
@@ -1837,6 +1655,12 @@ namespace VikingEngine.DSSWars.Work
         public bool waitForStockpile;
         //public bool safeguard;
 
+        public WorkPriority()
+        {
+            followFaction = true;
+            unlocked = true;
+        }
+
         public WorkPriority(byte defaultVal)//, bool safeguard)
         {
             followFaction = true;
@@ -2003,12 +1827,11 @@ namespace VikingEngine.DSSWars.Work
 
             if (!isCity || !followFaction)
             {
-                w.Write((byte)value);
+                w.Write(value);
             }
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, bool isCity)
         {
-
             EightBit eightBit = new EightBit(r);
             followFaction = eightBit.Get(0);
             waitForStockpile = eightBit.Get(1);

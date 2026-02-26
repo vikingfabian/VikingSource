@@ -318,8 +318,13 @@ namespace VikingEngine.DSSWars.GameObject
                     case ItemResourceType.ServiceMen:
                         freeServiceMen.amount += add;
                         return;
+
                     case ItemResourceType.Men:
                         workForce.amount += add;
+                        return;
+
+                    case ItemResourceType.NobelMen:
+                        freeNobelMen.amount += add;
                         return;
 
                     case ItemResourceType.Water_G:
@@ -436,6 +441,8 @@ namespace VikingEngine.DSSWars.GameObject
                         return new GroupedResource() { amount = (int)(DssRef.storage.gameRuleset.centralGold ? GetFaction_NoChecks().money.GetGold() : money.GetGold()), stockPileLimit = int.MaxValue };
                     case ItemResourceType.Men:
                         return workForce;
+                    case ItemResourceType.NobelMen:
+                        return freeNobelMen;
                     case ItemResourceType.ServiceMen:
                         return freeServiceMen;
 

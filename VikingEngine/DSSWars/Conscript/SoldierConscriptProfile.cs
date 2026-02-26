@@ -22,18 +22,30 @@ namespace VikingEngine.DSSWars.Conscript
         {
             conscript = new ConscriptProfile();
             conscript.weapon = ItemResourceType.SharpStick;
-            skillBonus = 0;
+            skillBonus = 1;
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
             conscript.writeGameState(w);
             StreamLib.WriteFloatMultiplier(skillBonus, w);
+#if DEBUG
+            if (skillBonus == 0)
+            {
+                throw new Exception();
+            }
+#endif
         }
         public void readGameState(System.IO.BinaryReader r)
         {
             conscript.readGameState(r);
             skillBonus = StreamLib.ReadFloatMultiplier(r);
+#if DEBUG
+            if (skillBonus == 0)
+            {
+                throw new Exception();
+            }
+#endif
         }
 
         public UnitBuildType unitType()
@@ -172,17 +184,32 @@ namespace VikingEngine.DSSWars.Conscript
 
         public SpriteName Icon()
         {
-            return init().icon;
+            return createSoldierData().icon;
         }
 
-        public SoldierData init()
+        public SoldierData createSoldierData()
         {
+#if DEBUG
+            if (skillBonus == 0)
+            {
+                throw new Exception();
+            }
+#endif
+
             var weaponProperties = ItemPropertyColl.Get(conscript.weapon);
             SoldierData soldierData = weaponProperties.soldierData;
+
+            soldierData.copperUpkeepPerSoldier = DssConst.TrainingGoldUpkeep[(int)conscript.training];
+            if (conscript.man == ItemResourceType.NobelMen)
+            {
+                soldierData.copperUpkeepPerSoldier += DssConst.Nobel_GoldUpkeep;
+
+            }
+
             soldierData.applySkillBonus(skillBonus);
 
             var armorData = ItemPropertyColl.Get(conscript.armorLevel).soldierData;
-            soldierData.basehealth = armorData.basehealth;
+            soldierData.basehealth = MathExt.MultiplyInt(armorData.basehealth, skillBonus);
             soldierData.modelData.armor = armorData.modelData.armor;
 
             soldierData.modelData.specialization = conscript.specialization;
@@ -300,11 +327,7 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
             }
 
-            soldierData.copperUpkeepPerSoldier = DssConst.TrainingGoldUpkeep[(int)conscript.training];
-            if (conscript.man == ItemResourceType.NobelMen)
-            {
-                soldierData.copperUpkeepPerSoldier += DssConst.Nobel_GoldUpkeep;
-            }
+            
 
             soldierData.attackTimePlusCoolDown /= ConscriptProfile.TrainingAttackSpeed(conscript.training);
             soldierData.attackTimePlusCoolDown /= 1f + skillBonus;

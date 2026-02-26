@@ -1,7 +1,7 @@
 ﻿UPDATE
 Change Log: 
-X storage is not saved
-X priority menu broken
+
+
 
 # SUMMER UPDATE #
 * Cities have a biom status
@@ -23,11 +23,15 @@ X priority menu broken
 * Soldier hall - unlock advanced conscripting
 
 SOLDIER RECRUITING
-x More options in soldier conscript: man type, shield, animal and wagon.
+* More options in soldier conscript: man type, shield, animal and wagon.
 * Adding up to 12 000 000 possible soldier types
 * Soldiers have gold upkeep, related to their training
-x -conscript ui
 * Extended recruiting to battle lab and god powers
+* Skill bonus will now also affect base health (to symbolize better survival skill)
+
+NOBELMEN
+* A new man type that can be produced for conscripting
+* Nobel houses now function as housing for nobel men
 
 USER INTERFACE
 x Menu for cesspits
@@ -57,33 +61,27 @@ PERFORMANCE
 QUESTIONS
 * Do it need some type of hunter cottage to collect the first animals?
 
-
+##ICONS TODO
+* butcher 
+* buthing animal
 
 
 #MOUNTED TODO
+x ui line breaks in German
+X handle negative raw food
+X butcher effect
+x Skill bonus ui
 
 CITY CULTURES
-* AnimalBreeder2, //Higher chance of successful breeding (replaces the old culture)
 * Wheelwright, //Speed bonus to conscripted carts
-
-Base mounts, use breeding to go from pony to warhorse:
-- Pony
-- Horse
-- WarHorse (cavalry bonus)
-- DraftHorse (wagon pulling bonus)
 
 (Maybe) Breeding tech tree skill (Allowes more reliable animal upgrades)
 (Maybe) War mount tech tree skill (Allowes training of cavalry)
 
+mounts in casual play
+
 New resources:
 Luxurious buildings, raises the nobel house cap
-Transport-weight
-
-Bioms:
-Frozen (Extra food storage, extra skin production)
-Mountain (Hog breeding)
-Desert (Elephant breeding, drying meat, drying salt)
-
 
 
 #Event timers (are slightly random)#

@@ -9,12 +9,12 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.LootFest.Display;
+using VikingEngine.LootFest.Map;
 
 namespace VikingEngine.DSSWars
 {  
     partial class WorldData
     {
-
         public EcsStaticArray neighborCities;
         public GroupedResource[] cityResouces;
         public WorkPriority[] cityWork;
@@ -25,11 +25,10 @@ namespace VikingEngine.DSSWars
         bool[] WorkXpInUse;
         public WorkExperience[] workerXp;
         
-        
-
         public void InitCity(City city)
         {
             city.resourceComponentStartIndex = CityResoureIndex.COUNT * city.myIndex;
+           
         }
 
         public void initWorkerXp(int cityCount)
@@ -202,117 +201,58 @@ namespace VikingEngine.DSSWars
                 startFood = 200;
             }
 
+            for (int i = 0; i < cityWork.Length; i++)
+            {
+                cityWork[i] = new WorkPriority(0);
+            }
+
+            int resStartIndex = 0;
             int startIndex = 0;
             for (int cityIx = 0; cityIx < cityCount; cityIx++)
             {
-                //cities[cityIx].resourceComponentStartIndex = startIndex;
-                //int multiplyDefault = cities[cityIx].cityType == CityType.UnClaimed ? 0 : 1;
-                // Basics
-                //cityResouces[startIndex + CityResoureIndex.wood] = new GroupedResource { amount = 20, goalBuffer = DefaultBuffer_Wood };
-                //cityResouces[startIndex + CityResoureIndex.fuel] = new GroupedResource { amount = 100, goalBuffer = 400 };
-                //cityResouces[startIndex + CityResoureIndex.water] = new GroupedResource { goalBuffer = 0 }; // (no default given)
-                //cityResouces[startIndex + CityResoureIndex.stone] = new GroupedResource { amount = 20, goalBuffer = 300 };
-                //cityResouces[startIndex + CityResoureIndex.rawFood] = new GroupedResource { amount = 0, goalBuffer = 200 };
-                //cityResouces[startIndex + CityResoureIndex.food] = new GroupedResource { amount = 200, goalBuffer = 500 };
-                //cityResouces[startIndex + CityResoureIndex.beer] = new GroupedResource { amount = 0, goalBuffer = 200 };
-                //cityResouces[startIndex + CityResoureIndex.coolingfluid] = new GroupedResource { amount = 0, goalBuffer = 200 };
-                //cityResouces[startIndex + CityResoureIndex.skinLinnen] = new GroupedResource { amount = 20, goalBuffer = DefaultBuffer_SkinLinnen };
-                
-
-                //// Ores
-                //cityResouces[resourceStart + CityResoureIndex.ironore] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.TinOre] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.CopperOre] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.LeadOre] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.SilverOre] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.GoldOre] = new GroupedResource { stockPileLimit = 100 };
-
-                // Refined / materials
-                //cityResouces[startIndex + CityResoureIndex.iron] = new GroupedResource { amount = 20, goalBuffer = 100 };
-                //cityResouces[startIndex + CityResoureIndex.Tin] = new GroupedResource { goalBuffer = 100 };
-                //cityResouces[startIndex + CityResoureIndex.Copper] = new GroupedResource { goalBuffer = 100 };
-                //cityResouces[startIndex + CityResoureIndex.Lead] = new GroupedResource { goalBuffer = 100 };
-                //cityResouces[startIndex + CityResoureIndex.Silver] = new GroupedResource { goalBuffer = 100 };
-                //cityResouces[startIndex + CityResoureIndex.RawMithril] = new GroupedResource { goalBuffer = 100 };
-                //cityResouces[startIndex + CityResoureIndex.Sulfur] = new GroupedResource { goalBuffer = 100 };
-                
-
-                //// Alloys / specials
-                //cityResouces[resourceStart + CityResoureIndex.Bronze] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.Steel] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.CastIron] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.BloomeryIron] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.Mithril] = new GroupedResource { stockPileLimit = 100 };
-
-                //// Tools / components / melee
-                //cityResouces[resourceStart + CityResoureIndex.Palisade] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.Toolkit] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.Wagon2Wheel] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.Wagon4Wheel] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.BlackPowder] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.GunPowder] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.LedBullet] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.sharpstick] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.BronzeSword] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.shortsword] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.Sword] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.LongSword] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.HandSpear] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.MithrilSword] = new GroupedResource { stockPileLimit = 100 };
-
-                //// More weapons
-                //cityResouces[resourceStart + CityResoureIndex.Warhammer] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.twohandsword] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                ////cityResouces[resourceStart + CityResoureIndex.knightslance] = new GroupedResource { amount = 0, goalBuffer = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.SlingShot] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.ThrowingSpear] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.bow] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.longbow] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.crossbow] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.MithrilBow] = new GroupedResource { stockPileLimit = 100 };
-
-                //// Early firearms
-                //cityResouces[resourceStart + CityResoureIndex.HandCannon] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.HandCulvertin] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.Rifle] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.Blunderbuss] = new GroupedResource { stockPileLimit = 100 };
-
-                //// Siege
-                //cityResouces[resourceStart + CityResoureIndex.BatteringRam] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.ballista] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.Manuballista] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.Catapult] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.SiegeCannonBronze] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.ManCannonBronze] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.SiegeCannonIron] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.ManCannonIron] = new GroupedResource { stockPileLimit = 100 };
-
-                //// Armor
-                //cityResouces[resourceStart + CityResoureIndex.paddedArmor] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.HeavyPaddedArmor] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.BronzeArmor] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.mailArmor] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.heavyMailArmor] = new GroupedResource { amount = 0, stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.LightPlateArmor] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.FullPlateArmor] = new GroupedResource { stockPileLimit = 100 };
-                //cityResouces[resourceStart + CityResoureIndex.MithrilArmor] = new GroupedResource { stockPileLimit = 100 };
-
                 for (int resourceIx = 0; resourceIx < CityResoureIndex.COUNT; ++resourceIx)
                 {
                     cityResouces[resourceStart + resourceIx] = new GroupedResource();
                 }
 
-                cityResouces[startIndex + CityResoureIndex.wood].amount = startWood;
-                cityResouces[startIndex + CityResoureIndex.fuel].amount = 100;
-                cityResouces[startIndex + CityResoureIndex.stone].amount = 20;
-                cityResouces[startIndex + CityResoureIndex.food].amount = startFood;
-                cityResouces[startIndex + CityResoureIndex.skinLinnen].amount = startLinnen;                
-                cityResouces[startIndex + CityResoureIndex.iron].amount = 20;
+                cityResouces[resStartIndex + CityResoureIndex.wood].amount = startWood;
+                cityResouces[resStartIndex + CityResoureIndex.fuel].amount = 100;
+                cityResouces[resStartIndex + CityResoureIndex.stone].amount = 20;
+                cityResouces[resStartIndex + CityResoureIndex.food].amount = startFood;
+                cityResouces[resStartIndex + CityResoureIndex.skinLinnen].amount = startLinnen;                
+                cityResouces[resStartIndex + CityResoureIndex.iron].amount = 20;
 
                 resourceStart += CityResoureIndex.COUNT;
                 //workStart += WorkTemplate.COUNT;
 
-                
+                //int exEnd = startIndex + WorkTemplate.COUNT;
+
+                //for (int i = startIndex; i < exEnd; i++)
+                //{
+                //    cityWork[i] = new WorkPriority(0);
+                //}
+                WorkTemplate.InitComponents(cityWork, startIndex);
+                //cityWork[startIndex + (int)WorkPriorityType.move].value = 3;
+                //cityWork[startIndex + (int)WorkPriorityType.wood].value = 2;
+                //cityWork[startIndex + (int)WorkPriorityType.stone].value = 2;
+                //cityWork[startIndex + (int)WorkPriorityType.craftFuel].value = 1;
+                //cityWork[startIndex + (int)WorkPriorityType.farmFood].value = 4;
+                //cityWork[startIndex + (int)WorkPriorityType.farmRawFood].value = 1;
+                //cityWork[startIndex + (int)WorkPriorityType.craftBeer].value = 1;
+
+                //cityWork[startIndex + (int)WorkPriorityType.smeltIron].value = 3;
+                //cityWork[startIndex + (int)WorkPriorityType.craftSharpStick].value = 1;
+                //cityWork[startIndex + (int)WorkPriorityType.craftPaddedArmor].value = 1;
+                //cityWork[startIndex + (int)WorkPriorityType.farmfuel].value = 2;
+                //cityWork[startIndex + (int)WorkPriorityType.farmlinen].value = 1;
+                //cityWork[startIndex + (int)WorkPriorityType.bogiron].value = 1;
+                //cityWork[startIndex + (int)WorkPriorityType.miningIron].value = 3;
+                //cityWork[startIndex + (int)WorkPriorityType.trading].value = 2;
+                //cityWork[startIndex + (int)WorkPriorityType.autoBuild].value = 1;
+                //cityWork[startIndex + (int)WorkPriorityType.buildOrders].value = 2;
+                //cityWork[startIndex + (int)WorkPriorityType.smeltGold].value = 3;
+
+                startIndex += WorkTemplate.COUNT;
             }
 
             for (int i = 0; i < cityStorage.Length; i++)
@@ -322,5 +262,19 @@ namespace VikingEngine.DSSWars
 
         }
 
+        public void writeComponents(System.IO.BinaryWriter w)
+        {
+            for (int i = 0; i < cityStorage.Length; i++)
+            {
+                cityStorage[i].write(w);
+            }
+        }
+        public void readComponents(System.IO.BinaryReader r, int subVersion)
+        {
+            for (int i = 0; i < cityStorage.Length; i++)
+            {
+                cityStorage[i].read(r, subVersion);
+            }
+        }
     }
 }

@@ -287,20 +287,24 @@ namespace VikingEngine.DSSWars.GameObject
         public City(int index, IntVector2 pos, CityType type, WorldData world)
         {
             this.myIndex = index;
+            workTemplate = new WorkTemplate(true, index);
             world.InitCity(this);
             this.tilePos = pos;
             this.cityType = type;
+            
         }
 
         public City(int index)
         {
             this.myIndex = index;
+            workTemplate = new WorkTemplate(true, index);
             DssRef.world.InitCity(this);
         }
 
         public City(WorldData world, int index, System.IO.BinaryReader r, int version)
         {
             this.myIndex = index;
+            workTemplate = new WorkTemplate(true, index);
             world.InitCity(this);
             readMapFile(world, r, version);
         }
@@ -562,8 +566,6 @@ namespace VikingEngine.DSSWars.GameObject
 
                 w.Write((byte)cityType);
 
-                //w.Write(Bound.UShort(workForce.amount));
-                //w.Write(Bound.UShort(HousingCount_Workers));
                 w.Write(workForce.amount);
                 w.Write(HousingCount_Workers);
                 w.Write(Bound.UShort(HousingCount_Guard));
@@ -586,6 +588,9 @@ namespace VikingEngine.DSSWars.GameObject
 
                 w.Write(Bound.Byte(maxWaterBase));
                 w.Write(waterAddPerSec);
+
+                Debug.WriteCheck(w);
+
                 workTemplate.writeGameState(w);
 
                 Debug.WriteCheck(w);
@@ -599,8 +604,6 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     barracks.writeGameState(w);
                 }
-
-                
 
                 w.Write((ushort)deliveryServices.Count);
                 foreach (var delivery in deliveryServices)
@@ -629,7 +632,7 @@ namespace VikingEngine.DSSWars.GameObject
                 writeSoldierGroups(w);
 
                 w.Write((ushort)defenceBuildings.Count);
-                for (int i = 0; i < defenceBuildings.Count; ++i)//each (var defence in defenceBuildings)
+                for (int i = 0; i < defenceBuildings.Count; ++i)
                 {
                     defenceBuildings.array[i].writeGameState(w);
                 }
@@ -716,7 +719,8 @@ namespace VikingEngine.DSSWars.GameObject
             maxWaterTotal = maxWaterBase;
             waterAddPerSec = r.ReadSingle();
 
-            
+            Debug.ReadCheck(r);
+
             workTemplate.readGameState(r, subversion, true);
 
             Debug.ReadCheck(r);
@@ -1783,7 +1787,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void initEconomy(/*bool newGame,*/ WorldData world)
         {
-            workTemplate.initComponents(true, world.cityWork, WorkTemplate.COUNT * myIndex);
+            
 
             //if (newGame)
             {

@@ -210,10 +210,10 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         { }
         protected override Graphics.VoxelModelInstance createModel()
         {
-            walkingAnimation = HoundModel.DogAnimation;
+            walkingAnimation = DssVar.dogModel.animation;
 
-            return DssRef.models.ModelInstance_drawbatch(VoxelModelName.dog1,
-                HoundModel.DogScale);
+            return DssRef.models.ModelInstance_drawbatch(DssVar.dogModel.modelName,
+                DssVar.dogModel.scale);
         }
 
         protected override void sound()

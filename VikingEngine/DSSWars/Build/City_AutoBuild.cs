@@ -751,6 +751,10 @@ namespace VikingEngine.DSSWars.GameObject
                                 onGuardHouseBuild(build, true);
                                 break;
 
+                            case TerrainBuildingType.Nobelhouse:
+                                onNobelHouseBuild(build, DssConst.NobelHouseMenCount);
+                                break;
+
                             case TerrainBuildingType.MaterialStorage:
                                 addStorageBuilding(StorageType.MaterialStorage, build);
                                 break;

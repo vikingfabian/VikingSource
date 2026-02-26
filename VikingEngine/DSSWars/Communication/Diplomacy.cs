@@ -130,6 +130,13 @@ namespace VikingEngine.DSSWars
                 return -1;
             }
 
+#if DEBUG
+            if (!arraylib.InBound(indexRegister, lowIndex))
+            {
+                throw new Exception();
+            }
+#endif
+
             int index = indexRegister[lowIndex] + highIndex - lowIndex;
 
 #if DEBUG

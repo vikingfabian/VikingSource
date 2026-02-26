@@ -647,7 +647,7 @@ namespace VikingEngine.DSSWars.Build
                 uniqueBuilding = true
             };
 
-            new BuildOption(BuildAndExpandType.GreatHall, TerrainMainType.Building, (int)TerrainBuildingType.GreatHall, SpriteName.MissingImage, CraftBuildingLib.GreatHall, true,
+            new BuildOption(BuildAndExpandType.GreatHall, TerrainMainType.Building, (int)TerrainBuildingType.GreatHall, SpriteName.WarsBuild_GreatHall, CraftBuildingLib.GreatHall, true,
                 BuildCategoryTab.Upgrade, BuildFilterTag.Upgrade, BuildFilterTag.Military, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.JustOne, DssConst.WorkTime_Building_Default)
             {

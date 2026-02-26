@@ -1098,6 +1098,10 @@ namespace VikingEngine.DSSWars
                             icon = SpriteName.WarsBuild_ManorLord;
                             name = DssRef.lang.BuildingType_ManorLord;
                             break;
+                        case TerrainBuildingType.GreatHall:
+                            icon = SpriteName.WarsBuild_GreatHall;
+                            name = DssRef.todoLang.BuildingType_GreatHall;
+                            break;
                         case TerrainBuildingType.SoldierBarracks:
                             icon = SpriteName.WarsBuild_SoldierBarracks;
                             name = DssRef.lang.BuildingType_SoldierBarracks;

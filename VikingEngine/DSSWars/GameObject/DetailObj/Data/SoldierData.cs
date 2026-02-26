@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         /// </summary>
         public float blocksRefillTimeSec = DssConst.DefaultBlockRefillTimeSec; 
 
-        public int basehealth = 0;
+        public int basehealth = DssConst.Soldier_DefaultHealth;
         public bool arrowWeakness = false;
         public AttackType mainAttack = 0;
         public AttackType secondaryAttack = 0;

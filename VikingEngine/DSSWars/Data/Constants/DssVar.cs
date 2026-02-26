@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars
 {
@@ -22,8 +24,13 @@ namespace VikingEngine.DSSWars
         public static float Worker_StandardBoundRadius;
         public static float Men_StandardWalkingSpeed_PerSec;
         public static Vector3 WorkerUnit_ResourcePosDiff;
+
+        public static AnimalModelData pigModel;
+        public static AnimalModelData dogModel;
         public static void UpdateConstants()
         {
+            pigModel = new AnimalModelData(VoxelModelName.Pig, DssConst.Men_StandardModelScale * 0.5f, new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames));
+            dogModel = new AnimalModelData(VoxelModelName.dog1, DssConst.Men_StandardModelScale * 0.6f, new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1.1f));
             Projectile.Projectile_PeekHeight = DssConst.Men_StandardModelScale * 1f;
             Men_AsynchCollisionGroupRadius = StandardBoundRadius * 2f;
             StandardBoundRadius = 0.4f * DssConst.Men_StandardModelScale;

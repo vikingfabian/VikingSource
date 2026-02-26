@@ -503,8 +503,8 @@ namespace VikingEngine.DSSWars
         BronzeCasters,//
         Apprentices,//
 
-        Noblemen,
-        Nomads, //Low settler cost
+        Noblemen,//-implemented
+        Nomads, //Low settler cost-implemented
 
         Butchers, //Larger meat production -implemented
         Skinner,//Larger skin production -implemented

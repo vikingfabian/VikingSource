@@ -27,6 +27,7 @@ namespace VikingEngine.DSSWars.Presentation
         //regular
         public string Tutorial_SeeThisInThat = "See {0} in {1}";
 
+        public string Conscript_SkillBonus => "Skill bonus";
 
         /// <summary>
         /// Generelized for any object, like skills, resources and buildings
@@ -97,6 +98,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string Resource_TypeName_Elephant => "elephant";
         public string Resource_TypeName_WarElephant => "war elephant";
         public string Resource_TypeName_Oliphant => "oliphant";
+
+        public string NobelHouse_HousingCount => "Will house {0} nobelmen";
 
         public string BuildingType_GreatHall => "Great hall";
         public string BuildingType_GreatHall_Description => "Unlock advanced conscripting";

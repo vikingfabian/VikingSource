@@ -439,7 +439,7 @@ namespace VikingEngine.DSSWars.GameObject
             SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
             {
                 conscript = profile,
-                skillBonus = 1,
+                skillBonus = profile.man == ItemResourceType.NobelMen? DssConst.NobelMenSkillBonus : 1,
             };
 
             soldierProfile.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
@@ -451,31 +451,31 @@ namespace VikingEngine.DSSWars.GameObject
                 case CityCulture.Archers:
                     if (rangedMan)
                     {
-                        soldierProfile.skillBonus = 1.2f;
+                        soldierProfile.skillBonus *= 1.2f;
                     }
                     break;
                 case CityCulture.Warriors:
                     if (meleeMan)
                     {
-                        soldierProfile.skillBonus = 1.2f;
+                        soldierProfile.skillBonus *= 1.2f;
                     }
                     break;
-                //case CityCulture.Noblemen:
-                //    if (knight)
-                //    {
-                //        soldierProfile.skillBonus = 1.2f;
-                //    }
-                //    break;
+                case CityCulture.Noblemen:
+                    if (profile.man == ItemResourceType.NobelMen)
+                    {
+                        soldierProfile.skillBonus *= 1.2f;
+                    }
+                    break;
                 case CityCulture.Seafaring:
                     if (soldierProfile.conscript.specialization == SpecializationType.Sea)
                     {
-                        soldierProfile.skillBonus = 1.2f;
+                        soldierProfile.skillBonus *= 1.2f;
                     }
                     break;
                 case CityCulture.SiegeEngineer:
                     if (warmachine)
                     {
-                        soldierProfile.skillBonus = 1.2f;
+                        soldierProfile.skillBonus *= 1.2f;
                     }
                     break;
             }

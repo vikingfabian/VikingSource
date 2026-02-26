@@ -60,7 +60,8 @@ namespace VikingEngine.DSSWars.Conscript
                     profile.weapon = ItemResourceType.ManCannonBronze;
                     break;
 
-            }
+            } 
+            profile.man = ItemResourceType.Men;
             profile.training = TrainingLevel.Basic;
             maxTrainingLevel = TrainingLevel.Skillful;
         }

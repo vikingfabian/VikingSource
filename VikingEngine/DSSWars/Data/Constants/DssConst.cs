@@ -3,6 +3,7 @@
 using VikingEngine.DSSWars.GameObject;
 using System;
 using VikingEngine.ToGG.HeroQuest.Data;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace VikingEngine.DSSWars
 {
@@ -16,6 +17,9 @@ namespace VikingEngine.DSSWars
         public static float DiplomacyExtraCostPerAlly = 0.5f;
 
         //SOLDIER
+        public static int DogHealth = 250;
+        public static int HoundHealth = 500;
+
         public static int Soldier_DefaultHealth = 400;
         public static float Soldier_StandardAttackAndCoolDownTime = 1600;
         public static int SoldierGroup_RowWidth = 6;
@@ -53,6 +57,10 @@ namespace VikingEngine.DSSWars
         public const int NobelHouseMenCount = 15;
         public const float NobelHouseMenAddSpeed_Minute = 5;
         public static float NobelHouseMenAddSpeed_PerManHouse = NobelHouseMenAddSpeed_Minute / NobelHouseMenCount;
+
+        public const float NobelMenSkillBonusAdd = 0.5f;
+        public const float NobelMenSkillBonus = 1 + NobelMenSkillBonusAdd;
+
 
         //MEN
         public static float SoldierGroupStandardRotatingSpeed = 6.5f;
@@ -108,6 +116,7 @@ namespace VikingEngine.DSSWars
         public static int WeaponDamage_SiegeCannonIron = 600;
         public static int WeaponDamage_ManCannonIron = 300;
 
+        public static int WeaponDamage_Pig = 5;
         public static int WeaponDamage_Dog = 80;
         public static int WeaponDamage_Hound = 150;
 
