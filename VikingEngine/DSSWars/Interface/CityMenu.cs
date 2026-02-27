@@ -2263,7 +2263,7 @@ namespace VikingEngine.DSSWars.Interface
 
                     // --- Farm ---
                     city.GetGroupedResource(CityResoureIndex.Hen).toMenu(content, ItemResourceType.Hen, ref reachedBuffer, player, city);
-                    city.GetGroupedResource(CityResoureIndex.Pig).toMenu(content, ItemResourceType.Pig, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.Pig).toMenu(content, ItemResourceType.Pig, ref reachedBuffer, player, city);
 
                     // --- Dogs ---
                     city.GetGroupedResource(CityResoureIndex.Dog).toMenu(content, ItemResourceType.Dog, ref reachedBuffer, player, city);

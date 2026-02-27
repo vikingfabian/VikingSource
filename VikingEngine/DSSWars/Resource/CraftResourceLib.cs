@@ -1389,7 +1389,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterPony = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            30,
+            20,
             new UseResource[]
             {
         new UseResource(ItemResourceType.Pony, HenSlaughterCount),

@@ -214,7 +214,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
                 {
-                    if (myIndex == 185 || debugTagged)
+                    if (myIndex == 90 || debugTagged)
                     {
                         lib.DoNothing();
                         
@@ -923,7 +923,7 @@ namespace VikingEngine.DSSWars.GameObject
                         foreach (var bp in crafts)
                         {
                             WorkPriority template = workTemplate.GetWorkPriority((ItemResourceType)bp.workTag, out _);
-                            if ((!template.waitForStockpile || bp.hasFullStock(this)) && bp.available(this))
+                            if (template.value > topPrioValue && (!template.waitForStockpile || bp.hasFullStock(this)) && bp.available(this))
                             {
                                 topPrioValue = template.value;
                                 topItem = bp.workTag;

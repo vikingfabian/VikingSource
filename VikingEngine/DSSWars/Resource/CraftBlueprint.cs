@@ -371,6 +371,15 @@ namespace VikingEngine.DSSWars.Resource
                     content.hspace();
                     content.Add(new RbText(resultAmount1.ToString()));
                     content.hspace();
+
+                    //if ( > 0)
+                    //{
+                    //    content.Add(new RbImage(SpriteName.pjNumPlus));
+
+                    //    content.hspace();
+                    //    content.Add(new RbText(resultAmount1.ToString()));
+
+                    //}
                 }
 
                 iconName(1, out SpriteName icon, out string name);
@@ -378,9 +387,16 @@ namespace VikingEngine.DSSWars.Resource
                 content.space();
                 content.Add(new RbText(name));
 
-                if (resultSubType2 >= 0)
+                if (resultAmount2 > 0)
                 {
-                    
+                    content.Add(new RbImage(SpriteName.pjNumPlus));
+                    content.hspace();
+                    content.Add(new RbText(resultAmount2.ToString()));
+                    content.hspace();
+                    iconName(2, out SpriteName icon2, out string name2);
+                    content.Add(new RbImage(icon2));
+                    content.space();
+                    content.Add(new RbText(name2));
                 }
             }
             if (includeLevel && experienceType != WorkExperienceType.NUM_NONE)

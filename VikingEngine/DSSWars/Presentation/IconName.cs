@@ -186,20 +186,22 @@ namespace VikingEngine.DSSWars
                     break;
                 // --- Animals ---
 
+                case ItemResourceType.SlaughterHen:
                 case ItemResourceType.Hen:
                     itemIcon = SpriteName.WarsResource_Hen;
                     itemName = DssRef.todoLang.Resource_TypeName_Hen;
                     break;
-
+                case ItemResourceType.SlaughterPig:
                 case ItemResourceType.Pig:
                     itemIcon = SpriteName.WarsResource_Pig;
                     itemName = DssRef.todoLang.Resource_TypeName_Pig;
                     break;
-
+                case ItemResourceType.SlaughterOxen:
                 case ItemResourceType.Oxen:
                     itemIcon = SpriteName.WarsResource_Oxen;
                     itemName = DssRef.todoLang.Resource_TypeName_Oxen;
                     break;
+                case ItemResourceType.SlaughterKineOxen:
                 case ItemResourceType.KineOxen:
                     itemIcon = SpriteName.WarsResource_KineOxen;
                     itemName = DssRef.todoLang.Resource_TypeName_KineOxen;
@@ -215,36 +217,44 @@ namespace VikingEngine.DSSWars
                     break;
 
                 // --- Horses ---
+                case ItemResourceType.SlaughterPony:
                 case ItemResourceType.Pony:
                     itemIcon = SpriteName.WarsResource_Pony;
                     itemName = DssRef.todoLang.Resource_TypeName_Pony;
                     break;
+                case ItemResourceType.SlaughterHorse:
                 case ItemResourceType.Horse:
                     itemIcon = SpriteName.WarsResource_Horse;
                     itemName = DssRef.todoLang.Resource_TypeName_Horse;
                     break;
+                case ItemResourceType.SlaughterWarHorse:
                 case ItemResourceType.WarHorse:
                     itemIcon = SpriteName.WarsResource_WarHorse;
                     itemName = DssRef.todoLang.Resource_TypeName_WarHorse;
                     break;
+                case ItemResourceType.SlaughterDraftHorse:
                 case ItemResourceType.DraftHorse:
                     itemIcon = SpriteName.WarsResource_DraftHorse;
                     itemName = DssRef.todoLang.Resource_TypeName_DraftHorse;
                     break;
 
                 // --- Wild Pigs / Hogs ---
+                case ItemResourceType.SlaughterWildPig:
                 case ItemResourceType.WildPig:
                     itemIcon = SpriteName.WarsResource_WildPig;
                     itemName = DssRef.todoLang.Resource_TypeName_WildPig;
                     break;
+                case ItemResourceType.SlaughterWildHog:
                 case ItemResourceType.WildHog:
                     itemIcon = SpriteName.WarsResource_WildHog;
                     itemName = DssRef.todoLang.Resource_TypeName_WildHog;
                     break;
+                case ItemResourceType.SlaughterWarHog:
                 case ItemResourceType.WarHog:
                     itemIcon = SpriteName.WarsResource_WarHog;
                     itemName = DssRef.todoLang.Resource_TypeName_WarHog;
                     break;
+                case ItemResourceType.SlaughterStagHog:
                 case ItemResourceType.StagHog:
                     itemIcon = SpriteName.WarsResource_StagHog;
                     itemName = DssRef.todoLang.Resource_TypeName_StagHog;
@@ -279,14 +289,17 @@ namespace VikingEngine.DSSWars
                     break;
 
                 // --- Elephants ---
+                case ItemResourceType.SlaughterElephant:
                 case ItemResourceType.Elephant:
                     itemIcon = SpriteName.WarsResource_Elephant;
                     itemName = DssRef.todoLang.Resource_TypeName_Elephant;
                     break;
+                case ItemResourceType.SlaughterWarElephant:
                 case ItemResourceType.WarElephant:
                     itemIcon = SpriteName.WarsResource_WarElephant;
                     itemName = DssRef.todoLang.Resource_TypeName_WarElephant;
                     break;
+                case ItemResourceType.SlaughterOliphant:
                 case ItemResourceType.Oliphant:
                     itemIcon = SpriteName.WarsResource_Oliphant;
                     itemName = DssRef.todoLang.Resource_TypeName_Oliphant;

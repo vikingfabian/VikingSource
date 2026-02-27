@@ -288,8 +288,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             this.myIndex = index;
             workTemplate = new WorkTemplate(true, index);
+            
             world.InitCity(this);
             this.tilePos = pos;
+            cityTileArea = Rectangle2.FromCenterTileAndRadius(tilePos, 1);
             this.cityType = type;
             
         }

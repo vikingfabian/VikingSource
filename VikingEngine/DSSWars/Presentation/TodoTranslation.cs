@@ -106,8 +106,10 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string BuildingType_ClayPit => "Clay pit";
         public string BuildingType_Butcher => "Butcher";
+        public string BuildingType_Butcher_Description => "Turn animals to food and skin";
         public string BuildingType_Pottery => "Pottery";
-        
+        public string BuildingType_Pottery_Description => "Clay crafting station";
+
         public string BuildingType_Smoker => "Smoker";
         public string BuildingType_Dryer => "Dryer";
         public string BuildingType_Shieldmaker => "Shield maker";

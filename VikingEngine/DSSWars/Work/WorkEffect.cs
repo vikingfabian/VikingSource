@@ -151,9 +151,9 @@ namespace VikingEngine.DSSWars.Work
         public PotteryWorkEffect(IntVector2 subTilePos)
         {
             emitterPos = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
-            emitterPos.X += 0.05f;
-            emitterPos.Y += 0.05f;
-            emitterPos.Z += 0.00f;
+            emitterPos.X += 0.02f;
+            emitterPos.Y += 0.02f;
+            emitterPos.Z -= 0.03f;
         }
 
         public override void update()
@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars.Work
             {
                 if (Ref.peRnd.Chance(0.5))
                 {
-                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, emitterPos);
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, Ref.peRnd.Vector3_Sq(VectorExt.AddZ(emitterPos, 0.02f), 0.007f));
                     Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
                     Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
                 }
@@ -202,8 +202,8 @@ namespace VikingEngine.DSSWars.Work
         {
             emitterPos = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
             emitterPos.X -= 0.02f;
-            emitterPos.Y += 0.005f;
-            emitterPos.Z -= 0.01f;
+            emitterPos.Y += 0.03f;
+            emitterPos.Z += 0.03f;
         }
 
         public override void update()
@@ -211,10 +211,10 @@ namespace VikingEngine.DSSWars.Work
             //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
             if (/*Ref.TimePassed16ms && */Ref.peRnd.Chance(0.1 / Ref.UpdateTimes60FPS))
             {
-                Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.DssDamage, emitterPos);
-                Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.DssDamage, emitterPos);
-                Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.DssDamage, emitterPos);
-
+                for (int i = 0; i < 6; i++)
+                {
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.DssDamage, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
+                }
             }
         }
     }

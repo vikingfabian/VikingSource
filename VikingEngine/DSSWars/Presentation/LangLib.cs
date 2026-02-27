@@ -1397,6 +1397,12 @@ namespace VikingEngine.DSSWars.Presentation
                 case TerrainBuildingType.Cesspit:
                     return DssRef.todoLang.BuildingType_Cesspit_Description;
 
+                case TerrainBuildingType.Butcher:
+                    return DssRef.todoLang.BuildingType_Butcher_Description;
+                case TerrainBuildingType.Pottery:
+                    return DssRef.todoLang.BuildingType_Pottery_Description;
+
+
                 default:
                     return TextLib.Error;
             }
