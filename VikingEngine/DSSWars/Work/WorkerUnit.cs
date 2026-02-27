@@ -360,6 +360,13 @@ namespace VikingEngine.DSSWars.Work
                         case TerrainBuildingType.Brewery:
                             workEffect = new BreweryWorkEffect(status.subTileEnd);
                             break;
+                        case TerrainBuildingType.Pottery:
+                            workEffect = new PotteryWorkEffect(status.subTileEnd);
+                            break;
+                        case TerrainBuildingType.Butcher:
+                            workEffect = new ButcherWorkEffect(status.subTileEnd);
+                            break;
+
                     }
                     break;
             }

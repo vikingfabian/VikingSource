@@ -1,8 +1,6 @@
 ﻿UPDATE
 Change Log: 
 
-
-
 # SUMMER UPDATE #
 * Cities have a biom status
 * Redesign of the resource stockpile system

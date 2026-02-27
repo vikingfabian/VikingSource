@@ -207,16 +207,17 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                if (myIndex == 107 || debugTagged)
+                if (myIndex == 185 || debugTagged)
                 {
                     lib.DoNothing();
                 }
 
                 if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
                 {
-                    if (myIndex == 107 || debugTagged)
+                    if (myIndex == 185 || debugTagged)
                     {
                         lib.DoNothing();
+                        
                     }
 
                     CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);

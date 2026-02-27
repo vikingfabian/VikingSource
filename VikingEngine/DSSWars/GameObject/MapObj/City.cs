@@ -515,23 +515,17 @@ namespace VikingEngine.DSSWars.GameObject
             tilePos.readUshort(r);
 
             cityType = (CityType)r.ReadByte();
-            if (saveMapVersion < 9)
-            {
-                cityType += 2;
-            }
+            //if (saveMapVersion < 9)
+            //{
+            //    cityType += 2;
+            //}
             
             areaSize = r.ReadUInt16();
 
-            if (saveMapVersion < 10)
-            {
-                int cityTileRadius = r.ReadByte();
-                cityTileArea = Rectangle2.FromCenterTileAndRadius(tilePos, cityTileRadius);
-            }
-            else
-            {
-                cityTileArea.pos.readUshort(r);
-                cityTileArea.size.readByte(r);
-            }
+            
+            cityTileArea.pos.readUshort(r);
+            cityTileArea.size.readByte(r);
+           
 
             workHutStyle = r.ReadByte();
 
@@ -549,10 +543,8 @@ namespace VikingEngine.DSSWars.GameObject
             workerCullingMinMax = new Intvector2MinMax(tilePos);
             guardCullingMinMax = workerCullingMinMax;
 
-            if (saveMapVersion >= 9)
-            {
-                Debug.ReadCheck(r);
-            }
+            Debug.ReadCheck(r);
+            
         }
 
         public void writeGameState(System.IO.BinaryWriter w)

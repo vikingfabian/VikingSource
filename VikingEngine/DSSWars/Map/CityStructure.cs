@@ -250,6 +250,7 @@ namespace VikingEngine.DSSWars.Map
             //FarmGather.Clear();
             AnimalPens.Clear();
             BogIron.Clear();
+            ClayPit.Clear();
             Mines.Clear();
             CraftStation.Clear();
             CoinMinting.Clear();
@@ -379,18 +380,18 @@ namespace VikingEngine.DSSWars.Map
 
                                     case TerrainSubFoilType.BogIron:
                                         ++terrainStructure.mineCount_bogIron;
-                                        if (BogIron.Count < workerCount)
-                                        {
+                                        //if (BogIron.Count < workerCount)
+                                        //{
                                             BogIron.Add(subTileLoop.Position);
-                                        }
+                                        //}
                                         break;
 
                                     case TerrainSubFoilType.ClayPit:
                                         ++terrainStructure.resourceCount_clay;
-                                        if (ClayPit.Count < workerCount)
-                                        {
+                                        //if (ClayPit.Count < workerCount)
+                                        //{
                                             ClayPit.Add(subTileLoop.Position);
-                                        }
+                                        //}
                                         break;
                                 }
                                 break;
