@@ -1,7 +1,6 @@
 ﻿UPDATE
 Change Log: 
-* Pottery is not locked behind Logistics
-* Bricks in black market
+* 
 
 ##ICONS TODO
 * butcher 
