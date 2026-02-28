@@ -1,5 +1,7 @@
 ﻿Change log:
-* 
+* Reduced warmanger power with 50%
+* Added a max size on the war manager attacker faction (about max 150% size of the player on 100%)
+
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
