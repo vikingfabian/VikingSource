@@ -1225,48 +1225,61 @@ namespace VikingEngine.DSSWars.Work
 
                 case WorkType.Mine:
                     {
-                        //TODO placera mining i en deposit
-                        var mineType = (TerrainMineType)subTile.subTerrain;
                         Resource.ItemResourceType resourceType = ItemResourceType.NONE;
                         int amount = TerrainContent.DefaultMineAmount;
-                        switch (mineType)
-                        {
-                            case TerrainMineType.IronOre:
-                                resourceType = ItemResourceType.IronOre_G;
-                                break;
-                            case TerrainMineType.TinOre:
-                                resourceType = ItemResourceType.TinOre;
-                                break;
-                            case TerrainMineType.CopperOre:
-                                resourceType = ItemResourceType.CopperOre;
-                                break;
-                            case TerrainMineType.LeadOre:
-                                resourceType = ItemResourceType.LeadOre;
-                                break;
-                            case TerrainMineType.Sulfur:
-                                resourceType = ItemResourceType.Sulfur;
-                                break;
-                            case TerrainMineType.SilverOre:
-                                resourceType = ItemResourceType.SilverOre;
-                                break;
-                            
-                            case TerrainMineType.Coal:
-                                resourceType = ItemResourceType.Coal;
-                                amount = TerrainContent.MineAmount_Coal;
-                                break;
-                            case TerrainMineType.GoldOre:
-                                resourceType = ItemResourceType.GoldOre;
-                                break;
 
-                            case TerrainMineType.Mithril:
-                                resourceType = ItemResourceType.RawMithril;
-                                break;
+                        if (subTile.mainTerrain == TerrainMainType.Mine)
+                        {
+
+                            var mineType = (TerrainMineType)subTile.subTerrain;
+
+                            switch (mineType)
+                            {
+                                case TerrainMineType.IronOre:
+                                    resourceType = ItemResourceType.IronOre_G;
+                                    break;
+                                case TerrainMineType.Salt:
+                                    resourceType = ItemResourceType.Salt;
+                                    break;
+                                case TerrainMineType.TinOre:
+                                    resourceType = ItemResourceType.TinOre;
+                                    break;
+                                case TerrainMineType.CopperOre:
+                                    resourceType = ItemResourceType.CopperOre;
+                                    break;
+                                case TerrainMineType.LeadOre:
+                                    resourceType = ItemResourceType.LeadOre;
+                                    break;
+                                case TerrainMineType.Sulfur:
+                                    resourceType = ItemResourceType.Sulfur;
+                                    break;
+                                case TerrainMineType.SilverOre:
+                                    resourceType = ItemResourceType.SilverOre;
+                                    break;
+
+                                case TerrainMineType.Coal:
+                                    resourceType = ItemResourceType.Coal;
+                                    amount = TerrainContent.MineAmount_Coal;
+                                    break;
+                                case TerrainMineType.GoldOre:
+                                    resourceType = ItemResourceType.GoldOre;
+                                    break;
+
+                                case TerrainMineType.Mithril:
+                                    resourceType = ItemResourceType.RawMithril;
+                                    break;
+                            }
+
+
+                            if (city.Culture == CityCulture.Miners)
+                            {
+                                amount *= 2;
+                            }
                         }
-
-                        
-                        if (city.Culture == CityCulture.Miners)
+                        else
                         {
-                            amount *= 2;
+                            resourceType = ItemResourceType.Salt;
+                            amount = TerrainContent.DryingSaltAmount;
                         }
 
                         carry = new ItemResource(

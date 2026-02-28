@@ -994,7 +994,9 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.Dryer:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_meatstation, 3, wp, WorldData.SubTileWidth * 0.9f));
                     break;
-
+                case TerrainBuildingType.DryingPan:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 12, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
                 case TerrainBuildingType.MaterialStorage:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_storage, 0, wp, WorldData.SubTileWidth * 0.9f));
                     break;
@@ -1015,7 +1017,7 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_storage, 5, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException(buildingType.ToString());
             }
         }
 

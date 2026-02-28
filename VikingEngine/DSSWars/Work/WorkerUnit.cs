@@ -366,6 +366,9 @@ namespace VikingEngine.DSSWars.Work
                         case TerrainBuildingType.Butcher:
                             workEffect = new ButcherWorkEffect(status.subTileEnd);
                             break;
+                        case TerrainBuildingType.Smoker:
+                            workEffect = new SmokingWorkEffect(status.subTileEnd);
+                            break;
 
                     }
                     break;

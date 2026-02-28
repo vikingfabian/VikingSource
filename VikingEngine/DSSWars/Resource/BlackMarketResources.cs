@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars.Resource
         {
             ItemResourceType.Wood_Group,
             ItemResourceType.Stone_G,
+            ItemResourceType.Brick,
             ItemResourceType.Iron_G,
             ItemResourceType.RawFood_Group,
             ItemResourceType.SkinLinen_Group,
@@ -29,10 +30,11 @@ namespace VikingEngine.DSSWars.Resource
         };
         static readonly int[] PurchaseCount = { 20, 100, 500 };
 
-        static int Cost_RawFood = DssConst.FoodGoldValue_BlackMarket - 4;
+        static int Cost_RawFood = DssConst.FoodGoldValue_BlackMarket - 5;
         static int Cost_Food = DssConst.FoodGoldValue_BlackMarket;
         static int Cost_Wood = 50;
         static int Cost_Stone = 60;
+        static int Cost_Brick = 100;
         static int Cost_SkinAndLinnen = 50;
         static int Cost_Iron = 500;
 
@@ -114,6 +116,9 @@ namespace VikingEngine.DSSWars.Resource
                     break;
                 case ItemResourceType.Stone_G:
                     Resource(CostMultiply(city, Cost_Stone), ItemResourceType.Stone_G, DssRef.lang.Resource_TypeName_Stone);
+                    break;
+                case ItemResourceType.Brick:
+                    Resource(CostMultiply(city, Cost_Brick), ItemResourceType.Brick, DssRef.todoLang.Resource_TypeName_Brick);
                     break;
                 case ItemResourceType.SkinLinen_Group:
                     Resource(CostMultiply(city, Cost_SkinAndLinnen), ItemResourceType.SkinLinen_Group, DssRef.lang.Resource_TypeName_Linen);

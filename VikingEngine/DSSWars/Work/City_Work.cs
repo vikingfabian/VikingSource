@@ -747,88 +747,127 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
 
-                    //CRAFT
-                    foreach (var pos in CityStructure.WorkInstance.CraftStation)
                     {
-                        int distanceValue = -center.SideLength(pos);
-                        var subTile = DssRef.world.subTileGrid.Get(pos);
-                        var building = subTile.GetBuildingType();
-                        switch (building)
+                        //CRAFT
+                        byte prio;
+                        foreach (var pos in CityStructure.WorkInstance.CraftStation)
                         {
-                            case TerrainBuildingType.Work_Cook:
-                                if (
-                                    workTemplate.Get(WorkPriorityType.craftFood).HasPrio() && needMore(CityResoureIndex.food) &&
-                                    (CraftResourceLib.Food2.hasResources(this) || CraftResourceLib.Food1.hasResources(this)) &&
-                                    work_isFreeTile(pos))
-                                {
-                                    workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Food_G, 0, pos, workTemplate.Get(WorkPriorityType.craftFood).value, 0, distanceValue));
-                                }
-                                break;
+                            int distanceValue = -center.SideLength(pos);
+                            var subTile = DssRef.world.subTileGrid.Get(pos);
+                            var building = subTile.GetBuildingType();
+                            switch (building)
+                            {
+                                case TerrainBuildingType.Work_Cook:
+                                    if (
+                                        workTemplate.Get(WorkPriorityType.craftFood).HasPrio_r(out prio) && needMore(CityResoureIndex.food) &&
+                                        (CraftResourceLib.Food2.hasResources(this) || CraftResourceLib.Food1.hasResources(this)) &&
+                                        work_isFreeTile(pos))
+                                    {
+                                        workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Food_G, 0, pos, prio, 0, distanceValue));
+                                    }
 
-                            case TerrainBuildingType.Work_Bench:
-                                craftBench(pos, distanceValue, CraftList.BenchCraftTypes, -5);
-                                break;
-                            case TerrainBuildingType.Work_Smith:
+                                    if (
+                                        workTemplate.Get(WorkPriorityType.craftConservedFood).HasPrio_r(out prio) && needMore(CityResoureIndex.ConservedFood) &&
+                                        CraftResourceLib.ConservedFood_Barrel.hasResources(this) &&
+                                        work_isFreeTile(pos))
+                                    {
+                                        workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.ConservedFood, 0, pos, prio, 0, distanceValue));
+                                    }
+                                    break;
 
-                                craftBench(pos, distanceValue, CraftList.SmithCraftTypes);
-                                break;
+                                case TerrainBuildingType.Work_Bench:
+                                    craftBench(pos, distanceValue, CraftList.BenchCraftTypes, -5);
+                                    break;
+                                case TerrainBuildingType.Work_Smith:
 
-                            case TerrainBuildingType.Work_CoalPit:
-                                if (
-                                   workTemplate.Get(WorkPriorityType.craftFuel).HasPrio() && needMore(CityResoureIndex.food) &&
-                                   CraftResourceLib.Charcoal.hasResources(this) &&
-                                   work_isFreeTile(pos))
-                                {
-                                    workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Coal, 0, pos, workTemplate.Get(WorkPriorityType.craftFuel).value, 0, distanceValue));
-                                }
-                                break;
+                                    craftBench(pos, distanceValue, CraftList.SmithCraftTypes);
+                                    break;
 
-                            case TerrainBuildingType.Brewery:
-                                if (workTemplate.Get(WorkPriorityType.craftBeer).HasPrio() &&
-                                    needMore(CityResoureIndex.beer) &&//res_beer.needMore() &&
-                                    CraftResourceLib.Beer.hasResources(this) &&
-                                    work_isFreeTile(pos))
-                                {
-                                    workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Beer, 0, pos, workTemplate.Get(WorkPriorityType.craftBeer).value, 0, distanceValue));
-                                }
-                                break;
+                                case TerrainBuildingType.Work_CoalPit:
+                                    if (
+                                       workTemplate.Get(WorkPriorityType.craftFuel).HasPrio() && needMore(CityResoureIndex.food) &&
+                                       CraftResourceLib.Charcoal.hasResources(this) &&
+                                       work_isFreeTile(pos))
+                                    {
+                                        workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Coal, 0, pos, workTemplate.Get(WorkPriorityType.craftFuel).value, 0, distanceValue));
+                                    }
+                                    break;
 
-                            case TerrainBuildingType.Carpenter:
-                                craftBench(pos, distanceValue, CraftList.CarpenterCraftTypes);
-                                break;
-                            case TerrainBuildingType.Armory:
-                                craftBench(pos, distanceValue, CraftList.ArmoryCraftTypes);
-                                break;
-                            case TerrainBuildingType.ShieldMaker:
-                                craftBench(pos, distanceValue, CraftList.ShieldCraftTypes);
-                                break;
-                            case TerrainBuildingType.Pottery:
-                                craftBench(pos, distanceValue, CraftList.PotteryCraftTypes);
-                                break;
-                            case TerrainBuildingType.Smelter:
-                                craftBench(pos, distanceValue, CraftList.SmelterCraftTypes);
-                                break;
-                            case TerrainBuildingType.Foundry:
-                                craftBench(pos, distanceValue, CraftList.FoundryCraftTypes);
-                                break;
-                            //case TerrainBuildingType.Butcher:
-                            //    craftBench(pos, distanceValue, CraftList.ButcherCraftTypes);
-                            //    break;
-                            case TerrainBuildingType.Chemist:
-                                craftBench(pos, distanceValue, CraftList.ChemistCraftTypes);
-                                break;
-                            case TerrainBuildingType.Gunmaker:
-                                craftBench(pos, distanceValue, CraftList.GunmakerCraftTypes);
-                                break;
-                            case TerrainBuildingType.Butcher:
-                                itemConvert(pos, distanceValue, false);
-                                break;
-                            case TerrainBuildingType.CoinMinter:
-                                itemConvert(pos, distanceValue, true);
-                                break;
+                                case TerrainBuildingType.Brewery:
+                                    if (workTemplate.Get(WorkPriorityType.craftBeer).HasPrio() &&
+                                        needMore(CityResoureIndex.beer) &&//res_beer.needMore() &&
+                                        CraftResourceLib.Beer.hasResources(this) &&
+                                        work_isFreeTile(pos))
+                                    {
+                                        workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.Beer, 0, pos, workTemplate.Get(WorkPriorityType.craftBeer).value, 0, distanceValue));
+                                    }
+                                    break;
+
+                                case TerrainBuildingType.Carpenter:
+                                    craftBench(pos, distanceValue, CraftList.CarpenterCraftTypes);
+                                    break;
+                                case TerrainBuildingType.Armory:
+                                    craftBench(pos, distanceValue, CraftList.ArmoryCraftTypes);
+                                    break;
+                                case TerrainBuildingType.ShieldMaker:
+                                    craftBench(pos, distanceValue, CraftList.ShieldCraftTypes);
+                                    break;
+                                case TerrainBuildingType.Pottery:
+                                    craftBench(pos, distanceValue, CraftList.PotteryCraftTypes);
+                                    break;
+                                case TerrainBuildingType.Smelter:
+                                    craftBench(pos, distanceValue, CraftList.SmelterCraftTypes);
+                                    break;
+                                case TerrainBuildingType.Foundry:
+                                    craftBench(pos, distanceValue, CraftList.FoundryCraftTypes);
+                                    break;
+                                //case TerrainBuildingType.Butcher:
+                                //    craftBench(pos, distanceValue, CraftList.ButcherCraftTypes);
+                                //    break;
+                                case TerrainBuildingType.Chemist:
+                                    craftBench(pos, distanceValue, CraftList.ChemistCraftTypes);
+                                    break;
+                                case TerrainBuildingType.Gunmaker:
+                                    craftBench(pos, distanceValue, CraftList.GunmakerCraftTypes);
+                                    break;
+                                case TerrainBuildingType.Smoker:
+                                    if (
+                                        workTemplate.Get(WorkPriorityType.craftConservedFood).HasPrio() && needMore(CityResoureIndex.ConservedFood) &&
+                                        CraftResourceLib.ConservedFood_Smoked.hasResources(this) &&
+                                        work_isFreeTile(pos)
+                                        )
+                                    {
+                                        workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.ConservedFood, 0, pos, workTemplate.Get(WorkPriorityType.craftConservedFood).value, 0, distanceValue));
+                                    }
+                                    break;
+                                case TerrainBuildingType.Dryer:
+                                    if (
+                                        workTemplate.Get(WorkPriorityType.craftConservedFood).HasPrio() && needMore(CityResoureIndex.ConservedFood) &&
+                                        CraftResourceLib.ConservedFood_Dried.hasResources(this) &&
+                                        work_isFreeTile(pos)
+                                        )
+                                    {
+                                        workQue.Add(new WorkQueMember(WorkType.Craft, (int)ItemResourceType.ConservedFood, 0, pos, workTemplate.Get(WorkPriorityType.craftConservedFood).value, 0, distanceValue));
+                                    }
+                                    break;
+                                case TerrainBuildingType.DryingPan:
+                                    if (
+                                        workTemplate.Get(WorkPriorityType.miningSalt).HasPrio() && needMore(CityResoureIndex.Salt) &&
+                                        work_isFreeTile(pos)
+                                        )
+                                    {
+                                        workQue.Add(new WorkQueMember(WorkType.Mine, (int)ItemResourceType.Salt, 0, pos, workTemplate.Get(WorkPriorityType.miningSalt).value, 0, distanceValue));
+                                    }
+                                    break;
+                                case TerrainBuildingType.Butcher:
+                                    itemConvert(pos, distanceValue, false);
+                                    break;
+                                case TerrainBuildingType.CoinMinter:
+                                    itemConvert(pos, distanceValue, true);
+                                    break;
+                            }
                         }
                     }
-
                     //COINS
                     if (CityStructure.WorkInstance.CoinMinting.Count > 0)//foreach (var pos in CityStructure.WorkInstance.CoinMinting)
                     {

@@ -319,8 +319,7 @@ namespace VikingEngine.DSSWars.Resource
         )
         { tooltipId = Tooltip.Food_BlueprintId };
 
-
-        public static readonly CraftBlueprint ConservedFood1 = new CraftBlueprint(
+        public static readonly CraftBlueprint ConservedFood_Barrel = new CraftBlueprint(
           CraftResultType.Resource,
           (int)ItemResourceType.ConservedFood,
           20,
@@ -333,7 +332,7 @@ namespace VikingEngine.DSSWars.Resource
           }, XP.WorkExperienceType.Chemistry
         );
 
-        public static readonly CraftBlueprint ConservedFood2 = new CraftBlueprint(
+        public static readonly CraftBlueprint ConservedFood_Smoked = new CraftBlueprint(
           CraftResultType.Resource,
           (int)ItemResourceType.ConservedFood,
           10,
@@ -342,10 +341,10 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Beer, FoodWaterUsage),
                 new UseResource(ItemResourceType.RawFood_Group, 10),
                 new UseResource(ItemResourceType.Fuel_G, FoodFuelUsage),
-          }, XP.WorkExperienceType.CraftFuel
+          }, XP.WorkExperienceType.CraftFuel, XP.ExperienceLevel.Beginner_1, Build.BuildAndExpandType.Smoker
         );
 
-        public static readonly CraftBlueprint ConservedFood3 = new CraftBlueprint(
+        public static readonly CraftBlueprint ConservedFood_Dried = new CraftBlueprint(
           CraftResultType.Resource,
           (int)ItemResourceType.ConservedFood,
           10,
@@ -354,7 +353,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Beer, FoodWaterUsage / 2),
                 new UseResource(ItemResourceType.Salt, 1),
                 new UseResource(ItemResourceType.RawFood_Group, 10),
-          }, XP.WorkExperienceType.CraftFuel
+          }, XP.WorkExperienceType.CraftFuel, XP.ExperienceLevel.Beginner_1, Build.BuildAndExpandType.Dryer
         );
 
         public static readonly CraftBlueprint Beer = new CraftBlueprint(

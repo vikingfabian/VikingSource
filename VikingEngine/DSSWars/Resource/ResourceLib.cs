@@ -293,7 +293,7 @@ namespace VikingEngine.DSSWars.Resource
             {
                 content.Add(new RbSeperationLine());
                 content.Add(new RbBeginTitle());
-                content.Add(new RbImage(SpriteName.MissingImage));
+                content.Add(new RbImage(SpriteName.WarsBuild_Cesspit));
                 content.space();
                 content.Add(new RbText(DssRef.todoLang.BuildingType_Cesspit, HudLib.TitleColor_Head2));
                 content.text(".Todo info here");

@@ -1971,7 +1971,7 @@ namespace VikingEngine.DSSWars.Interface
                     //})));
 
                     city.GetGroupedResource(CityResoureIndex.ConservedFood).toMenu(content, ItemResourceType.ConservedFood, ref reachedBuffer, player, city);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.ConservedFood1, CraftResourceLib.ConservedFood2);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.ConservedFood_Barrel, CraftResourceLib.ConservedFood_Smoked);
 
                     city.GetGroupedResource(CityResoureIndex.beer).toMenu(content, ItemResourceType.Beer, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Beer);

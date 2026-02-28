@@ -152,6 +152,7 @@ namespace VikingEngine.DSSWars.Map
         //public const int HenReady = HenMaxSize * 3;
 
         public const int DefaultMineAmount = 10;
+        public const int DryingSaltAmount = 8;
         public const int MineAmount_Coal = 20;
 
         public void asyncFoilGroth(IntVector2 pos, ref SubTile subtile)

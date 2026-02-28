@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.GameObject
                         CesspitStatus currentStatus = cesspits.array[selectedCessPit];
                         //selected view
 
-                        HudLib.buildingMenuTitle(content, SpriteName.NO_IMAGE, DssRef.todoLang.BuildingType_Cesspit, currentStatus.idAndPosition,
+                        HudLib.buildingMenuTitle(content, SpriteName.WarsBuild_Cesspit, DssRef.todoLang.BuildingType_Cesspit, currentStatus.idAndPosition,
                             selectedCessPit, cesspits.Count,
                             () => { selectedCessPit = -1; },
                             (int next) => {
@@ -66,7 +66,7 @@ namespace VikingEngine.DSSWars.GameObject
                         content.newParagraph();
                         option(ItemResourceType.NONE);
 
-                        for (ResourceGroupType group = 0; group < ResourceGroupType.NUM; group++)
+                        for (ResourceGroupType group = 0; group < ResourceGroupType.Mint; group++)
                         {
                             content.newParagraph();
                             var list = ResourceLib.ResourceGroupList(group);

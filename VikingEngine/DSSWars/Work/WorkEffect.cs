@@ -218,4 +218,29 @@ namespace VikingEngine.DSSWars.Work
             }
         }
     }
+
+    class SmokingWorkEffect : AbsWorkEffect
+    {
+        Vector3 emitterPos;
+
+        public SmokingWorkEffect(IntVector2 subTilePos)
+        {
+            emitterPos = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
+            //emitterPos.X -= 0.01f;
+            //emitterPos.Y += 0.005f;
+            //emitterPos.Z += 0.02f;
+        }
+
+        public override void update()
+        {
+            //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Fire, smokeEmitter);
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
+            {
+                if (Ref.peRnd.Chance(0.5))
+                {
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Smoke, Ref.peRnd.Vector3_Sq(emitterPos, 0.01f));
+                }
+            }
+        }
+    }
 }

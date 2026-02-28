@@ -1361,7 +1361,7 @@ namespace VikingEngine.DSSWars
                             break;
 
                         case TerrainBuildingType.Cesspit:
-                            icon = SpriteName.MissingImage;
+                            icon = SpriteName.WarsBuild_Cesspit;
                             name = DssRef.todoLang.BuildingType_Cesspit;
                             break;
 

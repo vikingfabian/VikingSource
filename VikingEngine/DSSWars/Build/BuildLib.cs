@@ -483,10 +483,9 @@ namespace VikingEngine.DSSWars.Build
             list.Add(BuildAndExpandType.Smith);
 
             list.Add(BuildAndExpandType.Carpenter);
-            if (logistics1)
-            {
-                list.Add(BuildAndExpandType.Pottery);
-            }
+            
+            list.Add(BuildAndExpandType.Pottery);
+            
             if (unlocks.building_chemist)
             {
                 list.Add(BuildAndExpandType.Chemist);                
