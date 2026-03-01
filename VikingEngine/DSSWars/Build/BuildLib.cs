@@ -806,11 +806,13 @@ namespace VikingEngine.DSSWars.Build
 
             new BuildOption(BuildAndExpandType.TreeSeedlingSoft, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeSoftSprout, SpriteName.WarsBuild_TreeSeedlingSoft, CraftBuildingLib.TreeSeedlingSoft, false,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
-                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { altBlueprint = CraftBuildingLib.TreeSeedlingSoft_Gold };
 
             new BuildOption(BuildAndExpandType.TreeSeedlingHard, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeHardSprout, SpriteName.WarsBuild_TreeSeedlingHard, CraftBuildingLib.TreeSeedlingHard, false,
                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
-               MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+               MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { altBlueprint = CraftBuildingLib.TreeSeedlingHard_Gold };
 
             new BuildOption(BuildAndExpandType.OrchardApple, TerrainMainType.Foil, (int)TerrainSubFoilType.TreeApple, SpriteName.WarsBuild_TreeApple, CraftBuildingLib.Orchard, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,

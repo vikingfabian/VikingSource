@@ -839,6 +839,16 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Water_G, 20),
             }, XP.WorkExperienceType.Farm
         );
+        public static readonly CraftBlueprint TreeSeedlingSoft_Gold = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.TreeSeedlingSoft,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Gold, 10),
+                new UseResource(ItemResourceType.Water_G, 20),
+           }, XP.WorkExperienceType.Farm
+       );
 
         public static readonly CraftBlueprint TreeSeedlingHard = new CraftBlueprint(
             CraftResultType.Building,
@@ -850,6 +860,16 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Water_G, 50),
             }, XP.WorkExperienceType.Farm
         );
+        public static readonly CraftBlueprint TreeSeedlingHard_Gold = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.TreeSeedlingHard,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.Gold, 10),
+                new UseResource(ItemResourceType.Water_G, 50),
+           }, XP.WorkExperienceType.Farm
+       );
 
         public static readonly CraftBlueprint Orchard = new CraftBlueprint(
             CraftResultType.Building,

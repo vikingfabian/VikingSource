@@ -79,6 +79,10 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 safeGuardBuild = BuildAndExpandType.WorkerTent;
             }
+            else if (terrainStructure.resourceCount_wood <= 2 && GetGroupedResource(CityResoureIndex.wood).amount <= 10)
+            {
+                safeGuardBuild = BuildAndExpandType.TreeSeedlingHard;
+            }
             else if (cityType == CityType.Campsite && buildingStructure.LinenFarm_count < 2)
             {
                 safeGuardBuild = BuildAndExpandType.LinenFarm;
@@ -486,7 +490,7 @@ namespace VikingEngine.DSSWars.GameObject
                     case BuildAndExpandType.OrchardApple:
                     case BuildAndExpandType.OrchidBanana:
                         chance = automationFocus == AutomationFocus.Grow ? 2000 : 1000;
-                        maxCount = 200;
+                        maxCount = cityType < CityType.Town ? 60 : 200;
                         break;
 
                     case BuildAndExpandType.WheatFarm:

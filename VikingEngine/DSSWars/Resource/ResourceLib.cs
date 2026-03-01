@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.EntityComponent;
@@ -190,6 +191,17 @@ namespace VikingEngine.DSSWars.Resource
                 case ResourceGroupType.Armor: return MovableCityResource_Armor;
             }
         }
+        public static void ResourceIconCountDisplay(City city, ItemResourceType item, RichBoxContent content)
+        {
+            EntityComponent.GroupedResource resources = city.GetGroupedResource(item);
+
+            content.Add(new RbImage(Icon(item)));
+            content.space();
+            content.Add(new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": ", HudLib.TitleColor_TypeName));
+            content.space();
+            content.Add(new RbText(TextLib.LargeNumber(resources.amount)));
+        }
+
         public static void FullResourceInfo(RichBoxContent content, object tag)
         {
             ResourceInfoTag args = (ResourceInfoTag)tag;
