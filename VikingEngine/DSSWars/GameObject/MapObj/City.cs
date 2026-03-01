@@ -2531,6 +2531,10 @@ namespace VikingEngine.DSSWars.GameObject
                 const int LowAmount = 10;
 
                 args.content.newLine();
+                args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+                args.content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
+
+                args.content.newLine();
                 HudLib.CityResource(args.content, this, ItemResourceType.Food_G);
 
                 if (resourceAmount(CityResoureIndex.food)/*res_food.amount*/ <= LowAmount)
@@ -2549,9 +2553,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                args.content.newLine();
-                args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-                args.content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
+                
             }
         }
 
@@ -2905,27 +2907,31 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                HudLib.ItemCount(content, SpriteName.WarsWorkerAdd, DssRef.lang.ResourceType_Children, children().ToString());
-                content.space();
                 if (interactive)
                 {
-                    HudLib.InfoButton(content, new RbTooltip(childrenTooltip, this));
-                }
 
-                content.newLine();
-                content.Add(new RbImage(SpriteName.WarsUnitIcon_Immigrant));
-                content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Immigrants, immigrants.Int())));
-                content.Add(new RbTab(0.4f));
-                content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
-                content.space();
-                content.Add(new RbImage(SpriteName.WarsBuild_Tent));
-                content.space();
-                content.Add(new RbText(buildingStructure.ImmigrationTent_count.ToString()));
-                content.space();
-                if (interactive)
-                {
-                    HudLib.InfoButton(content, new RbTooltip(immigrantsTooltip, this));
+                    HudLib.ItemCount(content, SpriteName.WarsWorkerAdd, DssRef.lang.ResourceType_Children, children().ToString());
+                    content.space();
+                    if (interactive)
+                    {
+                        HudLib.InfoButton(content, new RbTooltip(childrenTooltip, this));
+                    }
+
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.WarsUnitIcon_Immigrant));
+                    content.space();
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Immigrants, immigrants.Int())));
+                    content.Add(new RbTab(0.4f));
+                    content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+                    content.space();
+                    content.Add(new RbImage(SpriteName.WarsBuild_Tent));
+                    content.space();
+                    content.Add(new RbText(buildingStructure.ImmigrationTent_count.ToString()));
+                    content.space();
+                    if (interactive)
+                    {
+                        HudLib.InfoButton(content, new RbTooltip(immigrantsTooltip, this));
+                    }
                 }
 
                 content.newLine();
@@ -2970,9 +2976,20 @@ namespace VikingEngine.DSSWars.GameObject
                 //HudLib.ItemCount(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, TextLib.Divition_Large(workForce.amount, homesTotal()));
                 //HudLib.ItemCount(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, TextLib.Divition_Large(guardCount, maxGuardSize));
 
+
+                
+
                 CityEconomyData cityEconomy = new CityEconomyData(this);
 
                 content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
+
+                if (!interactive)
+                {
+                    content.newLine();
+                    ResourceLib.ResourceIconCountDisplay(this, ItemResourceType.Food_G, content);
+
+                }
+
                 content.icontext(SpriteName.rtsIncomeTime, string.Format(DssRef.lang.Hud_TotalIncome, Money.CopperToGoldString_Large(cityEconomy.IncomeAndUpkeep_Total())));
                 //content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, GuardUpkeep(maxGuardSize)));
 
@@ -3020,7 +3037,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                if (!player.profile.casualControls)
+                if (interactive && !player.profile.casualControls)
                 {
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsIcon_WorkQueueTotal));

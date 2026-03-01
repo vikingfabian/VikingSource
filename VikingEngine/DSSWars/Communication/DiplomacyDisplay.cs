@@ -207,7 +207,24 @@ namespace VikingEngine.DSSWars.Interface
 
             content.Add(new RbSeperationLine());
 
-            FactionSize(faction, content, false);
+            content.newLine();
+
+            content.Add(new RbImage(SpriteName.rtsMoney));
+            content.space();
+            content.Add(new RbText(TextLib.LargeNumber(faction.money.GetGold())));
+
+            content.space(2);
+
+
+            content.Add(new RbImage(SpriteName.WarsWorker));
+            content.space();
+            content.Add(new RbText(TextLib.LargeNumber(faction.totalWorkForce)));
+
+            content.space(2);
+
+            content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+            content.space();
+            content.Add(new RbText(TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
 
             content.newParagraph();
 
@@ -221,28 +238,40 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        public static void FactionSize(Faction faction, RichBoxContent content, bool fullDisplay)
-        {
-            if (fullDisplay)
-            {
-                content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(faction.totalWorkForce));
-                content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_TotalStrengthRating, TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
-            }
-            else
-            {
-                content.newLine();
-                content.Add(new RbImage(SpriteName.WarsWorker));
-                content.space();
-                content.Add(new RbText(TextLib.LargeNumber(faction.totalWorkForce)));
+        //public static void FactionSize(Faction faction, RichBoxContent content, bool fullDisplay)
+        //{
+        //    if (fullDisplay)
+        //    {
+        //        content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(faction.totalWorkForce));
+        //        content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_TotalStrengthRating, TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
+        //    }
+        //    else
+        //    {
+        //        content.newLine();
 
-                content.space(2);
+        //        content.Add(new RbImage(SpriteName.rtsMoney));
+        //        content.space();
+        //        content.Add(new RbText(TextLib.LargeNumber(faction.money.GetGold())));
 
-                content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-                content.space();
-                content.Add(new RbText(TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
-            }
-            content.newLine();
-        }
+        //        content.space(2);
+
+                
+        //        content.Add(new RbImage(SpriteName.WarsWorker));
+        //        content.space();
+        //        content.Add(new RbText(TextLib.LargeNumber(faction.totalWorkForce)));
+
+        //        content.space(2);
+
+        //        content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+        //        content.space();
+        //        content.Add(new RbText(TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
+
+                
+
+                
+        //    }
+        //    content.newLine();
+        //}
 
         void playerToPlayer(RichBoxContent content)
         {
