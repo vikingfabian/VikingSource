@@ -527,8 +527,15 @@ namespace VikingEngine.DSSWars
             }
             if (subTileReloadTimer.Update())
             {
-                detailMap.oneSecondUpdate = true;
-                overviewMap.bRefreshTimer = true;
+                if (detailMap != null)
+                {
+                    detailMap.oneSecondUpdate = true;
+                }
+             
+                if (overviewMap != null)
+                {
+                    overviewMap.bRefreshTimer = true;
+                }
             }
 
             //detailMap.update();
