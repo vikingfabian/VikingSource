@@ -76,12 +76,12 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string Hud_Purchase_ResourceCost => "{1} {0}";
 
-        public override string DisplayMode => "Режим экрана";
-        public override string DisplayMode_Windowed => "В окне";
-        public override string DisplayMode_BorderlessFullscreen => "Окно без рамки";
+        //public override string DisplayMode => "Режим экрана";
+        //public override string DisplayMode_Windowed => "В окне";
+        //public override string DisplayMode_BorderlessFullscreen => "Окно без рамки";
 
-        public override string GameSettings_RenderedMouseCursor => "Программный курсор";
-        public override string GameSettings_MuteControllerDisconnect => "Скрыть ошибки геймпада";
+        //public override string GameSettings_RenderedMouseCursor => "Программный курсор";
+        //public override string GameSettings_MuteControllerDisconnect => "Скрыть ошибки геймпада";
 
         public override string Delivery_MaxDistance => "Макс. дальность доставки: {0}";
         public override string Tutorial_WillTakeAWhile => "Это займет время, вернитесь позже.";

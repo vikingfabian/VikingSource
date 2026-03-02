@@ -618,6 +618,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Butcher: return Butcher_count;
                 case BuildAndExpandType.Smoker: return Smoker_count;
                 case BuildAndExpandType.Dryer: return Dryer_count;
+                case BuildAndExpandType.ShieldMaker: return ShieldMaker_count;
 
                 // --- NEW Storage ---
                 case BuildAndExpandType.MaterialStorage: return MaterialStorage_count;

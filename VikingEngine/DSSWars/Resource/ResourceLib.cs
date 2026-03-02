@@ -194,10 +194,10 @@ namespace VikingEngine.DSSWars.Resource
         public static void ResourceIconCountDisplay(City city, ItemResourceType item, RichBoxContent content)
         {
             EntityComponent.GroupedResource resources = city.GetGroupedResource(item);
-
-            content.Add(new RbImage(Icon(item)));
+            IconName.Item(item, out SpriteName itemIcon, out string itemName);
+            content.Add(new RbImage(itemIcon));
             content.space();
-            content.Add(new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": ", HudLib.TitleColor_TypeName));
+            content.Add(new RbText(TextLib.LargeFirstLetter(itemName) + ": ", HudLib.TitleColor_TypeName));
             content.space();
             content.Add(new RbText(TextLib.LargeNumber(resources.amount)));
         }

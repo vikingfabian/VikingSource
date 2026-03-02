@@ -76,12 +76,12 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string Hud_Purchase_ResourceCost => "{1} {0}";
 
-        public override string DisplayMode => "显示模式";
-        public override string DisplayMode_Windowed => "窗口模式";
-        public override string DisplayMode_BorderlessFullscreen => "无边框窗口";
+        //public override string DisplayMode => "显示模式";
+        //public override string DisplayMode_Windowed => "窗口模式";
+        //public override string DisplayMode_BorderlessFullscreen => "无边框窗口";
 
-        public override string GameSettings_RenderedMouseCursor => "游戏内光标"; // Implies a cursor rendered by the game
-        public override string GameSettings_MuteControllerDisconnect => "屏蔽手柄断开提示";
+        //public override string GameSettings_RenderedMouseCursor => "游戏内光标"; // Implies a cursor rendered by the game
+        //public override string GameSettings_MuteControllerDisconnect => "屏蔽手柄断开提示";
 
         public override string Delivery_MaxDistance => "最大运输距离：{0}";
         public override string Tutorial_WillTakeAWhile => "这需要一些时间，请稍后再来。";

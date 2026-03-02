@@ -83,12 +83,12 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public abstract string Hud_Purchase_ResourceCost { get; }
 
-        public abstract string DisplayMode { get; }
-        public abstract string DisplayMode_Windowed { get; }
-        public abstract string DisplayMode_BorderlessFullscreen { get; }
+        //public abstract string DisplayMode { get; }
+        //public abstract string DisplayMode_Windowed { get; }
+        //public abstract string DisplayMode_BorderlessFullscreen { get; }
 
-        public abstract string GameSettings_RenderedMouseCursor { get; }
-        public abstract string GameSettings_MuteControllerDisconnect { get; }
+        //public abstract string GameSettings_RenderedMouseCursor { get; }
+        //public abstract string GameSettings_MuteControllerDisconnect { get; }
 
         public abstract string Delivery_MaxDistance { get; }
         public abstract string Tutorial_WillTakeAWhile { get; }

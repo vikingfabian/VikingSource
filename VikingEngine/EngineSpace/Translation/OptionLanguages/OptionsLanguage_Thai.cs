@@ -24,7 +24,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string DisplayMode_Windowed => TextLib.ThaiConv("แบบ|หน้าต่าง");
         public override string DisplayMode_BorderlessFullscreen => TextLib.ThaiConv("เต็ม|จอ|ไร้|ขอบ");
         public override string GameSettings_RenderedMouseCursor => TextLib.ThaiConv("เรนเดอร์|เคอร์เซอร์");
-
+        public override string GameSettings_MuteControllerDisconnect => TextLib.ThaiConv("ปิด|การ|แจ้ง|เตือน|คอนโทรลเลอร์|หลุด");
         //--
         public override string GraphicsOption_FarViewDistance => TextLib.ThaiConv("ระยะ|การ|มอง|เห็น|ไกล");
 

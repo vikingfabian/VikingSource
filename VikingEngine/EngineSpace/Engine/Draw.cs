@@ -172,23 +172,23 @@ namespace VikingEngine.Engine
             //    instancing.Load();
             //}
             Input.Mouse.Reset();
-            refreshCursor();
+            //refreshCursor();
         }
 
-        public void refreshCursor()
-        {
-            //foreach (var ins in Input.Mouse.Instances)
-            //{ 
-            //    ins.RefreshMouseVisible();
-            //}
-            //customMousePointer = null;
+        //public void refreshCursor()
+        //{
+        //    //foreach (var ins in Input.Mouse.Instances)
+        //    //{ 
+        //    //    ins.RefreshMouseVisible();
+        //    //}
+        //    //customMousePointer = null;
 
-            //if (Ref.gamesett.customCursor)
-            //{
-            //    customMousePointer = new Image(SpriteName.cmdPointer, Vector2.Zero, Engine.Screen.IconSizeV2, ImageLayers.AbsoluteTopLayer, true, false);
-            //}
-            //Input.Mouse.RefreshMouseVisible();// = !Ref.gamesett.customMouse;
-        }
+        //    //if (Ref.gamesett.customCursor)
+        //    //{
+        //    //    customMousePointer = new Image(SpriteName.cmdPointer, Vector2.Zero, Engine.Screen.IconSizeV2, ImageLayers.AbsoluteTopLayer, true, false);
+        //    //}
+        //    //Input.Mouse.RefreshMouseVisible();// = !Ref.gamesett.customMouse;
+        //}
 
         virtual public void DeleteMe()
         {

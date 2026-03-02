@@ -82,12 +82,12 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string Hud_Purchase_ResourceCost => "{1} {0}";
 
-        public override string DisplayMode => "Görüntü Modu";
-        public override string DisplayMode_Windowed => "Pencere";
-        public override string DisplayMode_BorderlessFullscreen => "Çerçevesiz Tam Ekran";
+        //public override string DisplayMode => "Görüntü Modu";
+        //public override string DisplayMode_Windowed => "Pencere";
+        //public override string DisplayMode_BorderlessFullscreen => "Çerçevesiz Tam Ekran";
 
-        public override string GameSettings_RenderedMouseCursor => "Yazılımsal İmleç"; // "Software cursor" - standard tech term
-        public override string GameSettings_MuteControllerDisconnect => "Gamepad kopma uyarısını sustur";
+        //public override string GameSettings_RenderedMouseCursor => "Yazılımsal İmleç"; // "Software cursor" - standard tech term
+        //public override string GameSettings_MuteControllerDisconnect => "Gamepad kopma uyarısını sustur";
 
         public override string Delivery_MaxDistance => "Maks. teslimat mesafesi: {0}";
         public override string Tutorial_WillTakeAWhile => "Bu biraz sürecek, daha sonra tekrar gel.";

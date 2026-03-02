@@ -78,12 +78,12 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string Hud_Purchase_ResourceCost => "{1} {0}";
 
-        public override string DisplayMode => "Modo de exibição";
-        public override string DisplayMode_Windowed => "Modo janela";
-        public override string DisplayMode_BorderlessFullscreen => "Janela sem bordas";
+        //public override string DisplayMode => "Modo de exibição";
+        //public override string DisplayMode_Windowed => "Modo janela";
+        //public override string DisplayMode_BorderlessFullscreen => "Janela sem bordas";
 
-        public override string GameSettings_RenderedMouseCursor => "Cursor renderizado";
-        public override string GameSettings_MuteControllerDisconnect => "Silenciar desconexão do controle";
+        //public override string GameSettings_RenderedMouseCursor => "Cursor renderizado";
+        //public override string GameSettings_MuteControllerDisconnect => "Silenciar desconexão do controle";
 
         public override string Delivery_MaxDistance => "Distância máx. de entrega: {0}";
         public override string Tutorial_WillTakeAWhile => "Isso vai demorar um pouco, volte mais tarde.";

@@ -459,7 +459,11 @@ namespace VikingEngine.DSSWars.Conscript
                         break;
 
                     default:
+                        soldierData.modelName = LootFest.VoxelModelName.ErrorCube;
+#if DEBUG
                         throw new NotImplementedException();
+#endif
+                        break;
                 }
             }
         }

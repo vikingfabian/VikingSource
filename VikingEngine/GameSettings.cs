@@ -419,7 +419,8 @@ namespace VikingEngine
             if (set)
             {
                 customCursor = value;
-                Ref.draw.refreshCursor();
+                Input.Mouse.refreshCursor();
+                //Ref.draw.refreshCursor();
                 settingsHasChanged = true;
             }
             return customCursor;

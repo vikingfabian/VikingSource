@@ -477,7 +477,7 @@ namespace VikingEngine.DSSWars.Build
                     list.Add(BuildAndExpandType.DryingPan);
                 }
             }
-            list.Add(BuildAndExpandType.Cook);
+            //list.Add(BuildAndExpandType.Cook);
             list.Add(BuildAndExpandType.Smelter);
             list.Add(BuildAndExpandType.Foundry);
             list.Add(BuildAndExpandType.Smith);

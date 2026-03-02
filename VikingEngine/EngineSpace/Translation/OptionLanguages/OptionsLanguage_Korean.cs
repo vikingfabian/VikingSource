@@ -24,7 +24,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string DisplayMode_Windowed => "창 모드";
         public override string DisplayMode_BorderlessFullscreen => "테두리 없는 전체 화면";
         public override string GameSettings_RenderedMouseCursor => "렌더된 커서";
-
+        public override string GameSettings_MuteControllerDisconnect => "컨트롤러 연결 해제 알림 끄기";
         //--
         public override string GraphicsOption_FarViewDistance => "원거리 시야";
 

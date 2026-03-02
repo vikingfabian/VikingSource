@@ -23,6 +23,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string DisplayMode_Windowed => "Fenêtré";
         public override string DisplayMode_BorderlessFullscreen => "Plein écran sans bordure";
         public override string GameSettings_RenderedMouseCursor => "Curseur rendu";
+        public override string GameSettings_MuteControllerDisconnect => "Masquer alertes manette";
         //-
         public override string GraphicsOption_FarViewDistance => "Vue longue distance";
 

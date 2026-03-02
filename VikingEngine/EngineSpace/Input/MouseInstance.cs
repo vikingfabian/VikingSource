@@ -220,6 +220,11 @@ namespace VikingEngine.Input
             if (isMouse && !Ref.gamesett.customCursor)
             {
                 Ref.main.IsMouseVisible = visible;
+
+                if (customMousePointer != null)
+                {
+                    customMousePointer.Visible = false;
+                }
             }
             else
             {
@@ -231,6 +236,10 @@ namespace VikingEngine.Input
                 if (customMousePointer != null)
                 {
                     customMousePointer.Visible = visible;
+                    if (isMouse)
+                    {
+                        Ref.main.IsMouseVisible = !visible;
+                    }
                 }
             }
         }
@@ -286,7 +295,7 @@ namespace VikingEngine.Input
         {
             get
             {
-                return MoveDistance.X != 0 || MoveDistance.Y != 0;//currentMouseState.X != previousMouseState.X || currentMouseState.Y != previousMouseState.Y;
+                return MoveDistance.X != 0 || MoveDistance.Y != 0;
             }
         }
 

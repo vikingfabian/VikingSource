@@ -77,12 +77,12 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string Hud_Purchase_ResourceCost => TextLib.ThaiConv("{1} {0}");
 
-        public override string DisplayMode => TextLib.ThaiConv("โหมด|แสดง|ผล");
-        public override string DisplayMode_Windowed => TextLib.ThaiConv("แบบ|หน้าต่าง");
-        public override string DisplayMode_BorderlessFullscreen => TextLib.ThaiConv("เต็ม|จอ|ไร้|ขอบ");
+        //public override string DisplayMode => TextLib.ThaiConv("โหมด|แสดง|ผล");
+        //public override string DisplayMode_Windowed => TextLib.ThaiConv("แบบ|หน้าต่าง");
+        //public override string DisplayMode_BorderlessFullscreen => TextLib.ThaiConv("เต็ม|จอ|ไร้|ขอบ");
 
-        public override string GameSettings_RenderedMouseCursor => TextLib.ThaiConv("เรนเดอร์|เคอร์เซอร์");
-        public override string GameSettings_MuteControllerDisconnect => TextLib.ThaiConv("ปิด|การ|แจ้ง|เตือน|คอนโทรลเลอร์|หลุด");
+        //public override string GameSettings_RenderedMouseCursor => TextLib.ThaiConv("เรนเดอร์|เคอร์เซอร์");
+        //public override string GameSettings_MuteControllerDisconnect => TextLib.ThaiConv("ปิด|การ|แจ้ง|เตือน|คอนโทรลเลอร์|หลุด");
 
         public override string Delivery_MaxDistance => TextLib.ThaiConv("ระยะ|ขน|ส่ง|สูงสุด: {0}");
         public override string Tutorial_WillTakeAWhile => TextLib.ThaiConv("ขั้น|ตอนนี้|ใช้|เวลา|สัก|พัก |ลอง|กลับ|มา|ดู|ใหม่|ภาย|หลัง");

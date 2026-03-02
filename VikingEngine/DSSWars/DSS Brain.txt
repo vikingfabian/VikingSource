@@ -8,6 +8,7 @@ Change Log:
 
 
 #MOUNTED TODO
+x AI is having some real issues with the new resources and buildings
 x stockpile, must save if unlimited
 x stockpile copy/paste and to/from faction does not work at all
 x stockile any numbers option

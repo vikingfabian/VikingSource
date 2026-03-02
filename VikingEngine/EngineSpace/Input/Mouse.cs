@@ -13,7 +13,8 @@ namespace VikingEngine.Input
     {
         static MouseState previousMouseState;
         static MouseState currentMouseState;
-
+        public static Vector2 MoveDistance;
+        public static Vector2 RealMoveDistance;
         //static MainGame main;
         static bool swapLeftRightButtons = false;
 
@@ -32,6 +33,8 @@ namespace VikingEngine.Input
             Instances.Add(mouse);
             Ref.main.IsMouseVisible = true;
             MenuMode = true;
+
+            mouse.RefreshMouseVisible();
         }
 
         public static void SetMenuMode(bool menu)
@@ -93,10 +96,6 @@ namespace VikingEngine.Input
                 ins.Hide();
             }
         }
-
-
-        public static Vector2 MoveDistance;
-        public static Vector2 RealMoveDistance;
         
         public static bool bMoveInput
         {
@@ -150,6 +149,14 @@ namespace VikingEngine.Input
             foreach (MouseInstance ins in Instances)
             {
                 ins.Update();
+            }
+        }
+
+        public static void refreshCursor()
+        {
+            foreach (var ins in Input.Mouse.Instances)
+            {
+                ins.RefreshMouseVisible();
             }
         }
 

@@ -24,7 +24,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string DisplayMode_Windowed => "Оконный режим";
         public override string DisplayMode_BorderlessFullscreen => "Полный экран без рамок";
         public override string GameSettings_RenderedMouseCursor => "Отрисованный курсор";
-
+        public override string GameSettings_MuteControllerDisconnect => "Скрыть ошибки геймпада";
         //--
         public override string GraphicsOption_FarViewDistance => "Дальний обзор";
 

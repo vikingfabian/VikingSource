@@ -78,12 +78,12 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string Hud_Purchase_ResourceCost => "{1} {0}";
 
-        public override string DisplayMode => "화면 모드";
-        public override string DisplayMode_Windowed => "창 모드";
-        public override string DisplayMode_BorderlessFullscreen => "테두리 없는 전체 화면";
+        //public override string DisplayMode => "화면 모드";
+        //public override string DisplayMode_Windowed => "창 모드";
+        //public override string DisplayMode_BorderlessFullscreen => "테두리 없는 전체 화면";
 
-        public override string GameSettings_RenderedMouseCursor => "소프트웨어 커서";
-        public override string GameSettings_MuteControllerDisconnect => "컨트롤러 연결 해제 알림 끄기";
+        //public override string GameSettings_RenderedMouseCursor => "소프트웨어 커서";
+        //public override string GameSettings_MuteControllerDisconnect => "컨트롤러 연결 해제 알림 끄기";
 
         public override string Delivery_MaxDistance => "최대 배송 거리: {0}";
         public override string Tutorial_WillTakeAWhile => "시간이 좀 걸립니다. 나중에 다시 확인해 주세요.";
