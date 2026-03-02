@@ -8,6 +8,9 @@ Change Log:
 
 
 #MOUNTED TODO
+x stockpile, must save if unlimited
+x stockpile copy/paste and to/from faction does not work at all
+x stockile any numbers option
 x ui line breaks in German
 X handle negative raw food
 X butcher effect
