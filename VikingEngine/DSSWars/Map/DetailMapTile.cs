@@ -1001,13 +1001,13 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_storage, 0, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.FoodStorage:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_storage, 1, wp, WorldData.SubTileWidth * 0.9f));
-                    break;
-                case TerrainBuildingType.WeaponStorage:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_storage, 2, wp, WorldData.SubTileWidth * 0.9f));
                     break;
-                case TerrainBuildingType.ArmorStorage:
+                case TerrainBuildingType.WeaponStorage:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_storage, 3, wp, WorldData.SubTileWidth * 0.9f));
+                    break;
+                case TerrainBuildingType.ArmorStorage:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_storage, 1, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.AnimalStorage:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_storage, 4, wp, WorldData.SubTileWidth * 0.9f));

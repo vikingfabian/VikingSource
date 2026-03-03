@@ -33,14 +33,16 @@ namespace VikingEngine.DSSWars.EntityComponent
         public int stockPileLimit;
         public int deliverCount;
         public bool hasCesspit;
-        public StockpileLimitOption limitOption;
+        //public StockpileLimitOption limitOption;
+        public bool useStockLimit;
 
         public ResourceChangeRate changeRate;
 
         public GroupedResource()
         {
             stockPileLimit = StorageSize.StartSize;
-            limitOption = StockpileLimitOption.NoLimit;
+            //limitOption = StockpileLimitOption.NoLimit;
+            useStockLimit = false;
         }
 
         public void clearFactionOverView()
@@ -79,19 +81,35 @@ namespace VikingEngine.DSSWars.EntityComponent
         public void UpdateCapacity(int capacity)
         {
             this.capacity = capacity;
-            stockPileLimit = Math.Min(ResourceLib.Limit(limitOption), capacity);
+            if (useStockLimit)
+            {
+                Math.Min(stockPileLimit, capacity);
+            }
+            else
+            {
+                stockPileLimit = capacity;
+            }
+            //stockPileLimit = Math.Min(ResourceLib.Limit(limitOption), capacity);
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write(amount);
-            w.Write((byte)limitOption);
+            w.Write(useStockLimit);//(byte)limitOption);
             //w.Write((ushort)capacity);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion)
         {
             amount = r.ReadInt32();
-            limitOption = (StockpileLimitOption)r.ReadByte();
+            if (subversion < 107)
+            {
+                r.ReadByte();
+            }
+            else
+            { 
+                useStockLimit = r.ReadBoolean();
+            }
+            //limitOption = (StockpileLimitOption)r.ReadByte();
             //capacity = r.ReadUInt16();
         }
 

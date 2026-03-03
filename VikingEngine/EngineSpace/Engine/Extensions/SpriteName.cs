@@ -2647,6 +2647,7 @@ namespace VikingEngine
         WarsHammerAdd,
         WarsHammerSub,
         WarsConstructBuildingIcon,
+        WarsSlaughter,
 
         WarsIncreaseArrowUp,
         WarsDecreaseArrowDown,
@@ -2989,6 +2990,7 @@ namespace VikingEngine
         WarsStockpileAdd_Protected,
         WarsStockpileAdd,
         WarsStockpileStop,
+        WarsStockpileLimit,
 
         WarsProtectedStockpileOn,
         WarsProtectedStockpileOff,

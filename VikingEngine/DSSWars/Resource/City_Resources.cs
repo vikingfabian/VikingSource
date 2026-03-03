@@ -826,7 +826,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case ItemResourceType.RawFood_Group:
                 case ItemResourceType.Wheat:
                 case ItemResourceType.Egg:
-                case ItemResourceType.Hen:
+                //case ItemResourceType.Hen:
                     //if (rawfoodSafeGuard)
                     //{
                     //    usesSafeGuard = true;
@@ -834,13 +834,13 @@ namespace VikingEngine.DSSWars.GameObject
                     //}
                     return needMore(CityResoureIndex.rawFood);
 
-                case ItemResourceType.Pig:
-                    //if (rawfoodSafeGuard)
-                    //{
-                    //    usesSafeGuard = true;
-                    //    return true;
-                    //}
-                    return needMore(CityResoureIndex.food) || needMore(CityResoureIndex.skinLinnen);
+                //case ItemResourceType.Pig:
+                //    //if (rawfoodSafeGuard)
+                //    //{
+                //    //    usesSafeGuard = true;
+                //    //    return true;
+                //    //}
+                //    return needMore(CityResoureIndex.food) || needMore(CityResoureIndex.skinLinnen);
 
                 case ItemResourceType.Wood_Group:
                 case ItemResourceType.DryWood:
@@ -1257,19 +1257,19 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
 
                 case ItemResourceType.Egg:                                   
-                case ItemResourceType.Hen:
+                //case ItemResourceType.Hen:
                     convert1.type = ItemResourceType.RawFood_Group;
                     convert1.amount = DssConst.HenRawFoodAmout;
                     //animalResourceBonus(ref item);
                     break;
 
-                case ItemResourceType.Pig:
-                    convert1.type = ItemResourceType.RawFood_Group;
-                    convert1.amount = DssConst.PigRawFoodAmout;
-                    //animalResourceBonus(ref item);
+                //case ItemResourceType.Pig:
+                //    convert1.type = ItemResourceType.RawFood_Group;
+                //    convert1.amount = DssConst.PigRawFoodAmout;
+                //    //animalResourceBonus(ref item);
 
-                    convert2 = new ItemResource(ItemResourceType.SkinLinen_Group, 1, 1, DssConst.PigSkinAmount);
-                    break;
+                //    convert2 = new ItemResource(ItemResourceType.SkinLinen_Group, 1, 1, DssConst.PigSkinAmount);
+                //    break;
 
                 case ItemResourceType.Linen:
                     convert1.type = ItemResourceType.SkinLinen_Group;

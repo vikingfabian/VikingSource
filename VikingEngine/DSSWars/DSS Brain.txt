@@ -1,6 +1,14 @@
 ﻿UPDATE
 Change Log: 
-* 
+* Trying a new stockpile layout
+* missing soldier models should default to a error cube instead
+* fixed 2 Cook Buildings
+* fixed windows cursor is visible on top of the game cursor
+* fixed Shield makers are not showing the correct number of buildings
+* options for setting limit of salt and conserved food storage
+* fixed In game models for storage
+* fixed hen/pigs dont producte animals
+
 
 ##ICONS TODO
 * butcher 
@@ -8,15 +16,24 @@ Change Log:
 
 
 #MOUNTED TODO
+
+Current bugs
+x Shields not implemented
+x missing a lot of the animal/weapon/armor combos
 x AI is having some real issues with the new resources and buildings
+x stockpile, is broken, cant be copied, is messy
+X doesnt handle negative raw food on animal upkeep
+x cesspit should check fuel limit
+x bioms confusing
+x animal gather is confusing
+x HUD pins dont work
+
+
 x stockpile, must save if unlimited
 x stockpile copy/paste and to/from faction does not work at all
 x stockile any numbers option
 x ui line breaks in German
-X handle negative raw food
-X butcher effect
 x Skill bonus ui
-x cesspit should check fuel limit
 x adv build upgrade, no more use of logistics
 x auto options for logistics/hall/cook
 

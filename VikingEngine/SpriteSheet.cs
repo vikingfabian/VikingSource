@@ -2187,6 +2187,10 @@ namespace VikingEngine
                 add(SpriteName.WarsResource_WagonClosed);
                 add(SpriteName.WarsResource_WagonIron);
                 add(SpriteName.WarsResource_WagonSteel);
+
+                add(SpriteName.WarsSlaughter);
+                add(SpriteName.WarsStockpileLimit);
+
             }
 
             currentIndex = numTilesWidth * 87;
