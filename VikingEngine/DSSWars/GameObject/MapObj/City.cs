@@ -4009,7 +4009,7 @@ namespace VikingEngine.DSSWars.GameObject
             while(neighbors.Next(DssRef.world.cities, out City nCity))
             {
                 var cFaction = nCity.GetFaction();
-                if (cFaction != faction && cFaction.player.IsPlayerNeighbor)
+                if (cFaction != null && cFaction != faction && cFaction.player.IsPlayerNeighbor)
                 {
                     return true;
                 }

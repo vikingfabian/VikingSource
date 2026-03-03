@@ -217,31 +217,33 @@ namespace VikingEngine.DSSWars.Interface
 
             void addSoldier(int count)
             {
-                SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                if (city != null)
                 {
-                    conscript = new ConscriptProfile()
+                    SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                     {
-                        weapon = BattleLabStorage.Singleton.setup.selectedWeapon,
-                        armorLevel = Resource.ItemResourceType.PaddedArmor,
-                        training = TrainingLevel.Basic,
-                        specialization = SpecializationType.Traditional,
+                        conscript = new ConscriptProfile()
+                        {
+                            weapon = BattleLabStorage.Singleton.setup.selectedWeapon,
+                            armorLevel = Resource.ItemResourceType.PaddedArmor,
+                            training = TrainingLevel.Basic,
+                            specialization = SpecializationType.Traditional,
+                        }
+                    };
+
+                    var army = city.recruitToClosestArmy();
+
+                    if (army == null)
+                    {
+                        army = city.GetFaction().NewArmy(city.recruitToTile);
                     }
-                };
 
-                var army = city.recruitToClosestArmy();
+                    for (int i = 0; i < count; ++i)
+                    {
+                        new SoldierGroup(army, SoldierProfile, army.position);
+                    }
 
-                if (army == null)
-                {
-                    army = city.GetFaction().NewArmy(city.recruitToTile);
+                    army.setAsStartArmy();
                 }
-
-                for (int i = 0; i < count; ++i)
-                {                    
-                    new SoldierGroup(army, SoldierProfile, army.position);                    
-                }
-
-                army.setAsStartArmy();
-                //army.GetArmy().OnSoldierPurchaseCompleted();
             }
         }
 

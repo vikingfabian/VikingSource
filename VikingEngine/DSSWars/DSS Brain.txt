@@ -1,5 +1,6 @@
 ﻿Change log:
-* 
+* Fixed rare god recruit crash
+
 
 
 #Event timers (are slightly random)#
