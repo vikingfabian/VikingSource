@@ -429,20 +429,22 @@ namespace VikingEngine.DSSWars.Resource
             {
                 stockPileEdit(content, item, groupedResource);
             }
-
-            List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(2);
-            IconName.Storage(ItemPropertyColl.Get(item).storageType, out SpriteName storageIcon, out string storageName);
-            buttonContent.Add(new RbImage(storageIcon));
-            buttonContent.Add(new RbSpace());
-            if (city == null)
-            {
-                buttonContent.Add(new RbText(".Max"));
-            }
             else
             {
-                buttonContent.Add(new RbText(groupedResource.capacity.ToString()));
+                List<AbsRichBoxMember> buttonContent = new List<AbsRichBoxMember>(2);
+                IconName.Storage(ItemPropertyColl.Get(item).storageType, out SpriteName storageIcon, out string storageName);
+                buttonContent.Add(new RbImage(storageIcon));
+                buttonContent.Add(new RbSpace());
+                if (city == null)
+                {
+                    buttonContent.Add(new RbText(".Max"));
+                }
+                else
+                {
+                    buttonContent.Add(new RbText(groupedResource.capacity.ToString()));
+                }
+                content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null, new RbTooltip_Text(storageName)));
             }
-            content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null, new RbTooltip_Text(storageName)));
                 //new RbAction1Arg<StockpileLimitOption>((StockpileLimitOption limit) =>
                 //{
 

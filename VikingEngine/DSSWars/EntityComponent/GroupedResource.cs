@@ -40,7 +40,7 @@ namespace VikingEngine.DSSWars.EntityComponent
 
         public GroupedResource()
         {
-            stockPileLimit = StorageSize.StartSize;
+            stockPileLimit = DssConst.StorageStartSize;
             //limitOption = StockpileLimitOption.NoLimit;
             useStockLimit = false;
         }

@@ -108,7 +108,9 @@ namespace VikingEngine.DSSWars.Presentation
         public string BuildingType_Butcher => "Butcher";
         public string BuildingType_Butcher_Description => "Turn animals to food and skin";
         public string BuildingType_Pottery => "Pottery";
-        public string BuildingType_Pottery_Description => "Clay crafting station";
+        public string BuildingType_CraftX_Description => "{0} crafting station";
+
+        public string BuildingType_GatherX_Description => "Gather {0}";
 
         public string BuildingType_Smoker => "Smoker";
         public string BuildingType_Dryer => "Dryer";
@@ -123,6 +125,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string BuildingType_WeaponStorage => "Weapon Storage";
         public string BuildingType_ArmorStorage => "Armor Storage";
         public string BuildingType_AnimalStorage => "Animal Storage";
+
+        public string BuildingType_Storage_Description => "Increase max stockpile by {0}";
 
         public string BuildingType_Cesspit => "Cesspit";
         public string BuildingType_Cesspit_Description => "Destroy resources";

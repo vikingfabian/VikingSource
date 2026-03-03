@@ -13,8 +13,7 @@ namespace VikingEngine.DSSWars.Resource
     {
         public static readonly int COUNT = (int)StorageType.NUM_NONE;
 
-        public const int StartSize = 500;
-        const int BuildingSizeAdd = 500;
+       
 
         public int storageCount;
       
@@ -33,7 +32,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public void refreshCapacity(City city, StorageType storageType)
         {
-            int capacity = StartSize + storageCount * BuildingSizeAdd;
+            int capacity = DssConst.StorageStartSize + storageCount * DssConst.StorageBuildingSizeAdd;
 
             if (storageType == StorageType.FoodStorage && city.Biom == CityBiom.Frozen)
             {

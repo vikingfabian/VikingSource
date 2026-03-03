@@ -1400,8 +1400,24 @@ namespace VikingEngine.DSSWars.Presentation
                 case TerrainBuildingType.Butcher:
                     return DssRef.todoLang.BuildingType_Butcher_Description;
                 case TerrainBuildingType.Pottery:
-                    return DssRef.todoLang.BuildingType_Pottery_Description;
+                    return TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.BuildingType_CraftX_Description, DssRef.todoLang.Resource_TypeName_Clay));
 
+                case TerrainBuildingType.ShieldMaker:
+                    return TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.BuildingType_CraftX_Description, DssRef.todoLang.Resource_TypeName_Shield));
+
+                case TerrainBuildingType.Smoker:
+                case TerrainBuildingType.Dryer:
+                    return TextLib.LargeFirstLetter( string.Format(DssRef.todoLang.BuildingType_CraftX_Description, DssRef.todoLang.Resource_TypeName_ConservedFood));
+
+                case TerrainBuildingType.DryingPan:
+                    return TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.BuildingType_GatherX_Description, DssRef.todoLang.Resource_TypeName_Salt));
+
+                case TerrainBuildingType.AnimalStorage:
+                case TerrainBuildingType.ArmorStorage:
+                case TerrainBuildingType.FoodStorage:
+                case TerrainBuildingType.MaterialStorage:
+                case TerrainBuildingType.WeaponStorage:
+                    return string.Format(DssRef.todoLang.BuildingType_Storage_Description, DssConst.StorageBuildingSizeAdd);
 
                 default:
                     return TextLib.Error;

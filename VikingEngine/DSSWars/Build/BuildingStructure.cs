@@ -201,6 +201,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Butcher: return Butcher_pos;
                 case BuildAndExpandType.Smoker: return Smoker_pos;
                 case BuildAndExpandType.Dryer: return Dryer_pos;
+                case BuildAndExpandType.ShieldMaker: return ShieldMaker_pos;
 
                 // --- NEW Storage ---
                 case BuildAndExpandType.MaterialStorage: return MaterialStorage_pos;

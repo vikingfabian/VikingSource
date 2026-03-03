@@ -1,17 +1,8 @@
 ﻿UPDATE
-Change Log: 
-* Trying a new stockpile layout
-* missing soldier models should default to a error cube instead
-* fixed 2 Cook Buildings
-* fixed windows cursor is visible on top of the game cursor
-* fixed Shield makers are not showing the correct number of buildings
-* options for setting limit of salt and conserved food storage
-* fixed In game models for storage
-* fixed hen/pigs dont producte animals
-
+Change Log:
+* 
 
 ##ICONS TODO
-* butcher 
 * buthing animal
 
 
@@ -26,7 +17,6 @@ X doesnt handle negative raw food on animal upkeep
 x cesspit should check fuel limit
 x bioms confusing
 x animal gather is confusing
-x HUD pins dont work
 
 
 x stockpile, must save if unlimited

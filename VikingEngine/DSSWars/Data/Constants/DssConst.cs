@@ -312,6 +312,10 @@ namespace VikingEngine.DSSWars
         public const int StockPileMaxBound = 20000;
         public const float CessPitConvertToFuelPercentage = 0.1f;
 
+        //STOCKPILE
+        public const int StorageStartSize = 500;
+        public const int StorageBuildingSizeAdd = 500;
+
         //XP
         public static byte WorkXpToLevel = 50;
         public static int WorkLevel_Expert = WorkXpToLevel * 2;

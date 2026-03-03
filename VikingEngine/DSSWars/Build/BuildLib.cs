@@ -1132,24 +1132,24 @@ namespace VikingEngine.DSSWars.Build
                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             //DryingPan,
             new BuildOption(BuildAndExpandType.DryingPan, TerrainMainType.Building, (int)TerrainBuildingType.DryingPan, SpriteName.WarsBuild_DryingPan, CraftBuildingLib.DryingPan, true,
-                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             //Butcher,
             new BuildOption(BuildAndExpandType.Butcher, TerrainMainType.Building, (int)TerrainBuildingType.Butcher, SpriteName.WarsBuild_Butcher, CraftBuildingLib.Butcher, true,
-                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.Animals,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             //Smoker,
             new BuildOption(BuildAndExpandType.Smoker, TerrainMainType.Building, (int)TerrainBuildingType.Smoker, SpriteName.WarsBuild_Smoker, CraftBuildingLib.Smoker, true,
-                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             //Dryer,
             new BuildOption(BuildAndExpandType.Dryer, TerrainMainType.Building, (int)TerrainBuildingType.Dryer, SpriteName.WarsBuild_Dryer, CraftBuildingLib.Dryer, true,
-                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.MaterialStorage, TerrainMainType.Building, (int)TerrainBuildingType.MaterialStorage, SpriteName.WarsBuild_MaterialStorage, CraftBuildingLib.MaterialStorage, true,
-                BuildCategoryTab.Upgrade, BuildFilterTag.Craft, BuildFilterTag.Metals, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Upgrade, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             //FoodStorage
