@@ -805,5 +805,10 @@ namespace VikingEngine.DSSWars.Build
                 default: return 0; // Return 0 for NUM_NONE or any other undefined type
             }
         }
+
+        public int AllBarracksCount()
+        { 
+            return SoldierBarracks_count + ArcherBarracks_count + WarmachineBarracks_count + GunBarracks_count + CannonBarracks_count;
+        }
     }
 }

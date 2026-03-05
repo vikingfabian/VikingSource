@@ -49,34 +49,36 @@ namespace VikingEngine.HUD.RichBox
         public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, IntGetSetTag intValue, bool useSymbols, object tag = null)
         {
             var dragButton = new RbDragButton(settings, intValue);
+            int value = intValue(tag, false, 0);
 
             for (int i = options.Count - 1; i >= 0; --i)
             {
-                content.Add(new RbDragOptionButton(dragButton, -options[i], useSymbols));
+                content.Add(new RbDragOptionButton(dragButton, -options[i], useSymbols, value > settings.min));
             }
 
             content.Add(dragButton);
 
             for (int i = 0; i < options.Count; ++i)
             {
-                content.Add(new RbDragOptionButton(dragButton, options[i], useSymbols));
+                content.Add(new RbDragOptionButton(dragButton, options[i], useSymbols, value < settings.max));
             }
         }
 
         public static void RbDragButtonGroup(RichBoxContent content, List<float> options, DragButtonSettings settings, FloatGetSetTag floatValue, bool oneDecimal = true, object tag = null)
         {
             var dragButton = new RbDragButton(settings, floatValue, oneDecimal);
+            float value = floatValue(tag, false, 0);
 
             for (int i = options.Count - 1; i >= 0; --i)
             {
-                content.Add(new RbDragOptionButton(dragButton, -options[i], false));
+                content.Add(new RbDragOptionButton(dragButton, -options[i], false, value <= settings.min));
             }
 
             content.Add(dragButton);
 
             for (int i = 0; i < options.Count; ++i)
             {
-                content.Add(new RbDragOptionButton(dragButton, options[i], false));
+                content.Add(new RbDragOptionButton(dragButton, options[i], false, value >= settings.max));
             }
         }
 
@@ -265,7 +267,7 @@ namespace VikingEngine.HUD.RichBox
         //    content = new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(add)) };            
         //}
 
-        public RbDragOptionButton(RbDragButton parent, float add, bool useSymbols)
+        public RbDragOptionButton(RbDragButton parent, float add, bool useSymbols, bool enabled)
         {
             this.parent = parent;
             this.buttonStyle = Artistic.RbButtonStyle.Primary;
@@ -283,6 +285,8 @@ namespace VikingEngine.HUD.RichBox
             {
                 content = new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(add)) };
             }
+
+            this.enabled = enabled;
         }
 
         public override void onClick(RichMenu.RichMenu menu)

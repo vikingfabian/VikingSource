@@ -169,7 +169,7 @@ namespace VikingEngine.DSSWars.Resource
             foreach (var r in resources)
             {
                 var res = city.GetGroupedResource(r.type);
-                if (!res.almostReachedBuffer())
+                if (res.amount < r.amount || !res.almostReachedBuffer())
                 {
                     return false;
                 }

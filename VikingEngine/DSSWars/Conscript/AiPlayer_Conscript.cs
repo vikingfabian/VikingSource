@@ -74,7 +74,66 @@ namespace VikingEngine.DSSWars.Players
             ItemResourceType.PaddedArmor,
         };
 
+        protected static readonly ItemResourceType[] conscriptMountArmorPrioOrder =
+         {
+            ItemResourceType.MountMithrilArmor,
+            ItemResourceType.MountFullPlateArmor,
+            ItemResourceType.MountLightPlateArmor,
+            ItemResourceType.MountHeavyIronArmor,
+            ItemResourceType.MountIronArmor,
+            ItemResourceType.MountBronzeArmor,
+            ItemResourceType.MountHeavyPaddedArmor,
+            ItemResourceType.MountPaddedArmor,
+        };
+
+        protected static readonly ItemResourceType[] conscriptMountPrioOrder =
+         {
+            ItemResourceType.Oliphant,
+            ItemResourceType.WarElephant,
+            ItemResourceType.AlphaWarg,
+            ItemResourceType.WarLion,
+            ItemResourceType.WarHog,
+            ItemResourceType.WarHorse,
+
+            ItemResourceType.Elephant,
+            ItemResourceType.Warg,
+            ItemResourceType.Lion,
+            ItemResourceType.WildHog,
+            ItemResourceType.Horse,
+
+            ItemResourceType.Hound,
+
+            ItemResourceType.Wolf,
+            ItemResourceType.WildCat,
+            ItemResourceType.WildPig,
+            ItemResourceType.Pony,
+
+            ItemResourceType.Dog,
+            
+            ItemResourceType.DraftHorse,
+            ItemResourceType.StagHog,
+        };
+
+        protected static readonly ItemResourceType[] conscriptWagonMountPrioOrder =
+         {
+            ItemResourceType.DraftHorse,
+            ItemResourceType.StagHog,
+            ItemResourceType.Oliphant,
+            ItemResourceType.WarElephant,
+          
+            ItemResourceType.Oxen,
+
+            ItemResourceType.WarHog,
+            ItemResourceType.WarHorse,
+
+            ItemResourceType.Elephant,
        
+            ItemResourceType.WildHog,
+            ItemResourceType.Horse,
+
+            ItemResourceType.WildPig,
+            ItemResourceType.Pony,            
+        };
 
         void setupConscriptAi_async(City city, bool aggresive, out ConscriptProfile profile, out BuildAndExpandType barracksType, out int barracksCount, out int manCount, out int unitCount)
         {

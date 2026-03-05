@@ -18,7 +18,10 @@ using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.PJ.GameState;
+using VikingEngine.ToGG.Data.Property;
+using VikingEngine.ToGG.HeroQuest.GO;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -336,7 +339,7 @@ namespace VikingEngine.DSSWars.GameObject
             AutoBuild_available.Clear();
             AutoBuild_RandomBuild.clear();
 
-            BuildLib.AvailableBuildTypes(AutoBuild_available, this);
+            BuildLib.AvailableBuildTypes(AutoBuild_available, this, true);
 
             int pickCount = lib.SmallestValue(AutoBuild_available.Count, 4);
 
@@ -429,6 +432,11 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 switch (buildType)
                 {
+                    case BuildAndExpandType.ImmigrationTent:
+                        maxCount = 2;
+                        chance = 10;
+                        break;
+
                     case BuildAndExpandType.WorkerTent:
                         bBuild = WorkersMaxLimit > HousingCount_Workers;
                         maxCount = 20;
@@ -450,8 +458,11 @@ namespace VikingEngine.DSSWars.GameObject
                         break;
 
                     case BuildAndExpandType.SoldierBarracks:
+                        maxCount = 2;
+                        chance = automationFocus == AutomationFocus.Military ? 100 : 40;
+                        break;
+
                     case BuildAndExpandType.WarmachineBarracks:
-                    //case BuildAndExpandType.KnightsBarracks:
                     case BuildAndExpandType.GunBarracks:
                     case BuildAndExpandType.CannonBarracks:
                         maxCount = 2;
@@ -479,10 +490,21 @@ namespace VikingEngine.DSSWars.GameObject
                         break;
 
                     case BuildAndExpandType.Cook:
+                        bBuild = GetGroupedResource(CityResoureIndex.rawFood).amount > 50 &&
+                            workTemplate.Get(WorkPriorityType.craftFood).value > WorkTemplate.NoPrio;
                         maxCount = 8;
                         break;
 
-                    case BuildAndExpandType.CoalPit:
+                    case BuildAndExpandType.Dryer:
+                        maxCount = 2;
+                        bBuild = haveResourcesToCraftItem_Bp(WorkPriorityType.craftConservedFood, CraftResourceLib.ConservedFood_Dried);
+                        break;
+
+                    case BuildAndExpandType.Smoker:
+                        maxCount = 2;
+                        bBuild = haveResourcesToCraftItem_Bp(WorkPriorityType.craftConservedFood, CraftResourceLib.ConservedFood_Smoked);
+                        break;
+
                     case BuildAndExpandType.WorkBench:
                         chance = 200;
                         break;
@@ -495,12 +517,14 @@ namespace VikingEngine.DSSWars.GameObject
 
                     case BuildAndExpandType.WheatFarm:
                     case BuildAndExpandType.LinenFarm:
-                    case BuildAndExpandType.HenPen:
-                    case BuildAndExpandType.PigPen:
-                    case BuildAndExpandType.RapeSeedFarm:
                     case BuildAndExpandType.HempFarm:
-                        chance = automationFocus == AutomationFocus.Grow ? 2000 : 1000;
+                        chance = automationFocus == AutomationFocus.Grow ? 200 : 100;
                         maxCount = 24;
+                        break;
+
+                    case BuildAndExpandType.RapeSeedFarm:
+                        chance = automationFocus == AutomationFocus.Grow ? 50 : 20;
+                        maxCount = 8;
                         break;
 
                     case BuildAndExpandType.Postal:
@@ -509,21 +533,7 @@ namespace VikingEngine.DSSWars.GameObject
                         if (automationFocus == AutomationFocus.Export)
                         {
                             chance = 60;
-                            maxCount = 24;
-                        }
-                        else
-                        {
-                            chance = 40;
-                            maxCount = 8;
-                        }
-                        break;
-                    case BuildAndExpandType.Recruitment:
-                    case BuildAndExpandType.RecruitmentLevel2:
-                    case BuildAndExpandType.RecruitmentLevel3:
-                        if (automationFocus == AutomationFocus.Export)
-                        {
-                            chance = 200;
-                            maxCount = 12;
+                            maxCount = 10;
                         }
                         else
                         {
@@ -532,15 +542,82 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         break;
 
+                    case BuildAndExpandType.Recruitment:
+                    case BuildAndExpandType.RecruitmentLevel2:
+                    case BuildAndExpandType.RecruitmentLevel3:
+                        if (automationFocus == AutomationFocus.Export)
+                        {
+                            chance = 60;
+                            maxCount = 2;
+                        }
+                        else
+                        {
+                            chance = 40;
+                            maxCount = 1;
+                        }
+                        break;
+
+                    case BuildAndExpandType.CoalPit:
+                        int fuelUsingCount = buildingStructure.Foundry_count + buildingStructure.Smelter_count + buildingStructure.Cook_count;
+                        bBuild = fuelUsingCount > 2;
+                        chance = 10 + fuelUsingCount * 10;
+                        break;
+
+                    case BuildAndExpandType.Carpenter:
+                        maxCount = 2;
+                        bBuild = haveResourcesToCraft(buildingStructure.Carpenter_count, maxCount, CraftList.CarpenterCraftTypes);
+                        break;
+
+                    case BuildAndExpandType.Gunmaker:
+                        maxCount = 2;
+                        bBuild = haveResourcesToCraft(buildingStructure.Gunmaker_count, maxCount, CraftList.GunmakerCraftTypes);
+                        break;
+
                     case BuildAndExpandType.Foundry:
                         chance = 20;
                         maxCount = 2;
+                        bBuild = haveResourcesToCraft(buildingStructure.Foundry_count, maxCount, CraftList.FoundryCraftTypes);
+                        break;
+
+                    case BuildAndExpandType.Chemist:
+                        maxCount = 2;
+                        bBuild = haveResourcesToCraft(buildingStructure.Chemist_count, maxCount, CraftList.ChemistCraftTypes);
+                        break;
+
+                    case BuildAndExpandType.Smelter:
+                        bBuild = haveResourcesToCraft(buildingStructure.Smelter_count, maxCount, CraftList.SmelterCraftTypes);
+                        break;
+
+                    case BuildAndExpandType.Smith:
+                        bBuild = haveResourcesToCraft(buildingStructure.Smith_count, maxCount, CraftList.SmithCraftTypes);
+                        break;
+
+                    case BuildAndExpandType.Armory:
+                        maxCount = 2;
+                        bBuild = haveResourcesToCraft(buildingStructure.Armory_count, maxCount, CraftList.ArmoryCraftTypes);
+                        break;
+
+                    case BuildAndExpandType.ShieldMaker:
+                        chance = 20;
+                        maxCount = 1;
+                        bBuild = haveResourcesToCraft(buildingStructure.ShieldMaker_count, maxCount, CraftList.ShieldMakerCraftTypes);
+                        break;
+
+                    case BuildAndExpandType.Pottery:
+                        bBuild = haveResourcesToCraft(buildingStructure.Pottery_count, maxCount, CraftList.PotteryCraftTypes);
+                        maxCount = 2;
+                        break;
+
+                    case BuildAndExpandType.Butcher:
+                        bBuild = haveAnimalsToSlaughter();//haveResourcesToCraft(buildingStructure.Butcher_count, maxCount, CraftList.ButcherAnimalTypes);
+                        maxCount = 1;
                         break;
 
                     case BuildAndExpandType.Logistics:
                         chance = automationFocus == AutomationFocus.Grow ? 300 : 150;
                         maxCount = 1;
                         break;
+
                     case BuildAndExpandType.ManorLord:
                         if (DssRef.state.hasManorLords)
                         {
@@ -550,14 +627,50 @@ namespace VikingEngine.DSSWars.GameObject
                         else
                         {
                             bBuild = false;
-                        }
-                        
+                        }                        
+                        break;
+
+                    case BuildAndExpandType.GreatHall:
+                        bBuild = buildingStructure.AllBarracksCount() >= 2;
+                        chance = 20;
+                        maxCount = 1;
+                        break;
+
+                    case BuildAndExpandType.Nobelhouse:
+                        chance = 20;
+                        bBuild = buildingStructure.AllBarracksCount() >= 4 && Money.ToGold(previousIncome_copp) > 10;
                         break;
 
                     case BuildAndExpandType.School:
                         chance = 5;
                         maxCount = 2;
                         break;
+
+                    case BuildAndExpandType.MaterialStorage:
+                    case BuildAndExpandType.FoodStorage:
+                    case BuildAndExpandType.WeaponStorage:
+                    case BuildAndExpandType.ArmorStorage:
+                    case BuildAndExpandType.AnimalStorage:
+                        chance = 10;
+                        maxCount = 3;
+                        break;
+
+                    case BuildAndExpandType.Cesspit:
+                        chance = 5;
+                        maxCount = 1;
+                        break;
+
+                    case BuildAndExpandType.WaterResovoir:
+                        chance = 10;
+                        break;
+
+
+                    //case BuildAndExpandType.HenPen:
+                    //case BuildAndExpandType.PigPen:
+                        
+                    //    break;
+                       
+
                 }
 
                 if (bBuild)
@@ -583,6 +696,90 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
             }
+
+            bool haveResourcesToCraft(int hasCount, int maxCount, ItemResourceType[] craftList)
+            {
+                if (hasCount >= maxCount)
+                {
+                    return false;
+                }
+                
+
+                foreach (ItemResourceType item in craftList)
+                {
+                    if (haveResourcesToCraftItem(item))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            bool haveResourcesToCraftItem(ItemResourceType item)
+            {
+                const int MinCraftCount = 30;
+
+                ItemProperties properties = ItemPropertyColl.Get(item);
+
+                if (properties.work != WorkPriorityType.NUM_NONE)
+                {
+                    if (workTemplate.Get(properties.work).value == WorkTemplate.NoPrio)
+                    {
+                        return false;
+                    }
+                }
+
+                int available = properties.bp1.canCraftCount(this);
+
+                if (available >= MinCraftCount)
+                {
+                    return true;
+                }
+
+                if (properties.bp2 != null)
+                {
+                    available = properties.bp2.canCraftCount(this);
+                    if (available >= MinCraftCount)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            bool haveResourcesToCraftItem_Bp(WorkPriorityType workPriority, CraftBlueprint blueprint)
+            {
+                const int MinCraftCount = 30;
+
+                if (workTemplate.Get(workPriority).value == WorkTemplate.NoPrio)
+                {
+                    return false;
+                }                
+
+                int available = blueprint.canCraftCount(this);
+
+                if (available >= MinCraftCount)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            bool haveAnimalsToSlaughter()
+            {
+                foreach (var craft in CraftList.ButcherAnimalCraftTypes)
+                {
+                    if (craft.hasFullStock(this))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
         }
 
         public void AutoExpandType(out bool work, out Build.BuildAndExpandType farm)
@@ -604,10 +801,12 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.setWorkPrio(WorkPriorityType.move, 3);
             workTemplate.setWorkPrio(WorkPriorityType.wood, 2);
             workTemplate.setWorkPrio(WorkPriorityType.stone, 2);
+            workTemplate.setWorkPrio(WorkPriorityType.craftBrick, 2);
 
             // Crafting: Consumables
             workTemplate.setWorkPrio(WorkPriorityType.craftFuel, 4);
             workTemplate.setWorkPrio(WorkPriorityType.craftFood, 4);
+            workTemplate.setWorkPrio(WorkPriorityType.craftConservedFood, 2);
             workTemplate.setWorkPrio(WorkPriorityType.craftBeer, 1);
             workTemplate.setWorkPrio(WorkPriorityType.craftCoolingFluid, 1);
 
@@ -627,13 +826,17 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.setWorkPrio(WorkPriorityType.craftMithril, 4);
 
             // Crafting: Construction & Tools
-            workTemplate.setWorkPrio(WorkPriorityType.craftPalisade, 1);
+            workTemplate.setWorkPrio(WorkPriorityType.craftPalisade, 0);
             workTemplate.setWorkPrio(WorkPriorityType.craftToolkit, 1);
+            workTemplate.setWorkPrio(WorkPriorityType.craftContainer, 1);
 
             // Crafting: Wagons
             // Mapped 'wagonlight' -> 2Wheel, 'wagonheavy' -> 4Wheel
             workTemplate.setWorkPrio(WorkPriorityType.craftWagon2Wheel, 1);
             workTemplate.setWorkPrio(WorkPriorityType.craftWagon4Wheel, 1);
+            workTemplate.setWorkPrio(WorkPriorityType.craftWagonClosed, 1);
+            workTemplate.setWorkPrio(WorkPriorityType.craftWagonIron, 1);
+            workTemplate.setWorkPrio(WorkPriorityType.craftWagonSteel, 1);            
 
             // Crafting: Ammo
             workTemplate.setWorkPrio(WorkPriorityType.craftBlackPowder, 2);
@@ -646,8 +849,10 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.setWorkPrio(WorkPriorityType.farmfuel, 3);
             workTemplate.setWorkPrio(WorkPriorityType.farmlinen, 3);
             workTemplate.setWorkPrio(WorkPriorityType.bogiron, 1);
+            workTemplate.setWorkPrio(WorkPriorityType.collectClay, 3);
 
             // Mining
+            workTemplate.setWorkPrio(WorkPriorityType.miningSalt, 2);
             workTemplate.setWorkPrio(WorkPriorityType.miningIron, 3);
             workTemplate.setWorkPrio(WorkPriorityType.miningTin, 2);
             workTemplate.setWorkPrio(WorkPriorityType.miningCopper, 2);
@@ -667,6 +872,33 @@ namespace VikingEngine.DSSWars.GameObject
             workTemplate.setWorkPrio(WorkPriorityType.coinmaker_bronze, 1, true);
             workTemplate.setWorkPrio(WorkPriorityType.coinmaker_silver, 1, true);
             workTemplate.setWorkPrio(WorkPriorityType.coinmaker_mithril, 1, true);
+
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterHen, 2, false);
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterPig, 2, false);
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterOxen, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterKineOxen, 1, true);
+
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterPony, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterHorse, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterWarHorse, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterDraftHorse, 1, true);
+
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterWildPig, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterWildHog, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterWarHog, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterStagHog, 1, true);
+
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterWolf, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterWarg, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterAlphaWarg, 1, true);
+
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterWildCat, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterLion, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterWarLion, 1, true);
+
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterElephant, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterWarElephant, 1, true);
+            workTemplate.setWorkPrio(WorkPriorityType.SlaughterOliphant, 1, true);
         }
 
         public bool AutomateCityProperty(object tag, bool set, bool value)

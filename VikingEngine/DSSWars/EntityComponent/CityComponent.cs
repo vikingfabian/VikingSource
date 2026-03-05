@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars
 
         public void initWorkerXp(int cityCount)
         { 
-            int reserveWorkerCount = cityCount * 100;
+            int reserveWorkerCount = cityCount * 200;
             WorkXpInUse = new bool[reserveWorkerCount];
             workerXp = new WorkExperience[reserveWorkerCount * WorkerXpCOUNT];
         }

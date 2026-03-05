@@ -96,6 +96,11 @@ namespace VikingEngine.DSSWars.Event
 
         void asyncCheckVictory()
         {
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
+            {
+                return;
+            }
+
             int dominationCount = DssRef.storage.gameRuleset.mapSize > MapSize.Small ? 5 : 3;
             
             foreach (var p in DssRef.state.localPlayers)
@@ -108,28 +113,14 @@ namespace VikingEngine.DSSWars.Event
                 float warStrength = 0;
                 float peaceStrength = p.faction.PotensialMilitaryStrength();
 
-                //var relations = p.faction.diplomaticRelations;
-
-                //for (int relIx = 0; relIx < relations.Length; ++relIx)
-                //{
-                //    if (relIx != p.faction.myIndex)
-                //    {
-
                 RelationsLoop loop = new RelationsLoop(p.faction.myIndex);
                 while (loop.Next())
                 {
-                    //Faction otherFaction = DssRef.world.faction(relIx);
+                    
 
                         if (loop.OtherFaction(out var otherFaction) && otherFaction.isAlive)
                         {
-                        //RelationType relation = RelationType.RelationType0_Neutral;
-                        //SpeakTerms speak = otherFaction.DefaultSpeakingTerms();
-
-                        //if (DssRef.world.faction(relIx) != null)
-                        //{
-                        //    relation = relations[relIx].Relation;
-                        //    speak = relations[relIx].SpeakTerms;
-                        //}
+                       
                         var relation = loop.Relation();
 
                             if (relation.Relation >= RelationType.RelationType3_Ally)

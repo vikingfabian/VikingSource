@@ -69,7 +69,37 @@ namespace VikingEngine.DSSWars.Work
         public static readonly ItemResourceType[] ShieldMakerCraftTypes = {
              ItemResourceType.BucklerShield, ItemResourceType.RoundShield, ItemResourceType.HeaterShield, ItemResourceType.TowerShield
         };
-        public static readonly CraftBlueprint[] ButcherAnimalTypes = {
+
+        //public static readonly ItemResourceType[] ButcherAnimalTypes = {
+        //    ItemResourceType.Hen,
+        //    ItemResourceType.Pig,
+        //    ItemResourceType.Oxen,
+        //    ItemResourceType.KineOxen,
+
+        //    ItemResourceType.Pony,
+        //    ItemResourceType.Horse,
+        //    ItemResourceType.WarHorse,
+        //    ItemResourceType.DraftHorse,
+
+        //    ItemResourceType.WildPig,
+        //    ItemResourceType.WildHog,
+        //    ItemResourceType.WarHog,
+        //    ItemResourceType.StagHog,
+
+        //    ItemResourceType.Wolf,
+        //    ItemResourceType.Warg,
+        //    ItemResourceType.AlphaWarg,
+
+        //    ItemResourceType.WildCat,
+        //    ItemResourceType.Lion,
+        //    ItemResourceType.WarLion,
+
+        //    ItemResourceType.Elephant,
+        //    ItemResourceType.WarElephant,
+        //    ItemResourceType.Oliphant,
+        //};
+
+        public static readonly CraftBlueprint[] ButcherAnimalCraftTypes = {
             CraftResourceLib.SlaughterHen,
             CraftResourceLib.SlaughterPig,
             CraftResourceLib.SlaughterOxen,

@@ -957,7 +957,7 @@ namespace VikingEngine.DSSWars.GameObject
                         int topItem = -1;
                         WorkPriority topPrio = WorkPriority.Empty;
 
-                        CraftBlueprint[] crafts = coinMint ? Minting.CoinCraftTypes : CraftList.ButcherAnimalTypes;
+                        CraftBlueprint[] crafts = coinMint ? Minting.CoinCraftTypes : CraftList.ButcherAnimalCraftTypes;
 
                         foreach (var bp in crafts)
                         {

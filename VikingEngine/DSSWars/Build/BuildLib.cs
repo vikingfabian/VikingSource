@@ -237,19 +237,20 @@ namespace VikingEngine.DSSWars.Build
         };
 
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
-        public static void AvailableBuildTypes(List<BuildAndExpandType> list, City city)
+        public static void AvailableBuildTypes(List<BuildAndExpandType> list, City city, bool autoBuild)
         {
-            bool unlockAll = DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator ||
-                StartupSettings.UnlockAllProgress;
+            bool godPowers = DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator && !autoBuild;
+
+            bool devUnlockAll = StartupSettings.UnlockAllProgress;
 
             var unlocks = city.technology.GetUnlocks(false);
 
             bool logistics1 = city.buildingStructure.buildingLevel_logistics >= 1 ||
-                unlockAll;
+                godPowers;
             bool logistics2 = city.buildingStructure.buildingLevel_logistics >= 2 ||
-                unlockAll;
+                godPowers;
 
-            bool manor = city.buildingStructure.manorLord || unlockAll;
+            bool manor = city.buildingStructure.manorLord || godPowers;
 
             bool campSite = city.cityType == CityType.Campsite;
 
@@ -280,7 +281,7 @@ namespace VikingEngine.DSSWars.Build
             }
             else
             {
-                if (unlockAll)
+                if (godPowers)
                 {
                     list.Add(BuildAndExpandType.WorkerTent);
                 }
@@ -311,7 +312,7 @@ namespace VikingEngine.DSSWars.Build
             if (manor)
             {
                 list.Add(BuildAndExpandType.WheatFarm);
-                if (unlocks.building_upgradedFarm || unlockAll)
+                if (unlocks.building_upgradedFarm || godPowers)
                 {
                     list.Add(BuildAndExpandType.WheatFarmUpgraded);
                 }
@@ -400,7 +401,7 @@ namespace VikingEngine.DSSWars.Build
 
 
             if (city.buildingStructure.WoodCutter_count > 0 ||
-                unlockAll)
+                godPowers)
             {
                 list.Add(BuildAndExpandType.TreeSeedlingSoft);
                 list.Add(BuildAndExpandType.TreeSeedlingHard);
@@ -411,14 +412,14 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.Nobelhouse);
 
                 if (city.buildingStructure.Nobelhouse_count > 0 ||
-                    unlockAll)
+                    godPowers)
                 {
                     list.Add(BuildAndExpandType.Embassy);
                 }
 
                 list.Add(BuildAndExpandType.Bank);
                 if (city.buildingStructure.Bank_count > 0 ||
-                    unlockAll)
+                    godPowers)
                 {
                     list.Add(BuildAndExpandType.CoinMinter);
                 }
@@ -508,12 +509,12 @@ namespace VikingEngine.DSSWars.Build
             {
                 list.Add(BuildAndExpandType.WarmachineBarracks);
             }
-            if (unlocks.building_gunBarrack || unlockAll)
+            if (unlocks.building_gunBarrack || godPowers)
             {
                 list.Add(BuildAndExpandType.GunBarracks);
             }
             if (unlocks.building_cannonBarrack ||
-                unlockAll)
+                godPowers)
             {
                 list.Add(BuildAndExpandType.CannonBarracks);
             }
@@ -553,7 +554,7 @@ namespace VikingEngine.DSSWars.Build
 
             }
             if (unlocks.building_stoneBuildings ||
-                unlockAll)
+                godPowers)
             {
                 list.Add(BuildAndExpandType.Statue_ThePlayer);
             }

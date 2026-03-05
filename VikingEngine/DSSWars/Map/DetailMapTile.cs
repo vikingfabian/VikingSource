@@ -157,6 +157,7 @@ namespace VikingEngine.DSSWars.Map
                                     topCenter(ref subTile, ref subTopLeft), ref surfaceColor);
                                 break;
                             case TerrainMainType.Wall:
+                                bSurfacePolygonTexture = false;
                                 surfaceColor = ColorExt.Mix(biom.mudColor, surfaceColor, 0.1f);
                                 createWall(tile, ref subTile, (TerrainWallType)subTile.subTerrain,
                                     topCenter(ref subTile, ref subTopLeft), ref surfaceColor);

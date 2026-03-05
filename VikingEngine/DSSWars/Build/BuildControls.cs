@@ -467,9 +467,17 @@ namespace VikingEngine.DSSWars.Build
                         void findAdjacentFreeSpot(IntVector2 center)
                         {
                             ForXYEdgeLoopRandomPicker Auto_EdgeRandomizer = new ForXYEdgeLoopRandomPicker();
-                            for (int r = 1; r <= 2; r++)
+                            for (int r = 0; r <= 2; r++)
                             {
-                                Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
+                                if (r == 0)
+                                {
+                                    Auto_EdgeRandomizer.addDir4(center);
+                                    Auto_EdgeRandomizer.add(center);
+                                }
+                                else
+                                { 
+                                    Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
+                                }
 
                                 while (Auto_EdgeRandomizer.Next())
                                 {
@@ -542,7 +550,7 @@ namespace VikingEngine.DSSWars.Build
             List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
 
             if (player.tutorial == null || player.tutorial.AdvisorMode())
-            { BuildLib.AvailableBuildTypes(available, city); }
+            { BuildLib.AvailableBuildTypes(available, city, false); }
             else
             { available = player.tutorial.AvailableBuildTypes(); }
 

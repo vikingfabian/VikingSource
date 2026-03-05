@@ -26,13 +26,13 @@ namespace VikingEngine.DSSWars.Work
         public const byte MaxPrio = 5;
         public const int SafeGuardPrio = MaxPrio + 1;
 
-        public WorkPriority move = new WorkPriority(3);
-        public WorkPriority wood = new WorkPriority(2);
-        public WorkPriority stone = new WorkPriority(2);
-        public WorkPriority craft_fuel = new WorkPriority(1);
-        public WorkPriority craft_food = new WorkPriority(0);
-        public WorkPriority craft_beer = new WorkPriority(0);
-        public WorkPriority craft_coolingfluid = new WorkPriority(0);
+        //public WorkPriority move = new WorkPriority(3);
+        //public WorkPriority wood = new WorkPriority(2);
+        //public WorkPriority stone = new WorkPriority(2);
+        //public WorkPriority craft_fuel = new WorkPriority(1);
+        //public WorkPriority craft_food = new WorkPriority(0);
+        //public WorkPriority craft_beer = new WorkPriority(0);
+        //public WorkPriority craft_coolingfluid = new WorkPriority(0);
         public static readonly int COUNT = (int)WorkPriorityType.NUM_NONE;
 
         //public WorkPriority move = new WorkPriority(3);

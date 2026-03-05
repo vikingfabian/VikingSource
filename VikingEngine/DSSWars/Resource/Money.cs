@@ -63,6 +63,11 @@ namespace VikingEngine.DSSWars.Resource
         public long GetGold()
         { return (long)(copper * CopperToGold); }
 
+        public static long ToGold(long copper)
+        {
+            return copper / GoldToCopper;
+        }
+
         public bool PayGold(float payGold, bool allowDept)
         {
             if (allowDept)
