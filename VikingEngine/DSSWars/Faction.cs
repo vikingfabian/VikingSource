@@ -114,6 +114,12 @@ namespace VikingEngine.DSSWars
             player?.onGameStart(newGame);
         }
 
+        public void initMidGameEnter()
+        {            
+            new Players.AiPlayer(this, false);
+            initDiplomacy(DssRef.world);
+        }
+
         public void initDiplomacy(WorldData world)
         {
             if (diplomaticRelations == null)

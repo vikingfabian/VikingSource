@@ -292,9 +292,9 @@ namespace VikingEngine.DSSWars.Event
                     var SouthHara = DssRef.world.faction(DssRef.settings.Faction_SouthHara);
                     var UnitedKingdom = DssRef.world.faction(DssRef.settings.Faction_UnitedKingdom);
 
-                    DssRef.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType3_Ally).secret = true;
+                    DssRef.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType2_Good).secret = true;
                     DssRef.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, RelationType.RelationType3_Ally).secret = true;
-                    DssRef.diplomacy.SetRelationType(UnitedKingdom, SouthHara, RelationType.RelationType3_Ally).secret = true;
+                    DssRef.diplomacy.SetRelationType(UnitedKingdom, SouthHara, RelationType.RelationType2_Good).secret = true;
 
                     //Setup dying war
                     dyingFactionsTimer = new Time(5, TimeUnit.Minutes);

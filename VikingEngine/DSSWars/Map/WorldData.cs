@@ -137,30 +137,55 @@ namespace VikingEngine.DSSWars
             return null;
         }
 
-        public Faction findOrCreate(FactionType factionType)
+        public Faction findOrCreate(FactionType factionType, int setIndex)
         {
+            Faction faction;
             int firstEmpty = -1;
-            for (int i =  0; i < factions.Array.Length; ++i)//each (var faction in factions.Array)
+
+
+            if (setIndex >= 0 && factions.Array[setIndex] != null && factions.Array[setIndex].factiontype != factionType)
             {
-                var faction = factions.Array[i];
+                setIndex = -1;
+            }
+
+            if (setIndex >= 0)
+            {
+                faction = factions.Array[setIndex];
                 if (faction != null)
                 {
-                    if (faction.factiontype == factionType)
-                    { 
-                        return faction;
-                    }
+                    faction.isAlive = true;
+                    return faction;                    
                 }
-                else if (firstEmpty < 0)
+                else
                 {
-                    firstEmpty = i;
+                    firstEmpty = setIndex;
                 }
             }
-                        
+            else
+            {
+                for (int i = 0; i < factions.Array.Length; ++i)
+                {
+                    faction = factions.Array[i];
+                    if (faction != null)
+                    {
+                        if (faction.factiontype == factionType)
+                        {
+                            faction.isAlive = true;
+                            return faction;
+                        }
+                    }
+                    else if (firstEmpty < 0)
+                    {
+                        firstEmpty = i;
+                    }
+                }
+            }           
             var newFaction = new Faction(DssRef.world, factionType, firstEmpty);
-            new Players.AiPlayer(newFaction, true);
-            newFaction.initDiplomacy(DssRef.world);
+            newFaction.initMidGameEnter();
+
             return newFaction;            
         }
+
 
         public static MapSize CustomMapSizeToSize(IntVector2 size)
         {
