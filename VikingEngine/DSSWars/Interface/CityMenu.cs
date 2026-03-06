@@ -1607,7 +1607,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 case ResourceManagementType.Stockpile:
                     content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-                    new StockPileMenu(content, city, null).toHud(player, player.resourcesSubTab.resourceGroup);
+                    new StockPileMenu(content, city, city.GetFaction()).toHud(player, player.resourcesSubTab.resourceGroup);
                     break;
             }
 

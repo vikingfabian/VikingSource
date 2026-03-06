@@ -1,10 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Auto build will now check for work priorities and resource access on crafting
-* Rebalanced all auto build options
-* New buildings have been setup to auto build
-* Repaired spectator mode
-
+* 
 
 ##ICONS TODO
 * buthing animal
@@ -13,11 +9,10 @@ Change Log:
 #MOUNTED TODO
 
 Current bugs
-x weapon work priority
+
 x need dynamic worker xp components
 x Shields not implemented
 x missing a lot of the animal/weapon/armor combos
-x stockpile, is broken, cant be copied, is messy
 X doesnt handle negative raw food on animal upkeep
 x cesspit should check fuel limit
 x bioms confusing
@@ -25,7 +20,6 @@ x animal gather is confusing
 x ai conscript of animals
 
 
-x stockpile, must save if unlimited
 x stockpile copy/paste and to/from faction does not work at all
 x stockile any numbers option
 x ui line breaks in German
@@ -34,7 +28,7 @@ x adv build upgrade, no more use of logistics
 x auto options for logistics/hall/cook
 
 x potter skill
-
+x optimize stockpile save
 
 CITY CULTURES
 * Wheelwright, //Speed bonus to conscripted carts
