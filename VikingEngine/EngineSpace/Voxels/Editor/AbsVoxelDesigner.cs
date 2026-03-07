@@ -347,7 +347,7 @@ namespace VikingEngine.Voxels
         //    return setDrawLimit(new IntervalIntV3(drawLimits.Min, drawLimits.Min + animationFrames.Frames[0].Limits));
         //}
 
-        protected void UpdateDrawLimits()
+        public void UpdateDrawLimits()
         {
             if (bUpdateDrawLimits)
             {

@@ -63,8 +63,9 @@ namespace VikingEngine.DSSWars
             
             int faceFrame = 0;
             int armorFrame = (int)modelData.armor;
-            VoxelModelName shield = VoxelModelName.NUM_NON;
-            
+            ShieldModel shieldModel = null;
+            //VoxelModelName shield = VoxelModelName.NUM_NON;
+            //int shieldFrame = -1;
 
             WeaponLeftArmType weaponLeftArmType = WeaponLeftArmType.None;
             WeaponRightArmType weaponRightArmType = WeaponRightArmType.Sword;
@@ -100,8 +101,8 @@ namespace VikingEngine.DSSWars
                 case Resource.ItemResourceType.HandSpear:
                     weaponModel = VoxelModelName.modweapon_spear;
                     weaponHatFrame = 0;//missing
-                    shield = VoxelModelName.modshield_roman;
-                    weaponLeftArmType = WeaponLeftArmType.Shield;
+                    //shield = VoxelModelName.modshield_roman;
+                    //weaponLeftArmType = WeaponLeftArmType.Shield;
                     break;
 
                 case Resource.ItemResourceType.SlingShot:
@@ -113,9 +114,9 @@ namespace VikingEngine.DSSWars
                     weaponModel = VoxelModelName.modweapon_javelin;
                     weaponHatFrame = 3;
 
-                    shield = VoxelModelName.modshield_javelin;
+                    //shield = VoxelModelName.modshield_javelin;
 
-                    weaponLeftArmType = WeaponLeftArmType.Shield;
+                    //weaponLeftArmType = WeaponLeftArmType.Shield;
                     break;
 
                 case Resource.ItemResourceType.TwoHandSword:
@@ -125,7 +126,7 @@ namespace VikingEngine.DSSWars
                 case Resource.ItemResourceType.Warhammer:
                     weaponModel = VoxelModelName.modweapon_hammer;
                     weaponRightArmType = WeaponRightArmType.Bow;
-                    shield = VoxelModelName.modshield_knightsmallside;
+                    //shield = VoxelModelName.modshield_knightsmallside;
                     
                     weaponHatFrame = 6;
                     break;
@@ -183,6 +184,30 @@ namespace VikingEngine.DSSWars
                     break;
             }
 
+            switch (modelData.shield)
+            {
+                case Resource.ItemResourceType.BucklerShield:
+                    setShield(DssRef.models.BucklerShield);
+                    break;
+                case Resource.ItemResourceType.RoundShield:
+                    setShield(DssRef.models.RoundShield);
+                    break;
+                case Resource.ItemResourceType.HeaterShield:
+                    setShield(DssRef.models.HeaterShield);
+                    break;
+                case Resource.ItemResourceType.TowerShield:
+                    setShield(DssRef.models.TowerShield);
+                    break;
+
+            }
+
+            void setShield(ShieldModel model)
+            {
+                shieldModel = model;
+                weaponLeftArmType = WeaponLeftArmType.Shield;
+                
+            }
+
 
             ArmThemeModels armtheme = CharacterTheme.arm(profile.character.arms,
                 weaponLeftArmType, weaponRightArmType);
@@ -191,8 +216,8 @@ namespace VikingEngine.DSSWars
             {
                 case Conscript.SpecializationType.HonorGuard:
                     weaponHatFrame = 5;
-                    shield = VoxelModelName.modshield_roman;
-                    weaponLeftArmType = WeaponLeftArmType.Shield;
+                    //shield = VoxelModelName.modshield_roman;
+                    //weaponLeftArmType = WeaponLeftArmType.Shield;
                     break;
                 case Conscript.SpecializationType.Viking:
                     weaponHatFrame = 9;
@@ -298,11 +323,11 @@ namespace VikingEngine.DSSWars
             var faceVoxels = face.Frame(faceFrame).GetVoxelArray(faceOffset, profileColors, GridSize);
             var faceBlinkVoxels = face.Frame(faceFrame +1).GetVoxelArray(faceOffset, profileColors, GridSize);
 
-            WeaponModel leftHandItemVoxels = null;
+            AbsWeaponModel leftHandItemVoxels = null;
             ushort leftHandItemJointValue = 0;
-            if (shield != VoxelModelName.NUM_NON)
+            if (shieldModel != null)
             {
-                leftHandItemVoxels = DssRef.models.weaponModels[shield].recolor(profileColors);
+                leftHandItemVoxels = shieldModel.recolor(profileColors);
                 leftHandItemJointValue = leftHandItemVoxels.idle_jointPos.value;
                 //var shieldVoxels = shieldModel.Frame(0].GetVoxelArray(new IntVector3(6, 0, 33), profileColors, GridSize);
             }

@@ -177,6 +177,7 @@ namespace VikingEngine.DSSWars
             conscript = new ConscriptProfile()
             {
                 weapon = Resource.ItemResourceType.Sword,
+                shield = ItemResourceType.TowerShield,
                 armorLevel = Resource.ItemResourceType.FullPlateArmor,
                 training = TrainingLevel.Professional,
                 specialization = SpecializationType.HonorGuard,

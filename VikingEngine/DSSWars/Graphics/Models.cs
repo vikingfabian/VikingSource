@@ -25,6 +25,8 @@ namespace VikingEngine.DSSWars
 
         public Dictionary<VoxelModelName, WeaponModel> weaponModels;
 
+        public ShieldModel BucklerShield, RoundShield, HeaterShield, TowerShield;
+
         List<VoxelModelData> loadedData = new List<VoxelModelData>();
         bool asycTaskComplete = false;
 
@@ -92,6 +94,7 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modsoldier_face_access,
                 VoxelModelName.modsoldier_hat_soldier_all,
                 VoxelModelName.modsoldier_hat_custom_all,
+                
 
             };
             rawModels = new Dictionary<VoxelModelName, VoxelObjGridDataAnimHD>(loadRawModels.Count);
@@ -122,12 +125,11 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modweapon_longsword,
                 VoxelModelName.modweapon_bronzesword,
 
-                VoxelModelName.modshield_javelin,
-                VoxelModelName.modshield_roman,
+                //VoxelModelName.modshield_javelin,
+                //VoxelModelName.modshield_roman,
                 VoxelModelName.modshield_knightsmallside,
+                //VoxelModelName.modshield_forward1,
             };
-
-            weaponModels = new Dictionary<VoxelModelName, WeaponModel>(loadWeaponModels.Count);
 
             var units = new AllUnits();
             units.AddRawModelsToLoad(loadRawModels);
@@ -163,10 +165,16 @@ namespace VikingEngine.DSSWars
                 });
             }
 
+            weaponModels = new Dictionary<VoxelModelName, WeaponModel>(loadWeaponModels.Count);
             foreach (var weaponName in loadWeaponModels)
             {
                 weaponModels.Add(weaponName, new WeaponModel(weaponName));
             }
+
+            BucklerShield = new ShieldModel(VoxelModelName.modshield_forward1, 0);
+            RoundShield = new ShieldModel(VoxelModelName.modshield_forward1, 1);
+            HeaterShield = new ShieldModel(VoxelModelName.modshield_forward1, 2);
+            TowerShield = new ShieldModel(VoxelModelName.modshield_forward1, 3);
 
 
             //VOXEL

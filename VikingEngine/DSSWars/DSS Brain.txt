@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
-* 
+* voxel editor: fixed undo of resize
+* Shields visible on models
 
 ##ICONS TODO
 * buthing animal

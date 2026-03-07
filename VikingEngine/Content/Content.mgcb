@@ -2398,6 +2398,9 @@
 #begin Version Number.txt
 /copy:Version Number.txt
 
+#begin VoxelModel/Character/modshield_forward1.vox
+/copy:VoxelModel/Character/modshield_forward1.vox
+
 #begin VoxelModel/Character/modshield_javelin.vox
 /copy:VoxelModel/Character/modshield_javelin.vox
 

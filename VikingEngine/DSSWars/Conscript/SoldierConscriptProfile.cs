@@ -212,6 +212,8 @@ namespace VikingEngine.DSSWars.Conscript
             soldierData.basehealth = MathExt.MultiplyInt(armorData.basehealth, skillBonus);
             soldierData.modelData.armor = armorData.modelData.armor;
 
+            soldierData.modelData.shield = conscript.shield;
+
             soldierData.modelData.specialization = conscript.specialization;
 
             if (conscript.vehicle != ItemResourceType.NONE)

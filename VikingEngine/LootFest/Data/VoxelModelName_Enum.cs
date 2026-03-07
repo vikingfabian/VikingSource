@@ -81,6 +81,7 @@ namespace VikingEngine.LootFest
         modweapon_shortsword,
         modweapon_longsword,
         modweapon_bronzesword,
+        modshield_forward1,
 
         #endregion
 
