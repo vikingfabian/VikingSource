@@ -1,12 +1,6 @@
 ﻿UPDATE
 Change Log:
-* voxel editor: fixed undo of resize
-* Shields visible on models
-* Shields affect damage block, health, move speed and attack speed
-* Reduced units without shield to 50% damage block 
-* Repaired war toggle
-* Fixed Stockpile settings save
-
+* 
 
 ##ICONS TODO
 * butching animal

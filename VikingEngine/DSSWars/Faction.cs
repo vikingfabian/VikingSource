@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars
         public void initMidGameEnter()
         {            
             new Players.AiPlayer(this, false);
-            initDiplomacy(DssRef.world);
+            //initDiplomacy(DssRef.world);
         }
 
         public void initVisuals(WorldMetaData worldMeta)
