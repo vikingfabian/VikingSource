@@ -1556,10 +1556,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "Augmente l'attaque dans une zone, et la réduit dans les autres de {0}";
         public override string Conscript_SelectBuilding => "Sélectionner la garnison";
 
-        public override string Conscript_WeaponDamage => "Dégats de l'arme: {0}";
-        public override string Conscript_ArmorHealth => "Vie de l'armure: {0}";
-        public override string Conscript_TrainingSpeed => "Vitesse d'attaque: {0}";
-        public override string Conscript_TrainingTime => "Temps d'entraînement: {0}";
+        public override string Conscript_WeaponDamage => "Dégats de l'arme";
+        public override string Conscript_ArmorHealth => "Vie de l'armure";
+        public override string Conscript_TrainingSpeed => "Vitesse d'attaque";
+        public override string Conscript_TrainingTime => "Temps d'entraînement";
 
         public override string Conscript_Training_Minimal => "Minime";
         public override string Conscript_Training_Basic => "Basique";

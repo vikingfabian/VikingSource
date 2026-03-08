@@ -3804,7 +3804,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void biomeToHud(LocalPlayer player, RichBoxContent content, bool interactive)
         {
             content.newLine();
-            content.Add(new RbText(LangLib.LabelColon(DssRef.todoLang.CityBiome_Title), HudLib.TitleColor_Label));
+            content.Add(new RbText(TextLib.LabelColon(DssRef.todoLang.CityBiome_Title), HudLib.TitleColor_Label));
             content.space();
             content.Add(new RbText(Biom.ToString()));
         }

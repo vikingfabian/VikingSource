@@ -666,7 +666,19 @@ namespace VikingEngine.DSSWars
         {
             content.newLine();
             content.Add(new RbText(text + ":", TitleColor_Label));
-            //content.text(text + ":").overrideColor = TitleColor_Label;
+        }
+
+        public static void LabelAndText(RichBoxContent content, SpriteName icon, string label, string text)
+        {
+            content.newLine();
+            if (icon != SpriteName.NO_IMAGE)
+            {
+                content.Add(new RbImage(icon));
+                content.space();
+            }
+            content.Add(new RbText(label + ":", TitleColor_Label));
+            content.hspace();
+            content.Add(new RbText(text));
         }
 
         public static void CloseButton(RichBoxContent content, AbsRbAction click)

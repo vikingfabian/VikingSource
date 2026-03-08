@@ -41,27 +41,31 @@ namespace VikingEngine.DSSWars.Resource
 
         public void ToHud(RichBoxContent content)
         {
-            content.newLine();
-            content.Add(new RbText(".Block count", HudLib.TitleColor_Label));
-            content.hspace();
-            content.Add(new RbText(TextLib.PercentTextWithSymbol(blocksRefillTimeSecMultiply)));
+            HudLib.LabelAndText(content, SpriteName.cmdParry, ".Block count", TextLib.PercentTextWithSymbol(blocksRefillTimeSecMultiply));
+            HudLib.LabelAndText(content, meleeSpeedBonus < 0? SpriteName.cmdAttackDown : SpriteName.cmdAttackUp, ".Melee speed", TextLib.PercentAddText(meleeSpeedBonus));
+            HudLib.LabelAndText(content, SpriteName.warsArmyTag_Shield, DssRef.lang.Conscript_ArmorHealth, TextLib.PlusMinus(armorBonus));
+            HudLib.LabelAndText(content, SpriteName.cmdMoveDown, ".Move speed", TextLib.PercentTextWithSymbol(moveSpeedMultiply));
+            //content.newLine();
+            //content.Add(new RbText(".Block count", HudLib.TitleColor_Label));
+            //content.hspace();
+            //content.Add(new RbText(TextLib.PercentTextWithSymbol(blocksRefillTimeSecMultiply)));
 
-            content.newLine();
-            content.Add(new RbText(".Melee speed", HudLib.TitleColor_Label));
-            content.hspace();
-            content.Add(new RbText(TextLib.PercentAddText(meleeSpeedBonus)));
+            //content.newLine();
+            //content.Add(new RbText(".Melee speed", HudLib.TitleColor_Label));
+            //content.hspace();
+            //content.Add(new RbText(TextLib.PercentAddText(meleeSpeedBonus)));
 
-            content.newLine();
-            content.Add(new RbImage(SpriteName.warsArmyTag_Shield));
-            content.Add(new RbSpace());
-            content.Add(new RbText(DssRef.lang.Conscript_ArmorHealth, HudLib.TitleColor_Label));
-            content.hspace();
-            content.Add(new RbText(TextLib.PlusMinus(armorBonus)));
+            //content.newLine();
+            //content.Add(new RbImage(SpriteName.warsArmyTag_Shield));
+            //content.Add(new RbSpace());
+            //content.Add(new RbText(DssRef.lang.Conscript_ArmorHealth, HudLib.TitleColor_Label));
+            //content.hspace();
+            //content.Add(new RbText(TextLib.PlusMinus(armorBonus)));
 
-            content.newLine();
-            content.Add(new RbText(".Move speed", HudLib.TitleColor_Label));
-            content.hspace();
-            content.Add(new RbText(TextLib.PercentTextWithSymbol(moveSpeedMultiply)));
+            //content.newLine();
+            //content.Add(new RbText(".Move speed", HudLib.TitleColor_Label));
+            //content.hspace();
+            //content.Add(new RbText(TextLib.PercentTextWithSymbol(moveSpeedMultiply)));
         }
     }
 }

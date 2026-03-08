@@ -1384,8 +1384,24 @@ namespace VikingEngine.DSSWars.Build
 
                 case BuildAndExpandType.Cook:
                     mayCraftList(content, CraftResourceLib.Food1);
-
                     break;
+
+                case BuildAndExpandType.Butcher:
+                    //mayCraftList(content, city, CraftList.ButcherAnimalCraftTypes);
+                    break;
+                case BuildAndExpandType.Pottery:
+                    mayCraftList(content, city, CraftList.PotteryCraftTypes);
+                    break;
+                case BuildAndExpandType.ShieldMaker:
+                    mayCraftList(content, city, CraftList.ShieldMakerCraftTypes);
+                    break;
+                case BuildAndExpandType.Smoker:
+                    mayCraftList(content, CraftResourceLib.ConservedFood_Smoked);
+                    break;
+                case BuildAndExpandType.Dryer:
+                    mayCraftList(content, CraftResourceLib.ConservedFood_Dried);
+                    break;
+
 
                 case BuildAndExpandType.Carpenter:
                     mayCraftList(content, city, CraftList.CarpenterCraftTypes);
@@ -1666,6 +1682,21 @@ namespace VikingEngine.DSSWars.Build
             content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
             content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.EmbassyAddMaxDiplomacy)));
             content.newLine();
+        }
+
+        void mayCraftList(RichBoxContent content, City city, CraftBlueprint[] types)
+        {
+            content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+
+            foreach (var m in types)
+            {
+                //content.newLine();
+                //content.Add(new RbImage(SpriteName.WarsBluePrint));
+                //content.space();
+                
+                m.toMenu(content, city, false, true, false, false);
+                //bp1?.resultTypeToMenu(content);
+            }
         }
 
         void mayCraftList(RichBoxContent content, City city, ItemResourceType[] types)

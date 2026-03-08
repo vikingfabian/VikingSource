@@ -1555,10 +1555,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "Tek bir bölge için saldırı gücünü arttırır, ancak diğer hepsi için düşürür {0}";
         public override string Conscript_SelectBuilding => "Kışla seç";
 
-        public override string Conscript_WeaponDamage => "Silah hasarı: {0}";
-        public override string Conscript_ArmorHealth => "Zırh Dayanıklılığı: {0}";
-        public override string Conscript_TrainingSpeed => "Saldırı hızı: {0}";
-        public override string Conscript_TrainingTime => "Eğitim süresi: {0}";
+        public override string Conscript_WeaponDamage => "Silah hasarı";
+        public override string Conscript_ArmorHealth => "Zırh Dayanıklılığı";
+        public override string Conscript_TrainingSpeed => "Saldırı hızı";
+        public override string Conscript_TrainingTime => "Eğitim süresi";
 
         public override string Conscript_Training_Minimal => "Minimal";
         public override string Conscript_Training_Basic => "Temel";

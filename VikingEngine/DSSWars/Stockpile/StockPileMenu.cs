@@ -419,9 +419,10 @@ namespace VikingEngine.DSSWars.Resource
                 new RbSpace(0.5f),
                 new RbImage(SpriteName.WarsStockpileLimit) },
                 useLimitProperty, new RbTooltip((RichBoxContent content, object tag)=> {
-                    content.h1(".Limit stockpile", HudLib.TitleColor_Head);
+                    content.h1(DssRef.todoLang.StockPile_LimitTitle, HudLib.TitleColor_Head);
                     content.text(DssRef.lang.Resource_StockPile_Info);
                     content.newParagraph();
+                    content.Add(new RbSeperationLine());
                     ResourceLib.FullResourceInfo(faction, city, item, content);
                 })));
 

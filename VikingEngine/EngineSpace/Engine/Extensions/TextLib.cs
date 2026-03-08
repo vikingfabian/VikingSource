@@ -36,6 +36,13 @@ namespace VikingEngine
         public static NTStringBuilder TextLine = new NTStringBuilder();
         static NTStringBuilder test = new NTStringBuilder();
 
+        /// <summary>
+        /// Add ":"
+        /// </summary>
+        public static string LabelColon(string text)
+        {
+            return text + ":";
+        }
         public static string ThaiConv(string text)
         {
             return text.Replace('|', ZeroWidthSpaceChar);

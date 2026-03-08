@@ -1559,10 +1559,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "특정 전투 유형의 공격력이 {0}만큼 증가하며, 다른 모든 능력은 감소합니다.";
         public override string Conscript_SelectBuilding => "병영 선택";
 
-        public override string Conscript_WeaponDamage => "무기 공격력: {0}";
-        public override string Conscript_ArmorHealth => "방어구 체력: {0}";
-        public override string Conscript_TrainingSpeed => "공격 속도: {0}";
-        public override string Conscript_TrainingTime => "훈련 시간: {0}";
+        public override string Conscript_WeaponDamage => "무기 공격력";
+        public override string Conscript_ArmorHealth => "방어구 체력";
+        public override string Conscript_TrainingSpeed => "공격 속도";
+        public override string Conscript_TrainingTime => "훈련 시간";
 
         public override string Conscript_Training_Minimal => "최소";
         public override string Conscript_Training_Basic => "기초";

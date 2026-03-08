@@ -49,6 +49,11 @@ namespace VikingEngine.DSSWars.Interface
         {
             otherfaction = botFaction;
 
+            if (player.faction == botFaction)
+            {
+                return;
+            }
+
             selectedRelation = DssRef.diplomacy.GetRelation(player.faction, botFaction);//player.faction.diplomaticRelations[botFaction.myIndex];
             againstDark = botFaction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
             //if (selectedRelation == null)

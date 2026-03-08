@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars
             return ref diplomaticRelations[RelationIndex(faction1, faction2)];
         }
 
-        void writeRelations(System.IO.BinaryWriter w)
+        public void writeRelations(System.IO.BinaryWriter w)
         {            
             int skips = -1;
             for (int currentIndex = 0; currentIndex < diplomaticRelations.Length; ++currentIndex)
@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars
             Debug.WriteCheck(w);
         }
 
-        void readRelations(System.IO.BinaryReader r, int subVersion)
+        public void readRelations(System.IO.BinaryReader r, int subVersion)
         {
             int currentIndex = 0;
 

@@ -1544,10 +1544,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "特定の分野で攻撃力が{0}増加し、他のすべての分野が減少します";
         public override string Conscript_SelectBuilding => "兵舎を選択";
 
-        public override string Conscript_WeaponDamage => "武器のダメージ: {0}";
-        public override string Conscript_ArmorHealth => "鎧の耐久力: {0}";
-        public override string Conscript_TrainingSpeed => "攻撃速度: {0}";
-        public override string Conscript_TrainingTime => "訓練時間: {0}";
+        public override string Conscript_WeaponDamage => "武器のダメージ";
+        public override string Conscript_ArmorHealth => "鎧の耐久力";
+        public override string Conscript_TrainingSpeed => "攻撃速度";
+        public override string Conscript_TrainingTime => "訓練時間";
 
         public override string Conscript_Training_Minimal => "最低限";
         public override string Conscript_Training_Basic => "基本";

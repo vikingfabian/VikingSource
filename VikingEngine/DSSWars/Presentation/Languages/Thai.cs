@@ -1566,10 +1566,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => TextLib.ThaiConv("จะ|เพิ่ม|พลัง|โจมตี|ใน|ด้าน|หนึ่ง|แต่|จะ|ลด|ด้าน|อื่น|ลง|ทั้งหมด| {0}");
         public override string Conscript_SelectBuilding => TextLib.ThaiConv("เลือก|โรง|ทหาร");
 
-        public override string Conscript_WeaponDamage => TextLib.ThaiConv("พลัง|โจมตี|อาวุธ: {0}");
-        public override string Conscript_ArmorHealth => TextLib.ThaiConv("พลัง|ป้องกัน|เกราะ: {0}");
-        public override string Conscript_TrainingSpeed => TextLib.ThaiConv("ความ|เร็ว|การ|โจมตี: {0}");
-        public override string Conscript_TrainingTime => TextLib.ThaiConv("เวลา|ใน|การ|ฝึก: {0}");
+        public override string Conscript_WeaponDamage => TextLib.ThaiConv("พลัง|โจมตี|อาวุธ");
+        public override string Conscript_ArmorHealth => TextLib.ThaiConv("พลัง|ป้องกัน|เกราะ");
+        public override string Conscript_TrainingSpeed => TextLib.ThaiConv("ความ|เร็ว|การ|โจมตี");
+        public override string Conscript_TrainingTime => TextLib.ThaiConv("เวลา|ใน|การ|ฝึก");
 
         public override string Conscript_Training_Minimal => TextLib.ThaiConv("พื้น|ฐาน|ที่สุด");
         public override string Conscript_Training_Basic => TextLib.ThaiConv("ขั้น|ต้น");

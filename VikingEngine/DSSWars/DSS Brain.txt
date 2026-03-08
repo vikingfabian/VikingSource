@@ -2,7 +2,10 @@
 Change Log:
 * Dynamic space for worker XP
 * fixed double pig pen
-
+* fixed diplomacy click cirkle crash
+* fixed diplomacy saves
+* improved tooltip on conscrip resources
+* fixed: New buildings do not show Craftable recipies
 
 ##ICONS TODO
 * butching animal

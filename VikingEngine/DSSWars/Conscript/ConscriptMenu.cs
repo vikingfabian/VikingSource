@@ -14,6 +14,7 @@ using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.PJ;
 
 namespace VikingEngine.DSSWars.Conscript
 {
@@ -778,7 +779,9 @@ namespace VikingEngine.DSSWars.Conscript
             content.newLine();
             content.Add(new RbImage(SpriteName.warsArmyTag_Hit));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Conscript_WeaponDamage, ConscriptProfile.WeaponDamage(weapon, out int splashCount))));
+            content.Add(new RbText(TextLib.LabelColon(DssRef.lang.Conscript_WeaponDamage), HudLib.TitleColor_Label));
+            content.hspace();
+            content.Add(new RbText(ConscriptProfile.WeaponDamage(weapon, out int splashCount).ToString()));
 
             if (splashCount > 0)
             {
@@ -792,7 +795,9 @@ namespace VikingEngine.DSSWars.Conscript
                     content.newLine();
                     content.Add(new RbImage(SpriteName.warsArmyTag_Shield));
                     content.space();
-                    content.Add(new RbText(string.Format(DssRef.lang.Conscript_ArmorHealth, TextLib.PlusMinus(DssConst.WeaponHealthAdd_Handspear))));
+                    content.Add(new RbText(TextLib.LabelColon(DssRef.lang.Conscript_ArmorHealth), HudLib.TitleColor_Label));
+                    content.hspace();
+                    content.Add(new RbText(TextLib.PlusMinus(DssConst.WeaponHealthAdd_Handspear)));
                     break;
             }
 
@@ -803,13 +808,14 @@ namespace VikingEngine.DSSWars.Conscript
                 content.Add(new RbText(DssRef.lang.Conscript_BlockReducingAttack));
             }
             content.newLine();
-            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.cmdParry));
+            content.space();
             content.Add(new RbText(string.Format( DssRef.lang.Conscript_BlockPerSecond, TextLib.OneDecimal(1f/ data.blocksRefillTimeSec))));
             content.newLine();
             content.Add(new RbText(DssRef.lang.Conscript_BlockDescription, HudLib.InfoYellow_Light));
 
             content.newParagraph();
-
+            content.Add(new RbSeperationLine() { thick = true });
             ResourceLib.FullResourceInfo(player.faction, city, weapon, content); 
             //var res = city.GetGroupedResource(weapon);
 
@@ -822,13 +828,14 @@ namespace VikingEngine.DSSWars.Conscript
         {
             ItemResourceType item = (ItemResourceType)tag;
 
-            int skillBonus = item == ItemResourceType.NobelMen ? conv.ToPercentage(DssConst.NobelMenSkillBonusAdd) : 0;
+            float skillBonus = item == ItemResourceType.NobelMen ? DssConst.NobelMenSkillBonusAdd : 0;
 
-            HudLib.Label(content, DssRef.todoLang.Conscript_SkillBonus);
-            content.hspace();
-            content.Add(new RbText($"+{skillBonus}%"));
+            HudLib.LabelAndText(content, SpriteName.WarsStrengthIcon, DssRef.todoLang.Conscript_SkillBonus, TextLib.PercentAddText(skillBonus));
+            //content.hspace();
+            //content.Add(new RbText($"+{skillBonus}%"));
 
             content.newParagraph();
+            content.Add(new RbSeperationLine() { thick = true });
 
             ResourceLib.FullResourceInfo(player.faction, city, item, content);
         }
@@ -843,8 +850,8 @@ namespace VikingEngine.DSSWars.Conscript
 
                 DssVar.Shields[item].ToHud(content);
 
-                content.Add(new RbSeperationLine());
-                content.Add(new RbSeperationLine());
+                content.newParagraph();
+                content.Add(new RbSeperationLine() { thick = true });
             }
             ResourceLib.FullResourceInfo(player.faction, city, item, content);
         }
@@ -879,18 +886,23 @@ namespace VikingEngine.DSSWars.Conscript
             IconName.Item(armor, out SpriteName armoricon, out string armorname);
             content.h1(armorname, HudLib.TitleColor_Head);
             content.newLine();
-            content.Add(new RbImage(SpriteName.warsArmyTag_Shield));
-            content.Add(new RbSpace());
-            content.Add(new RbText(string.Format(DssRef.lang.Conscript_ArmorHealth, ConscriptProfile.ArmorHealth(armor))));
+
+            HudLib.LabelAndText(content, SpriteName.warsArmyTag_Shield, DssRef.lang.Conscript_ArmorHealth, ConscriptProfile.ArmorHealth(armor).ToString());
+            //content.Add(new RbImage(SpriteName.warsArmyTag_Shield));
+            //content.Add(new RbSpace());
+            //content.Add(new RbText(string.Format(DssRef.lang.Conscript_ArmorHealth, ConscriptProfile.ArmorHealth(armor))));
 
             if (armor != ItemResourceType.NONE)
             {
                 content.newParagraph();
-                content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
+                content.Add(new RbSeperationLine() { thick = true });
+                ResourceLib.FullResourceInfo(player.faction, city, armor, content);
+                //content.newParagraph();
+                //content.h2(DssRef.lang.Hud_Available).overrideColor = HudLib.TitleColor_Label;
 
-                bool reachedBuffer = false;
-                city.GetGroupedResource(armor).toMenu(content, armor, ref reachedBuffer);
-               
+                //bool reachedBuffer = false;
+                //city.GetGroupedResource(armor).toMenu(content, armor, ref reachedBuffer);
+
             }
         }
 
@@ -910,8 +922,18 @@ namespace VikingEngine.DSSWars.Conscript
         void trainingTooltip(RichBoxContent content, object tag)
         {
             TrainingTooltipArgs args = (TrainingTooltipArgs)tag;
-            content.text(string.Format(DssRef.lang.Conscript_TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(args.training, args.buildtype)).LongString()));
-            content.text(string.Format(DssRef.lang.Conscript_TrainingSpeed, TextLib.OneDecimal(ConscriptProfile.TrainingAttackSpeed(args.training))));
+
+            HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(args.training, args.buildtype)).LongString());
+            HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_TrainingSpeed, TextLib.OneDecimal(ConscriptProfile.TrainingAttackSpeed(args.training)));
+            //content.newLine();
+            //content.Add(new RbText(TextLib.LabelColon(DssRef.lang.Conscript_TrainingTime), HudLib.TitleColor_Label));
+            //content.hspace();
+            //content.Add(new RbText(new TimeLength(ConscriptProfile.TrainingTime(args.training, args.buildtype)).LongString()));
+
+            //content.newLine();
+            //content.Add(new RbText(TextLib.LabelColon(DssRef.lang.Conscript_TrainingSpeed), HudLib.TitleColor_Label));
+            //content.hspace();
+            //content.Add(new RbText(TextLib.OneDecimal(ConscriptProfile.TrainingAttackSpeed(args.training))));
 
         }
         void queClick(int length)

@@ -239,7 +239,7 @@ namespace VikingEngine.DSSWars.Build
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
         public static void AvailableBuildTypes(List<BuildAndExpandType> list, City city, bool autoBuild)
         {
-            bool godPowers = DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator && !autoBuild;
+            bool godPowers = (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator || StartupSettings.UnlockAllProgress) && !autoBuild;
 
             bool devUnlockAll = StartupSettings.UnlockAllProgress;
 

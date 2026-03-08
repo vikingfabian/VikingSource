@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Graphics;
+using VikingEngine.LootFest.GO.Characters;
 
 namespace VikingEngine.HUD.RichBox
 {
@@ -488,6 +489,7 @@ namespace VikingEngine.HUD.RichBox
         public Image pointer;
         float opacity;
         Color color;
+        public bool thick = false;
 
         public RbSeperationLine(Color color, float opacity)
         {
@@ -504,7 +506,7 @@ namespace VikingEngine.HUD.RichBox
             var pos = group.seperatingLinePlacement();
 
             pointer = new Image(SpriteName.WhiteArea, pos,
-                new Vector2(group.boxWidth, 2), group.layer, false, group.addToRender);
+                new Vector2(group.boxWidth, thick? 6 : 2), group.layer, false, group.addToRender);
             pointer.ColorAndAlpha(color, opacity);
             group.Add(pointer);
         }

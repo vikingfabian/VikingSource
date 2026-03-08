@@ -204,5 +204,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string CityBiome_Desolate => "Desolate";
         public string CityBiome_Desert => "Desert";
 
+        public string StockPile_LimitTitle => "Limit stockpile";
+
     }
 }

@@ -70,34 +70,34 @@ namespace VikingEngine.DSSWars.Work
              ItemResourceType.BucklerShield, ItemResourceType.RoundShield, ItemResourceType.HeaterShield, ItemResourceType.TowerShield
         };
 
-        //public static readonly ItemResourceType[] ButcherAnimalTypes = {
-        //    ItemResourceType.Hen,
-        //    ItemResourceType.Pig,
-        //    ItemResourceType.Oxen,
-        //    ItemResourceType.KineOxen,
+        public static readonly ItemResourceType[] ButcherAnimalTypes = {
+            ItemResourceType.Hen,
+            ItemResourceType.Pig,
+            ItemResourceType.Oxen,
+            ItemResourceType.KineOxen,
 
-        //    ItemResourceType.Pony,
-        //    ItemResourceType.Horse,
-        //    ItemResourceType.WarHorse,
-        //    ItemResourceType.DraftHorse,
+            ItemResourceType.Pony,
+            ItemResourceType.Horse,
+            ItemResourceType.WarHorse,
+            ItemResourceType.DraftHorse,
 
-        //    ItemResourceType.WildPig,
-        //    ItemResourceType.WildHog,
-        //    ItemResourceType.WarHog,
-        //    ItemResourceType.StagHog,
+            ItemResourceType.WildPig,
+            ItemResourceType.WildHog,
+            ItemResourceType.WarHog,
+            ItemResourceType.StagHog,
 
-        //    ItemResourceType.Wolf,
-        //    ItemResourceType.Warg,
-        //    ItemResourceType.AlphaWarg,
+            ItemResourceType.Wolf,
+            ItemResourceType.Warg,
+            ItemResourceType.AlphaWarg,
 
-        //    ItemResourceType.WildCat,
-        //    ItemResourceType.Lion,
-        //    ItemResourceType.WarLion,
+            ItemResourceType.WildCat,
+            ItemResourceType.Lion,
+            ItemResourceType.WarLion,
 
-        //    ItemResourceType.Elephant,
-        //    ItemResourceType.WarElephant,
-        //    ItemResourceType.Oliphant,
-        //};
+            ItemResourceType.Elephant,
+            ItemResourceType.WarElephant,
+            ItemResourceType.Oliphant,
+        };
 
         public static readonly CraftBlueprint[] ButcherAnimalCraftTypes = {
             CraftResourceLib.SlaughterHen,

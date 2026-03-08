@@ -336,6 +336,8 @@ namespace VikingEngine.DSSWars
             }
 
             Debug.WriteCheck(w);
+
+            DssRef.diplomacy.writeRelations(w);
             
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
@@ -368,10 +370,7 @@ namespace VikingEngine.DSSWars
             Debug.ReadCheck(r);
 
             int factionLegth = factions.Array.Length;
-            if (subversion >= 63)
-            {
-                factionLegth = r.ReadUInt16();
-            }
+            factionLegth = r.ReadUInt16();
             
             int darkLordCount = 0;
 
@@ -400,27 +399,31 @@ namespace VikingEngine.DSSWars
                 }
             }
 
-            if (subversion >= 85)
+            
+            int quickMatchFactionsCount = r.ReadByte();
+            if (quickMatchFactionsCount > 0)
             {
-                int quickMatchFactionsCount = r.ReadByte();
-                if (quickMatchFactionsCount > 0)
+                quickMatchFactions = new List<int>(quickMatchFactionsCount);
+                for (int i = 0; i < quickMatchFactionsCount; i++)
                 {
-                    quickMatchFactions = new List<int>(quickMatchFactionsCount);
-                    for (int i = 0; i < quickMatchFactionsCount; i++)
+                    int fIx = r.ReadUInt16();
+                    var f = faction(fIx);
+                    if (f != null)
                     {
-                        int fIx = r.ReadUInt16();
-                        var f = faction(fIx);
-                        if (f != null)
-                        {
-                            f.quickMatchFaction = true;
-                            f.displayInFullOverview = true;
-                            quickMatchFactions.Add(fIx);
-                        }
+                        f.quickMatchFaction = true;
+                        f.displayInFullOverview = true;
+                        quickMatchFactions.Add(fIx);
                     }
                 }
             }
+            
 
-            Debug.ReadCheck(r);            
+            Debug.ReadCheck(r);
+
+            if (subversion >= 109)
+            {
+                DssRef.diplomacy.readRelations(r, subversion);
+            }
         }
 
         public void writeNet(System.IO.BinaryWriter w)
