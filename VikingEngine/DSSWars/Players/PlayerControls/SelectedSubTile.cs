@@ -239,8 +239,17 @@ namespace VikingEngine.DSSWars.Players
                             return MayBuildResult.Yes;
                         }
                         else
-                        { 
-                            return MayBuildResult.Yes_ChangeCity;
+                        {
+                            List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
+                            BuildLib.AvailableBuildTypes(available, city, false);
+                            if (!available.Contains(player.gameControls.build.placeBuildingType))
+                            {
+                                return MayBuildResult.Yes_ChangeCity;
+                            }
+                            else
+                            {
+                                return MayBuildResult.No_OutsideRegion;
+                            }
                         }
                     }
                     else
