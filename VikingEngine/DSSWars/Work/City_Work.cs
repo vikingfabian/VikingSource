@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             var faction = GetFaction();
-            if (faction == null)
+            if (faction == null || faction.player == null)
             {
                 return;
             }
