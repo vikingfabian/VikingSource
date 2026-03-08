@@ -1,5 +1,5 @@
 ﻿Change log:
-* Fixed: could copy-build mines and locked buildings
+* 
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
