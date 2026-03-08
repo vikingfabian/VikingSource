@@ -55,8 +55,16 @@ namespace VikingEngine.DSSWars.Presentation
         //            break;
 
         //    }
+        
         //}
-
+        
+        /// <summary>
+        /// Add ":"
+        /// </summary>
+        public static string LabelColon(string text)
+        {
+            return text + ":";
+        }
         public static string FactionStartSizeName(FactionStartSize size)
         {
             switch (size)

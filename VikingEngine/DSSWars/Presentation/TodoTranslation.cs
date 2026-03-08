@@ -193,5 +193,16 @@ namespace VikingEngine.DSSWars.Presentation
         public string CityCulture_Coopers => "Coopers";
 
         public string CityCulture_Salters => "Salters";
+
+
+        public string CityBiome_Title => "Biome";
+        public string CityBiome_Description => "Biomes affect access to some resources and buildings";
+
+        public string CityBiome_Fields => "Fields";
+        public string CityBiome_Frozen => "Frozen";
+        public string CityBiome_Mountain => "Mountain";
+        public string CityBiome_Desolate => "Desolate";
+        public string CityBiome_Desert => "Desert";
+
     }
 }

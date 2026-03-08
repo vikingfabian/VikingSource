@@ -39,9 +39,14 @@ namespace VikingEngine.DSSWars.Data
             foreach (var entry in values)
             {
                 content.newLine();
-                content.Add(new RbText(LoadContent.CheckCharsSafety( entry.userName, LoadedFont.Regular), HudLib.TitleColor_Name));
-                HudLib.BulletSeperationPoint(content);
+
                 leaderBoard.toMenu(content, entry);
+
+                HudLib.BulletSeperationPoint(content);
+
+                content.Add(new RbText(LoadContent.CheckCharsSafety( entry.userName, LoadedFont.Regular), HudLib.TitleColor_Name));
+                
+                
             }
 
             if (values.Count == 0)

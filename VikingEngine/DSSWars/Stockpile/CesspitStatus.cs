@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 lock (cesspits.array)
                 {
-                    if (cesspits.InBound(selectedCessPit))
+                    if (cesspits.InBound_List(selectedCessPit))
                     {
                         CesspitStatus currentStatus = cesspits.array[selectedCessPit];
                         //selected view
@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     lock (cesspits.array)
                                     {
-                                        if (cesspits.InBound(selectedCessPit))
+                                        if (cesspits.InBound_List(selectedCessPit))
                                         {
                                             cesspits.array[selectedCessPit].type = item;
                                             refreshResourceCesspits();

@@ -13,16 +13,12 @@ namespace VikingEngine.DSSWars.Resource
     {
         public static readonly int COUNT = (int)StorageType.NUM_NONE;
 
-       
-
         public int storageCount;
       
         public StorageSize()
         {
             storageCount = 0;
         }
-
-        //const int SaveDiv = 100;
 
         public void addStorage(City city, StorageType storageType, bool add)
         {

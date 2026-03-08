@@ -55,7 +55,7 @@ namespace VikingEngine.EngineSpace
         public void Add(T item)
         {
             if (Count >= array.Length)
-                Resize(array.Length * 2);
+                Resize();
 
             array[Count++] = item;
         }
@@ -67,7 +67,7 @@ namespace VikingEngine.EngineSpace
                 if (index < 0 || index >= Count)
                     throw new IndexOutOfRangeException();
 
-                return ref array[index]; // ✅ ref access!
+                return ref array[index]; //ref access!
             }
         }
 
@@ -76,7 +76,12 @@ namespace VikingEngine.EngineSpace
             Count = 0;
         }
 
-        private void Resize(int newSize)
+        public void Resize()
+        {
+            Resize(array.Length * 2);
+        }
+
+        public void Resize(int newSize)
         {
             Array.Resize(ref array, newSize);
         }
@@ -132,9 +137,13 @@ namespace VikingEngine.EngineSpace
             return false;
         }
 
-        public bool InBound(int index)
+        public bool InBound_List(int index)
         {
             return index >= 0 && index < Count;
+        }
+        public bool InBound_Array(int index)
+        {
+            return index >= 0 && index < array.Length;
         }
     }    
 }

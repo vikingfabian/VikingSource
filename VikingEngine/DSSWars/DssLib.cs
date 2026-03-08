@@ -468,7 +468,7 @@ namespace VikingEngine.DSSWars
 
     enum CityBiom
     {
-        None,
+        Default_Fields,
         Frozen,// (Extra food storage, extra skin production)
         Forest,
         Mountain, //(Hog breeding)

@@ -338,10 +338,9 @@ namespace VikingEngine.DSSWars.Build
                     if (unlocks.building_upgradedFarm)
                     {
                         list.Add(BuildAndExpandType.HempFarmUpgraded);
-                    }
-                    list.Add(BuildAndExpandType.PigPen);
+                    }                   
                 }
-                //list.Add(BuildAndExpandType.PigPen);
+                
             }
 
             if (logistics1)
@@ -625,7 +624,7 @@ namespace VikingEngine.DSSWars.Build
 
             bool biomRequirement(CityBiom biom)
             {
-                return biom == CityBiom.None || city.Biom == biom || StartupSettings.UnlockAllProgress;
+                return biom == CityBiom.Default_Fields || city.Biom == biom || StartupSettings.UnlockAllProgress;
             }
         }
 

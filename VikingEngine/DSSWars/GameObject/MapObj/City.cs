@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.GameObject
         //public int cityTileRadius = 0;
         public Rectangle2 cityTileArea;
         public CityCulture Culture = CityCulture.NUM_NONE;
-        public CityBiom Biom = CityBiom.None;
+        public CityBiom Biom = CityBiom.Default_Fields;
 
         public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarm;
         bool autoBuild_Work = false;
@@ -412,7 +412,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (cityCultureCollection.CitySeedCommoness.GetRandom(world.rnd))
             {
                 case CityResurceSeed.HenOrPig:
-                    if (Biom == CityBiom.None && areaCulture.percPlains >= 0.25)
+                    if (Biom == CityBiom.Default_Fields && areaCulture.percPlains >= 0.25)
                     {
                         AddGroupedResource(world,CityResoureIndex.Pig, DssConst.PenBreedingStockCount * 2);
                     }
@@ -2903,7 +2903,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (!player.profile.casualControls)
                 {
                     cultureToHud(player, content, interactive);
-                    biomToHud(player, content, interactive);
+                    biomeToHud(player, content, interactive);
                 }
                 if (immigrants.HasValue())
                 {
@@ -3801,10 +3801,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void biomToHud(LocalPlayer player, RichBoxContent content, bool interactive)
+        public void biomeToHud(LocalPlayer player, RichBoxContent content, bool interactive)
         {
             content.newLine();
-            content.Add(new RbText(".Biom:", HudLib.TitleColor_Label));
+            content.Add(new RbText(LangLib.LabelColon(DssRef.todoLang.CityBiome_Title), HudLib.TitleColor_Label));
             content.space();
             content.Add(new RbText(Biom.ToString()));
         }

@@ -1,6 +1,8 @@
 ﻿UPDATE
 Change Log:
-* 
+* Dynamic space for worker XP
+* fixed double pig pen
+
 
 ##ICONS TODO
 * butching animal

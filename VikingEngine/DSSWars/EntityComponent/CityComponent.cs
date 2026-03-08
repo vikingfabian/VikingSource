@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.DSSWars.XP;
+using VikingEngine.EngineSpace;
 using VikingEngine.LootFest.Display;
 using VikingEngine.LootFest.Map;
 
@@ -23,7 +24,7 @@ namespace VikingEngine.DSSWars
         const int WorkerXpCOUNT = (int)WorkExperienceType.NUM_NONE;
         int nextXpIndex = 0;
         bool[] WorkXpInUse;
-        public WorkExperience[] workerXp;
+        public StructList<WorkExperience> workerXp;
         
         public void InitCity(City city)
         {
@@ -32,10 +33,10 @@ namespace VikingEngine.DSSWars
         }
 
         public void initWorkerXp(int cityCount)
-        { 
-            int reserveWorkerCount = cityCount * 200;
+        {
+            int reserveWorkerCount = cityCount * 400;
             WorkXpInUse = new bool[reserveWorkerCount];
-            workerXp = new WorkExperience[reserveWorkerCount * WorkerXpCOUNT];
+            workerXp = new StructList<WorkExperience>(reserveWorkerCount * WorkerXpCOUNT);
         }
 
         /// <returns>Entity index</returns>
@@ -51,7 +52,11 @@ namespace VikingEngine.DSSWars
                     loop++;
                     if (loop > 2)
                     {
-                        throw new Exception("Out of worker xp");
+                        //throw new Exception("Out of worker xp")
+                        nextXpIndex = WorkXpInUse.Length;
+                        workerXp.Resize();
+                        Array.Resize(ref WorkXpInUse, WorkXpInUse.Length * 2);
+                        break;
                     }
                 }
             }
@@ -78,7 +83,7 @@ namespace VikingEngine.DSSWars
                 //Clear out!
                 for (int i = 0; i < WorkerXpCOUNT; ++i)
                 {
-                    workerXp[i + start] = WorkExperience.Empty;
+                    workerXp.array[i + start] = WorkExperience.Empty;
                 }
             }
         }
@@ -86,32 +91,32 @@ namespace VikingEngine.DSSWars
         public WorkExperience GetWorkXp(int index, WorkExperienceType type)
         {
 #if DEBUG
-            if (!arraylib.InBound(workerXp, index * WorkerXpCOUNT + (int)type))
+            if (!workerXp.InBound_Array( index * WorkerXpCOUNT + (int)type))
             {
                 throw new Exception();
             }
 #endif
-            return workerXp[index * WorkerXpCOUNT + (int)type];
+            return workerXp.array[index * WorkerXpCOUNT + (int)type];
         }
         public void SetWorkXp(int index, WorkExperienceType type, byte xp)
         {
 #if DEBUG
-            if (!arraylib.InBound(workerXp, index * WorkerXpCOUNT + (int)type))
+            if (!workerXp.InBound_Array(index * WorkerXpCOUNT + (int)type))
             {
                 throw new Exception();
             }
 #endif
-            workerXp[index * WorkerXpCOUNT + (int)type].xp = xp;
+            workerXp.array[index * WorkerXpCOUNT + (int)type].xp = xp;
         }
         public ref WorkExperience GetRefWorkXp(int index, WorkExperienceType type)
         {
 #if DEBUG
-            if (!arraylib.InBound(workerXp, index * WorkerXpCOUNT + (int)type))
+            if (!workerXp.InBound_Array(index * WorkerXpCOUNT + (int)type))
             {
                 throw new Exception();
             }
 #endif
-            return ref workerXp[index * WorkerXpCOUNT + (int)type];
+            return ref workerXp.array[index * WorkerXpCOUNT + (int)type];
         }
 
         public void writeWorkXp(int index, System.IO.BinaryWriter w)
@@ -122,7 +127,7 @@ namespace VikingEngine.DSSWars
 
                 for (int i = 0; i < WorkerXpCOUNT; ++i)
                 {
-                    workerXp[i + start].write(w);
+                    workerXp.array[i + start].write(w);
                 }
             }
             else
@@ -139,7 +144,7 @@ namespace VikingEngine.DSSWars
 
             for (int i = 0; i < WorkerXpCOUNT; ++i)
             {
-                workerXp[i + start].read(r);
+                workerXp.array[i + start].read(r);
             }
         }
 
@@ -151,9 +156,9 @@ namespace VikingEngine.DSSWars
 
             for (int i = 0; i < WorkerXpCOUNT; ++i)
             {
-                if (workerXp[i + start].xp >= DssConst.WorkXpToLevel)
+                if (workerXp.array[i + start].xp >= DssConst.WorkXpToLevel)
                 {
-                    xpPairs.Add(new (workerXp[i + start], (WorkExperienceType)i));
+                    xpPairs.Add(new (workerXp.array[i + start], (WorkExperienceType)i));
                 }
             }
             
