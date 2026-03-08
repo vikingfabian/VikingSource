@@ -50,6 +50,7 @@ namespace VikingEngine.DSSWars.Build
 
         public SelectTileResult buildMode = SelectTileResult.None;
         public BuildAndExpandType placeBuildingType = BuildAndExpandType.WorkerHut;
+        bool availableBuildingType = true;
         public MapPaintToolShape toolShape = MapPaintToolShape.Area;
         LocalPlayer player;
         City city;
@@ -65,12 +66,37 @@ namespace VikingEngine.DSSWars.Build
             return BuildLib.BuildOptions[(int)placeBuildingType];
         }
 
+        public void checkBuildAvailable(City city)
+        {
+            this.city = city;
+            List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
+            BuildLib.AvailableBuildTypes(available, city);
+            availableBuildingType = available.Contains(placeBuildingType);
+            
+        }
+
+        public MayBuildResult adjustMayBuild( MayBuildResult mayBuild)
+        {
+            if (!availableBuildingType)
+            {
+                mayBuild = MayBuildResult.No_OutsideRegion;
+            }
+
+            return mayBuild;
+        }
+
         bool actOnTile(IntVector2 subTilePos, bool commit, out int usesBuildQue, out City city)
         {
             if (buildMode == SelectTileResult.Build)
             {
                 usesBuildQue = 1;
-                var mayBuild = SelectedSubTile.MayBuild(subTilePos, player, out bool upgrade, out city);
+                var mayBuild = adjustMayBuild(SelectedSubTile.MayBuild(subTilePos, player, out bool upgrade, out city));
+                
+                //if (!availableBuildingType)
+                //{
+                //    mayBuild = MayBuildResult.No_OutsideRegion;
+                //}
+                
                 if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
                 {
 
@@ -1556,12 +1582,20 @@ namespace VikingEngine.DSSWars.Build
                 blockBuildUpdate = true;
             }
 
-            buildMode = SelectTileResult.Build;
-            placeBuildingType = type;
+            //buildMode = SelectTileResult.Build;
+            //placeBuildingType = type;
+            //availableBuildingType = true;
+            SetBuildMode(type);
             player.gameControls.setMenuFocus(false, true);
 
             
             //player.gameControls.mapControls.setObjectMenuFocus(false);
+        }
+        public void SetBuildMode(BuildAndExpandType type) 
+        {
+            buildMode = SelectTileResult.Build;
+            placeBuildingType = type;
+            availableBuildingType = true;
         }
 
        

@@ -221,9 +221,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             {
                 if (InBuildOrdersMode(false))
                 {
-                    player.hud.needRefresh = true;
-                    build.buildMode = SelectTileResult.None;
-                    map.selection.subTile.selectTileResult = SelectTileResult.None;
+                    CancelBuildMode();
                 }
             }
 
@@ -339,6 +337,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             gameSpeedInput();
 
             updateObjectTabbing();
+        }
+
+        public void CancelBuildMode()
+        {
+            player.hud.needRefresh = true;
+            build.buildMode = SelectTileResult.None;
+            map.selection.subTile.selectTileResult = SelectTileResult.None;
         }
 
         public bool controller_mayUseHeadDisplay()
@@ -562,7 +567,20 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         }
 
                         var build = BuildLib.BuildTypeFromTerrain(map.hover.subTile.subTile.mainTerrain, map.hover.subTile.subTile.subTerrain);
+
+
+                        if (build != BuildAndExpandType.NUM_NONE)
+                        {
+                            List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
+                            BuildLib.AvailableBuildTypes(available, map.hover.subTile.city);
+                            if (!available.Contains(build))
+                            {
+                                build = BuildAndExpandType.NUM_NONE;
+                            }
+                        }
+
                         setBuildMode(map.hover.subTile.city, build);
+
                         return;
                     }
                 }
@@ -1132,8 +1150,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.cityTab = MenuTab.Build;
             if (type != BuildAndExpandType.NUM_NONE)
             {
-                build.buildMode = SelectTileResult.Build;
-                build.placeBuildingType = type;
+                build.SetBuildMode(type);
             }
         }
         public bool InBuildOrdersMode(bool includeZoomLevel = true)

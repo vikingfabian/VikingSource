@@ -315,6 +315,11 @@ namespace VikingEngine.DSSWars.Players
                 {
                     selection.obj = newCity;
                     player.hud.needRefresh = true;
+
+                    if (player.gameControls.InBuildOrdersMode())
+                    {
+                        player.gameControls.build.checkBuildAvailable(newCity);
+                    }
                     //SoundLib.select_city.Play();
                 }
             }

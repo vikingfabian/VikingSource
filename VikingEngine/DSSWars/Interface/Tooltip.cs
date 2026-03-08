@@ -223,7 +223,7 @@ namespace VikingEngine.DSSWars.Interface
                         bp.toMenu(content, subTile.city);
 
                         var mayBuild = player.gameControls.map.hover.subTile.mayBuild(player, out bool upgrade);
-                        
+                         mayBuild = player.gameControls.build.adjustMayBuild(mayBuild);
                         switch (mayBuild)
                         { 
                             case Players.MayBuildResult.Yes_ChangeCity:
