@@ -512,7 +512,7 @@ namespace VikingEngine.DSSWars.Event
 
                             if (enemyFac == null)
                             {
-                                enemyFac = DssRef.world.findOrCreate(FactionType.Barbarians);
+                                enemyFac = DssRef.world.findOrCreate(FactionType.Barbarians, DssRef.settings.Faction_Barbarian);
                                 DssRef.settings.Faction_Barbarian = enemyFac.myIndex;
                             }
 
@@ -661,7 +661,13 @@ namespace VikingEngine.DSSWars.Event
 
             Ref.update.AddSyncAction(new SyncAction(() =>
             {
-                var enemyFac = DssRef.world.faction(DssRef.settings.Faction_SouthHara);
+                var enemyFac = DssRef.world.findOrCreate(FactionType.SouthHara, DssRef.settings.Faction_SouthHara);
+
+                if (enemyFac == null)
+                {
+                    return;                    
+                }
+                DssRef.settings.Faction_SouthHara = enemyFac.myIndex;
 
                 for (int playerIx = 0; playerIx < DssRef.state.localPlayers.Count; ++playerIx)
                 {
@@ -705,14 +711,7 @@ namespace VikingEngine.DSSWars.Event
                         {
                             new SoldierGroup(army, DssLib.SoldierProfile_CrossbowMan, army.position);
                         }
-                        army.startInOnePoint();//refreshPositions(true);
-
-
-                        //var groupsC = army.groups.counter();
-                        //while (groupsC.Next())
-                        //{
-                        //    groupsC.sel.completeTransform(SoldierTransformType.ToShip);
-                        //}
+                        army.startInOnePoint();
 
                         DssRef.diplomacy.declareWar(enemyFac, DssRef.state.localPlayers[playerIx].faction);
                         army.Order_MoveTo(VectorExt.AddY(playerMostSouthCity[playerIx].tilePos, 3));
@@ -723,8 +722,6 @@ namespace VikingEngine.DSSWars.Event
                 new SouthHaraStartAi(enemyFac);
 
                 enemyFac.player.protectedFromDelete = false;
-                //playerMostSouthCity = null;
-                //spawnPos_Player = null;
             }));
         }
 

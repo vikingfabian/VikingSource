@@ -1357,8 +1357,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 var faction = GetFaction();
 
-
-                if (faction.player.IsLocalPlayer())
+                if (faction != null && faction.player.IsLocalPlayer())
                 {
                     var player = faction.player.GetLocalPlayer();
                     if (player.hud.messages.freeSpace())
