@@ -96,7 +96,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 
         public int MaxBlockCount()
         {
-            return (int)(1f / blocksRefillTimeSec + 0.9f);
+            return Bound.Min((int)(1f / blocksRefillTimeSec + 0.9f), 1);
         }
 
         public int DPS_land()

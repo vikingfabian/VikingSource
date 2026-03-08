@@ -102,6 +102,7 @@ namespace VikingEngine.DSSWars.EntityComponent
         {
             w.Write(amount);
             w.Write(useStockLimit);//(byte)limitOption);
+            w.Write((ushort)stockPileLimit);
             //w.Write((ushort)capacity);
         }
         public void readGameState(System.IO.BinaryReader r, int subversion)
@@ -114,6 +115,10 @@ namespace VikingEngine.DSSWars.EntityComponent
             else
             { 
                 useStockLimit = r.ReadBoolean();
+                if (subversion >= 108)
+                { 
+                    stockPileLimit = r.ReadUInt16();
+                }
             }
             //limitOption = (StockpileLimitOption)r.ReadByte();
             //capacity = r.ReadUInt16();

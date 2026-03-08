@@ -935,366 +935,30 @@ namespace VikingEngine.DSSWars.GameObject
         void writeResources(System.IO.BinaryWriter w)
         {
             w.Write((short)res_water.amount);
-            //write(CityResoureIndex.wood);
-            //write(CityResoureIndex.fuel);
-            //write(CityResoureIndex.stone);
-            //write(CityResoureIndex.rawFood);
-            //write(CityResoureIndex.food);
-            //write(CityResoureIndex.beer);
-            //write(CityResoureIndex.coolingfluid);
-            //write(CityResoureIndex.skinLinnen);
 
-            //// Ores
-            //write(CityResoureIndex.ironore);
-            //write(CityResoureIndex.TinOre);
-            //write(CityResoureIndex.CopperOre);
-            //write(CityResoureIndex.LeadOre);
-            //write(CityResoureIndex.SilverOre);
-            //write(CityResoureIndex.GoldOre);
-
-            //// Refined metals and materials
-            //write(CityResoureIndex.iron);
-            //write(CityResoureIndex.Tin);
-            //write(CityResoureIndex.Copper);
-            //write(CityResoureIndex.Lead);
-            //write(CityResoureIndex.Silver);
-            //write(CityResoureIndex.RawMithril);
-            //write(CityResoureIndex.Sulfur);
-
-            //// Alloys and special materials
-            //write(CityResoureIndex.Bronze);
-            //write(CityResoureIndex.Steel);
-            //write(CityResoureIndex.CastIron);
-            //write(CityResoureIndex.BloomeryIron);
-            //write(CityResoureIndex.Mithril);
-
-            //// Tools / construction
-            //write(CityResoureIndex.Palisade);
-            //write(CityResoureIndex.Toolkit);
-            //write(CityResoureIndex.Wagon2Wheel);
-            //write(CityResoureIndex.Wagon4Wheel);
-            //write(CityResoureIndex.BlackPowder);
-            //write(CityResoureIndex.GunPowder);
-            //write(CityResoureIndex.LedBullet);
-
-            //// Melee weapons
-            //write(CityResoureIndex.sharpstick);
-            //write(CityResoureIndex.BronzeSword);
-            //write(CityResoureIndex.shortsword);
-            //write(CityResoureIndex.Sword);
-            //write(CityResoureIndex.LongSword);
-            //write(CityResoureIndex.HandSpear);
-            //write(CityResoureIndex.MithrilSword);
-
-            //// Additional melee / ranged
-            //write(CityResoureIndex.Warhammer);
-            //write(CityResoureIndex.twohandsword);
-            ////write(CityResoureIndex.knightslance);
-            //write(CityResoureIndex.SlingShot);
-            //write(CityResoureIndex.ThrowingSpear);
-            //write(CityResoureIndex.bow);
-            //write(CityResoureIndex.longbow);
-            //write(CityResoureIndex.crossbow);
-            //write(CityResoureIndex.MithrilBow);
-
-            //// Firearms
-            //write(CityResoureIndex.HandCannon);
-            //write(CityResoureIndex.HandCulvertin);
-            //write(CityResoureIndex.Rifle);
-            //write(CityResoureIndex.Blunderbuss);
-
-            //// Siege
-            //write(CityResoureIndex.BatteringRam);
-            //write(CityResoureIndex.ballista);
-            //write(CityResoureIndex.Manuballista);
-            //write(CityResoureIndex.Catapult);
-            //write(CityResoureIndex.SiegeCannonBronze);
-            //write(CityResoureIndex.ManCannonBronze);
-            //write(CityResoureIndex.SiegeCannonIron);
-            //write(CityResoureIndex.ManCannonIron);
-
-            //// Armors
-            //write(CityResoureIndex.paddedArmor);
-            //write(CityResoureIndex.HeavyPaddedArmor);
-            //write(CityResoureIndex.BronzeArmor);
-            //write(CityResoureIndex.mailArmor);
-            //write(CityResoureIndex.heavyMailArmor);
-            //write(CityResoureIndex.LightPlateArmor);
-            //write(CityResoureIndex.FullPlateArmor);
-            //write(CityResoureIndex.MithrilArmor);
-
-
+            if (myIndex == 156)
+            {
+                lib.DoNothing();
+            }
             for (int i = 0; i < CityResoureIndex.COUNT; ++i)
             {
                 DssRef.world.cityResouces[resourceComponentStartIndex + i].writeGameState(w);
             }
 
-            //void write(int cityResourceIndex)
-            //{
-            //    DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex].writeGameState(w);
-            //}
-
-            //res_wood.writeGameState(w); // ItemResourceType.Wood_Group
-            //res_fuel.writeGameState(w); // ItemResourceType.Fuel_G
-            //res_stone.writeGameState(w); // ItemResourceType.Stone_G
-            //res_rawFood.writeGameState(w); // ItemResourceType.RawFood_Group
-            //res_food.writeGameState(w); // ItemResourceType.Food_G
-            //res_beer.writeGameState(w); // ItemResourceType.Beer
-            //res_coolingfluid.writeGameState(w); // ItemResourceType.CoolingFluid
-            //res_skinLinnen.writeGameState(w); // ItemResourceType.SkinLinen_Group
-
-            //res_ironore.writeGameState(w); // ItemResourceType.IronOre_G
-            //res_TinOre.writeGameState(w); // ItemResourceType.TinOre_G
-            //res_CupperOre.writeGameState(w); // ItemResourceType.CopperOre_G
-            //res_LeadOre.writeGameState(w); // ItemResourceType.LeadOre_G
-            //res_SilverOre.writeGameState(w); // ItemResourceType.SilverOre_G
-            //res_GoldOre.writeGameState(w);
-
-            //res_iron.writeGameState(w); // ItemResourceType.Iron_G
-            //res_Tin.writeGameState(w); // ItemResourceType.Tin_G
-            //res_Cupper.writeGameState(w); // ItemResourceType.Copper_G
-            //res_Lead.writeGameState(w); // ItemResourceType.Lead_G
-            //res_Silver.writeGameState(w); // ItemResourceType.Silver_G
-            //res_RawMithril.writeGameState(w); // ItemResourceType.RawMithril
-            //res_Sulfur.writeGameState(w); // ItemResourceType.Sulfur
-
-            //res_Bronze.writeGameState(w); // ItemResourceType.Bronze
-            //res_Steel.writeGameState(w); // ItemResourceType.Steel
-            //res_CastIron.writeGameState(w); // ItemResourceType.CastIron
-            //res_BloomeryIron.writeGameState(w); // ItemResourceType.BloomeryIron
-            //res_Mithril.writeGameState(w); // ItemResourceType.Mithril
-
-            //res_Palisade.writeGameState(w);
-            //res_Toolkit.writeGameState(w);
-            //res_Wagon2Wheel.writeGameState(w); // ItemResourceType.Wagon2Wheel
-            //res_Wagon4Wheel.writeGameState(w); // ItemResourceType.Wagon4Wheel
-            //res_BlackPowder.writeGameState(w); // ItemResourceType.BlackPowder
-            //res_GunPowder.writeGameState(w); // ItemResourceType.GunPowder
-            //res_LedBullet.writeGameState(w); // ItemResourceType.LedBullet
-
-            //res_sharpstick.writeGameState(w); // ItemResourceType.SharpStick
-            //res_BronzeSword.writeGameState(w); // ItemResourceType.BronzeSword
-            //res_shortsword.writeGameState(w); // ItemResourceType.ShortSword
-            //res_Sword.writeGameState(w); // ItemResourceType.Sword
-            //res_LongSword.writeGameState(w); // ItemResourceType.LongSword
-            //res_HandSpear.writeGameState(w); // ItemResourceType.HandSpear
-            //res_MithrilSword.writeGameState(w); // ItemResourceType.MithrilSword
-
-            //res_Warhammer.writeGameState(w); // ItemResourceType.Warhammer
-            //res_twohandsword.writeGameState(w); // ItemResourceType.TwoHandSword
-            //res_knightslance.writeGameState(w); // ItemResourceType.KnightsLance
-            //res_SlingShot.writeGameState(w); // ItemResourceType.SlingShot
-            //res_ThrowingSpear.writeGameState(w); // ItemResourceType.ThrowingSpear
-            //res_bow.writeGameState(w); // ItemResourceType.Bow
-            //res_longbow.writeGameState(w); // ItemResourceType.LongBow
-            //res_crossbow.writeGameState(w); // ItemResourceType.CrossBow
-            //res_MithrilBow.writeGameState(w); // ItemResourceType.MithrilBow
-
-            //res_HandCannon.writeGameState(w); // ItemResourceType.HandCannon
-            //res_HandCulvertin.writeGameState(w); // ItemResourceType.HandCulvertin
-            //res_Rifle.writeGameState(w); // ItemResourceType.Rifle
-            //res_Blunderbuss.writeGameState(w); // ItemResourceType.Blunderbus
-
-            //res_BatteringRam.writeGameState(w); // ItemResourceType.BatteringRam
-            //res_ballista.writeGameState(w); // ItemResourceType.Ballista
-            //res_Manuballista.writeGameState(w); // ItemResourceType.Manuballista
-            //res_Catapult.writeGameState(w); // ItemResourceType.Catapult
-            //res_SiegeCannonBronze.writeGameState(w); // ItemResourceType.SiegeCannonBronze
-            //res_ManCannonBronze.writeGameState(w); // ItemResourceType.ManCannonBronze
-            //res_SiegeCannonIron.writeGameState(w); // ItemResourceType.SiegeCannonIron
-            //res_ManCannonIron.writeGameState(w); // ItemResourceType.ManCannonIron
-
-            //res_paddedArmor.writeGameState(w); // ItemResourceType.LightArmor
-            //res_HeavyPaddedArmor.writeGameState(w); // ItemResourceType.HeavyPaddedArmor
-            //res_BronzeArmor.writeGameState(w); // ItemResourceType.BronzeArmor
-            //res_mailArmor.writeGameState(w); // ItemResourceType.MediumArmor
-            //res_heavyMailArmor.writeGameState(w); // ItemResourceType.HeavyArmor
-            //res_LightPlateArmor.writeGameState(w); // ItemResourceType.LightPlateArmor
-            //res_FullPlateArmor.writeGameState(w); // ItemResourceType.FullPlateArmor
-            //res_MithrilArmor.writeGameState(w); // ItemResourceType.MithrilArmor
         }
 
         public void readResources(System.IO.BinaryReader r, int subversion)
         {
             res_water.amount = r.ReadInt16();
 
-            //read(CityResoureIndex.wood);
-            //read(CityResoureIndex.fuel);
-            //read(CityResoureIndex.stone);
-            //read(CityResoureIndex.rawFood);
-            //read(CityResoureIndex.food);
-            //read(CityResoureIndex.beer);
-            //read(CityResoureIndex.coolingfluid);
-            //read(CityResoureIndex.skinLinnen);
-
-            //// Ores
-            //read(CityResoureIndex.ironore);
-            //read(CityResoureIndex.TinOre);
-            //read(CityResoureIndex.CopperOre);
-            //read(CityResoureIndex.LeadOre);
-            //read(CityResoureIndex.SilverOre);
-            //read(CityResoureIndex.GoldOre);
-
-            //// Refined metals and materials
-            //read(CityResoureIndex.iron);
-            //read(CityResoureIndex.Tin);
-            //read(CityResoureIndex.Copper);
-            //read(CityResoureIndex.Lead);
-            //read(CityResoureIndex.Silver);
-            //read(CityResoureIndex.RawMithril);
-            //read(CityResoureIndex.Sulfur);
-
-            //// Alloys and special materials
-            //read(CityResoureIndex.Bronze);
-            //read(CityResoureIndex.Steel);
-            //read(CityResoureIndex.CastIron);
-            //read(CityResoureIndex.BloomeryIron);
-            //read(CityResoureIndex.Mithril);
-
-            //// Tools / construction
-            //read(CityResoureIndex.Palisade);
-            //read(CityResoureIndex.Toolkit);
-            //read(CityResoureIndex.Wagon2Wheel);
-            //read(CityResoureIndex.Wagon4Wheel);
-            //read(CityResoureIndex.BlackPowder);
-            //read(CityResoureIndex.GunPowder);
-            //read(CityResoureIndex.LedBullet);
-
-            //// Melee weapons
-            //read(CityResoureIndex.sharpstick);
-            //read(CityResoureIndex.BronzeSword);
-            //read(CityResoureIndex.shortsword);
-            //read(CityResoureIndex.Sword);
-            //read(CityResoureIndex.LongSword);
-            //read(CityResoureIndex.HandSpear);
-            //read(CityResoureIndex.MithrilSword);
-
-            //// Additional melee / ranged
-            //read(CityResoureIndex.Warhammer);
-            //read(CityResoureIndex.twohandsword);
-            ////read(CityResoureIndex.knightslance);
-            //read(CityResoureIndex.SlingShot);
-            //read(CityResoureIndex.ThrowingSpear);
-            //read(CityResoureIndex.bow);
-            //read(CityResoureIndex.longbow);
-            //read(CityResoureIndex.crossbow);
-            //read(CityResoureIndex.MithrilBow);
-
-            //// Firearms
-            //read(CityResoureIndex.HandCannon);
-            //read(CityResoureIndex.HandCulvertin);
-            //read(CityResoureIndex.Rifle);
-            //read(CityResoureIndex.Blunderbuss);
-
-            //// Siege
-            //read(CityResoureIndex.BatteringRam);
-            //read(CityResoureIndex.ballista);
-            //read(CityResoureIndex.Manuballista);
-            //read(CityResoureIndex.Catapult);
-            //read(CityResoureIndex.SiegeCannonBronze);
-            //read(CityResoureIndex.ManCannonBronze);
-            //read(CityResoureIndex.SiegeCannonIron);
-            //read(CityResoureIndex.ManCannonIron);
-
-            //// Armors
-            //read(CityResoureIndex.paddedArmor);
-            //read(CityResoureIndex.HeavyPaddedArmor);
-            //read(CityResoureIndex.BronzeArmor);
-            //read(CityResoureIndex.mailArmor);
-            //read(CityResoureIndex.heavyMailArmor);
-            //read(CityResoureIndex.LightPlateArmor);
-            //read(CityResoureIndex.FullPlateArmor);
-            //read(CityResoureIndex.MithrilArmor);
-
+            if (myIndex == 156)
+            {
+                lib.DoNothing();
+            }
             for (int i = 0; i < CityResoureIndex.COUNT; ++i)
             {
                 DssRef.world.cityResouces[resourceComponentStartIndex + i].readGameState(r, subversion);
             }
-
-            //void read(int cityResourceIndex)
-            //{
-            //    DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex].readGameState(r, subversion);
-            //}
-            //res_wood.readGameState(r, subversion); // ItemResourceType.Wood_Group
-            //res_fuel.readGameState(r, subversion); // ItemResourceType.Fuel_G
-            //res_stone.readGameState(r, subversion); // ItemResourceType.Stone_G
-            //res_rawFood.readGameState(r, subversion); // ItemResourceType.RawFood_Group
-            //res_food.readGameState(r, subversion); // ItemResourceType.Food_G
-            //res_beer.readGameState(r, subversion); // ItemResourceType.Beer
-            //res_coolingfluid.readGameState(r, subversion); // ItemResourceType.CoolingFluid
-            //res_skinLinnen.readGameState(r, subversion); // ItemResourceType.SkinLinen_Group
-
-            //res_ironore.readGameState(r, subversion); // ItemResourceType.IronOre_G
-            //res_TinOre.readGameState(r, subversion); // ItemResourceType.TinOre_G
-            //res_CupperOre.readGameState(r, subversion); // ItemResourceType.CopperOre_G
-            //res_LeadOre.readGameState(r, subversion); // ItemResourceType.LeadOre_G
-            //res_SilverOre.readGameState(r, subversion); // ItemResourceType.SilverOre_G
-            //res_GoldOre.readGameState(r, subversion);
-
-
-            //res_iron.readGameState(r, subversion); // ItemResourceType.Iron_G
-            //res_Tin.readGameState(r, subversion); // ItemResourceType.Tin_G
-            //res_Cupper.readGameState(r, subversion); // ItemResourceType.Copper_G
-            //res_Lead.readGameState(r, subversion); // ItemResourceType.Lead_G
-            //res_Silver.readGameState(r, subversion); // ItemResourceType.Silver_G
-            //res_RawMithril.readGameState(r, subversion); // ItemResourceType.RawMithril
-            //res_Sulfur.readGameState(r, subversion); // ItemResourceType.Sulfur
-
-            //res_Bronze.readGameState(r, subversion); // ItemResourceType.Bronze
-            //res_Steel.readGameState(r, subversion); // ItemResourceType.Steel
-            //res_CastIron.readGameState(r, subversion); // ItemResourceType.CastIron
-            //res_BloomeryIron.readGameState(r, subversion); // ItemResourceType.BloomeryIron
-            //res_Mithril.readGameState(r, subversion); // ItemResourceType.Mithril
-
-            //res_Palisade.readGameState(r, subversion);
-
-            //res_Toolkit.readGameState(r, subversion);
-            //res_Wagon2Wheel.readGameState(r, subversion); // ItemResourceType.Wagon2Wheel
-            //res_Wagon4Wheel.readGameState(r, subversion); // ItemResourceType.Wagon4Wheel
-            //res_BlackPowder.readGameState(r, subversion); // ItemResourceType.BlackPowder
-            //res_GunPowder.readGameState(r, subversion); // ItemResourceType.GunPowder
-            //res_LedBullet.readGameState(r, subversion); // ItemResourceType.LedBullet
-
-            //res_sharpstick.readGameState(r, subversion); // ItemResourceType.SharpStick
-            //res_BronzeSword.readGameState(r, subversion); // ItemResourceType.BronzeSword
-            //res_shortsword.readGameState(r, subversion); // ItemResourceType.ShortSword
-            //res_Sword.readGameState(r, subversion); // ItemResourceType.Sword
-            //res_LongSword.readGameState(r, subversion); // ItemResourceType.LongSword
-            //res_HandSpear.readGameState(r, subversion); // ItemResourceType.HandSpear
-            //res_MithrilSword.readGameState(r, subversion); // ItemResourceType.MithrilSword
-
-            //res_Warhammer.readGameState(r, subversion); // ItemResourceType.Warhammer
-            //res_twohandsword.readGameState(r, subversion); // ItemResourceType.TwoHandSword
-            //res_knightslance.readGameState(r, subversion); // ItemResourceType.KnightsLance
-            //res_SlingShot.readGameState(r, subversion); // ItemResourceType.SlingShot
-            //res_ThrowingSpear.readGameState(r, subversion); // ItemResourceType.ThrowingSpear
-            //res_bow.readGameState(r, subversion); // ItemResourceType.Bow
-            //res_longbow.readGameState(r, subversion); // ItemResourceType.LongBow
-            //res_crossbow.readGameState(r, subversion); // ItemResourceType.CrossBow
-            //res_MithrilBow.readGameState(r, subversion); // ItemResourceType.MithrilBow
-
-            //res_HandCannon.readGameState(r, subversion); // ItemResourceType.HandCannon
-            //res_HandCulvertin.readGameState(r, subversion); // ItemResourceType.HandCulvertin
-            //res_Rifle.readGameState(r, subversion); // ItemResourceType.Rifle
-            //res_Blunderbuss.readGameState(r, subversion); // ItemResourceType.Blunderbus
-
-            //res_BatteringRam.readGameState(r, subversion); // ItemResourceType.BatteringRam
-            //res_ballista.readGameState(r, subversion); // ItemResourceType.Ballista
-            //res_Manuballista.readGameState(r, subversion); // ItemResourceType.Manuballista
-            //res_Catapult.readGameState(r, subversion); // ItemResourceType.Catapult
-            //res_SiegeCannonBronze.readGameState(r, subversion); // ItemResourceType.SiegeCannonBronze
-            //res_ManCannonBronze.readGameState(r, subversion); // ItemResourceType.ManCannonBronze
-            //res_SiegeCannonIron.readGameState(r, subversion); // ItemResourceType.SiegeCannonIron
-            //res_ManCannonIron.readGameState(r, subversion); // ItemResourceType.ManCannonIron
-
-            //res_paddedArmor.readGameState(r, subversion); // ItemResourceType.LightArmor
-            //res_HeavyPaddedArmor.readGameState(r, subversion); // ItemResourceType.HeavyPaddedArmor
-            //res_BronzeArmor.readGameState(r, subversion); // ItemResourceType.BronzeArmor
-            //res_mailArmor.readGameState(r, subversion); // ItemResourceType.MediumArmor
-            //res_heavyMailArmor.readGameState(r, subversion); // ItemResourceType.HeavyArmor
-            //res_LightPlateArmor.readGameState(r, subversion); // ItemResourceType.LightPlateArmor
-            //res_FullPlateArmor.readGameState(r, subversion); // ItemResourceType.FullPlateArmor
-            //res_MithrilArmor.readGameState(r, subversion); // ItemResourceType.MithrilArmor
         }
 
         public void writeNet_map(System.IO.BinaryWriter w)
@@ -4313,7 +3977,7 @@ namespace VikingEngine.DSSWars.GameObject
                 
                 technology.addFactionUnlocked(newFaction.technology, true, false);
 
-                if (newFaction.player != null && newFaction.player.IsLocalPlayer())
+                if (!convert && newFaction.player != null && newFaction.player.IsLocalPlayer())
                 {
                     DssRef.world.copyStockPile(null, newFaction, this, CopyPasteOption.FactionToCity, ResourceGroupType.NUM);
                 }

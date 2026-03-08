@@ -54,11 +54,12 @@ namespace VikingEngine.DSSWars
                 manType,
                 armor,
                 weapon,
+                shield,
                 riding,
                 specialization,
                 experience,
-                randomVariant,
-                profileVariant
+                randomVariant + profileVariant * 10
+                
             );
 
             if (result > 0)

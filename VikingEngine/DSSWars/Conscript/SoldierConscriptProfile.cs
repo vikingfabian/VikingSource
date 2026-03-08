@@ -214,6 +214,8 @@ namespace VikingEngine.DSSWars.Conscript
 
             soldierData.modelData.shield = conscript.shield;
 
+           
+
             soldierData.modelData.specialization = conscript.specialization;
 
             if (conscript.vehicle != ItemResourceType.NONE)
@@ -244,6 +246,8 @@ namespace VikingEngine.DSSWars.Conscript
                 conscript.specialization = SpecializationType.AntiCavalry;
             }
 
+            conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
+
             switch (conscript.specialization)
             {
                 case SpecializationType.CityGuard:
@@ -262,7 +266,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                 case SpecializationType.Viking:
                 case SpecializationType.Sea:
-                    conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
+                    
 
                     soldierData.attackDamage = MathExt.SubtractPercentage(soldierData.attackDamage, DssConst.Conscript_SpecializePercentage);
                     float seaDamagePerc = conscript.specialization == SpecializationType.Sea ?
@@ -329,12 +333,11 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
             }
 
-            
-
             soldierData.attackTimePlusCoolDown /= ConscriptProfile.TrainingAttackSpeed(conscript.training);
             soldierData.attackTimePlusCoolDown /= 1f + skillBonus;
 
-           
+            ShieldProperties.AddToConscript(ref soldierData, ref conscript, ranged);
+
             return soldierData;
 
             

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -836,7 +836,16 @@ namespace VikingEngine.DSSWars.Conscript
         void shieldTooltip(RichBoxContent content, object tag)
         {
             ItemResourceType item = (ItemResourceType)tag;
+            if (item != ItemResourceType.NONE)
+            {
+                IconName.Item(item, out SpriteName icon, out string name);
+                content.h1(TextLib.LargeFirstLetter( name), HudLib.TitleColor_Head);
 
+                DssVar.Shields[item].ToHud(content);
+
+                content.Add(new RbSeperationLine());
+                content.Add(new RbSeperationLine());
+            }
             ResourceLib.FullResourceInfo(player.faction, city, item, content);
         }
         void animalTooltip(RichBoxContent content, object tag)

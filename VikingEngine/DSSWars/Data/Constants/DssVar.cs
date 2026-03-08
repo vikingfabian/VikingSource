@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars
@@ -27,6 +28,8 @@ namespace VikingEngine.DSSWars
 
         public static AnimalModelData pigModel;
         public static AnimalModelData dogModel;
+
+        public static Dictionary<ItemResourceType, ShieldProperties> Shields;
         public static void UpdateConstants()
         {
             pigModel = new AnimalModelData(VoxelModelName.Pig, DssConst.Men_StandardModelScale * 0.5f, new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames));
@@ -44,6 +47,15 @@ namespace VikingEngine.DSSWars
             Worker_StandardBoundRadius = StandardBoundRadius * 2f;
             Men_StandardWalkingSpeed_PerSec = DssConst.Men_StandardWalkingSpeed * TimeExt.SecondToMs;
             WorkerUnit_ResourcePosDiff = new Vector3(0, DssConst.Men_StandardModelScale * 1.2f, DssConst.Men_StandardModelScale * 0.25f);
+
+            Shields = new Dictionary<ItemResourceType, ShieldProperties>
+            {
+                { ItemResourceType.NONE, new ShieldProperties() },
+                { ItemResourceType.BucklerShield, new ShieldProperties() { blocksRefillTimeSecMultiply = 2, meleeSpeedBonus = 0.4f} },
+                { ItemResourceType.RoundShield, new ShieldProperties() { blocksRefillTimeSecMultiply = 3f, meleeSpeedBonus = 0.2f, armorBonus = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.25)  } },
+                { ItemResourceType.HeaterShield, new ShieldProperties() { blocksRefillTimeSecMultiply = 5, meleeSpeedBonus = 0.0f, armorBonus = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.5), moveSpeedMultiply = 0.9f }},
+                { ItemResourceType.TowerShield, new ShieldProperties() { blocksRefillTimeSecMultiply = 8, meleeSpeedBonus = -0.4f, armorBonus = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 2), moveSpeedMultiply = 0.7f }},
+            };
 
             BloodBlock.UpdateConstants();
             SoldierGroup.Init();

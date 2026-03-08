@@ -37,9 +37,9 @@ namespace VikingEngine.DSSWars
 
         public static float DefaultBlockChance = 0.75f;
 
-        public static float DefaultBlockRefillTimeSec = 0.25f;
-        public static float LowBlockRefillTimeSec = 0.5f;
-        public static float BadBlockRefillTimeSec = 1f;
+        public static float DefaultBlockRefillTimeSec = 0.5f;
+        public static float LowBlockRefillTimeSec = 1f;
+        public static float BadBlockRefillTimeSec = 2f;
 
         public static float HeightAdvantageBlockReduce_multiply = 0.5f;
         public static float HeavyBlockReduceAttack_Inv = 0.2f;

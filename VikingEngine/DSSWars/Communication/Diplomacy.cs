@@ -170,6 +170,10 @@ namespace VikingEngine.DSSWars
 
         public DiplomaticRelation GetRelation(int faction1, int faction2)
         {
+            if (faction1 < 0 || faction2 < 0 || faction1 == faction2)
+            {
+                return DiplomaticRelation.Empty;
+            }
             return diplomaticRelations[RelationIndex(faction1, faction2)];
         }
 
