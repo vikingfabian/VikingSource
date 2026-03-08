@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.GameObject
         //public int cityTileRadius = 0;
         public Rectangle2 cityTileArea;
         public CityCulture Culture = CityCulture.NUM_NONE;
-        public CityBiom Biom = CityBiom.Default_Fields;
+        public CityBiom Biome = CityBiom.Default_Fields;
 
         public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarm;
         bool autoBuild_Work = false;
@@ -321,23 +321,23 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (areaCulture.percDesolate > 0.5)
             {
-                Biom = CityBiom.Desolate;
+                Biome = CityBiom.Desolate;
             }
             else if (areaCulture.frozenBiom > 0.5)
             {
-                Biom = CityBiom.Frozen;
+                Biome = CityBiom.Frozen;
             }
             else if (areaCulture.percDry > 0.5)
             {
-                Biom = CityBiom.Desert;
+                Biome = CityBiom.Desert;
             }
             else if (areaCulture.percForest > 0.75)
             {
-                Biom = CityBiom.Forest;
+                Biome = CityBiom.Forest;
             }
             else if (areaCulture.percMountain > 0.5)
             {
-                Biom = CityBiom.Mountain;
+                Biome = CityBiom.Mountain;
             }
 
             if (areaCulture.percForest >= 0.7 && cityType == CityType.Capital)
@@ -412,7 +412,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (cityCultureCollection.CitySeedCommoness.GetRandom(world.rnd))
             {
                 case CityResurceSeed.HenOrPig:
-                    if (Biom == CityBiom.Default_Fields && areaCulture.percPlains >= 0.25)
+                    if (Biome == CityBiom.Default_Fields && areaCulture.percPlains >= 0.25)
                     {
                         AddGroupedResource(world,CityResoureIndex.Pig, DssConst.PenBreedingStockCount * 2);
                     }
@@ -422,7 +422,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     break;
                 case CityResurceSeed.Mount:
-                    switch (Biom)
+                    switch (Biome)
                     {
                         case CityBiom.Mountain:
                             AddGroupedResource(world, CityResoureIndex.WildPig, DssConst.PenBreedingStockCount * 2);
@@ -3806,7 +3806,9 @@ namespace VikingEngine.DSSWars.GameObject
             content.newLine();
             content.Add(new RbText(TextLib.LabelColon(DssRef.todoLang.CityBiome_Title), HudLib.TitleColor_Label));
             content.space();
-            content.Add(new RbText(Biom.ToString()));
+            content.Add(new RbText(LangLib.Biome(Biome)));
+            content.space();
+            HudLib.InfoButton(content, new RbTooltip_Text(DssRef.todoLang.CityBiome_Description));
         }
 
         void cultureToolTip(RichBoxContent content, object tag)

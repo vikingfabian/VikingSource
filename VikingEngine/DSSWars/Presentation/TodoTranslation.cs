@@ -200,6 +200,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string CityBiome_Fields => "Fields";
         public string CityBiome_Frozen => "Frozen";
+        public string CityBiome_Forest => "Forest";
         public string CityBiome_Mountain => "Mountain";
         public string CityBiome_Desolate => "Desolate";
         public string CityBiome_Desert => "Desert";

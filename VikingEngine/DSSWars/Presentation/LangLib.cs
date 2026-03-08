@@ -55,10 +55,29 @@ namespace VikingEngine.DSSWars.Presentation
         //            break;
 
         //    }
-        
+
         //}
-        
-        
+        public static string Biome(CityBiom biom)
+        {
+            switch (biom)
+            {
+                case CityBiom.Default_Fields:
+                    return DssRef.todoLang.CityBiome_Fields;
+                case CityBiom.Frozen:
+                    return DssRef.todoLang.CityBiome_Frozen;
+                case CityBiom.Forest:
+                    return DssRef.todoLang.CityBiome_Forest;
+                case CityBiom.Mountain:
+                    return DssRef.todoLang.CityBiome_Mountain;
+                case CityBiom.Desolate:
+                    return DssRef.todoLang.CityBiome_Desolate;
+                case CityBiom.Desert:
+                    return DssRef.todoLang.CityBiome_Desert;
+                default:
+                    return TextLib.Error;
+            }
+        }
+
         public static string FactionStartSizeName(FactionStartSize size)
         {
             switch (size)

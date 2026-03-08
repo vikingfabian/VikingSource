@@ -624,7 +624,7 @@ namespace VikingEngine.DSSWars.Build
 
             bool biomRequirement(CityBiom biom)
             {
-                return biom == CityBiom.Default_Fields || city.Biom == biom || StartupSettings.UnlockAllProgress;
+                return biom == CityBiom.Default_Fields || city.Biome == biom || StartupSettings.UnlockAllProgress;
             }
         }
 

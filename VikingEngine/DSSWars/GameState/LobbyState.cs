@@ -698,7 +698,7 @@ namespace VikingEngine.DSSWars
 
         void createUpdateBackground(VectorRect bgArea)
         { 
-            Graphics.Image snowflake = new Image( SpriteName.WarsBuild_TreeApple, bgArea.PercentToPosition(new Vector2(0.03f)),
+            Graphics.Image snowflake = new Image( SpriteName.WarsResource_WarElephant, bgArea.PercentToPosition(new Vector2(0.03f)),
                 Screen.IconSizeV2 * 1.5f, ImageLayers.Background4 );
             snowflake.Rotation = 0.05f;
             snowflake.Color = Color.Gray;
