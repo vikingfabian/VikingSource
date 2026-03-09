@@ -786,6 +786,17 @@ namespace VikingEngine.DSSWars.Build
              XP.WorkExperienceType.Farm
         );
 
+        public static readonly CraftBlueprint LinenFarm_Gold = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.LinenFarm,
+            1,
+            [
+                new UseResource(ItemResourceType.Gold, 20),
+                new UseResource(ItemResourceType.Water_G, 2)
+            ],
+             XP.WorkExperienceType.Farm
+        );
+
         public static readonly CraftBlueprint LinenFarmUpgrade = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.LinenFarmUpgraded,
@@ -805,6 +816,16 @@ namespace VikingEngine.DSSWars.Build
             ], XP.WorkExperienceType.Farm
         );
 
+        public static readonly CraftBlueprint HempFarm_Gold = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.HempFarm,
+            1,
+            [
+                new UseResource(ItemResourceType.Gold, 25),
+                new UseResource(ItemResourceType.Water_G, 2)
+            ], XP.WorkExperienceType.Farm
+        );
+
         public static readonly CraftBlueprint HempFarmUpgrade = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.HempFarmUpgraded,
@@ -818,6 +839,14 @@ namespace VikingEngine.DSSWars.Build
             (int)Build.BuildAndExpandType.RapeSeedFarm,
             1,
             [new UseResource(ItemResourceType.Fuel_G, 4), new UseResource(ItemResourceType.Water_G, 2)],
+            XP.WorkExperienceType.Farm
+        );
+        public static readonly CraftBlueprint RapeseedFarm_Gold = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.RapeSeedFarm,
+            1,
+            [   new UseResource(ItemResourceType.Gold, 20),
+                new UseResource(ItemResourceType.Water_G, 2)],
             XP.WorkExperienceType.Farm
         );
         public static readonly CraftBlueprint RapeseedFarmUpgrade = new CraftBlueprint(

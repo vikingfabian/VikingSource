@@ -65,8 +65,8 @@ namespace VikingEngine.DSSWars
                     var properties = ItemPropertyColl.Get(item);
                     if (properties.cityResourceIndex >= 0)
                     {
-                        ref GroupedResource resource = ref factionResourceOverviews[faction.resourceComponentStartIndex + properties.cityResourceIndex];
-                        resource.stockPileLimit = properties.defaultStockPile;
+                        /*ref GroupedResource resource = ref */factionResourceOverviews[faction.resourceComponentStartIndex + properties.cityResourceIndex] = new GroupedResource();
+                        //resource.stockPileLimit = properties.defaultStockPile;
                     }
                 }
             }

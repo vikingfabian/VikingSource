@@ -15,21 +15,30 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Resource
 {
+
+    struct MarketResource
+    {
+        public ItemResourceType item;
+        public Money cost;
+
+        public MarketResource(ItemResourceType item, int goldCost)
+        { 
+            this.item = item;
+            cost = Money.FromGold(goldCost);
+        }
+    }
     static class BlackMarketResources
     {
-        static readonly ItemResourceType[] Resources =
-        {
-            ItemResourceType.Wood_Group,
-            ItemResourceType.Stone_G,
-            ItemResourceType.Brick,
-            ItemResourceType.Iron_G,
-            ItemResourceType.RawFood_Group,
-            ItemResourceType.SkinLinen_Group,
-            //ItemResourceType.Food_G,
-            
-        };
-        static readonly int[] PurchaseCount = { 20, 100, 500 };
+        //static readonly ItemResourceType[] Resources =
+        //{
+        //    ItemResourceType.Wood_Group,
+        //    ItemResourceType.Stone_G,
+        //    ItemResourceType.Brick,
+        //    ItemResourceType.Iron_G,
+        //    ItemResourceType.RawFood_Group,
+        //    ItemResourceType.SkinLinen_Group,
 
+        //};
         static int Cost_RawFood = DssConst.FoodGoldValue_BlackMarket - 5;
         static int Cost_Food = DssConst.FoodGoldValue_BlackMarket;
         static int Cost_Wood = 50;
@@ -37,6 +46,36 @@ namespace VikingEngine.DSSWars.Resource
         static int Cost_Brick = 100;
         static int Cost_SkinAndLinnen = 50;
         static int Cost_Iron = 500;
+
+        static readonly MarketResource[] Resources =
+        {
+            new MarketResource(ItemResourceType.Wood_Group, Cost_Wood),
+            new MarketResource(ItemResourceType.Stone_G, Cost_Stone),
+            new MarketResource(ItemResourceType.Brick, Cost_Brick),
+            new MarketResource(ItemResourceType.Iron_G, Cost_Iron),
+            new MarketResource(ItemResourceType.RawFood_Group, Cost_RawFood),
+            new MarketResource(ItemResourceType.SkinLinen_Group, Cost_SkinAndLinnen),
+        };
+
+        static readonly int[] PurchaseCount = { 20, 100, 500 };
+
+        
+
+        public static void AiPurchaseUpdate(City city, Faction faction)
+        {
+            if (city != null && city.GetFaction().GetGold(city) > 100000) 
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    MarketResource res = arraylib.RandomListMember(Resources);
+                    var gres = city.GetGroupedResource(res.item);
+                    if (gres.amount < 300)
+                    {
+                        city.blackMarketPurchase(res.item, 100, res.cost);
+                    }
+                }
+            }
+        }
 
         public static void AiPurchaseWood(City city, Faction faction)
         {
@@ -59,7 +98,7 @@ namespace VikingEngine.DSSWars.Resource
             return false;
         }
 
-        static int CostMultiply(City city, int cost)
+        static Money CostMultiply(City city, Money cost)
         {
             if (city.Culture == CityCulture.Backtrader)
             {
@@ -92,7 +131,7 @@ namespace VikingEngine.DSSWars.Resource
             content.newLine();
             content.Add(new RbImage(SpriteName.rtsUpkeep));
             content.Add(new RbText(Cost_Food.ToString()));
-            content.Add(new RbTab(0.2f));
+            content.Add(new RbTab(0.3f));
             content.Add(new RbImage(SpriteName.WarsResource_Food));
             content.space();
             content.Add(new RbText(DssRef.lang.Resource_TypeName_Food));
@@ -101,33 +140,36 @@ namespace VikingEngine.DSSWars.Resource
 
         }
 
-        public static void ResourceToHud(ItemResourceType item, LocalPlayer player, RichBoxContent content, City city)
+        public static void ResourceToHud(MarketResource res, LocalPlayer player, RichBoxContent content, City city)
         {
-            switch (item)
-            {
-                case ItemResourceType.RawFood_Group:
-                    Resource(CostMultiply(city, Cost_RawFood), ItemResourceType.RawFood_Group, DssRef.lang.Resource_TypeName_RawFood);
-                    break;
-                case ItemResourceType.Food_G:
-                    Resource(CostMultiply(city, Cost_Food), ItemResourceType.Food_G, DssRef.lang.Resource_TypeName_Food);
-                    break;
-                case ItemResourceType.Wood_Group:
-                    Resource(CostMultiply(city, Cost_Wood), ItemResourceType.Wood_Group, DssRef.lang.Resource_TypeName_Wood);
-                    break;
-                case ItemResourceType.Stone_G:
-                    Resource(CostMultiply(city, Cost_Stone), ItemResourceType.Stone_G, DssRef.lang.Resource_TypeName_Stone);
-                    break;
-                case ItemResourceType.Brick:
-                    Resource(CostMultiply(city, Cost_Brick), ItemResourceType.Brick, DssRef.todoLang.Resource_TypeName_Brick);
-                    break;
-                case ItemResourceType.SkinLinen_Group:
-                    Resource(CostMultiply(city, Cost_SkinAndLinnen), ItemResourceType.SkinLinen_Group, DssRef.lang.Resource_TypeName_Linen);
-                    break;
-                case ItemResourceType.Iron_G:
-                    Resource(CostMultiply(city, Cost_Iron), ItemResourceType.Iron_G, DssRef.lang.Resource_TypeName_Iron);
-                    break;
-            }
-            void Resource(int cost, ItemResourceType resourceType, string name)
+            //switch (item)
+            //{
+            //    case ItemResourceType.RawFood_Group:
+            //        Resource(CostMultiply(city, Cost_RawFood), ItemResourceType.RawFood_Group, DssRef.lang.Resource_TypeName_RawFood);
+            //        break;
+            //    case ItemResourceType.Food_G:
+            //        Resource(CostMultiply(city, Cost_Food), ItemResourceType.Food_G, DssRef.lang.Resource_TypeName_Food);
+            //        break;
+            //    case ItemResourceType.Wood_Group:
+            //        Resource(CostMultiply(city, Cost_Wood), ItemResourceType.Wood_Group, DssRef.lang.Resource_TypeName_Wood);
+            //        break;
+            //    case ItemResourceType.Stone_G:
+            //        Resource(CostMultiply(city, Cost_Stone), ItemResourceType.Stone_G, DssRef.lang.Resource_TypeName_Stone);
+            //        break;
+            //    case ItemResourceType.Brick:
+            //        Resource(CostMultiply(city, Cost_Brick), ItemResourceType.Brick, DssRef.todoLang.Resource_TypeName_Brick);
+            //        break;
+            //    case ItemResourceType.SkinLinen_Group:
+            //        Resource(CostMultiply(city, Cost_SkinAndLinnen), ItemResourceType.SkinLinen_Group, DssRef.lang.Resource_TypeName_Linen);
+            //        break;
+            //    case ItemResourceType.Iron_G:
+            //        Resource(CostMultiply(city, Cost_Iron), ItemResourceType.Iron_G, DssRef.lang.Resource_TypeName_Iron);
+            //        break;
+            //}
+
+            Resource(CostMultiply(city, res.cost), res.item);
+
+            void Resource(Money cost, ItemResourceType resourceType)
             {
                 int count = 1;
                 //int non = 0;
@@ -137,15 +179,16 @@ namespace VikingEngine.DSSWars.Resource
 
                 content.Add(new RbImage(SpriteName.rtsUpkeep));
                 content.Add(new RbText(cost.ToString()));
-                content.Add(new RbTab(0.2f));
+                content.Add(new RbTab(0.3f));
 
                 ArtButton button = new ArtButton( RbButtonStyle.Primary,new List<AbsRichBoxMember>
                     {
                         new RbImage(itemIcon),
-                        new RbText(name),
+                        new RbSpace(0.5f),
+                        new RbText(TextLib.LargeFirstLetter( itemName)),
                     },
-                new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, RbSoundType.Buy),
-                tooltip(count), player.faction.hasGold(cost, city));
+                new RbAction3Arg<ItemResourceType, int, Money>(city.blackMarketPurchase, resourceType, count, cost, RbSoundType.Buy),
+                tooltip(count), player.faction.hasMoney(cost, city));
 
                 content.Add(button);
                 content.Add(new RbTab(0.5f));
@@ -158,8 +201,8 @@ namespace VikingEngine.DSSWars.Resource
                         {
                             new RbText(string.Format(DssRef.lang.Hud_XTimes, count)),
                         },
-                    new RbAction3Arg<ItemResourceType, int, int>(city.blackMarketPurchase, resourceType, count, cost, RbSoundType.Buy),
-                    tooltip(count), player.faction.hasGold(cost * count, city));
+                    new RbAction3Arg<ItemResourceType, int, Money>(city.blackMarketPurchase, resourceType, count, cost, RbSoundType.Buy),
+                    tooltip(count), player.faction.hasMoney(cost * count, city));
                     content.Add(xbutton);
                     //content.space();
                 }
@@ -172,7 +215,7 @@ namespace VikingEngine.DSSWars.Resource
                         //RichBoxContent content = new RichBoxContent();
                         content.h2(DssRef.lang.Hud_PurchaseTitle_Cost).overrideColor = HudLib.TitleColor_Label;
                         content.newLine();
-                        HudLib.ResourceCost(content, ResourceType.Gold, cost * count, (int)player.faction.GetGold(city));
+                        HudLib.ResourceCost(content, ResourceType.Gold, cost.GetGold32() * count, (int)player.faction.GetGold(city));
 
                         content.newParagraph();
 

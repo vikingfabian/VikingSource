@@ -36,13 +36,20 @@ namespace VikingEngine.DSSWars.Communication
             return Relation >= RelationType.RelationType3_Ally;
         }
 
-        public void SetRelation(RelationType newRelation, out RelationType previousRelation)
+        public void SetRelation(Faction faction1, Faction faction2, RelationType newRelation, out RelationType previousRelation)
         {
             previousRelation = Relation;
-            Relation = newRelation;
-            if (Relation == RelationType.RelationTypeN4_TotalWar)
-            {
-                SpeakTerms = SpeakTerms.SpeakTermsN2_None;
+
+            if (Relation != newRelation)
+            {   
+                Relation = newRelation;
+                if (Relation == RelationType.RelationTypeN4_TotalWar)
+                {
+                    SpeakTerms = SpeakTerms.SpeakTermsN2_None;
+                }
+
+                faction1?.player.onNewRelation(faction2, this, previousRelation);
+                faction2?.player.onNewRelation(faction1, this, previousRelation);
             }
         }
 

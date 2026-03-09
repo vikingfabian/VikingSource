@@ -69,7 +69,6 @@ namespace VikingEngine.DSSWars.EntityComponent
             content.Add(new RbTab(0.4f));
             content.Add(new RbText(TextLib.LargeNumber(amount)));
 
-
             content.Add(new RbTab(0.5f));
             content.Add(new RbImage(SpriteName.WarsDecreaseArrowDown));
             var downText = new RbText(TextLib.LargeNumber(changeRate.prevConsumed));
@@ -95,17 +94,16 @@ namespace VikingEngine.DSSWars.EntityComponent
             {
                 stockPileLimit = capacity;
             }
-            //stockPileLimit = Math.Min(ResourceLib.Limit(limitOption), capacity);
         }
 
-        public void writeGameState(System.IO.BinaryWriter w)
+        public void writeCity(System.IO.BinaryWriter w)
         {
             w.Write(amount);
             w.Write(useStockLimit);//(byte)limitOption);
             w.Write((ushort)stockPileLimit);
             //w.Write((ushort)capacity);
         }
-        public void readGameState(System.IO.BinaryReader r, int subversion)
+        public void readCity(System.IO.BinaryReader r, int subversion)
         {
             amount = r.ReadInt32();
             if (subversion < 107)
@@ -120,8 +118,17 @@ namespace VikingEngine.DSSWars.EntityComponent
                     stockPileLimit = r.ReadUInt16();
                 }
             }
-            //limitOption = (StockpileLimitOption)r.ReadByte();
-            //capacity = r.ReadUInt16();
+        }
+
+        public void writeFaction(System.IO.BinaryWriter w)
+        {
+            w.Write(useStockLimit);
+            w.Write((ushort)stockPileLimit);
+        }
+        public void readFaction(System.IO.BinaryReader r, int subversion)
+        {  
+            useStockLimit = r.ReadBoolean();
+            stockPileLimit = r.ReadUInt16();
         }
 
         public void writeStockPile(System.IO.BinaryWriter w)

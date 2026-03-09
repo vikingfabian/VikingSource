@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
@@ -160,6 +161,10 @@ namespace VikingEngine.DSSWars
             //writeRelations(w);
 
             workTemplate.writeGameState(w);
+
+            Debug.WriteCheck(w);
+            writeResources(w);
+
         }
         virtual public void readGameState(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
@@ -261,16 +266,19 @@ namespace VikingEngine.DSSWars
 
             workTemplate.readGameState(r, subVersion, false);
 
-            //var cities_c = cities.counter();
-            //while (cities_c.Next())
-            //{
-            //    cities_c.sel.workTemplate.onFactionChange(cities_c.sel, workTemplate);
-            //}
+            if (subVersion >= 110)
+            {
+                Debug.ReadCheck(r);
+                readResources(r, subVersion);
+            }
+            
             citiesC.Reset();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
                 city.workTemplate.onFactionChange(city, workTemplate);
             }
+
+
         }
 
         //void writeRelations(System.IO.BinaryWriter w)
@@ -301,6 +309,24 @@ namespace VikingEngine.DSSWars
         //        }
         //    }
         //}
+
+        void writeResources(System.IO.BinaryWriter w)
+        {
+           
+            for (int i = 0; i < CityResoureIndex.COUNT; ++i)
+            {
+                DssRef.world.factionResourceOverviews[resourceComponentStartIndex + i].writeFaction(w);
+            }
+
+        }
+
+        public void readResources(System.IO.BinaryReader r, int subversion)
+        {           
+            for (int i = 0; i < CityResoureIndex.COUNT; ++i)
+            {
+                DssRef.world.factionResourceOverviews[resourceComponentStartIndex + i].readFaction(r, subversion);
+            }
+        }
 
         virtual public void writeNet(System.IO.BinaryWriter w)
         {

@@ -596,9 +596,9 @@ namespace VikingEngine.DSSWars
                 ref var relation = ref GetRefRelation(faction1.myIndex, faction2.myIndex);
                 if (newRelation.HasValue)
                 {
-                    relation.SetRelation(newRelation.Value, out RelationType previous);               
-                    faction1.player.onNewRelation(faction2, relation, previous);
-                    faction2.player.onNewRelation(faction1, relation, previous);
+                    relation.SetRelation(faction1, faction2, newRelation.Value, out RelationType previous);               
+                    //faction1.player.onNewRelation(faction2, relation, previous);
+                    //faction2.player.onNewRelation(faction1, relation, previous);
                 }
                 if (speakTerms.HasValue)
                 {
@@ -698,7 +698,7 @@ namespace VikingEngine.DSSWars
                 
                 if (relation.Relation > RelationType.RelationType0_Neutral)
                 {
-                    relation.SetRelation(RelationType.RelationType0_Neutral, out RelationType prev);
+                    relation.SetRelation(actingFaction, otherFaction, RelationType.RelationType0_Neutral, out RelationType prev);
                     //SetRelationType(actingFaction, otherFaction, RelationType.RelationType0_Neutral);
                     if (actingFaction.player.IsLocalPlayer())
                     {
@@ -719,7 +719,7 @@ namespace VikingEngine.DSSWars
                 !GetRelation(attacker, defender).InWar())
             {
                 ref var relation = ref GetRefRelation(attacker.myIndex, defender.myIndex);
-                relation.SetRelation(RelationType.RelationTypeN3_War, out RelationType prevRelation);
+                relation.SetRelation(attacker, defender, RelationType.RelationTypeN3_War, out RelationType prevRelation);
                 //RelationType prevRelation = GetRelation(attacker, defender);
                 //var relation = SetRelationType(attacker, defender, RelationType.RelationTypeN3_War);
 

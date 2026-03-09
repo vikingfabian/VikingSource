@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Command;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.LootFest.Players;
 
@@ -1670,6 +1671,8 @@ namespace VikingEngine.DSSWars.Players
                 armiesWithSettlerUpdate();
 
                 settlerCheck();
+
+                BlackMarketResources.AiPurchaseUpdate(faction.cities.GetRandom(Ref.rnd, DssRef.world.cities), faction);
             }
         }
 
@@ -1862,7 +1865,7 @@ namespace VikingEngine.DSSWars.Players
                 else
                 {
                     ref var alliance = ref DssRef.diplomacy.GetRefRelation_Safe(faction.myIndex, allyFaction.myIndex);
-                    alliance.SetRelation(RelationType.RelationType3_Ally, out _);
+                    alliance.SetRelation(null, null, RelationType.RelationType3_Ally, out _);
                     //var alliance = DssRef.diplomacy.SetRelationType(faction, allyFaction, RelationType.RelationType3_Ally);
                     //if (alliance != null)
                     //{
@@ -2556,7 +2559,7 @@ namespace VikingEngine.DSSWars.Players
 
         AbsMapObject AttackFactionAtWar(Army army, Faction opponent)
         {
-            if (DssRef.state.events.RunAi() && army != null)
+            if (DssRef.state.events.RunAi() && army != null && opponent != null)
             {
                 var areaPos = UnitCollAreaGrid.ToAreaPos(army.tilePos);
                 DssRef.world.unitCollAreaGrid.collectCitiesAndArmies(areaPos, 2, army.strengthValue * 0.8f, DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate,

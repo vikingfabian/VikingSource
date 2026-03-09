@@ -205,7 +205,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (properties.cityResourceIndex >= 0)
                     {
                         ref GroupedResource resource = ref world.cityResouces[resourceComponentStartIndex + properties.cityResourceIndex];
-                        resource.stockPileLimit = properties.defaultStockPile;
+                        //resource.stockPileLimit = properties.defaultStockPile;
                     }
                 }
             }
@@ -1335,10 +1335,11 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        public void blackMarketPurchase(ItemResourceType resourceType, int count, int cost)
+        public void blackMarketPurchase(ItemResourceType resourceType, int count, Money cost)
         {
             var faction = GetFaction();
-            if (GetFaction().payGold(cost * count, false, this))
+            ref Money money = ref faction.GetRefMoney(this);
+            if (money.pay(cost * count, false, faction.player))
             {
                 AddGroupedResource(resourceType, count);
                 faction.player.GetLocalPlayer()?.tutorial?.onBuyFromBlackMarket(resourceType);

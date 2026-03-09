@@ -39,33 +39,33 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.SoftWood, CityResoureIndex.wood, 1f / 30, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.DryWood, CityResoureIndex.wood, 1f / 60, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE);
 
-            new ItemProperties(ItemResourceType.Wood_Group, CityResoureIndex.wood, DefaultWeight, WorkPriorityType.NUM_NONE, null, null, StorageType.MaterialStorage) { defaultStockPile = 300 }.AddItemSource(new ItemSource(Map.TerrainSubFoilType.TreeSoft));
-            new ItemProperties(ItemResourceType.Clay, CityResoureIndex.Clay, DefaultWeight, WorkPriorityType.collectClay, null, null, StorageType.MaterialStorage) { defaultStockPile = 200 }.AddItemSource(new ItemSource(Map.TerrainSubFoilType.ClayPit));
+            new ItemProperties(ItemResourceType.Wood_Group, CityResoureIndex.wood, DefaultWeight, WorkPriorityType.NUM_NONE, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainSubFoilType.TreeSoft));
+            new ItemProperties(ItemResourceType.Clay, CityResoureIndex.Clay, DefaultWeight, WorkPriorityType.collectClay, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainSubFoilType.ClayPit));
 
             // basic resources
-            new ItemProperties(ItemResourceType.Stone_G, CityResoureIndex.stone, 1f / CarryStones, WorkPriorityType.stone, null, null, StorageType.MaterialStorage) { defaultStockPile = 200 }.AddItemSource(new ItemSource(Map.TerrainSubFoilType.Stones));
-            new ItemProperties(ItemResourceType.Brick, CityResoureIndex.Brick, 1f / CarryBricks, WorkPriorityType.craftBrick, CraftResourceLib.Brick, null, StorageType.MaterialStorage) { defaultStockPile = 200 }.AddItemSource(new ItemSource(Map.TerrainMineType.StoneBlock));
+            new ItemProperties(ItemResourceType.Stone_G, CityResoureIndex.stone, 1f / CarryStones, WorkPriorityType.stone, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainSubFoilType.Stones));
+            new ItemProperties(ItemResourceType.Brick, CityResoureIndex.Brick, 1f / CarryBricks, WorkPriorityType.craftBrick, CraftResourceLib.Brick, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.StoneBlock));
             new ItemProperties(ItemResourceType.Egg, CityResoureIndex.rawFood, 1f / 60, WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.Wheat, CityResoureIndex.rawFood, 1f / 10, WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);
-            new ItemProperties(ItemResourceType.Meat, CityResoureIndex.Meat, DefaultWeight, WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE) { defaultStockPile = 200 };
+            new ItemProperties(ItemResourceType.Meat, CityResoureIndex.Meat, DefaultWeight, WorkPriorityType.craftFood, null, null, StorageType.NUM_NONE);
 
-            new ItemProperties(ItemResourceType.RawFood_Group, CityResoureIndex.rawFood, DefaultWeight, WorkPriorityType.NUM_NONE, null, null, StorageType.FoodStorage) { defaultStockPile = 200 }.AddItemSource(
+            new ItemProperties(ItemResourceType.RawFood_Group, CityResoureIndex.rawFood, DefaultWeight, WorkPriorityType.NUM_NONE, null, null, StorageType.FoodStorage).AddItemSource(
                 new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WheatFarm), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.HenPen), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
 
             new ItemProperties(ItemResourceType.Linen, CityResoureIndex.skinLinnen, 1f / 10, WorkPriorityType.farmlinen, null, null, StorageType.MaterialStorage);
-            new ItemProperties(ItemResourceType.SkinLinen_Group, CityResoureIndex.skinLinnen, 1f / 10, WorkPriorityType.farmlinen, null, null, StorageType.MaterialStorage) { defaultStockPile = 200 }.AddItemSource(
+            new ItemProperties(ItemResourceType.SkinLinen_Group, CityResoureIndex.skinLinnen, 1f / 10, WorkPriorityType.farmlinen, null, null, StorageType.MaterialStorage).AddItemSource(
                 new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.LinenFarm), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
             new ItemProperties(ItemResourceType.WoodContainer, CityResoureIndex.Container, DefaultWeight, WorkPriorityType.craftContainer, CraftResourceLib.Container_wood, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.PotContainer, CityResoureIndex.Container, DefaultWeight, WorkPriorityType.craftContainer, CraftResourceLib.Container_clay, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.Container, CityResoureIndex.Container, DefaultWeight, WorkPriorityType.craftContainer, CraftResourceLib.Container_wood, CraftResourceLib.Container_clay, StorageType.MaterialStorage);
 
             // fuel & food
-            new ItemProperties(ItemResourceType.Fuel_G, CityResoureIndex.fuel, DefaultWeight, WorkPriorityType.craftFuel, CraftResourceLib.Fuel1, null, StorageType.MaterialStorage) { defaultStockPile = 400 }.AddItemSource(new ItemSource(ItemSourceType.Crafting, Build.BuildAndExpandType.CoalPit), new ItemSource(Map.TerrainMineType.Coal));
+            new ItemProperties(ItemResourceType.Fuel_G, CityResoureIndex.fuel, DefaultWeight, WorkPriorityType.craftFuel, CraftResourceLib.Fuel1, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(ItemSourceType.Crafting, Build.BuildAndExpandType.CoalPit), new ItemSource(Map.TerrainMineType.Coal));
             new ItemProperties(ItemResourceType.Coal, CityResoureIndex.fuel, DefaultWeight, WorkPriorityType.miningCoal, CraftResourceLib.Charcoal, null, StorageType.MaterialStorage);
             new ItemProperties(ItemResourceType.Salt, CityResoureIndex.Salt, DefaultWeight, WorkPriorityType.miningSalt, null, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(Map.TerrainMineType.Salt), new ItemSource(ItemSourceType.Crafting, Build.BuildAndExpandType.DryingPan));
-            new ItemProperties(ItemResourceType.Food_G, CityResoureIndex.food, 1f / CarryFood, WorkPriorityType.craftFood, CraftResourceLib.Food1, CraftResourceLib.Food2, StorageType.FoodStorage) { defaultStockPile = City.DefaultFoodBuffer }.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OrchardApple));
-            new ItemProperties(ItemResourceType.ConservedFood, CityResoureIndex.ConservedFood, 1f / CarryConservedFood, WorkPriorityType.craftConservedFood, CraftResourceLib.ConservedFood_Barrel, CraftResourceLib.ConservedFood_Smoked, StorageType.FoodStorage) { defaultStockPile = City.DefaultFoodBuffer }.AddItemSource(new ItemSource(Build.BuildAndExpandType.Cook), new ItemSource(Build.BuildAndExpandType.Smoker), new ItemSource(Build.BuildAndExpandType.Dryer));
-            new ItemProperties(ItemResourceType.Beer, CityResoureIndex.beer, DefaultWeight, WorkPriorityType.craftBeer, CraftResourceLib.Beer, null, StorageType.FoodStorage) { defaultStockPile = 200 };
+            new ItemProperties(ItemResourceType.Food_G, CityResoureIndex.food, 1f / CarryFood, WorkPriorityType.craftFood, CraftResourceLib.Food1, CraftResourceLib.Food2, StorageType.FoodStorage).AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OrchardApple));
+            new ItemProperties(ItemResourceType.ConservedFood, CityResoureIndex.ConservedFood, 1f / CarryConservedFood, WorkPriorityType.craftConservedFood, CraftResourceLib.ConservedFood_Barrel, CraftResourceLib.ConservedFood_Smoked, StorageType.FoodStorage).AddItemSource(new ItemSource(Build.BuildAndExpandType.Cook), new ItemSource(Build.BuildAndExpandType.Smoker), new ItemSource(Build.BuildAndExpandType.Dryer));
+            new ItemProperties(ItemResourceType.Beer, CityResoureIndex.beer, DefaultWeight, WorkPriorityType.craftBeer, CraftResourceLib.Beer, null, StorageType.FoodStorage);
             new ItemProperties(ItemResourceType.CoolingFluid, CityResoureIndex.coolingfluid, DefaultWeight, WorkPriorityType.craftCoolingFluid, CraftResourceLib.CoolingFluid, null, StorageType.MaterialStorage);
 
             // metals & alloys

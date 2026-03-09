@@ -439,6 +439,31 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public bool hasMoney(Money cost, AbsMapObject mapObj)
+        {
+            if (DssRef.storage.gameRuleset.centralGold)
+            {
+                return money >= cost;
+            }
+            else
+            {
+                return mapObj.money >= cost;
+            }
+        }
+
+        public ref Money GetRefMoney(AbsMapObject mapObj)
+        {
+            if (DssRef.storage.gameRuleset.centralGold)
+            {
+                return ref money;
+            }
+            else
+            {
+                return ref mapObj.money;
+            }
+
+        }
+
         public bool payGold(int cost, bool allowDept, City city)
         {
 #if DEBUG

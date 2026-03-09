@@ -129,7 +129,7 @@ namespace VikingEngine.DSSWars.Resource
         public WagonPull wagonPull = WagonPull.None;
         public ArmorCarry armorCarry = ArmorCarry.None;
         public int cityResourceIndex;
-        public int defaultStockPile = 100;
+        //public int defaultStockPile = 100;
 
         public ItemSource itemSource1 = ItemSource.None, itemSource2 = ItemSource.None, itemSource3 = ItemSource.None;
         

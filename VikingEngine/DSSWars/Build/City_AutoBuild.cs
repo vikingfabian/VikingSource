@@ -86,11 +86,12 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 safeGuardBuild = BuildAndExpandType.TreeSeedlingHard;
             }
-            else if (cityType == CityType.Campsite && buildingStructure.LinenFarm_count < 2)
+            else if (buildingStructure.LinenFarm_count < 2)
             {
                 safeGuardBuild = BuildAndExpandType.LinenFarm;
+                safeGuardBuildCount = 2;
             }
-            else if (cityType == CityType.Campsite && buildingStructure.Orchard_count < 6)
+            else if (buildingStructure.Orchard_count < 6)
             {
                 safeGuardBuild = BuildAndExpandType.OrchardApple;
                 safeGuardBuildCount = 2;

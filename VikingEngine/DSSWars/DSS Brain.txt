@@ -10,18 +10,14 @@ Change Log:
 
 Current bugs
 
-x need dynamic worker xp components
-x Shields not implemented
 x missing a lot of the animal/weapon/armor combos
 X doesnt handle negative raw food on animal upkeep
 x cesspit should check fuel limit
-x bioms confusing
 x animal gather is confusing
 x ai conscript of animals
+x economy rebalance
 
 
-x stockpile copy/paste and to/from faction does not work at all
-x stockile any numbers option
 x ui line breaks in German
 x Skill bonus ui
 x adv build upgrade, no more use of logistics
@@ -29,6 +25,7 @@ x auto options for logistics/hall/cook
 
 x potter skill
 x optimize stockpile save
+x controller input
 
 CITY CULTURES
 * Wheelwright, //Speed bonus to conscripted carts

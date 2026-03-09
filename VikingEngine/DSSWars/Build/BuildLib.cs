@@ -780,9 +780,11 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarm, true, 
-                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, 
-                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+            new BuildOption(BuildAndExpandType.LinenFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarm, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarm, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { altBlueprint = CraftBuildingLib.LinenFarm_Gold };
+            
 
             new BuildOption(BuildAndExpandType.LinenFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.LinenFarmUpgraded, SpriteName.WarsBuild_LinenFarms, CraftBuildingLib.LinenFarmUpgrade, true, 
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.NUM_NONE, 
@@ -790,7 +792,8 @@ namespace VikingEngine.DSSWars.Build
 
             new BuildOption(BuildAndExpandType.HempFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarm, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarm, true, 
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.Fuel, 
-                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { altBlueprint = CraftBuildingLib.HempFarm_Gold };
 
             new BuildOption(BuildAndExpandType.HempFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.HempFarmUpgraded, SpriteName.WarsBuild_HempFarms, CraftBuildingLib.HempFarmUpgrade, true, 
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Resources, BuildFilterTag.Fuel, 
@@ -798,7 +801,8 @@ namespace VikingEngine.DSSWars.Build
 
             new BuildOption(BuildAndExpandType.RapeSeedFarm, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarm, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarm, true, 
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Fuel, BuildFilterTag.NUM_NONE, 
-                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { altBlueprint = CraftBuildingLib.RapeseedFarm_Gold };
 
             new BuildOption(BuildAndExpandType.RapeSeedFarmUpgraded, TerrainMainType.Foil, (int)TerrainSubFoilType.RapeSeedFarmUpgraded, SpriteName.WarsBuild_RapeseedFarms, CraftBuildingLib.RapeseedFarmUpgrade, true, 
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Fuel, BuildFilterTag.NUM_NONE, 

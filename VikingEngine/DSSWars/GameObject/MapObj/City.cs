@@ -936,13 +936,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             w.Write((short)res_water.amount);
 
-            if (myIndex == 156)
-            {
-                lib.DoNothing();
-            }
             for (int i = 0; i < CityResoureIndex.COUNT; ++i)
             {
-                DssRef.world.cityResouces[resourceComponentStartIndex + i].writeGameState(w);
+                DssRef.world.cityResouces[resourceComponentStartIndex + i].writeCity(w);
             }
 
         }
@@ -951,13 +947,9 @@ namespace VikingEngine.DSSWars.GameObject
         {
             res_water.amount = r.ReadInt16();
 
-            if (myIndex == 156)
-            {
-                lib.DoNothing();
-            }
             for (int i = 0; i < CityResoureIndex.COUNT; ++i)
             {
-                DssRef.world.cityResouces[resourceComponentStartIndex + i].readGameState(r, subversion);
+                DssRef.world.cityResouces[resourceComponentStartIndex + i].readCity(r, subversion);
             }
         }
 
