@@ -238,7 +238,25 @@ namespace VikingEngine.DSSWars.GameObject
                 switch (type)
                 {
                     case ItemResourceType.Gold:
-                        return new GroupedResource() { amount = (int)(DssRef.storage.gameRuleset.centralGold ? GetFaction_NoChecks().money.GetGold() : money.GetGold()), stockPileLimit = int.MaxValue };
+                        int amount;
+                        if (DssRef.storage.gameRuleset.centralGold)
+                        {
+                            var faction = GetFaction_NoChecks();
+                            if (faction != null)
+                            {
+                                amount = faction.money.GetGold32();
+                            }
+                            else
+                            {
+                                amount = 0;
+                            }
+                        }
+                        else
+                        {
+                            amount = money.GetGold32();
+                        }
+
+                        return new GroupedResource() { amount = amount };
                     case ItemResourceType.Men:
                         return workForce;
                     case ItemResourceType.NobelMen:
