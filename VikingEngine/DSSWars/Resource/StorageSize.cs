@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Resource
         {
             int capacity = DssConst.StorageStartSize + storageCount * DssConst.StorageBuildingSizeAdd;
 
-            if (storageType == StorageType.FoodStorage && city.Biome == CityBiom.Frozen)
+            if (storageType == StorageType.FoodStorage && city.cityBiome == CityBiome.Frozen)
             {
                 capacity *= 2;
             }

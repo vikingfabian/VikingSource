@@ -637,6 +637,15 @@ namespace VikingEngine.DSSWars.GameObject
                         maxCount = 1;
                         break;
 
+                    case BuildAndExpandType.Bank:
+                        maxCount = 1;
+                        break;
+                    case BuildAndExpandType.CoinMinter:
+                        maxCount = 1;
+                        break;
+
+
+
                     case BuildAndExpandType.Nobelhouse:
                         chance = 20;
                         bBuild = buildingStructure.AllBarracksCount() >= 4 && Money.ToGold(previousIncome_copp) > 10;

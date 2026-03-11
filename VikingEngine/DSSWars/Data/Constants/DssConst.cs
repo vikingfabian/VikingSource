@@ -74,8 +74,8 @@ namespace VikingEngine.DSSWars
         public static float Men_StandardShipSpeed = Men_StandardWalkingSpeed * 2f;
 
         //ANIMAL
-        public const double BreedingUpChance = 0.01;
-        public const double BreedingDownChance = 0.8;
+        public const double BreedingUpChance = 0.05;
+        public const double BreedingDownChance = 0.6;
 
         //CONSCRIPT
         public static float SwordAttackRange = 0.04f;
@@ -155,9 +155,9 @@ namespace VikingEngine.DSSWars
         public const int Gold_RichStatus = 1000000;
 
         //CITY
-        public static int TaxPerWorker_copp = 8;
-        public static int UpkeepPerServiceMan_copp = 10;
-        public static int UpkeepPerGuard_copp = 10;
+        public static int TaxPerWorker_copp = 2;
+        public static int UpkeepPerServiceMan_copp = 4;
+        public static int UpkeepPerGuard_copp = 4;
         public static int CampsiteCityStartMaxWorkForce = HousingCount_WorkerTent;
         public static int SmallCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 5);
         public static int LargeCityStartMaxWorkForce = Convert.ToInt32(SoldierGroup_DefaultCount * 7);
@@ -281,8 +281,8 @@ namespace VikingEngine.DSSWars
         public static int Worker_MaxEnergy = 500;
         public static int Worker_Starvation = -Worker_MaxEnergy;
 
-        public static int OrchidFoodAmount = 30;
-        public static int WheatFoodAmount = 30;
+        public static int OrchidFoodAmount = 50;
+        public static int WheatFoodAmount = 50;
         public static int PenBreedingStockCount = 8;
         //public static int AnimalFoodAmount = 60;
 
@@ -344,7 +344,7 @@ namespace VikingEngine.DSSWars
 
         //BANK
         public static float GoldDeliveryFeePerc = 10;
-        public static int BankTaxIncreasePercUnits_copp = 4;
+        public static int BankTaxIncreasePercUnits_copp = 2;
         public static int GoldDeliveryChunkSize_Mini = 100;
         public static int GoldDeliveryChunkSize_Level1 = 500;
         public static int GoldDeliveryChunkSize_Level2 = 2000;

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
@@ -239,7 +240,7 @@ namespace VikingEngine.DSSWars.Build
         public static BuildOption[] BuildOptions = new BuildOption[(int)BuildAndExpandType.NUM_NONE];
         public static void AvailableBuildTypes(List<BuildAndExpandType> list, City city, bool autoBuild)
         {
-            bool godPowers = (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator || StartupSettings.UnlockAllProgress) && !autoBuild;
+            bool godPowers = (DssRef.difficulty.setting_gameMode == Data.GameModeMainType.Spectator || (StartupSettings.UnlockAllProgress && city.GetPlayer().IsLocalPlayer())) && !autoBuild;
 
             bool devUnlockAll = StartupSettings.UnlockAllProgress;
 
@@ -366,7 +367,7 @@ namespace VikingEngine.DSSWars.Build
                 addAnimalPen(BuildAndExpandType.DraftHorsePen, CityResoureIndex.DraftHorse, city.buildingStructure.DraftHorsePen_count);
 
                 // --- Wild Pigs / Hogs ---
-                if (biomRequirement(CityBiom.Mountain))
+                if (biomRequirement(CityBiome.Mountain))
                 {
                     addAnimalPen(BuildAndExpandType.WildPigPen, CityResoureIndex.WildPig, city.buildingStructure.WildPigPen_count);
                     addAnimalPen(BuildAndExpandType.WildHogPen, CityResoureIndex.WildHog, city.buildingStructure.WildHogPen_count);
@@ -375,7 +376,7 @@ namespace VikingEngine.DSSWars.Build
                 }
 
                 // --- Wolves ---
-                if (biomRequirement(CityBiom.Desolate))
+                if (biomRequirement(CityBiome.Desolate))
                 {
                     addAnimalPen(BuildAndExpandType.WolfCage, CityResoureIndex.Wolf, city.buildingStructure.WolfCage_count);
                     addAnimalPen(BuildAndExpandType.WargCage, CityResoureIndex.Warg, city.buildingStructure.WargCage_count);
@@ -383,14 +384,14 @@ namespace VikingEngine.DSSWars.Build
                 }
 
                 // --- Cats ---
-                if (biomRequirement(CityBiom.Forest))
+                if (biomRequirement(CityBiome.Forest))
                 {
                     addAnimalPen(BuildAndExpandType.WildCatCage, CityResoureIndex.WildCat, city.buildingStructure.WildCatCage_count);
                     addAnimalPen(BuildAndExpandType.LionCage, CityResoureIndex.Lion, city.buildingStructure.LionCage_count);
                     addAnimalPen(BuildAndExpandType.WarLionCage, CityResoureIndex.WarLion, city.buildingStructure.WarLionCage_count);
                 }
                 // --- Elephants ---
-                if (biomRequirement(CityBiom.Desert))
+                if (biomRequirement(CityBiome.Desert))
                 {
                     addAnimalPen(BuildAndExpandType.ElephantCage, CityResoureIndex.Elephant, city.buildingStructure.ElephantCage_count);
                     addAnimalPen(BuildAndExpandType.WarElephantCage, CityResoureIndex.WarElephant, city.buildingStructure.WarElephantCage_count);
@@ -471,7 +472,7 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.Butcher);
                 list.Add(BuildAndExpandType.Smoker);
 
-                if (biomRequirement(CityBiom.Desert))
+                if (biomRequirement(CityBiome.Desert))
                 {
                     list.Add(BuildAndExpandType.Dryer);
                     list.Add(BuildAndExpandType.DryingPan);
@@ -622,9 +623,9 @@ namespace VikingEngine.DSSWars.Build
                 }
             }
 
-            bool biomRequirement(CityBiom biom)
+            bool biomRequirement(CityBiome biom)
             {
-                return biom == CityBiom.Default_Fields || city.Biome == biom || StartupSettings.UnlockAllProgress;
+                return biom == CityBiome.Default_Fields || city.cityBiome == biom || StartupSettings.UnlockAllProgress;
             }
         }
 

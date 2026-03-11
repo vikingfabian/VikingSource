@@ -251,7 +251,7 @@ namespace VikingEngine.DSSWars.Work
                 terrainAmount *= 2;
             }
 
-            if (city.Culture == CityCulture.FertileGround)
+            if (city.cityCulture == CityCulture.FertileGround)
             {
                 return terrainAmount * 2;
             }
@@ -366,7 +366,7 @@ namespace VikingEngine.DSSWars.Work
             double downChance = DssConst.BreedingDownChance;
 
             double rnd = Ref.rnd.Double();
-            if (city.Culture == CityCulture.AnimalBreeder2)
+            if (city.cityCulture == CityCulture.AnimalBreeder2)
             {
                 upChance *= 2;
                 downChance = 0.6;
@@ -396,7 +396,7 @@ namespace VikingEngine.DSSWars.Work
             WorkExperienceType gainXp= WorkExperienceType.NUM_NONE;
 
             float energyCost = processTimeLengthSec * DssConst.WorkTeamEnergyCost;
-            if (city.Culture == CityCulture.CrabMentality)
+            if (city.cityCulture == CityCulture.CrabMentality)
             {
                 energyCost *= 0.5f;
             }
@@ -471,7 +471,7 @@ namespace VikingEngine.DSSWars.Work
                                 case ItemResourceType.SlaughterWarElephant:
                                 case ItemResourceType.SlaughterOliphant:
                                     alwaysNeedMore = true;
-                                    if (city.Culture == CityCulture.Butchers)
+                                    if (city.cityCulture == CityCulture.Butchers)
                                     {
                                         increaseMeat(ref item1, ref amount1);
                                         increaseMeat(ref item2, ref amount2);
@@ -484,7 +484,7 @@ namespace VikingEngine.DSSWars.Work
                                             }
                                         }
                                     }
-                                    else if (city.Culture == CityCulture.Skinner)
+                                    else if (city.cityCulture == CityCulture.Skinner)
                                     {
                                         increaseSkin(ref item1, ref amount1);
                                         increaseSkin(ref item2, ref amount2);
@@ -497,17 +497,31 @@ namespace VikingEngine.DSSWars.Work
                                             }
                                         }
                                     }
+
+                                    if (city.cityBiome == CityBiome.Frozen)
+                                    {
+                                        increaseSkin(ref item1, ref amount1);
+                                        increaseSkin(ref item2, ref amount2);
+
+                                        void increaseSkin(ref ItemResourceType item, ref int amount)
+                                        {
+                                            if (item == ItemResourceType.SkinLinen_Group)
+                                            {
+                                                amount = MathExt.MultiplyInt(amount, 1.5);
+                                            }
+                                        }
+                                    }
                                     break;
 
                                 case ItemResourceType.PotContainer:
-                                    if (city.Culture == CityCulture.Potters &&
+                                    if (city.cityCulture == CityCulture.Potters &&
                                         Ref.peRnd.ChanceF(0.5f))
                                     {
                                         amount1 += 1;
                                     }
                                     break;
                                 case ItemResourceType.WoodContainer:
-                                    if (city.Culture == CityCulture.Coopers &&
+                                    if (city.cityCulture == CityCulture.Coopers &&
                                         Ref.peRnd.ChanceF(0.5f))
                                     {
                                         amount1 += 1;
@@ -532,7 +546,7 @@ namespace VikingEngine.DSSWars.Work
                                     case ItemResourceType.Fuel_G:
                                     //case ItemResourceType.Coal:
                                         item = ItemResourceType.Fuel_G;
-                                        if (city.Culture == CityCulture.PitMasters)
+                                        if (city.cityCulture == CityCulture.PitMasters)
                                         {
                                             add *= 2;
                                         }
@@ -545,20 +559,20 @@ namespace VikingEngine.DSSWars.Work
                                     case ItemResourceType.Lead:
                                     case ItemResourceType.Silver:
                                     case ItemResourceType.RawMithril:
-                                        if (city.Culture == CityCulture.Smelters)
+                                        if (city.cityCulture == CityCulture.Smelters)
                                         {
                                             add *= 2;
                                         }
                                         break;
                                     case ItemResourceType.Beer:
-                                        if (city.Culture == CityCulture.Brewmaster)
+                                        if (city.cityCulture == CityCulture.Brewmaster)
                                         {
                                             add += add / 2;
                                         }
                                         break;
 
                                     case ItemResourceType.ConservedFood:
-                                        if (city.Culture == CityCulture.Salters)
+                                        if (city.cityCulture == CityCulture.Salters)
                                         {
                                             add += add / 4;
                                         }
@@ -566,7 +580,7 @@ namespace VikingEngine.DSSWars.Work
 
                                     case ItemResourceType.PaddedArmor:
                                     case ItemResourceType.HeavyPaddedArmor:
-                                        if (city.Culture == CityCulture.Weavers)
+                                        if (city.cityCulture == CityCulture.Weavers)
                                         {
                                             add += 1;
                                         }
@@ -576,7 +590,7 @@ namespace VikingEngine.DSSWars.Work
                                     case ItemResourceType.HeavyIronArmor:
                                     case ItemResourceType.LightPlateArmor:
                                     case ItemResourceType.FullPlateArmor:
-                                        if (city.Culture == CityCulture.Armorsmith)
+                                        if (city.cityCulture == CityCulture.Armorsmith)
                                         {
                                             add += 1;
                                         }
@@ -584,15 +598,15 @@ namespace VikingEngine.DSSWars.Work
                                     case ItemResourceType.Bronze:
                                     case ItemResourceType.BronzeSword:
 
-                                        if (city.Culture == CityCulture.BronzeCasters)
+                                        if (city.cityCulture == CityCulture.BronzeCasters)
                                         {
                                             add *= 2;
                                         }
                                         break;
 
                                     case ItemResourceType.BronzeArmor:
-                                        if (city.Culture == CityCulture.Armorsmith ||
-                                            city.Culture == CityCulture.BronzeCasters)
+                                        if (city.cityCulture == CityCulture.Armorsmith ||
+                                            city.cityCulture == CityCulture.BronzeCasters)
                                         {
                                             add += 1;
                                         }
@@ -607,7 +621,7 @@ namespace VikingEngine.DSSWars.Work
                                         break;
 
                                     case ItemResourceType.Brick:
-                                        if (city.Culture == CityCulture.Potters)
+                                        if (city.cityCulture == CityCulture.Potters)
                                         {
                                             amount1 += 2;
                                         }
@@ -617,7 +631,7 @@ namespace VikingEngine.DSSWars.Work
                                     case ItemResourceType.RoundShield:
                                     case ItemResourceType.HeaterShield:
                                     case ItemResourceType.TowerShield:
-                                        if (city.Culture == CityCulture.ShieldMaker &&
+                                        if (city.cityCulture == CityCulture.ShieldMaker &&
                                             Ref.peRnd.ChanceF(0.25f))
                                         {
                                             add += 1;
@@ -629,7 +643,7 @@ namespace VikingEngine.DSSWars.Work
                                     case ItemResourceType.WagonClosed:
                                     case ItemResourceType.WagonIron:
                                     case ItemResourceType.WagonSteel:
-                                        if (city.Culture == CityCulture.Wainwright &&
+                                        if (city.cityCulture == CityCulture.Wainwright &&
                                             Ref.peRnd.ChanceF(0.25f))
                                         {
                                             add += 1;
@@ -665,7 +679,7 @@ namespace VikingEngine.DSSWars.Work
                 case WorkType.Eat:
                     int eatAmount = (int)Math.Floor((DssConst.Worker_MaxEnergy - energy) / DssRef.difficulty.FoodEnergySett);
 
-                    city.AddGroupedResource(CityResoureIndex.food, -eatAmount);
+                    city.AddGroupedResource(CityResoureIndex.food, -eatAmount, false);
                     city.foodSpending.add(eatAmount);
                     energy += eatAmount * DssRef.difficulty.FoodEnergySett;
                     break;
@@ -770,7 +784,7 @@ namespace VikingEngine.DSSWars.Work
                                     amount = MathExt.AddPercentage(amount, workBonus);
                                 }
 
-                                if (city.Culture == CityCulture.Stonemason)
+                                if (city.cityCulture == CityCulture.Stonemason)
                                 {
                                     amount *= 2;
                                 }
@@ -1271,7 +1285,7 @@ namespace VikingEngine.DSSWars.Work
                             }
 
 
-                            if (city.Culture == CityCulture.Miners)
+                            if (city.cityCulture == CityCulture.Miners)
                             {
                                 amount *= 2;
                             }
@@ -1869,7 +1883,7 @@ namespace VikingEngine.DSSWars.Work
                 amount = MathExt.AddPercentage(amount, workBonus);
             }
 
-            if (city.Culture == CityCulture.Woodcutters)
+            if (city.cityCulture == CityCulture.Woodcutters)
             {
                 amount *= 2;
             }
@@ -2024,7 +2038,7 @@ namespace VikingEngine.DSSWars.Work
                     timeSec = BuildLib.BuildOptions[workSubType].buildTimeSec;
                     //timeSec = DssConst.WorkTime_Building;
 
-                    if (city.Culture == CityCulture.Builders)
+                    if (city.cityCulture == CityCulture.Builders)
                     {
                         timeSec *= 0.5f;
                     }

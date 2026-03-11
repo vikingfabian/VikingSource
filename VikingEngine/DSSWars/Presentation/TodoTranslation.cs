@@ -44,6 +44,8 @@ namespace VikingEngine.DSSWars.Presentation
         public string Resource_TypeName_ManType => "man type";
         public string Resource_TypeName_NobelMen => "nobelmen";
         public string Resource_TypeName_ConservedFood => "conserved food";
+
+        public string Resource_ConservedFood_Reserves => "Conserved food reserves";
         public string Resource_TypeName_Clay => "clay";
         public string Resource_TypeName_Brick => "brick";
         public string Resource_TypeName_Container => "container";
@@ -204,6 +206,9 @@ namespace VikingEngine.DSSWars.Presentation
         public string CityBiome_Mountain => "Mountain";
         public string CityBiome_Desolate => "Desolate";
         public string CityBiome_Desert => "Desert";
+
+        public string Bonus_IncreaseSkin => "Increased skin production";
+        public string Bonus_FoodStorage => "Larger food storage";
 
         public string StockPile_LimitTitle => "Limit stockpile";
 

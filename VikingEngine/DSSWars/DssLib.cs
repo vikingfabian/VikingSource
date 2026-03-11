@@ -25,10 +25,10 @@ namespace VikingEngine.DSSWars
         public static readonly string ContentDir = "DSS" + DataStream.FilePath.Dir;
         public static readonly string StoryContentDir = ContentDir + "Story" + DataStream.FilePath.Dir;
 
-#region DEBUG
+        #region DEBUG
         public static readonly bool RandomSeed = PlatformSettings.DebugOptions ? true :
             true;//DO NOT CHANGE
-        
+
         public static readonly bool DebugSquareInfo = PlatformSettings.DebugOptions ? false :
             false;//DO NOT CHANGE 
         public static readonly bool UpdateBorders = PlatformSettings.DebugOptions ? true :
@@ -36,7 +36,7 @@ namespace VikingEngine.DSSWars
 
         public const bool AllowDoubleTime = false;
         #endregion
-        
+
         public const int UserHeraldicWidth = 16;
         public const int MaxLocalPlayers = 4;
         public const int RtsMaxFactions = 2000;
@@ -193,7 +193,7 @@ namespace VikingEngine.DSSWars
                 specialization = SpecializationType.Green,
             }
         };
-        public static readonly SoldierConscriptProfile SoldierProfile_Viking= new SoldierConscriptProfile()
+        public static readonly SoldierConscriptProfile SoldierProfile_Viking = new SoldierConscriptProfile()
         {
             conscript = new ConscriptProfile()
             {
@@ -204,9 +204,9 @@ namespace VikingEngine.DSSWars
             }
         };
 
-        
-       
-        
+
+
+
 
         public const float BattleConflictRadius = 2f;
         public const int BattleChainConflictRadius = 3;
@@ -230,9 +230,9 @@ namespace VikingEngine.DSSWars
         //public static float SoldierDefaultEnergyUpkeep = DssConst.ManDefaultEnergyCost;
         public static float GroupDefaultUpkeep = SoldierDefaultUpkeep * DssConst.SoldierGroup_DefaultCount;
         public const int DefalutRecruitTrainingTimeSec = 3 * 60;
-                
 
-        public const float WeeklyArmyActionPoints = 0.05f; 
+
+        public const float WeeklyArmyActionPoints = 0.05f;
         public const float ArmyMoveDoubleTimeCostToFatigue = 0.1f;
         public const float ArmyWeeklyRest = 0.002f;
         public const float ArmyWeeklyCityTraining = 0.010f;
@@ -242,11 +242,11 @@ namespace VikingEngine.DSSWars
         //public const int LargeCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 6;
         //public const int HeadCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 10;
 
-        
+
 
         public static readonly int NobelHouseWorkForceReqiurement = DssConst.HeadCityStartMaxWorkForce;
 
-        
+
         public const float BattleMaxQueTimeMs = 2000;
 
         #region OVERVIEW_LAYERS
@@ -256,146 +256,13 @@ namespace VikingEngine.DSSWars
         public const float ArmyIconMinYpos = CityIconYpos + 0.3f;
         public const float CityIconYpos = OverviewMapYpos + 0.1f;
         public const float OverviewMapYpos = 0.4f;
-#endregion
+        #endregion
 
-      
+
 
         public static string MoneyToString(int amount)
         {
             return amount.ToString() + "gold";
-        }
-
-        public static int CulturePercChangeFactor(CityCulture culture)
-        {
-            switch (culture)
-            {
-                case CityCulture.LargeFamilies:
-                    return 200;
-                case CityCulture.FertileGround:
-                    return 200;
-                case CityCulture.Archers:
-                    return 120;
-                case CityCulture.Warriors:
-                    return 120;
-                //case CityCulture.AnimalBreeder:
-                //    return 200;
-                case CityCulture.Miners:
-                    return 200;
-                case CityCulture.Woodcutters:
-                    return 200;
-                case CityCulture.Builders:
-                    return 50;
-                case CityCulture.CrabMentality:
-                    return 50;
-                case CityCulture.DeepWell:
-                    return 200;
-                case CityCulture.Networker:
-                    return 50;
-                case CityCulture.PitMasters:
-                    return 200;
-
-                case CityCulture.Stonemason:
-                    return 200;
-                case CityCulture.Brewmaster:
-                    return 150;
-                case CityCulture.Weavers:
-                    return 200;
-                case CityCulture.SiegeEngineer:
-                    return 120;
-                case CityCulture.Armorsmith:
-                    return 200;
-                case CityCulture.Noblemen:
-                    return 120;
-                case CityCulture.Seafaring:
-                    return 120;
-                case CityCulture.Backtrader:
-                    return 50;
-                case CityCulture.Lawbiding:
-                    return 200;
-
-                case CityCulture.Smelters:
-                    return 200;
-                case CityCulture.BronzeCasters:
-                    return 200;
-                case CityCulture.Apprentices:
-                    return -1;
-
-                case CityCulture.Nomads:
-                    return 50;
-
-                case CityCulture.Butchers:
-                    return 125;
-                case CityCulture.Skinner:
-                    return 125;
-                case CityCulture.AnimalBreeder2:
-                    return 200;
-                
-                case CityCulture.Wainwright:
-                    return 125;
-                case CityCulture.Wheelwright:
-                    return -1;
-                case CityCulture.ShieldMaker:
-                    return 125;
-                case CityCulture.Potters:
-                    return 150;
-                case CityCulture.Coopers:
-                    return 150;
-                case CityCulture.Salters:
-                    return 125;
-
-
-                default:
-                    return -1;
-            }
-        }
-
-        public static List<IconAndText> CultureAffectedItems(CityCulture culture)
-        {
-            List<IconAndText> result = null;
-
-
-            switch (culture)
-            {
-                case CityCulture.Armorsmith:
-                    result = new List<IconAndText>(8);
-                    addItem(ItemResourceType.BronzeArmor);
-                    addItem(ItemResourceType.IronArmor);
-                    addItem(ItemResourceType.HeavyIronArmor);
-                    addItem(ItemResourceType.LightPlateArmor);
-                    addItem(ItemResourceType.FullPlateArmor);
-                    addItem(ItemResourceType.MithrilArmor);
-                    break;
-
-                case CityCulture.FertileGround:
-                    result = new List<IconAndText>(8);
-                    addBuilding(Build.BuildAndExpandType.OrchardApple);
-                    addBuilding(Build.BuildAndExpandType.WheatFarm);
-                    addBuilding(Build.BuildAndExpandType.LinenFarm);
-                    addBuilding(Build.BuildAndExpandType.RapeSeedFarm);
-                    addBuilding(Build.BuildAndExpandType.HempFarm);
-                    break;
-            }
-
-            return result;
-
-            void addItem(ItemResourceType item)
-            {
-                if (result == null)
-                {
-                    result = new List<IconAndText>(8);
-                }
-                IconName.Item(item, out var ic, out var nm);
-                result.Add(new IconAndText(ic, nm));
-            }
-            void addBuilding(Build.BuildAndExpandType build)
-            {
-                if (result == null)
-                {
-                    result = new List<IconAndText>(8);
-                }
-                IconName.Building(build, out var ic, out var nm);
-                result.Add(new IconAndText(ic, nm));
-            }
         }
     }
 
@@ -466,62 +333,8 @@ namespace VikingEngine.DSSWars
         NUM
     }
 
-    enum CityBiom
-    {
-        Default_Fields,
-        Frozen,// (Extra food storage, extra skin production)
-        Forest,
-        Mountain, //(Hog breeding)
-        Desolate,
-        Desert, //(Elephant breeding, drying meat, drying salt)
-    }
-    enum CityCulture
-    { 
-        LargeFamilies,//
-        FertileGround,//
-        Archers,//
-        Warriors,//
-        
-        Miners,//
-        Woodcutters,//
-        Builders,//
-        CrabMentality,// 
-        DeepWell,//
-        Networker,//
-        PitMasters,//
-
-        Stonemason,//.
-        Brewmaster,//.
-        Weavers,//.
-        SiegeEngineer,//.
-        Armorsmith,//.
-        
-        Seafaring,//.
-        Backtrader,//.
-        Lawbiding,//.
-
-        Smelters,//
-        BronzeCasters,//
-        Apprentices,//
-
-        Noblemen,//-implemented
-        Nomads, //Low settler cost-implemented
-
-        Butchers, //Larger meat production -implemented
-        Skinner,//Larger skin production -implemented
-        AnimalBreeder2, //Higher chance of successful breeding -implemented
-
-        Wainwright, //High wagon production -implemented
-        Wheelwright, //Speed bonus to conscripted carts
-        ShieldMaker, //High shield production -implemented
-
-        Potters, //Higher pottery production -implemented
-        Coopers, //High wood storage box production -implemented
-        Salters, //High conserved food production  -implemented
-
-
-        NUM_NONE
-    }
+   
+   
 
     enum CityResurceSeed
     { 

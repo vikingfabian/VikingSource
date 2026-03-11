@@ -293,7 +293,7 @@ namespace VikingEngine.DSSWars.Conscript
                 content.newLine();
                 TrainingLevel minLevel;
                 TrainingLevel maxLevel = currentStatus.maxTrainingLevel;
-                if (city.Culture == CityCulture.CrabMentality)
+                if (city.cityCulture == CityCulture.CrabMentality)
                 {
                     maxLevel = TrainingLevel.Basic;
                 }

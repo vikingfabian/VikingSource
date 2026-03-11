@@ -387,7 +387,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public CraftBlueprint SettlerBp()
         {
-            return Culture == CityCulture.Nomads ? ConscriptDataLib.CraftNomadSettler : ConscriptDataLib.CraftSettler;
+            return cityCulture == CityCulture.Nomads ? ConscriptDataLib.CraftNomadSettler : ConscriptDataLib.CraftSettler;
         }
 
         public void aiConscriptSettler(City settleArea)
@@ -445,7 +445,7 @@ namespace VikingEngine.DSSWars.GameObject
             soldierProfile.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
 
 
-            switch (Culture)
+            switch (cityCulture)
             {
                
                 case CityCulture.Archers:

@@ -441,7 +441,7 @@ namespace VikingEngine.DSSWars.GameObject
             
             if (PlatformSettings.DevBuild)
             {
-                args.content.text("Id: " + id.ToString());
+                args.content.text("Unique Id: " + id.ToString());
             }
         }
 
@@ -459,6 +459,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (!GetPlayer().profile.casualControls)
             {
+                args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsResource_Food));
                 args.content.space();
                 args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int)food))));
@@ -472,7 +473,7 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsResource_ConservedFood));
                 args.content.space();
-                args.content.Add(new RbText(string.Format(".Conserved food reserves", TextLib.LargeNumber((int)conservedFood))));
+                args.content.Add(new RbText(DssRef.todoLang.Resource_ConservedFood_Reserves +": " + TextLib.LargeNumber((int)conservedFood)));
 
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));

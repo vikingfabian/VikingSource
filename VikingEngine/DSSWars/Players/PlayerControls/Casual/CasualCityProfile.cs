@@ -234,7 +234,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 siegeMen.price = 1;
             }
 
-            if (city.Culture == CityCulture.Seafaring || culture.percWater > 0.5)
+            if (city.cityCulture == CityCulture.Seafaring || culture.percWater > 0.5)
             {
                 shipmen = new SoldierPurchaseOption(  1, ItemResourceType.PaddedArmor, ItemResourceType.ThrowingSpear, TrainingLevel.Basic);
                 
@@ -263,7 +263,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             if (riderMen.Available) riderMen.price = 3000;
             if (siegeMen.Available) siegeMen.price = 1200;
 
-            switch (city.Culture)
+            switch (city.cityCulture)
             {
                 //case CityCulture.AnimalBreeder:
                 case CityCulture.FertileGround:

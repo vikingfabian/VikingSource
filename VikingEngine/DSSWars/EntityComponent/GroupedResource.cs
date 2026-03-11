@@ -177,6 +177,15 @@ namespace VikingEngine.DSSWars.EntityComponent
             amount += item.amount * multiply;
         }
 
+        public void add(int add, bool respectLimit)
+        {
+            amount += add;
+            if (respectLimit && amount > stockPileLimit)
+            {
+                amount = stockPileLimit;
+            }
+        }
+
         public void toMenu(RichBoxContent content, ItemResourceType item, ref bool reachedBuffer)
         {
             IconName.Item(item, out SpriteName itemIcon, out string itemName);

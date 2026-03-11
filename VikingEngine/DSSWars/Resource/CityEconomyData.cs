@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Resource
                     {
                         taxPerWorker_copp += DssConst.BankTaxIncreasePercUnits_copp;
                     }
-                    if (city.Culture == CityCulture.Lawbiding)
+                    if (city.cityCulture == CityCulture.Lawbiding)
                     {
                         taxPerWorker_copp *= 2f;
                     }

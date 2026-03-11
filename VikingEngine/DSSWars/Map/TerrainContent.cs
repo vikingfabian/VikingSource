@@ -141,15 +141,6 @@ namespace VikingEngine.DSSWars.Map
         public static readonly AnimalPenGrowth Pheasant = new AnimalPenGrowth(
            maxSize: 1, maxCount: 2, harvestCount: int.MaxValue);
 
-        //public const int PigMaxSize = 4;
-        //public const int PigMaxCount = 4;
-        //const int PigMaxTotal = PigMaxSize * PigMaxCount;
-        //public const int PigReady = PigMaxSize * 3;
-
-        //public const int HenMaxSize = 3;
-        //public const int HenMaxCount = 6;
-        //const int HenMaxTotal = HenMaxSize * HenMaxCount;
-        //public const int HenReady = HenMaxSize * 3;
 
         public const int DefaultMineAmount = 10;
         public const int DryingSaltAmount = 8;
@@ -176,17 +167,15 @@ namespace VikingEngine.DSSWars.Map
                             {
                                 rndDir *= 2;
                             }
-                            //Map.SubTile ntile;
+
                             var npos = pos + rndDir;
-                            if (DssRef.world.subTileGrid.InBounds(npos))//.TryGet(npos, out ntile))
+                            if (DssRef.world.subTileGrid.InBounds(npos))
                             {
                                 ref var ntile = ref DssRef.world.subTileGrid.GetRef(npos);
                                 if (ntile.mainTerrain == Map.TerrainMainType.DefaultLand)
                                 {
                                     Map.TerrainSubFoilType sprout = foilType == Map.TerrainSubFoilType.TreeSoft ? Map.TerrainSubFoilType.TreeSoftSprout : Map.TerrainSubFoilType.TreeHardSprout;
                                     ntile.SetType(Map.TerrainMainType.Foil, (int)sprout, 1);
-
-                                    //DssRef.world.subTileGrid.Set(npos, ntile);
                                 }
                             }
 

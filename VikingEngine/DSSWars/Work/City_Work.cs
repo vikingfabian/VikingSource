@@ -161,7 +161,7 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             newWorker = newGameWorkerSkills(newWorker);
                         }
-                        else if (Culture == CityCulture.Apprentices)
+                        else if (cityCulture == CityCulture.Apprentices)
                         {
                             for (int xpIx = 0; xpIx <= 1; ++xpIx)
                             {
@@ -1085,7 +1085,7 @@ namespace VikingEngine.DSSWars.GameObject
             else if (workerStatuses.Count == 4)
             {
                 WorkExperienceType cultureWork = WorkExperienceType.NUM_NONE;
-                switch (Culture)
+                switch (cityCulture)
                 {
                     case CityCulture.FertileGround:
                         cultureWork = WorkExperienceType.Farm;

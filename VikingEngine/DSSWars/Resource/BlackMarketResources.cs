@@ -91,7 +91,7 @@ namespace VikingEngine.DSSWars.Resource
             int count = CraftBuildingLib.CraftSmith_IronUse;
             if (faction.payGold(count * Cost_Iron, false, city))
             {
-                city.AddGroupedResource(EntityComponent.CityResoureIndex.iron, count);
+                city.AddGroupedResource(EntityComponent.CityResoureIndex.iron, count, false);
                 //city.res_iron.amount += count;
                 return true;
             }
@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.Resource
 
         static Money CostMultiply(City city, Money cost)
         {
-            if (city.Culture == CityCulture.Backtrader)
+            if (city.cityCulture == CityCulture.Backtrader)
             {
                 return cost / 2;
             }
@@ -109,7 +109,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public static void ToHud(LocalPlayer player, RichBoxContent content, City city)
         {
-            if (city.Culture == CityCulture.Lawbiding && player.tutorial == null)
+            if (city.cityCulture == CityCulture.Lawbiding && player.tutorial == null)
             {
                 city.cultureToHud(player, content, false);
                 return;

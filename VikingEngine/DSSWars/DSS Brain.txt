@@ -1,6 +1,17 @@
 ﻿UPDATE
 Change Log:
-* 
+* cesspit will check fuel limit
+* Animal breed up chance from 1% to 5%
+
+ECONOMY REBALANCE
+* tax reduced to 25%
+* soldier gold upkeep reduced to 25% (however is zero in retail)
+* service men upkeep reduced to 40%
+* guard upkeep reduced to 40%
+* orchard food produce increased 30 to 50
+* wheat farm produce increased 30 to 50
+
+
 
 ##ICONS TODO
 * butching animal
@@ -12,7 +23,6 @@ Current bugs
 
 x missing a lot of the animal/weapon/armor combos
 X doesnt handle negative raw food on animal upkeep
-x cesspit should check fuel limit
 x animal gather is confusing
 x ai conscript of animals
 x economy rebalance
@@ -25,7 +35,7 @@ x auto options for logistics/hall/cook
 
 x potter skill
 x optimize stockpile save
-x controller input
+x controller text input
 
 CITY CULTURES
 * Wheelwright, //Speed bonus to conscripted carts

@@ -88,8 +88,8 @@ namespace VikingEngine.DSSWars.GameObject
         //IntVector2 cullingTopLeft, cullingBottomRight;
         //public int cityTileRadius = 0;
         public Rectangle2 cityTileArea;
-        public CityCulture Culture = CityCulture.NUM_NONE;
-        public CityBiom Biome = CityBiom.Default_Fields;
+        public CityCulture cityCulture = CityCulture.NUM_NONE;
+        public CityBiome cityBiome = CityBiome.Default_Fields;
 
         public Build.BuildAndExpandType autoExpandFarmType = Build.BuildAndExpandType.WheatFarm;
         bool autoBuild_Work = false;
@@ -321,23 +321,23 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (areaCulture.percDesolate > 0.5)
             {
-                Biome = CityBiom.Desolate;
+                cityBiome = CityBiome.Desolate;
             }
             else if (areaCulture.frozenBiom > 0.5)
             {
-                Biome = CityBiom.Frozen;
+                cityBiome = CityBiome.Frozen;
             }
             else if (areaCulture.percDry > 0.5)
             {
-                Biome = CityBiom.Desert;
+                cityBiome = CityBiome.Desert;
             }
             else if (areaCulture.percForest > 0.75)
             {
-                Biome = CityBiom.Forest;
+                cityBiome = CityBiome.Forest;
             }
             else if (areaCulture.percMountain > 0.5)
             {
-                Biome = CityBiom.Mountain;
+                cityBiome = CityBiome.Mountain;
             }
 
             if (areaCulture.percForest >= 0.7 && cityType == CityType.Capital)
@@ -369,37 +369,37 @@ namespace VikingEngine.DSSWars.GameObject
                 //Area specific culture
                 if (areaCulture.percDry > 0.05 && areaCulture.percDry < 0.7 && areaCulture.percPlains >= 0.1)
                 {
-                    Culture = CityCulture.FertileGround;
+                    cityCulture = CityCulture.FertileGround;
                 }
                 else if (areaCulture.percForest >= 0.8)
                 {
-                    Culture = CityCulture.Woodcutters;
+                    cityCulture = CityCulture.Woodcutters;
                 }
                 else if (areaCulture.percMountain > 0.5)
                 {
-                    Culture = CityCulture.Miners;
+                    cityCulture = CityCulture.Miners;
                 }
                 else if (areaCulture.percMountain > 0.3)
                 {
-                    Culture = CityCulture.Stonemason;
+                    cityCulture = CityCulture.Stonemason;
                 }
                 else if (areaCulture.dryBiom <= 1)
                 {
-                    Culture = CityCulture.DeepWell;
+                    cityCulture = CityCulture.DeepWell;
                 }
                 else if (areaCulture.percForest >= 0.1)
                 {
-                    Culture = CityCulture.PitMasters;
+                    cityCulture = CityCulture.PitMasters;
                 }
                 else if (areaCulture.percWater >= 0.25)
                 {
-                    Culture = CityCulture.Seafaring;
+                    cityCulture = CityCulture.Seafaring;
                 }
             }
 
-            if (Culture == CityCulture.NUM_NONE)
+            if (cityCulture == CityCulture.NUM_NONE)
             {
-                Culture = arraylib.RandomListMember(CityCultureCollection.GeneralCultures, world.rnd);
+                cityCulture = arraylib.RandomListMember(CityCultureCollection.GeneralCultures, world.rnd);
             }
 
             casualCityProfile.InitCulture(this, areaCulture);
@@ -412,7 +412,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (cityCultureCollection.CitySeedCommoness.GetRandom(world.rnd))
             {
                 case CityResurceSeed.HenOrPig:
-                    if (Biome == CityBiom.Default_Fields && areaCulture.percPlains >= 0.25)
+                    if (cityBiome == CityBiome.Default_Fields && areaCulture.percPlains >= 0.25)
                     {
                         AddGroupedResource(world,CityResoureIndex.Pig, DssConst.PenBreedingStockCount * 2);
                     }
@@ -422,13 +422,13 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     break;
                 case CityResurceSeed.Mount:
-                    switch (Biome)
+                    switch (cityBiome)
                     {
-                        case CityBiom.Mountain:
+                        case CityBiome.Mountain:
                             AddGroupedResource(world, CityResoureIndex.WildPig, DssConst.PenBreedingStockCount * 2);
                             break;
 
-                        case CityBiom.Desert:
+                        case CityBiome.Desert:
                             if (world.rnd.Chance(0.5))
                             {
                                 AddGroupedResource(world, CityResoureIndex.Elephant, DssConst.PenBreedingStockCount);
@@ -439,7 +439,7 @@ namespace VikingEngine.DSSWars.GameObject
                             }
                             break;
 
-                        case CityBiom.Forest:
+                        case CityBiome.Forest:
                             AddGroupedResource(world, CityResoureIndex.WildCat, DssConst.PenBreedingStockCount);
                             break;
 
@@ -507,7 +507,7 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write(Debug.Ushort_OrCrash(nCityIx));
             }
 
-            w.Write(Debug.Byte_OrCrash((int)Culture));
+            w.Write(Debug.Byte_OrCrash((int)cityCulture));
 
             Debug.WriteCheck(w);
         }
@@ -540,7 +540,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             
 
-            Culture = (CityCulture)r.ReadByte();
+            cityCulture = (CityCulture)r.ReadByte();
 
             workerCullingMinMax = new Intvector2MinMax(tilePos);
             guardCullingMinMax = workerCullingMinMax;
@@ -1469,7 +1469,7 @@ namespace VikingEngine.DSSWars.GameObject
                 workForce.amount = (int)(HousingCount_Workers * 0.75);
                 waterAddPerSec += Ref.rnd.Float(DssConst.WaterAdd_RandomAdd);
 
-                if (Culture == CityCulture.DeepWell)
+                if (cityCulture == CityCulture.DeepWell)
                 {
                     waterAddPerSec += DssConst.WaterAdd_HeadCity;
                 }
@@ -1736,7 +1736,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (requirements)
             {
                 var result = Bound.Min( workForce.amount / 600.0 * GetFaction().growthMultiplier, 0.1);
-                if (Culture == CityCulture.LargeFamilies)
+                if (cityCulture == CityCulture.LargeFamilies)
                 {
                     result *= 2;
                 }
@@ -2895,7 +2895,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (!player.profile.casualControls)
                 {
                     cultureToHud(player, content, interactive);
-                    biomeToHud(player, content, interactive);
+                    Data.Biome.biomeToHud(cityBiome, player, content, interactive);
                 }
                 if (immigrants.HasValue())
                 {
@@ -3779,7 +3779,7 @@ namespace VikingEngine.DSSWars.GameObject
         //}
         public void cultureToHud(LocalPlayer player, RichBoxContent content, bool interactive)
         {
-            IconName.CityCulture(Culture, out string title, out string description);
+            IconName.CityCulture(cityCulture, out string title, out string description);
             content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, title));
             if (interactive)
             {
@@ -3793,48 +3793,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void biomeToHud(LocalPlayer player, RichBoxContent content, bool interactive)
-        {
-            content.newLine();
-            content.Add(new RbText(TextLib.LabelColon(DssRef.todoLang.CityBiome_Title), HudLib.TitleColor_Label));
-            content.space();
-            content.Add(new RbText(LangLib.Biome(Biome)));
-            content.space();
-            HudLib.InfoButton(content, new RbTooltip_Text(DssRef.todoLang.CityBiome_Description));
-        }
+       
 
         void cultureToolTip(RichBoxContent content, object tag)
         {
-            IconName.CityCulture(Culture, out string title, out string description);
-            int factor = DssLib.CulturePercChangeFactor(Culture);
-            if (factor >= 0)
-            {
-                content.text(string.Format(DssRef.lang.Hud_ChangeFactor, factor + "%"));
-            }
-
-            var items = DssLib.CultureAffectedItems(Culture);
-            if (items != null)
-            {
-                content.newParagraph();
-                HudLib.Label(content, DssRef.todoLang.Culture_AffectedItems);
-                foreach (var iconText in items)
-                {
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbImage(iconText.Icon));
-                    content.hspace();
-                    content.Add(new RbText(iconText.Text));
-                }
-            }
-
-            content.h2(title, HudLib.TitleColor_Head);
-            content.text(description);
-
-            content.newParagraph();
-            content.text(DssRef.lang.CityCultureDescription, HudLib.InfoYellow_Light);
-
-           
-           
+            Data.Culture.CultureToolTip(content, cityCulture);
         }
 
         public void AddNeighborCity(WorldData world, int nCityIndex)

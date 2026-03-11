@@ -670,172 +670,167 @@ namespace VikingEngine.DSSWars
             }
         }
 
-        public static void CityCulture(CityCulture cityCulture, out string title, out string description)
+        public static void CityCulture(Data.CityCulture cityCulture, out string title, out string description)
         {
             switch (cityCulture)
             {
-                case DSSWars.CityCulture.Archers:
+                case Data.CityCulture.Archers:
                     title = DssRef.lang.CityCulture_Archers;
                     description = DssRef.lang.CityCulture_Archers_Description;
                     break;
 
-                case DSSWars.CityCulture.Builders:
+                case Data.CityCulture.Builders:
                     title = DssRef.lang.CityCulture_Builders;
                     description = DssRef.lang.CityCulture_Builders_Description;
                     break;
 
-                case DSSWars.CityCulture.CrabMentality:
+                case Data.CityCulture.CrabMentality:
                     title = DssRef.lang.CityCulture_CrabMentality;
                     description = DssRef.lang.CityCulture_CrabMentality_Description;
                     break;
 
-                case DSSWars.CityCulture.DeepWell:
+                case Data.CityCulture.DeepWell:
                     title = DssRef.lang.CityCulture_DeepWell;
                     description = DssRef.lang.CityCulture_DeepWell_Description;
                     break;
 
-                case DSSWars.CityCulture.FertileGround:
+                case Data.CityCulture.FertileGround:
                     title = DssRef.lang.CityCulture_FertileGround;
                     description = DssRef.lang.CityCulture_FertileGround_Description;
                     break;
 
-                case DSSWars.CityCulture.LargeFamilies:
+                case Data.CityCulture.LargeFamilies:
                     title = DssRef.lang.CityCulture_LargeFamilies;
                     description = DssRef.lang.CityCulture_LargeFamilies_Description;
                     break;
 
-                case DSSWars.CityCulture.Miners:
+                case Data.CityCulture.Miners:
                     title = DssRef.lang.CityCulture_Miners;
                     description = DssRef.lang.CityCulture_Miners_Description;
                     break;
 
-                case DSSWars.CityCulture.Warriors:
+                case Data.CityCulture.Warriors:
                     title = DssRef.lang.CityCulture_Warriors;
                     description = DssRef.lang.CityCulture_Warriors_Description;
                     break;
 
-                case DSSWars.CityCulture.Woodcutters:
+                case Data.CityCulture.Woodcutters:
                     title = DssRef.lang.CityCulture_Woodcutters;
                     description = DssRef.lang.CityCulture_Woodcutters_Description;
                     break;
 
-                case DSSWars.CityCulture.Networker:
+                case Data.CityCulture.Networker:
                     title = DssRef.lang.CityCulture_Networker;
                     description = DssRef.lang.CityCulture_Networker_Description;
                     break;
 
-                case DSSWars.CityCulture.PitMasters:
+                case Data.CityCulture.PitMasters:
                     title = DssRef.lang.CityCulture_PitMasters;
                     description = DssRef.lang.CityCulture_PitMasters_Description;
                     break;
 
-                case DSSWars.CityCulture.Stonemason:
+                case Data.CityCulture.Stonemason:
                     title = DssRef.lang.CityCulture_Stonemason;
                     description = DssRef.lang.CityCulture_Stonemason_Description;
                     break;
 
-                case DSSWars.CityCulture.Brewmaster:
+                case Data.CityCulture.Brewmaster:
                     title = DssRef.lang.CityCulture_Brewmaster;
                     description = DssRef.lang.CityCulture_Brewmaster_Description;
                     break;
 
-                case DSSWars.CityCulture.Weavers:
+                case Data.CityCulture.Weavers:
                     title = DssRef.lang.CityCulture_Weavers;
                     description = DssRef.lang.CityCulture_Weavers_Description;
                     break;
 
-                case DSSWars.CityCulture.SiegeEngineer:
+                case Data.CityCulture.SiegeEngineer:
                     title = DssRef.lang.CityCulture_SiegeEngineer;
                     description = DssRef.lang.CityCulture_SiegeEngineer_Description;
                     break;
 
-                case DSSWars.CityCulture.Armorsmith:
+                case Data.CityCulture.Armorsmith:
                     title = DssRef.lang.CityCulture_Armorsmith;
                     description = DssRef.lang.CityCulture_Armorsmith_Description;
                     break;
 
-                case DSSWars.CityCulture.Noblemen:
+                case Data.CityCulture.Noblemen:
                     title = DssRef.lang.CityCulture_Noblemen;
                     description = DssRef.lang.CityCulture_Noblemen_Description;
                     break;
 
-                case DSSWars.CityCulture.Seafaring:
+                case Data.CityCulture.Seafaring:
                     title = DssRef.lang.CityCulture_Seafaring;
                     description = DssRef.lang.CityCulture_Seafaring_Description;
                     break;
 
-                case DSSWars.CityCulture.Backtrader:
+                case Data.CityCulture.Backtrader:
                     title = DssRef.lang.CityCulture_Backtrader;
                     description = DssRef.lang.CityCulture_Backtrader_Description;
                     break;
 
-                case DSSWars.CityCulture.Lawbiding:
+                case Data.CityCulture.Lawbiding:
                     title = DssRef.lang.CityCulture_LawAbiding;
                     description = DssRef.lang.CityCulture_LawAbiding_Description;
                     break;
 
-                case DSSWars.CityCulture.Smelters:
+                case Data.CityCulture.Smelters:
                     title = DssRef.lang.CityCulture_Smelters;
                     description = DssRef.lang.CityCulture_Smelters_Description;
                     break;
 
-                case DSSWars.CityCulture.BronzeCasters:
+                case Data.CityCulture.BronzeCasters:
                     title = DssRef.lang.CityCulture_BronzeCasters;
                     description = DssRef.lang.CityCulture_BronzeCasters_Description;
                     break;
 
-                case DSSWars.CityCulture.Apprentices:
+                case Data.CityCulture.Apprentices:
                     title = DssRef.lang.CityCulture_Apprentices;
                     description = DssRef.lang.CityCulture_Apprentices_Description;
                     break;
 
-                case DSSWars.CityCulture.AnimalBreeder2:
+                case Data.CityCulture.AnimalBreeder2:
                     title = DssRef.lang.CityCulture_AnimalBreeder;
                     description = DssRef.todoLang.CityCulture_AnimalBreeder2_Description;
                     break;
 
-                case DSSWars.CityCulture.Butchers:
+                case Data.CityCulture.Butchers:
                     title = DssRef.todoLang.CityCulture_Butchers;
                     description = string.Format( DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_Meat);
                     break;
                
 
-                case DSSWars.CityCulture.Potters:
+                case Data.CityCulture.Potters:
                     title = DssRef.todoLang.CityCulture_Potters;
                     description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.CityCulture_Potters);
                     break;
 
-                case DSSWars.CityCulture.Wainwright:
+                case Data.CityCulture.Wainwright:
                     title = DssRef.todoLang.CityCulture_Wainwright;
                     description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_Vehicle);
                     break;
 
-                case DSSWars.CityCulture.Wheelwright:
+                case Data.CityCulture.Wheelwright:
                     title = DssRef.todoLang.CityCulture_Wheelwright;
                     description = DssRef.todoLang.CityCulture_Wheelwright_Description;
                     break;
 
-                case DSSWars.CityCulture.ShieldMaker:
+                case Data.CityCulture.ShieldMaker:
                     title = DssRef.todoLang.CityCulture_ShieldMaker;
                     description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_Shield);
                     break;
 
-                //case DSSWars.CityCulture.Nomads:
-                //    title = DssRef.todoLang.CityCulture_Nomads;
-                //    description = DssRef.todoLang.CityCulture_Nomads_Description;
-                //    break;
-
-                case DSSWars.CityCulture.Coopers:
+                case Data.CityCulture.Coopers:
                     title = DssRef.todoLang.CityCulture_Coopers;
                     description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_Container);
                     break;
 
-                case DSSWars.CityCulture.Salters:
+                case Data.CityCulture.Salters:
                     title = DssRef.todoLang.CityCulture_Salters;
                     description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_ConservedFood);
                     break;
 
-                case DSSWars.CityCulture.Nomads:
+                case Data.CityCulture.Nomads:
                     title = DssRef.lang.CityCulture_Nomad;
                     description = string.Format(DssRef.lang.Hud_Purchase_LowXCost, DssRef.lang.UnitType_Settler);
                     break;
