@@ -1,5 +1,5 @@
 ﻿Change log:
-* Fixed rare empty faction on get gold
+* 
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
