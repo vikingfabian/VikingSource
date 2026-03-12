@@ -404,7 +404,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             casualCityProfile.InitCulture(this, areaCulture);
 
-            resourcesStartSeed(world, cityCultureCollection, areaCulture);
+            //resourcesStartSeed(world, cityCultureCollection, areaCulture);
         }
 
         void resourcesStartSeed(WorldData world, CityCultureCollection cityCultureCollection, CityAreaCulture areaCulture)

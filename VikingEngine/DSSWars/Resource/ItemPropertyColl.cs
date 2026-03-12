@@ -172,6 +172,13 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.SilverCoin, NoCityResource, DefaultWeight, WorkPriorityType.coinmaker_silver, Minting.SilverCoin, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.ElfCoin, NoCityResource, DefaultWeight, WorkPriorityType.coinmaker_mithril, Minting.ElfCoin, null, StorageType.NUM_NONE);
 
+
+            new ItemProperties(ItemResourceType.Boar, CityResoureIndex.Boar, DefaultWeight, WorkPriorityType.SlaughterBoar, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.BoarPen));
+            
+            new ItemProperties(ItemResourceType.Fowl, CityResoureIndex.Fowl, DefaultWeight, WorkPriorityType.SlaughterFowl, null, null, StorageType.AnimalStorage)
+                .AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.FowlPen));
+
             {
                 var animal = new ItemProperties(ItemResourceType.Pig, CityResoureIndex.Pig, DefaultWeight, WorkPriorityType.SlaughterPig, null, null, StorageType.AnimalStorage);
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));

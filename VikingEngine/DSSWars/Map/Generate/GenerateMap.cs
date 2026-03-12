@@ -1732,7 +1732,7 @@ namespace VikingEngine.DSSWars.Map.Generate
         void processSubTiles(int part)
         {
             List<IntVector2> mineLocations = new List<IntVector2>(1024);
-
+            List<IntVector2> animalSpawns = new List<IntVector2>(1024);
             const int WidthMin1 = WorldData.TileSubDivitions - 1;
 
             int partWidth = world.Size.X / ProcessTilesDivisionParts;
@@ -1865,7 +1865,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                         }
 
                         var subTile = new SubTile(tiletype, subType, rndColor, topY);
-                        TerrainContent.createSubTileContent(subX, subY, distanceToCity, tile, heightSett, biom, ref mudRadius, ref subTile, world, noiseMap, mineLocations);
+                        TerrainContent.createSubTileContent(subX, subY, distanceToCity, tile, heightSett, biom, ref mudRadius, ref subTile, world, noiseMap, mineLocations, animalSpawns);
 
                         world.subTileGrid.Set(subX, subY, subTile);
 
@@ -1874,24 +1874,86 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             }
 
-            void addWildAnimals(int count, int type)
+            //void addWildAnimals()
             {
-                if (mineLocations.Count < count)
+                foreach (var pos in animalSpawns)
                 {
-                    return;
-                }
+                    Tile tile =  world.tileGrid.Get(WP.SubtileToTilePos(pos));
+                    var biome = world.cities[tile.CityIndex].cityBiome;
 
-                for (int i = 0; i < count; ++i)
-                {
-                    int index = world.rnd.Int(mineLocations.Count);
-                    IntVector2 pos = mineLocations[index];
-                    mineLocations.RemoveAt(index);
+                    double rnd = world.rnd.Double();
+
+                    TerrainBuildingType animal;
+
+                    switch (biome)
+                    {
+                        case CityBiome.Frozen:
+                            if (rnd < 0.3)
+                            {
+                                animal = TerrainBuildingType.OxHabitat;
+                            }
+                            else
+                            {
+                                animal = TerrainBuildingType.BoarHabitat;
+                            }
+                            break;
+                        case CityBiome.Forest:
+                            if (rnd < 0.5)
+                            {
+                                animal = TerrainBuildingType.CatHabitat;
+                            }
+                            else
+                            {
+                                animal = TerrainBuildingType.BoarHabitat;
+                            }
+                            break;
+                        case CityBiome.Desert:
+                            if (rnd < 0.5)
+                            {
+                                animal = TerrainBuildingType.ElephantHabitat;
+                            }
+                            else
+                            {
+                                animal = TerrainBuildingType.PonyHabitat;
+                            }
+                            break;
+                        case CityBiome.Desolate:
+                            if (rnd < 0.5)
+                            {
+                                animal = TerrainBuildingType.WolfHabitat;
+                            }
+                            else
+                            {
+                                animal = TerrainBuildingType.DogHabitat;
+                            }
+                            break;
+                        default:
+                            if (rnd < 0.1)
+                            {
+                                animal = TerrainBuildingType.DogHabitat;
+                            }
+                            else if (rnd < 0.4)
+                            {
+                                animal = TerrainBuildingType.FowlHabitat;
+                            }
+                            else if (rnd < 0.6)
+                            {
+                                animal = TerrainBuildingType.BoarHabitat;
+                            }
+                            else if (rnd < 0.8)
+                            {
+                                animal = TerrainBuildingType.OxHabitat;
+                            }
+                            else
+                            {
+                                animal = TerrainBuildingType.PonyHabitat;
+                            }
+                            break;
+                    }
 
                     var subTile = world.subTileGrid.Get(pos);
-                    subTile.subTerrain = type;
-
+                    subTile.SetType(TerrainMainType.Building, (int)animal, 1);
                     world.subTileGrid.Set(pos, subTile);
-
                 }
             }
 

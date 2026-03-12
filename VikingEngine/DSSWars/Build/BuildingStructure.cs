@@ -295,9 +295,15 @@ namespace VikingEngine.DSSWars.Build
         public int mineCount_stoneblock;
         public int resourceCount_clay;
 
-        public int wildAnimalCount_Hen;
-        public int wildAnimalCount_Pig;
+        public int wildAnimalCount_Fowl;
+        public int wildAnimalCount_Boar;
+        public int wildAnimalCount_Dog;
+        public int wildAnimalCount_Ox;
+
         public int wildAnimalCount_Pony;
+        public int wildAnimalCount_Wolf;
+        public int wildAnimalCount_Cat;
+        public int wildAnimalCount_Elephant;
 
 
         static readonly SubTile TerrainType_wood = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeSoft);
@@ -317,6 +323,16 @@ namespace VikingEngine.DSSWars.Build
         static readonly SubTile TerrainType_salt = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Salt); //New
         static readonly SubTile TerrainType_sulfur = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Sulfur);
         static readonly SubTile TerrainType_coal = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.Coal);
+
+        static readonly SubTile TerrainType_fowlHabitat = new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.FowlHabitat);
+        static readonly SubTile TerrainType_boarHabitat = new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.BoarHabitat);
+        static readonly SubTile TerrainType_dogHabitat = new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.DogHabitat);
+        static readonly SubTile TerrainType_oxHabitat = new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.OxHabitat);
+        static readonly SubTile TerrainType_ponyHabitat = new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.PonyHabitat);
+        static readonly SubTile TerrainType_wolfHabitat = new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.WolfHabitat);
+        static readonly SubTile TerrainType_catHabitat = new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.CatHabitat);
+        static readonly SubTile TerrainType_elephantHabitat = new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.ElephantHabitat);
+
 
         public bool HasIndependantResources()
         {
@@ -340,6 +356,16 @@ namespace VikingEngine.DSSWars.Build
             // Added StoneBlock (Brick) and Clay to natural resources
             naturalResource(player, content, mineCount_stoneblock, ItemResourceType.Brick, TerrainType_stoneblock, ref totalCount);
             naturalResource(player, content, resourceCount_clay, ItemResourceType.Clay, TerrainType_clay, ref totalCount);
+
+            animalHabitat(player, content, wildAnimalCount_Fowl, ItemResourceType.Fowl, TerrainType_fowlHabitat);
+            animalHabitat(player, content, wildAnimalCount_Boar, ItemResourceType.Boar, TerrainType_boarHabitat);
+            animalHabitat(player, content, wildAnimalCount_Dog, ItemResourceType.Dog, TerrainType_dogHabitat);
+            animalHabitat(player, content, wildAnimalCount_Ox, ItemResourceType.Oxen, TerrainType_oxHabitat);
+            animalHabitat(player, content, wildAnimalCount_Pony, ItemResourceType.Pony, TerrainType_ponyHabitat);
+            animalHabitat(player, content, wildAnimalCount_Wolf, ItemResourceType.Wolf, TerrainType_wolfHabitat);
+            animalHabitat(player, content, wildAnimalCount_Cat, ItemResourceType.WildCat, TerrainType_catHabitat);
+            animalHabitat(player, content, wildAnimalCount_Elephant, ItemResourceType.Elephant, TerrainType_elephantHabitat);
+
 
             mine(player, content, mineCount_coal, ItemResourceType.Coal, TerrainType_coal, ref totalCount);
             mine(player, content, mineCount_bogIron, ItemResourceType.BogIron, TerrainType_bogiron, ref totalCount);
@@ -413,6 +439,34 @@ namespace VikingEngine.DSSWars.Build
         public void naturalResource(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, SubTile terrainType, ref int totalCount)
         {
             resourceHoverButton(player, content, count, resource, DssRef.lang.Work_GatherXResource, SpriteName.WarsWorkCollect, terrainType, false, ref totalCount);
+        }
+
+        public void animalHabitat(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, SubTile terrainType)
+        {
+            if (count > 0)
+            {
+                IconName.Item(resource, out SpriteName icon, out string resourceName);
+
+                var infoContent = new RichBoxContent();
+
+                infoContent.Add(new RbImage(icon));
+                infoContent.space();
+                var countText = new RbText(count.ToString());
+                countText.overrideColor = Color.White;
+                infoContent.Add(countText);
+
+                var infoButton = new ArtButton(RbButtonStyle.Outline, infoContent, new RbAction1Arg<SubTile>(player.gameControls.map.terrainSearchClick, terrainType),
+                    new RbTooltip((RichBoxContent content, object tag) =>
+                    {
+                        content.Add(new RbImage(icon));
+                        content.space();
+                        var habitatString = string.Format(DssRef.todoLang.Terrain_XAnimalHabitat, resourceName);
+                        content.Add(new RbText(TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XCountIsY, habitatString, count))));
+
+                    }));
+
+                content.Add(infoButton);
+            }
         }
 
         public void mine(LocalPlayer player, RichBoxContent content, int count, ItemResourceType resource, SubTile terrainType, ref int totalCount)

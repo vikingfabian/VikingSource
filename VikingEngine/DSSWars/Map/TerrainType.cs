@@ -179,8 +179,8 @@ namespace VikingEngine.DSSWars.Map
         FowlPen,
         BoarPen,
 
-        BoarHabitat,
         FowlHabitat,
+        BoarHabitat,
         DogHabitat,
         OxHabitat,
         PonyHabitat,

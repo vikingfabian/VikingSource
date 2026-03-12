@@ -1836,12 +1836,15 @@ namespace VikingEngine.DSSWars.Players
 
         public void botToBotPeaceDeclaration(List<int> wars, Faction enemyFaction)
         {
-            if (enemyFaction.player.IsBot() &&
-                !DssRef.diplomacy.OppositeDiplomaticSides(faction, enemyFaction) &&
-                (wars == null || wars.Count > 1 || this.faction.militaryStrength < enemyFaction.militaryStrength) &&
-                !DssRef.diplomacy.InplayerAlliance(faction))
+            if (enemyFaction != null)
             {
-                this.faction.shareRelationWithAllAllies(enemyFaction, RelationType.RelationType1_Peace);
+                if (enemyFaction.player.IsBot() &&
+                    !DssRef.diplomacy.OppositeDiplomaticSides(faction, enemyFaction) &&
+                    (wars == null || wars.Count > 1 || this.faction.militaryStrength < enemyFaction.militaryStrength) &&
+                    !DssRef.diplomacy.InplayerAlliance(faction))
+                {
+                    this.faction.shareRelationWithAllAllies(enemyFaction, RelationType.RelationType1_Peace);
+                }
             }
         }
 

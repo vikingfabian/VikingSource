@@ -230,7 +230,20 @@ namespace VikingEngine.DSSWars.Map
             Map.TerrainBuildingType buildingType = (Map.TerrainBuildingType)subtile.subTerrain;
             switch (buildingType)
             {
-                
+                case TerrainBuildingType.BoarHabitat:
+                case TerrainBuildingType.BoarPen:
+                    BoarGrowth.asyncCityProduce(ref subtile);
+                    break;
+
+                case TerrainBuildingType.FowlHabitat:
+                    FowlGrowth.asyncCityProduce(ref subtile);
+                    break;
+
+                case TerrainBuildingType.FowlPen:
+                    const int FowlEggGroupCount = 4;
+                    spawnEggs(FowlEggGroupCount, ref subtile);
+                    FowlGrowth.asyncCityProduce(ref subtile);
+                    break;
 
                 case TerrainBuildingType.PigPen:
                     PigGrowth.asyncCityProduce(ref subtile);
@@ -239,23 +252,24 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainBuildingType.HenPen:
                     const int EggGroupCount = 5;
 
-                    if (subtile.terrainAmount > 0)
-                    {
-                        if (Ref.rnd.Chance(1.0 / EggGroupCount))
-                        {
-                            DssRef.state.resources.addItem(
-                                new ItemResource(
-                                    ItemResourceType.Egg,
-                                    1,
-                                    subtile.terrainAmount * 4,
-                                    subtile.terrainAmount * EggGroupCount),
-                                ref subtile.collectionPointer);
-                        }
-                    }
+                    spawnEggs(EggGroupCount, ref subtile);
+                    //if (subtile.terrainAmount > 0)
+                    //{
+                    //    if (Ref.rnd.Chance(1.0 / EggGroupCount))
+                    //    {
+                    //        DssRef.state.resources.addItem(
+                    //            new ItemResource(
+                    //                ItemResourceType.Egg,
+                    //                1,
+                    //                subtile.terrainAmount * 4,
+                    //                subtile.terrainAmount * EggGroupCount),
+                    //            ref subtile.collectionPointer);
+                    //    }
+                    //}
                     HenGrowth.asyncCityProduce(ref subtile);
-                    //DssRef.world.subTileGrid.Set(pos, subtile);
                     break;
 
+                    case TerrainBuildingType.OxHabitat:
                 case TerrainBuildingType.OxenPen:
                     OxenGrowth.asyncCityProduce(ref subtile);
                     break;
@@ -263,6 +277,7 @@ namespace VikingEngine.DSSWars.Map
                     KineOxenGrowth.asyncCityProduce(ref subtile);
                     break;
 
+                case TerrainBuildingType.DogHabitat:
                 case TerrainBuildingType.DogCage:
                     DogGrowth.asyncCityProduce(ref subtile);
                     break;
@@ -270,6 +285,7 @@ namespace VikingEngine.DSSWars.Map
                     HoundGrowth.asyncCityProduce(ref subtile);
                     break;
 
+                case TerrainBuildingType.PonyHabitat:
                 case TerrainBuildingType.PonyPen:
                     PonyGrowth.asyncCityProduce(ref subtile);
                     break;
@@ -296,6 +312,7 @@ namespace VikingEngine.DSSWars.Map
                     StagHogGrowth.asyncCityProduce(ref subtile);
                     break;
 
+                case TerrainBuildingType.WolfHabitat:
                 case TerrainBuildingType.WolfCage:
                     WolfGrowth.asyncCityProduce(ref subtile);
                     break;
@@ -306,6 +323,7 @@ namespace VikingEngine.DSSWars.Map
                     AlphaWargGrowth.asyncCityProduce(ref subtile);
                     break;
 
+                case TerrainBuildingType.CatHabitat:
                 case TerrainBuildingType.WildCatCage:
                     WildCatGrowth.asyncCityProduce(ref subtile);
                     break;
@@ -316,6 +334,7 @@ namespace VikingEngine.DSSWars.Map
                     WarLionGrowth.asyncCityProduce(ref subtile);
                     break;
 
+                case TerrainBuildingType.ElephantHabitat:
                 case TerrainBuildingType.ElephantCage:
                     ElephantGrowth.asyncCityProduce(ref subtile);
                     break;
@@ -332,6 +351,25 @@ namespace VikingEngine.DSSWars.Map
                         subtile.terrainAmount++;
                     }
                     break;
+            }
+
+            void spawnEggs(int eggGroupCount, ref SubTile subtile)
+            {
+                //const int EggGroupCount = 5;
+
+                if (subtile.terrainAmount > 0)
+                {
+                    if (Ref.rnd.Chance(1.0 / eggGroupCount))
+                    {
+                        DssRef.state.resources.addItem(
+                            new ItemResource(
+                                ItemResourceType.Egg,
+                                1,
+                                subtile.terrainAmount * 4,
+                                subtile.terrainAmount * eggGroupCount),
+                            ref subtile.collectionPointer);
+                    }
+                }
             }
         }
 
@@ -370,7 +408,7 @@ namespace VikingEngine.DSSWars.Map
                             
                             if (rndMine < 0.008)
                             {
-                                subTile.SetType(TerrainMainType.Mine, 0, 1);//(int)TerrainMineType.IronOre, 1);
+                                subTile.SetType(TerrainMainType.Mine, 0, 1);
                                 mineLocations.Add(new IntVector2(x, y));
                                 return;
                             }
@@ -459,7 +497,7 @@ namespace VikingEngine.DSSWars.Map
                     if (distanceToCity > 3)
                     {
                         var rndWildAnimal = world.rnd.Double();
-                        if (rndWildAnimal < 0.008)
+                        if (rndWildAnimal < 0.012)
                         {
                             animalSpawns.Add(new IntVector2(x, y));
                         }

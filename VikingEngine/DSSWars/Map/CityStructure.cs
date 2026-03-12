@@ -973,15 +973,29 @@ namespace VikingEngine.DSSWars.Map
                                         break;
 
                                     case TerrainBuildingType.FowlHabitat:
-                                        ++terrainStructure.wildAnimalCount_Hen;
-                                        if (subTile.terrainAmount >= TerrainContent.HenGrowth.harvestReady)
+                                        ++terrainStructure.wildAnimalCount_Fowl;
+                                        if (subTile.terrainAmount >= TerrainContent.FowlGrowth.harvestReady)
                                         {
                                             WildAnimals.Add(subTileLoop.Position);
                                         }
                                         break;
                                     case TerrainBuildingType.BoarHabitat:
-                                        ++terrainStructure.wildAnimalCount_Pig;
-                                        if (subTile.terrainAmount >= TerrainContent.PigGrowth.harvestReady)
+                                        ++terrainStructure.wildAnimalCount_Boar;
+                                        if (subTile.terrainAmount >= TerrainContent.BoarGrowth.harvestReady)
+                                        {
+                                            WildAnimals.Add(subTileLoop.Position);
+                                        }
+                                        break;
+                                    case TerrainBuildingType.DogHabitat:
+                                        ++terrainStructure.wildAnimalCount_Dog;
+                                        if (subTile.terrainAmount >= TerrainContent.DogGrowth.harvestReady)
+                                        {
+                                            WildAnimals.Add(subTileLoop.Position);
+                                        }
+                                        break;
+                                    case TerrainBuildingType.OxHabitat:
+                                        ++terrainStructure.wildAnimalCount_Ox;
+                                        if (subTile.terrainAmount >= TerrainContent.OxenGrowth.harvestReady)
                                         {
                                             WildAnimals.Add(subTileLoop.Position);
                                         }
@@ -993,9 +1007,34 @@ namespace VikingEngine.DSSWars.Map
                                             WildAnimals.Add(subTileLoop.Position);
                                         }
                                         break;
+
+                                    case TerrainBuildingType.WolfHabitat:
+                                        ++terrainStructure.wildAnimalCount_Wolf;
+                                        if (subTile.terrainAmount >= TerrainContent.WolfGrowth.harvestReady)
+                                        {
+                                            WildAnimals.Add(subTileLoop.Position);
+                                        }
+                                        break;
+
+                                    case TerrainBuildingType.CatHabitat:
+                                        ++terrainStructure.wildAnimalCount_Cat;
+                                        if (subTile.terrainAmount >= TerrainContent.WildCatGrowth.harvestReady)
+                                        {
+                                            WildAnimals.Add(subTileLoop.Position);
+                                        }
+                                        break;
+
+                                    case TerrainBuildingType.ElephantHabitat:
+                                        ++terrainStructure.wildAnimalCount_Elephant;
+                                        if (subTile.terrainAmount >= TerrainContent.ElephantGrowth.harvestReady)
+                                        {
+                                            WildAnimals.Add(subTileLoop.Position);
+                                        }
+                                        break;
+
                                 }
 
-                        
+
                                 break;
                             case TerrainMainType.Destroyed:
                             case TerrainMainType.DefaultLand:

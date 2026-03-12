@@ -141,6 +141,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                         if (ExitGame)
                         {
                             DssRef.state.beginExit();
+                            Close();
                         }
                         else if (autoSave)
                         {

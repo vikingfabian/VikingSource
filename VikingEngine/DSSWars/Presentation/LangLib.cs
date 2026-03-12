@@ -1294,10 +1294,18 @@ namespace VikingEngine.DSSWars.Presentation
                     return DssRef.lang.BuildingType_Tavern_Description;
                 case TerrainBuildingType.Storehouse:
                     return DssRef.lang.BuildingType_Storehouse_Description;
+
+                case TerrainBuildingType.TrappersHut:
+                    return DssRef.todoLang.BuildingType_TrapperHut_Description;
+
+                case TerrainBuildingType.BoarPen:
                 case TerrainBuildingType.PigPen:
                     return DssRef.lang.BuildingType_PigPen_Description;
+                case TerrainBuildingType.FowlPen:
                 case TerrainBuildingType.HenPen:
                     return DssRef.lang.BuildingType_HenPen_Description;
+
+
 
                 case TerrainBuildingType.OxenPen:
                 case TerrainBuildingType.KineOxenPen:

@@ -1,19 +1,6 @@
 ﻿UPDATE
 Change Log:
-* cesspit will check fuel limit
-* Animal breed up chance from 1% to 5%
-* Skill bonus ui
-* Added boar and fowl as lower tier animals
-* Wild animals and trapper building to capture them
-* Extended biom description
-
-ECONOMY REBALANCE
-* tax reduced to 25%
-* soldier gold upkeep reduced to 25% (however is zero in retail)
-* service men upkeep reduced to 40%
-* guard upkeep reduced to 40%
-* orchard food produce increased 30 to 50
-* wheat farm produce increased 30 to 50
+* 
 
 
 ##ICONS TODO
@@ -26,7 +13,7 @@ Current bugs
 
 x missing a lot of the animal/weapon/armor combos
 X doesnt handle negative raw food on animal upkeep
-x animal gather is confusing
+x auto build of trappers
 x ai conscript of animals
 
 x ui line breaks in German

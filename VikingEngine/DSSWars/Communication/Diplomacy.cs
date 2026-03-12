@@ -53,17 +53,7 @@ namespace VikingEngine.DSSWars
 
             this.factionCapacity = factionCapacity;
             diplomaticRelations = new DiplomaticRelation[length()];
-            indexRegister = new int[factionCapacity - 1];
-
-            int nextLength = factionCapacity - 1;
-            int currentIndex = 0;
-
-            for (int i = 0; i < factionCapacity - 1; i++)
-            {
-                indexRegister[i] = currentIndex;
-                currentIndex += nextLength;
-                nextLength--;
-            }
+            initRegister(factionCapacity - 1);
 
             switch (DssRef.difficulty.diplomacyDifficulty)
             {
@@ -105,6 +95,21 @@ namespace VikingEngine.DSSWars
                     break;
             }
 
+        }
+
+        private void initRegister(int length)
+        {
+            indexRegister = new int[length];
+
+            int nextLength = length;
+            int currentIndex = 0;
+
+            for (int i = 0; i < length; i++)
+            {
+                indexRegister[i] = currentIndex;
+                currentIndex += nextLength;
+                nextLength--;
+            }
         }
 
         int length()
@@ -198,6 +203,8 @@ namespace VikingEngine.DSSWars
 
         public void writeRelations(System.IO.BinaryWriter w)
         {            
+            w.Write((ushort)indexRegister.Length);
+            
             int skips = -1;
             for (int currentIndex = 0; currentIndex < diplomaticRelations.Length; ++currentIndex)
             {
@@ -217,6 +224,12 @@ namespace VikingEngine.DSSWars
 
         public void readRelations(System.IO.BinaryReader r, int subVersion)
         {
+            if (subVersion >= 111)
+            { 
+                int indexRegisterLength = r.ReadUInt16();
+                initRegister(indexRegisterLength);
+            }
+
             int currentIndex = 0;
 
             while (true)

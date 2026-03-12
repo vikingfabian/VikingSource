@@ -2019,9 +2019,10 @@ namespace VikingEngine.DSSWars.Work
         SlaughterWarElephant,
         SlaughterOliphant,
 
-            RESERVED1,
-            RESERVED2,
-            RESERVED3,
+        SlaughterFowl,
+        SlaughterBoar,
+        
+        RESERVED3,
             RESERVED4,
             RESERVED5,
             RESERVED6,

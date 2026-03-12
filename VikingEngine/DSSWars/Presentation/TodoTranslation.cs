@@ -81,7 +81,14 @@ namespace VikingEngine.DSSWars.Presentation
         public string Resource_TypeName_Oxen => "oxen";
         public string Resource_TypeName_KineOxen => "kine oxen";
 
+        /// <summary>
+        /// Low tier hen (for breeding)
+        /// </summary>
         public string Resource_TypeName_Fowl => "fowl";
+
+        /// <summary>
+        /// Low tier pig (for breeding)
+        /// </summary>
         public string Resource_TypeName_Boar => "boar";
         public string Resource_TypeName_Pig => "pig";
         public string Resource_TypeName_Hen => "hen";
@@ -142,6 +149,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string BuildingType_Cesspit => "Cesspit";
         public string BuildingType_Cesspit_Description => "Destroy resources";
+
+        public string BuildingType_FowlPen => "Fowl Pen";
+        public string BuildingType_BoarPen => "Boar Pen";
 
         // --- Oxen Pens ---
         public string BuildingType_OxenPen => "Oxen Pen";
