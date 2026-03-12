@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.PJ;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace VikingEngine.DSSWars.Conscript
 {
@@ -621,7 +623,7 @@ namespace VikingEngine.DSSWars.Conscript
             content.icontext(specIcon, specText);
 
             content.newParagraph();
-            content.text(DssRef.lang.Conscript_SpecializationDescription, HudLib.InfoYellow_Light);
+            content.text(string.Format( DssRef.lang.Conscript_SpecializationDescription, TextLib.PercentTextWithSymbol(DssConst.Conscript_SpecializePercentage)), HudLib.InfoYellow_Light);
         }
 
         public static void resourcesToMenu(RichBoxContent content, City city, BarracksStatus currentStatus)
@@ -830,9 +832,10 @@ namespace VikingEngine.DSSWars.Conscript
 
             float skillBonus = item == ItemResourceType.NobelMen ? DssConst.NobelMenSkillBonusAdd : 0;
 
-            HudLib.LabelAndText(content, SpriteName.WarsStrengthIcon, DssRef.todoLang.Conscript_SkillBonus, TextLib.PercentAddText(skillBonus));
+            //HudLib.LabelAndText(content, SpriteName.WarsStrengthIcon, DssRef.todoLang.Conscript_SkillBonus, TextLib.PercentAddText(skillBonus));
             //content.hspace();
             //content.Add(new RbText($"+{skillBonus}%"));
+            SkillbonusUi(content, skillBonus, true);
 
             content.newParagraph();
             content.Add(new RbSeperationLine() { thick = true });
@@ -924,7 +927,7 @@ namespace VikingEngine.DSSWars.Conscript
             TrainingTooltipArgs args = (TrainingTooltipArgs)tag;
 
             HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(args.training, args.buildtype)).LongString());
-            HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_TrainingSpeed, TextLib.OneDecimal(ConscriptProfile.TrainingAttackSpeed(args.training)));
+            HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_AttackSpeed, TextLib.PercentTextWithSymbol(ConscriptProfile.TrainingAttackSpeed(args.training)));
             //content.newLine();
             //content.Add(new RbText(TextLib.LabelColon(DssRef.lang.Conscript_TrainingTime), HudLib.TitleColor_Label));
             //content.hspace();
@@ -970,6 +973,54 @@ namespace VikingEngine.DSSWars.Conscript
             city.onConscriptChange();
         }
 
+        public static void SkillbonusUi(RichBoxContent content, float skillBonus, bool add)
+        {
+            //HudLib.LabelAndText(content, SpriteName.WarsStrengthIcon, DssRef.todoLang.Conscript_SkillBonus, TextLib.PercentAddText(skillBonus));
 
+            content.newLine();
+            content.Add(new RbBeginTitle());
+            content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+            content.space();
+            content.Add(new RbText(DssRef.todoLang.Conscript_SkillBonus + ":", HudLib.TitleColor_Label));
+            content.hspace();
+
+            bool positive;
+            if (add)
+            {
+                positive = skillBonus >= 0;
+                content.Add(new RbText(TextLib.PercentAddText(skillBonus)));
+            }
+            else
+            {
+                positive = skillBonus >= 1;
+                content.Add(new RbText(TextLib.PercentText(skillBonus)));
+            }
+
+            content.newLine();            
+            content.Add(new RbImage(positive ? SpriteName.cmdAttackUp: SpriteName.cmdAttackDown));
+            content.Add(new RbText(DssRef.lang.Conscript_AttackSpeed + ":", HudLib.InfoYellow_Dark));
+            content.hspace();
+            if (add)
+            {
+                content.Add(new RbText(TextLib.PercentAddText(skillBonus), HudLib.InfoYellow_Light));
+            }
+            else
+            {
+                content.Add(new RbText(TextLib.PercentText(skillBonus), HudLib.InfoYellow_Light));
+            }
+
+            content.newLine();
+            content.Add(new RbImage(SpriteName.warsArmyTag_Shield));
+            content.Add(new RbText(DssRef.lang.Conscript_ArmorHealth + ":", HudLib.InfoYellow_Dark));
+            content.hspace();
+            if (add)
+            {
+                content.Add(new RbText(TextLib.PercentAddText(skillBonus), HudLib.InfoYellow_Light));
+            }
+            else
+            {
+                content.Add(new RbText(TextLib.PercentText(skillBonus), HudLib.InfoYellow_Light));
+            }
+        }
     }
 }

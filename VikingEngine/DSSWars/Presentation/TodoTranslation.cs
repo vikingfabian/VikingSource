@@ -71,9 +71,18 @@ namespace VikingEngine.DSSWars.Presentation
         public string Resource_TypeName_MountArmorX => "mount {0}";
         public string Resource_TypeName_Animal => "animal";
 
+        //public string Resource_TypeName_WildAnimal => "wild animal";
+        
+        /// <summary>
+        /// Area with wild animals
+        /// </summary>
+        public string Terrain_XAnimalHabitat => "{0} habitat";
+
         public string Resource_TypeName_Oxen => "oxen";
         public string Resource_TypeName_KineOxen => "kine oxen";
 
+        public string Resource_TypeName_Fowl => "fowl";
+        public string Resource_TypeName_Boar => "boar";
         public string Resource_TypeName_Pig => "pig";
         public string Resource_TypeName_Hen => "hen";
         public string Resource_TypeName_Dog => "dog";
@@ -119,8 +128,9 @@ namespace VikingEngine.DSSWars.Presentation
         public string BuildingType_Shieldmaker => "Shield maker";
         public string BuildingType_DryingPan => "Drying pan";
 
-
-
+        public string BuildingType_TrapperHut => "Trapper's hut";
+        public string BuildingType_TrapperHut_Description => "Allows capture of wild animals";
+        
         // --- Storage ---
         public string BuildingType_MaterialStorage => "Material Storage";
         public string BuildingType_FoodStorage => "Food Storage";
@@ -175,8 +185,9 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         public string CityCulture_AnimalBreeder2_Description => "Higher chance of successful breeding";
-        
+
         public string CityCulture_EnhancedProduction => "Enhanced {0} production";
+        public string CityCulture_Production => "{0} production";
 
         public string CityCulture_Butchers => "Butchers";
 

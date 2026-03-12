@@ -12,6 +12,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
+using VikingEngine.DSSWars.Data;
 
 namespace VikingEngine.DSSWars.Resource
 {

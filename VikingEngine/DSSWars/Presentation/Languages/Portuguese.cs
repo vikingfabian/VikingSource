@@ -1099,7 +1099,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Conscript_WeaponDamage => "Dano da arma";
         public override string Conscript_ArmorHealth => "Vida da armadura";
-        public override string Conscript_TrainingSpeed => "Velocidade de ataque";
+        public override string Conscript_AttackSpeed => "Velocidade de ataque";
         public override string Conscript_TrainingTime => "Tempo de treino";
 
         public override string Conscript_Training_Minimal => "Mínimo";

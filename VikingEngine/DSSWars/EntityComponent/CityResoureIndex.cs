@@ -165,6 +165,9 @@ namespace VikingEngine.DSSWars.EntityComponent
         public const int Pig = 112;
         public const int Hen = 113;
 
+        public const int Fowl = 114;
+        public const int Boar = 115;
+
         // Reserve some indices (Increased from 80 to 120)
         public const int COUNT = 120;
     }

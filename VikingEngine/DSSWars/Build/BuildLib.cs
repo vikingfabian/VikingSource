@@ -197,6 +197,10 @@ namespace VikingEngine.DSSWars.Build
         WarElephantCage,
         OliphantCage,
 
+        BoarPen,
+        FowlPen,
+        TrapperHut,
+
         NUM_NONE,
         ALL,
 
@@ -259,8 +263,6 @@ namespace VikingEngine.DSSWars.Build
             {
                 list.Add(BuildAndExpandType.Logistics);
             }
-
-            
 
             if (logistics1)
             {
@@ -340,17 +342,27 @@ namespace VikingEngine.DSSWars.Build
                     {
                         list.Add(BuildAndExpandType.HempFarmUpgraded);
                     }                   
-                }
-                
+                }                
             }
 
             if (logistics1)
             {
-                //list.Add(BuildAndExpandType.MaterialStorage); list.Add(BuildAndExpandType.FoodStorage); list.Add(BuildAndExpandType.WeaponStorage); list.Add(BuildAndExpandType.ArmorStorage); list.Add(BuildAndExpandType.AnimalStorage);
-                
-                // --- Existing ---
+                list.Add(BuildAndExpandType.TrapperHut);
+
+                addAnimalPen(BuildAndExpandType.FowlPen, CityResoureIndex.Fowl, city.buildingStructure.FowlPen_count);
                 addAnimalPen(BuildAndExpandType.HenPen, CityResoureIndex.Hen, city.buildingStructure.HenPen_count);
+
+                addAnimalPen(BuildAndExpandType.BoarPen, CityResoureIndex.Boar, city.buildingStructure.BoarPen_count);
                 addAnimalPen(BuildAndExpandType.PigPen, CityResoureIndex.Pig, city.buildingStructure.PigPen_count);
+
+                // --- Wild Pigs / Hogs ---
+                if (biomRequirement(CityBiome.Mountain))
+                {
+                    addAnimalPen(BuildAndExpandType.WildPigPen, CityResoureIndex.WildPig, city.buildingStructure.WildPigPen_count);
+                    addAnimalPen(BuildAndExpandType.WildHogPen, CityResoureIndex.WildHog, city.buildingStructure.WildHogPen_count);
+                    addAnimalPen(BuildAndExpandType.WarHogPen, CityResoureIndex.WarHog, city.buildingStructure.WarHogPen_count);
+                    addAnimalPen(BuildAndExpandType.StagHogPen, CityResoureIndex.StagHog, city.buildingStructure.StagHogPen_count);
+                }
 
                 // --- Oxen ---
                 addAnimalPen(BuildAndExpandType.OxenPen, CityResoureIndex.Oxen, city.buildingStructure.OxenPen_count);
@@ -365,15 +377,7 @@ namespace VikingEngine.DSSWars.Build
                 addAnimalPen(BuildAndExpandType.HorsePen, CityResoureIndex.Horse, city.buildingStructure.HorsePen_count);
                 addAnimalPen(BuildAndExpandType.WarHorsePen, CityResoureIndex.WarHorse, city.buildingStructure.WarHorsePen_count);
                 addAnimalPen(BuildAndExpandType.DraftHorsePen, CityResoureIndex.DraftHorse, city.buildingStructure.DraftHorsePen_count);
-
-                // --- Wild Pigs / Hogs ---
-                if (biomRequirement(CityBiome.Mountain))
-                {
-                    addAnimalPen(BuildAndExpandType.WildPigPen, CityResoureIndex.WildPig, city.buildingStructure.WildPigPen_count);
-                    addAnimalPen(BuildAndExpandType.WildHogPen, CityResoureIndex.WildHog, city.buildingStructure.WildHogPen_count);
-                    addAnimalPen(BuildAndExpandType.WarHogPen, CityResoureIndex.WarHog, city.buildingStructure.WarHogPen_count);
-                    addAnimalPen(BuildAndExpandType.StagHogPen, CityResoureIndex.StagHog, city.buildingStructure.StagHogPen_count);
-                }
+                               
 
                 // --- Wolves ---
                 if (biomRequirement(CityBiome.Desolate))
@@ -740,6 +744,21 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Advanced, BuildFilterTag.Craft, BuildFilterTag.Water, BuildFilterTag.Optimize,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
                 { altBlueprint = CraftBuildingLib.Brewery_Bronze };
+
+
+            new BuildOption(BuildAndExpandType.TrapperHut, TerrainMainType.Building, (int)TerrainBuildingType.TrappersHut, SpriteName.MissingImage, CraftBuildingLib.TrapperHut, false,
+                BuildCategoryTab.Advanced, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
+
+            new BuildOption(BuildAndExpandType.BoarPen, TerrainMainType.Building, (int)TerrainBuildingType.BoarPen, SpriteName.MissingImage, CraftBuildingLib.BoarPen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.Resources,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            new BuildOption(BuildAndExpandType.FowlPen, TerrainMainType.Building, (int)TerrainBuildingType.FowlPen, SpriteName.MissingImage, CraftBuildingLib.FowlPen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
 
             new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, SpriteName.WarsBuild_PigPen, CraftBuildingLib.PigPen, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.Resources,

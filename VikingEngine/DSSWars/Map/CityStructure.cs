@@ -35,6 +35,10 @@ namespace VikingEngine.DSSWars.Map
         public List<IntVector2> WoodCutter = new List<IntVector2>(20);
         public List<IntVector2> StoneCutter = new List<IntVector2>(20);
 
+        public List<IntVector2> WildAnimals = new List<IntVector2>(8);
+        public List<IntVector2> TrapperHuts = new List<IntVector2>(8);
+
+
         //int nobelHouseCount = 0;
         public int fuelSpots = 0;
         public int foodspots = 0;
@@ -262,7 +266,11 @@ namespace VikingEngine.DSSWars.Map
             //int coalPitCount = 0;
             fuelSpots = 0;
             foodspots = 0;
-            
+
+            WildAnimals.Clear();
+            TrapperHuts.Clear();
+
+
             int serviceMenHousing = 0;
             
 
@@ -470,6 +478,25 @@ namespace VikingEngine.DSSWars.Map
                                         ++buildingStructure.GuardOffice_Large_count;
                                         break;
 
+                                    case TerrainBuildingType.FowlPen:
+                                        ++buildingStructure.FowlPen_count;
+                                        ++foodspots;
+                                        if (subTile.terrainAmount >= TerrainContent.FowlGrowth.harvestReady)
+                                        {
+                                            AnimalPens.Add(subTileLoop.Position);
+                                        }
+
+                                        buildingPosition.FowlPen_pos = subTileLoop.Position;
+                                        break;
+                                    case TerrainBuildingType.BoarPen:
+                                        ++buildingStructure.BoarPen_count;
+                                        ++foodspots;
+                                        if (subTile.terrainAmount >= TerrainContent.BoarGrowth.harvestReady)
+                                        {
+                                            AnimalPens.Add(subTileLoop.Position);
+                                        }
+                                        buildingPosition.BoarPen_pos = subTileLoop.Position;
+                                        break;
                                     case TerrainBuildingType.HenPen:
                                         ++buildingStructure.HenPen_count;
                                         ++foodspots;
@@ -939,7 +966,33 @@ namespace VikingEngine.DSSWars.Map
                                         buildingPosition.AnimalStorage_pos = subTileLoop.Position;
                                         break;
 
+                                    case TerrainBuildingType.TrappersHut:
+                                        ++buildingStructure.TrapperHut_count;
+                                        buildingPosition.TrapperHut_pos = subTileLoop.Position;
+                                        TrapperHuts.Add(subTileLoop.Position);
+                                        break;
 
+                                    case TerrainBuildingType.FowlHabitat:
+                                        ++terrainStructure.wildAnimalCount_Hen;
+                                        if (subTile.terrainAmount >= TerrainContent.HenGrowth.harvestReady)
+                                        {
+                                            WildAnimals.Add(subTileLoop.Position);
+                                        }
+                                        break;
+                                    case TerrainBuildingType.BoarHabitat:
+                                        ++terrainStructure.wildAnimalCount_Pig;
+                                        if (subTile.terrainAmount >= TerrainContent.PigGrowth.harvestReady)
+                                        {
+                                            WildAnimals.Add(subTileLoop.Position);
+                                        }
+                                        break;
+                                    case TerrainBuildingType.PonyHabitat:
+                                        ++terrainStructure.wildAnimalCount_Pony;
+                                        if (subTile.terrainAmount >= TerrainContent.PonyGrowth.harvestReady)
+                                        {
+                                            WildAnimals.Add(subTileLoop.Position);
+                                        }
+                                        break;
                                 }
 
                         
@@ -975,7 +1028,23 @@ namespace VikingEngine.DSSWars.Map
             city.terrainStructure = terrainStructure;
             //city.TotalServiceMen = serviceMenHousing;
 
+            buildingPosition.SuggestedTrapperPos = IntVector2.Zero;
 
+            foreach (var pos in WildAnimals)
+            {
+                foreach (var trapPos in TrapperHuts)
+                {
+                    if (pos.SideLength(trapPos) <= DssConst.TrapperHutRadius)
+                    {
+                        AnimalPens.Add(pos);
+                        break;
+                    }
+                    else if (Ref.peRnd.ChanceF(0.5f))
+                    {
+                        buildingPosition.SuggestedTrapperPos = pos + arraylib.RandomListMember(IntVector2.Dir4Array) * Ref.rnd.Int(2, 4);
+                    }
+                }
+            }
 
             void farming(ref SubTile subTile)
             {

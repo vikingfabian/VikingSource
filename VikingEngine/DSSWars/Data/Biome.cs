@@ -18,7 +18,49 @@ namespace VikingEngine.DSSWars.Data
             content.space();
             content.Add(new RbText(LangLib.Biome(biome)));
             content.space();
-            HudLib.InfoButton(content, new RbTooltip_Text(DssRef.todoLang.CityBiome_Description));
+            HudLib.InfoButton(content, new RbTooltip(biomeTooltip, biome));
+        }
+
+        static void biomeTooltip(RichBoxContent content, object tag)
+        {
+            CityBiome biome = (CityBiome)tag;
+            content.text(DssRef.todoLang.CityBiome_Description);
+
+            switch (biome)
+            {
+                case CityBiome.Frozen:
+                    content.newParagraph();
+                    content.h2(DssRef.todoLang.CityBiome_Frozen, HudLib.TitleColor_Head2);
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbImage(SpriteName.WarsBuild_FoodStorage));
+                    content.hspace();
+                    content.Add(new RbText(DssRef.todoLang.Bonus_FoodStorage));
+
+                    content.text(string.Format(DssRef.lang.Hud_ChangeFactor, "200%"));
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbImage(SpriteName.WarsResource_SkinAndLinen));
+                    content.hspace();
+                    content.Add(new RbText(DssRef.todoLang.Bonus_IncreaseSkin));
+
+                    content.text(string.Format(DssRef.lang.Hud_ChangeFactor, "+50%"));
+
+                    break;
+
+                case CityBiome.Mountain:
+                    content.newParagraph();
+                    content.h2(DssRef.todoLang.CityBiome_Mountain, HudLib.TitleColor_Head2);
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbImage(SpriteName.WarsResource_WildPig));
+                    content.hspace();
+                    content.Add(new RbText(string.Format(DssRef.todoLang.CityCulture_Production, DssRef.todoLang.Resource_TypeName_WildHog)));
+                    break;
+            }
         }
         
     }

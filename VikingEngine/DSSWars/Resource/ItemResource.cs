@@ -267,6 +267,11 @@ namespace VikingEngine.DSSWars.Resource
         Palisade,
         //WorkerTent,
         Settler,
+        
+        Fowl,
+        SlaughterFowl,
+        Boar,
+        SlaughterBoar,
 
         NUM,
         RESOURCES,

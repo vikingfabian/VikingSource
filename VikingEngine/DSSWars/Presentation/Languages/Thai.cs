@@ -1568,7 +1568,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Conscript_WeaponDamage => TextLib.ThaiConv("พลัง|โจมตี|อาวุธ");
         public override string Conscript_ArmorHealth => TextLib.ThaiConv("พลัง|ป้องกัน|เกราะ");
-        public override string Conscript_TrainingSpeed => TextLib.ThaiConv("ความ|เร็ว|การ|โจมตี");
+        public override string Conscript_AttackSpeed => TextLib.ThaiConv("ความ|เร็ว|การ|โจมตี");
         public override string Conscript_TrainingTime => TextLib.ThaiConv("เวลา|ใน|การ|ฝึก");
 
         public override string Conscript_Training_Minimal => TextLib.ThaiConv("พื้น|ฐาน|ที่สุด");

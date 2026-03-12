@@ -61,8 +61,15 @@ namespace VikingEngine.DSSWars.Map
 
 
         // Birds
+        public static readonly AnimalPenGrowth FowlGrowth = new AnimalPenGrowth(
+            maxSize: 3, maxCount: 4, harvestCount: 2);
+        // Birds
         public static readonly AnimalPenGrowth HenGrowth = new AnimalPenGrowth(
             maxSize: 3, maxCount: 6, harvestCount: 3);
+
+
+        public static readonly AnimalPenGrowth BoarGrowth = new AnimalPenGrowth(
+            maxSize: 3, maxCount: 5, harvestCount: 3);
 
         // Livestock (Pigs)
         public static readonly AnimalPenGrowth PigGrowth = new AnimalPenGrowth(
@@ -337,7 +344,8 @@ namespace VikingEngine.DSSWars.Map
             ref SubTile subTile, 
             WorldData world, 
             VikingEngine.EngineSpace.Maths.SimplexNoise2D noiseMap,
-            List<IntVector2> mineLocations)
+            List<IntVector2> mineLocations,
+            List<IntVector2> animalSpawns)
         {
             if (tile.IsLand() && !height.isMountainPeek)
             {
@@ -359,17 +367,7 @@ namespace VikingEngine.DSSWars.Map
                         if (tile.heightLevel >= Height.MineHeightStart)
                         {
                             var rndMine = world.rnd.Double();
-                            //if (rndMine < 0.001)
-                            //{
-                            //    subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.GoldOre, 1);
-                            //    return;
-                            //}
-                            //else if (rndMine < 0.002)
-                            //{
-                            //    subTile.SetType(TerrainMainType.Mine, (int)TerrainMineType.Coal, 1);
-                            //    return;
-                            //}
-                            //else 
+                            
                             if (rndMine < 0.008)
                             {
                                 subTile.SetType(TerrainMainType.Mine, 0, 1);//(int)TerrainMineType.IronOre, 1);
@@ -412,6 +410,7 @@ namespace VikingEngine.DSSWars.Map
                     }
                     if (herbnoise < -0.5f)
                     {
+                        animalSpawn();
                         subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.Bush, 1);
                         return;
                     }
@@ -419,6 +418,7 @@ namespace VikingEngine.DSSWars.Map
                     float grassnoise = noiseMap.OctaveNoise2D(4, 0.8f, 5, -x, -y);
                     if (grassnoise > 0.5f)
                     {
+                        animalSpawn();
                         subTile.SetType(TerrainMainType.Foil, (int)TerrainSubFoilType.TallGrass, 1);
                         return;
                     }
@@ -452,6 +452,18 @@ namespace VikingEngine.DSSWars.Map
                         subTile.SetType(TerrainMainType.Foil, (int)treeType, size);
                     }
 
+                }
+
+                void animalSpawn()
+                {
+                    if (distanceToCity > 3)
+                    {
+                        var rndWildAnimal = world.rnd.Double();
+                        if (rndWildAnimal < 0.008)
+                        {
+                            animalSpawns.Add(new IntVector2(x, y));
+                        }
+                    }
                 }
             }
         }

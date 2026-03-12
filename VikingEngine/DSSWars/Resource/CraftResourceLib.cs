@@ -1282,6 +1282,18 @@ namespace VikingEngine.DSSWars.Resource
 
         const int HenSlaughterCount = 4;
 
+        public static readonly CraftBlueprint SlaughterFowl = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            6 * HenSlaughterCount,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Fowl, HenSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterFowl }.addSecondResult(ItemResourceType.SkinLinen_Group, 1 * HenSlaughterCount);
+
         public static readonly CraftBlueprint SlaughterHen = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
@@ -1295,6 +1307,19 @@ namespace VikingEngine.DSSWars.Resource
         { workTag = (int)ItemResourceType.SlaughterHen }.addSecondResult(ItemResourceType.SkinLinen_Group, 1 * HenSlaughterCount);
 
         // --- Pigs / Hogs ---
+
+        public static readonly CraftBlueprint SlaughterBoar = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            20,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.Boar, HenSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterPig }.addSecondResult(ItemResourceType.SkinLinen_Group, 6);
+
 
         public static readonly CraftBlueprint SlaughterPig = new CraftBlueprint(
             CraftResultType.Resource,

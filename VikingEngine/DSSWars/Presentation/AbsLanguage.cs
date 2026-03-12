@@ -765,7 +765,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public abstract string Conscript_WeaponDamage { get; }
         public abstract string Conscript_ArmorHealth { get; }
-        public abstract string Conscript_TrainingSpeed { get; }
+        public abstract string Conscript_AttackSpeed { get; }
         public abstract string Conscript_TrainingTime { get; }
 
         public abstract string Conscript_Training_Minimal { get; }

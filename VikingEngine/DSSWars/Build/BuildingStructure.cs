@@ -41,6 +41,9 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 LinenFarm_pos;
         public IntVector2 HempFarm_pos;
         public IntVector2 RapeSeedFarm_pos;
+        public IntVector2 TrapperHut_pos;
+        public IntVector2 BoarPen_pos;
+        public IntVector2 FowlPen_pos;
         public IntVector2 PigPen_pos;
         public IntVector2 HenPen_pos;
         public IntVector2 Statue_ThePlayer_pos;
@@ -111,6 +114,8 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 WarElephantCage_pos;
         public IntVector2 OliphantCage_pos;
 
+        public IntVector2 SuggestedTrapperPos;
+
         public IntVector2 getPos(BuildAndExpandType type)
         {
             switch (type)
@@ -165,6 +170,8 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.RapeSeedFarmUpgraded:
                     return RapeSeedFarm_pos;
 
+                case BuildAndExpandType.BoarPen: return BoarPen_pos;
+                case BuildAndExpandType.FowlPen: return FowlPen_pos;
                 case BuildAndExpandType.PigPen: return PigPen_pos;
                 case BuildAndExpandType.HenPen: return HenPen_pos;
                 case BuildAndExpandType.Statue_ThePlayer: return Statue_ThePlayer_pos;
@@ -287,6 +294,11 @@ namespace VikingEngine.DSSWars.Build
         // --- New Resource Counts ---
         public int mineCount_stoneblock;
         public int resourceCount_clay;
+
+        public int wildAnimalCount_Hen;
+        public int wildAnimalCount_Pig;
+        public int wildAnimalCount_Pony;
+
 
         static readonly SubTile TerrainType_wood = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeSoft);
         static readonly SubTile TerrainType_stone = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.Stones);
@@ -471,6 +483,9 @@ namespace VikingEngine.DSSWars.Build
         public int LinenFarm_count;
         public int HempFarm_count;
         public int RapeSeedFarm_count;
+        public int TrapperHut_count;
+        public int BoarPen_count;
+        public int FowlPen_count;
         public int PigPen_count;
         public int HenPen_count;
         public int Statue_ThePlayer_count;

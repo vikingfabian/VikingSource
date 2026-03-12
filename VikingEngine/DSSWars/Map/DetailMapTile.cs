@@ -646,15 +646,36 @@ namespace VikingEngine.DSSWars.Map
 
             switch (buildingType)
             {
+                case TerrainBuildingType.BoarHabitat:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Boar, TerrainContent.BoarGrowth);
+                    break;
+
+                case TerrainBuildingType.BoarPen:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Boar, TerrainContent.BoarGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+
                 case TerrainBuildingType.PigPen:
                     animals(tile, ref subTile, ref wp, ItemResourceType.Pig, TerrainContent.PigGrowth);
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
+
+                case TerrainBuildingType.FowlHabitat:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Fowl, TerrainContent.FowlGrowth);
+                    break;
+                case TerrainBuildingType.FowlPen:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Fowl, TerrainContent.FowlGrowth);
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
+                    break;
+
                 case TerrainBuildingType.HenPen:
                     animals(tile, ref subTile, ref wp, ItemResourceType.Hen, TerrainContent.HenGrowth);
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
 
+                case TerrainBuildingType.OxHabitat:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Oxen, TerrainContent.OxenGrowth);
+                    break;
                 case TerrainBuildingType.OxenPen:
                     animals(tile, ref subTile, ref wp, ItemResourceType.Oxen, TerrainContent.OxenGrowth);
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
@@ -664,6 +685,9 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
 
+                case TerrainBuildingType.DogHabitat:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Dog, TerrainContent.DogGrowth);
+                    break;
                 case TerrainBuildingType.DogCage:
                     animals(tile, ref subTile, ref wp, ItemResourceType.Dog, TerrainContent.DogGrowth);
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
@@ -673,6 +697,9 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
 
+                case TerrainBuildingType.PonyHabitat:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Pony, TerrainContent.PonyGrowth);
+                    break;
                 case TerrainBuildingType.PonyPen:
                     animals(tile, ref subTile, ref wp, ItemResourceType.Pony, TerrainContent.PonyGrowth);
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
@@ -690,6 +717,7 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
 
+               
                 case TerrainBuildingType.WildPigPen:
                     animals(tile, ref subTile, ref wp, ItemResourceType.WildPig, TerrainContent.WildPigGrowth);
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
@@ -707,6 +735,9 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
 
+                case TerrainBuildingType.WolfHabitat:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Wolf, TerrainContent.WolfGrowth);
+                    break;
                 case TerrainBuildingType.WolfCage:
                     animals(tile, ref subTile, ref wp, ItemResourceType.Wolf, TerrainContent.WolfGrowth);
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
@@ -720,6 +751,9 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
 
+                case TerrainBuildingType.CatHabitat:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.WildCat, TerrainContent.WildCatGrowth);
+                    break;
                 case TerrainBuildingType.WildCatCage:
                     animals(tile, ref subTile, ref wp, ItemResourceType.WildCat, TerrainContent.WildCatGrowth);
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
@@ -733,6 +767,9 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
                     break;
 
+                case TerrainBuildingType.ElephantHabitat:
+                    animals(tile, ref subTile, ref wp, ItemResourceType.Elephant, TerrainContent.ElephantGrowth);
+                    break;
                 case TerrainBuildingType.ElephantCage:
                     animals(tile, ref subTile, ref wp, ItemResourceType.Elephant, TerrainContent.ElephantGrowth);
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_pen, rnd, wp, WorldData.SubTileWidth * 1.4f));
@@ -933,6 +970,9 @@ namespace VikingEngine.DSSWars.Map
                     break;
                 case TerrainBuildingType.StoneCutter:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_quarry, 1, wp, WorldData.SubTileWidth * 1f));
+                    break;
+                case TerrainBuildingType.TrappersHut:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_quarry, 0, wp, WorldData.SubTileWidth * 0.5f));
                     break;
 
                 case TerrainBuildingType.Nobelhouse:

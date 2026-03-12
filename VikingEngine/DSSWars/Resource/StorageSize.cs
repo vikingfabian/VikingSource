@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;

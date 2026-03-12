@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Orders;
@@ -654,6 +655,10 @@ namespace VikingEngine.DSSWars.GameObject
                             var subTile = DssRef.world.subTileGrid.Get(pos);
                             switch (subTile.GetBuildingType())
                             {
+                                case TerrainBuildingType.FowlHabitat:
+                                case TerrainBuildingType.FowlPen:
+                                    bNeedMore = needMore(CityResoureIndex.Fowl);
+                                    break;
                                 case TerrainBuildingType.HenPen:
                                     bNeedMore = needMore(CityResoureIndex.Hen);
                                     break;
@@ -662,6 +667,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     break;
 
                                 // Oxen
+                                case TerrainBuildingType.OxHabitat:
                                 case TerrainBuildingType.OxenPen:
                                     bNeedMore = needMore(CityResoureIndex.Oxen);
                                     break;
@@ -670,6 +676,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     break;
 
                                 // Dogs
+                                case TerrainBuildingType.DogHabitat:
                                 case TerrainBuildingType.DogCage:
                                     bNeedMore = needMore(CityResoureIndex.Dog);
                                     break;
@@ -678,6 +685,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     break;
 
                                 // Horses
+                                case TerrainBuildingType.PonyHabitat:
                                 case TerrainBuildingType.PonyPen:
                                     bNeedMore = needMore(CityResoureIndex.Pony);
                                     break;
@@ -692,6 +700,10 @@ namespace VikingEngine.DSSWars.GameObject
                                     break;
 
                                 // Wild Pigs/Hogs
+                                case TerrainBuildingType.BoarHabitat:
+                                case TerrainBuildingType.BoarPen:
+                                    bNeedMore = needMore(CityResoureIndex.Boar);
+                                    break;
                                 case TerrainBuildingType.WildPigPen:
                                     bNeedMore = needMore(CityResoureIndex.WildPig);
                                     break;
@@ -706,6 +718,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     break;
 
                                 // Wolves
+                                case TerrainBuildingType.WolfHabitat:
                                 case TerrainBuildingType.WolfCage:
                                     bNeedMore = needMore(CityResoureIndex.Wolf);
                                     break;
@@ -717,6 +730,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     break;
 
                                 // Cats
+                                case TerrainBuildingType.CatHabitat:
                                 case TerrainBuildingType.WildCatCage:
                                     bNeedMore = needMore(CityResoureIndex.WildCat);
                                     break;
@@ -728,6 +742,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     break;
 
                                 // Elephants
+                                case TerrainBuildingType.ElephantHabitat:
                                 case TerrainBuildingType.ElephantCage:
                                     bNeedMore = needMore(CityResoureIndex.Elephant);
                                     break;

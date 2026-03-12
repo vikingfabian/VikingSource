@@ -458,7 +458,29 @@ namespace VikingEngine.DSSWars.Build
         //         },
         //          XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Expert_3
         //    );
+        public static readonly CraftBlueprint BoarPen = new CraftBlueprint(
+           CraftResultType.Building,
+           (int)Build.BuildAndExpandType.BoarPen,
+           1,
+           new UseResource[]
+           {
+               new UseResource(ItemResourceType.ServiceMen, 1),
+               new UseResource(ItemResourceType.Boar, DssConst.PenBreedingStockCount),
+                new UseResource(ItemResourceType.Wood_Group, 20),
+           }, XP.WorkExperienceType.AnimalCare
+       );
 
+        public static readonly CraftBlueprint FowlPen = new CraftBlueprint(
+            CraftResultType.Building,
+            (int)Build.BuildAndExpandType.FowlPen,
+            1,
+            new UseResource[]
+            {
+               new UseResource(ItemResourceType.ServiceMen, 1),
+               new UseResource(ItemResourceType.Fowl, DssConst.PenBreedingStockCount),
+                new UseResource(ItemResourceType.Wood_Group, 20),
+            }, XP.WorkExperienceType.AnimalCare
+        );
 
         public static readonly CraftBlueprint PigPen = new CraftBlueprint(
            CraftResultType.Building,
@@ -468,9 +490,7 @@ namespace VikingEngine.DSSWars.Build
            {
                new UseResource(ItemResourceType.ServiceMen, 1),
                new UseResource(ItemResourceType.Pig, DssConst.PenBreedingStockCount),
-                //new UseResource(ItemResourceType.Water_G, 8),
                 new UseResource(ItemResourceType.Wood_Group, 20),
-                //new UseResource(ItemResourceType.RawFood_Group, DssConst.AnimalFoodAmount)
            }, XP.WorkExperienceType.AnimalCare
        );
 
@@ -482,9 +502,7 @@ namespace VikingEngine.DSSWars.Build
             {
                new UseResource(ItemResourceType.ServiceMen, 1),
                new UseResource(ItemResourceType.Hen, DssConst.PenBreedingStockCount),
-                //new UseResource(ItemResourceType.Water_G, 4),
                 new UseResource(ItemResourceType.Wood_Group, 20),
-                //new UseResource(ItemResourceType.RawFood_Group, DssConst.AnimalFoodAmount)
             }, XP.WorkExperienceType.AnimalCare
         );
 
@@ -1111,6 +1129,19 @@ namespace VikingEngine.DSSWars.Build
            },
             XP.WorkExperienceType.HouseBuilding
         );
+
+        public static readonly CraftBlueprint TrapperHut = new CraftBlueprint(
+                    CraftResultType.Building,
+                    (int)Build.BuildAndExpandType.TrapperHut,
+                   1,
+                   new UseResource[]
+                   {
+               new UseResource(ItemResourceType.ServiceMen, 1),
+               new UseResource(ItemResourceType.Wood_Group, 30),
+               new UseResource(ItemResourceType.SkinLinen_Group, 5),
+                   },
+                    XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
+                );
 
         public static readonly CraftBlueprint WoodCutter = new CraftBlueprint(
                     CraftResultType.Building,

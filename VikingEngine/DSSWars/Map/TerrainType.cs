@@ -174,6 +174,20 @@ namespace VikingEngine.DSSWars.Map
         WarElephantCage,
         OliphantCage,
 
+        TrappersHut,
+
+        FowlPen,
+        BoarPen,
+
+        BoarHabitat,
+        FowlHabitat,
+        DogHabitat,
+        OxHabitat,
+        PonyHabitat,
+        WolfHabitat,
+        CatHabitat,
+        ElephantHabitat,
+
         NUM_NONE
     }
 

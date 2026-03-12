@@ -1874,6 +1874,28 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             }
 
+            void addWildAnimals(int count, int type)
+            {
+                if (mineLocations.Count < count)
+                {
+                    return;
+                }
+
+                for (int i = 0; i < count; ++i)
+                {
+                    int index = world.rnd.Int(mineLocations.Count);
+                    IntVector2 pos = mineLocations[index];
+                    mineLocations.RemoveAt(index);
+
+                    var subTile = world.subTileGrid.Get(pos);
+                    subTile.subTerrain = type;
+
+                    world.subTileGrid.Set(pos, subTile);
+
+                }
+            }
+
+
             int mithrilCount = 0;
             switch (world.metaData.mapSize)
             {

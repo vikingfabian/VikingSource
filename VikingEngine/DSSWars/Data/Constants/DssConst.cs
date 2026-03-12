@@ -76,6 +76,7 @@ namespace VikingEngine.DSSWars
         //ANIMAL
         public const double BreedingUpChance = 0.05;
         public const double BreedingDownChance = 0.6;
+        public const int TrapperHutRadius = 8;
 
         //CONSCRIPT
         public static float SwordAttackRange = 0.04f;
