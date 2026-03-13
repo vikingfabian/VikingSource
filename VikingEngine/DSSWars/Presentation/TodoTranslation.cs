@@ -25,6 +25,8 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         //regular
+        public string Hud_Time_ValuePerMinute => "Value per minute";
+
         public string Tutorial_SeeThisInThat = "See {0} in {1}";
 
         public string Conscript_SkillBonus => "Skill bonus";
@@ -188,7 +190,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string BuildingType_WarElephantCage => "War Elephant Cage";
         public string BuildingType_OliphantCage => "Oliphant Cage";
 
-        public string BuildingDescription_Mounts => "Produces mounts for soldier conscript";
+        public string BuildingDescription_Animals => "Produces animals for soldier conscript";
         public string Pen_Breeding => "Animal breeding";
         public string Pen_BreedUpChance => "{0}% chance to increase tier";
         public string Pen_BreedDownChance => "{0}% chance to decrease tier";

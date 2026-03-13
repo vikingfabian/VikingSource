@@ -876,20 +876,49 @@ namespace VikingEngine.DSSWars.Work
 
                         switch (building)
                         {
-
-
                             default:
                             case TerrainBuildingType.FowlHabitat:
-                                if (upgrade)
-                                {
-                                    resourceType = Resource.ItemResourceType.Hen;
-                                }
-                                else
-                                {
-                                    resourceType = Resource.ItemResourceType.Fowl;
-                                }
+                                resourceType = Resource.ItemResourceType.Fowl;                                
                                 size = TerrainContent.FowlGrowth;
                                 break;
+
+                            case TerrainBuildingType.BoarHabitat:
+                                resourceType = Resource.ItemResourceType.Boar;
+                                size = TerrainContent.BoarGrowth;
+                                break;
+
+                            case TerrainBuildingType.OxHabitat:
+                                resourceType = Resource.ItemResourceType.Oxen;
+                                size = TerrainContent.OxenGrowth;
+                                break;
+
+                            case TerrainBuildingType.DogHabitat:
+                                resourceType = Resource.ItemResourceType.Dog;
+                                size = TerrainContent.DogGrowth;
+                                break;
+
+                            case TerrainBuildingType.PonyHabitat:
+                                resourceType = Resource.ItemResourceType.Pony;
+                                size = TerrainContent.PonyGrowth;
+                                break;
+
+                            case TerrainBuildingType.WolfHabitat:
+                                resourceType = Resource.ItemResourceType.Wolf;
+                                size = TerrainContent.WolfGrowth;
+                                break;
+
+                            case TerrainBuildingType.CatHabitat:
+                                resourceType = Resource.ItemResourceType.WildCat;
+                                size = TerrainContent.WildCatGrowth;
+                                break;
+
+                            case TerrainBuildingType.ElephantHabitat:
+                                resourceType = Resource.ItemResourceType.Elephant;
+                                size = TerrainContent.ElephantGrowth;
+                                break;
+
+
+
 
                             case TerrainBuildingType.HenPen:
                                 if (downgrade)
@@ -903,7 +932,7 @@ namespace VikingEngine.DSSWars.Work
                                 size = TerrainContent.HenGrowth;
                                 break;
 
-                            case TerrainBuildingType.BoarHabitat:
+                            
                             case TerrainBuildingType.BoarPen:
                                 if (upgrade)
                                 {

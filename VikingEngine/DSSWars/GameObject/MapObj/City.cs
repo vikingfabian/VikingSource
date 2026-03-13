@@ -62,6 +62,7 @@ namespace VikingEngine.DSSWars.GameObject
         public GroupedResource freeNobelMen = new GroupedResource();
         public int HousingCount_NobelMen = 0;
 
+        public bool PenUpkeep_IsPayed = true;
         public int PenFoodUpkeep_minute = 0;
 
         public int AvailableGuardHousing()
@@ -1850,7 +1851,8 @@ namespace VikingEngine.DSSWars.GameObject
                 float addNobel = HousingCount_NobelMen * DssConst.NobelHouseMenAddSpeed_PerManHouse;
                 freeNobelMen.amount = Bound.Max(freeNobelMen.amount + Convert.ToInt32(addNobel), HousingCount_NobelMen);
 
-                AddGroupedResource(ItemResourceType.RawFood_Group, -PenFoodUpkeep_minute);
+                
+                PenUpkeep_IsPayed = PenFoodUpkeep_minute <= 0 || payResource(CityResoureIndex.rawFood, PenFoodUpkeep_minute, false);
             }
         }
 
@@ -2861,12 +2863,23 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     content.newLine();
                     content.Add(new RbImage(SpriteName.WarsResource_RawFoodRemove));
-                    content.space();
-                    //content.Add(new RbText(DssRef.lang.WorkQueue_Title + ":"));
+                    content.space();                    
                     content.Add(new RbImage(SpriteName.WarsBuild_PigPen));
                     content.space();
                     content.Add(new RbText(string.Format(DssRef.todoLang.Economy_AnimalPenUpkeep, TextLib.TwoDecimal(cityEconomy.animalPenUpkeep))));
 
+                    if (!PenUpkeep_IsPayed)
+                    {
+                        content.space(2);
+                        content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsResource_FoodEmpty) },
+                            null, new RbTooltip((RichBoxContent content, object tag) => {
+                                content.h2(".Cannot pay the upkeep!", HudLib.NotAvailableColor);
+                                content.text(".Animal production will stop");
+
+                                content.Add(new RbSeperationLine() { thick = true });
+                                ResourceLib.FullResourceInfo(GetFaction(), this, ItemResourceType.RawFood_Group, content);
+                            })));
+                    }
                 }
 
                 {

@@ -1,6 +1,8 @@
 ﻿UPDATE
 Change Log:
-* 
+* Clay and Craft Bricks will start on prio 1 not 0
+* Fixed wild animal collecting
+* Handles lack of animal pen upkeep
 
 
 ##ICONS TODO
@@ -10,9 +12,8 @@ Change Log:
 #MOUNTED TODO
 
 Current bugs
-
+x display pen uupkeep
 x missing a lot of the animal/weapon/armor combos
-X doesnt handle negative raw food on animal upkeep
 x auto build of trappers
 x ai conscript of animals
 

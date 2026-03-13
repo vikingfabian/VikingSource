@@ -1330,7 +1330,7 @@ namespace VikingEngine.DSSWars.Presentation
                 case TerrainBuildingType.ElephantCage:
                 case TerrainBuildingType.WarElephantCage:
                 case TerrainBuildingType.OliphantCage:
-                    return DssRef.todoLang.BuildingDescription_Mounts;
+                    return DssRef.todoLang.BuildingDescription_Animals;
 
 
                 case TerrainBuildingType.WorkerTent:

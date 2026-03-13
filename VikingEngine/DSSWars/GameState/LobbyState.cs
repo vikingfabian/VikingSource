@@ -758,16 +758,17 @@ namespace VikingEngine.DSSWars
                 Screen.WindowScalePerc = 90;
                 Screen.PcDisplayMode = WindowDisplayMode.Windowed;
                 Ref.gamesett.masterVolProperty(null, true, 0.1f);
-                Screen.ApplyScreenSettings();
+                Ref.gamesett.lockMouseToWindow = false;
+               Screen.ApplyScreenSettings();
 
                 Ref.gamesett.graphicsHasChanged = true;
                 Ref.gamesett.settingsHasChanged = true;
 
             }), null, true);
-            content.Button("Achive", new RbAction(() =>
-            {
-                DssRef.achieve.UnlockAchievement(AchievementIndex.rear_flanking);
-            }), null, true);
+            //content.Button("Achive", new RbAction(() =>
+            //{
+            //    DssRef.achieve.UnlockAchievement(AchievementIndex.rear_flanking);
+            //}), null, true);
 #endif
 
 #if DEMO

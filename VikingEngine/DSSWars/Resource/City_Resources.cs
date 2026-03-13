@@ -221,6 +221,19 @@ namespace VikingEngine.DSSWars.GameObject
             resource.changeRate.onChange(add);
 
         }
+
+        public bool payResource(int itemIndex, int cost, bool allowNegative)
+        {
+            ref GroupedResource resource = ref DssRef.world.cityResouces[resourceComponentStartIndex + itemIndex];
+            if (allowNegative || resource.amount >= cost)
+            {
+                resource.amount -= cost;
+                return true;
+            }
+
+            return false;
+        }
+
         public GroupedResource GetGroupedResource(int cityResourceIndex)
         {
             return DssRef.world.cityResouces[resourceComponentStartIndex + cityResourceIndex];

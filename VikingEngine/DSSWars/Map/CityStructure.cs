@@ -1059,13 +1059,8 @@ namespace VikingEngine.DSSWars.Map
                     }
                 }
             }
-            //    }
-            //}
 
-            //Complete
-            city.buildingStructure = buildingStructure;
-            city.terrainStructure = terrainStructure;
-            //city.TotalServiceMen = serviceMenHousing;
+            checkPenUpkeep(city);
 
             buildingPosition.SuggestedTrapperPos = IntVector2.Zero;
 
@@ -1085,6 +1080,9 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
 
+            city.buildingStructure = buildingStructure;
+            city.terrainStructure = terrainStructure;
+
             void farming(ref SubTile subTile)
             {
                 if (subTile.terrainAmount == TerrainContent.FarmCulture_Empty)
@@ -1098,6 +1096,17 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
+        void checkPenUpkeep(City city)
+        {
+            if (!city.PenUpkeep_IsPayed)
+            {
+                foreach (var pos in AnimalPens)
+                {
+                    EditSubTile editValue = new EditSubTile(pos, new SubTile() { terrainAmount = 1 }, false, true, false);
+                    editValue.Submit();
+                }
+            }
+        }
         //public bool MayAutoBuildHere(City city, IntVector2 subTilePos)
         //{
         //    if (DssRef.world.subTileGrid.TryGet(subTilePos, out var subtile))

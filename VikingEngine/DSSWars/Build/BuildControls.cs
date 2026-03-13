@@ -41,8 +41,8 @@ namespace VikingEngine.DSSWars.Build
             Build.BuildAndExpandType.RapeSeedFarm,
             Build.BuildAndExpandType.HempFarm,
 
-            Build.BuildAndExpandType.PigPen,
-            Build.BuildAndExpandType.HenPen,
+            //Build.BuildAndExpandType.PigPen,
+            //Build.BuildAndExpandType.HenPen,
         };
 
         public static readonly MapPaintToolShape[] AvailableToolShapes = { MapPaintToolShape.Free, MapPaintToolShape.Line, MapPaintToolShape.LShape, MapPaintToolShape.Area };
@@ -1022,7 +1022,7 @@ namespace VikingEngine.DSSWars.Build
         {
             BuildAndExpandType type = (BuildAndExpandType)tag;
 
-            var build = BuildLib.BuildOptions[(int)type];
+            BuildOption build = BuildLib.BuildOptions[(int)type];
             content.h2(TextLib.LargeFirstLetter(build.Label())).overrideColor = HudLib.TitleColor_TypeName;
 
             //content.newLine();
@@ -1268,7 +1268,7 @@ namespace VikingEngine.DSSWars.Build
                     //HudLib.BulletPoint(content);
                     //content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce + DssConst.WorkTime_PickUpResource))));
 
-                    pen(TerrainContent.HenGrowth, ItemResourceType.Hen, false, false);
+                    pen(build, TerrainContent.HenGrowth, ItemResourceType.Hen, false, false);
 
                     content.newLine();
                     HudLib.BulletPoint(content);
@@ -1280,7 +1280,7 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.PigPen:
-                    pen(TerrainContent.PigGrowth, ItemResourceType.Pig, false, false);                                    
+                    pen(build, TerrainContent.PigGrowth, ItemResourceType.Pig, false, false);                                    
                     break;
 
                 //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
@@ -1309,73 +1309,73 @@ namespace VikingEngine.DSSWars.Build
                 //content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
 
                 case BuildAndExpandType.OxenPen:
-                    pen(TerrainContent.OxenGrowth, ItemResourceType.Oxen, true, false);
+                    pen(build,TerrainContent.OxenGrowth, ItemResourceType.Oxen, true, false);
                     break;
                 case BuildAndExpandType.KineOxenPen:
-                    pen(TerrainContent.KineOxenGrowth, ItemResourceType.KineOxen, false, true);
+                    pen(build, TerrainContent.KineOxenGrowth, ItemResourceType.KineOxen, false, true);
                     break;
 
                 case BuildAndExpandType.DogCage:
-                    pen(TerrainContent.DogGrowth, ItemResourceType.Dog, true, false);
+                    pen(build, TerrainContent.DogGrowth, ItemResourceType.Dog, true, false);
                     break;
                 case BuildAndExpandType.HoundCage:
-                    pen(TerrainContent.HoundGrowth, ItemResourceType.Hound, false, true);
+                    pen(build, TerrainContent.HoundGrowth, ItemResourceType.Hound, false, true);
                     break;
 
                 case BuildAndExpandType.PonyPen:
-                    pen(TerrainContent.PonyGrowth, ItemResourceType.Pony, true, false);
+                    pen(build, TerrainContent.PonyGrowth, ItemResourceType.Pony, true, false);
                     break;
                 case BuildAndExpandType.HorsePen:
-                    pen(TerrainContent.HorseGrowth, ItemResourceType.Horse, true, true);
+                    pen(build, TerrainContent.HorseGrowth, ItemResourceType.Horse, true, true);
                     break;
                 case BuildAndExpandType.WarHorsePen:
-                    pen(TerrainContent.WarHorseGrowth, ItemResourceType.WarHorse, false, true);
+                    pen(build, TerrainContent.WarHorseGrowth, ItemResourceType.WarHorse, false, true);
                     break;
                 case BuildAndExpandType.DraftHorsePen:
-                    pen(TerrainContent.DraftHorseGrowth, ItemResourceType.DraftHorse, false, true);
+                    pen(build, TerrainContent.DraftHorseGrowth, ItemResourceType.DraftHorse, false, true);
                     break;
 
                 case BuildAndExpandType.WildPigPen:
-                    pen(TerrainContent.WildPigGrowth, ItemResourceType.WildPig, true, false);
+                    pen(build, TerrainContent.WildPigGrowth, ItemResourceType.WildPig, true, false);
                     break;
                 case BuildAndExpandType.WildHogPen:
-                    pen(TerrainContent.WildHogGrowth, ItemResourceType.WildHog, true, true);
+                    pen(build, TerrainContent.WildHogGrowth, ItemResourceType.WildHog, true, true);
                     break;
                 case BuildAndExpandType.WarHogPen:
-                    pen(TerrainContent.WarHogGrowth, ItemResourceType.WarHog, false, true);
+                    pen(build, TerrainContent.WarHogGrowth, ItemResourceType.WarHog, false, true);
                     break;
                 case BuildAndExpandType.StagHogPen:
-                    pen(TerrainContent.StagHogGrowth, ItemResourceType.StagHog, false, true);
+                    pen(build, TerrainContent.StagHogGrowth, ItemResourceType.StagHog, false, true);
                     break;
 
                 case BuildAndExpandType.WolfCage:
-                    pen(TerrainContent.WolfGrowth, ItemResourceType.Wolf, true, false);
+                    pen(build, TerrainContent.WolfGrowth, ItemResourceType.Wolf, true, false);
                     break;
                 case BuildAndExpandType.WargCage:
-                    pen(TerrainContent.WargGrowth, ItemResourceType.Warg, true, true);
+                    pen(build, TerrainContent.WargGrowth, ItemResourceType.Warg, true, true);
                     break;
                 case BuildAndExpandType.AlphaWargCage:
-                    pen(TerrainContent.AlphaWargGrowth, ItemResourceType.AlphaWarg, false, true);
+                    pen(build, TerrainContent.AlphaWargGrowth, ItemResourceType.AlphaWarg, false, true);
                     break;
 
                 case BuildAndExpandType.WildCatCage:
-                    pen(TerrainContent.WildCatGrowth, ItemResourceType.WildCat, true, false);
+                    pen(build, TerrainContent.WildCatGrowth, ItemResourceType.WildCat, true, false);
                     break;
                 case BuildAndExpandType.LionCage:
-                    pen(TerrainContent.LionGrowth, ItemResourceType.Lion, true, true);
+                    pen(build, TerrainContent.LionGrowth, ItemResourceType.Lion, true, true);
                     break;
                 case BuildAndExpandType.WarLionCage:
-                    pen(TerrainContent.WarLionGrowth, ItemResourceType.WarLion, false, true);
+                    pen(build, TerrainContent.WarLionGrowth, ItemResourceType.WarLion, false, true);
                     break;
 
                 case BuildAndExpandType.ElephantCage:
-                    pen(TerrainContent.ElephantGrowth, ItemResourceType.Elephant, true, false);
+                    pen(build, TerrainContent.ElephantGrowth, ItemResourceType.Elephant, true, false);
                     break;
                 case BuildAndExpandType.WarElephantCage:
-                    pen(TerrainContent.WarElephantGrowth, ItemResourceType.WarElephant, true, true);
+                    pen(build, TerrainContent.WarElephantGrowth, ItemResourceType.WarElephant, true, true);
                     break;
                 case BuildAndExpandType.OliphantCage:
-                    pen(TerrainContent.OliphantGrowth, ItemResourceType.Oliphant, false, true);
+                    pen(build, TerrainContent.OliphantGrowth, ItemResourceType.Oliphant, false, true);
                     break;
 
                 case BuildAndExpandType.Brewery:
@@ -1608,8 +1608,20 @@ namespace VikingEngine.DSSWars.Build
                 }
             }
 
-            void pen(AnimalPenGrowth penGrowth, ItemResourceType resourceType, bool canBreedup, bool canBreedDown)
+            void pen(BuildOption build, AnimalPenGrowth penGrowth, ItemResourceType resourceType, bool canBreedup, bool canBreedDown)
             {
+                content.h2(string.Format(DssRef.lang.Hud_Upkeep, string.Empty), HudLib.TitleColor_Label);
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(SpriteName.WarsResource_RawFoodRemove));
+                content.hspace();
+                content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood, HudLib.TitleColor_TypeName));
+                content.hspace();
+                content.Add(new RbText(build.upkeep.amount.ToString()));
+                content.newLine();
+                content.text(DssRef.todoLang.Hud_Time_ValuePerMinute, HudLib.InfoYellow_Light);
+
+                content.newParagraph();
                 content.h2(DssRef.lang.BuildHud_PerCycle, HudLib.TitleColor_Label);
                 content.newLine();
                 HudLib.BulletPoint(content);

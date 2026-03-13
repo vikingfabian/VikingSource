@@ -102,6 +102,8 @@ namespace VikingEngine.DSSWars.Work
             work[startIndex + (int)WorkPriorityType.move].value = 3;
             work[startIndex + (int)WorkPriorityType.wood].value = 2;
             work[startIndex + (int)WorkPriorityType.stone].value = 2;
+            work[startIndex + (int)WorkPriorityType.collectClay].value = 1;
+            work[startIndex + (int)WorkPriorityType.craftBrick].value = 1;
             work[startIndex + (int)WorkPriorityType.craftFuel].value = 1;
             work[startIndex + (int)WorkPriorityType.farmFood].value = 4;
             work[startIndex + (int)WorkPriorityType.farmRawFood].value = 1;
