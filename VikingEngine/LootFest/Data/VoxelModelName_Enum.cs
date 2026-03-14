@@ -169,6 +169,7 @@ namespace VikingEngine.LootFest
         wars_hammer,
         city_water,
         city_quarry,
+        city_trapper,
         city_logistic,
 
         wars_shipcrew,

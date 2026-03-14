@@ -746,16 +746,16 @@ namespace VikingEngine.DSSWars.Build
                 { altBlueprint = CraftBuildingLib.Brewery_Bronze };
 
 
-            new BuildOption(BuildAndExpandType.TrapperHut, TerrainMainType.Building, (int)TerrainBuildingType.TrappersHut, SpriteName.MissingImage, CraftBuildingLib.TrapperHut, false,
+            new BuildOption(BuildAndExpandType.TrapperHut, TerrainMainType.Building, (int)TerrainBuildingType.TrappersHut, SpriteName.WarsBuild_Trapper, CraftBuildingLib.TrapperHut, false,
                 BuildCategoryTab.Advanced, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.BoarPen, TerrainMainType.Building, (int)TerrainBuildingType.BoarPen, SpriteName.MissingImage, CraftBuildingLib.BoarPen, true,
+            new BuildOption(BuildAndExpandType.BoarPen, TerrainMainType.Building, (int)TerrainBuildingType.BoarPen, SpriteName.WarsBuild_BoarPen, CraftBuildingLib.BoarPen, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.Resources,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
             { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
 
-            new BuildOption(BuildAndExpandType.FowlPen, TerrainMainType.Building, (int)TerrainBuildingType.FowlPen, SpriteName.MissingImage, CraftBuildingLib.FowlPen, true,
+            new BuildOption(BuildAndExpandType.FowlPen, TerrainMainType.Building, (int)TerrainBuildingType.FowlPen, SpriteName.WarsBuild_FowlPen, CraftBuildingLib.FowlPen, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
             { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };

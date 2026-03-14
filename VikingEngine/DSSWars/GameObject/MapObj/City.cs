@@ -2924,32 +2924,32 @@ namespace VikingEngine.DSSWars.GameObject
                 
             }
 
-            void workQueueInfo(RichBoxContent content, object tag)
-            {
-                content.h1(".Work queue", HudLib.TitleColor_Label);
-                HudLib.Label(content, "Remaining work objectives");
-                content.hspace();
-                content.Add(new RbText(WorkerStats_WorkQueueLength.ToString()));
+            //void workQueueInfo(RichBoxContent content, object tag)
+            //{
+            //    content.h1(".Work queue", HudLib.TitleColor_Label);
+            //    HudLib.Label(content, "Remaining work objectives");
+            //    content.hspace();
+            //    content.Add(new RbText(WorkerStats_WorkQueueLength.ToString()));
 
-                content.newParagraph();
+            //    content.newParagraph();
                 
-                HudLib.Label(content, "Active work teams");
-                content.hspace();
-                content.Add(new RbImage(SpriteName.WarsWorker));
-                content.hspace();
-                content.Add(new RbText((WorkerStats_TotalUnits - WorkerStats_IdleCount).ToString()));
+            //    HudLib.Label(content, "Active work teams");
+            //    content.hspace();
+            //    content.Add(new RbImage(SpriteName.WarsWorker));
+            //    content.hspace();
+            //    content.Add(new RbText((WorkerStats_TotalUnits - WorkerStats_IdleCount).ToString()));
 
-                content.newLine();
+            //    content.newLine();
                 
-                HudLib.Label(content, "Idle work teams");
-                content.hspace();
-                content.Add(new RbImage(SpriteName.unitEmoteSnore));
-                content.hspace();
-                content.Add(new RbText(WorkerStats_IdleCount.ToString()));
+            //    HudLib.Label(content, "Idle work teams");
+            //    content.hspace();
+            //    content.Add(new RbImage(SpriteName.unitEmoteSnore));
+            //    content.hspace();
+            //    content.Add(new RbText(WorkerStats_IdleCount.ToString()));
 
-                content.newLine();
-                content.text(string.Format("Villagers work in teams of {0}", WorkTeamSize), HudLib.InfoYellow_Light);
-            }
+            //    content.newLine();
+            //    content.text(string.Format("Villagers work in teams of {0}", WorkTeamSize), HudLib.InfoYellow_Light);
+            //}
 
 
             void automationToolTip(RichBoxContent content, object tag)

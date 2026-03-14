@@ -35,6 +35,7 @@ using VikingEngine.Input;
 using VikingEngine.Network;
 using VikingEngine.PJ.SpaceWar.SpaceShip;
 using VikingEngine.Sound;
+using VikingEngine.SteamWrapping;
 using VikingEngine.Timer;
 
 namespace VikingEngine.DSSWars
@@ -481,7 +482,8 @@ namespace VikingEngine.DSSWars
         void beginEditPlayerName()
         {
             var profile = DssRef.storage.profileStorage.Selected();
-            new TextInputState(profile.DisplayName(), PlayerNameEditEvent, null);
+            var reciever = new TextInputState(profile.DisplayName(), PlayerNameEditEvent, null);
+            SteamInputManager.tryOpenSteamKeyboard(reciever);
         }
         void PlayerNameEditEvent(string result, object tag)
         {

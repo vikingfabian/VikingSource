@@ -1258,6 +1258,17 @@ namespace VikingEngine.DSSWars.Build
                     farmHud(true, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount));
                     break;
 
+                case BuildAndExpandType.TrapperHut:
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(DssRef.lang.BuildHud_AreaEffectTitle));
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
+
+                    break;
+
                 case BuildAndExpandType.HenPen:
                     //content.h2(DssRef.lang.BuildHud_PerCycle, HudLib.TitleColor_Label);
                     //content.newLine();

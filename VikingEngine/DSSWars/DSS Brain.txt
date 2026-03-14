@@ -1,9 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Clay and Craft Bricks will start on prio 1 not 0
-* Fixed wild animal collecting
-* Handles lack of animal pen upkeep
-
+* 
 
 ##ICONS TODO
 * butching animal
@@ -12,7 +9,6 @@ Change Log:
 #MOUNTED TODO
 
 Current bugs
-x display pen uupkeep
 x missing a lot of the animal/weapon/armor combos
 x auto build of trappers
 x ai conscript of animals
@@ -24,7 +20,6 @@ x auto options for logistics/hall/cook
 
 x potter skill
 x optimize stockpile save
-x controller text input
 
 CITY CULTURES
 * Wheelwright, //Speed bonus to conscripted carts

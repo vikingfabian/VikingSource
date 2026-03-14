@@ -187,7 +187,7 @@ namespace VikingEngine.DSSWars
                 // --- Animals ---
                 case ItemResourceType.SlaughterFowl:
                 case ItemResourceType.Fowl:
-                    itemIcon = SpriteName.MissingImage;
+                    itemIcon = SpriteName.WarsResource_Fowl;
                     itemName = DssRef.todoLang.Resource_TypeName_Fowl;
                     break;
 
@@ -199,7 +199,7 @@ namespace VikingEngine.DSSWars
 
                 case ItemResourceType.SlaughterBoar:
                 case ItemResourceType.Boar:
-                    itemIcon = SpriteName.MissingImage;
+                    itemIcon = SpriteName.WarsResource_Boar;
                     itemName = DssRef.todoLang.Resource_TypeName_Boar;
                     break;
 
@@ -1383,11 +1383,11 @@ namespace VikingEngine.DSSWars
                             break;
 
                         case TerrainBuildingType.FowlHabitat:
-                            icon = SpriteName.MissingImage;
+                            icon = SpriteName.WarsResource_Fowl;
                             name = TextLib.LargeFirstLetter( string.Format(DssRef.todoLang.Terrain_XAnimalHabitat, DssRef.todoLang.Resource_TypeName_Fowl));
                             break;
                         case TerrainBuildingType.BoarHabitat:
-                            icon = SpriteName.MissingImage;
+                            icon = SpriteName.WarsResource_Boar;
                             name = TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.Terrain_XAnimalHabitat, DssRef.todoLang.Resource_TypeName_Boar));
                             break;
                         case TerrainBuildingType.PonyHabitat:
@@ -1412,11 +1412,11 @@ namespace VikingEngine.DSSWars
                             break;
 
                         case TerrainBuildingType.FowlPen:
-                            icon = SpriteName.MissingImage;
+                            icon = SpriteName.WarsBuild_FowlPen;
                             name = DssRef.todoLang.BuildingType_FowlPen;
                             break;
                         case TerrainBuildingType.BoarPen:
-                            icon = SpriteName.MissingImage;
+                            icon = SpriteName.WarsBuild_BoarPen;
                             name = DssRef.todoLang.BuildingType_BoarPen;
                             break;
 

@@ -2680,6 +2680,9 @@
 #begin VoxelModel/LfWars/city_tower32.vox
 /copy:VoxelModel/LfWars/city_tower32.vox
 
+#begin VoxelModel/LfWars/city_trapper.vox
+/copy:VoxelModel/LfWars/city_trapper.vox
+
 #begin VoxelModel/LfWars/city_water.vox
 /copy:VoxelModel/LfWars/city_water.vox
 

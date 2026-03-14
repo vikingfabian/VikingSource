@@ -2191,6 +2191,9 @@ namespace VikingEngine
                 add(SpriteName.WarsSlaughter);
                 add(SpriteName.WarsStockpileLimit);
 
+                add(SpriteName.WarsResource_Boar);
+                add(SpriteName.WarsResource_Fowl);
+
             }
 
             currentIndex = numTilesWidth * 87;
@@ -2289,6 +2292,10 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_GuardOfficeLarge, 3, 3);
                 add(SpriteName.WarsBuild_DirtTower, 3, 3);
                 add(SpriteName.WarsBuild_DirtWall, 3, 3);
+                
+                add(SpriteName.WarsBuild_BoarPen, 3, 3);
+                add(SpriteName.WarsBuild_FowlPen, 3, 3);
+                add(SpriteName.WarsBuild_Trapper, 3, 3);
 
             }
 

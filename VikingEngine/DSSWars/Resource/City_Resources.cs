@@ -211,12 +211,12 @@ namespace VikingEngine.DSSWars.GameObject
                         AddGroupedResource(CityResoureIndex.fuel, remove, true);
                     }
                 }
-                else
-                {
-                    int remove = resource.amount - resource.stockPileLimit;
-                    add -= remove;
-                    resource.amount = resource.stockPileLimit;
-                }
+                //else
+                //{
+                //    int remove = resource.amount - resource.stockPileLimit;
+                //    add -= remove;
+                //    resource.amount = resource.stockPileLimit;
+                //}
             }
             resource.changeRate.onChange(add);
 

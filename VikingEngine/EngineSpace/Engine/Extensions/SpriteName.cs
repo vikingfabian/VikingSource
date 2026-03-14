@@ -2724,8 +2724,11 @@ namespace VikingEngine
         WarsBuild_LinenFarms,
         WarsBuild_RapeseedFarms,
         WarsBuild_HempFarms,
+        WarsBuild_Trapper,
         WarsBuild_PigPen,
         WarsBuild_HenPen,
+        WarsBuild_BoarPen,
+        WarsBuild_FowlPen,
 
         WarsBuild_OxenPen,
         WarsBuild_KineOxenPen,
@@ -2901,6 +2904,8 @@ namespace VikingEngine
         WarsResource_Hemp,
         WarsResource_Palisade,
 
+        WarsResource_Fowl,
+        WarsResource_Boar,
         WarsResource_Hen,
         WarsResource_Pig,
         WarsResource_Oxen,

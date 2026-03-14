@@ -1,16 +1,18 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Steamworks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Text;
-using Microsoft.Xna.Framework;
-using Steamworks;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.SteamWrapping;
 
 //
 
@@ -169,8 +171,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void beginEditName()
         {
-            new DSSWars.Players.PlayerControls.TextInput(this);
-            //new TextInputState(Name(out _), NameEditEvent, null);
+            var reciever = new DSSWars.Players.PlayerControls.TextInput(this);
+            SteamInputManager.tryOpenSteamKeyboard(reciever);
         }
 
         virtual public void NameEditEvent(string result, object tag)

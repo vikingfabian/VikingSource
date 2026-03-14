@@ -28,7 +28,6 @@ namespace VikingEngine.DSSWars.Presentation
         public string Hud_Time_ValuePerMinute => "Value per minute";
 
         public string Tutorial_SeeThisInThat = "See {0} in {1}";
-
         public string Conscript_SkillBonus => "Skill bonus";
 
         /// <summary>
@@ -119,7 +118,11 @@ namespace VikingEngine.DSSWars.Presentation
         public string Resource_TypeName_WarElephant => "war elephant";
         public string Resource_TypeName_Oliphant => "oliphant";
 
+
+        public string BuildHud_AreaRadius => "Area radius";
+
         public string NobelHouse_HousingCount => "Will house {0} nobelmen";
+
 
         public string BuildingType_GreatHall => "Great hall";
         public string BuildingType_GreatHall_Description => "Unlock advanced conscripting";

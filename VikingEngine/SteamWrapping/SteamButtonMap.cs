@@ -178,7 +178,7 @@ namespace VikingEngine.SteamWrapping
             }
             else
             {
-                SInput.UnusedLayerToRichContent(content);
+                SteamInputManager.UnusedLayerToRichContent(content);
             }
         }
 

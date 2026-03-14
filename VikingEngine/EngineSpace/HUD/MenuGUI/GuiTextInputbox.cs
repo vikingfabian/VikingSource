@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
+using VikingEngine.Engine;
 using VikingEngine.Input;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.HUD
 {
@@ -23,9 +25,8 @@ namespace VikingEngine.HUD
 
         void clickEvent()
         {
-            new TextInputState(textString, TextInputEvent, null);
-            //Engine.XGuide.BeginKeyBoardInput(new Engine.KeyboardInputValues("error", textString,
-            //    0, 0, TextInputEvent));//, layoutParent.gui, null);
+            var reciever = new TextInputState(textString, TextInputEvent, null);
+            SteamInputManager.tryOpenSteamKeyboard(reciever);
         }
 
         void TextInputEvent(string result, object tag)

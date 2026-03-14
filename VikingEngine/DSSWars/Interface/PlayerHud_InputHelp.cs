@@ -168,7 +168,7 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         if (iconsBuffer[0] == SpriteName.NO_IMAGE)
                         {
-                            SInput.UnusedLayerToRichContent(content);
+                            SteamInputManager.UnusedLayerToRichContent(content);
                         }
                         else
                         {

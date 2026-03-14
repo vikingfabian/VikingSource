@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,6 +28,7 @@ using VikingEngine.LootFest.GO.PickUp;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.LootFest.Players;
 using VikingEngine.PJ;
+using VikingEngine.SteamWrapping;
 using VikingEngine.Voxels;
 
 namespace VikingEngine.DSSWars.GameState.VoxelEditor
@@ -387,7 +389,8 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         public void beginEditName()
         {
-            new TextInputState(designer.storage.saveFileName, NameEditEvent, null);
+            var reciever = new TextInputState(designer.storage.saveFileName, NameEditEvent, null);
+            SteamInputManager.tryOpenSteamKeyboard(reciever);
         }
         void NameEditEvent(string result, object tag)
         {
@@ -396,14 +399,16 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         }
         public void beginEditLayerName(int layer)
         {
-            new TextInputState(designer.voxelProject.layers.list[layer].name, LayerNameEditEvent, layer);
+            var reciever = new TextInputState(designer.voxelProject.layers.list[layer].name, LayerNameEditEvent, layer);
+            SteamInputManager.tryOpenSteamKeyboard(reciever);
         }
 
         void beginExportCurrentFrame()
         {
             menu.deleteTooltip();
             menu.blockToolTip = true;
-            new TextInputState(designer.storage.saveFileName + "_Frame" + TextLib.IndexToString(designer.voxelProject.currentFrame.Value), exportCurrentFrameEvent, null);
+            var reciever = new TextInputState(designer.storage.saveFileName + "_Frame" + TextLib.IndexToString(designer.voxelProject.currentFrame.Value), exportCurrentFrameEvent, null);
+            SteamInputManager.tryOpenSteamKeyboard(reciever);
         }
         void exportCurrentFrameEvent(string result, object tag)
         {
@@ -1322,7 +1327,13 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             else
             {
                 content.Add(new RbButton(new List<AbsRichBoxMember> { new RbImage(SpriteName.cmdSpyglass) },
-                    new RbAction(() => { new SearchInput(this); }), new RbTooltip_Text(DssRef.lang.Hud_Search))
+                    new RbAction(() => {
+                        
+                        var reciever = new SearchInput(this);
+                        SteamInputManager.tryOpenSteamKeyboard(reciever);
+
+
+                    }), new RbTooltip_Text(DssRef.lang.Hud_Search))
                 { overrideBgColor = Color.White });
 
                 if (!string.IsNullOrEmpty(modelSearchFilter))

@@ -447,7 +447,7 @@ namespace VikingEngine.DSSWars
                 Ref.music.Update();
             }            
 
-            if (Ref.steam.inOverlay)
+            if (Ref.steam.InOffGameOverlay())
             {
                 if (!menuSystem.IsOpen())
                 {

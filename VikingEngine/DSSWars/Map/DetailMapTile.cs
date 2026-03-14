@@ -972,7 +972,7 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_quarry, 1, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.TrappersHut:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_quarry, 0, wp, WorldData.SubTileWidth * 0.5f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_trapper, 0, wp, WorldData.SubTileWidth * 1f));
                     break;
 
                 case TerrainBuildingType.Nobelhouse:
