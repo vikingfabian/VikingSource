@@ -938,7 +938,7 @@ namespace VikingEngine.DSSWars.Work
                                 {
                                     if (city.cityBiome == CityBiome.Mountain)
                                     {
-                                        resourceType = Resource.ItemResourceType.KineOxen;
+                                        resourceType = Resource.ItemResourceType.WildPig;
                                     }
                                     else
                                     { 
@@ -947,11 +947,10 @@ namespace VikingEngine.DSSWars.Work
                                 }
                                 else
                                 {
-                                    resourceType = Resource.ItemResourceType.Oxen;
+                                    resourceType = Resource.ItemResourceType.Boar;
                                 }
                                 size = TerrainContent.BoarGrowth;
                                 break;
-
 
                             case TerrainBuildingType.PigPen:
                                 if (downgrade)
@@ -976,6 +975,7 @@ namespace VikingEngine.DSSWars.Work
                                 }
                                 size = TerrainContent.OxenGrowth;
                                 break;
+
                             case TerrainBuildingType.KineOxenPen:
                                 if (downgrade)
                                 {

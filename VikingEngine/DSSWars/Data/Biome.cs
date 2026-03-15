@@ -73,5 +73,6 @@ namespace VikingEngine.DSSWars.Data
         Mountain, //(Hog breeding)
         Desolate,
         Desert, //(Elephant breeding, drying meat, drying salt)
+        NUM_NONE,
     }
 }

@@ -1952,44 +1952,46 @@ namespace VikingEngine.DSSWars.Interface
 
                 case ResourceGroupType.Animals:
 
+                    bool hideZeroAnimals = DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator && !StartupSettings.UnlockAllProgress;
+
                     // --- Farm ---
                     city.GetGroupedResource(CityResoureIndex.Hen).toMenu(content, ItemResourceType.Hen, ref reachedBuffer, player, city);
                     city.GetGroupedResource(CityResoureIndex.Pig).toMenu(content, ItemResourceType.Pig, ref reachedBuffer, player, city);
 
                     // --- Dogs ---
                     city.GetGroupedResource(CityResoureIndex.Dog).toMenu(content, ItemResourceType.Dog, ref reachedBuffer, player, city);
-                    city.GetGroupedResource(CityResoureIndex.Hound).toMenu(content, ItemResourceType.Hound, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.Hound).toMenu(content, ItemResourceType.Hound, ref reachedBuffer, player, city, hideZeroAnimals);
 
                     // --- Oxen ---
                     city.GetGroupedResource(CityResoureIndex.Oxen).toMenu(content, ItemResourceType.Oxen, ref reachedBuffer, player, city);
-                    city.GetGroupedResource(CityResoureIndex.KineOxen).toMenu(content, ItemResourceType.KineOxen, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.KineOxen).toMenu(content, ItemResourceType.KineOxen, ref reachedBuffer, player, city, hideZeroAnimals);
 
                     // --- Horses ---
                     city.GetGroupedResource(CityResoureIndex.Pony).toMenu(content, ItemResourceType.Pony, ref reachedBuffer, player, city);
                     city.GetGroupedResource(CityResoureIndex.Horse).toMenu(content, ItemResourceType.Horse, ref reachedBuffer, player, city);
-                    city.GetGroupedResource(CityResoureIndex.WarHorse).toMenu(content, ItemResourceType.WarHorse, ref reachedBuffer, player, city, true);
-                    city.GetGroupedResource(CityResoureIndex.DraftHorse).toMenu(content, ItemResourceType.DraftHorse, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.WarHorse).toMenu(content, ItemResourceType.WarHorse, ref reachedBuffer, player, city, hideZeroAnimals);
+                    city.GetGroupedResource(CityResoureIndex.DraftHorse).toMenu(content, ItemResourceType.DraftHorse, ref reachedBuffer, player, city, hideZeroAnimals);
 
                     // --- Wild Pigs ---
-                    city.GetGroupedResource(CityResoureIndex.WildPig).toMenu(content, ItemResourceType.WildPig, ref reachedBuffer, player, city, true);
-                    city.GetGroupedResource(CityResoureIndex.WildHog).toMenu(content, ItemResourceType.WildHog, ref reachedBuffer, player, city, true);
-                    city.GetGroupedResource(CityResoureIndex.WarHog).toMenu(content, ItemResourceType.WarHog, ref reachedBuffer, player, city, true);
-                    city.GetGroupedResource(CityResoureIndex.StagHog).toMenu(content, ItemResourceType.StagHog, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.WildPig).toMenu(content, ItemResourceType.WildPig, ref reachedBuffer, player, city, hideZeroAnimals);
+                    city.GetGroupedResource(CityResoureIndex.WildHog).toMenu(content, ItemResourceType.WildHog, ref reachedBuffer, player, city, hideZeroAnimals);
+                    city.GetGroupedResource(CityResoureIndex.WarHog).toMenu(content, ItemResourceType.WarHog, ref reachedBuffer, player, city, hideZeroAnimals);
+                    city.GetGroupedResource(CityResoureIndex.StagHog).toMenu(content, ItemResourceType.StagHog, ref reachedBuffer, player, city, hideZeroAnimals);
 
                     // --- Wolves ---
-                    city.GetGroupedResource(CityResoureIndex.Wolf).toMenu(content, ItemResourceType.Wolf, ref reachedBuffer, player, city, true);
-                    city.GetGroupedResource(CityResoureIndex.Warg).toMenu(content, ItemResourceType.Warg, ref reachedBuffer, player, city, true);
-                    city.GetGroupedResource(CityResoureIndex.AlphaWarg).toMenu(content, ItemResourceType.AlphaWarg, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.Wolf).toMenu(content, ItemResourceType.Wolf, ref reachedBuffer, player, city, hideZeroAnimals);
+                    city.GetGroupedResource(CityResoureIndex.Warg).toMenu(content, ItemResourceType.Warg, ref reachedBuffer, player, city, hideZeroAnimals);
+                    city.GetGroupedResource(CityResoureIndex.AlphaWarg).toMenu(content, ItemResourceType.AlphaWarg, ref reachedBuffer, player, city, hideZeroAnimals);
 
                     // --- Cats ---
-                    city.GetGroupedResource(CityResoureIndex.WildCat).toMenu(content, ItemResourceType.WildCat, ref reachedBuffer, player, city, true);
-                    city.GetGroupedResource(CityResoureIndex.Lion).toMenu(content, ItemResourceType.Lion, ref reachedBuffer, player, city, true);
-                    city.GetGroupedResource(CityResoureIndex.WarLion).toMenu(content, ItemResourceType.WarLion, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.WildCat).toMenu(content, ItemResourceType.WildCat, ref reachedBuffer, player, city, hideZeroAnimals);
+                    city.GetGroupedResource(CityResoureIndex.Lion).toMenu(content, ItemResourceType.Lion, ref reachedBuffer, player, city, hideZeroAnimals);
+                    city.GetGroupedResource(CityResoureIndex.WarLion).toMenu(content, ItemResourceType.WarLion, ref reachedBuffer, player, city, hideZeroAnimals);
 
                     // --- Elephants ---
-                    city.GetGroupedResource(CityResoureIndex.Elephant).toMenu(content, ItemResourceType.Elephant, ref reachedBuffer, player, city, true);
-                    city.GetGroupedResource(CityResoureIndex.WarElephant).toMenu(content, ItemResourceType.WarElephant, ref reachedBuffer, player, city, true);
-                    city.GetGroupedResource(CityResoureIndex.Oliphant).toMenu(content, ItemResourceType.Oliphant, ref reachedBuffer, player, city, true);
+                    city.GetGroupedResource(CityResoureIndex.Elephant).toMenu(content, ItemResourceType.Elephant, ref reachedBuffer, player, city, hideZeroAnimals);
+                    city.GetGroupedResource(CityResoureIndex.WarElephant).toMenu(content, ItemResourceType.WarElephant, ref reachedBuffer, player, city, hideZeroAnimals);
+                    city.GetGroupedResource(CityResoureIndex.Oliphant).toMenu(content, ItemResourceType.Oliphant, ref reachedBuffer, player, city, hideZeroAnimals);
                     break;
             }
 

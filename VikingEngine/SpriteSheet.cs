@@ -2242,7 +2242,9 @@ namespace VikingEngine
 
                 add(SpriteName.WarsBuild_GreatHall, currentIndex, 3, 3);
                 add(SpriteName.WarsBuild_Cesspit, currentIndex, 3, 3);
-
+                add(SpriteName.WarsBuild_BoarPen, 3, 3);
+                add(SpriteName.WarsBuild_FowlPen, 3, 3);
+                add(SpriteName.WarsBuild_Trapper, 3, 3);
             }
             currentIndex = numTilesWidth * 90;
             {
@@ -2293,9 +2295,7 @@ namespace VikingEngine
                 add(SpriteName.WarsBuild_DirtTower, 3, 3);
                 add(SpriteName.WarsBuild_DirtWall, 3, 3);
                 
-                add(SpriteName.WarsBuild_BoarPen, 3, 3);
-                add(SpriteName.WarsBuild_FowlPen, 3, 3);
-                add(SpriteName.WarsBuild_Trapper, 3, 3);
+                
 
             }
 

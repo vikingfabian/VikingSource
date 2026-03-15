@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
@@ -132,6 +133,7 @@ namespace VikingEngine.DSSWars.Resource
         //public int defaultStockPile = 100;
 
         public ItemSource itemSource1 = ItemSource.None, itemSource2 = ItemSource.None, itemSource3 = ItemSource.None;
+        public CityBiome restrictedToBiom = CityBiome.NUM_NONE;
         
         public ItemProperties(ItemResourceType type, int cityResourceIndex, float weight, WorkPriorityType work, 
             CraftBlueprint bp1, CraftBlueprint bp2, StorageType storageType)

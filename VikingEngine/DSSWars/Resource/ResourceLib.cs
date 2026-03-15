@@ -276,8 +276,6 @@ namespace VikingEngine.DSSWars.Resource
                 content.Add(new RbText(priority.value.ToString(), priority.HasPrio() ? null : HudLib.NotAvailableColor));
             }
 
-            
-
             content.Add(new RbSeperationLine());
 
             content.h1(DssRef.lang.ItemSource, HudLib.TitleColor_Head2);
@@ -309,6 +307,14 @@ namespace VikingEngine.DSSWars.Resource
                 content.space();
                 content.Add(new RbText(DssRef.todoLang.BuildingType_Cesspit, HudLib.TitleColor_Head2));
                 content.text(".Todo info here");
+            }
+
+            if (properties.restrictedToBiom != Data.CityBiome.NUM_NONE)
+            {
+                content.newLine();/*.Add(new RbSeperationLine());*/
+                content.Add(new RbText(TextLib.LabelColon( ".Item production restricted to"), HudLib.TitleColor_Label));
+                content.space();
+                content.Add(new RbText($"{DssRef.todoLang.CityBiome_Title} - {LangLib.Biome(properties.restrictedToBiom)}"));
             }
         }
 

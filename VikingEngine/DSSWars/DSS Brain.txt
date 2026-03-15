@@ -1,9 +1,11 @@
 ﻿UPDATE
 Change Log:
-* 
+* Biom restriction info on animals
+* Fixed empty rubble from road removal
+* fixed boar pens
 
 ##ICONS TODO
-* butching animal
+* potter
 
 
 #MOUNTED TODO
@@ -20,6 +22,9 @@ x auto options for logistics/hall/cook
 
 x potter skill
 x optimize stockpile save
+* soldier tooltip, plus riding/wagon in name
+
+* go through controller best practices
 
 CITY CULTURES
 * Wheelwright, //Speed bonus to conscripted carts

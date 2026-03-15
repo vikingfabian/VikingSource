@@ -1384,10 +1384,11 @@ namespace VikingEngine.DSSWars.Build
             var subTile = DssRef.world.subTileGrid.Get(subTilePos);
             var buildingType = BuildLib.GetType(subTile.mainTerrain, subTile.subTerrain);
             if (buildingType != BuildAndExpandType.NUM_NONE)
-            {                
+            {
                 var opt = BuildOptions[(int)buildingType];
                 opt.destroy_async(city, subTilePos);
-                
+
+                bool addRubble = false;
                 var bp = opt.blueprint;
                 foreach (var r in bp.resources)
                 {
@@ -1398,8 +1399,10 @@ namespace VikingEngine.DSSWars.Build
                     else if (r.type != ItemResourceType.Water_G)
                     {
                         int returnAmount = r.amount / 2;
-                        if (returnAmount > 0)
+                        if (returnAmount > 4)
                         {
+                            addRubble = true;
+
                             DssRef.state.resources.addItem(
                                 new Resource.ItemResource(
                                   r.type,
@@ -1409,11 +1412,19 @@ namespace VikingEngine.DSSWars.Build
                               ref subTile.collectionPointer);
                         }
                     }
-                }               
+                }
 
-                subTile.mainTerrain = TerrainMainType.Resourses;
-                subTile.subTerrain = (int)TerrainResourcesType.Rubble;
-
+                if (addRubble)
+                {
+                    subTile.mainTerrain = TerrainMainType.Resourses;
+                    subTile.subTerrain = (int)TerrainResourcesType.Rubble;
+                }
+                else
+                {
+                    subTile.mainTerrain = TerrainMainType.Destroyed;
+                    subTile.subTerrain = 0;
+                }
+            
                 EditSubTile edit = new EditSubTile(subTilePos, subTile, true, true, true);
                 edit.Submit();
             }

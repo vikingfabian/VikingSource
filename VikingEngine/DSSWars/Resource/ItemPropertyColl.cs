@@ -288,7 +288,8 @@ namespace VikingEngine.DSSWars.Resource
             {
                 var animal = new ItemProperties(ItemResourceType.WildPig, CityResoureIndex.WildPig, DefaultWeight, WorkPriorityType.SlaughterWildPig, null, null, StorageType.AnimalStorage)
                 {
-                    Filter_IsRidingAnimal = true,
+                    Filter_IsRidingAnimal = true, 
+                    restrictedToBiom = Data.CityBiome.Mountain,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildPigPen));
                 animal.soldierData.CavalrySetup();
@@ -300,6 +301,7 @@ namespace VikingEngine.DSSWars.Resource
                 var animal = new ItemProperties(ItemResourceType.WildHog, CityResoureIndex.WildHog, DefaultWeight, WorkPriorityType.SlaughterWildHog, null, null, StorageType.AnimalStorage)
                 {
                     Filter_IsRidingAnimal = true,
+                    restrictedToBiom = Data.CityBiome.Mountain,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildHogPen));
                 animal.soldierData.CavalrySetup();
@@ -311,6 +313,7 @@ namespace VikingEngine.DSSWars.Resource
                 var animal = new ItemProperties(ItemResourceType.WarHog, CityResoureIndex.WarHog, DefaultWeight, WorkPriorityType.SlaughterWarHog, null, null, StorageType.AnimalStorage)
                 {
                     Filter_IsRidingAnimal = true,
+                    restrictedToBiom = Data.CityBiome.Mountain,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarHogPen));
                 animal.soldierData.CavalrySetup();
@@ -322,6 +325,7 @@ namespace VikingEngine.DSSWars.Resource
                 var animal = new ItemProperties(ItemResourceType.StagHog, CityResoureIndex.StagHog, DefaultWeight, WorkPriorityType.SlaughterStagHog, null, null, StorageType.AnimalStorage)
                 {
                     Filter_IsRidingAnimal = true,
+                    restrictedToBiom = Data.CityBiome.Mountain,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.StagHogPen));
                 animal.soldierData.CavalrySetup();
@@ -334,6 +338,7 @@ namespace VikingEngine.DSSWars.Resource
                 var animal = new ItemProperties(ItemResourceType.Wolf, CityResoureIndex.Wolf, DefaultWeight, WorkPriorityType.SlaughterWolf, null, null, StorageType.AnimalStorage)
                 {
                     Filter_IsRidingAnimal = true,
+                    restrictedToBiom = Data.CityBiome.Desolate,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WolfCage));
                 animal.soldierData.CavalrySetup();
@@ -345,6 +350,7 @@ namespace VikingEngine.DSSWars.Resource
                 var animal = new ItemProperties(ItemResourceType.Warg, CityResoureIndex.Warg, DefaultWeight, WorkPriorityType.SlaughterWarg, null, null, StorageType.AnimalStorage)
                 {
                     Filter_IsRidingAnimal = true,
+                    restrictedToBiom = Data.CityBiome.Desolate,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WargCage));
                 animal.soldierData.CavalrySetup();
@@ -356,6 +362,7 @@ namespace VikingEngine.DSSWars.Resource
                 var animal = new ItemProperties(ItemResourceType.AlphaWarg, CityResoureIndex.AlphaWarg, DefaultWeight, WorkPriorityType.SlaughterAlphaWarg, null, null, StorageType.AnimalStorage)
                 {
                     Filter_IsRidingAnimal = true,
+                    restrictedToBiom = Data.CityBiome.Desolate,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.AlphaWargCage));
                 animal.soldierData.CavalrySetup();
@@ -368,6 +375,7 @@ namespace VikingEngine.DSSWars.Resource
                 var animal = new ItemProperties(ItemResourceType.WildCat, CityResoureIndex.WildCat, DefaultWeight, WorkPriorityType.SlaughterWildCat, null, null, StorageType.AnimalStorage)
                 {
                     Filter_IsRidingAnimal = true,
+                    restrictedToBiom = Data.CityBiome.Forest,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WildCatCage));
                 animal.soldierData.CavalrySetup();
@@ -379,6 +387,7 @@ namespace VikingEngine.DSSWars.Resource
                 var animal = new ItemProperties(ItemResourceType.Lion, CityResoureIndex.Lion, DefaultWeight, WorkPriorityType.SlaughterLion, null, null, StorageType.AnimalStorage)
                 {
                     Filter_IsRidingAnimal = true,
+                    restrictedToBiom = Data.CityBiome.Forest,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.LionCage));
                 animal.soldierData.CavalrySetup();
@@ -390,6 +399,7 @@ namespace VikingEngine.DSSWars.Resource
                 var animal = new ItemProperties(ItemResourceType.WarLion, CityResoureIndex.WarLion, DefaultWeight, WorkPriorityType.SlaughterWarLion, null, null, StorageType.AnimalStorage)
                 {
                     Filter_IsRidingAnimal = true,
+                    restrictedToBiom = Data.CityBiome.Forest,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarLionCage));
                 animal.soldierData.CavalrySetup();
@@ -402,6 +412,7 @@ namespace VikingEngine.DSSWars.Resource
                 var animal = new ItemProperties(ItemResourceType.Elephant, CityResoureIndex.Elephant, 1f / 2, WorkPriorityType.SlaughterElephant, null, null, StorageType.AnimalStorage)
                 {
                     Filter_IsRidingAnimal = true,
+                    restrictedToBiom = Data.CityBiome.Desert,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.ElephantCage));
                 animal.soldierData.ElephantSetup();
@@ -413,6 +424,7 @@ namespace VikingEngine.DSSWars.Resource
                 var animal = new ItemProperties(ItemResourceType.WarElephant, CityResoureIndex.WarElephant, 1f / 2, WorkPriorityType.SlaughterWarElephant, null, null, StorageType.AnimalStorage)
                 {
                     Filter_IsRidingAnimal = true,
+                    restrictedToBiom = Data.CityBiome.Desert,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarElephantCage));
                 animal.soldierData.ElephantSetup();
@@ -424,6 +436,7 @@ namespace VikingEngine.DSSWars.Resource
                 var animal = new ItemProperties(ItemResourceType.Oliphant, CityResoureIndex.Oliphant, 1f, WorkPriorityType.SlaughterOliphant, null, null, StorageType.AnimalStorage)
                 {
                     Filter_IsRidingAnimal = true,
+                    restrictedToBiom = Data.CityBiome.Desert,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OliphantCage));
                 animal.soldierData.ElephantSetup();
