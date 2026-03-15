@@ -1,8 +1,7 @@
 ﻿UPDATE
 Change Log:
-* Biom restriction info on animals
-* Fixed empty rubble from road removal
-* fixed boar pens
+* Remade the diplomacy save to be more secure
+
 
 ##ICONS TODO
 * potter

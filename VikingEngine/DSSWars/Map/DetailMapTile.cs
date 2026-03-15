@@ -1338,6 +1338,9 @@ namespace VikingEngine.DSSWars.Map
                 case TerrainMineType.Salt:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 11, wp, scale));
                     break;
+                case TerrainMineType.StoneBlock:
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 13, wp, scale));
+                    break;
                 case TerrainMineType.Sulfur:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_mine, 5, wp, scale));
                     break;

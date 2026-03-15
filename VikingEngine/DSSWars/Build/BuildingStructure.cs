@@ -308,7 +308,7 @@ namespace VikingEngine.DSSWars.Build
 
         static readonly SubTile TerrainType_wood = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.TreeSoft);
         static readonly SubTile TerrainType_stone = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.Stones);
-        static readonly SubTile TerrainType_stoneblock = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.StoneBlock); //New
+        static readonly SubTile TerrainType_stoneblock = new SubTile(TerrainMainType.Mine, (int)TerrainMineType.StoneBlock); //New
 
         static readonly SubTile TerrainType_clay = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.ClayPit); //New
         static readonly SubTile TerrainType_bogiron = new SubTile(TerrainMainType.Foil, (int)TerrainSubFoilType.BogIron);
@@ -352,9 +352,7 @@ namespace VikingEngine.DSSWars.Build
 
             naturalResource(player, content, resourceCount_wood, ItemResourceType.Wood_Group, TerrainType_wood, ref totalCount);
             naturalResource(player, content, resourceCount_stone, ItemResourceType.Stone_G, TerrainType_stone, ref totalCount);
-
-            // Added StoneBlock (Brick) and Clay to natural resources
-            naturalResource(player, content, mineCount_stoneblock, ItemResourceType.Brick, TerrainType_stoneblock, ref totalCount);
+            
             naturalResource(player, content, resourceCount_clay, ItemResourceType.Clay, TerrainType_clay, ref totalCount);
 
             animalHabitat(player, content, wildAnimalCount_Fowl, ItemResourceType.Fowl, TerrainType_fowlHabitat);
@@ -379,9 +377,8 @@ namespace VikingEngine.DSSWars.Build
 
             // Added Salt to mines
             mine(player, content, mineCount_salt, ItemResourceType.Salt, TerrainType_salt, ref totalCount);
-
             mine(player, content, mineCount_sulfur, ItemResourceType.Sulfur, TerrainType_sulfur, ref totalCount);
-
+            mine(player, content, mineCount_stoneblock, ItemResourceType.Brick, TerrainType_stoneblock, ref totalCount);
 
             if (totalCount == 0)
             {

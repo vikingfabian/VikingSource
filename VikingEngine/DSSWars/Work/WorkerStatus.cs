@@ -60,21 +60,14 @@ namespace VikingEngine.DSSWars.Work
         public void xpToHud(RichBoxContent content)
         {
             // Pair the XP values with their respective types
-            var xpPairs = DssRef.world.listWorkXp(XpEntityIndex);
-            //    new List<(byte xp, WorkExperienceType type)>
-            //{
-            //    (xp1, xpType1),
-            //    (xp2, xpType2),
-            //    (xp3, xpType3)
-            //};
-
-            // Sort the list by XP in descending order
-            //xpPairs.Sort((a, b) => b.xp.CompareTo(a.xp));
-
-            foreach (var xpPair in xpPairs)
+            if (XpEntityIndex >= 0)
             {
-                /*if (xpPair.xp > 0 && xpPair.type != WorkExperienceType.NUM_NONE*/
-                //{
+                var xpPairs = DssRef.world.listWorkXp(XpEntityIndex);
+
+                foreach (var xpPair in xpPairs)
+                {
+                    /*if (xpPair.xp > 0 && xpPair.type != WorkExperienceType.NUM_NONE*/
+                    //{
                     LangLib.ExperienceType(xpPair.type, out string typeName, out SpriteName typeIcon);
                     var level = xpPair.xp.Level();
 
@@ -88,7 +81,8 @@ namespace VikingEngine.DSSWars.Work
                     content.Add(new RbTab(0.2f));
                     content.Add(new RbImage(LangLib.ExperienceLevelIcon(level)));
                     content.Add(new RbText(LangLib.ExperienceLevel(level)));
-                //}
+                    //}
+                }
             }
         }
 
@@ -1336,6 +1330,9 @@ namespace VikingEngine.DSSWars.Work
                                     break;
                                 case TerrainMineType.Salt:
                                     resourceType = ItemResourceType.Salt;
+                                    break;
+                                case TerrainMineType.StoneBlock:
+                                    resourceType = ItemResourceType.Brick;
                                     break;
                                 case TerrainMineType.TinOre:
                                     resourceType = ItemResourceType.TinOre;

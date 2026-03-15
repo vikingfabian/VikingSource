@@ -205,40 +205,38 @@ namespace VikingEngine.DSSWars
         {            
             w.Write((ushort)indexRegister.Length);
             
-            int skips = -1;
+            /*int skips = 0*/;
             for (int currentIndex = 0; currentIndex < diplomaticRelations.Length; ++currentIndex)
             {
                 if (diplomaticRelations[currentIndex].HasValue())
                 {
-                    StreamLib.WriteGrowingAddValue(w, skips);
-                    skips = 0;
+                    w.Write(currentIndex);
                     diplomaticRelations[currentIndex].write(w);
                 }
-                
-                skips++;                
             }
-            StreamLib.WriteGrowingAddValue(w, diplomaticRelations.Length);
+            w.Write(int.MaxValue);
+            //StreamLib.WriteGrowingAddValue(w, diplomaticRelations.Length);
 
             Debug.WriteCheck(w);
         }
 
         public void readRelations(System.IO.BinaryReader r, int subVersion)
         {
-            if (subVersion >= 111)
-            { 
+            //if (subVersion >= 111)
+            //{ 
                 int indexRegisterLength = r.ReadUInt16();
                 initRegister(indexRegisterLength);
-            }
+            //}
 
-            int currentIndex = 0;
+            
 
             while (true)
             {
-                int skips = StreamLib.ReadGrowingAddValue(r);
-
-                if (skips < diplomaticRelations.Length)
-                {
-                    currentIndex += skips;
+                int currentIndex = r.ReadInt32();
+                //int skips = StreamLib.ReadGrowingAddValue(r);
+                //currentIndex += skips;
+                if (currentIndex < diplomaticRelations.Length)
+                {                    
                     diplomaticRelations[currentIndex].read(r, subVersion);
                 }
                 else

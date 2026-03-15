@@ -436,6 +436,9 @@ namespace VikingEngine.DSSWars.Map
                                     case TerrainMineType.Salt:
                                         ++terrainStructure.mineCount_salt;
                                         break;
+                                    case TerrainMineType.StoneBlock:
+                                        ++terrainStructure.mineCount_stoneblock;
+                                        break;
                                     case TerrainMineType.Mithril:
                                         ++terrainStructure.mineCount_mithril;
                                         break;

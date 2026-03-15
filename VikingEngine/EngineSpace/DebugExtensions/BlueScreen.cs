@@ -235,11 +235,7 @@ namespace VikingEngine.DebugExtensions
                 try
                 {
                     method();
-                }
-                //catch (AbsSteamException e) 
-                //{
-                //    new SteamBlueScreen(ErrorMessage(e, methodType));
-                //}
+                }                
                 catch (Exception e)
                 {
                     new BlueScreen(ErrorMessage(e, methodType));

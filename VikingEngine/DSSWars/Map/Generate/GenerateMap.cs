@@ -38,7 +38,6 @@ namespace VikingEngine.DSSWars.Map.Generate
         public WorldData world;
 
         public bool postComplete = false;
-        //bool[] partComplete;
         GenerateRegion region = new GenerateRegion();
         CityCultureCollection cityCultureCollection = new CityCultureCollection();
         public bool abort = false;
@@ -50,18 +49,10 @@ namespace VikingEngine.DSSWars.Map.Generate
         {
             int partWidth = world.Size.X / ProcessTilesDivisionParts;
             int startX = partWidth * part;
-            //int endX = startX + partWidth;
             var area = new Rectangle2(startX, 0, partWidth, world.Size.Y);
-            //area.size -= 1;
+            
             return new ForXYLoop(area);
         }
-
-        //IntervalF[] citySizeToMudRadius = new IntervalF[]
-        //{
-        //    new IntervalF(1, 1),
-        //    new IntervalF(1, 1),
-        //    new IntervalF(5, 7),
-        //};
 
         public bool GeneratePass(Data.WorldMetaData worldMeta, MapGenerateSettings generateSettings, GenerateMapPass pass, List<Task> extraTasks)
         {
@@ -1992,13 +1983,14 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             addMines(mithrilCount, (int)TerrainMineType.Mithril);
 
-            int tin = MathExt.MultiplyInt(world.rnd.Double(0.12, 0.14), mineLocations.Count);
-            int cupper = MathExt.MultiplyInt(world.rnd.Double(0.12, 0.14), mineLocations.Count);
-            int lead = MathExt.MultiplyInt(world.rnd.Double(0.12, 0.14), mineLocations.Count);
+            int tin = MathExt.MultiplyInt(world.rnd.Double(0.11, 0.13), mineLocations.Count);
+            int cupper = MathExt.MultiplyInt(world.rnd.Double(0.11, 0.13), mineLocations.Count);
+            int lead = MathExt.MultiplyInt(world.rnd.Double(0.11, 0.13), mineLocations.Count);
             int silver = MathExt.MultiplyInt(world.rnd.Double(0.05, 0.06), mineLocations.Count);
             int gold = MathExt.MultiplyInt(world.rnd.Double(0.03, 0.04), mineLocations.Count);
             int sulfur = MathExt.MultiplyInt(world.rnd.Double(0.14, 0.16), mineLocations.Count);
             int salt = MathExt.MultiplyInt(world.rnd.Double(0.14, 0.16), mineLocations.Count);
+            int stone = MathExt.MultiplyInt(world.rnd.Double(0.14, 0.16), mineLocations.Count);
             int coal = MathExt.MultiplyInt(world.rnd.Double(0.14, 0.16), mineLocations.Count);
 
             addMines(tin, (int)TerrainMineType.TinOre);
@@ -2008,6 +2000,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             addMines(gold, (int)TerrainMineType.GoldOre);
             addMines(sulfur, (int)TerrainMineType.Sulfur);
             addMines(salt, (int)TerrainMineType.Salt);
+            addMines(stone, (int)TerrainMineType.StoneBlock);
             addMines(coal, (int)TerrainMineType.Coal);
 
             for (int i = 0; i < mineLocations.Count; ++i)
