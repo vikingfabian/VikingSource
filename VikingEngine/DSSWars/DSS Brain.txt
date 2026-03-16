@@ -1,10 +1,8 @@
 ﻿UPDATE
 Change Log:
-* Remade the diplomacy save to be more secure
-
+* 
 
 ##ICONS TODO
-* potter
 
 
 #MOUNTED TODO
@@ -19,8 +17,6 @@ x ui line breaks in German
 x adv build upgrade, no more use of logistics
 x auto options for logistics/hall/cook
 
-x potter skill
-x optimize stockpile save
 * soldier tooltip, plus riding/wagon in name
 
 * go through controller best practices

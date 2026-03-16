@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.EngineSpace.DataStream;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 
@@ -96,39 +97,62 @@ namespace VikingEngine.DSSWars.EntityComponent
             }
         }
 
-        public void writeCity(System.IO.BinaryWriter w)
+        void writeStockPile(BoolRegister boolRegister)
         {
-            w.Write(amount);
-            w.Write(useStockLimit);//(byte)limitOption);
-            w.Write((ushort)stockPileLimit);
-            //w.Write((ushort)capacity);
-        }
-        public void readCity(System.IO.BinaryReader r, int subversion)
-        {
-            amount = r.ReadInt32();
-            if (subversion < 107)
+            if (boolRegister.SetNext(useStockLimit))
             {
-                r.ReadByte();
+                boolRegister.writer.Write((ushort)stockPileLimit);
             }
-            else
-            { 
-                useStockLimit = r.ReadBoolean();
-                if (subversion >= 108)
-                { 
-                    stockPileLimit = r.ReadUInt16();
-                }
+        }
+        public void readStockPile(BoolRegister boolRegister, System.IO.BinaryReader r, int subversion)
+        {   
+            useStockLimit = boolRegister.GetNext();
+            if (useStockLimit)
+            {
+                stockPileLimit = r.ReadUInt16();
             }
         }
 
-        public void writeFaction(System.IO.BinaryWriter w)
+        public void writeCity(BoolRegister boolRegister)//System.IO.BinaryWriter w)
         {
-            w.Write(useStockLimit);
-            w.Write((ushort)stockPileLimit);
+            if (boolRegister.SetNext(amount != 0))
+            {
+                boolRegister.writer.Write(amount);
+            }
+            writeStockPile(boolRegister);
+            //if (boolRegister.SetNext(useStockLimit))
+            //{
+            //    boolRegister.writer.Write((ushort)stockPileLimit);
+            //}
+
+            //    w.Write(useStockLimit);
+            //w.Write((ushort)stockPileLimit);
         }
-        public void readFaction(System.IO.BinaryReader r, int subversion)
-        {  
-            useStockLimit = r.ReadBoolean();
-            stockPileLimit = r.ReadUInt16();
+        public void readCity(BoolRegister boolRegister, System.IO.BinaryReader r, int subversion)
+        {
+            if (boolRegister.GetNext())
+            {
+                amount = r.ReadInt32();
+            }
+            readStockPile(boolRegister, r, subversion);
+            //useStockLimit = boolRegister.GetNext();
+            //if (useStockLimit)
+            //{
+            //    stockPileLimit = r.ReadUInt16();
+            //}            
+        }
+
+        public void writeFaction(BoolRegister boolRegister)
+        {
+            //w.Write(useStockLimit);
+            //w.Write((ushort)stockPileLimit);
+            writeStockPile(boolRegister);
+        }
+        public void readFaction(BoolRegister boolRegister, System.IO.BinaryReader r, int subversion)
+        {
+            //useStockLimit = r.ReadBoolean();
+            //stockPileLimit = r.ReadUInt16();
+            readStockPile(boolRegister, r, subversion);
         }
 
         public void writeStockPile(System.IO.BinaryWriter w)

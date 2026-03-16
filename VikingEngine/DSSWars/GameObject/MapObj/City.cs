@@ -28,6 +28,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.DSSWars.Stockpile;
+using VikingEngine.EngineSpace.DataStream;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -937,20 +938,24 @@ namespace VikingEngine.DSSWars.GameObject
         {
             w.Write((short)res_water.amount);
 
-            for (int i = 0; i < CityResoureIndex.COUNT; ++i)
+            BoolRegister boolRegister = new BoolRegister(CityResoureIndex.COUNT * 2);
             {
-                DssRef.world.cityResouces[resourceComponentStartIndex + i].writeCity(w);
+                for (int i = 0; i < CityResoureIndex.COUNT; ++i)
+                {
+                    DssRef.world.cityResouces[resourceComponentStartIndex + i].writeCity(boolRegister);
+                }
             }
-
+            boolRegister.finalizeWrite(w);
         }
 
         public void readResources(System.IO.BinaryReader r, int subversion)
         {
             res_water.amount = r.ReadInt16();
 
+            BoolRegister boolRegister = new BoolRegister(r);
             for (int i = 0; i < CityResoureIndex.COUNT; ++i)
             {
-                DssRef.world.cityResouces[resourceComponentStartIndex + i].readCity(r, subversion);
+                DssRef.world.cityResouces[resourceComponentStartIndex + i].readCity(boolRegister, r, subversion);
             }
         }
 

@@ -593,8 +593,9 @@ namespace VikingEngine.DSSWars.GameObject
                         var subTile = DssRef.world.subTileGrid.Get(pos);
                         switch ((TerrainMineType)subTile.subTerrain)
                         {
-                            default://case TerrainMineType.IronOre:
-                                bNeedMore = needMore(CityResoureIndex.ironore);//res_ironore.needMore();
+                            default:
+                            case TerrainMineType.IronOre:
+                                bNeedMore = needMore(CityResoureIndex.ironore);
                                 priority = workTemplate.Get(WorkPriorityType.miningIron);
                                 break;
                             case TerrainMineType.TinOre:
@@ -602,20 +603,24 @@ namespace VikingEngine.DSSWars.GameObject
                                 priority = workTemplate.Get(WorkPriorityType.miningTin);
                                 break;
                             case TerrainMineType.CopperOre:
-                                bNeedMore = needMore(CityResoureIndex.CopperOre);//res_CupperOre.needMore();
+                                bNeedMore = needMore(CityResoureIndex.CopperOre);
                                 priority = workTemplate.Get(WorkPriorityType.miningCopper);
                                 break;
                             case TerrainMineType.LeadOre:
-                                bNeedMore = needMore(CityResoureIndex.LeadOre);//res_LeadOre.needMore();
+                                bNeedMore = needMore(CityResoureIndex.LeadOre);
                                 priority = workTemplate.Get(WorkPriorityType.miningLead);
                                 break;
                             case TerrainMineType.SilverOre:
-                                bNeedMore = needMore(CityResoureIndex.SilverOre);//res_Silver.needMore();
+                                bNeedMore = needMore(CityResoureIndex.SilverOre);
                                 priority = workTemplate.Get(WorkPriorityType.miningSilver);
                                 break;
                             case TerrainMineType.Salt:
                                 bNeedMore = needMore(CityResoureIndex.Salt);
                                 priority = workTemplate.Get(WorkPriorityType.miningSalt);
+                                break;
+                            case TerrainMineType.StoneBlock:
+                                bNeedMore = needMore(CityResoureIndex.Brick);
+                                priority = workTemplate.Get(WorkPriorityType.miningBrick);
                                 break;
                             case TerrainMineType.Sulfur:
                                 bNeedMore = needMore(CityResoureIndex.Sulfur);
@@ -626,13 +631,11 @@ namespace VikingEngine.DSSWars.GameObject
                                 priority = workTemplate.Get(WorkPriorityType.miningGold);
                                 break;
                             case TerrainMineType.Mithril:
-                                bNeedMore = needMore(CityResoureIndex.RawMithril);//res_RawMithril.needMore();
+                                bNeedMore = needMore(CityResoureIndex.RawMithril);
                                 priority = workTemplate.Get(WorkPriorityType.miningMithril);
                                 break;
                             case TerrainMineType.Coal:
-                                //++fuelSpots;
-                                //safeGuard = fuelSafeGuard;
-                                bNeedMore = needMore(CityResoureIndex.fuel);//res_fuel.needMore();
+                                bNeedMore = needMore(CityResoureIndex.fuel);
                                 priority = workTemplate.Get(WorkPriorityType.miningCoal);
                                 break;
                         }

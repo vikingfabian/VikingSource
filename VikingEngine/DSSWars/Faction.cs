@@ -18,6 +18,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.EngineSpace.DataStream;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -312,19 +313,21 @@ namespace VikingEngine.DSSWars
 
         void writeResources(System.IO.BinaryWriter w)
         {
-           
-            for (int i = 0; i < CityResoureIndex.COUNT; ++i)
+            BoolRegister boolRegister = new BoolRegister(CityResoureIndex.COUNT * 1);
             {
-                DssRef.world.factionResourceOverviews[resourceComponentStartIndex + i].writeFaction(w);
-            }
-
+                for (int i = 0; i < CityResoureIndex.COUNT; ++i)
+                {
+                    DssRef.world.factionResourceOverviews[resourceComponentStartIndex + i].writeFaction( boolRegister);
+                }
+            } boolRegister.finalizeWrite(w);
         }
 
         public void readResources(System.IO.BinaryReader r, int subversion)
-        {           
+        {
+            BoolRegister boolRegister = new BoolRegister(r);
             for (int i = 0; i < CityResoureIndex.COUNT; ++i)
             {
-                DssRef.world.factionResourceOverviews[resourceComponentStartIndex + i].readFaction(r, subversion);
+                DssRef.world.factionResourceOverviews[resourceComponentStartIndex + i].readFaction(boolRegister,r, subversion);
             }
         }
 
