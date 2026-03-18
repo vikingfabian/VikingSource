@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.LootFest;
 using VikingEngine.ToGG.MoonFall;
 
@@ -57,9 +58,10 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
         Vector3 leftSoldierPosDiff, rightSoldierPosDiff, backleftSoldierPosDiff, backrightSoldierPosDiff;
         public WagonRiderModel(AbsSoldierUnit soldier)
         {
-            CavalryModel.AnimalModel(soldier.group.soldierConscript.conscript.animal, out VoxelModelName modelName, out float modelScale, out horseWalkingAnimation, out float riderY, out float animalPullDistance);
-            animalmodel_left = DssRef.models.ModelInstance_drawbatch(modelName, modelScale);
-            animalmodel_right = DssRef.models.ModelInstance_drawbatch(modelName, modelScale);
+            AnimalModelData modelData = CavalryModel.AnimalModel(soldier.group.soldierConscript.conscript.animal);
+            horseWalkingAnimation = modelData.animation;
+            animalmodel_left = DssRef.models.ModelInstance_drawbatch(modelData.modelName, modelData.scale);
+            animalmodel_right = DssRef.models.ModelInstance_drawbatch(modelData.modelName, modelData.scale);
 
             
             LootFest.VoxelModelName wagonModelName;
@@ -195,14 +197,14 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
             wagonRollAnimation = new WalkingAnimation(0, 3, WalkingAnimation.StandardMoveFrames * 1f);
 
-            leftAnimalPosDiff = new Vector3(-0.24f, 0, 0f) * modelScale;
+            leftAnimalPosDiff = new Vector3(-0.24f, 0, 0f) * modelData.scale;
             rightAnimalPosDiff = leftAnimalPosDiff;
             rightAnimalPosDiff.X = -rightAnimalPosDiff.X;
 
             float wagonScale = DssConst.Men_StandardModelScale * wagonMScale;
             model = DssRef.models.ModelInstance_drawbatch(wagonModelName, wagonScale);
 
-            wagonGoalDistance = modelScale * (MGoalDistance + animalPullDistance);
+            wagonGoalDistance = modelData.scale * (MGoalDistance + modelData.wagonPullDistance);
 
             wagonPos = VectorExt.AddXZ(soldier.position, -soldier.rotation.Direction(wagonGoalDistance));
             wagonY = 0.02f * wagonScale;
@@ -212,7 +214,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             switch (manType)
             {
                 case WagonManType.Riding:
-                    rightSoldierPosDiff = new Vector3(0, riderY, 0);
+                    rightSoldierPosDiff = new Vector3(0, modelData.riderY, 0);
                     soldierRight = createSoldier();
                     break;
                 case WagonManType.Coach:

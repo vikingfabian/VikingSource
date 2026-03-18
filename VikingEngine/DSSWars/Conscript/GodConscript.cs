@@ -108,6 +108,11 @@ namespace VikingEngine.DSSWars.Conscript
             void selectAnimal(ItemResourceType item)
             {
                 BattleLabStorage.Singleton.setup.conscript.animal = item;
+                if (item == ItemResourceType.NONE)
+                {
+                    BattleLabStorage.Singleton.setup.conscript.mountArmor = ItemResourceType.NONE;
+                    BattleLabStorage.Singleton.setup.conscript.vehicle = ItemResourceType.NONE;
+                }
             }
             void selectAnimalArmor(ItemResourceType item)
             {

@@ -2533,6 +2533,9 @@
 #begin VoxelModel/Character/modweapon_twohand.vox
 /copy:VoxelModel/Character/modweapon_twohand.vox
 
+#begin VoxelModel/LfWars/alphawarg1.vox
+/copy:VoxelModel/LfWars/alphawarg1.vox
+
 #begin VoxelModel/LfWars/armybanner.vox
 /copy:VoxelModel/LfWars/armybanner.vox
 
@@ -2547,6 +2550,9 @@
 
 #begin VoxelModel/LfWars/banner.vox
 /copy:VoxelModel/LfWars/banner.vox
+
+#begin VoxelModel/LfWars/Boar.vox
+/copy:VoxelModel/LfWars/Boar.vox
 
 #begin VoxelModel/LfWars/boulder_proj.vox
 /copy:VoxelModel/LfWars/boulder_proj.vox
@@ -2713,8 +2719,17 @@
 #begin VoxelModel/LfWars/dog1.vox
 /copy:VoxelModel/LfWars/dog1.vox
 
-#begin VoxelModel/LfWars/Elephant1.vox
-/copy:VoxelModel/LfWars/Elephant1.vox
+#begin VoxelModel/LfWars/drafthorse_red.vox
+/copy:VoxelModel/LfWars/drafthorse_red.vox
+
+#begin VoxelModel/LfWars/Elephant_default.vox
+/copy:VoxelModel/LfWars/Elephant_default.vox
+
+#begin VoxelModel/LfWars/Elephant_oli.vox
+/copy:VoxelModel/LfWars/Elephant_oli.vox
+
+#begin VoxelModel/LfWars/Elephant_war.vox
+/copy:VoxelModel/LfWars/Elephant_war.vox
 
 #begin VoxelModel/LfWars/ErrorCube.vox
 /copy:VoxelModel/LfWars/ErrorCube.vox
@@ -2770,6 +2785,9 @@
 #begin VoxelModel/LfWars/fol_tree_soft.vox
 /copy:VoxelModel/LfWars/fol_tree_soft.vox
 
+#begin VoxelModel/LfWars/Fowl.vox
+/copy:VoxelModel/LfWars/Fowl.vox
+
 #begin VoxelModel/LfWars/godfire.vox
 /copy:VoxelModel/LfWars/godfire.vox
 
@@ -2788,6 +2806,9 @@
 #begin VoxelModel/LfWars/horsebanner.vox
 /copy:VoxelModel/LfWars/horsebanner.vox
 
+#begin VoxelModel/LfWars/kineoxen1.vox
+/copy:VoxelModel/LfWars/kineoxen1.vox
+
 #begin VoxelModel/LfWars/lion1.vox
 /copy:VoxelModel/LfWars/lion1.vox
 
@@ -2800,6 +2821,9 @@
 #begin VoxelModel/LfWars/little_javelin.vox
 /copy:VoxelModel/LfWars/little_javelin.vox
 
+#begin VoxelModel/LfWars/oxen1.vox
+/copy:VoxelModel/LfWars/oxen1.vox
+
 #begin VoxelModel/LfWars/party_restbar.vox
 /copy:VoxelModel/LfWars/party_restbar.vox
 
@@ -2808,6 +2832,12 @@
 
 #begin VoxelModel/LfWars/Pig.vox
 /copy:VoxelModel/LfWars/Pig.vox
+
+#begin VoxelModel/LfWars/pony_brown.vox
+/copy:VoxelModel/LfWars/pony_brown.vox
+
+#begin VoxelModel/LfWars/pony_pink.vox
+/copy:VoxelModel/LfWars/pony_pink.vox
 
 #begin VoxelModel/LfWars/resource_rubble.vox
 /copy:VoxelModel/LfWars/resource_rubble.vox
@@ -2907,6 +2937,12 @@
 
 #begin VoxelModel/LfWars/war_workerhut.vox
 /copy:VoxelModel/LfWars/war_workerhut.vox
+
+#begin VoxelModel/LfWars/warg1.vox
+/copy:VoxelModel/LfWars/warg1.vox
+
+#begin VoxelModel/LfWars/warhorse_brown.vox
+/copy:VoxelModel/LfWars/warhorse_brown.vox
 
 #begin VoxelModel/LfWars/warmap_grass1.vox
 /copy:VoxelModel/LfWars/warmap_grass1.vox

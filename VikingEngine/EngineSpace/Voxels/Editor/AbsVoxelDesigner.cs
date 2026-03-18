@@ -249,15 +249,18 @@ namespace VikingEngine.Voxels
 
         public void nextFrame(bool forward)
         {
-            if (voxelProject.lockFirstFrames > voxelProject.currentFrame.Max)
-            {
-                voxelProject.lockFirstFrames = 0;
-            }
+            //if (voxelProject.lockFirstFrame > voxelProject.currentFrame.Max)
+            //{
+            //    voxelProject.lockFirstFrame = null;
+            //}
 
-            do
-            {
-                voxelProject.currentFrame.Next(lib.BoolToLeftRight(forward));
-            } while (voxelProject.currentFrame.Value < voxelProject.lockFirstFrames);
+            var counter = voxelProject.currentFrame.AddBound(voxelProject.FrameBounds());
+            counter.Next(lib.BoolToLeftRight(forward));
+            voxelProject.currentFrame.Value = counter.Value;
+            //do
+            //{
+            //    voxelProject.currentFrame.Next(lib.BoolToLeftRight(forward));
+            //} while (voxelProject.lockFirstFrame != null && voxelProject.currentFrame.Value < voxelProject.lockFirstFrame);
             updateFrameInfo();
             updateVoxelObj();
         }

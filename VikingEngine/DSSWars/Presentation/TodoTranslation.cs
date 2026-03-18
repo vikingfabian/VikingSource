@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         //regular
         public string Hud_Time_ValuePerMinute => "Value per minute";
+        public string Hud_Lock => "Lock";
 
         public string Tutorial_SeeThisInThat = "See {0} in {1}";
         public string Conscript_SkillBonus => "Skill bonus";
@@ -37,6 +38,8 @@ namespace VikingEngine.DSSWars.Presentation
         //## Mounted update ##
         public string Progress_ClosingCores => "Closing CPU cores {0}";
         public string Editor_ExportFrame => "Export current frame";
+        public string Editor_FistFrame => "First frame";
+        public string Editor_LastFrame => "Last frame";
 
         public string Economy_AnimalPenUpkeep => "Pen upkeep: {0}";
         public string Work_SlaughterX => "Slaughter {0}";
@@ -45,6 +48,16 @@ namespace VikingEngine.DSSWars.Presentation
         public string Resource_TypeName_ManType => "man type";
         public string Resource_TypeName_NobelMen => "nobelmen";
         public string Resource_TypeName_ConservedFood => "conserved food";
+
+        public string UnitType_UnitOnMount => "riding {0}";
+        public string UnitType_UnitOnWagon => "wagon {0}";
+        public string UnitType_NobelUnit => "nobel {0}";
+
+        /// <summary>
+        /// 0: soldier type, 1: animal
+        /// </summary>
+        public string UnitType_LeashAnimalHandler => "{0} {1}-handler";
+
 
         public string Resource_ConservedFood_Reserves => "Conserved food reserves";
         public string Resource_TypeName_Clay => "clay";

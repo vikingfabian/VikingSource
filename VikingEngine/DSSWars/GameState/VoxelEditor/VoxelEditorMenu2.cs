@@ -316,6 +316,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             {
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFramePrevious) }, new RbAction1Arg<bool>(designer.nextFrame, false)));
+                Range lockBounds = designer.voxelProject.FrameBounds();
                 for (int frame = 0; frame <= designer.voxelProject.currentFrame.Max; frame++)
                 {
                     SpriteName frameicon;
@@ -328,7 +329,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                     else
                     {
                         buttonStyle = RbButtonStyle.OptionNotSelected;
-                        frameicon = SpriteName.VoxelEditorFrame;
+                        frameicon = lockBounds.IsWithinRange(frame)? SpriteName.VoxelEditorFrame : SpriteName.VoxelEditorFrameLocked;
                     }
 
                     content.Add(new ArtButton(buttonStyle,
@@ -340,11 +341,38 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 const float MoveFrameIconSz = 1.4f;
 
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameToEndL, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.ToStart), new RbTooltip_Text(DssRef.lang.Editor_Animation_MoveDescription)));
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameL, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.Back)));
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameR, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.Forward)));
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameToEndR, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.ToEnd)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameL, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.Back), new RbTooltip_Text(DssRef.lang.Editor_Animation_MoveDescription)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameR, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.Forward), new RbTooltip_Text(DssRef.lang.Editor_Animation_MoveDescription)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorMoveFrameToEndR, MoveFrameIconSz) }, new RbAction1Arg<MoveFrameType>(designer.moveFrame, MoveFrameType.ToEnd), new RbTooltip_Text(DssRef.lang.Editor_Animation_MoveDescription)));
 
+                content.space();
+                bool lockFirst = designer.voxelProject.lockFirstFrame == null;
+                if (lockFirst)
+                {
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
+                        new RbOverlapImage( new RbImage(SpriteName.VoxelEditorMoveFrameToEndL, MoveFrameIconSz), SpriteName.birdLock, new Vector2(0.1f, 0), 1.2f) }, new RbAction2Arg<bool, bool>(designer.voxelProject.LockAnimation, true, lockFirst),
+                        new RbTooltip_Text(DssRef.todoLang.Hud_Lock + " - " + DssRef.todoLang.Editor_FistFrame), designer.voxelProject.currentFrame.Value > 0));
+                }
+                else
+                {
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { /*new RbImage(SpriteName.birdUnLock),*/
+                       new RbOverlapImage(  new RbImage(SpriteName.VoxelEditorMoveFrameToEndL, MoveFrameIconSz), SpriteName.birdUnLock, new Vector2(0.1f, 0), 1.2f) }, new RbAction2Arg<bool, bool>(designer.voxelProject.LockAnimation, true, lockFirst),
+                        new RbTooltip_Text(DssRef.lang.Hud_Unlock + " - " + DssRef.todoLang.Editor_FistFrame), true));
+                }
 
+                bool lockLast = designer.voxelProject.lockEndFrame == null;
+                if (lockLast)
+                {
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { /*new RbImage(SpriteName.birdLock),*/
+                        new RbOverlapImage( new RbImage(SpriteName.VoxelEditorMoveFrameToEndR, MoveFrameIconSz), SpriteName.birdLock, new Vector2(-0.1f, 0), 1.2f) }, new RbAction2Arg<bool, bool>(designer.voxelProject.LockAnimation, false, lockLast),
+                        new RbTooltip_Text(DssRef.todoLang.Hud_Lock + " - " + DssRef.todoLang.Editor_LastFrame), designer.voxelProject.currentFrame.Value < designer.voxelProject.currentFrame.Max));
+                }
+                else
+                {
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { /*new RbImage(SpriteName.birdUnLock),*/
+                        new RbOverlapImage( new RbImage(SpriteName.VoxelEditorMoveFrameToEndR, MoveFrameIconSz), SpriteName.birdUnLock, new Vector2(-0.1f, 0), 1.2f) }, new RbAction2Arg<bool, bool>(designer.voxelProject.LockAnimation, false, lockLast),
+                        new RbTooltip_Text(DssRef.lang.Hud_Unlock + " - " + DssRef.todoLang.Editor_LastFrame), true));
+                }
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_ConvertAnimationToLayers) },
                     new RbAction(convertAnimationToLayers)));

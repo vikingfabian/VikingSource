@@ -203,12 +203,20 @@ namespace VikingEngine.DSSWars.Resource
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OxenPen));
                 animal.wagonPull = WagonPull.All;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.7f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+                animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.5f;
             }
             {
                 var animal = new ItemProperties(ItemResourceType.KineOxen, CityResoureIndex.KineOxen, DefaultWeight, WorkPriorityType.SlaughterKineOxen, null, null, StorageType.AnimalStorage);
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.KineOxenPen));
                 animal.wagonPull = WagonPull.All;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.8f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.7f;
+                animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
             }
             // --- Dogs ---
             {
@@ -249,6 +257,11 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.CavalrySetup();
                 animal.wagonPull = WagonPull.LightOnly;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.3f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.2f;
+                animal.soldierData.heavyWagonSpeed = 0;
+
             }
 
             {
@@ -260,6 +273,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.CavalrySetup();
                 animal.wagonPull = WagonPull.All;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.5f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
+                animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
             }
 
             {
@@ -271,6 +288,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.CavalrySetup();
                 animal.wagonPull = WagonPull.All;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.6f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
+                animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
             }
 
             {
@@ -282,6 +303,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.CavalrySetup();
                 animal.wagonPull = WagonPull.All;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
+                animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.2f;
             }
 
             // --- Pigs / Hogs ---
@@ -295,6 +320,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.CavalrySetup();
                 animal.wagonPull = WagonPull.LightOnly;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.3f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.2f;
+                animal.soldierData.heavyWagonSpeed = 0;
             }
 
             {
@@ -307,6 +336,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.CavalrySetup();
                 animal.wagonPull = WagonPull.LightOnly;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.6f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
+                animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
             }
 
             {
@@ -319,6 +352,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.CavalrySetup();
                 animal.wagonPull = WagonPull.LightOnly;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.6f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
+                animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
             }
 
             {
@@ -331,6 +368,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.CavalrySetup();
                 animal.wagonPull = WagonPull.All;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
+                animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.2f;
             }
 
             // --- Wolves ---
@@ -344,6 +385,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.CavalrySetup();
                 animal.wagonPull = WagonPull.LightOnly;
                 animal.armorCarry = ArmorCarry.LightOnly;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
+                animal.soldierData.heavyWagonSpeed = 0;
             }
 
             {
@@ -356,6 +401,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.CavalrySetup();
                 animal.wagonPull = WagonPull.LightOnly;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.5f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
+                animal.soldierData.heavyWagonSpeed = 0;
             }
 
             {
@@ -368,6 +417,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.CavalrySetup();
                 animal.wagonPull = WagonPull.LightOnly;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.6f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
+                animal.soldierData.heavyWagonSpeed = 0;
             }
 
             // --- Cats ---
@@ -381,6 +434,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.CavalrySetup();
                 animal.wagonPull = WagonPull.LightOnly;
                 animal.armorCarry = ArmorCarry.LightOnly;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
+                animal.soldierData.heavyWagonSpeed = 0;
             }
 
             {
@@ -393,6 +450,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.CavalrySetup();
                 animal.wagonPull = WagonPull.LightOnly;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.5f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
+                animal.soldierData.heavyWagonSpeed = 0;
             }
 
             {
@@ -405,6 +466,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.CavalrySetup();
                 animal.wagonPull = WagonPull.LightOnly;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.6f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
+                animal.soldierData.heavyWagonSpeed = 0;
             }
 
             // --- Elephants ---
@@ -418,6 +483,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.ElephantSetup();
                 animal.wagonPull = WagonPull.Balcon;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.85f;
+                animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.8f;
             }
 
             {
@@ -430,6 +499,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.ElephantSetup();
                 animal.wagonPull = WagonPull.Balcon;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.85f;
+                animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.8f;
             }
 
             {
@@ -442,6 +515,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.ElephantSetup();
                 animal.wagonPull = WagonPull.Balcon;
                 animal.armorCarry = ArmorCarry.All;
+
+                animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
+                animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.85f;
+                animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.8f;
             }
 
 

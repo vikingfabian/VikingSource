@@ -445,17 +445,23 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             templateSent = false;
         }
 
-        public void LinkAnimUnlockFrame()
+        public void LinkAnimUnlockFirstFrame()
         {
-            voxelProject.lockFirstFrames = 0;
-            menusystem.closeMenu();
+            voxelProject.lockFirstFrame = null;
+            //menusystem.closeMenu();
         }
-        public void LinkAnimLockFrame(bool start)
-        {
-            //lockFirstFrames = currentFrame.Value;
-            voxelProject.LockAnimation(start);
-            menusystem.closeMenu();
-        }
+        //public void LinkAnimLockFrame(bool start)
+        //{
+        //    //lockFirstFrames = currentFrame.Value;
+        //    voxelProject.LockAnimation(start);
+        //    menusystem.closeMenu();
+        //}
+
+        //public void LockFrame(bool asFirst, bool bLock)
+        //{
+        //    voxelProject.LockAnimation(start);
+        //    menusystem.closeMenu();
+        //}
 
         //public void LinkAnimAddFrame()
         //{

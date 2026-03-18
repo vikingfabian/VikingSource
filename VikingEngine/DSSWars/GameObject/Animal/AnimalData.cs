@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.PJ.Bagatelle;
 
 namespace VikingEngine.DSSWars.GameObject.Animal
 {
@@ -27,8 +28,16 @@ namespace VikingEngine.DSSWars.GameObject.Animal
                     new TempAnimal(tilepos, wp);
                     break;
 
+                case ItemResourceType.Boar:
+                    new Livestock(tilepos, wp, DssVar.boarModel);
+                    break;
+
                 case ItemResourceType.Pig:
                     new Pig(tilepos, wp);
+                    break;
+
+                case ItemResourceType.Fowl:
+                    new Livestock(tilepos, wp, DssVar.fowlModel);
                     break;
 
                 case ItemResourceType.Hen:
@@ -40,36 +49,57 @@ namespace VikingEngine.DSSWars.GameObject.Animal
                     new Dog(tilepos, wp);
                     break;
 
+                case ItemResourceType.Oxen:
+                    new Livestock(tilepos, wp, DssVar.oxenModel);
+                    break;
+                case ItemResourceType.KineOxen:
+                    new Livestock(tilepos, wp, DssVar.kineOxenModel);
+                    break;
+
                 case ItemResourceType.Pony:
+                    new Livestock(tilepos, wp, DssVar.ponyModel);
+                    break;
                 case ItemResourceType.Horse:
+                    new Livestock(tilepos, wp, DssVar.horseModel);
+                    break;
                 case ItemResourceType.WarHorse:
+                    new Livestock(tilepos, wp, DssVar.warHorseModel);
+                    break;
                 case ItemResourceType.DraftHorse:
-                    new Horse(tilepos, wp);
+                    new Livestock(tilepos, wp, DssVar.draftHorseModel);
                     break;
 
                 case ItemResourceType.WildPig:
                 case ItemResourceType.WildHog:
                 case ItemResourceType.WarHog:
                 case ItemResourceType.StagHog:
-                    new Hog(tilepos, wp);
+                    new Livestock(tilepos, wp, DssVar.hogModel);
                     break;
 
                 case ItemResourceType.Wolf:
+                    new Livestock(tilepos, wp, DssVar.wolfModel);
+                    break;
                 case ItemResourceType.Warg:
+                    new Livestock(tilepos, wp, DssVar.wargModel);
+                    break;
                 case ItemResourceType.AlphaWarg:
-                    new Wolf(tilepos, wp);
+                    new Livestock(tilepos, wp, DssVar.alphaWargModel);
                     break;
 
                 case ItemResourceType.WildCat:
                 case ItemResourceType.Lion:
                 case ItemResourceType.WarLion:
-                    new Lion(tilepos, wp);
+                    new Livestock(tilepos, wp, DssVar.boarModel);
                     break;
 
                 case ItemResourceType.Elephant:
+                    new Livestock(tilepos, wp, DssVar.elephantModel);
+                    break;
                 case ItemResourceType.WarElephant:
+                    new Livestock(tilepos, wp, DssVar.warElephantModel);
+                    break;
                 case ItemResourceType.Oliphant:
-                    new Elephant(tilepos, wp);
+                    new Livestock(tilepos, wp, DssVar.oliphantModel);
                     break;
 
                 case ItemResourceType.Pheasant:

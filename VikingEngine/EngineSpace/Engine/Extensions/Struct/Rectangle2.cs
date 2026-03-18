@@ -13,7 +13,7 @@ using VikingEngine.ToGG.HeroQuest.Data.Condition;
 
 namespace VikingEngine
 {
-    public struct Rectangle2
+    struct Rectangle2
     {
         /*Properties */
         public IntVector2 BottomRight { get { return pos + size; } }

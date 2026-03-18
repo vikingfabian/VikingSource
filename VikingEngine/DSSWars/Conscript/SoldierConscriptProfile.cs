@@ -214,19 +214,21 @@ namespace VikingEngine.DSSWars.Conscript
 
             soldierData.modelData.shield = conscript.shield;
 
-           
-
             soldierData.modelData.specialization = conscript.specialization;
 
             if (conscript.vehicle != ItemResourceType.NONE)
             {
                 soldierData.WagonSetup();
-                //var vProperties = Resource.ItemPropertyColl.Get(conscript.vehicle);
                 if (conscript.vehicle == ItemResourceType.Wagon4Wheel &&
-                   weaponProperties.Filter_IsSiegeWeapon)//vProperties.Filter_IsRidingWagon)
+                   weaponProperties.Filter_IsSiegeWeapon)
                 {
                     soldierData.modelData.riding = true;
                 }
+                var wagonProperties = Resource.ItemPropertyColl.Get(conscript.vehicle);
+                var animalProperties = Resource.ItemPropertyColl.Get(conscript.animal);
+
+                soldierData.walkingSpeed = new IntervalF(animalProperties.soldierData.lightWagonSpeed, animalProperties.soldierData.heavyWagonSpeed).GetFromPercent(wagonProperties.soldierData.weightClass);
+
             }
             else if (conscript.animal != ItemResourceType.NONE)
             {
@@ -238,7 +240,9 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.rowWidth = animalProperties.soldierData.rowWidth;
                     soldierData.boundRadius = animalProperties.soldierData.boundRadius;
                     soldierData.groupSpacing = animalProperties.soldierData.groupSpacing;
-                }
+
+                    soldierData.walkingSpeed = animalProperties.soldierData.walkingSpeed;
+                }                
             }
             
             if (conscript.weapon == ItemResourceType.Pike)

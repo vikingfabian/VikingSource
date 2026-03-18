@@ -41,6 +41,9 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public float upkeepMultiplier = 1f;//DssLib.SoldierDefaultEnergyUpkeep;
         public float rotationSpeed= DssConst.SoldierGroupStandardRotatingSpeed;
         public float walkingSpeed = DssConst.Men_StandardWalkingSpeed;
+        public float weightClass = 0.5f;
+        public float lightWagonSpeed = DssConst.Men_StandardWalkingSpeed;
+        public float heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed;
         public bool canAttackCharacters = true;
         public bool canAttackStructure = true;
         public float modelScale = DssConst.Men_ModCharacterScale;

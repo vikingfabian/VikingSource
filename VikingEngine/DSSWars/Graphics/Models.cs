@@ -229,6 +229,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.city_pavement, false);
             loadVoxelModel(VoxelModelName.city_garden, false);
 
+            loadVoxelModel(VoxelModelName.Boar, false);
             loadVoxelModel(VoxelModelName.Pig, false);
             loadVoxelModel(VoxelModelName.Hen, false);
             loadVoxelModel(VoxelModelName.dog1, false);
@@ -250,7 +251,21 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.hog1, false);
             loadVoxelModel(VoxelModelName.wolf1, false);
             loadVoxelModel(VoxelModelName.lion1, false);
-            loadVoxelModel(VoxelModelName.Elephant1, false);
+            loadVoxelModel(VoxelModelName.Elephant_default, false);
+
+            loadVoxelModel(VoxelModelName.Fowl, false);
+            loadVoxelModel(VoxelModelName.oxen1, false);
+            loadVoxelModel(VoxelModelName.kineoxen1, false);
+            loadVoxelModel(VoxelModelName.pony_brown, false);
+            loadVoxelModel(VoxelModelName.pony_pink, false);
+            loadVoxelModel(VoxelModelName.drafthorse_red, false);
+            loadVoxelModel(VoxelModelName.warhorse_brown, false);
+            loadVoxelModel(VoxelModelName.warg1, false);
+            loadVoxelModel(VoxelModelName.alphawarg1, false);
+            loadVoxelModel(VoxelModelName.Elephant_war, false);
+            loadVoxelModel(VoxelModelName.Elephant_oli, false);
+
+
             loadVoxelModel(VoxelModelName.wagon_light, false);
             loadVoxelModel(VoxelModelName.wagon_light4, false);
             loadVoxelModel(VoxelModelName.wagon_coach, false);

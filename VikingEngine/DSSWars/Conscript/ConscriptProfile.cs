@@ -384,58 +384,83 @@ namespace VikingEngine.DSSWars.Conscript
                     break;
             }
 
-            switch (animal)
+            //switch (animal)
+            //{
+            //    case ItemResourceType.NONE:
+            //        break;
+            //    //case ItemResourceType.Pig:
+            //    //case ItemResourceType.Dog:
+            //    //case ItemResourceType.Hound:
+            //    //    break;
+
+            //    case ItemResourceType.Pony:
+            //    case ItemResourceType.Horse:
+            //    case ItemResourceType.WarHorse:
+            //    case ItemResourceType.DraftHorse:
+            //        if (vehicle == ItemResourceType.NONE)
+            //        {
+            //            name += " .horse rider";
+            //        }
+            //        else
+            //        {
+            //            name += " .wagon";
+            //        }
+            //        break;
+
+            //    case ItemResourceType.WildPig:
+            //    case ItemResourceType.WildHog:
+            //    case ItemResourceType.WarHog:
+            //    case ItemResourceType.StagHog:
+            //        if (vehicle == ItemResourceType.NONE)
+            //        {
+            //            name += " .hog rider";
+            //        }
+            //        else
+            //        {
+            //            name += " .wagon";
+            //        }
+            //        break;
+
+            //    case ItemResourceType.Elephant:
+            //    case ItemResourceType.WarElephant:
+            //    case ItemResourceType.Oliphant:
+            //        if (vehicle == ItemResourceType.NONE)
+            //        {
+            //            name += " .elephant rider";
+            //        }
+            //        else
+            //        {
+            //            name += " .howdah";
+            //        }
+            //        break;
+            //}
+
+            if (animal != ItemResourceType.NONE)
             {
-                case ItemResourceType.NONE:
-                    break;
-                //case ItemResourceType.Pig:
-                //case ItemResourceType.Dog:
-                //case ItemResourceType.Hound:
-                //    break;
-
-                case ItemResourceType.Pony:
-                case ItemResourceType.Horse:
-                case ItemResourceType.WarHorse:
-                case ItemResourceType.DraftHorse:
+                if (ItemPropertyColl.Get(animal).Filter_IsRidingAnimal)
+                {
                     if (vehicle == ItemResourceType.NONE)
                     {
-                        name += " .horse rider";
+                        name = string.Format(DssRef.todoLang.UnitType_UnitOnMount, name);
                     }
                     else
                     {
-                        name += " .wagon";
+                        name = string.Format(DssRef.todoLang.UnitType_UnitOnWagon, name);
                     }
-                    break;
-
-                case ItemResourceType.WildPig:
-                case ItemResourceType.WildHog:
-                case ItemResourceType.WarHog:
-                case ItemResourceType.StagHog:
-                    if (vehicle == ItemResourceType.NONE)
-                    {
-                        name += " .hog rider";
-                    }
-                    else
-                    {
-                        name += " .wagon";
-                    }
-                    break;
-
-                case ItemResourceType.Elephant:
-                case ItemResourceType.WarElephant:
-                case ItemResourceType.Oliphant:
-                    if (vehicle == ItemResourceType.NONE)
-                    {
-                        name += " .elephant rider";
-                    }
-                    else
-                    {
-                        name += " .howdah";
-                    }
-                    break;
+                }
+                else
+                {
+                    IconName.Item(animal, out _, out string animalName);
+                    name = string.Format(DssRef.todoLang.UnitType_LeashAnimalHandler, name, animalName);
+                }
             }
 
-            return name;
+            if (man == ItemResourceType.NobelMen)
+            {
+                name = string.Format(DssRef.todoLang.UnitType_NobelUnit, name);
+            }
+
+            return TextLib.LargeFirstLetter(name);
         }
 
         static readonly SpecializationType[] Specializations_AntiCavalry = { SpecializationType.AntiCavalry };
@@ -499,16 +524,35 @@ namespace VikingEngine.DSSWars.Conscript
             IconName.Item(weapon, out var weaponIcon, out string weaponName);
             IconName.Item(armorLevel, out var armorIcon, out string armorName);
 
-
             content.newLine();
 
             if (compact)
             {
-                //HudLib.BulletSeperationPoint(content);
                 content.Add(new RbImage(LangLib.Training_Icon(training)));
 
-                content.Add(new RbImage(weaponIcon));
+                if (animal != ItemResourceType.NONE)
+                {
+                    IconName.Item(animal, out SpriteName animalIcon, out string animalName);
+                    content.Add(new RbImage(animalIcon));
+                    if (mountArmor != ItemResourceType.NONE)
+                    {
+                        IconName.Item(mountArmor, out SpriteName mountArmorIcon, out string mountArmorName);
+                        content.Add(new RbImage(mountArmorIcon));
+                    }
+                    
+                    if (vehicle != ItemResourceType.NONE)
+                    {
+                        IconName.Item(vehicle, out SpriteName vehicleIcon, out string vehicleName);
+                        content.Add(new RbImage(vehicleIcon));
+                    }
+                }
 
+                content.Add(new RbImage(weaponIcon));
+                if (shield != ItemResourceType.NONE)
+                {
+                    IconName.Item(shield, out SpriteName shieldIcon, out string shieldName);
+                    content.Add(new RbImage(shieldIcon));
+                }
                 if (armorLevel != ItemResourceType.NONE)
                 {
                     content.Add(new RbImage(armorIcon));
@@ -521,6 +565,30 @@ namespace VikingEngine.DSSWars.Conscript
 
                 content.Add(new RbImage(LangLib.Training_Icon(training)));
                 content.Add(new RbText(LangLib.Training(training), HudLib.TitleColor_TypeName));
+
+                if (animal != ItemResourceType.NONE)
+                {
+                    IconName.Item(animal, out SpriteName animalIcon, out string animalName);
+                    HudLib.BulletSeperationPoint(content);
+                    content.Add(new RbImage(animalIcon));
+                    content.Add(new RbText(animalName, HudLib.TitleColor_TypeName));
+                    if (mountArmor != ItemResourceType.NONE)
+                    {
+                        IconName.Item(mountArmor, out SpriteName mountArmorIcon, out string mountArmorName);
+                        HudLib.BulletSeperationPoint(content);
+                        content.Add(new RbImage(mountArmorIcon));
+                        content.Add(new RbText(mountArmorName, HudLib.TitleColor_TypeName));
+                    }
+
+                    if (vehicle != ItemResourceType.NONE)
+                    {
+                        IconName.Item(vehicle, out SpriteName vehicleIcon, out string vehicleName);
+                        HudLib.BulletSeperationPoint(content);
+                        content.Add(new RbImage(vehicleIcon));
+                        content.Add(new RbText(vehicleName, HudLib.TitleColor_TypeName));
+                    }
+                }
+
 
                 HudLib.BulletSeperationPoint(content);
 
@@ -544,10 +612,6 @@ namespace VikingEngine.DSSWars.Conscript
                 }
             }
 
-            //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_WeaponTitle, LangLib.Item(weapon)));
-            //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_ArmorTitle, LangLib.Item(armorLevel)));
-            //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_TrainingTitle, LangLib.Training(training)));
-            //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_SpecializationTitle, LangLib.SpecializationTypeName(specialization)));
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
