@@ -1223,22 +1223,26 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.space();
             args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
 
-            if (compact)
-            {
-                HudLib.BulletSeperationPoint(args.content);
-            }
-            else
-            {
+            //if (compact)
+            //{
+            //    HudLib.BulletSeperationPoint(args.content);
+            //}
+            //else
+            //{
                 soldierConscript.conscript.toHud(args.content, compact);
                 args.content.newLine();
-            }
+            //}
             args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
             args.content.Add(new RbText(TextLib.TwoDecimal(strengthValue())));
+
+            args.content.space(2);
+            args.content.Add(new RbImage(SpriteName.cmdStatsMove));
+            args.content.Add(new RbText(TextLib.TwoDecimal(mobilityValue())));
         }
 
         public override void toTooltip(ObjectHudArgs args)
         {
-            SoldiersPresentationHud(args, true, false);
+            SoldiersPresentationHud(args, true, true);
         }
 
         public override void toHud(ObjectHudArgs args)
@@ -2296,10 +2300,13 @@ namespace VikingEngine.DSSWars.GameObject
         
 
         public float strengthValue()
+        {            
+            return AllUnits.GroupStrengh(soldierCount, ref soldierData, !isShip);   
+        }
+
+        public float mobilityValue()
         {
-            
-            return AllUnits.GroupStrengh(soldierCount, ref soldierData, !isShip);
-            
+            return soldierData.mobilityValue();
         }
 
         public AbsSoldierUnit FirstSoldier()

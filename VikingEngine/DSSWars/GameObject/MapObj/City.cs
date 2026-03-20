@@ -2347,6 +2347,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+                 args.content.hspace();
                 args.content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
 
                 args.content.newLine();
@@ -2808,7 +2809,9 @@ namespace VikingEngine.DSSWars.GameObject
 
                 CityEconomyData cityEconomy = new CityEconomyData(this);
 
-                content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
+                //content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue)));
+                HudLib.LabelAndText(content, SpriteName.WarsStrengthIcon, DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue));
+
 
                 if (!interactive)
                 {

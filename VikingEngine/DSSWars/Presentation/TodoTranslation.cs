@@ -26,10 +26,26 @@ namespace VikingEngine.DSSWars.Presentation
 
         //regular
         public string Hud_Time_ValuePerMinute => "Value per minute";
+        public string Hud_Time_ValuePerSecond => "Value per second";
         public string Hud_Lock => "Lock";
 
         public string Tutorial_SeeThisInThat = "See {0} in {1}";
         public string Conscript_SkillBonus => "Skill bonus";
+        public string SoldierStats_UnitCount => "Unit count";
+        /// <summary>
+        /// Areas are field, forest, sea and siege
+        /// </summary>
+        public string Conscript_DamagePerSecondInAreaX => "Damage per second - {0}";
+        public string Conscript_BaseHealth => "Base health";
+
+        /// <summary>
+        /// Summary value for the ability to get across the map
+        /// </summary>
+        public string Conscript_Mobility => "Mobility";
+
+        public string Conscript_RiderMobility => "Rider mobility";
+        public string Conscript_LightWagonMobility => "Light wagon mobility";
+        public string Conscript_HeavyWagonMobility => "Heavy wagon mobility";
 
         /// <summary>
         /// Generelized for any object, like skills, resources and buildings

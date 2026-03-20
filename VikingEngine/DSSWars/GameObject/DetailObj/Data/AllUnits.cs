@@ -41,12 +41,13 @@ namespace VikingEngine.DSSWars.GameObject
             //add(new DarkLordWarshipData());
 
             add(new CityGuardSoldierBuilder());
-           
 
+            var defaultShield = DssVar.Shields[Resource.ItemResourceType.RoundShield];
             int defaultAttackDamage = DssConst.WeaponDamage_Sword;
             int defaultDps = DPS(defaultAttackDamage, DssConst.Soldier_StandardAttackAndCoolDownTime);//Convert.ToInt32(defaultAttackDamage / (DssConst.Soldier_StandardAttackAndCoolDownTime / 1000.0));
+            defaultDps = MathExt.MultiplyInt(defaultDps, 1f + defaultShield.meleeSpeedBonus);
             //int defaultDps = DssRef.profile.Get(UnitType.Soldier).DPS_land();
-            AverageGroupStrength = GroupStrengh_Raw(DssConst.SoldierGroup_DefaultCount, defaultDps, DssConst.Soldier_DefaultHealth);//DssConst.SoldierGroup_DefaultCount * (defaultDps + HealthToStrengthConvertion * DssConst.Soldier_DefaultHealth) ;
+            AverageGroupStrength = GroupStrengh_Raw(DssConst.SoldierGroup_DefaultCount, defaultDps, DssConst.Soldier_DefaultHealth + defaultShield.armorBonus);//DssConst.SoldierGroup_DefaultCount * (defaultDps + HealthToStrengthConvertion * DssConst.Soldier_DefaultHealth) ;
             
         }
 

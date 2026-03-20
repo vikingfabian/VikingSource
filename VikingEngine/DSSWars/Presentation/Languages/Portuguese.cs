@@ -337,7 +337,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_SoldierGroupsCount => "Qtd. de grupos: {0}";
 
         /// <summary>Ingame display. Unit calculated battle strength.</summary>
-        public override string Hud_StrengthRating => "Índice de força: {0}";
+        public override string Hud_StrengthRating => "Índice de força";
 
         /// <summary>Ingame display. Calculated battle strength for the whole nation.</summary>
         public override string Hud_TotalStrengthRating => "Força militar: {0}";
@@ -1134,7 +1134,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Mostrado em Recursos por Segundo.";
+        public override string Info_ResourcePerSecond => "Mostrado em Recursos por Segundo.";
 
         public override string Info_MinuteAverage => "O valor é uma média do último minuto";
 

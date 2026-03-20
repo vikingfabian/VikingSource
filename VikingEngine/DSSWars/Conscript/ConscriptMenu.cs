@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Interface.Component;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
@@ -211,7 +212,7 @@ namespace VikingEngine.DSSWars.Conscript
                 if (advanced && !guardTab)
                 {
                     content.newParagraph();
-                    HudLib.Label(content, DssRef.todoLang.Resource_TypeName_Animal);
+                    HudLib.Label(content, TextLib.LargeFirstLetter( DssRef.todoLang.Resource_TypeName_Animal));
                     content.newLine();
 
                     foreach (var item in ConscriptDataLib.AnimalTypes)
@@ -238,7 +239,7 @@ namespace VikingEngine.DSSWars.Conscript
                     if (currentStatus.profile.animal != ItemResourceType.NONE)
                     {
                         content.newParagraph();
-                        HudLib.Label(content, DssRef.todoLang.Resource_TypeName_MountArmorTitle);
+                        HudLib.Label(content, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_MountArmorTitle));
                         content.newLine();
 
                         foreach (var item in ConscriptDataLib.MountArmorTypes)
@@ -256,14 +257,14 @@ namespace VikingEngine.DSSWars.Conscript
 
                             var button = new ArtOption(item == currentStatus.profile.mountArmor, buttonContent,
                             new RbAction1Arg<ItemResourceType>(mountArmorClick, item, RbSoundType.Option),
-                            new RbTooltip(mountArmorTooltip, item)
+                            new RbTooltip(armorTooltip, item)
                             );
 
                             content.Add(button);
                         }
 
                         content.newParagraph();
-                        HudLib.Label(content, DssRef.todoLang.Resource_TypeName_Vehicle);
+                        HudLib.Label(content, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_Vehicle));
                         content.newLine();
 
                         foreach (var item in ConscriptDataLib.VehicleTypes)
@@ -342,7 +343,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     foreach (var specialization in specializationTypes)
                     {
-                        var specText = LangLib.SpecializationTypeName(specialization, out var specIcon);
+                        IconName.SpecializationTypeName(specialization, out var specIcon, out string specName);
                         var button = new ArtOption(specialization == currentStatus.profile.specialization, new List<AbsRichBoxMember>{
                             new RbImage(specIcon, 0.8f),
                             //new RbSpace(0.5f),
@@ -370,6 +371,11 @@ namespace VikingEngine.DSSWars.Conscript
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsResource_Food), new RbSpace(), new RbText(DssRef.lang.Conscript_FoodAbundance) },
                     maxFoodProperty, new RbTooltip_Text(DssRef.lang.Conscript_FoodAbundance_Description)));
+
+                content.newParagraph();
+                HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Gain);
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.HoverArea, resultContent(), null, new RbTooltip(resultTooltip)));
 
                 content.newParagraph();
                 HudLib.copyPaste(content, player,
@@ -618,9 +624,9 @@ namespace VikingEngine.DSSWars.Conscript
         void specializationToolTip(RichBoxContent content, object tag)
         {
             SpecializationType specialization = (SpecializationType)tag;
-            var specText = LangLib.SpecializationTypeName(specialization, out var specIcon);
+            IconName.SpecializationTypeName(specialization, out var specIcon, out string specName);
 
-            content.icontext(specIcon, specText);
+            content.h1(specIcon, specName, HudLib.TitleColor_Head);
 
             content.newParagraph();
             content.text(string.Format( DssRef.lang.Conscript_SpecializationDescription, TextLib.PercentTextWithSymbol(DssConst.Conscript_SpecializePercentage)), HudLib.InfoYellow_Light);
@@ -770,6 +776,49 @@ namespace VikingEngine.DSSWars.Conscript
             set(currentProfile);
         }
 
+        RichBoxContent resultContent()
+        {
+            RichBoxContent content = new RichBoxContent();
+            BarracksStatus currentProfile = get();
+            var conscriptPreview = new SoldierConscriptProfile() { conscript = currentProfile.profile };
+            var soldierPreview = conscriptPreview.createSoldierData();
+            int count = soldierPreview.UnitCount();
+            content.Add(new RbText(count.ToString(), null, LoadedFont.Bold));
+            content.space();
+            content.Add(new RbImage(AllUnits.UnitFilterIcon(conscriptPreview.filterType())));
+            content.hspace();
+            content.Add(new RbText(currentProfile.profile.TypeName(), HudLib.TitleColor_TypeName));
+
+            content.space();
+
+            currentProfile.profile.toHud(content, true);
+            return content;
+        }
+
+        void resultTooltip(RichBoxContent content, object tag)
+        {
+            BarracksStatus currentProfile = get();
+
+            var conscriptPreview = new SoldierConscriptProfile() { conscript = currentProfile.profile };
+            var soldierPreview = conscriptPreview.createSoldierData();
+
+            int count = soldierPreview.UnitCount();
+            HudLib.LabelAndText(content, AllUnits.UnitFilterIcon(conscriptPreview.filterType()),
+                DssRef.todoLang.SoldierStats_UnitCount, count.ToString());
+
+            float strengthValue = AllUnits.GroupStrengh(count, ref soldierPreview, true);
+            HudLib.LabelAndText(content, SpriteName.WarsStrengthIcon, DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue));
+            //content.newLine();
+            //content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+            //content.hspace();
+            //content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
+
+            content.newParagraph();
+            content.h2(DssRef.lang.SoldierStats_Title, HudLib.TitleColor_Head2);
+            soldierPreview.StatsToHud(content);
+            //currentProfile.profile.toHud(content, false);
+        }
+
         void weaponTooltip(RichBoxContent content, object tag)
         {
             ItemResourceType weapon = (ItemResourceType)tag;
@@ -832,9 +881,9 @@ namespace VikingEngine.DSSWars.Conscript
 
             float skillBonus = item == ItemResourceType.NobelMen ? DssConst.NobelMenSkillBonusAdd : 0;
 
-            //HudLib.LabelAndText(content, SpriteName.WarsStrengthIcon, DssRef.todoLang.Conscript_SkillBonus, TextLib.PercentAddText(skillBonus));
-            //content.hspace();
-            //content.Add(new RbText($"+{skillBonus}%"));
+            //HudLib.LabelAndText(content, SpriteName.cmdStatsHealth, DssRef.lang.SoldierStats_Health, TextLib.TwoDecimal(DssConst.Soldier_DefaultHealth));
+            HudLib.LabelAndText(content, SpriteName.cmdStatsMove, DssRef.todoLang.Conscript_Mobility, TextLib.TwoDecimal(SoldierData.Mobility(DssConst.Men_StandardWalkingSpeed)));
+
             SkillbonusUi(content, skillBonus, true);
 
             content.newParagraph();
@@ -862,17 +911,43 @@ namespace VikingEngine.DSSWars.Conscript
         {
             ItemResourceType item = (ItemResourceType)tag;
 
-            ResourceLib.FullResourceInfo(player.faction, city, item, content);
-        }
-        void mountArmorTooltip(RichBoxContent content, object tag)
-        {
-            ItemResourceType item = (ItemResourceType)tag;
+            IconName.Item(item, out SpriteName icon, out string  name);
+            content.h1(TextLib.LargeFirstLetter(name), HudLib.TitleColor_Head);
+            content.newLine();
+            var properties = ItemPropertyColl.Get(item);
+
+            HudLib.LabelAndText(content, SpriteName.WarsResource_Sword, DssRef.lang.Conscript_WeaponDamage, TextLib.PlusMinus(properties.soldierData.attackDamage));
+            HudLib.LabelAndText(content, SpriteName.warsArmyTag_Shield, DssRef.lang.Conscript_ArmorHealth, TextLib.PlusMinus(properties.soldierData.basehealth));
+            HudLib.LabelAndText(content, SpriteName.cmdStatsMove, DssRef.todoLang.Conscript_RiderMobility, TextLib.TwoDecimal( properties.soldierData.mobilityValue()));
+            HudLib.LabelAndText(content, SpriteName.WarsResource_Wagon2Wheel, DssRef.todoLang.Conscript_LightWagonMobility, TextLib.TwoDecimal(SoldierData.Mobility( properties.soldierData.lightWagonSpeed)));
+            HudLib.LabelAndText(content, SpriteName.WarsResource_WagonSteel, DssRef.todoLang.Conscript_HeavyWagonMobility, TextLib.TwoDecimal(SoldierData.Mobility(properties.soldierData.heavyWagonSpeed)));
+
+
+            content.newParagraph();
+            content.Add(new RbSeperationLine() { thick = true });
 
             ResourceLib.FullResourceInfo(player.faction, city, item, content);
         }
+        //void mountArmorTooltip(RichBoxContent content, object tag)
+        //{
+        //    ItemResourceType item = (ItemResourceType)tag;
+
+        //    ResourceLib.FullResourceInfo(player.faction, city, item, content);
+        //}
         void vehicleTooltip(RichBoxContent content, object tag)
         {
             ItemResourceType item = (ItemResourceType)tag;
+
+            IconName.Item(item, out SpriteName icon, out string name);
+            content.h1(TextLib.LargeFirstLetter(name), HudLib.TitleColor_Head);
+            content.newLine();
+            var properties = ItemPropertyColl.Get(item);
+
+            HudLib.LabelAndText(content, SpriteName.WarsResource_Sword, DssRef.lang.Conscript_WeaponDamage, TextLib.PlusMinus(properties.soldierData.attackDamage));
+            HudLib.LabelAndText(content, SpriteName.warsArmyTag_Shield, DssRef.lang.Conscript_ArmorHealth, TextLib.PlusMinus(properties.soldierData.basehealth));
+
+            content.newParagraph();
+            content.Add(new RbSeperationLine() { thick = true });
 
             ResourceLib.FullResourceInfo(player.faction, city, item, content);
         }

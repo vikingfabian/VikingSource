@@ -435,7 +435,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Отображение в игре. Расчетная боевая мощь юнита
         /// </summary>
-        public override string Hud_StrengthRating => "Рейтинг силы: {0}";
+        public override string Hud_StrengthRating => "Рейтинг силы";
 
         /// <summary>
         /// Отображение в игре. Расчетная боевая мощь всей нации
@@ -1569,7 +1569,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Отображено в ресурсах в секунду.";
+        public override string Info_ResourcePerSecond => "Отображено в ресурсах в секунду.";
 
         public override string Info_MinuteAverage => "Значение представляет собой среднее за последнюю минуту.";
 

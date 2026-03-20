@@ -437,7 +437,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Ingame display. Unit calculated battle strength.
         /// </summary>
-        public override string Hud_StrengthRating => "전투력: {0}";
+        public override string Hud_StrengthRating => "전투력";
 
         /// <summary>
         /// Ingame display. Calculated battle strength for the whole nation.
@@ -1596,7 +1596,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "정보";
 
-        public override string Info_PerSecond => "초당 자원 단위로 표시됩니다.";
+        public override string Info_ResourcePerSecond => "초당 자원 단위로 표시됩니다.";
         public override string Info_MinuteAverage => "최근 1분간의 평균값입니다.";
 
         public override string Message_OutOfFood_Title => "식량 부족";

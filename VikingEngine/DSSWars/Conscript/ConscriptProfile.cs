@@ -524,7 +524,7 @@ namespace VikingEngine.DSSWars.Conscript
             IconName.Item(weapon, out var weaponIcon, out string weaponName);
             IconName.Item(armorLevel, out var armorIcon, out string armorName);
 
-            content.newLine();
+            //content.newLine();
 
             if (compact)
             {
@@ -539,7 +539,7 @@ namespace VikingEngine.DSSWars.Conscript
                         IconName.Item(mountArmor, out SpriteName mountArmorIcon, out string mountArmorName);
                         content.Add(new RbImage(mountArmorIcon));
                     }
-                    
+
                     if (vehicle != ItemResourceType.NONE)
                     {
                         IconName.Item(vehicle, out SpriteName vehicleIcon, out string vehicleName);
@@ -557,59 +557,97 @@ namespace VikingEngine.DSSWars.Conscript
                 {
                     content.Add(new RbImage(armorIcon));
                 }
+
+                if (specialization != SpecializationType.None)
+                {
+                    IconName.SpecializationTypeName(specialization, out var specIcon, out string specName);
+                    content.Add(new RbImage(specIcon));
+                }
             }
             else
             {
 
-                HudLib.BulletSeperationPoint(content);
+                //HudLib.BulletSeperationPoint(content);
 
-                content.Add(new RbImage(LangLib.Training_Icon(training)));
-                content.Add(new RbText(LangLib.Training(training), HudLib.TitleColor_TypeName));
+                //content.Add(new RbImage(LangLib.Training_Icon(training)));
+                //content.Add(new RbText(LangLib.Training(training), HudLib.TitleColor_TypeName));
+                label(DssRef.lang.Conscript_TrainingTitle, LangLib.Training_Icon(training), LangLib.Training(training));
 
                 if (animal != ItemResourceType.NONE)
                 {
-                    IconName.Item(animal, out SpriteName animalIcon, out string animalName);
-                    HudLib.BulletSeperationPoint(content);
-                    content.Add(new RbImage(animalIcon));
-                    content.Add(new RbText(animalName, HudLib.TitleColor_TypeName));
-                    if (mountArmor != ItemResourceType.NONE)
-                    {
-                        IconName.Item(mountArmor, out SpriteName mountArmorIcon, out string mountArmorName);
-                        HudLib.BulletSeperationPoint(content);
-                        content.Add(new RbImage(mountArmorIcon));
-                        content.Add(new RbText(mountArmorName, HudLib.TitleColor_TypeName));
-                    }
-
-                    if (vehicle != ItemResourceType.NONE)
-                    {
-                        IconName.Item(vehicle, out SpriteName vehicleIcon, out string vehicleName);
-                        HudLib.BulletSeperationPoint(content);
-                        content.Add(new RbImage(vehicleIcon));
-                        content.Add(new RbText(vehicleName, HudLib.TitleColor_TypeName));
-                    }
+                    labelItem(DssRef.todoLang.Resource_TypeName_Animal, animal);
+                    labelItem(DssRef.todoLang.Resource_TypeName_MountArmorTitle, mountArmor);
+                    labelItem(DssRef.todoLang.Resource_TypeName_Vehicle, vehicle);
                 }
+                //    IconName.Item(animal, out SpriteName animalIcon, out string animalName);
+                //    HudLib.BulletSeperationPoint(content);
+                //    content.Add(new RbImage(animalIcon));
+                //    content.Add(new RbText(animalName, HudLib.TitleColor_TypeName));
+                //    if (mountArmor != ItemResourceType.NONE)
+                //    {
+                //        IconName.Item(mountArmor, out SpriteName mountArmorIcon, out string mountArmorName);
+                //        HudLib.BulletSeperationPoint(content);
+                //        content.Add(new RbImage(mountArmorIcon));
+                //        content.Add(new RbText(mountArmorName, HudLib.TitleColor_TypeName));
+                //    }
+
+                //    if (vehicle != ItemResourceType.NONE)
+                //    {
+                //        IconName.Item(vehicle, out SpriteName vehicleIcon, out string vehicleName);
+                //        HudLib.BulletSeperationPoint(content);
+                //        content.Add(new RbImage(vehicleIcon));
+                //        content.Add(new RbText(vehicleName, HudLib.TitleColor_TypeName));
+                //    }
+                //}
 
 
-                HudLib.BulletSeperationPoint(content);
+                //HudLib.BulletSeperationPoint(content);
+                labelItem(DssRef.lang.Conscript_WeaponTitle, weapon);
+                labelItem(DssRef.todoLang.Resource_TypeName_Shield, shield);
+                labelItem(DssRef.lang.Conscript_ArmorTitle, armorLevel);
 
-                content.Add(new RbImage(weaponIcon));
-                content.Add(new RbText(weaponName, HudLib.TitleColor_TypeName));
 
-                if (armorLevel != ItemResourceType.NONE)
-                {
-                    HudLib.BulletSeperationPoint(content);
+                //content.Add(new RbImage(weaponIcon));
+                //content.Add(new RbText(weaponName, HudLib.TitleColor_TypeName));
 
-                    content.Add(new RbImage(armorIcon));
-                    content.Add(new RbText(armorName, HudLib.TitleColor_TypeName));
-                }
+                //if (armorLevel != ItemResourceType.NONE)
+                //{
+                //    HudLib.BulletSeperationPoint(content);
+
+                //    content.Add(new RbImage(armorIcon));
+                //    content.Add(new RbText(armorName, HudLib.TitleColor_TypeName));
+                //}
 
                 if (specialization != SpecializationType.None)
                 {
-                    content.newLine();
-                    HudLib.BulletSeperationPoint(content);
-                    content.space();
-                    content.Add(new RbText(LangLib.SpecializationTypeName(specialization, out var specIcon), HudLib.TitleColor_TypeName));
+                    IconName.SpecializationTypeName(specialization, out var specIcon, out string specName);
+                    label(DssRef.lang.Conscript_SpecializationTitle, specIcon, specName);
+                    //    content.newLine();
+                    //    HudLib.BulletSeperationPoint(content);
+                    //    content.space();
+                    //    content.Add(new RbText(LangLib.SpecializationTypeName(specialization, out var specIcon), HudLib.TitleColor_TypeName));
                 }
+
+                void label(string label, SpriteName icon, string name)
+                {
+                    HudLib.Label(content, TextLib.LargeFirstLetter(label));
+                    content.Add(new RbImage(icon));
+                    content.hspace();
+                    content.Add(new RbText(TextLib.LargeFirstLetter(name), HudLib.TitleColor_TypeName));
+                }
+                void labelItem(string label, ItemResourceType item)
+                {
+                    if (item != ItemResourceType.NONE)
+                    {
+                        IconName.Item(item, out SpriteName icon, out string name);
+
+                        HudLib.Label(content, TextLib.LargeFirstLetter(label));
+                        content.Add(new RbImage(icon));
+                        content.hspace();
+                        content.Add(new RbText(TextLib.LargeFirstLetter(name), HudLib.TitleColor_TypeName));
+                    }
+                }
+
             }
 
         }

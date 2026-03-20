@@ -103,6 +103,45 @@ namespace VikingEngine.DSSWars.Conscript
 
         }
 
+        public int payItems(City city, bool men, CommitOption commit)
+        {
+            xx
+            int needMenEquipment = menNeeded - equipmentCollected;
+            var me = this;
+
+            int allItems(int mencount, int animalCount, int unitCount, bool commit)
+            {
+                payItem(me.profile.weapon, mencount, commit);
+                payItem(me.profile.shield, mencount, commit);
+                payItem(me.profile.armorLevel, mencount, commit);
+                
+                payItem(me.profile.weapon, mencount, commit);
+                payItem(me.profile.weapon, mencount, commit);
+                return -1;
+            }            
+
+            int payItem(ItemResourceType item, int count, bool commit)
+            {
+                if (item == ItemResourceType.NONE)
+                {
+                    return count;
+                }
+
+                if (commit)
+                {
+                    city.AddGroupedResource(item, count);
+                    return 0;
+                }
+                else
+                {
+                    int available = city.GetGroupedResource(item).amount;
+                    return available;
+                }
+            }
+
+            return -1;
+        }
+
         public void returnItems(City city)
         {
             if (active == ConscriptActiveStatus.CollectingEquipment ||

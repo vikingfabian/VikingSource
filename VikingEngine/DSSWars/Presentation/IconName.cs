@@ -5,6 +5,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
@@ -24,6 +25,60 @@ namespace VikingEngine.DSSWars
 {
     static class IconName
     {
+        public static void SpecializationTypeName(SpecializationType specialization, out SpriteName icon, out string name)
+        {
+            switch (specialization)
+            {
+                case SpecializationType.None:
+                    icon = SpriteName.BluePrintSquareFull;
+                    name = DssRef.lang.Hud_None;
+                    break;
+                case SpecializationType.Field:
+                    icon = SpriteName.WarsSpecializeField;
+                    name = DssRef.lang.Conscript_Specialization_Field;
+                    break;
+                case SpecializationType.Sea:
+                    icon = SpriteName.WarsSpecializeSea;
+                    name = DssRef.lang.Conscript_Specialization_Sea;
+                    break;
+                case SpecializationType.Siege:
+                    icon = SpriteName.WarsSpecializeSiege;
+                    name = DssRef.lang.Conscript_Specialization_Siege;
+                    break;
+                case SpecializationType.Viking:
+                    icon = SpriteName.WarsUnitIcon_Viking;
+                    name = DssRef.lang.UnitType_Viking;
+                    break;
+                case SpecializationType.HonorGuard:
+                    icon = SpriteName.WarsUnitIcon_Honorguard;
+                    name = DssRef.lang.UnitType_HonorGuard;
+                    break;
+                case SpecializationType.Green:
+                    icon = SpriteName.WarsUnitIcon_Greensoldier;
+                    name = DssRef.lang.UnitType_GreenSoldier;
+                    break;
+                case SpecializationType.Traditional:
+                    icon = SpriteName.WarsSpecializeTradition;
+                    name = DssRef.lang.Conscript_Specialization_Traditional;
+                    break;
+                case SpecializationType.AntiCavalry:
+
+                    icon = SpriteName.WarsSpecializeAntiCavalry;
+                    name = DssRef.lang.Conscript_Specialization_AntiCavalry;
+                    break;
+                case SpecializationType.CityGuard:
+
+                    icon = SpriteName.WarsGuard;
+                    name = DssRef.lang.Conscript_Soldiers_GuardType;
+                    break;
+
+                default:
+                    icon = SpriteName.NO_IMAGE;
+                    name = TextLib.Error;
+                    break;
+            }
+
+        }
         public static void Storage(StorageType storage, out SpriteName storeIcon, out string storeText)
         {
             switch (storage)

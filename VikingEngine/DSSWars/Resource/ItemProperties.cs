@@ -194,6 +194,7 @@ namespace VikingEngine.DSSWars.Resource
         Farm,
         Crafting,
         AnamalHabitat,
+        Building,
         NUM
     }
 

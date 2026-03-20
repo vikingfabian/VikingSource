@@ -75,6 +75,12 @@ namespace VikingEngine.DSSWars.Resource
                         addBuilding(sourceId);
                         break;
 
+                    case ItemSourceType.Building:
+
+                        label(DssRef.lang.BuildingType_DefaultName);
+                        addBuilding(sourceId);
+                        break;
+
                     case ItemSourceType.Mine:
                         label(DssRef.lang.ItemSource_Gathering);
                         IconName.Terrain(TerrainMainType.Mine, sourceId, out var icon, out var name);

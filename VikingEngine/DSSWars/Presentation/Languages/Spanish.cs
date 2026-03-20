@@ -435,7 +435,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Pantalla del juego. Fuerza de batalla calculada de la unidad.
         /// </summary>
-        public override string Hud_StrengthRating => "Valor de fuerza: {0}";
+        public override string Hud_StrengthRating => "Valor de fuerza";
 
         /// <summary>
         /// Pantalla del juego. Fuerza de batalla calculada para toda la nación.
@@ -1574,7 +1574,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Mostrado en Recursos por Segundo.";
+        public override string Info_ResourcePerSecond => "Mostrado en Recursos por Segundo.";
 
         public override string Info_MinuteAverage => "El valor es un promedio del último minuto";
 

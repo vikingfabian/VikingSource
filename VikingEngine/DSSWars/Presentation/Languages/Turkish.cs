@@ -442,7 +442,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
         /// </summary>
-        public override string Hud_StrengthRating => "Güç Oranı: {0}";
+        public override string Hud_StrengthRating => "Güç Oranı";
 
         /// <summary>
         /// Ingame display. Caculated battle strength for the whole nation.
@@ -1592,7 +1592,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Saniye Başı Sergilenen Kaynak";
+        public override string Info_ResourcePerSecond => "Saniye Başı Sergilenen Kaynak";
 
         public override string Info_MinuteAverage => "Bu değer, son bir dakikadaki ortalamanın sonucudur";
 

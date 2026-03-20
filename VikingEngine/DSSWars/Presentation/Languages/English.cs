@@ -1610,7 +1610,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Displayed in Resource Per Second.";
+        public override string Info_ResourcePerSecond => "Displayed in Resource Per Second.";
 
         public override string Info_MinuteAverage => "The value is an average from the last minute";
 

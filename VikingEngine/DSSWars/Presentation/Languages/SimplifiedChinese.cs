@@ -435,7 +435,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 游戏内显示。单位计算的战斗力。
         /// </summary>
-        public override string Hud_StrengthRating => "战斗力: {0}";
+        public override string Hud_StrengthRating => "战斗力";
 
         /// <summary>
         /// 游戏内显示。整个国家的计算战斗力。
@@ -1571,7 +1571,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "以每秒资源显示。";
+        public override string Info_ResourcePerSecond => "以每秒资源显示。";
 
         public override string Info_MinuteAverage => "此值是过去一分钟的平均值。";
 

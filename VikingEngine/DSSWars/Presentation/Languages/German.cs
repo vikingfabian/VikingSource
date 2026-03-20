@@ -315,7 +315,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_GuardCount_MustExpandCityMessage => "Du musst die Stadt erweitern.";
         public override string Hud_SoldierCount => "Soldatenanzahl: {0}";
         public override string Hud_SoldierGroupsCount => "Gruppenanzahl: {0}";
-        public override string Hud_StrengthRating => "Stärkewertung: {0}";
+        public override string Hud_StrengthRating => "Stärkewertung";
         public override string Hud_TotalStrengthRating => "Militärische Stärke: {0}";
         public override string Hud_Immigrants => "Einwanderer";
         public override string Hud_CityCount => "Stadtanzahl: {0}";
@@ -1450,7 +1450,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Angezeigt als Ressourcen pro Sekunde.";
+        public override string Info_ResourcePerSecond => "Angezeigt als Ressourcen pro Sekunde.";
 
         public override string Info_MinuteAverage => "Der Wert ist ein Durchschnitt der letzten Minute.";
 

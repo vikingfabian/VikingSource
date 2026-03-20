@@ -1,12 +1,16 @@
 ﻿UPDATE
 Change Log:
 * Voxel editor: repaired the animation locks
-* Added system for setting wagon and mount speed
+* Added system for setting wagon and mount speed, attack and health
 * Most animal models complete
-* Added animals to soldier ui
+* Updated soldiers tooltip
+* Ui for exposing soldier stats
+* fixed build over clay pit
+
 
 ##ICONS TODO
-
+move speed
+attack speed
 
 #MOUNTED TODO
 

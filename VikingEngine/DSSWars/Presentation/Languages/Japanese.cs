@@ -438,7 +438,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// ゲーム内表示。ユニットの計算された戦闘力。
         /// </summary>
-        public override string Hud_StrengthRating => "戦力評価: {0}";
+        public override string Hud_StrengthRating => "戦力評価";
 
         /// <summary>
         /// ゲーム内表示。国全体の計算された戦闘力。
@@ -1581,7 +1581,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "毎秒あたりの資源で表示されます。";
+        public override string Info_ResourcePerSecond => "毎秒あたりの資源で表示されます。";
 
         public override string Info_MinuteAverage => "この値は、過去1分の平均値です。";
 

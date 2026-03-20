@@ -134,6 +134,8 @@ namespace VikingEngine.DSSWars
         public static int ArmorHealth_FullPlate = (int)(Soldier_DefaultHealth * 3);
         public static int ArmorHealth_Mithril = (int)(Soldier_DefaultHealth * 6);
 
+        public static double ArmorHealthMulti_Mounts = 2.0;
+
         public static float TrainingAttackSpeed_Minimal = 0.5f;
         public static float TrainingAttackSpeed_Basic = 1f;
         public static float TrainingAttackSpeed_Skillful = 1.5f;

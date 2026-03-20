@@ -455,7 +455,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Wyświetlanie w grze. Obliczona siła bitewna jednostki.
         /// </summary>
-        public override string Hud_StrengthRating => "Wskaźnik siły: {0}";
+        public override string Hud_StrengthRating => "Wskaźnik siły";
 
         /// <summary>
         /// Wyświetlanie w grze. Obliczona siła bitewna dla całego narodu.
@@ -1602,7 +1602,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Wyświetlane jako Surowce na sekundę.";
+        public override string Info_ResourcePerSecond => "Wyświetlane jako Surowce na sekundę.";
 
         public override string Info_MinuteAverage => "Wartość jest średnią z ostatniej minuty";
 

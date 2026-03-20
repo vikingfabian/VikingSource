@@ -65,27 +65,9 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 default:
                     return ItemPropertyColl.Get(conscript.weapon).Filter_IsSiegeWeapon ? UnitBuildType.ConscriptWarmachine : UnitBuildType.Conscript;
-                //switch (conscript.weapon)
-                //{
-                //    case ItemResourceType.Ballista:
-                //    case ItemResourceType.Manuballista:
-                //    case ItemResourceType.Catapult:
-                //    case ItemResourceType.UN_BatteringRam:
-                //    case ItemResourceType.SiegeCannonBronze:
-                //    case ItemResourceType.ManCannonBronze:
-                //    case ItemResourceType.SiegeCannonIron:
-                //    case ItemResourceType.ManCannonIron:
-                //        return UnitType.ConscriptWarmachine;
-
-                //    default:
-                //        return UnitType.Conscript;
-                //}
-
+               
                 case SpecializationType.CityGuard:
                     return UnitBuildType.CityGuard;
-                    //case SpecializationType.DarkLord:
-                    //    return UnitType.DarkLord;
-
             }
 
                     
@@ -229,6 +211,8 @@ namespace VikingEngine.DSSWars.Conscript
 
                 soldierData.walkingSpeed = new IntervalF(animalProperties.soldierData.lightWagonSpeed, animalProperties.soldierData.heavyWagonSpeed).GetFromPercent(wagonProperties.soldierData.weightClass);
 
+                ridingAnimalSetup(conscript.animal, conscript.mountArmor, ref soldierData);
+                wagonSetup(conscript.vehicle, ref soldierData);
             }
             else if (conscript.animal != ItemResourceType.NONE)
             {
@@ -242,6 +226,8 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.groupSpacing = animalProperties.soldierData.groupSpacing;
 
                     soldierData.walkingSpeed = animalProperties.soldierData.walkingSpeed;
+
+                    ridingAnimalSetup(conscript.animal, conscript.mountArmor, ref soldierData);
                 }                
             }
             
@@ -345,6 +331,25 @@ namespace VikingEngine.DSSWars.Conscript
             return soldierData;
 
             
+        }
+
+        void ridingAnimalSetup(ItemResourceType animal, ItemResourceType armor, ref SoldierData soldierData)
+        {
+            var animalData = ItemPropertyColl.Get(animal).soldierData;
+            soldierData.attackDamage += animalData.attackDamage;
+            soldierData.basehealth += animalData.basehealth;
+
+            if (armor != ItemResourceType.NONE)
+            {
+                soldierData.basehealth += ItemPropertyColl.Get(armor).soldierData.basehealth;
+            }
+        }
+        void wagonSetup(ItemResourceType wagon, ref SoldierData soldierData)
+        {
+            var wagonData = ItemPropertyColl.Get(wagon).soldierData;
+            soldierData.attackDamage += wagonData.attackDamage;
+            soldierData.basehealth += wagonData.basehealth;
+
         }
 
         public SoldierData bannermanSetup(SoldierData soldierData)

@@ -459,7 +459,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     content.Add(new RbBeginTitle(2));
                     content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-                    content.Add(new RbText(string.Format(DssRef.lang.Hud_StrengthRating, string.Empty)));//"Strength ratings:"));
+                    content.Add(new RbText(DssRef.lang.Hud_StrengthRating));//"Strength ratings:"));
                     
                     content.newLine();
                     content.Add(new RbTexture(player.flagTexture, 1f, 0, 0.2f));

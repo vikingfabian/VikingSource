@@ -800,7 +800,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public abstract string Info_ButtonIcon { get; }
 
-        public abstract string Info_PerSecond { get; }
+        public abstract string Info_ResourcePerSecond { get; }
 
         public abstract string Info_MinuteAverage { get; }
 

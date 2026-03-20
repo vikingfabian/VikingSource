@@ -875,48 +875,48 @@ namespace VikingEngine.DSSWars.Presentation
             }
         }
 
-        public static string SpecializationTypeName(SpecializationType specialization, out SpriteName icon)
-        {
-            switch (specialization)
-            {
-                case SpecializationType.None:
-                    icon = SpriteName.BluePrintSquareFull;
-                    return DssRef.lang.Hud_None;
-                case SpecializationType.Field:
-                    icon = SpriteName.WarsSpecializeField;
-                    return DssRef.lang.Conscript_Specialization_Field;
-                case SpecializationType.Sea:
-                    icon = SpriteName.WarsSpecializeSea;
-                    return DssRef.lang.Conscript_Specialization_Sea;
-                case SpecializationType.Siege:
-                    icon = SpriteName.WarsSpecializeSiege;
-                    return DssRef.lang.Conscript_Specialization_Siege;
-                case SpecializationType.Viking:
-                    icon = SpriteName.WarsUnitIcon_Viking;
-                    return DssRef.lang.UnitType_Viking;
-                case SpecializationType.HonorGuard:
-                    icon = SpriteName.WarsUnitIcon_Honorguard;
-                    return DssRef.lang.UnitType_HonorGuard;
-                case SpecializationType.Green:
-                    icon = SpriteName.WarsUnitIcon_Greensoldier; 
-                    return DssRef.lang.UnitType_GreenSoldier;
-                case SpecializationType.Traditional:
-                    icon = SpriteName.WarsSpecializeTradition;
-                    return DssRef.lang.Conscript_Specialization_Traditional;
-                case SpecializationType.AntiCavalry:
+        //public static string SpecializationTypeName(SpecializationType specialization, out SpriteName icon)
+        //{
+        //    switch (specialization)
+        //    {
+        //        case SpecializationType.None:
+        //            icon = SpriteName.BluePrintSquareFull;
+        //            return DssRef.lang.Hud_None;
+        //        case SpecializationType.Field:
+        //            icon = SpriteName.WarsSpecializeField;
+        //            return DssRef.lang.Conscript_Specialization_Field;
+        //        case SpecializationType.Sea:
+        //            icon = SpriteName.WarsSpecializeSea;
+        //            return DssRef.lang.Conscript_Specialization_Sea;
+        //        case SpecializationType.Siege:
+        //            icon = SpriteName.WarsSpecializeSiege;
+        //            return DssRef.lang.Conscript_Specialization_Siege;
+        //        case SpecializationType.Viking:
+        //            icon = SpriteName.WarsUnitIcon_Viking;
+        //            return DssRef.lang.UnitType_Viking;
+        //        case SpecializationType.HonorGuard:
+        //            icon = SpriteName.WarsUnitIcon_Honorguard;
+        //            return DssRef.lang.UnitType_HonorGuard;
+        //        case SpecializationType.Green:
+        //            icon = SpriteName.WarsUnitIcon_Greensoldier; 
+        //            return DssRef.lang.UnitType_GreenSoldier;
+        //        case SpecializationType.Traditional:
+        //            icon = SpriteName.WarsSpecializeTradition;
+        //            return DssRef.lang.Conscript_Specialization_Traditional;
+        //        case SpecializationType.AntiCavalry:
 
-                    icon = SpriteName.WarsSpecializeAntiCavalry;
-                    return DssRef.lang.Conscript_Specialization_AntiCavalry;
-                case SpecializationType.CityGuard:
+        //            icon = SpriteName.WarsSpecializeAntiCavalry;
+        //            return DssRef.lang.Conscript_Specialization_AntiCavalry;
+        //        case SpecializationType.CityGuard:
 
-                    icon = SpriteName.WarsGuard;
-                    return DssRef.lang.Conscript_Soldiers_GuardType;
+        //            icon = SpriteName.WarsGuard;
+        //            return DssRef.lang.Conscript_Soldiers_GuardType;
 
-                default:
-                    icon = SpriteName.NO_IMAGE;
-                    return TextLib.Error;
-            }
-        }
+        //        default:
+        //            icon = SpriteName.NO_IMAGE;
+        //            return TextLib.Error;
+        //    }
+        //}
 
         public static string Tab(MenuTab tab, out string description, out Color? color)
         {

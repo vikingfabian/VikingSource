@@ -458,7 +458,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
         /// </summary>
-        public override string Hud_StrengthRating => TextLib.ThaiConv("ระดับ|พลัง: {0}");
+        public override string Hud_StrengthRating => TextLib.ThaiConv("ระดับ|พลัง");
 
         /// <summary>
         /// Ingame display. Caculated battle strength for the whole nation.
@@ -1603,7 +1603,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => TextLib.ThaiConv("i");
 
-        public override string Info_PerSecond => TextLib.ThaiConv("แสดง|เป็น|ทรัพยากร|ต่อ|วินาที");
+        public override string Info_ResourcePerSecond => TextLib.ThaiConv("แสดง|เป็น|ทรัพยากร|ต่อ|วินาที");
 
         public override string Info_MinuteAverage => TextLib.ThaiConv("ค่า|นี้|คือ|ค่า|เฉลี่ย|จาก| 1 |นาที|ล่าสุด");
 

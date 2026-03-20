@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
@@ -63,6 +64,24 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         { }
 
 
+        public void StatsToHud(RichBoxContent content)
+        {
+            HudLib.LabelAndText(content, SpriteName.WarsSpecializeField, string.Format(DssRef.todoLang.Conscript_DamagePerSecondInAreaX, DssRef.lang.Conscript_Specialization_Field),
+                TextLib.OneDecimal(DPS_land()));
+
+            HudLib.LabelAndText(content, SpriteName.WarsSpecializeSiege, string.Format(DssRef.todoLang.Conscript_DamagePerSecondInAreaX, DssRef.lang.Conscript_Specialization_Siege),
+                TextLib.OneDecimal(DPS_structure()));
+
+            HudLib.LabelAndText(content, SpriteName.WarsSpecializeSea, string.Format(DssRef.todoLang.Conscript_DamagePerSecondInAreaX, DssRef.lang.Conscript_Specialization_Sea),
+                TextLib.OneDecimal(DPS_sea()));
+
+            HudLib.LabelAndText(content, SpriteName.WarsResource_Sword, DssRef.lang.Conscript_WeaponDamage, attackDamage.ToString());
+            HudLib.LabelAndText(content, SpriteName.cmdAttackUp, DssRef.lang.Conscript_AttackSpeed, TextLib.OneDecimal(TimeExt.MillsSecToSec(attackTimePlusCoolDown)));
+            content.text(DssRef.todoLang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Light);
+            HudLib.LabelAndText(content, SpriteName.warsArmyTag_Shield, DssRef.lang.SoldierStats_Health, basehealth.ToString());
+            HudLib.LabelAndText(content, SpriteName.cmdStatsMove, DssRef.todoLang.Conscript_Mobility, TextLib.TwoDecimal(mobilityValue()));
+        }
+
         public void applySkillBonus(float skillBonus)
         {
             if (skillBonus <= 0)
@@ -102,17 +121,17 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
             return Bound.Min((int)(1f / blocksRefillTimeSec + 0.9f), 1);
         }
 
-        public int DPS_land()
+        public float DPS_land()
         {
-            return Convert.ToInt32(attackDamage / (attackTimePlusCoolDown / 1000.0));
+            return attackDamage / (attackTimePlusCoolDown / TimeExt.SecondToMs);
         }
-        public int DPS_sea()
+        public float DPS_sea()
         {
-            return Convert.ToInt32(attackDamageSea / (attackTimePlusCoolDown / 1000.0));
+            return attackDamageSea / (attackTimePlusCoolDown / TimeExt.SecondToMs);
         }
-        public int DPS_structure()
+        public float DPS_structure()
         {
-            return Convert.ToInt32(attackDamageStructure / (attackTimePlusCoolDown / 1000.0));
+            return attackDamageStructure / (attackTimePlusCoolDown / TimeExt.SecondToMs);
         }
 
         
@@ -173,6 +192,17 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
             upkeepMultiplier *= 4;
         }
 
+
+        const float MobilityMultiplySpeed = WorldData.TileSubDivitions * TimeExt.SecondToMs;
+        public float mobilityValue()
+        {
+            return walkingSpeed * MobilityMultiplySpeed;
+        }
+
+        public static float Mobility(float speed)
+        { 
+            return speed * MobilityMultiplySpeed;
+        }
         //public int Upkeep()
         //{
         //    return Convert.ToInt32(rowWidth * columnsDepth * upkeepPerSoldier);

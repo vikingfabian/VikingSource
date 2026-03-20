@@ -31,8 +31,9 @@ namespace VikingEngine.DSSWars.Resource
             items = new ItemProperties[(int)ItemResourceType.NUM];
 
             //men
-            new ItemProperties(ItemResourceType.Men, NoCityResource, 0, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE).AddItemSource(new ItemSource(Build.BuildAndExpandType.WorkerHut));
-            new ItemProperties(ItemResourceType.NobelMen, NoCityResource, 0, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE).AddItemSource(new ItemSource(Build.BuildAndExpandType.Nobelhouse));
+            new ItemProperties(ItemResourceType.Men, NoCityResource, 0, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE).AddItemSource(new ItemSource(ItemSourceType.Building, Build.BuildAndExpandType.WorkerHut));
+            new ItemProperties(ItemResourceType.NobelMen, NoCityResource, 0, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE).AddItemSource(new ItemSource(ItemSourceType.Building, Build.BuildAndExpandType.Nobelhouse));
+            new ItemProperties(ItemResourceType.ServiceMen, NoCityResource, 0, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE).AddItemSource(new ItemSource(ItemSourceType.Building, Build.BuildAndExpandType.ServiceHouse_Small));
 
             // wood variants
             new ItemProperties(ItemResourceType.HardWood, CityResoureIndex.wood, 1f / 20, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE);
@@ -120,12 +121,28 @@ namespace VikingEngine.DSSWars.Resource
             // --- Buildings & Tools ---
             new ItemProperties(ItemResourceType.Palisade, CityResoureIndex.Palisade, DefaultWeight, WorkPriorityType.craftPalisade, CraftResourceLib.Palisade, null, StorageType.MaterialStorage);
             new ItemProperties(ItemResourceType.Toolkit, CityResoureIndex.Toolkit, DefaultWeight, WorkPriorityType.craftToolkit, CraftResourceLib.Toolkit, null, StorageType.MaterialStorage);
-            new ItemProperties(ItemResourceType.Wagon2Wheel, CityResoureIndex.Wagon2Wheel, DefaultWeight, WorkPriorityType.craftWagon2Wheel, CraftResourceLib.Wagon2Wheel, null, StorageType.MaterialStorage);
-            new ItemProperties(ItemResourceType.Wagon4Wheel, CityResoureIndex.Wagon4Wheel, DefaultWeight, WorkPriorityType.craftWagon4Wheel, CraftResourceLib.Wagon4Wheel, null, StorageType.MaterialStorage);
-            new ItemProperties(ItemResourceType.WagonClosed, CityResoureIndex.WagonClosed, DefaultWeight, WorkPriorityType.craftWagonClosed, CraftResourceLib.WagonClosed, null, StorageType.MaterialStorage);
-            new ItemProperties(ItemResourceType.WagonIron, CityResoureIndex.WagonIron, DefaultWeight, WorkPriorityType.craftWagonIron, CraftResourceLib.WagonIron, null, StorageType.MaterialStorage);
-            new ItemProperties(ItemResourceType.WagonSteel, CityResoureIndex.WagonSteel, DefaultWeight, WorkPriorityType.craftWagonSteel, CraftResourceLib.WagonSteel, null, StorageType.MaterialStorage);
 
+            {
+                var wagon = new ItemProperties(ItemResourceType.Wagon2Wheel, CityResoureIndex.Wagon2Wheel, DefaultWeight, WorkPriorityType.craftWagon2Wheel, CraftResourceLib.Wagon2Wheel, null, StorageType.MaterialStorage);
+                wagon.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 2);
+            }
+            {
+                var wagon = new ItemProperties(ItemResourceType.Wagon4Wheel, CityResoureIndex.Wagon4Wheel, DefaultWeight, WorkPriorityType.craftWagon4Wheel, CraftResourceLib.Wagon4Wheel, null, StorageType.MaterialStorage);
+                wagon.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 3);
+            }
+            {
+                var wagon = new ItemProperties(ItemResourceType.WagonClosed, CityResoureIndex.WagonClosed, DefaultWeight, WorkPriorityType.craftWagonClosed, CraftResourceLib.WagonClosed, null, StorageType.MaterialStorage);
+                wagon.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 5);
+            }
+            {
+                var wagon = new ItemProperties(ItemResourceType.WagonIron, CityResoureIndex.WagonIron, DefaultWeight, WorkPriorityType.craftWagonIron, CraftResourceLib.WagonIron, null, StorageType.MaterialStorage);
+                wagon.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 10);
+            }
+            {
+                var wagon = new ItemProperties(ItemResourceType.WagonSteel, CityResoureIndex.WagonSteel, DefaultWeight, WorkPriorityType.craftWagonSteel, CraftResourceLib.WagonSteel, null, StorageType.MaterialStorage);
+                wagon.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 30);
+            }
+            
             // --- Gunpowder & Ballistics ---
             new ItemProperties(ItemResourceType.BlackPowder, CityResoureIndex.BlackPowder, DefaultWeight, WorkPriorityType.craftBlackPowder, CraftResourceLib.BlackPowder, null, StorageType.WeaponStorage);
             new ItemProperties(ItemResourceType.GunPowder, CityResoureIndex.GunPowder, DefaultWeight, WorkPriorityType.craftGunPowder, CraftResourceLib.GunPowder, null, StorageType.WeaponStorage);
@@ -201,22 +218,32 @@ namespace VikingEngine.DSSWars.Resource
             {
                 var animal = new ItemProperties(ItemResourceType.Oxen, CityResoureIndex.Oxen, DefaultWeight, WorkPriorityType.SlaughterOxen, null, null, StorageType.AnimalStorage);
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OxenPen));
+                animal.Filter_IsRidingAnimal = true;
                 animal.wagonPull = WagonPull.All;
                 animal.armorCarry = ArmorCarry.All;
 
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.7f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
                 animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.5f;
+
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.8);
+                animal.soldierData.attackDamage = 0;
             }
             {
                 var animal = new ItemProperties(ItemResourceType.KineOxen, CityResoureIndex.KineOxen, DefaultWeight, WorkPriorityType.SlaughterKineOxen, null, null, StorageType.AnimalStorage);
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.KineOxenPen));
+                animal.Filter_IsRidingAnimal = true;
                 animal.wagonPull = WagonPull.All;
                 animal.armorCarry = ArmorCarry.All;
 
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.8f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.7f;
                 animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
+
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 2);
+                animal.soldierData.attackDamage = 0;
             }
             // --- Dogs ---
             {
@@ -262,6 +289,11 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.2f;
                 animal.soldierData.heavyWagonSpeed = 0;
 
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 1.0);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 0.5);
+
+
             }
 
             {
@@ -277,6 +309,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.5f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
                 animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
+                
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 1.5);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 0.8);
             }
 
             {
@@ -292,6 +328,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.6f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
                 animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
+                
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 1.6);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 1.2);
             }
 
             {
@@ -307,6 +347,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
                 animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.2f;
+                
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 1.5);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 0.4);
             }
 
             // --- Pigs / Hogs ---
@@ -324,6 +368,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.3f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.2f;
                 animal.soldierData.heavyWagonSpeed = 0;
+
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 2);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 0.4);
             }
 
             {
@@ -340,6 +388,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.6f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
                 animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
+
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 2.5);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 0.5);
             }
 
             {
@@ -356,6 +408,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.6f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
                 animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
+
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 3);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 1);
             }
 
             {
@@ -372,6 +428,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
                 animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.2f;
+
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 3);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 0.4);
             }
 
             // --- Wolves ---
@@ -389,6 +449,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
                 animal.soldierData.heavyWagonSpeed = 0;
+
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.25);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 2);
             }
 
             {
@@ -405,6 +469,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.5f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
                 animal.soldierData.heavyWagonSpeed = 0;
+
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.4);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 3);
             }
 
             {
@@ -421,6 +489,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.6f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
                 animal.soldierData.heavyWagonSpeed = 0;
+
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.5);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 5);
             }
 
             // --- Cats ---
@@ -438,6 +510,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.4f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
                 animal.soldierData.heavyWagonSpeed = 0;
+
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.25);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 2);
             }
 
             {
@@ -454,6 +530,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.5f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
                 animal.soldierData.heavyWagonSpeed = 0;
+
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.4);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 3);
             }
 
             {
@@ -470,6 +550,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.6f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
                 animal.soldierData.heavyWagonSpeed = 0;
+
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.3);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 4);
             }
 
             // --- Elephants ---
@@ -487,6 +571,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.85f;
                 animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.8f;
+
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 10);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 10);
             }
 
             {
@@ -503,6 +591,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.85f;
                 animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.8f;
+
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 15);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 15);
             }
 
             {
@@ -519,6 +611,10 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.9f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.85f;
                 animal.soldierData.heavyWagonSpeed = DssConst.Men_StandardWalkingSpeed * 0.8f;
+
+                //Add health and attack
+                animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 40);
+                animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 30);
             }
 
 
@@ -637,6 +733,72 @@ namespace VikingEngine.DSSWars.Resource
                 var armor = Get(ItemResourceType.MithrilArmor);
                 ref var soldier = ref armor.soldierData;
                 soldier.basehealth = DssConst.ArmorHealth_Mithril;
+                soldier.modelData.armor = ArmorLevel.Masterful;
+            }
+
+            //MOUNT ARMOR
+            
+            // Padded Armor → Leather
+            {
+                var armor = Get(ItemResourceType.MountPaddedArmor);
+                ref var soldier = ref armor.soldierData;
+                soldier.basehealth = MathExt.MultiplyInt(DssConst.ArmorHealth_Padded, DssConst.ArmorHealthMulti_Mounts);
+                soldier.modelData.armor = ArmorLevel.Leather;
+            }
+
+            // Heavy Padded Armor → Leather
+            {
+                var armor = Get(ItemResourceType.MountHeavyPaddedArmor);
+                ref var soldier = ref armor.soldierData;
+                soldier.basehealth = MathExt.MultiplyInt(DssConst.ArmorHealth_HeavyPadded, DssConst.ArmorHealthMulti_Mounts);
+                soldier.modelData.armor = ArmorLevel.Leather;
+            }
+
+            // Bronze Armor → Iron
+            {
+                var armor = Get(ItemResourceType.MountBronzeArmor);
+                ref var soldier = ref armor.soldierData;
+                soldier.basehealth = MathExt.MultiplyInt(DssConst.ArmorHealth_Bronze, DssConst.ArmorHealthMulti_Mounts);
+                soldier.modelData.armor = ArmorLevel.Iron;
+            }
+
+            // Iron Armor → Iron
+            {
+                var armor = Get(ItemResourceType.MountIronArmor);
+                ref var soldier = ref armor.soldierData;
+                soldier.basehealth = MathExt.MultiplyInt(DssConst.ArmorHealth_Mail, DssConst.ArmorHealthMulti_Mounts);
+                soldier.modelData.armor = ArmorLevel.Iron;
+            }
+
+            // Heavy Iron Armor → Iron
+            {
+                var armor = Get(ItemResourceType.MountHeavyIronArmor);
+                ref var soldier = ref armor.soldierData;
+                soldier.basehealth = MathExt.MultiplyInt(DssConst.ArmorHealth_HeavyMail, DssConst.ArmorHealthMulti_Mounts);
+                soldier.modelData.armor = ArmorLevel.Iron;
+            }
+
+            // Light Plate Armor → Steel
+            {
+                var armor = Get(ItemResourceType.MountLightPlateArmor);
+                ref var soldier = ref armor.soldierData;
+                soldier.basehealth = MathExt.MultiplyInt(DssConst.ArmorHealth_Plate, DssConst.ArmorHealthMulti_Mounts);
+                soldier.modelData.armor = ArmorLevel.Steel;
+            }
+
+            // Full Plate Armor → Steel
+            {
+                var armor = Get(ItemResourceType.MountFullPlateArmor);
+                ref var soldier = ref armor.soldierData;
+                soldier.basehealth = MathExt.MultiplyInt(DssConst.ArmorHealth_FullPlate, DssConst.ArmorHealthMulti_Mounts);
+                soldier.modelData.armor = ArmorLevel.Steel;
+            }
+
+            // Mithril Armor → Masterful
+            {
+                var armor = Get(ItemResourceType.MountMithrilArmor);
+                ref var soldier = ref armor.soldierData;
+                soldier.basehealth = MathExt.MultiplyInt(DssConst.ArmorHealth_Mithril, DssConst.ArmorHealthMulti_Mounts);
                 soldier.modelData.armor = ArmorLevel.Masterful;
             }
 

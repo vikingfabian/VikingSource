@@ -245,4 +245,11 @@ namespace VikingEngine.DSSWars.Conscript
         );
     }
 
+    enum CommitOption
+    { 
+        Preview,
+        Commit,
+        Revert,
+    }
+
 }

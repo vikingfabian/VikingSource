@@ -642,7 +642,7 @@ namespace VikingEngine.DSSWars
         {
             bool minuteAverage = (bool)tag;
             //RichBoxContent content = new RichBoxContent();
-            content.text(DssRef.lang.Info_PerSecond);
+            content.text(DssRef.lang.Info_ResourcePerSecond);
             if (minuteAverage)
             {
                 content.text(DssRef.lang.Info_MinuteAverage);
@@ -781,21 +781,21 @@ namespace VikingEngine.DSSWars
             cityEconomy.tax(city, out float taxPerWorker_copp);
             content.text(string.Format(DssRef.lang.Economy_TaxDescription, Resource.Money.CopperToGoldString_Decimal((int)taxPerWorker_copp)));
             content.newParagraph();
-            content.text(DssRef.lang.Info_PerSecond);
+            content.text(DssRef.lang.Info_ResourcePerSecond);
         }
 
         public static void servicemenUpkeepInfo(RichBoxContent content, object tag)
         {
             content.text(string.Format(DssRef.lang.Economy_ServicemenUpkeep_Description, Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerServiceMan_copp)));
             content.newParagraph();
-            content.text(DssRef.lang.Info_PerSecond);
+            content.text(DssRef.lang.Info_ResourcePerSecond);
         }
 
         public static void guardUpkeepInfo(RichBoxContent content, object tag)
         {
             content.text(string.Format(DssRef.lang.Economy_GuardUpkeep_Description, Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerGuard_copp)));
             content.newParagraph();
-            content.text(DssRef.lang.Info_PerSecond);        
+            content.text(DssRef.lang.Info_ResourcePerSecond);        
         }
     }
 }

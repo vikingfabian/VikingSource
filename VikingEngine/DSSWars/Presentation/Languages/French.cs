@@ -443,7 +443,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
         /// </summary>
-        public override string Hud_StrengthRating => "Note de force: {0}";
+        public override string Hud_StrengthRating => "Note de force";
 
         /// <summary>
         /// Ingame display. Caculated battle strength for the whole nation.
@@ -1593,7 +1593,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Affiché en ressources par seconde.";
+        public override string Info_ResourcePerSecond => "Affiché en ressources par seconde.";
 
         public override string Info_MinuteAverage => "La valeur est une moyenne de la dernière minute";
 
