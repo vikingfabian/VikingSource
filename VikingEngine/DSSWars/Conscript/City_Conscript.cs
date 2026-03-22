@@ -58,80 +58,84 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     status.active++;
                                     status.inProgress = status.profile;
-                                    status.menCollected = 0;
-                                    status.menNeeded = status.inProgress.menCost();
-                                    status.equipmentCollected = 0;
+                                    status.unitsCollected = 0;
+                                    //status.payItems(this, CommitOption.Preview);
+                                    //status.menNeeded = status.inProgress.menCost();
+                                    //status.equipmentCollected = 0;
                                 }
                                 break;
 
                             case ConscriptActiveStatus.CollectingEquipment:
-                                ItemResourceType weaponItem = status.inProgress.weapon;
-                                ItemResourceType armorItem = status.inProgress.armorLevel;
-                                int needEquipment = status.menNeeded - status.equipmentCollected;
-                                int availableWeapons = GetGroupedResource(weaponItem).amount;
-                                int availableArmor;
-                                if (status.inProgress.armorLevel == ItemResourceType.NONE)
-                                {
-                                    availableArmor = needEquipment;
-                                }
-                                else
-                                {
-                                    availableArmor = GetGroupedResource(armorItem).amount;
-                                }
+                                //ItemResourceType weaponItem = status.inProgress.weapon;
+                                //ItemResourceType armorItem = status.inProgress.armorLevel;
+                                //int needEquipment = status.menNeeded - status.equipmentCollected;
+                                //int availableWeapons = GetGroupedResource(weaponItem).amount;
+                                //int availableArmor;
+                                //if (status.inProgress.armorLevel == ItemResourceType.NONE)
+                                //{
+                                //    availableArmor = needEquipment;
+                                //}
+                                //else
+                                //{
+                                //    availableArmor = GetGroupedResource(armorItem).amount;
+                                //}
 
-                                int collectEquipment = lib.SmallestValue(needEquipment, availableWeapons, availableArmor);
-                                status.equipmentCollected += collectEquipment;
+                                //int collectEquipment = lib.SmallestValue(needEquipment, availableWeapons, availableArmor);
+                                //status.equipmentCollected += collectEquipment;
 
-                                AddGroupedResource(weaponItem, -collectEquipment);
+                                //AddGroupedResource(weaponItem, -collectEquipment);
 
-                                if (status.inProgress.armorLevel !=  ItemResourceType.NONE)
-                                {
-                                    AddGroupedResource(armorItem, -collectEquipment);
-                                }
+                                //if (status.inProgress.armorLevel !=  ItemResourceType.NONE)
+                                //{
+                                //    AddGroupedResource(armorItem, -collectEquipment);
+                                //}
+                                status.payItems(this, CommitOption.Commit, out int totalMen);
 
-                                if (status.equipmentCollected == status.menNeeded)
+                                if (status.unitsCollected == status.unitsNeeded &&
+                                    (status.profile.specialization != SpecializationType.CityGuard || AvailableGuardHousing() >= totalMen))
                                 {
                                     status.active++;
+                                    status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.type)));
                                 }
                                 break;
 
-                            case ConscriptActiveStatus.CollectingMen:
+                            //case ConscriptActiveStatus.CollectingMen:
 
-                                status.followsRequirements(this, out bool populationIsOk, out bool foodIsOk);
+                            //    status.followsRequirements(this, out bool populationIsOk, out bool foodIsOk);
 
-                                if (populationIsOk && foodIsOk)
-                                {
-                                    int needMen = status.menNeeded - status.menCollected;
-                                    int collectMen = lib.SmallestValue(workForce.amount, needMen);
-                                    workForce.amount -= collectMen;
-                                    status.menCollected += collectMen;
+                            //    if (populationIsOk && foodIsOk)
+                            //    {
+                            //        int needMen = status.menNeeded - status.menCollected;
+                            //        int collectMen = lib.SmallestValue(workForce.amount, needMen);
+                            //        workForce.amount -= collectMen;
+                            //        status.menCollected += collectMen;
 
-                                    if (status.menCollected == status.menNeeded &&
-                                        (status.profile.specialization != SpecializationType.CityGuard || AvailableGuardHousing() >= status.menNeeded))
-                                    {
-                                        status.active++;
-                                        status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.type)));
-                                    }
-                                }
-                                break;
+                            //        if (status.menCollected == status.menNeeded &&
+                            //            (status.profile.specialization != SpecializationType.CityGuard || AvailableGuardHousing() >= status.menNeeded))
+                            //        {
+                            //            status.active++;
+                            //            status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.type)));
+                            //        }
+                            //    }
+                            //    break;
 
                             case ConscriptActiveStatus.Training:
                                 if (status.countdown.TimeOut())
                                 {
-                                    if (status.profile.specialization == SpecializationType.CityGuard && AvailableGuardHousing() < status.menNeeded)
-                                    {
-                                        //Reset timer when there is no space
-                                        status.active = ConscriptActiveStatus.CollectingMen;
-                                    }
-                                    else
-                                    {
+                                    //if (status.profile.specialization == SpecializationType.CityGuard && AvailableGuardHousing() < status.menNeeded)
+                                    //{
+                                    //    //Reset timer when there is no space
+                                    //    status.active = ConscriptActiveStatus.CollectingMen;
+                                    //}
+                                    //else
+                                    //{
                                         Vector3 startPos = WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition));
                                         Ref.update.AddSyncAction(new SyncAction3Arg<ConscriptProfile, Vector3, int>(conscriptArmyLink, status.inProgress, startPos, 1));
 
                                         status.active = ConscriptActiveStatus.Idle;
 
-                                        status.menCollected = 0;
-                                        status.equipmentCollected = 0;
+                                        status.unitsNeeded = 0;
+                                        status.unitsCollected = 0;
 
                                         if (GetPlayer().IsLocalPlayer())
                                         {
@@ -179,7 +183,7 @@ namespace VikingEngine.DSSWars.GameObject
                                             //        DssRef.state.progress.onCultureBuild(false);
                                             //        break;
                                             //}
-                                        }
+                                        //}
                                     }
                                 }
                                 break;

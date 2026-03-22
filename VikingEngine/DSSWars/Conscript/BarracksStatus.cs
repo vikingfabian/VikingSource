@@ -23,9 +23,13 @@ namespace VikingEngine.DSSWars.Conscript
         public ConscriptProfile inProgress;
         public TimeInGameCountdown countdown;
         public BuildAndExpandType type;
-        public int menCollected;
-        public int menNeeded;
-        public int equipmentCollected;
+
+        public int unitsCollected;
+        public int unitsNeeded;
+
+        //public int menCollected;
+        //public int menNeeded;
+        //public int equipmentCollected;
 
         public int idAndPosition;
         public TrainingLevel maxTrainingLevel;
@@ -103,62 +107,90 @@ namespace VikingEngine.DSSWars.Conscript
 
         }
 
-        public int payItems(City city, bool men, CommitOption commit)
+        /// <returns>Available/paid count</returns>
+        public int payItems(City city, CommitOption commit, out int totalMen)
         {
-            xx
-            int needMenEquipment = menNeeded - equipmentCollected;
+            ConscriptUnitCount perUnitCount = new ConscriptUnitCount(profile);
+            unitsNeeded = perUnitCount.groupUnitCount;
+            int needUnits = unitsNeeded - unitsCollected;
             var me = this;
 
-            int allItems(int mencount, int animalCount, int unitCount, bool commit)
+            int avaialble = allItems(needUnits, CommitOption.Preview);
+
+            switch (commit)
             {
-                payItem(me.profile.weapon, mencount, commit);
-                payItem(me.profile.shield, mencount, commit);
-                payItem(me.profile.armorLevel, mencount, commit);
-                
-                payItem(me.profile.weapon, mencount, commit);
-                payItem(me.profile.weapon, mencount, commit);
-                return -1;
+                case CommitOption.Commit:
+                    allItems(avaialble, commit);
+                    unitsCollected += avaialble;
+                    break;
+                case CommitOption.Revert:
+                    allItems(unitsCollected, commit);
+                    unitsCollected = 0;
+                    break;
+            }
+            totalMen = perUnitCount.menPerUnit * unitsNeeded;
+            return avaialble;
+
+            //--
+            int allItems(int unitCount, CommitOption commit)
+            {
+                FindMin_Int available = new FindMin_Int();
+                available.Next(payItem(me.profile.weapon, perUnitCount.weaponsPerUnit, unitCount, commit));
+                available.Next(payItem(me.profile.shield, perUnitCount.menPerUnit, unitCount, commit));
+                available.Next(payItem(me.profile.armorLevel, perUnitCount.menPerUnit, unitCount, commit));
+
+                available.Next(payItem(me.profile.animal, perUnitCount.animalsPerUnit, unitCount, commit));
+                available.Next(payItem(me.profile.mountArmor, perUnitCount.animalsPerUnit, unitCount, commit));
+
+                available.Next(payItem(me.profile.vehicle, perUnitCount.vehiclesPerUnit, unitCount, commit));
+
+                return available.minValue;
             }            
 
-            int payItem(ItemResourceType item, int count, bool commit)
+            //RETURN how many units can be covered
+            int payItem(ItemResourceType item, int perUnitCount, int unitCount, CommitOption commit)
             {
-                if (item == ItemResourceType.NONE)
+                if (item == ItemResourceType.NONE || perUnitCount == 0)
                 {
-                    return count;
+                    return unitCount;
                 }
 
-                if (commit)
+                switch (commit)
                 {
-                    city.AddGroupedResource(item, count);
-                    return 0;
-                }
-                else
-                {
-                    int available = city.GetGroupedResource(item).amount;
-                    return available;
+                    case CommitOption.Commit:
+                        city.AddGroupedResource(item, perUnitCount * -unitCount);
+                        return 0;
+
+                    case CommitOption.Revert:
+                        city.AddGroupedResource(item, perUnitCount * unitCount);
+                        return 0;
+
+                    default:
+                        int available = city.GetGroupedResource(item).amount;
+                        return available / perUnitCount;
+
                 }
             }
-
-            return -1;
         }
 
         public void returnItems(City city)
         {
-            if (active == ConscriptActiveStatus.CollectingEquipment ||
-                    active == ConscriptActiveStatus.CollectingMen)
+            if (active == ConscriptActiveStatus.CollectingEquipment)// ||
+                    //active == ConscriptActiveStatus.CollectingMen)
             {
                 //return items
-                ItemResourceType weaponItem = inProgress.weapon;
-                ItemResourceType armorItem = inProgress.armorLevel;
+                //ItemResourceType weaponItem = inProgress.weapon;
+                //ItemResourceType armorItem = inProgress.armorLevel;
 
-                city.AddGroupedResource(weaponItem, equipmentCollected);
+                //city.AddGroupedResource(weaponItem, equipmentCollected);
 
-                if (inProgress.armorLevel != ItemResourceType.NONE)
-                {
-                    city.AddGroupedResource(armorItem, equipmentCollected);
-                }
+                //if (inProgress.armorLevel != ItemResourceType.NONE)
+                //{
+                //    city.AddGroupedResource(armorItem, equipmentCollected);
+                //}
 
-                city.workForce.amount += menCollected;
+                //city.workForce.amount += menCollected;
+                payItems(city, CommitOption.Revert, out _);
 
                 active = ConscriptActiveStatus.Idle;
 
@@ -200,12 +232,12 @@ namespace VikingEngine.DSSWars.Conscript
             switch (active)
             {
                 case ConscriptActiveStatus.CollectingEquipment:
-                    w.Write((byte)equipmentCollected);
+                    w.Write((byte)unitsCollected);
                     break;
 
-                case ConscriptActiveStatus.CollectingMen:
-                    w.Write((byte)menCollected);
-                    break;
+                //case ConscriptActiveStatus.CollectingMen:
+                //    w.Write((byte)menCollected);
+                //    break;
 
                 case ConscriptActiveStatus.Training:
                     countdown.writeGameState(w);
@@ -222,7 +254,7 @@ namespace VikingEngine.DSSWars.Conscript
             Debug.WriteCheck(w);
         }
 
-        public void readGameState(System.IO.BinaryReader r, int subVersion)
+        public void readGameState(City city, System.IO.BinaryReader r, int subVersion)
         {
             Debug.ReadCheck(r);
 
@@ -231,22 +263,24 @@ namespace VikingEngine.DSSWars.Conscript
             if (active != ConscriptActiveStatus.Idle)
             {
                 inProgress.readGameState(r);
-                menNeeded = inProgress.menCost();
+                //menNeeded = inProgress.menCost();
             }
             switch (active)
             {
                 case ConscriptActiveStatus.CollectingEquipment:
-                    equipmentCollected = r.ReadByte();
+                    unitsCollected = r.ReadByte();
                     break;
 
-                case ConscriptActiveStatus.CollectingMen:
-                    equipmentCollected = DssConst.SoldierGroup_DefaultCount;
-                    menCollected = r.ReadByte();
-                    break;
+                //case ConscriptActiveStatus.CollectingMen:
+                //    equipmentCollected = DssConst.SoldierGroup_DefaultCount;
+                //    menCollected = r.ReadByte();
+                //    break;
 
                 case ConscriptActiveStatus.Training:
-                    equipmentCollected = DssConst.SoldierGroup_DefaultCount;
-                    menCollected = DssConst.SoldierGroup_DefaultCount;
+                    payItems(city, CommitOption.Preview, out _);
+                    unitsCollected = unitsCollected;
+                    //unitsNeeded = DssConst.SoldierGroup_DefaultCount;
+                    //menCollected = DssConst.SoldierGroup_DefaultCount;
                     countdown.readGameState(r);
                     break;
             }
@@ -302,19 +336,19 @@ namespace VikingEngine.DSSWars.Conscript
 
                 case ConscriptActiveStatus.CollectingEquipment:
                     {
-                        collected = equipmentCollected >= menCount;
-                        var progress = string.Format(DssRef.lang.Language_CollectProgress, equipmentCollected, menCount);
+                        collected = unitsCollected >= menCount;
+                        var progress = string.Format(DssRef.lang.Language_CollectProgress, unitsCollected, menCount);
                         result = string.Format(DssRef.lang.Conscription_Status_CollectingEquipment, progress);
                     }
                     break;
 
-                case ConscriptActiveStatus.CollectingMen:
-                    {
-                        collected = menCollected >= menCount;
-                        var progress = string.Format(DssRef.lang.Language_CollectProgress, menCollected, menCount);
-                        result = string.Format(DssRef.lang.Conscription_Status_CollectingMen, progress);
-                    }
-                    break;
+                //case ConscriptActiveStatus.CollectingMen:
+                //    {
+                //        collected = menCollected >= menCount;
+                //        var progress = string.Format(DssRef.lang.Language_CollectProgress, menCollected, menCount);
+                //        result = string.Format(DssRef.lang.Conscription_Status_CollectingMen, progress);
+                //    }
+                //    break;
             }
 
             return result;
@@ -329,7 +363,7 @@ namespace VikingEngine.DSSWars.Conscript
             }
             else
             {
-                int menCostProgress = menNeeded;
+                int menCostProgress = unitsNeeded;
                 result = activeStringOf(active, menCostProgress, out _) + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
             }
 

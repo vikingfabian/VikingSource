@@ -1,8 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace VikingEngine
 {
+    struct FindMin_Int
+    {
+        public bool hasValue;
+        //bool absolute;
+        //public int minMemberIndex;
+        public int minValue;
+
+        public float AbsMinValue
+        {
+            get { return Math.Abs(minValue); }
+        }
+
+        public FindMin_Int()
+        {
+        }
+        public void Next(int value)
+        {
+            if (hasValue)
+            {
+                if (value < minValue)
+                {
+                    minValue = value;
+                }
+            }
+            else
+            {
+                hasValue = true;
+                minValue = value;
+            }
+        }
+    }
     struct FindMinValue
     {
         public bool hasValue;

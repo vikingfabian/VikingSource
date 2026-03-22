@@ -12,6 +12,17 @@ namespace VikingEngine.DSSWars.Resource
 {
     static class ItemPropertyColl
     {
+        public const int MountRowWidth = 4;
+        public const int MountColumnDepth = 3;
+
+        public const int ElephantRowWidth = 3;
+        public const int ElephantCumnDepth = 2;
+
+        public const int WagonRowWidth = 2;
+        public const int WagonColumnDepth = 1;
+
+
+
         public const int CarryStones = 5;
         public const int CarryBricks = 10;
         public const int CarryFood = 20;
@@ -122,6 +133,7 @@ namespace VikingEngine.DSSWars.Resource
             new ItemProperties(ItemResourceType.Palisade, CityResoureIndex.Palisade, DefaultWeight, WorkPriorityType.craftPalisade, CraftResourceLib.Palisade, null, StorageType.MaterialStorage);
             new ItemProperties(ItemResourceType.Toolkit, CityResoureIndex.Toolkit, DefaultWeight, WorkPriorityType.craftToolkit, CraftResourceLib.Toolkit, null, StorageType.MaterialStorage);
 
+            
             {
                 var wagon = new ItemProperties(ItemResourceType.Wagon2Wheel, CityResoureIndex.Wagon2Wheel, DefaultWeight, WorkPriorityType.craftWagon2Wheel, CraftResourceLib.Wagon2Wheel, null, StorageType.MaterialStorage);
                 wagon.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 2);
@@ -229,6 +241,10 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.8);
                 animal.soldierData.attackDamage = 0;
+
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
+
             }
             {
                 var animal = new ItemProperties(ItemResourceType.KineOxen, CityResoureIndex.KineOxen, DefaultWeight, WorkPriorityType.SlaughterKineOxen, null, null, StorageType.AnimalStorage);
@@ -244,6 +260,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 2);
                 animal.soldierData.attackDamage = 0;
+
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
             }
             // --- Dogs ---
             {
@@ -293,7 +312,8 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 1.0);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 0.5);
 
-
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
             }
 
             {
@@ -313,6 +333,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 1.5);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 0.8);
+
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
             }
 
             {
@@ -332,6 +355,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 1.6);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 1.2);
+
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
             }
 
             {
@@ -351,6 +377,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 1.5);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 0.4);
+
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
             }
 
             // --- Pigs / Hogs ---
@@ -372,6 +401,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 2);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 0.4);
+
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
             }
 
             {
@@ -392,6 +424,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 2.5);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 0.5);
+
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
             }
 
             {
@@ -412,6 +447,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 3);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 1);
+
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
             }
 
             {
@@ -432,6 +470,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 3);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 0.4);
+
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
             }
 
             // --- Wolves ---
@@ -453,6 +494,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.25);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 2);
+
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
             }
 
             {
@@ -473,6 +517,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.4);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 3);
+
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
             }
 
             {
@@ -493,6 +540,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.5);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 5);
+
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
             }
 
             // --- Cats ---
@@ -514,6 +564,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.25);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 2);
+
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
             }
 
             {
@@ -534,6 +587,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.4);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 3);
+
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
             }
 
             {
@@ -554,6 +610,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 0.3);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 4);
+
+                animal.soldierData.rowWidth = MountRowWidth;
+                animal.soldierData.columnsDepth = MountColumnDepth;
             }
 
             // --- Elephants ---
@@ -575,6 +634,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 10);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 10);
+
+                animal.soldierData.rowWidth = ElephantRowWidth;
+                animal.soldierData.columnsDepth = ElephantCumnDepth;
             }
 
             {
@@ -595,6 +657,9 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 15);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 15);
+
+                animal.soldierData.rowWidth = ElephantRowWidth;
+                animal.soldierData.columnsDepth = ElephantCumnDepth;
             }
 
             {
@@ -615,8 +680,10 @@ namespace VikingEngine.DSSWars.Resource
                 //Add health and attack
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 40);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 30);
-            }
 
+                animal.soldierData.rowWidth = ElephantRowWidth;
+                animal.soldierData.columnsDepth = ElephantCumnDepth;
+            }
 
             new ItemProperties(ItemResourceType.SlaughterHen, NoCityResource, DefaultWeight, WorkPriorityType.SlaughterHen, CraftResourceLib.SlaughterHen, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.SlaughterPig, NoCityResource, DefaultWeight, WorkPriorityType.SlaughterPig, CraftResourceLib.SlaughterPig, null, StorageType.NUM_NONE);

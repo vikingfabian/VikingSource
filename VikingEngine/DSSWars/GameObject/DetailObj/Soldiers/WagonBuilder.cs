@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                     {
                         default:
                             wagonModelName = VoxelModelName.wagon_light4;
-                            manType = WagonManType.Wagon;
+                            manType = WagonManType.ManTransport;
                             break;
                         case Resource.ItemResourceType.ManCannonIron:
                             wagonMScale = 3.5f;
@@ -154,7 +154,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                     {
                         default:
                             wagonModelName = VoxelModelName.wagon_coach;
-                            manType = WagonManType.Wagon;
+                            manType = WagonManType.ManTransport;
                             break;
                         case Resource.ItemResourceType.ManCannonIron:
                             wagonModelName = VoxelModelName.cannoncoach_maniron;
@@ -176,7 +176,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                     {
                         default:
                             wagonModelName = VoxelModelName.wagon_ironcoach;
-                            manType = WagonManType.Wagon;
+                            manType = WagonManType.ManTransport;
                             break;
                         case Resource.ItemResourceType.ManCannonIron:
                             wagonModelName = VoxelModelName.cannoncoach_maniron;
@@ -236,7 +236,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                         rightSoldierPosDiff.Z *= 0.6f;
                     }
                     break;
-                case WagonManType.Wagon:
+                case WagonManType.ManTransport:
                     {
                         soldierLeft = createSoldier();
                         soldierRight = createSoldier();
@@ -327,7 +327,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                 switch (manType)
                 {
                     
-                    case WagonManType.Wagon:
+                    case WagonManType.ManTransport:
                         soldierLeft.position = model.Rotation.TranslateAlongAxis(leftSoldierPosDiff, wagonPos);
                         soldierRight.position = model.Rotation.TranslateAlongAxis(rightSoldierPosDiff, wagonPos);
 
@@ -389,7 +389,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
         enum WagonManType
         { 
-            Wagon,
+            ManTransport,
             Chariot,
             Riding,
             Coach,
