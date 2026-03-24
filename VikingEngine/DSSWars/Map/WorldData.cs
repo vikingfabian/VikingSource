@@ -635,7 +635,7 @@ namespace VikingEngine.DSSWars
             //DebugWriteSize citiesSz = new DebugWriteSize();
             //DebugWriteSize factionsSz = new DebugWriteSize();
 
-            const int SaveMapVersion = 10;
+            const int SaveMapVersion = 11;
             w.Write(SaveMapVersion);
 
             w.Write(metaData.seed);

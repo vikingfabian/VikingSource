@@ -1,8 +1,6 @@
 ﻿UPDATE
 Change Log:
 * 
-
-
 ##ICONS TODO
 move speed
 attack speed
@@ -10,6 +8,7 @@ attack speed
 #MOUNTED TODO
 
 Current bugs
+
 x block count to soldier stats
 x missing a lot of the animal/weapon/armor combos
 x auto build of trappers
@@ -18,6 +17,7 @@ x ai conscript of animals
 x adv build upgrade, no more use of logistics
 x auto options for logistics/hall/cook
 
+x achievements
 * go through controller best practices
 
 CITY CULTURES

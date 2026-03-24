@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall.GO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 {
@@ -86,6 +87,11 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
             content.space();
             content.Add(new RbText(TextLib.Parentheses( DssRef.todoLang.Hud_Time_ValuePerSecond), HudLib.InfoYellow_Light));
             HudLib.LabelAndText(content, SpriteName.warsArmyTag_Shield, DssRef.lang.SoldierStats_Health, basehealth.ToString());
+            //HudLib.LabelAndText(content, SpriteName.cmdParry, DssRef.lang.Conscript_BlockPerSecond, TextLib.OneDecimal(1f / blocksRefillTimeSec));
+            content.newLine();
+            content.Add(new RbImage(SpriteName.cmdParry));
+            content.space();
+            content.Add(new RbText(string.Format(DssRef.lang.Conscript_BlockPerSecond, TextLib.OneDecimal(1f / blocksRefillTimeSec))));
             HudLib.LabelAndText(content, SpriteName.cmdStatsMove, DssRef.todoLang.Conscript_Mobility, TextLib.TwoDecimal(mobilityValue()));
         }
 

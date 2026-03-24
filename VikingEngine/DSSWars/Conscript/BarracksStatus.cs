@@ -137,6 +137,8 @@ namespace VikingEngine.DSSWars.Conscript
             int allItems(int unitCount, CommitOption commit)
             {
                 FindMin_Int available = new FindMin_Int();
+                available.Next(payItem(me.profile.man, perUnitCount.menPerUnit, unitCount, commit));
+
                 available.Next(payItem(me.profile.weapon, perUnitCount.weaponsPerUnit, unitCount, commit));
                 available.Next(payItem(me.profile.shield, perUnitCount.menPerUnit, unitCount, commit));
                 available.Next(payItem(me.profile.armorLevel, perUnitCount.menPerUnit, unitCount, commit));

@@ -158,9 +158,11 @@ namespace VikingEngine.DSSWars.Data
                     title = ".Top city size, in workers";
                     break;
                 case LeaderBoardType.survive300_time:
-                    title = ".Survival length at 300% difficulty";
+                    title = string.Format(".Survival length at {0}% difficulty", SurviveLeaderBoard.Difficulty300);
                     break;
-
+                case LeaderBoardType.survive400_time:
+                    title = string.Format(".Survival length at {0}% difficulty", SurviveLeaderBoard.Difficulty400);
+                    break;
             }
 
             if (beta)
@@ -197,6 +199,7 @@ namespace VikingEngine.DSSWars.Data
                         leaderBoard = new CitySizeLeaderBoard();
                         break;
                     case LeaderBoardType.survive300_time:
+                    case LeaderBoardType.survive400_time:
                         leaderBoard = new SurviveLeaderBoard();
                         break;
 
@@ -228,6 +231,7 @@ namespace VikingEngine.DSSWars.Data
                         break;
 
                     case LeaderBoardType.survive300_time:
+                    case LeaderBoardType.survive400_time:
                         display = ELeaderboardDisplayType.k_ELeaderboardDisplayTypeTimeSeconds;
                         sort = ELeaderboardSortMethod.k_ELeaderboardSortMethodDescending;
                         break;
@@ -326,6 +330,8 @@ namespace VikingEngine.DSSWars.Data
     }
     class SurviveLeaderBoard : AbsLeaderBoard
     {
+        public const int Difficulty300 = 350;
+        public const int Difficulty400 = 400;
         public SurviveLeaderBoard()
         {
             this.type = LeaderBoardType.survive300_time;
@@ -334,7 +340,7 @@ namespace VikingEngine.DSSWars.Data
         public SurviveLeaderBoard(TimeSpan time)
         {
             var difficulty = DssRef.difficulty.TotalDifficulty();
-            setup(LeaderBoardType.survive300_time, (int)time.TotalSeconds);
+            setup(difficulty >= Difficulty400? LeaderBoardType.survive400_time : LeaderBoardType.survive300_time, (int)time.TotalSeconds);
             scoreDetails.Add(difficulty);
             BeginUpload();
                         
@@ -413,6 +419,7 @@ namespace VikingEngine.DSSWars.Data
         domination_speed150,
         city_size,
         survive300_time,
+        survive400_time,
         NUM
     }
 }

@@ -74,7 +74,12 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     count += groupsC.sel.soldierCount;
                     allGropsAreIdle &= groupsC.sel.HasIdleState();
-                    totalStrength += AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip);
+                    float strength = AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip);
+                    if (groupsC.sel.damageBlockChance_fromTerrain > 0)
+                    {
+                        strength *= 1f / (1f - groupsC.sel.damageBlockChance_fromTerrain);
+                    }
+                    totalStrength += strength;
 
                     minMax.Next(ref groupsC.sel.tilePos);
                 }

@@ -25,10 +25,10 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.LootFest;
-using VikingEngine.LootFest.GO.Gadgets;
+
 using VikingEngine.DSSWars.Stockpile;
 using VikingEngine.EngineSpace.DataStream;
+using VikingEngine.LootFest;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -510,6 +510,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             w.Write(Debug.Byte_OrCrash((int)cityCulture));
+            w.Write(Debug.Byte_OrCrash((int)cityBiome));
+
 
             Debug.WriteCheck(w);
         }
@@ -543,7 +545,10 @@ namespace VikingEngine.DSSWars.GameObject
             
 
             cityCulture = (CityCulture)r.ReadByte();
-
+            if (saveMapVersion >= 11)
+            {
+                cityBiome = (CityBiome)r.ReadByte();
+            }
             //workerCullingMinMax = new Intvector2MinMax(tilePos);
             //guardCullingMinMax = workerCullingMinMax;
 

@@ -780,6 +780,21 @@ namespace VikingEngine.DSSWars
         colonizer_tier2,
         colonizer_tier3,
 
+        /// <summary>
+        /// Bask in the glory, watch your name on the leaderboard
+        /// </summary>
+        leaderboard_glory,
+
+        /// <summary>
+        /// Alpha warg conscript
+        /// </summary>
+        the_alpha,
+
+        /// <summary>
+        /// Summon the cannonphant
+        /// </summary>
+        cannonphant,
+
         NUM_ACHIEVEMENTS
     }
 }
