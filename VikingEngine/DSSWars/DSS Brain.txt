@@ -2,10 +2,12 @@
 Change Log:
 * Voxel editor: repaired the animation locks
 * Added system for setting wagon and mount speed, attack and health
+* Added a system to track reasources for soldier conscript
 * Most animal models complete
 * Updated soldiers tooltip
 * Ui for exposing soldier stats
 * fixed build over clay pit
+* improved multi line content in buttons
 
 
 ##ICONS TODO
@@ -16,7 +18,6 @@ attack speed
 
 Current bugs
 x  they need conserved food, but I never saw/read anything about it in the help tips, the tooltips, etc.
-x I think the biggest thing right now is that cost doesnt seem to be affected by adding animals to a unit, so for instance if I add dogs to an archer unit it still costs 30 bows, 30 armor and 30 men, and no animals, but the unit does end up with almost half of the soldiers being dogs
 x missing a lot of the animal/weapon/armor combos
 x auto build of trappers
 x ai conscript of animals

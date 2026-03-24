@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VikingEngine.EngineSpace.Engine.Extensions.Struct
+namespace VikingEngine
 {
     public struct Fraction
     {

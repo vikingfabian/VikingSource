@@ -34,13 +34,13 @@ namespace VikingEngine.HUD.RichBox
             }
             
             float heigh = group.lineSpacingHalf;
-
+            bool afterOtherContent = !group.LeftCarriage;
             group.parentMember.Push(this);
-
+            group.storeCarriage();
             group.TryCreate_Start();
             createContent(out Vector2 topLeft, out Vector2 bottomRight, out bool multiline);
 
-            if (bottomRight.X + 4 > group.boxWidth)
+            if (multiline && afterOtherContent)//bottomRight.X + 4 > group.boxWidth)
             {
                 group.TryCreate_Undo();
                 group.newLine();
@@ -63,7 +63,7 @@ namespace VikingEngine.HUD.RichBox
             }
             else
             {
-                group.position.X += SpaceAfter;
+                group.carriage.position.X += SpaceAfter;
             }
 
             VectorRect area = VectorRect.FromTwoPoints(topLeft, bottomRight);
@@ -83,12 +83,13 @@ namespace VikingEngine.HUD.RichBox
 
             void createContent(out Vector2 topLeft, out Vector2 bottomRight, out bool multilineContent)
             {
+               int lines =  group.carriage.lineCount;
                 multilineContent = false;
-                float prevY = group.position.Y;
-                bool newLine = false;
-                topLeft = group.position;
+                float prevY = group.carriage.position.Y;
+                //bool newLine = false;
+                topLeft = group.carriage.position;
 
-                group.position.X += ButtonEdgeToContentSpace(group, true);
+                group.carriage.position.X += ButtonEdgeToContentSpace(group, true);
 
                 createPreContent(group);
 
@@ -96,27 +97,36 @@ namespace VikingEngine.HUD.RichBox
                 {
                     m.Create(group);
 
-                    if (newLine)
-                    {
+                    //if (newLine)
+                    //{
                        
-                        multilineContent = true;
-                    }
-                    if (prevY < group.position.Y)
+                    //    multilineContent = true;
+                    //}
+                    if (group.carriage.lineCount > lines)
                     {
+                        lines = group.carriage.lineCount;
                         //multiline button
                         //area.Width = group.boxWidth;
-                        group.position.X += ButtonEdgeToContentSpace(group, false);
-                        newLine = true;
+                        multilineContent = true;
+                        //group.carriage.position.X += ButtonEdgeToContentSpace(group, false);
+                        //newLine = true;
                     }
                 }
-                group.position.X += ButtonEdgeToContentSpace(group, false);
+                group.carriage.position.X += ButtonEdgeToContentSpace(group, false);
 
-                bottomRight = group.position;
+                bottomRight = group.carriage.position;
                 if (bottomRight.Y != topLeft.Y)
                 {
                     bottomRight.X = group.RightEdgeSpace();
                 }
+
+                //multilineContent = group.carriage.lineCount > lines;
             }
+        }
+
+        public override void Parent_OnNewLine(RichBoxGroup group)
+        {
+            group.carriage.position.X += ButtonEdgeToContentSpace(group, false);
         }
 
         abstract protected void createBackground(RichBoxGroup group, VectorRect area, ImageLayers layer);

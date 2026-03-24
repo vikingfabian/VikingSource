@@ -107,6 +107,8 @@ namespace VikingEngine.DSSWars.Conscript
 
         }
 
+        public int UnitsLeft => unitsNeeded - unitsCollected;
+
         /// <returns>Available/paid count</returns>
         public int payItems(City city, CommitOption commit, out int totalMen)
         {
@@ -278,7 +280,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                 case ConscriptActiveStatus.Training:
                     payItems(city, CommitOption.Preview, out _);
-                    unitsCollected = unitsCollected;
+                    unitsCollected = unitsNeeded;
                     //unitsNeeded = DssConst.SoldierGroup_DefaultCount;
                     //menCollected = DssConst.SoldierGroup_DefaultCount;
                     countdown.readGameState(r);
@@ -447,7 +449,7 @@ namespace VikingEngine.DSSWars.Conscript
 
             content.Add(new RbSeperationLine());
 
-            ConscriptMenu.resourcesToMenu(content, city, this);
+            ConscriptMenu.resourcesToMenu(content, city, this, false);
 
         }
     }

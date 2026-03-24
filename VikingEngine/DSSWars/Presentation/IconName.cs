@@ -1433,7 +1433,7 @@ namespace VikingEngine.DSSWars
                             break;
 
                         case TerrainBuildingType.TrappersHut:
-                            icon = SpriteName.MissingImage;
+                            icon = SpriteName.WarsBuild_Trapper;
                             name = DssRef.todoLang.BuildingType_TrapperHut;
                             break;
 

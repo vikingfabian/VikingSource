@@ -31,7 +31,7 @@ namespace VikingEngine.HUD.RichBox
                 m.Create(group);
             }
 
-            Vector2 pos = new Vector2(group.area.X -2, group.position.Y + group.lineSpacingHalf -2);
+            Vector2 pos = new Vector2(group.area.X -2, group.carriage.position.Y + group.lineSpacingHalf -2);
             pointer = new Image(SpriteName.WhiteArea, pos,
                 new Vector2(group.boxWidth +4, 4), group.layer, false, group.addToRender);
             pointer.Color = group.settings.tabSelected.BgColor;
@@ -93,7 +93,7 @@ namespace VikingEngine.HUD.RichBox
                 bgPointer.Color = group.settings.tabNotSelected.BgColor;
             }
 
-            group.position.X += group.imageHeight * 0.3f;
+            group.carriage.position.X += group.imageHeight * 0.3f;
         }
 
         //public override void onEnter()

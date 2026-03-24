@@ -355,10 +355,16 @@ namespace VikingEngine.DSSWars.Conscript
                         content.Add(button);
                     }
                 }
-                content.newParagraph();
-                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost, HudLib.TitleColor_Label);
 
-                resourcesToMenu(content, city, currentStatus);
+                content.newParagraph();
+                HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Cost);
+                content.newLine();
+                RichBoxContent costButtonContent = new RichBoxContent();
+                resourcesToMenu(costButtonContent, city, currentStatus, true);
+                content.Add(new ArtButton(RbButtonStyle.Outline, costButtonContent, null, new RbTooltip((RichBoxContent tooltipContent, object tag) =>
+                {
+                    resourcesToMenu(tooltipContent, city, currentStatus, false);
+                })));
                
                 content.newParagraph();
                 que.labelToHud(content);
@@ -558,7 +564,7 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 if (currentStatus.active != ConscriptActiveStatus.Idle)
                 {
-                    int menCostProgress = currentStatus.menNeeded;
+                   // int menCostProgress = currentStatus.menNeeded;
                     currentStatus.followsRequirements(city, out bool hasPopulation, out bool hasFood);
 
                     content.Add(new RbSeperationLine());
@@ -571,8 +577,8 @@ namespace VikingEngine.DSSWars.Conscript
                         progressPoint(DssRef.lang.Conscript_FoodAbundance, true, hasFood);
                     }
 
-                    progressPoint(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingEquipment, menCostProgress, out bool gotEquipment), currentStatus.active > ConscriptActiveStatus.CollectingEquipment, gotEquipment);
-                    progressPoint(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingMen, menCostProgress, out bool gotMen), currentStatus.active > ConscriptActiveStatus.CollectingMen, gotMen);
+                    progressPoint(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingEquipment, currentStatus.unitsCollected, out bool gotEquipment), currentStatus.active > ConscriptActiveStatus.CollectingEquipment, gotEquipment);
+                    //progressPoint(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingMen, menCostProgress, out bool gotMen), currentStatus.active > ConscriptActiveStatus.CollectingMen, gotMen);
 
                     {
                         content.newLine();
@@ -632,68 +638,74 @@ namespace VikingEngine.DSSWars.Conscript
             content.text(string.Format( DssRef.lang.Conscript_SpecializationDescription, TextLib.PercentTextWithSymbol(DssConst.Conscript_SpecializePercentage)), HudLib.InfoYellow_Light);
         }
 
-        public static void resourcesToMenu(RichBoxContent content, City city, BarracksStatus currentStatus)
+        public static void resourcesToMenu(RichBoxContent content, City city, BarracksStatus currentStatus, bool compact)
         {
-            int menCostNext = currentStatus.profile.menCost();
+            ConscriptUnitCount unitCount = new ConscriptUnitCount(currentStatus.profile);
+            currentStatus.unitsNeeded = unitCount.groupUnitCount;
+            //currentStatus.payItems(city, CommitOption.Preview, out int totalMen);
 
-            resource(content, ItemResourceType.Men, menCostNext, city.workForce.amount);
-
-
-            //content.newLine();
-            //HudLib.BulletPoint(content);
-            //HudLib.ResourceCost(content, ResourceType.Worker, menCostNext, city.workForce.amount);
-
-            //content.newLine();
-            //HudLib.BulletPoint(content);
-            ////var weaponItem = ConscriptProfile.WeaponItem(currentStatus.profile.weapon);
-            var weaponRes = city.GetGroupedResource(currentStatus.profile.weapon);
-            //HudLib.ResourceCost(content, currentStatus.profile.weapon, menCostNext, weaponRes.amount);
-
-            resource(content, currentStatus.profile.weapon, menCostNext, weaponRes.amount);
-
-            if (currentStatus.profile.armorLevel != ItemResourceType.NONE)
-            {
-                //content.newLine();
-                //HudLib.BulletPoint(content);
-                //var armorItem = ConscriptProfile.ArmorItem(currentStatus.profile.armorLevel);
-                var armorRes = city.GetGroupedResource(currentStatus.profile.armorLevel);
-                //HudLib.ResourceCost(content, currentStatus.profile.armorLevel, menCostNext, armorRes.amount);
-                resource(content, currentStatus.profile.armorLevel, menCostNext, armorRes.amount);
-            }
-
+            resource(content, currentStatus.profile.man, unitCount.menPerUnit);
+            resource(content, currentStatus.profile.weapon, unitCount.weaponsPerUnit);
+            resource(content, currentStatus.profile.shield, unitCount.menPerUnit);
+            resource(content, currentStatus.profile.armorLevel, unitCount.menPerUnit);
+            resource(content, currentStatus.profile.animal, unitCount.animalsPerUnit);
+            resource(content, currentStatus.profile.mountArmor, unitCount.animalsPerUnit);
+            resource(content, currentStatus.profile.vehicle, unitCount.vehiclesPerUnit);
+            
             if (currentStatus.profile.specialization == SpecializationType.CityGuard)
             {
                 //content.newParagraph();
                 //content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement, HudLib.TitleColor_Label);
-
+                int totalMen = currentStatus.unitsNeeded * unitCount.menPerUnit;
                 content.newLine();
                 //HudLib.BulletPoint(content);
-                bool available = menCostNext <= city.AvailableGuardHousing();
+                bool available = totalMen <= city.AvailableGuardHousing();
                 content.Add(new RbImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
                 content.space();
-                HudLib.ResourceCost(content, SpriteName.WarsBuild_GuardOffice, DssRef.lang.GuardHousingCount, menCostNext, city.AvailableGuardHousing());
+                HudLib.ResourceCost(content, SpriteName.WarsBuild_GuardOffice, DssRef.lang.GuardHousingCount, totalMen, city.AvailableGuardHousing());
             }
 
-            void resource(RichBoxContent content, ItemResourceType resource, int needResource, int hasResource)
+            void resource(RichBoxContent content, ItemResourceType resource, int perUnitCount)
             {
-                content.newLine();
-
-                bool available = hasResource >= needResource;
-                content.Add(new RbImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
-                content.space();
-                //SpriteName icon = ResourceLib.Icon(resource);
-                IconName.Item(resource, out SpriteName icon, out string name);
-
-                if (icon != SpriteName.NO_IMAGE)
+                if (resource != ItemResourceType.NONE && perUnitCount > 0)
                 {
-                    content.Add(new RbImage(icon));
-                    content.space(0.5f);
+                    if (compact)
+                    {
+                        HudLib.BulletSeperationPoint(content);
+                    }
+                    else
+                    {
+                        content.newLine();
+                    }
+                    var resourceGroup = city.GetGroupedResource(resource);
+                    int needCount = currentStatus.unitsNeeded * perUnitCount;
+                    bool available = resourceGroup.amount >= needCount;
+                    IconName.Item(resource, out SpriteName icon, out string name);
+
+                    content.Add(new RbImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
+                    content.hspace();
+
+                    if (compact)
+                    {                        
+                        content.Add(new RbText(needCount.ToString(), HudLib.ResourceCostColor(available)));
+                        content.hspace();
+                        content.Add(new RbImage(icon));
+                        
+                    }
+                    else
+                    {   
+                        if (icon != SpriteName.NO_IMAGE)
+                        {
+                            content.Add(new RbImage(icon));
+                            content.space(0.5f);
+                        }
+
+                        string text = string.Format(DssRef.lang.Hud_Purchase_ResourceCostOfAvailable,
+                            name, needCount.ToString(), TextLib.LargeNumber(resourceGroup.amount));
+
+                        content.Add(new RbText(text, HudLib.ResourceCostColor(available)));
+                    }
                 }
-
-                string text = string.Format(DssRef.lang.Hud_Purchase_ResourceCostOfAvailable,
-                    name, TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
-
-                content.Add(new RbText(text, HudLib.ResourceCostColor(available)));
             }
         }
 

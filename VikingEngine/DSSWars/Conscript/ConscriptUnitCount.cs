@@ -22,6 +22,7 @@ namespace VikingEngine.DSSWars.Conscript
             animalsPerUnit = 0;
             vehiclesPerUnit = 0;
             weaponsPerUnit = 1;
+            menPerUnit = 1;
             var weaponProp = Resource.ItemPropertyColl.Get(conscript.weapon);
 
             if (conscript.vehicle != Resource.ItemResourceType.NONE)

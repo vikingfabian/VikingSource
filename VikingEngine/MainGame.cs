@@ -253,8 +253,16 @@ namespace VikingEngine
             //Call if one of the threads arent close after some time
             if (Ref.update.HaveLiveThreads())
             {
-                //System.ExecutionEngineException
-                Environment.FailFast("Forces shutdown on threads");
+                try
+                {
+                    //System.ExecutionEngineException
+                    Environment.FailFast("Forces shutdown on threads");
+
+                }
+                catch
+                { 
+                    
+                }
             }
         }
 

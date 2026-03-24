@@ -38,7 +38,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
                 }
             }
 
-            Vector2 pos = new Vector2(group.area.X - 2, group.position.Y + group.lineSpacingHalf - 2);
+            Vector2 pos = new Vector2(group.area.X - 2, group.carriage.position.Y + group.lineSpacingHalf - 2);
             linePointer = new Image(SpriteName.WhiteArea, pos,
                 new Vector2(group.boxWidth + 4, 4), group.layer, false, group.addToRender);
             linePointer.Color = group.settings.tabSelected.BgColor;

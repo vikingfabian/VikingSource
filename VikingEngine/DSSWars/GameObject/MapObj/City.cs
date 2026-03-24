@@ -731,7 +731,7 @@ namespace VikingEngine.DSSWars.GameObject
             for (int i = 0; i < conscriptBuildingsCount; i++)
             {
                 var barrack = new Conscript.BarracksStatus();
-                barrack.readGameState(r, subversion);
+                barrack.readGameState(this, r, subversion);
                 //check doublette
                 if (!hasConscriptId(barrack.idAndPosition))
                 {
