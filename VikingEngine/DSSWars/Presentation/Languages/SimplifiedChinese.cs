@@ -780,7 +780,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 游戏结束画面上显示的统计数据。显示标题。
         /// </summary>
-        public override string EndGameStatistics_Title => "统计";
+        public override string Statistics_Title => "统计";
 
         /// <summary>
         /// 游戏结束画面上显示的统计数据。游戏内已过时间。
@@ -975,7 +975,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 士兵能承受多少伤害
         /// </summary>
-        public override string SoldierStats_Health => "生命值: {0}";
+        public override string SoldierStats_Health => "生命值";
 
         /// <summary>
         /// 一些士兵会增加军队的移动速度
@@ -1682,7 +1682,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Message_ArmyOutOfFood_Text => "将从黑市购买昂贵的食物。当你的钱用完时，饥饿的士兵将会逃离。";
 
-        public override string Info_ArmyFood => "军队将从最近的友好城市补充食物。可以从其他派系购买食物。在敌对区域，食物只能从黑市购买。";
+        public override string Info_ArmyFood1 => "军队将从最近的友好城市补充粮食。";
+        public override string Info_ArmyFood2 => "可以从其他阵营购买粮食。";
+        public override string Info_ArmyFood3 => "在敌对地区，只能从黑市购买粮食。";
 
         public override string FactionName_Monger => "贩夫";
         public override string FactionName_Hatu => "哈图";

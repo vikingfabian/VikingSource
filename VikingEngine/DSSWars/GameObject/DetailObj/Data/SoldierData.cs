@@ -83,7 +83,8 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 
             HudLib.LabelAndText(content, SpriteName.WarsResource_Sword, DssRef.lang.Conscript_WeaponDamage, attackDamage.ToString());
             HudLib.LabelAndText(content, SpriteName.cmdAttackUp, DssRef.lang.Conscript_AttackSpeed, TextLib.OneDecimal(TimeExt.MillsSecToSec(attackTimePlusCoolDown)));
-            content.text(DssRef.todoLang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Light);
+            content.space();
+            content.Add(new RbText(TextLib.Parentheses( DssRef.todoLang.Hud_Time_ValuePerSecond), HudLib.InfoYellow_Light));
             HudLib.LabelAndText(content, SpriteName.warsArmyTag_Shield, DssRef.lang.SoldierStats_Health, basehealth.ToString());
             HudLib.LabelAndText(content, SpriteName.cmdStatsMove, DssRef.todoLang.Conscript_Mobility, TextLib.TwoDecimal(mobilityValue()));
         }

@@ -374,10 +374,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             args.content.newLine();
             args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+            args.content.hspace();
             args.content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
 
             args.content.space(2);
             args.content.Add(new RbImage(SpriteName.cmdStatsMove));
+            args.content.hspace();
             args.content.Add(new RbText(TextLib.OneDecimal(mobilityValue)));
 
             args.content.newLine();
@@ -397,30 +399,10 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public override void toHud(ObjectHudArgs args)
         {
-            //base.toHud(args);
-
             debugTagButton(args.content);
 
             ArmyPresentationHud(args, false);
 
-
-
-            //if (args.player.hud.detailLevel == Display.HudDetailLevel.Minimal)
-            //{
-            //    //if (args.gui.menuState.Count == 0)
-            //    //{
-            //    args.content.Add(new RbImage(SpriteName.WarsGroupIcon));
-            //    args.content.Add(new RbText(groups.Count.ToString()));
-            //    args.content.space();
-            //    args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-            //    args.content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
-            //    args.content.space();
-            //    args.content.Add(new RbImage(SpriteName.rtsUpkeepTime));
-            //    //args.content.Add(new RichBoxText(TextLib.LargeNumber(upkeep)));
-            //    //}
-            //}
-            //else
-            //{
             if (factionIndex == args.player.faction.myIndex)
                     {
                         new Interface.ArmyMenu(args.player, this, args.content);
@@ -429,7 +411,6 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         basicInfoHud(args);
                     }
-            //}
         }
 
         public void basicInfoHud(ObjectHudArgs args)
@@ -473,7 +454,29 @@ namespace VikingEngine.DSSWars.GameObject
                 if (mayInteract)
                 {
                     args.content.space();
-                    HudLib.InfoButton(args.content, new RbTooltip_Text(DssRef.lang.Info_ArmyFood));
+                    HudLib.InfoButton(args.content, new RbTooltip((RichBoxContent content, object tag)=> {
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(DssRef.lang.Info_ArmyFood1));
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(DssRef.lang.Info_ArmyFood2));
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(DssRef.lang.Info_ArmyFood3));
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(DssRef.todoLang.Info_ArmyFood4));
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(DssRef.todoLang.Info_ArmyFood5));
+
+
+                    }));
                 }
 
                 args.content.newLine();

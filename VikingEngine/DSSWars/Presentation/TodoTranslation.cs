@@ -74,6 +74,8 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public string UnitType_LeashAnimalHandler => "{0} {1}-handler";
 
+        public string Info_ArmyFood4 => "Conserved food allows a larger food reserve";
+        public string Info_ArmyFood5 => "Fresh food will be used first";
 
         public string Resource_ConservedFood_Reserves => "Conserved food reserves";
         public string Resource_TypeName_Clay => "clay";

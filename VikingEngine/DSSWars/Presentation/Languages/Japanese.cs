@@ -787,7 +787,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// ゲーム終了画面に表示される統計。表示タイトル。
         /// </summary>
-        public override string EndGameStatistics_Title => "統計";
+        public override string Statistics_Title => "統計";
 
         /// <summary>
         /// ゲーム終了画面に表示される統計。経過した総ゲーム内時間。
@@ -983,7 +983,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 兵士が耐えられる傷の数
         /// </summary>
-        public override string SoldierStats_Health => "健康: {0}";
+        public override string SoldierStats_Health => "健康";
 
         /// <summary>
         /// 一部の兵士は軍隊の移動速度を上げます
@@ -1692,8 +1692,10 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Message_ArmyOutOfFood_Text => "高価な食料はブラックマーケットから購入されます。お金がなくなると、飢えた兵士は脱走します。";
 
-        public override string Info_ArmyFood => "軍隊は最も近い友好都市から食料を補給します。他の派閥から食料を購入することもできます。敵対地域では、食料をブラックマーケットからしか購入できません。";
-
+        public override string Info_ArmyFood1 => "軍隊は最も近い友好的な都市から食料を補充します。";
+        public override string Info_ArmyFood2 => "食料は他の勢力から購入できます。";
+        public override string Info_ArmyFood3 => "敵対的な地域では、闇市場からのみ食料を購入できます。"; 
+       
         public override string FactionName_Monger => "商人";
         public override string FactionName_Hatu => "ハツ";
         public override string FactionName_Destru => "デストル";

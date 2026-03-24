@@ -787,7 +787,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
-        public override string EndGameStatistics_Title => "Statistiche";
+        public override string Statistics_Title => "Statistiche";
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.
         /// </summary>
@@ -983,7 +983,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How many wounds a soldier can endure
         /// </summary>
-        public override string SoldierStats_Health => "Salute: {0}";
+        public override string SoldierStats_Health => "Salute";
 
         /// <summary>
         /// Some soldiers will increase the army movement speed
@@ -1712,9 +1712,9 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Message_ArmyOutOfFood_Text =>
     "Il cibo costoso verrà acquistato dal mercato nero. I soldati affamati diserteranno quando il denaro sarà esaurito.";
 
-        public override string Info_ArmyFood =>
-            "Gli eserciti si riforniranno di cibo dalla città amica più vicina. Il cibo può essere acquistato da altre fazioni. Nelle regioni ostili, può essere comprato solo dal mercato nero.";
-
+        public override string Info_ArmyFood1 => "Gli eserciti si riforniranno di cibo nella città alleata più vicina.";
+        public override string Info_ArmyFood2 => "Il cibo può essere acquistato da altre fazioni.";
+        public override string Info_ArmyFood3 => "Nelle regioni ostili, il cibo può essere acquistato solo al mercato nero.";
         public override string FactionName_Monger => "Monger";
         public override string FactionName_Hatu => "Hatu";
         public override string FactionName_Destru => "Destru";

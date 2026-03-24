@@ -394,6 +394,38 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbText(DssRef.lang.Building_BuildAction));
             }
 
+            if (subTile.subTile.mainTerrain == TerrainMainType.Building)
+            {
+                switch ((TerrainBuildingType)subTile.subTile.subTerrain)
+                {
+                    case TerrainBuildingType.BoarHabitat:
+                    case TerrainBuildingType.FowlHabitat:
+                    case TerrainBuildingType.OxHabitat:
+                    case TerrainBuildingType.PonyHabitat:
+                    case TerrainBuildingType.WolfHabitat:
+                    case TerrainBuildingType.CatHabitat:
+                    case TerrainBuildingType.ElephantHabitat:
+                        content.Add(new RbSeperationLine());
+                        content.h2(".To capture", HudLib.TitleColor_Head2);
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, DssRef.todoLang.BuildingType_TrapperHut)));
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(TextLib.LabelColon( DssRef.lang.Work_OrderPrioTitle)));
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsWorkMove));
+                        content.hspace();
+                        content.Add(new RbText(DssRef.lang.Work_Move));
+                        break;
+                }
+            }
+
             //content.text(subTile.subTile.TypeToString());
 
             create(player, content, false);

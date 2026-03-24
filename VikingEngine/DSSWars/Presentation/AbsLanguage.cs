@@ -387,7 +387,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Diplomacy_WarDeclarationTitle { get; }
         public abstract string Diplomacy_TruceEndTitle { get; }
 
-        public abstract string EndGameStatistics_Title { get; }
+        public abstract string Statistics_Title { get; }
         public abstract string EndGameStatistics_Time { get; }
         public abstract string EndGameStatistics_SoldiersRecruited { get; }
         public abstract string EndGameStatistics_FriendlySoldiersLost { get; }
@@ -905,7 +905,9 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Language_XUpkeepIsY { get; }
         public abstract string Language_XCountIsY { get; }
         public abstract string Message_ArmyOutOfFood_Text { get; }
-        public abstract string Info_ArmyFood { get; }
+        public abstract string Info_ArmyFood1 { get; }
+        public abstract string Info_ArmyFood2 { get; }
+        public abstract string Info_ArmyFood3 { get; }
         public abstract string FactionName_Monger { get; }
         public abstract string FactionName_Hatu { get; }
         public abstract string FactionName_Destru { get; }

@@ -791,7 +791,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
-        public override string EndGameStatistics_Title => "Stats";
+        public override string Statistics_Title => "Stats";
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.
         /// </summary>
@@ -987,7 +987,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How many wounds a soldier can endure
         /// </summary>
-        public override string SoldierStats_Health => "Vie: {0}";
+        public override string SoldierStats_Health => "Vie";
 
         /// <summary>
         /// Some soldiers will increase the army movement speed
@@ -1704,7 +1704,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Message_ArmyOutOfFood_Text => "De la nourriture sera achetée à prix fort sur le marché noir. Des soldats déserteront votre armée lorsque vous serez à court d'or.";
 
-        public override string Info_ArmyFood => "Les armées se fournissent en nourriture dans la ville la plus proche.";
+        public override string Info_ArmyFood1 => "Les armées se ravitailleront en nourriture dans la ville alliée la plus proche.";
+        public override string Info_ArmyFood2 => "De la nourriture peut être achetée auprès d'autres factions.";
+        public override string Info_ArmyFood3 => "Dans les régions hostiles, la nourriture ne peut être achetée qu'au marché noir.";
 
         public override string FactionName_Monger => "Gneurdeger";
         public override string FactionName_Hatu => "Hatu";

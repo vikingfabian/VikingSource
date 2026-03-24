@@ -547,7 +547,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Diplomacy_TruceEndTitle => "A trégua terminou";
 
         /// <summary>Stats that are shown on the end game screen. Display title.</summary>
-        public override string EndGameStatistics_Title => "Estatísticas";
+        public override string Statistics_Title => "Estatísticas";
         /// <summary>Stats that are shown on the end game screen. Total ingame time passed.</summary>
         public override string EndGameStatistics_Time => "Tempo de jogo: {0}";
 
@@ -669,7 +669,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string SoldierStats_AttackStrengthLandSeaCity => "Força de ataque: Terra {0} | Mar {1} | Cidade {2}";
 
         /// <summary>How many wounds a soldier can endure</summary>
-        public override string SoldierStats_Health => "Vida: {0}";
+        public override string SoldierStats_Health => "Vida";
 
         /// <summary>Some soldiers will increase the army movement speed</summary>
         public override string SoldierStats_SpeedBonusLand => "Bônus de velocidade em terra: {0}";
@@ -1251,7 +1251,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Message_ArmyOutOfFood_Text => "Comida cara será comprada no mercado negro. Soldados famintos desertarão quando o dinheiro acabar.";
 
-        public override string Info_ArmyFood => "Exércitos reabastecem comida na cidade amiga mais próxima. Comida pode ser comprada de outras facções. Em regiões hostis, só é possível comprar no mercado negro.";
+        public override string Info_ArmyFood1 => "Os exércitos reabastecerão sua comida na cidade aliada mais próxima.";
+        public override string Info_ArmyFood2 => "Comida pode ser comprada de outras facções.";
+        public override string Info_ArmyFood3 => "Em regiões hostis, a comida só pode ser comprada no mercado negro.";
 
         public override string FactionName_Monger => "Monger";
         public override string FactionName_Hatu => "Hatu";

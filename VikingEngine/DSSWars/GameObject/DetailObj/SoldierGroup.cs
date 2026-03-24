@@ -23,10 +23,12 @@ using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.Players;
 using VikingEngine.PJ.CarBall;
 using VikingEngine.ToGG.HeroQuest;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.ToGG.MoonFall.GO;
+using VikingEngine.ToGG.MoonFall.Players;
 using VikingEngine.ToGG.ToggEngine.Map;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
@@ -42,6 +44,7 @@ namespace VikingEngine.DSSWars.GameObject
 
     partial class SoldierGroup : AbsGroup
     {
+
         public static Physics.CircleBound OtherBound;
         public static Physics.CircleBound WalkDirBound;
         static float WalkDirCheckLength;
@@ -1233,10 +1236,12 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.newLine();
             //}
             args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+            args.content.hspace();
             args.content.Add(new RbText(TextLib.TwoDecimal(strengthValue())));
 
             args.content.space(2);
             args.content.Add(new RbImage(SpriteName.cmdStatsMove));
+            args.content.hspace();
             args.content.Add(new RbText(TextLib.TwoDecimal(mobilityValue())));
         }
 
@@ -1253,6 +1258,42 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             SoldiersPresentationHud(args, false, false);
+            args.content.Add(new RbSeperationLine());
+
+            soldierData.StatsToHud(args.content);
+            args.content.Add(new RbSeperationLine());
+            int tabSel = 0;
+
+            var tabs = new List<ArtTabMember>((int)MenuTab.NUM_NONE);
+
+            List<MenuTab> availableTabs = args.player.AvailableArmyTabs();
+            for (int i = 0; i < availableTabs.Count; ++i)
+            {
+                var text = new RbText(LangLib.Tab(availableTabs[i], out string description, out _));
+                text.overrideColor = HudLib.RbSettings.tabSelected.Color;
+
+                AbsRbAction enter = null;
+                if (description != null)
+                {
+                    enter = new RbAction(() =>
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        content.text(description).overrideColor = HudLib.InfoYellow_Light;
+
+                        args.player.hud.tooltip.create(args.player, content, true);
+                    });
+                }
+
+                tabs.Add(new ArtTabMember(new List<AbsRichBoxMember>
+                            {
+                                text
+                            }, enter));
+
+                if (availableTabs[i] == args.player.armyTab)
+                {
+                    tabSel = i;
+                }
+            }
 #if DEBUG
             args.content.newLine();
             debugTagButton(args.content);

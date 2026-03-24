@@ -10,6 +10,10 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public bool executeBuildEffectsOnCity(bool build, IntVector2 subPos, ref SubTile subTile, TerrainMainType mainType, int subType)
         {
+            if (!build)
+            {
+                lib.DoNothing();
+            }
             switch (mainType)
             {
                 case TerrainMainType.Building:

@@ -243,7 +243,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         public EndSceneRightDisplayPart(RichboxGui gui)
             : base(gui)
         {
-            content.h1(DssRef.lang.EndGameStatistics_Title, HudLib.TitleColor_Head2);
+            content.h1(DssRef.lang.Statistics_Title, HudLib.TitleColor_Head2);
 
             foreach (var p in DssRef.state.localPlayers)
             {

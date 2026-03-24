@@ -790,7 +790,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
-        public override string EndGameStatistics_Title => "İstatistikler";
+        public override string Statistics_Title => "İstatistikler";
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.
         /// </summary>
@@ -986,7 +986,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How many wounds a soldier can endure
         /// </summary>
-        public override string SoldierStats_Health => "Sağlık: {0}";
+        public override string SoldierStats_Health => "Sağlık";
 
         /// <summary>
         /// Some soldiers will increase the army movement speed
@@ -1703,8 +1703,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Message_ArmyOutOfFood_Text => "Yiyecekler karaborsadan pahalıya alınacak. Paran bittiğinde aç kalan askerler firar edecek.";
 
-        public override string Info_ArmyFood => "Ordular en yakın dost şehirden yiyecek ikmali yapar. Diğer taraflardan da alım yapılabilir. Düşman bölgelerinde yalnızca karaborsa aktiftir.";
-
+        public override string Info_ArmyFood1 => "Ordular, erzaklarını en yakın dost şehirden yeniler.";
+        public override string Info_ArmyFood2 => "Diğer fraksiyonlardan erzak satın alınabilir.";
+        public override string Info_ArmyFood3 => "Düşman bölgelerinde erzak yalnızca karaborsadan satın alınabilir.";
         public override string FactionName_Monger => "Monger";
         public override string FactionName_Hatu => "Hatu";
         public override string FactionName_Destru => "Destru";

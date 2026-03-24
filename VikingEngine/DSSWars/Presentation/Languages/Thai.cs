@@ -804,7 +804,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
-        public override string EndGameStatistics_Title => TextLib.ThaiConv("สถิติ");
+        public override string Statistics_Title => TextLib.ThaiConv("สถิติ");
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.
         /// </summary>
@@ -1000,7 +1000,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How many wounds a soldier can endure
         /// </summary>
-        public override string SoldierStats_Health => TextLib.ThaiConv("พลัง|ชีวิต: {0}");
+        public override string SoldierStats_Health => TextLib.ThaiConv("พลัง|ชีวิต");
 
         /// <summary>
         /// Some soldiers will increase the army movement speed
@@ -1726,7 +1726,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Message_ArmyOutOfFood_Text => TextLib.ThaiConv("จะ|มีการ|ซื้อ|เสบียง|ราคา|แพง|จาก|ตลาด|มืด |ทหาร|ที่|หิว|โซ|จะ|หนี|ทัพ|เมื่อ|เงิน|ของ|คุณ|หมด|ลง");
 
-        public override string Info_ArmyFood => TextLib.ThaiConv("กอง|ทัพ|จะ|เติม|เสบียง|จาก|เมือง|พันธมิตร|ที่|ใกล้|ที่สุด |เสบียง|สามารถ|ซื้อ|ได้|จาก|ฝ่าย|อื่น |แต่|ใน|เขต|ศัตรู|จะ|ซื้อ|เสบียง|ได้|จาก|ตลาด|มืด|เท่านั้น");
+        public override string Info_ArmyFood1 => "กองทัพ|จะ|เติม|เสบียง|จาก|เมือง|พันธมิตร|ที่|ใกล้|ที่สุด.";
+        public override string Info_ArmyFood2 => "สามารถ|ซื้อ|เสบียง|ได้|จาก|ฝ่าย|อื่น.";
+        public override string Info_ArmyFood3 => "ใน|ดินแดน|ศัตรู|จะ|ซื้อ|เสบียง|ได้|จาก|ตลาดมืด|เท่านั้น.";
 
         public override string FactionName_Monger => TextLib.ThaiConv("มอง|เกอร์");
         public override string FactionName_Hatu => TextLib.ThaiConv("ฮา|ตู");

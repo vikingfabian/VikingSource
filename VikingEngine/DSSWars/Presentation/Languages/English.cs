@@ -461,7 +461,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
         /// </summary>
-        public override string Hud_StrengthRating => "Strength rating: {0}";
+        public override string Hud_StrengthRating => "Strength rating";
 
         /// <summary>
         /// Ingame display. Caculated battle strength for the whole nation.
@@ -809,7 +809,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
-        public override string EndGameStatistics_Title => "Stats";
+        public override string Statistics_Title => "Stats";
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.
         /// </summary>
@@ -1005,7 +1005,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How many wounds a soldier can endure
         /// </summary>
-        public override string SoldierStats_Health => "Health: {0}";
+        public override string SoldierStats_Health => "Health";
 
         /// <summary>
         /// Some soldiers will increase the army movement speed
@@ -1733,7 +1733,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Message_ArmyOutOfFood_Text => "Expensive food will be purchased from the black market. Hungry soldiers will desert when your money runs out.";
 
-        public override string Info_ArmyFood => "Armies will restock food from the closest friendly city. Food can be purchased from other factions. In hostile regions, food can only be purchased from the black market.";
+        public override string Info_ArmyFood1 => "Armies will restock food from the closest friendly city.";
+         public override string Info_ArmyFood2 => "Food can be purchased from other factions.";
+        public override string Info_ArmyFood3 => "In hostile regions, food can only be purchased from the black market.";
 
         public override string FactionName_Monger => "Monger";
         public override string FactionName_Hatu => "Hatu";

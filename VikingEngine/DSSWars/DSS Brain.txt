@@ -1,16 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Remade worker culling to just be city area
-* Army total mobility value, is 20% medium speed + 80% slowest unit
-
-* Voxel editor: repaired the animation locks
-* Added system for setting wagon and mount speed, attack and health
-* Added a system to track reasources for soldier conscript
-* Most animal models complete
-* Updated soldiers tooltip
-* Ui for exposing soldier stats
-* fixed build over clay pit
-* improved multi line content in buttons
+* 
 
 
 ##ICONS TODO
@@ -20,17 +10,13 @@ attack speed
 #MOUNTED TODO
 
 Current bugs
-x  they need conserved food, but I never saw/read anything about it in the help tips, the tooltips, etc.
+x block count to soldier stats
 x missing a lot of the animal/weapon/armor combos
 x auto build of trappers
 x ai conscript of animals
 
-x ui line breaks in German
-
 x adv build upgrade, no more use of logistics
 x auto options for logistics/hall/cook
-
-* soldier tooltip, plus riding/wagon in name
 
 * go through controller best practices
 
@@ -61,7 +47,7 @@ Plus the boss fight: about 10 hours
 (total: about 45 hours)
 
 #current
-English, Simplified Chinese, Japanese, Korean, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian
+English, Simplified Chinese, Japanese, Korean, Russian, Spanish, German, French, Turkish, Brazialian Portuguese, Italian, Polish, Thai
 
 Fully translate all the strings in the file to Brazilian Portuguese and save into a new file, that I can download. Translate all of them, do not stop.
 Brazilians are used to English in gaming, use a “hybrid” translation.
@@ -69,6 +55,7 @@ Use an accessable language, that doesnt use very niche words, so the translation
 The game is a strategy wargame, with medieval and low fantasy theme.
 
 Where English is used in gaming, use a “hybrid” translation.
+For Thai, use a pipe (|) between words, example: "สวัสดี|ตอน|เช้า"
 
 
 ##
@@ -76,6 +63,8 @@ Translate all strings to French.
 Use an accessable language, that doesnt use very niche words, so the translation feels natural and player-friendly.
 The game is a strategy wargame, with medieval and low fantasy theme.
 Where English is used in gaming, use a “hybrid” translation.
+For Thai, use a pipe (|) between words, example: "สวัสดี|ตอน|เช้า"
+
 
 https://discord.com/verification
 

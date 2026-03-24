@@ -782,7 +782,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Статистика, отображаемая на экране окончания игры. Заголовок.
         /// </summary>
-        public override string EndGameStatistics_Title => "Статистика";
+        public override string Statistics_Title => "Статистика";
 
         /// <summary>
         /// Статистика, отображаемая на экране окончания игры. Общее время в игре.
@@ -977,7 +977,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Сколько ранений может выдержать солдат
         /// </summary>
-        public override string SoldierStats_Health => "Здоровье: {0}";
+        public override string SoldierStats_Health => "Здоровье";
 
         /// <summary>
         /// Некоторые солдаты увеличат скорость передвижения армии
@@ -1680,8 +1680,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Message_ArmyOutOfFood_Text => "Дорогая еда будет закупаться на черном рынке. Голодные солдаты дезертируют, когда закончатся деньги.";
 
-        public override string Info_ArmyFood => "Армии будут пополнять запасы еды из ближайшего дружественного города. Пищу можно покупать у других фракций. Во враждебных регионах еду можно купить только на черном рынке.";
-
+        public override string Info_ArmyFood1 => "Армии будут пополнять запасы провизии в ближайшем союзном городе.";
+        public override string Info_ArmyFood2 => "Провизию можно покупать у других фракций.";
+        public override string Info_ArmyFood3 => "На враждебных территориях провизию можно купить только на черном рынке.";
         public override string FactionName_Monger => "Торговец";
         public override string FactionName_Hatu => "Хату";
         public override string FactionName_Destru => "Дестру";

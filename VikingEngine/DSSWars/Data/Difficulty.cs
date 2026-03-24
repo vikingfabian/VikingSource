@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.Data
 
         int difficulty = DefaultOption;
 
-        static readonly int[] options = new int[] { 25, 50, 75, 100, 125, 150, 175, 200, 300 };
+        static readonly int[] options = new int[] { 25, 50, 75, 100, 125, 150, 175, 200, 250 };
         public static readonly int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150, 300 };
         public static readonly GameModeMainType[] AvailableModes = [GameModeMainType.FullStory, GameModeMainType.QuickMatch, GameModeMainType.Sandbox, GameModeMainType.Peaceful, GameModeMainType.Spectator];
 
@@ -214,19 +214,20 @@ namespace VikingEngine.DSSWars.Data
             double result = PercDifficulty;
             if (!setting_allowPauseCommand)
             {
-                result *= 1.25;
+                result += 50;
+
             }
             if (!DssRef.storage.gameRuleset.centralGold)
             {
-                result *= 1.5;
+                result += 25;
             }
             switch (setting_gameMode)
             {
-                case GameModeMainType.Sandbox:
-                    result *= 0.75;
+                case GameModeMainType.FullStory:
+                    result += 50;
                     break;
                 case GameModeMainType.Peaceful:
-                    result *= 0.25;
+                    result *= 0.5;
                     break;
             }
 

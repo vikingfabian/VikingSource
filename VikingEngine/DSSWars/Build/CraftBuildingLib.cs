@@ -207,7 +207,7 @@ namespace VikingEngine.DSSWars.Build
 
         public static readonly CraftBlueprint GreatHall = new CraftBlueprint(
            CraftResultType.Building,
-           (int)Build.BuildAndExpandType.ManorLord,
+           (int)Build.BuildAndExpandType.GreatHall,
            1,
            new UseResource[]
            {

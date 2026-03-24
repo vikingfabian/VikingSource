@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int WorkerStats_IdleCount = 0;
         public int WorkerStats_WorkQueueLength => workQue.Count;
-        public int WorkerStats_TotalUnits => workerStatuses.Count;
+        public int WorkerStats_TotalUnits = -1; /*=> workerStatuses.Count*/
 
         //public bool mintOnFullStockProperty(object tag, bool set, bool value)
         
@@ -77,7 +77,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 async_blackMarketUpdate();
 
-                int workerStatusActiveCount = workerStatuses.Count;
+                int workTeamsTotalCount = workerStatuses.Count;
                 int deletedCount = 0;
                 int idleCount = 0;
                 //IntVector2 minpos = WP.ToSubTilePos_Centered(tilePos);
@@ -94,12 +94,12 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         case WorkType.IsDeleted:
                             ++deletedCount;
-                            --workerStatusActiveCount;
+                            --workTeamsTotalCount;
                             break;
 
                         case WorkType.Starving:
                         case WorkType.Exit:
-                            --workerStatusActiveCount;
+                            --workTeamsTotalCount;
                             break;
 
                         case WorkType.Idle:
@@ -119,12 +119,12 @@ namespace VikingEngine.DSSWars.GameObject
                 //cullingBottomRight = WP.SubtileToTilePos(minMax.max);
                 //workerCullingMinMax = new Intvector2MinMax(WP.SubtileToTilePos(minMax_workerCulling.min), WP.SubtileToTilePos(minMax_workerCulling.max));
 
-                int workTeamCount = Bound.Min(workForce.amount / WorkTeamSize, 1);
+                int workTeamGoalCount = Bound.Min(workForce.amount / WorkTeamSize, 1);
 
-                if (workerStatusActiveCount < workTeamCount)
+                if (workTeamsTotalCount < workTeamGoalCount)
                 {
                     int deletedIx = 0;
-                    int newWorkers = workTeamCount - workerStatusActiveCount;
+                    int newWorkers = workTeamGoalCount - workTeamsTotalCount;
                     IntVector2 startPos = WP.ToSubTilePos_Centered(tilePos);
                     for (int i = 0; i < newWorkers; i++)
                     {
@@ -226,9 +226,13 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (status.work == WorkType.Idle)
                     {
-                        if (workerStatusActiveCount > workForce.amount +1)
+                        if (workTeamsTotalCount > workTeamGoalCount + 1)
                         {
-                            --workerStatusActiveCount;
+                            if (GetPlayer().IsLocalPlayer())
+                            {
+                                lib.DoNothing();
+                            }
+                            --workTeamsTotalCount;
                             
                             status.createWorkOrder(WorkType.Exit, -1, 0, WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
                         }
@@ -244,7 +248,7 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                         else if (status.energy <= DssConst.Worker_Starvation)
                         {
-                            --workerStatusActiveCount;
+                            --workTeamsTotalCount;
                             --workForce.amount;
 
                             status.createWorkOrder(WorkType.Starving, -1, 0, WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
@@ -256,6 +260,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
+                WorkerStats_TotalUnits = workTeamsTotalCount;
                 WorkerStats_IdleCount = idleWorkers.Count;
 
                 int distanceValue;

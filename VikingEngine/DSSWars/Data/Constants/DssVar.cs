@@ -48,7 +48,7 @@ namespace VikingEngine.DSSWars
             fowlModel = henModel.Copy(VoxelModelName.Fowl, 0.9f);
             pheasantModel = henModel.Copy(VoxelModelName.Pheasant, 1f);
 
-            pigModel = new AnimalModelData(VoxelModelName.Pig, DssConst.Men_StandardModelScale * 0.5f, new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames));
+            pigModel = new AnimalModelData(VoxelModelName.Pig, DssConst.Men_StandardModelScale * 0.5f, new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames * 0.5f));
             boarModel = pigModel.Copy(VoxelModelName.Boar, 0.8f);
 
             dogModel = new AnimalModelData(VoxelModelName.dog1, DssConst.Men_StandardModelScale * 0.6f, new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1.1f));

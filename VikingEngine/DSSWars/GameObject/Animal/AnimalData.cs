@@ -89,7 +89,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
                 case ItemResourceType.WildCat:
                 case ItemResourceType.Lion:
                 case ItemResourceType.WarLion:
-                    new Livestock(tilepos, wp, DssVar.boarModel);
+                    new Livestock(tilepos, wp, DssVar.lionModel);
                     break;
 
                 case ItemResourceType.Elephant:

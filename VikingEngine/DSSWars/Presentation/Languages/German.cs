@@ -659,7 +659,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Statistiken, die auf dem Endspiel-Bildschirm angezeigt werden. Titel.
         /// </summary>
-        public override string EndGameStatistics_Title => "Statistiken";
+        public override string Statistics_Title => "Statistiken";
 
         /// <summary>
         /// Statistiken, die auf dem Endspiel-Bildschirm angezeigt werden. Gesamtspielzeit.
@@ -856,7 +856,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Wie viele Treffer ein Soldat aushalten kann
         /// </summary>
-        public override string SoldierStats_Health => "Lebenspunkte: {0}";
+        public override string SoldierStats_Health => "Lebenspunkte";
 
         /// <summary>
         /// Einige Soldaten erhöhen die Bewegungsgeschwindigkeit der Armee an Land
@@ -1562,8 +1562,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Message_ArmyOutOfFood_Text => "Teure Nahrung wird vom Schwarzmarkt gekauft. Hungrige Soldaten werden desertieren, wenn dein Geld aufgebraucht ist.";
 
-        public override string Info_ArmyFood => "Armeen versorgen sich mit Nahrung aus der nächstgelegenen freundlichen Stadt. Nahrung kann von anderen Fraktionen gekauft werden. In feindlichen Gebieten kann Nahrung nur auf dem Schwarzmarkt erworben werden.";
-
+        public override string Info_ArmyFood1 => "Armeen füllen ihre Nahrung in der nächstgelegenen verbündeten Stadt auf.";
+        public override string Info_ArmyFood2 => "Nahrung kann von anderen Fraktionen gekauft werden.";
+        public override string Info_ArmyFood3 => "In feindlichen Gebieten kann Nahrung nur auf dem Schwarzmarkt gekauft werden.";
         public override string FactionName_Monger => "Monger";
         public override string FactionName_Hatu => "Hatu";
         public override string FactionName_Destru => "Destru";

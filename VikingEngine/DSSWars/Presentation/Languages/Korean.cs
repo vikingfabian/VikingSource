@@ -794,7 +794,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
-        public override string EndGameStatistics_Title => "통계";
+        public override string Statistics_Title => "통계";
 
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.
@@ -991,7 +991,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How many wounds a soldier can endure
         /// </summary>
-        public override string SoldierStats_Health => "체력: {0}";
+        public override string SoldierStats_Health => "체력";
 
         /// <summary>
         /// Some soldiers will increase the army movement speed
@@ -1704,8 +1704,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Message_ArmyOutOfFood_Text => "식량이 부족하여 암시장에서 비싼 식량을 구매합니다. 금화가 바닥나면 병사들이 탈영합니다.";
 
-        public override string Info_ArmyFood => "군대는 가장 가까운 아군 도시에서 식량을 보급받습니다. 다른 세력으로부터 식량을 구매할 수도 있습니다. 적대 지역에서는 암시장에서만 식량을 구입할 수 있습니다.";
-
+        public override string Info_ArmyFood1 => "군대는 가장 가까운 우호적인 도시에서 식량을 보충합니다.";
+        public override string Info_ArmyFood2 => "식량은 다른 세력에게서 구매할 수 있습니다.";
+        public override string Info_ArmyFood3 => "적대적인 지역에서는 암시장에서만 식량을 구매할 수 있습니다.";
         public override string FactionName_Monger => "몽거";
         public override string FactionName_Hatu => "하투";
         public override string FactionName_Destru => "데스트루";

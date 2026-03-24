@@ -783,7 +783,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Estadísticas que se muestran en la pantalla de fin de juego. Título de la visualización.
         /// </summary>
-        public override string EndGameStatistics_Title => "Estadísticas";
+        public override string Statistics_Title => "Estadísticas";
 
         /// <summary>
         /// Estadísticas que se muestran en la pantalla de fin de juego. Tiempo total transcurrido en el juego.
@@ -978,7 +978,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Cuántas heridas puede soportar un soldado
         /// </summary>
-        public override string SoldierStats_Health => "Salud: {0}";
+        public override string SoldierStats_Health => "Salud";
 
         /// <summary>
         /// Algunos soldados aumentarán la velocidad de movimiento del ejército
@@ -1685,7 +1685,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Message_ArmyOutOfFood_Text => "Se comprará comida cara del mercado negro. Los soldados hambrientos desertarán cuando se acabe tu dinero.";
 
-        public override string Info_ArmyFood => "Los ejércitos reabastecerán comida de la ciudad amiga más cercana. Se puede comprar comida de otras facciones. En regiones hostiles, la comida solo puede comprarse en el mercado negro.";
+        public override string Info_ArmyFood1 => "Армии будут пополнять запасы провизии в ближайшем союзном городе.";
+        public override string Info_ArmyFood2 => "Провизию можно покупать у других фракций.";
+        public override string Info_ArmyFood3 => "На враждебных территориях провизию можно купить только на черном рынке.";
 
         public override string FactionName_Monger => "Mercader";
         public override string FactionName_Hatu => "Hatu";

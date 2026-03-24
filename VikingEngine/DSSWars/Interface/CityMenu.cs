@@ -2595,6 +2595,7 @@ namespace VikingEngine.DSSWars.Interface
     enum MenuTab
     {         
         Info,
+        Statistics,
         Tag,
         Conscript,
         Economy,

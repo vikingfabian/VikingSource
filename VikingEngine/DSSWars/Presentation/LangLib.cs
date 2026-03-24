@@ -927,6 +927,9 @@ namespace VikingEngine.DSSWars.Presentation
                 case MenuTab.Info:
                     description = null;
                     return DssRef.lang.MenuTab_Info;
+                case MenuTab.Statistics:
+                    description = null;
+                    return DssRef.lang.Statistics_Title;
                 case MenuTab.Tag:
                     description = null;
                     return DssRef.lang.MenuTab_Tag;

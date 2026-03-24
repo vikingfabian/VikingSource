@@ -802,7 +802,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Statystyki wyświetlane na ekranie końcowym gry.
         /// </summary>
-        public override string EndGameStatistics_Title => "Statystyki";
+        public override string Statistics_Title => "Statystyki";
         /// <summary>
         /// Statystyki końcowe. Całkowity czas gry.
         /// </summary>
@@ -998,7 +998,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Ile ran może wytrzymać żołnierz
         /// </summary>
-        public override string SoldierStats_Health => "Zdrowie: {0}";
+        public override string SoldierStats_Health => "Zdrowie";
 
         /// <summary>
         /// Niektórzy żołnierze zwiększają prędkość poruszania się armii
@@ -1725,8 +1725,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Message_ArmyOutOfFood_Text => "Droga żywność zostanie kupiona na czarnym rynku. Głodni żołnierze zaczną dezerterować, gdy zabraknie Ci złota.";
 
-        public override string Info_ArmyFood => "Armie będą uzupełniać zapasy w najbliższym sojuszniczym mieście. Żywność można kupić od innych frakcji. W regionach wrogich żywność jest dostępna wyłącznie na czarnym rynku.";
-
+        public override string Info_ArmyFood1 => "Armie będą uzupełniać prowiant w najbliższym przyjaznym mieście.";
+        public override string Info_ArmyFood2 => "Prowiant można kupić od innych frakcji.";
+        public override string Info_ArmyFood3 => "Na wrogich terytoriach prowiant można kupić tylko na czarnym rynku.";
         public override string FactionName_Monger => "Monger";
         public override string FactionName_Hatu => "Hatu";
         public override string FactionName_Destru => "Destru";
