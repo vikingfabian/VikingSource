@@ -20,6 +20,22 @@ namespace VikingEngine
         {
             this.absolute = absolute;
         }
+
+        public void Next(float value)
+        {
+            if (hasValue)
+            {
+                if (value < minValue)
+                {
+                    minValue = value;
+                }
+            }
+            else
+            {
+                hasValue = true;
+                minValue = value;
+            }
+        }
         public void Next(float value, int index)
         {
             if (!hasValue)

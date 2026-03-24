@@ -1,6 +1,7 @@
 ﻿UPDATE
 Change Log:
 * Remade worker culling to just be city area
+* Army total mobility value, is 20% medium speed + 80% slowest unit
 
 * Voxel editor: repaired the animation locks
 * Added system for setting wagon and mount speed, attack and health

@@ -376,6 +376,10 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
             args.content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
 
+            args.content.space(2);
+            args.content.Add(new RbImage(SpriteName.cmdStatsMove));
+            args.content.Add(new RbText(TextLib.OneDecimal(mobilityValue)));
+
             args.content.newLine();
             args.content.Add(new RbImage(SpriteName.WarsGroupIcon));
             args.content.space(1);
@@ -433,6 +437,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.icontext(SpriteName.WarsGroupIcon, string.Format(DssRef.lang.Hud_SoldierGroupsCount, groups.Count));
             args.content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.Hud_SoldierCount, TextLib.LargeNumber(soldiersCount)));
             HudLib.LabelAndText(args.content, SpriteName.WarsStrengthIcon, DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue));
+            HudLib.LabelAndText(args.content, SpriteName.cmdStatsMove, DssRef.todoLang.Conscript_Mobility, TextLib.OneDecimal(mobilityValue));
             args.content.newLine();
 
             if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
@@ -987,6 +992,9 @@ namespace VikingEngine.DSSWars.GameObject
                 int shipCount = 0;
                 double speedbonus = 0;
                 float totalStrength = 0;
+                float totalMobility = 0;
+                FindMinValue lowestMobility = new FindMinValue(false);
+
                 //int dps;
                 bool allGropsAreIdle = true;
 
@@ -1048,8 +1056,9 @@ namespace VikingEngine.DSSWars.GameObject
                     }
 
                     totalStrength += groupsC.sel.strengthValue();/*AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip)*/;//(dps + health * AllUnits.HealthToStrengthConvertion) * groupsC.sel.soldierCount;
-
-                    
+                    float mobility = groupsC.sel.mobilityValue();
+                    totalMobility += mobility;
+                    lowestMobility.Next(mobility);
                 }
 
                 army_isIdle = allGropsAreIdle && IdleObjetive();
@@ -1070,6 +1079,15 @@ namespace VikingEngine.DSSWars.GameObject
                 transportSpeedSea = Convert.ToSingle(DssConst.Men_StandardShipSpeed * speedbonus);
 
                 strengthValue = totalStrength; // AllUnits.AverageGroupStrength;
+
+                if (groups.Count < 2)
+                {
+                    mobilityValue = totalMobility;
+                }
+                else
+                { 
+                    mobilityValue = 0.2f * totalMobility / groups.Count + 0.8f * lowestMobility.minValue;
+                }
 
                 cullingTopLeft = minpos - CamCullingRadius;
                 cullingBottomRight = maxpos + CamCullingRadius;
