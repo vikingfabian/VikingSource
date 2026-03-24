@@ -30,7 +30,9 @@ namespace VikingEngine.DSSWars.GameObject
         public bool inRender_detailLayer = false;
 
         public int previousWarAgainstFaction = -1;
-        public float strengthValue=-1;
+        public float strengthValue = -1;
+        public float mobilityValue = 0;
+
         public IntVector2 tilePos;
         public TimeStamp lastNetUpdate = new TimeStamp();
         public int previousIncome_copp = 0;

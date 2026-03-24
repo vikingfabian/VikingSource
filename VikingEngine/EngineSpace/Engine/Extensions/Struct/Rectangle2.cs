@@ -480,6 +480,15 @@ namespace VikingEngine
                 size.Y = value.Height;
             }
         }
+
+        public Intvector2MinMax MinMax
+        {
+            get
+            {
+                return new Intvector2MinMax(pos, pos + size);
+            }
+        }
+
         public bool IntersectPoint(IntVector2 point)
         {
             if (point.X >= pos.X && point.Y >= pos.Y)
