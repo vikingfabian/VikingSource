@@ -82,12 +82,8 @@ namespace VikingEngine.DSSWars.GameObject
                 int idleCount = 0;
                 //IntVector2 minpos = WP.ToSubTilePos_Centered(tilePos);
                 //IntVector2 maxpos = minpos;
-                Intvector2MinMax minMax = new Intvector2MinMax(WP.ToSubTilePos_Centered(tilePos));
-
-                //for (int i = 0; i < MaxSkill.Length; ++i)
-                //{
-                //    MaxSkill[i] = 0;
-                //}
+                //Intvector2MinMax minMax_workerCulling = new Intvector2MinMax(WP.ToSubTilePos_Centered(tilePos));
+                //cityHallSubtilePos
 
                 for (int i = 0; i < workerStatuses.Count; i++)
                 {
@@ -114,31 +110,14 @@ namespace VikingEngine.DSSWars.GameObject
                             break;
 
                     }
-                    minMax.Next(ref status.subTileEnd);
+                    //minMax_workerCulling.Next(ref status.subTileEnd);
                  
                 }
 
                 cityExperienceLevels = SkillCollector.ExportData();
-                //topskill_Farm = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Farm]);
-                //topskill_AnimalCare = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.AnimalCare]);
-                //topskill_HouseBuilding = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.HouseBuilding]);
-                //topskill_WoodCutter = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.WoodWork]);
-                //topskill_StoneCutter = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.StoneCutter]);
-                //topskill_Mining = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Mining]);
-                //topskill_Transport = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Transport]);
-                //topskill_Cook = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Cook]);
-                //topskill_Fletcher = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Fletcher]);
-                //topskill_Smelting = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Smelting]);
-                //topskill_Casting = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CastMetal]);
-                //topskill_CraftMetal = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftMetal]);
-                //topskill_CraftArmor = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftArmor]);
-                ////topskill_CraftWeapon = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftWeapon]);
-                //topskill_CraftFuel = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.CraftFuel]);
-                //topskill_Chemistry = XpLib.ToLevel(MaxSkill[(int)WorkExperienceType.Chemistry]);
-
                 //cullingTopLeft = WP.SubtileToTilePos(minMax.min);
                 //cullingBottomRight = WP.SubtileToTilePos(minMax.max);
-                workerCullingMinMax = new Intvector2MinMax(WP.SubtileToTilePos(minMax.min), WP.SubtileToTilePos(minMax.max));
+                //workerCullingMinMax = new Intvector2MinMax(WP.SubtileToTilePos(minMax_workerCulling.min), WP.SubtileToTilePos(minMax_workerCulling.max));
 
                 int workTeamCount = Bound.Min(workForce.amount / WorkTeamSize, 1);
 
@@ -207,6 +186,11 @@ namespace VikingEngine.DSSWars.GameObject
                         ++idleCount;
                     }
                 }
+                //else if (workerStatusActiveCount > workTeamCount +1)
+                //{ 
+                //    //too few homes
+
+                //}
 
                 if (myIndex == 185 || debugTagged)
                 {
@@ -242,7 +226,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (status.work == WorkType.Idle)
                     {
-                        if (workerStatusActiveCount > workForce.amount)
+                        if (workerStatusActiveCount > workForce.amount +1)
                         {
                             --workerStatusActiveCount;
                             

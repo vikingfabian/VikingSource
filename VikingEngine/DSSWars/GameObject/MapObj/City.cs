@@ -86,7 +86,7 @@ namespace VikingEngine.DSSWars.GameObject
         ObjectName name = new ObjectName();
 
 
-        Intvector2MinMax workerCullingMinMax, guardCullingMinMax;
+        Intvector2MinMax/* workerCullingMinMax,*/ guardCullingMinMax;
         //IntVector2 cullingTopLeft, cullingBottomRight;
         //public int cityTileRadius = 0;
         public Rectangle2 cityTileArea;
@@ -544,8 +544,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             cityCulture = (CityCulture)r.ReadByte();
 
-            workerCullingMinMax = new Intvector2MinMax(tilePos);
-            guardCullingMinMax = workerCullingMinMax;
+            //workerCullingMinMax = new Intvector2MinMax(tilePos);
+            //guardCullingMinMax = workerCullingMinMax;
 
             Debug.ReadCheck(r);
             
@@ -1715,13 +1715,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void asynchCullingUpdate(float time, bool bStateA)
         {
-            Intvector2MinMax minMax = workerCullingMinMax;
+            Intvector2MinMax minMax = cityTileArea.MinMax;//workerCullingMinMax;
             minMax.Combine(guardCullingMinMax);
-            if (myIndex == 316)
-            {
-                lib.DoNothing();
-                //var tp = this.tilePos;
-            }
+           
             DssRef.state.culling.InRender_Asynch(ref enterRender_overviewLayer_async, ref enterRender_detailLayer_async, bStateA, ref minMax.min, ref minMax.max);
         }
 
@@ -1781,7 +1777,6 @@ namespace VikingEngine.DSSWars.GameObject
             const int MinWorkforce = 8;
 
             int addWorkers = 0;
-
             childrenAge0.value += childAddPerSec();
 
             if (DssRef.time.oneMinute)
@@ -1810,8 +1805,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             workForce.amount = Bound.Max(workForce.amount + addWorkers, HousingCount_Workers);
-
-                        
+                                    
             nextWater.value += waterAddPerSec;
             maxWaterTotal = maxWaterBase + buildingStructure.WaterResovoir_count * DssConst.WaterResovoirWaterAdd;
             res_water.amount = Math.Min(res_water.amount + nextWater.pull(), maxWaterTotal);
@@ -1856,7 +1850,6 @@ namespace VikingEngine.DSSWars.GameObject
                 float addNobel = HousingCount_NobelMen * DssConst.NobelHouseMenAddSpeed_PerManHouse;
                 freeNobelMen.amount = Bound.Max(freeNobelMen.amount + Convert.ToInt32(addNobel), HousingCount_NobelMen);
 
-                
                 PenUpkeep_IsPayed = PenFoodUpkeep_minute <= 0 || payResource(CityResoureIndex.rawFood, PenFoodUpkeep_minute, false);
             }
         }
