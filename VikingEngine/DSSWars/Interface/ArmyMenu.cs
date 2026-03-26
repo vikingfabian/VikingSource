@@ -139,7 +139,8 @@ namespace VikingEngine.DSSWars.Interface
                             disbandTab(content);
                             break;
                         case MenuTab.Tag:
-                            tagsToMenu(content);
+                            //tagsToMenu(content);
+                            TagLib.TagsToMenu(content, player, army);
                             break;
 
 
@@ -453,46 +454,42 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(allbutton);
         }
 
-        public void tagsToMenu(RichBoxContent content)
-        {
-            HudLib.Label(content, DssRef.lang.ObjectUi_ViewOnMap + string.Format(" ({0})", DssRef.lang.Hud_AllArmies));
-            content.newLine();
-            player.armyHudSettings.toHud(content, false, player.profile.casualControls);
-            //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tag_ViewOnMap) }, player.ArmyTagsOnMapProperty));
-            content.newParagraph();
+        //public void tagsToMenu(RichBoxContent content)
+        //{
+        //    TagLib.TagsToMenu(content, player, army);
+        //    //HudLib.Label(content, DssRef.lang.ObjectUi_ViewOnMap + string.Format(" ({0})", DssRef.lang.Hud_AllArmies));
+        //    //content.newLine();
+        //    //player.armyHudSettings.toHud(content, false, player.profile.casualControls);
+            
+        //    //content.newParagraph();
 
-            for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
-            {
-                var button = new ArtToggle(back == army.tagBack, new List<AbsRichBoxMember> {
-                    new RbImage(Data.CityTag.BackSprite(back))
-                }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { army.tagBack = back; }, back, back == CityTagBack.NONE? RbSoundType.Deselect : RbSoundType.Option));
-                //button.setGroupSelectionColor(HudLib.RbSettings, back == army.tagBack);
-                content.Add(button);
+        //    //for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
+        //    //{
+        //    //    var button = new ArtToggle(back == army.Tag.tagBackType, new List<AbsRichBoxMember> {
+        //    //        new RbImage(Data.TagLib.BackSprite(back))
+        //    //    }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { army.Tag.tagBackType = back; }, back, back == CityTagBack.NONE? RbSoundType.Deselect : RbSoundType.Option));
+        //    //    content.Add(button);
 
-                if (back == CityTagBack.NONE)
-                {
-                    content.newLine();
-                }
-                //else
-                //{
-                //    content.space();
-                //}
-            }
+        //    //    if (back == CityTagBack.NONE)
+        //    //    {
+        //    //        content.newLine();
+        //    //    }
+            
+        //    //}
 
-            if (army.tagBack != CityTagBack.NONE)
-            {
-                content.newParagraph();
-                for (ArmyTagArt art = ArmyTagArt.None; art < ArmyTagArt.NUM; art++)
-                {
-                    var button = new ArtToggle(art == army.tagArt, new List<AbsRichBoxMember> {
-                    new RbImage(Data.CityTag.ArtSprite(art))
-                    }, new RbAction1Arg<ArmyTagArt>((ArmyTagArt art) => { army.tagArt = art; }, art, art == ArmyTagArt.None ? RbSoundType.Deselect : RbSoundType.Option));
-                    //button.setGroupSelectionColor(HudLib.RbSettings, art == army.tagArt);
-                    content.Add(button);
-                    //content.space();
-                }
-            }
-        }
+        //    //if (army.tagBack != CityTagBack.NONE)
+        //    //{
+        //    //    content.newParagraph();
+        //    //    for (ArmyTagArt art = ArmyTagArt.None; art < ArmyTagArt.NUM; art++)
+        //    //    {
+        //    //        var button = new ArtToggle(art == army.tagArt, new List<AbsRichBoxMember> {
+        //    //        new RbImage(Data.TagLib.ArtSprite(art))
+        //    //        }, new RbAction1Arg<ArmyTagArt>((ArmyTagArt art) => { army.tagArt = art; }, art, art == ArmyTagArt.None ? RbSoundType.Deselect : RbSoundType.Option));
+        //    //        content.Add(button);
+                    
+        //    //    }
+        //    //}
+        //}
         void splitArmyInHalf()
         {
             player.hud.objMenu.otherArmy = null;

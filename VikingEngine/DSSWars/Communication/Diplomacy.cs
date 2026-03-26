@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.ToGG.MoonFall;
+using static Sentry.MeasurementUnit;
 
 namespace VikingEngine.DSSWars
 {
@@ -607,15 +608,25 @@ namespace VikingEngine.DSSWars
                 ref var relation = ref GetRefRelation(faction1.myIndex, faction2.myIndex);
                 if (newRelation.HasValue)
                 {
-                    relation.SetRelation(faction1, faction2, newRelation.Value, out RelationType previous);               
-                    //faction1.player.onNewRelation(faction2, relation, previous);
-                    //faction2.player.onNewRelation(faction1, relation, previous);
+                    relation.SetRelation(faction1, faction2, newRelation.Value, out RelationType previous);     
                 }
                 if (speakTerms.HasValue)
                 {
                     relation.SpeakTerms = speakTerms.Value;
                 }
                 relation.secret = secret;
+            }
+        }
+
+        public void SetDefaultSpeakTerms(Faction faction, SpeakTerms speakTerms)
+        {
+            for (int i = 0; i < DssRef.world.factions.Array.Length; i++)
+            {
+                if (i != faction.myIndex)
+                {
+                    ref var relation = ref GetRefRelation(faction.myIndex, i);
+                    relation.SpeakTerms = speakTerms;
+                }
             }
         }
 

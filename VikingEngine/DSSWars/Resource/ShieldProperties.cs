@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.Resource
         public void ToHud(RichBoxContent content)
         {
             HudLib.LabelAndText(content, SpriteName.cmdParry, ".Block count", TextLib.PercentTextWithSymbol(blocksRefillTimeSecMultiply));
-            HudLib.LabelAndText(content, meleeSpeedBonus < 0? SpriteName.cmdAttackDown : SpriteName.cmdAttackUp, ".Melee speed", TextLib.PercentAddText(meleeSpeedBonus));
+            HudLib.LabelAndText(content, SpriteName.WarsAttackSpeedIcon, ".Melee speed", TextLib.PercentAddText(meleeSpeedBonus));
             HudLib.LabelAndText(content, SpriteName.warsArmyTag_Shield, DssRef.lang.Conscript_ArmorHealth, TextLib.PlusMinus(armorBonus));
             HudLib.LabelAndText(content, SpriteName.cmdMoveDown, ".Move speed", TextLib.PercentTextWithSymbol(moveSpeedMultiply));
             //content.newLine();

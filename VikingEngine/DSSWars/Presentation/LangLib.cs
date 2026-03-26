@@ -1768,7 +1768,7 @@ namespace VikingEngine.DSSWars.Presentation
                 case UnitFilterType.LongSword:
                     return DssRef.lang.UnitType_Soldier;
                 case UnitFilterType.Pike:
-                case UnitFilterType.SpearAndShield:
+                case UnitFilterType.Spear:
                     return DssRef.lang.UnitType_Spearman;
 
                 case UnitFilterType.Skirmisher:
@@ -1803,8 +1803,8 @@ namespace VikingEngine.DSSWars.Presentation
                 case UnitFilterType.TwohandSword:
                 case UnitFilterType.Warhammer:
                     return DssRef.lang.UnitType_FootKnight;
-                case UnitFilterType.Knight:
-                    return DssRef.lang.UnitType_CavalryKnight;
+                //case UnitFilterType.Knight:
+                //    return DssRef.lang.UnitType_CavalryKnight;
                 case UnitFilterType.MithrilBow:
                     return DssRef.lang.UnitType_MithrilArcher;
                 case UnitFilterType.MithrilKnight:

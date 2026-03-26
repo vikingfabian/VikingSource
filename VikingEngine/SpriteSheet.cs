@@ -1943,6 +1943,23 @@ namespace VikingEngine
                     add(SpriteName.WarsRelationFlag, 2, 3);
 
                     add(SpriteName.WarsBuild_TentHut, 3, 3);
+
+                    add(SpriteName.WarsBuild_WildPigPen, 3, 3);
+                    add(SpriteName.WarsBuild_WildHogPen, 3, 3);
+                    add(SpriteName.WarsBuild_WarHogPen, 3, 3);
+                    add(SpriteName.WarsBuild_StagHogPen, 3, 3);
+
+                    add(SpriteName.WarsBuild_WolfPen, 3, 3);
+                    add(SpriteName.WarsBuild_WargPen, 3, 3);
+                    add(SpriteName.WarsBuild_AlphaWargPen, 3, 3);
+
+                    add(SpriteName.WarsBuild_WildCatPen, 3, 3);
+                    add(SpriteName.WarsBuild_LionPen, 3, 3);
+                    add(SpriteName.WarsBuild_WarLionPen, 3, 3);
+
+                    add(SpriteName.WarsBuild_ElephantPen, 3, 3);
+                    add(SpriteName.WarsBuild_WarElephantPen, 3, 3);
+                    add(SpriteName.WarsBuild_OliphantPen, 3, 3);
                 }
             }
 
@@ -2034,6 +2051,61 @@ namespace VikingEngine
                 add(SpriteName.WarsSettler);
                 add(SpriteName.WarsSettlerAdd);
                 add(SpriteName.warsBuildCategoryFarm);
+
+                add(SpriteName.HudPin_Falcon0);
+                add(SpriteName.HudPin_Falcon1);
+                add(SpriteName.HudPin_Falcon2);
+                add(SpriteName.HudPin_Falcon3);
+                add(SpriteName.HudPin_Falcon4);
+                add(SpriteName.HudPin_Falcon5);
+                add(SpriteName.HudPin_Falcon6);
+                add(SpriteName.HudPin_Falcon7);
+                add(SpriteName.HudPin_Falcon8);
+                add(SpriteName.HudPin_Falcon9);
+
+                add(SpriteName.HudPin_Castle0);
+                add(SpriteName.HudPin_Castle1);
+                add(SpriteName.HudPin_Castle2);
+                add(SpriteName.HudPin_Castle3);
+                add(SpriteName.HudPin_Castle4);
+                add(SpriteName.HudPin_Castle5);
+                add(SpriteName.HudPin_Castle6);
+                add(SpriteName.HudPin_Castle7);
+                add(SpriteName.HudPin_Castle8);
+                add(SpriteName.HudPin_Castle9);
+
+                add(SpriteName.HudPin_Horse0);
+                add(SpriteName.HudPin_Horse1);
+                add(SpriteName.HudPin_Horse2);
+                add(SpriteName.HudPin_Horse3);
+                add(SpriteName.HudPin_Horse4);
+                add(SpriteName.HudPin_Horse5);
+                add(SpriteName.HudPin_Horse6);
+                add(SpriteName.HudPin_Horse7);
+                add(SpriteName.HudPin_Horse8);
+                add(SpriteName.HudPin_Horse9);
+
+                add(SpriteName.HudPin_Ship0);
+                add(SpriteName.HudPin_Ship1);
+                add(SpriteName.HudPin_Ship2);
+                add(SpriteName.HudPin_Ship3);
+                add(SpriteName.HudPin_Ship4);
+                add(SpriteName.HudPin_Ship5);
+                add(SpriteName.HudPin_Ship6);
+                add(SpriteName.HudPin_Ship7);
+                add(SpriteName.HudPin_Ship8);
+                add(SpriteName.HudPin_Ship9);
+
+                add(SpriteName.HudPin_Cannon0);
+                add(SpriteName.HudPin_Cannon1);
+                add(SpriteName.HudPin_Cannon2);
+                add(SpriteName.HudPin_Cannon3);
+                add(SpriteName.HudPin_Cannon4);
+                add(SpriteName.HudPin_Cannon5);
+                add(SpriteName.HudPin_Cannon6);
+                add(SpriteName.HudPin_Cannon7);
+                add(SpriteName.HudPin_Cannon8);
+                add(SpriteName.HudPin_Cannon9);
             }
 
 
@@ -2194,6 +2266,8 @@ namespace VikingEngine
                 add(SpriteName.WarsResource_Boar);
                 add(SpriteName.WarsResource_Fowl);
 
+                add(SpriteName.WarsAttackSpeedIcon);
+                add(SpriteName.WarsMobilityIcon);
             }
 
             currentIndex = numTilesWidth * 87;

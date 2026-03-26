@@ -1510,55 +1510,55 @@ namespace VikingEngine.DSSWars
                             name = DssRef.todoLang.BuildingType_DraftHorsePen;
                             break;
                         case TerrainBuildingType.WildPigPen:
-                            icon = SpriteName.WarsResource_WildPig;
+                            icon = SpriteName.WarsBuild_WildPigPen;
                             name = DssRef.todoLang.BuildingType_WildPigPen;
                             break;
                         case TerrainBuildingType.WildHogPen:
-                            icon = SpriteName.WarsResource_WildHog;
+                            icon = SpriteName.WarsBuild_WildHogPen;
                             name = DssRef.todoLang.BuildingType_WildHogPen;
                             break;
                         case TerrainBuildingType.WarHogPen:
-                            icon = SpriteName.WarsResource_WarHog;
+                            icon = SpriteName.WarsBuild_WarHogPen;
                             name = DssRef.todoLang.BuildingType_WarHogPen;
                             break;
                         case TerrainBuildingType.StagHogPen:
-                            icon = SpriteName.WarsResource_StagHog;
+                            icon = SpriteName.WarsBuild_StagHogPen;
                             name = DssRef.todoLang.BuildingType_StagHogPen;
                             break;
                         case TerrainBuildingType.WolfCage:
-                            icon = SpriteName.WarsResource_Wolf;
+                            icon = SpriteName.WarsBuild_WolfPen;
                             name = DssRef.todoLang.BuildingType_WolfCage;
                             break;
                         case TerrainBuildingType.WargCage:
-                            icon = SpriteName.WarsResource_Warg;
+                            icon = SpriteName.WarsBuild_AlphaWargPen;
                             name = DssRef.todoLang.BuildingType_WargCage;
                             break;
                         case TerrainBuildingType.AlphaWargCage:
-                            icon = SpriteName.WarsResource_AlphaWarg;
+                            icon = SpriteName.WarsBuild_AlphaWargPen;
                             name = DssRef.todoLang.BuildingType_AlphaWargCage;
                             break;
                         case TerrainBuildingType.WildCatCage:
-                            icon = SpriteName.WarsResource_WildCat;
+                            icon = SpriteName.WarsBuild_WildCatPen;
                             name = DssRef.todoLang.BuildingType_WildCatCage;
                             break;
                         case TerrainBuildingType.LionCage:
-                            icon = SpriteName.WarsResource_Lion;
+                            icon = SpriteName.WarsBuild_LionPen;
                             name = DssRef.todoLang.BuildingType_LionCage;
                             break;
                         case TerrainBuildingType.WarLionCage:
-                            icon = SpriteName.WarsResource_WarLion;
+                            icon = SpriteName.WarsBuild_WarLionPen;
                             name = DssRef.todoLang.BuildingType_WarLionCage;
                             break;
                         case TerrainBuildingType.ElephantCage:
-                            icon = SpriteName.WarsResource_Elephant;
+                            icon = SpriteName.WarsBuild_ElephantPen;
                             name = DssRef.todoLang.BuildingType_ElephantCage;
                             break;
                         case TerrainBuildingType.WarElephantCage:
-                            icon = SpriteName.WarsResource_WarElephant;
+                            icon = SpriteName.WarsBuild_WarElephantPen;
                             name = DssRef.todoLang.BuildingType_WarElephantCage;
                             break;
                         case TerrainBuildingType.OliphantCage:
-                            icon = SpriteName.WarsResource_Oliphant;
+                            icon = SpriteName.WarsBuild_OliphantPen;
                             name = DssRef.todoLang.BuildingType_OliphantCage;
                             break;
 

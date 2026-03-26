@@ -179,6 +179,8 @@ namespace VikingEngine.DSSWars.Resource
             ItemResourceType.Oliphant,
         };
 
+        public static readonly ItemResourceType[] Coins = { ItemResourceType.CopperCoin, ItemResourceType.BronzeCoin,  ItemResourceType.SilverCoin, ItemResourceType.ElfCoin };
+
         public static ItemResourceType[] ResourceGroupList(ResourceGroupType group)
         {
             switch (group)
@@ -189,6 +191,7 @@ namespace VikingEngine.DSSWars.Resource
                 case ResourceGroupType.Weapons: return MovableCityResource_WeaponMelee;
                 case ResourceGroupType.Projectile: return MovableCityResource_WeaponRanged;
                 case ResourceGroupType.Armor: return MovableCityResource_Armor;
+                case ResourceGroupType.Mint: return Coins;
             }
         }
         public static void ResourceIconCountDisplay(City city, ItemResourceType item, RichBoxContent content)

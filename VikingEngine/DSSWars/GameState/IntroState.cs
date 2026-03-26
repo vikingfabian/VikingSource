@@ -124,7 +124,8 @@ namespace VikingEngine.DSSWars
             dataProcessPart++;
             BuildLib.Init();
             dataProcessPart++;
-           
+            
+
             int loops = 0;
             while (!bSpriteSheetTexture)
             {

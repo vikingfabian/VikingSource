@@ -97,8 +97,8 @@ namespace VikingEngine.DSSWars.GameObject
         bool autoBuild_Work = false;
         bool autoBuild_Farm = false;
 
-        public CityTagBack tagBack = CityTagBack.NONE;
-        public CityTagArt tagArt = CityTagArt.None;
+        //public CityTagBack tagBack = CityTagBack.NONE;
+        //public TagArt tagArt = TagArt.None;
 
         int starvingTimeSeconds = 0;
 
@@ -648,11 +648,12 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write(autoBuild_Farm);
                 w.Write((byte)autoExpandFarmType);
 
-                w.Write((byte)tagBack);
-                if (tagBack != CityTagBack.NONE)
-                {
-                    w.Write((ushort)tagArt);
-                }
+                Tag.write(w);
+                //w.Write((byte)tagBack);
+                //if (tagBack != CityTagBack.NONE)
+                //{
+                //    w.Write((ushort)tagArt);
+                //}
 
                 w.Write(res_food_safeguard);
 
@@ -814,11 +815,12 @@ namespace VikingEngine.DSSWars.GameObject
             autoBuild_Farm = r.ReadBoolean();
             autoExpandFarmType = (Build.BuildAndExpandType)r.ReadByte();
 
-            tagBack = (CityTagBack)r.ReadByte();
-            if (tagBack != CityTagBack.NONE)
-            {
-                tagArt = (CityTagArt)r.ReadUInt16();
-            }
+            Tag.read(r, subversion);
+            //tagBack = (CityTagBack)r.ReadByte();
+            //if (tagBack != CityTagBack.NONE)
+            //{
+            //    tagArt = (TagArt)r.ReadUInt16();
+            //}
 
             res_food_safeguard = r.ReadBoolean();
 
@@ -1057,11 +1059,7 @@ namespace VikingEngine.DSSWars.GameObject
            
         }
 
-        override public void tagSprites(out SpriteName back, out SpriteName art)
-        {
-            back = Data.CityTag.BackSprite(tagBack);
-            art = Data.CityTag.ArtSprite(tagArt);
-        }
+        
 
 
         public int expandWorkForceCost()

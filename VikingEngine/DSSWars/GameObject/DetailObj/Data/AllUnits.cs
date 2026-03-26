@@ -174,7 +174,7 @@ namespace VikingEngine.DSSWars.GameObject
                 case UnitFilterType.SharpStick:
                     return SpriteName.WarsUnitIcon_Folkman;
 
-                case UnitFilterType.SpearAndShield:
+                case UnitFilterType.Spear:
                     return SpriteName.LittleUnitIconSpearman;
 
 
@@ -189,8 +189,8 @@ namespace VikingEngine.DSSWars.GameObject
                     return SpriteName.WarsUnitIcon_Hammerknight;
                 case UnitFilterType.TwohandSword:
                     return SpriteName.WarsUnitIcon_TwoHand;
-                case UnitFilterType.Knight:
-                    return SpriteName.WarsUnitIcon_Knight;
+                //case UnitFilterType.Knight:
+                //    return SpriteName.WarsUnitIcon_Knight;
                 case UnitFilterType.MithrilKnight:
                     return SpriteName.WarsUnitIcon_MithrilMan;
                 case UnitFilterType.MithrilBow:
@@ -249,10 +249,10 @@ namespace VikingEngine.DSSWars.GameObject
         Sword,
         LongSword,
         Pike,
-        SpearAndShield,
+        Spear,
         Warhammer,
         TwohandSword,
-        Knight,
+        //Knight,
         MithrilKnight,
 
         Skirmisher,
@@ -277,6 +277,7 @@ namespace VikingEngine.DSSWars.GameObject
         GreenSoldier,
         DarkLord,
         RoseWarrior,
+
         NUM
     }
 

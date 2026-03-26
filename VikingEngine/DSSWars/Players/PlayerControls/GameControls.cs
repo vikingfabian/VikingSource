@@ -59,11 +59,16 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 map.setCameraPos(player.faction.mainCity.tilePos);
             }
 
+            refreshGameSpeedOptions(true);
+        }
+
+        public void refreshGameSpeedOptions(bool startUp)
+        { 
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
             {
                 GameSpeedOptions = new int[] { 1, 2, 5, 15 };
             }
-            else if (DssRef.storage.speed5x)
+            else if (DssRef.storage.speed5x && (startUp || !player.IntutorialMode()))
             {
                 GameSpeedOptions = new int[] { 1, 2, DssConst.MaxSpeedOption };
             }

@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Data
         
         public bool autoSave = true;
         public bool runTutorial = true;
-        public bool speed5x = false;
+        public bool speed5x = true;
         public bool blockImportAchievements = true;
         
         public LocalPlayerStorage[] localPlayers = null;

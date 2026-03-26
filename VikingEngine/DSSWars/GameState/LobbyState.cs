@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using VikingEngine.DataStream;
@@ -41,7 +42,8 @@ using VikingEngine.Timer;
 namespace VikingEngine.DSSWars
 {
     class LobbyState : AbsDssState
-    {    
+    {
+        static bool FirstTimeLoad = true;
         Interface.MenuSystem menuSystem;
         LeaderboardMenu leaderboardMenu;
         MapBackgroundLoading mapBackgroundLoading;
@@ -90,6 +92,17 @@ namespace VikingEngine.DSSWars
         {
             DssRef.storage.profileStorage.refreshProfiles();
             HudLib.Init();
+            
+            if (FirstTimeLoad)
+            {
+                FirstTimeLoad = false;
+                TagLib.Init();
+                //Task.Run(() =>
+                //{
+
+                //    TagLib.Init();
+                //});
+            }
             Ref.isPaused = false;
             loadPreviousInput();
             Engine.Screen.SetupSplitScreen(1);

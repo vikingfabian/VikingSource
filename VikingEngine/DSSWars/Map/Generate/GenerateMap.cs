@@ -1432,24 +1432,25 @@ namespace VikingEngine.DSSWars.Map.Generate
         }
 
         void namedFactionsOnMap(int standardWorkForce, bool oneCity)
-        {   
+        {
+            bool bStory = DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory;
+            if (bStory)
             {
                 var faction = new Faction(world, FactionType.DarkFollower);
 
-                //region.Reset(MathExt.MultiplyInt(3, standardWorkForce));
-
                 int size = MathExt.MultiplyInt(3, standardWorkForce);
                 region.GetStartFactionRegion(size, false, collection_pullNextCity(cityCultureCollection.DarkLands), world, faction);
-                //region.ApplyFaction(DarkFollower);
+                
             }
 
+            if (bStory)
             { 
                 var faction = new Faction(world, FactionType.UnitedKingdom);
 
                 int size = MathExt.MultiplyInt(5, standardWorkForce);
 
                 region.GetStartFactionRegion(size, false, collection_pullNextCity(cityCultureCollection.WestKingdom), world, faction);
-                //region.ApplyFaction(UnitedKingdom);
+                
             }
 
             {
@@ -1458,7 +1459,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 int size = MathExt.MultiplyInt(1.5, standardWorkForce);
 
                 region.GetStartFactionRegion(size, oneCity, collection_pullNextCity(cityCultureCollection.LargeGreen), world, faction);
-                //region.ApplyFaction(GreenWood);
+                
             }
 
             if (world.metaData.mapSize >= MapSize.Medium)
@@ -1469,7 +1470,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     int size = MathExt.MultiplyInt(2, standardWorkForce);
 
                     region.GetStartFactionRegion(size, false, collection_pullNextCity(cityCultureCollection.DryEast), world, faction);
-                    //region.ApplyFaction(faction);
+                    
                 }
                 {
                     var faction = new Faction(world, FactionType.DyingHate);
@@ -1477,7 +1478,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     int size = MathExt.MultiplyInt(2, standardWorkForce);
 
                     region.GetStartFactionRegion(size, false, collection_pullNextCity(cityCultureCollection.DryEast), world, faction);
-                   //region.ApplyFaction(faction);
+                   
                 }
                 {
                     var faction = new Faction(world, FactionType.DyingDestru);
@@ -1485,7 +1486,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                     int size = MathExt.MultiplyInt(2, standardWorkForce);
 
                     region.GetStartFactionRegion(size, false, collection_pullNextCity(cityCultureCollection.DryEast), world, faction);
-                    //region.ApplyFaction(faction);
+                    
                 }
 
             }
@@ -1496,7 +1497,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 int size = MathExt.MultiplyInt(3, standardWorkForce);
 
                 region.GetStartFactionRegion(size, false, collection_pullNextCity(cityCultureCollection.DryEast), world, faction);
-                //region.ApplyFaction(faction);
+                
             }
 
             {
@@ -1505,7 +1506,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 int size = MathExt.MultiplyInt(2, standardWorkForce);
 
                 region.GetStartFactionRegion(size, false, collection_pullNextCity(cityCultureCollection.NorthSea), world, faction);
-                //region.ApplyFaction(NordicRealms);
+                
             }
 
 

@@ -1240,7 +1240,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RbText(TextLib.TwoDecimal(strengthValue())));
 
             args.content.space(2);
-            args.content.Add(new RbImage(SpriteName.cmdStatsMove));
+            args.content.Add(new RbImage(SpriteName.WarsMobilityIcon));
             args.content.hspace();
             args.content.Add(new RbText(TextLib.TwoDecimal(mobilityValue())));
         }

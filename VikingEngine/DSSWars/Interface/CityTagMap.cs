@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.Interface
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    if (citySel.tagBack != Data.CityTagBack.NONE)
+                    if (citySel.Tag.backType != Data.CityTagBack.NONE)
                     {
 
                         if (cityTags.Count <= tagIndex)
@@ -52,7 +52,7 @@ namespace VikingEngine.DSSWars.Interface
                 armiesC.Reset();
                 while (armiesC.Next())
                 {
-                    if (armiesC.sel.tagBack != Data.CityTagBack.NONE)
+                    if (armiesC.sel.Tag.backType != Data.CityTagBack.NONE)
                     {
 
                         if (cityTags.Count <= tagIndex)
@@ -154,7 +154,7 @@ namespace VikingEngine.DSSWars.Interface
                     bg.Visible = true;
                     bg.SetSpriteName(back);
 
-                    if (art != Data.CityTag.NoBackSprite)
+                    if (art != Data.TagLib.NoBackSprite)
                     {
                         var icon = nextIcon();
                         icon.position = bg.position;

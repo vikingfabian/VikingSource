@@ -138,9 +138,9 @@ namespace VikingEngine.DSSWars.GameObject
         public bool tagToHud(RichBoxContent content)
         {
             tagSprites(out SpriteName back, out SpriteName art);
-            if (back != CityTag.NoBackSprite)
+            if (back != TagLib.NoBackSprite)
             {
-                if (art == CityTag.NoBackSprite)
+                if (art == TagLib.NoBackSprite)
                 {
                     content.Add(new RbImage(back));
                 }
@@ -200,8 +200,7 @@ namespace VikingEngine.DSSWars.GameObject
                     Ref.TotalGameTimeSec > status.processTimeStartStampSec + status.processTimeLengthSec)
                 {
                     //Work complete
-                    onWorkComplete_async(ref status);
-                    //workerStatuses[i] = status;
+                    onWorkComplete_async(ref status); //index out  of bounds here
                 }
 
             }

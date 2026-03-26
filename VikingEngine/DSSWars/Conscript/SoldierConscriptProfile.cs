@@ -95,7 +95,7 @@ namespace VikingEngine.DSSWars.Conscript
                         case ItemResourceType.Pike:
                             return UnitFilterType.Pike;
                         case ItemResourceType.HandSpear:
-                            return UnitFilterType.SpearAndShield;
+                            return UnitFilterType.Spear;
 
                         case ItemResourceType.Warhammer:
                             return UnitFilterType.Warhammer;

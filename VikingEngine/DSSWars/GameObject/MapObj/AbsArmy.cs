@@ -33,6 +33,8 @@ namespace VikingEngine.DSSWars.GameObject
         public bool inBattle = false;
         InBattleWith inBattleWith = new InBattleWith();
 
+        public MapObjectTag Tag = new MapObjectTag();
+
         public void AddSoldierGroup(SoldierGroup group)
         {
             //Hitta en plats bland alla grupper
@@ -204,6 +206,12 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 groupsC.sel.asynchNearObjectsUpdate();
             }
+        }
+
+        override public void tagSprites(out SpriteName back, out SpriteName art)
+        {
+            back = Tag.TagBack();//Data.TagLib.BackSprite(tagBack);
+            art = Tag.TagArt();//Data.TagLib.ArtSprite(tagArt);
         }
 
         abstract public bool IdleObjetive();

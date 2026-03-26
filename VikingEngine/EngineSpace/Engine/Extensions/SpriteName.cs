@@ -2564,6 +2564,66 @@ namespace VikingEngine
         warsArmyTag_Anchor,
         HudPinIcon,
 
+       
+        HudPin_Falcon0,
+        HudPin_Falcon1,
+        HudPin_Falcon2,
+        HudPin_Falcon3,
+        HudPin_Falcon4,
+        HudPin_Falcon5,
+        HudPin_Falcon6,
+        HudPin_Falcon7,
+        HudPin_Falcon8,
+        HudPin_Falcon9,
+
+   
+        HudPin_Castle0,
+        HudPin_Castle1,
+        HudPin_Castle2,
+        HudPin_Castle3,
+        HudPin_Castle4,
+        HudPin_Castle5,
+        HudPin_Castle6,
+        HudPin_Castle7,
+        HudPin_Castle8,
+        HudPin_Castle9,
+
+     
+        HudPin_Horse0,
+        HudPin_Horse1,
+        HudPin_Horse2,
+        HudPin_Horse3,
+        HudPin_Horse4,
+        HudPin_Horse5,
+        HudPin_Horse6,
+        HudPin_Horse7,
+        HudPin_Horse8,
+        HudPin_Horse9,
+
+  
+        HudPin_Ship0,
+        HudPin_Ship1,
+        HudPin_Ship2,
+        HudPin_Ship3,
+        HudPin_Ship4,
+        HudPin_Ship5,
+        HudPin_Ship6,
+        HudPin_Ship7,
+        HudPin_Ship8,
+        HudPin_Ship9,
+
+      
+        HudPin_Cannon0,
+        HudPin_Cannon1,
+        HudPin_Cannon2,
+        HudPin_Cannon3,
+        HudPin_Cannon4,
+        HudPin_Cannon5,
+        HudPin_Cannon6,
+        HudPin_Cannon7,
+        HudPin_Cannon8,
+        HudPin_Cannon9,
+
 
         WarsRelationAlly,
         WarsRelationGood,
@@ -2590,6 +2650,9 @@ namespace VikingEngine
         WarsTechnology_Locked,
         WarsGovernmentIcon,
         WarsStrengthIcon,
+        WarsAttackSpeedIcon,
+        WarsMobilityIcon,
+
         WarsGroupIcon,
         WarsSoldierIcon,
         WarsBattleIcon,
@@ -2740,6 +2803,23 @@ namespace VikingEngine
         WarsBuild_HorsePen,
         WarsBuild_WarHorsePen,
         WarsBuild_DraftHorsePen,
+
+        WarsBuild_WildPigPen,
+        WarsBuild_WildHogPen,
+        WarsBuild_WarHogPen,
+        WarsBuild_StagHogPen,
+
+        WarsBuild_WolfPen,
+        WarsBuild_WargPen,
+        WarsBuild_AlphaWargPen,
+
+        WarsBuild_WildCatPen,
+        WarsBuild_LionPen,
+        WarsBuild_WarLionPen,
+
+        WarsBuild_ElephantPen,
+        WarsBuild_WarElephantPen,
+        WarsBuild_OliphantPen,
 
         WarsBuild_Statue,
         WarsBuild_Carpenter,

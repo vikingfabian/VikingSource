@@ -507,6 +507,15 @@ namespace VikingEngine.DSSWars.Players
 
         }
 
+        public bool IntutorialMode()
+        {
+            if (tutorial != null)
+            {
+                return tutorial.TutorialMode();
+            }
+            return DssRef.storage.runTutorial;
+        }
+
         public void tutorial_writeGameState(BinaryWriter w)
         {
             //w.Write(inTutorialMode);
@@ -622,8 +631,9 @@ namespace VikingEngine.DSSWars.Players
 
                 IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
                 var mainArmy = faction.NewArmy(onTile);
-                mainArmy.tagBack = CityTagBack.Blue;
-                mainArmy.tagArt = ArmyTagArt.Specialize_Tradition;
+                mainArmy.Tag = new MapObjectTag(CityTagBack.Blue, MapObjectTag.Tag_SpecializeTradition);
+                //mainArmy.tagBack = CityTagBack.Blue;
+                //mainArmy.tagArt = ArmyTagArt.Specialize_Tradition;
 
                 for (int i = 0; i < MathExt.MultiplyInt(5, unitCountMulti); ++i)
                 {
@@ -1737,8 +1747,9 @@ namespace VikingEngine.DSSWars.Players
                 if (newGame)
                 {
 
-                    faction.mainCity.tagBack = CityTagBack.Carton;
-                    faction.mainCity.tagArt = CityTagArt.IconFaction;
+                    //faction.mainCity.tagBack = CityTagBack.Carton;
+                    //faction.mainCity.tagArt = TagArt.IconFaction;
+                    faction.mainCity.Tag = new MapObjectTag(CityTagBack.Carton, MapObjectTag.Tag_Faction);
 
                     if (profile.casualControls)
                     {

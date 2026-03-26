@@ -788,12 +788,14 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Alpha warg conscript
         /// </summary>
-        the_alpha,
+        the_alpha, //i, t
 
         /// <summary>
         /// Summon the cannonphant
         /// </summary>
-        cannonphant,
+        cannonphant, //i,
+
+
 
         NUM_ACHIEVEMENTS
     }

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
@@ -375,6 +376,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             this.player = player;
             player.hud.minimapProperty(null, true, false);
+            player.gameControls.refreshGameSpeedOptions(false);
             display = new Interface.TutorialDisplay(player);
             initMissions();
 
@@ -1874,7 +1876,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                     //TwoBools tagCity_foodTag_sound = TwoBools.False;
                     if (tagCity_selectCity_sound.Value1 &&
-                        lib.EqualToAny(player.gameControls.map.selection.obj.GetCity().tagArt, Data.CityTagArt.ItemResourceTypeFood,  Data.CityTagArt.ItemResourceTypeRawFood))
+                        lib.EqualToAny(player.gameControls.map.selection.obj.GetCity().Tag.artId, MapObjectTag.Tag_ItemResourceTypeRawFood, MapObjectTag.Tag_ItemResourceTypeFood))
                     {
                         if (!tagCity_foodTag_sound.Value1)
                         {
@@ -2174,7 +2176,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             }
                             //TwoBools findWoodCity_woodTag_sound = TwoBools.False;
                             if (!findWoodCity_bowTag_sound.Value1 &&
-                                lib.EqualToAny(city.tagArt, Data.CityTagArt.ItemResourceTypeBow, Data.CityTagArt.ItemResourceTypeLongBow, Data.CityTagArt.ItemResourceTypeMithrilBow))
+                                lib.EqualToAny(city.Tag.artId, MapObjectTag.Tag_ItemResourceTypeBow, MapObjectTag.Tag_ItemResourceTypeLongBow, MapObjectTag.Tag_ItemResourceTypeMithrilBow))
                             {
                                 findWoodCity_bowTag_sound.Value1 = true;
                                 onPartSuccess();
@@ -2931,6 +2933,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case TutorialMission.ProduceMail:
                     ((PlayState)DssRef.state).AutoSave();
                     break;
+
+                case TutorialMission.MoveArmy:
+                case TutorialMission.ProduceWeaponsArmor:
+                    player.gameControls.map.setCameraBounds(false, cityarea);
+                    break;
             }
 
             if (missions.selIndex < nextIx)
@@ -3051,6 +3058,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             
             player.hud.messages.blockFoodWarning(false);
             DssRef.state.events.onTutorialEnd();
+            player.gameControls.refreshGameSpeedOptions(false);
 
             if (endAll)
             {

@@ -1,37 +1,38 @@
 ﻿UPDATE
 Change Log:
-* 
+* Changed the tags to pull images directly from the resources and buildings + added some new icon
+! saved tags will corrupt
+* Removed the x5 speed lock, and just hide during tutorial
+* will unlock map bounds earlier during tutorial
+* repaired speakterms setup
+* Removed story factions from sandbox mode
+
 ##ICONS TODO
-move speed
-attack speed
 
 #MOUNTED TODO
 
 Current bugs
 
-x block count to soldier stats
+x war manager should check relation peace timer
 x missing a lot of the animal/weapon/armor combos
 x auto build of trappers
 x ai conscript of animals
+x army collect conserved food
 
-x adv build upgrade, no more use of logistics
-x auto options for logistics/hall/cook
+x go through tutorial
+x translate
 
+## MOUNTED POST CONTENT UPDATE ##
+x deeper unit category with search for items and melee/ranged/warmashine filters
+(maybe filter out units for remove/split)
 x achievements
 * go through controller best practices
-
-CITY CULTURES
-* Wheelwright, //Speed bonus to conscripted carts
-
+* culture: Wheelwright, //Speed bonus to conscripted carts
 (Maybe) Breeding tech tree skill (Allowes more reliable animal upgrades)
-(Maybe) War mount tech tree skill (Allowes training of cavalry)
-
-mounts in casual play
-
-New resources:
-Luxurious buildings, raises the nobel house cap
-
-
+x adv build upgrade, no more use of logistics
+x auto options for logistics/hall/manor
+x mounts in casual play
+x Luxurious buildings, raises the nobel house cap
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

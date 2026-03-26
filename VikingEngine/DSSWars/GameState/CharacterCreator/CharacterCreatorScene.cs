@@ -220,7 +220,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 switch (armorLevel)
                 {
                     default://case ArmorLevel.None:
-                        armorIcon = CityTag.NoBackSprite;
+                        armorIcon = TagLib.NoBackSprite;
                         break;
                     case ArmorLevel.Leather:
                         armorIcon = SpriteName.WarsResource_PaddedArmor;

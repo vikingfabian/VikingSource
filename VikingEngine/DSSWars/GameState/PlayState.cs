@@ -191,10 +191,12 @@ namespace VikingEngine.DSSWars
 
         void initPlayers(bool newGame, ObjectPointerCollection pointers)
         {
-            new Faction(DssRef.world, FactionType.DarkLord);
-            new Faction(DssRef.world, FactionType.SouthHara);
-            new Faction(DssRef.world, FactionType.Barbarians);
-
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
+            {
+                new Faction(DssRef.world, FactionType.DarkLord);
+                new Faction(DssRef.world, FactionType.SouthHara);
+                new Faction(DssRef.world, FactionType.Barbarians);
+            }
 
             int playerCount = DssRef.storage.playerCount;
 
@@ -218,20 +220,17 @@ namespace VikingEngine.DSSWars
             var factionsCounter = DssRef.world.factions.counter();
             while (factionsCounter.Next())
             {
-                //factionsCounter.sel.initDiplomacy(DssRef.world);
-
                 switch (factionsCounter.sel.factiontype)
                 {
                     case FactionType.DarkLord:
                         {
-                            /*DssRef.settings.darkLordPlayer = */new Players.DarkLordPlayer(factionsCounter.sel, newGame);
+                            new Players.DarkLordPlayer(factionsCounter.sel, newGame);
                         }
                         break;
                     case FactionType.Player:
                         {
                             var local = new Players.LocalPlayer(factionsCounter.sel, newGame);
-                            //var local = arraylib.PullFirstMember(pointers.localPlayers);//new Players.LocalPlayer(factionsCounter.sel, 
-
+                            
                             localPlayers.Add(local);
                         }
                         break;

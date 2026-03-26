@@ -894,7 +894,7 @@ namespace VikingEngine.DSSWars.Conscript
             float skillBonus = item == ItemResourceType.NobelMen ? DssConst.NobelMenSkillBonusAdd : 0;
 
             //HudLib.LabelAndText(content, SpriteName.cmdStatsHealth, DssRef.lang.SoldierStats_Health, TextLib.TwoDecimal(DssConst.Soldier_DefaultHealth));
-            HudLib.LabelAndText(content, SpriteName.cmdStatsMove, DssRef.todoLang.Conscript_Mobility, TextLib.TwoDecimal(SoldierData.Mobility(DssConst.Men_StandardWalkingSpeed)));
+            HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.todoLang.Conscript_Mobility, TextLib.TwoDecimal(SoldierData.Mobility(DssConst.Men_StandardWalkingSpeed)));
 
             SkillbonusUi(content, skillBonus, true);
 
@@ -930,7 +930,7 @@ namespace VikingEngine.DSSWars.Conscript
 
             HudLib.LabelAndText(content, SpriteName.WarsResource_Sword, DssRef.lang.Conscript_WeaponDamage, TextLib.PlusMinus(properties.soldierData.attackDamage));
             HudLib.LabelAndText(content, SpriteName.warsArmyTag_Shield, DssRef.lang.Conscript_ArmorHealth, TextLib.PlusMinus(properties.soldierData.basehealth));
-            HudLib.LabelAndText(content, SpriteName.cmdStatsMove, DssRef.todoLang.Conscript_RiderMobility, TextLib.TwoDecimal( properties.soldierData.mobilityValue()));
+            HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.todoLang.Conscript_RiderMobility, TextLib.TwoDecimal( properties.soldierData.mobilityValue()));
             HudLib.LabelAndText(content, SpriteName.WarsResource_Wagon2Wheel, DssRef.todoLang.Conscript_LightWagonMobility, TextLib.TwoDecimal(SoldierData.Mobility( properties.soldierData.lightWagonSpeed)));
             HudLib.LabelAndText(content, SpriteName.WarsResource_WagonSteel, DssRef.todoLang.Conscript_HeavyWagonMobility, TextLib.TwoDecimal(SoldierData.Mobility(properties.soldierData.heavyWagonSpeed)));
 
@@ -1084,7 +1084,7 @@ namespace VikingEngine.DSSWars.Conscript
             }
 
             content.newLine();            
-            content.Add(new RbImage(positive ? SpriteName.cmdAttackUp: SpriteName.cmdAttackDown));
+            content.Add(new RbImage(SpriteName.WarsAttackSpeedIcon));
             content.Add(new RbText(DssRef.lang.Conscript_AttackSpeed + ":", HudLib.InfoYellow_Dark));
             content.hspace();
             if (add)

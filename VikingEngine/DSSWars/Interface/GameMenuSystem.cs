@@ -473,7 +473,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 if (lobby)
                 {
-                    if (DssRef.storage.metaProgression.totalGameTimeMinutes >= 15)
+                    //if (DssRef.storage.metaProgression.totalGameTimeMinutes >= 15)
                     {
                         content.newLine();
                         content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, DssConst.MaxSpeedOption)) }, speed5Property));

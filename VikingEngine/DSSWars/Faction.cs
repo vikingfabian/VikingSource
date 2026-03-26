@@ -113,6 +113,39 @@ namespace VikingEngine.DSSWars
         public void onGameStart(bool newGame)
         {
             player?.onGameStart(newGame);
+
+            SpeakTerms speakTerms = DefaultSpeakingTerms();
+            if (speakTerms != SpeakTerms.SpeakTerms0_Normal)
+            {
+
+                DssRef.diplomacy.SetDefaultSpeakTerms(this, speakTerms);
+            }
+        }
+
+        public SpeakTerms DefaultSpeakingTerms()
+        {
+            //Todo init all relations at start
+            switch (factiontype)
+            {
+                default:
+                    if (diplomaticSide == DiplomaticSide.Dark)
+                    {
+                        return SpeakTerms.SpeakTermsN1_Bad;
+                    }
+                    return SpeakTerms.SpeakTerms0_Normal;
+
+                case FactionType.DarkLord:
+                case FactionType.SouthHara:
+                case FactionType.DarkFollower:
+                case FactionType.Barbarians:
+                case FactionType.GreenWood:
+                case FactionType.UnitedKingdom:
+                    return SpeakTerms.SpeakTermsN2_None;
+
+
+                case FactionType.EasternEmpire:
+                    return SpeakTerms.SpeakTermsN1_Bad;
+            }
         }
 
         public void initMidGameEnter()
@@ -1307,30 +1340,7 @@ namespace VikingEngine.DSSWars
             
         }
 
-        public SpeakTerms DefaultSpeakingTerms()
-        {
-            switch (factiontype)
-            { 
-                default:
-                    if (diplomaticSide == DiplomaticSide.Dark)
-                    {
-                        return SpeakTerms.SpeakTermsN1_Bad;
-                    }
-                    return SpeakTerms.SpeakTerms0_Normal;
-
-                case FactionType.DarkLord:
-                case FactionType.SouthHara:
-                case FactionType.DarkFollower:
-                case FactionType.Barbarians:
-                case FactionType.GreenWood:
-                case FactionType.UnitedKingdom:
-                    return SpeakTerms.SpeakTermsN2_None;
-
-                
-                case FactionType.EasternEmpire:
-                    return SpeakTerms.SpeakTermsN1_Bad;
-            }
-        }
+        
 
         public List<Faction> CollectWars()
         {

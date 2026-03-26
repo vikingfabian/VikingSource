@@ -83,7 +83,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
                 TextLib.OneDecimal(DPS_sea()));
 
             HudLib.LabelAndText(content, SpriteName.WarsResource_Sword, DssRef.lang.Conscript_WeaponDamage, attackDamage.ToString());
-            HudLib.LabelAndText(content, SpriteName.cmdAttackUp, DssRef.lang.Conscript_AttackSpeed, TextLib.OneDecimal(TimeExt.MillsSecToSec(attackTimePlusCoolDown)));
+            HudLib.LabelAndText(content, SpriteName.WarsAttackSpeedIcon, DssRef.lang.Conscript_AttackSpeed, TextLib.OneDecimal(TimeExt.MillsSecToSec(attackTimePlusCoolDown)));
             content.space();
             content.Add(new RbText(TextLib.Parentheses( DssRef.todoLang.Hud_Time_ValuePerSecond), HudLib.InfoYellow_Light));
             HudLib.LabelAndText(content, SpriteName.warsArmyTag_Shield, DssRef.lang.SoldierStats_Health, basehealth.ToString());
@@ -92,7 +92,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
             content.Add(new RbImage(SpriteName.cmdParry));
             content.space();
             content.Add(new RbText(string.Format(DssRef.lang.Conscript_BlockPerSecond, TextLib.OneDecimal(1f / blocksRefillTimeSec))));
-            HudLib.LabelAndText(content, SpriteName.cmdStatsMove, DssRef.todoLang.Conscript_Mobility, TextLib.TwoDecimal(mobilityValue()));
+            HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.todoLang.Conscript_Mobility, TextLib.TwoDecimal(mobilityValue()));
         }
 
         public void applySkillBonus(float skillBonus)

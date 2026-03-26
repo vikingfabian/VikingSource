@@ -284,17 +284,17 @@ namespace VikingEngine.DSSWars.Event
                         }
                     }
 
-                    //Prepare secret alliances
-                    var DarkFollower = DssRef.world.faction(DssRef.settings.Faction_DarkFollower);
-                    var SouthHara = DssRef.world.faction(DssRef.settings.Faction_SouthHara);
-                    var UnitedKingdom = DssRef.world.faction(DssRef.settings.Faction_UnitedKingdom);
+                    if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
+                    {
+                        //Prepare secret alliances
+                        var DarkFollower = DssRef.world.faction(DssRef.settings.Faction_DarkFollower);
+                        var SouthHara = DssRef.world.faction(DssRef.settings.Faction_SouthHara);
+                        var UnitedKingdom = DssRef.world.faction(DssRef.settings.Faction_UnitedKingdom);
 
-                    DssRef.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType2_Good, null, true);
-                    DssRef.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, RelationType.RelationType3_Ally, null, true);
-                    DssRef.diplomacy.SetRelationType(UnitedKingdom, SouthHara, RelationType.RelationType2_Good, null, true);
-                    //secretAlliance(DarkFollower, SouthHara);
-                    //secretAlliance(DarkFollower, UnitedKingdom);
-                    //secretAlliance(UnitedKingdom, SouthHara);
+                        DssRef.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType2_Good, null, true);
+                        DssRef.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, RelationType.RelationType3_Ally, null, true);
+                        DssRef.diplomacy.SetRelationType(UnitedKingdom, SouthHara, RelationType.RelationType2_Good, null, true);
+                    }
 
                     //Setup dying war
                     dyingFactionsTimer = new Time(5, TimeUnit.Minutes);
@@ -539,8 +539,9 @@ namespace VikingEngine.DSSWars.Event
                                     new SoldierGroup(mainArmy, SoldierProfile, mainArmy.position);
                                 }
                             }
-                            mainArmy.tagBack = CityTagBack.Blue;
-                            mainArmy.tagArt = ArmyTagArt.LevelMaster;
+                            //mainArmy.tagBack = CityTagBack.Blue;
+                            //mainArmy.tagArt = ArmyTagArt.LevelMaster;
+                            mainArmy.Tag = new MapObjectTag(CityTagBack.Blue, MapObjectTag.Tag_LevelMaster);
                             mainArmy.setAsStartArmy();
 
                             p.hud.messages.Add(DssRef.lang.EventMessage_DarkHordeKiller_Title, DssRef.lang.EventMessage_DarkHordeKiller_Message);

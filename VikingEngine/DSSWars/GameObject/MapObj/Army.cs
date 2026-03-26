@@ -65,8 +65,9 @@ namespace VikingEngine.DSSWars.GameObject
         public MinuteStats foodCosts_import = new MinuteStats();
         public MinuteStats foodCosts_blackmarket = new MinuteStats();
 
-        public CityTagBack tagBack = CityTagBack.NONE;
-        public ArmyTagArt tagArt = ArmyTagArt.None;
+        //public CityTagBack tagBack = CityTagBack.NONE;
+        //public TagArt tagArt = TagArt.None;
+        
 
         public int goldCarryCapacity = 0;
         //public int gold = 0;
@@ -240,12 +241,13 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write(food);
             w.Write(conservedFood);
             money.write(w);
-            w.Write((byte)tagBack);
+            Tag.write(w);
+            //w.Write((byte)tagBack);
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-            if (tagBack != CityTagBack.NONE)
-            {
-                w.Write((ushort)tagArt);
-            }
+            //if (tagBack != CityTagBack.NONE)
+            //{
+            //    w.Write((ushort)tagArt);
+            //}
 
             w.Write((byte)armyColumnWidth);
 
@@ -286,13 +288,13 @@ namespace VikingEngine.DSSWars.GameObject
             
             money.read(r);
             
+            Tag.read(r, subVersion);
+            //tagBack = (CityTagBack)r.ReadByte();
 
-            tagBack = (CityTagBack)r.ReadByte();
-
-            if (tagBack != CityTagBack.NONE)
-            {
-                tagArt = (ArmyTagArt)r.ReadUInt16();
-            }
+            //if (tagBack != CityTagBack.NONE)
+            //{
+            //    tagArt = (TagArt)r.ReadUInt16();
+            //}
 
             armyColumnWidth = r.ReadByte();
             
@@ -302,11 +304,11 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
 
-        override public void tagSprites(out SpriteName back, out SpriteName art)
-        {
-            back = Data.CityTag.BackSprite(tagBack);
-            art = Data.CityTag.ArtSprite(tagArt);
-        }
+        //override public void tagSprites(out SpriteName back, out SpriteName art)
+        //{
+        //    back = Data.TagLib.BackSprite(tagBack);
+        //    art = Data.TagLib.ArtSprite(tagArt);
+        //}
 
         public override string TypeName()
         {
@@ -378,7 +380,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RbText(TextLib.OneDecimal(strengthValue)));
 
             args.content.space(2);
-            args.content.Add(new RbImage(SpriteName.cmdStatsMove));
+            args.content.Add(new RbImage(SpriteName.WarsMobilityIcon));
             args.content.hspace();
             args.content.Add(new RbText(TextLib.OneDecimal(mobilityValue)));
 
@@ -418,7 +420,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.icontext(SpriteName.WarsGroupIcon, string.Format(DssRef.lang.Hud_SoldierGroupsCount, groups.Count));
             args.content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.Hud_SoldierCount, TextLib.LargeNumber(soldiersCount)));
             HudLib.LabelAndText(args.content, SpriteName.WarsStrengthIcon, DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue));
-            HudLib.LabelAndText(args.content, SpriteName.cmdStatsMove, DssRef.todoLang.Conscript_Mobility, TextLib.OneDecimal(mobilityValue));
+            HudLib.LabelAndText(args.content, SpriteName.WarsMobilityIcon, DssRef.todoLang.Conscript_Mobility, TextLib.OneDecimal(mobilityValue));
             args.content.newLine();
 
             if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
