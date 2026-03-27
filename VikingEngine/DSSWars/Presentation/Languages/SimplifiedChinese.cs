@@ -428,9 +428,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "你需要扩展城市。";
 
-        public override string Hud_SoldierCount => "士兵数量: {0}";
+        public override string Hud_SoldierCount => "士兵数量";
 
-        public override string Hud_SoldierGroupsCount => "组数量: {0}";
+        public override string Hud_SoldierGroupsCount => "组数量";
 
         /// <summary>
         /// 游戏内显示。单位计算的战斗力。
@@ -1631,7 +1631,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "网络专家";
         public override string CityCulture_PitMasters => "燃料大师";
 
-        public override string CityCulture_CultureIsX => "文化: {0}";
+        public override string CityCulture_Culture => "文化";
         public override string CityCulture_LargeFamilies_Description => "提高出生率";
         public override string CityCulture_FertileGround_Description => "农作物产量增加";
         public override string CityCulture_Archers_Description => "生产熟练的弓箭手";

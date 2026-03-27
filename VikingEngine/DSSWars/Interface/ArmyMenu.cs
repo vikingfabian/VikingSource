@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.Interface
                     }
 
                     content.Add(tabGroup);
-                    content.newParagraph();
+                    //content.newParagraph();
                     //content.newLine();
                     switch (player.armyTab)
                     {

@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -46,33 +47,15 @@ namespace VikingEngine.DSSWars.GameObject
 
         int currentWallRadius = 0;
 
-        protected void workAutoBuild(/*bool fuelSafeGuard, bool rawFoodSafeGuard*/)
+        protected void workAutoBuild()
         {
-
             var player = GetPlayer();
-
-            //EMPTY
-            //if (checkAutoBuildAvailable())
-            //{
-
 
             AutoBuildList.Clear();
             int safeGuardBuildCount = 1;
 
             BuildAndExpandType safeGuardBuild = BuildAndExpandType.NUM_NONE;
-            //if (fuelSafeGuard && CityStructure.WorkInstance.fuelSpots < 4)
-            //{
-            //    ++CityStructure.WorkInstance.fuelSpots;
-            //    safeGuardBuild = BuildAndExpandType.RapeSeedFarm;
-            //    safeGuardBuildCount = 2;
-            //}
-            //else if (rawFoodSafeGuard && CityStructure.WorkInstance.foodspots < 4)
-            //{
-            //    ++CityStructure.WorkInstance.foodspots;
-            //    safeGuardBuild = BuildAndExpandType.OrchardApple;
-            //    safeGuardBuildCount = 4;
-            //}
-
+            
             if (buildingStructure.Orchard_count + buildingStructure.WheatFarm_count + buildingStructure.HenPen_count < 2)
             {
                 safeGuardBuild = BuildAndExpandType.OrchardApple;
@@ -173,7 +156,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             AutoUpgradeCityHall();
-            //int buildCount = lib.SmallestValue(AutoBuildList.Count, CityStructure.WorkInstance.EmptyLand.Count);
 
             for (int i = 0; i < AutoBuildList.Count; ++i)
             {
@@ -199,7 +181,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                if (!foundPos && CityStructure.WorkInstance.NextEmptyLand(this, Ref.peRnd.Int(32), out pos))//.EmptyLand[i];
+                if (!foundPos && CityStructure.WorkInstance.NextEmptyLand(this, Ref.peRnd.Int(32), out pos))
                 {
                     foundPos = true;
                 }
@@ -209,7 +191,6 @@ namespace VikingEngine.DSSWars.GameObject
                     if (BuildLib.BuildOptions[(int)buildType].availableBlueprintResources_ignorewater(this) &&
                         work_isFreeTile(pos))
                     {
-                        //workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.autoBuild.value, 0, 0));
                         workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
                     }
                 }
@@ -221,6 +202,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (safeGuardBuild == BuildAndExpandType.NUM_NONE)
             {
+                //WALLS
                 int freeWalls = buildingStructure.wallCount - groups.Count;
                 if (freeWalls < 2 && currentWallRadius < 32)
                 {
@@ -254,8 +236,8 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             if (!(loop.AtBottom && loop.AtCenterX) && //place for opening
                                 MayAutoBuildHere(loop.Position) && work_isFreeTile(loop.Position))
-                            {                                
-                                workQue.Add(new WorkQueMember(WorkType.Build, (int)(loop.AtCorner? towerType : wallType), 0, loop.Position, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
+                            {
+                                workQue.Add(new WorkQueMember(WorkType.Build, (int)(loop.AtCorner ? towerType : wallType), 0, loop.Position, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
                                 addCount--;
                                 if (addCount <= 0)
                                 {
@@ -268,17 +250,21 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             currentWallRadius += Ref.rnd.Int(5, 9);
                         }
-                            //    workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
-                            //}
-                        }
-                    //else
-                    //{
-                    //    workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
-                    //    break;
-                    //}
+                    }
+                }
+
+                //TRAPPER
+                if (buildingStructure.SuggestedTrapperPos.X > 0)
+                {
+                    if (MayAutoBuildHere(buildingStructure.SuggestedTrapperPos) && 
+                        work_isFreeTile(buildingStructure.SuggestedTrapperPos))
+                    {
+                        workQue.Add(new WorkQueMember(WorkType.Build, (int)BuildAndExpandType.TrapperHut, 0, buildingStructure.SuggestedTrapperPos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
+                        buildingStructure.SuggestedTrapperPos = IntVector2.Zero;
+                    }
                 }
             }
-            //}
+            
 
         }
 

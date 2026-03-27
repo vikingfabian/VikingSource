@@ -690,7 +690,6 @@ namespace VikingEngine.DSSWars
                         }
                     }
                 }
-
                     
                 if (rel.Relation >= RelationType.RelationTypeN1_Enemies && rel.Relation < RelationType.RelationType1_Peace)
                 {

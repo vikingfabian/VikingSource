@@ -435,9 +435,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "Şehri Genişletmen Gerek.";
 
-        public override string Hud_SoldierCount => "Asker Sayısı: {0}";
+        public override string Hud_SoldierCount => "Asker Sayısı";
 
-        public override string Hud_SoldierGroupsCount => "Grup Sayısı: {0}";
+        public override string Hud_SoldierGroupsCount => "Grup Sayısı";
 
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
@@ -1652,7 +1652,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "Sosyal kelebek";
         public override string CityCulture_PitMasters => "Kömürcü";
 
-        public override string CityCulture_CultureIsX => "Kültür: {0}";
+        public override string CityCulture_Culture => "Kültür";
         public override string CityCulture_LargeFamilies_Description => "Artan doğum oranları";
         public override string CityCulture_FertileGround_Description => "Ekinler daha fazla hasat verir";
         public override string CityCulture_Archers_Description => "Yetenekli okçular yetiştirilir";

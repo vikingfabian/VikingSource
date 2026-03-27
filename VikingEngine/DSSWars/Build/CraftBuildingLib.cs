@@ -1332,6 +1332,8 @@ namespace VikingEngine.DSSWars.Build
             XP.WorkExperienceType.StoneCutter, XP.ExperienceLevel.Master_4
        );
 
+        const int StorageContainerCost = 20;
+        const int StorageQuarterCost = 5;
 
         public static readonly CraftBlueprint MaterialStorage = new CraftBlueprint(
             CraftResultType.Building,
@@ -1339,7 +1341,7 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-               new UseResource(ItemResourceType.Container, 20),
+               new UseResource(ItemResourceType.Container, StorageContainerCost),
            },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
         );
@@ -1350,8 +1352,8 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-               new UseResource(ItemResourceType.Container, 20),
-               new UseResource(ItemResourceType.Salt, 5),
+               new UseResource(ItemResourceType.Container, StorageContainerCost),
+               new UseResource(ItemResourceType.Salt, StorageQuarterCost),
            },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
         );
@@ -1361,8 +1363,8 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-               new UseResource(ItemResourceType.Container, 20),
-               new UseResource(ItemResourceType.Iron_G, 5),
+               new UseResource(ItemResourceType.Container, StorageContainerCost),
+               new UseResource(ItemResourceType.Iron_G, StorageQuarterCost),
            },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
         );
@@ -1372,7 +1374,7 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-               new UseResource(ItemResourceType.Container, 20),
+               new UseResource(ItemResourceType.Container, StorageContainerCost),
            },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
         );
@@ -1382,8 +1384,8 @@ namespace VikingEngine.DSSWars.Build
            1,
            new UseResource[]
            {
-               new UseResource(ItemResourceType.Container, 20),
-               new UseResource(ItemResourceType.RawFood_Group, 20),
+               new UseResource(ItemResourceType.Container, StorageContainerCost),
+               new UseResource(ItemResourceType.RawFood_Group, StorageContainerCost),
            },
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
         );

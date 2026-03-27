@@ -571,7 +571,7 @@ namespace VikingEngine.DSSWars.Build
             });           
         }
 
-        public List<BuildAndExpandType> availableBuildOptions(City city)
+        public List<BuildAndExpandType> availableBuildOptions(City city, bool viewTabs)
         {
             List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
 
@@ -598,7 +598,7 @@ namespace VikingEngine.DSSWars.Build
                 foreach (var opt in available)
                 {
                     var build = BuildLib.BuildOptions[(int)opt];
-                    if (build.buildCategory == player.buildCategoryTab)
+                    if (build.buildCategory == player.buildCategoryTab || !viewTabs)
                     {
                         availableFiltered.Add(opt);
                     }
@@ -619,14 +619,17 @@ namespace VikingEngine.DSSWars.Build
         public void toHud(LocalPlayer player, RichBoxContent content, City city)
         {
             this.city = city;
+            bool viewTabs;
 
             if (player.tutorial != null && player.tutorial.DisplayCompressedBuildTab())
             {
+                viewTabs = false;
                 player.buildCategoryTab = BuildCategoryTab.General;
                 content.newParagraph();
             }
             else
             {
+                viewTabs = true;
                 buildTabToHud(content);
             }
 
@@ -693,7 +696,7 @@ namespace VikingEngine.DSSWars.Build
 
                 upgradeButtons(player, content, city, buildOpt);
 
-                buildOptionsToHud(content);
+                buildOptionsToHud(content, viewTabs);
 
                 if (player.tutorial == null || !player.tutorial.DisplayCompressedBuildTab())
                 {
@@ -882,44 +885,7 @@ namespace VikingEngine.DSSWars.Build
             foreach (var tab in buildCategories)
             {
                 IconName.BuildCategory(tab, out SpriteName tabIcon, out string category);
-                //string category;
-                //SpriteName tabIcon;
-                //switch (tab)
-                //{
-                //    case BuildCategoryTab.Filter:
-                //        tabIcon = SpriteName.warsBuildCategorySearch;
-                //        category = DssRef.lang.HUD_Filter;
-                //        break;
-                //    case BuildCategoryTab.General:
-                //        tabIcon = SpriteName.warsBuildCategoryHouse;
-                //        category = DssRef.lang.BuildCategory_General;
-                //        break;
-                //    case BuildCategoryTab.Advanced:
-                //        tabIcon = SpriteName.warsBuildCategoryAdvanced;
-                //        category = DssRef.lang.Hud_Advanced;
-                //        break;
-                //    case BuildCategoryTab.Military:
-                //        tabIcon = SpriteName.warsBuildCategoryMilitaryWall;
-                //        category = DssRef.lang.BuildCategory_Military;
-                //        break;
-                //    case BuildCategoryTab.Decor:
-                //        tabIcon = SpriteName.warsBuildCategoryDecorTree;
-                //        category = DssRef.lang.BuildCategory_Decoration;
-                //        break;
-                //    case BuildCategoryTab.Upgrade:
-                //        tabIcon = SpriteName.warsBuildCategoryUpgrades;
-                //        category = DssRef.lang.BuildCategory_Upgrade;
-                //        break;
-                //    case BuildCategoryTab.GodPower:
-                //        tabIcon = SpriteName.WarsGodPowerIcon;
-                //        category = DssRef.lang.GodPower;
-                //        break;
-                //    default:
-                //        tabIcon = SpriteName.warsBuildCategoryAutomation;
-                //        category = DssRef.lang.Automation_Title;
-                //        break;
-
-                //}
+                
                 var tabButton = new ArtButton(tab == player.buildCategoryTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
                     new List<AbsRichBoxMember> { new RbImage(tabIcon) },
                     new RbAction1Arg<BuildCategoryTab>((BuildCategoryTab selectTab) => { player.buildCategoryTab = selectTab; }, tab, RbSoundType.Tab),
@@ -929,7 +895,7 @@ namespace VikingEngine.DSSWars.Build
         }
 
 
-        void buildOptionsToHud(RichBoxContent content)
+        void buildOptionsToHud(RichBoxContent content, bool viewTabs)
         {
             bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Build, out Color focusColor);
             if (viewControllerTabs && player.gameControls.input.Controller_TabLeft.IsActive && player.gameControls.input.Controller_TabRight.IsActive)
@@ -941,7 +907,7 @@ namespace VikingEngine.DSSWars.Build
                 content.newLine();
             }
 
-            List<BuildAndExpandType> available = availableBuildOptions(city);
+            List<BuildAndExpandType> available = availableBuildOptions(city, viewTabs);
 
             if (player.buildCategoryTab == BuildCategoryTab.Filter)
             {

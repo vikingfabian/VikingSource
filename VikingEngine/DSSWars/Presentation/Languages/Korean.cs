@@ -430,9 +430,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "도시를 확장해야 합니다.";
 
-        public override string Hud_SoldierCount => "병사 수: {0}";
+        public override string Hud_SoldierCount => "병사 수";
 
-        public override string Hud_SoldierGroupsCount => "부대 수: {0}";
+        public override string Hud_SoldierGroupsCount => "부대 수";
 
         /// <summary>
         /// Ingame display. Unit calculated battle strength.
@@ -1655,7 +1655,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "연결가";
         public override string CityCulture_PitMasters => "숯굴 장인";
 
-        public override string CityCulture_CultureIsX => "문화: {0}";
+        public override string CityCulture_Culture => "문화";
         public override string CityCulture_LargeFamilies_Description => "출산율이 증가합니다.";
         public override string CityCulture_FertileGround_Description => "작물 생산량이 증가합니다.";
         public override string CityCulture_Archers_Description => "숙련된 궁수를 양성합니다.";

@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             CasualBuildBarracks,
             CasualRecruitSoldier,
             ConscriptArmy,
-            CollectFood,
+            //CollectFood,
             //RecruitGuard,
             
             MoveArmy,
@@ -131,7 +131,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         //bool CollectFood_buildfuelproduction = false;
         //bool CollectFood_builcook = false;
         bool CollectFood_selectStockPile = false;
-        bool CollectFood_increasefoodbuffer = false;
+        //bool CollectFood_increasefoodbuffer = false;
+        TutorialProgressPoint CollectFood_foodStorage = new TutorialProgressPoint(false);
         bool CollectFood_reachfoodamount = false;
 
         bool moveArmy_ZoomOut = false;
@@ -287,6 +288,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 //BuildAndExpandType.Cook,
                 //BuildAndExpandType.CoalPit,
                 BuildAndExpandType.WorkBench,
+               
                 //BuildAndExpandType.Smith,
 
                 //BuildAndExpandType.PigPen,
@@ -329,7 +331,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     TutorialMission.Linen,
                     TutorialMission.ProduceWeaponsArmor,
                     TutorialMission.ConscriptArmy,
-                    TutorialMission.CollectFood,
+                    //TutorialMission.CollectFood,
                     TutorialMission.MoveArmy,
                     TutorialMission.AttackBarbarian,
                     TutorialMission.Diplomatics,
@@ -444,13 +446,14 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             if (missions.sel >= TutorialMission.ConscriptArmy)
             {
                 cityTabs.Add(MenuTab.Conscript);
-            }
-            if (missions.sel >= TutorialMission.CollectFood)
-            {
                 cityTabs.Add(MenuTab.BlackMarket);
             }
+            //if (missions.sel >= TutorialMission.CollectFood)
+            //{
+            //    cityTabs.Add(MenuTab.BlackMarket);
+            //}
 
-            player.hud.messages.blockFoodWarning(missions.sel < TutorialMission.CollectFood);
+            player.hud.messages.blockFoodWarning(missions.sel < TutorialMission.ConscriptArmy);
         }
 
         public bool DisplayResourseSubTabs()
@@ -567,43 +570,45 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.iconicontext(HudLib.CheckImage(conscriptArmy_createArmy), SpriteName.WarsUnitIcon_Folkman, string.Format(DssRef.lang.Tutorial_CreateSoldiers, DssRef.lang.Resource_TypeName_SharpStick, DssRef.lang.Resource_TypeName_PaddedArmor));
                     break;
 
-                case TutorialMission.CollectFood:
-                    {
-                        //content.iconicontext(HudLib.CheckImage(CollectFood_selecttab), SpriteName.MenuPixelIconManual,
-                        //    string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources) + ". " + string.Format(DssRef.lang.Tutorial_Select_SubTab, DssRef.lang.Resource_Tab_Overview));
-                        //content.iconicontext(HudLib.CheckImage(CollectFood_foodblueprint), SpriteName.WarsBluePrint, DssRef.lang.Tutorial_LookAtFoodBlueprint);//-look at the food blueprint
-                        content.iconicontext(HudLib.CheckImage(CollectFood_buildfoodproduction), SpriteName.WarsResource_Food, string.Format(DssRef.lang.Tutorial_BuildSomething, DssRef.lang.Resource_TypeName_Food));//-build something that produces raw food
-                        //content.iconicontext(HudLib.CheckImage(CollectFood_buildfuelproduction), SpriteName.WarsResource_Fuel, string.Format(DssRef.lang.Tutorial_BuildSomething, DssRef.lang.Resource_TypeName_Fuel));//-build something that produces fuel
-                        //content.iconicontext(HudLib.CheckImage(CollectFood_builcook), SpriteName.WarsBuild_Cook, string.Format(DssRef.lang.Tutorial_BuildCraft, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
+                //case TutorialMission.CollectFood:
+                //    {
+                //        //content.iconicontext(HudLib.CheckImage(CollectFood_selecttab), SpriteName.MenuPixelIconManual,
+                //        //    string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources) + ". " + string.Format(DssRef.lang.Tutorial_Select_SubTab, DssRef.lang.Resource_Tab_Overview));
+                //        //content.iconicontext(HudLib.CheckImage(CollectFood_foodblueprint), SpriteName.WarsBluePrint, DssRef.lang.Tutorial_LookAtFoodBlueprint);//-look at the food blueprint
+                //        content.iconicontext(HudLib.CheckImage(CollectFood_buildfoodproduction), SpriteName.WarsResource_Food, string.Format(DssRef.lang.Tutorial_BuildSomething, DssRef.lang.Resource_TypeName_Food));//-build something that produces raw food
+                //        //content.iconicontext(HudLib.CheckImage(CollectFood_buildfuelproduction), SpriteName.WarsResource_Fuel, string.Format(DssRef.lang.Tutorial_BuildSomething, DssRef.lang.Resource_TypeName_Fuel));//-build something that produces fuel
+                //        //content.iconicontext(HudLib.CheckImage(CollectFood_builcook), SpriteName.WarsBuild_Cook, string.Format(DssRef.lang.Tutorial_BuildCraft, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
 
-                        content.iconicontext(HudLib.CheckImage(CollectFood_selectStockPile), SpriteName.WarsStockpileAdd,
-                            string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources) + ". " + string.Format(DssRef.lang.Tutorial_Select_SubTab, DssRef.lang.Resource_Tab_Stockpile));//-build a food crafting station
+                //        content.iconicontext(HudLib.CheckImage(CollectFood_selectStockPile), SpriteName.WarsStockpileAdd,
+                //            string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.MenuTab_Resources) + ". " + string.Format(DssRef.lang.Tutorial_Select_SubTab, DssRef.lang.Resource_Tab_Stockpile));//-build a food crafting station
 
-                        content.iconicontext(HudLib.CheckImage(CollectFood_increasefoodbuffer), SpriteName.WarsResource_Food, string.Format(DssRef.lang.Tutorial_IncreaseBufferLimit, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
-                        content.iconicontext(HudLib.CheckImage(CollectFood_reachfoodamount), SpriteName.WarsStockpileStop, string.Format(DssRef.lang.Tutorial_CollectItemStockpile, ReachFoodBuffer, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
+                //        //content.iconicontext(HudLib.CheckImage(CollectFood_increasefoodbuffer), SpriteName.WarsResource_Food, string.Format(DssRef.lang.Tutorial_IncreaseBufferLimit, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
+                //        buildOrder(CollectFood_foodStorage.completed, BuildAndExpandType.FoodStorage);
+                        
+                //        content.iconicontext(HudLib.CheckImage(CollectFood_reachfoodamount), SpriteName.WarsStockpileStop, string.Format(DssRef.lang.Tutorial_CollectItemStockpile, ReachFoodBuffer, DssRef.lang.Resource_TypeName_Food));//-build a food crafting station
 
-                        content.newParagraph();
-                        HudLib.BulletPoint(content);
-                        var info0 = new RbText(DssRef.lang.Tutorial_CollectFood_Info0);
-                        info0.overrideColor = HudLib.InfoYellow_VeryLight;
-                        content.Add(info0);
+                //        content.newParagraph();
+                //        HudLib.BulletPoint(content);
+                //        var info0 = new RbText(DssRef.lang.Tutorial_CollectFood_Info0);
+                //        info0.overrideColor = HudLib.InfoYellow_VeryLight;
+                //        content.Add(info0);
 
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        var info1 = new RbText(DssRef.lang.Tutorial_CollectFood_Info1);
-                        info1.overrideColor = HudLib.InfoYellow_VeryLight;
-                        content.Add(info1);
+                //        content.newLine();
+                //        HudLib.BulletPoint(content);
+                //        var info1 = new RbText(DssRef.lang.Tutorial_CollectFood_Info1);
+                //        info1.overrideColor = HudLib.InfoYellow_VeryLight;
+                //        content.Add(info1);
 
-                        content.newLine();
-                        HudLib.BulletPoint(content);
-                        content.Add(new RbText(DssRef.lang.Tutorial_CollectFood_Info2, HudLib.InfoYellow_VeryLight));
+                //        content.newLine();
+                //        HudLib.BulletPoint(content);
+                //        content.Add(new RbText(DssRef.lang.Tutorial_CollectFood_Info2, HudLib.InfoYellow_VeryLight));
 
-                        //content.newLine();
-                        //HudLib.BulletPoint(content);
-                        //City city = player.gameControls.map.selection.obj as City;
-                        //CraftResourceLib.Food1.toMenu(content, city, false, false, city != null, false);
-                    }
-                    break;
+                //        //content.newLine();
+                //        //HudLib.BulletPoint(content);
+                //        //City city = player.gameControls.map.selection.obj as City;
+                //        //CraftResourceLib.Food1.toMenu(content, city, false, false, city != null, false);
+                //    }
+                //    break;
                 
                 case TutorialMission.MoveArmy:
                     content.newLine();
@@ -1566,131 +1571,62 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     
                     break;
 
-                case TutorialMission.CollectFood:
-                    //bool CollectFood_increasefoodbuffer = false;
-                    //bool CollectFood_reachfoodamount = false;
-                    //if (!CollectFood_selecttab)
-                    //{
-                    //    if (player.cityTab == Interface.MenuTab.Resources)
-                    //    {
-                    //        CollectFood_selecttab = true;
+                //case TutorialMission.CollectFood:
+                   
+                //    if (!CollectFood_buildfoodproduction)
+                //    {
+                //        lock (player.orders.orders)
+                //        {
+                //            for (int i = player.orders.orders.Count - 1; i >= 0; --i)//each (var order in player.orders.orders)
+                //            {
+                //                var order = player.orders.orders[i];
+                //                if (order is BuildOrder)
+                //                {
+                //                    switch (((BuildOrder)order).buildingType)
+                //                    {
+                //                        case Build.BuildAndExpandType.OrchardApple:
+                //                        case Build.BuildAndExpandType.OrchidBanana:
+                //                        //case Build.BuildAndExpandType.WheatFarm:
+                //                            CollectFood_buildfoodproduction = true;
+                //                            onPartSuccess();
+                //                            break;
+                //                    }
+                //                    break;
+                //                }
+                //            }
+                //        }
+                //    }
+                   
 
-                    //        onPartSuccess();
-                    //    }
-                    //}
-                    //if (!CollectFood_foodblueprint)
-                    //{
-                    //    //if (player.hud.tooltip.tooltip_id == Tooltip.Food_BlueprintId &&
-                    //    //    player.hud.tooltip.tooltip_id_timestampsec >= 2)
-                    //    if (player.hud.objMenu.menu != null && player.hud.objMenu.menu.HasToolTip(Tooltip.Food_BlueprintId))
-                    //    {
-                    //        CollectFood_foodblueprint = true;
+                //    if (!CollectFood_selectStockPile)
+                //    {
+                //        if (player.gameControls.map.selection.obj is City &&
+                //            player.cityTab == Interface.MenuTab.Resources &&
+                //            player.resourcesSubTab.EqualTab(new ResourcesSubTab(ResourceManagementType.Stockpile, ResourceGroupType.Resources))) //== ResourcesSubTab.Stockpile_Resources)
+                //        {
+                //            CollectFood_selectStockPile = true;
 
-                    //        onPartSuccess();
-                    //    }
-                    //}
-                    if (!CollectFood_buildfoodproduction)
-                    {
-                        lock (player.orders.orders)
-                        {
-                            for (int i = player.orders.orders.Count - 1; i >= 0; --i)//each (var order in player.orders.orders)
-                            {
-                                var order = player.orders.orders[i];
-                                if (order is BuildOrder)
-                                {
-                                    switch (((BuildOrder)order).buildingType)
-                                    {
-                                        case Build.BuildAndExpandType.OrchardApple:
-                                        case Build.BuildAndExpandType.OrchidBanana:
-                                        //case Build.BuildAndExpandType.WheatFarm:
-                                            CollectFood_buildfoodproduction = true;
-                                            onPartSuccess();
-                                            break;
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    //if (!CollectFood_buildfuelproduction)
-                    //{
-                    //    lock (player.orders.orders)
-                    //    {
-                    //        for (int i = player.orders.orders.Count - 1; i >= 0; --i)//each (var order in player.orders.orders)
-                    //        {
-                    //            var order = player.orders.orders[i];
-                    //            if (order is BuildOrder)
-                    //            {
-                    //                switch (((BuildOrder)order).buildingType)
-                    //                {
-                    //                    case Build.BuildAndExpandType.CoalPit:
-                    //                    case Build.BuildAndExpandType.RapeSeedFarm:
-                    //                        CollectFood_buildfuelproduction = true;
-                    //                        onPartSuccess();
-                    //                        break;
-                    //                }
-                    //                break;
-                    //            }
-                    //        }
-                    //    }
-                    //}
-                    //if (!CollectFood_builcook)
-                    //{
-                    //    lock (player.orders.orders)
-                    //    {
-                    //        for (int i = player.orders.orders.Count - 1; i >= 0; --i)//each (var order in player.orders.orders)
-                    //        {
-                    //            var order = player.orders.orders[i];
-                    //            if (order is BuildOrder)
-                    //            {
-                    //                switch (((BuildOrder)order).buildingType)
-                    //                {
-                    //                    case Build.BuildAndExpandType.Cook:
-                    //                        CollectFood_builcook = true;
-                    //                        onPartSuccess();
-                    //                        break;
-                    //                }
-                    //                break;
-                    //            }
-                    //        }
-                    //    }
-                    //}
+                //            onPartSuccess();
+                //        }
+                //    }
 
-                    if (!CollectFood_selectStockPile)
-                    {
-                        if (player.gameControls.map.selection.obj is City &&
-                            player.cityTab == Interface.MenuTab.Resources &&
-                            player.resourcesSubTab.EqualTab(new ResourcesSubTab(ResourceManagementType.Stockpile, ResourceGroupType.Resources))) //== ResourcesSubTab.Stockpile_Resources)
-                        {
-                            CollectFood_selectStockPile = true;
+                //    if (CollectFood_foodStorage.NeedUpdate)
+                //    {
+                //        check(ref CollectFood_foodStorage, hasBuildOrder(BuildAndExpandType.FoodStorage));
+                //    }
 
-                            onPartSuccess();
-                        }
-                    }
+                //    if (!CollectFood_reachfoodamount)
+                //    {
+                //        if (player.gameControls.map.selection.obj is City &&
+                //            player.gameControls.map.selection.obj.GetCity().resourceAmount(EntityComponent.CityResoureIndex.food)/*.res_food.amount*/ >= ReachFoodBuffer)
+                //        {
+                //            CollectFood_reachfoodamount = true;
 
-                    if (!CollectFood_increasefoodbuffer)
-                    {
-                        if (player.gameControls.map.selection.obj is City &&
-                            player.gameControls.map.selection.obj.GetCity().GetGroupedResource(EntityComponent.CityResoureIndex.food).stockPileLimit/*res_food.goalBuffer*/ > City.DefaultFoodBuffer)
-                        {
-                            CollectFood_increasefoodbuffer = true;
+                //            onPartSuccess();
+                //        }
+                //    }
 
-                            onPartSuccess();
-                        }
-                    }
-
-                    if (!CollectFood_reachfoodamount)
-                    {
-                        if (player.gameControls.map.selection.obj is City &&
-                            player.gameControls.map.selection.obj.GetCity().resourceAmount(EntityComponent.CityResoureIndex.food)/*.res_food.amount*/ >= ReachFoodBuffer)
-                        {
-                            CollectFood_reachfoodamount = true;
-
-                            onPartSuccess();
-                        }
-                    }
-
-                    break;
+                //    break;
               
                 case TutorialMission.MoveArmy:
 
@@ -2837,16 +2773,17 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case TutorialMission.ConscriptArmy:
                     missionComplete = conscriptArmy_createArmy;
                     break;
-                case TutorialMission.CollectFood:
-                    missionComplete = 
-                        //CollectFood_selecttab &&
-                        //CollectFood_foodblueprint &&
-                        CollectFood_buildfoodproduction &&
-                        //CollectFood_buildfuelproduction &&
-                        //CollectFood_builcook &&
-                        CollectFood_increasefoodbuffer &&
-                        CollectFood_reachfoodamount;
-                    break;
+                //case TutorialMission.CollectFood:
+                //    missionComplete = 
+                //        //CollectFood_selecttab &&
+                //        //CollectFood_foodblueprint &&
+                //        CollectFood_buildfoodproduction &&
+                //        //CollectFood_buildfuelproduction &&
+                //        //CollectFood_builcook &&
+                //        //CollectFood_increasefoodbuffer &&
+                //        CollectFood_foodStorage.completed &&
+                //        CollectFood_reachfoodamount;
+                //    break;
                 case TutorialMission.MoveArmy:
                     missionComplete = moveArmy_ZoomOut &&
                         moveArmy_SelectMove;
@@ -2928,7 +2865,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             switch (missions.sel)
             { 
-                case TutorialMission.CollectFood:
+                //case TutorialMission.CollectFood:
                 case TutorialMission.ProduceBow:
                 case TutorialMission.ProduceMail:
                     ((PlayState)DssRef.state).AutoSave();
@@ -2945,15 +2882,15 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 missions.SelectIndex(nextIx);
                 display.refresh = true;
 
-                if (missions.sel == TutorialMission.CollectFood)
-                {
-                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                    while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
-                    {
-                        citySel.resourceAmountSet(EntityComponent.CityResoureIndex.food, City.DefaultFoodBuffer);                        
-                    }
-                }
-                else if (missions.sel == TutorialMission.EndTutorial)
+                //if (missions.sel == TutorialMission.CollectFood)
+                //{
+                //    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                //    while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
+                //    {
+                //        citySel.resourceAmountSet(EntityComponent.CityResoureIndex.food, City.DefaultFoodBuffer);                        
+                //    }
+                //}
+                /*else */if (missions.sel == TutorialMission.EndTutorial)
                 {
 
                     DssRef.stats.completeTutorial.addOne();

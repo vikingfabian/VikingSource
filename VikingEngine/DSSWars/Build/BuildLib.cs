@@ -463,7 +463,10 @@ namespace VikingEngine.DSSWars.Build
 
                 list.Add(BuildAndExpandType.CoalPit);
             }
-
+            //else
+            //{
+            //    list.Add(BuildAndExpandType.FoodStorage);
+            //}
 
             list.Add(BuildAndExpandType.WorkBench);
             if (manor)

@@ -114,7 +114,6 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 WarElephantCage_pos;
         public IntVector2 OliphantCage_pos;
 
-        public IntVector2 SuggestedTrapperPos;
 
         public IntVector2 getPos(BuildAndExpandType type)
         {
@@ -609,6 +608,7 @@ namespace VikingEngine.DSSWars.Build
 
         public int wallCount;
 
+        public IntVector2 SuggestedTrapperPos;
         public int getCount(BuildAndExpandType type)
         {
             switch (type)

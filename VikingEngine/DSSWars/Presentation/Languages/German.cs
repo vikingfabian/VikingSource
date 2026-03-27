@@ -313,8 +313,8 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_GuardCount => "Wachen";
         public override string Hud_IncreaseMaxGuardCount => "Maximale Wachengröße {0}";
         public override string Hud_GuardCount_MustExpandCityMessage => "Du musst die Stadt erweitern.";
-        public override string Hud_SoldierCount => "Soldatenanzahl: {0}";
-        public override string Hud_SoldierGroupsCount => "Gruppenanzahl: {0}";
+        public override string Hud_SoldierCount => "Soldatenanzahl";
+        public override string Hud_SoldierGroupsCount => "Gruppenanzahl";
         public override string Hud_StrengthRating => "Stärkewertung";
         public override string Hud_TotalStrengthRating => "Militärische Stärke: {0}";
         public override string Hud_Immigrants => "Einwanderer";
@@ -1511,7 +1511,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "Netzwerker";
         public override string CityCulture_PitMasters => "Grubenmeister";
 
-        public override string CityCulture_CultureIsX => "Kultur: {0}";
+        public override string CityCulture_Culture => "Kultur";
         public override string CityCulture_LargeFamilies_Description => "Erhöhte Geburtenrate";
         public override string CityCulture_FertileGround_Description => "Erhöhte Ernteerträge";
         public override string CityCulture_Archers_Description => "Produziert erfahrene Bogenschützen";

@@ -2723,17 +2723,17 @@ namespace VikingEngine.DSSWars.GameObject
                 if (interactive)
                 {
 
-                    HudLib.ItemCount(content, SpriteName.WarsWorkerAdd, DssRef.lang.ResourceType_Children, children().ToString());
+                    HudLib.LabelAndText(content, SpriteName.WarsWorkerAdd, DssRef.lang.ResourceType_Children, children().ToString());
                     content.space();
                     if (interactive)
                     {
                         HudLib.InfoButton(content, new RbTooltip(childrenTooltip, this));
                     }
 
-                    content.newLine();
-                    content.Add(new RbImage(SpriteName.WarsUnitIcon_Immigrant));
-                    content.space();
-                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Immigrants, immigrants.Int())));
+                    HudLib.LabelAndText(content, SpriteName.WarsUnitIcon_Immigrant, DssRef.lang.Hud_Immigrants, immigrants.Int().ToString());
+                    //content.Add(new RbImage(SpriteName.WarsUnitIcon_Immigrant));
+                    //content.space();
+                    //content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_Immigrants, immigrants.Int())));
                     content.Add(new RbTab(0.4f));
                     content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
                     content.space();
@@ -2747,21 +2747,26 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                 }
 
-                content.newLine();
-                content.Add(new RbImage(SpriteName.WarsWorker));
-                content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Workers, workForce.amount)));
+                HudLib.LabelAndText(content, SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers, workForce.amount.ToString());
+                //content.newLine();
+                //content.Add(new RbImage(SpriteName.WarsWorker));
+                //content.space();
+                //content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Workers, workForce.amount)));
                 content.Add(new RbTab(0.4f));
                 content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
                 content.space();
                 content.Add(new RbImage(SpriteName.WarsBuild_WorkerHuts));
                 content.space();
                 content.Add(new RbText(HousingCount_Workers.ToString()));
-
-                content.newLine();
-                content.Add(new RbImage(SpriteName.WarsGuard));
                 content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_GuardCount, soldiersCount)));
+                HudLib.InfoButton(content, new RbTooltip(workerTooltip));
+
+
+                HudLib.LabelAndText(content, SpriteName.WarsGuard, DssRef.lang.Hud_GuardCount, soldiersCount.ToString());
+                //content.newLine();
+                //content.Add(new RbImage(SpriteName.WarsGuard));
+                //content.space();
+                //content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_GuardCount, soldiersCount)));
 
                 if (!player.profile.casualControls)
                 {
@@ -2775,10 +2780,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (!player.profile.casualControls)
                 {
-                    content.newLine();
-                    content.Add(new RbImage(SpriteName.WarsServiceMen));
-                    content.space();
-                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_ServiceMen, freeServiceMen.amount)));
+                    HudLib.LabelAndText(content, SpriteName.WarsServiceMen, DssRef.lang.ResourceType_ServiceMen, freeServiceMen.amount.ToString());
+                    //content.newLine();
+                    //content.Add(new RbImage(SpriteName.WarsServiceMen));
+                    //content.space();
+                    //content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_ServiceMen, freeServiceMen.amount)));
                     content.Add(new RbTab(0.4f));
                     content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
                     content.space();
@@ -2786,10 +2792,12 @@ namespace VikingEngine.DSSWars.GameObject
                     content.space();
                     content.Add(new RbText(TotalServiceMen().ToString()));
 
-                    content.newLine();
-                    content.Add(new RbImage(SpriteName.WarsNobelman));
-                    content.space();
-                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_NobelMen), freeNobelMen.amount)));
+
+                    HudLib.LabelAndText(content, SpriteName.WarsNobelman, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_NobelMen), freeNobelMen.amount.ToString());
+                    //content.newLine();
+                    //content.Add(new RbImage(SpriteName.WarsNobelman));
+                    //content.space();
+                    //content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_NobelMen), freeNobelMen.amount)));
                     content.Add(new RbTab(0.4f));
                     content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
                     content.space();
@@ -2914,10 +2922,10 @@ namespace VikingEngine.DSSWars.GameObject
                     cultureToHud(player, content, interactive);
                     Data.Biome.biomeToHud(cityBiome, player, content, interactive);
                 }
-                if (immigrants.HasValue())
-                {
-                    content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
-                }
+                //if (immigrants.HasValue())
+                //{
+                //    content.icontext(SpriteName.WarsWorkerAdd, string.Format(DssRef.lang.Hud_Immigrants, immigrants.Int()));
+                //}
 
                 if (!player.profile.casualControls)
                 {
@@ -3121,7 +3129,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.newLine();
             HudLib.BulletPoint(content);
             content.space();
-            content.Add(new RbImage(SpriteName.WarsUnitIcon_Soldier));
+            content.Add(new RbImage(SpriteName.WarsSoldierMan));
             content.space();
             content.Add(new RbText(DssRef.lang.Immigrants_DisbandedSoldiers));
 
@@ -3205,6 +3213,34 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
             }
+        }
+
+        void workerTooltip(RichBoxContent content, object tag)
+        {
+            content.h1(DssRef.lang.ResourceType_Workers, HudLib.TitleColor_Head);
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsHammer));
+            content.hspace();
+            content.Add(new RbText(DssRef.todoLang.Workers_Description1_work));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.rtsIncome));
+            content.hspace();
+            content.Add(new RbText(DssRef.todoLang.Workers_Description2_income));
+
+            content.newLine();
+            HudLib.BulletPoint(content);
+            content.Add(new RbImage(SpriteName.WarsSoldierMan));
+            content.hspace();
+            content.Add(new RbText(DssRef.todoLang.Workers_Description3_soldiers));
+
+            content.newParagraph();
+            content.Add(new RbSeperationLine() { thick = true });
+
+            Resource.ResourceLib.FullResourceInfo(GetFaction(), this, ItemResourceType.Men, content);
         }
         //        public void CityDetailsHud(bool minimal, LocalPlayer player, RichBoxContent content)
         //        {
@@ -3797,7 +3833,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void cultureToHud(LocalPlayer player, RichBoxContent content, bool interactive)
         {
             IconName.CityCulture(cityCulture, out string title, out string description);
-            content.icontext(SpriteName.WarsCultureIcon, string.Format(DssRef.lang.CityCulture_CultureIsX, title));
+            HudLib.LabelAndText(content, SpriteName.WarsCultureIcon, DssRef.lang.CityCulture_Culture, title);
             if (interactive)
             {
                 content.space();

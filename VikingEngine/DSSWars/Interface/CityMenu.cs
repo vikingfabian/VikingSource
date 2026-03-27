@@ -1952,7 +1952,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 case ResourceGroupType.Animals:
 
-                    bool hideZeroAnimals = DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator && !StartupSettings.UnlockAllProgress;
+                    bool hideZeroAnimals = false;//DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator && !StartupSettings.UnlockAllProgress;
 
                     // --- Farm ---
                     city.GetGroupedResource(CityResoureIndex.Hen).toMenu(content, ItemResourceType.Hen, ref reachedBuffer, player, city);

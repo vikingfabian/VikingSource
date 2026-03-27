@@ -25,6 +25,10 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         //regular
+        public string Workers_Description1_work => "Will build, collect resources and craft items.";
+        public string Workers_Description2_income => "Are taxed for income.";
+        public string Workers_Description3_soldiers => "Can be drafted as soldiers for your armies.";
+        
         public string Hud_Time_ValuePerMinute => "Value per minute";
         public string Hud_Time_ValuePerSecond => "Value per second";
         public string Hud_Lock => "Lock";

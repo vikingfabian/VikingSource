@@ -58,10 +58,8 @@ namespace VikingEngine.DSSWars.Players
                 throw new ArgumentException();
             }
 #endif 
-
             gear = Bound.Set(gear, 1, MaxGear);
-            this.gear = gear;
-                        
+            this.gear = gear;                        
             
             PcgRandom random = new PcgRandom(DssRef.world.metaData.seed + gear * 11);
 
@@ -112,12 +110,6 @@ namespace VikingEngine.DSSWars.Players
                     checkTimeHours.Max *= 0.75f;
                 }
             }
-            //}
-            //else
-            //{
-            //    throw new ArgumentOutOfRangeException("WarManagerGear " + gear);
-            //}
-
         }
     }
 
@@ -125,11 +117,8 @@ namespace VikingEngine.DSSWars.Players
     {
         WarManagerGear warManagerGear;
         Time tooPeacefulCheckTimer =
-//#if DEBUG
-            //new Time(4, TimeUnit.Seconds);
-//#else
-            new Time(Ref.rnd.Float(20, 40), TimeUnit.Minutes);
-//#endif
+        new Time(Ref.rnd.Float(20, 40), TimeUnit.Minutes);
+
         public void testTooPeacefulCheck()
         {
             tooPeacefulCheckTimer.setZero();
@@ -146,8 +135,7 @@ namespace VikingEngine.DSSWars.Players
 
                 tooPeacefulCheckTimer = new Time(warManagerGear.checkTimeHours.GetRandom(), TimeUnit.Hours);
 
-                tooPeacefulCheck_asynch();
-                
+                tooPeacefulCheck_asynch();                
             }
         }
 
@@ -163,21 +151,13 @@ namespace VikingEngine.DSSWars.Players
                 RelationsLoop loop = new RelationsLoop(faction.myIndex);
                 while (loop.Next())
                 {
-                //    for (int relIx = 0; relIx < faction.diplomaticRelations.Length; ++relIx)
-                //{
-                //    if (faction.diplomaticRelations[relIx] != null &&
-                //        faction.diplomaticRelations[relIx].Relation <= RelationType.RelationTypeN2_Truce)
-                //    {
+                
                     if (loop.Relation().Relation <= RelationType.RelationTypeN2_Truce &&
                         loop.OtherFaction(out var opponent) &&
                         opponent.player.IsBot())
-                    {
-                        //var opponent = faction.diplomaticRelations[relIx].opponent(faction);
-                        //if (opponent.player.IsBot())
-                        //{
-                            ++warCount;
-                            opposingSize += opponent.PotensialMilitaryStrength();
-                        //}
+                    {                  
+                        ++warCount;
+                        opposingSize += opponent.PotensialMilitaryStrength();                  
                     }
                 }
 
@@ -195,16 +175,6 @@ namespace VikingEngine.DSSWars.Players
                 {
                     maxChecks--;
 
-                    //if (opposingSize > 0)
-                    //{
-                    //    //opposingSizePerc = opposingSize / faction.PotensialMilitaryStrength();
-
-                    //    //toPeaceful = opposingSizePerc <= DssRef.difficulty.toPeacefulPercentage * warManagerGear.tooPeacefulPercentageMulti;
-                    //}
-                    //else
-                    //{
-                    //    opposingSizePerc = 0;
-                    //}
                     tooPeaceful = opposingSize < minOpposingStrength;
 
                     if (tooPeaceful)
@@ -282,7 +252,6 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
             }
-
 
             opposingSizePerc = lib.SafeDiv(opposingSize, faction.PotensialMilitaryStrength());
         }

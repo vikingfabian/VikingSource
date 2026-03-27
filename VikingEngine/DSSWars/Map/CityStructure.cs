@@ -1065,7 +1065,7 @@ namespace VikingEngine.DSSWars.Map
 
             checkPenUpkeep(city);
 
-            buildingPosition.SuggestedTrapperPos = IntVector2.Zero;
+            buildingStructure.SuggestedTrapperPos = IntVector2.Zero;
 
             foreach (var pos in WildAnimals)
             {
@@ -1078,7 +1078,7 @@ namespace VikingEngine.DSSWars.Map
                     }
                     else if (Ref.peRnd.ChanceF(0.5f))
                     {
-                        buildingPosition.SuggestedTrapperPos = pos + arraylib.RandomListMember(IntVector2.Dir4Array) * Ref.rnd.Int(2, 4);
+                        buildingStructure.SuggestedTrapperPos = pos + arraylib.RandomListMember(IntVector2.Dir4Array) * Ref.rnd.Int(2, 4);
                     }
                 }
             }

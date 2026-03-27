@@ -1,11 +1,6 @@
 ﻿UPDATE
 Change Log:
-* Changed the tags to pull images directly from the resources and buildings + added some new icon
-! saved tags will corrupt
-* Removed the x5 speed lock, and just hide during tutorial
-* will unlock map bounds earlier during tutorial
-* repaired speakterms setup
-* Removed story factions from sandbox mode
+* 
 
 ##ICONS TODO
 
@@ -13,13 +8,9 @@ Change Log:
 
 Current bugs
 
-x war manager should check relation peace timer
-x missing a lot of the animal/weapon/armor combos
-x auto build of trappers
 x ai conscript of animals
-x army collect conserved food
+x missing a lot of the animal/weapon/armor combos
 
-x go through tutorial
 x translate
 
 ## MOUNTED POST CONTENT UPDATE ##

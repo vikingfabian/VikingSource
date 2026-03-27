@@ -448,9 +448,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "Musisz rozbudować miasto.";
 
-        public override string Hud_SoldierCount => "Liczba żołnierzy: {0}";
+        public override string Hud_SoldierCount => "Liczba żołnierzy";
 
-        public override string Hud_SoldierGroupsCount => "Liczba grup: {0}";
+        public override string Hud_SoldierGroupsCount => "Liczba grup";
 
         /// <summary>
         /// Wyświetlanie w grze. Obliczona siła bitewna jednostki.
@@ -1674,7 +1674,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string CityCulture_PitMasters => "Mistrzowie mielerzy";
 
-        public override string CityCulture_CultureIsX => "Kultura: {0}";
+        public override string CityCulture_Culture => "Kultura";
         public override string CityCulture_LargeFamilies_Description => "Zwiększony przyrost naturalny";
         public override string CityCulture_FertileGround_Description => "Obfitsze plony z upraw";
         public override string CityCulture_Archers_Description => "Pozwala szkolić wybitnych łuczników";

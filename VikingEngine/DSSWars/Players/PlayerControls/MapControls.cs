@@ -149,141 +149,20 @@ namespace VikingEngine.DSSWars.Players
 
         public void focusedUpdate()
         {
-            //if (controllerInput)
-            //{
-            //    mousePosition = screenPosToWorldPos(controllerPointer.position);
-
-            //    IntVector2 prevTile = tilePosition;
-            //    tilePosition = WP.ToTilePos(mousePosition);
-            //    onNewTile = prevTile != tilePosition;
-
-            //    if (focusedObjectMenuState())
-            //    {
-            //        player.hud.displays.updateMove(out bool bRefresh);
-            //        player.hud.needRefresh |= bRefresh;
-
-            //        if (player.input.ControllerFocus.DownEvent)
-            //        {
-            //            setObjectMenuFocus(false);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (selection.obj != null)
-            //        {
-            //            if (player.input.ControllerFocus.DownEvent)
-            //            {
-            //                setObjectMenuFocus(true);
-            //            }
-            //        }
-
-            //        panInput();
-            //        //Find closest object
-            //        hover.begin(true);
-            //        {
-            //            controllerHoverUpdate();
-            //        }
-            //        hover.end();
-            //    }
-
-            //    if (player.input.ControllerCancel.DownEvent)
-            //    {
-            //        player.hud.displays.clearMoveSelection();
-            //        player.clearSelection();
-            //    }
-
-            //    checkSelectionAlive();
-            //    selection.end();
-            //    rectangleSelectUpdate();
-            //    selection.begin(false);
-
-            //    updateSeletionGui();
-            //}
-            //else
-            //{
-            //    if (mouseOverHud)
-            //    {
-            //        hover.clear();
-            //    }
-            //    else
-            //    {
-            //if (controllerInput)
-            //{
-            //    mousePosition = screenPosToWorldPos(controllerPointer.position);
-            //}
-            //else
-            //{
+            
             updatePointer();
 
-            //if (focusedObjectMenuState() || player.hud.menuFocus)
-            //{
-            //    //player.hud.displays.updateMove(out bool bRefresh);
-            //    //player.hud.needRefresh |= bRefresh;
-
-            //    if (player.gameControls.input.ControllerFocus.DownEvent)
-            //    {
-            //        if (player.hud.menuFocus)
-            //        {
-            //            setHeadMenuFocus(false);
-            //        }
-            //        else
-            //        {
-            //            setObjectMenuFocus(false);
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    if (controllerInput)
-            //    {
-            //        keypPanInput();
-            //    }
 
             if (rectangleLines == null)
-            {
-                //if (controllerInput)
-                //{
-                //    if (player.gameControls.input.ControllerFocus.DownEvent)
-                //    {
-                //        if (selection.obj != null)
-                //        {
-                //            setObjectMenuFocus(true);
-                //        }
-                //        else if (hover.obj == null)
-                //        {
-                //            setHeadMenuFocus(true);
-                //        }
-                //    }
-
-
-                //}
-                //mouseHoverUpdate();
+            {                
                 hover.begin(true);
-                {
-                    //if (controllerInput)
-                    //{
-                    //    controllerHoverUpdate();
-                    //}
-                    //else
-                    //{
+                {                   
                     mouseHoverUpdate();
-                    //}
                 }
                 subTileHoverUpdate();
-                //mouseHoverUpdate();
             }
             hover.end();
-                        
-            //}
-            //}
-
-            //if (controllerInput && player.gameControls.input.ControllerCancel.DownEvent)
-            //{
-            //    //player.hud.displays.clearMoveSelection();
-            //    player.gameControls.clearSelection();
-            //}
-
-
+            
             checkSelectionAlive();
 
             if (player.gameControls.InBuildOrdersMode())
@@ -308,8 +187,6 @@ namespace VikingEngine.DSSWars.Players
             {
                 player.createPin();
             }
-
-            
 
         }
 

@@ -34,11 +34,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setMaxFood()
         {
-            float energy = DssConst.ManDefaultEnergyCost / DssRef.difficulty.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
-            float minuteEnergy = TimeExt.MinuteInSeconds * energy;
-            float bufferGoalFood = friendlyAreaFoodBuffer_minutes * minuteEnergy;
-            float bufferGoalConservedFood = friendlyAreaConservedFoodBuffer_minutes * minuteEnergy;
-
+            //float energy = DssConst.ManDefaultEnergyCost / DssRef.difficulty.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
+            //float minuteEnergy = TimeExt.MinuteInSeconds * energy;
+            //float bufferGoalFood = friendlyAreaFoodBuffer_minutes * minuteEnergy;
+            //float bufferGoalConservedFood = friendlyAreaConservedFoodBuffer_minutes * minuteEnergy;
+            getFoodGoalBuffer(out float bufferGoalFood, out float bufferGoalConservedFood);
             //#if DEBUG
             //            if (Debug.CorruptValue(food))
             //            {
@@ -47,6 +47,14 @@ namespace VikingEngine.DSSWars.GameObject
             //#endif
             food = bufferGoalFood;
             conservedFood = bufferGoalConservedFood;
+        }
+
+        void getFoodGoalBuffer(out float bufferGoalFood, out float bufferGoalConservedFood)
+        {
+            float energy = DssConst.ManDefaultEnergyCost / DssRef.difficulty.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
+            float minuteEnergy = TimeExt.MinuteInSeconds * energy;
+            bufferGoalFood = friendlyAreaFoodBuffer_minutes * minuteEnergy;
+            bufferGoalConservedFood = friendlyAreaConservedFoodBuffer_minutes * minuteEnergy;
         }
 
         public void async_workUpdate(Faction faction, float seconds)
@@ -117,34 +125,45 @@ namespace VikingEngine.DSSWars.GameObject
                         bufferGoal_minutes = foodBuffer_minutes;
                     }
 
-                    float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * totalUpkeep.food;
-
-                    //if (bufferGoal_minutes > 0 && food < bufferGoalFood && 
-                    //    city.res_food.amount >= ItemPropertyColl.CarryFood &&
-                    //     faction.hasGold(city.SellCost(ItemResourceType.Food_G) * ItemPropertyColl.CarryFood, this))
-                    if (bufferGoal_minutes > 0 && 
-                        (food + conservedFood) < bufferGoalFood && 
-                        city.resourceAmount(EntityComponent.CityResoureIndex.food) >= ItemPropertyColl.CarryFood &&                            
-                        faction.hasGold(DssConst.FoodGoldValue * ItemPropertyColl.CarryFood, this))
+                    //float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * totalUpkeep.food;
+                    if (bufferGoal_minutes > 0)
                     {
-                        int statusIx = getOrCreateFreeWorker();
-                        var status = workerStatuses[statusIx];
-                        status.createWorkOrder(WorkType.TrossCityTrade, -1, 0, XP.WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
-                        if (city.factionIndex != factionIndex)
-                        {
-                            foodCosts_import.add(status.carry.amount);
-                        }
-                        workerStatuses[statusIx] = status;
+                        getFoodGoalBuffer(out float bufferGoalFood, out float bufferGoalConservedFood);
 
-                        //Calc backorder 
-                        float perc = (ItemPropertyColl.ArmyFoodOrderSize + food) / bufferGoalFood;
-
-                        if (perc > 0)
+                        if (Ref.peRnd.ChanceF(0.6f))
                         {
-                            foodBackOrderTimeSec += status.processTimeLengthSec * perc * 0.8f;
+                            orderMissingFood(food, bufferGoalFood, city.resourceAmount(EntityComponent.CityResoureIndex.food), DssConst.FoodGoldValue, ItemResourceType.Food_G);
                         }
-                    }
-                }
+                        else
+                        {
+                            orderMissingFood(conservedFood, bufferGoalConservedFood, city.resourceAmount(EntityComponent.CityResoureIndex.ConservedFood), DssConst.ConservedFoodGoldValue, ItemResourceType.ConservedFood);
+                        }
+
+                        void orderMissingFood(float hasAmount, float goalAmount, int cityAmount, int goldValue, ItemResourceType foodType)
+                        {
+                            if (bufferGoal_minutes > 0 &&
+                                (food + conservedFood) < bufferGoalFood &&
+                                cityAmount >= ItemPropertyColl.CarryFood &&
+                                faction.hasGold(goldValue * ItemPropertyColl.CarryFood, this))
+                            {
+                                int statusIx = getOrCreateFreeWorker();
+                                var status = workerStatuses[statusIx];
+                                status.createWorkOrder(WorkType.TrossCityTrade, (int)foodType, 0, XP.WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
+                                if (city.factionIndex != factionIndex)
+                                {
+                                    foodCosts_import.add(status.carry.amount);
+                                }
+                                workerStatuses[statusIx] = status;
+
+                                //Calc backorder 
+                                float perc = (ItemPropertyColl.ArmyFoodOrderSize + hasAmount) / goalAmount;
+
+                                if (perc > 0)
+                                {
+                                    foodBackOrderTimeSec += status.processTimeLengthSec * perc * 0.8f;
+                                }
+                            } }
+                    } }
 
 
             }

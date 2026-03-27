@@ -428,9 +428,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "Вам нужно расширить город.";
 
-        public override string Hud_SoldierCount => "Количество солдат: {0}";
+        public override string Hud_SoldierCount => "Количество солдат";
 
-        public override string Hud_SoldierGroupsCount => "Количество групп: {0}";
+        public override string Hud_SoldierGroupsCount => "Количество групп";
 
         /// <summary>
         /// Отображение в игре. Расчетная боевая мощь юнита
@@ -1629,7 +1629,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "Сетевик";
         public override string CityCulture_PitMasters => "Мастер по топливу";
 
-        public override string CityCulture_CultureIsX => "Культура: {0}";
+        public override string CityCulture_Culture => "Культура";
         public override string CityCulture_LargeFamilies_Description => "Увеличивается рождаемость";
         public override string CityCulture_FertileGround_Description => "Урожайность выше";
         public override string CityCulture_Archers_Description => "Производит опытных лучников";

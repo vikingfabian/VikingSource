@@ -190,9 +190,14 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.h2(TypeName()).overrideColor = HudLib.TitleColor_TypeName;
         }
 
+        virtual public void toButtonContent(RichBoxContent content)
+        {
+            content.Add(new RbText(Name(out _), HudLib.TitleColor_Name));
+            content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+            content.Add(new RbText(TypeName(), HudLib.TitleColor_TypeName));
+        }
 
-
-        protected void nameToHud(RichBoxContent content, bool mayInteract)
+        public void nameToHud(RichBoxContent content, bool mayInteract)
         { 
             string name = Name(out bool mayEdit);
             if (name != null)

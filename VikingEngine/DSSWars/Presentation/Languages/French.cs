@@ -436,9 +436,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "Vous devez étendre votre ville.";
 
-        public override string Hud_SoldierCount => "Nombre de soldats: {0}";
+        public override string Hud_SoldierCount => "Nombre de soldats";
 
-        public override string Hud_SoldierGroupsCount => "Nombre dans le groupe: {0}";
+        public override string Hud_SoldierGroupsCount => "Nombre dans le groupe";
 
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
@@ -1653,7 +1653,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "Réseauteur";
         public override string CityCulture_PitMasters => "Maîtres des tunnels";
 
-        public override string CityCulture_CultureIsX => "Culture: {0}";
+        public override string CityCulture_Culture => "Culture";
         public override string CityCulture_LargeFamilies_Description => "Plus d'enfants naissent";
         public override string CityCulture_FertileGround_Description => "Meilleurs rendements agricoles";
         public override string CityCulture_Archers_Description => "Produit des archers entraînés";

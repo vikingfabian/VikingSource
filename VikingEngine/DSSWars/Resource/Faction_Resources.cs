@@ -399,7 +399,7 @@ namespace VikingEngine.DSSWars
 
         public void workFollowFactionClick(WorkPriorityType prioType, City city)
         {
-            city.workTemplate.followFactionClick(prioType, workTemplate);
+            city.workTemplate.followFactionClick(city, prioType, workTemplate);
         }
 
         //public bool calcCost(int cost, ref int totalCost, City city) {

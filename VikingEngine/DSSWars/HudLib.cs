@@ -674,7 +674,7 @@ namespace VikingEngine.DSSWars
             if (icon != SpriteName.NO_IMAGE)
             {
                 content.Add(new RbImage(icon));
-                content.space();
+                content.hspace();
             }
             content.Add(new RbText(label + ":", TitleColor_Label));
             content.hspace();

@@ -431,9 +431,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "都市を拡張する必要があります。";
 
-        public override string Hud_SoldierCount => "兵士数: {0}";
+        public override string Hud_SoldierCount => "兵士数";
 
-        public override string Hud_SoldierGroupsCount => "グループ数: {0}";
+        public override string Hud_SoldierGroupsCount => "グループ数";
 
         /// <summary>
         /// ゲーム内表示。ユニットの計算された戦闘力。
@@ -1641,7 +1641,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "ネットワーカー";
         public override string CityCulture_PitMasters => "燃料生産者";
 
-        public override string CityCulture_CultureIsX => "文化: {0}";
+        public override string CityCulture_Culture => "文化";
         public override string CityCulture_LargeFamilies_Description => "出生率が上昇します";
         public override string CityCulture_FertileGround_Description => "作物の収穫量が増えます";
         public override string CityCulture_Archers_Description => "熟練した弓兵を生産します";

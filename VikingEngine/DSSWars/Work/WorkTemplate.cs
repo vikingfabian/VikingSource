@@ -233,103 +233,7 @@ namespace VikingEngine.DSSWars.Work
                 DssRef.world.cityWork[workComponentStartIndex + i].onFactionValueChange(factionValue);
             }
 
-            //move.onFactionValueChange(factionTemplate.move);
-            //wood.onFactionValueChange(factionTemplate.wood);
-            //stone.onFactionValueChange(factionTemplate.stone);
-            //craft_fuel.onFactionValueChange(factionTemplate.craft_fuel);
-            //craft_food.onFactionValueChange(factionTemplate.craft_food);
-            //craft_beer.onFactionValueChange(factionTemplate.craft_beer);
-            //craft_coolingfluid.onFactionValueChange(factionTemplate.craft_coolingfluid);
-
-            //craft_iron.onFactionValueChange(factionTemplate.craft_iron);
-            //craft_tin.onFactionValueChange(factionTemplate.craft_tin);
-            //craft_cupper.onFactionValueChange(factionTemplate.craft_cupper);
-            //craft_lead.onFactionValueChange(factionTemplate.craft_lead);
-            //craft_silver.onFactionValueChange(factionTemplate.craft_silver);
-
-            //craft_bronze.onFactionValueChange(factionTemplate.craft_bronze);
-            //craft_castiron.onFactionValueChange(factionTemplate.craft_castiron);
-            //craft_bloomeryiron.onFactionValueChange(factionTemplate.craft_bloomeryiron);
-            //craft_steel.onFactionValueChange(factionTemplate.craft_steel);
-            //craft_mithril.onFactionValueChange(factionTemplate.craft_mithril);
-
-            //craft_palisade.onFactionValueChange(factionTemplate.craft_palisade);
-            //craft_toolkit.onFactionValueChange(factionTemplate.craft_toolkit);
-            //craft_wagonlight.onFactionValueChange(factionTemplate.craft_wagonlight);
-            //craft_wagonheavy.onFactionValueChange(factionTemplate.craft_wagonheavy);
-            //craft_blackpowder.onFactionValueChange(factionTemplate.craft_blackpowder);
-            //craft_gunpowder.onFactionValueChange(factionTemplate.craft_gunpowder);
-            //craft_bullet.onFactionValueChange(factionTemplate.craft_bullet);
-
-            //craft_sharpstick.onFactionValueChange(factionTemplate.craft_sharpstick);
-            //craft_bronzesword.onFactionValueChange(factionTemplate.craft_bronzesword);
-            //craft_shortsword.onFactionValueChange(factionTemplate.craft_shortsword);
-            //craft_sword.onFactionValueChange(factionTemplate.craft_sword);
-            //craft_longsword.onFactionValueChange(factionTemplate.craft_longsword);
-            //craft_handspear.onFactionValueChange(factionTemplate.craft_handspear);
-            //craft_mithrilsword.onFactionValueChange(factionTemplate.craft_mithrilsword);
-            //craft_warhammer.onFactionValueChange(factionTemplate.craft_warhammer);
-            //craft_twohandsword.onFactionValueChange(factionTemplate.craft_twohandsword);
-            //craft_knightslance.onFactionValueChange(factionTemplate.craft_knightslance);
-
-            //craft_slingshot.onFactionValueChange(factionTemplate.craft_slingshot);
-            //craft_throwingspear.onFactionValueChange(factionTemplate.craft_throwingspear);
-            //craft_bow.onFactionValueChange(factionTemplate.craft_bow);
-            //craft_longbow.onFactionValueChange(factionTemplate.craft_longbow);
-            //craft_crossbow.onFactionValueChange(factionTemplate.craft_crossbow);
-            //craft_mithrilbow.onFactionValueChange(factionTemplate.craft_mithrilbow);
-
-            //craft_handcannon.onFactionValueChange(factionTemplate.craft_handcannon);
-            //craft_handculverin.onFactionValueChange(factionTemplate.craft_handculverin);
-            //craft_rifle.onFactionValueChange(factionTemplate.craft_rifle);
-            //craft_blunderbus.onFactionValueChange(factionTemplate.craft_blunderbus);
-
-            //craft_ballista.onFactionValueChange(factionTemplate.craft_ballista);
-            //craft_manuballista.onFactionValueChange(factionTemplate.craft_manuballista);
-            //craft_catapult.onFactionValueChange(factionTemplate.craft_catapult);
-            //craft_batteringram.onFactionValueChange(factionTemplate.craft_batteringram);
-
-            //craft_siegecannonbronze.onFactionValueChange(factionTemplate.craft_siegecannonbronze);
-            //craft_mancannonbronze.onFactionValueChange(factionTemplate.craft_mancannonbronze);
-            //craft_siegecannoniron.onFactionValueChange(factionTemplate.craft_siegecannoniron);
-            //craft_mancannoniron.onFactionValueChange(factionTemplate.craft_mancannoniron);
-
-            //craft_paddedarmor.onFactionValueChange(factionTemplate.craft_paddedarmor);
-            //craft_heavypaddedarmor.onFactionValueChange(factionTemplate.craft_heavypaddedarmor);
-            //craft_bronzearmor.onFactionValueChange(factionTemplate.craft_bronzearmor);
-            //craft_mailarmor.onFactionValueChange(factionTemplate.craft_mailarmor);
-            //craft_heavymailarmor.onFactionValueChange(factionTemplate.craft_heavymailarmor);
-            //craft_platearmor.onFactionValueChange(factionTemplate.craft_platearmor);
-            //craft_fullplatearmor.onFactionValueChange(factionTemplate.craft_fullplatearmor);
-            //craft_mithrilarmor.onFactionValueChange(factionTemplate.craft_mithrilarmor);
-
-            //farm_food.onFactionValueChange(factionTemplate.farm_food);
-            //farm_fuel.onFactionValueChange(factionTemplate.farm_fuel);
-            //farm_linen.onFactionValueChange(factionTemplate.farm_linen);
-            //bogiron.onFactionValueChange(factionTemplate.bogiron);
-            //mining_iron.onFactionValueChange(factionTemplate.mining_iron);
-            //mining_tin.onFactionValueChange(factionTemplate.mining_tin);
-            //mining_copper.onFactionValueChange(factionTemplate.mining_copper);
-            //mining_lead.onFactionValueChange(factionTemplate.mining_lead);
-            //mining_silver.onFactionValueChange(factionTemplate.mining_silver);
-            //mining_gold.onFactionValueChange(factionTemplate.mining_gold);
-            //mining_mithril.onFactionValueChange(factionTemplate.mining_mithril);
-            //mining_sulfur.onFactionValueChange(factionTemplate.mining_sulfur);
-            //mining_coal.onFactionValueChange(factionTemplate.mining_coal);
-
-            //trading.onFactionValueChange(factionTemplate.trading);
-            //autoBuild.onFactionValueChange(factionTemplate.autoBuild);
-
-            //if (buildOrder.followFaction && buildOrder.value != factionTemplate.buildOrder.value)
-            //{
-            //    buildOrder.value = Bound.Max(factionTemplate.buildOrder.value, city.MaxBuildPrio());
-            //}
-
-            //smeltgold.onFactionValueChange(factionTemplate.smeltgold);
-            //coinmaker_copper.onFactionValueChange(factionTemplate.coinmaker_copper);
-            //coinmaker_bronze.onFactionValueChange(factionTemplate.coinmaker_bronze);
-            //coinmaker_silver.onFactionValueChange(factionTemplate.coinmaker_silver);
-            //coinmaker_mithril.onFactionValueChange(factionTemplate.coinmaker_mithril);
+            city.workTemplate.checkBuildMax(city);
         }
 
         public void setAllToFollowFaction()
@@ -364,12 +268,31 @@ namespace VikingEngine.DSSWars.Work
         //    work.followFaction = false;
         //    SetWorkPriority(priorityType, work);
         //}
-        public void followFactionClick(WorkPriorityType priorityType, WorkTemplate factionTemplate)
+        public void followFactionClick(City city, WorkPriorityType priorityType, WorkTemplate factionTemplate)
         {
             ref var work = ref GetRefWorkPriority(priorityType);
             work.followFaction = !work.followFaction;
             work.onFactionValueChange(factionTemplate.Get(priorityType));
             //SetWorkPriority(prioType, work);
+            if (priorityType == WorkPriorityType.buildOrders)
+            {
+                checkBuildMax(city);
+            }
+        }
+
+        public void checkBuildMax(City city)
+        {
+
+            if (city != null)
+            {
+                int max = city.MaxBuildPrio();
+                ref var work = ref GetRefWorkPriority(WorkPriorityType.buildOrders);
+                if (work.value > max)
+                {
+                    work.value = (byte)max;
+                }
+            }
+
         }
 
         //public WorkPriority GetWorkPriorityAndStockCheck(ItemResourceType item, out bool waitForFullStock)

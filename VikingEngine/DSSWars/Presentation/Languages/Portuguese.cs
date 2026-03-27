@@ -332,9 +332,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "Você precisa expandir a cidade.";
 
-        public override string Hud_SoldierCount => "Qtd. de soldados: {0}";
+        public override string Hud_SoldierCount => "Qtd. de soldados";
 
-        public override string Hud_SoldierGroupsCount => "Qtd. de grupos: {0}";
+        public override string Hud_SoldierGroupsCount => "Qtd. de grupos";
 
         /// <summary>Ingame display. Unit calculated battle strength.</summary>
         public override string Hud_StrengthRating => "Índice de força";
@@ -1200,7 +1200,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>Pit master: someone who is good at burning work (char coal) </summary>
         public override string CityCulture_PitMasters => "Mestres do carvão";
 
-        public override string CityCulture_CultureIsX => "Cultura: {0}";
+        public override string CityCulture_Culture => "Cultura";
         public override string CityCulture_LargeFamilies_Description => "Mais nascimentos";
         public override string CityCulture_FertileGround_Description => "Lavouras rendem mais";
         public override string CityCulture_Archers_Description => "Produz arqueiros habilidosos";

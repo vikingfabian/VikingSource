@@ -186,6 +186,7 @@ namespace VikingEngine.DSSWars
 
         public static int IronSellValue = 5;
         public static int FoodGoldValue = 2;
+        public static int ConservedFoodGoldValue = 4;
         public static int FoodGoldValue_BlackMarket = FoodGoldValue * 5;
         public static float MoneyCarryPerSoldier = FoodGoldValue_BlackMarket * 2;
 

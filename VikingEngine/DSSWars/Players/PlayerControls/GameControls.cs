@@ -471,7 +471,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                         var city = map.selection.obj?.GetCity();
                         if (city != null)
                         {
-                            var tabs = build.availableBuildOptions(city);
+                            var tabs = build.availableBuildOptions(city, true);
                             var index = arraylib.IndexFromValue(tabs, build.placeBuildingType);
                             index = Bound.SetRollover(index + dir, 0, tabs.Count - 1);
                             build.buildingTypeClick(tabs[index]);

@@ -253,7 +253,9 @@ namespace VikingEngine.DSSWars.EntityComponent
                 content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember>{
                     new RbImage(itemIcon),
                     new RbSpace(),
-                    new RbText(TextLib.LargeFirstLetter(itemName) + ": " + TextLib.LargeNumber(amount))
+                    new RbText(TextLib.LargeFirstLetter(itemName) + ": ", HudLib.TitleColor_TypeName),
+                    new RbText(TextLib.LargeNumber(amount)),
+
                 }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(player.faction, city, item))));
 
                 if (item != ItemResourceType.Water_G &&

@@ -451,9 +451,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => TextLib.ThaiConv("คุณ|ต้อง|ขยาย|เมือง|ก่อน");
 
-        public override string Hud_SoldierCount => TextLib.ThaiConv("จำนวน|ทหาร: {0}");
+        public override string Hud_SoldierCount => TextLib.ThaiConv("จำนวน|ทหาร");
 
-        public override string Hud_SoldierGroupsCount => TextLib.ThaiConv("จำนวน|กลุ่ม: {0}");
+        public override string Hud_SoldierGroupsCount => TextLib.ThaiConv("จำนวน|กลุ่ม");
 
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
@@ -1675,7 +1675,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string CityCulture_PitMasters => TextLib.ThaiConv("เจ้า|แห่ง|เตา|เผา");
 
-        public override string CityCulture_CultureIsX => TextLib.ThaiConv("วัฒนธรรม: {0}");
+        public override string CityCulture_Culture => TextLib.ThaiConv("วัฒนธรรม");
         public override string CityCulture_LargeFamilies_Description => TextLib.ThaiConv("เพิ่ม|อัตรา|การ|เกิด|ของ|เด็ก");
         public override string CityCulture_FertileGround_Description => TextLib.ThaiConv("พืช|ผล|ให้|ผล|ผลิต|มาก|ขึ้น");
         public override string CityCulture_Archers_Description => TextLib.ThaiConv("ผลิต|พล|ธนู|ที่|เชี่ยวชาญ");

@@ -454,9 +454,9 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "You need to expand the city.";
 
-        public override string Hud_SoldierCount => "Soldier count: {0}";
+        public override string Hud_SoldierCount => "Soldier count";
 
-        public override string Hud_SoldierGroupsCount => "Group count: {0}";
+        public override string Hud_SoldierGroupsCount => "Group count";
 
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
@@ -1682,7 +1682,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string CityCulture_PitMasters => "Pit masters";
 
-        public override string CityCulture_CultureIsX => "Culture: {0}";
+        public override string CityCulture_Culture => "Culture";
         public override string CityCulture_LargeFamilies_Description => "Increased child birth";
         public override string CityCulture_FertileGround_Description => "Crops give more";
         public override string CityCulture_Archers_Description => "Produces skilled archers";

@@ -860,7 +860,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string CityCulture_Networker { get; }
         public abstract string CityCulture_PitMasters { get; }
 
-        public abstract string CityCulture_CultureIsX { get; }
+        public abstract string CityCulture_Culture { get; }
         public abstract string CityCulture_LargeFamilies_Description { get; }
         public abstract string CityCulture_FertileGround_Description { get; }
         public abstract string CityCulture_Archers_Description { get; }

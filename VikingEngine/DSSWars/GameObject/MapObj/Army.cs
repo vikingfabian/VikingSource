@@ -318,7 +318,9 @@ namespace VikingEngine.DSSWars.GameObject
         public override void TypeIcon(RichBoxContent content)
         {
             content.Add(new RbImage(SpriteName.WarsArmy));
+            content.hspace();
             tagToHud(content);
+            content.hspace();
         }
 
         public override string Name(out bool mayEdit)
@@ -332,7 +334,6 @@ namespace VikingEngine.DSSWars.GameObject
         {
             name.setCustom(result);
         }
-
 
         void ArmyPresentationHud(ObjectHudArgs args, bool tooltip)
         {
@@ -417,8 +418,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void basicInfoHud(ObjectHudArgs args)
         {
-            args.content.icontext(SpriteName.WarsGroupIcon, string.Format(DssRef.lang.Hud_SoldierGroupsCount, groups.Count));
-            args.content.icontext(SpriteName.WarsSoldierIcon, string.Format(DssRef.lang.Hud_SoldierCount, TextLib.LargeNumber(soldiersCount)));
+            HudLib.LabelAndText(args.content, SpriteName.WarsSoldierGroup, DssRef.lang.Hud_SoldierGroupsCount, groups.Count.ToString());
+            HudLib.LabelAndText(args.content, SpriteName.WarsSoldierMan, DssRef.lang.Hud_SoldierCount, TextLib.LargeNumber(soldiersCount));
             HudLib.LabelAndText(args.content, SpriteName.WarsStrengthIcon, DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue));
             HudLib.LabelAndText(args.content, SpriteName.WarsMobilityIcon, DssRef.todoLang.Conscript_Mobility, TextLib.OneDecimal(mobilityValue));
             args.content.newLine();

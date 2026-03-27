@@ -14,6 +14,8 @@ namespace VikingEngine.DSSWars.Data
         public static void biomeToHud(CityBiome biome, LocalPlayer player, RichBoxContent content, bool interactive)
         {
             content.newLine();
+            content.Add(new RbImage(SpriteName.WarsMapFilterTerrain));
+            content.hspace();
             content.Add(new RbText(TextLib.LabelColon(DssRef.todoLang.CityBiome_Title), HudLib.TitleColor_Label));
             content.space();
             content.Add(new RbText(LangLib.Biome(biome)));
