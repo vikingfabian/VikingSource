@@ -1234,26 +1234,19 @@ namespace VikingEngine.DSSWars.Build
                     content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
 
                     break;
+                case BuildAndExpandType.FowlPen:
+                    pen(build, TerrainContent.FowlGrowth, ItemResourceType.Fowl, false, false);
 
+                    eggProduction();
+                    break;
                 case BuildAndExpandType.HenPen:
-                    //content.h2(DssRef.lang.BuildHud_PerCycle, HudLib.TitleColor_Label);
-                    //content.newLine();
-                    //HudLib.BulletPoint(content);
-                    //content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.HenGrowth.harvestReady - 1))));
-
-                    //content.newLine();
-                    //HudLib.BulletPoint(content);
-                    //content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce + DssConst.WorkTime_PickUpResource))));
-
                     pen(build, TerrainContent.HenGrowth, ItemResourceType.Hen, false, false);
 
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbText(DssRef.lang.BuildHud_Produce));
-                    content.space();
-                    content.Add(new RbText((DssConst.HenRawFoodAmout + DssConst.EggRawFoodAmout).ToString()));
-                    content.Add(new RbImage(SpriteName.WarsResource_RawFood));
-                    content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
+                    eggProduction();
+                    break;
+
+                case BuildAndExpandType.BoarPen:
+                    pen(build, TerrainContent.BoarGrowth, ItemResourceType.Boar, false, false);  
                     break;
 
                 case BuildAndExpandType.PigPen:
@@ -1634,6 +1627,17 @@ namespace VikingEngine.DSSWars.Build
                         content.Add(new RbText(string.Format(DssRef.todoLang.Pen_BreedDownChance, conv.ToPercentage(DssConst.BreedingDownChance))));
                     }
                 }
+            }
+
+            void eggProduction()
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(DssRef.lang.BuildHud_Produce));
+                content.space();
+                content.Add(new RbText((DssConst.HenRawFoodAmout + DssConst.EggRawFoodAmout).ToString()));
+                content.Add(new RbImage(SpriteName.WarsResource_RawFood));
+                content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
             }
         }
 

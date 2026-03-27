@@ -1640,9 +1640,12 @@ namespace VikingEngine.DSSWars.Interface
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.ClayBrick);
 
                     city.GetGroupedResource(CityResoureIndex.skinLinnen).toMenu(content, ItemResourceType.SkinLinen_Group, ref reachedBuffer, player, city);
+
+                    content.newParagraph();
+
                     city.GetGroupedResource(CityResoureIndex.rawFood).toMenu(content, ItemResourceType.RawFood_Group, ref reachedBuffer, player, city);
                     city.GetGroupedResource(CityResoureIndex.Salt).toMenu(content, ItemResourceType.Salt, ref reachedBuffer, player, city);
-                    content.newParagraph();
+                    
 
                     city.GetGroupedResource(CityResoureIndex.food).toMenu(content, ItemResourceType.Food_G, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.Food1, CraftResourceLib.Food2);
@@ -1669,7 +1672,7 @@ namespace VikingEngine.DSSWars.Interface
 
                     city.GetGroupedResource(CityResoureIndex.coolingfluid).toMenu(content, ItemResourceType.CoolingFluid, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.CoolingFluid);
-                    content.newParagraph();
+                    
 
                     
 
@@ -1955,7 +1958,9 @@ namespace VikingEngine.DSSWars.Interface
                     bool hideZeroAnimals = false;//DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator && !StartupSettings.UnlockAllProgress;
 
                     // --- Farm ---
+                    city.GetGroupedResource(CityResoureIndex.Fowl).toMenu(content, ItemResourceType.Fowl, ref reachedBuffer, player, city);
                     city.GetGroupedResource(CityResoureIndex.Hen).toMenu(content, ItemResourceType.Hen, ref reachedBuffer, player, city);
+                    city.GetGroupedResource(CityResoureIndex.Boar).toMenu(content, ItemResourceType.Boar, ref reachedBuffer, player, city);
                     city.GetGroupedResource(CityResoureIndex.Pig).toMenu(content, ItemResourceType.Pig, ref reachedBuffer, player, city);
 
                     // --- Dogs ---

@@ -1421,10 +1421,18 @@ namespace VikingEngine.DSSWars.Work
 
 
                 case ResourceGroupType.Animals:
+                    Get(WorkPriorityType.SlaughterFowl).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Fowl), SpriteName.WarsSlaughter, SpriteName.WarsResource_Fowl, WorkPriorityType.SlaughterFowl, faction, city, ItemResourceType.Fowl, WorkViewMode.Slaughter, ItemResourceType.SlaughterFowl);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterFowl);
+
                     Get(WorkPriorityType.SlaughterHen).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Hen), SpriteName.WarsSlaughter, SpriteName.WarsResource_Hen, WorkPriorityType.SlaughterHen, faction, city, ItemResourceType.Hen, WorkViewMode.Slaughter, ItemResourceType.SlaughterHen);
                     content.space(1);
                     waitForFullStock(WorkPriorityType.SlaughterHen);
 
+                    Get(WorkPriorityType.SlaughterBoar).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Boar), SpriteName.WarsSlaughter, SpriteName.WarsResource_Boar, WorkPriorityType.SlaughterBoar, faction, city, ItemResourceType.Boar, WorkViewMode.Slaughter, ItemResourceType.SlaughterBoar);
+                    content.space(1);
+                    waitForFullStock(WorkPriorityType.SlaughterBoar);
+                    
                     Get(WorkPriorityType.SlaughterPig).toHud(player, content, string.Format(DssRef.todoLang.Work_SlaughterX, DssRef.todoLang.Resource_TypeName_Pig), SpriteName.WarsSlaughter, SpriteName.WarsResource_Pig, WorkPriorityType.SlaughterPig, faction, city, ItemResourceType.Pig, WorkViewMode.Slaughter, ItemResourceType.SlaughterPig);
                     content.space(1);
                     waitForFullStock(WorkPriorityType.SlaughterPig);

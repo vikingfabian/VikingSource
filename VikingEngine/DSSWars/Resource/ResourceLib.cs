@@ -147,7 +147,9 @@ namespace VikingEngine.DSSWars.Resource
 
         public static readonly ItemResourceType[] MovableCityResource_Animals =
          {
+            ItemResourceType.Fowl,
             ItemResourceType.Hen,
+            ItemResourceType.Boar,
             ItemResourceType.Pig,
 
             ItemResourceType.Dog,

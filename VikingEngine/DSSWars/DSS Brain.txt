@@ -1,6 +1,6 @@
 ﻿UPDATE
 Change Log:
-* 
+* added fowl and boar animals to resources
 
 ##ICONS TODO
 

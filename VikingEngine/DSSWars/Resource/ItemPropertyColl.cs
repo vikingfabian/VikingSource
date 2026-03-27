@@ -685,7 +685,9 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.columnsDepth = ElephantCumnDepth;
             }
 
+            new ItemProperties(ItemResourceType.SlaughterFowl, NoCityResource, DefaultWeight, WorkPriorityType.SlaughterFowl, CraftResourceLib.SlaughterFowl, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.SlaughterHen, NoCityResource, DefaultWeight, WorkPriorityType.SlaughterHen, CraftResourceLib.SlaughterHen, null, StorageType.NUM_NONE);
+            new ItemProperties(ItemResourceType.SlaughterBoar, NoCityResource, DefaultWeight, WorkPriorityType.SlaughterBoar, CraftResourceLib.SlaughterBoar, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.SlaughterPig, NoCityResource, DefaultWeight, WorkPriorityType.SlaughterPig, CraftResourceLib.SlaughterPig, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.SlaughterOxen, NoCityResource, DefaultWeight, WorkPriorityType.SlaughterOxen, CraftResourceLib.SlaughterOxen, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.SlaughterKineOxen, NoCityResource, DefaultWeight, WorkPriorityType.SlaughterKineOxen, CraftResourceLib.SlaughterKineOxen, null, StorageType.NUM_NONE);
