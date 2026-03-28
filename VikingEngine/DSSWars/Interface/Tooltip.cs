@@ -406,7 +406,7 @@ namespace VikingEngine.DSSWars.Interface
                     case TerrainBuildingType.CatHabitat:
                     case TerrainBuildingType.ElephantHabitat:
                         content.Add(new RbSeperationLine());
-                        content.h2(".To capture", HudLib.TitleColor_Head2);
+                        content.h2(DssRef.todoLang.Tutorial_ToCapture, HudLib.TitleColor_Head2);
                         content.newLine();
                         HudLib.BulletPoint(content);
                         content.Add(new RbText(string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, DssRef.todoLang.BuildingType_TrapperHut)));

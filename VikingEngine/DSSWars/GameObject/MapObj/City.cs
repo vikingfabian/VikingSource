@@ -2473,6 +2473,42 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (!player.profile.casualControls)
                 {
+                    content.Add(new RbSeperationLine());
+
+                    content.h2(DssRef.lang.Action_PlaceSettlement, HudLib.TitleColor_Head2);
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbImage(SpriteName.WarsCityHall));
+                    content.hspace();
+                    content.Add(new RbText(DssRef.lang.Tutorial_SelectACity));
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbImage(SpriteName.WarsHudTabSelected));
+                    content.hspace();
+                    content.Add(new RbText(string.Format(DssRef.lang.Tutorial_SelectTabX, DssRef.lang.Conscription_Title)));
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbImage(SpriteName.WarsSettlerAdd));
+                    content.hspace();
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Tutorial_ClickButton, DssRef.lang.UnitType_Settler)));
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbImage(SpriteName.WarsMobilityIcon));
+                    content.hspace();
+                    content.Add(new RbText(string.Format(DssRef.todoLang.Tutorial_MoveXToY, DssRef.lang.UnitType_Settler, DssRef.lang.UnitType_UnclaimedLand)));
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    //content.Add(new RbImage(SpriteName.WarsSettlerAdd));
+                    //content.hspace();
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Tutorial_ClickButton, DssRef.lang.Action_PlaceSettlement)));
+
+                    content.newParagraph();
+                    content.Add(new RbSeperationLine());
                     waterToHud(content, false);
                     terrainStructure.miningOverviewHud(player, content);
                 }
@@ -2885,8 +2921,8 @@ namespace VikingEngine.DSSWars.GameObject
                         content.space(2);
                         content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsResource_FoodEmpty) },
                             null, new RbTooltip((RichBoxContent content, object tag) => {
-                                content.h2(".Cannot pay the upkeep!", HudLib.NotAvailableColor);
-                                content.text(".Animal production will stop");
+                                content.h2(DssRef.todoLang.Message_CannotPayUpkeep, HudLib.NotAvailableColor);
+                                content.text(DssRef.todoLang.Animals_ProductionStop);
 
                                 content.Add(new RbSeperationLine() { thick = true });
                                 ResourceLib.FullResourceInfo(GetFaction(), this, ItemResourceType.RawFood_Group, content);
@@ -2935,33 +2971,6 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 
             }
-
-            //void workQueueInfo(RichBoxContent content, object tag)
-            //{
-            //    content.h1(".Work queue", HudLib.TitleColor_Label);
-            //    HudLib.Label(content, "Remaining work objectives");
-            //    content.hspace();
-            //    content.Add(new RbText(WorkerStats_WorkQueueLength.ToString()));
-
-            //    content.newParagraph();
-                
-            //    HudLib.Label(content, "Active work teams");
-            //    content.hspace();
-            //    content.Add(new RbImage(SpriteName.WarsWorker));
-            //    content.hspace();
-            //    content.Add(new RbText((WorkerStats_TotalUnits - WorkerStats_IdleCount).ToString()));
-
-            //    content.newLine();
-                
-            //    HudLib.Label(content, "Idle work teams");
-            //    content.hspace();
-            //    content.Add(new RbImage(SpriteName.unitEmoteSnore));
-            //    content.hspace();
-            //    content.Add(new RbText(WorkerStats_IdleCount.ToString()));
-
-            //    content.newLine();
-            //    content.text(string.Format("Villagers work in teams of {0}", WorkTeamSize), HudLib.InfoYellow_Light);
-            //}
 
 
             void automationToolTip(RichBoxContent content, object tag)

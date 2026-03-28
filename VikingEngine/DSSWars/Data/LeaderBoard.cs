@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Data
         {
             RichBoxContent content = new RichBoxContent();
 
-            content.h1(".Leaderboards", HudLib.TitleColor_Head);
+            content.h1(DssRef.todoLang.Leaderboards_title, HudLib.TitleColor_Head);
 
             content.newLine();
             List<ArtTabMember> tabMembers = new List<ArtTabMember>((int)LeaderBoardType.NUM);
@@ -92,29 +92,7 @@ namespace VikingEngine.DSSWars.Data
             content.Add(tabGroup);
 
             string title = LeaderBoardCommunityName(tab, false);
-            //string Leaderboard_DominationSpeed = ".World domination top time, {0}% plus";
-            //switch (tab)
-            //{
-            //    case LeaderBoardType.story_difficulty:
-            //        title = ".Story victory, top % difficulty";
-            //        break;
-            //    case LeaderBoardType.domination_speed50:
-            //        title = string.Format(Leaderboard_DominationSpeed, 50);
-            //        break;
-            //    case LeaderBoardType.domination_speed100:
-            //        title = string.Format(Leaderboard_DominationSpeed, 100);
-            //        break;
-            //    case LeaderBoardType.domination_speed150:
-            //        title = string.Format(Leaderboard_DominationSpeed, 150);
-            //        break;
-            //    case LeaderBoardType.city_size:
-            //        title = ".Top city size, in workers";
-            //        break;
-            //    case LeaderBoardType.survive300_time:
-            //        title = ".Survival length at 300% difficulty";
-            //        break;
-
-            //}
+           
             content.h1(title, HudLib.TitleColor_Label);
             if (StartupSettings.LeaderboardInBeta)
             {
@@ -139,29 +117,28 @@ namespace VikingEngine.DSSWars.Data
         public static string LeaderBoardCommunityName(LeaderBoardType tab, bool beta)
         {
             string title = null;
-            string Leaderboard_DominationSpeed = ".World domination top time, {0}% plus";
             switch (tab)
             {
                 case LeaderBoardType.story_difficulty:
-                    title = ".Story victory, top % difficulty";
+                    title = DssRef.todoLang.Leaderboards_victory;
                     break;
                 case LeaderBoardType.domination_speed50:
-                    title = string.Format(Leaderboard_DominationSpeed, 50);
+                    title = string.Format(DssRef.todoLang.Leaderboards_domination, 50);
                     break;
                 case LeaderBoardType.domination_speed100:
-                    title = string.Format(Leaderboard_DominationSpeed, 100);
+                    title = string.Format(DssRef.todoLang.Leaderboards_domination, 100);
                     break;
                 case LeaderBoardType.domination_speed150:
-                    title = string.Format(Leaderboard_DominationSpeed, 150);
+                    title = string.Format(DssRef.todoLang.Leaderboards_domination, 150);
                     break;
                 case LeaderBoardType.city_size:
-                    title = ".Top city size, in workers";
+                    title = DssRef.todoLang.Leaderboards_CitySize;
                     break;
                 case LeaderBoardType.survive300_time:
-                    title = string.Format(".Survival length at {0}% difficulty", SurviveLeaderBoard.Difficulty300);
+                    title = string.Format(DssRef.todoLang.Leaderboards_Survival, SurviveLeaderBoard.Difficulty300);
                     break;
                 case LeaderBoardType.survive400_time:
-                    title = string.Format(".Survival length at {0}% difficulty", SurviveLeaderBoard.Difficulty400);
+                    title = string.Format(DssRef.todoLang.Leaderboards_Survival, SurviveLeaderBoard.Difficulty400);
                     break;
             }
 

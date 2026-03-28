@@ -441,7 +441,7 @@ namespace VikingEngine.DSSWars.Resource
                 buttonContent.Add(new RbSpace());
                 if (city == null)
                 {
-                    buttonContent.Add(new RbText(".Max"));
+                    buttonContent.Add(new RbText(DssRef.todoLang.Hud_Maximum));
                 }
                 else
                 {

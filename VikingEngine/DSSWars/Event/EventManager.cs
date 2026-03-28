@@ -220,7 +220,7 @@ namespace VikingEngine.DSSWars.Event
 
         public bool MayAttackPlayer()
         {
-            var storyevent = mainStory.FirstOrDefault();
+            mainStory.TryPeek(out var storyevent);
             if (storyevent != null)
             {
                 return storyevent.MayAttackPlayer();

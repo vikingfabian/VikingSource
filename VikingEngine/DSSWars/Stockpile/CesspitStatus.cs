@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         bool hasAnySelected = false;
                         //list all
-                        content.h2(".Select building", HudLib.TitleColor_Action);
+                        content.h2(DssRef.todoLang.BuildHud_Select, HudLib.TitleColor_Action);
 
                         for (int i = 0; i < cesspits.Count; ++i)
                         {
@@ -164,8 +164,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             content.newLine();
-            content.text(".Destroy selected resurces that reach stockpile limit.", HudLib.InfoYellow_Light);
-            content.text(string.Format(".Convert {0}% to {1}", 10, DssRef.lang.Resource_TypeName_Fuel), HudLib.InfoYellow_Light);
+            content.text(DssRef.todoLang.BuildingType_Cesspit_Info1_StockPile, HudLib.InfoYellow_Light);
+            content.text(string.Format(DssRef.todoLang.Info_XAmountIsConvertedToY, TextLib.PercentTextWithSymbol(DssConst.CessPitConvertToFuelPercentage), DssRef.lang.Resource_TypeName_Fuel), HudLib.InfoYellow_Light);
 
         }
 

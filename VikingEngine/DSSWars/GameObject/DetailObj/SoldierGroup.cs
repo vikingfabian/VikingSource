@@ -1226,7 +1226,7 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.space();
             args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
 
-            if (IsArmyGroup() && faction == args.player.faction && army.TryGetTarget(out var tArmy))
+            if (args.selected && IsArmyGroup() && faction == args.player.faction && army.TryGetTarget(out var tArmy))
             {
                 RichBoxContent armyContent = new RichBoxContent();
                 tArmy.toButtonContent(armyContent);

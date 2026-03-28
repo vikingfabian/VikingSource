@@ -1,6 +1,9 @@
 ﻿UPDATE
 Change Log:
-* added fowl and boar animals to resources
+* settler use tutorial
+* cesspit description
+* all translations prepared
+* fixed a bug that makes the ai more aggressive during the first hour
 
 ##ICONS TODO
 

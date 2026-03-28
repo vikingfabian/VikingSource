@@ -13,7 +13,6 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             : base()
         {
             this.exitThreads = exitThreads;
-            //progress.TextString = ".Closing CPU cores...";
 
         }
 

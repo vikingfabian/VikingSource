@@ -25,6 +25,22 @@ namespace VikingEngine.DSSWars.Presentation
 
 
         //regular
+        public string Leaderboards_title => "Leaderboards";
+        public string Leaderboards_domination => "World domination top time, {0}% plus";
+        public string Leaderboards_victory => "Story victory, top % difficulty";
+        public string Leaderboards_CitySize => "Top city size, in workers";
+        public string Leaderboards_Survival => "Survival length at {0}% difficulty";
+        
+        
+        public string Message_CannotPayUpkeep => "Cannot pay the upkeep!";
+        public string Animals_ProductionStop => "Animal production will stop";
+
+        public string Tutorial_ToCapture => "To capture";
+        public string Tutorial_ClickButton => "Click button";
+        public string Tutorial_MoveXToY => "Move {0} to {1}";
+        //public string xx => ;
+
+
         public string Workers_Description1_work => "Will build, collect resources and craft items.";
         public string Workers_Description2_income => "Are taxed for income.";
         public string Workers_Description3_soldiers => "Can be drafted as soldiers for your armies.";
@@ -32,6 +48,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Hud_Time_ValuePerMinute => "Value per minute";
         public string Hud_Time_ValuePerSecond => "Value per second";
         public string Hud_Lock => "Lock";
+        public string Hud_Maximum => "Max";
 
         public string Tutorial_SeeThisInThat = "See {0} in {1}";
         public string Conscript_SkillBonus => "Skill bonus";
@@ -153,7 +170,7 @@ namespace VikingEngine.DSSWars.Presentation
         public string Resource_TypeName_WarElephant => "war elephant";
         public string Resource_TypeName_Oliphant => "oliphant";
 
-
+        public string BuildHud_Select => "Select building";
         public string BuildHud_AreaRadius => "Area radius";
 
         public string NobelHouse_HousingCount => "Will house {0} nobelmen";
@@ -189,6 +206,10 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string BuildingType_Cesspit => "Cesspit";
         public string BuildingType_Cesspit_Description => "Destroy resources";
+
+        public string BuildingType_Cesspit_Info1_StockPile => "Destroys items that exceed the stockpile";
+        public string Info_XAmountIsConvertedToY => "{0} is converted to {1}";
+        public string Info_ProductionRestriction => "Item production restricted to";
 
         public string BuildingType_FowlPen => "Fowl Pen";
         public string BuildingType_BoarPen => "Boar Pen";

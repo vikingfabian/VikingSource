@@ -1010,6 +1010,16 @@ namespace VikingEngine.DSSWars.Build
             content.newLine();
             switch (type)
             {
+                case BuildAndExpandType.Cesspit:
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(DssRef.todoLang.BuildingType_Cesspit_Info1_StockPile));
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(string.Format( DssRef.todoLang.Info_XAmountIsConvertedToY, TextLib.PercentTextWithSymbol(DssConst.CessPitConvertToFuelPercentage), DssRef.lang.Resource_TypeName_Fuel)));
+
+                    break;
+
                 case BuildAndExpandType.ResearchCenter:
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(SpriteName.WarsUnitLevelBasic));
@@ -1027,8 +1037,6 @@ namespace VikingEngine.DSSWars.Build
                     content.newParagraph();
                     content.Add(new RbText(LangLib.TechnologyExample(), HudLib.InfoYellow_Light));
                     break;
-
-
 
                 case BuildAndExpandType.WaterResovoir:
                     HudLib.BulletPoint(content);

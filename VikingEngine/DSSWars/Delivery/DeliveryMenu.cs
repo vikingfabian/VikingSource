@@ -103,7 +103,7 @@ namespace VikingEngine.DSSWars.Delivery
                     }
                     content.newLine();
                     //for (ResourcesSubTab resourcesSubTab = ResourcesSubTab.Overview_Resources; resourcesSubTab <= ResourcesSubTab.Overview_Armor; ++resourcesSubTab)
-                    for (ResourceGroupType resourceGroup = 0; resourceGroup < ResourceGroupType.NUM; resourceGroup++)
+                    for (ResourceGroupType resourceGroup = 0; resourceGroup < ResourceGroupType.Mint; resourceGroup++)
                     {
                         var tabContent = new RichBoxContent();
                         //string text = null;
@@ -128,6 +128,10 @@ namespace VikingEngine.DSSWars.Delivery
 
                             case ResourceGroupType.Armor:
                                 tabContent.Add(new RbImage(SpriteName.cmdMailArmor));
+                                break;
+
+                            case ResourceGroupType.Animals:
+                                tabContent.Add(new RbImage(SpriteName.WarsResource_Pig));
                                 break;
                         }
                         var subTab = new ArtButton(player.resourcesSubTab.resourceGroup == resourceGroup? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected, 
