@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Work
             WorkToXPTable[(int)WorkExperienceType.CraftMetal] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.CraftArmor] = DssConst.DefaultWorkXpGain;
             //WorkToXPTable[(int)WorkExperienceType.CraftWeapon] = DssConst.DefaultWorkXpGain;
-            WorkToXPTable[(int)WorkExperienceType.CraftFuel] = 1;
+            WorkToXPTable[(int)WorkExperienceType.CraftFuel] = 2;
             WorkToXPTable[(int)WorkExperienceType.Chemistry] = DssConst.DefaultWorkXpGain;
 
 

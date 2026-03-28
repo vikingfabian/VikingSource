@@ -69,7 +69,7 @@ namespace VikingEngine.DSSWars.Resource
                 new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.LinenFarm), new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PigPen));
             new ItemProperties(ItemResourceType.WoodContainer, CityResoureIndex.Container, DefaultWeight, WorkPriorityType.craftContainer, CraftResourceLib.Container_wood, null, StorageType.NUM_NONE);
             new ItemProperties(ItemResourceType.PotContainer, CityResoureIndex.Container, DefaultWeight, WorkPriorityType.craftContainer, CraftResourceLib.Container_clay, null, StorageType.NUM_NONE);
-            new ItemProperties(ItemResourceType.Container, CityResoureIndex.Container, DefaultWeight, WorkPriorityType.craftContainer, CraftResourceLib.Container_wood, CraftResourceLib.Container_clay, StorageType.MaterialStorage);
+            new ItemProperties(ItemResourceType.Container, CityResoureIndex.Container, DefaultWeight, WorkPriorityType.craftContainer, CraftResourceLib.Container_wood, CraftResourceLib.Container_clay, StorageType.MaterialStorage).AddItemSource(new ItemSource(Build.BuildAndExpandType.Carpenter));
 
             // fuel & food
             new ItemProperties(ItemResourceType.Fuel_G, CityResoureIndex.fuel, DefaultWeight, WorkPriorityType.craftFuel, CraftResourceLib.Fuel1, null, StorageType.MaterialStorage).AddItemSource(new ItemSource(ItemSourceType.Crafting, Build.BuildAndExpandType.CoalPit), new ItemSource(Map.TerrainMineType.Coal));

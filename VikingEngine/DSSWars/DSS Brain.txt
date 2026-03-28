@@ -1,10 +1,8 @@
-<<<<<<< HEAD
+
 ﻿UPDATE
 Change Log:
-* settler use tutorial
-* cesspit description
-* all translations prepared
-* fixed a bug that makes the ai more aggressive during the first hour
+* 
+
 
 ##ICONS TODO
 
@@ -28,10 +26,8 @@ x adv build upgrade, no more use of logistics
 x auto options for logistics/hall/manor
 x mounts in casual play
 x Luxurious buildings, raises the nobel house cap
-=======
-﻿Change log:
-* Fixed: event driven bot aggression was broken
->>>>>>> patchwork
+
+
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

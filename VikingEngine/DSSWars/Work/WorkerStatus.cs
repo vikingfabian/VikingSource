@@ -1630,11 +1630,13 @@ namespace VikingEngine.DSSWars.Work
                 {
                     case ExperienceLevel.Beginner_1:
                         add = WorkLib.WorkToXPTable[(int)type];
-                        add += 2;
+                        add += 5;
                         break;
+
                     case ExperienceLevel.Practitioner_2:
                         add = WorkLib.WorkToXPTable[(int)type];
                         break;
+
                     case ExperienceLevel.Expert_3:
                         //expert = true;
                         if (Ref.peRnd.Chance(0.5))
