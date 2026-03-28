@@ -1008,7 +1008,7 @@ namespace VikingEngine.DSSWars.GameObject
                         break;
                 }
 
-                if (command != null)
+                if (command_sp != null)
                 {
                     if (command_sp.hasPathCommand(out bool towardsUnit))
                     {
