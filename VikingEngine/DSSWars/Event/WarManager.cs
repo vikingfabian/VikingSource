@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.Event
         {
             if (DssRef.difficulty.toPeacefulPercentage > 0)
             {
-                var storyevent = mainStory.FirstOrDefault();
+                mainStory.TryPeek(out var storyevent);
                 if (storyevent == null || storyevent.RunWarManager())
                 {
                     foreach (var p in DssRef.state.localPlayers)
