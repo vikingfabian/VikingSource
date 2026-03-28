@@ -50,12 +50,13 @@ namespace VikingEngine.DSSWars.Event
 
         public AbsStoryEvent CurrentEvent()
         {
-            return mainStory.FirstOrDefault();
+            mainStory.TryPeek(out var ev);
+            return ev;
         }
 
         public int StoryIndex()
-        { 
-            var ev = mainStory.FirstOrDefault();
+        {
+            mainStory.TryPeek(out var ev);
             if (ev == null)
             {
                 return EventsOrder.StoryEnd;
@@ -70,7 +71,7 @@ namespace VikingEngine.DSSWars.Event
             //    return;
             //}
 
-            var ev = mainStory.FirstOrDefault();
+            mainStory.TryPeek(out var ev);//var ev = mainStory.FirstOrDefault();
             if (ev != null)
             {
                 if (ev.asyncUpdate(time))
@@ -212,7 +213,7 @@ namespace VikingEngine.DSSWars.Event
 
         public bool RunAi()
         {
-            var storyevent = mainStory.FirstOrDefault();
+            mainStory.TryPeek(out var storyevent);
             if (storyevent != null)
             {
                 return storyevent.RunAi();
@@ -223,7 +224,7 @@ namespace VikingEngine.DSSWars.Event
 
         public bool MayAttackPlayer()
         {
-            var storyevent = mainStory.FirstOrDefault();
+            mainStory.TryPeek(out var storyevent);//var storyevent = mainStory.FirstOrDefault();
             if (storyevent != null)
             {
                 return storyevent.MayAttackPlayer();
@@ -669,12 +670,12 @@ namespace VikingEngine.DSSWars.Event
 
         public void TestNextEvent()
         {
-            var ev = mainStory.FirstOrDefault();
-            if (ev != null)
+            mainStory.TryPeek(out var storyevent);
+            if (storyevent != null)
             {
                 DssRef.state.localPlayers[0].hud.messages.Add(
-                        "Test event", ev.StoryEventType().ToString());
-                ev.TriggerNow();
+                        "Test event", storyevent.StoryEventType().ToString());
+                storyevent.TriggerNow();
                 //checkTime.start(1);
                 //triggerTime.start(2);
                 //triggerTimeSpan_Minutes = IntervalF.NoInterval(0.1f);
@@ -1029,14 +1030,14 @@ namespace VikingEngine.DSSWars.Event
 
                 if (other.factiontype != FactionType.Barbarians)
                 {
-                    var ev = mainStory.FirstOrDefault();
-                    if (ev != null)
+                    mainStory.TryPeek(out var storyevent);
+                    if (storyevent != null)
                     {
-                        if (ev.RunWarManager() == false)
+                        if (storyevent.RunWarManager() == false)
                         {
-                            if (ev.triggerTime.length.seconds > DelayReduceToSec)
+                            if (storyevent.triggerTime.length.seconds > DelayReduceToSec)
                             {
-                                ev.triggerTime.start(DelayReduceToSec);
+                                storyevent.triggerTime.start(DelayReduceToSec);
                             }
                         }
                     }

@@ -1,5 +1,5 @@
 ﻿Change log:
-* 
+* Fixed: event driven bot aggression was broken
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes
