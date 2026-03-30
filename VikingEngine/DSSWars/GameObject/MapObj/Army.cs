@@ -443,12 +443,21 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.newLine();
             args.content.Add(new RbImage(SpriteName.rtsUpkeepTime));
             args.content.space();
-            args.content.Add(new RbText(string.Format(DssRef.lang.Hud_Upkeep, TextLib.OneDecimal(totalUpkeep.copper * Money.CopperToGold))));
+            args.content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount, DssRef.lang.Hud_Upkeep, TextLib.TwoDecimal(totalUpkeep.copper * Money.CopperToGold))));
             args.content.space();
             HudLib.PerSecondInfo(args.player, args.content, false);
 
             if (!GetPlayer().profile.casualControls)
             {
+
+                args.content.newLine();
+                args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
+                args.content.space();
+                args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.TwoDecimal(/*Army.ManUpkeepToFoodUpkeep(*/totalUpkeep.food/*)*/))));
+                args.content.space();
+                HudLib.PerSecondInfo(args.player, args.content, false);
+
+
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsResource_Food));
                 args.content.space();
@@ -487,14 +496,7 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.space();
                 args.content.Add(new RbText(DssRef.todoLang.Resource_ConservedFood_Reserves +": " + TextLib.LargeNumber((int)conservedFood)));
 
-                args.content.newLine();
-                args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
-                args.content.space();
-                args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.OneDecimal(Army.ManUpkeepToFoodUpkeep(totalUpkeep.food)))));
-                args.content.space();
-                HudLib.PerSecondInfo(args.player, args.content, false);
-
-                args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.OneDecimal(foodCosts_import.displayValue_gold_sec)));
+                args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.TwoDecimal(foodCosts_import.displayValue_gold_sec)));
                 args.content.space();
                 HudLib.PerSecondInfo(args.player, args.content, true);
             }

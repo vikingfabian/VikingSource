@@ -190,7 +190,7 @@ namespace VikingEngine.DSSWars.Players
                             var friend = DssRef.state.events.findFriendsToDefender(attacker, this.faction);
                             if (friend != null)
                             {
-                                DssRef.diplomacy.declareWar(attacker, friend);
+                                DssRef.world.diplomacy.declareWar(attacker, friend);
                             }
                         }
 
@@ -202,7 +202,7 @@ namespace VikingEngine.DSSWars.Players
                                 opposingSize += strenght;
 
                                 attacker.player.setMinimumAggression(AbsPlayer.AggressionLevel2_RandomAttacks);
-                                DssRef.diplomacy.declareWar(attacker, faction);
+                                DssRef.world.diplomacy.declareWar(attacker, faction);
 
                                 attackers[attackersCount] = attacker.myIndex;
                                 attackersCount++;
@@ -233,7 +233,7 @@ namespace VikingEngine.DSSWars.Players
                         for (int otherIx = 1; otherIx < attackersCount; otherIx++)
                         {
                             var otherFaction = DssRef.world.faction(attackers[otherIx]);
-                            var relation = DssRef.diplomacy.GetRelation(firstAttacker, otherFaction).Relation;
+                            var relation = DssRef.world.diplomacy.GetRelation(firstAttacker, otherFaction).Relation;
 
                             if (relation <= RelationType.RelationTypeN3_War)
                             {

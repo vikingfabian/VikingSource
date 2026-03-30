@@ -157,7 +157,7 @@ namespace VikingEngine.DSSWars.Interface
                 buttonContent.space(0.5f);
                 buttonContent.Add(new RbText(TextLib.LargeNumber(workForce)));
                 content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null,
-                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Workers, workForce))));
+                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.ResourceType_Workers, workForce))));
             }
 
             content.Add(new RbTab(0.45f));
@@ -407,7 +407,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void factionGoldTip(RichBoxContent content, object tag)
         {
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.ResourceType_Gold, TextLib.LargeNumber(player.faction.money.GetGold()))));
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.ResourceType_Gold, TextLib.LargeNumber(player.faction.money.GetGold()))));
             content.newLine();
             content.Add(new RbText(string.Format(DssRef.lang.Hud_TotalIncome, TextLib.LargeNumber(player.faction.GoldSecDiff()))));
         }
@@ -447,7 +447,7 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new RbText(string.Format(DssRef.lang.Language_XCountIsY, DssRef.lang.BuildingType_Embassy, player.faction.embassyCount), HudLib.TitleColor_Head));
 
             content.newLine();
-            int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.EmbassyAddDiplomacy * 3600);
+            int diplomacydSec = Convert.ToInt32(DssRef.world.diplomacy.EmbassyAddDiplomacy * 3600);
 
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
@@ -456,21 +456,21 @@ namespace VikingEngine.DSSWars.Interface
 
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
-            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.EmbassyAddMaxDiplomacy)));
+            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.world.diplomacy.EmbassyAddMaxDiplomacy)));
             content.newLine();
         }
         void foodTip(RichBoxContent content, object tag)
         {
             content.Add(new RbImage(SpriteName.WarsResource_FoodAdd));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Info_TotalFoodProduction, player.faction.CityFoodProduction),
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodProduction, player.faction.CityFoodProduction),
                 HudLib.AvailableColor));
 
             content.newLine();
 
             content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Info_TotalFoodSpending, player.faction.CityFoodSpending),
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodSpending, player.faction.CityFoodSpending),
                 HudLib.NotAvailableColor));
         }
     }

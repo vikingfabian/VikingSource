@@ -109,10 +109,11 @@ namespace VikingEngine.DSSWars.Resource
                     groupType = ResourceGroupType.Weapons;
                     stockpile(player, ItemResourceType.SharpStick);
                     stockpile(player, ItemResourceType.BronzeSword);
+                    stockpile(player, ItemResourceType.HandSpear);
                     stockpile(player, ItemResourceType.ShortSword);
                     stockpile(player, ItemResourceType.Sword);
                     stockpile(player, ItemResourceType.LongSword);
-                    stockpile(player, ItemResourceType.HandSpear);
+                    
                     stockpile(player, ItemResourceType.Warhammer);
                     stockpile(player, ItemResourceType.TwoHandSword);
                     //stockpile(player, ItemResourceType.KnightsLance);

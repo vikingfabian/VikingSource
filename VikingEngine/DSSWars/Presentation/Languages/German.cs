@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
         //public override string DisplayMode => "Anzeigemodus";
         //public override string DisplayMode_Windowed => "Fenstermodus";
@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Darstellung der Anzahl von Gegenständen. 0: Gegenstand, 1: Anzahl
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Sprache auswählen
@@ -307,7 +307,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_GameSpeedLabel => "Spielgeschwindigkeit: {0}x";
         public override string Input_GameSpeed => "Spielgeschwindigkeit";
         public override string Hud_TotalIncome => "Gesamteinnahmen/Sekunde: {0}";
-        public override string Hud_Upkeep => "Unterhalt: {0}";
+        public override string Hud_Upkeep => "Unterhalt";
         public override string Hud_ArmyUpkeep => "Armeeunterhalt: {0}";
 
         public override string Hud_GuardCount => "Wachen";
@@ -1557,7 +1557,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "Kohle";
 
-        public override string Language_XUpkeepIsY => "{0}-Unterhalt: {1}";
+        public override string Language_XUpkeep => "{0}-Unterhalt";
         public override string Language_XCountIsY => "{0}-Anzahl: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "Teure Nahrung wird vom Schwarzmarkt gekauft. Hungrige Soldaten werden desertieren, wenn dein Geld aufgebraucht ist.";

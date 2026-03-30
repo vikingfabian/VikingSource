@@ -50,7 +50,7 @@ namespace VikingEngine.DSSWars
 
         public Diplomacy(int factionCapacity = 64)
         {
-            DssRef.diplomacy = this;
+            //DssRef.diplomacy = this;
 
             this.factionCapacity = factionCapacity;
             diplomaticRelations = new DiplomaticRelation[length()];
@@ -139,7 +139,8 @@ namespace VikingEngine.DSSWars
 #if DEBUG
             if (!arraylib.InBound(indexRegister, lowIndex))
             {
-                throw new Exception();
+                //throw new Exception();
+                arraylib.InBound(indexRegister, lowIndex);
             }
 #endif
 
@@ -242,6 +243,12 @@ namespace VikingEngine.DSSWars
                 }
                 else
                 {
+#if DEBUG
+                    if (currentIndex != int.MaxValue)
+                    {
+                        throw new Exception();
+                    }
+#endif
                     break;
                 }
             }
@@ -663,7 +670,7 @@ namespace VikingEngine.DSSWars
 
 
                 if (!mayAttackPlayer &&
-                    (defender.player.IsLocalPlayer() || DssRef.diplomacy.InplayerAlliance(defender)))
+                    (defender.player.IsLocalPlayer() || DssRef.world.diplomacy.InplayerAlliance(defender)))
                 {
                     return false;
                 }

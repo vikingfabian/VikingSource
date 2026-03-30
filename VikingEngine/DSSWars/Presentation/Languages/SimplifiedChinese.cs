@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
         //public override string DisplayMode => "显示模式";
         //public override string DisplayMode_Windowed => "窗口模式";
@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 如何显示项目的数量。0: 项目, 1: 数量
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// 选择语言选项
@@ -416,7 +416,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 单位黄金成本。
         /// </summary>
-        public override string Hud_Upkeep => "维持费用: {0}";
+        public override string Hud_Upkeep => "维持费用";
         public override string Hud_ArmyUpkeep => "军队维持费用: {0}";
 
         /// <summary>
@@ -1677,7 +1677,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "煤炭";
 
-        public override string Language_XUpkeepIsY => "{0} 维护费用：{1}";
+        public override string Language_XUpkeep => "{0} 维护费用";
         public override string Language_XCountIsY => "{0} 计数：{1}";
 
         public override string Message_ArmyOutOfFood_Text => "将从黑市购买昂贵的食物。当你的钱用完时，饥饿的士兵将会逃离。";

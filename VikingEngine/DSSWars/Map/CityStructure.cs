@@ -969,6 +969,11 @@ namespace VikingEngine.DSSWars.Map
                                         buildingPosition.AnimalStorage_pos = subTileLoop.Position;
                                         break;
 
+                                    case TerrainBuildingType.Cesspit:
+                                        ++buildingStructure.CessPit_count;
+                                        //buildingPosition.AnimalStorage_pos = subTileLoop.Position;
+                                        break;
+
                                     case TerrainBuildingType.TrappersHut:
                                         ++buildingStructure.TrapperHut_count;
                                         buildingPosition.TrapperHut_pos = subTileLoop.Position;

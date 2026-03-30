@@ -36,6 +36,12 @@ namespace VikingEngine.DSSWars.Map.Generate
         WorldDataStorage storage;
         protected LoadingState loadingState = 0;
         bool abort = false;
+        bool abortCompleted = false;
+
+        TimeStamp abortTime;
+        TimeStamp abortCompleteTime;
+
+
         public GenerateMap dataGenerate = null;
         GenerateMap postGenerate;
         int failCount = 0;
@@ -258,6 +264,8 @@ namespace VikingEngine.DSSWars.Map.Generate
         public void Abort()
         { 
             abort = true;
+            abortTime = TimeStamp.Now();
+
             if (storage != null)
             {
                 storage.worldData.abortLoad = true;

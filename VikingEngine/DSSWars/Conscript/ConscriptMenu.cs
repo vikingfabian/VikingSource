@@ -18,6 +18,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.PJ;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars.Conscript
 {
@@ -102,7 +103,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     content.Add(new RbSeperationLine());
                 }
-
+                ConscriptUnitCount unitCount = new ConscriptUnitCount(currentStatus.profile);
                 if (advanced)
                 {
                     content.newParagraph();
@@ -123,7 +124,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                         var button = new ArtOption(item == currentStatus.profile.man, buttonContent,
                         new RbAction1Arg<ItemResourceType>(manClick, item, RbSoundType.Option),
-                        new RbTooltip(manTooltip, item)
+                        new RbTooltip(manTooltip, new ManTooltipArgs() { manType = item, soldierCount = unitCount.TotalMen,})
                         );
 
                         content.Add(button);
@@ -318,13 +319,14 @@ namespace VikingEngine.DSSWars.Conscript
                     set(currentStatus);
                 }
 
+                
                 for (TrainingLevel training = minLevel; training <= maxLevel; training++)
                 {
                     var button = new ArtOption(training == currentStatus.profile.training,new List<AbsRichBoxMember>{
                         new RbImage(LangLib.Training_Icon(training)),
                         new RbText( LangLib.Training(training))
                     }, new RbAction1Arg<TrainingLevel>(trainingClick, training, RbSoundType.Option),
-                    new RbTooltip(trainingTooltip, new TrainingTooltipArgs() { training = training, buildtype = currentStatus.type }));
+                    new RbTooltip(trainingTooltip, new TrainingTooltipArgs() { training = training, buildtype = currentStatus.type, soldierCount = unitCount.TotalMen}));
                     
                     content.Add(button);
                 }
@@ -381,7 +383,7 @@ namespace VikingEngine.DSSWars.Conscript
                 content.newParagraph();
                 HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Gain);
                 content.newLine();
-                content.Add(new ArtButton(RbButtonStyle.HoverArea, resultContent(), null, new RbTooltip(resultTooltip)));
+                content.Add(new ArtButton(RbButtonStyle.HoverArea, resultContent(currentStatus, false), null, new RbTooltip(resultTooltip)));
 
                 content.newParagraph();
                 HudLib.copyPaste(content, player,
@@ -504,34 +506,43 @@ namespace VikingEngine.DSSWars.Conscript
                         if (player.conscriptSubTab == BuildAndExpandType.ALL ||
                             player.conscriptSubTab == currentProfile.type)
                         {
-                            string caption;
-                            SpriteName icon;
-                            if (currentProfile.profile.specialization == SpecializationType.CityGuard)
-                            {
-                                icon = SpriteName.WarsGuard;
-                                caption = DssRef.lang.Conscript_Soldiers_GuardType;
-                            }
-                            else
-                            {
-                                icon = new SoldierConscriptProfile() { conscript = currentProfile.profile }.Icon();
-                                caption = DssRef.lang.Conscript_Soldiers_ArmyType;
-                            }
+                            //string caption;
+                            //SpriteName icon;
+                            //if (currentProfile.profile.specialization == SpecializationType.CityGuard)
+                            //{
+                            //    icon = SpriteName.WarsGuard;
+                            //    caption = DssRef.lang.Conscript_Soldiers_GuardType;
+                            //}
+                            //else
+                            //{
+                            //    icon = new SoldierConscriptProfile() { conscript = currentProfile.profile }.Icon();
+                            //    caption = DssRef.lang.Conscript_Soldiers_ArmyType;
+                            //}
 
-                            IconName.Item(currentProfile.profile.weapon, out SpriteName weaponicon, out _);
-                            IconName.Item(currentProfile.profile.armorLevel, out SpriteName armoricon, out _);
+                            //IconName.Item(currentProfile.profile.weapon, out SpriteName weaponicon, out _);
+                            //IconName.Item(currentProfile.profile.armorLevel, out SpriteName armoricon, out _);
 
-                            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>(){
-                                new RbImage(icon),
-                                new RbSpace(),
-                                new RbText(caption, HudLib.TitleColor_Label_Dark),
-                                new RbSpace(),
-                                new RbImage(LangLib.Training_Icon(currentProfile.profile.training)),
-                                new RbImage(weaponicon),
-                                new RbImage(armoricon),
+                            //RichBoxContent buttonContent = new RichBoxContent();
+                            RichBoxContent buttonContent = resultContent(currentProfile, true);
+                            buttonContent.newLine();
+                            buttonContent.Add(new RbText(currentProfile.shortActiveString(), HudLib.InfoYellow_Dark));
+                            //currentProfile.profile.toHud(content, true);
 
-                                new RbNewLine(),
-                                 new RbText(currentProfile.shortActiveString(), HudLib.InfoYellow_Dark),
-                            }, new RbAction1Arg<int>(selectClick, i, RbSoundType.Default)));
+                            content.Add(new ArtButton(RbButtonStyle.Primary,
+                            //new List<AbsRichBoxMember>(){
+                            //new RbImage(icon),
+                            //new RbSpace(),
+                            //new RbText(caption, HudLib.TitleColor_Label_Dark),
+                            //new RbSpace(),
+                            //new RbImage(LangLib.Training_Icon(currentProfile.profile.training)),
+                            //new RbImage(weaponicon),
+                            //new RbImage(armoricon),
+
+                            //    new RbNewLine(),
+                            //     new RbText(currentProfile.shortActiveString(), HudLib.InfoYellow_Dark),
+                            //}, 
+                            buttonContent,
+                            new RbAction1Arg<int>(selectClick, i, RbSoundType.Default)));
 
                         }
                     }
@@ -643,7 +654,10 @@ namespace VikingEngine.DSSWars.Conscript
             ConscriptUnitCount unitCount = new ConscriptUnitCount(currentStatus.profile);
             currentStatus.unitsNeeded = unitCount.groupUnitCount;
             //currentStatus.payItems(city, CommitOption.Preview, out int totalMen);
-
+            if (!compact)
+            {
+                content.h2(DssRef.lang.Hud_PurchaseTitle_Cost, HudLib.TitleColor_Head2);
+            }
             resource(content, currentStatus.profile.man, unitCount.menPerUnit);
             resource(content, currentStatus.profile.weapon, unitCount.weaponsPerUnit);
             resource(content, currentStatus.profile.shield, unitCount.menPerUnit);
@@ -663,6 +677,16 @@ namespace VikingEngine.DSSWars.Conscript
                 content.Add(new RbImage(available ? SpriteName.warsResourceChunkAvailable : SpriteName.warsResourceChunkNotAvailable));
                 content.space();
                 HudLib.ResourceCost(content, SpriteName.WarsBuild_GuardOffice, DssRef.lang.GuardHousingCount, totalMen, city.AvailableGuardHousing());
+            }
+
+            if (!compact)
+            {
+                content.newParagraph();
+                content.h2(DssRef.lang.Hud_Upkeep, HudLib.TitleColor_Head2);
+                float goldUpkeep = Money.ToGoldF( unitCount.TotalMen * currentStatus.profile.copperUpkeepPerSoldier());
+                HudLib.LabelAndText(content, SpriteName.rtsUpkeep, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.ResourceType_Gold)), TextLib.TwoDecimal(goldUpkeep));
+                HudLib.LabelAndText(content, SpriteName.WarsResource_FoodSub, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.Resource_TypeName_Food)), TextLib.TwoDecimal(unitCount.TotalMen * DssRef.difficulty.manFoodUpkeep));
+                content.text(DssRef.todoLang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Light);
             }
 
             void resource(RichBoxContent content, ItemResourceType resource, int perUnitCount)
@@ -701,7 +725,7 @@ namespace VikingEngine.DSSWars.Conscript
                         }
 
                         string text = string.Format(DssRef.lang.Hud_Purchase_ResourceCostOfAvailable,
-                            name, needCount.ToString(), TextLib.LargeNumber(resourceGroup.amount));
+                            TextLib.LargeFirstLetter(name), needCount.ToString(), TextLib.LargeNumber(resourceGroup.amount));
 
                         content.Add(new RbText(text, HudLib.ResourceCostColor(available)));
                     }
@@ -788,22 +812,22 @@ namespace VikingEngine.DSSWars.Conscript
             set(currentProfile);
         }
 
-        RichBoxContent resultContent()
+        RichBoxContent resultContent(BarracksStatus profile, bool darkText)
         {
             RichBoxContent content = new RichBoxContent();
-            BarracksStatus currentProfile = get();
-            var conscriptPreview = new SoldierConscriptProfile() { conscript = currentProfile.profile };
+            //BarracksStatus profile = get();
+            var conscriptPreview = new SoldierConscriptProfile() { conscript = profile.profile };
             var soldierPreview = conscriptPreview.createSoldierData();
             int count = soldierPreview.UnitCount();
             content.Add(new RbText(count.ToString(), null, LoadedFont.Bold));
             content.space();
             content.Add(new RbImage(AllUnits.UnitFilterIcon(conscriptPreview.filterType())));
             content.hspace();
-            content.Add(new RbText(currentProfile.profile.TypeName(), HudLib.TitleColor_TypeName));
+            content.Add(new RbText(profile.profile.TypeName(), darkText? HudLib.TitleColor_TypeName_Dark : HudLib.TitleColor_TypeName));
 
             content.space();
 
-            currentProfile.profile.toHud(content, true);
+            profile.profile.toHud(content, true);
             return content;
         }
 
@@ -887,11 +911,17 @@ namespace VikingEngine.DSSWars.Conscript
             //res.toMenu(content, weapon, false, ref reachedBuffer);
         }
 
+        struct ManTooltipArgs
+        {
+            public ItemResourceType manType;
+            public int soldierCount;
+        }
+
         void manTooltip(RichBoxContent content, object tag)
         {
-            ItemResourceType item = (ItemResourceType)tag;
+            ManTooltipArgs args = (ManTooltipArgs)tag;
 
-            float skillBonus = item == ItemResourceType.NobelMen ? DssConst.NobelMenSkillBonusAdd : 0;
+            float skillBonus = args.manType == ItemResourceType.NobelMen ? DssConst.NobelMenSkillBonusAdd : 0;
 
             //HudLib.LabelAndText(content, SpriteName.cmdStatsHealth, DssRef.lang.SoldierStats_Health, TextLib.TwoDecimal(DssConst.Soldier_DefaultHealth));
             HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.todoLang.Conscript_Mobility, TextLib.TwoDecimal(SoldierData.Mobility(DssConst.Men_StandardWalkingSpeed)));
@@ -899,9 +929,19 @@ namespace VikingEngine.DSSWars.Conscript
             SkillbonusUi(content, skillBonus, true);
 
             content.newParagraph();
+            IconName.Item(args.manType, out var itemIcon, out var itemName);
+            content.h2(string.Format(DssRef.lang.Language_ItemCount, TextLib.LargeFirstLetter( itemName), args.soldierCount), HudLib.TitleColor_Head2);
+            if (args.manType == ItemResourceType.NobelMen)
+            {
+                HudLib.LabelAndText(content, SpriteName.rtsUpkeepTime, string.Format( DssRef.lang.Language_XUpkeep, DssRef.lang.ResourceType_Gold), TextLib.PlusMinus(Money.ToGoldF(DssConst.NobelHouseMenCount * args.soldierCount)));
+            }
+            HudLib.LabelAndText(content, SpriteName.WarsResource_FoodSub, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.Resource_TypeName_Food)), TextLib.TwoDecimal(args.soldierCount * DssRef.difficulty.manFoodUpkeep));
+            content.text(DssRef.todoLang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Light);
+
+            content.newParagraph();
             content.Add(new RbSeperationLine() { thick = true });
 
-            ResourceLib.FullResourceInfo(player.faction, city, item, content);
+            ResourceLib.FullResourceInfo(player.faction, city, args.manType, content);
         }
 
         void shieldTooltip(RichBoxContent content, object tag)
@@ -1008,6 +1048,7 @@ namespace VikingEngine.DSSWars.Conscript
         {
             public TrainingLevel training;
             public Build.BuildAndExpandType buildtype;
+            public int soldierCount;
         }
         void trainingTooltip(RichBoxContent content, object tag)
         {
@@ -1015,16 +1056,9 @@ namespace VikingEngine.DSSWars.Conscript
 
             HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(args.training, args.buildtype)).LongString());
             HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_AttackSpeed, TextLib.PercentTextWithSymbol(ConscriptProfile.TrainingAttackSpeed(args.training)));
-            //content.newLine();
-            //content.Add(new RbText(TextLib.LabelColon(DssRef.lang.Conscript_TrainingTime), HudLib.TitleColor_Label));
-            //content.hspace();
-            //content.Add(new RbText(new TimeLength(ConscriptProfile.TrainingTime(args.training, args.buildtype)).LongString()));
 
-            //content.newLine();
-            //content.Add(new RbText(TextLib.LabelColon(DssRef.lang.Conscript_TrainingSpeed), HudLib.TitleColor_Label));
-            //content.hspace();
-            //content.Add(new RbText(TextLib.OneDecimal(ConscriptProfile.TrainingAttackSpeed(args.training))));
-
+            HudLib.LabelAndText(content, SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.ResourceType_Gold), TextLib.TwoDecimal(Money.ToGoldF( DssConst.TrainingCopperUpkeep[(int)args.training] * args.soldierCount)));
+            content.text(DssRef.todoLang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Light);
         }
         void queClick(int length)
         {

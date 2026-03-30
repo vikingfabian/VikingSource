@@ -303,7 +303,19 @@ namespace VikingEngine.DSSWars.Work
                                 break;
                         }
 
-                        status.WorkComplete(parentMapObject, true);
+//#if !DEBUG
+//                        try
+//                        {
+//#endif
+                            status.WorkComplete(parentMapObject, true);
+//#if !DEBUG
+//                        }
+//                        catch
+//                        {
+//                            //muted
+//                            lib.DoNothing();
+//                        }
+//#endif
                         parentMapObject.setWorkerStatus(myIndex, ref status);
                         state = WorkerUnitState.None;
                         refreshCarryModel();

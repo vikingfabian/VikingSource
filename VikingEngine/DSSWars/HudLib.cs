@@ -424,18 +424,18 @@ namespace VikingEngine.DSSWars
         public static void Upkeep(RichBoxContent content, double value)
         {
             string valuestring = TextLib.OneDecimal(value);
-            content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, valuestring));
+            content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Language_ItemCount, DssRef.lang.Hud_Upkeep, valuestring));
         }
         public static void Upkeep(RichBoxContent content, int value)
         {
             string valuestring = TextLib.LargeNumber(value);
-            content.icontext(SpriteName.rtsUpkeepTime, string.Format( DssRef.lang.Hud_Upkeep, valuestring));  
+            content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Language_ItemCount, DssRef.lang.Hud_Upkeep, valuestring));  
         }
 
         public static void ItemCount(RichBoxContent content, SpriteName icon, string item, string count)
         {
             content.newLine();
-            string text = string.Format( DssRef.lang.Language_ItemCountPresentation, item, count);
+            string text = string.Format( DssRef.lang.Language_ItemCount_Colon, item, count);
             content.Add(new RbImage(icon));
             content.space(0.5f);
             content.Add(new RbText(text));
@@ -444,7 +444,7 @@ namespace VikingEngine.DSSWars
         public static RbText ItemCount(RichBoxContent content, string item, string count)
         {
             
-            string text = string.Format(DssRef.lang.Language_ItemCountPresentation, item, count);
+            string text = string.Format(DssRef.lang.Language_ItemCount_Colon, item, count);
             return content.text(text);
         }
 

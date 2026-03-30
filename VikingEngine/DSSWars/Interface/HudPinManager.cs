@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars.Interface
                     }
                     content.Add(new RbButton(
                         buttonContent, null, 
-                        new RbTooltip_Text(string.Format( DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Technology_Title, techname)), 
+                        new RbTooltip_Text(string.Format( DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Technology_Title, techname)), 
                         true, BgCol));
                     break;
 

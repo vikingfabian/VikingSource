@@ -576,6 +576,7 @@ namespace VikingEngine.DSSWars.Build
         public int WeaponStorage_count;
         public int ArmorStorage_count;
         public int AnimalStorage_count;
+        public int CessPit_count;
 
         // --- NEW Animal Pens & Cages ---
         public int OxenPen_count;
@@ -693,6 +694,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WeaponStorage: return WeaponStorage_count;
                 case BuildAndExpandType.ArmorStorage: return ArmorStorage_count;
                 case BuildAndExpandType.AnimalStorage: return AnimalStorage_count;
+                case BuildAndExpandType.Cesspit: return CessPit_count;
 
                 // --- NEW Animals ---
                 case BuildAndExpandType.OxenPen: return OxenPen_count;
@@ -821,6 +823,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WeaponStorage: WeaponStorage_count += add; break;
                 case BuildAndExpandType.ArmorStorage: ArmorStorage_count += add; break;
                 case BuildAndExpandType.AnimalStorage: AnimalStorage_count += add; break;
+                case BuildAndExpandType.Cesspit: CessPit_count += add; break;
 
                 // --- NEW Animals ---
                 case BuildAndExpandType.OxenPen: OxenPen_count += add; break;

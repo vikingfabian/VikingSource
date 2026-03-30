@@ -58,6 +58,7 @@ namespace VikingEngine.DSSWars.Data
         public bool setting_QuickMatch_TwoTeams = false;
 
         public float manFoodUpkeep;
+        public float mountFoodUpkeep;
 
         public int TechMultiProperty(object tag, bool set, int value)
         {
@@ -413,6 +414,7 @@ namespace VikingEngine.DSSWars.Data
             aiEconomyMultiplier = AiEconomyLevel[aiEconomyLevel] / 100.0;
 
             manFoodUpkeep = DssConst.ManDefaultEnergyCost / FoodEnergySett;
+            mountFoodUpkeep = DssConst.MountDefaultEnergyCost / FoodEnergySett;
         }
 
         public void write(System.IO.BinaryWriter w)

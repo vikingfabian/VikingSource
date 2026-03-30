@@ -75,13 +75,13 @@ namespace VikingEngine.DSSWars
             armies = new SpottedArray<Army>(16);
         }
 
-        public Faction(WorldData addTo, FactionType factiontype, int arrayIndex = -1)
+        public Faction(WorldData world, FactionType factiontype, int arrayIndex = -1)
         {
             if (factiontype == FactionType.DefaultAi)
             {
-                if (addTo.availableGenericAiTypes.Count > 0)
+                if (world.availableGenericAiTypes.Count > 0)
                 {
-                    factiontype = arraylib.RandomListMemberPop(addTo.availableGenericAiTypes, addTo.metaData.objRnd);
+                    factiontype = arraylib.RandomListMemberPop(world.availableGenericAiTypes, world.metaData.objRnd);
                 }
             }
 
@@ -90,16 +90,16 @@ namespace VikingEngine.DSSWars
             if (arrayIndex >= 0)
             {
                 this.myIndex = arrayIndex;
-                addTo.factions.HardSet(this, arrayIndex);
+                world.factions.HardSet(this, arrayIndex);
             }
             else
             {
-                this.myIndex = addTo.factions.Add(this);
+                this.myIndex = world.factions.Add(this);
             }
             factionIndex = myIndex;
             workTemplate = new Work.WorkTemplate(false, myIndex);
-            addTo.factionComponentsAdd(this);
-            initVisuals(addTo.metaData);
+            world.factionComponentsAdd(this);
+            initVisuals(world.metaData);
 
             cities = new SpottedPointerArray(8);
             armies = new SpottedArray<Army>(16);
@@ -118,7 +118,7 @@ namespace VikingEngine.DSSWars
             if (speakTerms != SpeakTerms.SpeakTerms0_Normal)
             {
 
-                DssRef.diplomacy.SetDefaultSpeakTerms(this, speakTerms);
+                DssRef.world.diplomacy.SetDefaultSpeakTerms(this, speakTerms);
             }
         }
 
@@ -1080,11 +1080,11 @@ namespace VikingEngine.DSSWars
                                 {
                                     if (loop.OtherFaction(out var ally))
                                     {
-                                        var allyToEnemyRelation = DssRef.diplomacy.GetRelation(ally, enemyFaction);//ally.diplomaticRelations[enemyFaction.myIndex];
+                                        var allyToEnemyRelation = DssRef.world.diplomacy.GetRelation(ally, enemyFaction);//ally.diplomaticRelations[enemyFaction.myIndex];
                                                                                                                    //if (allyToEnemyRelation == null)
                                                                                                                    //{
                                                                                                                    //    //Gain bad relation
-                                                                                                                   //    DssRef.diplomacy.SetRelationType(ally, enemyFaction, warRelation.Relation);
+                                                                                                                   //    DssRef.world.diplomacy.SetRelationType(ally, enemyFaction, warRelation.Relation);
                                                                                                                    //}
                                                                                                                    //else
                                                                                                                    //{
@@ -1094,11 +1094,11 @@ namespace VikingEngine.DSSWars
                                             RelationType worst = (RelationType)Math.Min((int)warRelation.Relation, (int)allyToEnemyRelation.Relation);
                                             if (worst <= RelationType.RelationTypeN3_War)
                                             {
-                                                DssRef.diplomacy.declareWar(enemyFaction, ally);
+                                                DssRef.world.diplomacy.declareWar(enemyFaction, ally);
                                             }
                                             else
                                             {
-                                                DssRef.diplomacy.SetRelationType(enemyFaction, ally, worst);
+                                                DssRef.world.diplomacy.SetRelationType(enemyFaction, ally, worst);
                                             }
                                         }
                                         //}
@@ -1123,7 +1123,7 @@ namespace VikingEngine.DSSWars
             {
                 try
                 {
-                    DssRef.diplomacy.SetRelationType(this, relationTo, relationType);
+                    DssRef.world.diplomacy.SetRelationType(this, relationTo, relationType);
 
                     //for (int relIndex = 0; relIndex < diplomaticRelations.Length; relIndex++)//each (var m in diplomaticRelations)
                     //{
@@ -1137,7 +1137,7 @@ namespace VikingEngine.DSSWars
 
                                 if (loop.OtherFaction(out var ally))//ally != null)
                                 {
-                                    DssRef.diplomacy.SetRelationType(ally, relationTo, relationType);
+                                    DssRef.world.diplomacy.SetRelationType(ally, relationTo, relationType);
                                 }
                             }
                         
@@ -1248,7 +1248,7 @@ namespace VikingEngine.DSSWars
             {
                 isAlive = false;
                 DssRef.state.events.onFactionDestroyed(this);
-                DssRef.diplomacy.onFactionDeath(this);
+                DssRef.world.diplomacy.onFactionDeath(this);
 
                 if (factiontype == FactionType.Player)
                 {

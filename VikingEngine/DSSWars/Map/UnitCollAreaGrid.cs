@@ -438,7 +438,7 @@ namespace VikingEngine.DSSWars.Map
                                     if (m.tilePos.SideLength(city.tilePos) <= radius)
                                     {
                                         if (city.factionIndex == m.factionIndex ||
-                                            DssRef.diplomacy.GetRelation(city.factionIndex, m.factionIndex).InWar())
+                                            DssRef.world.diplomacy.GetRelation(city.factionIndex, m.factionIndex).InWar())
                                         {
                                             if (faction_power.TryGetValue(m.factionIndex, out float strength))
                                             {
@@ -490,10 +490,10 @@ namespace VikingEngine.DSSWars.Map
                         {
                             lock (area.groups)
                             {
-                                //if (DssRef.diplomacy.GetRelation_Safe(faction, m.factionIndex).InWar())
+                                //if (DssRef.world.diplomacy.GetRelation_Safe(faction, m.factionIndex).InWar())
                                 foreach (var m in area.groups)
                                 {
-                                    if ( DssRef.diplomacy.GetRelation_Safe(faction, m.factionIndex).InWar())
+                                    if ( DssRef.world.diplomacy.GetRelation_Safe(faction, m.factionIndex).InWar())
                                     {
                                         groups_nearUpdate.Add(m);
                                     }
@@ -503,7 +503,7 @@ namespace VikingEngine.DSSWars.Map
                             for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
                             {
                                 var city = DssRef.world.cities[area.cities[i]];
-                                if (DssRef.diplomacy.GetRelation_Safe(faction, city.factionIndex).InWar())
+                                if (DssRef.world.diplomacy.GetRelation_Safe(faction, city.factionIndex).InWar())
                                 {
                                     var groupsC = city.groups.counter();
                                     while (groupsC.Next())
@@ -586,7 +586,7 @@ namespace VikingEngine.DSSWars.Map
         //                        {
         //                            var army = area.armies[aix];
         //                            if (army.faction != faction &&
-        //                                DssRef.diplomacy.InWar(faction, army.faction))
+        //                                DssRef.world.diplomacy.InWar(faction, army.faction))
         //                            {
         //                                units.Add(army);
         //                            }
@@ -601,7 +601,7 @@ namespace VikingEngine.DSSWars.Map
         //                        var city = DssRef.world.cities[area.cities[i]];
         //                        if (city.faction != faction &&
         //                            //city.guardCount > 0 &&
-        //                            DssRef.diplomacy.InWar(faction, city.faction))
+        //                            DssRef.world.diplomacy.InWar(faction, city.faction))
         //                        {
         //                            units.Add(city);
         //                        }

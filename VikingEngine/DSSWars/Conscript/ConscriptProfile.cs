@@ -96,6 +96,16 @@ namespace VikingEngine.DSSWars.Conscript
             return data.workForceCount();
         }
 
+        public float copperUpkeepPerSoldier()
+        {
+            var result = DssConst.TrainingCopperUpkeep[(int)training];
+            if (man == ItemResourceType.NobelMen)
+            {
+                result += DssConst.Nobel_GoldUpkeep;
+            }
+            return result;
+        }
+
         public bool isKnight()
         {
             if (man == ItemResourceType.NobelMen)
@@ -715,6 +725,12 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 man = (ItemResourceType)r.ReadByte();
             }
+
+            if (man == ItemResourceType.NONE)
+            {
+                man = ItemResourceType.Men;
+            }
+
             weapon = (ItemResourceType)r.ReadByte();
             if (special_shield)
             {

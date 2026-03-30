@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
         //public override string DisplayMode => "Modo de visualización";
         //public override string DisplayMode_Windowed => "Modo ventana";
@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Cómo mostrar una cantidad de elementos. 0: elemento, 1:Número
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Opción de seleccionar idioma
@@ -416,7 +416,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Costo de mantenimiento de la unidad.
         /// </summary>
-        public override string Hud_Upkeep => "Mantenimiento: {0}";
+        public override string Hud_Upkeep => "Mantenimiento";
         public override string Hud_ArmyUpkeep => "Mantenimiento del ejército: {0}";
 
         /// <summary>
@@ -1680,7 +1680,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "Carbón";
 
-        public override string Language_XUpkeepIsY => "Mantenimiento de {0}: {1}";
+        public override string Language_XUpkeep => "Mantenimiento de {0}";
         public override string Language_XCountIsY => "Conteo de {0}: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "Se comprará comida cara del mercado negro. Los soldados hambrientos desertarán cuando se acabe tu dinero.";

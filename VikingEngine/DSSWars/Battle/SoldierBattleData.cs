@@ -234,7 +234,7 @@ namespace VikingEngine.DSSWars.Battle
 
             foreach (var group in GroupBuffer)
             {
-                bool opponent = DssRef.diplomacy.GetRelation(parent.GetFaction(), group.GetFaction()).InWar();
+                bool opponent = DssRef.world.diplomacy.GetRelation(parent.GetFaction(), group.GetFaction()).InWar();
 
                 if (VectorExt.Length(group.position.X - parent.position.X, group.position.Z - parent.position.Z) < 5)
                 {

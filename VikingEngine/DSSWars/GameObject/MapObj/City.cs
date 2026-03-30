@@ -1938,7 +1938,7 @@ namespace VikingEngine.DSSWars.GameObject
             //            {
             //                foreach (var c in cities)
             //                {
-            //                    if (DssRef.diplomacy.InWar(c.faction, dominatingFaction))
+            //                    if (DssRef.world.diplomacy.InWar(c.faction, dominatingFaction))
             //                    {
             //                        if (c.faction.player.IsPlayer())
             //                        {
@@ -1958,7 +1958,7 @@ namespace VikingEngine.DSSWars.GameObject
             //            {
             //                var f = factions[i];
 
-            //                bool winner = f == dominatingFaction || !DssRef.diplomacy.InWar(f, dominatingFaction);
+            //                bool winner = f == dominatingFaction || !DssRef.world.diplomacy.InWar(f, dominatingFaction);
 
             //                if (f.player.IsPlayer())
             //                {
@@ -2125,7 +2125,7 @@ namespace VikingEngine.DSSWars.GameObject
             //            {
             //                foreach (var c in cities)
             //                {
-            //                    if (DssRef.diplomacy.InWar(c.faction, dominatingFaction))
+            //                    if (DssRef.world.diplomacy.InWar(c.faction, dominatingFaction))
             //                    {
             //                        if (c.faction.player.IsPlayer())
             //                        {
@@ -2145,7 +2145,7 @@ namespace VikingEngine.DSSWars.GameObject
             //            {
             //                var f = factions[i];
 
-            //                bool winner = f == dominatingFaction || !DssRef.diplomacy.InWar(f, dominatingFaction);
+            //                bool winner = f == dominatingFaction || !DssRef.world.diplomacy.InWar(f, dominatingFaction);
 
             //                if (f.player.IsPlayer())
             //                {
@@ -2493,7 +2493,7 @@ namespace VikingEngine.DSSWars.GameObject
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(SpriteName.WarsSettlerAdd));
                     content.hspace();
-                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Tutorial_ClickButton, DssRef.lang.UnitType_Settler)));
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.todoLang.Tutorial_ClickButton, DssRef.lang.UnitType_Settler)));
 
                     content.newLine();
                     HudLib.BulletPoint(content);
@@ -2505,7 +2505,7 @@ namespace VikingEngine.DSSWars.GameObject
                     HudLib.BulletPoint(content);
                     //content.Add(new RbImage(SpriteName.WarsSettlerAdd));
                     //content.hspace();
-                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.Tutorial_ClickButton, DssRef.lang.Action_PlaceSettlement)));
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.todoLang.Tutorial_ClickButton, DssRef.lang.Action_PlaceSettlement)));
 
                     content.newParagraph();
                     content.Add(new RbSeperationLine());
@@ -3159,7 +3159,7 @@ namespace VikingEngine.DSSWars.GameObject
             content.newParagraph();
             content.Add(new RbImage(SpriteName.WarsBuild_Tent));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.BuildingType_ImmigrationTent, buildingStructure.ImmigrationTent_count), HudLib.TitleColor_TypeName));
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.BuildingType_ImmigrationTent, buildingStructure.ImmigrationTent_count), HudLib.TitleColor_TypeName));
             content.newLine();
             content.Add(new RbText(string.Format(DssRef.lang.BuildingType_ImmigrationTent_Description, DssConst.ImmigrantionTent_Capacity), HudLib.InfoYellow_Light));
 
@@ -3206,7 +3206,7 @@ namespace VikingEngine.DSSWars.GameObject
                     content.hspace();
                     content.Add(new RbImage(SpriteName.WarsResource_Food));
                     content.hspace();
-                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Resource_TypeName_Food, city.resourceAmount(CityResoureIndex.food)/*city.res_food.amount*/), HudLib.ResourceCostColor(available)));
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Resource_TypeName_Food, city.resourceAmount(CityResoureIndex.food)/*city.res_food.amount*/), HudLib.ResourceCostColor(available)));
                     //HudLib.ItemCount(content, DssRef.lang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
                 }
                 if (cityType < CityType.Capital)
@@ -4051,7 +4051,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             content.newLine();
             HudLib.BulletPoint(content);
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.GuardHousingCount, TextLib.PlusMinus(addGuardHousing))));
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.GuardHousingCount, TextLib.PlusMinus(addGuardHousing))));
 
             content.newParagraph();
 

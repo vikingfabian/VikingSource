@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Event
                     //1. Send one army
                     new Timer.TimedAction0ArgTrigger_InGame(() =>
                     {
-                        DssRef.diplomacy.declareWar(attacker, DssRef.state.LocalHost().faction);
+                        DssRef.world.diplomacy.declareWar(attacker, DssRef.state.LocalHost().faction);
                         attacker.player.GetAiPlayer().armyAi_enabled = false;
 
                         const int FirstAttackerId = 4;

@@ -337,7 +337,7 @@ namespace VikingEngine.DSSWars
 
             Debug.WriteCheck(w);
 
-            DssRef.diplomacy.writeRelations(w);
+            DssRef.world.diplomacy.writeRelations(w);
             
         }
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
@@ -422,7 +422,7 @@ namespace VikingEngine.DSSWars
 
             if (subversion >= 109)
             {
-                DssRef.diplomacy.readRelations(r, subversion);
+                DssRef.world.diplomacy.readRelations(r, subversion);
             }
         }
 

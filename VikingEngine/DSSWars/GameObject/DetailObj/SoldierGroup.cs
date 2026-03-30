@@ -137,6 +137,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+
+
         private void initPart1(AbsArmy tArmy)
         {
 #if VISUAL_NODES
@@ -1029,7 +1031,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
                                 {
                                     var city = tile.City();
-                                    if (DssRef.diplomacy.GetRelation_Safe(tArmy.factionIndex, city.factionIndex).InWar())
+                                    if (DssRef.world.diplomacy.GetRelation_Safe(tArmy.factionIndex, city.factionIndex).InWar())
                                     {
                                         if (city.tilePos.SideLength(tilePos) <= 2 || tArmy.GetArmy().attackTarget == city)
                                         {
@@ -1054,7 +1056,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
                                 {
                                     var city = tile.City();
-                                    if (DssRef.diplomacy.GetRelation_Safe(tArmy.factionIndex, city.factionIndex).InWar())
+                                    if (DssRef.world.diplomacy.GetRelation_Safe(tArmy.factionIndex, city.factionIndex).InWar())
                                     {
                                         goalWp = WP.ToWorldPos(city.tilePos);
 
@@ -1201,7 +1203,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (faction != args.player.faction &&
                 args.player.gameControls.map.selection.obj != null &&
                 args.player.gameControls.map.selection.obj.IsSoldiers() &&
-                !DssRef.diplomacy.GetRelation(faction, args.player.faction).InWar())
+                !DssRef.world.diplomacy.GetRelation(faction, args.player.faction).InWar())
             {
                 args.content.Add(new RbImage(SpriteName.RedErrorCross));
                 args.content.hspace();
@@ -1215,7 +1217,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (faction != args.player.faction)
             {
-                args.content.Add(new RbImage(Diplomacy.RelationSprite(DssRef.diplomacy.GetRelation(faction, args.player.faction).Relation)));
+                args.content.Add(new RbImage(Diplomacy.RelationSprite(DssRef.world.diplomacy.GetRelation(faction, args.player.faction).Relation)));
                 args.content.space();
             }
 
@@ -1740,7 +1742,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (attackTarget_soldierGroupOrCity != null && attackTarget_soldierGroupOrCity.TryGetTarget(out var target) &&                    
 
                     (target.defeated() || 
-                    !DssRef.diplomacy.GetRelation_Safe(factionIndex, target.factionIndex).InWar() ||
+                    !DssRef.world.diplomacy.GetRelation_Safe(factionIndex, target.factionIndex).InWar() ||
                     distance(target) > 4)
                )
             {
@@ -2410,10 +2412,19 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                upkeep.copper += upkeepCount * soldierData.copperUpkeepPerSoldier;
+                upkeep.copper += upkeepCount * soldierConscript.conscript.copperUpkeepPerSoldier();//soldierData.copperUpkeepPerSoldier;
             }
             moneyCarry += soldierCount * DssConst.MoneyCarryPerSoldier;
         }
+
+        //public static float copperUpkeepPerSoldier(ConscriptProfile conscript)
+        //{
+        //    var result = DssConst.TrainingGoldUpkeep[(int)conscript.training];
+        //    if (conscript.man == ItemResourceType.NobelMen)
+        //    {
+        //        result += DssConst.Nobel_GoldUpkeep;
+        //    }
+        //}
 
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)
         {

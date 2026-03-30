@@ -75,7 +75,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => TextLib.ThaiConv("{1} {0}");
+        public override string Language_ItemCount => TextLib.ThaiConv("{1} {0}");
 
         //public override string DisplayMode => TextLib.ThaiConv("โหมด|แสดง|ผล");
         //public override string DisplayMode_Windowed => TextLib.ThaiConv("แบบ|หน้าต่าง");
@@ -199,7 +199,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How to display a number of items. 0: item, 1:Number
         /// </summary>
-        public override string Language_ItemCountPresentation => TextLib.ThaiConv("{0}: {1}");
+        public override string Language_ItemCount_Colon => TextLib.ThaiConv("{0}: {1}");
 
         /// <summary>
         /// Select language option
@@ -439,7 +439,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Unit gold cost.
         /// </summary>
-        public override string Hud_Upkeep => TextLib.ThaiConv("ค่า|บำรุง|รักษา: {0}");
+        public override string Hud_Upkeep => TextLib.ThaiConv("ค่า|บำรุง|รักษา");
         public override string Hud_ArmyUpkeep => TextLib.ThaiConv("ค่า|บำรุง|กอง|ทัพ: {0}");
 
         /// <summary>
@@ -1721,7 +1721,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => TextLib.ThaiConv("ถ่าน|หิน");
 
-        public override string Language_XUpkeepIsY => TextLib.ThaiConv("ค่า|บำรุง|รักษา| {0}: {1}");
+        public override string Language_XUpkeep => TextLib.ThaiConv("ค่า|บำรุง|รักษา| {0}");
         public override string Language_XCountIsY => TextLib.ThaiConv("จำนวน| {0}: {1}");
 
         public override string Message_ArmyOutOfFood_Text => TextLib.ThaiConv("จะ|มีการ|ซื้อ|เสบียง|ราคา|แพง|จาก|ตลาด|มืด |ทหาร|ที่|หิว|โซ|จะ|หนี|ทัพ|เมื่อ|เงิน|ของ|คุณ|หมด|ลง");

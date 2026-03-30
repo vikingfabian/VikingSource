@@ -49,6 +49,7 @@ namespace VikingEngine.DSSWars.GameObject
                 for (int i = 0; i < conscriptBuildings.Count; i++)
                 {
                     BarracksStatus status = conscriptBuildings[i];
+                    
                     if (i != selectedConscript || !conscriptDelay.HasTime || status.active == ConscriptActiveStatus.Training)
                     {
                         switch (status.active)

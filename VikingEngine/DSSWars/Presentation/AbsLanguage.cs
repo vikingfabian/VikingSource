@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public abstract string Hud_Purchase_ResourceCost { get; }
+        public abstract string Language_ItemCount { get; }
 
         //public abstract string DisplayMode { get; }
         //public abstract string DisplayMode_Windowed { get; }
@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public abstract string MyLanguage { get; }
 
-        public abstract string Language_ItemCountPresentation { get; }
+        public abstract string Language_ItemCount_Colon { get; }
 
         public abstract string Lobby_Language { get; }
         public abstract string Lobby_Start { get; }
@@ -902,7 +902,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string BuildingType_ResourceMine { get; }
         public abstract string Resource_TypeName_BogIron { get; }
         public abstract string Resource_TypeName_Coal { get; }
-        public abstract string Language_XUpkeepIsY { get; }
+        public abstract string Language_XUpkeep { get; }
         public abstract string Language_XCountIsY { get; }
         public abstract string Message_ArmyOutOfFood_Text { get; }
         public abstract string Info_ArmyFood1 { get; }

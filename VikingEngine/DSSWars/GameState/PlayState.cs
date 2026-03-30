@@ -319,11 +319,11 @@ namespace VikingEngine.DSSWars
                     bool ally = DssRef.difficulty.setting_QuickMatch_TwoTeams && (i < team1Count == j < team1Count);
 
 
-                    DssRef.diplomacy.SetRelationType(matchFactions[i], matchFactions[j], 
+                    DssRef.world.diplomacy.SetRelationType(matchFactions[i], matchFactions[j], 
                         ally ? RelationType.RelationType3_Ally : RelationType.RelationTypeN4_TotalWar, 
                         SpeakTerms.SpeakTermsN2_None);
 
-                    //var relation = DssRef.diplomacy.GetOrCreateRelation(matchFactions[i], matchFactions[j]);
+                    //var relation = DssRef.world.diplomacy.GetOrCreateRelation(matchFactions[i], matchFactions[j]);
 
                     //relation.Relation = ally ? RelationType.RelationType3_Ally : RelationType.RelationTypeN4_TotalWar;
                     //relation.SpeakTerms = SpeakTerms.SpeakTermsN2_None;
@@ -788,7 +788,7 @@ namespace VikingEngine.DSSWars
         {
             if (cutScene == null)
             {
-                DssRef.diplomacy.async_update();
+                DssRef.world.diplomacy.async_update();
                 events.asyncUpdate(time);
             }
             return exitThreads;

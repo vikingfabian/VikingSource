@@ -18,9 +18,9 @@ namespace VikingEngine.DSSWars.Conscript
         public const int MaxQue = 5;
 
         public ConscriptActiveStatus active;
-        public ConscriptProfile profile;
+        public ConscriptProfile profile = new ConscriptProfile();
 
-        public ConscriptProfile inProgress;
+        public ConscriptProfile inProgress = new ConscriptProfile();
         public TimeInGameCountdown countdown;
         public BuildAndExpandType type;
 
@@ -37,6 +37,9 @@ namespace VikingEngine.DSSWars.Conscript
 
         public bool requireMaxPopulation;
         public bool requireMaxFood;
+
+        public BarracksStatus()
+        { }
 
         public BarracksStatus(BuildAndExpandType type)
             : this()
@@ -368,7 +371,7 @@ namespace VikingEngine.DSSWars.Conscript
             else
             {
                 int menCostProgress = unitsNeeded;
-                result = activeStringOf(active, menCostProgress, out _) + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
+                result = activeStringOf(active, menCostProgress, out _) + ", " + string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
             }
 
             return result;

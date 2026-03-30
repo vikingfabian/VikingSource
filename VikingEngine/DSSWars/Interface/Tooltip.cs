@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
 
                     Faction thirdPartFaction = DssRef.world.faction(player.gameControls.diplomacy.relationArrowHover);
-                    var relation = DssRef.diplomacy.GetRelation(player.gameControls.diplomacy.mainSelection(out _), thirdPartFaction).Relation;
+                    var relation = DssRef.world.diplomacy.GetRelation(player.gameControls.diplomacy.mainSelection(out _), thirdPartFaction).Relation;
 
                     content.Add(thirdPartFaction.FlagTextureToHud());
                     content.hspace();
@@ -213,7 +213,7 @@ namespace VikingEngine.DSSWars.Interface
 
                     case Players.SelectTileResult.Build:
                         var buildOpt = BuildLib.BuildOptions[(int)player.gameControls.build.placeBuildingType];
-                        title = new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, buildOpt.Label()));
+                        title = new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Build_PlaceBuilding, buildOpt.Label()));
                         content.Add(title);
 
                         cancelInput();
@@ -413,7 +413,7 @@ namespace VikingEngine.DSSWars.Interface
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
+                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.todoLang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
 
                         content.newLine();
                         HudLib.BulletPoint(content);
@@ -423,6 +423,31 @@ namespace VikingEngine.DSSWars.Interface
                         content.hspace();
                         content.Add(new RbText(DssRef.lang.Work_Move));
                         break;
+
+                    case TerrainBuildingType.Smoker:
+                        content.newParagraph();
+                        content.Add(new RbSeperationLine());
+                        Resource.CraftResourceLib.ConservedFood_Smoked.toMenu(content, subTile.city);
+                        break;
+
+                    case TerrainBuildingType.Dryer:
+                        content.newParagraph();
+                        content.Add(new RbSeperationLine());
+                        Resource.CraftResourceLib.ConservedFood_Dried.toMenu(content, subTile.city);
+                        break;
+
+                    case TerrainBuildingType.Work_CoalPit:
+                        content.newParagraph();
+                        content.Add(new RbSeperationLine());
+                        Resource.CraftResourceLib.Charcoal.toMenu(content, subTile.city);
+                        break;
+
+                    case TerrainBuildingType.Brewery:
+                        content.newParagraph();
+                        content.Add(new RbSeperationLine());
+                        Resource.CraftResourceLib.Beer.toMenu(content, subTile.city);
+                        break;
+
                 }
             }
 
@@ -466,11 +491,11 @@ namespace VikingEngine.DSSWars.Interface
             
             if (attackTarget)
             {
-                if (!DssRef.diplomacy.GetRelation(player.faction, obj.GetFaction()).InWar())
+                if (!DssRef.world.diplomacy.GetRelation(player.faction, obj.GetFaction()).InWar())
                 {
                     content.Add(new RbSeperationLine());
 
-                    RelationType rel = DssRef.diplomacy.GetRelation(player.faction, obj.GetFaction()).Relation;
+                    RelationType rel = DssRef.world.diplomacy.GetRelation(player.faction, obj.GetFaction()).Relation;
                     
                     content.h1(DssRef.lang.Hud_WardeclarationTitle);
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);

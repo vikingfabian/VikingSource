@@ -46,12 +46,6 @@ namespace VikingEngine.DSSWars
         public static float MediumBlockReduceAttack_Inv = 0.5f;
         public static float SmallBlockReduceAttack_Inv = 0.75f;
 
-        public static float TrainingLevelMinimal_GoldUpkeep = 0;
-        public static float TrainingLevelBasic_GoldUpkeep = TaxPerWorker_copp * 0.4f;
-        public static float TrainingLevelSkillful_GoldUpkeep = TaxPerWorker_copp * 0.8f;
-        public static float TrainingLevelProfessional_GoldUpkeep = TaxPerWorker_copp * 2f;
-        public static float Nobel_GoldUpkeep = TaxPerWorker_copp * 2f;
-        public static readonly float[] TrainingGoldUpkeep = [TrainingLevelMinimal_GoldUpkeep, TrainingLevelBasic_GoldUpkeep, TrainingLevelSkillful_GoldUpkeep, TrainingLevelProfessional_GoldUpkeep];
         
         //NOBEL
         public const int NobelHouseMenCount = 15;
@@ -226,6 +220,15 @@ namespace VikingEngine.DSSWars
         public const int ImmigrantionTent_TransfereSpeedBonus = 2;
         public const int ImmigrantionTent_Capacity = 60;
 
+        //AHRMY UPKEEP
+        public static float TrainingLevelMinimal_CopperUpkeep = 0;
+        public static float TrainingLevelBasic_CopperUpkeep = TaxPerWorker_copp * 0.2f;
+        public static float TrainingLevelSkillful_CopperUpkeep = TaxPerWorker_copp * 0.4f;
+        public static float TrainingLevelProfessional_CopperUpkeep = TaxPerWorker_copp * 1f;
+        public static float Nobel_GoldUpkeep = TaxPerWorker_copp * 1f;
+        public static readonly float[] TrainingCopperUpkeep = [TrainingLevelMinimal_CopperUpkeep, TrainingLevelBasic_CopperUpkeep, TrainingLevelSkillful_CopperUpkeep, TrainingLevelProfessional_CopperUpkeep];
+
+
         //DEFENCE
         public static float GuardPostDefenceChance_Palisade = 0.4f;
         public static float GuardPostDefenceChance_Dirt = 0.5f;
@@ -301,6 +304,7 @@ namespace VikingEngine.DSSWars
         public static int PigRawFoodAmout = 3;
         public static int PigSkinAmount = 2;
         public static float ManDefaultEnergyCost = 1f;
+        public static float MountDefaultEnergyCost = 2f;
         public static float WorkTeamEnergyCost = ManDefaultEnergyCost * City.WorkTeamSize;
         public static float WorkTeamEnergyCost_WhenIdle = WorkTeamEnergyCost * 0.5f;
         public static int FoodEnergy = 100;

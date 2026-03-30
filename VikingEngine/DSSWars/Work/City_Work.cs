@@ -361,6 +361,20 @@ namespace VikingEngine.DSSWars.GameObject
                 if (!inRender_detailLayer)
                 {
                     processAsynchWork(ref workerStatuses);
+
+#if !DEBUG
+                        try
+                        {
+#endif
+                            processAsynchWork(ref workerStatuses);
+#if !DEBUG
+                        }
+                        catch
+                        {
+                            //muted
+                            lib.DoNothing();
+                        }
+#endif
                 }
 
                 void buildWorkQue2()
@@ -1011,7 +1025,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //            //3. distance
                 //            int distanceValue = -tilePos.SideLength(nCity.tilePos);
 
-                //            if (DssRef.diplomacy.MayTrade(nCity.faction, faction, out var relation))
+                //            if (DssRef.world.diplomacy.MayTrade(nCity.faction, faction, out var relation))
                 //            {
                 //                if (nCity.faction == faction)
                 //                {

@@ -1791,6 +1791,9 @@ namespace VikingEngine.DSSWars.Interface
                     city.GetGroupedResource(CityResoureIndex.BronzeSword).toMenu(content, ItemResourceType.BronzeSword, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.BronzeSword);
 
+                    city.GetGroupedResource(CityResoureIndex.HandSpear).toMenu(content, ItemResourceType.HandSpear, ref reachedBuffer, player, city);
+                    HudLib.blueprintButton(city, player, content, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
+
                     city.GetGroupedResource(CityResoureIndex.shortsword).toMenu(content, ItemResourceType.ShortSword, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.ShortSword);
 
@@ -1800,9 +1803,7 @@ namespace VikingEngine.DSSWars.Interface
                     city.GetGroupedResource(CityResoureIndex.LongSword).toMenu(content, ItemResourceType.LongSword, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.LongSword);
 
-                    city.GetGroupedResource(CityResoureIndex.HandSpear).toMenu(content, ItemResourceType.HandSpear, ref reachedBuffer, player, city);
-                    HudLib.blueprintButton(city, player, content, CraftResourceLib.HandSpearIron, CraftResourceLib.HandSpearBronze);
-
+                   
                     city.GetGroupedResource(CityResoureIndex.Warhammer).toMenu(content, ItemResourceType.Warhammer, ref reachedBuffer, player, city);
                     HudLib.blueprintButton(city, player, content, CraftResourceLib.WarhammerIron, CraftResourceLib.WarhammerBronze);
 
@@ -2351,7 +2352,7 @@ namespace VikingEngine.DSSWars.Interface
         //    content.newLine();
 
         //    //string addDiplomacy = "1 diplomacy point per {0} seconds";
-        //    int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.NobelHouseAddDiplomacy * 3600);
+        //    int diplomacydSec = Convert.ToInt32(DssRef.world.diplomacy.NobelHouseAddDiplomacy * 3600);
         //    //string addDiplomacyMax = "+{0} to diplomacy point max limit";
         //    //string addCommand = "1 command point per {0} seconds";
         //    //int commandSec = Convert.ToInt32(DssLib.NobelHouseAddCommand * 3600);
@@ -2365,7 +2366,7 @@ namespace VikingEngine.DSSWars.Interface
 
         //    HudLib.BulletPoint(content);
         //    content.Add(new RichBoxImage(SpriteName.WarsDiplomaticPoint));
-        //    content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.NobelHouseAddMaxDiplomacy)));
+        //    content.Add(new RichBoxText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.world.diplomacy.NobelHouseAddMaxDiplomacy)));
         //    content.newLine();
 
         //    //content.ListDot();

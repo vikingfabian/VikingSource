@@ -35,12 +35,12 @@ namespace VikingEngine.DSSWars.Communication
 
         public int RelationIndex()
         { 
-            return DssRef.diplomacy.RelationIndex(faction, otherFactionIx);
+            return DssRef.world.diplomacy.RelationIndex(faction, otherFactionIx);
         }
 
         public DiplomaticRelation Relation()
         {
-            return DssRef.diplomacy.GetRelation(faction, otherFactionIx);
+            return DssRef.world.diplomacy.GetRelation(faction, otherFactionIx);
         }
 
         public bool OtherFaction(out Faction other)

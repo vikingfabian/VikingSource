@@ -292,9 +292,9 @@ namespace VikingEngine.DSSWars.Event
                         var SouthHara = DssRef.world.faction(DssRef.settings.Faction_SouthHara);
                         var UnitedKingdom = DssRef.world.faction(DssRef.settings.Faction_UnitedKingdom);
 
-                        DssRef.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType2_Good, null, true);
-                        DssRef.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, RelationType.RelationType3_Ally, null, true);
-                        DssRef.diplomacy.SetRelationType(UnitedKingdom, SouthHara, RelationType.RelationType2_Good, null, true);
+                        DssRef.world.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType2_Good, null, true);
+                        DssRef.world.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, RelationType.RelationType3_Ally, null, true);
+                        DssRef.world.diplomacy.SetRelationType(UnitedKingdom, SouthHara, RelationType.RelationType2_Good, null, true);
                     }
 
                     //Setup dying war
@@ -304,13 +304,13 @@ namespace VikingEngine.DSSWars.Event
                     var hate = DssRef.world.faction(DssRef.settings.Faction_DyingHate);
                     var destru = DssRef.world.faction(DssRef.settings.Faction_DyingDestru);
 
-                    DssRef.diplomacy.SetRelationType(monger, hate, RelationType.RelationTypeN4_TotalWar);
-                    DssRef.diplomacy.SetRelationType(monger, destru, RelationType.RelationTypeN4_TotalWar);
-                    DssRef.diplomacy.SetRelationType(hate, destru, RelationType.RelationTypeN4_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(monger, hate, RelationType.RelationTypeN4_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(monger, destru, RelationType.RelationTypeN4_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(hate, destru, RelationType.RelationTypeN4_TotalWar);
 
                     //void secretAlliance(Faction faction1, Faction faction2)
                     //{
-                    //    ref var relation =  ref DssRef.diplomacy.GetRefRelation_Safe(faction1.myIndex, faction2.myIndex);
+                    //    ref var relation =  ref DssRef.world.diplomacy.GetRefRelation_Safe(faction1.myIndex, faction2.myIndex);
                     //    relation.SetRelation(RelationType.RelationType3_Ally, out _);
                     //    relation.secret = true;
                     //}
@@ -563,14 +563,14 @@ namespace VikingEngine.DSSWars.Event
                     break;
 
                 case FactionType.UnitedKingdom:
-                    if (IsStoryBeforeBoss() && DssRef.diplomacy.InWarWithPlayer(faction))
+                    if (IsStoryBeforeBoss() && DssRef.world.diplomacy.InWarWithPlayer(faction))
                     {
                         DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.early_uk_any, AchievementIndex.early_uk_100);
                     }
                     break;
 
                 case FactionType.DarkFollower:
-                    if (IsStoryBeforeBoss() && DssRef.diplomacy.InWarWithPlayer(faction))
+                    if (IsStoryBeforeBoss() && DssRef.world.diplomacy.InWarWithPlayer(faction))
                     {
                         DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.early_dread_any, AchievementIndex.early_dread_100);
                     }
@@ -579,7 +579,7 @@ namespace VikingEngine.DSSWars.Event
 
             foreach (var p in DssRef.state.localPlayers)
             {
-                if (DssRef.diplomacy.GetRelation(faction, p.faction).InWar())
+                if (DssRef.world.diplomacy.GetRelation(faction, p.faction).InWar())
                 {
                     //var citiesC = p.faction.cities.counter();
                     //while (citiesC.Next())
@@ -774,7 +774,7 @@ namespace VikingEngine.DSSWars.Event
         //                        factionC.sel.factiontype == FactionType.SouthHara
         //                    ) &&
         //                    factionC.sel.cities.Count >= 2 &&
-        //                    !DssRef.diplomacy.PositiveRelationWithPlayer(factionC.sel))
+        //                    !DssRef.world.diplomacy.PositiveRelationWithPlayer(factionC.sel))
         //                {
         //                    available.Add(factionC.sel);
 
@@ -787,7 +787,7 @@ namespace VikingEngine.DSSWars.Event
         //                    }
         //                }
 
-        //                if (DssRef.diplomacy.NegativeRelationWithPlayer(factionC.sel) ||
+        //                if (DssRef.world.diplomacy.NegativeRelationWithPlayer(factionC.sel) ||
         //                    factionC.sel.diplomaticSide == DiplomaticSide.Dark)
         //                {
         //                    darkLordAllies.Add(factionC.sel);
@@ -883,7 +883,7 @@ namespace VikingEngine.DSSWars.Event
                     while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var cindex in city.neighborCities)
                     {
                         var otherfaction = nCity.GetFaction();
-                        if (DssRef.diplomacy.botMayStartWar(otherfaction, defender))
+                        if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender))
                         {
                             return otherfaction;
                         }
@@ -911,7 +911,7 @@ namespace VikingEngine.DSSWars.Event
                         {
                             var otherfaction = nCity.GetFaction();
                             if (otherfaction != attacker && otherfaction != defender &&
-                                DssRef.diplomacy.GetRelation(otherfaction, defender).Relation >= RelationType.RelationType2_Good)
+                                DssRef.world.diplomacy.GetRelation(otherfaction, defender).Relation >= RelationType.RelationType2_Good)
                             {
                                 return otherfaction;
                             }
@@ -953,7 +953,7 @@ namespace VikingEngine.DSSWars.Event
                                 !factionsChecked[otherfactionIx])
                             {
                                 var otherfaction = DssRef.world.faction(otherfactionIx);
-                                if (DssRef.diplomacy.botMayStartWar(otherfaction, defender))
+                                if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender))
                                 {
                                     return otherfaction;
                                 }
@@ -977,7 +977,7 @@ namespace VikingEngine.DSSWars.Event
                 if (attacker.armies.Count > 0)
                 {
                     if (!attacker.player.mayAttackPlayer && 
-                        (defender.player.IsLocalPlayer() || DssRef.diplomacy.InplayerAlliance(defender)))
+                        (defender.player.IsLocalPlayer() || DssRef.world.diplomacy.InplayerAlliance(defender)))
                     {
                         return false;
                     }
@@ -995,7 +995,7 @@ namespace VikingEngine.DSSWars.Event
                         }
                     }
                     
-                    var rel = DssRef.diplomacy.GetRelation(defender, attacker);
+                    var rel = DssRef.world.diplomacy.GetRelation(defender, attacker);
                     if (rel.Relation >= RelationType.RelationTypeN1_Enemies && rel.Relation <= RelationType.RelationType1_Peace)
                     {
                         return true;

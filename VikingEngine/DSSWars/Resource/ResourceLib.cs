@@ -85,11 +85,12 @@ namespace VikingEngine.DSSWars.Resource
        {
             ItemResourceType.SharpStick,
             ItemResourceType.BronzeSword,
+            ItemResourceType.HandSpear,
+
             ItemResourceType.ShortSword,
             ItemResourceType.Sword,
             ItemResourceType.LongSword,
-            ItemResourceType.HandSpear,
-
+            
             ItemResourceType.Warhammer,
             ItemResourceType.TwoHandSword,
              //ItemResourceType.KnightsLance,

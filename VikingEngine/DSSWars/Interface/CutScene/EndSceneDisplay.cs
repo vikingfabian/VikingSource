@@ -78,11 +78,11 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             content.icontext(HudLib.CheckImage(DssRef.storage.gameRuleset.centralGold), DssRef.lang.Settings_CentralGold);
             content.icontext(HudLib.CheckImage(DssRef.difficulty.setting_allowPauseCommand), DssRef.lang.Settings_AllowPause);
 
-            content.icontext(SpriteName.WarsResource_Food, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(DssRef.difficulty.setting_foodMulti)));
-            content.icontext(SpriteName.WarsResource_WaterAdd, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(DssRef.difficulty.setting_waterMulti)));
-            content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(DssRef.difficulty.setting_childMulti)));
-            content.icontext(SpriteName.WarsHammer, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(DssRef.difficulty.setting_craftMulti)));
-            content.icontext(SpriteName.WarsTechnology_Unlocked, string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_TechMultiplier, DssRef.difficulty.TechMultiProperty(null, false, 0)));
+            content.icontext(SpriteName.WarsResource_Food, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(DssRef.difficulty.setting_foodMulti)));
+            content.icontext(SpriteName.WarsResource_WaterAdd, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(DssRef.difficulty.setting_waterMulti)));
+            content.icontext(SpriteName.WarsWorker, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(DssRef.difficulty.setting_childMulti)));
+            content.icontext(SpriteName.WarsHammer, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(DssRef.difficulty.setting_craftMulti)));
+            content.icontext(SpriteName.WarsTechnology_Unlocked, string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_TechMultiplier, DssRef.difficulty.TechMultiProperty(null, false, 0)));
 
             var time = HudLib.TimeSpan_LongText(DssRef.time.TotalIngameTime());
             content.text(string.Format(DssRef.lang.EndGameStatistics_Time, time));

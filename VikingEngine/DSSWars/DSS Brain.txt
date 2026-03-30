@@ -3,19 +3,20 @@
 Change Log:
 * 
 
-
 ##ICONS TODO
 
 #MOUNTED TODO
 
 Current bugs
-
+x Animal food upkeep
+x remove wheelwright
 x ai conscript of animals
 x missing a lot of the animal/weapon/armor combos
 
 x translate
 
 ## MOUNTED POST CONTENT UPDATE ##
+x boil salt
 x deeper unit category with search for items and melee/ranged/warmashine filters
 (maybe filter out units for remove/split)
 x achievements
@@ -26,7 +27,7 @@ x adv build upgrade, no more use of logistics
 x auto options for logistics/hall/manor
 x mounts in casual play
 x Luxurious buildings, raises the nobel house cap
-
+*
 
 
 #Event timers (are slightly random)#

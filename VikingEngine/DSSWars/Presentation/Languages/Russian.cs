@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
         //public override string DisplayMode => "Режим экрана";
         //public override string DisplayMode_Windowed => "В окне";
@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Как отображать количество предметов. 0: предмет, 1: количество
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Выбор языка
@@ -416,7 +416,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Стоимость содержания юнита
         /// </summary>
-        public override string Hud_Upkeep => "Содержание: {0}";
+        public override string Hud_Upkeep => "Содержание";
         public override string Hud_ArmyUpkeep => "Содержание армии: {0}";
 
         /// <summary>
@@ -1675,7 +1675,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "Уголь";
 
-        public override string Language_XUpkeepIsY => "{0} содержание: {1}";
+        public override string Language_XUpkeep => "{0} содержание";
         public override string Language_XCountIsY => "{0} количество: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "Дорогая еда будет закупаться на черном рынке. Голодные солдаты дезертируют, когда закончатся деньги.";

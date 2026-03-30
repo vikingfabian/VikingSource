@@ -20,7 +20,8 @@ namespace VikingEngine.DSSWars
         public Money money = new Money(4000);
         Money storeMoney = Money.Zero;
         Money previuosMoney = Money.Zero;
-        public int totalWorkForce, armyUpkeep, armyFoodImportCost, armyFoodBlackMarketCost;
+        public int totalWorkForce, /*armyFoodUpkeep, */armyFoodImportCost, armyFoodBlackMarketCost;
+        public SoldierUpkeep totalArmiesUpkeep = new SoldierUpkeep();
         public int embassyCount = 0;
 
         public TradeTemplate tradeTemplate = new TradeTemplate();
@@ -37,7 +38,7 @@ namespace VikingEngine.DSSWars
         public int CitySoldResources = 0;
 
         public int resourceComponentStartIndex;
-        SoldierUpkeep totalArmiesUpkeep = new SoldierUpkeep();
+        //SoldierUpkeep totalArmiesUpkeep = new SoldierUpkeep();
         public int WorkForceInCityCount()
         { 
             return totalWorkForce / DssConst.HeadCityStartMaxWorkForce;
@@ -598,21 +599,23 @@ namespace VikingEngine.DSSWars
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                //if (armiesC.sel.debugTagged)
-                //{
-                //    lib.DoNothing();
-                //}
+                if (armiesC.sel.debugTagged)
+                {
+                    lib.DoNothing();
+                }
 
-                SoldierUpkeep upkeep = new SoldierUpkeep();
+                //SoldierUpkeep upkeep = new SoldierUpkeep();
+                SoldierUpkeep armyUpkeep = new SoldierUpkeep();
                 float moneyCarry = 0;
                 //float armyUpkeep = 0;
 
                 var groups = armiesC.sel.groups.counter();
                 while (groups.Next())
                 {
-                    groups.sel.Upkeep(casual, ref upkeep, ref moneyCarry);
+                    groups.sel.Upkeep(casual, ref armyUpkeep, ref moneyCarry);
                 }
-                _totalArmiesUpkeep += upkeep;
+                //armyUpkeep += upkeep;
+                //_totalArmiesUpkeep += upkeep;
 
                 //float goldUpkeep = manUpkeepCount;
 
@@ -620,13 +623,12 @@ namespace VikingEngine.DSSWars
                 foodImport += armiesC.sel.foodCosts_import.displayValue_gold_sec;
                 foodBlackMarket += armiesC.sel.foodCosts_blackmarket.displayValue_gold_sec;
 
-                
-         
                 armiesC.sel.goldCarryCapacity = Convert.ToInt32(moneyCarry);
-                armiesC.sel.totalUpkeep = _totalArmiesUpkeep;
+                armiesC.sel.totalUpkeep = armyUpkeep;
+                _totalArmiesUpkeep += armyUpkeep;
 
-                
-                float copperUpkeep = upkeep.copper * oneSecondUpdate; // DssRef.difficulty.setting_foodMulti;
+
+                float copperUpkeep = armyUpkeep.copper * oneSecondUpdate; // DssRef.difficulty.setting_foodMulti;
                 if (!money.PayUpkeep(copperUpkeep))
                 {
                     Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
@@ -636,14 +638,14 @@ namespace VikingEngine.DSSWars
                 if (!casual)
                 {
                     
-                    armiesC.sel.food -= upkeep.food * oneSecondUpdate;
+                    armiesC.sel.food -= armyUpkeep.food * oneSecondUpdate;
                     if (armiesC.sel.food < 0)
                     {
                         float rest = armiesC.sel.food;
                         armiesC.sel.food = 0;
                         armiesC.sel.conservedFood += rest;
 
-                        if (armiesC.sel.conservedFood < -upkeep.food * 60)
+                        if (armiesC.sel.conservedFood < -armyUpkeep.food * 60)
                         {
                             if (hasDeserters)
                             {

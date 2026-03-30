@@ -76,6 +76,10 @@ namespace VikingEngine.DSSWars.Resource
         {
             return copper / GoldToCopper;
         }
+        public static float ToGoldF(float copper)
+        {
+            return copper / GoldToCopper;
+        }
 
         public bool PayGold(float payGold, bool allowDept)
         {

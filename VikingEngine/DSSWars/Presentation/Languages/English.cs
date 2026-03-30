@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
         //public override string DisplayMode => "Display mode";
         //public override string DisplayMode_Windowed => "Windowed";
@@ -202,7 +202,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How to display a number of items. 0: item, 1:Number
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Select language option
@@ -442,7 +442,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Unit gold cost.
         /// </summary>
-        public override string Hud_Upkeep => "Upkeep: {0}";
+        public override string Hud_Upkeep => "Upkeep";
         public override string Hud_ArmyUpkeep => "Army upkeep: {0}";
 
         /// <summary>
@@ -1728,7 +1728,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "Coal";
 
-        public override string Language_XUpkeepIsY => "{0} upkeep: {1}";
+        public override string Language_XUpkeep => "{0} upkeep";
         public override string Language_XCountIsY => "{0} count: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "Expensive food will be purchased from the black market. Hungry soldiers will desert when your money runs out.";

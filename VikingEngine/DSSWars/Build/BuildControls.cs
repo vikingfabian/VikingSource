@@ -889,7 +889,7 @@ namespace VikingEngine.DSSWars.Build
                 var tabButton = new ArtButton(tab == player.buildCategoryTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
                     new List<AbsRichBoxMember> { new RbImage(tabIcon) },
                     new RbAction1Arg<BuildCategoryTab>((BuildCategoryTab selectTab) => { player.buildCategoryTab = selectTab; }, tab, RbSoundType.Tab),
-                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_category, category)));
+                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_category, category)));
                 content.Add(tabButton);
             }
         }
@@ -1180,7 +1180,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Embassy:
                     EmbassyDescription(content);
 
-                    //int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.EmbassyAddDiplomacy * 3600);
+                    //int diplomacydSec = Convert.ToInt32(DssRef.world.diplomacy.EmbassyAddDiplomacy * 3600);
 
                     //HudLib.BulletPoint(content);
                     //content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
@@ -1189,7 +1189,7 @@ namespace VikingEngine.DSSWars.Build
 
                     //HudLib.BulletPoint(content);
                     //content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
-                    //content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.EmbassyAddMaxDiplomacy)));
+                    //content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.world.diplomacy.EmbassyAddMaxDiplomacy)));
                     //content.newLine();
                     break;
 
@@ -1239,7 +1239,7 @@ namespace VikingEngine.DSSWars.Build
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.todoLang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.todoLang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
 
                     break;
                 case BuildAndExpandType.FowlPen:
@@ -1521,7 +1521,7 @@ namespace VikingEngine.DSSWars.Build
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Delivery_SendChunk, maxAmount)));
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Delivery_SendChunk, maxAmount)));
 
                 content.newLine();
                 HudLib.BulletPoint(content);
@@ -1563,7 +1563,7 @@ namespace VikingEngine.DSSWars.Build
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, PlantWaterCost)));
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_PurchaseTitle_Cost, PlantWaterCost)));
                 content.Add(new RbImage(SpriteName.WarsResource_Water));
                 content.Add(new RbText(DssRef.lang.Resource_TypeName_Water));
 
@@ -1588,7 +1588,7 @@ namespace VikingEngine.DSSWars.Build
 
             void pen(BuildOption build, AnimalPenGrowth penGrowth, ItemResourceType resourceType, bool canBreedup, bool canBreedDown)
             {
-                content.h2(string.Format(DssRef.lang.Hud_Upkeep, string.Empty), HudLib.TitleColor_Label);
+                content.h2(DssRef.lang.Hud_Upkeep, HudLib.TitleColor_Label);
                 content.newLine();
                 HudLib.BulletPoint(content);
                 content.Add(new RbImage(SpriteName.WarsResource_RawFoodRemove));
@@ -1672,7 +1672,7 @@ namespace VikingEngine.DSSWars.Build
 
         public static void EmbassyDescription(RichBoxContent content)
         {
-            int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.EmbassyAddDiplomacy * 3600);
+            int diplomacydSec = Convert.ToInt32(DssRef.world.diplomacy.EmbassyAddDiplomacy * 3600);
 
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
@@ -1681,7 +1681,7 @@ namespace VikingEngine.DSSWars.Build
 
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
-            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.EmbassyAddMaxDiplomacy)));
+            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.world.diplomacy.EmbassyAddMaxDiplomacy)));
             content.newLine();
         }
 

@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
         //public override string DisplayMode => "Tryb wyświetlania";
         //public override string DisplayMode_Windowed => "W oknie";
@@ -196,7 +196,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Jak wyświetlać liczbę przedmiotów. 0: przedmiot, 1: Liczba
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Opcja wyboru języka
@@ -436,7 +436,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Koszt złota jednostki.
         /// </summary>
-        public override string Hud_Upkeep => "Utrzymanie: {0}";
+        public override string Hud_Upkeep => "Utrzymanie";
         public override string Hud_ArmyUpkeep => "Utrzymanie armii: {0}";
 
         /// <summary>
@@ -1720,7 +1720,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "węgiel";
 
-        public override string Language_XUpkeepIsY => "Utrzymanie ({0}): {1}";
+        public override string Language_XUpkeep => "Utrzymanie ({0})";
         public override string Language_XCountIsY => "Liczba ({0}): {1}";
 
         public override string Message_ArmyOutOfFood_Text => "Droga żywność zostanie kupiona na czarnym rynku. Głodni żołnierze zaczną dezerterować, gdy zabraknie Ci złota.";

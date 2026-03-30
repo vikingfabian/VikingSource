@@ -120,7 +120,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         bufferGoal_minutes = friendlyAreaFoodBuffer_minutes;
                     }
-                    else if (!DssRef.diplomacy.GetRelation(city.factionIndex, factionIndex).InWar())
+                    else if (!DssRef.world.diplomacy.GetRelation(city.factionIndex, factionIndex).InWar())
                     {
                         bufferGoal_minutes = foodBuffer_minutes;
                     }

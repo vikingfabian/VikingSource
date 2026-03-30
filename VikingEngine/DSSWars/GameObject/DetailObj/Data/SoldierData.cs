@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.ToGG.MoonFall.GO;
@@ -42,6 +43,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 
         public int defaultArmyPlacement = 0;
         public float upkeepMultiplier = 1f;//DssLib.SoldierDefaultEnergyUpkeep;
+        public float animalFoodMultiplier = 0;
         public float rotationSpeed= DssConst.SoldierGroupStandardRotatingSpeed;
         public float walkingSpeed = DssConst.Men_StandardWalkingSpeed;
         public float weightClass = 0.5f;
@@ -52,7 +54,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         public float modelScale = DssConst.Men_ModCharacterScale;
 
         //public float upkeepPerSoldier = DssLib.SoldierDefaultUpkeep;
-        public float copperUpkeepPerSoldier = 0;
+        //public float copperUpkeepPerSoldier = 0;
         
         public float boundRadius = DssVar.StandardBoundRadius;
         public float groupSpacing = DssVar.DefaultGroupSpacing;
@@ -216,6 +218,8 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
         { 
             return speed * MobilityMultiplySpeed;
         }
+
+       
         //public int Upkeep()
         //{
         //    return Convert.ToInt32(rowWidth * columnsDepth * upkeepPerSoldier);

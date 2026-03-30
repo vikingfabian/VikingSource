@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.Interface
                             //}
                             player.gameControls.input.GameSpeed.ToRichContent(content);
                             content.hspace();
-                            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Input_GameSpeed, string.Format(DssRef.lang.Hud_XTimes, speed))));
+                            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Input_GameSpeed, string.Format(DssRef.lang.Hud_XTimes, speed))));
                         })));
 
                 }

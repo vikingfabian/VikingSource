@@ -1041,7 +1041,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 content.hspace();
                 content.Add(new RbImage(itemIcon));
                 content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Resource, itemName)));
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Resource, itemName)));
             }
 
             void buildOrder(bool complete, BuildAndExpandType build)

@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
         //public override string DisplayMode => "화면 모드";
         //public override string DisplayMode_Windowed => "창 모드";
@@ -179,7 +179,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How to display a number of items. 0: item, 1:Number
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Select language option
@@ -418,7 +418,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Unit gold cost.
         /// </summary>
-        public override string Hud_Upkeep => "유지비: {0}";
+        public override string Hud_Upkeep => "유지비";
         public override string Hud_ArmyUpkeep => "군대 유지비: {0}";
 
         /// <summary>
@@ -1699,7 +1699,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Resource_TypeName_BogIron => "늪철";
         public override string Resource_TypeName_Coal => "석탄";
 
-        public override string Language_XUpkeepIsY => "{0} 유지비: {1}";
+        public override string Language_XUpkeep => "{0} 유지비";
         public override string Language_XCountIsY => "{0} 수량: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "식량이 부족하여 암시장에서 비싼 식량을 구매합니다. 금화가 바닥나면 병사들이 탈영합니다.";

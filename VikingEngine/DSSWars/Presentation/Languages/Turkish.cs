@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
         //public override string DisplayMode => "Görüntü Modu";
         //public override string DisplayMode_Windowed => "Pencere";
@@ -183,7 +183,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How to display a number of items. 0: item, 1:Number
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Select language option
@@ -423,7 +423,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Unit gold cost.
         /// </summary>
-        public override string Hud_Upkeep => "Bakım Maaliyeti: {0}";
+        public override string Hud_Upkeep => "Bakım Maaliyeti";
         public override string Hud_ArmyUpkeep => "Ordu Bakım Maaliyeti: {0}";
 
         /// <summary>
@@ -1698,7 +1698,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "Kömür";
 
-        public override string Language_XUpkeepIsY => "{0} maaliyeti: {1}";
+        public override string Language_XUpkeep => "{0} maaliyeti";
         public override string Language_XCountIsY => "{0} sayısı: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "Yiyecekler karaborsadan pahalıya alınacak. Paran bittiğinde aç kalan askerler firar edecek.";

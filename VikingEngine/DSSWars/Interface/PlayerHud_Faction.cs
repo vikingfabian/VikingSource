@@ -259,9 +259,18 @@ namespace VikingEngine.DSSWars.Interface
             {
                 {
                     content.newLine();
+                    content.Add(new RbImage(SpriteName.rtsUpkeepTime));
+                    content.space();
+                    content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.ResourceType_Gold), /*player.ConvertUpkeep(*/Money.ToGold(Convert.ToInt32( player.faction.totalArmiesUpkeep.copper))/*, out _))*/), HudLib.NotAvailableColor));
+                    content.space();
+                    HudLib.PerSecondInfo(player, content, false);
+                }
+
+                {
+                    content.newLine();
                     content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
                     content.space();
-                    content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), player.ConvertUpkeep(player.faction.armyUpkeep, out _)), HudLib.NotAvailableColor));
+                    content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), (int)player.faction.totalArmiesUpkeep.food/* player.ConvertUpkeep(player.faction.armyFoodUpkeep, out _))*/), HudLib.NotAvailableColor));
                     content.space();
                     HudLib.PerSecondInfo(player, content, false);
                 }
@@ -288,7 +297,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsUpkeepTime));
                 content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.ResourceType_Gold), TextLib.OneDecimal( player.ConvertUpkeep(player.faction.armyUpkeep, out _))), HudLib.NotAvailableColor));
+                content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.ResourceType_Gold), TextLib.OneDecimal(Money.ToGoldF(player.faction.totalArmiesUpkeep.copper))/* TextLib.OneDecimal( player.ConvertUpkeep(player.faction.armyFoodUpkeep, out _)))*/), HudLib.NotAvailableColor));
                 content.space();
                 HudLib.PerSecondInfo(player, content, false);
             }

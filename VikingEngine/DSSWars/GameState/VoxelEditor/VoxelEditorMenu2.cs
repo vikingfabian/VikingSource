@@ -623,10 +623,10 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 new RbAction(mergeLayerDown), new RbTooltip_Text(DssRef.lang.Editor_Layer_MergeDown)));
             content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsIncreaseArrowUp) },
                 new RbAction1Arg<bool>(moveLayer, false),
-                new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Editor_Canvas_Move, DssRef.lang.Editor_Canvas_Move_Up))));
+                new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Editor_Canvas_Move, DssRef.lang.Editor_Canvas_Move_Up))));
             content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsDecreaseArrowDown) },
                 new RbAction1Arg<bool>(moveLayer, true),
-                new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Editor_Canvas_Move, DssRef.lang.Editor_Canvas_Move_Down))));
+                new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Editor_Canvas_Move, DssRef.lang.Editor_Canvas_Move_Down))));
 
             content.newLine();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 

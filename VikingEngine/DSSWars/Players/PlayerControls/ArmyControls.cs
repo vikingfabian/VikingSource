@@ -115,7 +115,7 @@ namespace VikingEngine.DSSWars.Players
                 var target = player.gameControls.map.hover.obj.RelatedMapObject();
                 if (target != null)
                 {
-                    if (DssRef.diplomacy.GetRelation(player.faction, target.GetFaction()).InWar())
+                    if (DssRef.world.diplomacy.GetRelation(player.faction, target.GetFaction()).InWar())
                     {
                         mapExecuteAttack(target);
                     }

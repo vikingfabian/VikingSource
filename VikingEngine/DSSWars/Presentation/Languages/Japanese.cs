@@ -74,7 +74,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
         //public override string DisplayMode => "画面モード";
         //public override string DisplayMode_Windowed => "ウィンドウ";
@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// アイテム数の表示方法。0: アイテム, 1: 数量
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// 言語オプションの選択
@@ -419,7 +419,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// ユニットの金コスト。
         /// </summary>
-        public override string Hud_Upkeep => "維持費: {0}";
+        public override string Hud_Upkeep => "維持費";
         public override string Hud_ArmyUpkeep => "軍隊維持費: {0}";
 
         /// <summary>
@@ -1687,7 +1687,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "石炭";
 
-        public override string Language_XUpkeepIsY => "{0}の維持費：{1}";
+        public override string Language_XUpkeep => "{0}の維持費";
         public override string Language_XCountIsY => "{0}の数：{1}";
 
         public override string Message_ArmyOutOfFood_Text => "高価な食料はブラックマーケットから購入されます。お金がなくなると、飢えた兵士は脱走します。";

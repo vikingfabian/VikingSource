@@ -1106,7 +1106,7 @@ namespace VikingEngine.DSSWars.Players
 
             Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
             DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
-            DssRef.diplomacy.declareWar(faction, enemyFac);
+            DssRef.world.diplomacy.declareWar(faction, enemyFac);
 
 
             IntVector2 position = gameControls.map.tilePosition;
@@ -1186,7 +1186,7 @@ namespace VikingEngine.DSSWars.Players
 
             Faction enemyFac = DssRef.world.factions[DssRef.settings.Faction_DarkFollower];
             DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
-            //DssRef.diplomacy.declareWar(faction, enemyFac);
+            //DssRef.world.diplomacy.declareWar(faction, enemyFac);
 
 
             IntVector2 position = gameControls.map.tilePosition;
@@ -1410,7 +1410,7 @@ namespace VikingEngine.DSSWars.Players
             enemyFac.money.copper = -10000;
             enemyFac.hasDeserters = true;
             enemyFac.player.protectedFromDelete = false;
-            DssRef.diplomacy.declareWar(faction, enemyFac);
+            DssRef.world.diplomacy.declareWar(faction, enemyFac);
 
 
             IntVector2 position = gameControls.map.tilePosition;
@@ -1501,7 +1501,7 @@ namespace VikingEngine.DSSWars.Players
 
             Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
             DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
-            DssRef.diplomacy.declareWar(faction, enemyFac);
+            DssRef.world.diplomacy.declareWar(faction, enemyFac);
 
 
             IntVector2 position = gameControls.map.tilePosition;
@@ -1750,7 +1750,7 @@ namespace VikingEngine.DSSWars.Players
 
         public double diplomacyAddPerSec()
         {
-            return DssRef.diplomacy.DefaultDiplomacyPerSecond + DssRef.diplomacy.EmbassyAddDiplomacy * faction.embassyCount;
+            return DssRef.world.diplomacy.DefaultDiplomacyPerSecond + DssRef.world.diplomacy.EmbassyAddDiplomacy * faction.embassyCount;
         }
 
         public MapDetailLayerType mapLayer()
@@ -1771,7 +1771,7 @@ namespace VikingEngine.DSSWars.Players
             }
             else
             {
-                return DssRef.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond;
+                return DssRef.world.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond;
             }
         }
 
@@ -1781,9 +1781,9 @@ namespace VikingEngine.DSSWars.Players
 
             faction.resourceOverviewOneSecondUpdate();
 
-            double max = DssRef.diplomacy.DefaultMaxDiplomacy + DssRef.diplomacy.EmbassyAddMaxDiplomacy * faction.embassyCount;
+            double max = DssRef.world.diplomacy.DefaultMaxDiplomacy + DssRef.world.diplomacy.EmbassyAddMaxDiplomacy * faction.embassyCount;
             diplomaticPoints_softMax = (int)Math.Floor(max);
-            diplomaticPoints.setMax(max + DssRef.diplomacy.Diplomacy_HardMax_Add);
+            diplomaticPoints.setMax(max + DssRef.world.diplomacy.Diplomacy_HardMax_Add);
 
             if (diplomaticPoints.value < diplomaticPoints_softMax)
             {
@@ -1791,7 +1791,7 @@ namespace VikingEngine.DSSWars.Players
             }
             else
             {
-                diplomaticPoints.add(DssRef.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond);
+                diplomaticPoints.add(DssRef.world.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond);
             }
 
             if (mercenaryMarket.value < MercenaryMarketSoftLock1)
@@ -3148,7 +3148,7 @@ namespace VikingEngine.DSSWars.Players
 
 //            Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
 //            DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
-//            DssRef.diplomacy.declareWar(faction, enemyFac);
+//            DssRef.world.diplomacy.declareWar(faction, enemyFac);
 
 
 //            IntVector2 position = gameControls.map.tilePosition;
@@ -3228,7 +3228,7 @@ namespace VikingEngine.DSSWars.Players
 
 //            Faction enemyFac = DssRef.world.factions[DssRef.settings.Faction_DarkFollower];
 //            DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
-//            //DssRef.diplomacy.declareWar(faction, enemyFac);
+//            //DssRef.world.diplomacy.declareWar(faction, enemyFac);
 
 
 //            IntVector2 position = gameControls.map.tilePosition;
@@ -3451,7 +3451,7 @@ namespace VikingEngine.DSSWars.Players
 
 //            Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
 //            DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
-//            DssRef.diplomacy.declareWar(faction, enemyFac);
+//            DssRef.world.diplomacy.declareWar(faction, enemyFac);
 
 
 //            IntVector2 position = gameControls.map.tilePosition;
@@ -3811,7 +3811,7 @@ namespace VikingEngine.DSSWars.Players
 
 //        public double diplomacyAddPerSec()
 //        {
-//            return DssRef.diplomacy.DefaultDiplomacyPerSecond + DssRef.diplomacy.EmbassyAddDiplomacy * faction.embassyCount;
+//            return DssRef.world.diplomacy.DefaultDiplomacyPerSecond + DssRef.world.diplomacy.EmbassyAddDiplomacy * faction.embassyCount;
 //        }
 
 //        public MapDetailLayerType mapLayer()
@@ -3832,7 +3832,7 @@ namespace VikingEngine.DSSWars.Players
 //            }
 //            else
 //            {
-//                return DssRef.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond;
+//                return DssRef.world.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond;
 //            }
 //        }
 
@@ -3842,9 +3842,9 @@ namespace VikingEngine.DSSWars.Players
 
 //            faction.resourceOverviewOneSecondUpdate();
 
-//            double max = DssRef.diplomacy.DefaultMaxDiplomacy + DssRef.diplomacy.EmbassyAddMaxDiplomacy * faction.embassyCount;
+//            double max = DssRef.world.diplomacy.DefaultMaxDiplomacy + DssRef.world.diplomacy.EmbassyAddMaxDiplomacy * faction.embassyCount;
 //            diplomaticPoints_softMax = (int)Math.Floor(max);
-//            diplomaticPoints.setMax(max + DssRef.diplomacy.Diplomacy_HardMax_Add);
+//            diplomaticPoints.setMax(max + DssRef.world.diplomacy.Diplomacy_HardMax_Add);
 
 //            if (diplomaticPoints.value < diplomaticPoints_softMax)
 //            {
@@ -3852,7 +3852,7 @@ namespace VikingEngine.DSSWars.Players
 //            }
 //            else
 //            {
-//                diplomaticPoints.add(DssRef.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond);
+//                diplomaticPoints.add(DssRef.world.diplomacy.AddDiplomacy_AfterSoftlock_PerSecond);
 //            }
 
 //            if (mercenaryMarket.value < MercenaryMarketSoftLock1)

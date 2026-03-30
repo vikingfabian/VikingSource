@@ -289,7 +289,7 @@ namespace VikingEngine.DSSWars
                         
                         content.newLine();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(".Leaderboards") }),
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Leaderboards_title) }),
                             new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_leaderboards, StackOption.Stack), null, !PlatformSettings.STEAM_DEMO));
 
                         content.newLine();
@@ -2623,7 +2623,6 @@ namespace VikingEngine.DSSWars
                 return;
             }
 
-            
             mapBackgroundLoading?.Abort();
             mapBackgroundLoading.loadMeta = saveMeta;
 

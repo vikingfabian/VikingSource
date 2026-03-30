@@ -181,12 +181,12 @@ namespace VikingEngine.DSSWars.Conscript
             var weaponProperties = ItemPropertyColl.Get(conscript.weapon);
             SoldierData soldierData = weaponProperties.soldierData;
 
-            soldierData.copperUpkeepPerSoldier = DssConst.TrainingGoldUpkeep[(int)conscript.training];
-            if (conscript.man == ItemResourceType.NobelMen)
-            {
-                soldierData.copperUpkeepPerSoldier += DssConst.Nobel_GoldUpkeep;
+            //soldierData.copperUpkeepPerSoldier = DssConst.TrainingCopperUpkeep[(int)conscript.training];
+            //if (conscript.man == ItemResourceType.NobelMen)
+            //{
+            //    soldierData.copperUpkeepPerSoldier += DssConst.Nobel_GoldUpkeep;
 
-            }
+            //}
 
             soldierData.applySkillBonus(skillBonus);
 

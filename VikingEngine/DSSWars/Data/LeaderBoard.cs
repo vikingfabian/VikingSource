@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.Data
                         break;
                     case LeaderBoardType.survive300_time:
                     case LeaderBoardType.survive400_time:
-                        leaderBoard = new SurviveLeaderBoard();
+                        leaderBoard = new SurviveLeaderBoard(type);
                         break;
 
                     default:
@@ -195,7 +195,8 @@ namespace VikingEngine.DSSWars.Data
     {
         public static void CreateLeaderBoards()
         {
-            for (LeaderBoardType type = 0; type < LeaderBoardType.NUM; type++)
+            LeaderBoardType type = LeaderBoardType.survive400_time;
+            //for (LeaderBoardType type = 0; type < LeaderBoardType.NUM; type++)
             {
                 ELeaderboardSortMethod sort;
                 ELeaderboardDisplayType display;
@@ -309,9 +310,9 @@ namespace VikingEngine.DSSWars.Data
     {
         public const int Difficulty300 = 350;
         public const int Difficulty400 = 400;
-        public SurviveLeaderBoard()
+        public SurviveLeaderBoard(LeaderBoardType type)
         {
-            this.type = LeaderBoardType.survive300_time;
+            this.type = type;
         }
 
         public SurviveLeaderBoard(TimeSpan time)

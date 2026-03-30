@@ -472,7 +472,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void Order_Attack_Setup(AbsMapObject attackTarget)
         {
-            DssRef.diplomacy.declareWar(GetFaction(), attackTarget.GetFaction());
+            DssRef.world.diplomacy.declareWar(GetFaction(), attackTarget.GetFaction());
             clearObjective();
             this.attackTarget = attackTarget;
             this.attackTargetFaction = attackTarget.factionIndex;
