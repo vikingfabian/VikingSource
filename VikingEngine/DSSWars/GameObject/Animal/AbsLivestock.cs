@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.DetailObj.Soldiers;
 using VikingEngine.DSSWars.Map;
+using VikingEngine.Engine;
 using VikingEngine.LootFest;
 using VikingEngine.LootFest.Map;
 using VikingEngine.Sound;
@@ -18,15 +19,21 @@ namespace VikingEngine.DSSWars.GameObject.Animal
     {        
         VectorRect area;
         protected Graphics.VoxelModelInstance model;
-        protected AnimalModelData modelData;
+        protected AnimalProfile modelData;
         IntVector2 tilepos;
         Time stateTime;
         Vector3 walkDir;
         bool walkState = true;
-        public AbsLivestock(IntVector2 tilepos, Vector3 topCenterWp, AnimalModelData modelData)
+        SoundContainerBase soundFile;
+        float soundPitch;
+
+
+        public AbsLivestock(IntVector2 tilepos, Vector3 topCenterWp, AnimalProfile modelData, SoundContainerBase soundFile, float soundPitch)
             :base(true)
         {
             this.modelData = modelData;
+            this.soundFile = soundFile;
+            this.soundPitch = soundPitch;
             this.tilepos = tilepos;
             model = createModel();
 
@@ -89,7 +96,13 @@ namespace VikingEngine.DSSWars.GameObject.Animal
             }
         }
 
-        abstract protected void sound();
+        protected void sound()
+        {
+            if (Ref.peRnd.Chance(0.03) && soundFile != null && SoundStackManager.RareAvailable())
+            {
+                soundFile.Play(model.position);
+            }
+        }
 
         public override void DeleteMe()
         {
@@ -103,26 +116,18 @@ namespace VikingEngine.DSSWars.GameObject.Animal
     class Livestock : AbsLivestock
     {
         
-        public Livestock(IntVector2 tilepos, Vector3 topCenterWp, AnimalModelData modelData)
-            : base(tilepos, topCenterWp, modelData)
+        public Livestock(IntVector2 tilepos, Vector3 topCenterWp, AnimalProfile modelData, SoundContainerBase soundFile, float soundPitch)
+            : base(tilepos, topCenterWp, modelData, soundFile, soundPitch)
         {
         }
-        //protected override Graphics.VoxelModelInstance createModel()
-        //{
-        //    return DssRef.models.ModelInstance_drawbatch(modelData.modelName,
-        //        modelData.scale);
-        //}
-
-        protected override void sound()
-        {
-
-        }
+        
+       
     }
 
     class Pig : AbsLivestock
     {
         public Pig(IntVector2 tilepos, Vector3 topCenterWp)
-            : base(tilepos, topCenterWp, DssVar.pigModel)
+            : base(tilepos, topCenterWp, DssVar.pigModel, SoundLib.pig, 0)
         { }
         //protected override Graphics.VoxelModelInstance createModel()
         //{
@@ -130,20 +135,20 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         //        DssConst.Men_StandardModelScale * 0.5f);
         //}
 
-        protected override void sound()
-        {
-            if (Ref.peRnd.Chance(0.03) && SoundStackManager.RareAvailable())
-            {
-                SoundLib.pig.Play(model.position);
-            }
-        }
+        //protected override void sound()
+        //{
+        //    if (Ref.peRnd.Chance(0.03) && SoundStackManager.RareAvailable())
+        //    {
+        //        SoundLib.pig.Play(model.position);
+        //    }
+        //}
     }
     
 
     class Hen : AbsLivestock
     {
         public Hen(IntVector2 tilepos, Vector3 topCenterWp)
-            : base(tilepos, topCenterWp, DssVar.henModel)
+            : base(tilepos, topCenterWp, DssVar.henModel, SoundLib.hen, 0)
         { }
         //protected override Graphics.VoxelModelInstance createModel()
         //{
@@ -151,19 +156,19 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         //        DssConst.Men_StandardModelScale * 0.3f);
         //}
 
-        protected override void sound()
-        {
-            if (Ref.peRnd.Chance(0.03) && SoundStackManager.RareAvailable())
-            {
-                SoundLib.hen.Play(model.position);
-            }
-        }
+        //protected override void sound()
+        //{
+        //    if (Ref.peRnd.Chance(0.03) && SoundStackManager.RareAvailable())
+        //    {
+        //        SoundLib.hen.Play(model.position);
+        //    }
+        //}
     }
 
     class TempAnimal : AbsLivestock
     {
         public TempAnimal(IntVector2 tilepos, Vector3 topCenterWp)
-            : base(tilepos, topCenterWp, DssVar.emptyAnimalModel)
+            : base(tilepos, topCenterWp, DssVar.emptyAnimalModel, null, 0)
         { }
         //protected override Graphics.VoxelModelInstance createModel()
         //{
@@ -171,19 +176,19 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         //        DssConst.Men_StandardModelScale * 0.5f);
         //}
 
-        protected override void sound()
-        {
-            if (Ref.peRnd.Chance(0.03) && SoundStackManager.RareAvailable())
-            {
-                SoundLib.pig.Play(model.position);
-            }
-        }
+        //protected override void sound()
+        //{
+        //    if (Ref.peRnd.Chance(0.03) && SoundStackManager.RareAvailable())
+        //    {
+        //        SoundLib.pig.Play(model.position);
+        //    }
+        //}
     }
 
     class Pheasant : AbsLivestock
     {
         public Pheasant(IntVector2 tilepos, Vector3 topCenterWp)
-            : base(tilepos, topCenterWp, DssVar.pheasantModel)
+            : base(tilepos, topCenterWp, DssVar.pheasantModel, null, 0)
         { }
         //protected override Graphics.VoxelModelInstance createModel()
         //{
@@ -191,13 +196,13 @@ namespace VikingEngine.DSSWars.GameObject.Animal
         //        DssConst.Men_StandardModelScale * 0.6f);
         //}
 
-        protected override void sound()
-        {
-            //if (Ref.rnd.Chance(0.02))
-            //{
-            //    SoundLib.hen.Play(model.position);
-            //}
-        }
+        //protected override void sound()
+        //{
+        //    //if (Ref.rnd.Chance(0.02))
+        //    //{
+        //    //    SoundLib.hen.Play(model.position);
+        //    //}
+        //}
     }
 
     //class Horse : AbsLivestock
@@ -218,21 +223,21 @@ namespace VikingEngine.DSSWars.GameObject.Animal
     //    }
     //}
 
-    class Dog : AbsLivestock
-    {
-        public Dog(IntVector2 tilepos, Vector3 topCenterWp)
-            : base(tilepos, topCenterWp, DssVar.dogModel)
-        { }
-        //protected override Graphics.VoxelModelInstance createModel()
-        //{
-        //    return DssRef.models.ModelInstance_drawbatch(DssVar.dogModel.modelName,
-        //        DssVar.dogModel.scale);
-        //}
+    //class Dog : AbsLivestock
+    //{
+    //    public Dog(IntVector2 tilepos, Vector3 topCenterWp)
+    //        : base(tilepos, topCenterWp, DssVar.dogModel)
+    //    { }
+    //    //protected override Graphics.VoxelModelInstance createModel()
+    //    //{
+    //    //    return DssRef.models.ModelInstance_drawbatch(DssVar.dogModel.modelName,
+    //    //        DssVar.dogModel.scale);
+    //    //}
 
-        protected override void sound()
-        {
-        }
-    }
+    //    //protected override void sound()
+    //    //{
+    //    //}
+    //}
 
     //class Hog : AbsLivestock
     //{

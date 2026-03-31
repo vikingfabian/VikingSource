@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.LootFest;
+using VikingEngine.Sound;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
@@ -51,14 +52,14 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
         Vector3 leftAnimalPosDiff, rightAnimalPosDiff;
         WalkingAnimation horseWalkingAnimation;
         WalkingAnimation wagonRollAnimation;
-
         WagonManType manType;
 
         Graphics.VoxelModelInstance soldierLeft, soldierRight, soldierBackLeft, soldierBackRight;
         Vector3 leftSoldierPosDiff, rightSoldierPosDiff, backleftSoldierPosDiff, backrightSoldierPosDiff;
         public WagonRiderModel(AbsSoldierUnit soldier)
         {
-            AnimalModelData modelData = CavalryModel.AnimalModel(soldier.group.soldierConscript.conscript.animal);
+            AnimalProfile modelData = CavalryModel.AnimalModel(soldier.group.soldierConscript.conscript.animal);
+            walkSound = modelData.walkSoundType;
             horseWalkingAnimation = modelData.animation;
             animalmodel_left = DssRef.models.ModelInstance_drawbatch(modelData.modelName, modelData.scale);
             animalmodel_right = DssRef.models.ModelInstance_drawbatch(modelData.modelName, modelData.scale);
@@ -367,9 +368,17 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
                 //Animation
                 float move = soldier.walkingSpeedWithModifiers(Ref.DeltaGameTimeMs);
-                horseWalkingAnimation.update(move, animalmodel_left);
+                horseWalkingAnimation.update(move, animalmodel_left, out bool enterEvenFrame);
+                if (enterEvenFrame && Ref.peRnd.ChanceF_Low(0.08f))
+                {
+                    SoundLib.WalkSounds[(int)walkSound].Play(model.position);
+                }
                 animalmodel_right.Frame = animalmodel_left.Frame;
-                wagonRollAnimation.update(move, model);
+                wagonRollAnimation.update(move, model, out enterEvenFrame);
+                if (enterEvenFrame) //&& Ref.peRnd.ChanceF_Low(0.04f))
+                {
+                    SoundLib.wagon.Play(model.position);
+                }
             }
             else if (soldier.inAttackAnimation())
             {

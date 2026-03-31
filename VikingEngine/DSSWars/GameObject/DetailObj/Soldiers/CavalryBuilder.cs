@@ -63,7 +63,8 @@ namespace VikingEngine.DSSWars.GameObject
         public CavalryModel(AbsSoldierUnit soldier)
            : base(soldier)
         {
-            AnimalModelData modelData = AnimalModel(soldier.group.soldierConscript.conscript.animal);
+            AnimalProfile modelData = AnimalModel(soldier.group.soldierConscript.conscript.animal);
+            walkSound = modelData.walkSoundType;
             animalmodel = DssRef.models.ModelInstance_drawbatch(modelData.modelName, modelData.scale);
             riderY = modelData.riderY;
             //switch (soldier.group.soldierConscript.conscript.animal)
@@ -114,9 +115,9 @@ namespace VikingEngine.DSSWars.GameObject
             walkingAnimation.idleblinkframe = CharacterModelBuilder.IdleBlinkFrame;
         }
 
-        public static AnimalModelData AnimalModel(Resource.ItemResourceType animal/*, out float riderY, out float wagonPullDistance*/)
+        public static AnimalProfile AnimalModel(Resource.ItemResourceType animal/*, out float riderY, out float wagonPullDistance*/)
         {
-            AnimalModelData modelData;
+            AnimalProfile modelData;
             switch (animal)
             {
                 case Resource.ItemResourceType.Pony:
@@ -231,7 +232,11 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 float move = soldier.walkingSpeedWithModifiers(Ref.DeltaGameTimeMs);
 
-                walkingAnimation.update(move, animalmodel);
+                walkingAnimation.update(move, animalmodel, out bool enterEvenFrame);
+                if (enterEvenFrame && Ref.peRnd.ChanceF_Low(0.08f))
+                {
+                    SoundLib.WalkSounds[(int)walkSound].Play(model.position);
+                }
             }
             else 
             {

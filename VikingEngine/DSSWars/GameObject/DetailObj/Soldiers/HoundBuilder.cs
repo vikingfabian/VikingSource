@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
         
         public HoundModel(AbsSoldierUnit soldier)
         {
-            AnimalModelData modelData;
+            AnimalProfile modelData;
             switch (soldier.group.soldierConscript.conscript.animal)
             {
                 default:

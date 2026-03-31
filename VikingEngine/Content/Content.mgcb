@@ -1123,6 +1123,24 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/break.wav
 
+#begin DSS/Sound/breath1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/breath1.wav
+
+#begin DSS/Sound/breath2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/breath2.wav
+
+#begin DSS/Sound/breath3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/breath3.wav
+
 #begin DSS/Sound/button_hover1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1207,6 +1225,30 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/dig.wav
 
+#begin DSS/Sound/dog_bark (1).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/dog_bark (1).wav
+
+#begin DSS/Sound/dog_bark (2).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/dog_bark (2).wav
+
+#begin DSS/Sound/dog_growl1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/dog_growl1.wav
+
+#begin DSS/Sound/dog_growl2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/dog_growl2.wav
+
 #begin DSS/Sound/drop_item.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1248,6 +1290,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/Dwarf Pain 6.wav
+
+#begin DSS/Sound/elephant_trump1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/elephant_trump1.wav
+
+#begin DSS/Sound/elephant_trump2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/elephant_trump2.wav
 
 #begin DSS/Sound/flesh_gore (1).wav
 /importer:WavImporter
@@ -1417,6 +1471,36 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/heavy_ballista2.wav
 
+#begin DSS/Sound/heavy_sword.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/heavy_sword.wav
+
+#begin DSS/Sound/heavy_walk1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/heavy_walk1.wav
+
+#begin DSS/Sound/heavy_walk2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/heavy_walk2.wav
+
+#begin DSS/Sound/heavy_walk3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/heavy_walk3.wav
+
+#begin DSS/Sound/heavy_walk4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/heavy_walk4.wav
+
 #begin DSS/Sound/hen1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1429,17 +1513,101 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/hen2.wav
 
+#begin DSS/Sound/hog1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/hog1.wav
+
+#begin DSS/Sound/hog2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/hog2.wav
+
+#begin DSS/Sound/hog3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/hog3.wav
+
+#begin DSS/Sound/Horse_Neigh_01.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/Horse_Neigh_01.wav
+
+#begin DSS/Sound/Horse_Neigh_02.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/Horse_Neigh_02.wav
+
+#begin DSS/Sound/Horse_Snort.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/Horse_Snort.wav
+
+#begin DSS/Sound/horse_walk1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/horse_walk1.wav
+
+#begin DSS/Sound/horse_walk2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/horse_walk2.wav
+
+#begin DSS/Sound/horse_walk3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/horse_walk3.wav
+
 #begin DSS/Sound/hover_disabled.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/hover_disabled.wav
 
+#begin DSS/Sound/howl1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/howl1.wav
+
+#begin DSS/Sound/howl2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/howl2.wav
+
 #begin DSS/Sound/intro_beat.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/intro_beat.wav
+
+#begin DSS/Sound/lion1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/lion1.wav
+
+#begin DSS/Sound/lion2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/lion2.wav
+
+#begin DSS/Sound/lion3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/lion3.wav
 
 #begin DSS/Sound/load_ballista.wav
 /importer:WavImporter
@@ -1452,6 +1620,24 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/menu_expand.wav
+
+#begin DSS/Sound/moo (1).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/moo (1).wav
+
+#begin DSS/Sound/moo (2).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/moo (2).wav
+
+#begin DSS/Sound/moo (3).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/moo (3).wav
 
 #begin DSS/Sound/musket1.wav
 /importer:WavImporter
@@ -1686,6 +1872,48 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/trophy.wav
+
+#begin DSS/Sound/wagon1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wagon1.wav
+
+#begin DSS/Sound/wagon2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wagon2.wav
+
+#begin DSS/Sound/wagon3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wagon3.wav
+
+#begin DSS/Sound/wagon4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wagon4.wav
+
+#begin DSS/Sound/wagon5.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wagon5.wav
+
+#begin DSS/Sound/wagon6.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wagon6.wav
+
+#begin DSS/Sound/wagon7.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wagon7.wav
 
 #begin DSS/Sound/wood_bonk1.wav
 /importer:WavImporter

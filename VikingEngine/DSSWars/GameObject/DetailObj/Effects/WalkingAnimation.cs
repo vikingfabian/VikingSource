@@ -49,8 +49,9 @@ namespace VikingEngine.DSSWars.GameObject
             moveLength = 0;
         }
 
-        public void update(float speed, Graphics.AbsVoxelObj model)
+        public void update(float speed, Graphics.AbsVoxelObj model, out bool enterEvenFrame)
         {
+            enterEvenFrame = false;
             moveLength += speed;
             if (moveLength >= movelengthBetweenFrames)
             {
@@ -61,10 +62,13 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 model.Frame = currentFrame;
-                if (lib.IsEven(currentFrame) && Ref.peRnd.ChanceF_Low(0.04f))
-                {
-                    SoundLib.footstep.Play(model.position);
-                }
+                enterEvenFrame = lib.IsEven(currentFrame);
+                  
+
+                //if (lib.IsEven(currentFrame) && Ref.peRnd.ChanceF_Low(0.04f))
+                //{
+                //    SoundLib.footstep.Play(model.position);
+                //}
             }
         }
 

@@ -48,6 +48,7 @@ namespace VikingEngine.DSSWars.GameObject
 
     abstract class AbsDetailUnitAdvancedModel : DetailUnitModel
     {
+        protected WalkSoundType walkSound;
         protected Graphics.Mesh shadowPlane;
         protected Vector3 shadowOffset = new Vector3(-0.005f, 0, -0.0058f);
         public Circle selectionArea;
@@ -147,7 +148,11 @@ namespace VikingEngine.DSSWars.GameObject
                 float move = soldier.walkingSpeedWithModifiers(Ref.DeltaGameTimeMs);
 
                 moveJiggle.Add(move * 50f);
-                walkingAnimation.update(move, model);
+                walkingAnimation.update(move, model, out bool enterEvenFrame);
+                if (enterEvenFrame && Ref.peRnd.ChanceF_Low(0.04f))
+                {
+                    SoundLib.footstep.Play(model.position);
+                }
 
                 float jiggleAdd = 0f;
                 if (soldier.SoldierProfile().walkingWaggleAngle > 0)
