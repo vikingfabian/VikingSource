@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.Work
                         }
                         else
                         {
-                            walkingAnimation.update(speed, model);
+                            walkingAnimation.update(speed, model, out _);
                            
                         }
 

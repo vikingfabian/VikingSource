@@ -56,10 +56,16 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
 
         Graphics.VoxelModelInstance soldierLeft, soldierRight, soldierBackLeft, soldierBackRight;
         Vector3 leftSoldierPosDiff, rightSoldierPosDiff, backleftSoldierPosDiff, backrightSoldierPosDiff;
+
+        protected static readonly IntervalF WagonSoundFrequecy = new IntervalF(1.2f, 24f);
+        protected TimeInGameCountdown nextWagonSound;
+
         public WagonRiderModel(AbsSoldierUnit soldier)
         {
+            nextWagonSound.start(WagonSoundFrequecy);
             AnimalProfile modelData = CavalryModel.AnimalModel(soldier.group.soldierConscript.conscript.animal);
             walkSound = modelData.walkSoundType;
+            animalNoiseType = modelData.noiseType;
             horseWalkingAnimation = modelData.animation;
             animalmodel_left = DssRef.models.ModelInstance_drawbatch(modelData.modelName, modelData.scale);
             animalmodel_right = DssRef.models.ModelInstance_drawbatch(modelData.modelName, modelData.scale);
@@ -261,6 +267,9 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                     }
                     break;
             }
+
+            resetAnimlNoise();
+
             update(soldier);
 
             VoxelModelInstance_Pooled createSoldier()
@@ -322,8 +331,13 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                     WP.Rotation1DToQuaterion(model, lib.V3XZToAngle(-offset));
                 }
                 model.position = wagonPos;
-                
-                
+
+                if (Ref.peRnd.Chance(0.5 / Ref.UpdateTimes60FPS))
+                {
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, Ref.peRnd.Vector3_SqXZ(wagonPos, 0.02f));
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, Ref.peRnd.Vector3_SqXZ(animalmodel_left.position, 0.02f));
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, Ref.peRnd.Vector3_SqXZ(animalmodel_right.position, 0.02f));
+                }
 
                 switch (manType)
                 {
@@ -345,6 +359,8 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                         soldierRight.Rotation = right;
                         soldierBackLeft.Rotation = left;
                         soldierBackRight.Rotation = right;
+
+                        
                         break;
 
                     case WagonManType.Riding:
@@ -369,16 +385,19 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                 //Animation
                 float move = soldier.walkingSpeedWithModifiers(Ref.DeltaGameTimeMs);
                 horseWalkingAnimation.update(move, animalmodel_left, out bool enterEvenFrame);
-                if (enterEvenFrame && Ref.peRnd.ChanceF_Low(0.08f))
+                if (enterEvenFrame && Ref.peRnd.ChanceF(0.2f))
                 {
                     SoundLib.WalkSounds[(int)walkSound].Play(model.position);
                 }
                 animalmodel_right.Frame = animalmodel_left.Frame;
                 wagonRollAnimation.update(move, model, out enterEvenFrame);
-                if (enterEvenFrame) //&& Ref.peRnd.ChanceF_Low(0.04f))
+                if (nextWagonSound.TimeOut()) //&& Ref.peRnd.ChanceF_Low(0.04f))
                 {
+                    nextWagonSound.start(WagonSoundFrequecy);
                     SoundLib.wagon.Play(model.position);
                 }
+
+               
             }
             else if (soldier.inAttackAnimation())
             {
@@ -394,6 +413,8 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                 animalmodel_right.Frame = 0;
                 
             }
+
+            updateAnimalNoise();
         }
 
         enum WagonManType

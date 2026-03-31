@@ -87,6 +87,12 @@ namespace VikingEngine.DSSWars.Data
             start();//endTimeSec = Ref.TotalGameTimeSec + length.seconds;
         }
 
+        public void start(IntervalF randomSecondsRange)
+        {
+            this.length = new TimeLength(randomSecondsRange.GetRandom());
+            start();//endTimeSec = Ref.TotalGameTimeSec + length.seconds;
+        }
+
         public void start()
         { 
             endTimeSec = Ref.TotalGameTimeSec + length.seconds;

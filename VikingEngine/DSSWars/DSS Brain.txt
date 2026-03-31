@@ -3,6 +3,7 @@
 Change Log:
 * removed wheelwright (temporary)
 * Added animal food upkeep
+* animal sounds and dust
 
 ##ICONS TODO
 
@@ -29,7 +30,7 @@ x adv build upgrade, no more use of logistics
 x auto options for logistics/hall/manor
 x mounts in casual play
 x Luxurious buildings, raises the nobel house cap
-*
+
 
 
 #Event timers (are slightly random)#

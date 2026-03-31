@@ -25,9 +25,10 @@ namespace VikingEngine.DSSWars.Data
         public AnimalNoiseType noiseType;
 
 
-        public AnimalProfile(VoxelModelName modelName, float scale, WalkingAnimation animation, WalkSoundType walkSoundType, float riderY = 0, float wagonPullDistance = 0)
+        public AnimalProfile(VoxelModelName modelName, float scale, WalkingAnimation animation, AnimalNoiseType noiseType, WalkSoundType walkSoundType, float riderY = 0, float wagonPullDistance = 0)
         {
             this.walkSoundType = walkSoundType;
+            this.noiseType = noiseType;
             this.modelName = modelName;
             this.scale = scale;
             this.animation = animation;
@@ -37,7 +38,7 @@ namespace VikingEngine.DSSWars.Data
 
         public AnimalProfile Copy(VoxelModelName modelName, float scaleMulti)
         {
-            AnimalProfile clone = new AnimalProfile(modelName, scale * scaleMulti, animation, walkSoundType, riderY * scaleMulti, wagonPullDistance * scaleMulti);
+            AnimalProfile clone = new AnimalProfile(modelName, scale * scaleMulti, animation, noiseType, walkSoundType, riderY * scaleMulti, wagonPullDistance * scaleMulti);
             return clone;
         }
     }

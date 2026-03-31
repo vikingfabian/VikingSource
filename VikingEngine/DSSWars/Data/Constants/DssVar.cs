@@ -42,34 +42,34 @@ namespace VikingEngine.DSSWars
         public static Dictionary<ItemResourceType, ShieldProperties> Shields;
         public static void UpdateConstants()
         {
-            emptyAnimalModel = new AnimalProfile(VoxelModelName.ErrorCube, DssConst.Men_StandardModelScale * 0.5f, new WalkingAnimation(), WalkSoundType.Foot);
+            emptyAnimalModel = new AnimalProfile(VoxelModelName.ErrorCube, DssConst.Men_StandardModelScale * 0.5f, new WalkingAnimation(), AnimalNoiseType.hen, WalkSoundType.Foot);
 
-            henModel = new AnimalProfile(VoxelModelName.Hen, DssConst.Men_StandardModelScale * 0.3f, new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 0.25f), WalkSoundType.Foot);
+            henModel = new AnimalProfile(VoxelModelName.Hen, DssConst.Men_StandardModelScale * 0.3f, new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 0.25f), AnimalNoiseType.hen, WalkSoundType.Foot);
             fowlModel = henModel.Copy(VoxelModelName.Fowl, 0.9f);
             pheasantModel = henModel.Copy(VoxelModelName.Pheasant, 1f);
 
-            pigModel = new AnimalProfile(VoxelModelName.Pig, DssConst.Men_StandardModelScale * 0.5f, new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames * 0.5f), WalkSoundType.Foot);
+            pigModel = new AnimalProfile(VoxelModelName.Pig, DssConst.Men_StandardModelScale * 0.5f, new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames * 0.5f), AnimalNoiseType.pig, WalkSoundType.Foot);
             boarModel = pigModel.Copy(VoxelModelName.Boar, 0.8f);
 
-            dogModel = new AnimalProfile(VoxelModelName.dog1, DssConst.Men_StandardModelScale * 0.6f, new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1.1f), WalkSoundType.Foot);
+            dogModel = new AnimalProfile(VoxelModelName.dog1, DssConst.Men_StandardModelScale * 0.6f, new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1.1f), AnimalNoiseType.dog, WalkSoundType.Foot);
             
-            oxenModel = new AnimalProfile(VoxelModelName.oxen1, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1.1f), WalkSoundType.Foot);
+            oxenModel = new AnimalProfile(VoxelModelName.oxen1, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1.1f), AnimalNoiseType.oxen, WalkSoundType.Foot);
             kineOxenModel = oxenModel.Copy(VoxelModelName.kineoxen1, 1.2f);
 
-            horseModel = new AnimalProfile(VoxelModelName.horse_brown, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames * 1f), WalkSoundType.Horse, 0.018f);
+            horseModel = new AnimalProfile(VoxelModelName.horse_brown, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames * 1f), AnimalNoiseType.horse, WalkSoundType.Horse, 0.018f);
             ponyModel = horseModel.Copy(VoxelModelName.pony_brown, 0.8f);
             warHorseModel = horseModel.Copy(VoxelModelName.warhorse_brown, 1.1f);
             draftHorseModel = horseModel.Copy(VoxelModelName.drafthorse_red, 1.2f);
 
-            wolfModel = new AnimalProfile(VoxelModelName.wolf1, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f), WalkSoundType.Foot, 0.018f);
+            wolfModel = new AnimalProfile(VoxelModelName.wolf1, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f), AnimalNoiseType.wolf, WalkSoundType.Foot, 0.018f);
             wargModel = wolfModel.Copy(VoxelModelName.warg1, 1.1f);
             alphaWargModel = wargModel.Copy(VoxelModelName.alphawarg1, 1.1f);
 
-            hogModel = new AnimalProfile(VoxelModelName.hog1, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1f), WalkSoundType.Foot, 0.013f, 0.2f);
-            lionModel = new AnimalProfile(VoxelModelName.lion1, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f), WalkSoundType.Foot);
+            hogModel = new AnimalProfile(VoxelModelName.hog1, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1f), AnimalNoiseType.hog, WalkSoundType.Foot, 0.013f, 0.2f);
+            lionModel = new AnimalProfile(VoxelModelName.lion1, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f), AnimalNoiseType.lion, WalkSoundType.Foot);
 
 
-            elephantModel = new AnimalProfile(VoxelModelName.Elephant_default, DssConst.Men_StandardModelScale * 1.9f, new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames * 2), WalkSoundType.Heavy);
+            elephantModel = new AnimalProfile(VoxelModelName.Elephant_default, DssConst.Men_StandardModelScale * 1.9f, new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames * 2), AnimalNoiseType.elephant, WalkSoundType.Heavy);
             elephantModel.riderY = 0.38f * elephantModel.scale;
             warElephantModel = elephantModel.Copy(VoxelModelName.Elephant_war, 1.1f);
             oliphantModel = warElephantModel.Copy(VoxelModelName.Elephant_oli, 1.5f);

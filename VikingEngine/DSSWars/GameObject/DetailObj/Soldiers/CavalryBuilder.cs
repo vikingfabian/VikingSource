@@ -65,54 +65,18 @@ namespace VikingEngine.DSSWars.GameObject
         {
             AnimalProfile modelData = AnimalModel(soldier.group.soldierConscript.conscript.animal);
             walkSound = modelData.walkSoundType;
+            animalNoiseType = modelData.noiseType;
             animalmodel = DssRef.models.ModelInstance_drawbatch(modelData.modelName, modelData.scale);
             riderY = modelData.riderY;
-            //switch (soldier.group.soldierConscript.conscript.animal)
-            //{
-            //    default:
-            //        animalmodel = DssRef.models.ModelInstance_drawbatch(Ref.rnd.Chance(0.2) ? VoxelModelName.horse_white : VoxelModelName.horse_brown, DssConst.Men_StandardModelScale * 1.1f);
-            //        walkingAnimation = new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames * 2f);
-            //        riderY = 0.018f;
-            //        break;
+            
 
-            //    case Resource.ItemResourceType.WildPig:
-            //    case Resource.ItemResourceType.WildHog:
-            //    case Resource.ItemResourceType.StagHog:
-            //        animalmodel = DssRef.models.ModelInstance_drawbatch(VoxelModelName.hog1, DssConst.Men_StandardModelScale * 1.1f);
-            //        walkingAnimation = new WalkingAnimation(1, 5, WalkingAnimation.StandardMoveFrames * 2f);
-            //        riderY = 0.013f;
-            //        break;
-
-            //    case Resource.ItemResourceType.Wolf:
-            //    case Resource.ItemResourceType.Warg:
-            //    case Resource.ItemResourceType.AlphaWarg:
-            //        animalmodel = DssRef.models.ModelInstance_drawbatch(VoxelModelName.wolf1, DssConst.Men_StandardModelScale * 1.1f);
-            //        walkingAnimation = new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
-            //        riderY = 0.018f;
-            //        break;
-
-            //    case Resource.ItemResourceType.WildCat:
-            //    case Resource.ItemResourceType.Lion:
-            //    case Resource.ItemResourceType.WarLion:
-            //        animalmodel = DssRef.models.ModelInstance_drawbatch(VoxelModelName.lion1, DssConst.Men_StandardModelScale * 1.1f);
-            //        walkingAnimation = new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
-            //        riderY = 0.018f;
-            //        break;
-
-            //    case Resource.ItemResourceType.Elephant:
-            //    case Resource.ItemResourceType.WarElephant:
-            //    case Resource.ItemResourceType.Oliphant:
-            //        float scale = DssConst.Men_StandardModelScale * 1.9f;
-            //        animalmodel = DssRef.models.ModelInstance_drawbatch(VoxelModelName.Elephant1, scale);
-            //        walkingAnimation = new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames * 2);
-            //        riderY = 0.38f * scale;
-            //        break;
-            //}
             walkingAnimation = modelData.animation;
             var soldierProfile = soldier.Profile();
             walkingAnimation.attackframe = CharacterModelBuilder.AttackFrame;
             walkingAnimation.idleframe = CharacterModelBuilder.IdleFrame;
             walkingAnimation.idleblinkframe = CharacterModelBuilder.IdleBlinkFrame;
+
+            resetAnimlNoise();
         }
 
         public static AnimalProfile AnimalModel(Resource.ItemResourceType animal/*, out float riderY, out float wagonPullDistance*/)
@@ -233,9 +197,14 @@ namespace VikingEngine.DSSWars.GameObject
                 float move = soldier.walkingSpeedWithModifiers(Ref.DeltaGameTimeMs);
 
                 walkingAnimation.update(move, animalmodel, out bool enterEvenFrame);
-                if (enterEvenFrame && Ref.peRnd.ChanceF_Low(0.08f))
+                if (enterEvenFrame && Ref.peRnd.ChanceF(0.1f))
                 {
                     SoundLib.WalkSounds[(int)walkSound].Play(model.position);
+                }
+
+                if (Ref.peRnd.Chance(0.5 / Ref.UpdateTimes60FPS))
+                {
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, Ref.peRnd.Vector3_SqXZ(model.position, 0.02f));
                 }
             }
             else 
@@ -247,6 +216,8 @@ namespace VikingEngine.DSSWars.GameObject
             
             animalmodel.position = model.position;
             animalmodel.Rotation = model.Rotation;
+
+            updateAnimalNoise();
         }
 
         public override void DeleteMe()

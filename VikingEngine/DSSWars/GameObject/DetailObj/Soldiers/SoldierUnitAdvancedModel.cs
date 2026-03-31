@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.Sound;
 using VikingEngine.ToGG.HeroQuest.Gadgets;
 using VikingEngine.ToGG.MoonFall.GO;
 
@@ -49,6 +51,7 @@ namespace VikingEngine.DSSWars.GameObject
     abstract class AbsDetailUnitAdvancedModel : DetailUnitModel
     {
         protected WalkSoundType walkSound;
+        
         protected Graphics.Mesh shadowPlane;
         protected Vector3 shadowOffset = new Vector3(-0.005f, 0, -0.0058f);
         public Circle selectionArea;
@@ -97,6 +100,26 @@ namespace VikingEngine.DSSWars.GameObject
             selectionArea = new Circle(Vector2.Zero, 1.2f);
         }
 
+        protected AnimalNoiseType animalNoiseType = AnimalNoiseType.NUM_NONE;
+        protected static readonly IntervalF AnimalNoiseFrequecy = new IntervalF(5, 40);
+        protected TimeInGameCountdown nextAnimalNoise;
+        protected void resetAnimlNoise()
+        {
+            nextAnimalNoise.start(AnimalNoiseFrequecy);
+        }
+
+        protected void updateAnimalNoise()
+        {
+            if (nextAnimalNoise.TimeOut())
+            {
+                if (Ref.peRnd.Chance(0.5) && animalNoiseType != AnimalNoiseType.NUM_NONE && SoundStackManager.RareAvailable())
+                {
+                    SoundLib.AnimalNoises[(int)animalNoiseType].Play(model.position);
+                }
+                resetAnimlNoise();
+            }
+        }
+
         protected void createShadow(AbsSoldierUnit soldier)
         {
             if (!Ref.gamesett.modelShadow)
@@ -119,8 +142,9 @@ namespace VikingEngine.DSSWars.GameObject
     
     class SoldierUnitAdvancedModel: AbsDetailUnitAdvancedModel
     {
+        
         protected WalkingAnimation walkingAnimation;
-
+        
         Rotation1D moveJiggle = Rotation1D.Random();
         
         bool inBlinkFrame = true;
@@ -134,6 +158,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             walkingAnimation = WalkingAnimation.Standard;
         }
+
+        
 
         override public void update(AbsSoldierUnit soldier)
         {
@@ -162,10 +188,10 @@ namespace VikingEngine.DSSWars.GameObject
                 WP.Rotation1DToQuaterion(model, soldier.rotation.Radians + jiggleAdd);
 
 
-                if (/*Ref.TimePassed16ms && */Ref.peRnd.Chance(0.5 / Ref.UpdateTimes60FPS))
+                if (Ref.peRnd.Chance(0.5 / Ref.UpdateTimes60FPS))
                 {
                     Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, Ref.peRnd.Vector3_SqXZ( soldier.position, 0.02f));
-                    //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, soldier.position);
+                    
                 }
             }
             else

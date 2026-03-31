@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.PJ.Bagatelle;
 using VikingEngine.ToGG.ToggEngine.Map;
@@ -14,6 +15,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
     {
         public Vector3 wp;
         public ItemResourceType animal;
+        
 
         public AnimalData(Vector3 wp, ItemResourceType animal)
         {

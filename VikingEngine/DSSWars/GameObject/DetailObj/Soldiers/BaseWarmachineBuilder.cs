@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (parent.state.walking || parent.state.rotating)
             {
                 float move = parent.walkingSpeedWithModifiers(Ref.DeltaTimeMs);
-                walkingAnimation.update(move, model);
+                walkingAnimation.update(move, model, out _);
             }
             else
             {

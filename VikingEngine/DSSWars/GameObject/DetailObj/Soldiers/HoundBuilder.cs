@@ -58,12 +58,14 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             }
             model = DssRef.models.ModelInstance_drawbatch(modelData.modelName, modelData.scale);
             walkingAnimation = modelData.animation;
+            animalNoiseType = modelData.noiseType;
 
             var soldierProfile = soldier.Profile();
             walkingAnimation.attackframe = 0;
             walkingAnimation.idleframe = 0;
             walkingAnimation.idleblinkframe = 0;
-
+            
+            resetAnimlNoise();
             createShadow(soldier);
         }
 
@@ -74,13 +76,16 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
         }
 
         protected void updateAnimation(AbsSoldierUnit soldier)
-        {           
-
+        {  
             if (soldier.state.walking)
             {
                 float move = soldier.walkingSpeedWithModifiers(Ref.DeltaGameTimeMs);
 
-                walkingAnimation.update(move, model);
+                walkingAnimation.update(move, model, out bool enterEvenFrame);
+                if (enterEvenFrame && Ref.peRnd.ChanceF_Low(0.04f))
+                {
+                    SoundLib.footstep.Play(model.position);
+                }
             }
             else
             {
@@ -95,6 +100,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             }
 
             WP.Rotation1DToQuaterion(model, soldier.rotation.Radians);
+            updateAnimalNoise();
         }
     }
 }

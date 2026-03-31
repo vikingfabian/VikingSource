@@ -40,6 +40,7 @@ namespace VikingEngine.DSSWars
            painvoice, fleshgore;
 
         public static SoundContainerBase[] WalkSounds;
+        public static SoundContainerBase[] AnimalNoises;
 
         public static RbSoundProfile menu, menuHover, menuOption, menuOptionDeselect, menutab, menuExpand, menutabHover, menuBack, menuBuy, menuArmyHalt, menuCopy, menuPaste, menuStart, menuStop;
 
@@ -103,23 +104,24 @@ namespace VikingEngine.DSSWars
 
             SoundContainerMultiple animal_breath = new SoundContainerMultiple([SoundDir + "breath1", SoundDir + "breath2", SoundDir + "breath3"]);
 
-            SoundContainerBuilder elephantBuilder = new SoundContainerBuilder(0.6f, 0.2f);
+            SoundContainerBuilder elephantBuilder = new SoundContainerBuilder(0.5f, 0.2f);
             elephantBuilder.add([SoundDir + "elephant_trump1", SoundDir + "elephant_trump2"]);
             elephantBuilder.add(animal_breath);
             elephant = elephantBuilder.Build();
-            SoundContainerMultiple heavy_walk = new SoundContainerMultiple([SoundDir + "heavy_walk1", SoundDir + "heavy_walk2", SoundDir + "heavy_walk3", SoundDir + "heavy_walk4"]);
+            SoundContainerMultiple heavy_walk = new SoundContainerMultiple([SoundDir + "heavy_walk1", SoundDir + "heavy_walk2", SoundDir + "heavy_walk3", SoundDir + "heavy_walk4"], 0.6f, 0.2f);
 
             SoundContainerBuilder oxenBuilder = new SoundContainerBuilder(0.6f, 0.4f);
             oxenBuilder.add([SoundDir + "moo (1)", SoundDir + "moo (2)", SoundDir + "moo (3)"]);
             oxenBuilder.add(animal_breath);
             oxen = oxenBuilder.Build();
 
-            SoundContainerBuilder horseBuilder = new SoundContainerBuilder(0.6f, 0.4f);
+            SoundContainerBuilder horseBuilder = new SoundContainerBuilder(0.3f, 0.4f);
             horseBuilder.add([SoundDir + "Horse_Neigh_01", SoundDir + "Horse_Neigh_02", SoundDir + "Horse_Snort"]);
             horseBuilder.add(animal_breath);
             horse = horseBuilder.Build();
 
-            SoundContainerMultiple horse_walk = new SoundContainerMultiple([SoundDir + "horse_walk1", SoundDir + "horse_walk2", SoundDir + "horse_walk3"]);
+            SoundContainerMultiple horse_walk = new SoundContainerMultiple(
+                [SoundDir + "horse_walk1", SoundDir + "horse_walk2", SoundDir + "horse_walk3"], 0.4f, 0.2f);
 
             lion = new SoundContainerMultiple([SoundDir + "lion1", SoundDir + "lion2", SoundDir + "lion3"]);
 
@@ -148,7 +150,7 @@ namespace VikingEngine.DSSWars
                 SoundDir + "footstep (8)",
                 SoundDir + "footstep (9)",
                 SoundDir + "footstep (10)"
-            ], 0.20f, 0.4f);
+            ], 0.2f, 0.4f);
 
 
 
@@ -195,6 +197,18 @@ namespace VikingEngine.DSSWars
                 footstep,
                 horse_walk,
                 heavy_walk };
+
+            AnimalNoises = new SoundContainerBase[(int)AnimalNoiseType.NUM_NONE];
+            AnimalNoises[(int)AnimalNoiseType.hen] = hen;
+            AnimalNoises[(int)AnimalNoiseType.pig] = pig;
+            AnimalNoises[(int)AnimalNoiseType.hog] = hog;
+            AnimalNoises[(int)AnimalNoiseType.dog] = dog;
+            AnimalNoises[(int)AnimalNoiseType.wolf] = wolf;
+            AnimalNoises[(int)AnimalNoiseType.lion] = lion;
+            AnimalNoises[(int)AnimalNoiseType.oxen] = oxen;
+            AnimalNoises[(int)AnimalNoiseType.horse] = horse;
+            AnimalNoises[(int)AnimalNoiseType.elephant] = elephant;
+
             //buttonHoverAction = new RbSoundAction(menuHover);
             //tabHoverAction = new RbSoundAction(menutabHover);
 

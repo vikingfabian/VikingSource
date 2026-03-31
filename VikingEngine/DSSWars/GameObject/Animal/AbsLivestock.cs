@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
             {
                 float speed =DssConst.Livestock_WalkingSpeed * Ref.DeltaGameTimeMs;
                 model.position += walkDir * speed;
-                modelData.animation.update(speed, model);
+                modelData.animation.update(speed, model, out _);
 
                 if (!area.IntersectX(model.position.X) ||
                     !area.IntersectY(model.position.Z))
