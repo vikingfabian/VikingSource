@@ -2107,7 +2107,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 CityCulture.AnimalBreeder2, //Higher chance of successful breeding
                 CityCulture.Potters, //Higher pottery production
                 CityCulture.Wainwright, //High wagon production
-                CityCulture.Wheelwright, //Speed bonus to conscripted carts
+                //CityCulture.Wheelwright, //Speed bonus to conscripted carts
                 CityCulture.ShieldMaker, //High shield production
                 CityCulture.Nomads, //Low settler cost
                 CityCulture.Coopers, //High storage box production

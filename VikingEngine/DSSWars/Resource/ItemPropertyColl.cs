@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.Resource
 {
@@ -221,6 +222,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = false;
                 soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.2f;
                 soldier.basehealth = DssConst.Soldier_DefaultHealth;
+                soldier.animalFoodMultiplier = 0.8f;
             }
 
             new ItemProperties(ItemResourceType.Hen, CityResoureIndex.Hen, DefaultWeight, WorkPriorityType.SlaughterHen, null, null, StorageType.AnimalStorage)
@@ -244,6 +246,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 1f;
 
             }
             {
@@ -263,6 +266,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 1.2f;
             }
             // --- Dogs ---
             {
@@ -278,6 +282,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = false;
                 soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 2f;
                 soldier.basehealth = DssConst.DogHealth;
+                animal.soldierData.animalFoodMultiplier = 0.25f;
             }
             {
                 var animal = new ItemProperties(ItemResourceType.Hound, CityResoureIndex.Hound, DefaultWeight, WorkPriorityType.NUM_NONE, null, null, StorageType.AnimalStorage);
@@ -292,6 +297,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = false;
                 soldier.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.7f;
                 soldier.basehealth = DssConst.HoundHealth;
+                animal.soldierData.animalFoodMultiplier = 0.3f;
             }
             // --- Horses ---
             {
@@ -314,6 +320,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 0.5f;
             }
 
             {
@@ -336,6 +343,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 1f;
             }
 
             {
@@ -358,6 +366,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 1.2f;
             }
 
             {
@@ -380,6 +389,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 1.2f;
             }
 
             // --- Pigs / Hogs ---
@@ -404,6 +414,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 1.1f;
             }
 
             {
@@ -427,6 +438,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 1.25f;
             }
 
             {
@@ -450,6 +462,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 1.4f;
             }
 
             {
@@ -473,6 +486,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 1.4f;
             }
 
             // --- Wolves ---
@@ -497,6 +511,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 0.6f;
             }
 
             {
@@ -520,6 +535,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 0.8f;
             }
 
             {
@@ -543,6 +559,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 1f;
             }
 
             // --- Cats ---
@@ -567,6 +584,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 0.6f;
             }
 
             {
@@ -590,6 +608,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 0.8f;
             }
 
             {
@@ -613,6 +632,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = MountRowWidth;
                 animal.soldierData.columnsDepth = MountColumnDepth;
+                animal.soldierData.animalFoodMultiplier = 1f;
             }
 
             // --- Elephants ---
@@ -637,6 +657,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = ElephantRowWidth;
                 animal.soldierData.columnsDepth = ElephantCumnDepth;
+                animal.soldierData.animalFoodMultiplier = 4f;
             }
 
             {
@@ -660,6 +681,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = ElephantRowWidth;
                 animal.soldierData.columnsDepth = ElephantCumnDepth;
+                animal.soldierData.animalFoodMultiplier = 5f;
             }
 
             {
@@ -683,6 +705,7 @@ namespace VikingEngine.DSSWars.Resource
 
                 animal.soldierData.rowWidth = ElephantRowWidth;
                 animal.soldierData.columnsDepth = ElephantCumnDepth;
+                animal.soldierData.animalFoodMultiplier = 8f;
             }
 
             new ItemProperties(ItemResourceType.SlaughterFowl, NoCityResource, DefaultWeight, WorkPriorityType.SlaughterFowl, CraftResourceLib.SlaughterFowl, null, StorageType.NUM_NONE);

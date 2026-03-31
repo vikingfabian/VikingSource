@@ -1,12 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
 using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.PJ;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.DSSWars.Conscript
@@ -181,13 +182,6 @@ namespace VikingEngine.DSSWars.Conscript
             var weaponProperties = ItemPropertyColl.Get(conscript.weapon);
             SoldierData soldierData = weaponProperties.soldierData;
 
-            //soldierData.copperUpkeepPerSoldier = DssConst.TrainingCopperUpkeep[(int)conscript.training];
-            //if (conscript.man == ItemResourceType.NobelMen)
-            //{
-            //    soldierData.copperUpkeepPerSoldier += DssConst.Nobel_GoldUpkeep;
-
-            //}
-
             soldierData.applySkillBonus(skillBonus);
 
             var armorData = ItemPropertyColl.Get(conscript.armorLevel).soldierData;
@@ -213,6 +207,9 @@ namespace VikingEngine.DSSWars.Conscript
 
                 ridingAnimalSetup(conscript.animal, conscript.mountArmor, ref soldierData);
                 wagonSetup(conscript.vehicle, ref soldierData);
+
+                ConscriptUnitCount unitCount = new ConscriptUnitCount(conscript);
+                animalSetup(conscript.animal, unitCount.animalsPerUnit, ref soldierData);
             }
             else if (conscript.animal != ItemResourceType.NONE)
             {
@@ -228,9 +225,11 @@ namespace VikingEngine.DSSWars.Conscript
                     soldierData.walkingSpeed = animalProperties.soldierData.walkingSpeed;
 
                     ridingAnimalSetup(conscript.animal, conscript.mountArmor, ref soldierData);
-                }                
+                }
+                animalSetup(conscript.animal, 1, ref soldierData);
             }
             
+
             if (conscript.weapon == ItemResourceType.Pike)
             {
                 conscript.specialization = SpecializationType.AntiCavalry;
@@ -332,7 +331,11 @@ namespace VikingEngine.DSSWars.Conscript
 
             
         }
-
+        void animalSetup(ItemResourceType animal, int unitAnimalCount, ref SoldierData soldierData)
+        {
+            var animalData = ItemPropertyColl.Get(animal).soldierData;
+            soldierData.animalFoodMultiplier = animalData.animalFoodMultiplier * unitAnimalCount;
+        }
         void ridingAnimalSetup(ItemResourceType animal, ItemResourceType armor, ref SoldierData soldierData)
         {
             var animalData = ItemPropertyColl.Get(animal).soldierData;

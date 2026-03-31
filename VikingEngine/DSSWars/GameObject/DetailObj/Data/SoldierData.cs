@@ -149,7 +149,10 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
             return attackDamageStructure / (attackTimePlusCoolDown / TimeExt.SecondToMs);
         }
 
-        
+        public float animalFoodUpkeep(int unitCount)
+        {
+            return animalFoodMultiplier * unitCount * DssRef.difficulty.mountFoodUpkeep;
+        }
 
         public int UnitCount()
         {

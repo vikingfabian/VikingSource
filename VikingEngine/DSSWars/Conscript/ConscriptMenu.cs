@@ -124,7 +124,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                         var button = new ArtOption(item == currentStatus.profile.man, buttonContent,
                         new RbAction1Arg<ItemResourceType>(manClick, item, RbSoundType.Option),
-                        new RbTooltip(manTooltip, new ManTooltipArgs() { manType = item, soldierCount = unitCount.TotalMen,})
+                        new RbTooltip(manTooltip, new ManTooltipArgs() { item = item, count = unitCount.TotalMen,})
                         );
 
                         content.Add(button);
@@ -220,18 +220,16 @@ namespace VikingEngine.DSSWars.Conscript
                     {
                         IconName.Item(item, out SpriteName itemIcon, out _);
 
-                        var buttonContent = new List<AbsRichBoxMember>(3) {
-                        new RbImage(itemIcon),
-                    };
+                        var buttonContent = new List<AbsRichBoxMember>(3) { new RbImage(itemIcon)};
 
                         if (city.GetGroupedResource(item).amount >= menCostNext)
                         {
                             buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
                         }
-
+                        var animalTip = new ManTooltipArgs() { item = item, count = unitCount.groupUnitCount, };
                         var button = new ArtOption(item == currentStatus.profile.animal, buttonContent,
                         new RbAction1Arg<ItemResourceType>(animalClick, item, RbSoundType.Option),
-                        new RbTooltip(animalTooltip, item)
+                        new RbTooltip(animalTooltip, animalTip)
                         );
 
                         content.Add(button);
@@ -685,7 +683,12 @@ namespace VikingEngine.DSSWars.Conscript
                 content.h2(DssRef.lang.Hud_Upkeep, HudLib.TitleColor_Head2);
                 float goldUpkeep = Money.ToGoldF( unitCount.TotalMen * currentStatus.profile.copperUpkeepPerSoldier());
                 HudLib.LabelAndText(content, SpriteName.rtsUpkeep, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.ResourceType_Gold)), TextLib.TwoDecimal(goldUpkeep));
-                HudLib.LabelAndText(content, SpriteName.WarsResource_FoodSub, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.Resource_TypeName_Food)), TextLib.TwoDecimal(unitCount.TotalMen * DssRef.difficulty.manFoodUpkeep));
+                float foodUpkeep = unitCount.TotalMen * DssRef.difficulty.manFoodUpkeep;
+                if (currentStatus.profile.animal != ItemResourceType.NONE)
+                {
+                    foodUpkeep += ItemPropertyColl.Get(currentStatus.profile.animal).soldierData.animalFoodUpkeep(unitCount.groupUnitCount);
+                }
+                HudLib.LabelAndText(content, SpriteName.WarsResource_FoodSub, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.Resource_TypeName_Food)), TextLib.TwoDecimal(foodUpkeep));
                 content.text(DssRef.todoLang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Light);
             }
 
@@ -913,15 +916,15 @@ namespace VikingEngine.DSSWars.Conscript
 
         struct ManTooltipArgs
         {
-            public ItemResourceType manType;
-            public int soldierCount;
+            public ItemResourceType item;
+            public int count;
         }
 
         void manTooltip(RichBoxContent content, object tag)
         {
             ManTooltipArgs args = (ManTooltipArgs)tag;
 
-            float skillBonus = args.manType == ItemResourceType.NobelMen ? DssConst.NobelMenSkillBonusAdd : 0;
+            float skillBonus = args.item == ItemResourceType.NobelMen ? DssConst.NobelMenSkillBonusAdd : 0;
 
             //HudLib.LabelAndText(content, SpriteName.cmdStatsHealth, DssRef.lang.SoldierStats_Health, TextLib.TwoDecimal(DssConst.Soldier_DefaultHealth));
             HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.todoLang.Conscript_Mobility, TextLib.TwoDecimal(SoldierData.Mobility(DssConst.Men_StandardWalkingSpeed)));
@@ -929,19 +932,19 @@ namespace VikingEngine.DSSWars.Conscript
             SkillbonusUi(content, skillBonus, true);
 
             content.newParagraph();
-            IconName.Item(args.manType, out var itemIcon, out var itemName);
-            content.h2(string.Format(DssRef.lang.Language_ItemCount, TextLib.LargeFirstLetter( itemName), args.soldierCount), HudLib.TitleColor_Head2);
-            if (args.manType == ItemResourceType.NobelMen)
+            IconName.Item(args.item, out var itemIcon, out var itemName);
+            content.h2(string.Format(DssRef.lang.Language_ItemCount, TextLib.LargeFirstLetter( itemName), args.count), HudLib.TitleColor_Head2);
+            if (args.item == ItemResourceType.NobelMen)
             {
-                HudLib.LabelAndText(content, SpriteName.rtsUpkeepTime, string.Format( DssRef.lang.Language_XUpkeep, DssRef.lang.ResourceType_Gold), TextLib.PlusMinus(Money.ToGoldF(DssConst.NobelHouseMenCount * args.soldierCount)));
+                HudLib.LabelAndText(content, SpriteName.rtsUpkeepTime, string.Format( DssRef.lang.Language_XUpkeep, DssRef.lang.ResourceType_Gold), TextLib.PlusMinus(Money.ToGoldF(DssConst.NobelHouseMenCount * args.count)));
             }
-            HudLib.LabelAndText(content, SpriteName.WarsResource_FoodSub, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.Resource_TypeName_Food)), TextLib.TwoDecimal(args.soldierCount * DssRef.difficulty.manFoodUpkeep));
+            HudLib.LabelAndText(content, SpriteName.WarsResource_FoodSub, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.Resource_TypeName_Food)), TextLib.TwoDecimal(args.count * DssRef.difficulty.manFoodUpkeep));
             content.text(DssRef.todoLang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Light);
 
             content.newParagraph();
             content.Add(new RbSeperationLine() { thick = true });
 
-            ResourceLib.FullResourceInfo(player.faction, city, args.manType, content);
+            ResourceLib.FullResourceInfo(player.faction, city, args.item, content);
         }
 
         void shieldTooltip(RichBoxContent content, object tag)
@@ -961,12 +964,12 @@ namespace VikingEngine.DSSWars.Conscript
         }
         void animalTooltip(RichBoxContent content, object tag)
         {
-            ItemResourceType item = (ItemResourceType)tag;
+            ManTooltipArgs args = (ManTooltipArgs)tag;
 
-            IconName.Item(item, out SpriteName icon, out string  name);
+            IconName.Item(args.item, out SpriteName icon, out string  name);
             content.h1(TextLib.LargeFirstLetter(name), HudLib.TitleColor_Head);
             content.newLine();
-            var properties = ItemPropertyColl.Get(item);
+            var properties = ItemPropertyColl.Get(args.item);
 
             HudLib.LabelAndText(content, SpriteName.WarsResource_Sword, DssRef.lang.Conscript_WeaponDamage, TextLib.PlusMinus(properties.soldierData.attackDamage));
             HudLib.LabelAndText(content, SpriteName.warsArmyTag_Shield, DssRef.lang.Conscript_ArmorHealth, TextLib.PlusMinus(properties.soldierData.basehealth));
@@ -974,11 +977,15 @@ namespace VikingEngine.DSSWars.Conscript
             HudLib.LabelAndText(content, SpriteName.WarsResource_Wagon2Wheel, DssRef.todoLang.Conscript_LightWagonMobility, TextLib.TwoDecimal(SoldierData.Mobility( properties.soldierData.lightWagonSpeed)));
             HudLib.LabelAndText(content, SpriteName.WarsResource_WagonSteel, DssRef.todoLang.Conscript_HeavyWagonMobility, TextLib.TwoDecimal(SoldierData.Mobility(properties.soldierData.heavyWagonSpeed)));
 
-
+            content.newParagraph();
+            content.h2(DssRef.lang.Hud_Upkeep, HudLib.TitleColor_Head2);
+            HudLib.LabelAndText(content, SpriteName.WarsResource_FoodSub, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.Resource_TypeName_Food)), TextLib.TwoDecimal(properties.soldierData.animalFoodUpkeep(args.count)));
+            content.text(DssRef.todoLang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Dark);
+            
             content.newParagraph();
             content.Add(new RbSeperationLine() { thick = true });
 
-            ResourceLib.FullResourceInfo(player.faction, city, item, content);
+            ResourceLib.FullResourceInfo(player.faction, city, args.item, content);
         }
         //void mountArmorTooltip(RichBoxContent content, object tag)
         //{
