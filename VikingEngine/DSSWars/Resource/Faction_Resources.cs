@@ -20,6 +20,8 @@ namespace VikingEngine.DSSWars
         public Money money = new Money(4000);
         Money storeMoney = Money.Zero;
         Money previuosMoney = Money.Zero;
+        public MinuteStats foodProduction = new MinuteStats();
+        public MinuteStats foodSpending = new MinuteStats();
         public int totalWorkForce, /*armyFoodUpkeep, */armyFoodImportCost, armyFoodBlackMarketCost;
         public SoldierUpkeep totalArmiesUpkeep = new SoldierUpkeep();
         public int embassyCount = 0;
@@ -33,8 +35,8 @@ namespace VikingEngine.DSSWars
         public int CityTradeExportCounting = 0;
         public int CityTradeImportCounting = 0;
 
-        public int CityFoodProduction = 0;
-        public int CityFoodSpending = 0;
+        //public int CityFoodProduction = 0;
+        //public int CityFoodSpending = 0;
         public int CitySoldResources = 0;
 
         public int resourceComponentStartIndex;
@@ -542,55 +544,41 @@ namespace VikingEngine.DSSWars
 
         public void resources_updateAsynch(float oneSecondUpdate, out float citiesMilitaryStrenght)
         {
-            //int cityIncomeCount = 0;
             int workForceCount = 0;
-            //int nobel = 0;
             
             CityEconomyData newCitiesEconomy = new CityEconomyData();
-            float citiesFoodProduce = 0;
-            float citiesFoodSpend = 0;
+            //float citiesFoodProduce = 0;
+            //float citiesFoodSpend = 0;
             float soldResources = 0;
             citiesMilitaryStrenght = 0;
 
-            //var citiesC = cities.counter();
-            //            while (citiesC.Next())
-            //            {
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
             {
-                //citiesC.sel.updateIncome_asynch();
-                //CityEconomyData data = citiesC.sel.calcIncome_async();
                 CityEconomyData data = new CityEconomyData(citySel);
                 newCitiesEconomy.Add(data);
-                //cityIncomeCount += data.total();
                 workForceCount += citySel.workForce.amount;
-                citiesFoodProduce += citySel.foodProduction.displayValue_gold_sec;
-                citiesFoodSpend += citySel.foodSpending.displayValue_gold_sec;
+                //citiesFoodProduce += citySel.foodProduction.displayValue_gold_sec;
+                //citiesFoodSpend += citySel.foodSpending.displayValue_gold_sec;
                 soldResources += citySel.soldResources.displayValue_gold_sec;
                 citiesMilitaryStrenght += citySel.strengthValue;
-                //if (citiesC.sel.nobelHouse)
-                //{
-                //    ++nobel;
-                //}
+              
             }
 
             totalWorkForce = workForceCount;
             citiesEconomy = newCitiesEconomy;
-            //cityIncome = newCitiesEconomy.total();
-            //nobelHouseCount = nobel;
 
-#if DEBUG
-            if (Debug.CorruptValue(citiesFoodSpend))
-            {
-                lib.DoNothing();
-            }
-#endif
+//#if DEBUG
+//            if (Debug.CorruptValue(citiesFoodSpend))
+//            {
+//                lib.DoNothing();
+//            }
+//#endif
 
-            CityFoodProduction = Convert.ToInt32(citiesFoodProduce);
-            CityFoodSpending = Convert.ToInt32(citiesFoodSpend);
+//            CityFoodProduction = Convert.ToInt32(citiesFoodProduce);
+//            CityFoodSpending = Convert.ToInt32(citiesFoodSpend);
             CitySoldResources = Convert.ToInt32(soldResources);
 
-            //float totalArmiesUpkeep = 0;
             float foodImport = 0;
             float foodBlackMarket = 0;
 
@@ -604,22 +592,15 @@ namespace VikingEngine.DSSWars
                     lib.DoNothing();
                 }
 
-                //SoldierUpkeep upkeep = new SoldierUpkeep();
                 SoldierUpkeep armyUpkeep = new SoldierUpkeep();
                 float moneyCarry = 0;
-                //float armyUpkeep = 0;
 
                 var groups = armiesC.sel.groups.counter();
                 while (groups.Next())
                 {
                     groups.sel.Upkeep(casual, ref armyUpkeep, ref moneyCarry);
                 }
-                //armyUpkeep += upkeep;
-                //_totalArmiesUpkeep += upkeep;
-
-                //float goldUpkeep = manUpkeepCount;
-
-                //totalArmiesUpkeep += armyUpkeep;
+                
                 foodImport += armiesC.sel.foodCosts_import.displayValue_gold_sec;
                 foodBlackMarket += armiesC.sel.foodCosts_blackmarket.displayValue_gold_sec;
 
@@ -629,7 +610,7 @@ namespace VikingEngine.DSSWars
 
 
                 float copperUpkeep = armyUpkeep.copper * oneSecondUpdate; // DssRef.difficulty.setting_foodMulti;
-                if (!money.PayUpkeep(copperUpkeep))
+                if (!money.PayUpkeep(copperUpkeep) && hasDeserters && DssRef.state.resourceCheckTime())
                 {
                     Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
                 }
@@ -645,7 +626,7 @@ namespace VikingEngine.DSSWars
                         armiesC.sel.food = 0;
                         armiesC.sel.conservedFood += rest;
 
-                        if (armiesC.sel.conservedFood < -armyUpkeep.food * 60)
+                        if (armiesC.sel.conservedFood < -armyUpkeep.food * 60 && DssRef.state.resourceCheckTime())
                         {
                             if (hasDeserters)
                             {
@@ -772,11 +753,14 @@ namespace VikingEngine.DSSWars
             //res_MithrilArmor.oneSecondUpdate();
         }
 
+        
         public void updateResourceOverview_async()
         {
             if (resourceSecondUpdates > 0)
             {
                 resourceSecondUpdates--;
+
+                
 
                 int end = resourceComponentStartIndex + CityResoureIndex.COUNT;
                 for (int itemIx = resourceComponentStartIndex; itemIx < end; itemIx++)
@@ -800,6 +784,10 @@ namespace VikingEngine.DSSWars
                         factionOverview.changeRate.prevProduced += cityResource.changeRate.prevProduced;
                     }
                 }
+
+                ResourceChangeRate foodChange = DssRef.world.factionResourceOverviews[resourceComponentStartIndex + CityResoureIndex.food].changeRate;
+                foodProduction.add(foodChange.prevProduced);
+                foodSpending.add(foodChange.prevConsumed);
             }
 
             //var citiesC = cities.counter();

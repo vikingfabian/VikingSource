@@ -129,8 +129,8 @@ namespace VikingEngine.DSSWars.Interface
             income = faction.GoldSecDiff();
             workForce = faction.totalWorkForce;
             totalStrength = Convert.ToInt32(faction.militaryStrength);
-            foodAdd = faction.CityFoodProduction;
-            foodSub = faction.CityFoodSpending;
+            foodAdd =  Convert.ToInt32(faction.foodProduction.displayValue_gold_sec);
+            foodSub = Convert.ToInt32(faction.foodSpending.displayValue_gold_sec);
             workForce = faction.totalWorkForce;
             diplomancyPoints = player.diplomaticPoints.Int();
             diplomacySoftMax = player.diplomaticPoints_softMax;
@@ -463,15 +463,18 @@ namespace VikingEngine.DSSWars.Interface
         {
             content.Add(new RbImage(SpriteName.WarsResource_FoodAdd));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodProduction, player.faction.CityFoodProduction),
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodProduction, Convert.ToInt32( player.faction.foodProduction.displayValue_gold_sec)),
                 HudLib.AvailableColor));
 
             content.newLine();
 
             content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
             content.space();
-            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodSpending, player.faction.CityFoodSpending),
+            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Info_TotalFoodSpending, Convert.ToInt32(player.faction.foodSpending.displayValue_gold_sec)),
                 HudLib.NotAvailableColor));
+
+            content.newLine();
+            content.text(DssRef.lang.Info_MinuteAverage, HudLib.InfoYellow_Light);
         }
     }
     

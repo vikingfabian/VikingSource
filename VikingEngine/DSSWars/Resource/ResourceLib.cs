@@ -96,6 +96,10 @@ namespace VikingEngine.DSSWars.Resource
              //ItemResourceType.KnightsLance,
             ItemResourceType.MithrilSword,
 
+            ItemResourceType.BucklerShield,
+            ItemResourceType.RoundShield,
+            ItemResourceType.HeaterShield,
+            ItemResourceType.TowerShield,
 
         };
 

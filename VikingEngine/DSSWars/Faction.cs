@@ -684,6 +684,12 @@ namespace VikingEngine.DSSWars
         
         public void asynchGameObjectsUpdate(float time, float oneSecondUpdate, bool oneMinute)
         {
+            if (oneMinute)
+            {
+                foodProduction.minuteUpdate();
+                foodSpending.minuteUpdate();
+            }
+
             float armiesStrength = 0;
 
             var armiesC = armies.counter();

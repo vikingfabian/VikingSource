@@ -25,8 +25,7 @@ namespace VikingEngine.DSSWars.GameObject
     partial class City
     {
         MinuteStats blackMarketCosts_food = new MinuteStats();
-        public MinuteStats foodProduction = new MinuteStats();
-        public MinuteStats foodSpending = new MinuteStats();
+        
         public MinuteStats soldResources = new MinuteStats();
 
         public int maxWaterBase = DssConst.Maxwater;
@@ -269,7 +268,7 @@ namespace VikingEngine.DSSWars.GameObject
                             amount = money.GetGold32();
                         }
 
-                        return new GroupedResource() { amount = amount };
+                        return new GroupedResource() { amount = amount, stockPileLimit = int.MaxValue };
                     case ItemResourceType.Men:
                         return workForce;
                     case ItemResourceType.NobelMen:

@@ -146,7 +146,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsResource_FoodAdd));
                 content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceProduction, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), player.faction.CityFoodProduction), HudLib.AvailableColor));
+                content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceProduction, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), Convert.ToInt32( player.faction.foodProduction.displayValue_gold_sec)), HudLib.AvailableColor));
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
             }
@@ -155,7 +155,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
                 content.space();
-                content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), player.faction.CityFoodSpending), HudLib.NotAvailableColor));
+                content.Add(new RbText(string.Format(DssRef.lang.Economy_ResourceSpending, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Food), Convert.ToInt32(player.faction.foodSpending.displayValue_gold_sec)), HudLib.NotAvailableColor));
                 content.space();
                 HudLib.PerSecondInfo(player, content, true);
             }

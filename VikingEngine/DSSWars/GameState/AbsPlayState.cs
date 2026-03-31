@@ -58,6 +58,8 @@ namespace VikingEngine.DSSWars.GameState
        
         protected ExitGameStateThreads exitGameStateThreads;
 
+        TimeStamp gameStartTime = TimeStamp.Now();
+
         public AbsPlayState() 
             :base() 
         {
@@ -67,9 +69,14 @@ namespace VikingEngine.DSSWars.GameState
 
         virtual protected void onGameStart(bool newGame)
         {
+            gameStartTime = TimeStamp.Now();
             Input.Mouse.SetMenuMode(SteamWrapping.SteamActionSet.InGameControls);
         }
 
+        public bool resourceCheckTime()
+        {
+            return gameStartTime.secPassed(5);
+        }
 
         public void stepFrames(int frameCount)
         {

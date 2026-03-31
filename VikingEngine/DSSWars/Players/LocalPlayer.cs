@@ -817,8 +817,8 @@ namespace VikingEngine.DSSWars.Players
                     var armiesC = faction.armies.counter();
                     while (armiesC.Next())
                     {
-                        armiesC.sel.food = 0;
-                        armiesC.sel.conservedFood = 0;
+                        armiesC.sel.food = -100;
+                        armiesC.sel.conservedFood = -120;
 
                     }
                     //DssRef.state.events.victory(Event.VictoryType.DefeatBoss);

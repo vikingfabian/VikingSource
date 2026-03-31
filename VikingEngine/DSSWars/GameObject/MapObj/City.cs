@@ -2003,8 +2003,8 @@ namespace VikingEngine.DSSWars.GameObject
             if (minute)
             {
                 blackMarketCosts_food.minuteUpdate();
-                foodProduction.minuteUpdate();
-                foodSpending.minuteUpdate();
+                //foodProduction.minuteUpdate();
+                //foodSpending.minuteUpdate();
                 soldResources.minuteUpdate();
             }
         }

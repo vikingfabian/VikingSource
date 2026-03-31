@@ -1,16 +1,15 @@
 
 ﻿UPDATE
 Change Log:
-* removed wheelwright (temporary)
-* Added animal food upkeep
-* animal sounds and dust
+* 
+
 
 ##ICONS TODO
 
 #MOUNTED TODO
 
 Current bugs)
-?  I've had armies disband even though I have 200k+ gold
+
 x the food produced in the last minute stat is permanently 0 no matter how much food I make
 
 x ai conscript of animals

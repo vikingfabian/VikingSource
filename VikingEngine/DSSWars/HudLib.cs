@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars
 
         public static readonly Color OffStandardOrange = new Color(200, 128, 0);
         public static readonly Color InfoYellow_Dark = new Color(160, 128, 0);
-        public static readonly Color InfoYellow_Light = new Color(255, 255, 150);
+        public static readonly Color InfoYellow_Light = new Color(200, 200, 0);//255, 255, 150);
         public static readonly Color InfoYellow_VeryLight = new Color(255, 255, 200);
         public static readonly Color InfoYellow_BG = new Color(40, 32, 0);
         public const ImageLayers StoryContentLayer = ImageLayers.Lay1_Front;
