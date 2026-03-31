@@ -587,11 +587,9 @@ namespace VikingEngine.DSSWars
             var armiesC = armies.counter();
             while (armiesC.Next())
             {
-                if (armiesC.sel.debugTagged)
-                {
-                    lib.DoNothing();
-                }
+                
 
+                bool missingUpkeep = false;
                 SoldierUpkeep armyUpkeep = new SoldierUpkeep();
                 float moneyCarry = 0;
 
@@ -608,35 +606,56 @@ namespace VikingEngine.DSSWars
                 armiesC.sel.totalUpkeep = armyUpkeep;
                 _totalArmiesUpkeep += armyUpkeep;
 
-
-                float copperUpkeep = armyUpkeep.copper * oneSecondUpdate; // DssRef.difficulty.setting_foodMulti;
-                if (!money.PayUpkeep(copperUpkeep) && hasDeserters && DssRef.state.resourceCheckTime())
+                if (oneSecondUpdate > 0)
                 {
-                    Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
-                }
+                    //if (armiesC.sel.debugTagged)
+                    //{
+                    //    lib.DoNothing();
+                    //}
 
-              
-                if (!casual)
-                {
-                    
-                    armiesC.sel.food -= armyUpkeep.food * oneSecondUpdate;
-                    if (armiesC.sel.food < 0)
+                    float copperUpkeep = armyUpkeep.copper * oneSecondUpdate; // DssRef.difficulty.setting_foodMulti;
+                    if (!money.PayUpkeep(copperUpkeep) && hasDeserters)
                     {
-                        float rest = armiesC.sel.food;
-                        armiesC.sel.food = 0;
-                        armiesC.sel.conservedFood += rest;
+                        missingUpkeep = true;
+                        //Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
+                    }
 
-                        if (armiesC.sel.conservedFood < -armyUpkeep.food * 60 && DssRef.state.resourceCheckTime())
+
+                    if (!casual)
+                    {
+                        armiesC.sel.food -= armyUpkeep.food * oneSecondUpdate;
+                        if (armiesC.sel.food < 0)
                         {
-                            if (hasDeserters)
+                            float rest = armiesC.sel.food;
+                            armiesC.sel.food = 0;
+                            armiesC.sel.conservedFood += rest;
+
+                            if (armiesC.sel.conservedFood < -armyUpkeep.food * 60)
                             {
-                                Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
-                            }
-                            else
-                            {
-                                armiesC.sel.setMaxFood();
+                                if (hasDeserters)
+                                {
+                                    missingUpkeep = true;
+                                    //Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
+                                }
+                                else
+                                {
+                                    armiesC.sel.setMaxFood();
+                                }
                             }
                         }
+                    }
+
+                    if (missingUpkeep)
+                    {
+                        armiesC.sel.missingUpkeepSeconds++;
+                        if (armiesC.sel.missingUpkeepSeconds > 20)
+                        {
+                            Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
+                        }
+                    }
+                    else
+                    {
+                        armiesC.sel.missingUpkeepSeconds = 0;
                     }
                 }
             }

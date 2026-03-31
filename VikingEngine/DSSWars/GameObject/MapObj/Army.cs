@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars.GameObject
         public float food = 0;
         public float conservedFood = 0;
         public SoldierUpkeep totalUpkeep = new SoldierUpkeep();
-
+        public int missingUpkeepSeconds = 0;
         public float foodBuffer_minutes = 2f;
         public float friendlyAreaFoodBuffer_minutes = 3f;
         public float friendlyAreaConservedFoodBuffer_minutes = 6f;

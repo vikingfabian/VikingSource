@@ -96,10 +96,10 @@ namespace VikingEngine.DSSWars.GameObject
         void foodUpkeepUpdate_async(Faction faction, float seconds)
         {
 
-            if (debugTagged)
-            {
-                lib.DoNothing();
-            }
+            //if (debugTagged)
+            //{
+            //    lib.DoNothing();
+            //}
 
             //float energyUpkeep = totalUpkeep * DssConst.ManDefaultEnergyCost;
             //float foodUpkeep = energyUpkeep * DssRef.difficulty.FoodEnergySett;
@@ -186,10 +186,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     allowDept = true;
                 }
-                //black market trade
-
-                //if (localPlayer || (!DssRef.storage.gameRuleset.centralGold && 
-
+                
                 var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * (minBuffer - food));
                 
                 if (payGold(cost, allowDept))

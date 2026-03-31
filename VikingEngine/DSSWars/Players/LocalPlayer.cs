@@ -838,10 +838,11 @@ namespace VikingEngine.DSSWars.Players
                     //    gameControls.map.hover.obj.GetArmy().DeleteMe(DeleteReason.Desert, true);
                     //}
                     //debugKillCityLess();
-                    fleeingArmyTest();
+                    //fleeingArmyTest();
                 }
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
+                    faction.money.copper = -100000000000;
                     //DssRef.state.events.victory(Event.VictoryType.DefeatBoss);
                     //DssRef.state.events.TestNextEvent();
                     //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
