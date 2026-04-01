@@ -3034,6 +3034,9 @@
 #begin VoxelModel/LfWars/horsebanner.vox
 /copy:VoxelModel/LfWars/horsebanner.vox
 
+#begin VoxelModel/LfWars/hound1.vox
+/copy:VoxelModel/LfWars/hound1.vox
+
 #begin VoxelModel/LfWars/kineoxen1.vox
 /copy:VoxelModel/LfWars/kineoxen1.vox
 
@@ -3075,6 +3078,9 @@
 
 #begin VoxelModel/LfWars/slingstone.vox
 /copy:VoxelModel/LfWars/slingstone.vox
+
+#begin VoxelModel/LfWars/staghog1.vox
+/copy:VoxelModel/LfWars/staghog1.vox
 
 #begin VoxelModel/LfWars/tree_apple.vox
 /copy:VoxelModel/LfWars/tree_apple.vox
@@ -3169,8 +3175,14 @@
 #begin VoxelModel/LfWars/warg1.vox
 /copy:VoxelModel/LfWars/warg1.vox
 
+#begin VoxelModel/LfWars/warhog1.vox
+/copy:VoxelModel/LfWars/warhog1.vox
+
 #begin VoxelModel/LfWars/warhorse_brown.vox
 /copy:VoxelModel/LfWars/warhorse_brown.vox
+
+#begin VoxelModel/LfWars/warlion1.vox
+/copy:VoxelModel/LfWars/warlion1.vox
 
 #begin VoxelModel/LfWars/warmap_grass1.vox
 /copy:VoxelModel/LfWars/warmap_grass1.vox
@@ -3309,6 +3321,12 @@
 
 #begin VoxelModel/LfWars/wars_viking_ship.vox
 /copy:VoxelModel/LfWars/wars_viking_ship.vox
+
+#begin VoxelModel/LfWars/wildcat1.vox
+/copy:VoxelModel/LfWars/wildcat1.vox
+
+#begin VoxelModel/LfWars/wildpig1.vox
+/copy:VoxelModel/LfWars/wildpig1.vox
 
 #begin VoxelModel/LfWars/wolf1.vox
 /copy:VoxelModel/LfWars/wolf1.vox

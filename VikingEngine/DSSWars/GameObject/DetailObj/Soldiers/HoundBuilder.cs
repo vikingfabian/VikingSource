@@ -52,6 +52,9 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                 default:
                     modelData = DssVar.dogModel;
                     break;
+                case Resource.ItemResourceType.Hound:
+                    modelData = DssVar.houndModel;
+                    break;
                 case Resource.ItemResourceType.Pig:
                     modelData = DssVar.pigModel;
                     break;

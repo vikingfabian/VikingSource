@@ -233,6 +233,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.Pig, false);
             loadVoxelModel(VoxelModelName.Hen, false);
             loadVoxelModel(VoxelModelName.dog1, false);
+            loadVoxelModel(VoxelModelName.hound1, false);
             loadVoxelModel(VoxelModelName.Pheasant, false);
             loadVoxelModel(VoxelModelName.Arrow, true);
             loadVoxelModel(VoxelModelName.slingstone, true);
@@ -248,9 +249,16 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.wars_deserter, false);
             loadVoxelModel(VoxelModelName.horse_brown, false);
             loadVoxelModel(VoxelModelName.horse_white, false);
+            loadVoxelModel(VoxelModelName.wildpig1, false);
             loadVoxelModel(VoxelModelName.hog1, false);
+            loadVoxelModel(VoxelModelName.warhog1, false);
+            loadVoxelModel(VoxelModelName.staghog1, false);
             loadVoxelModel(VoxelModelName.wolf1, false);
+            loadVoxelModel(VoxelModelName.warg1, false);
+            loadVoxelModel(VoxelModelName.alphawarg1, false);
+            loadVoxelModel(VoxelModelName.wildcat1, false);
             loadVoxelModel(VoxelModelName.lion1, false);
+            loadVoxelModel(VoxelModelName.warlion1, false);
             loadVoxelModel(VoxelModelName.Elephant_default, false);
 
             loadVoxelModel(VoxelModelName.Fowl, false);
@@ -260,8 +268,6 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.pony_pink, false);
             loadVoxelModel(VoxelModelName.drafthorse_red, false);
             loadVoxelModel(VoxelModelName.warhorse_brown, false);
-            loadVoxelModel(VoxelModelName.warg1, false);
-            loadVoxelModel(VoxelModelName.alphawarg1, false);
             loadVoxelModel(VoxelModelName.Elephant_war, false);
             loadVoxelModel(VoxelModelName.Elephant_oli, false);
 

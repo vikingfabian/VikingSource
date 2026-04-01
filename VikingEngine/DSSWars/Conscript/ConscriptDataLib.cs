@@ -102,9 +102,9 @@ namespace VikingEngine.DSSWars.Conscript
         public static readonly ItemResourceType[] AnimalTypes = {
             ItemResourceType.NONE,
 
-            ItemResourceType.Fowl,
-            ItemResourceType.Hen,
-            ItemResourceType.Boar,
+            //ItemResourceType.Fowl,
+            //ItemResourceType.Hen,
+            //ItemResourceType.Boar,
             ItemResourceType.Pig,
 
             ItemResourceType.Oxen,

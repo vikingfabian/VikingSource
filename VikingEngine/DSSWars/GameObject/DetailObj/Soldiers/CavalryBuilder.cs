@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.GameObject
     class CavalryModel : SoldierUnitAdvancedModel
     {
         Graphics.VoxelModelInstance animalmodel;
-        float riderY;
+        protected float riderY;
         public CavalryModel(AbsSoldierUnit soldier)
            : base(soldier)
         {
@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject
             resetAnimlNoise();
         }
 
-        public static AnimalProfile AnimalModel(Resource.ItemResourceType animal/*, out float riderY, out float wagonPullDistance*/)
+        public static AnimalProfile AnimalModel(Resource.ItemResourceType animal)
         {
             AnimalProfile modelData;
             switch (animal)
@@ -94,10 +94,6 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         modelData.modelName = VoxelModelName.horse_white;
                     }
-                    //modelName = Ref.rnd.Chance(0.2) ? VoxelModelName.horse_white : VoxelModelName.horse_brown;
-                    //modelScale = DssConst.Men_StandardModelScale * 1.1f;
-                    //walkingAnimation = HorseAnimation;//new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames * 1f);
-                    //riderY = 0.018f;
                     break;
 
                 case Resource.ItemResourceType.WarHorse:
@@ -116,15 +112,16 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
 
                 case Resource.ItemResourceType.WildPig:
+                    modelData = DssVar.wildpigModel;
+                    break;
                 case Resource.ItemResourceType.WildHog:
-                case Resource.ItemResourceType.WarHog:
-                case Resource.ItemResourceType.StagHog:
                     modelData = DssVar.hogModel;
-                    //wagonPullDistance = 0.2f;
-                    //modelName = VoxelModelName.hog1;
-                    //modelScale = HogScale;
-                    //walkingAnimation = HogAnimation;//new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1f);
-                    //riderY = 0.013f;
+                    break;
+                case Resource.ItemResourceType.WarHog:
+                    modelData = DssVar.warhogModel;
+                    break;
+                case Resource.ItemResourceType.StagHog:
+                    modelData = DssVar.stagHogModel;
                     break;
 
                 case Resource.ItemResourceType.Wolf:
@@ -138,20 +135,15 @@ namespace VikingEngine.DSSWars.GameObject
                 case Resource.ItemResourceType.AlphaWarg:
                     modelData = DssVar.alphaWargModel;
                     break;
-                    //modelName = VoxelModelName.wolf1;
-                    //modelScale = WolfScale;
-                    //walkingAnimation = WolfAnimation;//new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
-                    //riderY = 0.018f;
-                    //break;
 
                 case Resource.ItemResourceType.WildCat:
+                    modelData = DssVar.wildcatModel;
+                    break;
                 case Resource.ItemResourceType.Lion:
-                case Resource.ItemResourceType.WarLion:
                     modelData = DssVar.lionModel;
-                    //modelName = VoxelModelName.lion1;
-                    //modelScale = LionScale;
-                    //walkingAnimation = LionAnimation;// new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
-                    //riderY = 0.018f;
+                    break;
+                case Resource.ItemResourceType.WarLion:
+                    modelData = DssVar.warlionModel;
                     break;
 
                 case Resource.ItemResourceType.Elephant:
@@ -165,11 +157,6 @@ namespace VikingEngine.DSSWars.GameObject
                 case Resource.ItemResourceType.Oliphant:
                     modelData = DssVar.oliphantModel;
                     break;
-                    //modelScale = ElephantScale;
-                    //modelName = VoxelModelName.Elephant_default;
-                    //walkingAnimation = ElephantAnimation;//new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames * 2);
-                    //riderY = 0.38f * modelScale;
-                    //break;
             }
             return modelData;
         }
@@ -234,7 +221,7 @@ namespace VikingEngine.DSSWars.GameObject
         public CavalryBannerModel(AbsSoldierUnit soldier)
             : base(soldier)
         {
-            banner = new HorseBanner(soldier.GetFaction(), soldier.soldierData.modelScale);
+            banner = new HorseBanner(soldier.GetFaction(), soldier.soldierData.modelScale, riderY);
         }
 
         protected override void updateAnimation(AbsSoldierUnit soldier)
@@ -258,11 +245,12 @@ namespace VikingEngine.DSSWars.GameObject
 
     class HorseBanner : AbsModelAttachment_Batched
     {
-        public HorseBanner(Faction faction, float soldierScale)
+        public HorseBanner(Faction faction, float soldierScale, float riderY)
         {
             model = faction.AutoLoadModelInstance_batched(
                modelName(), soldierScale * 0.8f);
-            diff = new Vector3(-0.12f, 0.16f, -0.05f) * soldierScale;
+            diff = new Vector3(-0.12f, 0.06f, -0.05f) * soldierScale;
+            diff.Y += riderY;
         }
 
         public override void update(AbsSoldierUnit parent)

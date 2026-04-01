@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.GameObject.DetailObj.Soldiers;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.LootFest;
 using VikingEngine.ToGG.ToggEngine.Map;
@@ -32,12 +33,12 @@ namespace VikingEngine.DSSWars
         public static AnimalProfile boarModel;
         public static AnimalProfile oxenModel, kineOxenModel;
         public static AnimalProfile pigModel;
-        public static AnimalProfile dogModel;
+        public static AnimalProfile dogModel, houndModel;
         public static AnimalProfile elephantModel, warElephantModel, oliphantModel;
         public static AnimalProfile ponyModel, horseModel, warHorseModel, draftHorseModel;
         public static AnimalProfile wolfModel, wargModel, alphaWargModel;
-        public static AnimalProfile hogModel;
-        public static AnimalProfile lionModel;
+        public static AnimalProfile wildpigModel, hogModel, warhogModel, stagHogModel;
+        public static AnimalProfile wildcatModel, lionModel, warlionModel;
 
         public static Dictionary<ItemResourceType, ShieldProperties> Shields;
         public static void UpdateConstants()
@@ -52,8 +53,9 @@ namespace VikingEngine.DSSWars
             boarModel = pigModel.Copy(VoxelModelName.Boar, 0.8f);
 
             dogModel = new AnimalProfile(VoxelModelName.dog1, DssConst.Men_StandardModelScale * 0.6f, new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1.1f), AnimalNoiseType.dog, WalkSoundType.Foot);
-            
-            oxenModel = new AnimalProfile(VoxelModelName.oxen1, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1.1f), AnimalNoiseType.oxen, WalkSoundType.Foot);
+            houndModel = dogModel.Copy(VoxelModelName.hound1, 1.2f);
+
+            oxenModel = new AnimalProfile(VoxelModelName.oxen1, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1.1f), AnimalNoiseType.oxen, WalkSoundType.Foot, 0.018f);
             kineOxenModel = oxenModel.Copy(VoxelModelName.kineoxen1, 1.2f);
 
             horseModel = new AnimalProfile(VoxelModelName.horse_brown, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames * 1f), AnimalNoiseType.horse, WalkSoundType.Horse, 0.018f);
@@ -66,27 +68,20 @@ namespace VikingEngine.DSSWars
             alphaWargModel = wargModel.Copy(VoxelModelName.alphawarg1, 1.1f);
 
             hogModel = new AnimalProfile(VoxelModelName.hog1, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1f), AnimalNoiseType.hog, WalkSoundType.Foot, 0.013f, 0.2f);
-            lionModel = new AnimalProfile(VoxelModelName.lion1, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f), AnimalNoiseType.lion, WalkSoundType.Foot);
+            wildpigModel = hogModel.Copy(VoxelModelName.wildpig1, 0.9f);
+            warhogModel = hogModel.Copy(VoxelModelName.warhog1, 1.2f);
+            stagHogModel = hogModel.Copy(VoxelModelName.staghog1, 1.2f);
 
+            lionModel = new AnimalProfile(VoxelModelName.lion1, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f), AnimalNoiseType.lion, WalkSoundType.Foot, 0.018f);
+            wildcatModel = lionModel.Copy(VoxelModelName.wildcat1, 0.9f);
+            warlionModel = lionModel.Copy(VoxelModelName.warlion1, 1.2f);
 
             elephantModel = new AnimalProfile(VoxelModelName.Elephant_default, DssConst.Men_StandardModelScale * 1.9f, new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames * 2), AnimalNoiseType.elephant, WalkSoundType.Heavy);
             elephantModel.riderY = 0.38f * elephantModel.scale;
             warElephantModel = elephantModel.Copy(VoxelModelName.Elephant_war, 1.1f);
+
             oliphantModel = warElephantModel.Copy(VoxelModelName.Elephant_oli, 1.5f);
-            //    public static readonly float HorseScale = DssConst.Men_StandardModelScale * 1.1f;
-            //public static readonly float HogScale = DssConst.Men_StandardModelScale * 1.1f;
-            //public static readonly float LionScale = DssConst.Men_StandardModelScale * 1.1f;
-            //public static readonly float WolfScale = DssConst.Men_StandardModelScale * 1.1f;
-            //public static readonly float ElephantScale = DssConst.Men_StandardModelScale * 1.9f;
-
-            //public static readonly WalkingAnimation HorseAnimation = new WalkingAnimation(1, 6, WalkingAnimation.StandardMoveFrames * 1f);
-            //public static readonly WalkingAnimation HogAnimation = new WalkingAnimation(1, 4, WalkingAnimation.StandardMoveFrames * 1f);
-            //public static readonly WalkingAnimation LionAnimation = new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
-            //public static readonly WalkingAnimation WolfAnimation = new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f);
-            //public static readonly WalkingAnimation ElephantAnimation = new WalkingAnimation(1, 2, WalkingAnimation.StandardMoveFrames * 2);
-
-
-
+            oliphantModel.riderY = 0.42f * oliphantModel.scale;
 
             Projectile.Projectile_PeekHeight = DssConst.Men_StandardModelScale * 1f;
             Men_AsynchCollisionGroupRadius = StandardBoundRadius * 2f;

@@ -624,23 +624,24 @@ namespace VikingEngine.DSSWars
                     if (!casual)
                     {
                         armiesC.sel.food -= armyUpkeep.food * oneSecondUpdate;
-                        if (armiesC.sel.food < 0)
+                        if (armiesC.sel.food < 0 && armiesC.sel.conservedFood > 0)
                         {
-                            float rest = armiesC.sel.food;
-                            armiesC.sel.food = 0;
-                            armiesC.sel.conservedFood += rest;
+                            float rest = lib.SmallestValue(armiesC.sel.conservedFood, - armiesC.sel.food);
+                            armiesC.sel.conservedFood -= rest;
+                            armiesC.sel.food += rest;
+                        }
 
-                            if (armiesC.sel.conservedFood < -armyUpkeep.food * 60)
+                        if (armiesC.sel.food < -armyUpkeep.food * 60)
+                        {
+                            armiesC.sel.foodMarketCheck();
+                            if (hasDeserters)
                             {
-                                if (hasDeserters)
-                                {
-                                    missingUpkeep = true;
-                                    //Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
-                                }
-                                else
-                                {
-                                    armiesC.sel.setMaxFood();
-                                }
+                                missingUpkeep = true;
+                                //Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
+                            }
+                            else
+                            {
+                                armiesC.sel.setMaxFood();
                             }
                         }
                     }

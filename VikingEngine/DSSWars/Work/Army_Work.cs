@@ -168,6 +168,26 @@ namespace VikingEngine.DSSWars.GameObject
 
             }
 
+            foodMarketCheck();
+
+            int getOrCreateFreeWorker()
+            {
+                var worker = new WorkerStatus(true) { subTileEnd = WP.ToSubTilePos_Centered(tilePos) };
+                for (int i = 0; i < workerStatuses.Count; i++)
+                {
+                    if (workerStatuses.array[i].work == WorkType.IsDeleted)
+                    {
+                        workerStatuses.array[i] = worker;
+                        return i;
+                    }
+                }
+                workerStatuses.Add(worker);
+                return workerStatuses.Count - 1;
+            }
+        }
+
+        public void foodMarketCheck()
+        {
             float minBuffer = totalUpkeep.food * 2;
 
             if (food + conservedFood < minBuffer)
@@ -186,29 +206,15 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     allowDept = true;
                 }
-                
-                var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * (minBuffer - food));
-                
+
+                var cost = (int)Math.Ceiling(DssConst.FoodGoldValue_BlackMarket * (minBuffer - food - conservedFood));
+
                 if (payGold(cost, allowDept))
                 {
                     foodCosts_blackmarket.add(cost);
                     food = minBuffer;
+                    conservedFood = 0;
                 }
-            }
-
-            int getOrCreateFreeWorker()
-            {
-                var worker = new WorkerStatus(true) { subTileEnd = WP.ToSubTilePos_Centered(tilePos) };
-                for (int i = 0; i < workerStatuses.Count; i++)
-                {
-                    if (workerStatuses.array[i].work == WorkType.IsDeleted)
-                    {
-                        workerStatuses.array[i] = worker;
-                        return i;
-                    }
-                }
-                workerStatuses.Add(worker);
-                return workerStatuses.Count - 1;
             }
         }
 

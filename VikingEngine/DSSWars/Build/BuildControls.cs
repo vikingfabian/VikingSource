@@ -1243,22 +1243,22 @@ namespace VikingEngine.DSSWars.Build
 
                     break;
                 case BuildAndExpandType.FowlPen:
-                    pen(build, TerrainContent.FowlGrowth, ItemResourceType.Fowl, false, false);
+                    pen(build, TerrainContent.FowlGrowth, ItemResourceType.Fowl, true, false);
 
                     eggProduction();
                     break;
                 case BuildAndExpandType.HenPen:
-                    pen(build, TerrainContent.HenGrowth, ItemResourceType.Hen, false, false);
+                    pen(build, TerrainContent.HenGrowth, ItemResourceType.Hen, false, true);
 
                     eggProduction();
                     break;
 
                 case BuildAndExpandType.BoarPen:
-                    pen(build, TerrainContent.BoarGrowth, ItemResourceType.Boar, false, false);  
+                    pen(build, TerrainContent.BoarGrowth, ItemResourceType.Boar, true, false);  
                     break;
 
                 case BuildAndExpandType.PigPen:
-                    pen(build, TerrainContent.PigGrowth, ItemResourceType.Pig, false, false);                                    
+                    pen(build, TerrainContent.PigGrowth, ItemResourceType.Pig, false, true);                                    
                     break;
 
                 //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
