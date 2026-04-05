@@ -1,7 +1,9 @@
 
 ﻿UPDATE
 Change Log:
-* 
+* fixed WorkComplete crash
+* fixed double work error
+
 
 ##ICONS TODO
 

@@ -362,19 +362,19 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     processAsynchWork(ref workerStatuses);
 
-#if !DEBUG
-                        try
-                        {
-#endif
-                            processAsynchWork(ref workerStatuses);
-#if !DEBUG
-                        }
-                        catch
-                        {
-                            //muted
-                            lib.DoNothing();
-                        }
-#endif
+//#if !DEBUG
+//                        try
+//                        {
+//#endif
+//                            processAsynchWork(ref workerStatuses);
+//#if !DEBUG
+//                        }
+//                        catch
+//                        {
+//                            //muted
+//                            lib.DoNothing();
+//                        }
+//#endif
                 }
 
                 void buildWorkQue2()

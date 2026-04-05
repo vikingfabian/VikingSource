@@ -108,15 +108,23 @@ namespace VikingEngine.DSSWars
 #endif
             workerXp.array[index * WorkerXpCOUNT + (int)type].xp = xp;
         }
+
+        WorkExperience empty = new WorkExperience();
         public ref WorkExperience GetRefWorkXp(int index, WorkExperienceType type)
         {
+            int arrayIx = index * WorkerXpCOUNT + (int)type;
 #if DEBUG
-            if (!workerXp.InBound_Array(index * WorkerXpCOUNT + (int)type))
+            if (!workerXp.InBound_Array(arrayIx))
             {
                 throw new Exception();
             }
 #endif
-            return ref workerXp.array[index * WorkerXpCOUNT + (int)type];
+            if (workerXp.InBound_Array(arrayIx))
+            {
+                return ref workerXp.array[arrayIx];
+            }
+
+            return ref empty;
         }
 
         public void writeWorkXp(int index, System.IO.BinaryWriter w)

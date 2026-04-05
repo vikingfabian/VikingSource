@@ -1838,55 +1838,10 @@ namespace VikingEngine.DSSWars.Work
         {
             if (type != XP.WorkExperienceType.NUM_NONE)
             {
+                
                 ref var xp = ref DssRef.world.GetRefWorkXp(XpEntityIndex, type);
                 xp.setLevel(toLevel);
-                //if (type == xpType1)
-                //{
-                //    setTo(ref type, ref xp1);
-                //}
-                //else if (type == xpType2)
-                //{
-                //    setTo(ref type, ref xp2);
-                //}
-                //else if (type == xpType3)
-                //{
-                //    setTo(ref type, ref xp3);
-                //}
-                //else
-                //{
-                //    int lowIx = 0;
-                //    int lowVal = xp1;
-
-                //    if (xp2 < lowVal)
-                //    {
-                //        lowIx = 1;
-                //        lowVal = xp2;
-                //    }
-                //    if (xp3 < lowVal)
-                //    {
-                //        lowIx = 2;
-                //        lowVal = xp3;
-                //    }
-
-                //    switch (lowIx)
-                //    {
-                //        case 0:
-                //            xpType1 = type;
-                //            xp1 = 0;
-                //            setTo(ref type, ref xp1);
-                //            break;
-                //        case 1:
-                //            xpType2 = type;
-                //            xp2 = 0;
-                //            setTo(ref type, ref xp2);
-                //            break;
-                //        case 2:
-                //            xpType3 = type;
-                //            xp3 = 0;
-                //            setTo(ref type, ref xp3);
-                //            break;
-                //    }
-                //}
+                
             }
 
 
