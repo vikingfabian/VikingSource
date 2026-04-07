@@ -902,7 +902,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             Debug.ReadCheck(r);
 
-            IntVector2 startPos = WP.ToSubTilePos_Centered(tilePos);
+            IntVector2 startPos = citySquareSubtilePos;//WP.ToSubTilePos_Centered(tilePos);
 
             int workerStatusesCount = r.ReadUInt16();
             writeStatusesStartEnd(part, workerStatusesCount, out bool meta, out int start, out int end);

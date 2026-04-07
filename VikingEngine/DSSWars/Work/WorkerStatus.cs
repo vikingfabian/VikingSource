@@ -1569,7 +1569,7 @@ namespace VikingEngine.DSSWars.Work
                 processTimeLengthSec = finalizeWorkTime(city);
                 subTileStart = subTileEnd;
             }
-            else
+            else if (work != WorkType.IsDeleted)
             {
                 work = WorkType.Idle;
 

@@ -1,19 +1,15 @@
 
 ﻿UPDATE
 Change Log:
-* fixed WorkComplete crash
-* fixed double work error
+* 
 
 
 ##ICONS TODO
 
 #MOUNTED TODO
-
-Current bugs)
-
 x ai conscript of animals
 x missing a lot of the animal/weapon/armor combos
-
+x lock wagons to animal + siege weapons
 x translate
 
 ## MOUNTED POST CONTENT UPDATE ##

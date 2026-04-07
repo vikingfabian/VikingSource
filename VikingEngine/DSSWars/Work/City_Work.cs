@@ -80,6 +80,7 @@ namespace VikingEngine.DSSWars.GameObject
                 int workTeamsTotalCount = workerStatuses.Count;
                 int deletedCount = 0;
                 int idleCount = 0;
+                int mayExitCount = 0;
                 //IntVector2 minpos = WP.ToSubTilePos_Centered(tilePos);
                 //IntVector2 maxpos = minpos;
                 //Intvector2MinMax minMax_workerCulling = new Intvector2MinMax(WP.ToSubTilePos_Centered(tilePos));
@@ -99,7 +100,8 @@ namespace VikingEngine.DSSWars.GameObject
 
                         case WorkType.Starving:
                         case WorkType.Exit:
-                            --workTeamsTotalCount;
+                            //--workTeamsTotalCount;
+                            ++mayExitCount;
                             break;
 
                         case WorkType.Idle:
@@ -123,9 +125,13 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (workTeamsTotalCount < workTeamGoalCount)
                 {
+                    if (myIndex == 270)
+                    {
+                        lib.DoNothing();
+                    }
                     int deletedIx = 0;
-                    int newWorkers = workTeamGoalCount - workTeamsTotalCount;
-                    IntVector2 startPos = WP.ToSubTilePos_Centered(tilePos);
+                    int newWorkers = /*Bound.Max(*/workTeamGoalCount - workTeamsTotalCount;/*, 2);*/
+                    IntVector2 startPos = citySquareSubtilePos;//WP.ToSubTilePos_Centered(tilePos);
                     for (int i = 0; i < newWorkers; i++)
                     {
                         var newWorker = new WorkerStatus(true)
@@ -149,19 +155,6 @@ namespace VikingEngine.DSSWars.GameObject
                                 var lvl = (ExperienceLevel)cityExperienceLevels.Get(exp).maxLevel;//XpLib.ToLevel(MaxSkill[(int)exp]);
                                 if (lvl >= ExperienceLevel.Expert_3)
                                 {
-                                    //if (xpIx == 0)
-                                    //{
-                                    //    newWorker.xpType1 = exp;
-                                    //    newWorker.xp1 = DssConst.WorkXpToLevel;
-                                    //}
-                                    //else
-                                    //{
-                                    //    if (exp != newWorker.xpType1)
-                                    //    {
-                                    //        newWorker.xpType2 = exp;
-                                    //        newWorker.xp2 = DssConst.WorkXpToLevel;
-                                    //    }
-                                    //}
                                     newWorker.setXpFor(exp, DssConst.WorkXpToLevel);
                                 }
                             }
@@ -175,7 +168,8 @@ namespace VikingEngine.DSSWars.GameObject
                                 {
                                     workerStatuses[di] = newWorker;
                                     --deletedCount;
-                                    deletedIx = di - 1;
+                                    deletedIx = di;
+                                    break;
                                 }
                             }
                         }
@@ -183,6 +177,7 @@ namespace VikingEngine.DSSWars.GameObject
                         {
                             workerStatuses.Add(newWorker);
                         }
+                        ++workTeamsTotalCount;
                         ++idleCount;
                     }
                 }
@@ -226,15 +221,15 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (status.work == WorkType.Idle)
                     {
-                        if (workTeamsTotalCount > workTeamGoalCount + 1)
+                        if (workTeamsTotalCount - mayExitCount > workTeamGoalCount + 1)
                         {
-                            if (GetPlayer().IsLocalPlayer())
+                            if (myIndex == 270)
                             {
                                 lib.DoNothing();
                             }
-                            --workTeamsTotalCount;
-                            
-                            status.createWorkOrder(WorkType.Exit, -1, 0, WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
+                            //--workTeamsTotalCount;
+                            mayExitCount++;
+                            status.createWorkOrder(WorkType.Exit, -1, 0, WorkExperienceType.NUM_NONE, -1, citySquareSubtilePos/*WP.ToSubTilePos_Centered(tilePos)*/, this);
                         }
                         else if (status.carry.amount > 0)
                         {
@@ -251,7 +246,7 @@ namespace VikingEngine.DSSWars.GameObject
                             --workTeamsTotalCount;
                             --workForce.amount;
 
-                            status.createWorkOrder(WorkType.Starving, -1, 0, WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(tilePos), this);
+                            status.createWorkOrder(WorkType.Starving, -1, 0, WorkExperienceType.NUM_NONE, -1, citySquareSubtilePos/*WP.ToSubTilePos_Centered(tilePos)*/, this);
                         }
                         else
                         {

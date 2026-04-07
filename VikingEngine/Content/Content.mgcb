@@ -2950,15 +2950,6 @@
 #begin VoxelModel/LfWars/drafthorse_red.vox
 /copy:VoxelModel/LfWars/drafthorse_red.vox
 
-#begin VoxelModel/LfWars/Elephant_default.vox
-/copy:VoxelModel/LfWars/Elephant_default.vox
-
-#begin VoxelModel/LfWars/Elephant_oli.vox
-/copy:VoxelModel/LfWars/Elephant_oli.vox
-
-#begin VoxelModel/LfWars/Elephant_war.vox
-/copy:VoxelModel/LfWars/Elephant_war.vox
-
 #begin VoxelModel/LfWars/ErrorCube.vox
 /copy:VoxelModel/LfWars/ErrorCube.vox
 
@@ -3057,6 +3048,54 @@
 
 #begin VoxelModel/LfWars/party_restbar.vox
 /copy:VoxelModel/LfWars/party_restbar.vox
+
+#begin VoxelModel/LfWars/Phant_balkong_enforced.vox
+/copy:VoxelModel/LfWars/Phant_balkong_enforced.vox
+
+#begin VoxelModel/LfWars/Phant_balkong_iron.vox
+/copy:VoxelModel/LfWars/Phant_balkong_iron.vox
+
+#begin VoxelModel/LfWars/Phant_balkong_steel.vox
+/copy:VoxelModel/LfWars/Phant_balkong_steel.vox
+
+#begin VoxelModel/LfWars/Phant_balkong2w.vox
+/copy:VoxelModel/LfWars/Phant_balkong2w.vox
+
+#begin VoxelModel/LfWars/Phant_balkong4w.vox
+/copy:VoxelModel/LfWars/Phant_balkong4w.vox
+
+#begin VoxelModel/LfWars/Phant_ballista.vox
+/copy:VoxelModel/LfWars/Phant_ballista.vox
+
+#begin VoxelModel/LfWars/Phant_bronzecannon_side.vox
+/copy:VoxelModel/LfWars/Phant_bronzecannon_side.vox
+
+#begin VoxelModel/LfWars/Phant_bronzecannon.vox
+/copy:VoxelModel/LfWars/Phant_bronzecannon.vox
+
+#begin VoxelModel/LfWars/Phant_bronzesiege.vox
+/copy:VoxelModel/LfWars/Phant_bronzesiege.vox
+
+#begin VoxelModel/LfWars/Phant_elephant.vox
+/copy:VoxelModel/LfWars/Phant_elephant.vox
+
+#begin VoxelModel/LfWars/Phant_ironcannon_side.vox
+/copy:VoxelModel/LfWars/Phant_ironcannon_side.vox
+
+#begin VoxelModel/LfWars/Phant_ironcannon.vox
+/copy:VoxelModel/LfWars/Phant_ironcannon.vox
+
+#begin VoxelModel/LfWars/Phant_ironsiege.vox
+/copy:VoxelModel/LfWars/Phant_ironsiege.vox
+
+#begin VoxelModel/LfWars/Phant_manuballista.vox
+/copy:VoxelModel/LfWars/Phant_manuballista.vox
+
+#begin VoxelModel/LfWars/Phant_oliphant.vox
+/copy:VoxelModel/LfWars/Phant_oliphant.vox
+
+#begin VoxelModel/LfWars/Phant_warelephant.vox
+/copy:VoxelModel/LfWars/Phant_warelephant.vox
 
 #begin VoxelModel/LfWars/Pheasant.vox
 /copy:VoxelModel/LfWars/Pheasant.vox

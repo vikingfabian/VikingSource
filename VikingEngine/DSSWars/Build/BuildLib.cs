@@ -270,8 +270,10 @@ namespace VikingEngine.DSSWars.Build
                 {
                     list.Add(BuildAndExpandType.ManorLord);
                 }
-                list.Add(BuildAndExpandType.GreatHall);
-
+                if (!city.buildingStructure.greatHall)
+                {
+                    list.Add(BuildAndExpandType.GreatHall);
+                }
                 list.Add(BuildAndExpandType.School);
 
                 list.Add(BuildAndExpandType.ResearchCenter);

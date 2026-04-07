@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars
                 throw new Exception();
             }
 #endif
-            if (workerXp.InBound_Array(arrayIx))
+            if (index >= 0)
             {
                 return ref workerXp.array[arrayIx];
             }

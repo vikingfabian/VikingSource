@@ -837,7 +837,7 @@ namespace VikingEngine.Voxels
             {
                 for (int layerIx = 0; layerIx < voxelProject.layers.list.Count; ++layerIx)
                 {
-                    if (layerIx != voxelProject.layers.selectedIndex)
+                    if (layerIx != voxelProject.layers.selectedIndex && voxelProject.layers.list[layerIx].visible)
                     {
                         selectedLayerCol = voxelProject.layers.list[layerIx].GetFrame(voxelProject.currentFrame.Value).GetSafe(drawPoint);
                         if (selectedLayerCol != BlockHD.EmptyBlock)

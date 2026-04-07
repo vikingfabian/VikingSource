@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Work
     class WorkerUnit : AbsGameObject
     {
         WalkingAnimation walkingAnimation;
-        protected WorkerStatus status;
+        //protected WorkerStatus status;
 
         public Graphics.AbsVoxelObj model;
         Graphics.Mesh resourceModel;
@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.Work
         {
             parentMapObject = mapObject;
             factionIndex = mapObject.factionIndex;
-            this.status = status;
+            //this.status = status;
             myIndex = statusIndex;
             model = mapObject.GetFaction_NoChecks().AutoLoadModelInstance_batched(
                  DssLib.WorkerModel, DssConst.Men_StandardModelScale * 0.9f);
@@ -57,10 +57,14 @@ namespace VikingEngine.DSSWars.Work
 
         public bool update(City city)
         {
-            if (myIndex == 6)
-            {
-                lib.DoNothing();
-            }
+
+
+            //if (myIndex == 6)
+            //{
+            //    lib.DoNothing();
+            //}
+
+            ref WorkerStatus status = ref parentMapObject.getRefWorkerStatus(myIndex);
 
             switch (state)
             {
@@ -316,14 +320,14 @@ namespace VikingEngine.DSSWars.Work
 //                            lib.DoNothing();
 //                        }
 //#endif
-                        parentMapObject.setWorkerStatus(myIndex, ref status);
+                        //parentMapObject.setWorkerStatus(myIndex, ref status);
                         state = WorkerUnitState.None;
                         refreshCarryModel();
                     }
                     break;
 
                 case WorkerUnitState.None:
-                    parentMapObject.getWorkerStatus(myIndex, ref status);
+                    //parentMapObject.getWorkerStatus(myIndex, ref status);
                     checkForGoal(false, city);
                     break;
             }
@@ -344,6 +348,7 @@ namespace VikingEngine.DSSWars.Work
 
         void beginWork()
         {
+            ref WorkerStatus status = ref parentMapObject.getRefWorkerStatus(myIndex);
             state = WorkerUnitState.FinalizeWork;
 
             switch (status.work)
@@ -389,6 +394,7 @@ namespace VikingEngine.DSSWars.Work
 
         protected void checkForGoal(bool onInit, City city)
         {
+            ref WorkerStatus status = ref parentMapObject.getRefWorkerStatus(myIndex);
             if (status.work > WorkType.Idle)
             {
                 if (!model.Visible)
@@ -455,6 +461,7 @@ namespace VikingEngine.DSSWars.Work
 
         void refreshGoalDir()
         {
+            ref WorkerStatus status = ref parentMapObject.getRefWorkerStatus(myIndex);
             walkDist_beforeRefresh = 0;
             goalPos = WP.SubtileToWorldPosXZ(status.subTileEnd);
             goalPos.X += WorldData.SubTileWidth * 0.25f;
@@ -466,6 +473,7 @@ namespace VikingEngine.DSSWars.Work
 
         void refreshCarryModel()
         {
+            ref WorkerStatus status = ref parentMapObject.getRefWorkerStatus(myIndex);
             SpriteName sprite = SpriteName.NO_IMAGE;
             bool hasImage;
             if (status.carry.amount > 0)
@@ -569,6 +577,7 @@ namespace VikingEngine.DSSWars.Work
         }
         public override void toHud(ObjectHudArgs args)
         {
+            WorkerStatus status = parentMapObject.getWorkerStatus(myIndex);
             WorkerPresentationHud(args, false);
             //args.content.h2(Name(out _)).overrideColor = Color.LightYellow;
             args.content.text(string.Format(DssRef.lang.WorkerHud_WorkType, status.workString()));
@@ -638,6 +647,9 @@ namespace VikingEngine.DSSWars.Work
                 //    })));
             }
 
+            args.content.text("status ix: " + myIndex.ToString(), HudLib.SecondaryTextColor);
+            args.content.text("xp ix: " + status.XpEntityIndex.ToString(), HudLib.SecondaryTextColor);
+
 //#if DEBUG
 //            args.content.text(string.Format("XP1: {0} {1}", status.xpType1, status.xp1));
 //            args.content.text(string.Format("XP2: {0} {1}", status.xpType2, status.xp2));
@@ -652,6 +664,7 @@ namespace VikingEngine.DSSWars.Work
         //}
         public override void toTooltip(ObjectHudArgs args)
         {
+            WorkerStatus status = parentMapObject.getWorkerStatus(myIndex);
             WorkerPresentationHud(args, true);
             status.xpToHud(args.content);
         }

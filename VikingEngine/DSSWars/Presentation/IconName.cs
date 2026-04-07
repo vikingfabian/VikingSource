@@ -1445,6 +1445,10 @@ namespace VikingEngine.DSSWars
                             icon = SpriteName.WarsResource_Boar;
                             name = TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.Terrain_XAnimalHabitat, DssRef.todoLang.Resource_TypeName_Boar));
                             break;
+                        case TerrainBuildingType.OxHabitat:
+                            icon = SpriteName.WarsResource_Oxen;
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.Terrain_XAnimalHabitat, DssRef.todoLang.Resource_TypeName_Oxen));
+                            break;
                         case TerrainBuildingType.PonyHabitat:
                             icon = SpriteName.WarsResource_Pony;
                             name = TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.Terrain_XAnimalHabitat, DssRef.todoLang.Resource_TypeName_Pony));
@@ -1475,6 +1479,7 @@ namespace VikingEngine.DSSWars
                             name = DssRef.todoLang.BuildingType_BoarPen;
                             break;
 
+                           
                         case TerrainBuildingType.OxenPen:
                             icon = SpriteName.WarsBuild_OxenPen;
                             name = DssRef.todoLang.BuildingType_OxenPen;

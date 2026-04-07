@@ -526,6 +526,11 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             content.space();
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("+" + DssRef.lang.Editor_Canvas_Dimension_Z) }, new RbAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.PlusZ, true)));
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("-" + DssRef.lang.Editor_Canvas_Dimension_Z) }, new RbAction2Arg<IntVector3, bool>(designer.moveAll, IntVector3.NegativeZ, true)));
+            content.newLine();
+            allFramesChkBox(content);
+            //content.newLine();
+            allLayersChkBox(content);
+
 
             content.newParagraph();
             content.h2(DssRef.lang.Editor_Canvas_RotateFlip_Title, HudLib.TitleColor_Label);

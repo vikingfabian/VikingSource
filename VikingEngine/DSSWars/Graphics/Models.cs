@@ -94,7 +94,21 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modsoldier_face_access,
                 VoxelModelName.modsoldier_hat_soldier_all,
                 VoxelModelName.modsoldier_hat_custom_all,
-                
+
+        VoxelModelName.Phant_balkong2w,
+        VoxelModelName.Phant_balkong4w,
+        VoxelModelName.Phant_balkong_enforced,
+        VoxelModelName.Phant_balkong_iron,
+        VoxelModelName.Phant_balkong_steel,
+        VoxelModelName.Phant_ballista,
+        VoxelModelName.Phant_bronzecannon,
+        VoxelModelName.Phant_bronzecannon_side,
+        VoxelModelName.Phant_bronzesiege,
+        VoxelModelName.Phant_ironcannon,
+        VoxelModelName.Phant_ironcannon_side,
+        VoxelModelName.Phant_ironsiege,
+        VoxelModelName.Phant_manuballista,
+
 
             };
             rawModels = new Dictionary<VoxelModelName, VoxelObjGridDataAnimHD>(loadRawModels.Count);
@@ -259,7 +273,10 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.wildcat1, false);
             loadVoxelModel(VoxelModelName.lion1, false);
             loadVoxelModel(VoxelModelName.warlion1, false);
-            loadVoxelModel(VoxelModelName.Elephant_default, false);
+
+            loadVoxelModel(VoxelModelName.Phant_elephant, false);
+            loadVoxelModel(VoxelModelName.Phant_warelephant, false);
+            loadVoxelModel(VoxelModelName.Phant_oliphant, false);
 
             loadVoxelModel(VoxelModelName.Fowl, false);
             loadVoxelModel(VoxelModelName.oxen1, false);
@@ -268,8 +285,7 @@ namespace VikingEngine.DSSWars
             loadVoxelModel(VoxelModelName.pony_pink, false);
             loadVoxelModel(VoxelModelName.drafthorse_red, false);
             loadVoxelModel(VoxelModelName.warhorse_brown, false);
-            loadVoxelModel(VoxelModelName.Elephant_war, false);
-            loadVoxelModel(VoxelModelName.Elephant_oli, false);
+            
 
 
             loadVoxelModel(VoxelModelName.wagon_light, false);
