@@ -78,6 +78,8 @@ namespace VikingEngine.DSSWars
 
             new Models().loadContent();
             part++;
+            ElephantModelBuilder.Init();
+            part++;
 
             Engine.LoadContent.LoadMesh(LoadedMesh.cube_repeating, Engine.LoadContent.ModelPath + "cube_repeating");
             Engine.LoadContent.LoadMesh(LoadedMesh.plane, Engine.LoadContent.ModelPath + "plane");
@@ -175,6 +177,11 @@ namespace VikingEngine.DSSWars
             part++;
             CasualBuild.Init();
             part++;
+        }
+
+        protected override bool tasksComplete()
+        {
+            return ElephantModelBuilder.WaitingCount <= 0;
         }
 
 

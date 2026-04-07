@@ -95,6 +95,12 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modsoldier_hat_soldier_all,
                 VoxelModelName.modsoldier_hat_custom_all,
 
+
+        VoxelModelName.Phant_elephant,
+        VoxelModelName.Phant_warelephant,
+        VoxelModelName.Phant_oliphant,
+
+
         VoxelModelName.Phant_balkong2w,
         VoxelModelName.Phant_balkong4w,
         VoxelModelName.Phant_balkong_enforced,
