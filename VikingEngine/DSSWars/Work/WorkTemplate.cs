@@ -1604,8 +1604,7 @@ namespace VikingEngine.DSSWars.Work
             unlocked = true;
             value = defaultVal;
         }
-
-
+        
         public void set(int value)
         { 
             this.value = (byte)value;

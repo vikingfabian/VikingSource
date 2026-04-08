@@ -47,15 +47,24 @@ namespace VikingEngine.DSSWars.Players
                     city.autoAdjustResourcesToCitySize(prepareSettle);
 
                     //DOES NOT WORK - will reset in auto_updateWorkPrio()
+
+                    ref var woodPrio = ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.wood);
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.wood, ref woodPrio);
+
+                    ref var movePrio = ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.move);
+                    movePrio.set(lib.LargestValue(woodPrio.value, 3));
+
                     adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.stone, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.stone));
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.Clay, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.collectClay), false);
 
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.food, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftFood));
+                    adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.food, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.farmFood), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftFood));
+                    adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.ConservedFood, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftConservedFood), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningSalt), false);
 
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.fuel, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftFuel));
+                    adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.fuel, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftFuel), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningCoal));
 
+                    adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.ironore, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.bogiron), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningIron));
                     adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.iron, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.smeltIron));
 
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.food, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.farmFood));
                     adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.rawFood, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.farmRawFood));
 
 
@@ -100,13 +109,13 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
 
-            void adjustWorkToBuffer(int resourceCompex, ref WorkPriority workPriority)
+            void adjustWorkToBuffer(int resourceCompex, ref WorkPriority workPriority, bool highPrio = true)
             {
                 GroupedResource resource = DssRef.world.cityResouces[resourceCompex];
 
                 if (resource.amount < ResourceLowBuffer)
                 {
-                    if (Ref.peRnd.Chance(0.5))
+                    if (Ref.peRnd.Chance(highPrio? 0.5 : 0.3))
                     {
                         workPriority.addPrio_belowMax(1);
                     }
@@ -116,6 +125,35 @@ namespace VikingEngine.DSSWars.Players
                     if (Ref.peRnd.Chance(0.3))
                     {
                         workPriority.addPrio(-1);
+                    }
+                }
+            }
+
+            void adjustWorkToBuffer_2(int resourceCompex, ref WorkPriority workPriority1, ref WorkPriority workPriority2, bool highPrio = true)
+            {
+                GroupedResource resource = DssRef.world.cityResouces[resourceCompex];
+
+                if (resource.amount < ResourceLowBuffer)
+                {
+                    double chance = highPrio ? 0.5 : 0.3;
+                    if (Ref.peRnd.Chance(chance))
+                    {
+                        workPriority1.addPrio_belowMax(1);
+                    }
+                    if (Ref.peRnd.Chance(chance))
+                    {
+                        workPriority2.addPrio_belowMax(1);
+                    }
+                }
+                else if (resource.amount >= resource.stockPileLimit / 2)
+                {
+                    if (Ref.peRnd.Chance(0.3))
+                    {
+                        workPriority1.addPrio(-1);
+                    }
+                    if (Ref.peRnd.Chance(0.3))
+                    {
+                        workPriority2.addPrio(-1);
                     }
                 }
             }

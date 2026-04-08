@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Resource;
@@ -977,6 +978,8 @@ namespace VikingEngine.DSSWars.Build
             XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
         );
 
+        public const int WorkBenchIronCount = 2;
+
         public static readonly CraftBlueprint WorkBench = new CraftBlueprint(
             CraftResultType.Building,
             (int)Build.BuildAndExpandType.WorkBench,
@@ -984,7 +987,7 @@ namespace VikingEngine.DSSWars.Build
            new UseResource[]
            {
                new UseResource(ItemResourceType.Wood_Group, 20),
-               new UseResource(ItemResourceType.Iron_G, 2),
+               new UseResource(ItemResourceType.Iron_G, WorkBenchIronCount),
            },
             XP.WorkExperienceType.HouseBuilding
         );

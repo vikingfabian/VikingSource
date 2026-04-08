@@ -123,7 +123,7 @@ namespace VikingEngine.DSSWars.Resource
         public StorageType storageType;
 
         public SoldierData soldierData = new SoldierData();
-        public bool Filter_IsWarMashine = false;
+        public bool Filter_IsWarMachine = false;
         public bool Filter_IsTwoHandWeapon = true;
         public bool Filter_IsRidingAnimal = false;
         //public bool Filter_IsRidingWagon = false;

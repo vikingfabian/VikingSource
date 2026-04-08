@@ -308,7 +308,7 @@ namespace VikingEngine.DSSWars.Resource
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.PonyPen));
                 animal.soldierData.CavalrySetup();
                 animal.wagonPull = WagonPull.LightOnly;
-                animal.armorCarry = ArmorCarry.All;
+                animal.armorCarry = ArmorCarry.LightOnly;
 
                 animal.soldierData.walkingSpeed = DssConst.Men_StandardWalkingSpeed * 1.3f;
                 animal.soldierData.lightWagonSpeed = DssConst.Men_StandardWalkingSpeed * 1.2f;
@@ -1430,8 +1430,8 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Ballista;
-                soldier.modelData.modelType = ModelType.Warmashine;
-                weapon.Filter_IsWarMashine = true;
+                soldier.modelData.modelType = ModelType.Warmachine;
+                weapon.Filter_IsWarMachine = true;
                 soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
 
@@ -1465,8 +1465,8 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Manuballista;
-                soldier.modelData.modelType = ModelType.Warmashine;
-                weapon.Filter_IsWarMashine = true;
+                soldier.modelData.modelType = ModelType.Warmachine;
+                weapon.Filter_IsWarMachine = true;
                 soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
             {
@@ -1499,8 +1499,8 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Catapult;
-                soldier.modelData.modelType = ModelType.Warmashine;
-                weapon.Filter_IsWarMashine = true;
+                soldier.modelData.modelType = ModelType.Warmachine;
+                weapon.Filter_IsWarMachine = true;
                 soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
             {
@@ -1534,8 +1534,8 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.SiegeCannonBronze;
-                soldier.modelData.modelType = ModelType.Warmashine;
-                weapon.Filter_IsWarMashine = true;
+                soldier.modelData.modelType = ModelType.Warmachine;
+                weapon.Filter_IsWarMachine = true;
                 soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
             {
@@ -1569,8 +1569,8 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.ManCannonBronze;
-                soldier.modelData.modelType = ModelType.Warmashine;
-                weapon.Filter_IsWarMashine = true;
+                soldier.modelData.modelType = ModelType.Warmachine;
+                weapon.Filter_IsWarMachine = true;
                 soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
             {
@@ -1604,8 +1604,8 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.SiegeCannonIron;
-                soldier.modelData.modelType = ModelType.Warmashine;
-                weapon.Filter_IsWarMashine = true;
+                soldier.modelData.modelType = ModelType.Warmachine;
+                weapon.Filter_IsWarMachine = true;
                 soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
 
@@ -1640,8 +1640,8 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.blocksRefillTimeSec = DssConst.BadBlockRefillTimeSec;
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.ManCannonIron;
-                soldier.modelData.modelType = ModelType.Warmashine;
-                weapon.Filter_IsWarMashine = true;
+                soldier.modelData.modelType = ModelType.Warmachine;
+                weapon.Filter_IsWarMachine = true;
                 soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
 

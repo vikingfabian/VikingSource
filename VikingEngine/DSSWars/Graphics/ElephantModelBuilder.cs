@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars
         { 
             animal = conscript.animal;
             balkong = conscript.vehicle;
-            if (ItemPropertyColl.Get(conscript.weapon).Filter_IsWarMashine)
+            if (ItemPropertyColl.Get(conscript.weapon).Filter_IsWarMachine)
             {
                 siegeWeapon = conscript.weapon;
             }

@@ -17,7 +17,7 @@ namespace VikingEngine.DSSWars.GameObject
         public CavalryBuilder()
             :base()
         {
-            unitBuildType = UnitBuildType.ConscriptBalkong;
+            unitBuildType = UnitBuildType.ConscriptCavalry;
             
             targetSpotRange = StandardTargetSpotRange;
             

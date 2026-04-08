@@ -83,7 +83,7 @@ namespace VikingEngine.DSSWars.Conscript
             switch (conscript.specialization)
             {
                 default:
-                    return ItemPropertyColl.Get(conscript.weapon).Filter_IsWarMashine ? UnitBuildType.ConscriptWarmachine : UnitBuildType.Conscript;
+                    return ItemPropertyColl.Get(conscript.weapon).Filter_IsWarMachine ? UnitBuildType.ConscriptWarmachine : UnitBuildType.Conscript;
                
                 case SpecializationType.CityGuard:
                     return UnitBuildType.CityGuard;
@@ -214,7 +214,7 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 soldierData.WagonSetup();
                 if (conscript.vehicle == ItemResourceType.Wagon4Wheel &&
-                   weaponProperties.Filter_IsWarMashine)
+                   weaponProperties.Filter_IsWarMachine)
                 {
                     soldierData.modelData.riding = true;
                 }

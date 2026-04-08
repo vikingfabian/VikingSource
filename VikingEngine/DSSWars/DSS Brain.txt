@@ -7,9 +7,6 @@ Change Log:
 ##ICONS TODO
 
 #MOUNTED TODO
-x ai conscript of animals
-x missing a lot of the animal/weapon/armor combos
-x lock wagons to animal + siege weapons
 x translate
 
 ## MOUNTED POST CONTENT UPDATE ##

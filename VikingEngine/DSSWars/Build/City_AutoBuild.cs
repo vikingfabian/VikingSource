@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.GameObject
             int safeGuardBuildCount = 1;
 
             BuildAndExpandType safeGuardBuild = BuildAndExpandType.NUM_NONE;
-            
+
             if (buildingStructure.Orchard_count + buildingStructure.WheatFarm_count + buildingStructure.HenPen_count < 2)
             {
                 safeGuardBuild = BuildAndExpandType.OrchardApple;
@@ -79,10 +79,20 @@ namespace VikingEngine.DSSWars.GameObject
                 safeGuardBuild = BuildAndExpandType.OrchardApple;
                 safeGuardBuildCount = 2;
             }
-            else if (buildingStructure.WorkBench_count < 1)
+            else if (buildingStructure.Pottery_count < 1)
+            {
+                safeGuardBuild = BuildAndExpandType.Pottery;
+            }
+            else if (buildingStructure.Smelter_count < 1 &&
+                GetGroupedResource(EntityComponent.CityResoureIndex.ironore).amount >= 5)
+            {
+                safeGuardBuild = BuildAndExpandType.Smelter;
+            }
+            else if (buildingStructure.WorkBench_count < 1 &&
+                GetGroupedResource(EntityComponent.CityResoureIndex.iron).amount >= Build.CraftBuildingLib.WorkBenchIronCount)
             {
                 safeGuardBuild = BuildAndExpandType.WorkBench;
-            }
+            }            
             else if (cityType == CityType.Campsite && TryGetFaction(out var faction) && faction.cities.Count == 1 &&
                 buildingStructure.SoldierBarracks_count + buildingStructure.ArcherBarracks_count < 1)
             {

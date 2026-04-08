@@ -15,6 +15,9 @@ namespace VikingEngine.DSSWars.Conscript
     {
         public static void ToHud(RichBoxContent content, Action<int> addSoldier)
         {
+            ConscriptOptions conscriptOptions = new ConscriptOptions(BattleLabStorage.Singleton.setup.conscript);
+            conscriptOptions.CheckLegal(ref BattleLabStorage.Singleton.setup.conscript);
+
             var weapons_groups = ConscriptDataLib.AllConstriptWeapons();
             foreach (var group in weapons_groups)
             {
@@ -29,7 +32,7 @@ namespace VikingEngine.DSSWars.Conscript
 
             content.newParagraph();
 
-            var shields = BattleLabStorage.Singleton.setup.conscript.AvailableShields();
+            var shields = conscriptOptions.AvailableShields;
             foreach (var item in shields)
             {
                 IconName.Item(item, out var icon, out var name);
@@ -57,7 +60,7 @@ namespace VikingEngine.DSSWars.Conscript
 
             content.newParagraph();
 
-            var animalArmors = BattleLabStorage.Singleton.setup.conscript.AvailableAnimalArmor();
+            var animalArmors = conscriptOptions.AvailableAnimalArmor;
             if (animalArmors != null)
             {
                 foreach (var item in animalArmors)
@@ -70,7 +73,7 @@ namespace VikingEngine.DSSWars.Conscript
                 content.newParagraph();
             }
 
-            var wagons = BattleLabStorage.Singleton.setup.conscript.AvailableWagons();
+            var wagons = conscriptOptions.AvailableWagons;
             if (wagons != null)
             {
                 foreach (var item in wagons)

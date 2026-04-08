@@ -1074,18 +1074,22 @@ namespace VikingEngine.DSSWars.Map
 
             foreach (var pos in WildAnimals)
             {
+                bool inTrapperRange = false;
                 foreach (var trapPos in TrapperHuts)
                 {
                     if (pos.SideLength(trapPos) <= DssConst.TrapperHutRadius)
                     {
                         AnimalPens.Add(pos);
+                        inTrapperRange = true;
                         break;
                     }
-                    else if (Ref.peRnd.ChanceF(0.5f))
-                    {
-                        buildingStructure.SuggestedTrapperPos = pos + arraylib.RandomListMember(IntVector2.Dir4Array) * Ref.rnd.Int(2, 4);
-                    }
                 }
+
+                if (!inTrapperRange && Ref.peRnd.ChanceF(0.5f))
+                {
+                    buildingStructure.SuggestedTrapperPos = pos + arraylib.RandomListMember(IntVector2.Dir4Array) * Ref.rnd.Int(2, 4);
+                }
+
             }
 
             city.buildingStructure = buildingStructure;

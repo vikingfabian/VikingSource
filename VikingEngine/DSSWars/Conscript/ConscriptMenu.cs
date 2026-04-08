@@ -156,13 +156,16 @@ namespace VikingEngine.DSSWars.Conscript
                     content.Add(button);
                 }
 
+                ConscriptOptions conscriptOptions = new ConscriptOptions(currentStatus.profile);
+                conscriptOptions.CheckLegal(ref currentStatus.profile);
+
                 if (advanced)
                 {
                     content.newParagraph();
                     HudLib.Label(content, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_Shield));
                     content.newLine();
 
-                    var shields = currentStatus.profile.AvailableShields();
+                    var shields = conscriptOptions.AvailableShields;
                     foreach (var item in shields)
                     {
                         IconName.Item(item, out SpriteName itemIcon, out _);
@@ -237,54 +240,60 @@ namespace VikingEngine.DSSWars.Conscript
 
                     if (currentStatus.profile.animal != ItemResourceType.NONE)
                     {
-                        content.newParagraph();
-                        HudLib.Label(content, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_MountArmorTitle));
-                        content.newLine();
-
-                        foreach (var item in ConscriptDataLib.MountArmorTypes)
+                        if (conscriptOptions.AvailableAnimalArmor != null)
                         {
-                            IconName.Item(item, out SpriteName itemIcon, out _);
+                            content.newParagraph();
+                            HudLib.Label(content, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_MountArmorTitle));
+                            content.newLine();
 
-                            var buttonContent = new List<AbsRichBoxMember>(3) {
-                        new RbImage(itemIcon),
-                    };
-
-                            if (city.GetGroupedResource(item).amount >= menCostNext)
+                            foreach (var item in conscriptOptions.AvailableAnimalArmor)
                             {
-                                buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
+                                IconName.Item(item, out SpriteName itemIcon, out _);
+
+                                var buttonContent = new List<AbsRichBoxMember>(3) {
+                                new RbImage(itemIcon),
+                            };
+
+                                if (city.GetGroupedResource(item).amount >= menCostNext)
+                                {
+                                    buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
+                                }
+
+                                var button = new ArtOption(item == currentStatus.profile.mountArmor, buttonContent,
+                                new RbAction1Arg<ItemResourceType>(mountArmorClick, item, RbSoundType.Option),
+                                new RbTooltip(armorTooltip, item)
+                                );
+
+                                content.Add(button);
                             }
-
-                            var button = new ArtOption(item == currentStatus.profile.mountArmor, buttonContent,
-                            new RbAction1Arg<ItemResourceType>(mountArmorClick, item, RbSoundType.Option),
-                            new RbTooltip(armorTooltip, item)
-                            );
-
-                            content.Add(button);
                         }
 
-                        content.newParagraph();
-                        HudLib.Label(content, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_Vehicle));
-                        content.newLine();
-
-                        foreach (var item in ConscriptDataLib.VehicleTypes)
+                        if (conscriptOptions.AvailableWagons != null)
                         {
-                            IconName.Item(item, out SpriteName itemIcon, out _);
+                            content.newParagraph();
+                            HudLib.Label(content, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_Vehicle));
+                            content.newLine();
 
-                            var buttonContent = new List<AbsRichBoxMember>(3) {
-                        new RbImage(itemIcon),
-                    };
-
-                            if (city.GetGroupedResource(item).amount >= menCostNext)
+                            foreach (var item in conscriptOptions.AvailableWagons)
                             {
-                                buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
+                                IconName.Item(item, out SpriteName itemIcon, out _);
+
+                                var buttonContent = new List<AbsRichBoxMember>(3) {
+                                    new RbImage(itemIcon),
+                                };
+
+                                if (city.GetGroupedResource(item).amount >= menCostNext)
+                                {
+                                    buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
+                                }
+
+                                var button = new ArtOption(item == currentStatus.profile.vehicle, buttonContent,
+                                new RbAction1Arg<ItemResourceType>(vehicleClick, item, RbSoundType.Option),
+                                new RbTooltip(vehicleTooltip, item)
+                                );
+
+                                content.Add(button);
                             }
-
-                            var button = new ArtOption(item == currentStatus.profile.vehicle, buttonContent,
-                            new RbAction1Arg<ItemResourceType>(vehicleClick, item, RbSoundType.Option),
-                            new RbTooltip(vehicleTooltip, item)
-                            );
-
-                            content.Add(button);
                         }
                     }
                 }

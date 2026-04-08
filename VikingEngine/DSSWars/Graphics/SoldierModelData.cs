@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars
     { 
         Soldier,
         Custom,
-        Warmashine,
+        Warmachine,
         Riding,
         Ship,
     }

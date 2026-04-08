@@ -33,8 +33,23 @@ namespace VikingEngine.DSSWars.Conscript
                 vehiclesPerUnit = 1;
                 animalsPerUnit = 2;
                 groupUnitCount = Resource.ItemPropertyColl.WagonRowWidth * Resource.ItemPropertyColl.WagonColumnDepth;
+                var animalProp = Resource.ItemPropertyColl.Get(conscript.animal);
 
-                if (weaponProp.Filter_IsWarMashine)
+                if (animalProp.wagonPull == Resource.WagonPull.Balcon)
+                {
+                    //Elephant riders
+                    menPerUnit = 2;
+
+                    if (weaponProp.Filter_IsWarMachine)
+                    {   
+                        weaponsPerUnit = 1;
+                    }
+                    else
+                    {
+                        weaponsPerUnit = menPerUnit;
+                    }
+                }
+                else if (weaponProp.Filter_IsWarMachine)
                 {
                     //The wagon is one big weapon
                     menPerUnit = 2;
@@ -62,7 +77,7 @@ namespace VikingEngine.DSSWars.Conscript
                     groupUnitCount = animalProp.soldierData.UnitCount();
                 }
 
-                if (weaponProp.Filter_IsWarMashine)
+                if (weaponProp.Filter_IsWarMachine)
                 {
 #if DEBUG
                     throw new Exception();
@@ -72,7 +87,7 @@ namespace VikingEngine.DSSWars.Conscript
             else
             {
                 groupUnitCount = weaponProp.soldierData.UnitCount(conscript.specialization == SpecializationType.CityGuard);
-                if (weaponProp.Filter_IsWarMashine)
+                if (weaponProp.Filter_IsWarMachine)
                 {
                     //The wagon is one big weapon
                     menPerUnit = 2;

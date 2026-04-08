@@ -112,7 +112,7 @@ namespace VikingEngine.ToGG.Commander.UnitsData
     class Goblin_MountedBallista : CmdUnitData
     {
         public Goblin_MountedBallista()
-            : base("Goblin Ballista", UnitMainType.Warmashine, UnitUnderType.Warmashine_Ballista, false, SpriteName.cmdUnitBallista,
+            : base("Goblin Ballista", UnitMainType.Warmashine, UnitUnderType.Warmachine_Ballista, false, SpriteName.cmdUnitBallista,
                 0, 0, 2, 5, 2, true)
         {
             modelSettings.facingRight = true;

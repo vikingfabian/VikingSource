@@ -169,6 +169,14 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.WagonSteel,
         };
 
+        public static readonly ItemResourceType[] VehicleRequired = {
+            ItemResourceType.Wagon2Wheel,
+            ItemResourceType.Wagon4Wheel,
+            ItemResourceType.WagonClosed,
+            ItemResourceType.WagonIron,
+            ItemResourceType.WagonSteel,
+        };
+
         public static List<ItemResourceType[]> AllConstriptWeapons()
         {
             return new List<ItemResourceType[]>

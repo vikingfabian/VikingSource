@@ -41,50 +41,55 @@ namespace VikingEngine.DSSWars.Conscript
             specialization = SpecializationType.None;
         }
 
-        public ItemResourceType[] AvailableShields()
-        {
-            if (ItemPropertyColl.Get(weapon).Filter_IsTwoHandWeapon)
-            {
-                return ConscriptDataLib.SideShield;
-            }
-            else
-            {
-                return ConscriptDataLib.AllShields;
-            }
-        }
+        //public ItemResourceType[] AvailableShields()
+        //{
+        //    if (ItemPropertyColl.Get(weapon).Filter_IsTwoHandWeapon)
+        //    {
+        //        return ConscriptDataLib.SideShield;
+        //    }
+        //    else
+        //    {
+        //        return ConscriptDataLib.AllShields;
+        //    }
+        //}
 
-        public ItemResourceType[] AvailableWagons()
-        {
-            switch (ItemPropertyColl.Get(animal).wagonPull)
-            {
-                default:
-                case WagonPull.None:
-                    return null;
+        //public ItemResourceType[] AvailableWagons()
+        //{
+        //    switch (ItemPropertyColl.Get(animal).wagonPull)
+        //    {
+        //        default:
+        //        case WagonPull.None:
+        //            return null;
 
-                case WagonPull.LightOnly:
-                    return ConscriptDataLib.VehicleTypesLight;
+        //        case WagonPull.LightOnly:
+        //            return ConscriptDataLib.VehicleTypesLight;
 
-                case WagonPull.All:
-                case WagonPull.Balcon:
-                    return ConscriptDataLib.VehicleTypes;
-            }
-        }
+        //        case WagonPull.All:
+        //            return ConscriptDataLib.VehicleTypes;
+        //        case WagonPull.Balcon:
+        //            if (ItemPropertyColl.Get(weapon).Filter_IsWarMashine)
+        //            { 
+        //                return ConscriptDataLib.VehicleRequired;
+        //            }
+        //            return ConscriptDataLib.VehicleTypes;
+        //    }
+        //}
 
-        public ItemResourceType[] AvailableAnimalArmor()
-        {
-            switch (ItemPropertyColl.Get(animal).armorCarry)
-            {
-                default:
-                case ArmorCarry.None:
-                    return null;
+        //public ItemResourceType[] AvailableAnimalArmor()
+        //{
+        //    switch (ItemPropertyColl.Get(animal).armorCarry)
+        //    {
+        //        default:
+        //        case ArmorCarry.None:
+        //            return null;
 
-                case ArmorCarry.LightOnly:
-                    return ConscriptDataLib.MountArmorTypesLight;
+        //        case ArmorCarry.LightOnly:
+        //            return ConscriptDataLib.MountArmorTypesLight;
 
-                case ArmorCarry.All:
-                    return ConscriptDataLib.MountArmorTypes;
-            }
-        }
+        //        case ArmorCarry.All:
+        //            return ConscriptDataLib.MountArmorTypes;
+        //    }
+        //}
 
         public int menCost()
         {

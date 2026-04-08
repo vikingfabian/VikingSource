@@ -4124,7 +4124,6 @@ namespace VikingEngine.DSSWars.GameObject
             if (available)
             {
                 blueprint.payResources(this);
-                //freeServiceMen.amount -= serviceHouses_required;
                 cityType++;
                 TerrainBuildingType hall;
 
@@ -4143,14 +4142,6 @@ namespace VikingEngine.DSSWars.GameObject
 
                 }
 
-                //if (cityType == CityType.Town)
-                //{
-                //    hall = TerrainBuildingType.CityHall_Town;
-                //}
-                //else
-                //{
-                //    hall = TerrainBuildingType.CityHall_Capital;
-                //}
                 SubTile subTile = new SubTile();
                 subTile.SetType(TerrainMainType.Building, (int)hall, 1);
                 new EditSubTile(cityHallSubtilePos, subTile, true, false, false).Submit();
