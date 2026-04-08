@@ -35,6 +35,7 @@ namespace VikingEngine.DSSWars.GameObject
             add(new WarmachineProfile());
             add(new CavalryBuilder());
             add(new WagonBuilder());
+            add(new BalkongBuilder());
             add(new HoundBuilder());
 
             //add(new DarkLordBuilder());
@@ -284,9 +285,6 @@ namespace VikingEngine.DSSWars.GameObject
     enum UnitBuildType
     {
         NULL = -1,
-        //King = 34,
-        //KingsGuard = 35,
-        //Recruit =0,
         Conscript = 0,
         ConscriptWarship = 1,
         BannerMan = 2,
@@ -294,52 +292,13 @@ namespace VikingEngine.DSSWars.GameObject
         ConscriptWagon = 4,
         ConscriptHound = 5,
         ConscriptWarmachine = 6,
-        //DarkLordWarship = 6,
-        //DarkLord = 7,
-
+       
         CityGuard = 7,
         CityGuardWarship = 8,
-        //Soldier =1,
-        //Sailor =2,
-        //Folkman =3,
-        //Spearman =4,
-        //HonorGuard=10,
-        //Pikeman =5,
-        //Knight=6,
-        //Archer=7,
-        //CrossBow=8,
-
-        //Ballista=9,        
-        //Trollcannon=11,
-        //GreenSoldier = 13,
-        //Viking = 14,
-        //DarkLord = 16,
-        //BannerMan =12,7
+        ConscriptBalkong = 9,
+        
         NUM,
         City,
 
-        //RecruitWarship = 17,
-        //FolkWarship = 18,
-
-        //SoldierWarship = 19,
-        //HonorGuardWarship = 20,
-        //PikemanWarship = 21,
-
-        //ArcherWarship = 22,
-        //CrossbowWarship = 23,
-
-        //BallistaWarship = 24,
-        //TrollcannonWarship = 25,
-
-        //SailorWarship = 26,
-        //VikingWarship = 27,
-
-        //GreenWarship = 28,
-        //KnightWarship = 29,
-        //DarkLordWarship = 30,
-
-
-        
-       
     }
 }

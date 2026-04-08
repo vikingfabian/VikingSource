@@ -194,7 +194,7 @@ namespace VikingEngine.DSSWars
 
         protected override void launch()
         {
-
+            DssRef.models.rawModels_temporary = null;
             Ref.main.criticalContentIsLoaded = true;
             new Achievements();
             //new GameStats();

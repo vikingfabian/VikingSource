@@ -19,8 +19,9 @@ namespace VikingEngine.DSSWars
    
     class Models
     {
-        
+
         public Dictionary<VoxelModelName, VoxelObjGridDataAnimHD> rawModels;
+        public Dictionary<VoxelModelName, VoxelObjGridDataAnimHD> rawModels_temporary;
         public Dictionary<VoxelModelName, Graphics.VoxelModel> voxelModels = new Dictionary<VoxelModelName, Graphics.VoxelModel>();
 
         public Dictionary<VoxelModelName, WeaponModel> weaponModels;
@@ -96,30 +97,37 @@ namespace VikingEngine.DSSWars
                 VoxelModelName.modsoldier_hat_custom_all,
 
 
-        VoxelModelName.Phant_elephant,
-        VoxelModelName.Phant_warelephant,
-        VoxelModelName.Phant_oliphant,
-
-
-        VoxelModelName.Phant_balkong2w,
-        VoxelModelName.Phant_balkong4w,
-        VoxelModelName.Phant_balkong_enforced,
-        VoxelModelName.Phant_balkong_iron,
-        VoxelModelName.Phant_balkong_steel,
-        VoxelModelName.Phant_ballista,
-        VoxelModelName.Phant_bronzecannon,
-        VoxelModelName.Phant_bronzecannon_side,
-        VoxelModelName.Phant_bronzesiege,
-        VoxelModelName.Phant_ironcannon,
-        VoxelModelName.Phant_ironcannon_side,
-        VoxelModelName.Phant_ironsiege,
-        VoxelModelName.Phant_manuballista,
+        
 
 
             };
             rawModels = new Dictionary<VoxelModelName, VoxelObjGridDataAnimHD>(loadRawModels.Count);
 
-            List<VoxelModelName> loadWeaponModels = new List<VoxelModelName>
+            List<VoxelModelName> loadTemporaryRawModels = new List<VoxelModelName>
+            {
+                VoxelModelName.Phant_elephant,
+                VoxelModelName.Phant_warelephant,
+                VoxelModelName.Phant_oliphant,
+
+
+                VoxelModelName.Phant_balkong2w,
+                VoxelModelName.Phant_balkong4w,
+                VoxelModelName.Phant_balkong_enforced,
+                VoxelModelName.Phant_balkong_iron,
+                VoxelModelName.Phant_balkong_steel,
+                VoxelModelName.Phant_ballista,
+                VoxelModelName.Phant_bronzecannon,
+                VoxelModelName.Phant_bronzecannon_side,
+                VoxelModelName.Phant_bronzesiege,
+                VoxelModelName.Phant_ironcannon,
+                VoxelModelName.Phant_ironcannon_side,
+                VoxelModelName.Phant_ironsiege,
+                VoxelModelName.Phant_manuballista,
+            };
+
+            rawModels_temporary = new Dictionary<VoxelModelName, VoxelObjGridDataAnimHD>(loadTemporaryRawModels.Count);
+
+                List <VoxelModelName> loadWeaponModels = new List<VoxelModelName>
             {
                 VoxelModelName.modweapon_sword1,
                 
@@ -159,31 +167,34 @@ namespace VikingEngine.DSSWars
                 loadVoxelModel(model, false);
             }
 
-            foreach (var modelName in loadRawModels)
-            {
-                DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
-                byte[] data = DataStream.FileToDiskManager.Read(path);
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        System.IO.MemoryStream s = new System.IO.MemoryStream(data);
-                        System.IO.BinaryReader r = new System.IO.BinaryReader(s);
+            loadRawModelsToDic(loadRawModels, rawModels);
+            loadRawModelsToDic(loadTemporaryRawModels, rawModels_temporary);
 
-                        var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
-                        var result = new VoxelObjGridDataAnimHD(grids);
+            //foreach (var modelName in loadRawModels)
+            //{
+            //    DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
+            //    byte[] data = DataStream.FileToDiskManager.Read(path);
+            //    Task.Run(() =>
+            //    {
+            //        try
+            //        {
+            //            System.IO.MemoryStream s = new System.IO.MemoryStream(data);
+            //            System.IO.BinaryReader r = new System.IO.BinaryReader(s);
 
-                        lock (rawModels)
-                        {
-                            rawModels.Add(modelName, result);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        BlueScreen.ThreadException = ex;
-                    }
-                });
-            }
+            //            var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
+            //            var result = new VoxelObjGridDataAnimHD(grids);
+
+            //            lock (rawModels)
+            //            {
+            //                rawModels.Add(modelName, result);
+            //            }
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            BlueScreen.ThreadException = ex;
+            //        }
+            //    });
+            //}
 
             weaponModels = new Dictionary<VoxelModelName, WeaponModel>(loadWeaponModels.Count);
             foreach (var weaponName in loadWeaponModels)
@@ -347,6 +358,36 @@ namespace VikingEngine.DSSWars
 
                 loadedData.Add(new VoxelModelData(modelName, verticeData, gridSz, framesData)); 
             }
+        }
+
+        void loadRawModelsToDic(List<VoxelModelName> loadRawModels, Dictionary<VoxelModelName, VoxelObjGridDataAnimHD> toDictionary)
+        {
+            foreach (var modelName in loadRawModels)
+            {
+                DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
+                byte[] data = DataStream.FileToDiskManager.Read(path);
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        System.IO.MemoryStream s = new System.IO.MemoryStream(data);
+                        System.IO.BinaryReader r = new System.IO.BinaryReader(s);
+
+                        var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
+                        var result = new VoxelObjGridDataAnimHD(grids);
+
+                        lock (toDictionary)
+                        {
+                            toDictionary.Add(modelName, result);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        BlueScreen.ThreadException = ex;
+                    }
+                });
+            }
+
         }
 
         public void sychLoading()

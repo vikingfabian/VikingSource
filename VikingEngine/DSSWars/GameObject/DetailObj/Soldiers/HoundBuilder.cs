@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             walkingAnimation.idleframe = 0;
             walkingAnimation.idleblinkframe = 0;
             
-            resetAnimlNoise();
+            resetAnimalNoise();
             createShadow(soldier);
         }
 

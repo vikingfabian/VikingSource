@@ -51,6 +51,7 @@ namespace VikingEngine.DSSWars.Players
             if (newGame)
             {
                 createStartupBarracks();
+                faction.addGold_factionWide(DssRef.difficulty.setting_gameMode == GameModeMainType.Sandbox? 500 : 200);
             }
         }
 

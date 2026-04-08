@@ -61,10 +61,6 @@ namespace VikingEngine.DSSWars.GameObject
                 safeGuardBuild = BuildAndExpandType.OrchardApple;
                 safeGuardBuildCount = 2;
             }
-            else if (cityType == CityType.Campsite && buildingStructure.TentHuts_count < 2)
-            {
-                safeGuardBuild = BuildAndExpandType.WorkerTent;
-            }
             else if (terrainStructure.resourceCount_wood <= 2 && GetGroupedResource(CityResoureIndex.wood).amount <= 10)
             {
                 safeGuardBuild = BuildAndExpandType.TreeSeedlingHard;
@@ -73,6 +69,10 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 safeGuardBuild = BuildAndExpandType.LinenFarm;
                 safeGuardBuildCount = 2;
+            }
+            else if (cityType == CityType.Campsite && buildingStructure.TentHuts_count < 2)
+            {
+                safeGuardBuild = BuildAndExpandType.WorkerTent;
             }
             else if (buildingStructure.Orchard_count < 6)
             {
@@ -191,6 +191,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (BuildLib.BuildOptions[(int)buildType].availableBlueprintResources_ignorewater(this) &&
                         work_isFreeTile(pos))
                     {
+                        byte prio = buildType == safeGuardBuild ? WorkTemplate.MaxPrio : workTemplate.Get(WorkPriorityType.autoBuild).value;
                         workQue.Add(new WorkQueMember(WorkType.Build, (int)buildType, 0, pos, workTemplate.Get(WorkPriorityType.autoBuild).value, 0, 0));
                     }
                 }

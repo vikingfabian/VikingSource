@@ -1955,20 +1955,20 @@ namespace VikingEngine.DSSWars.Map.Generate
             {
                //Tiny, Small, Medium, Large, Huge, Epic
                default:
-                    mithrilCount = 2;
+                    mithrilCount = 1;
                     break;
 
                 case MapSize.Medium:
-                    mithrilCount = 3;
+                    mithrilCount = 2;
                     break;
 
                 case MapSize.Large:
-                    mithrilCount = 4;
+                    mithrilCount = 3;
                     break;
 
                 case MapSize.Huge:
                 case MapSize.Epic:
-                    mithrilCount = 5;
+                    mithrilCount = 4;
                     break;
             }
 
@@ -1984,15 +1984,15 @@ namespace VikingEngine.DSSWars.Map.Generate
 
             addMines(mithrilCount, (int)TerrainMineType.Mithril);
 
-            int tin = MathExt.MultiplyInt(world.rnd.Double(0.11, 0.13), mineLocations.Count);
-            int cupper = MathExt.MultiplyInt(world.rnd.Double(0.11, 0.13), mineLocations.Count);
-            int lead = MathExt.MultiplyInt(world.rnd.Double(0.11, 0.13), mineLocations.Count);
-            int silver = MathExt.MultiplyInt(world.rnd.Double(0.05, 0.06), mineLocations.Count);
-            int gold = MathExt.MultiplyInt(world.rnd.Double(0.03, 0.04), mineLocations.Count);
-            int sulfur = MathExt.MultiplyInt(world.rnd.Double(0.14, 0.16), mineLocations.Count);
-            int salt = MathExt.MultiplyInt(world.rnd.Double(0.14, 0.16), mineLocations.Count);
-            int stone = MathExt.MultiplyInt(world.rnd.Double(0.14, 0.16), mineLocations.Count);
-            int coal = MathExt.MultiplyInt(world.rnd.Double(0.14, 0.16), mineLocations.Count);
+            int tin = MathExt.MultiplyInt(world.rnd.Double(0.08, 0.1), mineLocations.Count);
+            int cupper = MathExt.MultiplyInt(world.rnd.Double(0.1, 0.12), mineLocations.Count);
+            int lead = MathExt.MultiplyInt(world.rnd.Double(0.07, 0.09), mineLocations.Count);
+            int silver = MathExt.MultiplyInt(world.rnd.Double(0.04, 0.05), mineLocations.Count);
+            int gold = MathExt.MultiplyInt(world.rnd.Double(0.02, 0.03), mineLocations.Count);
+            int sulfur = MathExt.MultiplyInt(world.rnd.Double(0.07, 0.09), mineLocations.Count);
+            int salt = MathExt.MultiplyInt(world.rnd.Double(0.12, 0.14), mineLocations.Count);
+            int stone = MathExt.MultiplyInt(world.rnd.Double(0.12, 0.14), mineLocations.Count);
+            int coal = MathExt.MultiplyInt(world.rnd.Double(0.1, 0.12), mineLocations.Count);
 
             addMines(tin, (int)TerrainMineType.TinOre);
             addMines(cupper, (int)TerrainMineType.CopperOre);

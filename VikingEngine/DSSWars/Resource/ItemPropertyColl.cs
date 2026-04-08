@@ -1431,7 +1431,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Ballista;
                 soldier.modelData.modelType = ModelType.Warmashine;
-                weapon.Filter_IsSiegeWeapon = true;
+                weapon.Filter_IsWarMashine = true;
                 soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
 
@@ -1466,6 +1466,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Manuballista;
                 soldier.modelData.modelType = ModelType.Warmashine;
+                weapon.Filter_IsWarMashine = true;
                 soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
             {
@@ -1499,7 +1500,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.Catapult;
                 soldier.modelData.modelType = ModelType.Warmashine;
-                weapon.Filter_IsSiegeWeapon = true;
+                weapon.Filter_IsWarMashine = true;
                 soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
             {
@@ -1534,7 +1535,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.SiegeCannonBronze;
                 soldier.modelData.modelType = ModelType.Warmashine;
-                weapon.Filter_IsSiegeWeapon = true;
+                weapon.Filter_IsWarMashine = true;
                 soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
             {
@@ -1569,6 +1570,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.ManCannonBronze;
                 soldier.modelData.modelType = ModelType.Warmashine;
+                weapon.Filter_IsWarMashine = true;
                 soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
             {
@@ -1603,7 +1605,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.SiegeCannonIron;
                 soldier.modelData.modelType = ModelType.Warmashine;
-                weapon.Filter_IsSiegeWeapon = true;
+                weapon.Filter_IsWarMashine = true;
                 soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
 
@@ -1639,6 +1641,7 @@ namespace VikingEngine.DSSWars.Resource
                 soldier.factionColoredModel = true;
                 soldier.modelData.weapon = ItemResourceType.ManCannonIron;
                 soldier.modelData.modelType = ModelType.Warmashine;
+                weapon.Filter_IsWarMashine = true;
                 soldier.boundRadius = DssVar.StandardBoundRadius * 2.2f;
             }
 

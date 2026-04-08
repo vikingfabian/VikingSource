@@ -1556,6 +1556,7 @@ namespace VikingEngine.DSSWars.Work
                         }
                     }
                     break;
+                case WorkType.Starving:
                 case WorkType.Exit:
                     //work = WorkType.IsDeleted;
                     DeleteMe();

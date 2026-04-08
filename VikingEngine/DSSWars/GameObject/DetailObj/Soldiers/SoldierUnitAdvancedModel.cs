@@ -103,7 +103,7 @@ namespace VikingEngine.DSSWars.GameObject
         protected AnimalNoiseType animalNoiseType = AnimalNoiseType.NUM_NONE;
         protected static readonly IntervalF AnimalNoiseFrequecy = new IntervalF(5, 40);
         protected TimeInGameCountdown nextAnimalNoise;
-        protected void resetAnimlNoise()
+        protected void resetAnimalNoise()
         {
             nextAnimalNoise.start(AnimalNoiseFrequecy);
         }
@@ -116,7 +116,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     SoundLib.AnimalNoises[(int)animalNoiseType].Play(model.position);
                 }
-                resetAnimlNoise();
+                resetAnimalNoise();
             }
         }
 

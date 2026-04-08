@@ -65,10 +65,10 @@ namespace VikingEngine.DSSWars.Players
                         city.workTemplate.setWorkPrio(WorkPriorityType.farmFood, 5);
                         city.workTemplate.setWorkPrio(WorkPriorityType.farmRawFood, 4);
                     }
-                    if (city.resourceAmount(CityResoureIndex.wood) <= 0)
-                    {
-                        BlackMarketResources.AiPurchaseWood(city, faction);
-                    }
+                    //if (city.resourceAmount(CityResoureIndex.wood) <= 0)
+                    //{
+                    //    BlackMarketResources.AiPurchaseWood(city, faction);
+                    //}
 
 
                     bool hasBetterCraft = false;

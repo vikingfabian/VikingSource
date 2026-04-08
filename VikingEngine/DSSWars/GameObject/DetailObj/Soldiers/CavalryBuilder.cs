@@ -17,10 +17,8 @@ namespace VikingEngine.DSSWars.GameObject
         public CavalryBuilder()
             :base()
         {
-            unitBuildType = UnitBuildType.ConscriptCavalry;
-            //boundRadius = DssVar.StandardBoundRadius;
-
-            //idleFrame = 0;
+            unitBuildType = UnitBuildType.ConscriptBalkong;
+            
             targetSpotRange = StandardTargetSpotRange;
             
             goldCost = MathExt.MultiplyInt(2, DssLib.GroupDefaultCost);
@@ -56,6 +54,8 @@ namespace VikingEngine.DSSWars.GameObject
         }
     }
 
+    
+
     class CavalryModel : SoldierUnitAdvancedModel
     {
         Graphics.VoxelModelInstance animalmodel;
@@ -71,12 +71,12 @@ namespace VikingEngine.DSSWars.GameObject
             
 
             walkingAnimation = modelData.animation;
-            var soldierProfile = soldier.Profile();
+            //var soldierProfile = soldier.Profile();
             walkingAnimation.attackframe = CharacterModelBuilder.AttackFrame;
             walkingAnimation.idleframe = CharacterModelBuilder.IdleFrame;
             walkingAnimation.idleblinkframe = CharacterModelBuilder.IdleBlinkFrame;
 
-            resetAnimlNoise();
+            resetAnimalNoise();
         }
 
         public static AnimalProfile AnimalModel(Resource.ItemResourceType animal)
@@ -186,12 +186,12 @@ namespace VikingEngine.DSSWars.GameObject
                 walkingAnimation.update(move, animalmodel, out bool enterEvenFrame);
                 if (enterEvenFrame && Ref.peRnd.ChanceF(0.1f))
                 {
-                    SoundLib.WalkSounds[(int)walkSound].Play(model.position);
+                    SoundLib.WalkSounds[(int)walkSound].Play(animalmodel.position);
                 }
 
                 if (Ref.peRnd.Chance(0.5 / Ref.UpdateTimes60FPS))
                 {
-                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, Ref.peRnd.Vector3_SqXZ(model.position, 0.02f));
+                    Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, Ref.peRnd.Vector3_SqXZ(animalmodel.position, 0.02f));
                 }
             }
             else 

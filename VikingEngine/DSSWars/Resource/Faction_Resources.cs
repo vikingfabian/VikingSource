@@ -529,9 +529,6 @@ namespace VikingEngine.DSSWars
             {
                 int perCity = value / cityCount;
 
-                //var citiesC = cities.counter();
-                //while (citiesC.Next())
-                //{
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
                 {

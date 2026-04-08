@@ -268,14 +268,14 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                     break;
             }
 
-            resetAnimlNoise();
+            resetAnimalNoise();
 
             update(soldier);
 
             VoxelModelInstance_Pooled createSoldier()
             {
                 return faction.AutoLoadModelInstance_character(
-                        soldier.soldierData.modelData, soldier.soldierData.modelScale * faction.player.profile.character.soldierScale);
+                        soldier.soldierData.modelData, DssConst.Men_ModCharacterScale * faction.player.profile.character.soldierScale);
             }
         }
 

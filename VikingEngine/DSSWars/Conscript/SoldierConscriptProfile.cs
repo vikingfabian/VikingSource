@@ -53,19 +53,37 @@ namespace VikingEngine.DSSWars.Conscript
         {
             if (conscript.vehicle != ItemResourceType.NONE)
             {
+                switch (conscript.animal)
+                {
+                    case ItemResourceType.Elephant:
+                    case ItemResourceType.WarElephant:
+                    case ItemResourceType.Oliphant:
+                        return UnitBuildType.ConscriptBalkong;
+                }
                 return UnitBuildType.ConscriptWagon;
             }
 
             if (conscript.animal != ItemResourceType.NONE &&
                 ItemPropertyColl.Get(conscript.animal).Filter_IsRidingAnimal)
             {
+                //switch (conscript.animal)
+                //{
+                //    case ItemResourceType.Elephant:
+                //    case ItemResourceType.WarElephant:
+                //    case ItemResourceType.Oliphant:
+                //        if (conscript.vehicle != ItemResourceType.NONE)
+                //        { 
+                //            return UnitBuildType.ConscriptBalkong;
+                //        }
+                //        break;
+                //}
                 return UnitBuildType.ConscriptCavalry;
             }
 
             switch (conscript.specialization)
             {
                 default:
-                    return ItemPropertyColl.Get(conscript.weapon).Filter_IsSiegeWeapon ? UnitBuildType.ConscriptWarmachine : UnitBuildType.Conscript;
+                    return ItemPropertyColl.Get(conscript.weapon).Filter_IsWarMashine ? UnitBuildType.ConscriptWarmachine : UnitBuildType.Conscript;
                
                 case SpecializationType.CityGuard:
                     return UnitBuildType.CityGuard;
@@ -196,7 +214,7 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 soldierData.WagonSetup();
                 if (conscript.vehicle == ItemResourceType.Wagon4Wheel &&
-                   weaponProperties.Filter_IsSiegeWeapon)
+                   weaponProperties.Filter_IsWarMashine)
                 {
                     soldierData.modelData.riding = true;
                 }

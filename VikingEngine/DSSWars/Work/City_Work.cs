@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (workTeamsTotalCount < workTeamGoalCount)
                 {
-                    if (myIndex == 270)
+                    if (myIndex == 220)
                     {
                         lib.DoNothing();
                     }
@@ -236,7 +236,11 @@ namespace VikingEngine.DSSWars.GameObject
                             CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
                             status.createWorkOrder(WorkType.DropOff, -1, 0, WorkExperienceType.Transport, -1, CityStructure.WorkInstance.storePosition(status.subTileEnd), this);
                         }
-                        else if (status.energy < 0 && (resourceAmount(CityResoureIndex.food)/*res_food.amount*/ > 0 || faction.hasGold(1, this)))
+                        else if (status.energy < 0 && workTeamsTotalCount <= 1)
+                        {
+                            status.energy = DssConst.Worker_MaxEnergy / 2;
+                        }
+                        else if (status.energy < 0 && (resourceAmount(CityResoureIndex.food) > 0 || faction.hasGold(1, this)))
                         {
                             CityStructure.WorkInstance.updateIfNew(this, workerStatuses.Count);
                             status.createWorkOrder(WorkType.Eat, -1, 0, WorkExperienceType.NUM_NONE, -1, CityStructure.WorkInstance.eatPosition(status.subTileEnd), this);

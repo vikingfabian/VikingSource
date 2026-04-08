@@ -13,6 +13,7 @@ x lock wagons to animal + siege weapons
 x translate
 
 ## MOUNTED POST CONTENT UPDATE ##
+x close cores popup on battle lab
 x boil salt
 x deeper unit category with search for items and melee/ranged/warmashine filters
 (maybe filter out units for remove/split)

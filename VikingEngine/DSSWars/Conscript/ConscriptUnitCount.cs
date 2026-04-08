@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.Conscript
                 animalsPerUnit = 2;
                 groupUnitCount = Resource.ItemPropertyColl.WagonRowWidth * Resource.ItemPropertyColl.WagonColumnDepth;
 
-                if (weaponProp.Filter_IsSiegeWeapon)
+                if (weaponProp.Filter_IsWarMashine)
                 {
                     //The wagon is one big weapon
                     menPerUnit = 2;
@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.Conscript
                     groupUnitCount = animalProp.soldierData.UnitCount();
                 }
 
-                if (weaponProp.Filter_IsSiegeWeapon)
+                if (weaponProp.Filter_IsWarMashine)
                 {
 #if DEBUG
                     throw new Exception();
@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars.Conscript
             else
             {
                 groupUnitCount = weaponProp.soldierData.UnitCount(conscript.specialization == SpecializationType.CityGuard);
-                if (weaponProp.Filter_IsSiegeWeapon)
+                if (weaponProp.Filter_IsWarMashine)
                 {
                     //The wagon is one big weapon
                     menPerUnit = 2;

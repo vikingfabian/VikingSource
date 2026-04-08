@@ -6,6 +6,7 @@ using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.LootFest;
+using VikingEngine.LootFest.Players;
 using VikingEngine.ToGG.ToggEngine.Map;
 using VikingEngine.Voxels;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -19,6 +20,24 @@ namespace VikingEngine.DSSWars
         public ArmorLevel armor;
         public ItemResourceType balkong;
         public ItemResourceType siegeWeapon;
+
+        public ElephantModelData()
+        { }
+
+        public ElephantModelData(Conscript.ConscriptProfile conscript)
+        { 
+            animal = conscript.animal;
+            balkong = conscript.vehicle;
+            if (ItemPropertyColl.Get(conscript.weapon).Filter_IsWarMashine)
+            {
+                siegeWeapon = conscript.weapon;
+            }
+            else
+            { 
+                siegeWeapon = ItemResourceType.NONE;
+            }
+
+        }
 
         public override int GetHashCode()
         {
@@ -37,6 +56,11 @@ namespace VikingEngine.DSSWars
             return animal == ItemResourceType.Oliphant && 
                 (siegeWeapon == ItemResourceType.ManCannonIron || siegeWeapon == ItemResourceType.ManCannonBronze);
         }
+
+        public override string ToString()
+        {
+            return $"ElephantModelData {{ Animal = {animal}, Armor = {armor}, Balkong = {balkong}, SiegeWeapon = {siegeWeapon} }}";
+        }
     }
 
     class ElephantModelBuilder : Voxels.ModelBuilder
@@ -48,7 +72,7 @@ namespace VikingEngine.DSSWars
         public static void Init()
         {
             ItemResourceType[] animals = [ItemResourceType.Elephant, ItemResourceType.WarElephant, ItemResourceType.Oliphant];
-            ItemResourceType[] balkongs = [ItemResourceType.NONE, ItemResourceType.Wagon2Wheel, ItemResourceType.Wagon4Wheel, ItemResourceType.WagonClosed, ItemResourceType.WagonIron, ItemResourceType.WagonSteel];
+            ItemResourceType[] balkongs = [/*ItemResourceType.NONE,*/ ItemResourceType.Wagon2Wheel, ItemResourceType.Wagon4Wheel, ItemResourceType.WagonClosed, ItemResourceType.WagonIron, ItemResourceType.WagonSteel];
             ItemResourceType[] siegeWeapons = [ItemResourceType.NONE, ItemResourceType.Ballista, ItemResourceType.Manuballista, ItemResourceType.Catapult, ItemResourceType.SiegeCannonBronze, ItemResourceType.ManCannonBronze, ItemResourceType.SiegeCannonIron, ItemResourceType.ManCannonIron];
 
             ElephantModelData modelData = new ElephantModelData();
@@ -88,6 +112,41 @@ namespace VikingEngine.DSSWars
                     }
                 }
             }
+        }
+
+        public static VoxelModelInstance_Pooled GetInstance(ElephantModelData modelData, float scale = 1f)
+        {
+
+            VoxelModelInstance_Pooled instance = DssRef.models.NextInstance_Pooled();
+#if DEBUG
+            instance.DebugName = modelData.ToString();
+#endif
+            instance.scale.X = scale;
+            instance.scale.Y = 0;
+
+            Graphics.AbsVoxelObj master = null;
+
+            int id = modelData.GetHashCode();
+            models_loaded.TryGetValue(id, out master);
+
+            if (master == null)
+            {
+                id = new ElephantModelData() { animal = modelData.animal }.GetHashCode();
+                models_loaded.TryGetValue(id, out master);
+            }
+
+            if (master != null)
+            {
+                instance.SetMaster(master.GetMaster());
+                if (instance.scale.X > 0)
+                {
+                    instance.scale = VectorExt.V3(instance.SizeToScale * instance.scale.X);
+                }
+            }            
+
+            Ref.draw.drawBatch.Add(instance);
+
+            return instance;
         }
 
         VoxelObjGridDataAnimHD buildGrid(ElephantModelData modelData)
@@ -168,17 +227,15 @@ namespace VikingEngine.DSSWars
                     break;
                 case  ItemResourceType.Oliphant:
                     bodyModel = VoxelModelName.Phant_oliphant;
-                    balkongOffset.Y = -1;
+                    balkongOffset.Y = 1;
                     break;
 
             }
             
-            var body = DssRef.models.rawModels[bodyModel];
-
-            VoxelObjGridDataAnimHD grid = body.Clone();
+            VoxelObjGridDataAnimHD grid = DssRef.models.rawModels_temporary[bodyModel].Clone();
             if (balkongModel != VoxelModelName.NUM_NON)
             {
-                var balkong = DssRef.models.rawModels[balkongModel].Frames[0].GetVoxelArray();
+                var balkong = DssRef.models.rawModels_temporary[balkongModel].Frames[0].GetVoxelArray();
 
                 for (int frame = 0; frame < grid.Frames.Count; frame++)
                 {
@@ -188,19 +245,17 @@ namespace VikingEngine.DSSWars
 
             if (weaponModel != VoxelModelName.NUM_NON)
             {
-                var weapon = DssRef.models.rawModels[weaponModel].Frames[0].GetVoxelArray();
+                //weaponModel = VoxelModelName.Phant_ironcannon_side;
+
+                var weapon = DssRef.models.rawModels_temporary[weaponModel].Frames[0].GetVoxelArray();
 
                 for (int frame = 0; frame < grid.Frames.Count; frame++)
                 {
                     grid.Frame(frame).AddVoxels(weapon, balkongOffset);
                 }
             }
-            return body;
-            //var centerAdjust = grid.Frame(0).BottomCenterAdj();
-            //buildVerticeDataHD_ColorNormal(grid.Frames, centerAdjust);
-            //Graphics.VoxelModel model = modelFromVertices();
-
-            //return model;
+            return grid;
+            
         }
     }
 }
