@@ -1960,6 +1960,9 @@ namespace VikingEngine
                     add(SpriteName.WarsBuild_ElephantPen, 3, 3);
                     add(SpriteName.WarsBuild_WarElephantPen, 3, 3);
                     add(SpriteName.WarsBuild_OliphantPen, 3, 3);
+
+                    currentIndex += 9;
+                    add(SpriteName.warsCannonphantPromo, 3, 3);
                 }
             }
 

@@ -173,7 +173,7 @@ namespace VikingEngine.DSSWars.Interface
                         else
                         {
                             content.Add(new RbImage(iconsBuffer[0]));
-                            if (plusKey != SpriteName.NO_IMAGE)
+                            if (plusKey != SpriteName.NO_IMAGE && iconsBuffer.Count >= 2)
                             {
                                 content.space();
                                 content.Add(new RbText("+"));

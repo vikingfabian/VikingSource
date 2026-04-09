@@ -2521,6 +2521,7 @@ namespace VikingEngine
         warsWorkerPromoHammer,
         warsWorkerPromoBox,
         warsWorkerPromoCannon,
+        warsCannonphantPromo,
         UpdatePromo_SnowFlake,
 
         warsCheckYes,

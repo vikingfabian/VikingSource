@@ -880,6 +880,10 @@ namespace VikingEngine.DSSWars.GameObject
                                     }
                                     break;
                                 case TerrainBuildingType.Butcher:
+                                    if (debugTagged || myIndex == 270)
+                                    {
+                                        lib.DoNothing();
+                                    }
                                     itemConvert(pos, distanceValue, false);
                                     break;
                                 case TerrainBuildingType.CoinMinter:

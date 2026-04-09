@@ -1318,7 +1318,7 @@ namespace VikingEngine.DSSWars.Resource
             },
             XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
         )
-        { workTag = (int)ItemResourceType.SlaughterPig }.addSecondResult(ItemResourceType.SkinLinen_Group, 6);
+        { workTag = (int)ItemResourceType.SlaughterBoar }.addSecondResult(ItemResourceType.SkinLinen_Group, 6);
 
 
         public static readonly CraftBlueprint SlaughterPig = new CraftBlueprint(

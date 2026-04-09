@@ -1,15 +1,17 @@
 
 ﻿UPDATE
 Change Log:
-* 
+* Fixed boar slaughter
 
 
 ##ICONS TODO
 
 #MOUNTED TODO
+
 x translate
 
 ## MOUNTED POST CONTENT UPDATE ##
+x icons
 x close cores popup on battle lab
 x boil salt
 x deeper unit category with search for items and melee/ranged/warmashine filters

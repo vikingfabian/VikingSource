@@ -115,7 +115,7 @@ namespace VikingEngine.DSSWars
             oxenBuilder.add(animal_breath);
             oxen = oxenBuilder.Build();
 
-            SoundContainerBuilder horseBuilder = new SoundContainerBuilder(0.3f, 0.4f);
+            SoundContainerBuilder horseBuilder = new SoundContainerBuilder(0.25f, 0.4f);
             horseBuilder.add([SoundDir + "Horse_Neigh_01", SoundDir + "Horse_Neigh_02", SoundDir + "Horse_Snort"]);
             horseBuilder.add(animal_breath);
             horse = horseBuilder.Build();
