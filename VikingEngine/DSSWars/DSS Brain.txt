@@ -2,12 +2,12 @@
 ﻿UPDATE
 Change Log:
 * Fixed boar slaughter
-
+* set build skill on coalpit and brewery
 
 ##ICONS TODO
 
 #MOUNTED TODO
-
+x truce timer broken, and peace timer
 x translate
 
 ## MOUNTED POST CONTENT UPDATE ##

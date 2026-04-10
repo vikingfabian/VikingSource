@@ -254,7 +254,7 @@ namespace VikingEngine.DSSWars.Build
                 new UseResource(ItemResourceType.Wood_Group, 60),
                 new UseResource(ItemResourceType.Iron_G, 5)
            },
-            XP.WorkExperienceType.Cook, XP.ExperienceLevel.Beginner_1
+            XP.WorkExperienceType.HouseBuilding, XP.ExperienceLevel.Beginner_1
         );
         public static readonly CraftBlueprint Brewery_Bronze = new CraftBlueprint(
             CraftResultType.Building,
@@ -1012,7 +1012,7 @@ namespace VikingEngine.DSSWars.Build
            {
                new UseResource(ItemResourceType.Stone_G, 15),
            },
-            XP.WorkExperienceType.CraftFuel
+            XP.WorkExperienceType.HouseBuilding
         );
 
         public static readonly CraftBlueprint Carpenter = new CraftBlueprint(
