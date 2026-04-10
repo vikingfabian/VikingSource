@@ -45,7 +45,7 @@ namespace VikingEngine.DSSWars.Resource
             content.icontext(SpriteName.cmdParry, string.Format(DssRef.lang.Conscript_BlockPerSecond, TextLib.PercentTextWithSymbol(blocksRefillTimeSecMultiply)));
             HudLib.LabelAndText(content, SpriteName.WarsAttackSpeedIcon, DssRef.lang.Conscript_AttackSpeed + " " + TextLib.Parentheses(DssRef.lang.WarsResourceGroup_MeleeHandWeapons), TextLib.PercentAddText(meleeSpeedBonus));
             HudLib.LabelAndText(content, SpriteName.warsArmyTag_Shield, DssRef.lang.Conscript_ArmorHealth, TextLib.PlusMinus(armorBonus));
-            HudLib.LabelAndText(content, SpriteName.cmdMoveDown, DssRef.todoLang.Conscript_Mobility, TextLib.PercentTextWithSymbol(moveSpeedMultiply));
+            HudLib.LabelAndText(content, SpriteName.cmdMoveDown, DssRef.lang.Conscript_Mobility, TextLib.PercentTextWithSymbol(moveSpeedMultiply));
             //content.newLine();
             //content.Add(new RbText(".Block count", HudLib.TitleColor_Label));
             //content.hspace();

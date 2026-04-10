@@ -766,7 +766,7 @@ namespace VikingEngine
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.8f, 1.6f, 0.1f), IngameMenuWProperty, true));
 
-            HudLib.Label(content, DssRef.todoLang.Setting_MinimapScale);
+            HudLib.Label(content, Ref.langOpt.Setting_MinimapScale);
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.2f, 2f, 0.1f), minimapScaleProperty, true));
 

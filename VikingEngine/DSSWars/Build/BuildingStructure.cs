@@ -456,7 +456,7 @@ namespace VikingEngine.DSSWars.Build
                     {
                         content.Add(new RbImage(icon));
                         content.space();
-                        var habitatString = string.Format(DssRef.todoLang.Terrain_XAnimalHabitat, resourceName);
+                        var habitatString = string.Format(DssRef.lang.Terrain_XAnimalHabitat, resourceName);
                         content.Add(new RbText(TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XCountIsY, habitatString, count))));
 
                     }));

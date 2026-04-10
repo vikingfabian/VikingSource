@@ -56,7 +56,7 @@ namespace VikingEngine.DSSWars.GameObject
                         CesspitStatus currentStatus = cesspits.array[selectedCessPit];
                         //selected view
 
-                        HudLib.buildingMenuTitle(content, SpriteName.WarsBuild_Cesspit, DssRef.todoLang.BuildingType_Cesspit, currentStatus.idAndPosition,
+                        HudLib.buildingMenuTitle(content, SpriteName.WarsBuild_Cesspit, DssRef.lang.BuildingType_Cesspit, currentStatus.idAndPosition,
                             selectedCessPit, cesspits.Count,
                             () => { selectedCessPit = -1; },
                             (int next) => {
@@ -99,7 +99,7 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         bool hasAnySelected = false;
                         //list all
-                        content.h2(DssRef.todoLang.BuildHud_Select, HudLib.TitleColor_Action);
+                        content.h2(DssRef.lang.BuildHud_Select, HudLib.TitleColor_Action);
 
                         for (int i = 0; i < cesspits.Count; ++i)
                         {
@@ -160,12 +160,12 @@ namespace VikingEngine.DSSWars.GameObject
                 content.newLine();
                 content.Add(new RbImage(SpriteName.MissingImage));
                 content.space();
-                content.Add(new RbText(DssRef.todoLang.BuildingType_Cesspit));
+                content.Add(new RbText(DssRef.lang.BuildingType_Cesspit));
             }
 
             content.newLine();
-            content.text(DssRef.todoLang.BuildingType_Cesspit_Info1_StockPile, HudLib.InfoYellow_Light);
-            content.text(string.Format(DssRef.todoLang.Info_XAmountIsConvertedToY, TextLib.PercentTextWithSymbol(DssConst.CessPitConvertToFuelPercentage), DssRef.lang.Resource_TypeName_Fuel), HudLib.InfoYellow_Light);
+            content.text(DssRef.lang.BuildingType_Cesspit_Info1_StockPile, HudLib.InfoYellow_Light);
+            content.text(string.Format(DssRef.lang.Info_XAmountIsConvertedToY, TextLib.PercentTextWithSymbol(DssConst.CessPitConvertToFuelPercentage), DssRef.lang.Resource_TypeName_Fuel), HudLib.InfoYellow_Light);
 
         }
 

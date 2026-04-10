@@ -11,6 +11,273 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Korean : AbsLanguage
     {
+        //탈것 업데이트
+        public override string Leaderboards_title => "리더보드";
+        public override string Leaderboards_domination => "세계 정복 최단 시간, {0}% 이상";
+        public override string Leaderboards_victory => "스토리 승리, 상위 % 난이도";
+        public override string Leaderboards_CitySize => "최대 도시 규모 (일꾼 수)";
+        public override string Leaderboards_Survival => "생존 시간 ({0}% 난이도)";
+
+        public override string Message_CannotPayUpkeep => "유지비를 지불할 수 없습니다!";
+        public override string Animals_ProductionStop => "동물 생산이 중단됩니다";
+
+        public override string Tutorial_ToCapture => "포획하기";
+        public override string Tutorial_ClickButton => "버튼 클릭";
+        public override string Tutorial_MoveXToY => "{0}을(를) {1}(으)로 이동";
+
+        public override string Workers_Description1_work => "건설, 자원 수집 및 아이템 제작을 수행합니다.";
+        public override string Workers_Description2_income => "세금을 납부하여 수입원이 됩니다.";
+        public override string Workers_Description3_soldiers => "군대의 병사로 징집될 수 있습니다.";
+
+        public override string Hud_Time_ValuePerMinute => "분당 가치";
+        public override string Hud_Time_ValuePerSecond => "초당 가치";
+        public override string Hud_Lock => "잠금";
+        public override string Hud_Maximum => "최대";
+
+        public override string Tutorial_SeeThisInThat => "{1}에서 {0} 확인";
+        public override string Conscript_SkillBonus => "스킬 보너스";
+        public override string SoldierStats_UnitCount => "유닛 수";
+        /// <summary>
+        /// Areas are field, forest, sea and siege
+        /// </summary>
+        public override string Conscript_DamagePerSecondInAreaX => "초당 데미지 - {0}";
+        public override string Conscript_BaseHealth => "기본 체력";
+
+        /// <summary>
+        /// Summary value for the ability to get across the map
+        /// </summary>
+        public override string Conscript_Mobility => "기동력";
+
+        public override string Conscript_RiderMobility => "기수 기동력";
+        public override string Conscript_LightWagonMobility => "경형 마차 기동력";
+        public override string Conscript_HeavyWagonMobility => "중형 마차 기동력";
+
+        /// <summary>
+        /// Generelized for any object, like skills, resources and buildings
+        /// </summary>
+        public override string Culture_AffectedItems => "영향을 받는 아이템";
+        //## 탈것 업데이트 ##
+        public override string Progress_ClosingCores => "CPU 코어 종료 중 {0}";
+        public override string Editor_ExportFrame => "현재 프레임 내보내기";
+        public override string Editor_FistFrame => "첫 프레임";
+        public override string Editor_LastFrame => "마지막 프레임";
+
+        public override string Economy_AnimalPenUpkeep => "사육장 유지비: {0}";
+        public override string Work_SlaughterX => "{0} 도축";
+
+        public override string BuildCategory_Farming => "농사";
+        public override string Resource_TypeName_ManType => "인간 유형";
+        public override string Resource_TypeName_NobelMen => "귀족";
+        public override string Resource_TypeName_ConservedFood => "보존식";
+
+        public override string UnitType_UnitOnMount => "{0} 탑승";
+        public override string UnitType_UnitOnWagon => "{0} 마차";
+        public override string UnitType_NobelUnit => "귀족 {0}";
+
+        /// <summary>
+        /// 0: soldier type, 1: animal
+        /// </summary>
+        public override string UnitType_LeashAnimalHandler => "{0} ({1} 조련사)";
+
+        public override string Info_ArmyFood4 => "보존식은 더 많은 식량 비축을 가능하게 합니다";
+        public override string Info_ArmyFood5 => "신선한 음식이 먼저 소비됩니다";
+
+        public override string Resource_ConservedFood_Reserves => "보존식 비축량";
+        public override string Resource_TypeName_Clay => "찰흙";
+        public override string Resource_TypeName_Brick => "벽돌";
+        public override string Resource_TypeName_Container => "용기";
+        public override string Resource_TypeName_Meat => "고기";
+        public override string Resource_TypeName_Salt => "소금";
+        public override string Resource_TypeName_Vehicle => "탈것";
+        public override string Resource_TypeName_WagonClosed => "유개 마차";
+        public override string Resource_TypeName_WagonIron => "철제 마차";
+        public override string Resource_TypeName_WagonSteel => "강철 마차";
+        public override string Resource_TypeName_Shield => "방패";
+        public override string Resource_TypeName_BucklerShield => "버클러";
+        public override string Resource_TypeName_RoundShield => "라운드 실드";
+        public override string Resource_TypeName_HeaterShield => "히터 실드";
+        public override string Resource_TypeName_TowerShield => "타워 실드";
+
+        public override string Resource_TypeName_Mount => "탈것";
+
+        public override string Resource_TypeName_MountArmorTitle => "탈것 갑옷";
+
+        /// <summary>
+        /// 0: armor type
+        /// </summary>
+        public override string Resource_TypeName_MountArmorX => "탈것용 {0}";
+        public override string Resource_TypeName_Animal => "동물";
+
+        //public override string Resource_TypeName_WildAnimal => "야생 동물";
+
+        /// <summary>
+        /// Area with wild animals
+        /// </summary>
+        public override string Terrain_XAnimalHabitat => "{0} 서식지";
+
+        public override string Resource_TypeName_Oxen => "황소";
+        public override string Resource_TypeName_KineOxen => "암소";
+
+        /// <summary>
+        /// Low tier hen (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Fowl => "가금류";
+
+        /// <summary>
+        /// Low tier pig (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Boar => "수퍅";
+        public override string Resource_TypeName_Pig => "돼지";
+        public override string Resource_TypeName_Hen => "암탉";
+        public override string Resource_TypeName_Dog => "개";
+        public override string Resource_TypeName_Hound => "사냥개";
+
+        public override string Resource_TypeName_Pony => "포니";
+        public override string Resource_TypeName_Horse => "말";
+        public override string Resource_TypeName_WarHorse => "군마";
+        public override string Resource_TypeName_DraftHorse => "짐말";
+
+        public override string Resource_TypeName_WildPig => "야생 돼지";
+        public override string Resource_TypeName_WildHog => "야생 멧돼지";
+        public override string Resource_TypeName_WarHog => "전투 멧돼지";
+        public override string Resource_TypeName_StagHog => "스태그 호그";
+
+        public override string Resource_TypeName_Wolf => "늑대";
+        public override string Resource_TypeName_Warg => "와그";
+        public override string Resource_TypeName_AlphaWarg => "알파 와그";
+
+        public override string Resource_TypeName_WildCat => "들고양이";
+        public override string Resource_TypeName_Lion => "사자";
+        public override string Resource_TypeName_WarLion => "전투 사자";
+
+        public override string Resource_TypeName_Elephant => "코끼리";
+        public override string Resource_TypeName_WarElephant => "전투 코끼리";
+        public override string Resource_TypeName_Oliphant => "올리판트";
+
+        public override string BuildHud_Select => "건물 선택";
+        public override string BuildHud_AreaRadius => "지역 반경";
+
+        public override string NobelHouse_HousingCount => "귀족 {0}명 수용 가능";
+
+
+        public override string BuildingType_GreatHall => "대강당";
+        public override string BuildingType_GreatHall_Description => "고급 징집 잠금 해제";
+
+        public override string BuildingType_ClayPit => "찰흙 채취장";
+        public override string BuildingType_Butcher => "도축장";
+        public override string BuildingType_Butcher_Description => "동물을 식량과 가죽으로 가공";
+        public override string BuildingType_Pottery => "도자기 공방";
+        public override string BuildingType_CraftX_Description => "{0} 제작대";
+
+        public override string BuildingType_GatherX_Description => "{0} 채집";
+
+        public override string BuildingType_Smoker => "훈제장";
+        public override string BuildingType_Dryer => "건조장";
+        public override string BuildingType_Shieldmaker => "방패 제작소";
+        public override string BuildingType_DryingPan => "건조판";
+
+        public override string BuildingType_TrapperHut => "사냥꾼 오두막";
+        public override string BuildingType_TrapperHut_Description => "야생 동물 포획 가능";
+
+        // --- Storage ---
+        public override string BuildingType_MaterialStorage => "자재 창고";
+        public override string BuildingType_FoodStorage => "식량 창고";
+        public override string BuildingType_WeaponStorage => "무기 창고";
+        public override string BuildingType_ArmorStorage => "갑옷 창고";
+        public override string BuildingType_AnimalStorage => "동물 보관소";
+
+        public override string BuildingType_Storage_Description => "최대 비축량 {0} 증가";
+
+        public override string BuildingType_Cesspit => "폐기장";
+        public override string BuildingType_Cesspit_Description => "자원 파기";
+
+        public override string BuildingType_Cesspit_Info1_StockPile => "비축 한도를 초과하는 아이템을 파기합니다";
+        public override string Info_XAmountIsConvertedToY => "{0}이(가) {1}(으)로 변환됨";
+        public override string Info_ProductionRestriction => "아이템 생산 제한:";
+
+        public override string BuildingType_FowlPen => "가금류 사육장";
+        public override string BuildingType_BoarPen => "멧돼지 사육장";
+
+        // --- Oxen Pens ---
+        public override string BuildingType_OxenPen => "황소 사육장";
+        public override string BuildingType_KineOxenPen => "암소 사육장";
+
+        // --- Dog Cages ---
+        public override string BuildingType_DogCage => "견사";
+        public override string BuildingType_HoundCage => "사냥개 사육장";
+
+        // --- Horse Pens ---
+        public override string BuildingType_PonyPen => "포니 사육장";
+        public override string BuildingType_HorsePen => "마구간";
+        public override string BuildingType_WarHorsePen => "군마 사육장";
+        public override string BuildingType_DraftHorsePen => "짐말 사육장";
+
+        // --- Pig/Hog Pens ---
+        public override string BuildingType_WildPigPen => "야생 돼지 사육장";
+        public override string BuildingType_WildHogPen => "야생 멧돼지 사육장";
+        public override string BuildingType_WarHogPen => "전투 멧돼지 사육장";
+        public override string BuildingType_StagHogPen => "스태그 호그 사육장";
+
+        // --- Wolf Cages ---
+        public override string BuildingType_WolfCage => "늑대 우리";
+        public override string BuildingType_WargCage => "와그 우리";
+        public override string BuildingType_AlphaWargCage => "알파 와그 우리";
+
+        // --- Cat Cages ---
+        public override string BuildingType_WildCatCage => "들고양이 우리";
+        public override string BuildingType_LionCage => "사자 우리";
+        public override string BuildingType_WarLionCage => "전투 사자 우리";
+
+        // --- Elephant Cages ---
+        public override string BuildingType_ElephantCage => "코끼리 사육장";
+        public override string BuildingType_WarElephantCage => "전투 코끼리 사육장";
+        public override string BuildingType_OliphantCage => "올리판트 사육장";
+
+        public override string BuildingDescription_Animals => "병사 징집을 위한 동물을 생산합니다";
+        public override string Pen_Breeding => "동물 번식";
+        public override string Pen_BreedUpChance => "티어 상승 확률 {0}%";
+        public override string Pen_BreedDownChance => "티어 하락 확률 {0}%";
+
+
+        public override string CityCulture_AnimalBreeder2_Description => "번식 성공 확률 증가";
+
+        public override string CityCulture_EnhancedProduction => "{0} 생산 강화";
+        public override string CityCulture_Production => "{0} 생산";
+
+        public override string CityCulture_Butchers => "도축업자";
+
+        public override string CityCulture_Potters => "옹기장이";
+
+        public override string CityCulture_Wainwright => "마차 제작자";
+
+        public override string CityCulture_Wheelwright => "바퀴 제작자";
+        public override string CityCulture_Wheelwright_Description => "징집된 수레의 속도 보너스";
+
+        public override string CityCulture_ShieldMaker => "방패 제작자";
+
+
+        //public override string CityCulture_Nomads_Description => "낮은 정착 비용";
+
+        public override string CityCulture_Coopers => "통 제작자";
+
+        public override string CityCulture_Salters => "제염업자";
+
+
+        public override string CityBiome_Title => "생물군계";
+        public override string CityBiome_Description => "생물군계는 일부 자원 및 건물 이용에 영향을 줍니다";
+
+        public override string CityBiome_Fields => "들판";
+        public override string CityBiome_Frozen => "동토";
+        public override string CityBiome_Forest => "숲";
+        public override string CityBiome_Mountain => "산악";
+        public override string CityBiome_Desolate => "황무지";
+        public override string CityBiome_Desert => "사막";
+
+        public override string Bonus_IncreaseSkin => "가죽 생산량 증가";
+        public override string Bonus_FoodStorage => "식량 창고 확장";
+
+        public override string StockPile_LimitTitle => "비축 제한";
+
         public override string Help_Work_Automatic => "작업은 자동으로 진행됩니다";
         public override string Tutorial_SecondCity => "두 번째 도시 확보";
         //## Spring update
@@ -1448,7 +1715,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "포장 도로";
         public override string BuildingType_Smith => "대장간";
         public override string BuildingType_Cook => "요리소";
-        public override string BuildingType_Storage => "창고";
+        public override string BuildingType_Storehouse => "창고";
 
         public override string BuildingType_ResourceFarm => "{0} 농장";
 
@@ -1471,7 +1738,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "기사와 외교관의 거주지입니다.";
         public override string BuildingType_CoalPit_Description => "효율적인 연료 생산 건물입니다.";
-        public override string BuildingType_Storage_Description => "자원 보관소입니다.";
+        //public override string BuildingType_Storehouse_Description => "자원 보관소입니다.";
 
         public override string MenuTab_Info => "정보";
         public override string MenuTab_Work => "작업";

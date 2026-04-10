@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.Conscript
                 if (advanced)
                 {
                     content.newParagraph();
-                    HudLib.Label(content, TextLib.LargeFirstLetter( DssRef.todoLang.Resource_TypeName_ManType));
+                    HudLib.Label(content, TextLib.LargeFirstLetter( DssRef.lang.Resource_TypeName_ManType));
                     content.space();
                     foreach (var item in ConscriptDataLib.MenTypes)
                     {
@@ -162,7 +162,7 @@ namespace VikingEngine.DSSWars.Conscript
                 if (advanced)
                 {
                     content.newParagraph();
-                    HudLib.Label(content, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_Shield));
+                    HudLib.Label(content, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Shield));
                     content.newLine();
 
                     var shields = conscriptOptions.AvailableShields;
@@ -216,7 +216,7 @@ namespace VikingEngine.DSSWars.Conscript
                 if (advanced && !guardTab)
                 {
                     content.newParagraph();
-                    HudLib.Label(content, TextLib.LargeFirstLetter( DssRef.todoLang.Resource_TypeName_Animal));
+                    HudLib.Label(content, TextLib.LargeFirstLetter( DssRef.lang.Resource_TypeName_Animal));
                     content.newLine();
 
                     foreach (var item in ConscriptDataLib.AnimalTypes)
@@ -243,7 +243,7 @@ namespace VikingEngine.DSSWars.Conscript
                         if (conscriptOptions.AvailableAnimalArmor != null)
                         {
                             content.newParagraph();
-                            HudLib.Label(content, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_MountArmorTitle));
+                            HudLib.Label(content, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_MountArmorTitle));
                             content.newLine();
 
                             foreach (var item in conscriptOptions.AvailableAnimalArmor)
@@ -271,7 +271,7 @@ namespace VikingEngine.DSSWars.Conscript
                         if (conscriptOptions.AvailableWagons != null)
                         {
                             content.newParagraph();
-                            HudLib.Label(content, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_Vehicle));
+                            HudLib.Label(content, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Vehicle));
                             content.newLine();
 
                             foreach (var item in conscriptOptions.AvailableWagons)
@@ -698,7 +698,7 @@ namespace VikingEngine.DSSWars.Conscript
                     foodUpkeep += ItemPropertyColl.Get(currentStatus.profile.animal).soldierData.animalFoodUpkeep(unitCount.groupUnitCount);
                 }
                 HudLib.LabelAndText(content, SpriteName.WarsResource_FoodSub, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.Resource_TypeName_Food)), TextLib.TwoDecimal(foodUpkeep));
-                content.text(DssRef.todoLang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Light);
+                content.text(DssRef.lang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Light);
             }
 
             void resource(RichBoxContent content, ItemResourceType resource, int perUnitCount)
@@ -852,7 +852,7 @@ namespace VikingEngine.DSSWars.Conscript
 
             int count = soldierPreview.UnitCount();
             HudLib.LabelAndText(content, AllUnits.UnitFilterIcon(conscriptPreview.filterType()),
-                DssRef.todoLang.SoldierStats_UnitCount, count.ToString());
+                DssRef.lang.SoldierStats_UnitCount, count.ToString());
 
             float strengthValue = AllUnits.GroupStrengh(count, ref soldierPreview, true);
             HudLib.LabelAndText(content, SpriteName.WarsStrengthIcon, DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue));
@@ -936,7 +936,7 @@ namespace VikingEngine.DSSWars.Conscript
             float skillBonus = args.item == ItemResourceType.NobelMen ? DssConst.NobelMenSkillBonusAdd : 0;
 
             //HudLib.LabelAndText(content, SpriteName.cmdStatsHealth, DssRef.lang.SoldierStats_Health, TextLib.TwoDecimal(DssConst.Soldier_DefaultHealth));
-            HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.todoLang.Conscript_Mobility, TextLib.TwoDecimal(SoldierData.Mobility(DssConst.Men_StandardWalkingSpeed)));
+            HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.lang.Conscript_Mobility, TextLib.TwoDecimal(SoldierData.Mobility(DssConst.Men_StandardWalkingSpeed)));
 
             SkillbonusUi(content, skillBonus, true);
 
@@ -948,7 +948,7 @@ namespace VikingEngine.DSSWars.Conscript
                 HudLib.LabelAndText(content, SpriteName.rtsUpkeepTime, string.Format( DssRef.lang.Language_XUpkeep, DssRef.lang.ResourceType_Gold), TextLib.PlusMinus(Money.ToGoldF(DssConst.NobelHouseMenCount * args.count)));
             }
             HudLib.LabelAndText(content, SpriteName.WarsResource_FoodSub, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.Resource_TypeName_Food)), TextLib.TwoDecimal(args.count * DssRef.difficulty.manFoodUpkeep));
-            content.text(DssRef.todoLang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Light);
+            content.text(DssRef.lang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Light);
 
             content.newParagraph();
             content.Add(new RbSeperationLine() { thick = true });
@@ -982,14 +982,14 @@ namespace VikingEngine.DSSWars.Conscript
 
             HudLib.LabelAndText(content, SpriteName.WarsResource_Sword, DssRef.lang.Conscript_WeaponDamage, TextLib.PlusMinus(properties.soldierData.attackDamage));
             HudLib.LabelAndText(content, SpriteName.warsArmyTag_Shield, DssRef.lang.Conscript_ArmorHealth, TextLib.PlusMinus(properties.soldierData.basehealth));
-            HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.todoLang.Conscript_RiderMobility, TextLib.TwoDecimal( properties.soldierData.mobilityValue()));
-            HudLib.LabelAndText(content, SpriteName.WarsResource_Wagon2Wheel, DssRef.todoLang.Conscript_LightWagonMobility, TextLib.TwoDecimal(SoldierData.Mobility( properties.soldierData.lightWagonSpeed)));
-            HudLib.LabelAndText(content, SpriteName.WarsResource_WagonSteel, DssRef.todoLang.Conscript_HeavyWagonMobility, TextLib.TwoDecimal(SoldierData.Mobility(properties.soldierData.heavyWagonSpeed)));
+            HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.lang.Conscript_RiderMobility, TextLib.TwoDecimal( properties.soldierData.mobilityValue()));
+            HudLib.LabelAndText(content, SpriteName.WarsResource_Wagon2Wheel, DssRef.lang.Conscript_LightWagonMobility, TextLib.TwoDecimal(SoldierData.Mobility( properties.soldierData.lightWagonSpeed)));
+            HudLib.LabelAndText(content, SpriteName.WarsResource_WagonSteel, DssRef.lang.Conscript_HeavyWagonMobility, TextLib.TwoDecimal(SoldierData.Mobility(properties.soldierData.heavyWagonSpeed)));
 
             content.newParagraph();
             content.h2(DssRef.lang.Hud_Upkeep, HudLib.TitleColor_Head2);
             HudLib.LabelAndText(content, SpriteName.WarsResource_FoodSub, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.Resource_TypeName_Food)), TextLib.TwoDecimal(properties.soldierData.animalFoodUpkeep(args.count)));
-            content.text(DssRef.todoLang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Dark);
+            content.text(DssRef.lang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Dark);
             
             content.newParagraph();
             content.Add(new RbSeperationLine() { thick = true });
@@ -1074,7 +1074,7 @@ namespace VikingEngine.DSSWars.Conscript
             HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_AttackSpeed, TextLib.PercentTextWithSymbol(ConscriptProfile.TrainingAttackSpeed(args.training)));
 
             HudLib.LabelAndText(content, SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.ResourceType_Gold), TextLib.TwoDecimal(Money.ToGoldF( DssConst.TrainingCopperUpkeep[(int)args.training] * args.soldierCount)));
-            content.text(DssRef.todoLang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Light);
+            content.text(DssRef.lang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Light);
         }
         void queClick(int length)
         {
@@ -1112,13 +1112,13 @@ namespace VikingEngine.DSSWars.Conscript
 
         public static void SkillbonusUi(RichBoxContent content, float skillBonus, bool add)
         {
-            //HudLib.LabelAndText(content, SpriteName.WarsStrengthIcon, DssRef.todoLang.Conscript_SkillBonus, TextLib.PercentAddText(skillBonus));
+            //HudLib.LabelAndText(content, SpriteName.WarsStrengthIcon, DssRef.lang.Conscript_SkillBonus, TextLib.PercentAddText(skillBonus));
 
             content.newLine();
             content.Add(new RbBeginTitle());
             content.Add(new RbImage(SpriteName.WarsStrengthIcon));
             content.space();
-            content.Add(new RbText(DssRef.todoLang.Conscript_SkillBonus + ":", HudLib.TitleColor_Label));
+            content.Add(new RbText(DssRef.lang.Conscript_SkillBonus + ":", HudLib.TitleColor_Label));
             content.hspace();
 
             bool positive;

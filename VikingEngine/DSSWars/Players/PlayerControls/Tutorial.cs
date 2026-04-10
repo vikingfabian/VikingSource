@@ -538,7 +538,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     content.hspace();
                     content.Add(new RbImage(SpriteName.WarsHudIconSettings));
                     content.hspace();
-                    content.Add(new RbText(string.Format( DssRef.todoLang.Tutorial_SeeThisInThat, Ref.langOpt.MouseSettings_Title, Ref.langOpt.Options_title, HudLib.InfoYellow_VeryLight)));
+                    content.Add(new RbText(string.Format( DssRef.lang.Tutorial_SeeThisInThat, Ref.langOpt.MouseSettings_Title, Ref.langOpt.Options_title, HudLib.InfoYellow_VeryLight)));
                     break;
 
                 case TutorialMission.ProduceWeaponsArmor:

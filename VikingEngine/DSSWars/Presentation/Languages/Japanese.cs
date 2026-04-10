@@ -8,6 +8,276 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Japanese : AbsLanguage
     {
+
+        //マウントアップデート
+        public override string Leaderboards_title => "リーダーボード";
+        public override string Leaderboards_domination => "世界統一タイム、{0}%以上";
+        public override string Leaderboards_victory => "ストーリー勝利、難易度トップ%";
+        public override string Leaderboards_CitySize => "最大都市サイズ（労働者数）";
+        public override string Leaderboards_Survival => "生存期間（難易度 {0}%）";
+
+        public override string Message_CannotPayUpkeep => "維持費を支払えません！";
+        public override string Animals_ProductionStop => "動物の生産が停止します";
+
+        public override string Tutorial_ToCapture => "捕獲する";
+        public override string Tutorial_ClickButton => "ボタンをクリック";
+        public override string Tutorial_MoveXToY => "{0}を{1}へ移動";
+
+        public override string Workers_Description1_work => "建設、資源収集、アイテム製作を行います。";
+        public override string Workers_Description2_income => "徴税により収入源となります。";
+        public override string Workers_Description3_soldiers => "軍隊の兵士として徴兵可能です。";
+
+        public override string Hud_Time_ValuePerMinute => "毎分の生産量";
+        public override string Hud_Time_ValuePerSecond => "毎秒の生産量";
+        public override string Hud_Lock => "ロック";
+        public override string Hud_Maximum => "最大";
+
+        public override string Tutorial_SeeThisInThat => "{1}内の{0}を確認";
+        public override string Conscript_SkillBonus => "スキルボーナス";
+        public override string SoldierStats_UnitCount => "ユニット数";
+        /// <summary>
+        /// Areas are field, forest, sea and siege
+        /// </summary>
+        public override string Conscript_DamagePerSecondInAreaX => "秒間ダメージ - {0}";
+        public override string Conscript_BaseHealth => "基本体力";
+
+        /// <summary>
+        /// Summary value for the ability to get across the map
+        /// </summary>
+        public override string Conscript_Mobility => "機動力";
+
+        public override string Conscript_RiderMobility => "騎乗機動力";
+        public override string Conscript_LightWagonMobility => "軽ワゴン機動力";
+        public override string Conscript_HeavyWagonMobility => "重ワゴン機動力";
+
+        /// <summary>
+        /// Generelized for any object, like skills, resources and buildings
+        /// </summary>
+        public override string Culture_AffectedItems => "対象アイテム";
+        //## マウントアップデート ##
+        public override string Progress_ClosingCores => "CPUコアを閉じています：{0}";
+        public override string Editor_ExportFrame => "現在のフレームを書き出し";
+        public override string Editor_FistFrame => "最初のフレーム";
+        public override string Editor_LastFrame => "最後のフレーム";
+
+        public override string Economy_AnimalPenUpkeep => "飼育場の維持費: {0}";
+        public override string Work_SlaughterX => "{0}を屠殺";
+
+        public override string BuildCategory_Farming => "農業";
+        public override string Resource_TypeName_ManType => "人間タイプ";
+        public override string Resource_TypeName_NobelMen => "貴族";
+        public override string Resource_TypeName_ConservedFood => "保存食";
+
+        public override string UnitType_UnitOnMount => "{0}騎乗";
+        public override string UnitType_UnitOnWagon => "{0}ワゴン";
+        public override string UnitType_NobelUnit => "貴族ユニット（{0}）";
+
+        /// <summary>
+        /// 0: soldier type, 1: animal
+        /// </summary>
+        public override string UnitType_LeashAnimalHandler => "{0}（{1}使い）";
+
+        public override string Info_ArmyFood4 => "保存食により、より多くの食糧備蓄が可能になります";
+        public override string Info_ArmyFood5 => "生鮮食品が優先的に消費されます";
+
+        public override string Resource_ConservedFood_Reserves => "保存食備蓄";
+        public override string Resource_TypeName_Clay => "粘土";
+        public override string Resource_TypeName_Brick => "レンガ";
+        public override string Resource_TypeName_Container => "容器";
+        public override string Resource_TypeName_Meat => "肉";
+        public override string Resource_TypeName_Salt => "塩";
+        public override string Resource_TypeName_Vehicle => "車両";
+        public override string Resource_TypeName_WagonClosed => "有蓋ワゴン";
+        public override string Resource_TypeName_WagonIron => "鉄の馬車";
+        public override string Resource_TypeName_WagonSteel => "鋼の馬車";
+        public override string Resource_TypeName_Shield => "盾";
+        public override string Resource_TypeName_BucklerShield => "バックラー";
+        public override string Resource_TypeName_RoundShield => "ラウンドシールド";
+        public override string Resource_TypeName_HeaterShield => "ヒーターシールド";
+        public override string Resource_TypeName_TowerShield => "タワーシールド";
+
+        public override string Resource_TypeName_Mount => "マウント";
+
+        public override string Resource_TypeName_MountArmorTitle => "馬具（鎧）";
+
+        /// <summary>
+        /// 0: armor type
+        /// </summary>
+        public override string Resource_TypeName_MountArmorX => "マウント用{0}";
+        public override string Resource_TypeName_Animal => "動物";
+
+        //public override string Resource_TypeName_WildAnimal => "野生動物";
+
+        /// <summary>
+        /// Area with wild animals
+        /// </summary>
+        public override string Terrain_XAnimalHabitat => "{0}の生息地";
+
+        public override string Resource_TypeName_Oxen => "雄牛";
+        public override string Resource_TypeName_KineOxen => "雌牛";
+
+        /// <summary>
+        /// Low tier hen (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Fowl => "家禽";
+
+        /// <summary>
+        /// Low tier pig (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Boar => "雄豚";
+        public override string Resource_TypeName_Pig => "豚";
+        public override string Resource_TypeName_Hen => "雌鶏";
+        public override string Resource_TypeName_Dog => "犬";
+        public override string Resource_TypeName_Hound => "猟犬";
+
+        public override string Resource_TypeName_Pony => "ポニー";
+        public override string Resource_TypeName_Horse => "馬";
+        public override string Resource_TypeName_WarHorse => "軍馬";
+        public override string Resource_TypeName_DraftHorse => "荷馬";
+
+        public override string Resource_TypeName_WildPig => "野生の豚";
+        public override string Resource_TypeName_WildHog => "野生の猪";
+        public override string Resource_TypeName_WarHog => "軍用猪";
+        public override string Resource_TypeName_StagHog => "スタッグホッグ";
+
+        public override string Resource_TypeName_Wolf => "狼";
+        public override string Resource_TypeName_Warg => "ワーグ";
+        public override string Resource_TypeName_AlphaWarg => "アルファ・ワーグ";
+
+        public override string Resource_TypeName_WildCat => "山猫";
+        public override string Resource_TypeName_Lion => "ライオン";
+        public override string Resource_TypeName_WarLion => "軍用ライオン";
+
+        public override string Resource_TypeName_Elephant => "象";
+        public override string Resource_TypeName_WarElephant => "戦象";
+        public override string Resource_TypeName_Oliphant => "オリファント";
+
+        public override string BuildHud_Select => "建物を選択";
+        public override string BuildHud_AreaRadius => "効果範囲";
+
+        public override string NobelHouse_HousingCount => "貴族{0}人が居住可能";
+
+
+        public override string BuildingType_GreatHall => "大広間";
+        public override string BuildingType_GreatHall_Description => "高度な徴兵をアンロック";
+
+        public override string BuildingType_ClayPit => "粘土採掘場";
+        public override string BuildingType_Butcher => "肉屋";
+        public override string BuildingType_Butcher_Description => "動物を食糧と皮に加工";
+        public override string BuildingType_Pottery => "陶器工房";
+        public override string BuildingType_CraftX_Description => "{0}製作所";
+
+        public override string BuildingType_GatherX_Description => "{0}を収集";
+
+        public override string BuildingType_Smoker => "燻製所";
+        public override string BuildingType_Dryer => "乾燥所";
+        public override string BuildingType_Shieldmaker => "盾職人の工房";
+        public override string BuildingType_DryingPan => "乾燥パン";
+
+        public override string BuildingType_TrapperHut => "罠師の小屋";
+        public override string BuildingType_TrapperHut_Description => "野生動物の捕獲が可能になる";
+
+        // --- Storage ---
+        public override string BuildingType_MaterialStorage => "資材保管庫";
+        public override string BuildingType_FoodStorage => "食糧保管庫";
+        public override string BuildingType_WeaponStorage => "武器保管庫";
+        public override string BuildingType_ArmorStorage => "防具保管庫";
+        public override string BuildingType_AnimalStorage => "動物保管庫";
+
+        public override string BuildingType_Storage_Description => "最大備蓄量を{0}増加";
+
+        public override string BuildingType_Cesspit => "廃棄場";
+        public override string BuildingType_Cesspit_Description => "資源を破棄";
+
+        public override string BuildingType_Cesspit_Info1_StockPile => "備蓄制限を超えたアイテムを破棄します";
+        public override string Info_XAmountIsConvertedToY => "{0}が{1}に変換されます";
+        public override string Info_ProductionRestriction => "アイテム生産制限：";
+
+        public override string BuildingType_FowlPen => "家禽の囲い";
+        public override string BuildingType_BoarPen => "猪の囲い";
+
+        // --- Oxen Pens ---
+        public override string BuildingType_OxenPen => "雄牛の囲い";
+        public override string BuildingType_KineOxenPen => "雌牛の囲い";
+
+        // --- Dog Cages ---
+        public override string BuildingType_DogCage => "犬のケージ";
+        public override string BuildingType_HoundCage => "猟犬のケージ";
+
+        // --- Horse Pens ---
+        public override string BuildingType_PonyPen => "ポニーの囲い";
+        public override string BuildingType_HorsePen => "馬の囲い";
+        public override string BuildingType_WarHorsePen => "軍馬の囲い";
+        public override string BuildingType_DraftHorsePen => "荷馬の囲い";
+
+        // --- Pig/Hog Pens ---
+        public override string BuildingType_WildPigPen => "野豚の囲い";
+        public override string BuildingType_WildHogPen => "猪の囲い";
+        public override string BuildingType_WarHogPen => "軍用猪の囲い";
+        public override string BuildingType_StagHogPen => "スタッグホッグの囲い";
+
+        // --- Wolf Cages ---
+        public override string BuildingType_WolfCage => "狼のケージ";
+        public override string BuildingType_WargCage => "ワーグのケージ";
+        public override string BuildingType_AlphaWargCage => "アルファ・ワーグのケージ";
+
+        // --- Cat Cages ---
+        public override string BuildingType_WildCatCage => "山猫のケージ";
+        public override string BuildingType_LionCage => "ライオンのケージ";
+        public override string BuildingType_WarLionCage => "軍用ライオンのケージ";
+
+        // --- Elephant Cages ---
+        public override string BuildingType_ElephantCage => "象の囲い";
+        public override string BuildingType_WarElephantCage => "戦象の囲い";
+        public override string BuildingType_OliphantCage => "オリファントの囲い";
+
+        public override string BuildingDescription_Animals => "徴兵用の動物を生産します";
+        public override string Pen_Breeding => "動物の繁殖";
+        public override string Pen_BreedUpChance => "ティア上昇率: {0}%";
+        public override string Pen_BreedDownChance => "ティア下降率: {0}%";
+
+
+        public override string CityCulture_AnimalBreeder2_Description => "繁殖の成功率が上昇";
+
+        public override string CityCulture_EnhancedProduction => "{0}の生産強化";
+        public override string CityCulture_Production => "{0}生産";
+
+        public override string CityCulture_Butchers => "肉屋";
+
+        public override string CityCulture_Potters => "陶芸家";
+
+        public override string CityCulture_Wainwright => "荷車職人";
+
+        public override string CityCulture_Wheelwright => "車輪職人";
+        public override string CityCulture_Wheelwright_Description => "徴用されたカートの移動速度ボーナス";
+
+        public override string CityCulture_ShieldMaker => "盾職人";
+
+
+        //public override string CityCulture_Nomads_Description => "入植コスト低下";
+
+        public override string CityCulture_Coopers => "樽職人";
+
+        public override string CityCulture_Salters => "製塩工";
+
+
+        public override string CityBiome_Title => "バイオーム";
+        public override string CityBiome_Description => "バイオームは一部の資源や建物へのアクセスに影響します";
+
+        public override string CityBiome_Fields => "平原";
+        public override string CityBiome_Frozen => "氷結地帯";
+        public override string CityBiome_Forest => "森林";
+        public override string CityBiome_Mountain => "山岳";
+        public override string CityBiome_Desolate => "荒地";
+        public override string CityBiome_Desert => "砂漠";
+
+        public override string Bonus_IncreaseSkin => "皮の生産量増加";
+        public override string Bonus_FoodStorage => "食糧保管庫の拡張";
+
+        public override string StockPile_LimitTitle => "備蓄制限";
+
+
+
         public override string Help_Work_Automatic => "作業は自動で行われます";
         public override string Tutorial_SecondCity => "2つ目の都市を獲得する";
         //## Spring update
@@ -1433,7 +1703,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "舗装";
         public override string BuildingType_Smith => "鍛冶屋";
         public override string BuildingType_Cook => "料理人";
-        public override string BuildingType_Storage => "倉庫";
+        public override string BuildingType_Storehouse => "倉庫";
 
         public override string BuildingType_ResourceFarm => "{0}農場";
 
@@ -1456,7 +1726,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "騎士と外交官の家";
         public override string BuildingType_CoalPit_Description => "効率的な燃料生産";
-        public override string BuildingType_Storage_Description => "資源の集積所";
+        //public override string BuildingType_Storehouse_Description => "資源の集積所";
 
         public override string MenuTab_Info => "情報";
         public override string MenuTab_Work => "仕事";

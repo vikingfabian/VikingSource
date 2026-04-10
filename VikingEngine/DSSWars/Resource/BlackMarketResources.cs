@@ -158,7 +158,7 @@ namespace VikingEngine.DSSWars.Resource
             //        Resource(CostMultiply(city, Cost_Stone), ItemResourceType.Stone_G, DssRef.lang.Resource_TypeName_Stone);
             //        break;
             //    case ItemResourceType.Brick:
-            //        Resource(CostMultiply(city, Cost_Brick), ItemResourceType.Brick, DssRef.todoLang.Resource_TypeName_Brick);
+            //        Resource(CostMultiply(city, Cost_Brick), ItemResourceType.Brick, DssRef.lang.Resource_TypeName_Brick);
             //        break;
             //    case ItemResourceType.SkinLinen_Group:
             //        Resource(CostMultiply(city, Cost_SkinAndLinnen), ItemResourceType.SkinLinen_Group, DssRef.lang.Resource_TypeName_Linen);

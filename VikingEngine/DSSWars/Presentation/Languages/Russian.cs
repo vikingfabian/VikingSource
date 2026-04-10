@@ -8,6 +8,275 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Russian : AbsLanguage
     {
+        //Обновление с маунтами
+        public override string Leaderboards_title => "Лидерборды";
+        public override string Leaderboards_domination => "Мировое господство, лучшее время, {0}% и выше";
+        public override string Leaderboards_victory => "Сюжетная победа, топ % сложности";
+        public override string Leaderboards_CitySize => "Размер города (в рабочих)";
+        public override string Leaderboards_Survival => "Время выживания на {0}% сложности";
+
+        public override string Message_CannotPayUpkeep => "Нечем платить за содержание!";
+        public override string Animals_ProductionStop => "Производство животных остановится";
+
+        public override string Tutorial_ToCapture => "Для поимки";
+        public override string Tutorial_ClickButton => "Нажмите кнопку";
+        public override string Tutorial_MoveXToY => "Переместите {0} в {1}";
+
+        public override string Workers_Description1_work => "Строят, добывают ресурсы и крафтят предметы.";
+        public override string Workers_Description2_income => "Платят налоги, принося доход.";
+        public override string Workers_Description3_soldiers => "Могут быть призваны как солдаты в вашу армию.";
+
+        public override string Hud_Time_ValuePerMinute => "Значение в минуту";
+        public override string Hud_Time_ValuePerSecond => "Значение в секунду";
+        public override string Hud_Lock => "Замок";
+        public override string Hud_Maximum => "Макс.";
+
+        public override string Tutorial_SeeThisInThat => "Смотрите {0} в {1}";
+        public override string Conscript_SkillBonus => "Бонус к скиллу";
+        public override string SoldierStats_UnitCount => "Количество юнитов";
+        /// <summary>
+        /// Зоны: поле, лес, море и осада
+        /// </summary>
+        public override string Conscript_DamagePerSecondInAreaX => "Урон в секунду - {0}";
+        public override string Conscript_BaseHealth => "Базовое HP";
+
+        /// <summary>
+        /// Сводное значение способности передвигаться по карте
+        /// </summary>
+        public override string Conscript_Mobility => "Мобильность";
+
+        public override string Conscript_RiderMobility => "Мобильность всадника";
+        public override string Conscript_LightWagonMobility => "Мобильность (легкая повозка)";
+        public override string Conscript_HeavyWagonMobility => "Мобильность (тяжелая повозка)";
+
+        /// <summary>
+        /// Обобщено для любого объекта, такого как скиллы, ресурсы и здания
+        /// </summary>
+        public override string Culture_AffectedItems => "Затронутые предметы";
+        //## Обновление с маунтами ##
+        public override string Progress_ClosingCores => "Отключение ядер CPU {0}";
+        public override string Editor_ExportFrame => "Экспорт текущего кадра";
+        public override string Editor_FistFrame => "Первый кадр";
+        public override string Editor_LastFrame => "Последний кадр";
+
+        public override string Economy_AnimalPenUpkeep => "Содержание загона: {0}";
+        public override string Work_SlaughterX => "Забить {0}";
+
+        public override string BuildCategory_Farming => "Фермерство";
+        public override string Resource_TypeName_ManType => "тип человека";
+        public override string Resource_TypeName_NobelMen => "аристократы";
+        public override string Resource_TypeName_ConservedFood => "консервированная еда";
+
+        public override string UnitType_UnitOnMount => "верхом на {0}";
+        public override string UnitType_UnitOnWagon => "в повозке: {0}";
+        public override string UnitType_NobelUnit => "знатный {0}";
+
+        /// <summary>
+        /// 0: soldier type, 1: animal
+        /// </summary>
+        public override string UnitType_LeashAnimalHandler => "{0}-погонщик {1}";
+
+        public override string Info_ArmyFood4 => "Консервированная еда позволяет создавать бóльшие запасы";
+        public override string Info_ArmyFood5 => "Свежая еда будет расходоваться первой";
+
+        public override string Resource_ConservedFood_Reserves => "Запасы консервированной еды";
+        public override string Resource_TypeName_Clay => "глина";
+        public override string Resource_TypeName_Brick => "кирпич";
+        public override string Resource_TypeName_Container => "контейнер";
+        public override string Resource_TypeName_Meat => "мясо";
+        public override string Resource_TypeName_Salt => "соль";
+        public override string Resource_TypeName_Vehicle => "транспорт";
+        public override string Resource_TypeName_WagonClosed => "крытая повозка";
+        public override string Resource_TypeName_WagonIron => "железная карета";
+        public override string Resource_TypeName_WagonSteel => "стальная карета";
+        public override string Resource_TypeName_Shield => "щит";
+        public override string Resource_TypeName_BucklerShield => "баклер";
+        public override string Resource_TypeName_RoundShield => "круглый щит";
+        public override string Resource_TypeName_HeaterShield => "треугольный щит";
+        public override string Resource_TypeName_TowerShield => "ростовой щит";
+
+        public override string Resource_TypeName_Mount => "маунт";
+
+        public override string Resource_TypeName_MountArmorTitle => "броня для маунта";
+
+        /// <summary>
+        /// 0: armor type
+        /// </summary>
+        public override string Resource_TypeName_MountArmorX => "маунт {0}";
+        public override string Resource_TypeName_Animal => "животное";
+
+        //public override string Resource_TypeName_WildAnimal => "дикое животное";
+
+        /// <summary>
+        /// Зона с дикими животными
+        /// </summary>
+        public override string Terrain_XAnimalHabitat => "Место обитания: {0}";
+
+        public override string Resource_TypeName_Oxen => "вол";
+        public override string Resource_TypeName_KineOxen => "корова";
+
+        /// <summary>
+        /// Low tier hen (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Fowl => "птица";
+
+        /// <summary>
+        /// Low tier pig (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Boar => "хряк";
+        public override string Resource_TypeName_Pig => "свинья";
+        public override string Resource_TypeName_Hen => "курица";
+        public override string Resource_TypeName_Dog => "собака";
+        public override string Resource_TypeName_Hound => "гончая";
+
+        public override string Resource_TypeName_Pony => "пони";
+        public override string Resource_TypeName_Horse => "лошадь";
+        public override string Resource_TypeName_WarHorse => "боевой конь";
+        public override string Resource_TypeName_DraftHorse => "тягловая лошадь";
+
+        public override string Resource_TypeName_WildPig => "дикая свинья";
+        public override string Resource_TypeName_WildHog => "вепрь";
+        public override string Resource_TypeName_WarHog => "боевой кабан";
+        public override string Resource_TypeName_StagHog => "рогатый кабан";
+
+        public override string Resource_TypeName_Wolf => "волк";
+        public override string Resource_TypeName_Warg => "варг";
+        public override string Resource_TypeName_AlphaWarg => "альфа-варг";
+
+        public override string Resource_TypeName_WildCat => "дикая кошка";
+        public override string Resource_TypeName_Lion => "лев";
+        public override string Resource_TypeName_WarLion => "боевой лев";
+
+        public override string Resource_TypeName_Elephant => "слон";
+        public override string Resource_TypeName_WarElephant => "боевой слон";
+        public override string Resource_TypeName_Oliphant => "олифант";
+
+        public override string BuildHud_Select => "Выбрать здание";
+        public override string BuildHud_AreaRadius => "Радиус области";
+
+        public override string NobelHouse_HousingCount => "Вместит аристократов: {0}";
+
+
+        public override string BuildingType_GreatHall => "Великий зал";
+        public override string BuildingType_GreatHall_Description => "Открывает продвинутый рекрутинг";
+
+        public override string BuildingType_ClayPit => "Глиняный карьер";
+        public override string BuildingType_Butcher => "Мясник";
+        public override string BuildingType_Butcher_Description => "Перерабатывает животных в еду и шкуры";
+        public override string BuildingType_Pottery => "Гончарная";
+        public override string BuildingType_CraftX_Description => "Станция крафта: {0}";
+
+        public override string BuildingType_GatherX_Description => "Сбор: {0}";
+
+        public override string BuildingType_Smoker => "Коптильня";
+        public override string BuildingType_Dryer => "Сушильня";
+        public override string BuildingType_Shieldmaker => "Мастерская щитов";
+        public override string BuildingType_DryingPan => "Сушильный поддон";
+
+        public override string BuildingType_TrapperHut => "Хижина зверолова";
+        public override string BuildingType_TrapperHut_Description => "Позволяет ловить диких животных";
+
+        // --- Storage ---
+        public override string BuildingType_MaterialStorage => "Склад материалов";
+        public override string BuildingType_FoodStorage => "Склад еды";
+        public override string BuildingType_WeaponStorage => "Склад оружия";
+        public override string BuildingType_ArmorStorage => "Склад брони";
+        public override string BuildingType_AnimalStorage => "Хранилище животных";
+
+        public override string BuildingType_Storage_Description => "Увеличивает макс. лимит склада на {0}";
+
+        public override string BuildingType_Cesspit => "Яма для отходов";
+        public override string BuildingType_Cesspit_Description => "Уничтожает ресурсы";
+
+        public override string BuildingType_Cesspit_Info1_StockPile => "Уничтожает предметы сверх лимита склада";
+        public override string Info_XAmountIsConvertedToY => "{0} конвертируется в {1}";
+        public override string Info_ProductionRestriction => "Производство предметов ограничено до";
+
+        public override string BuildingType_FowlPen => "Птичник";
+        public override string BuildingType_BoarPen => "Загон для хряков";
+
+        // --- Oxen Pens ---
+        public override string BuildingType_OxenPen => "Загон для волов";
+        public override string BuildingType_KineOxenPen => "Коровник";
+
+        // --- Dog Cages ---
+        public override string BuildingType_DogCage => "Собачий вольер";
+        public override string BuildingType_HoundCage => "Вольер для гончих";
+
+        // --- Horse Pens ---
+        public override string BuildingType_PonyPen => "Загон для пони";
+        public override string BuildingType_HorsePen => "Конюшня";
+        public override string BuildingType_WarHorsePen => "Загон для боевых коней";
+        public override string BuildingType_DraftHorsePen => "Загон для тягловых лошадей";
+
+        // --- Pig/Hog Pens ---
+        public override string BuildingType_WildPigPen => "Загон для диких свиней";
+        public override string BuildingType_WildHogPen => "Загон для вепрей";
+        public override string BuildingType_WarHogPen => "Загон для боевых кабанов";
+        public override string BuildingType_StagHogPen => "Загон для рогатых кабанов";
+
+        // --- Wolf Cages ---
+        public override string BuildingType_WolfCage => "Волчья клетка";
+        public override string BuildingType_WargCage => "Клетка для варгов";
+        public override string BuildingType_AlphaWargCage => "Клетка для альфа-варгов";
+
+        // --- Cat Cages ---
+        public override string BuildingType_WildCatCage => "Клетка для диких кошек";
+        public override string BuildingType_LionCage => "Клетка для львов";
+        public override string BuildingType_WarLionCage => "Клетка для боевых львов";
+
+        // --- Elephant Cages ---
+        public override string BuildingType_ElephantCage => "Загон для слонов";
+        public override string BuildingType_WarElephantCage => "Загон для боевых слонов";
+        public override string BuildingType_OliphantCage => "Загон для олифантов";
+
+        public override string BuildingDescription_Animals => "Производит животных для рекрутинга солдат";
+        public override string Pen_Breeding => "Разведение животных";
+        public override string Pen_BreedUpChance => "{0}% шанс повысить тир";
+        public override string Pen_BreedDownChance => "{0}% шанс понизить тир";
+
+
+        public override string CityCulture_AnimalBreeder2_Description => "Выше шанс успешного разведения";
+
+        public override string CityCulture_EnhancedProduction => "Улучшенное производство: {0}";
+        public override string CityCulture_Production => "Производство: {0}";
+
+        public override string CityCulture_Butchers => "Мясники";
+
+        public override string CityCulture_Potters => "Гончары";
+
+        public override string CityCulture_Wainwright => "Каретники";
+
+        public override string CityCulture_Wheelwright => "Колесники";
+        public override string CityCulture_Wheelwright_Description => "Бонус к скорости призванных повозок";
+
+        public override string CityCulture_ShieldMaker => "Мастера щитов";
+
+
+        //public override string CityCulture_Nomads_Description => "Низкая стоимость поселенцев";
+
+        public override string CityCulture_Coopers => "Бондари";
+
+        public override string CityCulture_Salters => "Солевары";
+
+
+        public override string CityBiome_Title => "Биом";
+        public override string CityBiome_Description => "Биомы влияют на доступ к некоторым ресурсам и зданиям";
+
+        public override string CityBiome_Fields => "Поля";
+        public override string CityBiome_Frozen => "Мерзлота";
+        public override string CityBiome_Forest => "Лес";
+        public override string CityBiome_Mountain => "Горы";
+        public override string CityBiome_Desolate => "Пустошь";
+        public override string CityBiome_Desert => "Пустыня";
+
+        public override string Bonus_IncreaseSkin => "Увеличенное производство шкур";
+        public override string Bonus_FoodStorage => "Увеличенный склад еды";
+
+        public override string StockPile_LimitTitle => "Лимит склада";
+
+
+
         public override string Help_Work_Automatic => "Работа выполняется автоматически";
         public override string Tutorial_SecondCity => "Захватите второй город";
         //## Spring update
@@ -1421,7 +1690,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "Тротуар";
         public override string BuildingType_Smith => "Кузница";
         public override string BuildingType_Cook => "Повар";
-        public override string BuildingType_Storage => "Склад";
+        public override string BuildingType_Storehouse => "Склад";
 
         public override string BuildingType_ResourceFarm => "Ферма {0}";
 
@@ -1444,7 +1713,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "Дом для рыцарей и дипломатов";
         public override string BuildingType_CoalPit_Description => "Эффективное производство топлива";
-        public override string BuildingType_Storage_Description => "Пункт сдачи ресурсов";
+        //public override string BuildingType_Storehouse_Description => "Пункт сдачи ресурсов";
 
         public override string MenuTab_Info => "Информация";
         public override string MenuTab_Work => "Работа";

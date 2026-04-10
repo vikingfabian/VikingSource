@@ -289,7 +289,7 @@ namespace VikingEngine.DSSWars
                         
                         content.newLine();
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.todoLang.Leaderboards_title) }),
+                        content.Add(new ArtButton(RbButtonStyle.Primary, HudLib.AddLockOnDemo(new List<AbsRichBoxMember>() { new RbText(DssRef.lang.Leaderboards_title) }),
                             new RbAction2Arg<string, StackOption>(openUnderMenu, UnderMenu_leaderboards, StackOption.Stack), null, !PlatformSettings.STEAM_DEMO));
 
                         content.newLine();
@@ -1424,7 +1424,7 @@ namespace VikingEngine.DSSWars
                 content.newLine();
                 content.Add(new RbText(DssRef.lang.MapType_CustomMap));
                 content.space();
-                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Cancel) },
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(Ref.langOpt.Hud_Cancel) },
                     new RbAction(cancelCustomMap), new RbTooltip_Text(DssRef.lang.MapType_CustomMap)));
             }
             else
@@ -1777,7 +1777,7 @@ namespace VikingEngine.DSSWars
                     inputOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Settings_Title_Input, underMenu);
 
                     content.newLine();
-                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Input_SimulateMouse) },
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.Input_SimulateMouse) },
                         playerData.SimulateMouseProperty));
                 }
                 

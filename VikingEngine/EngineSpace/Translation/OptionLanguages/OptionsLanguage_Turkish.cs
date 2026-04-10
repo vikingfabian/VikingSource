@@ -8,6 +8,15 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Turkish : AbsOptionsLanguage
     {
+        //Mounts
+        public override string InputSteam => "Steam Input";
+        public override string Input_SimulateMouse => "Fareyi simüle et";
+        public override string Input_LockMouseToWindow => "Fareyi pencereye kilitle";
+        public override string Input_MouseEdgePush_Title => "Kenar kaydırma";
+        public override string Input_NoControl => "Yok";
+        public override string Input_ActiveControl => "Aktif";
+        public override string Input_PassiveControl => "Pasif";
+        public override string Setting_MinimapScale => "Minimap ölçeği";
         //##Settings
         public override string Settings_Particles_FadeMapLayers => "Katmanları soldur";
         public override string SplitScreen_HorizontalFirst => "Önce yatay";

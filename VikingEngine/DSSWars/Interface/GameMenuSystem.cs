@@ -408,7 +408,7 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_PanOnZoom) }, Ref.gamesett.panOnZoomProperty));
 
             content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Input_LockMouseToWindow) },
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(Ref.langOpt.Input_LockMouseToWindow) },
                 Ref.gamesett.LockMouseProperty));
             
             if (Screen.PcDisplayMode != WindowDisplayMode.Windowed || Ref.gamesett.lockMouseToWindow)
@@ -421,13 +421,13 @@ namespace VikingEngine.DSSWars.Interface
                     switch (opt)
                     {
                         default:
-                            caption = DssRef.todoLang.Input_NoControl;
+                            caption = Ref.langOpt.Input_NoControl;
                             break;
                         case MouseEdgePush.Passive:
-                            caption = DssRef.todoLang.Input_PassiveControl;
+                            caption = Ref.langOpt.Input_PassiveControl;
                             break;
                         case MouseEdgePush.Active:
-                            caption = DssRef.todoLang.Input_ActiveControl;
+                            caption = Ref.langOpt.Input_ActiveControl;
                             break;
 
                     }
@@ -440,7 +440,7 @@ namespace VikingEngine.DSSWars.Interface
                             menu.CloseDropDown();
                         }, opt), null);
                 }
-                edgePushOptions.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.Input_MouseEdgePush_Title, menu);
+                edgePushOptions.Build(content, SpriteName.NO_IMAGE, Ref.langOpt.Input_MouseEdgePush_Title, menu);
 
             }
 

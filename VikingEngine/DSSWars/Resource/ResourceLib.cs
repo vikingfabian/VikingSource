@@ -315,16 +315,16 @@ namespace VikingEngine.DSSWars.Resource
                 content.Add(new RbBeginTitle());
                 content.Add(new RbImage(SpriteName.WarsBuild_Cesspit));
                 content.space();
-                content.Add(new RbText(DssRef.todoLang.BuildingType_Cesspit, HudLib.TitleColor_Head2));
-                content.text(DssRef.todoLang.BuildingType_Cesspit_Info1_StockPile, HudLib.SecondaryTextColor);
+                content.Add(new RbText(DssRef.lang.BuildingType_Cesspit, HudLib.TitleColor_Head2));
+                content.text(DssRef.lang.BuildingType_Cesspit_Info1_StockPile, HudLib.SecondaryTextColor);
             }
 
             if (properties.restrictedToBiom != Data.CityBiome.NUM_NONE)
             {
                 content.newLine();
-                content.Add(new RbText(TextLib.LabelColon(DssRef.todoLang.Info_ProductionRestriction), HudLib.TitleColor_Label));
+                content.Add(new RbText(TextLib.LabelColon(DssRef.lang.Info_ProductionRestriction), HudLib.TitleColor_Label));
                 content.space();
-                content.Add(new RbText($"{DssRef.todoLang.CityBiome_Title} - {LangLib.Biome(properties.restrictedToBiom)}"));
+                content.Add(new RbText($"{DssRef.lang.CityBiome_Title} - {LangLib.Biome(properties.restrictedToBiom)}"));
             }
         }
 

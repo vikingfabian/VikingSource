@@ -282,7 +282,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 new RbImage(SpriteName.VoxelEditorFrame)
                 },
                 new RbAction(beginExportCurrentFrame),
-                new RbTooltip_Text(DssRef.todoLang.Editor_ExportFrame)));
+                new RbTooltip_Text(DssRef.lang.Editor_ExportFrame)));
             }
 
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
@@ -351,13 +351,13 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 {
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
                         new RbOverlapImage( new RbImage(SpriteName.VoxelEditorMoveFrameToEndL, MoveFrameIconSz), SpriteName.birdLock, new Vector2(0.1f, 0), 1.2f) }, new RbAction2Arg<bool, bool>(designer.voxelProject.LockAnimation, true, lockFirst),
-                        new RbTooltip_Text(DssRef.todoLang.Hud_Lock + " - " + DssRef.todoLang.Editor_FistFrame), designer.voxelProject.currentFrame.Value > 0));
+                        new RbTooltip_Text(DssRef.lang.Hud_Lock + " - " + DssRef.lang.Editor_FistFrame), designer.voxelProject.currentFrame.Value > 0));
                 }
                 else
                 {
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { /*new RbImage(SpriteName.birdUnLock),*/
                        new RbOverlapImage(  new RbImage(SpriteName.VoxelEditorMoveFrameToEndL, MoveFrameIconSz), SpriteName.birdUnLock, new Vector2(0.1f, 0), 1.2f) }, new RbAction2Arg<bool, bool>(designer.voxelProject.LockAnimation, true, lockFirst),
-                        new RbTooltip_Text(DssRef.lang.Hud_Unlock + " - " + DssRef.todoLang.Editor_FistFrame), true));
+                        new RbTooltip_Text(DssRef.lang.Hud_Unlock + " - " + DssRef.lang.Editor_FistFrame), true));
                 }
 
                 bool lockLast = designer.voxelProject.lockEndFrame == null;
@@ -365,13 +365,13 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                 {
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { /*new RbImage(SpriteName.birdLock),*/
                         new RbOverlapImage( new RbImage(SpriteName.VoxelEditorMoveFrameToEndR, MoveFrameIconSz), SpriteName.birdLock, new Vector2(-0.1f, 0), 1.2f) }, new RbAction2Arg<bool, bool>(designer.voxelProject.LockAnimation, false, lockLast),
-                        new RbTooltip_Text(DssRef.todoLang.Hud_Lock + " - " + DssRef.todoLang.Editor_LastFrame), designer.voxelProject.currentFrame.Value < designer.voxelProject.currentFrame.Max));
+                        new RbTooltip_Text(DssRef.lang.Hud_Lock + " - " + DssRef.lang.Editor_LastFrame), designer.voxelProject.currentFrame.Value < designer.voxelProject.currentFrame.Max));
                 }
                 else
                 {
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { /*new RbImage(SpriteName.birdUnLock),*/
                         new RbOverlapImage( new RbImage(SpriteName.VoxelEditorMoveFrameToEndR, MoveFrameIconSz), SpriteName.birdUnLock, new Vector2(-0.1f, 0), 1.2f) }, new RbAction2Arg<bool, bool>(designer.voxelProject.LockAnimation, false, lockLast),
-                        new RbTooltip_Text(DssRef.lang.Hud_Unlock + " - " + DssRef.todoLang.Editor_LastFrame), true));
+                        new RbTooltip_Text(DssRef.lang.Hud_Unlock + " - " + DssRef.lang.Editor_LastFrame), true));
                 }
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_ConvertAnimationToLayers) },

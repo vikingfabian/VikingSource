@@ -9,6 +9,15 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Korean : AbsOptionsLanguage
     {
+        //Mounts
+        public override string InputSteam => "Steam 입력";
+        public override string Input_SimulateMouse => "마우스 시뮬레이션";
+        public override string Input_LockMouseToWindow => "마우스를 창에 가두기";
+        public override string Input_MouseEdgePush_Title => "가장자리 스크롤";
+        public override string Input_NoControl => "없음";
+        public override string Input_ActiveControl => "액티브";
+        public override string Input_PassiveControl => "패시브";
+        public override string Setting_MinimapScale => "미니맵 배율";
         //##Settings
         public override string Settings_Particles_FadeMapLayers => "레이어 페이드"; // "Layer Fade"
         public override string SplitScreen_HorizontalFirst => "가로 우선";

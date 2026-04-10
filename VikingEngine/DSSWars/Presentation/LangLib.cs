@@ -62,17 +62,17 @@ namespace VikingEngine.DSSWars.Presentation
             switch (biom)
             {
                 case CityBiome.Default_Fields:
-                    return DssRef.todoLang.CityBiome_Fields;
+                    return DssRef.lang.CityBiome_Fields;
                 case CityBiome.Frozen:
-                    return DssRef.todoLang.CityBiome_Frozen;
+                    return DssRef.lang.CityBiome_Frozen;
                 case CityBiome.Forest:
-                    return DssRef.todoLang.CityBiome_Forest;
+                    return DssRef.lang.CityBiome_Forest;
                 case CityBiome.Mountain:
-                    return DssRef.todoLang.CityBiome_Mountain;
+                    return DssRef.lang.CityBiome_Mountain;
                 case CityBiome.Desolate:
-                    return DssRef.todoLang.CityBiome_Desolate;
+                    return DssRef.lang.CityBiome_Desolate;
                 case CityBiome.Desert:
-                    return DssRef.todoLang.CityBiome_Desert;
+                    return DssRef.lang.CityBiome_Desert;
                 default:
                     return TextLib.Error;
             }
@@ -1292,14 +1292,14 @@ namespace VikingEngine.DSSWars.Presentation
                 case TerrainBuildingType.ManorLord:
                     return DssRef.lang.BuildingType_ManorLord_Description;
                 case TerrainBuildingType.GreatHall:
-                    return DssRef.todoLang.BuildingType_GreatHall_Description;
+                    return DssRef.lang.BuildingType_GreatHall_Description;
                 case TerrainBuildingType.Tavern:
                     return DssRef.lang.BuildingType_Tavern_Description;
                 case TerrainBuildingType.Storehouse:
                     return DssRef.lang.BuildingType_Storehouse_Description;
 
                 case TerrainBuildingType.TrappersHut:
-                    return DssRef.todoLang.BuildingType_TrapperHut_Description;
+                    return DssRef.lang.BuildingType_TrapperHut_Description;
 
                 case TerrainBuildingType.BoarPen:
                 case TerrainBuildingType.PigPen:
@@ -1333,7 +1333,7 @@ namespace VikingEngine.DSSWars.Presentation
                 case TerrainBuildingType.ElephantCage:
                 case TerrainBuildingType.WarElephantCage:
                 case TerrainBuildingType.OliphantCage:
-                    return DssRef.todoLang.BuildingDescription_Animals;
+                    return DssRef.lang.BuildingDescription_Animals;
 
 
                 case TerrainBuildingType.WorkerTent:
@@ -1427,29 +1427,29 @@ namespace VikingEngine.DSSWars.Presentation
                     return string.Format(DssRef.lang.BuildingType_ImmigrationTent_Description, DssConst.ImmigrantionTent_Capacity);
 
                 case TerrainBuildingType.Cesspit:
-                    return DssRef.todoLang.BuildingType_Cesspit_Description;
+                    return DssRef.lang.BuildingType_Cesspit_Description;
 
                 case TerrainBuildingType.Butcher:
-                    return DssRef.todoLang.BuildingType_Butcher_Description;
+                    return DssRef.lang.BuildingType_Butcher_Description;
                 case TerrainBuildingType.Pottery:
-                    return TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.BuildingType_CraftX_Description, DssRef.todoLang.Resource_TypeName_Clay));
+                    return TextLib.LargeFirstLetter(string.Format(DssRef.lang.BuildingType_CraftX_Description, DssRef.lang.Resource_TypeName_Clay));
 
                 case TerrainBuildingType.ShieldMaker:
-                    return TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.BuildingType_CraftX_Description, DssRef.todoLang.Resource_TypeName_Shield));
+                    return TextLib.LargeFirstLetter(string.Format(DssRef.lang.BuildingType_CraftX_Description, DssRef.lang.Resource_TypeName_Shield));
 
                 case TerrainBuildingType.Smoker:
                 case TerrainBuildingType.Dryer:
-                    return TextLib.LargeFirstLetter( string.Format(DssRef.todoLang.BuildingType_CraftX_Description, DssRef.todoLang.Resource_TypeName_ConservedFood));
+                    return TextLib.LargeFirstLetter( string.Format(DssRef.lang.BuildingType_CraftX_Description, DssRef.lang.Resource_TypeName_ConservedFood));
 
                 case TerrainBuildingType.DryingPan:
-                    return TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.BuildingType_GatherX_Description, DssRef.todoLang.Resource_TypeName_Salt));
+                    return TextLib.LargeFirstLetter(string.Format(DssRef.lang.BuildingType_GatherX_Description, DssRef.lang.Resource_TypeName_Salt));
 
                 case TerrainBuildingType.AnimalStorage:
                 case TerrainBuildingType.ArmorStorage:
                 case TerrainBuildingType.FoodStorage:
                 case TerrainBuildingType.MaterialStorage:
                 case TerrainBuildingType.WeaponStorage:
-                    return string.Format(DssRef.todoLang.BuildingType_Storage_Description, DssConst.StorageBuildingSizeAdd);
+                    return string.Format(DssRef.lang.BuildingType_Storage_Description, DssConst.StorageBuildingSizeAdd);
 
                 default:
                     return TextLib.Error;
@@ -1738,7 +1738,7 @@ namespace VikingEngine.DSSWars.Presentation
         //        case ItemResourceType.ServiceMen:
         //            return DssRef.lang.ResourceType_ServiceMen;
         //        case ItemResourceType.Settler:
-        //            return DssRef.todoLang.UnitType_Settler;
+        //            return DssRef.lang.UnitType_Settler;
 
 
         //        case ItemResourceType.CopperCoin:

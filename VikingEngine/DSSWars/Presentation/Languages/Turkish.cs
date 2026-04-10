@@ -12,6 +12,273 @@ namespace VikingEngine.DSSWars.Presentation
     //Licenesed 2025 Sep 11, "Astro: you can remix our work freely, any platform"
     partial class Turkish : AbsLanguage
     {
+        //Binek güncellemesi
+        public override string Leaderboards_title => "Leaderboards";
+        public override string Leaderboards_domination => "Dünya hakimiyeti en iyi süresi, %{0} artı";
+        public override string Leaderboards_victory => "Hikaye zaferi, en iyi % zorluk";
+        public override string Leaderboards_CitySize => "Maksimum şehir boyutu, işçi sayısına göre";
+        public override string Leaderboards_Survival => "%{0} zorlukta hayatta kalma süresi";
+
+        public override string Message_CannotPayUpkeep => "Bakım masrafı ödenemiyor!";
+        public override string Animals_ProductionStop => "Hayvan üretimi duracak";
+
+        public override string Tutorial_ToCapture => "Yakalamak için";
+        public override string Tutorial_ClickButton => "Butona tıkla";
+        public override string Tutorial_MoveXToY => "{0}'i {1}'e taşı";
+
+        public override string Workers_Description1_work => "İnşaat yapacak, kaynak toplayacak ve eşya craftlayacaklar.";
+        public override string Workers_Description2_income => "Gelir için vergi öderler.";
+        public override string Workers_Description3_soldiers => "Orduların için asker olarak silah altına alınabilirler.";
+
+        public override string Hud_Time_ValuePerMinute => "Dakika başına değer";
+        public override string Hud_Time_ValuePerSecond => "Saniye başına değer";
+        public override string Hud_Lock => "Kilitle";
+        public override string Hud_Maximum => "Maks";
+
+        public override string Tutorial_SeeThisInThat => "{1} içinde {0}'i gör";
+        public override string Conscript_SkillBonus => "Skill bonusu";
+        public override string SoldierStats_UnitCount => "Birim sayısı";
+        /// <summary>
+        /// Alanlar; ova, orman, deniz ve kuşatmadır
+        /// </summary>
+        public override string Conscript_DamagePerSecondInAreaX => "Saniye başına hasar - {0}";
+        public override string Conscript_BaseHealth => "Base HP";
+
+        /// <summary>
+        /// Haritada ilerleyebilme yeteneği için özet değer
+        /// </summary>
+        public override string Conscript_Mobility => "Mobilite";
+
+        public override string Conscript_RiderMobility => "Binici mobilitesi";
+        public override string Conscript_LightWagonMobility => "Hafif araba mobilitesi";
+        public override string Conscript_HeavyWagonMobility => "Ağır araba mobilitesi";
+
+        /// <summary>
+        /// Yetenekler, kaynaklar ve binalar gibi herhangi bir obje için genelleştirilmiş
+        /// </summary>
+        public override string Culture_AffectedItems => "Etkilenen item'lar";
+        //## Binek güncellemesi ##
+        public override string Progress_ClosingCores => "CPU çekirdekleri kapatılıyor {0}";
+        public override string Editor_ExportFrame => "Mevcut frame'i dışa aktar";
+        public override string Editor_FistFrame => "İlk frame";
+        public override string Editor_LastFrame => "Son frame";
+
+        public override string Economy_AnimalPenUpkeep => "Ağıl bakım masrafı: {0}";
+        public override string Work_SlaughterX => "{0} kes";
+
+        public override string BuildCategory_Farming => "Tarım";
+        public override string Resource_TypeName_ManType => "insan tipi";
+        public override string Resource_TypeName_NobelMen => "soylular";
+        public override string Resource_TypeName_ConservedFood => "konserve yiyecek";
+
+        public override string UnitType_UnitOnMount => "{0} biniyor";
+        public override string UnitType_UnitOnWagon => "{0} arabası";
+        public override string UnitType_NobelUnit => "soylu {0}";
+
+        /// <summary>
+        /// 0: asker tipi, 1: hayvan
+        /// </summary>
+        public override string UnitType_LeashAnimalHandler => "{0} {1}-terbiyecisi";
+
+        public override string Info_ArmyFood4 => "Konserve yiyecekler daha büyük bir erzak stoğuna izin verir";
+        public override string Info_ArmyFood5 => "Önce taze yiyecekler tüketilir";
+
+        public override string Resource_ConservedFood_Reserves => "Konserve yiyecek stokları";
+        public override string Resource_TypeName_Clay => "kil";
+        public override string Resource_TypeName_Brick => "tuğla";
+        public override string Resource_TypeName_Container => "kutu";
+        public override string Resource_TypeName_Meat => "et";
+        public override string Resource_TypeName_Salt => "tuz";
+        public override string Resource_TypeName_Vehicle => "araç";
+        public override string Resource_TypeName_WagonClosed => "kapalı araba";
+        public override string Resource_TypeName_WagonIron => "demir araba";
+        public override string Resource_TypeName_WagonSteel => "çelik araba";
+        public override string Resource_TypeName_Shield => "kalkan";
+        public override string Resource_TypeName_BucklerShield => "buckler kalkanı";
+        public override string Resource_TypeName_RoundShield => "yuvarlak kalkan";
+        public override string Resource_TypeName_HeaterShield => "üçgen kalkan";
+        public override string Resource_TypeName_TowerShield => "kule kalkanı";
+
+        public override string Resource_TypeName_Mount => "binek";
+
+        public override string Resource_TypeName_MountArmorTitle => "binek zırhı";
+
+        /// <summary>
+        /// 0: zırh tipi
+        /// </summary>
+        public override string Resource_TypeName_MountArmorX => "binek {0}";
+        public override string Resource_TypeName_Animal => "hayvan";
+
+        //public override string Resource_TypeName_WildAnimal => "vahşi hayvan";
+
+        /// <summary>
+        /// Vahşi hayvanların bulunduğu alan
+        /// </summary>
+        public override string Terrain_XAnimalHabitat => "{0} habitatı";
+
+        public override string Resource_TypeName_Oxen => "öküz";
+        public override string Resource_TypeName_KineOxen => "inek";
+
+        /// <summary>
+        /// Düşük tier tavuk (üretim için)
+        /// </summary>
+        public override string Resource_TypeName_Fowl => "kümes hayvanı";
+
+        /// <summary>
+        /// Düşük tier domuz (üretim için)
+        /// </summary>
+        public override string Resource_TypeName_Boar => "erkek domuz";
+        public override string Resource_TypeName_Pig => "domuz";
+        public override string Resource_TypeName_Hen => "tavuk";
+        public override string Resource_TypeName_Dog => "köpek";
+        public override string Resource_TypeName_Hound => "tazı";
+
+        public override string Resource_TypeName_Pony => "midilli";
+        public override string Resource_TypeName_Horse => "at";
+        public override string Resource_TypeName_WarHorse => "savaş atı";
+        public override string Resource_TypeName_DraftHorse => "yük atı";
+
+        public override string Resource_TypeName_WildPig => "yabani domuz";
+        public override string Resource_TypeName_WildHog => "yaban domuzu";
+        public override string Resource_TypeName_WarHog => "savaş domuzu";
+        public override string Resource_TypeName_StagHog => "boynuzlu domuz";
+
+        public override string Resource_TypeName_Wolf => "kurt";
+        public override string Resource_TypeName_Warg => "warg";
+        public override string Resource_TypeName_AlphaWarg => "alfa warg";
+
+        public override string Resource_TypeName_WildCat => "yaban kedisi";
+        public override string Resource_TypeName_Lion => "aslan";
+        public override string Resource_TypeName_WarLion => "savaş aslanı";
+
+        public override string Resource_TypeName_Elephant => "fil";
+        public override string Resource_TypeName_WarElephant => "savaş fili";
+        public override string Resource_TypeName_Oliphant => "olifant";
+
+        public override string BuildHud_Select => "Bina seç";
+        public override string BuildHud_AreaRadius => "Alan yarıçapı";
+
+        public override string NobelHouse_HousingCount => "{0} soyluya ev sahipliği yapacak";
+
+
+        public override string BuildingType_GreatHall => "Büyük Salon";
+        public override string BuildingType_GreatHall_Description => "Gelişmiş asker alımını açar";
+
+        public override string BuildingType_ClayPit => "Kil Ocağı";
+        public override string BuildingType_Butcher => "Kasap";
+        public override string BuildingType_Butcher_Description => "Hayvanları yiyecek ve deriye dönüştürür";
+        public override string BuildingType_Pottery => "Çömlekçi";
+        public override string BuildingType_CraftX_Description => "{0} craft istasyonu";
+
+        public override string BuildingType_GatherX_Description => "{0} topla";
+
+        public override string BuildingType_Smoker => "Tütsüleyici";
+        public override string BuildingType_Dryer => "Kurutucu";
+        public override string BuildingType_Shieldmaker => "Kalkan Üreticisi";
+        public override string BuildingType_DryingPan => "Kurutma Tavası";
+
+        public override string BuildingType_TrapperHut => "Avcı Kulübesi";
+        public override string BuildingType_TrapperHut_Description => "Vahşi hayvanların yakalanmasını sağlar";
+
+        // --- Depolama ---
+        public override string BuildingType_MaterialStorage => "Materyal Deposu";
+        public override string BuildingType_FoodStorage => "Erzak Deposu";
+        public override string BuildingType_WeaponStorage => "Silah Deposu";
+        public override string BuildingType_ArmorStorage => "Zırh Deposu";
+        public override string BuildingType_AnimalStorage => "Hayvan Deposu";
+
+        public override string BuildingType_Storage_Description => "Maksimum stok limitini {0} artırır";
+
+        public override string BuildingType_Cesspit => "Atık Çukuru";
+        public override string BuildingType_Cesspit_Description => "Kaynakları yok eder";
+
+        public override string BuildingType_Cesspit_Info1_StockPile => "Stok limitini aşan item'ları yok eder";
+        public override string Info_XAmountIsConvertedToY => "{0}, {1}'e dönüştürülür";
+        public override string Info_ProductionRestriction => "İtem üretimi şu şekilde sınırlandırıldı:";
+
+        public override string BuildingType_FowlPen => "Kümes";
+        public override string BuildingType_BoarPen => "Erkek Domuz Ağılı";
+
+        // --- Öküz Ağılları ---
+        public override string BuildingType_OxenPen => "Öküz Ağılı";
+        public override string BuildingType_KineOxenPen => "İnek Ağılı";
+
+        // --- Köpek Kafesleri ---
+        public override string BuildingType_DogCage => "Köpek Kafesi";
+        public override string BuildingType_HoundCage => "Tazı Kafesi";
+
+        // --- At Ağılları ---
+        public override string BuildingType_PonyPen => "Midilli Ağılı";
+        public override string BuildingType_HorsePen => "At Ağılı";
+        public override string BuildingType_WarHorsePen => "Savaş Atı Ağılı";
+        public override string BuildingType_DraftHorsePen => "Yük Atı Ağılı";
+
+        // --- Domuz Ağılları ---
+        public override string BuildingType_WildPigPen => "Yabani Domuz Ağılı";
+        public override string BuildingType_WildHogPen => "Yaban Domuzu Ağılı";
+        public override string BuildingType_WarHogPen => "Savaş Domuzu Ağılı";
+        public override string BuildingType_StagHogPen => "Boynuzlu Domuz Ağılı";
+
+        // --- Kurt Kafesleri ---
+        public override string BuildingType_WolfCage => "Kurt Kafesi";
+        public override string BuildingType_WargCage => "Warg Kafesi";
+        public override string BuildingType_AlphaWargCage => "Alfa Warg Kafesi";
+
+        // --- Kedi Kafesleri ---
+        public override string BuildingType_WildCatCage => "Yaban Kedisi Kafesi";
+        public override string BuildingType_LionCage => "Aslan Kafesi";
+        public override string BuildingType_WarLionCage => "Savaş Aslanı Kafesi";
+
+        // --- Fil Kafesleri ---
+        public override string BuildingType_ElephantCage => "Fil Ağılı";
+        public override string BuildingType_WarElephantCage => "Savaş Fili Ağılı";
+        public override string BuildingType_OliphantCage => "Olifant Ağılı";
+
+        public override string BuildingDescription_Animals => "Asker alımı için hayvanlar üretir";
+        public override string Pen_Breeding => "Hayvan yetiştiriciliği";
+        public override string Pen_BreedUpChance => "Tier atlama şansı: %{0}";
+        public override string Pen_BreedDownChance => "Tier düşme şansı: %{0}";
+
+
+        public override string CityCulture_AnimalBreeder2_Description => "Daha yüksek başarılı yetiştirme şansı";
+
+        public override string CityCulture_EnhancedProduction => "Gelişmiş {0} üretimi";
+        public override string CityCulture_Production => "{0} üretimi";
+
+        public override string CityCulture_Butchers => "Kasaplar";
+
+        public override string CityCulture_Potters => "Çömlekçiler";
+
+        public override string CityCulture_Wainwright => "Arabacılar";
+
+        public override string CityCulture_Wheelwright => "Tekerlekçiler";
+        public override string CityCulture_Wheelwright_Description => "Askere alınan arabalar için speed bonusu";
+
+        public override string CityCulture_ShieldMaker => "Kalkan Üreticileri";
+
+
+        //public override string CityCulture_Nomads_Description => "Düşük yerleşimci maliyeti";
+
+        public override string CityCulture_Coopers => "Fıçıcılar";
+
+        public override string CityCulture_Salters => "Tuzcular";
+
+
+        public override string CityBiome_Title => "Biyom";
+        public override string CityBiome_Description => "Biyomlar bazı kaynaklara ve binalara erişimi etkiler";
+
+        public override string CityBiome_Fields => "Ovalar";
+        public override string CityBiome_Frozen => "Buzul";
+        public override string CityBiome_Forest => "Orman";
+        public override string CityBiome_Mountain => "Dağlık";
+        public override string CityBiome_Desolate => "Issız";
+        public override string CityBiome_Desert => "Çöl";
+
+        public override string Bonus_IncreaseSkin => "Artırılmış deri üretimi";
+        public override string Bonus_FoodStorage => "Daha büyük erzak deposu";
+
+        public override string StockPile_LimitTitle => "Stok limiti";
+
 
         public override string Help_Work_Automatic => "Çalışma otomatiktir";
         public override string Tutorial_SecondCity => "İkinci bir şehir ele geçir";
@@ -1444,7 +1711,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "Kaldırım";
         public override string BuildingType_Smith => "Demirci";
         public override string BuildingType_Cook => "Aşçı";
-        public override string BuildingType_Storage => "Depo";
+        public override string BuildingType_Storehouse => "Depo";
 
         public override string BuildingType_ResourceFarm => "{0} çiftlik";
 
@@ -1467,7 +1734,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "Şövalyeler ve diplomatlar için konaklama";
         public override string BuildingType_CoalPit_Description => "Yüksek verimle yakıt üretir";
-        public override string BuildingType_Storage_Description => "Kaynak stoklama noktası";
+        //public override string BuildingType_Storehouse_Description => "Kaynak stoklama noktası";
 
         public override string MenuTab_Info => "Bilgi";
         public override string MenuTab_Work => "İş";
@@ -1739,7 +2006,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Automation_queue_description => "Kuyruk bitene kadar sürekli tekrar eder";
 
         public override string BuildingType_Storehouse_Description => "İşçiler eşyaları buraya bırakabilir";
-
+       
         public override string Resource_TypeName_Longbow => "uzun yay";
         public override string Resource_TypeName_Rapeseed => "kanola";
         public override string Resource_TypeName_Hemp => "enevir";

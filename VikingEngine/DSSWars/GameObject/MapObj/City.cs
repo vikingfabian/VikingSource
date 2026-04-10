@@ -2493,19 +2493,19 @@ namespace VikingEngine.DSSWars.GameObject
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(SpriteName.WarsSettlerAdd));
                     content.hspace();
-                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.todoLang.Tutorial_ClickButton, DssRef.lang.UnitType_Settler)));
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Tutorial_ClickButton, DssRef.lang.UnitType_Settler)));
 
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(SpriteName.WarsMobilityIcon));
                     content.hspace();
-                    content.Add(new RbText(string.Format(DssRef.todoLang.Tutorial_MoveXToY, DssRef.lang.UnitType_Settler, DssRef.lang.UnitType_UnclaimedLand)));
+                    content.Add(new RbText(string.Format(DssRef.lang.Tutorial_MoveXToY, DssRef.lang.UnitType_Settler, DssRef.lang.UnitType_UnclaimedLand)));
 
                     content.newLine();
                     HudLib.BulletPoint(content);
                     //content.Add(new RbImage(SpriteName.WarsSettlerAdd));
                     //content.hspace();
-                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.todoLang.Tutorial_ClickButton, DssRef.lang.Action_PlaceSettlement)));
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Tutorial_ClickButton, DssRef.lang.Action_PlaceSettlement)));
 
                     content.newParagraph();
                     content.Add(new RbSeperationLine());
@@ -2829,11 +2829,11 @@ namespace VikingEngine.DSSWars.GameObject
                     content.Add(new RbText(TotalServiceMen().ToString()));
 
 
-                    HudLib.LabelAndText(content, SpriteName.WarsNobelman, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_NobelMen), freeNobelMen.amount.ToString());
+                    HudLib.LabelAndText(content, SpriteName.WarsNobelman, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_NobelMen), freeNobelMen.amount.ToString());
                     //content.newLine();
                     //content.Add(new RbImage(SpriteName.WarsNobelman));
                     //content.space();
-                    //content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_NobelMen), freeNobelMen.amount)));
+                    //content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_NobelMen), freeNobelMen.amount)));
                     content.Add(new RbTab(0.4f));
                     content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
                     content.space();
@@ -2914,15 +2914,15 @@ namespace VikingEngine.DSSWars.GameObject
                     content.space();                    
                     content.Add(new RbImage(SpriteName.WarsBuild_PigPen));
                     content.space();
-                    content.Add(new RbText(string.Format(DssRef.todoLang.Economy_AnimalPenUpkeep, TextLib.TwoDecimal(cityEconomy.animalPenUpkeep))));
+                    content.Add(new RbText(string.Format(DssRef.lang.Economy_AnimalPenUpkeep, TextLib.TwoDecimal(cityEconomy.animalPenUpkeep))));
 
                     if (!PenUpkeep_IsPayed)
                     {
                         content.space(2);
                         content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsResource_FoodEmpty) },
                             null, new RbTooltip((RichBoxContent content, object tag) => {
-                                content.h2(DssRef.todoLang.Message_CannotPayUpkeep, HudLib.NotAvailableColor);
-                                content.text(DssRef.todoLang.Animals_ProductionStop);
+                                content.h2(DssRef.lang.Message_CannotPayUpkeep, HudLib.NotAvailableColor);
+                                content.text(DssRef.lang.Animals_ProductionStop);
 
                                 content.Add(new RbSeperationLine() { thick = true });
                                 ResourceLib.FullResourceInfo(GetFaction(), this, ItemResourceType.RawFood_Group, content);
@@ -3232,19 +3232,19 @@ namespace VikingEngine.DSSWars.GameObject
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsHammer));
             content.hspace();
-            content.Add(new RbText(DssRef.todoLang.Workers_Description1_work));
+            content.Add(new RbText(DssRef.lang.Workers_Description1_work));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.rtsIncome));
             content.hspace();
-            content.Add(new RbText(DssRef.todoLang.Workers_Description2_income));
+            content.Add(new RbText(DssRef.lang.Workers_Description2_income));
 
             content.newLine();
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsSoldierMan));
             content.hspace();
-            content.Add(new RbText(DssRef.todoLang.Workers_Description3_soldiers));
+            content.Add(new RbText(DssRef.lang.Workers_Description3_soldiers));
 
             content.newParagraph();
             content.Add(new RbSeperationLine() { thick = true });
