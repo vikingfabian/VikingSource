@@ -1444,7 +1444,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "Kaldırım";
         public override string BuildingType_Smith => "Demirci";
         public override string BuildingType_Cook => "Aşçı";
-        public override string BuildingType_Storage => "Depo";
+        public override string BuildingType_Storehouse => "Depo";
 
         public override string BuildingType_ResourceFarm => "{0} çiftlik";
 
@@ -1467,7 +1467,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "Şövalyeler ve diplomatlar için konaklama";
         public override string BuildingType_CoalPit_Description => "Yüksek verimle yakıt üretir";
-        public override string BuildingType_Storage_Description => "Kaynak stoklama noktası";
+        public override string BuildingType_Storehouse_Description => "Kaynak stoklama noktası";
 
         public override string MenuTab_Info => "Bilgi";
         public override string MenuTab_Work => "İş";

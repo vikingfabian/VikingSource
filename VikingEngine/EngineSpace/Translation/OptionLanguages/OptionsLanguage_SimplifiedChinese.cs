@@ -9,6 +9,15 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_SimplifiedChinese : AbsOptionsLanguage
     {
+        //Mounts
+        public override string InputSteam => "Steam输入";
+        public override string Input_SimulateMouse => "模拟鼠标";
+        public override string Input_LockMouseToWindow => "鼠标锁定至窗口";
+        public override string Input_MouseEdgePush_Title => "边缘平移";
+        public override string Input_NoControl => "无";
+        public override string Input_ActiveControl => "主动";
+        public override string Input_PassiveControl => "被动";
+        public override string Setting_MinimapScale => "小地图缩放";
         //##Settings
         public override string Settings_Particles_FadeMapLayers => "图层淡出";
         public override string SplitScreen_HorizontalFirst => "水平优先";

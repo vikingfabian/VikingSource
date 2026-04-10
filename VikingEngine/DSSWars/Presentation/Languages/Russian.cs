@@ -1421,7 +1421,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "Тротуар";
         public override string BuildingType_Smith => "Кузница";
         public override string BuildingType_Cook => "Повар";
-        public override string BuildingType_Storage => "Склад";
+        public override string BuildingType_Storehouse => "Склад";
 
         public override string BuildingType_ResourceFarm => "Ферма {0}";
 
@@ -1444,7 +1444,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "Дом для рыцарей и дипломатов";
         public override string BuildingType_CoalPit_Description => "Эффективное производство топлива";
-        public override string BuildingType_Storage_Description => "Пункт сдачи ресурсов";
+        public override string BuildingType_Storehouse_Description => "Пункт сдачи ресурсов";
 
         public override string MenuTab_Info => "Информация";
         public override string MenuTab_Work => "Работа";

@@ -9,6 +9,15 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Russian : AbsOptionsLanguage
     {
+        //Mounts
+        public override string InputSteam => "Steam Input";
+        public override string Input_SimulateMouse => "Симуляция мыши";
+        public override string Input_LockMouseToWindow => "Привязать мышь к окну";
+        public override string Input_MouseEdgePush_Title => "Скроллинг у края экрана";
+        public override string Input_NoControl => "Нет";
+        public override string Input_ActiveControl => "Активно";
+        public override string Input_PassiveControl => "Пассивно";
+        public override string Setting_MinimapScale => "Масштаб миникарты";
         //##Settings
         public override string Settings_Particles_FadeMapLayers => "Затухание слоев";
         public override string SplitScreen_HorizontalFirst => "Сначала горизонтально";

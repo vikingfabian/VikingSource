@@ -9,6 +9,16 @@ namespace VikingEngine.EngineSpace.Translation
 {
     abstract class AbsOptionsLanguage
     {
+        //Mounts update
+        public abstract string InputSteam { get; }
+        public abstract string Input_SimulateMouse { get; }
+        public abstract string Input_LockMouseToWindow { get; }
+        public abstract string Input_MouseEdgePush_Title { get; }
+        public abstract string Input_NoControl { get; }
+        public abstract string Input_ActiveControl { get; }
+        public abstract string Input_PassiveControl { get; }
+        public abstract string Setting_MinimapScale { get; }
+
 
         //Spring patch
 

@@ -1423,7 +1423,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "铺路";
         public override string BuildingType_Smith => "铁匠铺";
         public override string BuildingType_Cook => "厨师";
-        public override string BuildingType_Storage => "仓库";
+        public override string BuildingType_Storehouse => "仓库";
 
         public override string BuildingType_ResourceFarm => "{0}农场";
 
@@ -1446,7 +1446,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "骑士和外交官的住所";
         public override string BuildingType_CoalPit_Description => "高效的燃料生产";
-        public override string BuildingType_Storage_Description => "资源储存点";
+        public override string BuildingType_Storehouse_Description => "资源储存点";
 
         public override string MenuTab_Info => "信息";
         public override string MenuTab_Work => "工作";

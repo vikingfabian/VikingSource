@@ -986,7 +986,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "Calçamento";
         public override string BuildingType_Smith => "Ferraria";
         public override string BuildingType_Cook => "Cozinha";
-        public override string BuildingType_Storage => "Armazém";
+        public override string BuildingType_Storehouse => "Armazém";
 
         public override string BuildingType_ResourceFarm => "Fazenda de {0}";
 
@@ -1009,7 +1009,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "Lar para cavaleiros e diplomatas";
         public override string BuildingType_CoalPit_Description => "Produção eficiente de combustível";
-        public override string BuildingType_Storage_Description => "Ponto de entrega de recursos";
+        public override string BuildingType_Storehouse_Description => "Ponto de entrega de recursos";
 
         public override string MenuTab_Info => "Info";
         public override string MenuTab_Work => "Trabalho";

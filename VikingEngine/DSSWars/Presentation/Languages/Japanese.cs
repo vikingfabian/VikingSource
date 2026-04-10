@@ -8,6 +8,9 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Japanese : AbsLanguage
     {
+
+
+
         public override string Help_Work_Automatic => "作業は自動で行われます";
         public override string Tutorial_SecondCity => "2つ目の都市を獲得する";
         //## Spring update
@@ -1433,7 +1436,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "舗装";
         public override string BuildingType_Smith => "鍛冶屋";
         public override string BuildingType_Cook => "料理人";
-        public override string BuildingType_Storage => "倉庫";
+        public override string BuildingType_Storehouse => "倉庫";
 
         public override string BuildingType_ResourceFarm => "{0}農場";
 
@@ -1456,7 +1459,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "騎士と外交官の家";
         public override string BuildingType_CoalPit_Description => "効率的な燃料生産";
-        public override string BuildingType_Storage_Description => "資源の集積所";
+        //public override string BuildingType_Storehouse_Description => "資源の集積所";
 
         public override string MenuTab_Info => "情報";
         public override string MenuTab_Work => "仕事";

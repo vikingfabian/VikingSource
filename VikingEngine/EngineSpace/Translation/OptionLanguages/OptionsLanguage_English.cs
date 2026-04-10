@@ -9,6 +9,17 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_English : AbsOptionsLanguage
     {
+        //Mounts
+        public override string InputSteam => "Steam Input";
+        public override string Input_SimulateMouse => "Simulate mouse";
+        public override string Input_LockMouseToWindow => "Lock mouse to window";
+        public override string Input_MouseEdgePush_Title => "Mouse edge push";
+        public override string Input_NoControl => "None";
+        public override string Input_ActiveControl => "Active";
+        public override string Input_PassiveControl => "Passive";
+        public override string Setting_MinimapScale => "Mini map scale";
+
+        //--
         public override string Settings_Particles_FadeMapLayers => "Fade layers";
         public override string SplitScreen_HorizontalFirst => "Horizontal first";
         public override string SplitScreen_VerticalFirst => "Vertical first";

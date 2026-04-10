@@ -9,6 +9,16 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Japanese : AbsOptionsLanguage
     {
+        //Mounts
+        public override string InputSteam => "Steam入力";
+        public override string Input_SimulateMouse => "マウス操作をシミュレート";
+        public override string Input_LockMouseToWindow => "マウスをウィンドウにロック";
+        public override string Input_MouseEdgePush_Title => "エッジスクロール";
+        public override string Input_NoControl => "なし";
+        public override string Input_ActiveControl => "アクティブ";
+        public override string Input_PassiveControl => "パッシブ";
+        public override string Setting_MinimapScale => "ミニマップのスケール";
+
         //##Settings
         public override string Settings_Particles_FadeMapLayers => "レイヤーのフェード";
         public override string SplitScreen_HorizontalFirst => "横方向を優先";

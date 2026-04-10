@@ -1455,7 +1455,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => TextLib.ThaiConv("ทาง|เดิน|หิน");
         public override string BuildingType_Smith => TextLib.ThaiConv("โรง|ตี|เหล็ก");
         public override string BuildingType_Cook => TextLib.ThaiConv("โรง|ครัว");
-        public override string BuildingType_Storage => TextLib.ThaiConv("โรง|เก็บ|ของ");
+        public override string BuildingType_Storehouse => TextLib.ThaiConv("โรง|เก็บ|ของ");
 
         public override string BuildingType_ResourceFarm => TextLib.ThaiConv("ฟาร์ม| {0}");
 
@@ -1478,7 +1478,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => TextLib.ThaiConv("ที่|พัก|สำหรับ|อัศวิน|และ|นัก|การ|ทูต");
         public override string BuildingType_CoalPit_Description => TextLib.ThaiConv("ผลิต|เชื้อเพลิง|อย่าง|มี|ประสิทธิภาพ");
-        public override string BuildingType_Storage_Description => TextLib.ThaiConv("จุด|รับ|ฝาก|ทรัพยากร");
+        public override string BuildingType_Storehouse_Description => TextLib.ThaiConv("จุด|รับ|ฝาก|ทรัพยากร");
 
         public override string MenuTab_Info => TextLib.ThaiConv("ข้อมูล");
         public override string MenuTab_Work => TextLib.ThaiConv("งาน");

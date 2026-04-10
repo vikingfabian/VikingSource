@@ -1267,7 +1267,7 @@ namespace VikingEngine.DSSWars
                             break;
                         case TerrainBuildingType.Storehouse:
                             icon = SpriteName.WarsBuild_Storehouse;
-                            name = DssRef.lang.BuildingType_Storage;
+                            name = DssRef.lang.BuildingType_Storehouse;
                             break;
                         case TerrainBuildingType.Tavern:
                             icon = SpriteName.WarsBuild_Tavern;
