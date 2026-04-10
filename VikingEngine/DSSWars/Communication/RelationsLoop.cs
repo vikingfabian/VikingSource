@@ -14,7 +14,6 @@ namespace VikingEngine.DSSWars.Communication
         public RelationsLoop(int faction) 
         { 
             this.faction = faction;
-
         }
 
         public bool Next()

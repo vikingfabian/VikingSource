@@ -320,7 +320,7 @@ namespace VikingEngine.DSSWars
 
 
                     DssRef.world.diplomacy.SetRelationType(matchFactions[i], matchFactions[j], 
-                        ally ? RelationType.RelationType3_Ally : RelationType.RelationTypeN4_TotalWar, 
+                        ally ? RelationType.RelationType3_Ally : RelationType.RelationTypeN4_TotalWar, null, 
                         SpeakTerms.SpeakTermsN2_None);
 
                     //var relation = DssRef.world.diplomacy.GetOrCreateRelation(matchFactions[i], matchFactions[j]);

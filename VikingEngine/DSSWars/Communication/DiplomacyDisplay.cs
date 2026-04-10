@@ -395,7 +395,8 @@ namespace VikingEngine.DSSWars.Interface
             int cost = Diplomacy.ExtendTruceCost();
             if (player.diplomaticPoints.pay(cost, false))
             {
-                selectedRelation.RelationEnd_GameTimeSec.addTime(DssConst.TruceTimeSec);
+                ref var relation = ref DssRef.world.diplomacy.GetRefRelation_Safe(player.faction.myIndex, otherfaction.myIndex);
+                relation.RelationEnd_GameTimeSec.addTime(DssConst.TruceTimeSec);
                 player.hud.needRefresh = true;
             }
         }
@@ -454,9 +455,9 @@ namespace VikingEngine.DSSWars.Interface
             {
                 if (peace_notTruce)
                 {
-                    DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType1_Peace);
+                    DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType1_Peace, DssConst.PeaceSafeTimeSec.GetRandom());
 
-                    selectedRelation.RelationEnd_GameTimeSec.setTimeFromNow(DssConst.PeaceSafeTimeSec.GetRandom());
+                    //selectedRelation.RelationEnd_GameTimeSec.setTimeFromNow(DssConst.PeaceSafeTimeSec.GetRandom());
                 }
                 else
                 {
@@ -471,9 +472,8 @@ namespace VikingEngine.DSSWars.Interface
 
                     if (success)
                     {
-                        DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationTypeN2_Truce);
+                        DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationTypeN2_Truce, DssConst.TruceTimeSec);
 
-                        selectedRelation.RelationEnd_GameTimeSec.setTimeFromNow(DssConst.TruceTimeSec);
                     }
                     else
                     {
@@ -593,9 +593,9 @@ namespace VikingEngine.DSSWars.Interface
                 }
                 else
                 {
-                    DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType2_Good);
+                    DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType2_Good, DssConst.PeaceSafeTimeSec.GetRandom());
 
-                    selectedRelation.RelationEnd_GameTimeSec.setTimeFromNow(DssConst.PeaceSafeTimeSec.GetRandom());
+                    //selectedRelation.RelationEnd_GameTimeSec.setTimeFromNow(DssConst.PeaceSafeTimeSec.GetRandom());
                 }
 
                 player.hud.needRefresh = true;

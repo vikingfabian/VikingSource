@@ -972,7 +972,7 @@ namespace VikingEngine.DSSWars.Event
             //Prepare leader
             attackers.Remove(attackLeader);
             attackers.Insert(0, attackLeader);
-            DssRef.world.diplomacy.SetRelationType(attackLeader, player.faction, null, SpeakTerms.SpeakTermsN2_None);
+            DssRef.world.diplomacy.SetRelationType(attackLeader, player.faction, null, null, SpeakTerms.SpeakTermsN2_None);
             attackLeader.player.setAggression(Players.AbsPlayer.AggressionLevel1_RevengeOnly);
 
             Ref.update.AddSyncAction(new SyncAction(() =>
@@ -1199,7 +1199,7 @@ namespace VikingEngine.DSSWars.Event
 
                         if (greenwood != null && !DssRef.world.diplomacy.GetRelation(p.faction, greenwood).InWar())
                         {
-                            DssRef.world.diplomacy.SetRelationType(p.faction, greenwood, null, SpeakTerms.SpeakTerms1_Good);
+                            DssRef.world.diplomacy.SetRelationType(p.faction, greenwood, null, null, SpeakTerms.SpeakTerms1_Good);
                         }
                     }
                 //}

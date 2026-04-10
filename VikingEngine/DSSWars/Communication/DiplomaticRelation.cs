@@ -216,10 +216,12 @@ namespace VikingEngine.DSSWars.Communication
 
         public void truce_update()
         {
-            if (Relation == RelationType.RelationTypeN2_Truce &&
-                RelationEnd_GameTimeSec.TimeOut())
+            if (Relation == RelationType.RelationTypeN2_Truce)
             {
-                Relation = RelationType.RelationTypeN3_War;
+                if (RelationEnd_GameTimeSec.TimeOut())
+                {
+                    Relation = RelationType.RelationTypeN3_War;
+                }
             }
         }
 

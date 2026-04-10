@@ -276,6 +276,11 @@ namespace VikingEngine.DSSWars
                 RelationsLoop loop = new RelationsLoop(p.faction.myIndex);
                 while (loop.Next())
                 {
+                    if (loop.otherFactionIx == 108)
+                    {
+                        lib.DoNothing();
+                       var relation =  diplomaticRelations[loop.RelationIndex()];
+                    }
                     diplomaticRelations[loop.RelationIndex()].truce_update();
                 }
                 //for (int otherFaction = 0; otherFaction < DssRef.world.factions.Array.Length; otherFaction++)
@@ -608,7 +613,7 @@ namespace VikingEngine.DSSWars
         //    return rel;
         //}
 
-        public void SetRelationType(Faction faction1, Faction faction2, RelationType? newRelation, SpeakTerms? speakTerms = null, bool secret = false)
+        public void SetRelationType(Faction faction1, Faction faction2, RelationType? newRelation, float? relationEndTime = null, SpeakTerms? speakTerms = null, bool secret = false)
         {
             if (faction1 != null && faction2 != null && faction1 != faction2)
             {
@@ -620,6 +625,10 @@ namespace VikingEngine.DSSWars
                 if (speakTerms.HasValue)
                 {
                     relation.SpeakTerms = speakTerms.Value;
+                }
+                if (relationEndTime.HasValue)
+                {
+                    relation.RelationEnd_GameTimeSec.setTimeFromNow(relationEndTime.Value);
                 }
                 relation.secret = secret;
             }
