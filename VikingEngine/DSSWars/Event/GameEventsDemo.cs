@@ -35,8 +35,8 @@ namespace VikingEngine.DSSWars.Event
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
                 while (citiesC.Next(ref DssRef.state.LocalHost().faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    citySel.AddGroupedResource(EntityComponent.CityResoureIndex.Palisade, 20);
-                    citySel.AddGroupedResource(EntityComponent.CityResoureIndex.food, 500);
+                    citySel.AddGroupedResource(EntityComponent.CityResoureIndex.Palisade, 20, false);
+                    citySel.AddGroupedResource(EntityComponent.CityResoureIndex.food, 500, false);
 
                     //citiesC.sel.res_Palisade.amount += 20;
                     //citiesC.sel.res_food.amount += 500;
@@ -54,7 +54,7 @@ namespace VikingEngine.DSSWars.Event
                     //1. Send one army
                     new Timer.TimedAction0ArgTrigger_InGame(() =>
                     {
-                        DssRef.diplomacy.declareWar(attacker, DssRef.state.LocalHost().faction);
+                        DssRef.world.diplomacy.declareWar(attacker, DssRef.state.LocalHost().faction);
                         attacker.player.GetAiPlayer().armyAi_enabled = false;
 
                         const int FirstAttackerId = 4;

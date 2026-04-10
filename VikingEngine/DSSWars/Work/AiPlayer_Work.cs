@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Players
 {
@@ -17,11 +18,11 @@ namespace VikingEngine.DSSWars.Players
 
         protected void refreshWorkPriority_async(bool inWar)
         {
-
-            faction.workTemplate.autoBuild.value = 4 - aggressionLevel;
-            if (inWar && faction.workTemplate.autoBuild.value > 1)
+            ref var autoBuild = ref faction.workTemplate.GetRefWorkPriority(WorkPriorityType.autoBuild);
+            autoBuild.value = (byte)(4 - aggressionLevel);
+            if (inWar && autoBuild.value > 1)
             {
-                faction.workTemplate.autoBuild.value -= 1;
+                autoBuild.value -= 1;
             }
             faction.refreshCityWork();
 
@@ -46,29 +47,37 @@ namespace VikingEngine.DSSWars.Players
                     city.autoAdjustResourcesToCitySize(prepareSettle);
 
                     //DOES NOT WORK - will reset in auto_updateWorkPrio()
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.stone/*ref city.res_stone*/, ref city.workTemplate.stone);
 
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.food/*ref city.res_food*/, ref city.workTemplate.craft_food);
+                    ref var woodPrio = ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.wood);
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.wood, ref woodPrio);
 
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.fuel/*ref city.res_fuel*/, ref city.workTemplate.craft_fuel);
+                    ref var movePrio = ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.move);
+                    movePrio.set(lib.LargestValue(woodPrio.value, 3));
 
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.iron/*ref city.res_iron*/, ref city.workTemplate.craft_iron);
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.stone, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.stone));
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.Clay, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.collectClay), false);
 
-                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.rawFood/*ref city.res_rawFood*/, ref city.workTemplate.farm_food);
+                    adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.food, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.farmFood), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftFood));
+                    adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.ConservedFood, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftConservedFood), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningSalt), false);
 
-                    
+                    adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.fuel, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.craftFuel), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningCoal));
 
-                    //adjustWorkToBuffer(ref city.res_wood, ref city.workTemplate.wood);
+                    adjustWorkToBuffer_2(city.resourceComponentStartIndex + CityResoureIndex.ironore, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.bogiron), ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.miningIron));
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.iron, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.smeltIron));
 
-                    if (city.resourceAmount(CityResoureIndex.food)/*city.res_food.amount*/ <= 0)
+                    adjustWorkToBuffer(city.resourceComponentStartIndex + CityResoureIndex.rawFood, ref city.workTemplate.GetRefWorkPriority(WorkPriorityType.farmRawFood));
+
+
+                    if (city.resourceAmount(CityResoureIndex.food) <= 0)
                     {
-                        city.workTemplate.craft_food.value = 5;
-                        city.workTemplate.farm_food.value = 4;
+                        city.workTemplate.setWorkPrio(WorkPriorityType.craftFood, 5);
+                        city.workTemplate.setWorkPrio(WorkPriorityType.farmFood, 5);
+                        city.workTemplate.setWorkPrio(WorkPriorityType.farmRawFood, 4);
                     }
-                    if (city.resourceAmount(CityResoureIndex.wood)/*city.res_wood.amount*/ <= 0)
-                    {
-                        BlackMarketResources.AiPurchaseWood(city, faction);
-                    }
+                    //if (city.resourceAmount(CityResoureIndex.wood) <= 0)
+                    //{
+                    //    BlackMarketResources.AiPurchaseWood(city, faction);
+                    //}
 
 
                     bool hasBetterCraft = false;
@@ -77,10 +86,6 @@ namespace VikingEngine.DSSWars.Players
                         var work = city.workTemplate.GetWorkPriority(weaponType.item, out _);
                         if (adjustWorkToMilitaryCrafting(city, ItemPropertyColl.Get(weaponType.item).bp1, ref work, hasBetterCraft, out bool available))
                         {
-                            //if (hasBetterCraft && weaponType.item != ItemResourceType.SharpStick)
-                            //{
-                            //    lib.DoNothing();
-                            //}
                             city.workTemplate.SetWorkPriority(weaponType.item, work);
                         }
 
@@ -100,24 +105,17 @@ namespace VikingEngine.DSSWars.Players
                         }
                     }
 
-                    //bool craftWeapon = adjustWorkToCrafting(city, CraftResourceLib.Sword, ref city.workTemplate.craft_sword, false);
-                    //craftWeapon = adjustWorkToCrafting(city, CraftResourceLib.Bow, ref city.workTemplate.craft_bow, craftWeapon);
-                    //adjustWorkToCrafting(city, CraftResourceLib.SharpStick, ref city.workTemplate.craft_sharpstick, craftWeapon);
-
-                    //bool craftArmour= adjustWorkToCrafting(city, CraftResourceLib.HeavyMailArmor, ref city.workTemplate.craft_heavymailarmor, false);
-                    //craftArmour = adjustWorkToCrafting(city, CraftResourceLib.MailArmor, ref city.workTemplate.craft_mailarmor, craftArmour);
-                    //adjustWorkToCrafting(city, CraftResourceLib.PaddedArmor, ref city.workTemplate.craft_paddedarmor, craftArmour);
 
                 }
             }
 
-            void adjustWorkToBuffer(int resourceCompex/*ref GroupedResource resource*/, ref WorkPriority workPriority)
+            void adjustWorkToBuffer(int resourceCompex, ref WorkPriority workPriority, bool highPrio = true)
             {
                 GroupedResource resource = DssRef.world.cityResouces[resourceCompex];
 
                 if (resource.amount < ResourceLowBuffer)
                 {
-                    if (Ref.peRnd.Chance(0.5))
+                    if (Ref.peRnd.Chance(highPrio? 0.5 : 0.3))
                     {
                         workPriority.addPrio_belowMax(1);
                     }
@@ -127,6 +125,35 @@ namespace VikingEngine.DSSWars.Players
                     if (Ref.peRnd.Chance(0.3))
                     {
                         workPriority.addPrio(-1);
+                    }
+                }
+            }
+
+            void adjustWorkToBuffer_2(int resourceCompex, ref WorkPriority workPriority1, ref WorkPriority workPriority2, bool highPrio = true)
+            {
+                GroupedResource resource = DssRef.world.cityResouces[resourceCompex];
+
+                if (resource.amount < ResourceLowBuffer)
+                {
+                    double chance = highPrio ? 0.5 : 0.3;
+                    if (Ref.peRnd.Chance(chance))
+                    {
+                        workPriority1.addPrio_belowMax(1);
+                    }
+                    if (Ref.peRnd.Chance(chance))
+                    {
+                        workPriority2.addPrio_belowMax(1);
+                    }
+                }
+                else if (resource.amount >= resource.stockPileLimit / 2)
+                {
+                    if (Ref.peRnd.Chance(0.3))
+                    {
+                        workPriority1.addPrio(-1);
+                    }
+                    if (Ref.peRnd.Chance(0.3))
+                    {
+                        workPriority2.addPrio(-1);
                     }
                 }
             }
@@ -168,15 +195,15 @@ namespace VikingEngine.DSSWars.Players
             intelligent = false;
             work = false;
 
-            if (city.needMore(CityResoureIndex.rawFood)/*res_rawFood.needMore()*/ && Ref.peRnd.Chance(0.6))
+            if (city.needMore(CityResoureIndex.rawFood) && Ref.peRnd.Chance(0.6))
             {
                 building = BuildAndExpandType.WheatFarm;
             }
-            else if (city.resourceAmount(CityResoureIndex.fuel)/*res_fuel.amount*/ < ResourceLowBuffer && city.resourceAmount(CityResoureIndex.wood)/*res_wood.amount*/ > ResourceLowBuffer && Ref.rnd.Chance(0.6))
+            else if (city.resourceAmount(CityResoureIndex.fuel) < ResourceLowBuffer && city.resourceAmount(CityResoureIndex.wood)/*res_wood.amount*/ > ResourceLowBuffer && Ref.rnd.Chance(0.6))
             {
                 building = BuildAndExpandType.CoalPit;
             }
-            else if (city.needMore(CityResoureIndex.skinLinnen)/*res_skinLinnen.needMore()*/ && Ref.peRnd.Chance(0.6))
+            else if (city.needMore(CityResoureIndex.skinLinnen) && Ref.peRnd.Chance(0.6))
             {
                 building = BuildAndExpandType.LinenFarm;
             }

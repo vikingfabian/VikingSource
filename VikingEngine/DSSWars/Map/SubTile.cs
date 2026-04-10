@@ -272,6 +272,8 @@ namespace VikingEngine.DSSWars.Map
                         //case TerrainSubFoilType.RapeSeedFarmUpgraded:
                         //case TerrainSubFoilType.HempFarmUpgraded:
                         case TerrainSubFoilType.BogIron:
+                        case TerrainSubFoilType.ClayPit:
+                        case TerrainSubFoilType.SaltPit:
                             return false;
                         
                     }

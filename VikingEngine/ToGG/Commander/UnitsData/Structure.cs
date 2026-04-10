@@ -48,7 +48,7 @@ namespace VikingEngine.ToGG.Commander.UnitsData
     class BatteringRam : CmdUnitData
     {
         public BatteringRam()
-            : base("Battering Ram", UnitMainType.Warmashine, UnitUnderType.Warmashine_BatteringRam, true,
+            : base("Battering Ram", UnitMainType.Warmashine, UnitUnderType.Warmachine_BatteringRam, true,
                  SpriteName.cmdUnitBatteringRam,
                 1, 0, 0, 0, 8, true)
         {

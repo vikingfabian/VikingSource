@@ -152,7 +152,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //}
 
-        abstract protected DetailUnitModel initModel();
+        abstract protected DetailUnitModel initModel(bool bannerman);
 
         //    protected void updateTargetAim()
         //    {
@@ -547,7 +547,7 @@ namespace VikingEngine.DSSWars.GameObject
             return pos;
         }
 
-        abstract public UnitType DetailUnitType();
+        abstract public UnitBuildType DetailUnitType();
 
 
         abstract public bool IsShipType();

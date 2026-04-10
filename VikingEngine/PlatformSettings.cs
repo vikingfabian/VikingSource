@@ -33,7 +33,7 @@ namespace VikingEngine
             StartProgram.LootFest3;
 #endif
 
-        public static readonly bool Debug_SteamAPI = false;
+        public static readonly bool Debug_SteamAPI = true;
 
         public static readonly bool Debug_SteamStats = false;
 
@@ -201,12 +201,12 @@ namespace VikingEngine
         {
             get
             {
-                if (Engine.LoadContent.SteamVersion == null)
+                if (Engine.LoadContent.EngineVersion == null)
                     return "Unknown Version";
                 else if (PlatformSettings.STEAM_DEMO)
-                    return "Demo v. " + Engine.LoadContent.SteamVersion;
+                    return "Demo v. " + Engine.LoadContent.EngineVersion;
                 else
-                    return "Version " + Engine.LoadContent.SteamVersion;
+                    return "Version " + Engine.LoadContent.EngineVersion;
             }
         }
         public static string XboxVersion = "UNKNOWN";

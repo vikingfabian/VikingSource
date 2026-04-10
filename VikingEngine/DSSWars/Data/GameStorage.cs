@@ -30,7 +30,7 @@ namespace VikingEngine.DSSWars.Data
         
         public bool autoSave = true;
         public bool runTutorial = true;
-        public bool speed5x = false;
+        public bool speed5x = true;
         public bool blockImportAchievements = true;
         
         public LocalPlayerStorage[] localPlayers = null;
@@ -150,7 +150,7 @@ namespace VikingEngine.DSSWars.Data
             }
             DataStream.BeginReadWrite.BinaryIO(true, path, write, null, callBack, true);
         }
-        public const int Version = 34;
+        public const int Version = 35;
         public void writeGameSetup(System.IO.BinaryWriter w)
         {
             w.Write(Version);

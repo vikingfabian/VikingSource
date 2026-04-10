@@ -189,7 +189,7 @@ namespace VikingEngine.DataStream
         
         public void CheckFileLength()
         {
-            const int MaxFileLength = 40;
+            const int MaxFileLength = 250;
             if (FileName.Length + 4 > MaxFileLength)
                 throw new Exception("To long file name: " + this.ToString());
         }

@@ -79,7 +79,7 @@ namespace VikingEngine.LootFest.Display
 
             //SteamGamepad.SetActionSet_All(ControllerActionSetType.MenuControls);
 
-            Input.Mouse.View();//Input.Mouse.Visible = true;
+            Input.Mouse.ViewAll();//Input.Mouse.Visible = true;
         }
 
         List<ControllerChoice> listControllers()
@@ -110,7 +110,7 @@ namespace VikingEngine.LootFest.Display
         public bool Update()
         {
             if (PlatformSettings.DevBuild && 
-                DebugSett.AutoSelectInputController != InputSourceType.Num_Non &&
+                DebugSett.AutoSelectInputController != InputSourceType.Num_None &&
                 LfRef.gamestate.localPlayers.Count == 1)
             {
                 onSelect(DebugSett.AutoSelectInputController, 0);
@@ -223,12 +223,10 @@ namespace VikingEngine.LootFest.Display
             }
             selectionFrame.DeleteMe();
 
-            player.inputMap.setInputSource(inputSource, controllerIndex);
+            player.inputMap.setInputSource(new InputSource( inputSource, controllerIndex));
             player.selectSaveFile();
         }
     }
-
-    
 
     class SelectControllerMenuMember
     {
@@ -242,7 +240,7 @@ namespace VikingEngine.LootFest.Display
             //, icon;
 
         public SelectControllerMenuMember(Vector2 center, Vector2 sz, float borderSz, PlayerControllerSelection controller,
-            ControllerChoice controllerChoice)//, bool isAlreadyInUse)
+            ControllerChoice controllerChoice)
         {
             mouseClickArea = VectorRect.FromCenterSize(center, sz);
             selectionArea = new VectorRect(center, sz + new Vector2(borderSz));

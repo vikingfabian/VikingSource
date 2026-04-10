@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             menuSystem = new GameMenuSystem();
 
             new GameObject.AllUnits();
-            new Diplomacy();
+            //new Diplomacy();
 
             new GameTime();
             HudLib.Init();
@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             var factionsCounter = DssRef.world.factions.counter();
             while (factionsCounter.Next())
             {
-                factionsCounter.sel.initDiplomacy(DssRef.world);
+                //factionsCounter.sel.initDiplomacy(DssRef.world);
                 if (factionsCounter.sel.factiontype == FactionType.DarkLord)
                 {
                     DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(factionsCounter.sel, true);
@@ -68,6 +68,8 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
                 var local = createLocalPlayer(startFaction);
                 local.assignPlayer(i, playerCount, true);
                 localPlayers.Add(local);
+
+                Mouse.AddPlayer(local.playerData, playerCount, local.gameControls.input.moveCursor, local.gameControls.input.menuInput.cursor);
             }
         }
 

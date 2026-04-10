@@ -76,14 +76,14 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
-        public override string DisplayMode => "Modo de exibição";
-        public override string DisplayMode_Windowed => "Modo janela";
-        public override string DisplayMode_BorderlessFullscreen => "Janela sem bordas";
+        //public override string DisplayMode => "Modo de exibição";
+        //public override string DisplayMode_Windowed => "Modo janela";
+        //public override string DisplayMode_BorderlessFullscreen => "Janela sem bordas";
 
-        public override string GameSettings_RenderedMouseCursor => "Cursor renderizado";
-        public override string GameSettings_MuteControllerDisconnect => "Silenciar desconexão do controle";
+        //public override string GameSettings_RenderedMouseCursor => "Cursor renderizado";
+        //public override string GameSettings_MuteControllerDisconnect => "Silenciar desconexão do controle";
 
         public override string Delivery_MaxDistance => "Distância máx. de entrega: {0}";
         public override string Tutorial_WillTakeAWhile => "Isso vai demorar um pouco, volte mais tarde.";
@@ -175,7 +175,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string MyLanguage => "Português (Brasil)";
 
         /// <summary>How to display a number of items. 0: item, 1:Number</summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>Select language option</summary>
         public override string Lobby_Language => "Idioma";
@@ -322,7 +322,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_TotalIncome => "Renda total/segundo: {0}";
 
         /// <summary>Unit gold cost.</summary>
-        public override string Hud_Upkeep => "Manutenção: {0}";
+        public override string Hud_Upkeep => "Manutenção";
         public override string Hud_ArmyUpkeep => "Manutenção do exército: {0}";
 
         /// <summary>Ingame display. Soldiers protecting a building.</summary>
@@ -332,12 +332,12 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "Você precisa expandir a cidade.";
 
-        public override string Hud_SoldierCount => "Qtd. de soldados: {0}";
+        public override string Hud_SoldierCount => "Qtd. de soldados";
 
-        public override string Hud_SoldierGroupsCount => "Qtd. de grupos: {0}";
+        public override string Hud_SoldierGroupsCount => "Qtd. de grupos";
 
         /// <summary>Ingame display. Unit calculated battle strength.</summary>
-        public override string Hud_StrengthRating => "Índice de força: {0}";
+        public override string Hud_StrengthRating => "Índice de força";
 
         /// <summary>Ingame display. Calculated battle strength for the whole nation.</summary>
         public override string Hud_TotalStrengthRating => "Força militar: {0}";
@@ -547,7 +547,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Diplomacy_TruceEndTitle => "A trégua terminou";
 
         /// <summary>Stats that are shown on the end game screen. Display title.</summary>
-        public override string EndGameStatistics_Title => "Estatísticas";
+        public override string Statistics_Title => "Estatísticas";
         /// <summary>Stats that are shown on the end game screen. Total ingame time passed.</summary>
         public override string EndGameStatistics_Time => "Tempo de jogo: {0}";
 
@@ -669,7 +669,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string SoldierStats_AttackStrengthLandSeaCity => "Força de ataque: Terra {0} | Mar {1} | Cidade {2}";
 
         /// <summary>How many wounds a soldier can endure</summary>
-        public override string SoldierStats_Health => "Vida: {0}";
+        public override string SoldierStats_Health => "Vida";
 
         /// <summary>Some soldiers will increase the army movement speed</summary>
         public override string SoldierStats_SpeedBonusLand => "Bônus de velocidade em terra: {0}";
@@ -1097,10 +1097,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "Aumenta o ataque em uma área e reduz as outras em {0}";
         public override string Conscript_SelectBuilding => "Selecionar quartel";
 
-        public override string Conscript_WeaponDamage => "Dano da arma: {0}";
-        public override string Conscript_ArmorHealth => "Vida da armadura: {0}";
-        public override string Conscript_TrainingSpeed => "Velocidade de ataque: {0}";
-        public override string Conscript_TrainingTime => "Tempo de treino: {0}";
+        public override string Conscript_WeaponDamage => "Dano da arma";
+        public override string Conscript_ArmorHealth => "Vida da armadura";
+        public override string Conscript_AttackSpeed => "Velocidade de ataque";
+        public override string Conscript_TrainingTime => "Tempo de treino";
 
         public override string Conscript_Training_Minimal => "Mínimo";
         public override string Conscript_Training_Basic => "Básico";
@@ -1134,7 +1134,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Mostrado em Recursos por Segundo.";
+        public override string Info_ResourcePerSecond => "Mostrado em Recursos por Segundo.";
 
         public override string Info_MinuteAverage => "O valor é uma média do último minuto";
 
@@ -1200,12 +1200,12 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>Pit master: someone who is good at burning work (char coal) </summary>
         public override string CityCulture_PitMasters => "Mestres do carvão";
 
-        public override string CityCulture_CultureIsX => "Cultura: {0}";
+        public override string CityCulture_Culture => "Cultura";
         public override string CityCulture_LargeFamilies_Description => "Mais nascimentos";
         public override string CityCulture_FertileGround_Description => "Lavouras rendem mais";
         public override string CityCulture_Archers_Description => "Produz arqueiros habilidosos";
         public override string CityCulture_Warriors_Description => "Produz lutadores corpo a corpo";
-        public override string CityCulture_AnimalBreeder_Description => "Animais dão mais recursos";
+        //public override string CityCulture_AnimalBreeder_Description => "Animais dão mais recursos";
         public override string CityCulture_Miners_Description => "Minera mais minério";
         public override string CityCulture_Woodcutters_Description => "Árvores rendem mais madeira";
         public override string CityCulture_Builders_Description => "Rapidez na construção";
@@ -1246,12 +1246,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "Carvão";
 
-        public override string Language_XUpkeepIsY => "{0} - manutenção: {1}";
+        public override string Language_XUpkeep => "{0} - manutenção";
         public override string Language_XCountIsY => "{0} - quantidade: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "Comida cara será comprada no mercado negro. Soldados famintos desertarão quando o dinheiro acabar.";
 
-        public override string Info_ArmyFood => "Exércitos reabastecem comida na cidade amiga mais próxima. Comida pode ser comprada de outras facções. Em regiões hostis, só é possível comprar no mercado negro.";
+        public override string Info_ArmyFood1 => "Os exércitos reabastecerão sua comida na cidade aliada mais próxima.";
+        public override string Info_ArmyFood2 => "Comida pode ser comprada de outras facções.";
+        public override string Info_ArmyFood3 => "Em regiões hostis, a comida só pode ser comprada no mercado negro.";
 
         public override string FactionName_Monger => "Monger";
         public override string FactionName_Hatu => "Hatu";

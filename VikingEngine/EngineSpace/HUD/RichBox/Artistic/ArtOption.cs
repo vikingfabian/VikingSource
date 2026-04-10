@@ -18,7 +18,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
         {   
             var checkImage = new RbImage(buttonStyle == RbButtonStyle.OptionNotSelected ? group.settings.optionOff : group.settings.optionOn, 0.76f);
             checkImage.Create(group);
-            group.position.X += 4;            
+            group.carriage.position.X += 4;            
         }
     }
 

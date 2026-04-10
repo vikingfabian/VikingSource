@@ -495,5 +495,28 @@ namespace VikingEngine
         {
             return Convert.ToInt32(perc * 100);
         }
+
+        /// <summary>
+        /// 5 will return 5+4+3+2+1
+        /// </summary>
+        /// <returns>Sum of all lower numbers</returns>
+        public static int GaussSum(int n)
+        {
+            return n * (n + 1) / 2;
+        }
+
+        public static int InvertedGaussSumIndex(int entityCount, int entityNumber)
+        {
+            // 1. Calculate the full size of the triangle (e.g., 55)
+            int totalSum = entityCount * (entityCount + 1) / 2;
+
+            // 2. Calculate the size of the "remaining" triangle
+            // For entity 1, we subtract the sum of 10..1 (55) -> Index 0
+            // For entity 2, we subtract the sum of 9..1 (45)  -> Index 10
+            int remainingLength = entityCount - (entityNumber - 1);
+            int remainingSum = remainingLength * (remainingLength + 1) / 2;
+
+            return totalSum - remainingSum;
+        }
     }
 }

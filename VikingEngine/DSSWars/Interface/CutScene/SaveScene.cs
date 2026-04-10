@@ -140,7 +140,8 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                     case 3:
                         if (ExitGame)
                         {
-                            DssRef.state.exit();
+                            DssRef.state.beginExit();
+                            Close();
                         }
                         else if (autoSave)
                         {
@@ -165,7 +166,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                 Close();
                 if (ExitGame)
                 {
-                    DssRef.state.exit();
+                    DssRef.state.beginExit();
                 }
             }
         }

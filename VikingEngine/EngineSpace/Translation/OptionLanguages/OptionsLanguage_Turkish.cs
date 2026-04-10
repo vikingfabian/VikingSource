@@ -24,7 +24,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string DisplayMode_Windowed => "Pencere";
         public override string DisplayMode_BorderlessFullscreen => "Çerçevesiz Tam Ekran";
         public override string GameSettings_RenderedMouseCursor => "Dahili imleç";
-
+        public override string GameSettings_MuteControllerDisconnect => "Gamepad kopma uyarısını sustur";
         //--
         public override string GraphicsOption_FarViewDistance => "Uzun mesafe görüşü";
 

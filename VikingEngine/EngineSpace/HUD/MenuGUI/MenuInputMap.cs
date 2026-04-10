@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.Input;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.HUD
 {
@@ -15,6 +16,8 @@ namespace VikingEngine.HUD
 
         public IDirectionalMap mouse;
         public IDirectionalMap movement;
+        public IDirectionalMap cursor;
+
         public IDirectionalMap scroll;
         public IButtonMap click;
         public IButtonMap back;
@@ -72,14 +75,20 @@ namespace VikingEngine.HUD
                 new DirectionalXboxMap(ThumbStickType.D, false, controllerIndex));
 
             scroll = new AlternativeDirectionalMap(
-                new DirectionalMouseScrollMap(), 
+                new DirectionalMouseScrollMap(),
                 new DirectionalXboxTriggerMap(controllerIndex));
 
             click = new AlternativeButtonsMap(new XboxButtonMap(Buttons.A, controllerIndex), new XboxButtonMap(Buttons.X, controllerIndex));
-            
+
             back = new AlternativeButtonsMap(new XboxButtonMap(Buttons.B, controllerIndex), new MouseButtonMap(MouseButton.Right));
             tabLeftUp = new XboxButtonMap(Buttons.LeftShoulder, controllerIndex);
             tabRightDown = new XboxButtonMap(Buttons.RightShoulder, controllerIndex);
+        }
+
+        public void steamSetup(int controllerIndex)
+        {
+            scroll = new SteamAnalogMap(SteamActionSet.MenuControls, false, SteamAnalogAction.Scroll, controllerIndex);
+            OpenCloseController = new SteamButtonMap(SteamActionSet.MenuControls, SteamDigitalAction.close_menu, controllerIndex);
         }
 
         //public void ps4Setup(int controllerIndex)

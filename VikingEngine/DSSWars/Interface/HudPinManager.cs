@@ -73,10 +73,11 @@ namespace VikingEngine.DSSWars.Interface
             {
                 case HudPinType.Resource:
                     var item = (ItemResourceType)id;
+                    IconName.Item(item, out var icon, out var name);
                     var resourceCount = city.GetGroupedResource(item);
                     content.Add(new RbButton(
                         new List<AbsRichBoxMember> { 
-                            new RbImage(ResourceLib.Icon(item)),
+                            new RbImage(icon),
                             new RbSpace(0.5f), 
                             new RbText(resourceCount.amount.ToString(), Color.White)
                         }, null, new RbTooltip(ResourceLib.FullResourceInfo, new ResourceInfoTag(null,city, item)), true, BgCol));
@@ -103,7 +104,7 @@ namespace VikingEngine.DSSWars.Interface
                     }
                     content.Add(new RbButton(
                         buttonContent, null, 
-                        new RbTooltip_Text(string.Format( DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Technology_Title, techname)), 
+                        new RbTooltip_Text(string.Format( DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Technology_Title, techname)), 
                         true, BgCol));
                     break;
 

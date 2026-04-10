@@ -80,14 +80,14 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
-        public override string DisplayMode => "Görüntü Modu";
-        public override string DisplayMode_Windowed => "Pencere";
-        public override string DisplayMode_BorderlessFullscreen => "Çerçevesiz Tam Ekran";
+        //public override string DisplayMode => "Görüntü Modu";
+        //public override string DisplayMode_Windowed => "Pencere";
+        //public override string DisplayMode_BorderlessFullscreen => "Çerçevesiz Tam Ekran";
 
-        public override string GameSettings_RenderedMouseCursor => "Yazılımsal İmleç"; // "Software cursor" - standard tech term
-        public override string GameSettings_MuteControllerDisconnect => "Gamepad kopma uyarısını sustur";
+        //public override string GameSettings_RenderedMouseCursor => "Yazılımsal İmleç"; // "Software cursor" - standard tech term
+        //public override string GameSettings_MuteControllerDisconnect => "Gamepad kopma uyarısını sustur";
 
         public override string Delivery_MaxDistance => "Maks. teslimat mesafesi: {0}";
         public override string Tutorial_WillTakeAWhile => "Bu biraz sürecek, daha sonra tekrar gel.";
@@ -183,7 +183,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How to display a number of items. 0: item, 1:Number
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Select language option
@@ -423,7 +423,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Unit gold cost.
         /// </summary>
-        public override string Hud_Upkeep => "Bakım Maaliyeti: {0}";
+        public override string Hud_Upkeep => "Bakım Maaliyeti";
         public override string Hud_ArmyUpkeep => "Ordu Bakım Maaliyeti: {0}";
 
         /// <summary>
@@ -435,14 +435,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "Şehri Genişletmen Gerek.";
 
-        public override string Hud_SoldierCount => "Asker Sayısı: {0}";
+        public override string Hud_SoldierCount => "Asker Sayısı";
 
-        public override string Hud_SoldierGroupsCount => "Grup Sayısı: {0}";
+        public override string Hud_SoldierGroupsCount => "Grup Sayısı";
 
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
         /// </summary>
-        public override string Hud_StrengthRating => "Güç Oranı: {0}";
+        public override string Hud_StrengthRating => "Güç Oranı";
 
         /// <summary>
         /// Ingame display. Caculated battle strength for the whole nation.
@@ -790,7 +790,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
-        public override string EndGameStatistics_Title => "İstatistikler";
+        public override string Statistics_Title => "İstatistikler";
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.
         /// </summary>
@@ -986,7 +986,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How many wounds a soldier can endure
         /// </summary>
-        public override string SoldierStats_Health => "Sağlık: {0}";
+        public override string SoldierStats_Health => "Sağlık";
 
         /// <summary>
         /// Some soldiers will increase the army movement speed
@@ -1555,10 +1555,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "Tek bir bölge için saldırı gücünü arttırır, ancak diğer hepsi için düşürür {0}";
         public override string Conscript_SelectBuilding => "Kışla seç";
 
-        public override string Conscript_WeaponDamage => "Silah hasarı: {0}";
-        public override string Conscript_ArmorHealth => "Zırh Dayanıklılığı: {0}";
-        public override string Conscript_TrainingSpeed => "Saldırı hızı: {0}";
-        public override string Conscript_TrainingTime => "Eğitim süresi: {0}";
+        public override string Conscript_WeaponDamage => "Silah hasarı";
+        public override string Conscript_ArmorHealth => "Zırh Dayanıklılığı";
+        public override string Conscript_AttackSpeed => "Saldırı hızı";
+        public override string Conscript_TrainingTime => "Eğitim süresi";
 
         public override string Conscript_Training_Minimal => "Minimal";
         public override string Conscript_Training_Basic => "Temel";
@@ -1592,7 +1592,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Saniye Başı Sergilenen Kaynak";
+        public override string Info_ResourcePerSecond => "Saniye Başı Sergilenen Kaynak";
 
         public override string Info_MinuteAverage => "Bu değer, son bir dakikadaki ortalamanın sonucudur";
 
@@ -1652,12 +1652,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "Sosyal kelebek";
         public override string CityCulture_PitMasters => "Kömürcü";
 
-        public override string CityCulture_CultureIsX => "Kültür: {0}";
+        public override string CityCulture_Culture => "Kültür";
         public override string CityCulture_LargeFamilies_Description => "Artan doğum oranları";
         public override string CityCulture_FertileGround_Description => "Ekinler daha fazla hasat verir";
         public override string CityCulture_Archers_Description => "Yetenekli okçular yetiştirilir";
         public override string CityCulture_Warriors_Description => "Yetenekli savaşçılar eğitilir";
-        public override string CityCulture_AnimalBreeder_Description => "Hayvanlar daha fazla ürün sağlar";
+        //public override string CityCulture_AnimalBreeder_Description => "Hayvanlar daha fazla ürün sağlar";
         public override string CityCulture_Miners_Description => "Madenden daha fazla cevher çıkarılır";
         public override string CityCulture_Woodcutters_Description => "Ağaçlardan daha fazla odun elde edilir";
         public override string CityCulture_Builders_Description => "Yapı inşaası daha hızlıdır";
@@ -1698,13 +1698,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "Kömür";
 
-        public override string Language_XUpkeepIsY => "{0} maaliyeti: {1}";
+        public override string Language_XUpkeep => "{0} maaliyeti";
         public override string Language_XCountIsY => "{0} sayısı: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "Yiyecekler karaborsadan pahalıya alınacak. Paran bittiğinde aç kalan askerler firar edecek.";
 
-        public override string Info_ArmyFood => "Ordular en yakın dost şehirden yiyecek ikmali yapar. Diğer taraflardan da alım yapılabilir. Düşman bölgelerinde yalnızca karaborsa aktiftir.";
-
+        public override string Info_ArmyFood1 => "Ordular, erzaklarını en yakın dost şehirden yeniler.";
+        public override string Info_ArmyFood2 => "Diğer fraksiyonlardan erzak satın alınabilir.";
+        public override string Info_ArmyFood3 => "Düşman bölgelerinde erzak yalnızca karaborsadan satın alınabilir.";
         public override string FactionName_Monger => "Monger";
         public override string FactionName_Hatu => "Hatu";
         public override string FactionName_Destru => "Destru";

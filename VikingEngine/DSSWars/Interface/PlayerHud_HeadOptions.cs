@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.HUD.RichBox;
-using VikingEngine.HUD.RichMenu;
-using VikingEngine.HUD;
 using VikingEngine.DSSWars.Players;
-using Microsoft.Xna.Framework;
+using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.HUD.RichMenu;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Interface
 {
@@ -55,7 +56,8 @@ namespace VikingEngine.DSSWars.Interface
 
                 
                     bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Pause_GamePlay, out Color focusColor);
-                    if (viewControllerTabs && DssRef.difficulty.setting_allowPauseCommand)
+                    if (viewControllerTabs && DssRef.difficulty.setting_allowPauseCommand &&
+                        player.gameControls.input.Controller_TabLeft.IsActive)
                     {
                         content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
                         content.space(0.5f);
@@ -67,8 +69,13 @@ namespace VikingEngine.DSSWars.Interface
                         new List<AbsRichBoxMember> { new RbImage(Ref.isPaused ? SpriteName.WarsHudHeadBarPauseIcon : SpriteName.WarsHudHeadBarPlayIcon) },
                         new RbAction(Ref.TogglePause), new RbTooltip((RichBoxContent content, object tag) =>
                         {
-                            content.Add(new RbImage(player.gameControls.input.PauseGame.Icon));
-                            content.Add(new RbSpace(0.5f));
+                            //if (player.gameControls.input.PauseGame.IsActive)
+                            //{
+                            //    content.Add(new RbImage(player.gameControls.input.PauseGame.Icon));
+                            //    content.Add(new RbSpace(0.5f));
+                            //}
+                            player.gameControls.input.PauseGame.ToRichContent(content);
+                            content.hspace();
                             content.Add(new RbText(DssRef.lang.Input_Pause));
                         }), DssRef.difficulty.setting_allowPauseCommand));
                 }
@@ -86,9 +93,14 @@ namespace VikingEngine.DSSWars.Interface
                         new RbAction1Arg<int>(gameSpeedClick, speed, RbSoundType.Option),
                         new RbTooltip((RichBoxContent content, object tag) =>
                         {
-                            content.Add(new RbImage(player.gameControls.input.GameSpeed.Icon));
-                            content.Add(new RbSpace(0.5f));
-                            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Input_GameSpeed, string.Format(DssRef.lang.Hud_XTimes, speed))));
+                            //if (player.gameControls.input.GameSpeed.IsActive)
+                            //{
+                            //    content.Add(new RbImage(player.gameControls.input.GameSpeed.Icon));
+                            //    content.Add(new RbSpace(0.5f));
+                            //}
+                            player.gameControls.input.GameSpeed.ToRichContent(content);
+                            content.hspace();
+                            content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Input_GameSpeed, string.Format(DssRef.lang.Hud_XTimes, speed))));
                         })));
 
                 }
@@ -96,7 +108,7 @@ namespace VikingEngine.DSSWars.Interface
             }
 
             
-            if (player.gameControls.input.inputSource.IsController)
+            if (player.gameControls.input.inputSource.IsXnaController)
             {
                 content.Add(new RbImage(player.gameControls.input.Menu.Icon));
                 content.space(0.5f);
@@ -105,7 +117,7 @@ namespace VikingEngine.DSSWars.Interface
                 new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarMenuIcon) },
                 new RbAction(DssRef.state.menuSystem.pauseMenu),
                 new RbTooltip((RichBoxContent content, object tag) => {
-                    content.Add(new RbImage(player.gameControls.input.menuInput.OpenCloseKeyBoard.Icon));
+                    player.gameControls.input.Menu.ToRichContent(content);
                     content.Add(new RbSpace(0.5f));
                     content.Add(new RbText(DssRef.lang.GameMenu_Title));
                 })

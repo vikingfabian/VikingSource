@@ -57,6 +57,8 @@ namespace VikingEngine.DSSWars.Data
         public int setting_QuickMatch_PlayerCount = 4;
         public bool setting_QuickMatch_TwoTeams = false;
 
+        public float manFoodUpkeep;
+        public float mountFoodUpkeep;
 
         public int TechMultiProperty(object tag, bool set, int value)
         {
@@ -213,19 +215,20 @@ namespace VikingEngine.DSSWars.Data
             double result = PercDifficulty;
             if (!setting_allowPauseCommand)
             {
-                result *= 1.25;
+                result += 50;
+
             }
             if (!DssRef.storage.gameRuleset.centralGold)
             {
-                result *= 1.5;
+                result += 25;
             }
             switch (setting_gameMode)
             {
-                case GameModeMainType.Sandbox:
-                    result *= 0.75;
+                case GameModeMainType.FullStory:
+                    result += 50;
                     break;
                 case GameModeMainType.Peaceful:
-                    result *= 0.25;
+                    result *= 0.5;
                     break;
             }
 
@@ -295,7 +298,7 @@ namespace VikingEngine.DSSWars.Data
                     resourcesStartHelp = true;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 20 * TimeExt.MinuteInSeconds;
-                    toPeacefulPercentage = 0.3f;
+                    toPeacefulPercentage = 0.2f;
                     PlayerBonusGold = 2000;
                     break;
 
@@ -308,7 +311,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = true;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 30;
-                    toPeacefulPercentage = 0.75f;
+                    toPeacefulPercentage = 0.4f;
                     break;
 
                 case 4:
@@ -320,7 +323,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = false;
                     //toPeacefulCheck = true;
                     aiDelayTimeSec = 10;
-                    toPeacefulPercentage = 1f;
+                    toPeacefulPercentage = 0.7f;
                     break;
 
                 case 5:
@@ -332,7 +335,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = false;
                     aiDelayTimeSec = 0;
                     //toPeacefulCheck = true;
-                    toPeacefulPercentage = 1.5f;
+                    toPeacefulPercentage = 1f;
                     break;
 
                 case 6:
@@ -347,7 +350,7 @@ namespace VikingEngine.DSSWars.Data
                     honorGuard = false;
                     aiDelayTimeSec = 0;
                     //toPeacefulCheck = true;
-                    toPeacefulPercentage = 1.75f;
+                    toPeacefulPercentage = 1.5f;
                     break;
 
                 case 7: //200%
@@ -409,6 +412,9 @@ namespace VikingEngine.DSSWars.Data
             MercenaryPurchaseCost_Add = 100 + mediumOffset * 20;
 
             aiEconomyMultiplier = AiEconomyLevel[aiEconomyLevel] / 100.0;
+
+            manFoodUpkeep = DssConst.ManDefaultEnergyCost / FoodEnergySett;
+            mountFoodUpkeep = DssConst.MountDefaultEnergyCost / FoodEnergySett;
         }
 
         public void write(System.IO.BinaryWriter w)

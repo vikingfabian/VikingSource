@@ -74,14 +74,14 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
-        public override string DisplayMode => "Режим экрана";
-        public override string DisplayMode_Windowed => "В окне";
-        public override string DisplayMode_BorderlessFullscreen => "Окно без рамки";
+        //public override string DisplayMode => "Режим экрана";
+        //public override string DisplayMode_Windowed => "В окне";
+        //public override string DisplayMode_BorderlessFullscreen => "Окно без рамки";
 
-        public override string GameSettings_RenderedMouseCursor => "Программный курсор";
-        public override string GameSettings_MuteControllerDisconnect => "Скрыть ошибки геймпада";
+        //public override string GameSettings_RenderedMouseCursor => "Программный курсор";
+        //public override string GameSettings_MuteControllerDisconnect => "Скрыть ошибки геймпада";
 
         public override string Delivery_MaxDistance => "Макс. дальность доставки: {0}";
         public override string Tutorial_WillTakeAWhile => "Это займет время, вернитесь позже.";
@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Как отображать количество предметов. 0: предмет, 1: количество
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Выбор языка
@@ -416,7 +416,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Стоимость содержания юнита
         /// </summary>
-        public override string Hud_Upkeep => "Содержание: {0}";
+        public override string Hud_Upkeep => "Содержание";
         public override string Hud_ArmyUpkeep => "Содержание армии: {0}";
 
         /// <summary>
@@ -428,14 +428,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "Вам нужно расширить город.";
 
-        public override string Hud_SoldierCount => "Количество солдат: {0}";
+        public override string Hud_SoldierCount => "Количество солдат";
 
-        public override string Hud_SoldierGroupsCount => "Количество групп: {0}";
+        public override string Hud_SoldierGroupsCount => "Количество групп";
 
         /// <summary>
         /// Отображение в игре. Расчетная боевая мощь юнита
         /// </summary>
-        public override string Hud_StrengthRating => "Рейтинг силы: {0}";
+        public override string Hud_StrengthRating => "Рейтинг силы";
 
         /// <summary>
         /// Отображение в игре. Расчетная боевая мощь всей нации
@@ -782,7 +782,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Статистика, отображаемая на экране окончания игры. Заголовок.
         /// </summary>
-        public override string EndGameStatistics_Title => "Статистика";
+        public override string Statistics_Title => "Статистика";
 
         /// <summary>
         /// Статистика, отображаемая на экране окончания игры. Общее время в игре.
@@ -977,7 +977,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Сколько ранений может выдержать солдат
         /// </summary>
-        public override string SoldierStats_Health => "Здоровье: {0}";
+        public override string SoldierStats_Health => "Здоровье";
 
         /// <summary>
         /// Некоторые солдаты увеличат скорость передвижения армии
@@ -1532,10 +1532,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "Увеличивает атаку в одной области, снижая эффективность в остальных на {0}";
         public override string Conscript_SelectBuilding => "Выберите казармы";
 
-        public override string Conscript_WeaponDamage => "Урон оружия: {0}";
-        public override string Conscript_ArmorHealth => "Прочность брони: {0}";
-        public override string Conscript_TrainingSpeed => "Скорость атаки: {0}";
-        public override string Conscript_TrainingTime => "Время тренировки: {0}";
+        public override string Conscript_WeaponDamage => "Урон оружия";
+        public override string Conscript_ArmorHealth => "Прочность брони";
+        public override string Conscript_AttackSpeed => "Скорость атаки";
+        public override string Conscript_TrainingTime => "Время тренировки";
 
         public override string Conscript_Training_Minimal => "Минимум";
         public override string Conscript_Training_Basic => "Базовая";
@@ -1569,7 +1569,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Отображено в ресурсах в секунду.";
+        public override string Info_ResourcePerSecond => "Отображено в ресурсах в секунду.";
 
         public override string Info_MinuteAverage => "Значение представляет собой среднее за последнюю минуту.";
 
@@ -1629,12 +1629,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "Сетевик";
         public override string CityCulture_PitMasters => "Мастер по топливу";
 
-        public override string CityCulture_CultureIsX => "Культура: {0}";
+        public override string CityCulture_Culture => "Культура";
         public override string CityCulture_LargeFamilies_Description => "Увеличивается рождаемость";
         public override string CityCulture_FertileGround_Description => "Урожайность выше";
         public override string CityCulture_Archers_Description => "Производит опытных лучников";
         public override string CityCulture_Warriors_Description => "Производит опытных бойцов ближнего боя";
-        public override string CityCulture_AnimalBreeder_Description => "Животные дают больше ресурсов";
+        //public override string CityCulture_AnimalBreeder_Description => "Животные дают больше ресурсов";
         public override string CityCulture_Miners_Description => "Больше добычи руды";
         public override string CityCulture_Woodcutters_Description => "Больше древесины";
         public override string CityCulture_Builders_Description => "Быстрее строят";
@@ -1675,13 +1675,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "Уголь";
 
-        public override string Language_XUpkeepIsY => "{0} содержание: {1}";
+        public override string Language_XUpkeep => "{0} содержание";
         public override string Language_XCountIsY => "{0} количество: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "Дорогая еда будет закупаться на черном рынке. Голодные солдаты дезертируют, когда закончатся деньги.";
 
-        public override string Info_ArmyFood => "Армии будут пополнять запасы еды из ближайшего дружественного города. Пищу можно покупать у других фракций. Во враждебных регионах еду можно купить только на черном рынке.";
-
+        public override string Info_ArmyFood1 => "Армии будут пополнять запасы провизии в ближайшем союзном городе.";
+        public override string Info_ArmyFood2 => "Провизию можно покупать у других фракций.";
+        public override string Info_ArmyFood3 => "На враждебных территориях провизию можно купить только на черном рынке.";
         public override string FactionName_Monger => "Торговец";
         public override string FactionName_Hatu => "Хату";
         public override string FactionName_Destru => "Дестру";

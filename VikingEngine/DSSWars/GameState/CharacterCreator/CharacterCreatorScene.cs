@@ -182,7 +182,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             content.h1("Diplay options", HudLib.TitleColor_Head);
 
             content.newLine();
-            var weapons = ConscriptMenu.AllHandWeapons();
+            var weapons = ConscriptDataLib.AllHandWeapons();
 
             weaponOption(ItemResourceType.Settler);
 
@@ -203,9 +203,10 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
             void weaponOption(ItemResourceType weapon)
             {
+                IconName.Item(weapon, out var weaponIcon, out _);
                 var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
                         {
-                            new RbImage(ResourceLib.Icon(weapon))
+                            new RbImage(weaponIcon)
                         },
                     new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, RbSoundType.Option)
                     );
@@ -219,7 +220,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 switch (armorLevel)
                 {
                     default://case ArmorLevel.None:
-                        armorIcon = CityTag.NoBackSprite;
+                        armorIcon = TagLib.NoBackSprite;
                         break;
                     case ArmorLevel.Leather:
                         armorIcon = SpriteName.WarsResource_PaddedArmor;

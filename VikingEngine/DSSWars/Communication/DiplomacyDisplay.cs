@@ -48,16 +48,21 @@ namespace VikingEngine.DSSWars.Interface
         public void toHud(RichBoxContent content, Faction botFaction, bool selection)
         {
             otherfaction = botFaction;
-                        
-            selectedRelation = player.faction.diplomaticRelations[botFaction.myIndex];
-            againstDark = botFaction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
-            if (selectedRelation == null)
+
+            if (player.faction == botFaction)
             {
-                selectedRelation = DssRef.diplomacy.SetRelationType(player.faction, botFaction, RelationType.RelationType0_Neutral, true);
+                return;
             }
 
-            if (selectedRelation != null)
-            {
+            selectedRelation = DssRef.world.diplomacy.GetRelation(player.faction, botFaction);//player.faction.diplomaticRelations[botFaction.myIndex];
+            againstDark = botFaction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
+            //if (selectedRelation == null)
+            //{
+            //    selectedRelation = DssRef.world.diplomacy.SetRelationType(player.faction, botFaction, RelationType.RelationType0_Neutral, true);
+            //}
+
+            //if (selectedRelation != null)
+            //{
                 FactionRelationDisplay(botFaction, selectedRelation.Relation, content);
 
                 content.newLine();
@@ -72,7 +77,7 @@ namespace VikingEngine.DSSWars.Interface
                         playerToPlayer(content);
                     }
                 }
-            }
+            //}
             
             if (player.gameControls.diplomacy.previousFactionsLookedAt.Count > 1)
             {
@@ -83,7 +88,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     content.newLine();
                     var thirdPartFaction = player.gameControls.diplomacy.previousFactionsLookedAt[i];
-                    var relation = DssRef.diplomacy.GetRelationType(otherfaction, thirdPartFaction);
+                    var relation = DssRef.world.diplomacy.GetRelation(otherfaction, thirdPartFaction).Relation;
 
                     content.Add(thirdPartFaction.FlagTextureToHud());
                     content.hspace();
@@ -190,7 +195,7 @@ namespace VikingEngine.DSSWars.Interface
 
         void setRelation_AsGod(RelationType relation, Faction faction1, Faction faction2)
         {
-            DssRef.diplomacy.SetRelationType(faction1, faction2, relation);
+            DssRef.world.diplomacy.SetRelationType(faction1, faction2, relation);
         }
 
         public static void FactionRelationDisplay(Faction faction, RelationType relation, RichBoxContent content)
@@ -207,7 +212,24 @@ namespace VikingEngine.DSSWars.Interface
 
             content.Add(new RbSeperationLine());
 
-            FactionSize(faction, content, false);
+            content.newLine();
+
+            content.Add(new RbImage(SpriteName.rtsMoney));
+            content.space();
+            content.Add(new RbText(TextLib.LargeNumber(faction.money.GetGold())));
+
+            content.space(2);
+
+
+            content.Add(new RbImage(SpriteName.WarsWorker));
+            content.space();
+            content.Add(new RbText(TextLib.LargeNumber(faction.totalWorkForce)));
+
+            content.space(2);
+
+            content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+            content.space();
+            content.Add(new RbText(TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
 
             content.newParagraph();
 
@@ -221,28 +243,40 @@ namespace VikingEngine.DSSWars.Interface
             }
         }
 
-        public static void FactionSize(Faction faction, RichBoxContent content, bool fullDisplay)
-        {
-            if (fullDisplay)
-            {
-                content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(faction.totalWorkForce));
-                content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_TotalStrengthRating, TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
-            }
-            else
-            {
-                content.newLine();
-                content.Add(new RbImage(SpriteName.WarsWorker));
-                content.space();
-                content.Add(new RbText(TextLib.LargeNumber(faction.totalWorkForce)));
+        //public static void FactionSize(Faction faction, RichBoxContent content, bool fullDisplay)
+        //{
+        //    if (fullDisplay)
+        //    {
+        //        content.icontext(SpriteName.WarsWorker, DssRef.lang.ResourceType_Workers + ": " + TextLib.LargeNumber(faction.totalWorkForce));
+        //        content.icontext(SpriteName.WarsStrengthIcon, string.Format(DssRef.lang.Hud_TotalStrengthRating, TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
+        //    }
+        //    else
+        //    {
+        //        content.newLine();
 
-                content.space(2);
+        //        content.Add(new RbImage(SpriteName.rtsMoney));
+        //        content.space();
+        //        content.Add(new RbText(TextLib.LargeNumber(faction.money.GetGold())));
 
-                content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-                content.space();
-                content.Add(new RbText(TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
-            }
-            content.newLine();
-        }
+        //        content.space(2);
+
+                
+        //        content.Add(new RbImage(SpriteName.WarsWorker));
+        //        content.space();
+        //        content.Add(new RbText(TextLib.LargeNumber(faction.totalWorkForce)));
+
+        //        content.space(2);
+
+        //        content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+        //        content.space();
+        //        content.Add(new RbText(TextLib.LargeNumber(Convert.ToInt32(faction.militaryStrength))));
+
+                
+
+                
+        //    }
+        //    content.newLine();
+        //}
 
         void playerToPlayer(RichBoxContent content)
         {
@@ -342,7 +376,7 @@ namespace VikingEngine.DSSWars.Interface
 
             if (PtoP.suggestingNewRelation)
             { 
-                DssRef.diplomacy.SetRelationType(player.faction, otherfaction, PtoP.suggestedRelation);
+                DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, PtoP.suggestedRelation);
             }
 
             PtoP.suggestingNewRelation = false;
@@ -402,10 +436,10 @@ namespace VikingEngine.DSSWars.Interface
                     servantAction();
                     break;
                 case RelationType.RelationType0_Neutral:
-                    DssRef.diplomacy.endRelations(player.faction, otherfaction);
+                    DssRef.world.diplomacy.endRelations(player.faction, otherfaction);
                     break;
                 case RelationType.RelationTypeN3_War:
-                    DssRef.diplomacy.declareWar(player.faction, otherfaction);
+                    DssRef.world.diplomacy.declareWar(player.faction, otherfaction);
                     break;
             }
         }
@@ -420,7 +454,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 if (peace_notTruce)
                 {
-                    DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType1_Peace);
+                    DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType1_Peace);
 
                     selectedRelation.RelationEnd_GameTimeSec.setTimeFromNow(DssConst.PeaceSafeTimeSec.GetRandom());
                 }
@@ -437,13 +471,13 @@ namespace VikingEngine.DSSWars.Interface
 
                     if (success)
                     {
-                        DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationTypeN2_Truce);
+                        DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationTypeN2_Truce);
 
                         selectedRelation.RelationEnd_GameTimeSec.setTimeFromNow(DssConst.TruceTimeSec);
                     }
                     else
                     {
-                        var relation = DssRef.diplomacy.GetOrCreateRelation(player.faction, otherfaction);
+                        ref var relation = ref DssRef.world.diplomacy.GetRefRelation(player.faction.myIndex, otherfaction.myIndex);
                         relation.SpeakTerms--;
                         if (relation.SpeakTerms < SpeakTerms.SpeakTermsN2_None)
                         {
@@ -555,11 +589,11 @@ namespace VikingEngine.DSSWars.Interface
                 if (ally_notFriend)
                 {
                     ++player.statistics.AlliedFactions;
-                    DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType3_Ally);
+                    DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType3_Ally);
                 }
                 else
                 {
-                    DssRef.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType2_Good);
+                    DssRef.world.diplomacy.SetRelationType(player.faction, otherfaction, RelationType.RelationType2_Good);
 
                     selectedRelation.RelationEnd_GameTimeSec.setTimeFromNow(DssConst.PeaceSafeTimeSec.GetRandom());
                 }
@@ -597,7 +631,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
                     HudLib.BulletPoint(content);
                    
-                    var relation = DssRef.diplomacy.GetRelationType(otherfaction, m);
+                    var relation = DssRef.world.diplomacy.GetRelation(otherfaction, m).Relation;
                     content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
                     content.space();
                     content.Add(m.FlagTextureToHud());
@@ -622,7 +656,7 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbText(string.Format(DssRef.lang.Diplomacy_CostPerAlly, DssConst.DiplomacyExtraCostPerAlly)));
                 
                 content.newLine();
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Diplomacy_AllyCount, player.allyCount), HudLib.InfoYellow_Light));
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Diplomacy_AllyCount, player.allyCount), HudLib.InfoYellow_Light));
             }
         }
 
@@ -649,13 +683,14 @@ namespace VikingEngine.DSSWars.Interface
             return selectedRelation.Relation == RelationType.RelationType3_Ally &&
                 player.faction.militaryStrength >= Diplomacy.MiltitaryStrengthXServant * otherfaction.militaryStrength && 
                 player.diplomaticPoints.Int() >= cost &&
-                otherfaction.cities.Count <= DssRef.diplomacy.ServantMaxCities &&
+                otherfaction.cities.Count <= DssRef.world.diplomacy.ServantMaxCities &&
                 hasStrongerFoe();
         }
 
         bool hasStrongerFoe()
         {
-            var wars = DssRef.diplomacy.collectWars(otherfaction);
+            List<int> wars = new List<int>(8);
+            DssRef.world.diplomacy.collectWars(otherfaction, wars);
 
             foreach (var w in wars)
             {
@@ -692,7 +727,7 @@ namespace VikingEngine.DSSWars.Interface
             HudLib.BulletPoint(content);
             {
                 string militaryStrength = DssRef.lang.Diplomacy_ServantRequirement_MaxCities;
-                content.Add(new RbText(string.Format(militaryStrength, DssRef.diplomacy.ServantMaxCities), HudLib.ResourceCostColor(otherfaction.cities.Count <= DssRef.diplomacy.ServantMaxCities)));
+                content.Add(new RbText(string.Format(militaryStrength, DssRef.world.diplomacy.ServantMaxCities), HudLib.ResourceCostColor(otherfaction.cities.Count <= DssRef.world.diplomacy.ServantMaxCities)));
                 content.newLine();
             }
 
@@ -714,7 +749,7 @@ namespace VikingEngine.DSSWars.Interface
             {
                 content.Add(new RbImage(SpriteName.WarsDiplomaticSub));
                 content.space(0.5f);
-                content.Add(new RbText(string.Format(DssRef.lang.Hud_Purchase_ResourceCost, DssRef.lang.ResourceType_DiplomacyPoints, cost)));
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount, DssRef.lang.ResourceType_DiplomacyPoints, cost)));
          
             }
             else

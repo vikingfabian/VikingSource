@@ -79,15 +79,15 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
-        public override string DisplayMode => "Mode d'affichage";
-        public override string DisplayMode_Windowed => "Fenêtré";
-        public override string DisplayMode_BorderlessFullscreen => "Plein écran sans bordure";
+        //public override string DisplayMode => "Mode d'affichage";
+        //public override string DisplayMode_Windowed => "Fenêtré";
+        //public override string DisplayMode_BorderlessFullscreen => "Plein écran sans bordure";
 
-        // "Curseur logiciel" implies the game renders it, as opposed to the OS (Hardware cursor)
-        public override string GameSettings_RenderedMouseCursor => "Curseur logiciel";
-        public override string GameSettings_MuteControllerDisconnect => "Masquer alertes manette";
+        //// "Curseur logiciel" implies the game renders it, as opposed to the OS (Hardware cursor)
+        //public override string GameSettings_RenderedMouseCursor => "Curseur logiciel";
+        //public override string GameSettings_MuteControllerDisconnect => "Masquer alertes manette";
 
         public override string Delivery_MaxDistance => "Distance de livraison max : {0}";
         public override string Tutorial_WillTakeAWhile => "Ça va prendre un moment, revenez plus tard.";
@@ -184,7 +184,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How to display a number of items. 0: item, 1:Number
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Select language option
@@ -424,7 +424,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Unit gold cost.
         /// </summary>
-        public override string Hud_Upkeep => "Maintenance: {0}";
+        public override string Hud_Upkeep => "Maintenance";
         public override string Hud_ArmyUpkeep => "Maintenance de l'armée: {0}";
 
         /// <summary>
@@ -436,14 +436,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "Vous devez étendre votre ville.";
 
-        public override string Hud_SoldierCount => "Nombre de soldats: {0}";
+        public override string Hud_SoldierCount => "Nombre de soldats";
 
-        public override string Hud_SoldierGroupsCount => "Nombre dans le groupe: {0}";
+        public override string Hud_SoldierGroupsCount => "Nombre dans le groupe";
 
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
         /// </summary>
-        public override string Hud_StrengthRating => "Note de force: {0}";
+        public override string Hud_StrengthRating => "Note de force";
 
         /// <summary>
         /// Ingame display. Caculated battle strength for the whole nation.
@@ -791,7 +791,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
-        public override string EndGameStatistics_Title => "Stats";
+        public override string Statistics_Title => "Stats";
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.
         /// </summary>
@@ -987,7 +987,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How many wounds a soldier can endure
         /// </summary>
-        public override string SoldierStats_Health => "Vie: {0}";
+        public override string SoldierStats_Health => "Vie";
 
         /// <summary>
         /// Some soldiers will increase the army movement speed
@@ -1556,10 +1556,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "Augmente l'attaque dans une zone, et la réduit dans les autres de {0}";
         public override string Conscript_SelectBuilding => "Sélectionner la garnison";
 
-        public override string Conscript_WeaponDamage => "Dégats de l'arme: {0}";
-        public override string Conscript_ArmorHealth => "Vie de l'armure: {0}";
-        public override string Conscript_TrainingSpeed => "Vitesse d'attaque: {0}";
-        public override string Conscript_TrainingTime => "Temps d'entraînement: {0}";
+        public override string Conscript_WeaponDamage => "Dégats de l'arme";
+        public override string Conscript_ArmorHealth => "Vie de l'armure";
+        public override string Conscript_AttackSpeed => "Vitesse d'attaque";
+        public override string Conscript_TrainingTime => "Temps d'entraînement";
 
         public override string Conscript_Training_Minimal => "Minime";
         public override string Conscript_Training_Basic => "Basique";
@@ -1593,7 +1593,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Affiché en ressources par seconde.";
+        public override string Info_ResourcePerSecond => "Affiché en ressources par seconde.";
 
         public override string Info_MinuteAverage => "La valeur est une moyenne de la dernière minute";
 
@@ -1653,12 +1653,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "Réseauteur";
         public override string CityCulture_PitMasters => "Maîtres des tunnels";
 
-        public override string CityCulture_CultureIsX => "Culture: {0}";
+        public override string CityCulture_Culture => "Culture";
         public override string CityCulture_LargeFamilies_Description => "Plus d'enfants naissent";
         public override string CityCulture_FertileGround_Description => "Meilleurs rendements agricoles";
         public override string CityCulture_Archers_Description => "Produit des archers entraînés";
         public override string CityCulture_Warriors_Description => "Produit des combattants de mêlée entraînés";
-        public override string CityCulture_AnimalBreeder_Description => "Les animaux donnent plus de ressources";
+        //public override string CityCulture_AnimalBreeder_Description => "Les animaux donnent plus de ressources";
         public override string CityCulture_Miners_Description => "Plus de rendements des mines";
         public override string CityCulture_Woodcutters_Description => "Les arbres donnent plus de bois";
         public override string CityCulture_Builders_Description => "Construction plus rapide";
@@ -1699,12 +1699,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "Charbon";
 
-        public override string Language_XUpkeepIsY => "Maintenance de {0}: {1}";
+        public override string Language_XUpkeep => "Maintenance de {0}";
         public override string Language_XCountIsY => "Nombre de {0}: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "De la nourriture sera achetée à prix fort sur le marché noir. Des soldats déserteront votre armée lorsque vous serez à court d'or.";
 
-        public override string Info_ArmyFood => "Les armées se fournissent en nourriture dans la ville la plus proche.";
+        public override string Info_ArmyFood1 => "Les armées se ravitailleront en nourriture dans la ville alliée la plus proche.";
+        public override string Info_ArmyFood2 => "De la nourriture peut être achetée auprès d'autres factions.";
+        public override string Info_ArmyFood3 => "Dans les régions hostiles, la nourriture ne peut être achetée qu'au marché noir.";
 
         public override string FactionName_Monger => "Gneurdeger";
         public override string FactionName_Hatu => "Hatu";

@@ -76,14 +76,14 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
-        public override string DisplayMode => "화면 모드";
-        public override string DisplayMode_Windowed => "창 모드";
-        public override string DisplayMode_BorderlessFullscreen => "테두리 없는 전체 화면";
+        //public override string DisplayMode => "화면 모드";
+        //public override string DisplayMode_Windowed => "창 모드";
+        //public override string DisplayMode_BorderlessFullscreen => "테두리 없는 전체 화면";
 
-        public override string GameSettings_RenderedMouseCursor => "소프트웨어 커서";
-        public override string GameSettings_MuteControllerDisconnect => "컨트롤러 연결 해제 알림 끄기";
+        //public override string GameSettings_RenderedMouseCursor => "소프트웨어 커서";
+        //public override string GameSettings_MuteControllerDisconnect => "컨트롤러 연결 해제 알림 끄기";
 
         public override string Delivery_MaxDistance => "최대 배송 거리: {0}";
         public override string Tutorial_WillTakeAWhile => "시간이 좀 걸립니다. 나중에 다시 확인해 주세요.";
@@ -179,7 +179,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How to display a number of items. 0: item, 1:Number
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Select language option
@@ -418,7 +418,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Unit gold cost.
         /// </summary>
-        public override string Hud_Upkeep => "유지비: {0}";
+        public override string Hud_Upkeep => "유지비";
         public override string Hud_ArmyUpkeep => "군대 유지비: {0}";
 
         /// <summary>
@@ -430,14 +430,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "도시를 확장해야 합니다.";
 
-        public override string Hud_SoldierCount => "병사 수: {0}";
+        public override string Hud_SoldierCount => "병사 수";
 
-        public override string Hud_SoldierGroupsCount => "부대 수: {0}";
+        public override string Hud_SoldierGroupsCount => "부대 수";
 
         /// <summary>
         /// Ingame display. Unit calculated battle strength.
         /// </summary>
-        public override string Hud_StrengthRating => "전투력: {0}";
+        public override string Hud_StrengthRating => "전투력";
 
         /// <summary>
         /// Ingame display. Calculated battle strength for the whole nation.
@@ -794,7 +794,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
-        public override string EndGameStatistics_Title => "통계";
+        public override string Statistics_Title => "통계";
 
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.
@@ -991,7 +991,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How many wounds a soldier can endure
         /// </summary>
-        public override string SoldierStats_Health => "체력: {0}";
+        public override string SoldierStats_Health => "체력";
 
         /// <summary>
         /// Some soldiers will increase the army movement speed
@@ -1559,10 +1559,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "특정 전투 유형의 공격력이 {0}만큼 증가하며, 다른 모든 능력은 감소합니다.";
         public override string Conscript_SelectBuilding => "병영 선택";
 
-        public override string Conscript_WeaponDamage => "무기 공격력: {0}";
-        public override string Conscript_ArmorHealth => "방어구 체력: {0}";
-        public override string Conscript_TrainingSpeed => "공격 속도: {0}";
-        public override string Conscript_TrainingTime => "훈련 시간: {0}";
+        public override string Conscript_WeaponDamage => "무기 공격력";
+        public override string Conscript_ArmorHealth => "방어구 체력";
+        public override string Conscript_AttackSpeed => "공격 속도";
+        public override string Conscript_TrainingTime => "훈련 시간";
 
         public override string Conscript_Training_Minimal => "최소";
         public override string Conscript_Training_Basic => "기초";
@@ -1596,7 +1596,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "정보";
 
-        public override string Info_PerSecond => "초당 자원 단위로 표시됩니다.";
+        public override string Info_ResourcePerSecond => "초당 자원 단위로 표시됩니다.";
         public override string Info_MinuteAverage => "최근 1분간의 평균값입니다.";
 
         public override string Message_OutOfFood_Title => "식량 부족";
@@ -1655,12 +1655,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "연결가";
         public override string CityCulture_PitMasters => "숯굴 장인";
 
-        public override string CityCulture_CultureIsX => "문화: {0}";
+        public override string CityCulture_Culture => "문화";
         public override string CityCulture_LargeFamilies_Description => "출산율이 증가합니다.";
         public override string CityCulture_FertileGround_Description => "작물 생산량이 증가합니다.";
         public override string CityCulture_Archers_Description => "숙련된 궁수를 양성합니다.";
         public override string CityCulture_Warriors_Description => "숙련된 근접 전사를 양성합니다.";
-        public override string CityCulture_AnimalBreeder_Description => "가축에서 더 많은 자원을 얻습니다.";
+        //public override string CityCulture_AnimalBreeder_Description => "가축에서 더 많은 자원을 얻습니다.";
         public override string CityCulture_Miners_Description => "광석 채굴량이 증가합니다.";
         public override string CityCulture_Woodcutters_Description => "벌목 효율이 증가합니다.";
         public override string CityCulture_Builders_Description => "건설 속도가 빨라집니다.";
@@ -1699,13 +1699,14 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Resource_TypeName_BogIron => "늪철";
         public override string Resource_TypeName_Coal => "석탄";
 
-        public override string Language_XUpkeepIsY => "{0} 유지비: {1}";
+        public override string Language_XUpkeep => "{0} 유지비";
         public override string Language_XCountIsY => "{0} 수량: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "식량이 부족하여 암시장에서 비싼 식량을 구매합니다. 금화가 바닥나면 병사들이 탈영합니다.";
 
-        public override string Info_ArmyFood => "군대는 가장 가까운 아군 도시에서 식량을 보급받습니다. 다른 세력으로부터 식량을 구매할 수도 있습니다. 적대 지역에서는 암시장에서만 식량을 구입할 수 있습니다.";
-
+        public override string Info_ArmyFood1 => "군대는 가장 가까운 우호적인 도시에서 식량을 보충합니다.";
+        public override string Info_ArmyFood2 => "식량은 다른 세력에게서 구매할 수 있습니다.";
+        public override string Info_ArmyFood3 => "적대적인 지역에서는 암시장에서만 식량을 구매할 수 있습니다.";
         public override string FactionName_Monger => "몽거";
         public override string FactionName_Hatu => "하투";
         public override string FactionName_Destru => "데스트루";

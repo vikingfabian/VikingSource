@@ -24,7 +24,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string DisplayMode_Windowed => "ウィンドウモード";
         public override string DisplayMode_BorderlessFullscreen => "ボーダーレスフルスクリーン";
         public override string GameSettings_RenderedMouseCursor => "レンダーされたカーソル";
-
+        public override string GameSettings_MuteControllerDisconnect => "コントローラー切断通知をミュート";
         //--
         public override string GraphicsOption_FarViewDistance => "遠距離ビュー";
 

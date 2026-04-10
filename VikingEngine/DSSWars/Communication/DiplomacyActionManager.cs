@@ -33,12 +33,12 @@ namespace VikingEngine.DSSWars.Communication
 
             this.player = player;
             this.botFaction = botFaction;
-            
-            selectedRelation = player.faction.diplomaticRelations[botFaction.myIndex];
-            if (selectedRelation == null)
-            {
-                return result;
-            }
+
+            selectedRelation = DssRef.world.diplomacy.GetRelation(player.faction.myIndex, botFaction.myIndex);//player.faction.diplomaticRelations[botFaction.myIndex];
+            //if (selectedRelation == null)
+            //{
+            //    return result;
+            //}
             againstDark = botFaction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
 
             if (selectedRelation.SpeakTerms > SpeakTerms.SpeakTermsN2_None)
@@ -165,12 +165,13 @@ namespace VikingEngine.DSSWars.Communication
             return selectedRelation.Relation == RelationType.RelationType3_Ally &&
                 player.faction.militaryStrength >= Diplomacy.MiltitaryStrengthXServant * botFaction.militaryStrength &&
                 player.diplomaticPoints.Int() >= cost &&
-                botFaction.cities.Count <= DssRef.diplomacy.ServantMaxCities &&
+                botFaction.cities.Count <= DssRef.world.diplomacy.ServantMaxCities &&
                 hasStrongerFoe();
         }
         bool hasStrongerFoe()
         {
-            var wars = DssRef.diplomacy.collectWars(botFaction);
+            List<int> wars = new List<int>(8);
+            DssRef.world.diplomacy.collectWars(botFaction, wars);
 
             foreach (var w in wars)
             {

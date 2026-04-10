@@ -7,6 +7,7 @@ using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Command;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.LootFest.Players;
 
@@ -935,9 +936,9 @@ namespace VikingEngine.DSSWars.Players
                             //faction.mainCity.res_shortsword.amount += 60;
                             //faction.mainCity.res_heavyMailArmor.amount += 60;
 
-                            faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.iron, 100);
-                            faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.shortsword, 60);
-                            faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.heavyMailArmor, 60);
+                            faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.iron, 100, false);
+                            faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.shortsword, 60, false);
+                            faction.mainCity.AddGroupedResource(EntityComponent.CityResoureIndex.heavyMailArmor, 60, false);
 
                             break;
 
@@ -1626,7 +1627,7 @@ namespace VikingEngine.DSSWars.Players
                 
                 bool protect = Ref.peRnd.Chance(0.6);
 
-                List<int> wars = DssRef.diplomacy.aiPlayerAsynchUpdate_collectWars(faction);
+                List<int> wars = DssRef.world.diplomacy.aiPlayerAsynchUpdate_collectWars(faction);
                 bool inWar = aggressionLevel >= AggressionLevel2_RandomAttacks ||
                     (aggressionLevel == AggressionLevel1_RevengeOnly && wars.Count > 0);
 
@@ -1670,6 +1671,8 @@ namespace VikingEngine.DSSWars.Players
                 armiesWithSettlerUpdate();
 
                 settlerCheck();
+
+                BlackMarketResources.AiPurchaseUpdate(faction.cities.GetRandom(Ref.rnd, DssRef.world.cities), faction);
             }
         }
 
@@ -1748,11 +1751,11 @@ namespace VikingEngine.DSSWars.Players
                     else if (aggressionLevel >= AggressionLevel2_RandomAttacks &&
                         !personality_loner)
                     {
-                        List<int> threats = DssRef.diplomacy.aiPlayerAsynchUpdate_collectThreats(faction, Ref.rnd.Float(2f, 6f));
+                        List<int> threats = DssRef.world.diplomacy.aiPlayerAsynchUpdate_collectThreats(faction, Ref.rnd.Float(2f, 6f));
                         if (threats.Count > 0)
                         {
                             Faction enemyFaction = DssRef.world.faction(arraylib.RandomListMember(threats));
-                            if (!DssRef.diplomacy.InWar(faction, enemyFaction))
+                            if (!DssRef.world.diplomacy.GetRelation/*InWar*/(faction, enemyFaction).InWar())
                             {
                                 findAlliances(enemyFaction, false);
                             }
@@ -1764,7 +1767,7 @@ namespace VikingEngine.DSSWars.Players
 
             void findAlliances(Faction enemyFaction, bool reasonWar)
             {
-                DssRef.diplomacy.aiPlayerAsynchUpdate_collectAlliances.Clear();
+                DssRef.world.diplomacy.aiPlayerAsynchUpdate_collectAlliances.Clear();
 
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
@@ -1773,21 +1776,21 @@ namespace VikingEngine.DSSWars.Players
                         factions.sel.player.IsBot() &&
                         !factions.sel.quickMatchFaction)
                     {
-                        var relation = DssRef.diplomacy.GetRelationType(this.faction, factions.sel);
+                        var relation = DssRef.world.diplomacy.GetRelation(this.faction, factions.sel);
 
-                        if (relation >= RelationType.RelationType0_Neutral &&
-                            relation < RelationType.RelationType3_Ally &&
+                        if (relation.Relation >= RelationType.RelationType0_Neutral &&
+                            relation.Relation < RelationType.RelationType3_Ally &&
                             this.faction.SameOrNeutralSide(factions.sel.diplomaticSide) &&
                             shareWarOrThreat(factions.sel, enemyFaction.myIndex, reasonWar))
                         {
-                            DssRef.diplomacy.aiPlayerAsynchUpdate_collectAlliances.Add(factions.CurrentIndex);
+                            DssRef.world.diplomacy.aiPlayerAsynchUpdate_collectAlliances.Add(factions.CurrentIndex);
                         }
                     }
                 }
 
-                if (DssRef.diplomacy.aiPlayerAsynchUpdate_collectAlliances.Count > 0)
+                if (DssRef.world.diplomacy.aiPlayerAsynchUpdate_collectAlliances.Count > 0)
                 {
-                    int newAlly = arraylib.RandomListMember(DssRef.diplomacy.aiPlayerAsynchUpdate_collectAlliances);
+                    int newAlly = arraylib.RandomListMember(DssRef.world.diplomacy.aiPlayerAsynchUpdate_collectAlliances);
                     var allyFaction = DssRef.world.faction(newAlly);
                     botToBotAllyDeclaration(enemyFaction, allyFaction, false);
                 }
@@ -1795,8 +1798,8 @@ namespace VikingEngine.DSSWars.Players
 
             bool shareWarOrThreat(Faction maybeFriendFaction, int enemyFactionIx, bool reasonWar)
             {
-                var relation = DssRef.diplomacy.GetRelationType(maybeFriendFaction, DssRef.world.faction(enemyFactionIx));
-                if (relation <= RelationType.RelationTypeN1_Enemies)
+                var relation = DssRef.world.diplomacy.GetRelation(maybeFriendFaction, DssRef.world.faction(enemyFactionIx));
+                if (relation.Relation <= RelationType.RelationTypeN1_Enemies)
                 {
                     return true;
                 }
@@ -1806,7 +1809,7 @@ namespace VikingEngine.DSSWars.Players
                     var maybeFriendBot = maybeFriendFaction.player.GetAiPlayer();
                     if (maybeFriendBot.aggressionLevel >= AggressionLevel2_RandomAttacks &&
                         !maybeFriendBot.personality_loner &&
-                        DssRef.diplomacy.aiPlayerAsynchUpdate_collectThreats(maybeFriendFaction).Contains(enemyFactionIx))
+                        DssRef.world.diplomacy.aiPlayerAsynchUpdate_collectThreats(maybeFriendFaction).Contains(enemyFactionIx))
                     {
                         return true;
                     }
@@ -1822,8 +1825,8 @@ namespace VikingEngine.DSSWars.Players
                 Faction enemyFaction = DssRef.world.faction(war);
                 if (enemyFaction != null && enemyFaction.player.IsBot())
                 {
-                    var rel = DssRef.diplomacy.GetRelationType(faction, enemyFaction);
-                    if (rel <= RelationType.RelationTypeN2_Truce && rel > RelationType.RelationTypeN4_TotalWar)
+                    var rel = DssRef.world.diplomacy.GetRelation(faction, enemyFaction);
+                    if (rel.Relation <= RelationType.RelationTypeN2_Truce && rel.Relation > RelationType.RelationTypeN4_TotalWar)
                     {
                         botToBotPeaceDeclaration(null, enemyFaction);
                     }
@@ -1833,18 +1836,21 @@ namespace VikingEngine.DSSWars.Players
 
         public void botToBotPeaceDeclaration(List<int> wars, Faction enemyFaction)
         {
-            if (enemyFaction.player.IsBot() &&
-                !DssRef.diplomacy.OppositeDiplomaticSides(faction, enemyFaction) &&
-                (wars == null || wars.Count > 1 || this.faction.militaryStrength < enemyFaction.militaryStrength) &&
-                !DssRef.diplomacy.InplayerAlliance(faction))
+            if (enemyFaction != null)
             {
-                this.faction.shareRelationWithAllAllies(enemyFaction, RelationType.RelationType1_Peace);
+                if (enemyFaction.player.IsBot() &&
+                    !DssRef.world.diplomacy.OppositeDiplomaticSides(faction, enemyFaction) &&
+                    (wars == null || wars.Count > 1 || this.faction.militaryStrength < enemyFaction.militaryStrength) &&
+                    !DssRef.world.diplomacy.InplayerAlliance(faction))
+                {
+                    this.faction.shareRelationWithAllAllies(enemyFaction, RelationType.RelationType1_Peace);
+                }
             }
         }
 
         public void botToBotAllyDeclaration(Faction enemyFaction, Faction allyFaction, bool tryEndOtherWars)
         {
-            if (allyFaction != null && DssRef.diplomacy.aiPlayerAsynchUpdate_mayAlly_checkConflict(faction, allyFaction, enemyFaction, tryEndOtherWars))
+            if (allyFaction != null && DssRef.world.diplomacy.aiPlayerAsynchUpdate_mayAlly_checkConflict(faction, allyFaction, enemyFaction, tryEndOtherWars))
             {
                 const int TinyFaction = 2;
                 const int LargeFaction = 8;
@@ -1861,11 +1867,13 @@ namespace VikingEngine.DSSWars.Players
                 }
                 else
                 {
-                    var alliance = DssRef.diplomacy.SetRelationType(faction, allyFaction, RelationType.RelationType3_Ally);
-                    if (alliance != null)
-                    {
-                        alliance.allyAgainst = enemyFaction.myIndex;
-                    }
+                    ref var alliance = ref DssRef.world.diplomacy.GetRefRelation_Safe(faction.myIndex, allyFaction.myIndex);
+                    alliance.SetRelation(null, null, RelationType.RelationType3_Ally, out _);
+                    //var alliance = DssRef.world.diplomacy.SetRelationType(faction, allyFaction, RelationType.RelationType3_Ally);
+                    //if (alliance != null)
+                    //{
+                    alliance.allyAgainst = enemyFaction.myIndex;
+                    //}
                     allyFaction.player.GetAiPlayer().diplomacyPoints = 0;
 #if DEBUG
                     //Ref.update.AddSyncAction(new SyncAction(() =>
@@ -2291,7 +2299,7 @@ namespace VikingEngine.DSSWars.Players
                         return true;
                     }
 
-                    if (DssRef.diplomacy.InWar(faction, army.GetFaction()))
+                    if (DssRef.world.diplomacy.GetRelation(faction, army.GetFaction()).InWar())
                     {
                         if (dist <= 8)
                         {
@@ -2322,13 +2330,13 @@ namespace VikingEngine.DSSWars.Players
                 {
                     //if (nCity.factionIndex != faction.myIndex)
                     //{
-                        var relation = DssRef.diplomacy.GetRelationType(nCity.GetFaction(), faction);
-                        if (relation <= RelationType.RelationTypeN1_Enemies)
+                        var relation = DssRef.world.diplomacy.GetRelation(nCity.GetFaction(), faction);
+                        if (relation.Relation <= RelationType.RelationTypeN1_Enemies)
                         {
                             return true;
                         }
                         else if (!inWarOnly &&
-                            relation <= RelationType.RelationType0_Neutral &&
+                            relation.Relation <= RelationType.RelationType0_Neutral &&
                             nCity.GetFaction_NoChecks().militaryStrength > faction.militaryStrength * 2)
                         {
                             return true;
@@ -2554,7 +2562,7 @@ namespace VikingEngine.DSSWars.Players
 
         AbsMapObject AttackFactionAtWar(Army army, Faction opponent)
         {
-            if (DssRef.state.events.RunAi() && army != null)
+            if (DssRef.state.events.RunAi() && army != null && opponent != null)
             {
                 var areaPos = UnitCollAreaGrid.ToAreaPos(army.tilePos);
                 DssRef.world.unitCollAreaGrid.collectCitiesAndArmies(areaPos, 2, army.strengthValue * 0.8f, DssRef.world.unitCollAreaGrid.mapObjects_aiUpdate,
@@ -2586,7 +2594,7 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (city.cityType > CityType.UnClaimed && army.strengthValue > city.strengthValue + city.ai_armyDefenceValue)
                     {
-                        if (DssRef.diplomacy.botMayStartWar(faction, city.GetFaction()))//mayAttackFaction(city.GetFaction()))
+                        if (DssRef.world.diplomacy.botMayStartWar(faction, city.GetFaction()))//mayAttackFaction(city.GetFaction()))
                         {
                             army.Ai_Order_Attack(city);
                             return city;
@@ -2602,16 +2610,16 @@ namespace VikingEngine.DSSWars.Players
         //    if (otherFaction == null)
         //    { return false; }
 
-        //    if (DssRef.diplomacy.InplayerAlliance(faction))
+        //    if (DssRef.world.diplomacy.InplayerAlliance(faction))
         //    {
-        //        RelationType playerRel = DssRef.diplomacy.GetRelationType(faction, otherFaction);
+        //        RelationType playerRel = DssRef.world.diplomacy.GetRelationType(faction, otherFaction);
         //        return playerRel <= RelationType.RelationTypeN3_War;
         //    }
 
         //    if (otherFaction.player.IsLocalPlayer() && 
         //        (DssRef.difficulty.peaceful || !DssRef.state.events.MayAttackPlayer() || !mayAttackPlayer))
         //    {
-        //        RelationType playerRel = DssRef.diplomacy.GetRelationType(faction, otherFaction);
+        //        RelationType playerRel = DssRef.world.diplomacy.GetRelationType(faction, otherFaction);
         //        return playerRel <= RelationType.RelationTypeN3_War;
         //    }
 
@@ -2624,7 +2632,7 @@ namespace VikingEngine.DSSWars.Players
         //        return false;
         //    }
 
-        //    var relation = DssRef.diplomacy.GetRelationType(faction, otherFaction);
+        //    var relation = DssRef.world.diplomacy.GetRelationType(faction, otherFaction);
             
         //    if (relation <= RelationType.RelationType0_Neutral)
         //    {
@@ -2648,7 +2656,7 @@ namespace VikingEngine.DSSWars.Players
         //}
 
         
-        public override void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation)
+        public override void onNewRelation(Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation)
         {
             base.onNewRelation(otherFaction, rel, previousRelation);
             if (rel.Relation == RelationType.RelationTypeN3_War)

@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
@@ -364,11 +365,12 @@ namespace VikingEngine.DSSWars.XP
             content.h2(DssRef.lang.Hud_Unlock).overrideColor = HudLib.TitleColor_Label;
             foreach (var item in items)
             {
+                IconName.Item(item, out SpriteName itemIcon, out string itemName);
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbImage(Resource.ResourceLib.Icon(item)));
+                content.Add(new RbImage(itemIcon));
                 content.space();
-                content.Add(new RbText(LangLib.Item(item)));
+                content.Add(new RbText(itemName));
             }
 
             foreach (var item in buildings)

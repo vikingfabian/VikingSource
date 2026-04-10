@@ -15,7 +15,7 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Interface
 {
-    class PlayerHud_Object
+    class PlayerHud_Object : IPlayerHud_Menu
     {
         List<GameObject.AbsGameObject> selectHistory = new List<AbsGameObject>();
         
@@ -23,6 +23,8 @@ namespace VikingEngine.DSSWars.Interface
         public RichMenu menu;
         public AbsArmy otherArmy;
 
+        public RichMenu Menu => menu;
+        public bool IsFactionMenu { get { return false; } }
         public PlayerHud_Object(LocalPlayer player)
         {
             diplomacy = new DiplomacyDisplay(player);
@@ -107,10 +109,14 @@ namespace VikingEngine.DSSWars.Interface
                 else
                 {
                     content.newLine();
-                    content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
-                    new RbText(obj.Name(out _), HudLib.TitleColor_Name),
-                    new RbImage(SpriteName.warsBulletSeperationPoint),
-                    new RbText(obj.TypeName(), HudLib.TitleColor_TypeName) },
+                    RichBoxContent buttonContent = new RichBoxContent();
+                    obj.toButtonContent(buttonContent);
+                    content.Add(new ArtButton(RbButtonStyle.Outline,
+                        buttonContent,
+                    //    new List<AbsRichBoxMember> {
+                    //new RbText(obj.Name(out _), HudLib.TitleColor_Name),
+                    //new RbImage(SpriteName.warsBulletSeperationPoint),
+                    //new RbText(obj.TypeName(), HudLib.TitleColor_TypeName) },
                         new RbAction1Arg<AbsGameObject>((AbsGameObject obj) =>
                         {
                             player.gameControls.selectObject(obj);

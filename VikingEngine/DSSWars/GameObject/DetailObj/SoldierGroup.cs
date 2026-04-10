@@ -23,10 +23,12 @@ using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.Players;
 using VikingEngine.PJ.CarBall;
 using VikingEngine.ToGG.HeroQuest;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.ToGG.MoonFall.GO;
+using VikingEngine.ToGG.MoonFall.Players;
 using VikingEngine.ToGG.ToggEngine.Map;
 using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
@@ -42,6 +44,7 @@ namespace VikingEngine.DSSWars.GameObject
 
     partial class SoldierGroup : AbsGroup
     {
+
         public static Physics.CircleBound OtherBound;
         public static Physics.CircleBound WalkDirBound;
         static float WalkDirCheckLength;
@@ -84,9 +87,9 @@ namespace VikingEngine.DSSWars.GameObject
         public bool inShipOrGuardTransform = false;
         public float damageBlockChance_fromTerrain = 0;
 
-        public UnitType currentBuilder;
-        public UnitType landBuilder;
-        public UnitType shipBuilder;
+        public UnitBuildType currentBuilder;
+        public UnitBuildType landBuilder;
+        public UnitBuildType shipBuilder;
 
         public SoldierConscriptProfile soldierConscript;
         public SoldierData soldierData;
@@ -118,7 +121,7 @@ namespace VikingEngine.DSSWars.GameObject
             initPart2();
 
             soldierCount = soldierData.UnitCount();
-            soldierData = soldierConscript.init();
+            soldierData = soldierConscript.createSoldierData();
 
             initPart3(tArmy);
 
@@ -134,6 +137,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+
+
         private void initPart1(AbsArmy tArmy)
         {
 #if VISUAL_NODES
@@ -144,7 +149,7 @@ namespace VikingEngine.DSSWars.GameObject
             landBuilder = type;
             shipBuilder = DssRef.units.Get(landBuilder).ShipType();
 
-            soldierData_soldier = soldierConscript.init();
+            soldierData_soldier = soldierConscript.createSoldierData();
             soldierData = soldierData_soldier;
             currentBuilder = landBuilder;
 
@@ -412,54 +417,111 @@ namespace VikingEngine.DSSWars.GameObject
             //}
         }
 
-        virtual protected void createAllSoldiers(UnitType type, int count, bool createModels)
+        virtual protected void createAllSoldiers(UnitBuildType type, int count, bool createModels)
         {
-            AbsSoldierBuilder typeProfile = DssRef.units.Get(type);
+            AbsSoldierBuilder builder = DssRef.units.Get(type);
 
             soldiers = new SpottedArray<AbsSoldierUnit>(count +1);
-            soldierData = soldierConscript.init();
+            soldierData = soldierConscript.createSoldierData();
 
-            if (typeProfile.IsShip())
+            int xStart;
+
+            if (builder.IsShip())
             {
                 soldierConscript.shipSetup(ref soldierData);
+                xStart = 0;
+                create(0, 0, false, builder, ref soldierData);
             }
+            else
+            {
+                xStart = -soldierData.rowWidth / 2;
+                IntVector2 bannerPos = bannerManPos();
 
-            int xStart = -soldierData.rowWidth / 2;
-            IntVector2 bannerPos = bannerManPos();
+                int columnDepth = MathExt.Div_Ceiling(count, soldierData.rowWidth);
 
-            int columnDepth = MathExt.Div_Ceiling(count, soldierData.rowWidth);
 
-            for (int x = 0; x < soldierData.rowWidth; ++x)
-            {               
-                for (int y = 0; y < columnDepth; ++y)
+                switch (soldierConscript.conscript.animal)
                 {
-                    AbsSoldierUnit unit;
-                    if (bannerPos.Equals(x, y))
-                    {
-                        var bannerData = soldierConscript.bannermanSetup(soldierData);
-                        unit = createUnit(DssRef.units.bannerman, new IntVector2(x + xStart, y), tilePos, ref bannerData, createModels);
-                    }
-                    else
-                    {
-                        unit = createUnit(typeProfile, new IntVector2(x + xStart, y), tilePos, ref soldierData, createModels);
-                    }
+                    default:
+                        for (int y = 0; y < columnDepth; ++y)
+                        {
+                            for (int x = 0; x < soldierData.rowWidth; ++x)
+                            {
+                                if (!create(x, y, bannerPos.Equals(x, y), builder, ref soldierData))
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                        break;
 
-                    if (unit == null)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        unit.firstUpdate();
-                    }
+                    case ItemResourceType.Dog:
+                    case ItemResourceType.Hound:
+                    case ItemResourceType.Pig:
+                        int houndColumnExMax = soldierData.columnsDepth / 2;
+                        
+                        for (int y = houndColumnExMax; y < columnDepth; ++y)
+                        {
+                            for (int x = 0; x < soldierData.rowWidth; ++x)
+                            {
+                                if (!create(x, y, bannerPos.Equals(x, y), builder, ref soldierData))
+                                {
+                                    return;
+                                }
+                            }
+                        }
 
-                    if (--count <= 0)
-                    {
-                        return;
-                    }
+                        AbsSoldierBuilder houndbuilder = DssRef.units.Get(UnitBuildType.ConscriptHound);
+                        var houndSoldierData = ItemPropertyColl.Get(soldierConscript.conscript.animal).soldierData;
+                        for (int y = 0; y < houndColumnExMax; ++y)
+                        {
+                            for (int x = 0; x < soldierData.rowWidth; ++x)
+                            {
+                                if (!create(x, y, false, houndbuilder, ref houndSoldierData))
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                        break;
                 }
+                
             }
 
+            bool create(int x, int y, bool banner, AbsSoldierBuilder builder, ref SoldierData soldierData)
+            {
+                AbsSoldierUnit unit = createUnit(builder, new IntVector2(x + xStart, y),
+                        banner, tilePos, ref soldierData, createModels);
+
+                if (unit == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    unit.firstUpdate();                    
+                }
+
+                return --count > 0;
+            }
+
+
+            //AbsSoldierUnit unit = createUnit(typeProfile, new IntVector2(x + xStart, y), 
+            //    bannerPos.Equals(x, y), tilePos, ref soldierData, createModels);
+
+            //if (unit == null)
+            //{
+            //    return;
+            //}
+            //else
+            //{
+            //    unit.firstUpdate();
+            //}
+
+            //if (--count <= 0)
+            //{
+            //    return;
+            //}
         }
 
         void deleteAllSoldiers(DeleteReason reason)
@@ -508,13 +570,13 @@ namespace VikingEngine.DSSWars.GameObject
                     shipHealth = soldierData_soldier.basehealth * soldierCount;
                     soldierCount = 1;
                     currentBuilder = shipBuilder;
-                    soldierData = soldierConscript.init();
+                    soldierData = soldierConscript.createSoldierData();
                 }
                 else
                 {
                     soldierCount = shipHealth / soldierData_soldier.basehealth;
                     currentBuilder = landBuilder;
-                    soldierData = soldierConscript.init();
+                    soldierData = soldierConscript.createSoldierData();
                 }
 
                 var soldiers_sp = soldiers;
@@ -535,7 +597,7 @@ namespace VikingEngine.DSSWars.GameObject
                         var shipData = soldierData;
                         soldierConscript.shipSetup(ref shipData);
 
-                        var ship = createUnit(DssRef.units.Get(shipBuilder), IntVector2.Zero, WP.ToTilePos(position), ref shipData, true);
+                        var ship = createUnit(DssRef.units.Get(shipBuilder), IntVector2.Zero, false, WP.ToTilePos(position), ref shipData, true);
 
                         if (ship != null)
                         {
@@ -561,7 +623,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
 
-        public AbsSoldierUnit createUnit(AbsSoldierBuilder typeProfile, IntVector2 gridPlacement, IntVector2 area, ref SoldierData data, bool models)
+        public AbsSoldierUnit createUnit(AbsSoldierBuilder typeProfile, IntVector2 gridPlacement, bool bBannerPos, IntVector2 area, ref SoldierData data, bool models)
         {
             var soldiers_sp = soldiers;
 
@@ -569,11 +631,20 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 AbsSoldierUnit s;
 
-                s = typeProfile.CreateUnit();
+                s = typeProfile.CreateUnit(bBannerPos);
                 s.factionIndex = this.factionIndex;
-                s.UnitType = typeProfile.unitType;
-                s.soldierData = data;
+                s.unitBuildType = typeProfile.unitBuildType;
 
+                s.isBannerMan = bBannerPos;
+
+                if (bBannerPos && typeProfile.unitBuildType == UnitBuildType.Conscript)
+                {
+                    s.soldierData = soldierConscript.bannermanSetup(data);
+                }
+                else
+                {
+                    s.soldierData = data;
+                }
 
                 s.InitLocal(position, gridPlacement, area, this);
                 s.position = WP.ToWorldPos(area); //temp pos
@@ -960,7 +1031,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
                                 {
                                     var city = tile.City();
-                                    if (DssRef.diplomacy.InWar(tArmy.factionIndex, city.factionIndex))
+                                    if (DssRef.world.diplomacy.GetRelation_Safe(tArmy.factionIndex, city.factionIndex).InWar())
                                     {
                                         if (city.tilePos.SideLength(tilePos) <= 2 || tArmy.GetArmy().attackTarget == city)
                                         {
@@ -985,7 +1056,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 if (DssRef.world.tileGrid.TryGet(tilePos, out var tile))
                                 {
                                     var city = tile.City();
-                                    if (DssRef.diplomacy.InWar(tArmy.factionIndex, city.factionIndex))
+                                    if (DssRef.world.diplomacy.GetRelation_Safe(tArmy.factionIndex, city.factionIndex).InWar())
                                     {
                                         goalWp = WP.ToWorldPos(city.tilePos);
 
@@ -1008,7 +1079,7 @@ namespace VikingEngine.DSSWars.GameObject
                         break;
                 }
 
-                if (command != null)
+                if (command_sp != null)
                 {
                     if (command_sp.hasPathCommand(out bool towardsUnit))
                     {
@@ -1085,20 +1156,31 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 if (allIdle &&
+                    HasIdleCommand() &&
                     state == GroupState.GoingIdle &&
                     waitTime >= 5000)
                 {
                     state = GroupState.Idle;
                 }
             }
-
         }
+
+        
 
         public override void OnBecomeAttackTarget()
         {
             enterBattleState(true);
         }
 
+        public bool HasIdleCommand()
+        {
+            var command_sp = command;
+            if (command_sp != null)
+            {
+                return command_sp.haltCommand;
+            }
+            return true;
+        }
 
         public bool HasIdleState()
         {
@@ -1121,7 +1203,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (faction != args.player.faction &&
                 args.player.gameControls.map.selection.obj != null &&
                 args.player.gameControls.map.selection.obj.IsSoldiers() &&
-                !DssRef.diplomacy.InWar(faction, args.player.faction))
+                !DssRef.world.diplomacy.GetRelation(faction, args.player.faction).InWar())
             {
                 args.content.Add(new RbImage(SpriteName.RedErrorCross));
                 args.content.hspace();
@@ -1135,7 +1217,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (faction != args.player.faction)
             {
-                args.content.Add(new RbImage(Diplomacy.RelationSprite(DssRef.diplomacy.GetRelationType(faction, args.player.faction))));
+                args.content.Add(new RbImage(Diplomacy.RelationSprite(DssRef.world.diplomacy.GetRelation(faction, args.player.faction).Relation)));
                 args.content.space();
             }
 
@@ -1146,22 +1228,30 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.space();
             args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
 
-            if (compact)
+            if (args.selected && IsArmyGroup() && faction == args.player.faction && army.TryGetTarget(out var tArmy))
             {
-                HudLib.BulletSeperationPoint(args.content);
+                RichBoxContent armyContent = new RichBoxContent();
+                tArmy.toButtonContent(armyContent);
+                args.content.Add(new ArtButton(RbButtonStyle.Outline, armyContent,
+                    new RbAction1Arg<AbsArmy>(args.player.gameControls.mapSelect, tArmy), new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput)));
             }
-            else
-            {
-                soldierConscript.conscript.toHud(args.content, compact);
-                args.content.newLine();
-            }
+
+            soldierConscript.conscript.toHud(args.content, compact);
+            args.content.newLine();
+            
             args.content.Add(new RbImage(SpriteName.WarsStrengthIcon));
+            args.content.hspace();
             args.content.Add(new RbText(TextLib.TwoDecimal(strengthValue())));
+
+            args.content.space(2);
+            args.content.Add(new RbImage(SpriteName.WarsMobilityIcon));
+            args.content.hspace();
+            args.content.Add(new RbText(TextLib.TwoDecimal(mobilityValue())));
         }
 
         public override void toTooltip(ObjectHudArgs args)
         {
-            SoldiersPresentationHud(args, true, false);
+            SoldiersPresentationHud(args, true, true);
         }
 
         public override void toHud(ObjectHudArgs args)
@@ -1172,6 +1262,42 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             SoldiersPresentationHud(args, false, false);
+            args.content.Add(new RbSeperationLine());
+
+            soldierData.StatsToHud(args.content);
+            args.content.Add(new RbSeperationLine());
+            int tabSel = 0;
+
+            var tabs = new List<ArtTabMember>((int)MenuTab.NUM_NONE);
+
+            List<MenuTab> availableTabs = args.player.AvailableArmyTabs();
+            for (int i = 0; i < availableTabs.Count; ++i)
+            {
+                var text = new RbText(LangLib.Tab(availableTabs[i], out string description, out _));
+                text.overrideColor = HudLib.RbSettings.tabSelected.Color;
+
+                AbsRbAction enter = null;
+                if (description != null)
+                {
+                    enter = new RbAction(() =>
+                    {
+                        RichBoxContent content = new RichBoxContent();
+                        content.text(description).overrideColor = HudLib.InfoYellow_Light;
+
+                        args.player.hud.tooltip.create(args.player, content, true);
+                    });
+                }
+
+                tabs.Add(new ArtTabMember(new List<AbsRichBoxMember>
+                            {
+                                text
+                            }, enter));
+
+                if (availableTabs[i] == args.player.armyTab)
+                {
+                    tabSel = i;
+                }
+            }
 #if DEBUG
             args.content.newLine();
             debugTagButton(args.content);
@@ -1616,7 +1742,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (attackTarget_soldierGroupOrCity != null && attackTarget_soldierGroupOrCity.TryGetTarget(out var target) &&                    
 
                     (target.defeated() || 
-                    !DssRef.diplomacy.InWar(factionIndex, target.factionIndex) ||
+                    !DssRef.world.diplomacy.GetRelation_Safe(factionIndex, target.factionIndex).InWar() ||
                     distance(target) > 4)
                )
             {
@@ -2219,10 +2345,13 @@ namespace VikingEngine.DSSWars.GameObject
         
 
         public float strengthValue()
+        {            
+            return AllUnits.GroupStrengh(soldierCount, ref soldierData, !isShip);   
+        }
+
+        public float mobilityValue()
         {
-            
-            return AllUnits.GroupStrengh(soldierCount, ref soldierData, !isShip);
-            
+            return soldierData.mobilityValue();
         }
 
         public AbsSoldierUnit FirstSoldier()
@@ -2272,11 +2401,32 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void Upkeep(ref float upkeepCount, ref float moneyCarry)
+        public void Upkeep(bool casual, ref SoldierUpkeep upkeep, ref float moneyCarry)
         {
-            upkeepCount += soldierData.upkeepMultiplier * soldierCount;
+            float upkeepCount = soldierData.upkeepMultiplier * soldierCount;
+
+            upkeep.food += upkeepCount * DssRef.difficulty.manFoodUpkeep +
+                 soldierData.animalFoodUpkeep(soldierCount);//soldierData.animalFoodMultiplier * DssRef.difficulty.mountFoodUpkeep;
+
+            if (casual)
+            {
+                upkeep.copper += upkeepCount * DssConst.CasualSoldierDefaultCost_Copp;
+            }
+            else
+            {
+                upkeep.copper += upkeepCount * soldierConscript.conscript.copperUpkeepPerSoldier();//soldierData.copperUpkeepPerSoldier;
+            }
             moneyCarry += soldierCount * DssConst.MoneyCarryPerSoldier;
         }
+
+        //public static float copperUpkeepPerSoldier(ConscriptProfile conscript)
+        //{
+        //    var result = DssConst.TrainingGoldUpkeep[(int)conscript.training];
+        //    if (conscript.man == ItemResourceType.NobelMen)
+        //    {
+        //        result += DssConst.Nobel_GoldUpkeep;
+        //    }
+        //}
 
         public override void DeleteMe(DeleteReason reason, bool removeFromParent)
         {

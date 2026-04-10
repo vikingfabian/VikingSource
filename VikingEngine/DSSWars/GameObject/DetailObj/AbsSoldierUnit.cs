@@ -1,17 +1,18 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.PJ.Strategy;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.ToGG.MoonFall.GO;
@@ -45,17 +46,18 @@ namespace VikingEngine.DSSWars.GameObject
 
         public int bonusProjectiles = 0;
 
-        public UnitType UnitType;
+        public UnitBuildType unitBuildType;
         float reactionTime;        
         SoldierBattleData battleData = null;
         public float boundRadius;
+        public bool isBannerMan = false;
         public override AbsDetailUnitBuilder Profile()
         {
-            return DssRef.units.Get(UnitType);
+            return DssRef.units.Get(unitBuildType);
         }
         public AbsSoldierBuilder SoldierProfile()
         {
-            return DssRef.units.Get(UnitType);
+            return DssRef.units.Get(unitBuildType);
         }
 
         virtual public void copyDataToUpgradedUnit(AbsSoldierUnit upgradeUnit)
@@ -128,7 +130,7 @@ namespace VikingEngine.DSSWars.GameObject
             this.gridPlacement = gridPlacement;
             myIndex = group.GetFaction_NoChecks().pickNextUnitId();
             //bound = new Physics.CircleBound(Vector2.Zero, SoldierProfile().boundRadius);
-            boundRadius = SoldierProfile().boundRadius;
+            boundRadius = soldierData.boundRadius;
 
             init(false);
             tilePos = tile;
@@ -171,12 +173,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void setDetailLevel(bool unitDetailView)
         {
-            Debug.CrashIfThreaded();
+            //Debug.CrashIfThreaded();
             if (unitDetailView)
             {
                 if (model == null)
                 {
-                    model = initModel();
+                    model = initModel(isBannerMan);
                     model.update(this);
                 }
             }
@@ -188,11 +190,13 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public override string Name(out bool mayEdit)
         {
+            IconName.Item(group.soldierConscript.conscript.weapon, out SpriteName weaponIcon, out string weaponName);
             mayEdit = false;
-            string name = LangLib.Item(group.soldierConscript.conscript.weapon);
+            string name = weaponName;//LangLib.Item(group.soldierConscript.conscript.weapon);
             if (group.soldierConscript.conscript.armorLevel != Resource.ItemResourceType.NONE)
-            { 
-              name  += " " + LangLib.Item(group.soldierConscript.conscript.armorLevel);
+            {
+                IconName.Item(group.soldierConscript.conscript.weapon, out SpriteName armorIcon, out string armorName);
+                name += " " + armorName;
             }
             return name;
         }
@@ -252,8 +256,14 @@ namespace VikingEngine.DSSWars.GameObject
 
         virtual public void init(bool asUpgrade)
         {
+#if DEBUG
+            if (soldierData.basehealth <= 0)
+            {
+                throw new Exception();
+            }
+#endif
             health = soldierData.basehealth;
-            radius = Profile().boundRadius;
+            radius = soldierData.boundRadius;
 
             if (!asUpgrade)
             {
@@ -568,7 +578,7 @@ namespace VikingEngine.DSSWars.GameObject
         const float ModelGroundYAdj = -0.0001f;
         protected void updateGroudY(bool set)
         {
-            if (UnitType == UnitType.CityGuard)
+            if (unitBuildType == UnitBuildType.CityGuard)
             {
                 var guards = group.GetGuardGroup();
                 if (guards.assignedToPost_IdAndPosition > 0)
@@ -1509,9 +1519,9 @@ namespace VikingEngine.DSSWars.GameObject
             group.army.TryGetTarget(out var tArmy);
             return tArmy;
         }
-        public override UnitType DetailUnitType()
+        public override UnitBuildType DetailUnitType()
         {
-            return UnitType;//profile.unitType;
+            return unitBuildType;//profile.unitType;
         }
     }
 

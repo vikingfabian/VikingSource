@@ -105,9 +105,12 @@
     <ProjectReference Include="..\..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj">
       <Properties Condition="'$(Configuration)' == 'Release'">Platform=x64</Properties>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SteamworksNet\Steamworks.NET\Standalone2.0\Steamworks.NET.Standard.csproj">
-        <Properties Condition="'$(Configuration)' == 'Release'">Platform=x64</Properties>
+    <ProjectReference Include="..\..\..\Steamworks repo\Steamworks.NET\Standalone2.0\Steamworks.NET.Standard.csproj">
+      <Properties Condition="'$(Configuration)' == 'Release'">Platform=x64</Properties>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\VoxelModel\Temp\" />
   </ItemGroup>
   
   <PropertyGroup>

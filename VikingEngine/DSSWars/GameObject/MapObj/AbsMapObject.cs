@@ -30,7 +30,9 @@ namespace VikingEngine.DSSWars.GameObject
         public bool inRender_detailLayer = false;
 
         public int previousWarAgainstFaction = -1;
-        public float strengthValue=-1;
+        public float strengthValue = -1;
+        public float mobilityValue = 0;
+
         public IntVector2 tilePos;
         public TimeStamp lastNetUpdate = new TimeStamp();
         public int previousIncome_copp = 0;
@@ -128,7 +130,14 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return DssRef.world.tileGrid.Get(tilePos);
         }
+        public override void toButtonContent(RichBoxContent content)
+        {
+            content.Add(new RbText(Name(out _), HudLib.TitleColor_Name));
+            content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+            TypeIcon(content);
+            content.Add(new RbText(TypeName(), HudLib.TitleColor_TypeName));
 
+        }
         virtual public void tagSprites(out SpriteName back, out SpriteName art)
         { 
             throw new NotImplementedException();
@@ -136,9 +145,9 @@ namespace VikingEngine.DSSWars.GameObject
         public bool tagToHud(RichBoxContent content)
         {
             tagSprites(out SpriteName back, out SpriteName art);
-            if (back != CityTag.NoBackSprite)
+            if (back != TagLib.NoBackSprite)
             {
-                if (art == CityTag.NoBackSprite)
+                if (art == TagLib.NoBackSprite)
                 {
                     content.Add(new RbImage(back));
                 }
@@ -198,8 +207,7 @@ namespace VikingEngine.DSSWars.GameObject
                     Ref.TotalGameTimeSec > status.processTimeStartStampSec + status.processTimeLengthSec)
                 {
                     //Work complete
-                    onWorkComplete_async(ref status);
-                    //workerStatuses[i] = status;
+                    onWorkComplete_async(ref status); //index out  of bounds here
                 }
 
             }

@@ -11,25 +11,27 @@ namespace VikingEngine.DSSWars.Resource
     //struct ResourceFactionOverview
     //{
     //    public ResourceChangeRate changeRate;
-    //    public int amount;
+    //    public int current;
     //    public int goalBuffer;
 
-    //    public void clearFactionOverView()
+    //    public void clearOverview()
     //    {
-    //        amount = 0;
+    //        current = 0;
     //        changeRate.prevProduced = 0;
     //        changeRate.prevConsumed = 0;
     //    }
 
-    //    public void toFactionOverViewMenu(RichBoxContent content, ItemResourceType item)
+    //    public void toFactionViewMenu(RichBoxContent content, ItemResourceType item)
     //    {
     //        content.newLine();
 
-    //        content.Add(new RbImage(ResourceLib.Icon(item)));
+    //        IconName.Item(item, out SpriteName itemIcon, out string itemName);
+
+    //        content.Add(new RbImage(itemIcon));
     //        content.space();
-    //        content.Add(new RbText(TextLib.LargeFirstLetter(LangLib.Item(item)) + ": "));
+    //        content.Add(new RbText(TextLib.LargeFirstLetter(itemName) + ": "));
     //        content.Add(new RbTab(0.4f));
-    //        content.Add(new RbText(TextLib.LargeNumber(amount)));
+    //        content.Add(new RbText(TextLib.LargeNumber(current)));
 
 
     //        content.Add(new RbTab(0.5f));

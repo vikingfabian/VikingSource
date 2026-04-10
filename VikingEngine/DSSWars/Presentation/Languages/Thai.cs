@@ -75,14 +75,14 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => TextLib.ThaiConv("{1} {0}");
+        public override string Language_ItemCount => TextLib.ThaiConv("{1} {0}");
 
-        public override string DisplayMode => TextLib.ThaiConv("โหมด|แสดง|ผล");
-        public override string DisplayMode_Windowed => TextLib.ThaiConv("แบบ|หน้าต่าง");
-        public override string DisplayMode_BorderlessFullscreen => TextLib.ThaiConv("เต็ม|จอ|ไร้|ขอบ");
+        //public override string DisplayMode => TextLib.ThaiConv("โหมด|แสดง|ผล");
+        //public override string DisplayMode_Windowed => TextLib.ThaiConv("แบบ|หน้าต่าง");
+        //public override string DisplayMode_BorderlessFullscreen => TextLib.ThaiConv("เต็ม|จอ|ไร้|ขอบ");
 
-        public override string GameSettings_RenderedMouseCursor => TextLib.ThaiConv("เรนเดอร์|เคอร์เซอร์");
-        public override string GameSettings_MuteControllerDisconnect => TextLib.ThaiConv("ปิด|การ|แจ้ง|เตือน|คอนโทรลเลอร์|หลุด");
+        //public override string GameSettings_RenderedMouseCursor => TextLib.ThaiConv("เรนเดอร์|เคอร์เซอร์");
+        //public override string GameSettings_MuteControllerDisconnect => TextLib.ThaiConv("ปิด|การ|แจ้ง|เตือน|คอนโทรลเลอร์|หลุด");
 
         public override string Delivery_MaxDistance => TextLib.ThaiConv("ระยะ|ขน|ส่ง|สูงสุด: {0}");
         public override string Tutorial_WillTakeAWhile => TextLib.ThaiConv("ขั้น|ตอนนี้|ใช้|เวลา|สัก|พัก |ลอง|กลับ|มา|ดู|ใหม่|ภาย|หลัง");
@@ -199,7 +199,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How to display a number of items. 0: item, 1:Number
         /// </summary>
-        public override string Language_ItemCountPresentation => TextLib.ThaiConv("{0}: {1}");
+        public override string Language_ItemCount_Colon => TextLib.ThaiConv("{0}: {1}");
 
         /// <summary>
         /// Select language option
@@ -439,7 +439,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Unit gold cost.
         /// </summary>
-        public override string Hud_Upkeep => TextLib.ThaiConv("ค่า|บำรุง|รักษา: {0}");
+        public override string Hud_Upkeep => TextLib.ThaiConv("ค่า|บำรุง|รักษา");
         public override string Hud_ArmyUpkeep => TextLib.ThaiConv("ค่า|บำรุง|กอง|ทัพ: {0}");
 
         /// <summary>
@@ -451,14 +451,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => TextLib.ThaiConv("คุณ|ต้อง|ขยาย|เมือง|ก่อน");
 
-        public override string Hud_SoldierCount => TextLib.ThaiConv("จำนวน|ทหาร: {0}");
+        public override string Hud_SoldierCount => TextLib.ThaiConv("จำนวน|ทหาร");
 
-        public override string Hud_SoldierGroupsCount => TextLib.ThaiConv("จำนวน|กลุ่ม: {0}");
+        public override string Hud_SoldierGroupsCount => TextLib.ThaiConv("จำนวน|กลุ่ม");
 
         /// <summary>
         /// Ingame display. Unit caculated battle strength.
         /// </summary>
-        public override string Hud_StrengthRating => TextLib.ThaiConv("ระดับ|พลัง: {0}");
+        public override string Hud_StrengthRating => TextLib.ThaiConv("ระดับ|พลัง");
 
         /// <summary>
         /// Ingame display. Caculated battle strength for the whole nation.
@@ -804,7 +804,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Stats that are shown on the end game screen. Display title.
         /// </summary>
-        public override string EndGameStatistics_Title => TextLib.ThaiConv("สถิติ");
+        public override string Statistics_Title => TextLib.ThaiConv("สถิติ");
         /// <summary>
         /// Stats that are shown on the end game screen. Total ingame time passed.
         /// </summary>
@@ -1000,7 +1000,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How many wounds a soldier can endure
         /// </summary>
-        public override string SoldierStats_Health => TextLib.ThaiConv("พลัง|ชีวิต: {0}");
+        public override string SoldierStats_Health => TextLib.ThaiConv("พลัง|ชีวิต");
 
         /// <summary>
         /// Some soldiers will increase the army movement speed
@@ -1566,10 +1566,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => TextLib.ThaiConv("จะ|เพิ่ม|พลัง|โจมตี|ใน|ด้าน|หนึ่ง|แต่|จะ|ลด|ด้าน|อื่น|ลง|ทั้งหมด| {0}");
         public override string Conscript_SelectBuilding => TextLib.ThaiConv("เลือก|โรง|ทหาร");
 
-        public override string Conscript_WeaponDamage => TextLib.ThaiConv("พลัง|โจมตี|อาวุธ: {0}");
-        public override string Conscript_ArmorHealth => TextLib.ThaiConv("พลัง|ป้องกัน|เกราะ: {0}");
-        public override string Conscript_TrainingSpeed => TextLib.ThaiConv("ความ|เร็ว|การ|โจมตี: {0}");
-        public override string Conscript_TrainingTime => TextLib.ThaiConv("เวลา|ใน|การ|ฝึก: {0}");
+        public override string Conscript_WeaponDamage => TextLib.ThaiConv("พลัง|โจมตี|อาวุธ");
+        public override string Conscript_ArmorHealth => TextLib.ThaiConv("พลัง|ป้องกัน|เกราะ");
+        public override string Conscript_AttackSpeed => TextLib.ThaiConv("ความ|เร็ว|การ|โจมตี");
+        public override string Conscript_TrainingTime => TextLib.ThaiConv("เวลา|ใน|การ|ฝึก");
 
         public override string Conscript_Training_Minimal => TextLib.ThaiConv("พื้น|ฐาน|ที่สุด");
         public override string Conscript_Training_Basic => TextLib.ThaiConv("ขั้น|ต้น");
@@ -1603,7 +1603,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => TextLib.ThaiConv("i");
 
-        public override string Info_PerSecond => TextLib.ThaiConv("แสดง|เป็น|ทรัพยากร|ต่อ|วินาที");
+        public override string Info_ResourcePerSecond => TextLib.ThaiConv("แสดง|เป็น|ทรัพยากร|ต่อ|วินาที");
 
         public override string Info_MinuteAverage => TextLib.ThaiConv("ค่า|นี้|คือ|ค่า|เฉลี่ย|จาก| 1 |นาที|ล่าสุด");
 
@@ -1675,12 +1675,12 @@ namespace VikingEngine.DSSWars.Presentation
         /// </summary>
         public override string CityCulture_PitMasters => TextLib.ThaiConv("เจ้า|แห่ง|เตา|เผา");
 
-        public override string CityCulture_CultureIsX => TextLib.ThaiConv("วัฒนธรรม: {0}");
+        public override string CityCulture_Culture => TextLib.ThaiConv("วัฒนธรรม");
         public override string CityCulture_LargeFamilies_Description => TextLib.ThaiConv("เพิ่ม|อัตรา|การ|เกิด|ของ|เด็ก");
         public override string CityCulture_FertileGround_Description => TextLib.ThaiConv("พืช|ผล|ให้|ผล|ผลิต|มาก|ขึ้น");
         public override string CityCulture_Archers_Description => TextLib.ThaiConv("ผลิต|พล|ธนู|ที่|เชี่ยวชาญ");
         public override string CityCulture_Warriors_Description => TextLib.ThaiConv("ผลิต|นัก|รบ|ประชิด|ที่|เชี่ยวชาญ");
-        public override string CityCulture_AnimalBreeder_Description => TextLib.ThaiConv("สัตว์|ให้|ทรัพยากร|มาก|ขึ้น");
+        //public override string CityCulture_AnimalBreeder_Description => TextLib.ThaiConv("สัตว์|ให้|ทรัพยากร|มาก|ขึ้น");
         public override string CityCulture_Miners_Description => TextLib.ThaiConv("ขุด|แร่|ได้|มาก|ขึ้น");
         public override string CityCulture_Woodcutters_Description => TextLib.ThaiConv("ต้น|ไม้|ให้|ไม้|มาก|ขึ้น");
         public override string CityCulture_Builders_Description => TextLib.ThaiConv("ก่อ|สร้าง|ได้|รวดเร็ว");
@@ -1721,12 +1721,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => TextLib.ThaiConv("ถ่าน|หิน");
 
-        public override string Language_XUpkeepIsY => TextLib.ThaiConv("ค่า|บำรุง|รักษา| {0}: {1}");
+        public override string Language_XUpkeep => TextLib.ThaiConv("ค่า|บำรุง|รักษา| {0}");
         public override string Language_XCountIsY => TextLib.ThaiConv("จำนวน| {0}: {1}");
 
         public override string Message_ArmyOutOfFood_Text => TextLib.ThaiConv("จะ|มีการ|ซื้อ|เสบียง|ราคา|แพง|จาก|ตลาด|มืด |ทหาร|ที่|หิว|โซ|จะ|หนี|ทัพ|เมื่อ|เงิน|ของ|คุณ|หมด|ลง");
 
-        public override string Info_ArmyFood => TextLib.ThaiConv("กอง|ทัพ|จะ|เติม|เสบียง|จาก|เมือง|พันธมิตร|ที่|ใกล้|ที่สุด |เสบียง|สามารถ|ซื้อ|ได้|จาก|ฝ่าย|อื่น |แต่|ใน|เขต|ศัตรู|จะ|ซื้อ|เสบียง|ได้|จาก|ตลาด|มืด|เท่านั้น");
+        public override string Info_ArmyFood1 => "กองทัพ|จะ|เติม|เสบียง|จาก|เมือง|พันธมิตร|ที่|ใกล้|ที่สุด.";
+        public override string Info_ArmyFood2 => "สามารถ|ซื้อ|เสบียง|ได้|จาก|ฝ่าย|อื่น.";
+        public override string Info_ArmyFood3 => "ใน|ดินแดน|ศัตรู|จะ|ซื้อ|เสบียง|ได้|จาก|ตลาดมืด|เท่านั้น.";
 
         public override string FactionName_Monger => TextLib.ThaiConv("มอง|เกอร์");
         public override string FactionName_Hatu => TextLib.ThaiConv("ฮา|ตู");

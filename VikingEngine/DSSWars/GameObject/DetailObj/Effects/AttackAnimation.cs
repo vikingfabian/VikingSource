@@ -110,10 +110,15 @@ namespace VikingEngine.DSSWars.GameObject
                     damage = soldierData.attackDamage;
 
                     if (group != null &&
-                        group.soldierConscript.conscript.specialization == SpecializationType.AntiCavalry && 
-                        target.DetailUnitType() == UnitType.ConscriptCavalry)
+                        group.soldierConscript.conscript.specialization == SpecializationType.AntiCavalry)
                     {
-                        damage = MathExt.MultiplyInt(DssConst.AntiCavalryBonusMultiply, damage);
+                        switch (target.DetailUnitType())
+                        {
+                            case UnitBuildType.ConscriptCavalry:
+                            case UnitBuildType.ConscriptBalkong:
+                                damage = MathExt.MultiplyInt(DssConst.AntiCavalryBonusMultiply, damage);
+                                break;
+                        }
                     }
                 }
                 else
@@ -141,7 +146,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 case Resource.ItemResourceType.HandSpear:
                                 case Resource.ItemResourceType.Pike:
                                 case Resource.ItemResourceType.SharpStick:
-                                case Resource.ItemResourceType.KnightsLance:
+                                //case Resource.ItemResourceType.KnightsLance:
                                     SoundLib.spear_whoosh.Play(position);
 
                                     break;
@@ -191,22 +196,26 @@ namespace VikingEngine.DSSWars.GameObject
                 var f = this.GetFaction();
                 if (f != null && f.player.IsLocalPlayer())
                 {
-                    switch (group.soldierConscript.conscript.weapon)
+                    if (group.soldierConscript.conscript.isKnight())
                     {
-                        case Resource.ItemResourceType.KnightsLance:
-                            if (ItemPropertyColl.Get(target.group.soldierConscript.conscript.weapon).Filter_IsSiegeWeapon)
-                            { 
-                                DssRef.achieve.UnlockAchievement(AchievementIndex.rear_flanking);
-                            }                           
-                            break;
-
-                        //case ItemResourceType.SiegeCannonBronze:
-                        //    if (target.group.InGuardPost())
-                        //    {
-                        //        DssRef.achieve.UnlockAchievement(AchievementIndex.ottoman);
-                        //    }
-                        //    break;
+                        DssRef.achieve.UnlockAchievement(AchievementIndex.rear_flanking);
                     }
+                    //switch (group.soldierConscript.conscript.weapon)
+                    //{
+                    //    case Resource.ItemResourceType.KnightsLance:
+                    //        if (ItemPropertyColl.Get(target.group.soldierConscript.conscript.weapon).Filter_IsSiegeWeapon)
+                    //        { 
+                    //            DssRef.achieve.UnlockAchievement(AchievementIndex.rear_flanking);
+                    //        }                           
+                    //        break;
+
+                        //    //case ItemResourceType.SiegeCannonBronze:
+                        //    //    if (target.group.InGuardPost())
+                        //    //    {
+                        //    //        DssRef.achieve.UnlockAchievement(AchievementIndex.ottoman);
+                        //    //    }
+                        //    //    break;
+                        //}
                 }
             }
         }

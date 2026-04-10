@@ -162,7 +162,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 category = CasualBuildCategory.Technology,
                 Type = CasualBuildType.UnlockIronArmor,
-                Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
+                Name = string.Format(DssRef.lang.Language_ItemCount_Colon,
                     DssRef.lang.Hud_Unlock, DssRef.lang.Resource_TypeName_IronArmor),
                 icon = SpriteName.WarsResource_IronArmor,
                 price = 2000,
@@ -173,7 +173,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 category = CasualBuildCategory.Technology,
                 Type = CasualBuildType.UnlockSteelArmor,
-                Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
+                Name = string.Format(DssRef.lang.Language_ItemCount_Colon,
                                 DssRef.lang.Hud_Unlock, DssRef.lang.Resource_TypeName_FullPlateArmor),
                 icon = SpriteName.WarsResource_FullPlateArmor,
                 price = 3000,
@@ -184,7 +184,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 category = CasualBuildCategory.Technology,
                 Type = CasualBuildType.UnlockSword,
-                Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
+                Name = string.Format(DssRef.lang.Language_ItemCount_Colon,
                    DssRef.lang.Hud_Unlock, DssRef.lang.Resource_TypeName_Sword),
                 icon = SpriteName.WarsResource_Sword,
                 price = 2000,
@@ -194,7 +194,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 category = CasualBuildCategory.Technology,
                 Type = CasualBuildType.UnlockSteelSword,
-                Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
+                Name = string.Format(DssRef.lang.Language_ItemCount_Colon,
                                 DssRef.lang.Hud_Unlock, DssRef.lang.Resource_TypeName_LongSword),
                 icon = SpriteName.WarsResource_Longsword,
                 price = 3000,
@@ -205,7 +205,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 category = CasualBuildCategory.Technology,
                 Type = CasualBuildType.UnlockCatapult,
-                Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
+                Name = string.Format(DssRef.lang.Language_ItemCount_Colon,
                     DssRef.lang.Hud_Unlock, DssRef.lang.Resource_TypeName_Catapult),
                 icon = SpriteName.WarsResource_Catapult,
                 price = 3000,
@@ -215,7 +215,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 category = CasualBuildCategory.Technology,
                 Type = CasualBuildType.UnlockBlackPower,
-                Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
+                Name = string.Format(DssRef.lang.Language_ItemCount_Colon,
                                 DssRef.lang.Hud_Unlock, DssRef.lang.Resource_TypeName_BlackPowder),
                 icon = SpriteName.WarsResource_BlackPowder,
                 price = 4000,
@@ -225,7 +225,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 category = CasualBuildCategory.Technology,
                 Type = CasualBuildType.UnlockGunPower,
-                Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
+                Name = string.Format(DssRef.lang.Language_ItemCount_Colon,
                                 DssRef.lang.Hud_Unlock, DssRef.lang.Resource_TypeName_GunPowder),
                 icon = SpriteName.WarsResource_GunPowder,
                 price = 6000,
@@ -236,7 +236,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 category = CasualBuildCategory.Technology,
                 Type = CasualBuildType.UnlockFarming2,
-                Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
+                Name = string.Format(DssRef.lang.Language_ItemCount_Colon,
                     DssRef.lang.Hud_Unlock, DssRef.lang.Technology_AdvancedFarming),
                 icon = SpriteName.WarsResource_Toolkit,
                 price = 2000,
@@ -246,7 +246,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 category = CasualBuildCategory.Technology,
                 Type = CasualBuildType.UnlockFarming3,
-                Name = string.Format(DssRef.lang.Language_ItemCountPresentation,
+                Name = string.Format(DssRef.lang.Language_ItemCount_Colon,
                                 DssRef.lang.Hud_Unlock, DssRef.lang.Technology_ModernFarming),
                 icon = SpriteName.WarsResource_Wagon4Wheel,
                 price = 3000,
@@ -625,8 +625,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(SpriteName.birdUnLock));
-                    content.Add(new RbImage(ResourceLib.Icon(item)));
-                    content.Add(new RbText(LangLib.Item(item)));
+                    IconName.Item(item, out SpriteName itemIcon, out string itemName);
+                    content.Add(new RbImage(itemIcon));
+                    content.Add(new RbText(itemName));
                 }
             
             }

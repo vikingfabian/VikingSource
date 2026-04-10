@@ -55,7 +55,7 @@ namespace VikingEngine.EngineSpace
         public void Add(T item)
         {
             if (Count >= array.Length)
-                Resize(array.Length * 2);
+                Resize();
 
             array[Count++] = item;
         }
@@ -67,7 +67,7 @@ namespace VikingEngine.EngineSpace
                 if (index < 0 || index >= Count)
                     throw new IndexOutOfRangeException();
 
-                return ref array[index]; // ✅ ref access!
+                return ref array[index]; //ref access!
             }
         }
 
@@ -76,9 +76,12 @@ namespace VikingEngine.EngineSpace
             Count = 0;
         }
 
-        //public T[] RawArray => _array;
+        public void Resize()
+        {
+            Resize(array.Length * 2);
+        }
 
-        private void Resize(int newSize)
+        public void Resize(int newSize)
         {
             Array.Resize(ref array, newSize);
         }
@@ -91,6 +94,22 @@ namespace VikingEngine.EngineSpace
             if (index < 0 || index >= Count) return;
             Count--;
             array[index] = array[Count];
+        }
+
+        /// <summary>
+        /// Removes the element at the index and shifts subsequent elements down.
+        /// Preserves order.
+        /// </summary>
+        public void RemoveAt(int index)
+        {
+            if (index < 0 || index >= Count) return; // Or throw ArgumentOutOfRangeException
+
+            for (int i = index; i < Count - 1; i++)
+            {
+                array[i] = array[i + 1];
+            }
+
+            Count--;
         }
 
         public static bool Example1_FindNextAlive(StructList<ExampleStruct1> array, ref int index)
@@ -118,12 +137,13 @@ namespace VikingEngine.EngineSpace
             return false;
         }
 
-        public bool InBound(int index)
+        public bool InBound_List(int index)
         {
             return index >= 0 && index < Count;
         }
-    }
-
-
-    
+        public bool InBound_Array(int index)
+        {
+            return index >= 0 && index < array.Length;
+        }
+    }    
 }

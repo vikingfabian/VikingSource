@@ -57,13 +57,13 @@ namespace VikingEngine.DSSWars.XP
         public TechnologyUnlock(int speed)
         {
             AdvancedBuildingUnlock = 50 / speed;
-            AdvancedFarmingUnlock = 150 / speed;
-            AdvancedCastingUnlock = 200 / speed;
-            IronUnlock = 200 / speed;
-            SteelUnlock = 300 / speed;
-            CatapultUnlock = 200 / speed;
-            BlackPowderUnlock = 500 / speed;
-            GunPowderUnlock = 1000 / speed;
+            AdvancedFarmingUnlock = 300 / speed;
+            AdvancedCastingUnlock = 400 / speed;
+            IronUnlock = 100 / speed;
+            SteelUnlock = 400 / speed;
+            CatapultUnlock = 300 / speed;
+            BlackPowderUnlock = 700 / speed;
+            GunPowderUnlock = 1200 / speed;
         }
     }
 

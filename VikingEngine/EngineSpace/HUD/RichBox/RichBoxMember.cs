@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Graphics;
+using VikingEngine.LootFest.GO.Characters;
 
 namespace VikingEngine.HUD.RichBox
 {
@@ -64,7 +65,12 @@ namespace VikingEngine.HUD.RichBox
         virtual public Vector2 Center => throw new NotImplementedException();
         virtual public Vector2 Size => throw new NotImplementedException();
 
+        virtual public void Parent_OnNewLine(RichBoxGroup group)
+        {}
+
         virtual public bool IsNewLine() { return false; }
+
+        
     }
 
     class RbNewLine : AbsRichBoxMember
@@ -139,11 +145,11 @@ namespace VikingEngine.HUD.RichBox
             List<string> lines = new List<string>(4);
             TextLib.SplitToMultiLine2(text, font,
                 AbsText.HeightToScale(format.size, format.Font).Y,
-                group.boxWidth, group.position.X - group.topleft.X, lines);
+                group.boxWidth, group.carriage.position.X - group.topleft.X, lines);
 
             for (int i = 0; i < lines.Count; ++i)
             {
-                Text2 textLine = new Text2(lines[i], format.Font, group.position,
+                Text2 textLine = new Text2(lines[i], format.Font, group.carriage.position,
                     format.size, col, group.layer, null, group.addToRender);
                 textLine.OrigoAtCenterHeight();
                 group.Add(textLine);
@@ -155,11 +161,11 @@ namespace VikingEngine.HUD.RichBox
 
                 if (arraylib.IsLast(i, lines))
                 {
-                    group.position.X = textLine.MeasureRightPos();
+                    group.carriage.position.X = textLine.MeasureRightPos();
                 }
                 else
                 {
-                    group.position.X = group.topleft.X + group.boxWidth;
+                    group.carriage.position.X = group.topleft.X + group.boxWidth;
                     group.newLine();
                 }
             }
@@ -196,7 +202,7 @@ namespace VikingEngine.HUD.RichBox
 
     //    public override void Create(RichBoxGroup group)
     //    {
-    //        group.position.X += spaces * group.lineSpacing;
+    //        group.carriage.position.X += spaces * group.lineSpacing;
     //    }
     //}
     abstract class AbsRichBoxImage : AbsRichBoxMember
@@ -228,12 +234,12 @@ namespace VikingEngine.HUD.RichBox
                 group.newLine();
             }
 
-            Vector2 center = VectorExt.AddX(group.position, totalW * 0.5f);
+            Vector2 center = VectorExt.AddX(group.carriage.position, totalW * 0.5f);
             var img = createImg(group, center, sz);
 
             group.Add(img);
 
-            group.position.X += totalW;
+            group.carriage.position.X += totalW;
         }
 
         abstract protected Image createImg(RichBoxGroup group, Vector2 center, Vector2 sz);
@@ -362,7 +368,7 @@ namespace VikingEngine.HUD.RichBox
             List<string> lines = new List<string>(4);
             TextLib.SplitToMultiLine2(text, font,
                 AbsText.HeightToScale(format.size, format.Font).Y,
-                group.boxWidth, group.position.X - group.topleft.X, lines);
+                group.boxWidth, group.carriage.position.X - group.topleft.X, lines);
 
 
 
@@ -382,11 +388,11 @@ namespace VikingEngine.HUD.RichBox
 
                 //if (arraylib.IsLast(i, lines))
                 //{
-                //    group.position.X = textLine.MeasureRightPos();
+                //    group.carriage.position.X = textLine.MeasureRightPos();
                 //}
                 //else
                 //{
-                //    group.position.X = group.topleft.X + group.boxWidth;
+                //    group.carriage.position.X = group.topleft.X + group.boxWidth;
                 //    group.newLine();
                 //}
             }
@@ -441,7 +447,7 @@ namespace VikingEngine.HUD.RichBox
 
         public override void Create(RichBoxGroup group)
         {
-            group.position.X += spaces * group.imageHeight * 0.3f;
+            group.carriage.position.X += spaces * group.imageHeight * 0.3f;
         }
     }
 
@@ -472,13 +478,13 @@ namespace VikingEngine.HUD.RichBox
         public override void Create(RichBoxGroup group)
         {
             float goalX = group.topleft.X + group.boxWidth * percX;
-            if (group.position.X < goalX)
+            if (group.carriage.position.X < goalX)
             {
-                group.position.X = goalX;
+                group.carriage.position.X = goalX;
             }
             else
             {
-                group.position.X += 2;
+                group.carriage.position.X += 2;
             }
         }
     }
@@ -488,6 +494,7 @@ namespace VikingEngine.HUD.RichBox
         public Image pointer;
         float opacity;
         Color color;
+        public bool thick = false;
 
         public RbSeperationLine(Color color, float opacity)
         {
@@ -504,7 +511,7 @@ namespace VikingEngine.HUD.RichBox
             var pos = group.seperatingLinePlacement();
 
             pointer = new Image(SpriteName.WhiteArea, pos,
-                new Vector2(group.boxWidth, 2), group.layer, false, group.addToRender);
+                new Vector2(group.boxWidth, thick? 6 : 2), group.layer, false, group.addToRender);
             pointer.ColorAndAlpha(color, opacity);
             group.Add(pointer);
         }
@@ -513,5 +520,10 @@ namespace VikingEngine.HUD.RichBox
         {
             pointer.Width = width;
         }
+    }
+
+    struct CreateMemberResult
+    { 
+        
     }
 }

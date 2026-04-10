@@ -70,7 +70,7 @@ namespace VikingEngine.LootFest.Display
                 }
             }
 
-            Input.Mouse.View();// Input.Mouse.Visible = true;
+            Input.Mouse.ViewAll();// Input.Mouse.Visible = true;
         }
 
         void setGrindexFromIndex(int index)
@@ -131,7 +131,7 @@ namespace VikingEngine.LootFest.Display
                 mem.DeleteMe();
             }
             selectionFrame.DeleteMe();
-            Input.Mouse.CenterLockAndHide();//Input.Mouse.Visible = false;
+            Input.Mouse.CenterLockAndHideAll();//Input.Mouse.Visible = false;
             //inputmap.SetGameStateLayout(ControllerActionSetType.InGameControls);
         }
     }

@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
             Faction enemyFac = DssRef.settings.darkLordPlayer.faction;
             DssRef.settings.darkLordPlayer.faction.hasDeserters = false;
-            DssRef.diplomacy.declareWar(player.faction, enemyFac);
+            DssRef.world.diplomacy.declareWar(player.faction, enemyFac);
 
             //IntVector2 position = WP.ToTilePos(DssRef.state.culling.players[player.playerData.localPlayerIndex].MapCenter);//mapConttilePosition;
 
@@ -157,20 +157,24 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
         void addSoldier(int count)
         {
-            addSoldier(count, Setup.selectedWeapon, Setup.selectedPlayer);
+            addSoldier(count, Setup.conscript, Setup.selectedPlayer);
         }
 
-        public void addSoldier(int count, ItemResourceType weapon, int toPlayer)
+        public void addSoldier(int count, ConscriptProfile conscript, int toPlayer)
         {
+            //conscript.specialization = SpecializationType.Traditional;
+            //conscript.training = TrainingLevel.Basic;
+
             SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
             {
-                conscript = new ConscriptProfile()
-                {
-                    weapon = weapon,
-                    armorLevel = Resource.ItemResourceType.PaddedArmor,
-                    training = TrainingLevel.Basic,
-                    specialization = SpecializationType.Traditional,
-                }
+                conscript = conscript,
+                //new ConscriptProfile()
+                //{
+                //    weapon = weapon,
+                //    armorLevel = Resource.ItemResourceType.PaddedArmor,
+                //    training = TrainingLevel.Basic,
+                //    specialization = SpecializationType.Traditional,
+                //}
             };
 
             for (int i = 0; i < count; ++i)

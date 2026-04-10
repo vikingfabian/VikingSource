@@ -5,20 +5,24 @@ namespace VikingEngine.DSSWars.XP
 {
     class WorkerSkillCollector
     {
-        int[,] WorkType_LevelCount = new int[(int)WorkExperienceType.NUM, (int)XpLib.XpLevelCount];
+        int[,] WorkType_LevelCount = new int[(int)WorkExperienceType.NUM_NONE, (int)XpLib.XpLevelCount];
 
         public void Add(ref WorkerStatus status)
         {
-            addXp(status.xpType1, status.xp1);
-            addXp(status.xpType2, status.xp2);
-            addXp(status.xpType3, status.xp3);
-
-            void addXp(WorkExperienceType type, byte xp)
+            if (status.work != WorkType.IsDeleted)
             {
-                if (xp > 0)
+                for (WorkExperienceType type = 0; type < WorkExperienceType.NUM_NONE; type++)
                 {
-                    int level = Bound.Max(xp / DssConst.WorkXpToLevel, XpLib.MaxXpLevel);
-                    ++WorkType_LevelCount[(int)type, level];
+                    addXp(type, status.getXpFor(type).xp);
+                }
+
+                void addXp(WorkExperienceType type, byte xp)
+                {
+                    if (xp > 0)
+                    {
+                        int level = Bound.Max(xp / DssConst.WorkXpToLevel, XpLib.MaxXpLevel);
+                        ++WorkType_LevelCount[(int)type, level];
+                    }
                 }
             }
         }

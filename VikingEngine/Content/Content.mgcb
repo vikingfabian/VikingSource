@@ -13,6 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin controller_switch_pro.vdf
+/copy:controller_switch_pro.vdf
+
 #begin DSS/darkforest_bg.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1120,6 +1123,24 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/break.wav
 
+#begin DSS/Sound/breath1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/breath1.wav
+
+#begin DSS/Sound/breath2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/breath2.wav
+
+#begin DSS/Sound/breath3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/breath3.wav
+
 #begin DSS/Sound/button_hover1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1204,6 +1225,30 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/dig.wav
 
+#begin DSS/Sound/dog_bark (1).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/dog_bark (1).wav
+
+#begin DSS/Sound/dog_bark (2).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/dog_bark (2).wav
+
+#begin DSS/Sound/dog_growl1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/dog_growl1.wav
+
+#begin DSS/Sound/dog_growl2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/dog_growl2.wav
+
 #begin DSS/Sound/drop_item.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1245,6 +1290,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/Dwarf Pain 6.wav
+
+#begin DSS/Sound/elephant_trump1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/elephant_trump1.wav
+
+#begin DSS/Sound/elephant_trump2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/elephant_trump2.wav
 
 #begin DSS/Sound/flesh_gore (1).wav
 /importer:WavImporter
@@ -1414,6 +1471,36 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/heavy_ballista2.wav
 
+#begin DSS/Sound/heavy_sword.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/heavy_sword.wav
+
+#begin DSS/Sound/heavy_walk1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/heavy_walk1.wav
+
+#begin DSS/Sound/heavy_walk2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/heavy_walk2.wav
+
+#begin DSS/Sound/heavy_walk3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/heavy_walk3.wav
+
+#begin DSS/Sound/heavy_walk4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/heavy_walk4.wav
+
 #begin DSS/Sound/hen1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1426,17 +1513,101 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/hen2.wav
 
+#begin DSS/Sound/hog1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/hog1.wav
+
+#begin DSS/Sound/hog2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/hog2.wav
+
+#begin DSS/Sound/hog3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/hog3.wav
+
+#begin DSS/Sound/Horse_Neigh_01.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/Horse_Neigh_01.wav
+
+#begin DSS/Sound/Horse_Neigh_02.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/Horse_Neigh_02.wav
+
+#begin DSS/Sound/Horse_Snort.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/Horse_Snort.wav
+
+#begin DSS/Sound/horse_walk1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/horse_walk1.wav
+
+#begin DSS/Sound/horse_walk2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/horse_walk2.wav
+
+#begin DSS/Sound/horse_walk3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/horse_walk3.wav
+
 #begin DSS/Sound/hover_disabled.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/hover_disabled.wav
 
+#begin DSS/Sound/howl1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/howl1.wav
+
+#begin DSS/Sound/howl2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/howl2.wav
+
 #begin DSS/Sound/intro_beat.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/intro_beat.wav
+
+#begin DSS/Sound/lion1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/lion1.wav
+
+#begin DSS/Sound/lion2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/lion2.wav
+
+#begin DSS/Sound/lion3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/lion3.wav
 
 #begin DSS/Sound/load_ballista.wav
 /importer:WavImporter
@@ -1449,6 +1620,24 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/menu_expand.wav
+
+#begin DSS/Sound/moo (1).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/moo (1).wav
+
+#begin DSS/Sound/moo (2).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/moo (2).wav
+
+#begin DSS/Sound/moo (3).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/moo (3).wav
 
 #begin DSS/Sound/musket1.wav
 /importer:WavImporter
@@ -1683,6 +1872,48 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/trophy.wav
+
+#begin DSS/Sound/wagon1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wagon1.wav
+
+#begin DSS/Sound/wagon2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wagon2.wav
+
+#begin DSS/Sound/wagon3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wagon3.wav
+
+#begin DSS/Sound/wagon4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wagon4.wav
+
+#begin DSS/Sound/wagon5.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wagon5.wav
+
+#begin DSS/Sound/wagon6.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wagon6.wav
+
+#begin DSS/Sound/wagon7.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/wagon7.wav
 
 #begin DSS/Sound/wood_bonk1.wav
 /importer:WavImporter
@@ -2005,6 +2236,9 @@
 /processorParam:TextureFormat=Compressed
 /build:Font/ThaiRegular.spritefont
 
+#begin game_actions.vdf
+/copy:game_actions.vdf
+
 #begin Modding/ModConst.txt
 /copy:Modding/ModConst.txt
 
@@ -2179,6 +2413,9 @@
 /processorParam:TextureFormat=Compressed
 /build:Model/sphere.fbx
 
+#begin official_controller_xbox.vdf
+/copy:official_controller_xbox.vdf
+
 #begin Shaders/DeferredRenderer/DepthWriter.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -2268,6 +2505,9 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:Shaders/WaveXzEffect.fx
+
+#begin steam deck.vdf
+/copy:steam deck.vdf
 
 #begin Texture/Lf3Tiles2.tga
 /importer:TextureImporter
@@ -2385,6 +2625,9 @@
 
 #begin Version Number.txt
 /copy:Version Number.txt
+
+#begin VoxelModel/Character/modshield_forward1.vox
+/copy:VoxelModel/Character/modshield_forward1.vox
 
 #begin VoxelModel/Character/modshield_javelin.vox
 /copy:VoxelModel/Character/modshield_javelin.vox
@@ -2518,6 +2761,9 @@
 #begin VoxelModel/Character/modweapon_twohand.vox
 /copy:VoxelModel/Character/modweapon_twohand.vox
 
+#begin VoxelModel/LfWars/alphawarg1.vox
+/copy:VoxelModel/LfWars/alphawarg1.vox
+
 #begin VoxelModel/LfWars/armybanner.vox
 /copy:VoxelModel/LfWars/armybanner.vox
 
@@ -2533,11 +2779,44 @@
 #begin VoxelModel/LfWars/banner.vox
 /copy:VoxelModel/LfWars/banner.vox
 
+#begin VoxelModel/LfWars/Boar.vox
+/copy:VoxelModel/LfWars/Boar.vox
+
 #begin VoxelModel/LfWars/boulder_proj.vox
 /copy:VoxelModel/LfWars/boulder_proj.vox
 
 #begin VoxelModel/LfWars/buildarea.vox
 /copy:VoxelModel/LfWars/buildarea.vox
+
+#begin VoxelModel/LfWars/cannon4wagon_iron.vox
+/copy:VoxelModel/LfWars/cannon4wagon_iron.vox;VoxelModel/LfWars/cannon4wagon_maniron.vox
+
+#begin VoxelModel/LfWars/cannoncoach_manbronze.vox
+/copy:VoxelModel/LfWars/cannoncoach_manbronze.vox
+
+#begin VoxelModel/LfWars/cannoncoach_maniron.vox
+/copy:VoxelModel/LfWars/cannoncoach_maniron.vox
+
+#begin VoxelModel/LfWars/cannoncoach_siegeiron.vox
+/copy:VoxelModel/LfWars/cannoncoach_siegeiron.vox
+
+#begin VoxelModel/LfWars/cannonwagon_ballista.vox
+/copy:VoxelModel/LfWars/cannonwagon_ballista.vox
+
+#begin VoxelModel/LfWars/cannonwagon_catapult.vox
+/copy:VoxelModel/LfWars/cannonwagon_catapult.vox
+
+#begin VoxelModel/LfWars/cannonwagon_manbronze.vox
+/copy:VoxelModel/LfWars/cannonwagon_manbronze.vox
+
+#begin VoxelModel/LfWars/cannonwagon_maniron.vox
+/copy:VoxelModel/LfWars/cannonwagon_maniron.vox
+
+#begin VoxelModel/LfWars/cannonwagon_manuballista.vox
+/copy:VoxelModel/LfWars/cannonwagon_manuballista.vox
+
+#begin VoxelModel/LfWars/cannonwagon_siegebronze.vox
+/copy:VoxelModel/LfWars/cannonwagon_siegebronze.vox
 
 #begin VoxelModel/LfWars/city_bank.vox
 /copy:VoxelModel/LfWars/city_bank.vox
@@ -2571,6 +2850,9 @@
 
 #begin VoxelModel/LfWars/city_logistic.vox
 /copy:VoxelModel/LfWars/city_logistic.vox
+
+#begin VoxelModel/LfWars/city_meatstation.vox
+/copy:VoxelModel/LfWars/city_meatstation.vox
 
 #begin VoxelModel/LfWars/city_mine.vox
 /copy:VoxelModel/LfWars/city_mine.vox
@@ -2611,6 +2893,9 @@
 #begin VoxelModel/LfWars/city_stonewall.vox
 /copy:VoxelModel/LfWars/city_stonewall.vox
 
+#begin VoxelModel/LfWars/city_storage.vox
+/copy:VoxelModel/LfWars/city_storage.vox
+
 #begin VoxelModel/LfWars/city_storehouse.vox
 /copy:VoxelModel/LfWars/city_storehouse.vox
 
@@ -2628,6 +2913,9 @@
 
 #begin VoxelModel/LfWars/city_tower32.vox
 /copy:VoxelModel/LfWars/city_tower32.vox
+
+#begin VoxelModel/LfWars/city_trapper.vox
+/copy:VoxelModel/LfWars/city_trapper.vox
 
 #begin VoxelModel/LfWars/city_water.vox
 /copy:VoxelModel/LfWars/city_water.vox
@@ -2655,6 +2943,12 @@
 
 #begin VoxelModel/LfWars/decor_statue.vox
 /copy:VoxelModel/LfWars/decor_statue.vox
+
+#begin VoxelModel/LfWars/dog1.vox
+/copy:VoxelModel/LfWars/dog1.vox
+
+#begin VoxelModel/LfWars/drafthorse_red.vox
+/copy:VoxelModel/LfWars/drafthorse_red.vox
 
 #begin VoxelModel/LfWars/ErrorCube.vox
 /copy:VoxelModel/LfWars/ErrorCube.vox
@@ -2710,11 +3004,17 @@
 #begin VoxelModel/LfWars/fol_tree_soft.vox
 /copy:VoxelModel/LfWars/fol_tree_soft.vox
 
+#begin VoxelModel/LfWars/Fowl.vox
+/copy:VoxelModel/LfWars/Fowl.vox
+
 #begin VoxelModel/LfWars/godfire.vox
 /copy:VoxelModel/LfWars/godfire.vox
 
 #begin VoxelModel/LfWars/Hen.vox
 /copy:VoxelModel/LfWars/Hen.vox
+
+#begin VoxelModel/LfWars/hog1.vox
+/copy:VoxelModel/LfWars/hog1.vox
 
 #begin VoxelModel/LfWars/horse_brown.vox
 /copy:VoxelModel/LfWars/horse_brown.vox
@@ -2725,6 +3025,15 @@
 #begin VoxelModel/LfWars/horsebanner.vox
 /copy:VoxelModel/LfWars/horsebanner.vox
 
+#begin VoxelModel/LfWars/hound1.vox
+/copy:VoxelModel/LfWars/hound1.vox
+
+#begin VoxelModel/LfWars/kineoxen1.vox
+/copy:VoxelModel/LfWars/kineoxen1.vox
+
+#begin VoxelModel/LfWars/lion1.vox
+/copy:VoxelModel/LfWars/lion1.vox
+
 #begin VoxelModel/LfWars/little_boltarrow.vox
 /copy:VoxelModel/LfWars/little_boltarrow.vox
 
@@ -2734,14 +3043,71 @@
 #begin VoxelModel/LfWars/little_javelin.vox
 /copy:VoxelModel/LfWars/little_javelin.vox
 
+#begin VoxelModel/LfWars/oxen1.vox
+/copy:VoxelModel/LfWars/oxen1.vox
+
 #begin VoxelModel/LfWars/party_restbar.vox
 /copy:VoxelModel/LfWars/party_restbar.vox
+
+#begin VoxelModel/LfWars/Phant_balkong_enforced.vox
+/copy:VoxelModel/LfWars/Phant_balkong_enforced.vox
+
+#begin VoxelModel/LfWars/Phant_balkong_iron.vox
+/copy:VoxelModel/LfWars/Phant_balkong_iron.vox
+
+#begin VoxelModel/LfWars/Phant_balkong_steel.vox
+/copy:VoxelModel/LfWars/Phant_balkong_steel.vox
+
+#begin VoxelModel/LfWars/Phant_balkong2w.vox
+/copy:VoxelModel/LfWars/Phant_balkong2w.vox
+
+#begin VoxelModel/LfWars/Phant_balkong4w.vox
+/copy:VoxelModel/LfWars/Phant_balkong4w.vox
+
+#begin VoxelModel/LfWars/Phant_ballista.vox
+/copy:VoxelModel/LfWars/Phant_ballista.vox
+
+#begin VoxelModel/LfWars/Phant_bronzecannon_side.vox
+/copy:VoxelModel/LfWars/Phant_bronzecannon_side.vox
+
+#begin VoxelModel/LfWars/Phant_bronzecannon.vox
+/copy:VoxelModel/LfWars/Phant_bronzecannon.vox
+
+#begin VoxelModel/LfWars/Phant_bronzesiege.vox
+/copy:VoxelModel/LfWars/Phant_bronzesiege.vox
+
+#begin VoxelModel/LfWars/Phant_elephant.vox
+/copy:VoxelModel/LfWars/Phant_elephant.vox
+
+#begin VoxelModel/LfWars/Phant_ironcannon_side.vox
+/copy:VoxelModel/LfWars/Phant_ironcannon_side.vox
+
+#begin VoxelModel/LfWars/Phant_ironcannon.vox
+/copy:VoxelModel/LfWars/Phant_ironcannon.vox
+
+#begin VoxelModel/LfWars/Phant_ironsiege.vox
+/copy:VoxelModel/LfWars/Phant_ironsiege.vox
+
+#begin VoxelModel/LfWars/Phant_manuballista.vox
+/copy:VoxelModel/LfWars/Phant_manuballista.vox
+
+#begin VoxelModel/LfWars/Phant_oliphant.vox
+/copy:VoxelModel/LfWars/Phant_oliphant.vox
+
+#begin VoxelModel/LfWars/Phant_warelephant.vox
+/copy:VoxelModel/LfWars/Phant_warelephant.vox
 
 #begin VoxelModel/LfWars/Pheasant.vox
 /copy:VoxelModel/LfWars/Pheasant.vox
 
 #begin VoxelModel/LfWars/Pig.vox
 /copy:VoxelModel/LfWars/Pig.vox
+
+#begin VoxelModel/LfWars/pony_brown.vox
+/copy:VoxelModel/LfWars/pony_brown.vox
+
+#begin VoxelModel/LfWars/pony_pink.vox
+/copy:VoxelModel/LfWars/pony_pink.vox
 
 #begin VoxelModel/LfWars/resource_rubble.vox
 /copy:VoxelModel/LfWars/resource_rubble.vox
@@ -2752,6 +3118,9 @@
 #begin VoxelModel/LfWars/slingstone.vox
 /copy:VoxelModel/LfWars/slingstone.vox
 
+#begin VoxelModel/LfWars/staghog1.vox
+/copy:VoxelModel/LfWars/staghog1.vox
+
 #begin VoxelModel/LfWars/tree_apple.vox
 /copy:VoxelModel/LfWars/tree_apple.vox
 
@@ -2760,6 +3129,18 @@
 
 #begin VoxelModel/LfWars/unclaimed_icon.vox
 /copy:VoxelModel/LfWars/unclaimed_icon.vox
+
+#begin VoxelModel/LfWars/wagon_coach.vox
+/copy:VoxelModel/LfWars/wagon_coach.vox
+
+#begin VoxelModel/LfWars/wagon_ironcoach.vox
+/copy:VoxelModel/LfWars/wagon_ironcoach.vox
+
+#begin VoxelModel/LfWars/wagon_light.vox
+/copy:VoxelModel/LfWars/wagon_light.vox
+
+#begin VoxelModel/LfWars/wagon_light4.vox
+/copy:VoxelModel/LfWars/wagon_light4.vox
 
 #begin VoxelModel/LfWars/war_archer_i2.vox
 /copy:VoxelModel/LfWars/war_archer_i2.vox
@@ -2829,6 +3210,18 @@
 
 #begin VoxelModel/LfWars/war_workerhut.vox
 /copy:VoxelModel/LfWars/war_workerhut.vox
+
+#begin VoxelModel/LfWars/warg1.vox
+/copy:VoxelModel/LfWars/warg1.vox
+
+#begin VoxelModel/LfWars/warhog1.vox
+/copy:VoxelModel/LfWars/warhog1.vox
+
+#begin VoxelModel/LfWars/warhorse_brown.vox
+/copy:VoxelModel/LfWars/warhorse_brown.vox
+
+#begin VoxelModel/LfWars/warlion1.vox
+/copy:VoxelModel/LfWars/warlion1.vox
 
 #begin VoxelModel/LfWars/warmap_grass1.vox
 /copy:VoxelModel/LfWars/warmap_grass1.vox
@@ -2967,4 +3360,13 @@
 
 #begin VoxelModel/LfWars/wars_viking_ship.vox
 /copy:VoxelModel/LfWars/wars_viking_ship.vox
+
+#begin VoxelModel/LfWars/wildcat1.vox
+/copy:VoxelModel/LfWars/wildcat1.vox
+
+#begin VoxelModel/LfWars/wildpig1.vox
+/copy:VoxelModel/LfWars/wildpig1.vox
+
+#begin VoxelModel/LfWars/wolf1.vox
+/copy:VoxelModel/LfWars/wolf1.vox
 

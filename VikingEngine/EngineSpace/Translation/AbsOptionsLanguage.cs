@@ -109,6 +109,7 @@ namespace VikingEngine.EngineSpace.Translation
         public abstract string DisplayMode_Windowed { get; }
         public abstract string DisplayMode_BorderlessFullscreen { get; }
         public abstract string GameSettings_RenderedMouseCursor { get; }
+        public abstract string GameSettings_MuteControllerDisconnect { get; }
 
         public string ThreeOption(ThreeOptions option)
         {

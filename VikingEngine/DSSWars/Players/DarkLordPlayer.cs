@@ -108,21 +108,21 @@ namespace VikingEngine.DSSWars.Players
            
             foreach (var ally in darkLordAllies)
             {
-               var relation = DssRef.diplomacy.SetRelationType(faction, ally, RelationType.RelationType3_Ally);//.secret = false;
+                DssRef.world.diplomacy.SetRelationType(faction, ally, RelationType.RelationType3_Ally);//.secret = false;
 
-                if (relation != null)
-                {
-                    relation.secret = false;
-                }
+                //if (relation != null)
+                //{
+                //    relation.secret = false;
+                //}
 
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    DssRef.diplomacy.SetRelationType(p.faction, ally, RelationType.RelationTypeN4_TotalWar).SpeakTerms = SpeakTerms.SpeakTermsN2_None;
+                    DssRef.world.diplomacy.SetRelationType(p.faction, ally, RelationType.RelationTypeN4_TotalWar);
                 }
 
                 if (greenwood != null)
                 {
-                    DssRef.diplomacy.SetRelationType(greenwood, ally, RelationType.RelationTypeN4_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(greenwood, ally, RelationType.RelationTypeN4_TotalWar);
                 }                
             }
 
@@ -171,7 +171,7 @@ namespace VikingEngine.DSSWars.Players
                         var nFaction = nCity.GetFaction();
                         if (nFaction != faction &&
                             nFaction.diplomaticSide != DiplomaticSide.Light &&
-                            !DssRef.diplomacy.PositiveRelationWithPlayer(nFaction))
+                            !DssRef.world.diplomacy.PositiveRelationWithPlayer(nFaction))
                         {
                             if (darkLordAllies == null)
                             {

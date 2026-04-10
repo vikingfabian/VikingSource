@@ -23,7 +23,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string DisplayMode_Windowed => "Janela";
         public override string DisplayMode_BorderlessFullscreen => "Tela cheia sem bordas";
         public override string GameSettings_RenderedMouseCursor => "Cursor renderizado";
-
+        public override string GameSettings_MuteControllerDisconnect => "Silenciar desconexão do controle";
         //--
         public override string GraphicsOption_FarViewDistance => "Visão de longa distância";
 

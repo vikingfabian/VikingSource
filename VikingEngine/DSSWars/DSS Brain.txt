@@ -1,5 +1,30 @@
-﻿Change log:
-* 
+
+﻿UPDATE
+Change Log:
+* Fixed boar slaughter
+* set build skill on coalpit and brewery
+
+##ICONS TODO
+
+#MOUNTED TODO
+x truce timer broken, and peace timer
+x translate
+
+## MOUNTED POST CONTENT UPDATE ##
+x icons
+x close cores popup on battle lab
+x boil salt
+x deeper unit category with search for items and melee/ranged/warmashine filters
+(maybe filter out units for remove/split)
+x achievements
+* go through controller best practices
+* culture: Wheelwright, //Speed bonus to conscripted carts
+(Maybe) Breeding tech tree skill (Allowes more reliable animal upgrades)
+x adv build upgrade, no more use of logistics
+x auto options for logistics/hall/manor
+x mounts in casual play
+x Luxurious buildings, raises the nobel house cap
+
 
 
 #Event timers (are slightly random)#
@@ -49,6 +74,9 @@ https://www.shadertoy.com/view/4ltcRB
 Most of what I use can be found here: 
 https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping 
 
+Pixel perfect font:
+https://github.com/FontStashSharp/FontStashSharp/wiki/Using-FontStashSharp-in-MonoGame-or-FNA
+
 #Export
 cd VikingEngine
 dotnet publish -c Release -r win-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained
@@ -58,8 +86,6 @@ dotnet publish -c Release -r win-x64 --self-contained true /p:PublishSingleFile=
 
 #LINUX
 dotnet publish -c Release -r linux-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained
--c Release -r linux-x64 -p:PublishReadyToRun=false -p:TieredCompilation=false --self-contained --property:RuntimeIdentifier=win-x64
-storage Environment app location
 
 (högerklick i Publish "open git bash here")
 chmod +x VikingEngine
@@ -67,3 +93,5 @@ chmod +x VikingEngine
 tar -czf VikingEngine-linux-x64.tar.gz -C bin/Release/net8.0/linux-x64/publish .
 (hamnar i Repo\VikingSource\VikingEngine)
 
+
+"cross of SIM City & RTSs and Hearts of Iron IV"

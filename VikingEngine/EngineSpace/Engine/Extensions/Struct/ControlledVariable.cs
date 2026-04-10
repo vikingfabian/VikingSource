@@ -493,7 +493,7 @@ namespace VikingEngine
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    public struct CircleCounter
+    struct CircleCounter
     {
         int value;
         public int Value
@@ -534,12 +534,28 @@ namespace VikingEngine
         {
             value = min;
         }
+
+        public CircleCounter AddBound(Range bounds)
+        {
+            CircleCounter copy = this;
+            if (copy.min < bounds.Min)
+            {
+                copy.min = bounds.Min;
+            }
+            if (copy.max > bounds.Max)
+            {
+                copy.max = bounds.Max;
+            }
+            copy.value = bounds.SetBounds(copy.Value);
+
+            return copy;
+        }
     }
 
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    public struct CircleCounterUp : ICircleCounter
+    struct CircleCounterUp : ICircleCounter
     {
         public int value;
         public int Value
@@ -590,7 +606,7 @@ namespace VikingEngine
     /// <summary>
     /// Contains a index that you count up until it will reach max, and then go back to zero
     /// </summary>
-    public struct CircleCounterDown : ICircleCounter
+    struct CircleCounterDown : ICircleCounter
     {
         public int value;
         public int Value
@@ -683,7 +699,7 @@ namespace VikingEngine
     /// <summary>
     /// Will count back n forward between bounds
     /// </summary>
-    public struct PingPongCounter
+    struct PingPongCounter
     {
         public int dir;
         public int Min;
@@ -882,7 +898,7 @@ namespace VikingEngine
         }
     }
    
-    public struct Percent
+    struct Percent
     {
         public const float MaxPercentage = 1;
         public const int MaxTextPercentage = 100;

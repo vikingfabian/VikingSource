@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars
 
         public static WorldData world = null;
         public static MapSettings map = null;
-        public static Diplomacy diplomacy = null;
+        //public static Diplomacy diplomacy = null;
         public static GameStorage storage;
         public static Achievements achieve = null;
         public static GameStats stats = null;

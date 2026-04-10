@@ -2,7 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using VikingEngine.DSSWars.Data;
+using VikingEngine.Sound;
 using VikingEngine.ToGG.HeroQuest.Gadgets;
+using VikingEngine.ToGG.MoonFall.GO;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -47,6 +50,8 @@ namespace VikingEngine.DSSWars.GameObject
 
     abstract class AbsDetailUnitAdvancedModel : DetailUnitModel
     {
+        protected WalkSoundType walkSound;
+        
         protected Graphics.Mesh shadowPlane;
         protected Vector3 shadowOffset = new Vector3(-0.005f, 0, -0.0058f);
         public Circle selectionArea;
@@ -90,6 +95,33 @@ namespace VikingEngine.DSSWars.GameObject
             }
             model.position = soldier.position;
 
+            createShadow(soldier);
+
+            selectionArea = new Circle(Vector2.Zero, 1.2f);
+        }
+
+        protected AnimalNoiseType animalNoiseType = AnimalNoiseType.NUM_NONE;
+        protected static readonly IntervalF AnimalNoiseFrequecy = new IntervalF(5, 40);
+        protected TimeInGameCountdown nextAnimalNoise;
+        protected void resetAnimalNoise()
+        {
+            nextAnimalNoise.start(AnimalNoiseFrequecy);
+        }
+
+        protected void updateAnimalNoise()
+        {
+            if (nextAnimalNoise.TimeOut())
+            {
+                if (Ref.peRnd.Chance(0.5) && animalNoiseType != AnimalNoiseType.NUM_NONE && SoundStackManager.RareAvailable())
+                {
+                    SoundLib.AnimalNoises[(int)animalNoiseType].Play(model.position);
+                }
+                resetAnimalNoise();
+            }
+        }
+
+        protected void createShadow(AbsSoldierUnit soldier)
+        {
             if (!Ref.gamesett.modelShadow)
             {
                 shadowPlane = new Graphics.Mesh(LoadedMesh.plane, soldier.position,
@@ -97,13 +129,6 @@ namespace VikingEngine.DSSWars.GameObject
                      SpriteName.LittleUnitShadow, Color.Black);
                 shadowPlane.Opacity = 0.5f;
             }
-
-
-            
-
-            
-            selectionArea = new Circle(Vector2.Zero, 1.2f);
-
         }
 
         override public void DeleteMe()
@@ -117,8 +142,9 @@ namespace VikingEngine.DSSWars.GameObject
     
     class SoldierUnitAdvancedModel: AbsDetailUnitAdvancedModel
     {
+        
         protected WalkingAnimation walkingAnimation;
-
+        
         Rotation1D moveJiggle = Rotation1D.Random();
         
         bool inBlinkFrame = true;
@@ -133,6 +159,8 @@ namespace VikingEngine.DSSWars.GameObject
             walkingAnimation = WalkingAnimation.Standard;
         }
 
+        
+
         override public void update(AbsSoldierUnit soldier)
         {
             base.update(soldier);
@@ -146,7 +174,11 @@ namespace VikingEngine.DSSWars.GameObject
                 float move = soldier.walkingSpeedWithModifiers(Ref.DeltaGameTimeMs);
 
                 moveJiggle.Add(move * 50f);
-                walkingAnimation.update(move, model);
+                walkingAnimation.update(move, model, out bool enterEvenFrame);
+                if (enterEvenFrame && Ref.peRnd.ChanceF_Low(0.04f))
+                {
+                    SoundLib.footstep.Play(model.position);
+                }
 
                 float jiggleAdd = 0f;
                 if (soldier.SoldierProfile().walkingWaggleAngle > 0)
@@ -156,17 +188,17 @@ namespace VikingEngine.DSSWars.GameObject
                 WP.Rotation1DToQuaterion(model, soldier.rotation.Radians + jiggleAdd);
 
 
-                if (/*Ref.TimePassed16ms && */Ref.peRnd.Chance(0.5 / Ref.UpdateTimes60FPS))
+                if (Ref.peRnd.Chance(0.5 / Ref.UpdateTimes60FPS))
                 {
                     Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, Ref.peRnd.Vector3_SqXZ( soldier.position, 0.02f));
-                    //Engine.ParticleHandler.AddParticles(Graphics.ParticleSystemType.Dust, soldier.position);
+                    
                 }
             }
             else
             {
                 if (soldier.inAttackAnimation())
                 {
-                    model.Frame =soldier.SoldierProfile().attackFrame;
+                    model.Frame =CharacterModelBuilder.AttackFrame;
                 }
                 else
                 {
@@ -184,7 +216,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
 
 
-                    model.Frame = inBlinkFrame ? soldier.SoldierProfile().idleBlinkFrame : soldier.SoldierProfile().idleFrame;
+                    model.Frame = inBlinkFrame ? CharacterModelBuilder.IdleBlinkFrame : CharacterModelBuilder.IdleFrame;
                 }
 
                 WP.Rotation1DToQuaterion(model, soldier.rotation.Radians);

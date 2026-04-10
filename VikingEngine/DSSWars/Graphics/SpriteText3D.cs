@@ -107,7 +107,8 @@ namespace VikingEngine.DSSWars
 
             center.X += letterSpacing * 0.5f;
             sz *= 1.7f;
-            nextMesh(ResourceLib.Icon(item));
+            IconName.Item(item, out var itemIcon, out _);
+            nextMesh(itemIcon);
 
             AddToOrRemoveFromUpdateList(true);
 

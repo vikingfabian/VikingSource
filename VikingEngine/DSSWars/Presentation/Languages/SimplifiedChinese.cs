@@ -74,14 +74,14 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
-        public override string DisplayMode => "显示模式";
-        public override string DisplayMode_Windowed => "窗口模式";
-        public override string DisplayMode_BorderlessFullscreen => "无边框窗口";
+        //public override string DisplayMode => "显示模式";
+        //public override string DisplayMode_Windowed => "窗口模式";
+        //public override string DisplayMode_BorderlessFullscreen => "无边框窗口";
 
-        public override string GameSettings_RenderedMouseCursor => "游戏内光标"; // Implies a cursor rendered by the game
-        public override string GameSettings_MuteControllerDisconnect => "屏蔽手柄断开提示";
+        //public override string GameSettings_RenderedMouseCursor => "游戏内光标"; // Implies a cursor rendered by the game
+        //public override string GameSettings_MuteControllerDisconnect => "屏蔽手柄断开提示";
 
         public override string Delivery_MaxDistance => "最大运输距离：{0}";
         public override string Tutorial_WillTakeAWhile => "这需要一些时间，请稍后再来。";
@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 如何显示项目的数量。0: 项目, 1: 数量
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// 选择语言选项
@@ -416,7 +416,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 单位黄金成本。
         /// </summary>
-        public override string Hud_Upkeep => "维持费用: {0}";
+        public override string Hud_Upkeep => "维持费用";
         public override string Hud_ArmyUpkeep => "军队维持费用: {0}";
 
         /// <summary>
@@ -428,14 +428,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "你需要扩展城市。";
 
-        public override string Hud_SoldierCount => "士兵数量: {0}";
+        public override string Hud_SoldierCount => "士兵数量";
 
-        public override string Hud_SoldierGroupsCount => "组数量: {0}";
+        public override string Hud_SoldierGroupsCount => "组数量";
 
         /// <summary>
         /// 游戏内显示。单位计算的战斗力。
         /// </summary>
-        public override string Hud_StrengthRating => "战斗力: {0}";
+        public override string Hud_StrengthRating => "战斗力";
 
         /// <summary>
         /// 游戏内显示。整个国家的计算战斗力。
@@ -780,7 +780,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 游戏结束画面上显示的统计数据。显示标题。
         /// </summary>
-        public override string EndGameStatistics_Title => "统计";
+        public override string Statistics_Title => "统计";
 
         /// <summary>
         /// 游戏结束画面上显示的统计数据。游戏内已过时间。
@@ -975,7 +975,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 士兵能承受多少伤害
         /// </summary>
-        public override string SoldierStats_Health => "生命值: {0}";
+        public override string SoldierStats_Health => "生命值";
 
         /// <summary>
         /// 一些士兵会增加军队的移动速度
@@ -1534,10 +1534,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "将提高某个领域的攻击力，同时降低所有其他领域的攻击力，幅度为{0}";
         public override string Conscript_SelectBuilding => "选择兵营";
 
-        public override string Conscript_WeaponDamage => "武器伤害: {0}";
-        public override string Conscript_ArmorHealth => "盔甲耐久: {0}";
-        public override string Conscript_TrainingSpeed => "攻击速度: {0}";
-        public override string Conscript_TrainingTime => "训练时间: {0}";
+        public override string Conscript_WeaponDamage => "武器伤害";
+        public override string Conscript_ArmorHealth => "盔甲耐久";
+        public override string Conscript_AttackSpeed => "攻击速度";
+        public override string Conscript_TrainingTime => "训练时间";
 
         public override string Conscript_Training_Minimal => "最低限度";
         public override string Conscript_Training_Basic => "基础";
@@ -1571,7 +1571,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "以每秒资源显示。";
+        public override string Info_ResourcePerSecond => "以每秒资源显示。";
 
         public override string Info_MinuteAverage => "此值是过去一分钟的平均值。";
 
@@ -1631,12 +1631,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "网络专家";
         public override string CityCulture_PitMasters => "燃料大师";
 
-        public override string CityCulture_CultureIsX => "文化: {0}";
+        public override string CityCulture_Culture => "文化";
         public override string CityCulture_LargeFamilies_Description => "提高出生率";
         public override string CityCulture_FertileGround_Description => "农作物产量增加";
         public override string CityCulture_Archers_Description => "生产熟练的弓箭手";
         public override string CityCulture_Warriors_Description => "生产熟练的近战士兵";
-        public override string CityCulture_AnimalBreeder_Description => "动物提供更多资源";
+        //public override string CityCulture_AnimalBreeder_Description => "动物提供更多资源";
         public override string CityCulture_Miners_Description => "矿石产量增加";
         public override string CityCulture_Woodcutters_Description => "树木产量增加";
         public override string CityCulture_Builders_Description => "建筑速度更快";
@@ -1677,12 +1677,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "煤炭";
 
-        public override string Language_XUpkeepIsY => "{0} 维护费用：{1}";
+        public override string Language_XUpkeep => "{0} 维护费用";
         public override string Language_XCountIsY => "{0} 计数：{1}";
 
         public override string Message_ArmyOutOfFood_Text => "将从黑市购买昂贵的食物。当你的钱用完时，饥饿的士兵将会逃离。";
 
-        public override string Info_ArmyFood => "军队将从最近的友好城市补充食物。可以从其他派系购买食物。在敌对区域，食物只能从黑市购买。";
+        public override string Info_ArmyFood1 => "军队将从最近的友好城市补充粮食。";
+        public override string Info_ArmyFood2 => "可以从其他阵营购买粮食。";
+        public override string Info_ArmyFood3 => "在敌对地区，只能从黑市购买粮食。";
 
         public override string FactionName_Monger => "贩夫";
         public override string FactionName_Hatu => "哈图";

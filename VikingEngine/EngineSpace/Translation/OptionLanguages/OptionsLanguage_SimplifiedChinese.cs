@@ -25,7 +25,7 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string DisplayMode_BorderlessFullscreen => "无边框全屏";
         public override string GameSettings_RenderedMouseCursor => "渲染光标";
 
-
+        public override string GameSettings_MuteControllerDisconnect => "屏蔽手柄断开提示";
         //--
         public override string GraphicsOption_FarViewDistance => "远距离视野";
         public override string Hud_Cancel => "取消";

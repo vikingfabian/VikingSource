@@ -45,7 +45,7 @@ namespace VikingEngine.LootFest
 
             menu = new Gui(GuiStyle(), player.SafeScreenArea, 0f, LfLib.Layer_GuiMenu, Input.InputSource.DefaultPC);//player.PlayerIndex);
 
-            Input.Mouse.CenterLockAndHide();//Input.Mouse.Visible = true;
+            Input.Mouse.CenterLockAndHideAll();//Input.Mouse.Visible = true;
 
             //inputOverview = new Display.InputOverview(player.SafeScreenArea, player.inputMap);
         }
@@ -1934,7 +1934,7 @@ namespace VikingEngine.LootFest
         public void DeleteMe()
         {
             menu.DeleteMe();
-            Input.Mouse.CenterLockAndHide();//Input.Mouse.Visible = false;
+            Input.Mouse.CenterLockAndHideAll();//Input.Mouse.Visible = false;
 
             //inputOverview.DeleteMe();
         }

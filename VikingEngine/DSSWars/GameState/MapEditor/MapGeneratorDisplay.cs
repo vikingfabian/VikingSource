@@ -17,6 +17,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest.GO.Gadgets;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.DSSWars.GameState.MapEditor
 {
@@ -287,7 +288,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
         public void beginEditName()
         {
-            new TextInputState(state.mapStorage.Name, NameEditEvent, null);
+           var reciever =  new TextInputState(state.mapStorage.Name, NameEditEvent, null);
+            SteamInputManager.tryOpenSteamKeyboard(reciever);
         }
 
         virtual protected void NameEditEvent(string result, object tag)

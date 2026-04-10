@@ -17,6 +17,7 @@ using VikingEngine.Input;
 using VikingEngine.LootFest.BlockMap.Level;
 using VikingEngine.LootFest.GO.PickUp;
 using VikingEngine.LootFest.Players;
+using VikingEngine.PJ;
 using VikingEngine.PJ.Display;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.HeroQuest;
@@ -200,7 +201,7 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                DssRef.state.exit();
+                DssRef.state.beginExit();
             }
         }
 
@@ -211,7 +212,7 @@ namespace VikingEngine.DSSWars.Interface
                 Ref.steam.stats.upload();
             }
             closeMenu();
-            DssRef.state.exit();
+            DssRef.state.beginExit();
         }
 
         public void controllerDisconnectMenu()
@@ -407,23 +408,51 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Settings_PanOnZoom) }, Ref.gamesett.panOnZoomProperty));
 
             content.newLine();
-            content.Add(new RbImage(SpriteName.MouseScroll));
-            content.space();
-            content.Add(new RbText(DssRef.lang.Settings_ScrollSensitivity_Game));
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.Input_LockMouseToWindow) },
+                Ref.gamesett.LockMouseProperty));
+            
+            if (Screen.PcDisplayMode != WindowDisplayMode.Windowed || Ref.gamesett.lockMouseToWindow)
+            {
+                var edgePushOptions = new DropDownBuilder("edge push");
+                
+                for (MouseEdgePush opt = 0; opt < MouseEdgePush.NUM; opt++)
+                {
+                    string caption;
+                    switch (opt)
+                    {
+                        default:
+                            caption = DssRef.todoLang.Input_NoControl;
+                            break;
+                        case MouseEdgePush.Passive:
+                            caption = DssRef.todoLang.Input_PassiveControl;
+                            break;
+                        case MouseEdgePush.Active:
+                            caption = DssRef.todoLang.Input_ActiveControl;
+                            break;
+
+                    }
+
+                    edgePushOptions.AddOption(caption, opt == Ref.gamesett.edgePush, opt == MouseEdgePush.Active,
+                        new RbAction1Arg<MouseEdgePush>((MouseEdgePush opt) =>
+                        {
+                            Ref.gamesett.edgePush = opt;
+                            Ref.gamesett.settingsHasChanged = true;
+                            menu.CloseDropDown();
+                        }, opt), null);
+                }
+                edgePushOptions.Build(content, SpriteName.NO_IMAGE, DssRef.todoLang.Input_MouseEdgePush_Title, menu);
+
+            }
+
+            HudLib.Label(content, SpriteName.MouseScroll, DssRef.lang.Settings_ScrollSensitivity_Game);
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollGameProperty, true));
 
-            content.newLine();
-            content.Add(new RbImage(SpriteName.MouseScroll));
-            content.space();
-            content.Add(new RbText(DssRef.lang.Settings_ScrollSensitivity_Menu));
+            HudLib.Label(content, SpriteName.MouseScroll, DssRef.lang.Settings_ScrollSensitivity_Menu);
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 10, 0.1f), Ref.gamesett.scrollMenuProperty, true));
 
-            content.newLine();
-            content.Add(new RbImage(SpriteName.ArrowKeys));
-            content.space();
-            content.Add(new RbText(Ref.langOpt.Settings_KeyMapPanSpeed));
+            HudLib.Label(content, SpriteName.ArrowKeys, Ref.langOpt.Settings_KeyMapPanSpeed);
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.1f, 4, 0.1f), Ref.gamesett.panSpeedProperty, true));
 
@@ -444,7 +473,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 if (lobby)
                 {
-                    if (DssRef.storage.metaProgression.totalGameTimeMinutes >= 15)
+                    //if (DssRef.storage.metaProgression.totalGameTimeMinutes >= 15)
                     {
                         content.newLine();
                         content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.GameMenu_UseSpeedX, DssConst.MaxSpeedOption)) }, speed5Property));
@@ -453,10 +482,12 @@ namespace VikingEngine.DSSWars.Interface
                     content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_BlockImportAchievements) }, blockImportAchievementsProperty));
                 }
             }
+
+            
             //content.newLine();
             //content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(".Low memory garbarge collecting") }, Ref.gamesett.lowGCProperty));
             content.newLine();
-            content.Add(new RbText(DssRef.lang.Settings_Blood + ":", HudLib.TitleColor_Label));
+            HudLib.Label(content, DssRef.lang.Settings_Blood);
             content.space();
             RbDragButton.RbDragButtonGroup(content, new List<float> { 100 }, new DragButtonSettings(0, GameSettings.MaxBlood, 10), Ref.gamesett.bloodProperty, false);
 
@@ -518,7 +549,7 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(new ArtCheckbox(new List<AbsRichBoxMember>{
                 new RbImage(SpriteName.PixController1),
                 new RbSpace(0.5f),
-                new RbText(DssRef.lang.GameSettings_MuteControllerDisconnect)
+                new RbText(Ref.langOpt.GameSettings_MuteControllerDisconnect)
             }, Ref.gamesett.muteControllerDisconnectProperty));
         }
 

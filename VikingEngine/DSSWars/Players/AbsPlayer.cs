@@ -51,6 +51,7 @@ namespace VikingEngine.DSSWars.Players
             if (newGame)
             {
                 createStartupBarracks();
+                faction.addGold_factionWide(DssRef.difficulty.setting_gameMode == GameModeMainType.Sandbox? 500 : 200);
             }
         }
 
@@ -122,7 +123,7 @@ namespace VikingEngine.DSSWars.Players
         virtual public void aiPlayerAsynchUpdate(float time)
         { }
 
-        virtual public void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation)
+        virtual public void onNewRelation(Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation)
         {
             //On peace, stop all attacking armies
             bool fromWar = Diplomacy.IsWar(previousRelation);
@@ -201,8 +202,8 @@ namespace VikingEngine.DSSWars.Players
 
                 //player.GetAiPlayer().refreshAggression();
 
-                var relation = DssRef.diplomacy.GetOrCreateRelation(faction, player.faction);
-                relation.SetWorseSpeakTerms(DssRef.diplomacy.SpeakTermsOnNeigbor_BadChance, DssRef.diplomacy.SpeakTermsOnNeigbor_NoneChance);
+                ref var relation = ref DssRef.world.diplomacy.GetRefRelation(faction.myIndex, player.faction.myIndex);
+                relation.SetWorseSpeakTerms(DssRef.world.diplomacy.SpeakTermsOnNeigbor_BadChance, DssRef.world.diplomacy.SpeakTermsOnNeigbor_NoneChance);
 
                 if (faction.Size() >= FactionSize.Big)
                 {

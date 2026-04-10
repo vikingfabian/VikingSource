@@ -74,14 +74,14 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public override string Hud_Purchase_ResourceCost => "{1} {0}";
+        public override string Language_ItemCount => "{1} {0}";
 
-        public override string DisplayMode => "画面モード";
-        public override string DisplayMode_Windowed => "ウィンドウ";
-        public override string DisplayMode_BorderlessFullscreen => "ボーダーレスウィンドウ";
+        //public override string DisplayMode => "画面モード";
+        //public override string DisplayMode_Windowed => "ウィンドウ";
+        //public override string DisplayMode_BorderlessFullscreen => "ボーダーレスウィンドウ";
 
-        public override string GameSettings_RenderedMouseCursor => "カーソル描画";
-        public override string GameSettings_MuteControllerDisconnect => "コントローラー切断通知をミュート";
+        //public override string GameSettings_RenderedMouseCursor => "カーソル描画";
+        //public override string GameSettings_MuteControllerDisconnect => "コントローラー切断通知をミュート";
 
         public override string Delivery_MaxDistance => "最大配送距離: {0}";
         public override string Tutorial_WillTakeAWhile => "時間がかかります。後で戻ってきてください。";
@@ -177,7 +177,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// アイテム数の表示方法。0: アイテム, 1: 数量
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// 言語オプションの選択
@@ -419,7 +419,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// ユニットの金コスト。
         /// </summary>
-        public override string Hud_Upkeep => "維持費: {0}";
+        public override string Hud_Upkeep => "維持費";
         public override string Hud_ArmyUpkeep => "軍隊維持費: {0}";
 
         /// <summary>
@@ -431,14 +431,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "都市を拡張する必要があります。";
 
-        public override string Hud_SoldierCount => "兵士数: {0}";
+        public override string Hud_SoldierCount => "兵士数";
 
-        public override string Hud_SoldierGroupsCount => "グループ数: {0}";
+        public override string Hud_SoldierGroupsCount => "グループ数";
 
         /// <summary>
         /// ゲーム内表示。ユニットの計算された戦闘力。
         /// </summary>
-        public override string Hud_StrengthRating => "戦力評価: {0}";
+        public override string Hud_StrengthRating => "戦力評価";
 
         /// <summary>
         /// ゲーム内表示。国全体の計算された戦闘力。
@@ -787,7 +787,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// ゲーム終了画面に表示される統計。表示タイトル。
         /// </summary>
-        public override string EndGameStatistics_Title => "統計";
+        public override string Statistics_Title => "統計";
 
         /// <summary>
         /// ゲーム終了画面に表示される統計。経過した総ゲーム内時間。
@@ -983,7 +983,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 兵士が耐えられる傷の数
         /// </summary>
-        public override string SoldierStats_Health => "健康: {0}";
+        public override string SoldierStats_Health => "健康";
 
         /// <summary>
         /// 一部の兵士は軍隊の移動速度を上げます
@@ -1544,10 +1544,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "特定の分野で攻撃力が{0}増加し、他のすべての分野が減少します";
         public override string Conscript_SelectBuilding => "兵舎を選択";
 
-        public override string Conscript_WeaponDamage => "武器のダメージ: {0}";
-        public override string Conscript_ArmorHealth => "鎧の耐久力: {0}";
-        public override string Conscript_TrainingSpeed => "攻撃速度: {0}";
-        public override string Conscript_TrainingTime => "訓練時間: {0}";
+        public override string Conscript_WeaponDamage => "武器のダメージ";
+        public override string Conscript_ArmorHealth => "鎧の耐久力";
+        public override string Conscript_AttackSpeed => "攻撃速度";
+        public override string Conscript_TrainingTime => "訓練時間";
 
         public override string Conscript_Training_Minimal => "最低限";
         public override string Conscript_Training_Basic => "基本";
@@ -1581,7 +1581,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "毎秒あたりの資源で表示されます。";
+        public override string Info_ResourcePerSecond => "毎秒あたりの資源で表示されます。";
 
         public override string Info_MinuteAverage => "この値は、過去1分の平均値です。";
 
@@ -1641,12 +1641,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "ネットワーカー";
         public override string CityCulture_PitMasters => "燃料生産者";
 
-        public override string CityCulture_CultureIsX => "文化: {0}";
+        public override string CityCulture_Culture => "文化";
         public override string CityCulture_LargeFamilies_Description => "出生率が上昇します";
         public override string CityCulture_FertileGround_Description => "作物の収穫量が増えます";
         public override string CityCulture_Archers_Description => "熟練した弓兵を生産します";
         public override string CityCulture_Warriors_Description => "熟練した近接戦闘兵を生産します";
-        public override string CityCulture_AnimalBreeder_Description => "動物がより多くの資源を提供します";
+        //public override string CityCulture_AnimalBreeder_Description => "動物がより多くの資源を提供します";
         public override string CityCulture_Miners_Description => "鉱石の採掘量が増えます";
         public override string CityCulture_Woodcutters_Description => "木材の生産量が増えます";
         public override string CityCulture_Builders_Description => "建設が速くなります";
@@ -1687,13 +1687,15 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "石炭";
 
-        public override string Language_XUpkeepIsY => "{0}の維持費：{1}";
+        public override string Language_XUpkeep => "{0}の維持費";
         public override string Language_XCountIsY => "{0}の数：{1}";
 
         public override string Message_ArmyOutOfFood_Text => "高価な食料はブラックマーケットから購入されます。お金がなくなると、飢えた兵士は脱走します。";
 
-        public override string Info_ArmyFood => "軍隊は最も近い友好都市から食料を補給します。他の派閥から食料を購入することもできます。敵対地域では、食料をブラックマーケットからしか購入できません。";
-
+        public override string Info_ArmyFood1 => "軍隊は最も近い友好的な都市から食料を補充します。";
+        public override string Info_ArmyFood2 => "食料は他の勢力から購入できます。";
+        public override string Info_ArmyFood3 => "敵対的な地域では、闇市場からのみ食料を購入できます。"; 
+       
         public override string FactionName_Monger => "商人";
         public override string FactionName_Hatu => "ハツ";
         public override string FactionName_Destru => "デストル";

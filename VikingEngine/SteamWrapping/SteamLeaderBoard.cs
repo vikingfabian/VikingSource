@@ -56,7 +56,7 @@ namespace VikingEngine.SteamWrapping
 
     class SteamLeaderBoardLocal : AbsSteamLeaderBoardInstance
     {        
-        string name;
+        protected string name;
         bool uploadOnFind;
 
         Action<List<SteamLeaderBoardRemote>> downloadCallback = null;
@@ -64,12 +64,15 @@ namespace VikingEngine.SteamWrapping
         CallResult<LeaderboardFindResult_t> findLeaderboardCallback;
         CallResult<LeaderboardScoreUploaded_t> leaderboardScoreUploadedCallback;
         CallResult<LeaderboardScoresDownloaded_t> leaderboardScoreDownloadedCallback;
+
+        public SteamLeaderBoardLocal()
+        { }
         public SteamLeaderBoardLocal(string name)
         {
             this.name = name;
         }
         
-        public void BeginUpload()
+        virtual public void BeginUpload()
         {
             uploadOnFind = true;
             find();
@@ -84,14 +87,21 @@ namespace VikingEngine.SteamWrapping
 
         void find()
         {
-            if (Ref.steam.isInitialized && Ref.steam.leaderboardsInitialized)
+            if (Ref.steam.isInitialized /*&& Ref.steam.leaderboardsInitialized*/)
             {
                 findLeaderboardCallback = new CallResult<LeaderboardFindResult_t>(onFindLeaderboard);
                 var apiCall = SteamUserStats.FindLeaderboard(name);//"Error");
                 findLeaderboardCallback.Set(apiCall);
             }
         }
-        
+        //void findOrCreate()
+        //{
+        //    if (Ref.steam.isInitialized /*&& Ref.steam.leaderboardsInitialized*/)
+        //    {
+               
+        //    }
+        //}
+
         void onFindLeaderboard(LeaderboardFindResult_t caller, bool ioFailure)
         {
             if (caller.m_bLeaderboardFound != byte.MinValue)
@@ -102,7 +112,7 @@ namespace VikingEngine.SteamWrapping
                 {
                     leaderboardScoreUploadedCallback = new CallResult<LeaderboardScoreUploaded_t>(onLeaderboardScoreUploaded);
                     SteamAPICall_t apiCall = SteamUserStats.UploadLeaderboardScore(leaderboard,
-                        ELeaderboardUploadScoreMethod.k_ELeaderboardUploadScoreMethodForceUpdate,
+                        ELeaderboardUploadScoreMethod.k_ELeaderboardUploadScoreMethodKeepBest,
                         score, scoreDetails.Array, scoreDetails.Count);
                     leaderboardScoreUploadedCallback.Set(apiCall);
                 }

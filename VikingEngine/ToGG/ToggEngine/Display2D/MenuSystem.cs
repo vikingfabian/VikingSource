@@ -30,7 +30,7 @@ namespace VikingEngine.ToGG
 
         public void OpenMenu(bool inGame)
         {
-            Input.Mouse.LockToScreenArea = false;
+            Input.Mouse.SetMenuMode(true);
 
             if (menu == null)
             {
@@ -74,7 +74,7 @@ namespace VikingEngine.ToGG
         }
         public void CloseMenu()
         {
-            Input.Mouse.LockToScreenArea = true;
+            Input.Mouse.SetMenuMode(false);
 
             if (menu != null)
             {

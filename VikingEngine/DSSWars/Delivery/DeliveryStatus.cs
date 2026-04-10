@@ -261,7 +261,7 @@ namespace VikingEngine.DSSWars.Delivery
             }
             else
             {
-                result = active.ToString() + ", " + string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
+                result = active.ToString() + ", " + string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
             }
 
             return result;
@@ -410,7 +410,7 @@ namespace VikingEngine.DSSWars.Delivery
         {
             distance = VectorExt.Length((othercity.tilePos - from.tilePos).Vec);
             float time = distance / DssVar.Men_StandardWalkingSpeed_PerSec;
-            if (from.Culture == CityCulture.Networker)
+            if (from.cityCulture == CityCulture.Networker)
             {
                 time *= 0.5f;
             }

@@ -81,14 +81,14 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
         /// </summary>
-        public abstract string Hud_Purchase_ResourceCost { get; }
+        public abstract string Language_ItemCount { get; }
 
-        public abstract string DisplayMode { get; }
-        public abstract string DisplayMode_Windowed { get; }
-        public abstract string DisplayMode_BorderlessFullscreen { get; }
+        //public abstract string DisplayMode { get; }
+        //public abstract string DisplayMode_Windowed { get; }
+        //public abstract string DisplayMode_BorderlessFullscreen { get; }
 
-        public abstract string GameSettings_RenderedMouseCursor { get; }
-        public abstract string GameSettings_MuteControllerDisconnect { get; }
+        //public abstract string GameSettings_RenderedMouseCursor { get; }
+        //public abstract string GameSettings_MuteControllerDisconnect { get; }
 
         public abstract string Delivery_MaxDistance { get; }
         public abstract string Tutorial_WillTakeAWhile { get; }
@@ -189,7 +189,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public abstract string MyLanguage { get; }
 
-        public abstract string Language_ItemCountPresentation { get; }
+        public abstract string Language_ItemCount_Colon { get; }
 
         public abstract string Lobby_Language { get; }
         public abstract string Lobby_Start { get; }
@@ -387,7 +387,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Diplomacy_WarDeclarationTitle { get; }
         public abstract string Diplomacy_TruceEndTitle { get; }
 
-        public abstract string EndGameStatistics_Title { get; }
+        public abstract string Statistics_Title { get; }
         public abstract string EndGameStatistics_Time { get; }
         public abstract string EndGameStatistics_SoldiersRecruited { get; }
         public abstract string EndGameStatistics_FriendlySoldiersLost { get; }
@@ -765,7 +765,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public abstract string Conscript_WeaponDamage { get; }
         public abstract string Conscript_ArmorHealth { get; }
-        public abstract string Conscript_TrainingSpeed { get; }
+        public abstract string Conscript_AttackSpeed { get; }
         public abstract string Conscript_TrainingTime { get; }
 
         public abstract string Conscript_Training_Minimal { get; }
@@ -800,7 +800,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public abstract string Info_ButtonIcon { get; }
 
-        public abstract string Info_PerSecond { get; }
+        public abstract string Info_ResourcePerSecond { get; }
 
         public abstract string Info_MinuteAverage { get; }
 
@@ -860,12 +860,12 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string CityCulture_Networker { get; }
         public abstract string CityCulture_PitMasters { get; }
 
-        public abstract string CityCulture_CultureIsX { get; }
+        public abstract string CityCulture_Culture { get; }
         public abstract string CityCulture_LargeFamilies_Description { get; }
         public abstract string CityCulture_FertileGround_Description { get; }
         public abstract string CityCulture_Archers_Description { get; }
         public abstract string CityCulture_Warriors_Description { get; }
-        public abstract string CityCulture_AnimalBreeder_Description { get; }
+        //public abstract string CityCulture_AnimalBreeder_Description { get; }
         public abstract string CityCulture_Miners_Description { get; }
         public abstract string CityCulture_Woodcutters_Description { get; }
         public abstract string CityCulture_Builders_Description { get; }
@@ -902,10 +902,12 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string BuildingType_ResourceMine { get; }
         public abstract string Resource_TypeName_BogIron { get; }
         public abstract string Resource_TypeName_Coal { get; }
-        public abstract string Language_XUpkeepIsY { get; }
+        public abstract string Language_XUpkeep { get; }
         public abstract string Language_XCountIsY { get; }
         public abstract string Message_ArmyOutOfFood_Text { get; }
-        public abstract string Info_ArmyFood { get; }
+        public abstract string Info_ArmyFood1 { get; }
+        public abstract string Info_ArmyFood2 { get; }
+        public abstract string Info_ArmyFood3 { get; }
         public abstract string FactionName_Monger { get; }
         public abstract string FactionName_Hatu { get; }
         public abstract string FactionName_Destru { get; }
