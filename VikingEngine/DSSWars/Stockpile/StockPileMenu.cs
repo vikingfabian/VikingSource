@@ -423,7 +423,7 @@ namespace VikingEngine.DSSWars.Resource
                 new RbSpace(0.5f),
                 new RbImage(SpriteName.WarsStockpileLimit) },
                 useLimitProperty, new RbTooltip((RichBoxContent content, object tag)=> {
-                    content.h1(DssRef.todoLang.StockPile_LimitTitle, HudLib.TitleColor_Head);
+                    content.h1(DssRef.lang.StockPile_LimitTitle, HudLib.TitleColor_Head);
                     content.text(DssRef.lang.Resource_StockPile_Info);
                     content.newParagraph();
                     content.Add(new RbSeperationLine());
@@ -442,7 +442,7 @@ namespace VikingEngine.DSSWars.Resource
                 buttonContent.Add(new RbSpace());
                 if (city == null)
                 {
-                    buttonContent.Add(new RbText(DssRef.todoLang.Hud_Maximum));
+                    buttonContent.Add(new RbText(DssRef.lang.Hud_Maximum));
                 }
                 else
                 {
@@ -477,7 +477,7 @@ namespace VikingEngine.DSSWars.Resource
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.KeyDelete)},
                     new RbAction2Arg<LocalPlayer, ItemResourceType>(city.itemCesspitClick, player, item),
-                    new RbTooltip_Text(DssRef.todoLang.BuildingType_Cesspit))
+                    new RbTooltip_Text(DssRef.lang.BuildingType_Cesspit))
                 { AddXRadius = -2 });
                 
             }

@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
 
         }
 
-        protected override string SaveString => DssRef.todoLang.Progress_ClosingCores;
+        protected override string SaveString => DssRef.lang.Progress_ClosingCores;
         public override void Time_Update(float time)
         {
             progress.TextString = string.Format( SaveString, $"{exitThreads.startCount - exitThreads.currentCount}/{exitThreads.startCount}");

@@ -117,7 +117,7 @@ namespace VikingEngine.Input
                             result = "Switch";
                             break;
                         default:
-                            result = DssRef.todoLang.InputSteam;
+                            result = Ref.langOpt.InputSteam;
                             break;
                     }
                     break;

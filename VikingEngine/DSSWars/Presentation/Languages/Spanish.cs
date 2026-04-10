@@ -8,6 +8,270 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Spanish : AbsLanguage
     {
+        //Actualización de monturas
+        public override string Leaderboards_title => "Leaderboards";
+        public override string Leaderboards_domination => "Mejor tiempo dominación mundial, {0}% o más";
+        public override string Leaderboards_victory => "Victoria en la historia, top % dificultad";
+        public override string Leaderboards_CitySize => "Tamaño máx. de ciudad, en trabajadores";
+        public override string Leaderboards_Survival => "Tiempo de supervivencia al {0}% de dificultad";
+
+        public override string Message_CannotPayUpkeep => "¡No puedes pagar el mantenimiento!";
+        public override string Animals_ProductionStop => "La producción de animales se detendrá";
+
+        public override string Tutorial_ToCapture => "Para capturar";
+        public override string Tutorial_ClickButton => "Haz clic en el botón";
+        public override string Tutorial_MoveXToY => "Mueve {0} a {1}";
+
+        public override string Workers_Description1_work => "Construirán, recolectarán recursos y craftearán objetos.";
+        public override string Workers_Description2_income => "Pagan impuestos para generar ingresos.";
+        public override string Workers_Description3_soldiers => "Pueden ser reclutados como soldados para tus ejércitos.";
+
+        public override string Hud_Time_ValuePerMinute => "Valor por minuto";
+        public override string Hud_Time_ValuePerSecond => "Valor por segundo";
+        public override string Hud_Lock => "Bloquear";
+        public override string Hud_Maximum => "Máx.";
+
+        public override string Tutorial_SeeThisInThat => "Ver {0} en {1}";
+        public override string Conscript_SkillBonus => "Bonus de skill";
+        public override string SoldierStats_UnitCount => "Número de unidades";
+        /// <summary>
+        /// Las áreas son campo, bosque, mar y asedio
+        /// </summary>
+        public override string Conscript_DamagePerSecondInAreaX => "Daño por segundo - {0}";
+        public override string Conscript_BaseHealth => "HP base";
+
+        /// <summary>
+        /// Valor resumido para la capacidad de atravesar el mapa
+        /// </summary>
+        public override string Conscript_Mobility => "Movilidad";
+
+        public override string Conscript_RiderMobility => "Movilidad de jinete";
+        public override string Conscript_LightWagonMobility => "Movilidad (Carro ligero)";
+        public override string Conscript_HeavyWagonMobility => "Movilidad (Carro pesado)";
+
+        /// <summary>
+        /// Generalizado para cualquier objeto, como skills, recursos y edificios
+        /// </summary>
+        public override string Culture_AffectedItems => "Items afectados";
+        //## Actualización de monturas ##
+        public override string Progress_ClosingCores => "Cerrando núcleos de CPU {0}";
+        public override string Editor_ExportFrame => "Exportar frame actual";
+        public override string Editor_FistFrame => "Primer frame";
+        public override string Editor_LastFrame => "Último frame";
+
+        public override string Economy_AnimalPenUpkeep => "Mantenimiento del corral: {0}";
+        public override string Work_SlaughterX => "Sacrificar {0}";
+
+        public override string BuildCategory_Farming => "Agricultura";
+        public override string Resource_TypeName_ManType => "tipo de hombre";
+        public override string Resource_TypeName_NobelMen => "nobles";
+        public override string Resource_TypeName_ConservedFood => "comida en conserva";
+
+        public override string UnitType_UnitOnMount => "montado en {0}";
+        public override string UnitType_UnitOnWagon => "carro de {0}";
+        public override string UnitType_NobelUnit => "{0} noble";
+
+        /// <summary>
+        /// 0: tipo de soldado, 1: animal
+        /// </summary>
+        public override string UnitType_LeashAnimalHandler => "{0} domador de {1}";
+
+        public override string Info_ArmyFood4 => "La comida en conserva permite mayores reservas de alimento";
+        public override string Info_ArmyFood5 => "La comida fresca se consumirá primero";
+
+        public override string Resource_ConservedFood_Reserves => "Reservas de comida en conserva";
+        public override string Resource_TypeName_Clay => "arcilla";
+        public override string Resource_TypeName_Brick => "ladrillo";
+        public override string Resource_TypeName_Container => "contenedor";
+        public override string Resource_TypeName_Meat => "carne";
+        public override string Resource_TypeName_Salt => "sal";
+        public override string Resource_TypeName_Vehicle => "vehículo";
+        public override string Resource_TypeName_WagonClosed => "carro cerrado";
+        public override string Resource_TypeName_WagonIron => "carruaje de hierro";
+        public override string Resource_TypeName_WagonSteel => "carruaje de acero";
+        public override string Resource_TypeName_Shield => "escudo";
+        public override string Resource_TypeName_BucklerShield => "broquel";
+        public override string Resource_TypeName_RoundShield => "escudo redondo";
+        public override string Resource_TypeName_HeaterShield => "escudo triangular";
+        public override string Resource_TypeName_TowerShield => "escudo de torre";
+
+        public override string Resource_TypeName_Mount => "montura";
+
+        public override string Resource_TypeName_MountArmorTitle => "armadura de montura";
+
+        /// <summary>
+        /// 0: tipo de armadura
+        /// </summary>
+        public override string Resource_TypeName_MountArmorX => "montura de {0}";
+        public override string Resource_TypeName_Animal => "animal";
+
+        //public override string Resource_TypeName_WildAnimal => "animal salvaje";
+
+        /// <summary>
+        /// Área con animales salvajes
+        /// </summary>
+        public override string Terrain_XAnimalHabitat => "Hábitat de {0}";
+
+        public override string Resource_TypeName_Oxen => "buey";
+        public override string Resource_TypeName_KineOxen => "ganado bovino";
+
+        /// <summary>
+        /// Gallina de tier bajo (para cría)
+        /// </summary>
+        public override string Resource_TypeName_Fowl => "ave de corral";
+
+        /// <summary>
+        /// Cerdo de tier bajo (para cría)
+        /// </summary>
+        public override string Resource_TypeName_Boar => "verraco";
+        public override string Resource_TypeName_Pig => "cerdo";
+        public override string Resource_TypeName_Hen => "gallina";
+        public override string Resource_TypeName_Dog => "perro";
+        public override string Resource_TypeName_Hound => "sabueso";
+
+        public override string Resource_TypeName_Pony => "poni";
+        public override string Resource_TypeName_Horse => "caballo";
+        public override string Resource_TypeName_WarHorse => "caballo de guerra";
+        public override string Resource_TypeName_DraftHorse => "caballo de tiro";
+
+        public override string Resource_TypeName_WildPig => "cerdo salvaje";
+        public override string Resource_TypeName_WildHog => "jabalí";
+        public override string Resource_TypeName_WarHog => "jabalí de guerra";
+        public override string Resource_TypeName_StagHog => "jabalí ciervo";
+
+        public override string Resource_TypeName_Wolf => "lobo";
+        public override string Resource_TypeName_Warg => "huargo";
+        public override string Resource_TypeName_AlphaWarg => "huargo alfa";
+
+        public override string Resource_TypeName_WildCat => "gato montés";
+        public override string Resource_TypeName_Lion => "león";
+        public override string Resource_TypeName_WarLion => "león de guerra";
+
+        public override string Resource_TypeName_Elephant => "elefante";
+        public override string Resource_TypeName_WarElephant => "elefante de guerra";
+        public override string Resource_TypeName_Oliphant => "olifante";
+
+        public override string BuildHud_Select => "Seleccionar edificio";
+        public override string BuildHud_AreaRadius => "Radio del área";
+
+        public override string NobelHouse_HousingCount => "Alojará a {0} nobles";
+
+        public override string BuildingType_GreatHall => "Gran Salón";
+        public override string BuildingType_GreatHall_Description => "Desbloquea reclutamiento avanzado";
+
+        public override string BuildingType_ClayPit => "Pozo de arcilla";
+        public override string BuildingType_Butcher => "Carnicero";
+        public override string BuildingType_Butcher_Description => "Procesa animales para obtener carne y pieles";
+        public override string BuildingType_Pottery => "Alfarería";
+        public override string BuildingType_CraftX_Description => "Estación de crafteo de {0}";
+
+        public override string BuildingType_GatherX_Description => "Recolectar {0}";
+
+        public override string BuildingType_Smoker => "Ahumador";
+        public override string BuildingType_Dryer => "Secadero";
+        public override string BuildingType_Shieldmaker => "Fabricante de escudos";
+        public override string BuildingType_DryingPan => "Bandeja de secado";
+
+        public override string BuildingType_TrapperHut => "Cabaña del trampero";
+        public override string BuildingType_TrapperHut_Description => "Permite capturar animales salvajes";
+
+        // --- Almacenamiento ---
+        public override string BuildingType_MaterialStorage => "Almacén de materiales";
+        public override string BuildingType_FoodStorage => "Almacén de comida";
+        public override string BuildingType_WeaponStorage => "Almacén de armas";
+        public override string BuildingType_ArmorStorage => "Almacén de armaduras";
+        public override string BuildingType_AnimalStorage => "Almacén de animales";
+
+        public override string BuildingType_Storage_Description => "Aumenta el límite de inventario en {0}";
+
+        public override string BuildingType_Cesspit => "Foso de desechos";
+        public override string BuildingType_Cesspit_Description => "Destruye recursos";
+
+        public override string BuildingType_Cesspit_Info1_StockPile => "Destruye los items que superan el límite del inventario";
+        public override string Info_XAmountIsConvertedToY => "{0} se convierte en {1}";
+        public override string Info_ProductionRestriction => "Producción de items restringida a";
+
+        public override string BuildingType_FowlPen => "Corral de aves";
+        public override string BuildingType_BoarPen => "Corral de verracos";
+
+        // --- Corrales de bueyes ---
+        public override string BuildingType_OxenPen => "Corral de bueyes";
+        public override string BuildingType_KineOxenPen => "Corral de ganado bovino";
+
+        // --- Jaulas de perros ---
+        public override string BuildingType_DogCage => "Perrera";
+        public override string BuildingType_HoundCage => "Perrera de sabuesos";
+
+        // --- Corrales de caballos ---
+        public override string BuildingType_PonyPen => "Corral de ponis";
+        public override string BuildingType_HorsePen => "Establo";
+        public override string BuildingType_WarHorsePen => "Establo de caballos de guerra";
+        public override string BuildingType_DraftHorsePen => "Establo de caballos de tiro";
+
+        // --- Corrales de cerdos/jabalíes ---
+        public override string BuildingType_WildPigPen => "Corral de cerdos salvajes";
+        public override string BuildingType_WildHogPen => "Corral de jabalíes";
+        public override string BuildingType_WarHogPen => "Corral de jabalíes de guerra";
+        public override string BuildingType_StagHogPen => "Corral de jabalíes ciervo";
+
+        // --- Jaulas de lobos ---
+        public override string BuildingType_WolfCage => "Jaula de lobos";
+        public override string BuildingType_WargCage => "Jaula de huargos";
+        public override string BuildingType_AlphaWargCage => "Jaula de huargos alfa";
+
+        // --- Jaulas de felinos ---
+        public override string BuildingType_WildCatCage => "Jaula de gatos monteses";
+        public override string BuildingType_LionCage => "Jaula de leones";
+        public override string BuildingType_WarLionCage => "Jaula de leones de guerra";
+
+        // --- Jaulas de elefantes ---
+        public override string BuildingType_ElephantCage => "Corral de elefantes";
+        public override string BuildingType_WarElephantCage => "Corral de elefantes de guerra";
+        public override string BuildingType_OliphantCage => "Corral de olifantes";
+
+        public override string BuildingDescription_Animals => "Produce animales para el reclutamiento de soldados";
+        public override string Pen_Breeding => "Cría de animales";
+        public override string Pen_BreedUpChance => "{0}% de probabilidad de subir de tier";
+        public override string Pen_BreedDownChance => "{0}% de probabilidad de bajar de tier";
+
+        public override string CityCulture_AnimalBreeder2_Description => "Mayor probabilidad de éxito en la cría";
+
+        public override string CityCulture_EnhancedProduction => "Producción de {0} mejorada";
+        public override string CityCulture_Production => "Producción de {0}";
+
+        public override string CityCulture_Butchers => "Carniceros";
+
+        public override string CityCulture_Potters => "Alfareros";
+
+        public override string CityCulture_Wainwright => "Fabricantes de carros";
+
+        public override string CityCulture_Wheelwright => "Fabricantes de ruedas";
+        public override string CityCulture_Wheelwright_Description => "Bonus de speed para los carros reclutados";
+
+        public override string CityCulture_ShieldMaker => "Fabricantes de escudos";
+
+        //public override string CityCulture_Nomads_Description => "Bajo costo de colonización";
+
+        public override string CityCulture_Coopers => "Toneleros";
+
+        public override string CityCulture_Salters => "Salineros";
+
+        public override string CityBiome_Title => "Bioma";
+        public override string CityBiome_Description => "Los biomas afectan el acceso a algunos recursos y edificios";
+
+        public override string CityBiome_Fields => "Campos";
+        public override string CityBiome_Frozen => "Helado";
+        public override string CityBiome_Forest => "Bosque";
+        public override string CityBiome_Mountain => "Montaña";
+        public override string CityBiome_Desolate => "Desolado";
+        public override string CityBiome_Desert => "Desierto";
+
+        public override string Bonus_IncreaseSkin => "Mayor producción de pieles";
+        public override string Bonus_FoodStorage => "Mayor almacenamiento de comida";
+
+        public override string StockPile_LimitTitle => "Límite de inventario";
+
+
         public override string Help_Work_Automatic => "El trabajo se realiza automáticamente";
         public override string Tutorial_SecondCity => "Consigue una segunda ciudad";
 
@@ -1449,7 +1713,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "Hogar de caballeros y diplomáticos";
         public override string BuildingType_CoalPit_Description => "Producción eficiente de combustible";
-        public override string BuildingType_Storehouse_Description => "Punto de entrega de recursos";
+        //public override string BuildingType_Storehouse_Description => "Punto de entrega de recursos";
 
         public override string MenuTab_Info => "Información";
         public override string MenuTab_Work => "Trabajo";

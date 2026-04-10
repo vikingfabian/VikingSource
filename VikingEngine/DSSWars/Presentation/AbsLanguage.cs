@@ -941,7 +941,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public abstract string BuildingType_Nobelhouse_Description { get; }
         public abstract string BuildingType_CoalPit_Description { get; }
-        public abstract string BuildingType_Storehouse_Description { get; }
+        //public abstract string BuildingType_Storehouse_Description { get; }
 
         public abstract string MenuTab_Info { get; }
         public abstract string MenuTab_Work { get; }

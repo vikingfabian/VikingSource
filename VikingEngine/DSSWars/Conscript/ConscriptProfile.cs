@@ -456,23 +456,23 @@ namespace VikingEngine.DSSWars.Conscript
                 {
                     if (vehicle == ItemResourceType.NONE)
                     {
-                        name = string.Format(DssRef.todoLang.UnitType_UnitOnMount, name);
+                        name = string.Format(DssRef.lang.UnitType_UnitOnMount, name);
                     }
                     else
                     {
-                        name = string.Format(DssRef.todoLang.UnitType_UnitOnWagon, name);
+                        name = string.Format(DssRef.lang.UnitType_UnitOnWagon, name);
                     }
                 }
                 else
                 {
                     IconName.Item(animal, out _, out string animalName);
-                    name = string.Format(DssRef.todoLang.UnitType_LeashAnimalHandler, name, animalName);
+                    name = string.Format(DssRef.lang.UnitType_LeashAnimalHandler, name, animalName);
                 }
             }
 
             if (man == ItemResourceType.NobelMen)
             {
-                name = string.Format(DssRef.todoLang.UnitType_NobelUnit, name);
+                name = string.Format(DssRef.lang.UnitType_NobelUnit, name);
             }
 
             return TextLib.LargeFirstLetter(name);
@@ -590,9 +590,9 @@ namespace VikingEngine.DSSWars.Conscript
 
                 if (animal != ItemResourceType.NONE)
                 {
-                    labelItem(DssRef.todoLang.Resource_TypeName_Animal, animal);
-                    labelItem(DssRef.todoLang.Resource_TypeName_MountArmorTitle, mountArmor);
-                    labelItem(DssRef.todoLang.Resource_TypeName_Vehicle, vehicle);
+                    labelItem(DssRef.lang.Resource_TypeName_Animal, animal);
+                    labelItem(DssRef.lang.Resource_TypeName_MountArmorTitle, mountArmor);
+                    labelItem(DssRef.lang.Resource_TypeName_Vehicle, vehicle);
                 }
                 //    IconName.Item(animal, out SpriteName animalIcon, out string animalName);
                 //    HudLib.BulletSeperationPoint(content);
@@ -618,7 +618,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                 //HudLib.BulletSeperationPoint(content);
                 labelItem(DssRef.lang.Conscript_WeaponTitle, weapon);
-                labelItem(DssRef.todoLang.Resource_TypeName_Shield, shield);
+                labelItem(DssRef.lang.Resource_TypeName_Shield, shield);
                 labelItem(DssRef.lang.Conscript_ArmorTitle, armorLevel);
 
 

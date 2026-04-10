@@ -3,12 +3,13 @@
 Change Log:
 * Fixed boar slaughter
 * set build skill on coalpit and brewery
+* fixed rare get start player crash
+* translated
 
 ##ICONS TODO
 
 #MOUNTED TODO
 x truce timer broken, and peace timer
-x translate
 
 ## MOUNTED POST CONTENT UPDATE ##
 x icons

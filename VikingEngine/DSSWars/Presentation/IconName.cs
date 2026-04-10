@@ -86,23 +86,23 @@ namespace VikingEngine.DSSWars
                 default:
                 case StorageType.MaterialStorage:
                     storeIcon = SpriteName.WarsBuild_MaterialStorage;
-                    storeText = DssRef.todoLang.BuildingType_MaterialStorage;
+                    storeText = DssRef.lang.BuildingType_MaterialStorage;
                     break;
                 case StorageType.FoodStorage:
                     storeIcon = SpriteName.WarsBuild_FoodStorage;
-                    storeText = DssRef.todoLang.BuildingType_FoodStorage;
+                    storeText = DssRef.lang.BuildingType_FoodStorage;
                     break;
                 case StorageType.WeaponStorage:
                     storeIcon = SpriteName.WarsBuild_WeaponStorage;
-                    storeText = DssRef.todoLang.BuildingType_WeaponStorage;
+                    storeText = DssRef.lang.BuildingType_WeaponStorage;
                     break;
                 case StorageType.ArmorStorage:
                     storeIcon = SpriteName.WarsBuild_ArmorStorage;
-                    storeText = DssRef.todoLang.BuildingType_ArmorStorage;
+                    storeText = DssRef.lang.BuildingType_ArmorStorage;
                     break;
                 case StorageType.AnimalStorage:
                     storeIcon = SpriteName.WarsBuild_AnimalStorage;
-                    storeText = DssRef.todoLang.BuildingType_AnimalStorage;
+                    storeText = DssRef.lang.BuildingType_AnimalStorage;
                     break;
 
             }
@@ -154,7 +154,7 @@ namespace VikingEngine.DSSWars
                     break;
                 case ItemResourceType.NobelMen:
                     itemIcon = SpriteName.WarsNobelman;
-                    itemName = DssRef.todoLang.Resource_TypeName_NobelMen;
+                    itemName = DssRef.lang.Resource_TypeName_NobelMen;
                     break;
                 case ItemResourceType.Settler:
                     itemIcon = SpriteName.WarsSettler; // Defaulting to worker icon
@@ -197,15 +197,15 @@ namespace VikingEngine.DSSWars
 
                 case ItemResourceType.Salt:
                     itemIcon = SpriteName.WarsResource_Salt;
-                    itemName = DssRef.todoLang.Resource_TypeName_Salt;
+                    itemName = DssRef.lang.Resource_TypeName_Salt;
                     break;
                 case ItemResourceType.Clay:
                     itemIcon = SpriteName.WarsResource_Clay;
-                    itemName = DssRef.todoLang.Resource_TypeName_Clay;
+                    itemName = DssRef.lang.Resource_TypeName_Clay;
                     break;
                 case ItemResourceType.Brick:
                     itemIcon = SpriteName.WarsResource_Brick;
-                    itemName = DssRef.todoLang.Resource_TypeName_Brick;
+                    itemName = DssRef.lang.Resource_TypeName_Brick;
                     break;
 
                 // --- Food & Agriculture ---
@@ -216,7 +216,7 @@ namespace VikingEngine.DSSWars
 
                 case ItemResourceType.ConservedFood:
                     itemIcon = SpriteName.WarsResource_ConservedFood;
-                    itemName = DssRef.todoLang.Resource_TypeName_ConservedFood;
+                    itemName = DssRef.lang.Resource_TypeName_ConservedFood;
                     break;
 
                 case ItemResourceType.Egg:
@@ -243,133 +243,133 @@ namespace VikingEngine.DSSWars
                 case ItemResourceType.SlaughterFowl:
                 case ItemResourceType.Fowl:
                     itemIcon = SpriteName.WarsResource_Fowl;
-                    itemName = DssRef.todoLang.Resource_TypeName_Fowl;
+                    itemName = DssRef.lang.Resource_TypeName_Fowl;
                     break;
 
                 case ItemResourceType.SlaughterHen:
                 case ItemResourceType.Hen:
                     itemIcon = SpriteName.WarsResource_Hen;
-                    itemName = DssRef.todoLang.Resource_TypeName_Hen;
+                    itemName = DssRef.lang.Resource_TypeName_Hen;
                     break;
 
                 case ItemResourceType.SlaughterBoar:
                 case ItemResourceType.Boar:
                     itemIcon = SpriteName.WarsResource_Boar;
-                    itemName = DssRef.todoLang.Resource_TypeName_Boar;
+                    itemName = DssRef.lang.Resource_TypeName_Boar;
                     break;
 
                 case ItemResourceType.SlaughterPig:
                 case ItemResourceType.Pig:
                     itemIcon = SpriteName.WarsResource_Pig;
-                    itemName = DssRef.todoLang.Resource_TypeName_Pig;
+                    itemName = DssRef.lang.Resource_TypeName_Pig;
                     break;
                 case ItemResourceType.SlaughterOxen:
                 case ItemResourceType.Oxen:
                     itemIcon = SpriteName.WarsResource_Oxen;
-                    itemName = DssRef.todoLang.Resource_TypeName_Oxen;
+                    itemName = DssRef.lang.Resource_TypeName_Oxen;
                     break;
                 case ItemResourceType.SlaughterKineOxen:
                 case ItemResourceType.KineOxen:
                     itemIcon = SpriteName.WarsResource_KineOxen;
-                    itemName = DssRef.todoLang.Resource_TypeName_KineOxen;
+                    itemName = DssRef.lang.Resource_TypeName_KineOxen;
                     break;
 
                 case ItemResourceType.Dog:
                     itemIcon = SpriteName.WarsResource_Dog;
-                    itemName = DssRef.todoLang.Resource_TypeName_Dog;
+                    itemName = DssRef.lang.Resource_TypeName_Dog;
                     break;
                 case ItemResourceType.Hound:
                     itemIcon = SpriteName.WarsResource_Hound;
-                    itemName = DssRef.todoLang.Resource_TypeName_Hound;
+                    itemName = DssRef.lang.Resource_TypeName_Hound;
                     break;
 
                 // --- Horses ---
                 case ItemResourceType.SlaughterPony:
                 case ItemResourceType.Pony:
                     itemIcon = SpriteName.WarsResource_Pony;
-                    itemName = DssRef.todoLang.Resource_TypeName_Pony;
+                    itemName = DssRef.lang.Resource_TypeName_Pony;
                     break;
                 case ItemResourceType.SlaughterHorse:
                 case ItemResourceType.Horse:
                     itemIcon = SpriteName.WarsResource_Horse;
-                    itemName = DssRef.todoLang.Resource_TypeName_Horse;
+                    itemName = DssRef.lang.Resource_TypeName_Horse;
                     break;
                 case ItemResourceType.SlaughterWarHorse:
                 case ItemResourceType.WarHorse:
                     itemIcon = SpriteName.WarsResource_WarHorse;
-                    itemName = DssRef.todoLang.Resource_TypeName_WarHorse;
+                    itemName = DssRef.lang.Resource_TypeName_WarHorse;
                     break;
                 case ItemResourceType.SlaughterDraftHorse:
                 case ItemResourceType.DraftHorse:
                     itemIcon = SpriteName.WarsResource_DraftHorse;
-                    itemName = DssRef.todoLang.Resource_TypeName_DraftHorse;
+                    itemName = DssRef.lang.Resource_TypeName_DraftHorse;
                     break;
 
                 // --- Wild Pigs / Hogs ---
                 case ItemResourceType.SlaughterWildPig:
                 case ItemResourceType.WildPig:
                     itemIcon = SpriteName.WarsResource_WildPig;
-                    itemName = DssRef.todoLang.Resource_TypeName_WildPig;
+                    itemName = DssRef.lang.Resource_TypeName_WildPig;
                     break;
                 case ItemResourceType.SlaughterWildHog:
                 case ItemResourceType.WildHog:
                     itemIcon = SpriteName.WarsResource_WildHog;
-                    itemName = DssRef.todoLang.Resource_TypeName_WildHog;
+                    itemName = DssRef.lang.Resource_TypeName_WildHog;
                     break;
                 case ItemResourceType.SlaughterWarHog:
                 case ItemResourceType.WarHog:
                     itemIcon = SpriteName.WarsResource_WarHog;
-                    itemName = DssRef.todoLang.Resource_TypeName_WarHog;
+                    itemName = DssRef.lang.Resource_TypeName_WarHog;
                     break;
                 case ItemResourceType.SlaughterStagHog:
                 case ItemResourceType.StagHog:
                     itemIcon = SpriteName.WarsResource_StagHog;
-                    itemName = DssRef.todoLang.Resource_TypeName_StagHog;
+                    itemName = DssRef.lang.Resource_TypeName_StagHog;
                     break;
 
                 // --- Wolves ---
                 case ItemResourceType.Wolf:
                     itemIcon = SpriteName.WarsResource_Wolf;
-                    itemName = DssRef.todoLang.Resource_TypeName_Wolf;
+                    itemName = DssRef.lang.Resource_TypeName_Wolf;
                     break;
                 case ItemResourceType.Warg:
                     itemIcon = SpriteName.WarsResource_Warg;
-                    itemName = DssRef.todoLang.Resource_TypeName_Warg;
+                    itemName = DssRef.lang.Resource_TypeName_Warg;
                     break;
                 case ItemResourceType.AlphaWarg:
                     itemIcon = SpriteName.WarsResource_AlphaWarg;
-                    itemName = DssRef.todoLang.Resource_TypeName_AlphaWarg;
+                    itemName = DssRef.lang.Resource_TypeName_AlphaWarg;
                     break;
 
                 // --- Cats ---
                 case ItemResourceType.WildCat:
                     itemIcon = SpriteName.WarsResource_WildCat;
-                    itemName = DssRef.todoLang.Resource_TypeName_WildCat;
+                    itemName = DssRef.lang.Resource_TypeName_WildCat;
                     break;
                 case ItemResourceType.Lion:
                     itemIcon = SpriteName.WarsResource_Lion;
-                    itemName = DssRef.todoLang.Resource_TypeName_Lion;
+                    itemName = DssRef.lang.Resource_TypeName_Lion;
                     break;
                 case ItemResourceType.WarLion:
                     itemIcon = SpriteName.WarsResource_WarLion;
-                    itemName = DssRef.todoLang.Resource_TypeName_WarLion;
+                    itemName = DssRef.lang.Resource_TypeName_WarLion;
                     break;
 
                 // --- Elephants ---
                 case ItemResourceType.SlaughterElephant:
                 case ItemResourceType.Elephant:
                     itemIcon = SpriteName.WarsResource_Elephant;
-                    itemName = DssRef.todoLang.Resource_TypeName_Elephant;
+                    itemName = DssRef.lang.Resource_TypeName_Elephant;
                     break;
                 case ItemResourceType.SlaughterWarElephant:
                 case ItemResourceType.WarElephant:
                     itemIcon = SpriteName.WarsResource_WarElephant;
-                    itemName = DssRef.todoLang.Resource_TypeName_WarElephant;
+                    itemName = DssRef.lang.Resource_TypeName_WarElephant;
                     break;
                 case ItemResourceType.SlaughterOliphant:
                 case ItemResourceType.Oliphant:
                     itemIcon = SpriteName.WarsResource_Oliphant;
-                    itemName = DssRef.todoLang.Resource_TypeName_Oliphant;
+                    itemName = DssRef.lang.Resource_TypeName_Oliphant;
                     break;
 
 
@@ -494,19 +494,19 @@ namespace VikingEngine.DSSWars
                 // --- Shields ---
                 case ItemResourceType.BucklerShield:
                     itemIcon = SpriteName.WarsResource_BucklerShield;
-                    itemName = DssRef.todoLang.Resource_TypeName_BucklerShield;
+                    itemName = DssRef.lang.Resource_TypeName_BucklerShield;
                     break;
                 case ItemResourceType.RoundShield:
                     itemIcon = SpriteName.WarsResource_RoundShield;
-                    itemName = DssRef.todoLang.Resource_TypeName_RoundShield;
+                    itemName = DssRef.lang.Resource_TypeName_RoundShield;
                     break;
                 case ItemResourceType.HeaterShield:
                     itemIcon = SpriteName.WarsResource_HeaterShield;
-                    itemName = DssRef.todoLang.Resource_TypeName_HeaterShield;
+                    itemName = DssRef.lang.Resource_TypeName_HeaterShield;
                     break;
                 case ItemResourceType.TowerShield:
                     itemIcon = SpriteName.WarsResource_TowerShield;
-                    itemName = DssRef.todoLang.Resource_TypeName_TowerShield;
+                    itemName = DssRef.lang.Resource_TypeName_TowerShield;
                     break;
 
                 //case ItemResourceType.KnightsLance:
@@ -581,7 +581,7 @@ namespace VikingEngine.DSSWars
                 case ItemResourceType.PotContainer:
                 case ItemResourceType.Container:
                     itemIcon = SpriteName.WarsResource_Container;
-                    itemName = DssRef.todoLang.Resource_TypeName_Container;
+                    itemName = DssRef.lang.Resource_TypeName_Container;
                     break;
                 case ItemResourceType.Wagon2Wheel:
                     itemIcon = SpriteName.WarsResource_Wagon2Wheel;
@@ -593,15 +593,15 @@ namespace VikingEngine.DSSWars
                     break;
                 case ItemResourceType.WagonClosed:
                     itemIcon = SpriteName.WarsResource_WagonClosed;
-                    itemName = DssRef.todoLang.Resource_TypeName_WagonClosed;
+                    itemName = DssRef.lang.Resource_TypeName_WagonClosed;
                     break;
                 case ItemResourceType.WagonIron:
                     itemIcon = SpriteName.WarsResource_WagonIron;
-                    itemName = DssRef.todoLang.Resource_TypeName_WagonIron;
+                    itemName = DssRef.lang.Resource_TypeName_WagonIron;
                     break;
                 case ItemResourceType.WagonSteel:
                     itemIcon = SpriteName.WarsResource_WagonSteel;
-                    itemName = DssRef.todoLang.Resource_TypeName_WagonSteel;
+                    itemName = DssRef.lang.Resource_TypeName_WagonSteel;
                     break;
 
                 // --- Firearms & Explosives ---
@@ -670,35 +670,35 @@ namespace VikingEngine.DSSWars
 
                 case ItemResourceType.MountPaddedArmor:
                     itemIcon = SpriteName.WarsResource_MountPaddedArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_PaddedArmor.ToLower());
+                    itemName = string.Format(DssRef.lang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_PaddedArmor.ToLower());
                     break;
                 case ItemResourceType.MountHeavyPaddedArmor:
                     itemIcon = SpriteName.WarsResource_MountHeavyPaddedArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_HeavyPaddedArmor.ToLower());
+                    itemName = string.Format(DssRef.lang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_HeavyPaddedArmor.ToLower());
                     break;
                 case ItemResourceType.MountBronzeArmor:
                     itemIcon = SpriteName.WarsResource_MountBronzeArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_BronzeArmor.ToLower());
+                    itemName = string.Format(DssRef.lang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_BronzeArmor.ToLower());
                     break;
                 case ItemResourceType.MountIronArmor:
                     itemIcon = SpriteName.WarsResource_MountIronArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_IronArmor.ToLower());
+                    itemName = string.Format(DssRef.lang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_IronArmor.ToLower());
                     break;
                 case ItemResourceType.MountHeavyIronArmor:
                     itemIcon = SpriteName.WarsResource_MountHeavyIronArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_HeavyIronArmor.ToLower());
+                    itemName = string.Format(DssRef.lang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_HeavyIronArmor.ToLower());
                     break;
                 case ItemResourceType.MountLightPlateArmor:
                     itemIcon = SpriteName.WarsResource_MountLightPlateArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_LightPlateArmor.ToLower());
+                    itemName = string.Format(DssRef.lang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_LightPlateArmor.ToLower());
                     break;
                 case ItemResourceType.MountFullPlateArmor:
                     itemIcon = SpriteName.WarsResource_MountFullPlateArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_FullPlateArmor.ToLower());
+                    itemName = string.Format(DssRef.lang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_FullPlateArmor.ToLower());
                     break;
                 case ItemResourceType.MountMithrilArmor:
                     itemIcon = SpriteName.WarsResource_MountMithrilArmor;
-                    itemName = string.Format(DssRef.todoLang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_MithrilArmor.ToLower());
+                    itemName = string.Format(DssRef.lang.Resource_TypeName_MountArmorX, DssRef.lang.Resource_TypeName_MithrilArmor.ToLower());
                     break;
 
                 // --- Currency ---
@@ -858,43 +858,43 @@ namespace VikingEngine.DSSWars
 
                 case Data.CityCulture.AnimalBreeder2:
                     title = DssRef.lang.CityCulture_AnimalBreeder;
-                    description = DssRef.todoLang.CityCulture_AnimalBreeder2_Description;
+                    description = DssRef.lang.CityCulture_AnimalBreeder2_Description;
                     break;
 
                 case Data.CityCulture.Butchers:
-                    title = DssRef.todoLang.CityCulture_Butchers;
-                    description = string.Format( DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_Meat);
+                    title = DssRef.lang.CityCulture_Butchers;
+                    description = string.Format( DssRef.lang.CityCulture_EnhancedProduction, DssRef.lang.Resource_TypeName_Meat);
                     break;
                
 
                 case Data.CityCulture.Potters:
-                    title = DssRef.todoLang.CityCulture_Potters;
-                    description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.CityCulture_Potters);
+                    title = DssRef.lang.CityCulture_Potters;
+                    description = string.Format(DssRef.lang.CityCulture_EnhancedProduction, DssRef.lang.CityCulture_Potters);
                     break;
 
                 case Data.CityCulture.Wainwright:
-                    title = DssRef.todoLang.CityCulture_Wainwright;
-                    description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_Vehicle);
+                    title = DssRef.lang.CityCulture_Wainwright;
+                    description = string.Format(DssRef.lang.CityCulture_EnhancedProduction, DssRef.lang.Resource_TypeName_Vehicle);
                     break;
 
                 case Data.CityCulture.Wheelwright:
-                    title = DssRef.todoLang.CityCulture_Wheelwright;
-                    description = DssRef.todoLang.CityCulture_Wheelwright_Description;
+                    title = DssRef.lang.CityCulture_Wheelwright;
+                    description = DssRef.lang.CityCulture_Wheelwright_Description;
                     break;
 
                 case Data.CityCulture.ShieldMaker:
-                    title = DssRef.todoLang.CityCulture_ShieldMaker;
-                    description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_Shield);
+                    title = DssRef.lang.CityCulture_ShieldMaker;
+                    description = string.Format(DssRef.lang.CityCulture_EnhancedProduction, DssRef.lang.Resource_TypeName_Shield);
                     break;
 
                 case Data.CityCulture.Coopers:
-                    title = DssRef.todoLang.CityCulture_Coopers;
-                    description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_Container);
+                    title = DssRef.lang.CityCulture_Coopers;
+                    description = string.Format(DssRef.lang.CityCulture_EnhancedProduction, DssRef.lang.Resource_TypeName_Container);
                     break;
 
                 case Data.CityCulture.Salters:
-                    title = DssRef.todoLang.CityCulture_Salters;
-                    description = string.Format(DssRef.todoLang.CityCulture_EnhancedProduction, DssRef.todoLang.Resource_TypeName_ConservedFood);
+                    title = DssRef.lang.CityCulture_Salters;
+                    description = string.Format(DssRef.lang.CityCulture_EnhancedProduction, DssRef.lang.Resource_TypeName_ConservedFood);
                     break;
 
                 case Data.CityCulture.Nomads:
@@ -925,7 +925,7 @@ namespace VikingEngine.DSSWars
                     break;
                 case BuildCategoryTab.Farming:
                     tabIcon = SpriteName.warsBuildCategoryFarm;
-                    category = DssRef.todoLang.BuildCategory_Farming;
+                    category = DssRef.lang.BuildCategory_Farming;
                     break;
                 case BuildCategoryTab.Advanced:
                     tabIcon = SpriteName.warsBuildCategoryAdvanced;
@@ -1023,7 +1023,7 @@ namespace VikingEngine.DSSWars
 
                 case ResourceGroupType.Animals:
                     groupIcon = SpriteName.WarsResource_Horse;
-                    groupName = TextLib.LargeFirstLetter(DssRef.todoLang.Resource_TypeName_Animal); // Replace with DssRef.lang.Mounts if available
+                    groupName = TextLib.LargeFirstLetter(DssRef.lang.Resource_TypeName_Animal); // Replace with DssRef.lang.Mounts if available
                     break;
 
                 default:
@@ -1175,7 +1175,7 @@ namespace VikingEngine.DSSWars
                             break;
                         case TerrainBuildingType.GreatHall:
                             icon = SpriteName.WarsBuild_GreatHall;
-                            name = DssRef.todoLang.BuildingType_GreatHall;
+                            name = DssRef.lang.BuildingType_GreatHall;
                             break;
                         case TerrainBuildingType.SoldierBarracks:
                             icon = SpriteName.WarsBuild_SoldierBarracks;
@@ -1382,189 +1382,189 @@ namespace VikingEngine.DSSWars
                         // --- Everything below this line was already set up with icons in your provided block ---
                         case TerrainBuildingType.Pottery:
                             icon = SpriteName.WarsBuild_Pottery;
-                            name = DssRef.todoLang.BuildingType_Pottery;
+                            name = DssRef.lang.BuildingType_Pottery;
                             break;
                         case TerrainBuildingType.DryingPan:
                             icon = SpriteName.WarsBuild_DryingPan;
-                            name = DssRef.todoLang.BuildingType_DryingPan;
+                            name = DssRef.lang.BuildingType_DryingPan;
                             break;
                         case TerrainBuildingType.Butcher:
                             icon = SpriteName.WarsBuild_Butcher;
-                            name = DssRef.todoLang.BuildingType_Butcher;
+                            name = DssRef.lang.BuildingType_Butcher;
                             break;
                         case TerrainBuildingType.Smoker:
                             icon = SpriteName.WarsBuild_Smoker;
-                            name = DssRef.todoLang.BuildingType_Smoker;
+                            name = DssRef.lang.BuildingType_Smoker;
                             break;
                         case TerrainBuildingType.Dryer:
                             icon = SpriteName.WarsBuild_Dryer;
-                            name = DssRef.todoLang.BuildingType_Dryer;
+                            name = DssRef.lang.BuildingType_Dryer;
                             break;
 
                         case TerrainBuildingType.MaterialStorage:
                             icon = SpriteName.WarsBuild_MaterialStorage;
-                            name = DssRef.todoLang.BuildingType_MaterialStorage;
+                            name = DssRef.lang.BuildingType_MaterialStorage;
                             break;
                         case TerrainBuildingType.FoodStorage:
                             icon = SpriteName.WarsBuild_FoodStorage;
-                            name = DssRef.todoLang.BuildingType_FoodStorage;
+                            name = DssRef.lang.BuildingType_FoodStorage;
                             break;
                         case TerrainBuildingType.WeaponStorage:
                             icon = SpriteName.WarsBuild_WeaponStorage;
-                            name = DssRef.todoLang.BuildingType_WeaponStorage;
+                            name = DssRef.lang.BuildingType_WeaponStorage;
                             break;
                         case TerrainBuildingType.ArmorStorage:
                             icon = SpriteName.WarsBuild_ArmorStorage;
-                            name = DssRef.todoLang.BuildingType_ArmorStorage;
+                            name = DssRef.lang.BuildingType_ArmorStorage;
                             break;
                         case TerrainBuildingType.AnimalStorage:
                             icon = SpriteName.WarsBuild_AnimalStorage;
-                            name = DssRef.todoLang.BuildingType_AnimalStorage;
+                            name = DssRef.lang.BuildingType_AnimalStorage;
                             break;
 
                         case TerrainBuildingType.Cesspit:
                             icon = SpriteName.WarsBuild_Cesspit;
-                            name = DssRef.todoLang.BuildingType_Cesspit;
+                            name = DssRef.lang.BuildingType_Cesspit;
                             break;
 
                         case TerrainBuildingType.ShieldMaker:
                             icon = SpriteName.WarsBuild_Shieldmaker;
-                            name = DssRef.todoLang.BuildingType_Shieldmaker;
+                            name = DssRef.lang.BuildingType_Shieldmaker;
                             break;
 
                         case TerrainBuildingType.TrappersHut:
                             icon = SpriteName.WarsBuild_Trapper;
-                            name = DssRef.todoLang.BuildingType_TrapperHut;
+                            name = DssRef.lang.BuildingType_TrapperHut;
                             break;
 
                         case TerrainBuildingType.FowlHabitat:
                             icon = SpriteName.WarsResource_Fowl;
-                            name = TextLib.LargeFirstLetter( string.Format(DssRef.todoLang.Terrain_XAnimalHabitat, DssRef.todoLang.Resource_TypeName_Fowl));
+                            name = TextLib.LargeFirstLetter( string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Fowl));
                             break;
                         case TerrainBuildingType.BoarHabitat:
                             icon = SpriteName.WarsResource_Boar;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.Terrain_XAnimalHabitat, DssRef.todoLang.Resource_TypeName_Boar));
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Boar));
                             break;
                         case TerrainBuildingType.OxHabitat:
                             icon = SpriteName.WarsResource_Oxen;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.Terrain_XAnimalHabitat, DssRef.todoLang.Resource_TypeName_Oxen));
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Oxen));
                             break;
                         case TerrainBuildingType.PonyHabitat:
                             icon = SpriteName.WarsResource_Pony;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.Terrain_XAnimalHabitat, DssRef.todoLang.Resource_TypeName_Pony));
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Pony));
                             break;
                         case TerrainBuildingType.CatHabitat:
                             icon = SpriteName.WarsResource_WildCat;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.Terrain_XAnimalHabitat, DssRef.todoLang.Resource_TypeName_WildCat));
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_WildCat));
                             break;
                         case TerrainBuildingType.DogHabitat:
                             icon = SpriteName.WarsResource_Dog;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.Terrain_XAnimalHabitat, DssRef.todoLang.Resource_TypeName_Dog));
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Dog));
                             break;
                         case TerrainBuildingType.WolfHabitat:
                             icon = SpriteName.WarsResource_Wolf;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.Terrain_XAnimalHabitat, DssRef.todoLang.Resource_TypeName_Wolf));
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Wolf));
                             break;
                         case TerrainBuildingType.ElephantHabitat:
                             icon = SpriteName.WarsResource_Elephant;
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.todoLang.Terrain_XAnimalHabitat, DssRef.todoLang.Resource_TypeName_Elephant));
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.Terrain_XAnimalHabitat, DssRef.lang.Resource_TypeName_Elephant));
                             break;
 
                         case TerrainBuildingType.FowlPen:
                             icon = SpriteName.WarsBuild_FowlPen;
-                            name = DssRef.todoLang.BuildingType_FowlPen;
+                            name = DssRef.lang.BuildingType_FowlPen;
                             break;
                         case TerrainBuildingType.BoarPen:
                             icon = SpriteName.WarsBuild_BoarPen;
-                            name = DssRef.todoLang.BuildingType_BoarPen;
+                            name = DssRef.lang.BuildingType_BoarPen;
                             break;
 
                            
                         case TerrainBuildingType.OxenPen:
                             icon = SpriteName.WarsBuild_OxenPen;
-                            name = DssRef.todoLang.BuildingType_OxenPen;
+                            name = DssRef.lang.BuildingType_OxenPen;
                             break;
                         case TerrainBuildingType.KineOxenPen:
                             icon = SpriteName.WarsBuild_KineOxenPen;
-                            name = DssRef.todoLang.BuildingType_KineOxenPen;
+                            name = DssRef.lang.BuildingType_KineOxenPen;
                             break;
 
                         case TerrainBuildingType.DogCage:
                             icon = SpriteName.WarsBuild_DogCage;
-                            name = DssRef.todoLang.BuildingType_DogCage;
+                            name = DssRef.lang.BuildingType_DogCage;
                             break;
                         case TerrainBuildingType.HoundCage:
                             icon = SpriteName.WarsBuild_HoundCage;
-                            name = DssRef.todoLang.BuildingType_HoundCage;
+                            name = DssRef.lang.BuildingType_HoundCage;
                             break;
 
                         case TerrainBuildingType.PonyPen:
                             icon = SpriteName.WarsBuild_PonyPen;
-                            name = DssRef.todoLang.BuildingType_PonyPen;
+                            name = DssRef.lang.BuildingType_PonyPen;
                             break;
                         case TerrainBuildingType.HorsePen:
                             icon = SpriteName.WarsBuild_HorsePen;
-                            name = DssRef.todoLang.BuildingType_HorsePen;
+                            name = DssRef.lang.BuildingType_HorsePen;
                             break;
                         case TerrainBuildingType.WarHorsePen:
                             icon = SpriteName.WarsBuild_WarHorsePen;
-                            name = DssRef.todoLang.BuildingType_WarHorsePen;
+                            name = DssRef.lang.BuildingType_WarHorsePen;
                             break;
                         case TerrainBuildingType.DraftHorsePen:
                             icon = SpriteName.WarsBuild_DraftHorsePen;
-                            name = DssRef.todoLang.BuildingType_DraftHorsePen;
+                            name = DssRef.lang.BuildingType_DraftHorsePen;
                             break;
                         case TerrainBuildingType.WildPigPen:
                             icon = SpriteName.WarsBuild_WildPigPen;
-                            name = DssRef.todoLang.BuildingType_WildPigPen;
+                            name = DssRef.lang.BuildingType_WildPigPen;
                             break;
                         case TerrainBuildingType.WildHogPen:
                             icon = SpriteName.WarsBuild_WildHogPen;
-                            name = DssRef.todoLang.BuildingType_WildHogPen;
+                            name = DssRef.lang.BuildingType_WildHogPen;
                             break;
                         case TerrainBuildingType.WarHogPen:
                             icon = SpriteName.WarsBuild_WarHogPen;
-                            name = DssRef.todoLang.BuildingType_WarHogPen;
+                            name = DssRef.lang.BuildingType_WarHogPen;
                             break;
                         case TerrainBuildingType.StagHogPen:
                             icon = SpriteName.WarsBuild_StagHogPen;
-                            name = DssRef.todoLang.BuildingType_StagHogPen;
+                            name = DssRef.lang.BuildingType_StagHogPen;
                             break;
                         case TerrainBuildingType.WolfCage:
                             icon = SpriteName.WarsBuild_WolfPen;
-                            name = DssRef.todoLang.BuildingType_WolfCage;
+                            name = DssRef.lang.BuildingType_WolfCage;
                             break;
                         case TerrainBuildingType.WargCage:
                             icon = SpriteName.WarsBuild_AlphaWargPen;
-                            name = DssRef.todoLang.BuildingType_WargCage;
+                            name = DssRef.lang.BuildingType_WargCage;
                             break;
                         case TerrainBuildingType.AlphaWargCage:
                             icon = SpriteName.WarsBuild_AlphaWargPen;
-                            name = DssRef.todoLang.BuildingType_AlphaWargCage;
+                            name = DssRef.lang.BuildingType_AlphaWargCage;
                             break;
                         case TerrainBuildingType.WildCatCage:
                             icon = SpriteName.WarsBuild_WildCatPen;
-                            name = DssRef.todoLang.BuildingType_WildCatCage;
+                            name = DssRef.lang.BuildingType_WildCatCage;
                             break;
                         case TerrainBuildingType.LionCage:
                             icon = SpriteName.WarsBuild_LionPen;
-                            name = DssRef.todoLang.BuildingType_LionCage;
+                            name = DssRef.lang.BuildingType_LionCage;
                             break;
                         case TerrainBuildingType.WarLionCage:
                             icon = SpriteName.WarsBuild_WarLionPen;
-                            name = DssRef.todoLang.BuildingType_WarLionCage;
+                            name = DssRef.lang.BuildingType_WarLionCage;
                             break;
                         case TerrainBuildingType.ElephantCage:
                             icon = SpriteName.WarsBuild_ElephantPen;
-                            name = DssRef.todoLang.BuildingType_ElephantCage;
+                            name = DssRef.lang.BuildingType_ElephantCage;
                             break;
                         case TerrainBuildingType.WarElephantCage:
                             icon = SpriteName.WarsBuild_WarElephantPen;
-                            name = DssRef.todoLang.BuildingType_WarElephantCage;
+                            name = DssRef.lang.BuildingType_WarElephantCage;
                             break;
                         case TerrainBuildingType.OliphantCage:
                             icon = SpriteName.WarsBuild_OliphantPen;
-                            name = DssRef.todoLang.BuildingType_OliphantCage;
+                            name = DssRef.lang.BuildingType_OliphantCage;
                             break;
 
                         default:
@@ -1647,7 +1647,7 @@ namespace VikingEngine.DSSWars
 
                         case TerrainSubFoilType.ClayPit:
                             icon = SpriteName.WarsClayPit;
-                            name = DssRef.todoLang.BuildingType_ClayPit;
+                            name = DssRef.lang.BuildingType_ClayPit;
                             break;
                     }
                     break;
@@ -1685,7 +1685,7 @@ namespace VikingEngine.DSSWars
                             name = string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Mithril);
                             break;
                         case TerrainMineType.Salt:
-                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.todoLang.Resource_TypeName_Salt));
+                            name = TextLib.LargeFirstLetter(string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Salt));
                             break;
                         case TerrainMineType.Sulfur:
                             name = string.Format(DssRef.lang.BuildingType_ResourceMine, DssRef.lang.Resource_TypeName_Sulfur);

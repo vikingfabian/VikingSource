@@ -16,7 +16,7 @@ namespace VikingEngine.DSSWars.Data
             content.newLine();
             content.Add(new RbImage(SpriteName.WarsMapFilterTerrain));
             content.hspace();
-            content.Add(new RbText(TextLib.LabelColon(DssRef.todoLang.CityBiome_Title), HudLib.TitleColor_Label));
+            content.Add(new RbText(TextLib.LabelColon(DssRef.lang.CityBiome_Title), HudLib.TitleColor_Label));
             content.space();
             content.Add(new RbText(LangLib.Biome(biome)));
             content.space();
@@ -26,19 +26,19 @@ namespace VikingEngine.DSSWars.Data
         static void biomeTooltip(RichBoxContent content, object tag)
         {
             CityBiome biome = (CityBiome)tag;
-            content.text(DssRef.todoLang.CityBiome_Description);
+            content.text(DssRef.lang.CityBiome_Description);
 
             switch (biome)
             {
                 case CityBiome.Frozen:
                     content.newParagraph();
-                    content.h2(DssRef.todoLang.CityBiome_Frozen, HudLib.TitleColor_Head2);
+                    content.h2(DssRef.lang.CityBiome_Frozen, HudLib.TitleColor_Head2);
 
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(SpriteName.WarsBuild_FoodStorage));
                     content.hspace();
-                    content.Add(new RbText(DssRef.todoLang.Bonus_FoodStorage));
+                    content.Add(new RbText(DssRef.lang.Bonus_FoodStorage));
 
                     content.text(string.Format(DssRef.lang.Hud_ChangeFactor, "200%"));
 
@@ -46,7 +46,7 @@ namespace VikingEngine.DSSWars.Data
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(SpriteName.WarsResource_SkinAndLinen));
                     content.hspace();
-                    content.Add(new RbText(DssRef.todoLang.Bonus_IncreaseSkin));
+                    content.Add(new RbText(DssRef.lang.Bonus_IncreaseSkin));
 
                     content.text(string.Format(DssRef.lang.Hud_ChangeFactor, "+50%"));
 
@@ -54,13 +54,13 @@ namespace VikingEngine.DSSWars.Data
 
                 case CityBiome.Mountain:
                     content.newParagraph();
-                    content.h2(DssRef.todoLang.CityBiome_Mountain, HudLib.TitleColor_Head2);
+                    content.h2(DssRef.lang.CityBiome_Mountain, HudLib.TitleColor_Head2);
 
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(SpriteName.WarsResource_WildPig));
                     content.hspace();
-                    content.Add(new RbText(string.Format(DssRef.todoLang.CityCulture_Production, DssRef.todoLang.Resource_TypeName_WildHog)));
+                    content.Add(new RbText(string.Format(DssRef.lang.CityCulture_Production, DssRef.lang.Resource_TypeName_WildHog)));
                     break;
             }
         }

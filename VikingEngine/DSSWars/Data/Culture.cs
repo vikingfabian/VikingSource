@@ -23,7 +23,7 @@ namespace VikingEngine.DSSWars.Data
             if (items != null)
             {
                 content.newParagraph();
-                HudLib.Label(content, DssRef.todoLang.Culture_AffectedItems);
+                HudLib.Label(content, DssRef.lang.Culture_AffectedItems);
                 foreach (var iconText in items)
                 {
                     content.newLine();

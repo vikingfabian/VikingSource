@@ -13,12 +13,6 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
-        //options
         
-
-
-        //regular
-        
-
     }
 }

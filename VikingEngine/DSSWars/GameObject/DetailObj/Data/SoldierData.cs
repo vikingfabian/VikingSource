@@ -75,26 +75,26 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
 
         public void StatsToHud(RichBoxContent content)
         {
-            HudLib.LabelAndText(content, SpriteName.WarsSpecializeField, string.Format(DssRef.todoLang.Conscript_DamagePerSecondInAreaX, DssRef.lang.Conscript_Specialization_Field),
+            HudLib.LabelAndText(content, SpriteName.WarsSpecializeField, string.Format(DssRef.lang.Conscript_DamagePerSecondInAreaX, DssRef.lang.Conscript_Specialization_Field),
                 TextLib.OneDecimal(DPS_land()));
 
-            HudLib.LabelAndText(content, SpriteName.WarsSpecializeSiege, string.Format(DssRef.todoLang.Conscript_DamagePerSecondInAreaX, DssRef.lang.Conscript_Specialization_Siege),
+            HudLib.LabelAndText(content, SpriteName.WarsSpecializeSiege, string.Format(DssRef.lang.Conscript_DamagePerSecondInAreaX, DssRef.lang.Conscript_Specialization_Siege),
                 TextLib.OneDecimal(DPS_structure()));
 
-            HudLib.LabelAndText(content, SpriteName.WarsSpecializeSea, string.Format(DssRef.todoLang.Conscript_DamagePerSecondInAreaX, DssRef.lang.Conscript_Specialization_Sea),
+            HudLib.LabelAndText(content, SpriteName.WarsSpecializeSea, string.Format(DssRef.lang.Conscript_DamagePerSecondInAreaX, DssRef.lang.Conscript_Specialization_Sea),
                 TextLib.OneDecimal(DPS_sea()));
 
             HudLib.LabelAndText(content, SpriteName.WarsResource_Sword, DssRef.lang.Conscript_WeaponDamage, attackDamage.ToString());
             HudLib.LabelAndText(content, SpriteName.WarsAttackSpeedIcon, DssRef.lang.Conscript_AttackSpeed, TextLib.OneDecimal(TimeExt.MillsSecToSec(attackTimePlusCoolDown)));
             content.space();
-            content.Add(new RbText(TextLib.Parentheses( DssRef.todoLang.Hud_Time_ValuePerSecond), HudLib.InfoYellow_Light));
+            content.Add(new RbText(TextLib.Parentheses( DssRef.lang.Hud_Time_ValuePerSecond), HudLib.InfoYellow_Light));
             HudLib.LabelAndText(content, SpriteName.warsArmyTag_Shield, DssRef.lang.SoldierStats_Health, basehealth.ToString());
             //HudLib.LabelAndText(content, SpriteName.cmdParry, DssRef.lang.Conscript_BlockPerSecond, TextLib.OneDecimal(1f / blocksRefillTimeSec));
             content.newLine();
             content.Add(new RbImage(SpriteName.cmdParry));
             content.space();
             content.Add(new RbText(string.Format(DssRef.lang.Conscript_BlockPerSecond, TextLib.OneDecimal(1f / blocksRefillTimeSec))));
-            HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.todoLang.Conscript_Mobility, TextLib.TwoDecimal(mobilityValue()));
+            HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.lang.Conscript_Mobility, TextLib.TwoDecimal(mobilityValue()));
         }
 
         public void applySkillBonus(float skillBonus)

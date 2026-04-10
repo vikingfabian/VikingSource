@@ -73,7 +73,7 @@ namespace VikingEngine.DSSWars.Data
         {
             RichBoxContent content = new RichBoxContent();
 
-            content.h1(DssRef.todoLang.Leaderboards_title, HudLib.TitleColor_Head);
+            content.h1(DssRef.lang.Leaderboards_title, HudLib.TitleColor_Head);
 
             content.newLine();
             List<ArtTabMember> tabMembers = new List<ArtTabMember>((int)LeaderBoardType.NUM);
@@ -120,25 +120,25 @@ namespace VikingEngine.DSSWars.Data
             switch (tab)
             {
                 case LeaderBoardType.story_difficulty:
-                    title = DssRef.todoLang.Leaderboards_victory;
+                    title = DssRef.lang.Leaderboards_victory;
                     break;
                 case LeaderBoardType.domination_speed50:
-                    title = string.Format(DssRef.todoLang.Leaderboards_domination, 50);
+                    title = string.Format(DssRef.lang.Leaderboards_domination, 50);
                     break;
                 case LeaderBoardType.domination_speed100:
-                    title = string.Format(DssRef.todoLang.Leaderboards_domination, 100);
+                    title = string.Format(DssRef.lang.Leaderboards_domination, 100);
                     break;
                 case LeaderBoardType.domination_speed150:
-                    title = string.Format(DssRef.todoLang.Leaderboards_domination, 150);
+                    title = string.Format(DssRef.lang.Leaderboards_domination, 150);
                     break;
                 case LeaderBoardType.city_size:
-                    title = DssRef.todoLang.Leaderboards_CitySize;
+                    title = DssRef.lang.Leaderboards_CitySize;
                     break;
                 case LeaderBoardType.survive300_time:
-                    title = string.Format(DssRef.todoLang.Leaderboards_Survival, SurviveLeaderBoard.Difficulty300);
+                    title = string.Format(DssRef.lang.Leaderboards_Survival, SurviveLeaderBoard.Difficulty300);
                     break;
                 case LeaderBoardType.survive400_time:
-                    title = string.Format(DssRef.todoLang.Leaderboards_Survival, SurviveLeaderBoard.Difficulty400);
+                    title = string.Format(DssRef.lang.Leaderboards_Survival, SurviveLeaderBoard.Difficulty400);
                     break;
             }
 

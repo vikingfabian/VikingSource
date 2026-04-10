@@ -372,7 +372,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (!GetCasual())
             {
                 HudLib.ItemCount(args.content, SpriteName.WarsResource_Food, DssRef.lang.Resource_TypeName_Food, TextLib.OneDecimal(food));
-                HudLib.ItemCount(args.content, SpriteName.WarsResource_ConservedFood, DssRef.todoLang.Resource_TypeName_ConservedFood, TextLib.OneDecimal(conservedFood));
+                HudLib.ItemCount(args.content, SpriteName.WarsResource_ConservedFood, DssRef.lang.Resource_TypeName_ConservedFood, TextLib.OneDecimal(conservedFood));
             }
 
             args.content.newLine();
@@ -421,7 +421,7 @@ namespace VikingEngine.DSSWars.GameObject
             HudLib.LabelAndText(args.content, SpriteName.WarsSoldierGroup, DssRef.lang.Hud_SoldierGroupsCount, groups.Count.ToString());
             HudLib.LabelAndText(args.content, SpriteName.WarsSoldierMan, DssRef.lang.Hud_SoldierCount, TextLib.LargeNumber(soldiersCount));
             HudLib.LabelAndText(args.content, SpriteName.WarsStrengthIcon, DssRef.lang.Hud_StrengthRating, TextLib.OneDecimal(strengthValue));
-            HudLib.LabelAndText(args.content, SpriteName.WarsMobilityIcon, DssRef.todoLang.Conscript_Mobility, TextLib.OneDecimal(mobilityValue));
+            HudLib.LabelAndText(args.content, SpriteName.WarsMobilityIcon, DssRef.lang.Conscript_Mobility, TextLib.OneDecimal(mobilityValue));
             args.content.newLine();
 
             if (DssRef.state.PlayType() == GameState.PlayStateType.Play)
@@ -481,11 +481,11 @@ namespace VikingEngine.DSSWars.GameObject
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(DssRef.todoLang.Info_ArmyFood4));
+                        content.Add(new RbText(DssRef.lang.Info_ArmyFood4));
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(DssRef.todoLang.Info_ArmyFood5));
+                        content.Add(new RbText(DssRef.lang.Info_ArmyFood5));
 
 
                     }));
@@ -494,7 +494,7 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsResource_ConservedFood));
                 args.content.space();
-                args.content.Add(new RbText(DssRef.todoLang.Resource_ConservedFood_Reserves +": " + TextLib.LargeNumber((int)conservedFood)));
+                args.content.Add(new RbText(DssRef.lang.Resource_ConservedFood_Reserves +": " + TextLib.LargeNumber((int)conservedFood)));
 
                 args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.TwoDecimal(foodCosts_import.displayValue_gold_sec + foodCosts_blackmarket.displayValue_gold_sec)));
                 args.content.space();

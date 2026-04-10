@@ -345,7 +345,7 @@ namespace VikingEngine.DSSWars.Interface
                         break;
 
                     case SelectTileResult.CessPit:
-                        title = new RbText(DssRef.todoLang.BuildingType_Cesspit);
+                        title = new RbText(DssRef.lang.BuildingType_Cesspit);
                         content.Add(title);
                         break;
 
@@ -406,14 +406,14 @@ namespace VikingEngine.DSSWars.Interface
                     case TerrainBuildingType.CatHabitat:
                     case TerrainBuildingType.ElephantHabitat:
                         content.Add(new RbSeperationLine());
-                        content.h2(DssRef.todoLang.Tutorial_ToCapture, HudLib.TitleColor_Head2);
+                        content.h2(DssRef.lang.Tutorial_ToCapture, HudLib.TitleColor_Head2);
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, DssRef.todoLang.BuildingType_TrapperHut)));
+                        content.Add(new RbText(string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, DssRef.lang.BuildingType_TrapperHut)));
 
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.todoLang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
+                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
 
                         content.newLine();
                         HudLib.BulletPoint(content);

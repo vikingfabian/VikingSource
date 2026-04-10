@@ -1012,11 +1012,11 @@ namespace VikingEngine.DSSWars.Build
             {
                 case BuildAndExpandType.Cesspit:
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(DssRef.todoLang.BuildingType_Cesspit_Info1_StockPile));
+                    content.Add(new RbText(DssRef.lang.BuildingType_Cesspit_Info1_StockPile));
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format( DssRef.todoLang.Info_XAmountIsConvertedToY, TextLib.PercentTextWithSymbol(DssConst.CessPitConvertToFuelPercentage), DssRef.lang.Resource_TypeName_Fuel)));
+                    content.Add(new RbText(string.Format( DssRef.lang.Info_XAmountIsConvertedToY, TextLib.PercentTextWithSymbol(DssConst.CessPitConvertToFuelPercentage), DssRef.lang.Resource_TypeName_Fuel)));
 
                     break;
 
@@ -1161,7 +1161,7 @@ namespace VikingEngine.DSSWars.Build
 
                     HudLib.BulletPoint(content);
                     //content.Add(new RbText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
-                    content.Add(new RbText(string.Format(DssRef.todoLang.NobelHouse_HousingCount, DssConst.NobelHouseMenCount)));
+                    content.Add(new RbText(string.Format(DssRef.lang.NobelHouse_HousingCount, DssConst.NobelHouseMenCount)));
                     
                     content.newLine();
 
@@ -1239,7 +1239,7 @@ namespace VikingEngine.DSSWars.Build
 
                     content.newLine();
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.todoLang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
 
                     break;
                 case BuildAndExpandType.FowlPen:
@@ -1597,7 +1597,7 @@ namespace VikingEngine.DSSWars.Build
                 content.hspace();
                 content.Add(new RbText(build.upkeep.amount.ToString()));
                 content.newLine();
-                content.text(DssRef.todoLang.Hud_Time_ValuePerMinute, HudLib.InfoYellow_Light);
+                content.text(DssRef.lang.Hud_Time_ValuePerMinute, HudLib.InfoYellow_Light);
 
                 content.newParagraph();
                 content.h2(DssRef.lang.BuildHud_PerCycle, HudLib.TitleColor_Label);
@@ -1620,19 +1620,19 @@ namespace VikingEngine.DSSWars.Build
 
                 if (canBreedup || canBreedDown)
                 {
-                    content.h2(DssRef.todoLang.Pen_Breeding, HudLib.TitleColor_Label);
+                    content.h2(DssRef.lang.Pen_Breeding, HudLib.TitleColor_Label);
                     content.newLine();
                     if (canBreedup)
                     {
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(string.Format(DssRef.todoLang.Pen_BreedUpChance, conv.ToPercentage(DssConst.BreedingUpChance))));
+                        content.Add(new RbText(string.Format(DssRef.lang.Pen_BreedUpChance, conv.ToPercentage(DssConst.BreedingUpChance))));
                     }
                     if (canBreedDown)
                     {
                         content.newLine();
                         HudLib.BulletPoint(content);
-                        content.Add(new RbText(string.Format(DssRef.todoLang.Pen_BreedDownChance, conv.ToPercentage(DssConst.BreedingDownChance))));
+                        content.Add(new RbText(string.Format(DssRef.lang.Pen_BreedDownChance, conv.ToPercentage(DssConst.BreedingDownChance))));
                     }
                 }
             }
