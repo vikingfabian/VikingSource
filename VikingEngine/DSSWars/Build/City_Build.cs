@@ -79,7 +79,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
 
                             case TerrainBuildingType.Nobelhouse:
-                                onNobelHouseBuild(build, DssConst.NobelHouseMenCount);
+                                onNobelHouseBuild(build, DssConst.NobleHouseMenCount);
                                 break;
 
                             case TerrainBuildingType.MaterialStorage:

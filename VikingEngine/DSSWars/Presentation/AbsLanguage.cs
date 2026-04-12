@@ -156,7 +156,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string BuildHud_Select { get; }
         public abstract string BuildHud_AreaRadius { get; }
 
-        public abstract string NobelHouse_HousingCount { get; }
+        public abstract string NobleHouse_HousingCount { get; }
 
 
         public abstract string BuildingType_GreatHall { get; }

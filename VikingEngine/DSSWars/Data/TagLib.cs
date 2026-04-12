@@ -233,7 +233,7 @@ namespace VikingEngine.DSSWars.Data
         BuildAndExpandType.Postal,
         BuildAndExpandType.Recruitment,
        
-        BuildAndExpandType.Nobelhouse,
+        BuildAndExpandType.Noblehouse,
         BuildAndExpandType.Tavern,
         BuildAndExpandType.Storehouse,
         BuildAndExpandType.Brewery,

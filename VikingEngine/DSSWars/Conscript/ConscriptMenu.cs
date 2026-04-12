@@ -309,7 +309,7 @@ namespace VikingEngine.DSSWars.Conscript
                     maxLevel = TrainingLevel.Basic;
                 }
 
-                if (currentStatus.profile.man == ItemResourceType.NobelMen)
+                if (currentStatus.profile.man == ItemResourceType.NobleMen)
                 {
                     minLevel = TrainingLevel.Basic;
                     maxLevel = TrainingLevel.Professional;
@@ -933,7 +933,7 @@ namespace VikingEngine.DSSWars.Conscript
         {
             ManTooltipArgs args = (ManTooltipArgs)tag;
 
-            float skillBonus = args.item == ItemResourceType.NobelMen ? DssConst.NobelMenSkillBonusAdd : 0;
+            float skillBonus = args.item == ItemResourceType.NobleMen ? DssConst.NobelMenSkillBonusAdd : 0;
 
             //HudLib.LabelAndText(content, SpriteName.cmdStatsHealth, DssRef.lang.SoldierStats_Health, TextLib.TwoDecimal(DssConst.Soldier_DefaultHealth));
             HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.lang.Conscript_Mobility, TextLib.TwoDecimal(SoldierData.Mobility(DssConst.Men_StandardWalkingSpeed)));
@@ -943,9 +943,9 @@ namespace VikingEngine.DSSWars.Conscript
             content.newParagraph();
             IconName.Item(args.item, out var itemIcon, out var itemName);
             content.h2(string.Format(DssRef.lang.Language_ItemCount, TextLib.LargeFirstLetter( itemName), args.count), HudLib.TitleColor_Head2);
-            if (args.item == ItemResourceType.NobelMen)
+            if (args.item == ItemResourceType.NobleMen)
             {
-                HudLib.LabelAndText(content, SpriteName.rtsUpkeepTime, string.Format( DssRef.lang.Language_XUpkeep, DssRef.lang.ResourceType_Gold), TextLib.PlusMinus(Money.ToGoldF(DssConst.NobelHouseMenCount * args.count)));
+                HudLib.LabelAndText(content, SpriteName.rtsUpkeepTime, string.Format( DssRef.lang.Language_XUpkeep, DssRef.lang.ResourceType_Gold), TextLib.PlusMinus(Money.ToGoldF(DssConst.NobleHouseMenCount * args.count)));
             }
             HudLib.LabelAndText(content, SpriteName.WarsResource_FoodSub, TextLib.LargeFirstLetter(string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.Resource_TypeName_Food)), TextLib.TwoDecimal(args.count * DssRef.difficulty.manFoodUpkeep));
             content.text(DssRef.lang.Hud_Time_ValuePerSecond, HudLib.InfoYellow_Light);

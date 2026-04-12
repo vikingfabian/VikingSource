@@ -154,7 +154,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildHud_Select => TextLib.ThaiConv("เลือก|สิ่งก่อสร้าง");
         public override string BuildHud_AreaRadius => TextLib.ThaiConv("รัศมี|พื้นที่");
 
-        public override string NobelHouse_HousingCount => TextLib.ThaiConv("สามารถ|รองรับ|ขุนนาง|ได้|{0}|คน");
+        public override string NobleHouse_HousingCount => TextLib.ThaiConv("สามารถ|รองรับ|ขุนนาง|ได้|{0}|คน");
 
 
         public override string BuildingType_GreatHall => TextLib.ThaiConv("โถง|ใหญ่");

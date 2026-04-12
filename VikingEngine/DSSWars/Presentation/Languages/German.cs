@@ -154,7 +154,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildHud_Select => "Gebäude auswählen";
         public override string BuildHud_AreaRadius => "Bereichsradius";
 
-        public override string NobelHouse_HousingCount => "Bietet Platz für {0} Adlige";
+        public override string NobleHouse_HousingCount => "Bietet Platz für {0} Adlige";
 
         public override string BuildingType_GreatHall => "Große Halle";
         public override string BuildingType_GreatHall_Description => "Schaltet erweiterte Rekrutierung frei";

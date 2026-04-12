@@ -204,7 +204,7 @@ namespace VikingEngine.DSSWars.Resource
         RoseWarrior_dog,
 
         Men,
-        NobelMen,
+        NobleMen,
         ServiceMen,
 
         Hen,

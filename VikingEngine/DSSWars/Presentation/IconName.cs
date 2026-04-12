@@ -152,7 +152,7 @@ namespace VikingEngine.DSSWars
                     itemIcon = SpriteName.WarsServiceMen;
                     itemName = DssRef.lang.ResourceType_ServiceMen;
                     break;
-                case ItemResourceType.NobelMen:
+                case ItemResourceType.NobleMen:
                     itemIcon = SpriteName.WarsNobelman;
                     itemName = DssRef.lang.Resource_TypeName_NobelMen;
                     break;

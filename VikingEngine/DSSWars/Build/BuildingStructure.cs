@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 Recruitment_pos;
         public IntVector2 SoldierBarracks_pos;
         public IntVector2 ImmigrationTent_pos;
-        public IntVector2 Nobelhouse_pos;
+        public IntVector2 Noblehouse_pos;
         public IntVector2 Tavern_pos;
         public IntVector2 Storehouse_pos;
         public IntVector2 Brewery_pos;
@@ -139,7 +139,7 @@ namespace VikingEngine.DSSWars.Build
                     return Recruitment_pos;
 
                 case BuildAndExpandType.SoldierBarracks: return SoldierBarracks_pos;
-                case BuildAndExpandType.Nobelhouse: return Nobelhouse_pos;
+                case BuildAndExpandType.Noblehouse: return Noblehouse_pos;
                 case BuildAndExpandType.Tavern: return Tavern_pos;
                 case BuildAndExpandType.Storehouse: return Storehouse_pos;
                 case BuildAndExpandType.Brewery: return Brewery_pos;
@@ -519,7 +519,7 @@ namespace VikingEngine.DSSWars.Build
         public int Postal_count;
         public int Recruitment_count;
         public int SoldierBarracks_count;
-        public int Nobelhouse_count;
+        public int Noblehouse_count;
         public int Tavern_count;
         public int Storehouse_count;
         public int Brewery_count;
@@ -630,7 +630,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.RecruitmentLevel3: return Recruitment_count;
 
                 case BuildAndExpandType.SoldierBarracks: return SoldierBarracks_count;
-                case BuildAndExpandType.Nobelhouse: return Nobelhouse_count;
+                case BuildAndExpandType.Noblehouse: return Noblehouse_count;
                 case BuildAndExpandType.Tavern: return Tavern_count;
                 case BuildAndExpandType.Storehouse: return Storehouse_count;
                 case BuildAndExpandType.Brewery: return Brewery_count;
@@ -750,7 +750,7 @@ namespace VikingEngine.DSSWars.Build
                     Recruitment_count += add; break;
 
                 case BuildAndExpandType.SoldierBarracks: SoldierBarracks_count += add; break;
-                case BuildAndExpandType.Nobelhouse: Nobelhouse_count += add; break;
+                case BuildAndExpandType.Noblehouse: Noblehouse_count += add; break;
                 case BuildAndExpandType.Tavern: Tavern_count += add; break;
                 case BuildAndExpandType.Storehouse: Storehouse_count += add; break;
                 case BuildAndExpandType.Brewery: Brewery_count += add; break;

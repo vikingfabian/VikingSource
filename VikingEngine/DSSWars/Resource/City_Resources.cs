@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.GameObject
                         workForce.amount += add;
                         return;
 
-                    case ItemResourceType.NobelMen:
+                    case ItemResourceType.NobleMen:
                         freeNobelMen.amount += add;
                         return;
 
@@ -278,7 +278,7 @@ namespace VikingEngine.DSSWars.GameObject
                         return new GroupedResource() { amount = amount, stockPileLimit = int.MaxValue };
                     case ItemResourceType.Men:
                         return workForce;
-                    case ItemResourceType.NobelMen:
+                    case ItemResourceType.NobleMen:
                         return freeNobelMen;
                     case ItemResourceType.ServiceMen:
                         return freeServiceMen;

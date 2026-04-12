@@ -708,6 +708,20 @@ namespace VikingEngine.DSSWars.Interface
         public void debugMenu()
         {
             openMenu();
+
+            RichBoxContent content = new RichBoxContent();
+
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.GameMenu_Resume) }, new RbAction(closeMenu))
+            {
+                fillWidth = true
+            });
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText($"Next event ({DssRef.state.events.StoryIndex()})") }, new RbAction(()=> { 
+                DssRef.state.events.TestNextEvent();
+                closeMenu();
+            })));
+
+
+            completeMenu(content);
             //GuiLayout layout = new GuiLayout("DEBUG", menu);
             //{
             //    DssRef.state.localPlayers[0].debugMenu(layout);

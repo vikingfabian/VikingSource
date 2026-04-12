@@ -158,7 +158,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildHud_Select => "Bina seç";
         public override string BuildHud_AreaRadius => "Alan yarıçapı";
 
-        public override string NobelHouse_HousingCount => "{0} soyluya ev sahipliği yapacak";
+        public override string NobleHouse_HousingCount => "{0} soyluya ev sahipliği yapacak";
 
 
         public override string BuildingType_GreatHall => "Büyük Salon";

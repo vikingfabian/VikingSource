@@ -643,7 +643,7 @@ namespace VikingEngine.DSSWars.GameObject
 
 
 
-                    case BuildAndExpandType.Nobelhouse:
+                    case BuildAndExpandType.Noblehouse:
                         chance = 20;
                         bBuild = buildingStructure.AllBarracksCount() >= 4 && Money.ToGold(previousIncome_copp) > 10;
                         break;

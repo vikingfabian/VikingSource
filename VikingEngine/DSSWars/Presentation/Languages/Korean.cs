@@ -157,7 +157,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildHud_Select => "건물 선택";
         public override string BuildHud_AreaRadius => "지역 반경";
 
-        public override string NobelHouse_HousingCount => "귀족 {0}명 수용 가능";
+        public override string NobleHouse_HousingCount => "귀족 {0}명 수용 가능";
 
 
         public override string BuildingType_GreatHall => "대강당";

@@ -83,7 +83,7 @@ namespace VikingEngine.DSSWars.Conscript
 
         public static readonly ItemResourceType[] MenTypes = {
             ItemResourceType.Men,
-            ItemResourceType.NobelMen,
+            ItemResourceType.NobleMen,
         };
 
         public static readonly List<ItemResourceType> ArmorOptions = new List<ItemResourceType>

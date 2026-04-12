@@ -1156,12 +1156,12 @@ namespace VikingEngine.DSSWars.Build
 
                     break;
 
-                case BuildAndExpandType.Nobelhouse:
+                case BuildAndExpandType.Noblehouse:
 
 
                     HudLib.BulletPoint(content);
                     //content.Add(new RbText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
-                    content.Add(new RbText(string.Format(DssRef.lang.NobelHouse_HousingCount, DssConst.NobelHouseMenCount)));
+                    content.Add(new RbText(string.Format(DssRef.lang.NobleHouse_HousingCount, DssConst.NobleHouseMenCount)));
                     
                     content.newLine();
 

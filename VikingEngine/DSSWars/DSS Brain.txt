@@ -1,7 +1,8 @@
 
 ﻿UPDATE
 Change Log:
-* 
+
+
 
 ##ICONS TODO
 
@@ -10,8 +11,11 @@ Change Log:
 
 
 ## MOUNTED POST CONTENT UPDATE ##
-x icons
-x close cores popup on battle lab
+x 3k self dying cities
+* reduce loss of worker XP (recruitment)
+* I wish I could play the story mode, but its too much time, Id really like a button I could click to call the next event early, when I feel like Im in a good spot to do so
+
+x close cores popup on battle lab, plus exit end screen
 x boil salt
 x deeper unit category with search for items and melee/ranged/warmashine filters
 (maybe filter out units for remove/split)

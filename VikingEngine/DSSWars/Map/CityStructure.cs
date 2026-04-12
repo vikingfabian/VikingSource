@@ -856,8 +856,8 @@ namespace VikingEngine.DSSWars.Map
                                         break;
 
                                     case TerrainBuildingType.Nobelhouse:
-                                        ++buildingStructure.Nobelhouse_count;
-                                        buildingPosition.Nobelhouse_pos = subTileLoop.Position;
+                                        ++buildingStructure.Noblehouse_count;
+                                        buildingPosition.Noblehouse_pos = subTileLoop.Position;
 
                                         break;
                                     case TerrainBuildingType.Embassy:

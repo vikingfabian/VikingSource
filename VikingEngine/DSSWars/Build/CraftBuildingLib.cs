@@ -1276,9 +1276,9 @@ namespace VikingEngine.DSSWars.Build
                     XP.WorkExperienceType.HouseBuilding
                 );
 
-        public static readonly CraftBlueprint NobelHouse = new CraftBlueprint(
+        public static readonly CraftBlueprint NobleHouse = new CraftBlueprint(
             CraftResultType.Building,
-            (int)Build.BuildAndExpandType.Nobelhouse,
+            (int)Build.BuildAndExpandType.Noblehouse,
             1,
             new UseResource[]
             {

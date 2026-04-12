@@ -865,6 +865,11 @@ namespace VikingEngine.DSSWars.Players
                     AbsWorldObject obj = gameControls.map.hover.obj as AbsWorldObject;
                     obj?.AddDebugTag();
                 }
+
+                if (Input.Keyboard.KeyDownEvent(Keys.B) && Input.Keyboard.Ctrl)
+                {
+                    DssRef.state.menuSystem.debugMenu();
+                }
             }
 
             mapLayersManager.Update();
@@ -1265,7 +1270,7 @@ namespace VikingEngine.DSSWars.Players
                             //specialization = SpecializationType.Traditional,
 
 
-                            man = Resource.ItemResourceType.NobelMen,
+                            man = Resource.ItemResourceType.NobleMen,
                             weapon = Resource.ItemResourceType.HandSpear,
                             armorLevel = Resource.ItemResourceType.IronArmor,
                             animal = Resource.ItemResourceType.WarHorse,

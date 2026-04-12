@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.Build
         Postal,
         Recruitment,
         SoldierBarracks,
-        Nobelhouse,
+        Noblehouse,
         Tavern,
         Storehouse,
         Brewery,
@@ -521,9 +521,9 @@ namespace VikingEngine.DSSWars.Build
 
             if (!campSite && unlocks.building_stoneBuildings)
             {
-                list.Add(BuildAndExpandType.Nobelhouse);
+                list.Add(BuildAndExpandType.Noblehouse);
 
-                if (city.buildingStructure.Nobelhouse_count > 0 ||
+                if (city.buildingStructure.Noblehouse_count > 0 ||
                     godPowers)
                 {
                     list.Add(BuildAndExpandType.Embassy);
@@ -730,7 +730,7 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Military, BuildFilterTag.Soldiers, BuildFilterTag.Military, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.Nobelhouse, TerrainMainType.Building, (int)TerrainBuildingType.Nobelhouse, SpriteName.WarsBuild_Nobelhouse, CraftBuildingLib.NobelHouse, true,
+            new BuildOption(BuildAndExpandType.Noblehouse, TerrainMainType.Building, (int)TerrainBuildingType.Nobelhouse, SpriteName.WarsBuild_Nobelhouse, CraftBuildingLib.NobleHouse, true,
                 BuildCategoryTab.Advanced, BuildFilterTag.Upgrade, BuildFilterTag.Military, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 

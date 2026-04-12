@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars.Conscript
         public float copperUpkeepPerSoldier()
         {
             var result = DssConst.TrainingCopperUpkeep[(int)training];
-            if (man == ItemResourceType.NobelMen)
+            if (man == ItemResourceType.NobleMen)
             {
                 result += DssConst.Nobel_GoldUpkeep;
             }
@@ -113,7 +113,7 @@ namespace VikingEngine.DSSWars.Conscript
 
         public bool isKnight()
         {
-            if (man == ItemResourceType.NobelMen)
+            if (man == ItemResourceType.NobleMen)
             {
                 switch (animal)
                 {
@@ -470,7 +470,7 @@ namespace VikingEngine.DSSWars.Conscript
                 }
             }
 
-            if (man == ItemResourceType.NobelMen)
+            if (man == ItemResourceType.NobleMen)
             {
                 name = string.Format(DssRef.lang.UnitType_NobelUnit, name);
             }

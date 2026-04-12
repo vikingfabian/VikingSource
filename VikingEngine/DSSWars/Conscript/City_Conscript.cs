@@ -93,7 +93,7 @@ namespace VikingEngine.DSSWars.GameObject
                                             DssRef.stats.guardsRecruited++;
                                         }
 
-                                        if (status.inProgress.man == ItemResourceType.NobelMen && status.inProgress.animal == ItemResourceType.WarHorse)
+                                        if (status.inProgress.man == ItemResourceType.NobleMen && status.inProgress.animal == ItemResourceType.WarHorse)
                                         {
                                             DssRef.achieve.UnlockAchievement_async(AchievementIndex.knights);
                                         }
@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars.GameObject
                                         switch (status.inProgress.animal)
                                         {
                                             case ItemResourceType.WarHorse:
-                                                if (status.inProgress.man == ItemResourceType.NobelMen)
+                                                if (status.inProgress.man == ItemResourceType.NobleMen)
                                                 {
                                                     DssRef.achieve.UnlockAchievement_async(AchievementIndex.knights);
                                                 }
@@ -398,7 +398,7 @@ namespace VikingEngine.DSSWars.GameObject
             SoldierConscriptProfile soldierProfile = new SoldierConscriptProfile()
             {
                 conscript = profile,
-                skillBonus = profile.man == ItemResourceType.NobelMen? DssConst.NobelMenSkillBonus : 1,
+                skillBonus = profile.man == ItemResourceType.NobleMen? DssConst.NobelMenSkillBonus : 1,
             };
 
             soldierProfile.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
@@ -420,7 +420,7 @@ namespace VikingEngine.DSSWars.GameObject
                     }
                     break;
                 case CityCulture.Noblemen:
-                    if (profile.man == ItemResourceType.NobelMen)
+                    if (profile.man == ItemResourceType.NobleMen)
                     {
                         soldierProfile.skillBonus *= 1.2f;
                     }

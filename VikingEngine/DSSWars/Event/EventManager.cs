@@ -525,7 +525,7 @@ namespace VikingEngine.DSSWars.Event
                                 {
                                     conscript = new ConscriptProfile()
                                     {
-                                        man = Resource.ItemResourceType.NobelMen,
+                                        man = Resource.ItemResourceType.NobleMen,
                                         weapon = Resource.ItemResourceType.HandSpear,
                                         armorLevel = Resource.ItemResourceType.FullPlateArmor,
                                         animal = Resource.ItemResourceType.WarHorse,

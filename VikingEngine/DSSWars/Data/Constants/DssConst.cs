@@ -48,9 +48,9 @@ namespace VikingEngine.DSSWars
 
         
         //NOBEL
-        public const int NobelHouseMenCount = 15;
+        public const int NobleHouseMenCount = 15;
         public const float NobelHouseMenAddSpeed_Minute = 5;
-        public static float NobelHouseMenAddSpeed_PerManHouse = NobelHouseMenAddSpeed_Minute / NobelHouseMenCount;
+        public static float NobelHouseMenAddSpeed_PerManHouse = NobelHouseMenAddSpeed_Minute / NobleHouseMenCount;
 
         public const float NobelMenSkillBonusAdd = 0.5f;
         public const float NobelMenSkillBonus = 1 + NobelMenSkillBonusAdd;
@@ -226,7 +226,7 @@ namespace VikingEngine.DSSWars
         public static float TrainingLevelSkillful_CopperUpkeep = TaxPerWorker_copp * 0.4f;
         public static float TrainingLevelProfessional_CopperUpkeep = TaxPerWorker_copp * 1f;
         public static float Nobel_GoldUpkeep = TaxPerWorker_copp * 1f;
-        public static readonly float[] TrainingCopperUpkeep = [TrainingLevelMinimal_CopperUpkeep, TrainingLevelBasic_CopperUpkeep, TrainingLevelSkillful_CopperUpkeep, TrainingLevelProfessional_CopperUpkeep];
+        public static readonly float[] TrainingCopperUpkeep = [TrainingLevelMinimal_CopperUpkeep, TrainingLevelBasic_CopperUpkeep, TrainingLevelSkillful_CopperUpkeep, TrainingLevelProfessional_CopperUpkeep, TrainingLevelProfessional_CopperUpkeep, TrainingLevelProfessional_CopperUpkeep, 0];
 
 
         //DEFENCE

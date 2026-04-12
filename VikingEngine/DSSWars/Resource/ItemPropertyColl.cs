@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Resource
 
             //men
             new ItemProperties(ItemResourceType.Men, NoCityResource, 0, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE).AddItemSource(new ItemSource(ItemSourceType.Building, Build.BuildAndExpandType.WorkerHut));
-            new ItemProperties(ItemResourceType.NobelMen, NoCityResource, 0, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE).AddItemSource(new ItemSource(ItemSourceType.Building, Build.BuildAndExpandType.Nobelhouse));
+            new ItemProperties(ItemResourceType.NobleMen, NoCityResource, 0, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE).AddItemSource(new ItemSource(ItemSourceType.Building, Build.BuildAndExpandType.Noblehouse));
             new ItemProperties(ItemResourceType.ServiceMen, NoCityResource, 0, WorkPriorityType.NUM_NONE, null, null, StorageType.NUM_NONE).AddItemSource(new ItemSource(ItemSourceType.Building, Build.BuildAndExpandType.ServiceHouse_Small));
 
             // wood variants

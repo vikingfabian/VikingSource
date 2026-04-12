@@ -154,7 +154,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string BuildHud_Select => "选择建筑";
         public override string BuildHud_AreaRadius => "区域半径";
 
-        public override string NobelHouse_HousingCount => "可容纳 {0} 名贵族";
+        public override string NobleHouse_HousingCount => "可容纳 {0} 名贵族";
 
 
         public override string BuildingType_GreatHall => "大领主厅";
