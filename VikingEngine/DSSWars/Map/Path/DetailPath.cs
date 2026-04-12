@@ -1,5 +1,4 @@
-﻿
-//#define VISUAL_NODES
+﻿//#define VISUAL_NODES
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Concurrent;
@@ -17,7 +16,7 @@ namespace VikingEngine.DSSWars.Map.Path
         //Represents a thread-safe last in-first out (LIFO) collection.
         ConcurrentStack<DetailPathFinding> pfPool = new ConcurrentStack<DetailPathFinding>();
         ConcurrentQueue<DetailWalkingPath> resultPool = new ConcurrentQueue<DetailWalkingPath>();
-                
+
         public DetailPathFinding GetPf()
         {
             if (pfPool.TryPop(out DetailPathFinding path))
@@ -39,7 +38,7 @@ namespace VikingEngine.DSSWars.Map.Path
         }
 
         public DetailWalkingPath GetRes()
-        {   
+        {
             if (resultPool.TryDequeue(out DetailWalkingPath path))
             {
                 if (path.timeStamp + 2 >= Ref.TotalFrameCount)
@@ -115,14 +114,14 @@ namespace VikingEngine.DSSWars.Map.Path
             {
 #endif
 
-                area = Rectangle2.FromCenterTileAndRadius(center, MaxTileRadius);
-                Rectangle2 subtileLimit = DssRef.world.subTileGrid.Area;
-                subtileLimit.AddRadius(-1);
-                area.SetTileBounds(subtileLimit);
-                //gridOffset = area.pos
-                DetailPathNode startNode = new DetailPathNode(center, conv.ToDir8_INT(startDir), startAsShip);
-                {
-                    IntVector2 gridPos = center - area.pos;
+            area = Rectangle2.FromCenterTileAndRadius(center, MaxTileRadius);
+            Rectangle2 subtileLimit = DssRef.world.subTileGrid.Area;
+            subtileLimit.AddRadius(-1);
+            area.SetTileBounds(subtileLimit);
+            //gridOffset = area.pos
+            DetailPathNode startNode = new DetailPathNode(center, conv.ToDir8_INT(startDir), startAsShip);
+            {
+                IntVector2 gridPos = center - area.pos;
 #if DEBUG
                 try
                 {
@@ -136,110 +135,110 @@ namespace VikingEngine.DSSWars.Map.Path
                     lib.DoNothing();
                 }
 #endif
-                        nodeUseTopLeft = gridPos;
-                    nodeUseBottomRight = gridPos;
-                }
-                //bool endAsShip = DssRef.world.subTileGrid.Get(goal).IsWater();
-                DetailPathNode currentNode = startNode;
+                nodeUseTopLeft = gridPos;
+                nodeUseBottomRight = gridPos;
+            }
+            //bool endAsShip = DssRef.world.subTileGrid.Get(goal).IsWater();
+            DetailPathNode currentNode = startNode;
 
-                int numLoops = 0;
+            int numLoops = 0;
 
 
-                while (true)
+            while (true)
+            {
+                for (int dir = 0; dir < 8; dir++)
                 {
-                    for (int dir = 0; dir < 8; dir++)
+                    IntVector2 pos = IntVector2.Dir8Array[dir] + currentNode.Position;
+                    IntVector2 gridPos = pos - area.pos;
+                    if (area.IntersectTilePoint(pos) && !nodeGrid[gridPos.X, gridPos.Y].HasValue)
                     {
-                        IntVector2 pos = IntVector2.Dir8Array[dir] + currentNode.Position;
-                        IntVector2 gridPos = pos - area.pos;
-                        if (area.IntersectTilePoint(pos) && !nodeGrid[gridPos.X, gridPos.Y].HasValue)
+
+                        //add a node to open list
+                        DetailPathNode node = new DetailPathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip);
+                        open.Add(node);
+
+                        nodeGrid[gridPos.X, gridPos.Y] = node;
+                        if (gridPos.X < nodeUseTopLeft.X)
                         {
+                            nodeUseTopLeft.X = gridPos.X;
+                        }
+                        else if (gridPos.X > nodeUseBottomRight.X)
+                        {
+                            nodeUseBottomRight.X = gridPos.X;
+                        }
 
-                            //add a node to open list
-                            DetailPathNode node = new DetailPathNode(pos, dir, DssRef.world, currentNode, goal, endAsShip);
-                            open.Add(node);
-
-                            nodeGrid[gridPos.X, gridPos.Y] = node;
-                            if (gridPos.X < nodeUseTopLeft.X)
-                            {
-                                nodeUseTopLeft.X = gridPos.X;
-                            }
-                            else if (gridPos.X > nodeUseBottomRight.X)
-                            {
-                                nodeUseBottomRight.X = gridPos.X;
-                            }
-
-                            if (gridPos.Y < nodeUseTopLeft.Y)
-                            {
-                                nodeUseTopLeft.Y = gridPos.Y;
-                            }
-                            else if (gridPos.Y > nodeUseBottomRight.Y)
-                            {
-                                nodeUseBottomRight.Y = gridPos.Y;
-                            }
+                        if (gridPos.Y < nodeUseTopLeft.Y)
+                        {
+                            nodeUseTopLeft.Y = gridPos.Y;
+                        }
+                        else if (gridPos.Y > nodeUseBottomRight.Y)
+                        {
+                            nodeUseBottomRight.Y = gridPos.Y;
                         }
                     }
-
-                    var lowValue = float.MaxValue;
-                    int lowIndex = -1;
-                    for (int i = 0; i < open.Count; i++)
-                    {
-                        if (open[i].Value < lowValue)
-                        {
-                            lowValue = open[i].Value;
-                            lowIndex = i;
-                        }
-                    }
-
-                    if (open.Count > 1)
-                    {
-                        currentNode = open[lowIndex];
-                        open.RemoveAt(lowIndex);
-                    }
-
-                    currentNode.closed = true;
-                    nodeGrid[currentNode.Position.X - area.pos.X, currentNode.Position.Y - area.pos.Y] = currentNode;
-
-                    if (currentNode.Position == goal)
-                    {
-                        break;
-                    }
-
-                    numLoops++;
-                    if (numLoops > 20000)
-                    {
-                        break;
-                    }
                 }
 
-                //List<DetailPathNodeResult> result = new List<DetailPathNodeResult>();
-
-                //const int MaxBacknodes = 1;
-                var path = DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.GetRes();
-                bool blocked = false;
-                int totalNodes = 0;
-
-                while (currentNode.Position != startNode.Position)
+                var lowValue = float.MaxValue;
+                int lowIndex = -1;
+                for (int i = 0; i < open.Count; i++)
                 {
-                    //if (isTravelNode || currentNode.ship == startAsShip || currentNode.ship == endAsShip || totalNodes > MaxBacknodes)
-                    //{
-                    path.nodes.Add(new DetailPathNodeResult(currentNode.Position, currentNode.ship));
-
-                    totalNodes++;
-                    if (totalNodes > MaxNodeLength)
-                        throw new EndlessLoopException("");
-                    //}
-                    //else
-                    //{
-                    //    path.nodes.Clear();
-                    //    blocked = true;
-                    //}
-
-                    IntVector2 pos = currentNode.PreviousPosition;
-                    currentNode = nodeGrid[pos.X - area.pos.X, pos.Y - area.pos.Y];
+                    if (open[i].Value < lowValue)
+                    {
+                        lowValue = open[i].Value;
+                        lowIndex = i;
+                    }
                 }
 
-                path.init(goal, blocked);
-                return path;
+                if (open.Count > 1)
+                {
+                    currentNode = open[lowIndex];
+                    open.RemoveAt(lowIndex);
+                }
+
+                currentNode.closed = true;
+                nodeGrid[currentNode.Position.X - area.pos.X, currentNode.Position.Y - area.pos.Y] = currentNode;
+
+                if (currentNode.Position == goal)
+                {
+                    break;
+                }
+
+                numLoops++;
+                if (numLoops > 20000)
+                {
+                    break;
+                }
+            }
+
+            //List<DetailPathNodeResult> result = new List<DetailPathNodeResult>();
+
+            //const int MaxBacknodes = 1;
+            var path = DssRef.state.pathUpdates[pathThreadIndex].detailPathFindingPool.GetRes();
+            bool blocked = false;
+            int totalNodes = 0;
+
+            while (currentNode.Position != startNode.Position)
+            {
+                //if (isTravelNode || currentNode.ship == startAsShip || currentNode.ship == endAsShip || totalNodes > MaxBacknodes)
+                //{
+                path.nodes.Add(new DetailPathNodeResult(currentNode.Position, currentNode.ship));
+
+                totalNodes++;
+                if (totalNodes > MaxNodeLength)
+                    throw new EndlessLoopException("");
+                //}
+                //else
+                //{
+                //    path.nodes.Clear();
+                //    blocked = true;
+                //}
+
+                IntVector2 pos = currentNode.PreviousPosition;
+                currentNode = nodeGrid[pos.X - area.pos.X, pos.Y - area.pos.Y];
+            }
+
+            path.init(goal, blocked);
+            return path;
 
 #if !DEBUG
             }
@@ -295,7 +294,7 @@ namespace VikingEngine.DSSWars.Map.Path
         public bool blockedPath;
         public double timeStamp;
         public void recycle()
-        { 
+        {
             nodes.Clear();
         }
 
@@ -319,25 +318,25 @@ namespace VikingEngine.DSSWars.Map.Path
             if (complete)
             {
                 ship = false;
-                return  WP.SubtileToWorldPosXZ(goal);
+                return WP.SubtileToWorldPosXZ(goal);
             }
 
             ship = nodes[currentNodeIx].ship;
             IntVector2 to = nodes[currentNodeIx].position;
             Vector3 toWp = WP.SubtileToWorldPosXZ(to);
-            Vector2 diff = new Vector2( toWp.X - myPos.X, toWp.Z - myPos.Z);
+            Vector2 diff = new Vector2(toWp.X - myPos.X, toWp.Z - myPos.Z);
             if (diff.Length() <= NodeMinDistance)
             {
                 --currentNodeIx;
             }
-            
-            
+
+
             return toWp;
         }
 
         public DetailWalkingPath()
         {
-            
+
         }
 
         public void init(IntVector2 goal,/* List<DetailPathNodeResult> nodes,*/ bool blockedPath)
@@ -345,11 +344,82 @@ namespace VikingEngine.DSSWars.Map.Path
             this.goal = goal;
             //this.nodes = nodes;
             this.blockedPath = blockedPath;
+
+            CompressToJumpNodes();
+
             currentNodeIx = nodes.Count - 1;
 
 #if VISUAL_NODES
             Ref.update.AddSyncAction(new SyncAction(createVisuals));
 #endif
+        }
+
+        /// <summary>
+        /// Compresses the raw A* node list into jump nodes.
+        /// A node is kept only when the direction or terrain type changes
+        /// significantly — runs in a straight line on uniform terrain are
+        /// collapsed to their two endpoints.
+        /// nodes is stored end-first (index 0 = goal side), so we iterate
+        /// from the last element (start side) toward index 0.
+        /// </summary>
+        void CompressToJumpNodes()
+        {
+            // Need at least 3 nodes to compress anything
+            if (nodes.Count < 3)
+                return;
+
+            // Terrain-change threshold: difference in subtile terrain block
+            // multiplier that counts as "large". Tune this value to taste.
+            // 0 = compress only purely identical terrain;
+            // higher = allow more variation before forcing a waypoint.
+            const float TerrainChangeTolerance = 0.05f;
+
+            var compressed = new List<DetailPathNodeResult>(nodes.Count);
+
+            // Always keep the first element (goal-side end of the reversed list)
+            compressed.Add(nodes[0]);
+
+            for (int i = 1; i < nodes.Count - 1; i++)
+            {
+                DetailPathNodeResult prev = nodes[i - 1];
+                DetailPathNodeResult curr = nodes[i];
+                DetailPathNodeResult next = nodes[i + 1];
+
+                // Direction from prev → curr and from curr → next
+                IntVector2 d1 = curr.position - prev.position;
+                IntVector2 d2 = next.position - curr.position;
+
+                bool dirChanged = (d1.X != d2.X || d1.Y != d2.Y);
+
+                // Ship/land transition is always a jump node
+                bool modeChanged = (curr.ship != prev.ship);
+
+                // Sample terrain cost at curr to detect large height/terrain shifts.
+                // We re-read the subtile multiplier the same way DetailPathNode does.
+                float terrainCurr = TerrainMultiplierAt(curr.position);
+                float terrainNext = TerrainMultiplierAt(next.position);
+                bool terrainJump = Math.Abs(terrainCurr - terrainNext) > TerrainChangeTolerance;
+
+                if (dirChanged || modeChanged || terrainJump)
+                {
+                    compressed.Add(curr);
+                }
+            }
+
+            // Always keep the last element (start-side end)
+            compressed.Add(nodes[nodes.Count - 1]);
+
+            nodes.Clear();
+            nodes.AddRange(compressed);
+        }
+
+        /// <summary>Returns the terrain block multiplier for a sub-tile position.</summary>
+        static float TerrainMultiplierAt(IntVector2 subTilePos)
+        {
+            if (!DssRef.world.subTileGrid.InBounds(subTilePos))
+                return 1f;
+            SubTile subtile = DssRef.world.subTileGrid.Get(subTilePos);
+            return subtile.TerrainBlockMultipleValue();
         }
 
 #if VISUAL_NODES
@@ -508,10 +578,10 @@ namespace VikingEngine.DSSWars.Map.Path
                 moveCost = MoveCostStraight;
             }
             else
-            { 
+            {
                 moveCost = MoveCostDiagonal;
             }
-            
+
             if (dir8 == parent.dir8)
             { //Bonus for keeping direction
                 moveCost -= 1f;
@@ -519,7 +589,7 @@ namespace VikingEngine.DSSWars.Map.Path
 
             SubTile subtile = world.subTileGrid.Get(pos);
             moveCost *= subtile.TerrainBlockMultipleValue();
-            
+
 
             Tile tile = world.tileGrid.Get(pos / WorldData.TileSubDivitions);
             waterTile = tile.IsWater();
