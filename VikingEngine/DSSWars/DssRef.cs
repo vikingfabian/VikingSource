@@ -31,6 +31,8 @@ namespace VikingEngine.DSSWars
         public static TodoTranslation todoLang = new Presentation.TodoTranslation();
         public static PlaySettings settings;
         public static Difficulty difficulty = new Difficulty();
+
+        public static LeaderBoardType LastLeaderBoardUpload = LeaderBoardType.NUM_NONE;
         //public static Data.Constants.Const Const = new Data.Constants.Const();
     }
 }

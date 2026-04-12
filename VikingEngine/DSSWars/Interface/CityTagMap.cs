@@ -154,7 +154,7 @@ namespace VikingEngine.DSSWars.Interface
                     bg.Visible = true;
                     bg.SetSpriteName(back);
 
-                    if (art != Data.TagLib.NoBackSprite)
+                    if (art != SpriteName.NO_IMAGE)
                     {
                         var icon = nextIcon();
                         icon.position = bg.position;

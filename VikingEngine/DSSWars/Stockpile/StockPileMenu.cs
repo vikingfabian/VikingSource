@@ -71,14 +71,10 @@ namespace VikingEngine.DSSWars.Resource
                     stockpile(player, ItemResourceType.GunPowder);
                     stockpile(player, ItemResourceType.LedBullet);
 
-                    //content.newParagraph();
-                    //HudLib.Description(content, DssRef.lang.Resource_StockPile_Info);
-                    //GroupedResource.BufferIconInfo(content, false);
                     break;
 
                 case ResourceGroupType.Metals:
-                    //content.h2(DssRef.lang.Resource_Tab_Stockpile, HudLib.TitleColor_Head);
-
+                   
                     groupType = ResourceGroupType.Metals;
                     stockpile(player, ItemResourceType.IronOre_G);
                     stockpile(player, ItemResourceType.TinOre);
@@ -185,31 +181,31 @@ namespace VikingEngine.DSSWars.Resource
                     stockpile(player, ItemResourceType.Hen);
                     stockpile(player, ItemResourceType.Boar);
                     stockpile(player, ItemResourceType.Pig);
-                    //content.newParagraph();
+                    
                     stockpile(player, ItemResourceType.Oxen);
                     stockpile(player, ItemResourceType.KineOxen);
-                    //content.newParagraph();
+                    
                     stockpile(player, ItemResourceType.Dog);
                     stockpile(player, ItemResourceType.Hound);
-                    //content.newParagraph();
+                   
                     stockpile(player, ItemResourceType.Pony);
                     stockpile(player, ItemResourceType.Horse);
                     stockpile(player, ItemResourceType.WarHorse);
                     stockpile(player, ItemResourceType.DraftHorse);
-                    //content.newParagraph();
+                    
                     stockpile(player, ItemResourceType.WildPig);
                     stockpile(player, ItemResourceType.WildHog);
                     stockpile(player, ItemResourceType.WarHog);
                     stockpile(player, ItemResourceType.StagHog);
-                    //content.newParagraph();
+                   
                     stockpile(player, ItemResourceType.Wolf);
                     stockpile(player, ItemResourceType.Warg);
                     stockpile(player, ItemResourceType.AlphaWarg);
-                    //content.newParagraph();
+                   
                     stockpile(player, ItemResourceType.WildCat);
                     stockpile(player, ItemResourceType.Lion);
                     stockpile(player, ItemResourceType.WarLion);
-                    //content.newParagraph();
+                   
                     stockpile(player, ItemResourceType.Elephant);
                     stockpile(player, ItemResourceType.WarElephant);
                     stockpile(player, ItemResourceType.Oliphant);
@@ -219,11 +215,53 @@ namespace VikingEngine.DSSWars.Resource
             content.newParagraph();
             HudLib.Label(content, DssRef.lang.Hud_CurrentPage); content.space();
             copyPasteOptions(groupType);
+            setAll(groupType);
 
             content.newParagraph();
             HudLib.Label(content, DssRef.lang.Hud_AllPages); content.space();
             copyPasteOptions(ResourceGroupType.NUM);
 
+            void setAll(ResourceGroupType group)
+            {
+                content.newLine();
+
+                setAllButton(0);
+                setAllButton(100);
+                setAllButton(200);
+                setAllButton(500);
+                setAllButton(int.MaxValue);
+
+
+                void setAllButton(int value)
+                {
+                    RbImage icon;
+                    RbText text;
+
+                    if (value < ushort.MaxValue)
+                    {
+                        icon = new RbImage(SpriteName.WarsStockpileLimit);
+                        text = new RbText(value.ToString());
+                    }
+                    else
+                    {
+                        icon = new RbImage(SpriteName.WarsBuild_MaterialStorage);
+                        text = new RbText(DssRef.lang.Hud_Maximum);
+                    }
+
+                    content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { icon, new RbSpace(0.5f), text },
+                        new RbAction(() =>
+                        {
+                           var list = Resource.ResourceLib.ResourceGroupList(group);
+                            foreach (var item in list)
+                            {
+                                ref var resources = ref city.GetRefGroupedResource(item);
+                                resources.setLimit(value);
+                            }
+                            player.hud.needRefresh = true;
+                        }), 
+                        new RbTooltip_Text(DssRef.lang.StockPile_LimitTitle)));
+                }
+            }
 
             void copyPasteOptions(ResourceGroupType group)
             {
@@ -425,6 +463,8 @@ namespace VikingEngine.DSSWars.Resource
                 useLimitProperty, new RbTooltip((RichBoxContent content, object tag)=> {
                     content.h1(DssRef.lang.StockPile_LimitTitle, HudLib.TitleColor_Head);
                     content.text(DssRef.lang.Resource_StockPile_Info);
+                    content.text(DssRef.todoLang.StockPile_ItemsAreNotLost, HudLib.InfoYellow_Light);
+
                     content.newParagraph();
                     content.Add(new RbSeperationLine());
                     ResourceLib.FullResourceInfo(faction, city, item, content);
@@ -450,26 +490,7 @@ namespace VikingEngine.DSSWars.Resource
                 }
                 content.Add(new ArtButton(RbButtonStyle.HoverArea, buttonContent, null, new RbTooltip_Text(storageName)));
             }
-                //new RbAction1Arg<StockpileLimitOption>((StockpileLimitOption limit) =>
-                //{
-
-                //    if (city != null)
-                //    {
-                //        ref GroupedResource res = ref city.GetRefGroupedResource(item);
-                //        groupedResource.limitOption = limit;
-
-                //    }
-                //    else
-                //    {
-                //        ref GroupedResource res = ref faction.GetRefResourceOverview(item);
-                //        res.limitOption = limit;
-                //    }
-
-
-                //}, limit),
-                //new RbTooltip(limitTooltip, new LimitTooltipArgs() { limit = limit, res = res })));
-        
-
+                
 
 
             if (groupedResource.hasCesspit)

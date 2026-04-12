@@ -2,12 +2,12 @@
 ﻿UPDATE
 Change Log:
 * 
-* fixed rare get start player crash
-* translated
 
 ##ICONS TODO
 
 #MOUNTED TODO
+
+
 
 ## MOUNTED POST CONTENT UPDATE ##
 x icons

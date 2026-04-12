@@ -52,6 +52,19 @@ namespace VikingEngine.DSSWars.EntityComponent
             useStockLimit = copyFrom.useStockLimit;
         }
 
+        public void setLimit(int limit)
+        {
+            if (limit >= ushort.MaxValue)
+            {
+                useStockLimit = false;
+            }
+            else
+            {
+                useStockLimit = true;
+                stockPileLimit = Math.Min(capacity, limit);
+            }
+        }
+
         public void clearFactionOverView()
         {
             amount = 0;

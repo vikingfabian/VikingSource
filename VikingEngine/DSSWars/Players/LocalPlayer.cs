@@ -814,13 +814,13 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Z))
                 {
-                    var armiesC = faction.armies.counter();
-                    while (armiesC.Next())
-                    {
-                        armiesC.sel.food = -100;
-                        armiesC.sel.conservedFood = -120;
+                    //var armiesC = faction.armies.counter();
+                    //while (armiesC.Next())
+                    //{
+                    //    armiesC.sel.food = -100;
+                    //    armiesC.sel.conservedFood = -120;
 
-                    }
+                    //}
                     //DssRef.state.events.victory(Event.VictoryType.DefeatBoss);
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.TestNextEvent();
@@ -842,11 +842,11 @@ namespace VikingEngine.DSSWars.Players
                 }
                 if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
-                    faction.money.copper = -100000000000;
+                    //faction.money.copper = -100000000000;
                     //DssRef.state.events.victory(Event.VictoryType.DefeatBoss);
-                    //DssRef.state.events.TestNextEvent();
+                    DssRef.state.events.TestNextEvent();
                     //hud.messages.Add(new RichBoxContent() { new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("message test") }, null) });
-                    //battleLineUpTest2(true);
+                    //battleLineUpTest2(false);
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.testTooPeacefulCheck();
                 }

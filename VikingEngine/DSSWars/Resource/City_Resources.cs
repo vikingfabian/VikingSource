@@ -89,7 +89,14 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
         public void AddGroupedResource(ItemResourceType type, int add)
-        {            
+        {
+//#if DEBUG
+//            if (type == ItemResourceType.ShortSword)
+//            {
+//                lib.DoNothing();
+//            }
+//#endif
+
             int itemIndex = ItemPropertyColl.CityIndex(type);
 
             if (itemIndex < 0) 

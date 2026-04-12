@@ -1159,7 +1159,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
         {
             if (DssRef.state.IsSinglePlayer_Local())
             {
-                if (DssRef.difficulty.setting_allowPauseCommand &&
+                if ((DssRef.difficulty.setting_allowPauseCommand || StartupSettings.PauseCheat) &&
                     input.PauseGame.DownEvent)
                 {
                     Ref.TogglePause();

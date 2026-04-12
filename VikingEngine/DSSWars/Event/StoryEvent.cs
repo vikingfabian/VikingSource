@@ -357,7 +357,7 @@ namespace VikingEngine.DSSWars.Event
 
             if (DssRef.difficulty.extremeAggression)
             {
-                triggerTimeSpan_Minutes = IntervalF.NoInterval(Ref.rnd.Float(9f, 12f));
+                triggerTimeSpan_Minutes = new IntervalF(9f, 12f);
             }
 
             init(

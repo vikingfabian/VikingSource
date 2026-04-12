@@ -413,23 +413,7 @@ namespace VikingEngine.DSSWars.Build
                 list.Add(BuildAndExpandType.TreeSeedlingHard);
             }
 
-            if (!campSite && unlocks.building_stoneBuildings)
-            {
-                list.Add(BuildAndExpandType.Nobelhouse);
-
-                if (city.buildingStructure.Nobelhouse_count > 0 ||
-                    godPowers)
-                {
-                    list.Add(BuildAndExpandType.Embassy);
-                }
-
-                list.Add(BuildAndExpandType.Bank);
-                if (city.buildingStructure.Bank_count > 0 ||
-                    godPowers)
-                {
-                    list.Add(BuildAndExpandType.CoinMinter);
-                }
-            }
+            
 
             list.Add(BuildAndExpandType.Postal);
 
@@ -496,21 +480,22 @@ namespace VikingEngine.DSSWars.Build
             
             list.Add(BuildAndExpandType.Pottery);
             
-            if (unlocks.building_chemist)
-            {
-                list.Add(BuildAndExpandType.Chemist);                
-            }
-            if (unlocks.building_gunmaker)
-            {
-                list.Add(BuildAndExpandType.Gunmaker);
-            }
+            
 
             if (logistics1)
             {
                 list.Add(BuildAndExpandType.Armory);
                 list.Add(BuildAndExpandType.ShieldMaker);
             }
-        
+            if (unlocks.building_chemist)
+            {
+                list.Add(BuildAndExpandType.Chemist);
+            }
+            if (unlocks.building_gunmaker)
+            {
+                list.Add(BuildAndExpandType.Gunmaker);
+            }
+
             list.Add(BuildAndExpandType.SoldierBarracks);
             list.Add(BuildAndExpandType.ArcherBarracks);
 
@@ -529,15 +514,27 @@ namespace VikingEngine.DSSWars.Build
             }
 
             if (logistics1)
-            {
-                //if (city.buildingStructure.Nobelhouse_count > 0 ||
-                //    unlockAll)
-                //{
-                //    list.Add(BuildAndExpandType.KnightsBarracks);
-                //}
-                    
+            {                    
                 list.Add(BuildAndExpandType.WoodCutter);
                 list.Add(BuildAndExpandType.StoneCutter);
+            }
+
+            if (!campSite && unlocks.building_stoneBuildings)
+            {
+                list.Add(BuildAndExpandType.Nobelhouse);
+
+                if (city.buildingStructure.Nobelhouse_count > 0 ||
+                    godPowers)
+                {
+                    list.Add(BuildAndExpandType.Embassy);
+                }
+
+                list.Add(BuildAndExpandType.Bank);
+                if (city.buildingStructure.Bank_count > 0 ||
+                    godPowers)
+                {
+                    list.Add(BuildAndExpandType.CoinMinter);
+                }
             }
 
             list.Add(BuildAndExpandType.DirtRoad);
@@ -776,12 +773,12 @@ namespace VikingEngine.DSSWars.Build
             { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
 
             new BuildOption(BuildAndExpandType.Cook, TerrainMainType.Building, (int)TerrainBuildingType.Work_Cook, SpriteName.WarsBuild_Cook, CraftBuildingLib.Cook, true,
-                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Advanced, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
                 { altBlueprint = CraftBuildingLib.Cook_Copper };
 
             new BuildOption(BuildAndExpandType.CoalPit, TerrainMainType.Building, (int)TerrainBuildingType.Work_CoalPit, SpriteName.WarsBuild_CoalPit, CraftBuildingLib.CoalPit, true, 
-                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Fuel, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Advanced, BuildFilterTag.Craft, BuildFilterTag.Fuel, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.WorkBench, TerrainMainType.Building, (int)TerrainBuildingType.Work_Bench, SpriteName.WarsBuild_WorkBench, CraftBuildingLib.WorkBench, true, 
@@ -1161,20 +1158,20 @@ namespace VikingEngine.DSSWars.Build
                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             //DryingPan,
             new BuildOption(BuildAndExpandType.DryingPan, TerrainMainType.Building, (int)TerrainBuildingType.DryingPan, SpriteName.WarsBuild_DryingPan, CraftBuildingLib.DryingPan, true,
-                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Advanced, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             //Butcher,
             new BuildOption(BuildAndExpandType.Butcher, TerrainMainType.Building, (int)TerrainBuildingType.Butcher, SpriteName.WarsBuild_Butcher, CraftBuildingLib.Butcher, true,
-                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.Animals,
+                BuildCategoryTab.Advanced, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.Animals,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             //Smoker,
             new BuildOption(BuildAndExpandType.Smoker, TerrainMainType.Building, (int)TerrainBuildingType.Smoker, SpriteName.WarsBuild_Smoker, CraftBuildingLib.Smoker, true,
-                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Advanced, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
             //Dryer,
             new BuildOption(BuildAndExpandType.Dryer, TerrainMainType.Building, (int)TerrainBuildingType.Dryer, SpriteName.WarsBuild_Dryer, CraftBuildingLib.Dryer, true,
-                BuildCategoryTab.General, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                BuildCategoryTab.Advanced, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
             new BuildOption(BuildAndExpandType.MaterialStorage, TerrainMainType.Building, (int)TerrainBuildingType.MaterialStorage, SpriteName.WarsBuild_MaterialStorage, CraftBuildingLib.MaterialStorage, true,
@@ -1483,8 +1480,8 @@ namespace VikingEngine.DSSWars.Build
     enum BuildCategoryTab
     {  
         General,
-        Farming,
         Advanced,
+        Farming,
         Military,
         Decor,
         Upgrade,

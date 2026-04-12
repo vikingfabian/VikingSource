@@ -613,7 +613,7 @@ namespace VikingEngine.DSSWars.Event
                             { 
                                 DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.destroy_first_attacker_any, AchievementIndex.destroy_first_attacker_100);
 
-                                if (DssRef.achieve.difficultyPerc >= 300)
+                                if (DssRef.achieve.difficultyPerc >= 290)
                                 {
                                     DssRef.achieve.UnlockAchievement(AchievementIndex.destroy_first_attacker_300);
                                 }

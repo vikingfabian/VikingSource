@@ -142,7 +142,14 @@ namespace VikingEngine.DSSWars
             this.bgTex = bgTex;
             createBackground();
             messages = new MessageGroup_Editor();
-            
+
+
+            //DssRef.LastLeaderBoardUpload = LeaderBoardType.city_size;
+            if (DssRef.LastLeaderBoardUpload != LeaderBoardType.NUM_NONE)
+            {
+                openUnderMenu(UnderMenu_leaderboards, StackOption.Stack);
+            }
+
 #if DEBUG
             //new TimedAction0ArgTrigger(collectReports, 600);
 

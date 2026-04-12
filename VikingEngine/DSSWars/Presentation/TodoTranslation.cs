@@ -13,6 +13,6 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
-        
+        public string StockPile_ItemsAreNotLost => "Items will not be destroyed if you exceed the stockpile!";    
     }
 }

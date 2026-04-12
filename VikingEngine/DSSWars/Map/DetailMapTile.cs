@@ -1030,7 +1030,7 @@ namespace VikingEngine.DSSWars.Map
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_meatstation, 0, wp, WorldData.SubTileWidth * 0.9f));
                     break;
                 case TerrainBuildingType.ShieldMaker:
-                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workstation, 11, wp, WorldData.SubTileWidth * 0.9f));
+                    foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_workstation, 11, wp, WorldData.SubTileWidth * 1f));
                     break;
                 case TerrainBuildingType.Dryer:
                     foliageModels.Add(new FoliageModel(LootFest.VoxelModelName.city_meatstation, 3, wp, WorldData.SubTileWidth * 0.9f));

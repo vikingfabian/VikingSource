@@ -61,11 +61,16 @@ namespace VikingEngine.DSSWars.Data
     {
         RichMenu menu;
         LeaderBoardType tab = LeaderBoardType.story_difficulty;
-        LeaderboardList[] tabs = new LeaderboardList[(int)LeaderBoardType.NUM];
+        LeaderboardList[] tabs = new LeaderboardList[(int)LeaderBoardType.NUM_NONE];
 
         public LeaderboardMenu(RichMenu menu)
         { 
             this.menu = menu;
+            if (DssRef.LastLeaderBoardUpload != LeaderBoardType.NUM_NONE)
+            {
+                tab = DssRef.LastLeaderBoardUpload;
+                DssRef.LastLeaderBoardUpload = LeaderBoardType.NUM_NONE;
+            }
         }
 
 
@@ -76,8 +81,8 @@ namespace VikingEngine.DSSWars.Data
             content.h1(DssRef.lang.Leaderboards_title, HudLib.TitleColor_Head);
 
             content.newLine();
-            List<ArtTabMember> tabMembers = new List<ArtTabMember>((int)LeaderBoardType.NUM);
-            for (int i = 0; i < (int)LeaderBoardType.NUM; ++i)
+            List<ArtTabMember> tabMembers = new List<ArtTabMember>((int)LeaderBoardType.NUM_NONE);
+            for (int i = 0; i < (int)LeaderBoardType.NUM_NONE; ++i)
             {
                 LeaderBoardType tabType = (LeaderBoardType)i;
                 ArtTabMember tabMember = new ArtTabMember(new List<AbsRichBoxMember> { new RbText(TextLib.IndexToString(i)) }
@@ -251,11 +256,6 @@ namespace VikingEngine.DSSWars.Data
         public void setName()
         {
             name = TypeId(type, StartupSettings.LeaderboardInBeta);
-            //name = $"{type}_{StartupSettings.LeaderboardVersion}";
-            //if (StartupSettings.LeaderboardInBeta)
-            //{
-            //    name = "beta_" + name;
-            //}
         }
 
 
@@ -276,6 +276,8 @@ namespace VikingEngine.DSSWars.Data
             {
                 return;
             }
+
+            DssRef.LastLeaderBoardUpload = type;
 
             base.BeginUpload();
         }
@@ -398,7 +400,7 @@ namespace VikingEngine.DSSWars.Data
         city_size,
         survive300_time,
         survive400_time,
-        NUM
+        NUM_NONE
     }
 }
 

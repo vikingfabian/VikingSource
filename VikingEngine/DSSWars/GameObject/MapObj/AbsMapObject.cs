@@ -147,7 +147,7 @@ namespace VikingEngine.DSSWars.GameObject
             tagSprites(out SpriteName back, out SpriteName art);
             if (back != TagLib.NoBackSprite)
             {
-                if (art == TagLib.NoBackSprite)
+                if (art == SpriteName.NO_IMAGE)
                 {
                     content.Add(new RbImage(back));
                 }
