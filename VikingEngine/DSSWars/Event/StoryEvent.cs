@@ -252,7 +252,8 @@ namespace VikingEngine.DSSWars.Event
         public override void onStart()
         {
             var time = new TimeLength(DssRef.difficulty.aiDelayTimeSec);
-            if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch ||
+                 DssRef.difficulty.setting_gameMode ==  GameModeMainType.QuickBoss)
             {
                 time.seconds *= 0.5f;
             }
@@ -1071,8 +1072,23 @@ namespace VikingEngine.DSSWars.Event
         }
         public override void onStart()
         {
+            
+
+            IntervalF hours;
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickBoss)
+            {
+                //1.5 hours passed in quick boss
+                //Warning is one hour before
+                float time = GameRuleset.QuickBossOptions_Time_Difficulty[DssRef.storage.gameRuleset.QuickBossTimeOption].Value1 - 2.5f;
+                hours = new IntervalF(0.9f, 1.1f) * time;
+            }
+            else
+            {
+                hours = new IntervalF(9f, 13f);
+            }
+
             init(
-             triggerTimeSpan_Minutes: new IntervalF(9f, 13f) * TimeExt.HourInMinutes,
+             triggerTimeSpan_Minutes: hours * TimeExt.HourInMinutes,
              nextExpectedPlayerSize: new IntervalF(DssConst.HeadCityStartMaxWorkForce * 4f, DssConst.HeadCityStartMaxWorkForce * 16f));
         }
 

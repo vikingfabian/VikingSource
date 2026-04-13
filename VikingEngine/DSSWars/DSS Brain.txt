@@ -4,7 +4,8 @@ Change Log:
 * Added growing food requirements for ai workerhut building
 * Ai may build larger cities
 * improved messages goto buttons
-
+* fixed: dark lord player had endless diplomacy
+* added color to minimap enemy/ally
 
 ##ICONS TODO
 
@@ -15,8 +16,7 @@ Change Log:
 ## MOUNTED POST CONTENT UPDATE ##
 x 3k self dying cities
 * reduce loss of worker XP (recruitment)
-* I wish I could play the story mode, but its too much time, Id really like a button I could click to call the next event early, when I feel like Im in a good spot to do so
-
+x boss closer to player
 x close cores popup on battle lab, plus exit end screen
 x boil salt
 x deeper unit category with search for items and melee/ranged/warmashine filters

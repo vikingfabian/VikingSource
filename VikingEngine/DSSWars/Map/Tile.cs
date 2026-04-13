@@ -525,6 +525,8 @@ namespace VikingEngine.DSSWars.Map
 
             City city = City();
             int faction = city.factionIndex;
+            float red = 0;
+            float green = 0;
 
             if (faction < 0)
             {
@@ -537,6 +539,17 @@ namespace VikingEngine.DSSWars.Map
             }
             else
             {
+               var rel = DssRef.world.diplomacy.GetRelation_Safe(playerFaction.myIndex, faction).Relation;
+
+                if (rel <= RelationType.RelationTypeN2_Truce)
+                {
+                    red = 0.2f;
+                }
+                else if (rel >= RelationType.RelationType3_Ally)
+                {
+                    green = 0.2f;
+                }
+
                 brightness *= 0.2f;
             }
 
@@ -558,7 +571,7 @@ namespace VikingEngine.DSSWars.Map
                 }
             }
 
-            return new Color(brightness, brightness, brightness);
+            return new Color(brightness + red, brightness + green, brightness);
         }
 
 

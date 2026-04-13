@@ -28,24 +28,31 @@ namespace VikingEngine.DSSWars.Players
         {
             DssRef.settings.darkLordPlayer = this;
 
-            switch (DssRef.difficulty.bossSize)
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
             {
-                case BossSize.Small:
-                    factoriesLeft = 2;
-                    maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 16;
-                    break;
-                case BossSize.Medium:
-                    factoriesLeft = 3;
-                    maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 22;
-                    break;
-                case BossSize.Large:
-                    factoriesLeft = 3;
-                    maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 34;
-                    break;
-                case BossSize.Huge:
-                    factoriesLeft = 4;
-                    maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 40;
-                    break;
+                switch (DssRef.difficulty.bossSize)
+                {
+                    case BossSize.Small:
+                        factoriesLeft = 2;
+                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 16;
+                        break;
+                    case BossSize.Medium:
+                        factoriesLeft = 3;
+                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 22;
+                        break;
+                    case BossSize.Large:
+                        factoriesLeft = 3;
+                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 34;
+                        break;
+                    case BossSize.Huge:
+                        factoriesLeft = 4;
+                        maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 40;
+                        break;
+                }
+            }
+            else
+            {
+                maxDiplomacy = DssConst.HeadCityStartMaxWorkForce * 2;
             }
         }
 
@@ -101,7 +108,7 @@ namespace VikingEngine.DSSWars.Players
             //    Ref.music.PlaySong(Data.Music.IAmYourDoom, false);
             //}
 
-            faction.money.copper = DssConst.HeadCityStartMaxWorkForce * 100000;
+            faction.money.copper = DssConst.HeadCityStartMaxWorkForce * 1000000;
 
             this.darkLordAllies = darkLordAllies;
             Faction greenwood = DssRef.world.faction(DssRef.settings.Faction_GreenWood);
@@ -166,10 +173,11 @@ namespace VikingEngine.DSSWars.Players
                 if (city != null)
                 {
                     EcsStaticArrayCounter neighbors = city.CityNeighbors();
-                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in city.neighborCities)
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))
                     {
                         var nFaction = nCity.GetFaction();
-                        if (nFaction != faction &&
+                        if (nFaction != null &&
+                            nFaction != faction &&
                             nFaction.diplomaticSide != DiplomaticSide.Light &&
                             !DssRef.world.diplomacy.PositiveRelationWithPlayer(nFaction))
                         {
@@ -199,7 +207,7 @@ namespace VikingEngine.DSSWars.Players
             {
                 if (maxDiplomacy > 0)
                 {
-                    diplomacyPoints += DssConst.HeadCityStartMaxWorkForce / 20;
+                    diplomacyPoints += 5;
 
                     if (diplomacyPoints >= 0)
                     {
@@ -225,7 +233,7 @@ namespace VikingEngine.DSSWars.Players
 
         void makeServant(Faction takeOverFaction, bool factory)
         {
-            int cost = takeOverFaction.citiesEconomy.workerCount;
+            int cost = takeOverFaction.totalWorkForce;// .citiesEconomy.workerCount;
             diplomacyPoints -= cost;
             maxDiplomacy -= cost;
 
