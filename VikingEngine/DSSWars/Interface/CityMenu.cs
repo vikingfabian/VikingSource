@@ -1960,9 +1960,17 @@ namespace VikingEngine.DSSWars.Interface
 
                     // --- Farm ---
                     city.GetGroupedResource(CityResoureIndex.Fowl).toMenu(content, ItemResourceType.Fowl, ref reachedBuffer, player, city);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterFowl);
+
                     city.GetGroupedResource(CityResoureIndex.Hen).toMenu(content, ItemResourceType.Hen, ref reachedBuffer, player, city);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterHen);
+
                     city.GetGroupedResource(CityResoureIndex.Boar).toMenu(content, ItemResourceType.Boar, ref reachedBuffer, player, city);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterBoar);
+
                     city.GetGroupedResource(CityResoureIndex.Pig).toMenu(content, ItemResourceType.Pig, ref reachedBuffer, player, city);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterPig);
+
 
                     // --- Dogs ---
                     city.GetGroupedResource(CityResoureIndex.Dog).toMenu(content, ItemResourceType.Dog, ref reachedBuffer, player, city);
@@ -1970,34 +1978,72 @@ namespace VikingEngine.DSSWars.Interface
 
                     // --- Oxen ---
                     city.GetGroupedResource(CityResoureIndex.Oxen).toMenu(content, ItemResourceType.Oxen, ref reachedBuffer, player, city);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterOxen);
+
                     city.GetGroupedResource(CityResoureIndex.KineOxen).toMenu(content, ItemResourceType.KineOxen, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterKineOxen);
+
 
                     // --- Horses ---
                     city.GetGroupedResource(CityResoureIndex.Pony).toMenu(content, ItemResourceType.Pony, ref reachedBuffer, player, city);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterPony);
+
                     city.GetGroupedResource(CityResoureIndex.Horse).toMenu(content, ItemResourceType.Horse, ref reachedBuffer, player, city);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterHorse);
+
                     city.GetGroupedResource(CityResoureIndex.WarHorse).toMenu(content, ItemResourceType.WarHorse, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterWarHorse);
+
                     city.GetGroupedResource(CityResoureIndex.DraftHorse).toMenu(content, ItemResourceType.DraftHorse, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterDraftHorse);
+
 
                     // --- Wild Pigs ---
                     city.GetGroupedResource(CityResoureIndex.WildPig).toMenu(content, ItemResourceType.WildPig, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterWildPig);
+
                     city.GetGroupedResource(CityResoureIndex.WildHog).toMenu(content, ItemResourceType.WildHog, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterWildHog);
+
                     city.GetGroupedResource(CityResoureIndex.WarHog).toMenu(content, ItemResourceType.WarHog, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterWarHog);
+
                     city.GetGroupedResource(CityResoureIndex.StagHog).toMenu(content, ItemResourceType.StagHog, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterStagHog);
+
 
                     // --- Wolves ---
                     city.GetGroupedResource(CityResoureIndex.Wolf).toMenu(content, ItemResourceType.Wolf, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterWolf);
+
                     city.GetGroupedResource(CityResoureIndex.Warg).toMenu(content, ItemResourceType.Warg, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterWarg);
+
                     city.GetGroupedResource(CityResoureIndex.AlphaWarg).toMenu(content, ItemResourceType.AlphaWarg, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterAlphaWarg);
+
 
                     // --- Cats ---
                     city.GetGroupedResource(CityResoureIndex.WildCat).toMenu(content, ItemResourceType.WildCat, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterWildCat);
+
                     city.GetGroupedResource(CityResoureIndex.Lion).toMenu(content, ItemResourceType.Lion, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterLion);
+
                     city.GetGroupedResource(CityResoureIndex.WarLion).toMenu(content, ItemResourceType.WarLion, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterWarLion);
+
 
                     // --- Elephants ---
                     city.GetGroupedResource(CityResoureIndex.Elephant).toMenu(content, ItemResourceType.Elephant, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterElephant);
+
                     city.GetGroupedResource(CityResoureIndex.WarElephant).toMenu(content, ItemResourceType.WarElephant, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterWarElephant);
+
                     city.GetGroupedResource(CityResoureIndex.Oliphant).toMenu(content, ItemResourceType.Oliphant, ref reachedBuffer, player, city, hideZeroAnimals);
+                    HudLib.butcherBlueprintButton(city, player, content, CraftResourceLib.SlaughterOliphant);
+
                     break;
             }
 

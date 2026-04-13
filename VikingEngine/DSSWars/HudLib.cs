@@ -318,7 +318,7 @@ namespace VikingEngine.DSSWars
             });
 
             content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.MissingImage)
+                new RbOverlapImage(new RbImage(SpriteName.WarsBluePrint), SpriteName.WarsSlaughter, Vector2.Zero)
             },
             null, tooltip));
 

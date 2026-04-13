@@ -752,25 +752,7 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default);
 
-            new BuildOption(BuildAndExpandType.BoarPen, TerrainMainType.Building, (int)TerrainBuildingType.BoarPen, SpriteName.WarsBuild_BoarPen, CraftBuildingLib.BoarPen, true,
-                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.Resources,
-                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
-
-            new BuildOption(BuildAndExpandType.FowlPen, TerrainMainType.Building, (int)TerrainBuildingType.FowlPen, SpriteName.WarsBuild_FowlPen, CraftBuildingLib.FowlPen, true,
-                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
-                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
-
-            new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, SpriteName.WarsBuild_PigPen, CraftBuildingLib.PigPen, true,
-                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.Resources,
-                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
-
-            new BuildOption(BuildAndExpandType.HenPen, TerrainMainType.Building, (int)TerrainBuildingType.HenPen, SpriteName.WarsBuild_HenPen, CraftBuildingLib.HenPen, true,
-                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
-                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+            
 
             new BuildOption(BuildAndExpandType.Cook, TerrainMainType.Building, (int)TerrainBuildingType.Work_Cook, SpriteName.WarsBuild_Cook, CraftBuildingLib.Cook, true,
                 BuildCategoryTab.Advanced, BuildFilterTag.Craft, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
@@ -1202,17 +1184,37 @@ namespace VikingEngine.DSSWars.Build
                 BuildCategoryTab.Upgrade, BuildFilterTag.Storage, BuildFilterTag.Optimize, BuildFilterTag.NUM_NONE,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Small);
 
+            new BuildOption(BuildAndExpandType.BoarPen, TerrainMainType.Building, (int)TerrainBuildingType.BoarPen, SpriteName.WarsBuild_BoarPen, CraftBuildingLib.BoarPen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.Resources,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
+
+            new BuildOption(BuildAndExpandType.FowlPen, TerrainMainType.Building, (int)TerrainBuildingType.FowlPen, SpriteName.WarsBuild_FowlPen, CraftBuildingLib.FowlPen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
+            new BuildOption(BuildAndExpandType.PigPen, TerrainMainType.Building, (int)TerrainBuildingType.PigPen, SpriteName.WarsBuild_PigPen, CraftBuildingLib.PigPen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.Resources,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
+
+            new BuildOption(BuildAndExpandType.HenPen, TerrainMainType.Building, (int)TerrainBuildingType.HenPen, SpriteName.WarsBuild_HenPen, CraftBuildingLib.HenPen, true,
+                BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Food, BuildFilterTag.NUM_NONE,
+                MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+
             //OxenPen
             new BuildOption(BuildAndExpandType.OxenPen, TerrainMainType.Building, (int)TerrainBuildingType.OxenPen, SpriteName.WarsBuild_OxenPen, CraftBuildingLib.OxenPen, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
 
             //KineOxenPen
             new BuildOption(BuildAndExpandType.KineOxenPen, TerrainMainType.Building, (int)TerrainBuildingType.KineOxenPen, SpriteName.WarsBuild_KineOxenPen, CraftBuildingLib.KineOxenPen, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
 
             //DogCage
             new BuildOption(BuildAndExpandType.DogCage, TerrainMainType.Building, (int)TerrainBuildingType.DogCage, SpriteName.WarsBuild_DogCage, CraftBuildingLib.DogCage, true,
@@ -1230,103 +1232,103 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.PonyPen, TerrainMainType.Building, (int)TerrainBuildingType.PonyPen, SpriteName.WarsBuild_PonyPen, CraftBuildingLib.PonyPen, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
 
             //HorsePen
             new BuildOption(BuildAndExpandType.HorsePen, TerrainMainType.Building, (int)TerrainBuildingType.HorsePen, SpriteName.WarsBuild_HorsePen, CraftBuildingLib.HorsePen, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
 
             //WarHorsePen
             new BuildOption(BuildAndExpandType.WarHorsePen, TerrainMainType.Building, (int)TerrainBuildingType.WarHorsePen, SpriteName.WarsBuild_WarHorsePen, CraftBuildingLib.WarHorsePen, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
 
             //DraftHorsePen
             new BuildOption(BuildAndExpandType.DraftHorsePen, TerrainMainType.Building, (int)TerrainBuildingType.DraftHorsePen, SpriteName.WarsBuild_DraftHorsePen, CraftBuildingLib.DraftHorsePen, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
 
             //WildPigPen
             new BuildOption(BuildAndExpandType.WildPigPen, TerrainMainType.Building, (int)TerrainBuildingType.WildPigPen, SpriteName.WarsBuild_WildPigPen, CraftBuildingLib.WildPigPen, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
 
             //WildHogPen
             new BuildOption(BuildAndExpandType.WildHogPen, TerrainMainType.Building, (int)TerrainBuildingType.WildHogPen, SpriteName.WarsBuild_WildHogPen, CraftBuildingLib.WildHogPen, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
 
             //WarHogPen
             new BuildOption(BuildAndExpandType.WarHogPen, TerrainMainType.Building, (int)TerrainBuildingType.WarHogPen, SpriteName.WarsBuild_WarHogPen, CraftBuildingLib.WarHogPen, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
 
             //StagHogPen
             new BuildOption(BuildAndExpandType.StagHogPen, TerrainMainType.Building, (int)TerrainBuildingType.StagHogPen, SpriteName.WarsBuild_StagHogPen, CraftBuildingLib.StagHogPen, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
 
             //WolfCage
             new BuildOption(BuildAndExpandType.WolfCage, TerrainMainType.Building, (int)TerrainBuildingType.WolfCage, SpriteName.WarsBuild_WolfPen, CraftBuildingLib.WolfCage, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
 
             //WargCage
             new BuildOption(BuildAndExpandType.WargCage, TerrainMainType.Building, (int)TerrainBuildingType.WargCage, SpriteName.WarsBuild_WargPen, CraftBuildingLib.WargCage, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 3) };
 
             //AlphaWargCage
             new BuildOption(BuildAndExpandType.AlphaWargCage, TerrainMainType.Building, (int)TerrainBuildingType.AlphaWargCage, SpriteName.WarsBuild_AlphaWargPen, CraftBuildingLib.AlphaWargCage, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 3) };
 
             //WildCatCage
             new BuildOption(BuildAndExpandType.WildCatCage, TerrainMainType.Building, (int)TerrainBuildingType.WildCatCage, SpriteName.WarsBuild_WildCatPen, CraftBuildingLib.WildCatCage, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 1) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
 
             //LionCage
             new BuildOption(BuildAndExpandType.LionCage, TerrainMainType.Building, (int)TerrainBuildingType.LionCage, SpriteName.WarsBuild_LionPen, CraftBuildingLib.LionCage, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 3) };
 
             //WarLionCage
             new BuildOption(BuildAndExpandType.WarLionCage, TerrainMainType.Building, (int)TerrainBuildingType.WarLionCage, SpriteName.WarsBuild_WarLionPen, CraftBuildingLib.WarLionCage, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 3) };
 
             //ElephantCage
             new BuildOption(BuildAndExpandType.ElephantCage, TerrainMainType.Building, (int)TerrainBuildingType.ElephantCage, SpriteName.WarsBuild_ElephantPen, CraftBuildingLib.ElephantCage, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.Food_G, 4) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 5) };
 
             //WarElephantCage
             new BuildOption(BuildAndExpandType.WarElephantCage, TerrainMainType.Building, (int)TerrainBuildingType.WarElephantCage, SpriteName.WarsBuild_WarElephantPen, CraftBuildingLib.WarElephantCage, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.Food_G, 4) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 6) };
 
             //OliphantCage
             new BuildOption(BuildAndExpandType.OliphantCage, TerrainMainType.Building, (int)TerrainBuildingType.OliphantCage, SpriteName.WarsBuild_OliphantPen, CraftBuildingLib.OliphantCage, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.Food_G, 8) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 10) };
         }
 
         public static BuildAndExpandType BuildTypeFromTerrain(TerrainMainType main, int sub)
