@@ -1,7 +1,9 @@
 
 ﻿UPDATE
 Change Log:
-
+* Added growing food requirements for ai workerhut building
+* Ai may build larger cities
+* improved messages goto buttons
 
 
 ##ICONS TODO
@@ -27,7 +29,7 @@ x adv build upgrade, no more use of logistics
 x auto options for logistics/hall/manor
 x mounts in casual play
 x Luxurious buildings, raises the nobel house cap
-
+x lets me build Orchards over orchards
 
 
 #Event timers (are slightly random)#

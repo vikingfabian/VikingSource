@@ -29,8 +29,7 @@ namespace VikingEngine.DSSWars.Data
 
         static readonly int[] options = new int[] { 25, 50, 75, 100, 125, 150, 175, 200, 300 };
         public static readonly int[] AiEconomyLevel = new int[] { 50, 75, 100, 125, 150, 300 };
-        public static readonly GameModeMainType[] AvailableModes = [GameModeMainType.FullStory, GameModeMainType.QuickMatch, GameModeMainType.Sandbox, GameModeMainType.Peaceful, GameModeMainType.Spectator];
-
+        
         public AiAggressivity aiAggressivity = AiAggressivity.Medium;
         public BossSize bossSize = BossSize.Medium;
         
@@ -224,6 +223,10 @@ namespace VikingEngine.DSSWars.Data
             }
             switch (setting_gameMode)
             {
+                case GameModeMainType.QuickBoss:
+                    //result += 25;
+                    result += GameRuleset.QuickBossOptions_Time_Difficulty[DssRef.storage.gameRuleset.QuickBossTimeOption].Value2;
+                    break;
                 case GameModeMainType.FullStory:
                     result += 50;
                     break;
@@ -386,6 +389,7 @@ namespace VikingEngine.DSSWars.Data
 
             switch (setting_gameMode)
             {
+                case GameModeMainType.QuickBoss:
                 case GameModeMainType.FullStory:
                     runStory = true;
                     peaceful = false;
@@ -509,6 +513,7 @@ namespace VikingEngine.DSSWars.Data
         Peaceful,
         Spectator,
         QuickMatch,
+        QuickBoss,
         NUM
     }
     //enum AiResourceMultiplyType

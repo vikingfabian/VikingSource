@@ -329,8 +329,7 @@ namespace VikingEngine.DSSWars.Map.Path
             if (diff.Length() <= NodeMinDistance)
             {
                 --currentNodeIx;
-            }
-            
+            }            
             
             return toWp;
         }

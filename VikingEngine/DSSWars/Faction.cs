@@ -784,12 +784,20 @@ namespace VikingEngine.DSSWars
                     {
                         MessageGroup_Ingame.Title(content, DssRef.lang.Message_LostCity);
 
-                        var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                        MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoBattleButtonContent);
-                        gotoBattleButtonContent.Add(new RbText(city.TypeName()));
+                        //var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
+                        //MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoBattleButtonContent);
+                        //gotoBattleButtonContent.Add(new RbText(city.TypeName()));
 
-                        content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
-                            new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, city)));
+                        //content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
+                        //    new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, city)));
+                        var gotoButtonContent = new RichBoxContent();
+                        MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoButtonContent);
+                        //gotoButtonContent.Add(new RbText(city.TypeName()));
+                        city.toButtonContent(gotoButtonContent, true);
+
+                        content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                            new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, city, RbSoundType.Default))
+                        { fillWidth = true });
 
                         localplayer.hud.messages.Add(content);
                     }

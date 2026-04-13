@@ -110,13 +110,10 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     content.newLine();
                     RichBoxContent buttonContent = new RichBoxContent();
-                    obj.toButtonContent(buttonContent);
+                    obj.toButtonContent(buttonContent, true);
                     content.Add(new ArtButton(RbButtonStyle.Outline,
                         buttonContent,
-                    //    new List<AbsRichBoxMember> {
-                    //new RbText(obj.Name(out _), HudLib.TitleColor_Name),
-                    //new RbImage(SpriteName.warsBulletSeperationPoint),
-                    //new RbText(obj.TypeName(), HudLib.TitleColor_TypeName) },
+                    
                         new RbAction1Arg<AbsGameObject>((AbsGameObject obj) =>
                         {
                             player.gameControls.selectObject(obj);

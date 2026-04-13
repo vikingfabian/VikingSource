@@ -1231,7 +1231,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (args.selected && IsArmyGroup() && faction == args.player.faction && army.TryGetTarget(out var tArmy))
             {
                 RichBoxContent armyContent = new RichBoxContent();
-                tArmy.toButtonContent(armyContent);
+                tArmy.toButtonContent(armyContent, false);
                 args.content.Add(new ArtButton(RbButtonStyle.Outline, armyContent,
                     new RbAction1Arg<AbsArmy>(args.player.gameControls.mapSelect, tArmy), new RbTooltip_Text(DssRef.lang.Tutorial_SelectInput)));
             }

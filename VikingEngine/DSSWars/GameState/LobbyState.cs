@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis.FlowAnalysis;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -1464,7 +1465,7 @@ namespace VikingEngine.DSSWars
 
             DropDownBuilder modeOptions = new DropDownBuilder("mode");
             {
-                foreach (var mode in Difficulty.AvailableModes)
+                foreach (var mode in GameRuleset.AvailableModes)
                 {
                    LangLib.GameModeText(mode, out string caption, out string desc);
                     modeOptions.AddOption(caption, mode == DssRef.difficulty.setting_gameMode, mode == Difficulty.DefaultMode,
@@ -1473,18 +1474,47 @@ namespace VikingEngine.DSSWars
                 modeOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Settings_GameMode, underMenu);
             }
 
-            if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
-            {
-                content.newLine();
-                content.Add(new RbImage(SpriteName.birdPlayerCount));
-                content.space();
-                content.Add(new RbText(DssRef.lang.Lobby_PlayerCount, HudLib.TitleColor_Label));
-                content.space();
-                content.Add(new RbDragButton(new DragButtonSettings(2, 8, 1), quickPlayerCountProperty));
+            switch (DssRef.difficulty.setting_gameMode)
+            { 
+                case GameModeMainType.QuickBoss:
+                    DropDownBuilder timeOptions = new DropDownBuilder("bosstime");
+                    for (int i = 0; i < GameRuleset.QuickBossOptions_Time_Difficulty.Length; ++i)
+                    {
+                        timeOptions.AddOption(GameRuleset.QuickBossOptions_Time_Difficulty[i].Value1.ToString(), i == DssRef.storage.gameRuleset.QuickBossTimeOption,
+                            i == 1, new RbAction1Arg<int>((int option) =>
+                            {
+                                DssRef.storage.gameRuleset.QuickBossTimeOption = option;
+                                underMenu.CloseDropDown();
+                            }, i), null);
+                    }
+                    timeOptions.Build(content, SpriteName.cmdIconTimeOut, DssRef.todoLang.QuickBoss_TimeOption, underMenu);
+                    break;
 
-                content.newLine();
-                content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_TwoTeams) }, bQuickTwoTeamProperty));
+                case GameModeMainType.QuickMatch:
+                    content.newLine();
+                    content.Add(new RbImage(SpriteName.birdPlayerCount));
+                    content.space();
+                    content.Add(new RbText(DssRef.lang.Lobby_PlayerCount, HudLib.TitleColor_Label));
+                    content.space();
+                    content.Add(new RbDragButton(new DragButtonSettings(2, 8, 1), quickPlayerCountProperty));
+
+                    content.newLine();
+                    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_TwoTeams) }, bQuickTwoTeamProperty));
+
+                    break;
             }
+            //if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
+            //{
+            //    content.newLine();
+            //    content.Add(new RbImage(SpriteName.birdPlayerCount));
+            //    content.space();
+            //    content.Add(new RbText(DssRef.lang.Lobby_PlayerCount, HudLib.TitleColor_Label));
+            //    content.space();
+            //    content.Add(new RbDragButton(new DragButtonSettings(2, 8, 1), quickPlayerCountProperty));
+
+            //    content.newLine();
+            //    content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Lobby_TwoTeams) }, bQuickTwoTeamProperty));
+            //}
 
             DropDownBuilder factionSizeOptions = new DropDownBuilder("faction sz");
             {
@@ -2064,28 +2094,28 @@ namespace VikingEngine.DSSWars
        
        
 
-        void selectGameModeMenu()
-        {
-            GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
-            {
-                //List<GameModeMainType> availableModes = new List<GameModeMainType>
-                //{
-                //     GameModeMainType.FullStory,
-                //      GameModeMainType.QuickMatch,
-                //       GameModeMainType.Sandbox,
-                //        GameModeMainType.Peaceful,
-                //         GameModeMainType.Spectator,
-                //};
-                foreach (var mode in Difficulty.AvailableModes)//for (GameModeMainType mode = 0; mode < GameModeMainType.NUM; ++mode)
-                {
-                    LangLib.GameModeText(mode, out string caption, out string desc);
+        //void selectGameModeMenu()
+        //{
+        //    GuiLayout layout = new GuiLayout(string.Empty, menuSystem.menu);
+        //    {
+        //        //List<GameModeMainType> availableModes = new List<GameModeMainType>
+        //        //{
+        //        //     GameModeMainType.FullStory,
+        //        //      GameModeMainType.QuickMatch,
+        //        //       GameModeMainType.Sandbox,
+        //        //        GameModeMainType.Peaceful,
+        //        //         GameModeMainType.Spectator,
+        //        //};
+        //        foreach (var mode in Difficulty.AvailableModes)//for (GameModeMainType mode = 0; mode < GameModeMainType.NUM; ++mode)
+        //        {
+        //            LangLib.GameModeText(mode, out string caption, out string desc);
 
-                    new GuiTextButton(caption, desc,
-                        new GuiAction1Arg<GameModeMainType>(gameModeClick, mode), false, layout);
-                }
-            }
-            layout.End();
-        }
+        //            new GuiTextButton(caption, desc,
+        //                new GuiAction1Arg<GameModeMainType>(gameModeClick, mode), false, layout);
+        //        }
+        //    }
+        //    layout.End();
+        //}
 
         void selectDifficultyMenu()
         {

@@ -196,12 +196,14 @@ namespace VikingEngine.DSSWars.Interface
 
                 content.newParagraph();
 
-                var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                MessageGroup_Ingame.ControllerInputIcons(player,gotoBattleButtonContent);
-                gotoBattleButtonContent.Add(new RbText(city.TypeName()));
+                var gotoButtonContent = new RichBoxContent();
+                MessageGroup_Ingame.ControllerInputIcons(player,gotoButtonContent);
+                //gotoButtonContent.Add(new RbText(city.TypeName()));
+                city.toButtonContent(gotoButtonContent, true);
 
-                content.Add(new ArtButton( RbButtonStyle.Primary,gotoBattleButtonContent,
-                    new RbAction1Arg<AbsGameObject>(goToMapObject, city, RbSoundType.Default)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, city, RbSoundType.Default))
+                { fillWidth = true });
 
                 Add(content);
             }
@@ -221,12 +223,14 @@ namespace VikingEngine.DSSWars.Interface
 
                 content.newParagraph();
 
-                var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                ControllerInputIcons(player, gotoBattleButtonContent);
-                gotoBattleButtonContent.Add(new RbText(army.TypeName()));
+                var gotoButtonContent = new RichBoxContent();
+                MessageGroup_Ingame.ControllerInputIcons(player, gotoButtonContent);
+                //gotoButtonContent.Add(new RbText(city.TypeName()));
+                army.toButtonContent(gotoButtonContent, true);
 
-                content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
-                    new RbAction1Arg<AbsGameObject>(goToMapObject, army, RbSoundType.Default)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, army, RbSoundType.Default))
+                { fillWidth = true });
 
                 Add(content);
             }

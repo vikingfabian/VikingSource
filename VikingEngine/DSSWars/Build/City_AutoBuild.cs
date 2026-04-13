@@ -437,15 +437,19 @@ namespace VikingEngine.DSSWars.GameObject
 
                     case BuildAndExpandType.WorkerTent:
                         bBuild = WorkersMaxLimit > HousingCount_Workers;
-                        maxCount = 20;
+                        maxCount = 8;
                         chance = automationFocus == AutomationFocus.Grow ? 4000 : 200;
                         repeat = 4;
                         break;
 
                     case BuildAndExpandType.WorkerHutLarge:
                     case BuildAndExpandType.WorkerHut:
-                        bBuild = WorkersMaxLimit > HousingCount_Workers;
-                        maxCount = 100;
+                        int availableHomes =  HousingCount_Workers - workForce.amount;
+                        int foodRequirement = 200 + 100 * (HousingCount_Workers / 1000);
+                        bBuild = WorkersMaxLimit > HousingCount_Workers && 
+                            availableHomes < 30 &&
+                            GetGroupedResource(EntityComponent.CityResoureIndex.food).amount > foodRequirement;
+                        maxCount = 500;
                         chance = automationFocus == AutomationFocus.Grow ? 4000 : 200;
                         repeat = 4;
                         break;

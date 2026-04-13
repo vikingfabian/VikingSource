@@ -258,34 +258,54 @@ namespace VikingEngine.DSSWars.Event
                         if (DssRef.difficulty.runStory &&
                             PlatformSettings.STEAM_DEMO == false)
                         {
-                            addStoryEvent(new List<AbsStoryEvent>
-                        {
-                            new StoryEvent_Tutorial(),
-                            new StoryEvent_AiDelay(),
-                            new StoryEvent_AiWarDelay(),
-                            new StoryEvent_FirstAttack(),
-                            new StoryEvent_WarmanagerDelay(),
-                            new StoryEvent_Barbarians(),
-                            new StoryEvent_Mercenaries(),
-                            new StoryEvent_Cohalition(),
-                            new StoryEvent_DarkLordWarning(),
-                            new StoryEvent_DarkLord(),
-                            new StoryEvent_DefeatTheBoss(),
-                        }, true);
+                            if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
+                            {
+                                addStoryEvent(new List<AbsStoryEvent>
+                                {
+                                    new StoryEvent_Tutorial(),
+                                    new StoryEvent_AiDelay(),
+                                    new StoryEvent_AiWarDelay(),
+                                    new StoryEvent_FirstAttack(),
+                                    new StoryEvent_WarmanagerDelay(),
+                                    new StoryEvent_Barbarians(),
+                                    new StoryEvent_Mercenaries(),
+                                    new StoryEvent_Cohalition(),
+                                    new StoryEvent_DarkLordWarning(),
+                                    new StoryEvent_DarkLord(),
+                                    new StoryEvent_DefeatTheBoss(),
+                                }, true);
+                            }
+                            else if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickBoss)
+                            {
+                                addStoryEvent(new List<AbsStoryEvent>
+                                {
+                                    new StoryEvent_Tutorial(),
+                                    new StoryEvent_AiDelay(),
+                                    new StoryEvent_AiWarDelay(),
+                                    new StoryEvent_WarmanagerDelay(),
+                                    new StoryEvent_DarkLordWarning(),
+                                    new StoryEvent_DarkLord(),
+                                    new StoryEvent_DefeatTheBoss(),
+                                }, true);
+                            }
+                            else
+                            {
+                                throw new NotImplementedException();
+                            }
                         }
                         else
                         {
                             addStoryEvent(new List<AbsStoryEvent>
-                        {
-                            new StoryEvent_Tutorial(),
-                            new StoryEvent_AiDelay(),
-                            new StoryEvent_AiWarDelay(),
-                            new StoryEvent_WarmanagerDelay(),
-                        }, true);
+                            {
+                                new StoryEvent_Tutorial(),
+                                new StoryEvent_AiDelay(),
+                                new StoryEvent_AiWarDelay(),
+                                new StoryEvent_WarmanagerDelay(),
+                            }, true);
                         }
                     }
 
-                    if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
+                    if (DssRef.difficulty.runStory/* == GameModeMainType.FullStory*/)
                     {
                         //Prepare secret alliances
                         var DarkFollower = DssRef.world.faction(DssRef.settings.Faction_DarkFollower);
@@ -629,7 +649,7 @@ namespace VikingEngine.DSSWars.Event
 
         bool IsStoryBeforeBoss()
         {
-            if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
+            if (DssRef.difficulty.runStory/* .setting_gameMode == GameModeMainType.FullStory*/)
             {
                 var current = CurrentEvent();
                 if (current != null && current.OrderIndex() < EventsOrder.DarkLord)

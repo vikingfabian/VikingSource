@@ -130,12 +130,13 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return DssRef.world.tileGrid.Get(tilePos);
         }
-        public override void toButtonContent(RichBoxContent content)
+        public override void toButtonContent(RichBoxContent content, bool dark)
         {
-            content.Add(new RbText(Name(out _), HudLib.TitleColor_Name));
+            content.Add(new RbText(Name(out _), dark ? HudLib.TitleColor_Name_Dark : HudLib.TitleColor_Name));
             content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
             TypeIcon(content);
-            content.Add(new RbText(TypeName(), HudLib.TitleColor_TypeName));
+            content.hspace();
+            content.Add(new RbText(TypeName(), dark? HudLib.TitleColor_TypeName_Dark : HudLib.TitleColor_TypeName));
 
         }
         virtual public void tagSprites(out SpriteName back, out SpriteName art)

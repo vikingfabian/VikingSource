@@ -103,6 +103,9 @@ namespace VikingEngine.DSSWars
                     case GameModeMainType.FullStory:
                         DssRef.stats.startNewStory.addOne();
                         break;
+                    case GameModeMainType.QuickBoss:
+                        DssRef.stats.startNewQuickBoss.addOne();
+                        break;
                     case GameModeMainType.QuickMatch:
                         DssRef.stats.startQuickMatch.addOne();
                         break;

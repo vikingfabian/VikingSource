@@ -1432,7 +1432,7 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         void namedFactionsOnMap(int standardWorkForce, bool oneCity)
         {
-            bool bStory = DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory;
+            bool bStory = DssRef.difficulty.runStory; //== GameModeMainType.FullStory;
             if (bStory)
             {
                 var faction = new Faction(world, FactionType.DarkFollower);

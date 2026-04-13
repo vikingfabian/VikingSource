@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -143,12 +144,19 @@ namespace VikingEngine.DSSWars.GameObject
                             RichBoxContent content = new RichBoxContent();
                             MessageGroup_Ingame.Title(content, DssRef.lang.Hud_Battle);
 
-                            var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                            MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoBattleButtonContent);
-                            gotoBattleButtonContent.Add(new RbText(TypeName()));
+                            //var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
+                            //MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoBattleButtonContent);
+                            //gotoBattleButtonContent.Add(new RbText(TypeName()));
 
-                            content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
-                                new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, this)));
+                            //content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
+                            //    new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, this)));
+                            var gotoButtonContent = new RichBoxContent();
+                            MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoButtonContent);
+                            this.toButtonContent(gotoButtonContent, true);
+
+                            content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                                new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, this, RbSoundType.Default))
+                            { fillWidth = true });
 
                             localplayer.hud.messages.Add(content);
                         }

@@ -191,11 +191,16 @@ namespace VikingEngine.DSSWars
 
         void initPlayers(bool newGame, ObjectPointerCollection pointers)
         {
+            
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
             {
                 new Faction(DssRef.world, FactionType.DarkLord);
                 new Faction(DssRef.world, FactionType.SouthHara);
                 new Faction(DssRef.world, FactionType.Barbarians);
+            }
+            else if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickBoss)
+            {
+                new Faction(DssRef.world, FactionType.DarkLord);
             }
 
             int playerCount = DssRef.storage.playerCount;

@@ -41,6 +41,7 @@ namespace VikingEngine.DSSWars.Data
         public StatsInt skip_advisor = new StatsInt("skip_advisor");
 
         public StatsInt startNewStory = new StatsInt("startnew_story");
+        public StatsInt startNewQuickBoss = new StatsInt("startnew_quickboss");
         public StatsInt startQuickMatch = new StatsInt("startnew_quickmatch");
         public StatsInt startnew_casual = new StatsInt("startnew_casual");
         public StatsInt startNewSandbox = new StatsInt("startNewSandbox");

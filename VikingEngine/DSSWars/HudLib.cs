@@ -40,6 +40,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color TitleColor_Action = Color.LightBlue;
         public static readonly Color TitleColor_Attack = Color.Red;
         public static readonly Color TitleColor_Name = Color.LightYellow;
+        public static readonly Color TitleColor_Name_Dark = Color.Brown;
         public static readonly Color TitleColor_TypeName = Color.LightGray;
         public static readonly Color TitleColor_TypeName_Dark = new Color(50, 50, 50);
         public static readonly Color TitleColor_Label = new Color(0, 128, 153);

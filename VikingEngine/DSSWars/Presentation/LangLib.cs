@@ -26,37 +26,6 @@ namespace VikingEngine.DSSWars.Presentation
 {
     static class LangLib
     {
-        //public static void MapFilter(FactionMapFilter filter, out SpriteName icon, out string caption)
-        //{
-        //    caption = TextLib.Error;
-
-        //    switch (filter)
-        //    {
-        //        default:                    
-        //            icon = SpriteName.MissingImage; break;
-
-        //        case FactionMapFilter.FactionCols:
-        //            icon = SpriteName.WarsMapFilterFactions;
-        //            break;
-        //        case FactionMapFilter.Terrain:
-        //            icon = SpriteName.WarsMapFilterTerrain;
-        //            break;
-        //        case FactionMapFilter.Minimap:
-        //            icon = SpriteName.WarsMapFilterMinimap;
-        //            break;
-
-        //        case FactionMapFilter.PopulationHeatmap:
-        //            caption = DssRef.lang.worker;
-        //            icon = SpriteName.WarsMapFilterWorkers;
-        //            break;
-        //        case FactionMapFilter.StrengthHeatmap:
-        //            caption = DssRef.lang.UnitType_Faction;
-        //            icon = SpriteName.WarsMapFilterStrength;
-        //            break;
-
-        //    }
-
-        //}
         public static string Biome(CityBiome biom)
         {
             switch (biom)
@@ -101,18 +70,27 @@ namespace VikingEngine.DSSWars.Presentation
                     caption = DssRef.lang.Settings_Mode_Story;
                     desc = DssRef.lang.Settings_Mode_IncludeBoss + " " + DssRef.lang.Settings_Mode_IncludeAttacks;
                     break;
+
+                case GameModeMainType.QuickBoss:
+                    caption = DssRef.todoLang.Settings_Mode_QuickBoss;
+                    desc = DssRef.todoLang.Settings_Mode_QuickBoss_Description + ". " + DssRef.lang.Settings_Mode_IncludeAttacks;
+                    break;
+
                 case GameModeMainType.QuickMatch:
                     caption = DssRef.lang.GameMode_QuickMatch;
                     desc = DssRef.lang.GameMode_QuickMatch_Description;
                     break;
+
                 case GameModeMainType.Sandbox:
                     caption = DssRef.lang.Settings_Mode_Sandbox;
                     desc = DssRef.lang.Settings_Mode_IncludeAttacks;
                     break;
+
                 case GameModeMainType.Peaceful:
                     caption = DssRef.lang.Settings_Mode_Peaceful;
-                    desc = DssRef.lang.Settings_Mode_Peaceful_Description + " " + Ref.langOpt.Settings_Mode_No_Achivements;
+                    desc = DssRef.lang.Settings_Mode_Peaceful_Description + ". " + Ref.langOpt.Settings_Mode_No_Achivements;
                     break;
+
                 case GameModeMainType.Spectator:
                     caption = DssRef.lang.Settings_Mode_Spectator;
                     desc = DssRef.lang.Settings_Mode_Spectator_Description + " " + Ref.langOpt.Settings_Mode_No_Achivements;
