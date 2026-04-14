@@ -919,7 +919,17 @@ namespace VikingEngine.DSSWars.Work
                                 break;
 
 
-
+                            case TerrainBuildingType.FowlPen:
+                                if (upgrade)
+                                {
+                                    resourceType = Resource.ItemResourceType.Hen;
+                                }
+                                else
+                                {
+                                    resourceType = Resource.ItemResourceType.Fowl;
+                                }
+                                size = TerrainContent.FowlGrowth;
+                                break;
 
                             case TerrainBuildingType.HenPen:
                                 if (downgrade)

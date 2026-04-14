@@ -634,7 +634,7 @@ namespace VikingEngine.DSSWars
 
                     InputActionType.ZoomInKey,
                     InputActionType.ZoomOutKey,
-                    InputActionType.Build,
+                    //InputActionType.Build,
 
                     InputActionType.Copy,
                     InputActionType.Paste,

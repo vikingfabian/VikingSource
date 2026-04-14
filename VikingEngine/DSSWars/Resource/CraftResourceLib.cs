@@ -1285,7 +1285,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterFowl = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            6 * HenSlaughterCount,
+            12 * HenSlaughterCount,
             new UseResource[]
             {
                 new UseResource(ItemResourceType.Fowl, HenSlaughterCount),
@@ -1297,7 +1297,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterHen = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            8 * HenSlaughterCount,
+            16 * HenSlaughterCount,
             new UseResource[]
             {
                 new UseResource(ItemResourceType.Hen, HenSlaughterCount),
@@ -1311,7 +1311,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterBoar = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            20,
+            60,
             new UseResource[]
             {
         new UseResource(ItemResourceType.Boar, HenSlaughterCount),
@@ -1324,7 +1324,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterPig = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            30,
+            80,
             new UseResource[]
             {
         new UseResource(ItemResourceType.Pig, HenSlaughterCount),
@@ -1336,7 +1336,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterWildPig = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            30,
+            80,
             new UseResource[]
             {
         new UseResource(ItemResourceType.WildPig, HenSlaughterCount),
@@ -1348,7 +1348,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterWildHog = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            50,
+            120,
             new UseResource[]
             {
         new UseResource(ItemResourceType.WildHog, HenSlaughterCount),
@@ -1360,7 +1360,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterWarHog = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            30,
+            80,
             new UseResource[]
             {
         new UseResource(ItemResourceType.WarHog, HenSlaughterCount),
@@ -1372,7 +1372,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterStagHog = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            80,
+            160,
             new UseResource[]
             {
         new UseResource(ItemResourceType.StagHog, HenSlaughterCount),
@@ -1386,7 +1386,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterOxen = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            40,
+            100,
             new UseResource[]
             {
         new UseResource(ItemResourceType.Oxen, HenSlaughterCount),
@@ -1398,7 +1398,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterKineOxen = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            40,
+            120,
             new UseResource[]
             {
         new UseResource(ItemResourceType.KineOxen, HenSlaughterCount),
@@ -1413,7 +1413,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterPony = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            20,
+            60,
             new UseResource[]
             {
         new UseResource(ItemResourceType.Pony, HenSlaughterCount),
@@ -1425,7 +1425,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterHorse = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            50,
+            100,
             new UseResource[]
             {
         new UseResource(ItemResourceType.Horse, HenSlaughterCount),
@@ -1437,7 +1437,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterWarHorse = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            30,
+            60,
             new UseResource[]
             {
         new UseResource(ItemResourceType.WarHorse, HenSlaughterCount),
@@ -1449,7 +1449,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterDraftHorse = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            40,
+            100,
             new UseResource[]
             {
         new UseResource(ItemResourceType.DraftHorse, HenSlaughterCount),
@@ -1542,7 +1542,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterElephant = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            100,
+            200,
             new UseResource[]
             {
         new UseResource(ItemResourceType.Elephant, HenSlaughterCount),
@@ -1554,7 +1554,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterWarElephant = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            80,
+            160,
             new UseResource[]
             {
         new UseResource(ItemResourceType.WarElephant, HenSlaughterCount),
@@ -1566,7 +1566,7 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint SlaughterOliphant = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.RawFood_Group,
-            300,
+            600,
             new UseResource[]
             {
         new UseResource(ItemResourceType.Oliphant, HenSlaughterCount),

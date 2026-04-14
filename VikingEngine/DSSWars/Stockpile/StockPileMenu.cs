@@ -177,6 +177,8 @@ namespace VikingEngine.DSSWars.Resource
                     break;
 
                 case ResourceGroupType.Animals:
+                    groupType = ResourceGroupType.Animals;
+
                     stockpile(player, ItemResourceType.Fowl);
                     stockpile(player, ItemResourceType.Hen);
                     stockpile(player, ItemResourceType.Boar);
@@ -254,8 +256,17 @@ namespace VikingEngine.DSSWars.Resource
                            var list = Resource.ResourceLib.ResourceGroupList(group);
                             foreach (var item in list)
                             {
-                                ref var resources = ref city.GetRefGroupedResource(item);
-                                resources.setLimit(value);
+                                if (city != null)
+                                {
+                                    ref GroupedResource resources = ref city.GetRefGroupedResource(item);
+                                    resources.setLimit(value);
+                                }
+                                else
+                                {
+                                    ref GroupedResource resources = ref faction.GetRefResourceOverview(item);
+                                    resources.capacity = value;
+                                    resources.setLimit(value);
+                                }
                             }
                             player.hud.needRefresh = true;
                         }), 

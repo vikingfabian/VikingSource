@@ -1243,14 +1243,14 @@ namespace VikingEngine.DSSWars.Build
 
                     break;
                 case BuildAndExpandType.FowlPen:
-                    pen(build, TerrainContent.FowlGrowth, ItemResourceType.Fowl, true, false);
+                    pen(build, TerrainContent.FowlGrowth, ItemResourceType.Fowl, true, false, true);
 
-                    eggProduction();
+                    //eggProduction();
                     break;
                 case BuildAndExpandType.HenPen:
-                    pen(build, TerrainContent.HenGrowth, ItemResourceType.Hen, false, true);
+                    pen(build, TerrainContent.HenGrowth, ItemResourceType.Hen, false, true, true);
 
-                    eggProduction();
+                    //eggProduction();
                     break;
 
                 case BuildAndExpandType.BoarPen:
@@ -1586,7 +1586,7 @@ namespace VikingEngine.DSSWars.Build
                 }
             }
 
-            void pen(BuildOption build, AnimalPenGrowth penGrowth, ItemResourceType resourceType, bool canBreedup, bool canBreedDown)
+            void pen(BuildOption build, AnimalPenGrowth penGrowth, ItemResourceType resourceType, bool canBreedup, bool canBreedDown, bool eggs =false)
             {
                 content.h2(DssRef.lang.Hud_Upkeep, HudLib.TitleColor_Label);
                 content.newLine();
@@ -1596,6 +1596,12 @@ namespace VikingEngine.DSSWars.Build
                 content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood, HudLib.TitleColor_TypeName));
                 content.hspace();
                 content.Add(new RbText(build.upkeep.amount.ToString()));
+
+                content.space();
+                content.Add(new RbText(TextLib.Parentheses(
+                    TextLib.TwoDecimal(build.upkeep.amount / (float)(penGrowth.harvestReady - 1)) + " " + DssRef.lang.BuildHud_PerCycle  ), 
+                    HudLib.SecondaryTextColor));
+
                 content.newLine();
                 content.text(DssRef.lang.Hud_Time_ValuePerMinute, HudLib.InfoYellow_Light);
 
@@ -1617,6 +1623,11 @@ namespace VikingEngine.DSSWars.Build
                 content.Add(new RbImage(itemIcon));
                 content.hspace();
                 content.Add(new RbText(itemName));
+
+                if (eggs)
+                {
+                    eggProduction();
+                }
 
                 if (canBreedup || canBreedDown)
                 {
@@ -1643,6 +1654,8 @@ namespace VikingEngine.DSSWars.Build
                 HudLib.BulletPoint(content);
                 content.Add(new RbText(DssRef.lang.BuildHud_Produce));
                 content.space();
+                content.Add(new RbImage(SpriteName.WarsResource_Egg));
+                content.hspace();
                 content.Add(new RbText((DssConst.HenRawFoodAmout + DssConst.EggRawFoodAmout).ToString()));
                 content.Add(new RbImage(SpriteName.WarsResource_RawFood));
                 content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
