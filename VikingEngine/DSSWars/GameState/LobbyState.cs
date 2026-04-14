@@ -144,8 +144,8 @@ namespace VikingEngine.DSSWars
             messages = new MessageGroup_Editor();
 
 
-            //DssRef.LastLeaderBoardUpload = LeaderBoardType.city_size;
-            if (DssRef.LastLeaderBoardUpload != LeaderBoardType.NUM_NONE)
+            if (DssRef.LastLeaderBoardUpload != LeaderBoardType.NUM_NONE && 
+                Ref.steam.isInitialized)
             {
                 openUnderMenu(UnderMenu_leaderboards, StackOption.Stack);
             }
