@@ -1214,7 +1214,7 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.KineOxenPen, TerrainMainType.Building, (int)TerrainBuildingType.KineOxenPen, SpriteName.WarsBuild_KineOxenPen, CraftBuildingLib.KineOxenPen, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 2) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 3) };
 
             //DogCage
             new BuildOption(BuildAndExpandType.DogCage, TerrainMainType.Building, (int)TerrainBuildingType.DogCage, SpriteName.WarsBuild_DogCage, CraftBuildingLib.DogCage, true,
@@ -1316,19 +1316,19 @@ namespace VikingEngine.DSSWars.Build
             new BuildOption(BuildAndExpandType.ElephantCage, TerrainMainType.Building, (int)TerrainBuildingType.ElephantCage, SpriteName.WarsBuild_ElephantPen, CraftBuildingLib.ElephantCage, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 5) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 8) };
 
             //WarElephantCage
             new BuildOption(BuildAndExpandType.WarElephantCage, TerrainMainType.Building, (int)TerrainBuildingType.WarElephantCage, SpriteName.WarsBuild_WarElephantPen, CraftBuildingLib.WarElephantCage, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 6) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 10) };
 
             //OliphantCage
             new BuildOption(BuildAndExpandType.OliphantCage, TerrainMainType.Building, (int)TerrainBuildingType.OliphantCage, SpriteName.WarsBuild_OliphantPen, CraftBuildingLib.OliphantCage, true,
                 BuildCategoryTab.Farming, BuildFilterTag.Farm, BuildFilterTag.Animals, BuildFilterTag.Soldiers,
                 MapPaintToolCategory.Default, DssConst.WorkTime_Building_Default)
-            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 10) };
+            { upkeep = new ItemResource(ItemResourceType.RawFood_Group, 20) };
         }
 
         public static BuildAndExpandType BuildTypeFromTerrain(TerrainMainType main, int sub)

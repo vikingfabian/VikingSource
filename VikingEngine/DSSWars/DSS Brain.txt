@@ -1,8 +1,8 @@
 
 ﻿UPDATE
 Change Log:
-* fixed: Key mapping Build Duplicate
-* fixed: Set all stockpiles to X buttons do not work in animals tab
+* 
+
 
 ##ICONS TODO
 

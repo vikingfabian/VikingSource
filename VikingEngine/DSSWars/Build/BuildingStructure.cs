@@ -651,8 +651,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.RapeSeedFarm: return RapeSeedFarm_count;
                 case BuildAndExpandType.RapeSeedFarmUpgraded: return RapeSeedFarm_count;
 
-                case BuildAndExpandType.PigPen: return PigPen_count;
-                case BuildAndExpandType.HenPen: return HenPen_count;
+                
                 case BuildAndExpandType.Statue_ThePlayer: return Statue_ThePlayer_count;
                 case BuildAndExpandType.Pavement: return Pavement_count;
                 case BuildAndExpandType.PavementFlower: return PavementFlower_count;
@@ -697,6 +696,13 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Cesspit: return CessPit_count;
 
                 // --- NEW Animals ---
+
+
+                case BuildAndExpandType.BoarPen: return BoarPen_count;
+                case BuildAndExpandType.FowlPen: return FowlPen_count;
+                case BuildAndExpandType.PigPen: return PigPen_count;
+                case BuildAndExpandType.HenPen: return HenPen_count;
+
                 case BuildAndExpandType.OxenPen: return OxenPen_count;
                 case BuildAndExpandType.KineOxenPen: return KineOxenPen_count;
 
@@ -724,8 +730,11 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.ElephantCage: return ElephantCage_count;
                 case BuildAndExpandType.WarElephantCage: return WarElephantCage_count;
                 case BuildAndExpandType.OliphantCage: return OliphantCage_count;
-
+#if DEBUG
+                default: throw new NotImplementedException();
+#else
                 default: return 0;
+#endif
             }
         }
 
