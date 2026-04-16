@@ -15,6 +15,9 @@ namespace VikingEngine.DSSWars.Presentation
     {
         public string StockPile_ItemsAreNotLost => "Items will not be destroyed if you exceed the stockpile!";
 
+        public string SlaughterResult_PerAnimal => "Slaughter output, per animal";
+        public string StockPile_ItemsAreNotLost => "Items will not be destroyed if you exceed the stockpile!";
+
         public string Settings_Mode_QuickBoss => "Quick boss";
         public string Settings_Mode_QuickBoss_Description => "Prepare for a few hours and meet a final boss";
 

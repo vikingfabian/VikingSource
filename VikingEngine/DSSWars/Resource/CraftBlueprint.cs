@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
@@ -292,6 +293,59 @@ namespace VikingEngine.DSSWars.Resource
             content.Add(new RbImage(icon));
             content.space();
             content.Add(new RbText(name));
+
+            if (resultAmount2 > 0)
+            {
+                content.Add(new RbImage(SpriteName.pjNumPlus));
+                content.hspace();
+                iconName(2, out icon, out name);
+                content.Add(new RbImage(icon));
+                content.space();
+                content.Add(new RbText(name));
+            }
+        }
+
+        public void resultDividedToMenu(RichBoxContent content)
+        {
+            float useCount = resources[0].amount;
+
+            iconName(1, out SpriteName icon, out string name);
+            content.Add(new RbText(TextLib.OneDecimal(resultAmount1 / useCount)));
+            content.hspace();
+            content.Add(new RbImage(icon));
+            content.space();
+            content.Add(new RbText(name));
+
+            if (resultAmount2 > 0)
+            {
+                content.Add(new RbImage(SpriteName.pjNumPlus));
+                content.hspace();
+                iconName(2, out icon, out name);
+                content.Add(new RbText(TextLib.OneDecimal(resultAmount2 / useCount)));
+                content.hspace();
+                content.Add(new RbImage(icon));
+                content.space();
+                content.Add(new RbText(name));
+            }
+            //foreach (var r in resources)
+            //{
+            //    IconName.Item(r.type, out SpriteName itemIcon, out string itemName);
+
+            //    if (!first)
+            //    {
+            //        content.Add(new RbImage(SpriteName.pjNumPlus));
+            //    }
+
+            //    var countText = new RbText(TextLib.TwoDecimal(r.amount / (float)resultAmount1));
+
+            //    content.Add(countText);
+            //    content.hspace();
+            //    content.Add(new RbImage(itemIcon));
+            //    content.hspace();
+            //    content.Add(new RbText(TextLib.LargeFirstLetter(itemName)));
+
+            //    first = false;
+            //}
         }
 
         public void toMenu(RichBoxContent content, City city, bool upgradeOnly = false, bool newLine = true, bool includeAvailable = true, bool includeLevel = true)

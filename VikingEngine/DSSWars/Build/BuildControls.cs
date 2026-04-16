@@ -1243,22 +1243,22 @@ namespace VikingEngine.DSSWars.Build
 
                     break;
                 case BuildAndExpandType.FowlPen:
-                    pen(build, TerrainContent.FowlGrowth, ItemResourceType.Fowl, true, false, true);
+                    pen(build, TerrainContent.FowlGrowth, ItemResourceType.Fowl, CraftResourceLib.SlaughterFowl, true, false, true);
 
                     //eggProduction();
                     break;
                 case BuildAndExpandType.HenPen:
-                    pen(build, TerrainContent.HenGrowth, ItemResourceType.Hen, false, true, true);
+                    pen(build, TerrainContent.HenGrowth, ItemResourceType.Hen, CraftResourceLib.SlaughterHen, false, true, true);
 
                     //eggProduction();
                     break;
 
                 case BuildAndExpandType.BoarPen:
-                    pen(build, TerrainContent.BoarGrowth, ItemResourceType.Boar, true, false);  
+                    pen(build, TerrainContent.BoarGrowth, ItemResourceType.Boar, CraftResourceLib.SlaughterBoar, true, false);  
                     break;
 
                 case BuildAndExpandType.PigPen:
-                    pen(build, TerrainContent.PigGrowth, ItemResourceType.Pig, false, true);                                    
+                    pen(build, TerrainContent.PigGrowth, ItemResourceType.Pig, CraftResourceLib.SlaughterPig, false, true);                                    
                     break;
 
                 //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
@@ -1287,73 +1287,73 @@ namespace VikingEngine.DSSWars.Build
                 //content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
 
                 case BuildAndExpandType.OxenPen:
-                    pen(build,TerrainContent.OxenGrowth, ItemResourceType.Oxen, true, false);
+                    pen(build, TerrainContent.OxenGrowth, ItemResourceType.Oxen, CraftResourceLib.SlaughterOxen, true, false);
                     break;
                 case BuildAndExpandType.KineOxenPen:
-                    pen(build, TerrainContent.KineOxenGrowth, ItemResourceType.KineOxen, false, true);
+                    pen(build, TerrainContent.KineOxenGrowth, ItemResourceType.KineOxen, CraftResourceLib.SlaughterKineOxen, false, true);
                     break;
 
                 case BuildAndExpandType.DogCage:
-                    pen(build, TerrainContent.DogGrowth, ItemResourceType.Dog, true, false);
+                    pen(build, TerrainContent.DogGrowth, ItemResourceType.Dog, null, true, false);
                     break;
                 case BuildAndExpandType.HoundCage:
-                    pen(build, TerrainContent.HoundGrowth, ItemResourceType.Hound, false, true);
+                    pen(build, TerrainContent.HoundGrowth, ItemResourceType.Hound, null, false, true);
                     break;
 
                 case BuildAndExpandType.PonyPen:
-                    pen(build, TerrainContent.PonyGrowth, ItemResourceType.Pony, true, false);
+                    pen(build, TerrainContent.PonyGrowth, ItemResourceType.Pony, CraftResourceLib.SlaughterPony, true, false);
                     break;
                 case BuildAndExpandType.HorsePen:
-                    pen(build, TerrainContent.HorseGrowth, ItemResourceType.Horse, true, true);
+                    pen(build, TerrainContent.HorseGrowth, ItemResourceType.Horse, CraftResourceLib.SlaughterHorse, true, true);
                     break;
                 case BuildAndExpandType.WarHorsePen:
-                    pen(build, TerrainContent.WarHorseGrowth, ItemResourceType.WarHorse, false, true);
+                    pen(build, TerrainContent.WarHorseGrowth, ItemResourceType.WarHorse, CraftResourceLib.SlaughterWarHorse, false, true);
                     break;
                 case BuildAndExpandType.DraftHorsePen:
-                    pen(build, TerrainContent.DraftHorseGrowth, ItemResourceType.DraftHorse, false, true);
+                    pen(build, TerrainContent.DraftHorseGrowth, ItemResourceType.DraftHorse, CraftResourceLib.SlaughterDraftHorse, false, true);
                     break;
 
                 case BuildAndExpandType.WildPigPen:
-                    pen(build, TerrainContent.WildPigGrowth, ItemResourceType.WildPig, true, false);
+                    pen(build, TerrainContent.WildPigGrowth, ItemResourceType.WildPig, CraftResourceLib.SlaughterWildPig, true, false);
                     break;
                 case BuildAndExpandType.WildHogPen:
-                    pen(build, TerrainContent.WildHogGrowth, ItemResourceType.WildHog, true, true);
+                    pen(build, TerrainContent.WildHogGrowth, ItemResourceType.WildHog, CraftResourceLib.SlaughterWildHog, true, true);
                     break;
                 case BuildAndExpandType.WarHogPen:
-                    pen(build, TerrainContent.WarHogGrowth, ItemResourceType.WarHog, false, true);
+                    pen(build, TerrainContent.WarHogGrowth, ItemResourceType.WarHog, CraftResourceLib.SlaughterWarHog, false, true);
                     break;
                 case BuildAndExpandType.StagHogPen:
-                    pen(build, TerrainContent.StagHogGrowth, ItemResourceType.StagHog, false, true);
+                    pen(build, TerrainContent.StagHogGrowth, ItemResourceType.StagHog, CraftResourceLib.SlaughterStagHog, false, true);
                     break;
 
                 case BuildAndExpandType.WolfCage:
-                    pen(build, TerrainContent.WolfGrowth, ItemResourceType.Wolf, true, false);
+                    pen(build, TerrainContent.WolfGrowth, ItemResourceType.Wolf, CraftResourceLib.SlaughterWolf, true, false);
                     break;
                 case BuildAndExpandType.WargCage:
-                    pen(build, TerrainContent.WargGrowth, ItemResourceType.Warg, true, true);
+                    pen(build, TerrainContent.WargGrowth, ItemResourceType.Warg, CraftResourceLib.SlaughterWarg, true, true);
                     break;
                 case BuildAndExpandType.AlphaWargCage:
-                    pen(build, TerrainContent.AlphaWargGrowth, ItemResourceType.AlphaWarg, false, true);
+                    pen(build, TerrainContent.AlphaWargGrowth, ItemResourceType.AlphaWarg, CraftResourceLib.SlaughterAlphaWarg, false, true);
                     break;
 
                 case BuildAndExpandType.WildCatCage:
-                    pen(build, TerrainContent.WildCatGrowth, ItemResourceType.WildCat, true, false);
+                    pen(build, TerrainContent.WildCatGrowth, ItemResourceType.WildCat, CraftResourceLib.SlaughterWildCat, true, false);
                     break;
                 case BuildAndExpandType.LionCage:
-                    pen(build, TerrainContent.LionGrowth, ItemResourceType.Lion, true, true);
+                    pen(build, TerrainContent.LionGrowth, ItemResourceType.Lion, CraftResourceLib.SlaughterLion, true, true);
                     break;
                 case BuildAndExpandType.WarLionCage:
-                    pen(build, TerrainContent.WarLionGrowth, ItemResourceType.WarLion, false, true);
+                    pen(build, TerrainContent.WarLionGrowth, ItemResourceType.WarLion, CraftResourceLib.SlaughterWarLion, false, true);
                     break;
 
                 case BuildAndExpandType.ElephantCage:
-                    pen(build, TerrainContent.ElephantGrowth, ItemResourceType.Elephant, true, false);
+                    pen(build, TerrainContent.ElephantGrowth, ItemResourceType.Elephant, CraftResourceLib.SlaughterElephant, true, false);
                     break;
                 case BuildAndExpandType.WarElephantCage:
-                    pen(build, TerrainContent.WarElephantGrowth, ItemResourceType.WarElephant, true, true);
+                    pen(build, TerrainContent.WarElephantGrowth, ItemResourceType.WarElephant, CraftResourceLib.SlaughterWarElephant, true, true);
                     break;
                 case BuildAndExpandType.OliphantCage:
-                    pen(build, TerrainContent.OliphantGrowth, ItemResourceType.Oliphant, false, true);
+                    pen(build, TerrainContent.OliphantGrowth, ItemResourceType.Oliphant, CraftResourceLib.SlaughterOliphant, false, true);
                     break;
 
                 case BuildAndExpandType.Brewery:
@@ -1586,7 +1586,7 @@ namespace VikingEngine.DSSWars.Build
                 }
             }
 
-            void pen(BuildOption build, AnimalPenGrowth penGrowth, ItemResourceType resourceType, bool canBreedup, bool canBreedDown, bool eggs =false)
+            void pen(BuildOption build, AnimalPenGrowth penGrowth, ItemResourceType resourceType, CraftBlueprint slaughterBp, bool canBreedup, bool canBreedDown, bool eggs =false)
             {
                 content.h2(DssRef.lang.Hud_Upkeep, HudLib.TitleColor_Label);
                 content.newLine();
@@ -1599,7 +1599,7 @@ namespace VikingEngine.DSSWars.Build
 
                 content.space();
                 content.Add(new RbText(TextLib.Parentheses(
-                    TextLib.TwoDecimal(build.upkeep.amount / (float)(penGrowth.harvestReady - 1)) + " " + DssRef.lang.BuildHud_PerCycle  ), 
+                    TextLib.TwoDecimal(build.upkeep.amount * (float)(penGrowth.harvestReady - 1)) + " " + DssRef.lang.BuildHud_PerCycle  ), 
                     HudLib.SecondaryTextColor));
 
                 content.newLine();
@@ -1624,9 +1624,18 @@ namespace VikingEngine.DSSWars.Build
                 content.hspace();
                 content.Add(new RbText(itemName));
 
+                
                 if (eggs)
                 {
                     eggProduction();
+                }
+
+                if (slaughterBp != null)
+                {
+                    content.newParagraph();
+                    content.h2(DssRef.todoLang.SlaughterResult_PerAnimal, HudLib.TitleColor_Label);
+                    content.newLine();
+                    slaughterBp.resultDividedToMenu(content);
                 }
 
                 if (canBreedup || canBreedDown)
