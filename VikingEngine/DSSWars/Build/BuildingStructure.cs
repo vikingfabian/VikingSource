@@ -731,7 +731,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WarElephantCage: return WarElephantCage_count;
                 case BuildAndExpandType.OliphantCage: return OliphantCage_count;
 #if DEBUG
-                default: throw new NotImplementedException();
+                default: throw new NotImplementedException(type.ToString());
 #else
                 default: return 0;
 #endif
