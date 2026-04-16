@@ -730,6 +730,12 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.ElephantCage: return ElephantCage_count;
                 case BuildAndExpandType.WarElephantCage: return WarElephantCage_count;
                 case BuildAndExpandType.OliphantCage: return OliphantCage_count;
+
+                case BuildAndExpandType.TreeHard:
+                case BuildAndExpandType.TreeSoft:
+                case BuildAndExpandType.TreeSeedlingSoft:
+                case BuildAndExpandType.TreeSeedlingHard:
+                    return 0;
 #if DEBUG
                 default: throw new NotImplementedException(type.ToString());
 #else
