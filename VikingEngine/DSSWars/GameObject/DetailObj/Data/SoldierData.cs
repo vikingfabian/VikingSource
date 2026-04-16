@@ -97,16 +97,24 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
             HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.lang.Conscript_Mobility, TextLib.TwoDecimal(mobilityValue()));
         }
 
-        public void applySkillBonus(float skillBonus)
+        public void applySkillBonus(float skillBonus, float mobileBonus)
         {
-            if (skillBonus <= 0)
+            if (skillBonus == 0 || skillBonus == 1)
             {
                 skillBonus = 1;
             }
+            else
+            {
+                attackDamage = Convert.ToInt32(attackDamage * skillBonus);
+                attackDamageStructure = Convert.ToInt32(attackDamageStructure * skillBonus);
+                attackDamageSea = Convert.ToInt32(attackDamageSea * skillBonus);
+                basehealth = MathExt.MultiplyInt(basehealth, skillBonus);
+            }
 
-            attackDamage = Convert.ToInt32(attackDamage * skillBonus);
-            attackDamageStructure = Convert.ToInt32(attackDamageStructure * skillBonus);
-            attackDamageSea = Convert.ToInt32(attackDamageSea * skillBonus);
+            if (mobileBonus != 0) 
+            {
+                walkingSpeed += mobileBonus * walkingSpeed;
+            }
         }
 
         public LootFest.VoxelModelName RandomModelName()

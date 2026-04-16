@@ -17,6 +17,7 @@ namespace VikingEngine.DSSWars.Conscript
     {
         public ConscriptProfile conscript;
         public float skillBonus;
+        public float mobileBonus_PercAdd;
 
         public SoldierConscriptProfile()
 
@@ -24,6 +25,7 @@ namespace VikingEngine.DSSWars.Conscript
             conscript = new ConscriptProfile();
             conscript.weapon = ItemResourceType.SharpStick;
             skillBonus = 1;
+
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
@@ -190,23 +192,25 @@ namespace VikingEngine.DSSWars.Conscript
 
         public SoldierData createSoldierData()
         {
-#if DEBUG
-            if (skillBonus == 0)
-            {
-                throw new Exception();
-            }
-#endif
+//#if DEBUG
+//            if (skillBonus == 0)
+//            {
+//                throw new Exception();
+//            }
+//#endif
 
             var weaponProperties = ItemPropertyColl.Get(conscript.weapon);
             SoldierData soldierData = weaponProperties.soldierData;
 
-            soldierData.applySkillBonus(skillBonus);
+            //soldierData.applySkillBonus(skillBonus, mobileBonus_PercAdd);
 
             var armorData = ItemPropertyColl.Get(conscript.armorLevel).soldierData;
-            soldierData.basehealth = MathExt.MultiplyInt(armorData.basehealth, skillBonus);
+            
             soldierData.modelData.armor = armorData.modelData.armor;
 
             soldierData.modelData.shield = conscript.shield;
+            
+            soldierData.applySkillBonus(skillBonus, mobileBonus_PercAdd);
 
             soldierData.modelData.specialization = conscript.specialization;
 

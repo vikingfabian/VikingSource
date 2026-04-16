@@ -6,6 +6,10 @@ Change Log:
 * improved messages goto buttons
 * fixed: dark lord player had endless diplomacy
 * added color to minimap enemy/ally
+* new mode: quick boss
+* new culture: Wheelwright, //Speed bonus to conscripted carts
+
+
 
 ##ICONS TODO
 
@@ -23,7 +27,7 @@ x deeper unit category with search for items and melee/ranged/warmashine filters
 (maybe filter out units for remove/split)
 x achievements
 
-* culture: Wheelwright, //Speed bonus to conscripted carts
+
 (Maybe) Breeding tech tree skill (Allowes more reliable animal upgrades)
 x adv build upgrade, no more use of logistics
 x auto options for logistics/hall/manor

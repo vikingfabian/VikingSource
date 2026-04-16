@@ -437,6 +437,12 @@ namespace VikingEngine.DSSWars.GameObject
                         soldierProfile.skillBonus *= 1.2f;
                     }
                     break;
+                case CityCulture.Wheelwright:
+                    if (wagonRide)
+                    {
+                        soldierProfile.mobileBonus_PercAdd = Culture.WheelWhrightBonus;
+                    }
+                    break;
             }
 
             if (profile.specialization == SpecializationType.CityGuard)

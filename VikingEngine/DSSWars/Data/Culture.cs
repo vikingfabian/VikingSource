@@ -10,6 +10,8 @@ namespace VikingEngine.DSSWars.Data
 {
     static class Culture
     {
+        public const float WheelWhrightBonus = 0.2f;
+
         public static void CultureToolTip(RichBoxContent content, CityCulture culture)
         {
             IconName.CityCulture(culture, out string title, out string description);
@@ -109,7 +111,7 @@ namespace VikingEngine.DSSWars.Data
                 case CityCulture.Wainwright:
                     return 125;
                 case CityCulture.Wheelwright:
-                    return -1;
+                    return conv.ToPercentage(WheelWhrightBonus);
                 case CityCulture.ShieldMaker:
                     return 125;
                 case CityCulture.Potters:
