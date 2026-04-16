@@ -13,11 +13,7 @@ namespace VikingEngine.DSSWars.Data
         public static void CultureToolTip(RichBoxContent content, CityCulture culture)
         {
             IconName.CityCulture(culture, out string title, out string description);
-            int factor = CulturePercChangeFactor(culture);
-            if (factor >= 0)
-            {
-                content.text(string.Format(DssRef.lang.Hud_ChangeFactor, factor + "%"));
-            }
+            
 
             var items = CultureAffectedItems(culture);
             if (items != null)
@@ -36,6 +32,11 @@ namespace VikingEngine.DSSWars.Data
 
             content.h2(title, HudLib.TitleColor_Head);
             content.text(description);
+            int factor = CulturePercChangeFactor(culture);
+            if (factor >= 0)
+            {
+                content.text(string.Format(DssRef.lang.Hud_ChangeFactor, factor + "%"));
+            }
 
             content.newParagraph();
             content.text(DssRef.lang.CityCultureDescription, HudLib.InfoYellow_Light);
