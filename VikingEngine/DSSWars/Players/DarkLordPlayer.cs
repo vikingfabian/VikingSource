@@ -102,12 +102,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void EnterMap(Faction takeOverFaction, List<Faction> darkLordAllies)
         {
-            //if (DssRef.difficulty.PercDifficulty > 100)
-            //{
-            //    Ref.music.stop(true);
-            //    Ref.music.PlaySong(Data.Music.IAmYourDoom, false);
-            //}
-
+            
             faction.money.copper = DssConst.HeadCityStartMaxWorkForce * 1000000;
 
             this.darkLordAllies = darkLordAllies;
@@ -116,11 +111,6 @@ namespace VikingEngine.DSSWars.Players
             foreach (var ally in darkLordAllies)
             {
                 DssRef.world.diplomacy.SetRelationType(faction, ally, RelationType.RelationType3_Ally);//.secret = false;
-
-                //if (relation != null)
-                //{
-                //    relation.secret = false;
-                //}
 
                 foreach (var p in DssRef.state.localPlayers)
                 {
@@ -151,16 +141,6 @@ namespace VikingEngine.DSSWars.Players
             hasEntered = true;
             protectedFromDelete = false;
         }
-
-        //public override void Update()
-        //{
-        //    base.Update();
-
-        //    if (hasEntered)
-        //    { 
-                
-        //    }
-        //}
 
         public override void aiPlayerAsynchUpdate(float time)
         {
