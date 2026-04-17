@@ -169,7 +169,10 @@ namespace VikingEngine.DSSWars.Map
 
                 if (prevLayer.fadeDelay <= 0)
                 {
-                    if (Ref.gamesett.fadeMapLayers)
+                    if (Ref.gamesett.fadeMapLayers &&
+                        prevLayer.type != MapDetailLayerType.FullOverview4 &&
+                        current.type != MapDetailLayerType.FullOverview4
+                        )
                     {
                         prevLayer.opacity -= 3f * Ref.DeltaTimeSec;
 

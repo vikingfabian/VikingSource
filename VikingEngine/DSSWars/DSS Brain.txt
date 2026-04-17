@@ -11,9 +11,11 @@ Change Log:
 * new mode: quick boss
 * new culture: Wheelwright, //Speed bonus to conscripted carts
 * increased sharp stick damage 20 > 24
+* City highlight on faction map
 
 
 ##ICONS TODO
+* Better Diplomacy City highlight
 
 #MOUNTED TODO
 

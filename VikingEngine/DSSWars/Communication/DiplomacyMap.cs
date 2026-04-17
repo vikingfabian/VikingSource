@@ -17,7 +17,8 @@ namespace VikingEngine.DSSWars.Communication
         List<QuestFlag> questFlags = new List<QuestFlag>();
         RelationFlag[] relationFlags;
         LocalPlayer player;
-        Graphics.Image hoverbox, seletionbox;
+        //Graphics.Image hoverbox, seletionbox;
+        DiplomacyMapSelection hoverGui, selectGui;
         RelationFlag selected = null, currentHover;
         public int relationArrowHover = -1;
 
@@ -46,12 +47,14 @@ namespace VikingEngine.DSSWars.Communication
                 relationFlags[i] = new RelationFlag(i);
             }
 
-            hoverbox = new Graphics.Image(SpriteName.WarsRelationFlagOutline, Vector2.Zero, Vector2.One, HudLib.DiplomacyDisplayLayer + 3);
-            hoverbox.Visible = false;
-            hoverbox.Color = ColorExt.FromAlpha(0.9f);
+            hoverGui = new DiplomacyMapSelection(false);
+            selectGui = new DiplomacyMapSelection(true);
+            //hverbox = new Graphics.Image(SpriteName.WarsRelationFlagOutline, Vector2.Zero, Vector2.One, HudLib.DiplomacyDisplayLayer + 3);
+            //hoverbox.Visible = false;
+            //hoverbox.Color = ColorExt.FromAlpha(0.9f);
 
-            seletionbox = new Graphics.Image(SpriteName.WarsRelationFlagOutline, Vector2.Zero, Vector2.One, HudLib.DiplomacyDisplayLayer + 2);
-            seletionbox.Visible = false;
+            //seletionbox = new Graphics.Image(SpriteName.WarsRelationFlagOutline, Vector2.Zero, Vector2.One, HudLib.DiplomacyDisplayLayer + 2);
+            //seletionbox.Visible = false;
 
             foreach (var factory in DssRef.state.events.factories)
             {
@@ -292,8 +295,13 @@ namespace VikingEngine.DSSWars.Communication
 
             relationArrows.update(selectedFaction, selectedFlagPos, this);
 
-            updateSelectBox(currentHover, hoverbox);
-            updateSelectBox(selected, seletionbox);
+            //updateSelectBox(currentHover, hoverbox);
+            //updateSelectBox(selected, seletionbox);
+
+            hoverGui.updateSelectBox(player, currentHover);
+            selectGui.updateSelectBox(player, selected);
+
+
 
         }
 
@@ -320,24 +328,24 @@ namespace VikingEngine.DSSWars.Communication
             previousFactionsLookedAt.Insert(0, faction);
         }
 
-        void updateSelectBox(RelationFlag relation, Graphics.Image box)
-        {
-            if (relation != null)
-            {
-                if (relation.bg != null)
-                {
-                    var hoverArea = relation.bg.RealArea();
+        //void updateSelectBox(RelationFlag relation, Graphics.Image box)
+        //{
+        //    if (relation != null)
+        //    {
+        //        if (relation.bg != null)
+        //        {
+        //            var hoverArea = relation.bg.RealArea();
 
-                    hoverArea.AddRadius(4);
-                    box.Area = hoverArea;
-                    box.Visible = relation.bg != null && relation.bg.Visible;
-                }
-            }
-            else
-            {
-                box.Visible = false;
-            }
-        }
+        //            hoverArea.AddRadius(4);
+        //            box.Area = hoverArea;
+        //            box.Visible = relation.bg != null && relation.bg.Visible;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        box.Visible = false;
+        //    }
+        //}
 
         public void cancel()
         {
@@ -345,7 +353,8 @@ namespace VikingEngine.DSSWars.Communication
             {
                 player.gameControls.setMenuFocus(false, true);
                 selected = null;
-                seletionbox.Visible = false;
+                selectGui.Hide();
+                //seletionbox.Visible = false;
             }
 
             player.hud.needRefresh = true;
@@ -366,8 +375,11 @@ namespace VikingEngine.DSSWars.Communication
                 quest.icon.DeleteMe();
             }
 
-            hoverbox.DeleteMe();
-            seletionbox.DeleteMe();
+            //hoverbox.DeleteMe();
+            //seletionbox.DeleteMe();
+
+            hoverGui.DeleteMe();
+            selectGui.DeleteMe();
 
             relationArrows.DeleteMe();
             relationArrows = null;
