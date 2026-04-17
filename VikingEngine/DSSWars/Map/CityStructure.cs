@@ -476,9 +476,11 @@ namespace VikingEngine.DSSWars.Map
 
                                     case TerrainBuildingType.GuardHouse_Small:
                                         ++buildingStructure.GuardOffice_count;
+                                        buildingPosition.GuardHouse_pos = subTileLoop.Position;
                                         break;
                                     case TerrainBuildingType.GuardHouse_Large:
                                         ++buildingStructure.GuardOffice_Large_count;
+                                        buildingPosition.GuardHouse_pos = subTileLoop.Position;
                                         break;
 
                                     case TerrainBuildingType.FowlPen:

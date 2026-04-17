@@ -67,7 +67,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Resource_TypeName_NobelMen => "nobelmen";
         public override string Resource_TypeName_ConservedFood => "conserved food";
 
-        public override string UnitType_UnitOnMount => "riding {0}";
+        public override string UnitType_UnitOnMount => "mounted {0}";
         public override string UnitType_UnitOnWagon => "wagon {0}";
         public override string UnitType_NobelUnit => "nobel {0}";
 

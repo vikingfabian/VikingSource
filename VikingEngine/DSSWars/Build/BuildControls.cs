@@ -41,8 +41,6 @@ namespace VikingEngine.DSSWars.Build
             Build.BuildAndExpandType.RapeSeedFarm,
             Build.BuildAndExpandType.HempFarm,
 
-            //Build.BuildAndExpandType.PigPen,
-            //Build.BuildAndExpandType.HenPen,
         };
 
         public static readonly MapPaintToolShape[] AvailableToolShapes = { MapPaintToolShape.Free, MapPaintToolShape.Line, MapPaintToolShape.LShape, MapPaintToolShape.Area };
@@ -1599,7 +1597,7 @@ namespace VikingEngine.DSSWars.Build
 
                 content.space();
                 content.Add(new RbText(TextLib.Parentheses(
-                    TextLib.TwoDecimal(build.upkeep.amount * (float)(penGrowth.harvestReady - 1)) + " " + DssRef.lang.BuildHud_PerCycle  ), 
+                    TextLib.TwoDecimal(build.upkeep.amount * (float)(penGrowth.maxSize)) + " " + DssRef.lang.BuildHud_PerCycle  ), 
                     HudLib.SecondaryTextColor));
 
                 content.newLine();
@@ -1609,7 +1607,7 @@ namespace VikingEngine.DSSWars.Build
                 content.h2(DssRef.lang.BuildHud_PerCycle, HudLib.TitleColor_Label);
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, penGrowth.harvestReady - 1))));
+                content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, penGrowth.maxSize))));
 
                 content.newLine();
                 HudLib.BulletPoint(content);
