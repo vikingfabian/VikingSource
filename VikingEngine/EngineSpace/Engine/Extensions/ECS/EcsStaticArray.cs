@@ -9,8 +9,6 @@ namespace VikingEngine
     using System;
     using System.Runtime.CompilerServices;
 
-
-
     /// <summary>
     /// A garbage-free counter for iterating over an entity’s subarray.
     /// </summary>

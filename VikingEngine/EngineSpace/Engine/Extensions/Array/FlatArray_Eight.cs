@@ -7,47 +7,23 @@ using System.Threading.Tasks;
 namespace VikingEngine
 {
     using System;
-    using System.Runtime.CompilerServices;
-
-    struct FlatArrayCounter_EightInt
-    {
-        public int index;
-        public readonly int length;
-
-        public FlatArrayCounter_EightInt(int length)
-        {
-            this.index = -1;
-            this.length = length;
-        }
-
-        public bool MoveNext()
-        {
-            index++;
-            return index < length;
-        }
-
-        public void Reset()
-        {
-            index = -1;
-        }
-    }
 
     /// <summary>
-    /// A complete garbage-free fixed array of up to 8 integers.
+    /// A complete garbage-free fixed array of up to 8 items.
     /// </summary>
-    struct FlatArray_EightInt
+    public struct FlatArray_Eight<T> where T : struct
     {
         public int count;
-        public int value1;
-        public int value2;
-        public int value3;
-        public int value4;
-        public int value5;
-        public int value6;
-        public int value7;
-        public int value8;
+        public T value1;
+        public T value2;
+        public T value3;
+        public T value4;
+        public T value5;
+        public T value6;
+        public T value7;
+        public T value8;
 
-        public void Add(int v)
+        public void Add(T v)
         {
             switch (count)
             {
@@ -59,12 +35,12 @@ namespace VikingEngine
                 case 5: value6 = v; break;
                 case 6: value7 = v; break;
                 case 7: value8 = v; break;
-                default: throw new InvalidOperationException("FlatArray_EightInt is full.");
+                default: throw new InvalidOperationException("FlatArray is full.");
             }
             count++;
         }
 
-        public int this[int index]
+        public T this[int index]
         {
             readonly get
             {
@@ -97,11 +73,5 @@ namespace VikingEngine
                 }
             }
         }
-
-        public FlatArrayCounter_EightInt GetCounter()
-        {
-            return new FlatArrayCounter_EightInt(count);
-        }
     }
-
 }

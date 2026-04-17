@@ -41,6 +41,8 @@ namespace VikingEngine.DSSWars.GameObject
         public int WorkerStats_StuckBuildings_Process = 0;
         public int WorkerStats_StuckBuildings = 0;
 
+        //FlatArray_Three<int> markedForExit = new FlatArray_Three<int>();
+
         public bool craftOnFullStockProperty(object tag, bool set, bool value)
         {
             WorkPriorityType work = (WorkPriorityType)tag;
