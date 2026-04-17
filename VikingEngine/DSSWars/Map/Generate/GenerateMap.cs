@@ -998,12 +998,17 @@ namespace VikingEngine.DSSWars.Map.Generate
                     generateSettings.percentageUnclaimed = 0.85f;
                     generateCityType(CityType.Campsite, numHeadCities * 8, 8, generateSettings);
                     break;
-            }            
+            }
 
+            float storyPlacementScale = 1f;
+            if (world.Size.Area() > WorldData.SizeDimentions(MapSize.Medium).Area())
+            {
+                storyPlacementScale = (float)WorldData.SizeDimentions(MapSize.Medium).Area() / world.Size.Area();
+            }
             world.Init_CityComponents(world.cities.Count);
             foreach (City city in world.cities)
             {
-                city.generateCultureAndEconomy(world, cityCultureCollection);
+                city.generateCultureAndEconomy(world, storyPlacementScale, cityCultureCollection);
             }
         }
         void generateCityType(CityType type, int amount, float neededSpace, MapGenerateSettings generateSettings)
@@ -1432,8 +1437,8 @@ namespace VikingEngine.DSSWars.Map.Generate
 
         void namedFactionsOnMap(int standardWorkForce, bool oneCity)
         {
-            bool bStory = DssRef.difficulty.runStory; //== GameModeMainType.FullStory;
-            if (bStory)
+            bool bFullStory = DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory;
+            if (bFullStory)
             {
                 var faction = new Faction(world, FactionType.DarkFollower);
 
@@ -1442,7 +1447,7 @@ namespace VikingEngine.DSSWars.Map.Generate
                 
             }
 
-            if (bStory)
+            if (bFullStory)
             { 
                 var faction = new Faction(world, FactionType.UnitedKingdom);
 

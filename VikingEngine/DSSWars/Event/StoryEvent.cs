@@ -1135,8 +1135,63 @@ namespace VikingEngine.DSSWars.Event
             init(false, TimeLength.FromHours(1f));
         }
 
+        void setupDistanceFromPlayer()
+        {
+            //HashSet<int> cities = new HashSet<int>();
+            List<City> cityList = new List<City>(32);
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref p.faction.cities, DssRef.world.cities, out City citySel))
+                {
+                    cityList.Add(citySel);
+                    citySel.distanceFromPlayer = 0;
+                }
+            }
+
+            //HashSet<int> alreadyChecked = new HashSet<int>();
+            List<City> nextList = new List<City>(32);
+            for (int i = 0; i < 5; i++)
+            {
+                cityList.AddRange(nextList);
+
+                foreach (var city in cityList)
+                {
+                    int distance = city.distanceFromPlayer + 1;
+                    
+                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in city.neighborCities)
+                    {
+                        if (nCity.distanceFromPlayer < 0)
+                        {
+                            nCity.distanceFromPlayer = distance;
+                            nextList.Add(nCity);
+                        }
+                    }
+                }
+
+                cityList.Clear();
+            }
+        }
+
+        bool factionInGoodDistanceFromPlayer(Faction faction)
+        {
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+            {
+                if (citySel.distanceFromPlayer >= 2 && citySel.distanceFromPlayer <= 4)
+                { 
+                    return true;
+                }
+            }
+            return false;
+        }
+
         void asyncPrepare()
         {
+
+            setupDistanceFromPlayer();
+
             Rectangle2 mapCenter = new Rectangle2(IntVector2.Zero, DssRef.world.Size);
             mapCenter.AddRadius(-mapCenter.Height / 8);
 
@@ -1161,10 +1216,11 @@ namespace VikingEngine.DSSWars.Event
                 {
                     available.Add(factionC.sel);
 
-                    if (factionC.sel.cities.Count >= 4 &&
-                        factionC.sel.mainCity != null &&
-                        mapCenter.IntersectTilePoint(factionC.sel.mainCity.tilePos) &&
-                        !factionC.sel.HasPlayerNeighbor())
+                    //if (factionC.sel.cities.Count >= 4 &&
+                    //    factionC.sel.mainCity != null &&
+                    //    mapCenter.IntersectTilePoint(factionC.sel.mainCity.tilePos) &&
+                    //    !factionC.sel.HasPlayerNeighbor())
+                    if (factionInGoodDistanceFromPlayer(factionC.sel))
                     {
                         perfectPosition.Add(factionC.sel);
                     }
@@ -1205,7 +1261,7 @@ namespace VikingEngine.DSSWars.Event
 
                 //if (arraylib.HasMembers(darkLordAvailableFactions))
                 //{
-                    DssRef.settings.darkLordPlayer.EnterMap(arraylib.RandomListMember(darkLordAvailableFactions), darkLordAllies);
+                    DssRef.settings.darkLordPlayer.EnterMap(darkLordAvailableFactions, darkLordAllies);
 
                     var greenwood = DssRef.world.faction(DssRef.settings.Faction_GreenWood);
 

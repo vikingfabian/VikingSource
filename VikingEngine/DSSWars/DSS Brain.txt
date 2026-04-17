@@ -5,6 +5,8 @@ Change Log:
 * Ai may build larger cities
 * improved messages goto buttons
 * fixed: dark lord player had endless diplomacy
+* Remade the boss enter event to be placed much smarter
+* The story factions are placed closer to the player in large maps
 * added color to minimap enemy/ally
 * new mode: quick boss
 * new culture: Wheelwright, //Speed bonus to conscripted carts

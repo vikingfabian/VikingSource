@@ -105,6 +105,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int previousOwner = -1;
         public float capturePoints = 0;
 
+        public int distanceFromPlayer = -1;
 
         public bool CanBuildLogistics(int toLevel)
         {
@@ -313,13 +314,15 @@ namespace VikingEngine.DSSWars.GameObject
             readMapFile(world, r, version);
         }
 
-        public void generateCultureAndEconomy(WorldData world, CityCultureCollection cityCultureCollection)
+        public void generateCultureAndEconomy(WorldData world, float storyPlacementScale, CityCultureCollection cityCultureCollection)
         {
             initEconomy(world);
 
             CityAreaCulture areaCulture = new CityAreaCulture(this, world);
 
             workHutStyle = areaCulture.percMountain > 0.5 ? 0 : 1;
+
+            
 
             if (areaCulture.percDesolate > 0.5)
             {
@@ -346,25 +349,53 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 cityCultureCollection.LargeGreen.Add(this);
             }
-            else if (areaCulture.percDry >= 0.7 && areaCulture.worldPercX >= 0.75)
+            else if (areaCulture.percDry >= 0.7 && areaCulture.worldPerc.X >= 0.75)
             {
                 cityCultureCollection.DryEast.Add(this);
             }
-            else if (areaCulture.percWater >= 0.25 && areaCulture.worldPercY <= 0.25)
+            else if (areaCulture.percWater >= 0.25 && areaCulture.worldPerc.Y <= 0.25)
             {
                 cityCultureCollection.NorthSea.Add(this);
             }
-            else if (areaCulture.worldPercY > 0.5f)
+
+            Vector2 percCentered = areaCulture.worldPerc - VectorExt.V2Half;
+            percCentered /= storyPlacementScale;
+            if (percCentered.Y > 0.5f &&
+                percCentered.Y < 0.9f)
             {
-                if (areaCulture.worldPercX < 0.3f)
+                if (percCentered.X < 0.3f)
                 {
-                    cityCultureCollection.WestKingdom.Add(this);
+                    if (percCentered.X > 0.1f)
+                    {
+                        cityCultureCollection.WestKingdom.Add(this);
+                    }
                 }
                 else
                 {
-                    cityCultureCollection.DarkLands.Add(this);
+                    if (percCentered.X < 0.7f)
+                    {
+                        cityCultureCollection.DarkLands.Add(this);
+                    }
                 }
             }
+            //if (areaCulture.worldPercY > 0.5f * storyPlacementScale &&
+            //    areaCulture.worldPercY < 0.9f * storyPlacementScale)
+            //{
+            //    if (areaCulture.worldPercX < 0.3f * storyPlacementScale)
+            //    {
+            //        if (areaCulture.worldPercX > 0.1f * storyPlacementScale)
+            //        {
+            //            cityCultureCollection.WestKingdom.Add(this);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (areaCulture.worldPercX < 0.7f * storyPlacementScale)
+            //        {
+            //            cityCultureCollection.DarkLands.Add(this);
+            //        }
+            //    }
+            //}
 
             if (world.rnd.Chance(0.3))
             {

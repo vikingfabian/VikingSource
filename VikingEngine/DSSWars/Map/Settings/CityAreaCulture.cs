@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,7 @@ namespace VikingEngine.DSSWars.Map.Settings
         public double percDry;
         public double percDesolate;
 
-        public double worldPercX, worldPercY;
+        public Vector2 worldPerc;
         public CityAreaCulture(City city, WorldData world)
         {
             Rectangle2 cultureArea = Rectangle2.FromCenterTileAndRadius(city.tilePos, 3);
@@ -74,8 +75,8 @@ namespace VikingEngine.DSSWars.Map.Settings
             percDesolate = desolateBiom / land;
 
             //Collect cultures
-            worldPercX = city.tilePos.X / (double)world.Size.X;
-            worldPercY = city.tilePos.Y / (double)world.Size.Y;
+            worldPerc.X = city.tilePos.X / (float)world.Size.X;
+            worldPerc.Y = city.tilePos.Y / (float)world.Size.Y;
         }
     }
 }
