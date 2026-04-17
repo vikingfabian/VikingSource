@@ -156,6 +156,21 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        public int GetWorkXpScore(int index)
+        {
+            int score = 0;
+            if (index >= 0)
+            {
+                int start = index * WorkerXpCOUNT;
+
+                for (int i = 0; i < WorkerXpCOUNT; ++i)
+                {
+                    score += MathExt.Square(workerXp.array[i + start].xp);
+                } 
+            }
+            return score;
+        }
+
         public List<(WorkExperience xp, WorkExperienceType type)> listWorkXp(int index)
         {
             var xpPairs = new List<(WorkExperience xp, WorkExperienceType type)>(8);

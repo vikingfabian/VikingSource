@@ -63,6 +63,25 @@ namespace VikingEngine
 
             return false;
         }
+        public readonly bool Contains_GetIndex(T value, out int index)
+        {
+            if (count > 0 && value1.Equals(value))
+            { index = 0; return true; }
+
+            if (count > 1 && value2.Equals(value)) 
+            { index = 1; return true; }
+
+            if (count > 2 && value3.Equals(value)) 
+            { index = 2; return true; }
+
+            index = -1;
+            return false;
+        }
+
+        public void Clear()
+        {
+            count = 0;
+        }
 
         public void RemoveAt(int index)
         {
@@ -98,6 +117,64 @@ namespace VikingEngine
             if (count > 0 && value1.Equals(value)) { RemoveAt(0); return; }
             if (count > 1 && value2.Equals(value)) { RemoveAt(1); return; }
             if (count > 2 && value3.Equals(value)) { RemoveAt(2); return; }
+        }
+
+        /// <summary>
+        /// Removes and returns the last element in the array.
+        /// </summary>
+        public T PullLast()
+        {
+            if (count == 0)
+                throw new InvalidOperationException("FlatArray_Three is empty.");
+
+            count--;
+            T result;
+
+            switch (count)
+            {
+                case 0:
+                    result = value1;
+                    break;
+                case 1:
+                    result = value2;
+                    break;
+                case 2:
+                    result = value3;
+                    break;
+                default:
+                    throw new InvalidOperationException();
+            }
+
+            return result;
+        }
+
+        public bool TryPullLast(out T result)
+        {
+            if (count == 0)
+            {
+                result = default;
+                return false;
+            }
+
+            count--;
+
+            switch (count)
+            {
+                case 0:
+                    result = value1;
+                    break;
+                case 1:
+                    result = value2;
+                    break;
+                case 2:
+                    result = value3;
+                    break;
+                default:
+                    result = default;
+                    return false;
+            }
+
+            return true;
         }
     }
 }

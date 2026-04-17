@@ -41,7 +41,7 @@ namespace VikingEngine.DSSWars.GameObject
         public int WorkerStats_StuckBuildings_Process = 0;
         public int WorkerStats_StuckBuildings = 0;
 
-        //FlatArray_Three<int> markedForExit = new FlatArray_Three<int>();
+        FlatArray_Three<int> markedForExit = new FlatArray_Three<int>();
 
         public bool craftOnFullStockProperty(object tag, bool set, bool value)
         {
@@ -124,6 +124,7 @@ namespace VikingEngine.DSSWars.GameObject
                 //workerCullingMinMax = new Intvector2MinMax(WP.SubtileToTilePos(minMax_workerCulling.min), WP.SubtileToTilePos(minMax_workerCulling.max));
 
                 int workTeamGoalCount = Bound.Min(workForce.amount / WorkTeamSize, 1);
+                int exitCount = (workTeamsTotalCount - mayExitCount) - (workTeamGoalCount + 1);
 
                 if (workTeamsTotalCount < workTeamGoalCount)
                 {
@@ -183,16 +184,28 @@ namespace VikingEngine.DSSWars.GameObject
                         ++idleCount;
                     }
                 }
+                else if (exitCount > 0)//workTeamsTotalCount - mayExitCount > workTeamGoalCount + 1)
+                {
+                    if (myIndex == 270)
+                    {
+                        lib.DoNothing();
+                    }
+
+                    findLowXpWorkers();
+                        //--workTeamsTotalCount;
+                        //mayExitCount++;
+                        //status.createWorkOrder(WorkType.Exit, -1, 0, WorkExperienceType.NUM_NONE, -1, citySquareSubtilePos/*WP.ToSubTilePos_Centered(tilePos)*/, this);
+                }
                 //else if (workerStatusActiveCount > workTeamCount +1)
                 //{ 
                 //    //too few homes
 
                 //}
 
-                if (myIndex == 185 || debugTagged)
-                {
-                    lib.DoNothing();
-                }
+                //if (myIndex == 185 || debugTagged)
+                //{
+                //    lib.DoNothing();
+                //}
 
                 if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
                 {
@@ -223,13 +236,17 @@ namespace VikingEngine.DSSWars.GameObject
 
                     if (status.work == WorkType.Idle)
                     {
-                        if (workTeamsTotalCount - mayExitCount > workTeamGoalCount + 1)
+                        if (exitCount > 0 &&
+                            (status.GetXpScore() < DssConst.WorkXpToLevel_Squared ||
+                            markedForExit.Contains(i))
+                            )/*workTeamsTotalCount - mayExitCount > workTeamGoalCount + 1)*/
                         {
-                            if (myIndex == 270)
-                            {
-                                lib.DoNothing();
-                            }
+                            //if (myIndex == 270)
+                            //{
+                            //    lib.DoNothing();
+                            //}
                             //--workTeamsTotalCount;
+                            exitCount--;
                             mayExitCount++;
                             status.createWorkOrder(WorkType.Exit, -1, 0, WorkExperienceType.NUM_NONE, -1, citySquareSubtilePos/*WP.ToSubTilePos_Centered(tilePos)*/, this);
                         }
@@ -1209,6 +1226,66 @@ namespace VikingEngine.DSSWars.GameObject
                         BuildLib.TryAutoBuild(freeSubTilePos, TerrainMainType.Foil, fuelType, Ref.peRnd.Int(1, TerrainContent.FarmCulture_MaxSize));
                     }
                 }
+            }
+        }
+
+        
+        void findLowXpWorkers()
+        {
+            
+
+            // Value1 = Index
+            // Value2 = Score
+            TwoInts lowest1 = new TwoInts(-1, int.MaxValue);
+            TwoInts lowest2 = new TwoInts(-1, int.MaxValue);
+            TwoInts lowest3 = new TwoInts(-1, int.MaxValue);
+
+            for (int i = 0; i < workerStatuses.Count; i++)
+            {
+                int score = workerStatuses.array[i].GetXpScore();
+
+                // Check against lowest1
+                if (lowest1.Value1 < 0 || score < lowest1.Value2)
+                {
+                    // Shift down
+                    lowest3 = lowest2;
+                    lowest2 = lowest1;
+
+                    // Assign new lowest1
+                    lowest1.Value1 = i;
+                    lowest1.Value2 = score;
+                }
+                // Check against lowest2
+                else if (lowest2.Value1 < 0 || score < lowest2.Value2)
+                {
+                    // Shift down
+                    lowest3 = lowest2;
+
+                    // Assign new lowest2
+                    lowest2.Value1 = i;
+                    lowest2.Value2 = score;
+                }
+                // Check against lowest3
+                else if (lowest3.Value1 < 0 || score < lowest3.Value2)
+                {
+                    // Assign new lowest3
+                    lowest3.Value1 = i;
+                    lowest3.Value2 = score;
+                }
+            }
+
+            markedForExit.Clear();
+            if (lowest3.Value1 >= 0)
+            {
+                markedForExit.Add(lowest3.Value1);
+            }
+            if (lowest2.Value1 >= 0)
+            {
+                markedForExit.Add(lowest2.Value1);
+            }
+            if (lowest1.Value1 >= 0)
+            {
+                markedForExit.Add(lowest1.Value1);
             }
         }
 

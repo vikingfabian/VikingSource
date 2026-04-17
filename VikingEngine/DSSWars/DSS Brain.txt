@@ -12,6 +12,7 @@ Change Log:
 * new culture: Wheelwright, //Speed bonus to conscripted carts
 * increased sharp stick damage 20 > 24
 * City highlight on faction map
+* Low xp workers are lost first
 
 
 ##ICONS TODO

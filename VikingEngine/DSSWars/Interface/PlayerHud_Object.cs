@@ -110,7 +110,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                     content.newLine();
                     RichBoxContent buttonContent = new RichBoxContent();
-                    obj.toButtonContent(buttonContent, true);
+                    obj.toButtonContent(buttonContent, false);
                     content.Add(new ArtButton(RbButtonStyle.Outline,
                         buttonContent,
                     

@@ -1601,22 +1601,12 @@ namespace VikingEngine.DSSWars.Work
                 return DssRef.world.GetWorkXp(XpEntityIndex, type);
             }
             return WorkExperience.Empty;
-                //if (type == xpType1)
-            //{
-            //    return xp1;
-            //}
-            //else if (type == xpType2)
-            //{
-            //    return xp2;
-            //}
-            //else if (type == xpType3)
-            //{
-            //    return xp3;
-            //}
-
-            //return 0;
         }
 
+        public int GetXpScore()
+        {
+            return DssRef.world.GetWorkXpScore(XpEntityIndex);           
+        }
 
         public void setXpFor(XP.WorkExperienceType type, byte toXp)
         {
