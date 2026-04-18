@@ -63,6 +63,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             var faction = soldier.GetFaction();
 
+            if (faction == null)
+            {
+                return;
+            }
+
             captain = faction.AutoLoadModelInstance_batched(
                 LootFest.VoxelModelName.wars_captain, DssConst.Men_StandardModelScale * 0.7f);
 
@@ -113,8 +118,6 @@ namespace VikingEngine.DSSWars.GameObject
                 foamModel.position.X = model.position.X;
                 foamModel.position.Z = model.position.Z;
                 foamModel.Rotation = model.Rotation;
-
-                //foamModel.scale = DssConst.Men_StandardModelScale * 3f * new Vector3(0.96f, 1, 2);
             }
 
             if (soldier.state.walking )
@@ -138,25 +141,32 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void displayHealth(float percHealth)
         {
-            int viewCount = (int)Math.Ceiling(12 * percHealth);
-            int left = viewCount / 2;
-            int right = viewCount-left;
+            if (captain != null)
+            {
+                int viewCount = (int)Math.Ceiling(12 * percHealth);
+                int left = viewCount / 2;
+                int right = viewCount - left;
 
-            leftcrew.Frame = 6 - left;
-            rightcrew.Frame = 6 - right;
+                leftcrew.Frame = 6 - left;
+                rightcrew.Frame = 6 - right;
+            }
         }
 
         public override void DeleteMe()
         {
             base.DeleteMe();
-            captain.DeleteMe();
-            leftcrew.DeleteMe();
-            rightcrew.DeleteMe();
-            if (foamModel != null)
+
+            if (captain != null)
             {
-                foamModel.DeleteMe();
-                DssRef.models.shipWaveModels.Push(foamModel);
-                foamModel = null;
+                captain.DeleteMe();
+                leftcrew.DeleteMe();
+                rightcrew.DeleteMe();
+                if (foamModel != null)
+                {
+                    foamModel.DeleteMe();
+                    DssRef.models.shipWaveModels.Push(foamModel);
+                    foamModel = null;
+                }
             }
         }
 

@@ -11,7 +11,7 @@ namespace VikingEngine.DSSWars.GameObject
     class ConscriptedWarshipData : AbsWarShipBuilder
     {
         public ConscriptedWarshipData()
-            : base(UnitType.ConscriptWarship)
+            : base(UnitBuildType.ConscriptWarship)
         {
             //if (profile.conscript.specialization == SpecializationType.Sea)
             //{
@@ -48,17 +48,17 @@ namespace VikingEngine.DSSWars.GameObject
 
         }
 
-        public override AbsSoldierUnit CreateUnit()
-        {
+        //public override AbsSoldierUnit CreateUnit(bool bannerman)
+        //{
 
-            AbsSoldierUnit result = base.CreateUnit();
-            //result.refreshShipCarryCount();
-            //if (result.group.soldierConscript.conscript.specialization == SpecializationType.DarkLord)
-            //{
-            //    DssRef.settings.darkLordPlayer.darkLordUnit = result;
-            //}
-            return result;
-        }
+        //    AbsSoldierUnit result = base.CreateUnit(bannerman);
+        //    //result.refreshShipCarryCount();
+        //    //if (result.group.soldierConscript.conscript.specialization == SpecializationType.DarkLord)
+        //    //{
+        //    //    DssRef.settings.darkLordPlayer.darkLordUnit = result;
+        //    //}
+        //    return result;
+        //}
 
 
     }

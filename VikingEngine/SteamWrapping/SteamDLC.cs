@@ -4,19 +4,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Valve.Steamworks;
+using Steamworks;
 
 namespace VikingEngine.SteamWrapping
 {
     class DlcDescriptor
     {
         /* Fields */
-        public uint appId;
+        public AppId_t appId;
         public string name;
         public bool owned;
 
         /* Constructors */
-        public DlcDescriptor(uint dlcAppId, string storeName)
+        public DlcDescriptor(AppId_t dlcAppId, string storeName)
         {
             appId = dlcAppId;
             name = storeName;
@@ -26,7 +26,7 @@ namespace VikingEngine.SteamWrapping
         /* Novelty Methods */
         public bool UpdateAndCheckIfOwned()
         {
-            owned = SteamAPI.SteamApps().BIsDlcInstalled(appId);
+            owned = SteamApps.BIsDlcInstalled(appId);
             return owned;
         }
 
@@ -41,12 +41,12 @@ namespace VikingEngine.SteamWrapping
     {
         /* Fields */
         DlcDescriptor[] dlcs;
-        SteamCallback<DlcInstalled_t> DlcInstalledCB;
+        Callback<DlcInstalled_t> DlcInstalledCB;
 
         /* Constructors */
         public SteamDLC()
         {
-            DlcInstalledCB = new SteamCallback<DlcInstalled_t>(OnDlcInstalled, false);
+            DlcInstalledCB = new Callback<DlcInstalled_t>(OnDlcInstalled, false);
 
             dlcs = GetAvailableDlcAppIds(PlatformSettings.RunProgram);
 
@@ -68,17 +68,21 @@ namespace VikingEngine.SteamWrapping
                 return;
             }
 
-            if (!SteamAPI.SteamUtils().IsOverlayEnabled())
+            if (!SteamUtils.IsOverlayEnabled())
             {
                 // overlay is not available.
                 return;
             }
 
-            var action = new GuiAction2Arg<uint, EOverlayToStoreFlag>(
-                SteamAPI.SteamFriends().ActivateGameOverlayToStore,
-                Ref.steam.applicationSettings.appId,
-                EOverlayToStoreFlag.k_EOverlayToStoreFlag_AddToCartAndShow);
-            new GuiTextButton("DLC", null, action, true, layout);
+            //var action = new GuiAction2Arg<AppId_t, EOverlayToStoreFlag>(
+            //    SteamFriends.ActivateGameOverlayToStore(
+            //        Ref.steam.applicationSettings.appId,
+            //        EOverlayToStoreFlag.k_EOverlayToStoreFlag_AddToCartAndShow);
+            new GuiTextButton("DLC", null, ()=> {
+                SteamFriends.ActivateGameOverlayToStore(
+                    Ref.steam.applicationSettings.appId,
+                    EOverlayToStoreFlag.k_EOverlayToStoreFlag_AddToCartAndShow);
+            }, true, layout);
         }
 
         DlcDescriptor[] GetAvailableDlcAppIds(StartProgram program)
@@ -88,10 +92,10 @@ namespace VikingEngine.SteamWrapping
                 case StartProgram.PartyJousting:
                     return new DlcDescriptor[]
                     {
-                        new DlcDescriptor(439450, "Party Jousting - Character Pack"),
-                        new DlcDescriptor(442830, "Party Jousting - Bling Pack"),
-                        new DlcDescriptor(451890, "Party Jousting - Zombie Pack"),
-                        new DlcDescriptor(111111, "Error test"),
+                        new DlcDescriptor(new AppId_t( 439450), "Party Jousting - Character Pack"),
+                        new DlcDescriptor(new AppId_t(442830), "Party Jousting - Bling Pack"),
+                        new DlcDescriptor(new AppId_t(451890), "Party Jousting - Zombie Pack"),
+                        new DlcDescriptor(new AppId_t(111111), "Error test"),
                     };
 
                 default:
@@ -149,15 +153,15 @@ namespace VikingEngine.SteamWrapping
         {
             if (dlcs != null)
             {
-                SteamAPI.SteamFriends().ActivateGameOverlayToStore(
+                SteamFriends.ActivateGameOverlayToStore(
                     dlcs[dlcIndex].appId,
                     EOverlayToStoreFlag.k_EOverlayToStoreFlag_AddToCartAndShow);
             }
         }
 
-        public void openGameStore(uint appid)
+        public void openGameStore(AppId_t appid)
         {
-            SteamAPI.SteamFriends().ActivateGameOverlayToStore(
+            SteamFriends.ActivateGameOverlayToStore(
                     appid,
                     EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
         }
@@ -166,14 +170,14 @@ namespace VikingEngine.SteamWrapping
         {
             get
             {
-                return SteamAPI.SteamApps().GetDLCCount();
+                return SteamApps.GetDLCCount();
             }
         }
 
         /* Callback Responses */
         void OnDlcInstalled(DlcInstalled_t callback)
         {
-            uint dlcAppId = callback.m_nAppID;
+            AppId_t dlcAppId = callback.m_nAppID;
 
             foreach (DlcDescriptor dlc in dlcs)
             {

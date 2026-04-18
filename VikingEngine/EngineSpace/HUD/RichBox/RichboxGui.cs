@@ -5,17 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.HUD.RichBox
 {
-    interface IRichboxGuiInputMap
-    {
-        IButtonMap RichboxGuiSelect { get; }
-        IntVector2 RichboxGuiMove();
-        bool RichboxGuiUseMove { get; }
-    }
+   
 
     struct RichboxGuiSettings
     {
@@ -29,7 +25,7 @@ namespace VikingEngine.HUD.RichBox
     }
     class RichboxGui
     {
-        public IRichboxGuiInputMap input;
+        public IRichMenuInputMap input;
         public RichboxGuiSettings settings;
         public List<RichboxGuiPart> parts= new List<RichboxGuiPart>();
 
@@ -44,7 +40,7 @@ namespace VikingEngine.HUD.RichBox
         public RichboxGui()
         { }
 
-        public RichboxGui(RichboxGuiSettings settings, IRichboxGuiInputMap input)
+        public RichboxGui(RichboxGuiSettings settings, IRichMenuInputMap input)
         {
             this.input = input;
             this.settings = settings;
@@ -73,7 +69,7 @@ namespace VikingEngine.HUD.RichBox
 
         public void beginMove(int part)
         {
-            if (input.RichboxGuiUseMove)
+            if (input.RbControllerMode)
             {
                 lockInput = 2;
                 movePos_part = part;
@@ -90,14 +86,14 @@ namespace VikingEngine.HUD.RichBox
         public void updateMove(out bool refresh)
         {
             refresh = false;
-            if (input.RichboxGuiUseMove && lockInput <= 0)
+            if (input.RbControllerMode && lockInput <= 0)
             {
                 if (movePos_part >= 0 && parts[movePos_part].canMoveInteract())
                 {
                     IntVector2 prevGrid = movePos_grid;
                     int prevPart = movePos_part;
 
-                    IntVector2 move = input.RichboxGuiMove();
+                    IntVector2 move = input.RbMoveSteps();
                     
                     if (move.Y != 0)
                     {
@@ -159,7 +155,7 @@ namespace VikingEngine.HUD.RichBox
                     //    lib.DoNothing();
                     //}
 
-                    if (movePos_part >= 0 && input.RichboxGuiSelect.DownEvent)
+                    if (movePos_part >= 0 && input.RbClick().DownEvent)
                     {
                         parts[movePos_part].interaction.hover.onClick(null);
                         refresh = true;
@@ -185,7 +181,7 @@ namespace VikingEngine.HUD.RichBox
 
         public void onRefresh(RichboxGuiPart part)
         {
-            if (input.RichboxGuiUseMove)
+            if (input.RbControllerMode)
             {
                 if (movePos_part >= 0 && part == parts[movePos_part])
                 {
@@ -242,7 +238,7 @@ namespace VikingEngine.HUD.RichBox
 
         void menuMoveRefreshOnStateChange()
         {
-            if (input.RichboxGuiUseMove && movePos_part>=0)
+            if (input.RbControllerMode && movePos_part>=0)
             {
                 beginMove(movePos_part);
             }
@@ -359,8 +355,7 @@ namespace VikingEngine.HUD.RichBox
 
             if (interact)
             {
-                interaction = new RbInteraction(content, gui.settings.contentLayer,
-                    gui.input.RichboxGuiSelect);
+                interaction = new RbInteraction(content, gui.settings.contentLayer, gui.input);
             }
 
             if (outLine != null)

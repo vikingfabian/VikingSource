@@ -41,11 +41,14 @@ namespace VikingEngine.DSSWars.Communication
             {
                 int arrowIndex = 0;
 
-                for (int i = 0; i < selected.diplomaticRelations.Length; i++)
+                //for (int i = 0; i < selected.diplomaticRelations.Length; i++)
+                //{
+                //    if (selected.diplomaticRelations[i] != null && i != selected.myIndex)
+                //    {
+                RelationsLoop loop = new RelationsLoop(selected.myIndex);
+                while (loop.Next())
                 {
-                    if (selected.diplomaticRelations[i] != null && i != selected.myIndex)
-                    {
-                        var relationType = selected.diplomaticRelations[i].Relation;
+                    var relationType = loop.Relation().Relation;//selected.diplomaticRelations[i].Relation;
 
                         if (relationType <= RelationType.RelationTypeN2_Truce)
                         {
@@ -58,8 +61,8 @@ namespace VikingEngine.DSSWars.Communication
 
                         void addArrow(bool goodRelation)
                         {
-                            var otherFaction = DssRef.world.faction(i);
-                            if (otherFaction != null && !otherFaction.HasZeroUnits())
+                            //var otherFaction = DssRef.world.faction(i);
+                            if (loop.OtherFaction(out var otherFaction) && !otherFaction.HasZeroUnits())
                             {
                                 Graphics.Image arrow;
 
@@ -80,12 +83,12 @@ namespace VikingEngine.DSSWars.Communication
                                 diff.Normalize();
                                 arrow.position = flagPos + diff * radius;
                                 arrow.Rotation = lib.V2ToAngle_PreNorm_Unsafe(diff);
-                                arrow.idOrIndex = i;
+                                arrow.idOrIndex = otherFaction.myIndex;
                                 arrowIndex++;
                             }
                         }
                     }
-                }
+                
 
                 clearFromIndex(arrowIndex);
             }

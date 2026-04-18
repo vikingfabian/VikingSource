@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using System.Threading;
+using Steamworks;
 
 namespace VikingEngine.Network
 {
@@ -40,10 +41,10 @@ namespace VikingEngine.Network
             get
             {
 #if PCGAME
-                ulong lobbyId = Ref.steam.LobbyMatchmaker.currentLobbyID;
-                if (lobbyId != 0 && Ref.steam.P2PManager.localPeer != null)
+                CSteamID lobbyId = Ref.steam.LobbyMatchmaker.currentLobbyID;
+                if (lobbyId != CSteamID.Nil && Ref.steam.P2PManager.localPeer != null)
                 {
-                    return Valve.Steamworks.SteamAPI.SteamMatchmaking().GetLobbyOwner(lobbyId) == Ref.steam.P2PManager.localPeer.fullId;
+                    return Steamworks.SteamMatchmaking.GetLobbyOwner(lobbyId) == Ref.steam.P2PManager.localPeer.SteamID;
                 }
 #endif
                 return false;
@@ -70,7 +71,7 @@ namespace VikingEngine.Network
             get
             {
 #if PCGAME
-                return Ref.steam.isNetworkInitialized && (Ref.steam.LobbyMatchmaker.currentLobbyID != 0 || InMultiplayerSession);
+                return Ref.steam.isNetworkInitialized && (Ref.steam.LobbyMatchmaker.currentLobbyID != CSteamID.Nil || InMultiplayerSession);
 #else
                 return false;
 #endif
@@ -183,9 +184,9 @@ namespace VikingEngine.Network
         public void Invite()
         {
 #if PCGAME
-            if (Ref.steam.LobbyMatchmaker.currentLobbyID != 0)
+            if (Ref.steam.LobbyMatchmaker.currentLobbyID != CSteamID.Nil)
             {
-                Valve.Steamworks.SteamAPI.SteamFriends().ActivateGameOverlayInviteDialog(
+                Steamworks.SteamFriends.ActivateGameOverlayInviteDialog(
                     Ref.steam.LobbyMatchmaker.currentLobbyID);
             }
 #endif
@@ -234,7 +235,7 @@ namespace VikingEngine.Network
         public AbsNetworkPeer GetPeer(ulong fullId)
         {
 #if PCGAME
-            return Ref.steam.P2PManager.GetPeer(fullId);
+            return Ref.steam.P2PManager.GetPeer(new CSteamID( fullId));
 #else
             return null;
 #endif
@@ -352,14 +353,14 @@ namespace VikingEngine.Network
         public void setLobbyData(string key, int data)
         {
 #if PCGAME
-            Valve.Steamworks.SteamAPI.SteamMatchmaking().SetLobbyData(Ref.steamlobby.currentLobbyID, key, data.ToString());
+            Steamworks.SteamMatchmaking.SetLobbyData(Ref.steamlobby.currentLobbyID, key, data.ToString());
 #endif
         }
 
         public int getLobbyIntData(string key, ulong lobbyID)
         {
 #if PCGAME
-            string data = Valve.Steamworks.SteamAPI.SteamMatchmaking().GetLobbyData(lobbyID, key);
+            string data = Steamworks.SteamMatchmaking.GetLobbyData(new CSteamID(lobbyID), key);
             return Convert.ToInt32(data);
 #else
             return int.MinValue;

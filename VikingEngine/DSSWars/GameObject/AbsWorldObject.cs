@@ -47,7 +47,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    }
         //    if (GetFaction() != args.player.faction)
         //    {
-        //        var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
+        //        var relation = DssRef.world.diplomacy.GetRelationType(args.player.faction, GetFaction());
 
         //        args.content.newLine();
         //        args.content.Add(new RichBoxText(GetFaction().PlayerName, Color.LightYellow));

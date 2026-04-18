@@ -30,6 +30,8 @@ namespace VikingEngine.DSSWars.Data
         public int AlliedFactions = 0;
         public int ServantFactions = 0;
 
+        public int foundCities = 0;
+
         int decorBuilt = 0;
         int statuesBuilt = 0;
 
@@ -52,7 +54,6 @@ namespace VikingEngine.DSSWars.Data
             content.newParagraph();
             content.text(string.Format(DssRef.lang.EndGameStatistics_StatuesBuilt, statuesBuilt));
             content.text(string.Format(DssRef.lang.EndGameStatistics_DecorsBuilt, decorBuilt));
-
         }
 
         public void onDecorBuild_async(TerrainDecorType decorType)
@@ -93,6 +94,24 @@ namespace VikingEngine.DSSWars.Data
             }
         }
 
+        public void onCityFound()
+        { 
+            foundCities++;
+
+            switch (foundCities)
+            {
+                case 1:
+                    DssRef.achieve.UnlockAchievement(AchievementIndex.colonizer_tier1);
+                    break;
+                case 3:
+                    DssRef.achieve.UnlockAchievement(AchievementIndex.colonizer_tier2);
+                    break;
+                case 9:
+                    DssRef.achieve.UnlockAchievement(AchievementIndex.colonizer_tier3);
+                    break;
+            }
+        }
+
         public void writeGameState(BinaryWriter w)
         {
             w.Write(SoldiersRecruited);
@@ -110,12 +129,13 @@ namespace VikingEngine.DSSWars.Data
 
             w.Write((ushort)decorBuilt);
             w.Write((ushort)statuesBuilt);
+            w.Write((ushort)foundCities);
         }
 
         public void readGameState(BinaryReader r, int subVersion)
         {
-             SoldiersRecruited =r.ReadInt32();
-             FriendlySoldiersLost = r.ReadInt32();
+            SoldiersRecruited =r.ReadInt32();
+            FriendlySoldiersLost = r.ReadInt32();
             EnemySoldiersKilled = r.ReadInt32();
 
             CitiesCaptured = r.ReadUInt16();
@@ -131,6 +151,11 @@ namespace VikingEngine.DSSWars.Data
             {
                 decorBuilt = r.ReadUInt16();
                 statuesBuilt = r.ReadUInt16();
+            }
+
+            if (subVersion >= 101)
+            {
+                foundCities = r.ReadUInt16();
             }
         }
     }

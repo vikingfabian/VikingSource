@@ -40,8 +40,7 @@ namespace VikingEngine
         /// </summary>
         public bool Next()
         {
-            var safePointer1 = array.NextIteration(ref selIndex);
-            sel = safePointer1;
+            sel = array.NextIteration(ref selIndex);
             return sel != null;
         }
 
@@ -422,17 +421,6 @@ namespace VikingEngine
                 lib.DoNothing();
             }
         }
-
-        //public void RemoveAt_EqualSafeCheck_OrCrash(T obj, int index)
-        //{
-        //    if (obj.Equals(Array[index]))
-        //    {
-        //        --Count;
-        //        Array[index] = default(T);
-        //        mostLeftFreePosition = lib.SmallestValue(mostLeftFreePosition, index);
-        //        updateSpottedLength();
-        //    }
-        //}
 
         public T Get(int position)
         {

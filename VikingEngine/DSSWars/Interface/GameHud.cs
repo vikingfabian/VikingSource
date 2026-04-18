@@ -14,6 +14,12 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Interface
 {
+    interface IPlayerHud_Menu
+    {
+        RichMenu Menu { get; }
+        bool IsFactionMenu { get; }
+    }
+
     class GameHud
     {
         LocalPlayer player;
@@ -66,7 +72,7 @@ namespace VikingEngine.DSSWars.Interface
             objMenu = new PlayerHud_Object(player);
             factionMenu = new PlayerHud_Faction();
 
-            if (numPlayers <= 1)
+            if (numPlayers <= 1 && DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
             {
                 miniMap = new MiniMap(player, false);
             }
@@ -207,6 +213,7 @@ namespace VikingEngine.DSSWars.Interface
 
                 refresh |= player.gameControls.map.selection.isNew ||
                     player.gameControls.map.hover.isNew ||
+                    SteamWrapping.SteamInputManager.InputLayerChange ||
                     needRefresh;
 
 
@@ -238,7 +245,7 @@ namespace VikingEngine.DSSWars.Interface
                 }
 
 
-                if (player.gameControls.input.inputSource.HasMouse)
+                if (player.gameControls.input.inputSource.HasMouseInstance)
                 {
                     if (head != null)
                     {

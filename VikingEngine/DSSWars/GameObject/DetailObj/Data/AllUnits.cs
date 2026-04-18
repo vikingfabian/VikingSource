@@ -14,9 +14,9 @@ namespace VikingEngine.DSSWars.GameObject
     class AllUnits
     {
         public static float AverageGroupStrength;
-        public const float HealthToStrengthConvertion = 0.5f;
+        public const float HealthToStrengthConvertion = 0.36f;
 
-        AbsSoldierBuilder[] profiles = new AbsSoldierBuilder[(int)UnitType.NUM];
+        AbsSoldierBuilder[] profiles = new AbsSoldierBuilder[(int)UnitBuildType.NUM];
         //public CityDetailProfile city;
         public BannerManBuilder bannerman;
 
@@ -34,21 +34,25 @@ namespace VikingEngine.DSSWars.GameObject
 
             add(new WarmachineProfile());
             add(new CavalryBuilder());
+            add(new WagonBuilder());
+            add(new BalkongBuilder());
+            add(new HoundBuilder());
 
             //add(new DarkLordBuilder());
             //add(new DarkLordWarshipData());
 
             add(new CityGuardSoldierBuilder());
-           
 
+            var defaultShield = DssVar.Shields[Resource.ItemResourceType.RoundShield];
             int defaultAttackDamage = DssConst.WeaponDamage_Sword;
             int defaultDps = DPS(defaultAttackDamage, DssConst.Soldier_StandardAttackAndCoolDownTime);//Convert.ToInt32(defaultAttackDamage / (DssConst.Soldier_StandardAttackAndCoolDownTime / 1000.0));
+            defaultDps = MathExt.MultiplyInt(defaultDps, 1f + defaultShield.meleeSpeedBonus);
             //int defaultDps = DssRef.profile.Get(UnitType.Soldier).DPS_land();
-            AverageGroupStrength = GroupStrengh_Raw(DssConst.SoldierGroup_DefaultCount, defaultDps, DssConst.Soldier_DefaultHealth);//DssConst.SoldierGroup_DefaultCount * (defaultDps + HealthToStrengthConvertion * DssConst.Soldier_DefaultHealth) ;
+            AverageGroupStrength = GroupStrengh_Raw(DssConst.SoldierGroup_DefaultCount, defaultDps, DssConst.Soldier_DefaultHealth + defaultShield.armorBonus);//DssConst.SoldierGroup_DefaultCount * (defaultDps + HealthToStrengthConvertion * DssConst.Soldier_DefaultHealth) ;
             
         }
 
-        public bool IsShip(UnitType type)
+        public bool IsShip(UnitBuildType type)
         {
             return profiles[(int)type].IsShip();
         }
@@ -64,7 +68,19 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static float GroupStrengh(int soldierCount, ref SoldierData data, bool land)
         {
+            //int damage;
+            //if (land)
+            //{ 
+            
+            //}
+            //else
+            //{
+            //    crewCount = MathExt.Div_Ceiling(this.health, data.basehealth);
+
+            //}
+
             var raw = GroupStrengh_Raw(soldierCount, DPS(land? data.attackDamage : data.attackDamageSea, data.attackTimePlusCoolDown), data.basehealth);
+            
             return raw / AverageGroupStrength;
         }
 
@@ -142,10 +158,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         void add(AbsSoldierBuilder builder)
         {
-            profiles[(int)builder.unitType] = builder;
+            profiles[(int)builder.unitBuildType] = builder;
         }
 
-        public AbsSoldierBuilder Get(UnitType type)
+        public AbsSoldierBuilder Get(UnitBuildType type)
         {
             return profiles[(int)type];
         }
@@ -154,10 +170,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             switch (filterType)
             {
+                case UnitFilterType.Settler:
+                    return SpriteName.WarsSettler;
                 case UnitFilterType.SharpStick:
                     return SpriteName.WarsUnitIcon_Folkman;
 
-                case UnitFilterType.SpearAndShield:
+                case UnitFilterType.Spear:
                     return SpriteName.LittleUnitIconSpearman;
 
 
@@ -172,8 +190,8 @@ namespace VikingEngine.DSSWars.GameObject
                     return SpriteName.WarsUnitIcon_Hammerknight;
                 case UnitFilterType.TwohandSword:
                     return SpriteName.WarsUnitIcon_TwoHand;
-                case UnitFilterType.Knight:
-                    return SpriteName.WarsUnitIcon_Knight;
+                //case UnitFilterType.Knight:
+                //    return SpriteName.WarsUnitIcon_Knight;
                 case UnitFilterType.MithrilKnight:
                     return SpriteName.WarsUnitIcon_MithrilMan;
                 case UnitFilterType.MithrilBow:
@@ -227,14 +245,15 @@ namespace VikingEngine.DSSWars.GameObject
 
     enum UnitFilterType
     { 
+        Settler,
         SharpStick,
         Sword,
         LongSword,
         Pike,
-        SpearAndShield,
+        Spear,
         Warhammer,
         TwohandSword,
-        Knight,
+        //Knight,
         MithrilKnight,
 
         Skirmisher,
@@ -259,66 +278,27 @@ namespace VikingEngine.DSSWars.GameObject
         GreenSoldier,
         DarkLord,
         RoseWarrior,
+
         NUM
     }
 
-    enum UnitType
+    enum UnitBuildType
     {
         NULL = -1,
-        //King = 34,
-        //KingsGuard = 35,
-        //Recruit =0,
         Conscript = 0,
         ConscriptWarship = 1,
         BannerMan = 2,
         ConscriptCavalry = 3,
-        ConscriptWarmachine = 4,
-        DarkLordWarship = 5,
-        DarkLord = 6,
-
+        ConscriptWagon = 4,
+        ConscriptHound = 5,
+        ConscriptWarmachine = 6,
+       
         CityGuard = 7,
         CityGuardWarship = 8,
-        //Soldier =1,
-        //Sailor =2,
-        //Folkman =3,
-        //Spearman =4,
-        //HonorGuard=10,
-        //Pikeman =5,
-        //Knight=6,
-        //Archer=7,
-        //CrossBow=8,
-
-        //Ballista=9,        
-        //Trollcannon=11,
-        //GreenSoldier = 13,
-        //Viking = 14,
-        //DarkLord = 16,
-        //BannerMan =12,7
+        ConscriptBalkong = 9,
+        
         NUM,
         City,
 
-        //RecruitWarship = 17,
-        //FolkWarship = 18,
-
-        //SoldierWarship = 19,
-        //HonorGuardWarship = 20,
-        //PikemanWarship = 21,
-
-        //ArcherWarship = 22,
-        //CrossbowWarship = 23,
-
-        //BallistaWarship = 24,
-        //TrollcannonWarship = 25,
-
-        //SailorWarship = 26,
-        //VikingWarship = 27,
-
-        //GreenWarship = 28,
-        //KnightWarship = 29,
-        //DarkLordWarship = 30,
-
-
-        
-       
     }
 }

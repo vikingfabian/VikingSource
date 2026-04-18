@@ -19,8 +19,8 @@ namespace VikingEngine.Voxels
 
         public IntervalIntV3 drawLimits;
 
-        public int lockFirstFrames = 0;
-        public int lockEndFrames = 0;
+        public int? lockFirstFrame = null;
+        public int? lockEndFrame = null;
         public CircleCounter currentFrame = new CircleCounter(0);
         public string name = "VoxProj" + Ref.rnd.Int(9999).ToString();
         //public VoxelObjGridDataAnimHD mergedLayers = null;
@@ -28,7 +28,22 @@ namespace VikingEngine.Voxels
         /// <summary>
         /// Low index = top layer = override bottom layers
         /// </summary>
-        public ListWithSelection<VoxLayer> layers = new ListWithSelection<VoxLayer>(); 
+        public ListWithSelection<VoxLayer> layers = new ListWithSelection<VoxLayer>();
+
+        public Range FrameBounds()
+        {
+            Range range = new Range(0, currentFrame.Max);
+            if (lockFirstFrame.HasValue)
+            {
+                range.Min = lockFirstFrame.Value;
+            }
+            if (lockEndFrame.HasValue)
+            {
+                range.Max = lockEndFrame.Value;
+            }
+
+            return range;
+        }
 
         public VoxelObjGridDataHD CurrentVoxelGrid
         {
@@ -177,17 +192,37 @@ namespace VikingEngine.Voxels
             }
         }
 
-        public void LockAnimation(bool start)
+        public void LockAnimation(bool firstFrame, bool bLock)
         {
-            if (start)
+            if (firstFrame)
             {
-                lockFirstFrames = currentFrame.Value;
-                lockEndFrames = Bound.Min(lockEndFrames, lockFirstFrames);
+                if (bLock)
+                {
+                    lockFirstFrame = currentFrame.Value;
+                    if (lockEndFrame.HasValue)
+                    {
+                        lockEndFrame = Bound.Min(lockEndFrame.Value, lockFirstFrame.Value);
+                    }
+                }
+                else
+                {
+                    lockFirstFrame = null;
+                }
             }
             else
-            { 
-                lockEndFrames = currentFrame.Value;
-                lockFirstFrames = Bound.Max(lockFirstFrames, lockEndFrames);
+            {
+                if (bLock)
+                {
+                    lockEndFrame = currentFrame.Value;
+                    if (lockFirstFrame.HasValue)
+                    {
+                        lockFirstFrame = Bound.Max(lockFirstFrame.Value, lockEndFrame.Value);
+                    }
+                }
+                else
+                {
+                    lockEndFrame = null;
+                }
             }
         }
 

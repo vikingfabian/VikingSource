@@ -87,6 +87,12 @@ namespace VikingEngine.DSSWars.Data
             start();//endTimeSec = Ref.TotalGameTimeSec + length.seconds;
         }
 
+        public void start(IntervalF randomSecondsRange)
+        {
+            this.length = new TimeLength(randomSecondsRange.GetRandom());
+            start();//endTimeSec = Ref.TotalGameTimeSec + length.seconds;
+        }
+
         public void start()
         { 
             endTimeSec = Ref.TotalGameTimeSec + length.seconds;
@@ -100,6 +106,11 @@ namespace VikingEngine.DSSWars.Data
         public bool TimeOut()
         {
             return Ref.TotalGameTimeSec >= endTimeSec;
+        }
+
+        public TimeLength TimePassed()
+        {
+            return new TimeLength(length.seconds - endTimeSec + Ref.TotalGameTimeSec);
         }
 
         public TimeLength RemainingLength()

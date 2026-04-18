@@ -4,6 +4,7 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using VikingEngine.DSSWars;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using VikingEngine.HUD.RichMenu;
@@ -13,9 +14,7 @@ namespace VikingEngine.HUD.RichBox
 {
     abstract class AbsRbInteraction
     {
-
         abstract public bool updateController(RichMenuControllerPointer pointer, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction, out float pushScroll);
-
         abstract public bool update(Vector2 mousePosOffSet, RichMenu.RichMenu menu, bool useClickInput, out bool needRefresh, out bool endInteraction);
         abstract public void end(float pointerX, out bool needRefresh);
     }
@@ -26,14 +25,14 @@ namespace VikingEngine.HUD.RichBox
         public ImageLayers layer;
 
         Graphics.RectangleLines selectionOutline = null;
-        Input.IButtonMap clickInput;
+        IRichMenuInputMap inputMap;
         public RenderTargetDrawContainer drawContainer = null;
         public AbsRbInteraction interactionStack = null;
 
-        public RbInteraction(List<AbsRichBoxMember> content, ImageLayers layer,  Input.IButtonMap clickInput)
+        public RbInteraction(List<AbsRichBoxMember> content, ImageLayers layer, IRichMenuInputMap inputMap)
         {
             this.layer = layer;
-            this.clickInput = clickInput;
+            this.inputMap = inputMap;
 
             //foreach (var m in content)
             //{
@@ -136,12 +135,22 @@ namespace VikingEngine.HUD.RichBox
             //Debug.Log($"Menu content offset: {menu.richBox.GetOffset()}");
             unused1 = false;
             needRefresh = false;
+            Input.MouseInstance mouse;
+            if (menu != null)
+            {
+                mouse = menu.InputMap().RbMouseInstance();
+            }
+            else
+            {
+                mouse = DssRef.state.LocalHost().gameControls.input.mouse;
+            }
+
             if (interactionStack != null)
             {
                 var result = interactionStack.update(mousePosOffSet, menu, useClickInput, out needRefresh, out bool endInteraction);
                 if (endInteraction)
                 {
-                    interactionStack.end(Input.Mouse.Position.X, out needRefresh);
+                    interactionStack.end(mouse.Position.X, out needRefresh);
                     interactionStack = null;
                 }
                 return result;
@@ -152,9 +161,9 @@ namespace VikingEngine.HUD.RichBox
             VectorRect area = VectorRect.Zero;
             //VectorRect area2 = VectorRect.Zero;
             //int hoverIx = 0;
-            if (clickInput.IsMouse)
+            //if (clickInput.IsMouse)
             {
-                Vector2 pos = Input.Mouse.Position + mousePosOffSet;
+                Vector2 pos = mouse.Position + mousePosOffSet;
                 //Debug.Log($"mouse pos: {pos}");
                 hover = null;
                 
@@ -196,13 +205,13 @@ namespace VikingEngine.HUD.RichBox
         {
             if (hover != null)
             {
-                if (clickInput.DownEvent && useClickInput)
+                if (inputMap.RbClick().DownEvent/*clickInput.DownEvent*/ && useClickInput)
                 {
                     hover.onClick(menu);
                     hover?.clickAnimation(true);
                     return true;
                 }
-                else if (clickInput.UpEvent)
+                else if (inputMap.RbClick().UpEvent/*clickInput.UpEvent*/)
                 {
                     hover.clickAnimation(false);
                 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,13 +11,16 @@ namespace VikingEngine.DSSWars.Map.Settings
 {
     class CityAreaCulture
     {
-        public double land = 0, water = 0, plain = 0, forest = 0, mountain = 0, dryBiom = 0;
+        public double land = 0, water = 0, plain = 0, forest = 0, mountain = 0, frozenBiom = 0, dryBiom = 0, desolateBiom = 0;
         public double percWater;
         public double percForest;
         public double percPlains;
         public double percMountain;
+        public double percFrozen;
         public double percDry;
-        public double worldPercX, worldPercY;
+        public double percDesolate;
+
+        public Vector2 worldPerc;
         public CityAreaCulture(City city, WorldData world)
         {
             Rectangle2 cultureArea = Rectangle2.FromCenterTileAndRadius(city.tilePos, 3);
@@ -45,9 +49,19 @@ namespace VikingEngine.DSSWars.Map.Settings
                             ++mountain;
                             break;
                     }
-                    if (tile.biom == BiomType.YellowDry || tile.biom == BiomType.RedDry)
+
+                    switch (tile.biom)
                     {
-                        ++dryBiom;
+                        case BiomType.YellowDry:
+                        case BiomType.RedDry:
+                            ++dryBiom;
+                            break;
+                        case BiomType.DarkLands:
+                            ++desolateBiom;
+                            break;
+                        case BiomType.Frozen:
+                            ++frozenBiom;
+                            break;
                     }
                 }
             }
@@ -56,11 +70,13 @@ namespace VikingEngine.DSSWars.Map.Settings
             percForest = forest / land;
             percPlains = plain / land;
             percMountain = mountain / land;
+            percFrozen = frozenBiom / land;
             percDry = dryBiom / land;
+            percDesolate = desolateBiom / land;
 
             //Collect cultures
-            worldPercX = city.tilePos.X / (double)world.Size.X;
-            worldPercY = city.tilePos.Y / (double)world.Size.Y;
+            worldPerc.X = city.tilePos.X / (float)world.Size.X;
+            worldPerc.Y = city.tilePos.Y / (float)world.Size.Y;
         }
     }
 }

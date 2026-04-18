@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,14 +29,89 @@ namespace VikingEngine.DSSWars
         }
     }
 
-    class WeaponModel
+    abstract class AbsWeaponModel
+    {
+        protected List<VoxelHD> idle;
+        public VoxelJoint idle_jointPos;
+
+        protected List<VoxelHD> cloneVoxels(Dictionary<ushort, ushort> findReplace, List<VoxelHD> voxels)
+        {
+            if (voxels != null)
+            {
+                List<VoxelHD> result = new List<VoxelHD>(voxels.Count);
+                foreach (VoxelHD v in voxels)
+                {
+                    VoxelHD copy = v;
+                    if (findReplace.TryGetValue(v.Material, out ushort toColor))
+                    {
+                        copy.Material = toColor;
+                    }
+                    result.Add(copy);
+                }
+
+                return result;
+            }
+            return null;
+        }
+
+        abstract public void addToGrid(VoxelObjGridDataHD grid, IntVector3 armJointPos, int state);
+    }
+
+    class ShieldModel : AbsWeaponModel
+    {
+        public ShieldModel()
+        {
+        }
+        public ShieldModel(VoxelModelName modelName, int frame)
+        {
+            DataStream.FilePath path = VoxelObjDataLoader.ContentPath(modelName);
+            byte[] data = DataStream.FileToDiskManager.Read(path);
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    System.IO.MemoryStream s = new System.IO.MemoryStream(data);
+                    System.IO.BinaryReader r = new System.IO.BinaryReader(s);
+
+                    var grids = VoxelObjDataLoader.LoadVoxelObjGridHD(r);
+
+                    idle = grids[frame].GetVoxelArray(out idle_jointPos);
+                }
+                catch (Exception ex)
+                {
+                    BlueScreen.ThreadException = ex;
+                }
+            });
+
+        }
+
+        override public void addToGrid(VoxelObjGridDataHD grid, IntVector3 armJointPos, int state)
+        {
+            grid.SafeAddVoxels(idle, armJointPos - idle_jointPos.pos);
+        }
+
+        public ShieldModel recolor(Dictionary<ushort, ushort> findReplace)
+        {
+            ShieldModel clone = new ShieldModel();
+
+            clone.idle = cloneVoxels(findReplace, idle);
+            clone.idle_jointPos = idle_jointPos;
+           
+            return clone;
+
+
+        }
+    }
+
+    class WeaponModel : AbsWeaponModel
     {
         public const int IdleFrame = 0;
         public const int AttackFrame = 1;
         public const int MoveFrame = 2;
 
-        List<VoxelHD> idle, attack, move;
-        public VoxelJoint idle_jointPos, attack_jointPos, move_jointPos;
+        List<VoxelHD> attack, move;
+        public VoxelJoint attack_jointPos, move_jointPos;
         //ushort idleJoint, attack
         public WeaponModel()
         { 
@@ -62,11 +139,6 @@ namespace VikingEngine.DSSWars
                     {
                         move = grids[MoveFrame].GetVoxelArray(out move_jointPos);
                     }
-
-                    //if (modelName == VoxelModelName.modweapon_shortbow)
-                    //{ 
-                    //    lib.DoNothing();
-                    //}
                 }
                 catch (Exception ex)
                 {
@@ -76,7 +148,7 @@ namespace VikingEngine.DSSWars
 
         }
 
-        public void addToGrid(VoxelObjGridDataHD grid, IntVector3 armJointPos, int state)
+        override public void addToGrid(VoxelObjGridDataHD grid, IntVector3 armJointPos, int state)
         {
             switch (state)
             {
@@ -97,9 +169,9 @@ namespace VikingEngine.DSSWars
         {
             WeaponModel clone = new WeaponModel();
 
-            clone.idle = cloneVoxels(idle);
-            clone.attack = cloneVoxels(attack);
-            clone.move = cloneVoxels(move);
+            clone.idle = cloneVoxels(findReplace, idle);
+            clone.attack = cloneVoxels(findReplace, attack);
+            clone.move = cloneVoxels(findReplace, move);
 
             clone.idle_jointPos = idle_jointPos;
             clone.attack_jointPos = attack_jointPos;
@@ -107,25 +179,7 @@ namespace VikingEngine.DSSWars
 
             return clone;
 
-            List<VoxelHD> cloneVoxels(List<VoxelHD> voxels)
-            {
-                if (voxels != null)
-                {
-                    List<VoxelHD> result = new List<VoxelHD>(voxels.Count);
-                    foreach (VoxelHD v in voxels)
-                    {
-                        VoxelHD copy = v;
-                        if (findReplace.TryGetValue(v.Material, out ushort toColor))
-                        {
-                            copy.Material = toColor;
-                        }
-                        result.Add(copy);
-                    }
-
-                    return result;
-                }
-                return null;
-            }
+            
         }
     }
 }

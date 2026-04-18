@@ -54,8 +54,7 @@ namespace VikingEngine.DSSWars
             return instance;
         }
 
-        public VoxelModelInstance_Pooled AutoLoadModelInstance_character(SoldierModelData modelData,
-          float scale = 1f)
+        public VoxelModelInstance_Pooled AutoLoadModelInstance_character(SoldierModelData modelData, float scale = 1f)
         {
 
             VoxelModelInstance_Pooled instance = DssRef.models.NextInstance_Pooled();

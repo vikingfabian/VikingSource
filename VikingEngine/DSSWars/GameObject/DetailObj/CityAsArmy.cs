@@ -13,7 +13,7 @@ namespace VikingEngine.DSSWars.GameObject
     {
         void updateArmyMembers(float time, bool fullUpdate)
         {
-            if (myIndex == 0)
+            if (myIndex == 40)
             {
                 lib.DoNothing();
             }
@@ -64,6 +64,7 @@ namespace VikingEngine.DSSWars.GameObject
             int count = 0;
             float totalStrength = 0;
             Intvector2MinMax minMax = new Intvector2MinMax(tilePos);
+            bool allGropsAreIdle = true;
 
             if (groups.Count > 0)
             {
@@ -72,12 +73,19 @@ namespace VikingEngine.DSSWars.GameObject
                 while (groupsC.Next())
                 {
                     count += groupsC.sel.soldierCount;
-                    totalStrength += AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip);
+                    allGropsAreIdle &= groupsC.sel.HasIdleState();
+                    float strength = AllUnits.GroupStrengh(groupsC.sel.soldierCount, ref groupsC.sel.soldierData, !groupsC.sel.isShip);
+                    if (groupsC.sel.damageBlockChance_fromTerrain > 0)
+                    {
+                        strength *= 1f / (1f - groupsC.sel.damageBlockChance_fromTerrain);
+                    }
+                    totalStrength += strength;
 
                     minMax.Next(ref groupsC.sel.tilePos);
                 }
             }
 
+            army_isIdle = allGropsAreIdle;
             soldiersCount = count;
             this.strengthValue = totalStrength;
             guardCullingMinMax = minMax;

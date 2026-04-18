@@ -30,10 +30,6 @@ namespace VikingEngine.DSSWars.Map
         List<SoldierGroup> playerNearGroups = new List<SoldierGroup>();
 
 
-
-
-        //Dictionary<int, float> cityDominationStrength = new Dictionary<int, float>();
-
         public UnitCollAreaGrid(IntVector2 worldSz)
         {
             if ((worldSz.X % UnitGridSquareWidth) != 0 ||
@@ -50,8 +46,6 @@ namespace VikingEngine.DSSWars.Map
             {
                 grid.LoopValueSet(new UnitCollArea());
             }
-
-            //cityGrid = new Grid2D<GameObject.City>(grid.Size);
         }
 
         public void asynchUpdate()
@@ -192,13 +186,12 @@ namespace VikingEngine.DSSWars.Map
                             //var groups_sp = area.groups;
                             lock (area.groups)
                             {
-                                if (area.groups != null)
-                                {
+                                
                                     for (int i = 0; i < area.groups.Count; ++i)
                                     {
                                         area.groups[i].soldiers?.toList(ref playerNearDetailUnits);
                                     }
-                                }
+                                
                             }
                         }
                     }
@@ -229,16 +222,14 @@ namespace VikingEngine.DSSWars.Map
                     if (grid.TryGet(x, y, out area))
                     {
                         lock (area.armies)
-                        {
-                            
-                                foreach (AbsMapObject obj in area.armies)
-                                {
+                        {                            
+                            foreach (AbsMapObject obj in area.armies)
+                            {
                                 if (obj.factionIndex == faction)
                                 {
                                     playerNearMapObjects.Add(obj);
                                 }
-                                }
-                            
+                            }                            
                         }
                     }
                 }
@@ -307,10 +298,9 @@ namespace VikingEngine.DSSWars.Map
                 lock (area.armies)
                 {
                     //var armies_sp = area.armies;
-                    if (area.armies != null)
-                    {
+                    
                         playerNearMapObjects.AddRange(area.armies);
-                    }
+                    
                 }
             }
 
@@ -335,10 +325,9 @@ namespace VikingEngine.DSSWars.Map
                             lock (area.armies)
                             {
                                 //var armies_sp = area.armies;
-                                if (area.armies != null)
-                                {
+                                
                                     playerNearMapObjects.AddRange(area.armies);
-                                }
+                                
                             }
                         }
                     }
@@ -408,8 +397,7 @@ namespace VikingEngine.DSSWars.Map
                         //var groups_sp = area.groups;
                         lock (area.groups)
                         {
-                            if (area.groups != null)
-                            {
+                            
                                 for (int i = 0; i < area.groups.Count; ++i)
                                 {
                                     if (area.groups[i].GetFaction() == faction &&
@@ -418,7 +406,7 @@ namespace VikingEngine.DSSWars.Map
                                         playerNearGroups.Add(area.groups[i]);
                                     }
                                 }
-                            }
+                            
                         }
                     }
                 }
@@ -444,14 +432,13 @@ namespace VikingEngine.DSSWars.Map
                     {
                         lock (area.groups)
                         {
-                            if (area.groups != null)
-                            {
+                            
                                 foreach (var m in area.groups)
                                 {
                                     if (m.tilePos.SideLength(city.tilePos) <= radius)
                                     {
                                         if (city.factionIndex == m.factionIndex ||
-                                            DssRef.diplomacy.InWar(city.factionIndex, m.factionIndex))
+                                            DssRef.world.diplomacy.GetRelation(city.factionIndex, m.factionIndex).InWar())
                                         {
                                             if (faction_power.TryGetValue(m.factionIndex, out float strength))
                                             {
@@ -464,7 +451,7 @@ namespace VikingEngine.DSSWars.Map
                                         }
                                     }
                                 }
-                            }
+                            
                         }
                     }
                 }
@@ -487,52 +474,51 @@ namespace VikingEngine.DSSWars.Map
 
         public void collectOpponentGroups(int faction, IntVector2 tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities)
         {
-            groups_nearUpdate.Clear();
-            cities_nearUpdate.Clear();
-
-            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
-            UnitCollArea area;
-
-            for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
+            lock (groups_nearUpdate)
             {
-                for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
+                groups_nearUpdate.Clear();
+                cities_nearUpdate.Clear();
+
+                IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+                UnitCollArea area;
+
+                for (int y = areaPos.Y - 1; y <= areaPos.Y + 1; ++y)
                 {
-                    if (grid.TryGet(x, y, out area))
+                    for (int x = areaPos.X - 1; x <= areaPos.X + 1; ++x)
                     {
-                        lock (area.groups)
+                        if (grid.TryGet(x, y, out area))
                         {
-                            if (area.groups != null)
+                            lock (area.groups)
                             {
+                                //if (DssRef.world.diplomacy.GetRelation_Safe(faction, m.factionIndex).InWar())
                                 foreach (var m in area.groups)
                                 {
-                                    if (DssRef.diplomacy.InWar(faction, m.factionIndex))
+                                    if ( DssRef.world.diplomacy.GetRelation_Safe(faction, m.factionIndex).InWar())
                                     {
                                         groups_nearUpdate.Add(m);
                                     }
                                 }
                             }
-                        }
 
-                        for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
-                        {
-                            var city = DssRef.world.cities[area.cities[i]];
-                            if (DssRef.diplomacy.InWar(faction, city.factionIndex))
+                            for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
                             {
-                                //cities_nearUpdate.Add(city);
-                                //foreach (var m in citie)
-                                var groupsC = city.groups.counter();
-                                while (groupsC.Next())
+                                var city = DssRef.world.cities[area.cities[i]];
+                                if (DssRef.world.diplomacy.GetRelation_Safe(faction, city.factionIndex).InWar())
                                 {
-                                    groups_nearUpdate.Add(groupsC.sel);
+                                    var groupsC = city.groups.counter();
+                                    while (groupsC.Next())
+                                    {
+                                        groups_nearUpdate.Add(groupsC.sel);
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                groups = groups_nearUpdate;
+                cities = cities_nearUpdate;
+                
             }
-
-            groups = groups_nearUpdate;
-            cities = cities_nearUpdate;
         }
 
         //public List<GameObject.AbsGroup> collectOpponents(int faction, IntVector2 tilePos)
@@ -600,7 +586,7 @@ namespace VikingEngine.DSSWars.Map
         //                        {
         //                            var army = area.armies[aix];
         //                            if (army.faction != faction &&
-        //                                DssRef.diplomacy.InWar(faction, army.faction))
+        //                                DssRef.world.diplomacy.InWar(faction, army.faction))
         //                            {
         //                                units.Add(army);
         //                            }
@@ -615,7 +601,7 @@ namespace VikingEngine.DSSWars.Map
         //                        var city = DssRef.world.cities[area.cities[i]];
         //                        if (city.faction != faction &&
         //                            //city.guardCount > 0 &&
-        //                            DssRef.diplomacy.InWar(faction, city.faction))
+        //                            DssRef.world.diplomacy.InWar(faction, city.faction))
         //                        {
         //                            units.Add(city);
         //                        }
@@ -697,10 +683,9 @@ namespace VikingEngine.DSSWars.Map
                     {
                         lock (area.groups)
                         {
-                            if (area.groups != null)
-                            {
+                            
                                 groups.AddRange(area.groups);
-                            }
+                            
                         }
 
                         for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
@@ -733,8 +718,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         lock (area.armies)
                         {
-                            if (area.armies != null)
-                            {
+                           
                                 foreach (var m in area.armies)
                                 {
                                     if (!armies.Contains(m))
@@ -742,7 +726,7 @@ namespace VikingEngine.DSSWars.Map
                                         armies.Add(m);
                                     }                                    
                                 }
-                            }
+                            
                         }
                     }
                 }
@@ -764,8 +748,7 @@ namespace VikingEngine.DSSWars.Map
                         lock (area.armies)
                         {
                             //Todo dont add remote player armies
-                            if (area.armies != null)
-                            {
+                            
                                 foreach (var m in area.armies)
                                 {
                                     if (!armies.Contains(m))
@@ -773,7 +756,7 @@ namespace VikingEngine.DSSWars.Map
                                         armies.Add(m);
                                     }
                                 }
-                            }
+                            
                         }
                     }
                 }
@@ -796,8 +779,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         lock (area.armies)
                         {
-                            if (area.armies != null)
-                            {
+                            
                                 foreach (var m in area.armies)
                                 {
                                     if (m.factionIndex == factionFilter)
@@ -808,7 +790,7 @@ namespace VikingEngine.DSSWars.Map
                                         }
                                     }
                                 }
-                            }
+                            
                         }
                     }
                 }
@@ -833,8 +815,7 @@ namespace VikingEngine.DSSWars.Map
                     {
                         lock (area.groups)
                         {
-                            if (area.groups != null)
-                            {
+                            
                                 foreach (var m in area.groups)
                                 {
                                     if (m.factionIndex != faction && !RefExt.EqTarget(prevArmy, m.army))
@@ -847,7 +828,7 @@ namespace VikingEngine.DSSWars.Map
                                         }
                                     }
                                 }
-                            }
+                            
                         }
                     }
                 }
@@ -868,8 +849,7 @@ namespace VikingEngine.DSSWars.Map
                         lock (area.armies)
                         {
                             //var armies_sp = area.armies;
-                            if (area.armies != null)
-                            {
+                           
                                 for (int i = 0; i < area.armies.Count; ++i)
                                 {
                                     var army = area.armies[i];
@@ -880,7 +860,7 @@ namespace VikingEngine.DSSWars.Map
                                         return army;
                                     }
                                 }
-                            }
+                            
                         }
                     }
                 }
@@ -1035,8 +1015,7 @@ namespace VikingEngine.DSSWars.Map
                     }
                     lock (area.armies)
                     {
-                        if (area.armies != null)
-                        {
+                        
                             foreach (var army in area.armies)
                             {
                                 if (army.strengthValue <= maxStrengthValue)
@@ -1054,7 +1033,7 @@ namespace VikingEngine.DSSWars.Map
                                     }
                                 }
                             }
-                        }
+                        
                     }
                 }
             }
@@ -1103,16 +1082,16 @@ namespace VikingEngine.DSSWars.Map
 
             lock (groups)
             {
-                    var pointer = groups;
-                    groups = processingGroups;
-                    processingGroups = pointer;
+                var pointer = groups;
+                groups = processingGroups;
+                processingGroups = pointer;
             }
 
             lock (armies)
             {
-                    var pointer = armies;
-                    armies = processingArmies;
-                    processingArmies = pointer;
+                var pointer = armies;
+                armies = processingArmies;
+                processingArmies = pointer;
             }
         }
     }

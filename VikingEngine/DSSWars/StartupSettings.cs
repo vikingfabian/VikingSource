@@ -8,6 +8,10 @@ namespace VikingEngine.DSSWars
 {
     static class StartupSettings 
     {
+        public static string LeaderboardVersion = "apr2026";
+        public static bool LeaderboardInBeta = PlatformSettings.DevBuild ? true :
+           false; //RETAIL
+
         public static bool AutoStartLevel = false;
 
         //## DEFAULT TRUE ##
@@ -22,14 +26,17 @@ namespace VikingEngine.DSSWars
 
 
         //## DEFAULT FALSE ##
-        public static bool EndlessResources = PlatformSettings.DevBuild ? false : 
+        public static bool EndlessResources = PlatformSettings.DevBuild ? true : 
             false;//DO NOT CHANGE    
 
         public static bool EndlessDiplomacy = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
 
-        public static bool UnlockAllProgress = PlatformSettings.DevBuild ? false :
+        public static bool UnlockAllProgress = PlatformSettings.DevBuild ? true :
             false;//DO NOT CHANGE
+
+        public static bool PauseCheat = PlatformSettings.DevBuild ? true :
+            false;//DO NOT CHANGE    
 
         public static bool CasualInstaBuild = PlatformSettings.DevBuild ? false :
             false;//DO NOT CHANGE
@@ -59,6 +66,7 @@ namespace VikingEngine.DSSWars
         public static bool CheatActive =>
             !SpawnStartingArmies ||
             !RunAI ||
+            PauseCheat ||
             UnlockAllProgress ||
             EndlessResources ||
             EndlessDiplomacy ||

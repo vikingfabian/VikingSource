@@ -34,6 +34,8 @@ namespace VikingEngine.DSSWars
             Ref.music.SetPlaylist(Music.PlayList(), PlatformSettings.PlayMusic);
 
             new PlaySettings();
+
+            DssRef.storage.meta.gameOverResultCollection = null;
         }
 
         public override void Time_Update(float time)
@@ -90,10 +92,19 @@ namespace VikingEngine.DSSWars
             if (loadMeta == null)
             {
                 // new game
+
+                if (Difficulty.ModeSupportsTutorial(DssRef.difficulty.setting_gameMode) == false)
+                {
+                    DssRef.storage.runTutorial = false;
+                }
+                                    
                 switch (DssRef.difficulty.setting_gameMode)
                 {
                     case GameModeMainType.FullStory:
                         DssRef.stats.startNewStory.addOne();
+                        break;
+                    case GameModeMainType.QuickBoss:
+                        DssRef.stats.startNewQuickBoss.addOne();
                         break;
                     case GameModeMainType.QuickMatch:
                         DssRef.stats.startQuickMatch.addOne();
@@ -106,6 +117,19 @@ namespace VikingEngine.DSSWars
                         break;
                     case GameModeMainType.Spectator:
                         DssRef.stats.startNewSpectator.addOne();
+                        break;
+                }
+
+                switch (DssRef.storage.gameRuleset.factionStartSize)
+                {
+                    case FactionStartSize.Full:
+                        DssRef.stats.startnewsize_full.addOne();
+                        break;
+                    case FactionStartSize.OneCity:
+                        DssRef.stats.startnewsize_onecity.addOne();
+                        break;
+                    case FactionStartSize.Settler:
+                        DssRef.stats.startnewsize_settler.addOne();
                         break;
                 }
 
@@ -134,6 +158,9 @@ namespace VikingEngine.DSSWars
                         break;
                     case 200:
                         DssRef.stats.startNew200perc.addOne();
+                        break;
+                    case 300:
+                        DssRef.stats.startNew300perc.addOne();
                         break;
 
                 }
@@ -174,7 +201,7 @@ namespace VikingEngine.DSSWars
                     DssRef.stats.startNewLocalMultiplayer.addOne();
                 }
 
-                if (DssRef.storage.localPlayers[0].inputSource.IsController)
+                if (DssRef.storage.localPlayers[0].inputSource.HasControllerInput)
                 {
                     DssRef.stats.controller_user.addOne();
                 }

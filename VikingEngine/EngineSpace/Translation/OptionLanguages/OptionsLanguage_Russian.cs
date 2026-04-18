@@ -9,6 +9,32 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Russian : AbsOptionsLanguage
     {
+        //Mounts
+        public override string InputSteam => "Steam Input";
+        public override string Input_SimulateMouse => "Симуляция мыши";
+        public override string Input_LockMouseToWindow => "Привязать мышь к окну";
+        public override string Input_MouseEdgePush_Title => "Скроллинг у края экрана";
+        public override string Input_NoControl => "Нет";
+        public override string Input_ActiveControl => "Активно";
+        public override string Input_PassiveControl => "Пассивно";
+        public override string Setting_MinimapScale => "Масштаб миникарты";
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "Затухание слоев";
+        public override string SplitScreen_HorizontalFirst => "Сначала горизонтально";
+        public override string SplitScreen_VerticalFirst => "Сначала вертикально";
+        public override string SplitScreen_HorizontalOnly => "Только горизонтально";
+        public override string SplitScreen_VerticalOnly => "Только вертикально";
+        public override string SplitScreen_Title => "Разделение экрана";
+        public override string SplitScreen_AdjustSplit => "Настройка разделения {0}";
+
+        public override string Settings_ControllerVibration => "Вибрация геймпада";
+        public override string GraphicsOption_IngameMenuWidth => "Ширина игрового меню";
+        public override string DisplayMode => "Режим отображения";
+        public override string DisplayMode_Windowed => "Оконный режим";
+        public override string DisplayMode_BorderlessFullscreen => "Полный экран без рамок";
+        public override string GameSettings_RenderedMouseCursor => "Отрисованный курсор";
+        public override string GameSettings_MuteControllerDisconnect => "Скрыть ошибки геймпада";
+        //--
         public override string GraphicsOption_FarViewDistance => "Дальний обзор";
 
         public override string Hud_Cancel => "Отмена";

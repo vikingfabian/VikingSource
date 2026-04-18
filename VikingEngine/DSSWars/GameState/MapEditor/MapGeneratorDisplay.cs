@@ -17,6 +17,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest.GO.Gadgets;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.DSSWars.GameState.MapEditor
 {
@@ -167,7 +168,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     HudLib.Label(content, DssRef.lang.MapGenerator_Terrain_BuildDigLoops);
                     content.space();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 1 }, BuildDigLoopBounds,
-                        (bool set, int value) =>
+                        (object tag, bool set, int value) =>
                         {
 
                             if (set)
@@ -182,7 +183,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     HudLib.Label(content, DssRef.lang.MapGenerator_Terrain_BuildStrokes);
                     content.space();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f }, StrokeCountBounds,
-                        (bool set, float value) =>
+                        (object tag, bool set, float value) =>
                         {
                             if (set)
                             {
@@ -204,7 +205,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     HudLib.Label(content, DssRef.lang.MapGenerator_Terrain_DigStrokes);
                     content.space();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f }, StrokeCountBounds,
-                        (bool set, float value) =>
+                        (object tag, bool set, float value) =>
                         {
                             if (set)
                             {
@@ -287,7 +288,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
         public void beginEditName()
         {
-            new TextInputState(state.mapStorage.Name, NameEditEvent, null);
+           var reciever =  new TextInputState(state.mapStorage.Name, NameEditEvent, null);
+            SteamInputManager.tryOpenSteamKeyboard(reciever);
         }
 
         virtual protected void NameEditEvent(string result, object tag)

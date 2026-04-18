@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
+using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.Players
 {    
@@ -113,14 +115,15 @@ namespace VikingEngine.DSSWars.Players
                 var target = player.gameControls.map.hover.obj.RelatedMapObject();
                 if (target != null)
                 {
-                    SoundLib.ordermove.Play();
-                    foreach (var m in collection.objects)
+                    if (DssRef.world.diplomacy.GetRelation(player.faction, target.GetFaction()).InWar())
                     {
-                        if (m.isAlive)
-                        {
-                            m.army.Order_Attack(target);
-                        }
+                        mapExecuteAttack(target);
                     }
+                    else
+                    {
+                        new PopMenu(player, new HUD.RichBox.RbAction1Arg<AbsMapObject>(mapExecuteAttack, target));
+                    }
+                    
                 }
             }
             else
@@ -138,11 +141,30 @@ namespace VikingEngine.DSSWars.Players
                         {
                             nextPlacementLoop.ExpandRadius();
                         }
-                        m.army.Ai_Order_MoveTo(nextPlacementLoop.Position);//player.gameControls.mapControls.tilePosition);
+                        m.army.Ai_Order_MoveTo(nextPlacementLoop.Position);
                         
                     }
                 }
+
+                moveOrderEffect();
             }
+        }
+
+        public void mapExecuteAttack(AbsMapObject target)
+        {
+            if (target != null)
+            {
+                SoundLib.ordermove.Play();
+                foreach (var m in collection.objects)
+                {
+                    if (m.isAlive)
+                    {
+                        m.army.Order_Attack(target);
+                    }
+                }
+            }
+
+            moveOrderEffect();
         }
     }
 

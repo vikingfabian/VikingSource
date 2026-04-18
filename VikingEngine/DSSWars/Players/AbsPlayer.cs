@@ -26,6 +26,7 @@ namespace VikingEngine.DSSWars.Players
         protected bool ignorePlayerCapture = false;
         public bool personality_loner = false;
         public bool protectedFromDelete = false;
+        public bool mayAttackPlayer = true;
 
         public Orders.Orders orders;
         abstract public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType buildType, out bool intelligent);
@@ -50,6 +51,7 @@ namespace VikingEngine.DSSWars.Players
             if (newGame)
             {
                 createStartupBarracks();
+                faction.addGold_factionWide(DssRef.difficulty.setting_gameMode == GameModeMainType.Sandbox? 500 : 200);
             }
         }
 
@@ -96,7 +98,8 @@ namespace VikingEngine.DSSWars.Players
             {
                 aggressionLevel = r.ReadByte();
                 var bools = new EightBit(r);
-                bools.Get(out IsPlayerNeighbor, out protectedFromBotAttacks, out personality_loner, out protectedFromDelete);
+                bools.Get(out IsPlayerNeighbor, out protectedFromBotAttacks, out personality_loner, out protectedFromDelete, out mayAttackPlayer);
+                
             }
         }
 
@@ -120,17 +123,17 @@ namespace VikingEngine.DSSWars.Players
         virtual public void aiPlayerAsynchUpdate(float time)
         { }
 
-        virtual public void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation)
+        virtual public void onNewRelation(Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation)
         {
             //On peace, stop all attacking armies
-            bool fromWar = Diplomacy.IsWar(rel.Relation);
+            bool fromWar = Diplomacy.IsWar(previousRelation);
             bool toWar = Diplomacy.IsWar(rel.Relation);
 
             if (fromWar != toWar)
             {
                 if (toWar)
                 {
-                    faction.tradeAllianceWars(otherFaction);
+                    faction.tradeAllianceWars(otherFaction, rel);
                 }
                 else
                 {
@@ -141,7 +144,7 @@ namespace VikingEngine.DSSWars.Players
             if (rel.Relation == RelationType.RelationType3_Ally &&
                 !rel.secret)
             {
-                faction.tradeAllianceWars(otherFaction);
+                faction.tradeAllianceWars(otherFaction, rel);
             }
         }
 
@@ -199,8 +202,8 @@ namespace VikingEngine.DSSWars.Players
 
                 //player.GetAiPlayer().refreshAggression();
 
-                var relation = DssRef.diplomacy.GetOrCreateRelation(faction, player.faction);
-                relation.SetWorseSpeakTerms(DssRef.diplomacy.SpeakTermsOnNeigbor_BadChance, DssRef.diplomacy.SpeakTermsOnNeigbor_NoneChance);
+                ref var relation = ref DssRef.world.diplomacy.GetRefRelation(faction.myIndex, player.faction.myIndex);
+                relation.SetWorseSpeakTerms(DssRef.world.diplomacy.SpeakTermsOnNeigbor_BadChance, DssRef.world.diplomacy.SpeakTermsOnNeigbor_NoneChance);
 
                 if (faction.Size() >= FactionSize.Big)
                 {
@@ -209,11 +212,11 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        protected bool quickMatchUnits()
+        protected bool quickMatchUnits(bool checkIfParticipant)
         {
             if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
             {
-                if (IsLocalPlayer() || DssRef.world.quickMatchFactions.Contains(faction.myIndex))
+                if (!checkIfParticipant || IsLocalPlayer() || DssRef.world.quickMatchFactions.Contains(faction.myIndex))
                 {
                     IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
                     Army mainArmy = faction.NewArmy(onTile);
@@ -243,8 +246,25 @@ namespace VikingEngine.DSSWars.Players
             return false;
         }
 
+        protected void settlerGuardUnits()
+        {
+            IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
+            Army mainArmy = faction.NewArmy(onTile);
 
-        virtual public void createStartUnits()
+            if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
+            {
+                new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
+            }
+            else
+            {
+                new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
+            }
+
+            mainArmy.setAsStartArmy();
+        }
+
+
+        virtual public void createStartUnits(double unitCountMulti, bool settlerGuard)
         {   
         }
 

@@ -41,7 +41,7 @@ namespace VikingEngine.HUD.RichBox
 
                 checkImage = new RbImage(value ? checkOn : checkOff);
                 checkImage.Create(group);
-                group.position.X += 4;
+                group.carriage.position.X += 4;
             }
         }
 

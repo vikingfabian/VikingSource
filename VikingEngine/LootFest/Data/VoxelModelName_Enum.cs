@@ -26,7 +26,7 @@ namespace VikingEngine.LootFest
             return (int)name * 100 + rotation;
         }
     }
-    
+
     enum VoxelModelName
     {
         //--
@@ -42,7 +42,7 @@ namespace VikingEngine.LootFest
         modsoldier_hat_soldier_all,
         modsoldier_hat_custom_all,
         modsoldier_leg1,
-        
+
         modsoldier_larm_empty1,
         modsoldier_larm_shield1,
         modsoldier_rarm_sword1,
@@ -60,7 +60,7 @@ namespace VikingEngine.LootFest
         modshield_javelin,
         modshield_roman,
         modshield_knightsmallside,
-        
+
         modweapon_blunderbuss,
         modweapon_crossbow,
         modweapon_culvertin,
@@ -71,6 +71,7 @@ namespace VikingEngine.LootFest
         modweapon_mithrilbow,
         modweapon_mithrilsword,
         modweapon_rifle,
+        modweapon_settler,
         modweapon_sharpstick,
         modweapon_shortbow,
         modweapon_sling,
@@ -80,6 +81,7 @@ namespace VikingEngine.LootFest
         modweapon_shortsword,
         modweapon_longsword,
         modweapon_bronzesword,
+        modshield_forward1,
 
         #endregion
 
@@ -92,27 +94,30 @@ namespace VikingEngine.LootFest
 
         //--
         CATEGORY_WARS_1,
-#region LFWARS
+        #region LFWARS
         ErrorCube,
         party_restbar,
         Arrow,
         slingstone,
         boulder_proj,
+        Boar,
         Pig,
         Hen,
+        dog1,
+        hound1,
         Pheasant,
         little_kingman,
         little_kingorc,
         little_hirdman,
         little_hirdorc,
-        
+
         little_archerman,
         little_archerorc,
         little_crossbowman,
         wars_crossbow,
         little_javelinman,
         little_javelinorc,
-        
+
         little_dogman,
         little_dogorc,
         war_dogneutral,
@@ -166,6 +171,7 @@ namespace VikingEngine.LootFest
         wars_hammer,
         city_water,
         city_quarry,
+        city_trapper,
         city_logistic,
 
         wars_shipcrew,
@@ -192,7 +198,7 @@ namespace VikingEngine.LootFest
         little_rocketlauncherorc,
         little_ramman,
         little_ramorc,
-        
+
         war_ballista_proj,
         war_cannonball,
         war_gunblast,
@@ -221,12 +227,14 @@ namespace VikingEngine.LootFest
         armystand,
         armystand_detail,
         cityicon,
+        unclaimed_icon,
         buildarea,
         godfire,
         wars_borderstick,
         //city_tower24,
         city_flagpole,
         city_pen,
+        city_tenthut,
         city_workerhut,
         city_workerhut_long,
         city_guard_house,
@@ -250,13 +258,66 @@ namespace VikingEngine.LootFest
         city_barracks,
         city_mine,
         city_workstation,
+        city_meatstation,
+        city_storage,
         city_carpenter,
         city_nobelhouse,
         city_tent,
         city_research,
 
+        Fowl,
+        oxen1,
+        kineoxen1,
+        pony_brown,
+        pony_pink,
         horse_white, horse_brown,
-        
+        drafthorse_red,
+        warhorse_brown,
+        wildpig1,
+        hog1, 
+        warhog1,
+        staghog1,
+        wolf1,
+        warg1,
+        alphawarg1,
+
+        wildcat1,
+        lion1,
+        warlion1,
+        Phant_elephant,
+        Phant_warelephant,
+        Phant_oliphant,
+
+        Phant_balkong2w,
+        Phant_balkong4w,
+        Phant_balkong_enforced,
+        Phant_balkong_iron,
+        Phant_balkong_steel,
+        Phant_ballista,
+        Phant_bronzecannon,
+        Phant_bronzecannon_side,
+        Phant_bronzesiege,
+        Phant_ironcannon,
+        Phant_ironcannon_side,
+        Phant_ironsiege,
+        Phant_manuballista,
+
+
+        wagon_light,
+        wagon_light4,
+        wagon_coach,
+        wagon_ironcoach,
+        cannonwagon_siegebronze,
+        cannonwagon_manuballista,
+        cannonwagon_catapult,
+        cannonwagon_ballista,
+        cannonwagon_manbronze,
+        cannonwagon_maniron,
+        cannon4wagon_maniron,
+        cannoncoach_maniron,
+        cannoncoach_manbronze,
+        cannoncoach_siegeiron,
+
         stupid_board,
         stupid_gate,
         little_flag,
@@ -358,6 +419,8 @@ namespace VikingEngine.LootFest
         fol_tree_hard,
         fol_tree_soft,
         fol_tree_dry,
+        tree_apple,
+        tree_banana,
         fol_tree_hard_lava,
         fol_tree_soft_lava,
         fol_tree_hard_snow,

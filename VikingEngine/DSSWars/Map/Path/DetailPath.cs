@@ -103,7 +103,9 @@ namespace VikingEngine.DSSWars.Map.Path
             */
             if (center == goal ||
                 !DssRef.world.subTileGrid.InBounds(center) ||
-                !DssRef.world.subTileGrid.InBounds(goal))
+                !DssRef.world.subTileGrid.InBounds(goal) ||
+                center.X <= 0 ||
+                (goal - center).SideLength() >= MaxTileRadius)
             {
                 return null;
             }
@@ -121,8 +123,20 @@ namespace VikingEngine.DSSWars.Map.Path
                 DetailPathNode startNode = new DetailPathNode(center, conv.ToDir8_INT(startDir), startAsShip);
                 {
                     IntVector2 gridPos = center - area.pos;
+#if DEBUG
+                try
+                {
+#endif
+
                     nodeGrid[gridPos.X, gridPos.Y] = startNode;
-                    nodeUseTopLeft = gridPos;
+#if DEBUG
+                }
+                catch (Exception ex)
+                {
+                    lib.DoNothing();
+                }
+#endif
+                        nodeUseTopLeft = gridPos;
                     nodeUseBottomRight = gridPos;
                 }
                 //bool endAsShip = DssRef.world.subTileGrid.Get(goal).IsWater();
@@ -315,8 +329,7 @@ namespace VikingEngine.DSSWars.Map.Path
             if (diff.Length() <= NodeMinDistance)
             {
                 --currentNodeIx;
-            }
-            
+            }            
             
             return toWp;
         }

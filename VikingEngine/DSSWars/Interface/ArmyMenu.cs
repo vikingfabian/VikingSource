@@ -5,6 +5,8 @@ using System.Reflection.Metadata;
 using System.Text;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -111,19 +113,19 @@ namespace VikingEngine.DSSWars.Interface
                     }
 
                     bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.ArmyMenu, out Color focusColor);
-                    if (viewControllerTabs)
+                    if (viewControllerTabs && player.gameControls.input.Controller_TabLeft.IsActive)
                     {
                         content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
                         content.space(0.5f);
                     }
                     var tabGroup = new ArtTabgroup(tabs, tabSel, player.armyTabClick);
-                    if (viewControllerTabs)
+                    if (viewControllerTabs && player.gameControls.input.Controller_TabRight.IsActive)
                     {
                         tabGroup.endAttach = new List<AbsRichBoxMember> { new RbSpace(0.5f), new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor } };
                     }
 
                     content.Add(tabGroup);
-                    content.newParagraph();
+                    //content.newParagraph();
                     //content.newLine();
                     switch (player.armyTab)
                     {
@@ -137,7 +139,8 @@ namespace VikingEngine.DSSWars.Interface
                             disbandTab(content);
                             break;
                         case MenuTab.Tag:
-                            tagsToMenu(content);
+                            //tagsToMenu(content);
+                            TagLib.TagsToMenu(content, player, army);
                             break;
 
 
@@ -191,14 +194,60 @@ namespace VikingEngine.DSSWars.Interface
         {
             army.basicInfoHud(new ObjectHudArgs( content, player, true));
 
+            content.newLine();
+            ColumnWidth(content, army);
+
+            content.newLine();
+            if (army.HasSettler(out var unit))
+            {
+                settlerButton(player, content, unit);
+            }
+
+            content.newLine();
             var haltButton = new ArtButton( RbButtonStyle.Primary,
                         new List<AbsRichBoxMember>
                         {
                         new HUD.RichBox.RbText(DssRef.lang.ArmyOption_Halt),
                         },
                         new RbAction(halt), null);
-            //haltButton.addShortCutButton(player.input.Stop, false);
+            
             content.Add(haltButton);
+
+            
+        }
+
+        public static void ColumnWidth(RichBoxContent content, AbsArmy army)
+        {
+            HudLib.Label(content, DssRef.lang.ArmyStructure_ColumnWidth);
+            content.newLine();
+            for (int w = Army.MinColumnWidth; w <= Army.MaxColumnWidth; w += 2)
+            {
+                var button = new ArtOption(w == army.armyColumnWidth,
+                    new List<AbsRichBoxMember> { new RbText(w.ToString()) },
+                    new RbAction1Arg<int>(army.armyColumnWidthClick, w, RbSoundType.Option));
+
+                content.Add(button);
+            }
+        }
+
+        public static void settlerButton(LocalPlayer player, RichBoxContent content, SoldierGroup unit)
+        {
+            if (DssRef.world.tileGrid.TryGet(unit.tilePos, out var tile))
+            {
+                bool unclaimedLand = tile.City().cityType == CityType.UnClaimed;
+
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{
+                        new RbText(DssRef.lang.Action_PlaceSettlement) }, new RbAction(() =>
+                        {
+                            if (!unit.isDeleted)
+                            {
+                                new SettlerCommandTarget(player, unit);
+                            }
+                        }), null, unclaimedLand));
+
+                content.newLine();
+            }
         }
 
         void divideTab(RichBoxContent content)
@@ -405,44 +454,42 @@ namespace VikingEngine.DSSWars.Interface
             content.Add(allbutton);
         }
 
-        public void tagsToMenu(RichBoxContent content)
-        {
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tag_ViewOnMap) }, player.ArmyTagsOnMapProperty));
-            content.newParagraph();
+        //public void tagsToMenu(RichBoxContent content)
+        //{
+        //    TagLib.TagsToMenu(content, player, army);
+        //    //HudLib.Label(content, DssRef.lang.ObjectUi_ViewOnMap + string.Format(" ({0})", DssRef.lang.Hud_AllArmies));
+        //    //content.newLine();
+        //    //player.armyHudSettings.toHud(content, false, player.profile.casualControls);
+            
+        //    //content.newParagraph();
 
-            for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
-            {
-                var button = new ArtToggle(back == army.tagBack, new List<AbsRichBoxMember> {
-                    new RbImage(Data.CityTag.BackSprite(back))
-                }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { army.tagBack = back; }, back, back == CityTagBack.NONE? RbSoundType.Deselect : RbSoundType.Option));
-                //button.setGroupSelectionColor(HudLib.RbSettings, back == army.tagBack);
-                content.Add(button);
+        //    //for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
+        //    //{
+        //    //    var button = new ArtToggle(back == army.Tag.tagBackType, new List<AbsRichBoxMember> {
+        //    //        new RbImage(Data.TagLib.BackSprite(back))
+        //    //    }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { army.Tag.tagBackType = back; }, back, back == CityTagBack.NONE? RbSoundType.Deselect : RbSoundType.Option));
+        //    //    content.Add(button);
 
-                if (back == CityTagBack.NONE)
-                {
-                    content.newLine();
-                }
-                //else
-                //{
-                //    content.space();
-                //}
-            }
+        //    //    if (back == CityTagBack.NONE)
+        //    //    {
+        //    //        content.newLine();
+        //    //    }
+            
+        //    //}
 
-            if (army.tagBack != CityTagBack.NONE)
-            {
-                content.newParagraph();
-                for (ArmyTagArt art = ArmyTagArt.None; art < ArmyTagArt.NUM; art++)
-                {
-                    var button = new ArtToggle(art == army.tagArt, new List<AbsRichBoxMember> {
-                    new RbImage(Data.CityTag.ArtSprite(art))
-                    }, new RbAction1Arg<ArmyTagArt>((ArmyTagArt art) => { army.tagArt = art; }, art, art == ArmyTagArt.None ? RbSoundType.Deselect : RbSoundType.Option));
-                    //button.setGroupSelectionColor(HudLib.RbSettings, art == army.tagArt);
-                    content.Add(button);
-                    //content.space();
-                }
-            }
-        }
+        //    //if (army.tagBack != CityTagBack.NONE)
+        //    //{
+        //    //    content.newParagraph();
+        //    //    for (ArmyTagArt art = ArmyTagArt.None; art < ArmyTagArt.NUM; art++)
+        //    //    {
+        //    //        var button = new ArtToggle(art == army.tagArt, new List<AbsRichBoxMember> {
+        //    //        new RbImage(Data.TagLib.ArtSprite(art))
+        //    //        }, new RbAction1Arg<ArmyTagArt>((ArmyTagArt art) => { army.tagArt = art; }, art, art == ArmyTagArt.None ? RbSoundType.Deselect : RbSoundType.Option));
+        //    //        content.Add(button);
+                    
+        //    //    }
+        //    //}
+        //}
         void splitArmyInHalf()
         {
             player.hud.objMenu.otherArmy = null;

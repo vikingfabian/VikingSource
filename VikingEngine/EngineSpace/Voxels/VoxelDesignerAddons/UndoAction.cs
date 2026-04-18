@@ -40,8 +40,10 @@ namespace VikingEngine.Voxels
                 }
 
                 undo.Undo(designer);
+                designer.UpdateDrawLimits();
                 designer.updateVoxelObj(IntervalIntV3.Zero);
                 designer.updateFrameInfo();
+                
                 //if (designer.inGameEditor)
                 //{
                 //    undo.selectionArea.AddValue(designer.worldPos.WorldGrindex);
@@ -111,7 +113,7 @@ namespace VikingEngine.Voxels
                 designer.setUndoDrawLimit(allFrames.Frames.First().Size);
                 designer.voxelProject.layers.list[layer].animationFrames = allFrames;
             }
-
+            designer.voxelProject.drawLimits.Size = designer.voxelProject.layers.First.animationFrames.Size;
             designer.voxelProject.currentFrame.Value = frame;
         }
         

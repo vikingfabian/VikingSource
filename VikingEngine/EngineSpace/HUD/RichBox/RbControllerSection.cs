@@ -26,14 +26,14 @@ namespace VikingEngine.EngineSpace.HUD.RichBox
                 var previous = group.controllerSections[group.controllerSections.Count - 1];
                 if (!previous.finalized)
                 {
-                    previous.end(group.position.Y);
+                    previous.end(group.carriage.position.Y);
                     group.controllerSections[group.controllerSections.Count - 1] = previous;
                 }
             }
 
             if (id != null)
             {
-                group.controllerSections.Add(new ControllerSection(id, group.position.Y));
+                group.controllerSections.Add(new ControllerSection(id, group.carriage.position.Y));
             }
         
         }

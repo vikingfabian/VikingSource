@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
@@ -343,7 +343,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             waitForRegroup = true;
             stateTime = 0;
-            //refreshNextWalkingNode();
+            
         }
 
         public void Ai_Order_MoveTo(IntVector2 goalTilePos)
@@ -472,7 +472,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void Order_Attack_Setup(AbsMapObject attackTarget)
         {
-            DssRef.diplomacy.declareWar(GetFaction(), attackTarget.GetFaction());
+            DssRef.world.diplomacy.declareWar(GetFaction(), attackTarget.GetFaction());
             clearObjective();
             this.attackTarget = attackTarget;
             this.attackTargetFaction = attackTarget.factionIndex;

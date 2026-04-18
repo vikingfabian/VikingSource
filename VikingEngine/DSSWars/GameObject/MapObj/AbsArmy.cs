@@ -11,6 +11,7 @@ using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
+using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -32,6 +33,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool inBattle = false;
         InBattleWith inBattleWith = new InBattleWith();
+
+        public MapObjectTag Tag = new MapObjectTag();
 
         public void AddSoldierGroup(SoldierGroup group)
         {
@@ -141,12 +144,19 @@ namespace VikingEngine.DSSWars.GameObject
                             RichBoxContent content = new RichBoxContent();
                             MessageGroup_Ingame.Title(content, DssRef.lang.Hud_Battle);
 
-                            var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                            MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoBattleButtonContent);
-                            gotoBattleButtonContent.Add(new RbText(TypeName()));
+                            //var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
+                            //MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoBattleButtonContent);
+                            //gotoBattleButtonContent.Add(new RbText(TypeName()));
 
-                            content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
-                                new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, this)));
+                            //content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
+                            //    new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, this)));
+                            var gotoButtonContent = new RichBoxContent();
+                            MessageGroup_Ingame.ControllerInputIcons(localplayer, gotoButtonContent);
+                            this.toButtonContent(gotoButtonContent, true);
+
+                            content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                                new RbAction1Arg<AbsGameObject>(localplayer.hud.messages.goToMapObject, this, RbSoundType.Default))
+                            { fillWidth = true });
 
                             localplayer.hud.messages.Add(content);
                         }
@@ -155,47 +165,9 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        
 
-        //protected void net_writeGroups(System.IO.BinaryWriter w)
-        //{
-        //    w.Write((ushort)groups.Count);
-        //    var groupsC = groups.counter();
-        //    while (groupsC.Next())
-        //    {
-        //        w.Write((ushort)groupsC.sel.parentArrayIndex);
-        //        groupsC.sel.writeNet(w);
-        //    }
-        //}
-
-        //protected void net_readGroups(System.IO.BinaryReader r)
-        //{
-        //    int groupsCount = r.ReadUInt16();
-        //    for (int i = 0; i < groupsCount; i++)
-        //    {
-        //        int index = r.ReadUInt16();
-        //        var group = groups.GetIndex_Safe(index);
-        //        bool needInit = false;
-        //        if (group == null)
-        //        {
-        //            needInit = true;
-        //            if (IsCity())
-        //            {
-        //                group = new GuardGroup(this);
-        //            }
-        //            else
-        //            {
-        //                group = new SoldierGroup(this);
-        //            }
-        //            groups.HardSet(group, index);
-        //        }
-
-        //        group.readNet(r, needInit);
-        //        group.net_onUpdate();
-        //        group.net_updateclient(DssRef.state.culling.playerInDetailView);
-        //    }
-        //}
-
-        protected void writeGroups(System.IO.BinaryWriter w)
+        protected void writeSoldierGroups(System.IO.BinaryWriter w)
         {
             w.Write((ushort)groups.Count);
             var groupsC = groups.counter();
@@ -206,7 +178,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             Debug.WriteCheck(w);
         }
-        public void readGroups(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
+        public void readSoldierGroups(System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             int groupsCount = r.ReadUInt16();
 
@@ -242,6 +214,12 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 groupsC.sel.asynchNearObjectsUpdate();
             }
+        }
+
+        override public void tagSprites(out SpriteName back, out SpriteName art)
+        {
+            back = Tag.TagBack();//Data.TagLib.BackSprite(tagBack);
+            art = Tag.TagArt();//Data.TagLib.ArtSprite(tagArt);
         }
 
         abstract public bool IdleObjetive();

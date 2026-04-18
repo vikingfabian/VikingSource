@@ -21,6 +21,7 @@ namespace VikingEngine.Input
         XController,
         GenericController,
         XController_TriggerAlts,
+        SteamInput,
     }
     
     interface IButtonMap
@@ -44,6 +45,8 @@ namespace VikingEngine.Input
         int ControllerIndex { get; set; }
 
         InputSourceType inputSource { get; }
+
+        bool IsActive { get; }
 
         void write(System.IO.BinaryWriter w);
         void read(System.IO.BinaryReader r);
@@ -161,7 +164,9 @@ namespace VikingEngine.Input
         public string ButtonName { get { return ""; } }
         public bool IsMouse { get { return false; } }
 
-        public InputSourceType inputSource { get { return InputSourceType.Num_Non; } }
+        public bool IsActive { get { return false; } }
+
+        public InputSourceType inputSource { get { return InputSourceType.Num_None; } }
 
         public void write(System.IO.BinaryWriter w)
         {
@@ -222,6 +227,8 @@ namespace VikingEngine.Input
 
         public string ButtonName { get { return button1.ButtonName + ", " + button2.ButtonName; } }
         public bool IsMouse { get { return button1.IsMouse || button2.IsMouse; } }
+
+        public bool IsActive { get { return true; } }
 
         public void write(System.IO.BinaryWriter w)
         {
@@ -355,6 +362,8 @@ namespace VikingEngine.Input
                 }
             }
         }
+
+        public bool IsActive { get { return true; } }
 
         public IButtonMap GetFromSource(Input.InputSourceType fromSource)
         {
@@ -505,6 +514,8 @@ namespace VikingEngine.Input
                 throw new NotImplementedException();
             }
         }
+
+        public bool IsActive { get { return true; } }
         public bool UpEvent { get { return (altKey.IsDown != key.IsDown) && (altKey.UpEvent || key.UpEvent); ; } }
         public float Value { get { return IsDown ? 1f : 0f; } }
         //public SpriteName[] Icons { get { return icons; } }
@@ -666,6 +677,7 @@ namespace VikingEngine.Input
         }
 
         /* Methods */
+        public bool IsActive { get { return true; } }
         public SpriteName Icon { get { return GetKeySprite(key); } }
         public void ListIcons(List<SpriteName> list)
         {
@@ -727,7 +739,6 @@ namespace VikingEngine.Input
 
     struct MouseButtonMap : IButtonMap
     {
-        /* Properties */
         public bool IsDown { get { return Input.Mouse.IsButtonDown(button); } }
         public bool DownEvent { get { return Input.Mouse.ButtonDownEvent(button); } }
 
@@ -738,7 +749,7 @@ namespace VikingEngine.Input
                 return DownEvent;
             }
         }
-
+        public bool IsActive { get { return true; } }
         public bool UpEvent { get { return Input.Mouse.ButtonUpEvent(button); } }
         public float Value { get { return Input.Mouse.IsButtonDown(button) ? 1f : 0f; } }
         public string ButtonName { get { return button.ToString() + "Click"; } }
@@ -746,11 +757,9 @@ namespace VikingEngine.Input
         public InputSourceType inputSource { get { return InputSourceType.Mouse; } }
         public int buttonIndex { get { return (int)button; } }
         public int ControllerIndex { get { return -1; } set { } }
-        /* Fields */
+        
         MouseButton button;
-        //SpriteName[] icons;
-
-        /* Constructors */
+        
         public MouseButtonMap(MouseButton button)
         {
             this.button = button;
@@ -816,7 +825,7 @@ namespace VikingEngine.Input
                 return false;
             }
         }
-
+        public bool IsActive { get { return true; } }
         public bool DownEvent_AnyInstance
         {
             get
@@ -931,7 +940,7 @@ namespace VikingEngine.Input
             }
         }
         public bool UpEvent { get { return Input.XInput.Instance(controllerIx).KeyUpEvent(button); } }
-
+        public bool IsActive { get { return true; } }
         bool altIsDown()
         {
             var ins = Input.XInput.Instance(controllerIx);

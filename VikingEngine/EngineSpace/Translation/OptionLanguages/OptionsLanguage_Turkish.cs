@@ -8,6 +8,33 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Turkish : AbsOptionsLanguage
     {
+        //Mounts
+        public override string InputSteam => "Steam Input";
+        public override string Input_SimulateMouse => "Fareyi simüle et";
+        public override string Input_LockMouseToWindow => "Fareyi pencereye kilitle";
+        public override string Input_MouseEdgePush_Title => "Kenar kaydırma";
+        public override string Input_NoControl => "Yok";
+        public override string Input_ActiveControl => "Aktif";
+        public override string Input_PassiveControl => "Pasif";
+        public override string Setting_MinimapScale => "Minimap ölçeği";
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "Katmanları soldur";
+        public override string SplitScreen_HorizontalFirst => "Önce yatay";
+        public override string SplitScreen_VerticalFirst => "Önce dikey";
+        public override string SplitScreen_HorizontalOnly => "Sadece yatay";
+        public override string SplitScreen_VerticalOnly => "Sadece dikey";
+        public override string SplitScreen_Title => "Bölünmüş ekran";
+        public override string SplitScreen_AdjustSplit => "Bölmeyi ayarla {0}";
+
+        public override string Settings_ControllerVibration => "Gamepad titreşimi";
+        //Winter update settings
+        public override string GraphicsOption_IngameMenuWidth => "Oyun menüsü genişliği";
+        public override string DisplayMode => "Görüntüleme moud";
+        public override string DisplayMode_Windowed => "Pencere";
+        public override string DisplayMode_BorderlessFullscreen => "Çerçevesiz Tam Ekran";
+        public override string GameSettings_RenderedMouseCursor => "Dahili imleç";
+        public override string GameSettings_MuteControllerDisconnect => "Gamepad kopma uyarısını sustur";
+        //--
         public override string GraphicsOption_FarViewDistance => "Uzun mesafe görüşü";
 
         public override string Hud_Cancel => "İptal";

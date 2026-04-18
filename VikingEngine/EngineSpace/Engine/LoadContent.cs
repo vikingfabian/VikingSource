@@ -17,7 +17,7 @@ namespace VikingEngine.Engine
 {
     static class LoadContent
     {
-        public static string SteamVersion = "-"; 
+        public static string EngineVersion = "-"; 
         public static bool BaseContentLoaded = false;
         public static ContentManager Content;
         public static Texture2D[] Textures = new Texture2D[(int)LoadedTexture.NUM];
@@ -110,6 +110,16 @@ namespace VikingEngine.Engine
                         Fonts[(int)LoadedFont.Console] = japanese_console;
                         break;
 
+                    case FontLanguage.Thai:
+                        var thai_regular = Content.Load<SpriteFont>("Font\\ThaiRegular");
+                        var thai_bold = Content.Load<SpriteFont>("Font\\ThaiBold");
+                        var thai_console = Content.Load<SpriteFont>("Font\\ThaiConsole");
+
+                        Fonts[(int)LoadedFont.Regular] = thai_regular;
+                        Fonts[(int)LoadedFont.Bold] = thai_bold;
+                        Fonts[(int)LoadedFont.Console] = thai_console;
+                        break;
+
                     case FontLanguage.Korean:
                         var korean_regular = Content.Load<SpriteFont>("Font\\KoreanRegular");
                         var korean_bold = Content.Load<SpriteFont>("Font\\KoreanBold");
@@ -147,7 +157,7 @@ namespace VikingEngine.Engine
             var versionFile = DataLib.SaveLoad.LoadTextFile(Engine.LoadContent.Content.RootDirectory + "\\Version Number.txt");
             if (versionFile != null && versionFile.Count > 0)
             {
-                SteamVersion = versionFile[0];
+                EngineVersion = versionFile[0];
                 //PlatformSettings.SteamVersion = "Version " + versionFile[0];
             }
         }
@@ -311,6 +321,7 @@ namespace VikingEngine
         Western,
         Chinese,
         Japanese,
+        Thai,
         Korean,
     }
 }

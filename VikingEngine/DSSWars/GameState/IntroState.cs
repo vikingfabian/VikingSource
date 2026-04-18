@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
@@ -78,6 +78,8 @@ namespace VikingEngine.DSSWars
 
             new Models().loadContent();
             part++;
+            ElephantModelBuilder.Init();
+            part++;
 
             Engine.LoadContent.LoadMesh(LoadedMesh.cube_repeating, Engine.LoadContent.ModelPath + "cube_repeating");
             Engine.LoadContent.LoadMesh(LoadedMesh.plane, Engine.LoadContent.ModelPath + "plane");
@@ -124,7 +126,8 @@ namespace VikingEngine.DSSWars
             dataProcessPart++;
             BuildLib.Init();
             dataProcessPart++;
-           
+            
+
             int loops = 0;
             while (!bSpriteSheetTexture)
             {
@@ -176,6 +179,11 @@ namespace VikingEngine.DSSWars
             part++;
         }
 
+        protected override bool tasksComplete()
+        {
+            return ElephantModelBuilder.WaitingCount <= 0;
+        }
+
 
         public override void Time_Update(float time)
         {
@@ -186,10 +194,10 @@ namespace VikingEngine.DSSWars
 
         protected override void launch()
         {
-
+            DssRef.models.rawModels_temporary = null;
             Ref.main.criticalContentIsLoaded = true;
             new Achievements();
-            new GameStats();
+            //new GameStats();
             DssRef.stats.startUp.addOne();
 
             if (Ref.gamesett.language == LanguageType.NONE)

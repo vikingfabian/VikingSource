@@ -8,6 +8,33 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
     // Keep a distinct class name so it can live side-by-side with English
     class OptionsLanguage_Portuguese : AbsOptionsLanguage
     {
+        //Mounts
+        public override string InputSteam => "Steam Input";
+        public override string Input_SimulateMouse => "Simular mouse";
+        public override string Input_LockMouseToWindow => "Prender mouse na janela";
+        public override string Input_MouseEdgePush_Title => "Rolagem de borda";
+        public override string Input_NoControl => "Nenhum";
+        public override string Input_ActiveControl => "Ativo";
+        public override string Input_PassiveControl => "Passivo";
+        public override string Setting_MinimapScale => "Escala do minimapa";
+
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "Desvanecer camadas";
+        public override string SplitScreen_HorizontalFirst => "Horizontal primeiro";
+        public override string SplitScreen_VerticalFirst => "Vertical primeiro";
+        public override string SplitScreen_HorizontalOnly => "Apenas horizontal";
+        public override string SplitScreen_VerticalOnly => "Apenas vertical";
+        public override string SplitScreen_Title => "Tela dividida";
+        public override string SplitScreen_AdjustSplit => "Ajustar divisão {0}";
+
+        public override string Settings_ControllerVibration => "Vibração do controle";
+        public override string GraphicsOption_IngameMenuWidth => "Largura do menu in-game";
+        public override string DisplayMode => "Modo de exibição";
+        public override string DisplayMode_Windowed => "Janela";
+        public override string DisplayMode_BorderlessFullscreen => "Tela cheia sem bordas";
+        public override string GameSettings_RenderedMouseCursor => "Cursor renderizado";
+        public override string GameSettings_MuteControllerDisconnect => "Silenciar desconexão do controle";
+        //--
         public override string GraphicsOption_FarViewDistance => "Visão de longa distância";
 
         public override string Hud_Cancel => "Cancelar";

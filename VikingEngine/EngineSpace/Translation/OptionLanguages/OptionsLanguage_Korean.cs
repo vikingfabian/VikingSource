@@ -9,6 +9,32 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Korean : AbsOptionsLanguage
     {
+        //Mounts
+        public override string InputSteam => "Steam 입력";
+        public override string Input_SimulateMouse => "마우스 시뮬레이션";
+        public override string Input_LockMouseToWindow => "마우스를 창에 가두기";
+        public override string Input_MouseEdgePush_Title => "가장자리 스크롤";
+        public override string Input_NoControl => "없음";
+        public override string Input_ActiveControl => "액티브";
+        public override string Input_PassiveControl => "패시브";
+        public override string Setting_MinimapScale => "미니맵 배율";
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "레이어 페이드"; // "Layer Fade"
+        public override string SplitScreen_HorizontalFirst => "가로 우선";
+        public override string SplitScreen_VerticalFirst => "세로 우선";
+        public override string SplitScreen_HorizontalOnly => "가로 전용";
+        public override string SplitScreen_VerticalOnly => "세로 전용";
+        public override string SplitScreen_Title => "화면 분할";
+        public override string SplitScreen_AdjustSplit => "분할 조정 {0}";
+
+        public override string Settings_ControllerVibration => "컨트롤러 진동";
+        public override string GraphicsOption_IngameMenuWidth => "인게임 메뉴 너비";
+        public override string DisplayMode => "디스플레이 모드";
+        public override string DisplayMode_Windowed => "창 모드";
+        public override string DisplayMode_BorderlessFullscreen => "테두리 없는 전체 화면";
+        public override string GameSettings_RenderedMouseCursor => "렌더된 커서";
+        public override string GameSettings_MuteControllerDisconnect => "컨트롤러 연결 해제 알림 끄기";
+        //--
         public override string GraphicsOption_FarViewDistance => "원거리 시야";
 
         public override string Hud_Cancel => "취소";

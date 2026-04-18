@@ -25,7 +25,8 @@ namespace VikingEngine.DSSWars.GameState
 {
     abstract class AbsPlayState : AbsDssState
     {
-       
+        public bool isReady = false;
+        public bool hasManorLords = false;
         public WorldResources resources = new WorldResources();
         public Map.MapLayer_Factions factionsMap;
         protected Map.MapLayer_Overview overviewMap;
@@ -53,6 +54,12 @@ namespace VikingEngine.DSSWars.GameState
         public Ambience ambience;
         public bool importedWorld = false;
 
+        public Stack<SpriteText3D> Text3DPool = new Stack<SpriteText3D>();
+       
+        protected ExitGameStateThreads exitGameStateThreads;
+
+        TimeStamp gameStartTime = TimeStamp.Now();
+
         public AbsPlayState() 
             :base() 
         {
@@ -60,7 +67,17 @@ namespace VikingEngine.DSSWars.GameState
             
         }
 
-        
+        virtual protected void onGameStart(bool newGame)
+        {
+            gameStartTime = TimeStamp.Now();
+            Input.Mouse.SetMenuMode(SteamWrapping.SteamActionSet.InGameControls);
+        }
+
+        public bool resourceCheckTime()
+        {
+            return gameStartTime.secPassed(5);
+        }
+
         public void stepFrames(int frameCount)
         {
             stepFramesCount = frameCount;
@@ -140,7 +157,7 @@ namespace VikingEngine.DSSWars.GameState
         {
             foreach (var local in localPlayers)
             {
-                if (local.gameControls.input.Menu.DownEvent)
+                if (local.gameControls.input.menuInput.openCloseInputEvent())
                 {
                     return true;
                 }
@@ -273,33 +290,27 @@ namespace VikingEngine.DSSWars.GameState
 
         public void updateMouseVisible()
         {
-            if (menuSystem != null && menuSystem.IsOpen())
-            {
-                Input.Mouse.View();//Mouse.Visible = true;
-            }
-            else 
-            {
-                if (localPlayers != null)
-                {
-                    foreach (var player in localPlayers)
-                    {
-                        if (player.gameControls.input.inputSource.HasMouse)
-                        {
-                            Input.Mouse.View();//Mouse.Visible = true;
-                            return;
-                        }
-                    }
-                }
+            Input.Mouse.SetMenuMode(menuSystem != null && menuSystem.IsOpen());
 
-                Mouse.Hide();//Mouse.Visible = false;
-            }
+            //Mouse.Hide();
+            
         }
 
-        public void exit()
+        public void beginExit()
         {
             Ref.music.stop(true);
             exitThreads = true;
             DssRef.ambience.gameEnd();
+
+            if (cutScene is EndScene)
+            {
+                cutScene.Close();
+            }
+
+            exitGameStateThreads = new ExitGameStateThreads(exit);
+        }
+        void exit()
+        {            
             new ExitToLobby(false);
         }
 

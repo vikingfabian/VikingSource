@@ -35,9 +35,6 @@ namespace VikingEngine.DSSWars.Map
         protected Faction playerFaction;
         public Graphics.PixelTexture texture;
 
-
-
-
         public AbsMapPixelTexture(Faction faction)
         {
             this.playerFaction = faction;
@@ -88,7 +85,7 @@ namespace VikingEngine.DSSWars.Map
 
         public void HeatMapInfoHud(RichBoxContent content)
         {
-            content.h2(DssRef.todoLang.MapFilter, HudLib.TitleColor_Head);
+            content.h2(DssRef.lang.MapFilter, HudLib.TitleColor_Head);
 
             SpriteName icon = SpriteName.NO_IMAGE;
             string caption = null;
@@ -103,7 +100,8 @@ namespace VikingEngine.DSSWars.Map
                     caption = string.Format(DssRef.lang.Hud_TotalStrengthRating, string.Empty);
                     break;
                 case FactionMapFilter.ResourceHeatmap:
-                    icon = ResourceLib.Icon(resourceFilter);
+                    //icon = ResourceLib.Icon(resourceFilter);
+                    IconName.Item(resourceFilter, out icon, out _);
                     caption = DssRef.lang.Resource;
                     break;
             }
@@ -156,12 +154,14 @@ namespace VikingEngine.DSSWars.Map
                 content.newParagraph();
                 foreach (var res in TerrainStructure.AllTerrainResources)
                 {
+                    IconName.Item(res, out SpriteName itemIcon, out string itemName);
+
                     content.Add(new ArtOption(res == resourceFilter,
                         new List<AbsRichBoxMember> {
                             new RbImage((res == ItemResourceType.Wood_Group || res == ItemResourceType.Stone_G)? SpriteName.WarsWorkCollect : SpriteName.WarsWorkMine),
-                            new RbImage(ResourceLib.Icon(res)),
+                            new RbImage(itemIcon),
                             new RbSpace(0.5f),
-                            new RbText(LangLib.Item(res)),
+                            new RbText(itemName),
                         },
                         new RbAction1Arg<ItemResourceType>((ItemResourceType resource) => { 
                             resourceFilter = resource;
@@ -215,31 +215,27 @@ namespace VikingEngine.DSSWars.Map
                 case FactionMapFilter.StrengthHeatmap:
                 case FactionMapFilter.ResourceHeatmap:
 
-                    max = 0;                    
+                    max = 0;
+
+                    var factionsC = DssRef.world.factions.counter();
                     switch (filter)
                     {
                         case FactionMapFilter.PopulationHeatmap:
+                            while (factionsC.Next())
                             {
-                                var factionsC = DssRef.world.factions.counter();
-                                while (factionsC.Next())
+                                if (factionsC.sel.isAlive)
                                 {
-                                    if (factionsC.sel.isAlive)
-                                    {
-                                        max = Math.Max(max, factionsC.sel.totalWorkForce);
-                                    }
+                                    max = Math.Max(max, factionsC.sel.totalWorkForce);
                                 }
                             }
                             break;
 
                         case FactionMapFilter.StrengthHeatmap:
+                            while (factionsC.Next())
                             {
-                                var factionsC = DssRef.world.factions.counter();
-                                while (factionsC.Next())
+                                if (factionsC.sel.isAlive)
                                 {
-                                    if (factionsC.sel.isAlive)
-                                    {
-                                        max = Math.Max(max, factionsC.sel.militaryStrength);
-                                    }
+                                    max = Math.Max(max, factionsC.sel.militaryStrength);
                                 }
                             }
                             break;
@@ -263,61 +259,51 @@ namespace VikingEngine.DSSWars.Map
                         t = DssRef.world.tileGrid.Get(loop.Position);
 
                         if (t.tileContent == TileContent.City)
-                        {
-                            color = Color.DarkBlue;//t.cityColor();
-                        }
-                        else if (t.heightLevel <= Height.LowWaterHeight)
+                            color = t.cityColor();
+
+                        if (t.heightLevel <= Height.LowerWaterHeight)
                         {
                             color = Color.CornflowerBlue;
                         }
                         else if (t.CityIndex == prevCity)
                         {
                             color = prevColor;
-                            if (t.hasBorder(out _))
-                            {
-                                color = ColorExt.ChangeBrighness(color, -20);
-                            }
                         }
                         else
                         {
                             City city = t.City();
                             Faction faction = city.GetFaction();
 
-                            float value = 0;
-
-                            switch (filter)
+                            if (faction != null)
                             {
-                                case FactionMapFilter.PopulationHeatmap:
-                                    if (faction != null)
-                                    {
+                                float value = 0;
+                                switch (filter)
+                                {
+                                    case FactionMapFilter.PopulationHeatmap:
                                         value = faction.totalWorkForce;
-                                    }
-                                    break;
+                                        break;
 
-                                case FactionMapFilter.StrengthHeatmap:
-                                    if (faction != null)
-                                    {
+                                    case FactionMapFilter.StrengthHeatmap:
                                         value = faction.militaryStrength;
-                                    }
-                                    break;
+                                        break;
 
-                                case FactionMapFilter.ResourceHeatmap:
-                                    value = city.terrainStructure.Get(resourceFilter);
-                                    break;
+                                    case FactionMapFilter.ResourceHeatmap:
+                                        value = city.terrainStructure.Get(resourceFilter);
+                                        break;
+                                }
+
+                                color = ColorExt.HeatColor_Inferno(value / max);
+                                prevCity = t.CityIndex;
+                                prevColor = color;
                             }
-
-                            color = ColorExt.HeatColor_Inferno(value / max);
-                            prevColor = color;
-                            if (t.hasBorder(out _))
+                            else
                             {
-                                color = ColorExt.ChangeBrighness(color, -20);
+                                color = Color.Gray;
                             }
-                            prevCity = t.CityIndex;
-                            
                         }
 
                         texture.SetPixel(loop.Position, color);
-                    }
+                    }                    
                     break;
             }
 

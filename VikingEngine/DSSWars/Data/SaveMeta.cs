@@ -26,6 +26,8 @@ namespace VikingEngine.DSSWars.Data
         DataStream.FilePath importSavePath = new DataStream.FilePath(ImportSaveFolder, null, null);
         DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, $"DSS_savemeta_v{SaveGamestate.Version}", ".mta");
 
+        public GameOverResultCollection gameOverResultCollection = null;
+
         public void CreateImportFolders()
         {
             System.IO.Directory.CreateDirectory(importSavePath.CompleteDirectory);
@@ -248,7 +250,7 @@ namespace VikingEngine.DSSWars.Data
             if (gameMode != GameModeMainType.NUM)
             {
                 LangLib.GameModeText(gameMode, out string caption, out _);
-                result += string.Format(DssRef.lang.Language_ItemCountPresentation,DssRef.lang.Settings_GameMode, caption) + Environment.NewLine;
+                result += string.Format(DssRef.lang.Language_ItemCount_Colon,DssRef.lang.Settings_GameMode, caption) + Environment.NewLine;
             }
             result += string.Format(DssRef.lang.EndGameStatistics_Time, playTime) + Environment.NewLine;
             if (autosave)
@@ -264,16 +266,16 @@ namespace VikingEngine.DSSWars.Data
 
             if (setting_foodMulti > 0)
             {
-                result += string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(setting_foodMulti)) + Environment.NewLine +
-                    string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(setting_waterMulti)) + Environment.NewLine +
-                    string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(setting_childMulti)) + Environment.NewLine +
-                    string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(setting_craftMulti)) + Environment.NewLine;
+                result += string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_FoodMultiplier, TextLib.OneDecimal(setting_foodMulti)) + Environment.NewLine +
+                    string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_WaterMultiplier, TextLib.OneDecimal(setting_waterMulti)) + Environment.NewLine +
+                    string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_ChildMultiplier, TextLib.OneDecimal(setting_childMulti)) + Environment.NewLine +
+                    string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Settings_CraftMultiplier, TextLib.OneDecimal(setting_craftMulti)) + Environment.NewLine;
 
             }
 
             if (localPlayerCount > 1)
             {
-                result += string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Lobby_LocalMultiplayerEdit, localPlayerCount) + Environment.NewLine;
+                result += string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Lobby_LocalMultiplayerEdit, localPlayerCount) + Environment.NewLine;
             }
 
             result += " [" + HudLib.Date(saveDate) + "]";

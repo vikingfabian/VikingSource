@@ -1,19 +1,19 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Steamworks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Text;
-using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Work;
+using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
-using VikingEngine.Input;
-using VikingEngine.LootFest.GO.Gadgets;
-using VikingEngine.LootFest.Players;
-using VikingEngine.ToGG.MoonFall.GO;
-using VikingEngine.ToGG.MoonFall.Players;
+using VikingEngine.SteamWrapping;
+
 //
 
 namespace VikingEngine.DSSWars.GameObject
@@ -43,26 +43,51 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return false;
         }
+
+        public bool HasFaction()
+        { 
+            return factionIndex >= 0 && factionIndex < DssRef.world.factions.Count;
+        }
+
+        public bool HasAliveFaction()
+        {
+            if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
+            { 
+                return DssRef.world.factions.Array[factionIndex] != null && DssRef.world.factions.Array[factionIndex].isAlive; 
+            }
+            return false;
+        }
+
         virtual public Faction GetFaction_NoChecks()
         {
-#if DEBUG
-            if (factionIndex < 0)
+            if (factionIndex < 0 || factionIndex >= DssRef.world.factions.Count)
             {
-                throw new Exception();
+                return null;
             }
-#endif
+
             return DssRef.world.factions.Array[factionIndex];
         }
 
         virtual public Faction GetFaction()
         {
-#if DEBUG
+
             if (factionIndex < 0)
             {
-                throw new Exception();
+                return null;
             }
-#endif
+
             return DssRef.world.faction(factionIndex);
+        }
+
+        public bool TryGetFaction(out Faction faction)
+        {
+            if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
+            {
+                faction = DssRef.world.factions.Array[factionIndex];
+                return true;
+            }
+            faction = null;
+            return false;
         }
 
         virtual public Faction GetFaction_Safe()
@@ -75,10 +100,24 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (factionIndex < 0)
             {
-                return null;//throw new Exception();
+                return null;
             }
 
             return DssRef.world.factions.Array[factionIndex]?.player;
+        }
+
+        public bool TryGetPlayer(out Players.AbsPlayer player)
+        {
+
+            if (factionIndex < 0 || factionIndex >= DssRef.world.factions.Array.Length)
+            {
+                player = null;
+            }
+            else
+            {
+                player = DssRef.world.factions.Array[factionIndex]?.player;
+            }
+            return player != null;
         }
 
         public bool GetCasual()
@@ -132,8 +171,8 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void beginEditName()
         {
-            new DSSWars.Players.PlayerControls.TextInput(this);
-            //new TextInputState(Name(out _), NameEditEvent, null);
+            var reciever = new DSSWars.Players.PlayerControls.TextInput(this);
+            SteamInputManager.tryOpenSteamKeyboard(reciever);
         }
 
         virtual public void NameEditEvent(string result, object tag)
@@ -151,9 +190,14 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.h2(TypeName()).overrideColor = HudLib.TitleColor_TypeName;
         }
 
+        virtual public void toButtonContent(RichBoxContent content, bool dark)
+        {
+            content.Add(new RbText(Name(out _), dark ? HudLib.TitleColor_Name_Dark : HudLib.TitleColor_Name));
+            content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+            content.Add(new RbText(TypeName(), dark ? HudLib.TitleColor_TypeName_Dark : HudLib.TitleColor_TypeName));
+        }
 
-
-        protected void nameToHud(RichBoxContent content, bool mayInteract)
+        public void nameToHud(RichBoxContent content, bool mayInteract)
         { 
             string name = Name(out bool mayEdit);
             if (name != null)
@@ -190,7 +234,7 @@ namespace VikingEngine.DSSWars.GameObject
             var faction = GetFaction();
             if (args.player != null && faction != null && faction != args.player.faction)
             {
-                var relation = DssRef.diplomacy.GetRelationType(args.player.faction, faction);
+                var relation = DssRef.world.diplomacy.GetRelation(args.player.faction, faction).Relation;
 
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
@@ -222,7 +266,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 if (GetFaction() != args.player.faction)
                 {
-                    var relation = DssRef.diplomacy.GetRelationType(args.player.faction, GetFaction());
+                    var relation = DssRef.world.diplomacy.GetRelation(args.player.faction, GetFaction()).Relation;
 
                     args.content.newLine();
                     args.content.Add(new RbText(GetFaction().PlayerName, Color.LightYellow));
@@ -254,6 +298,7 @@ namespace VikingEngine.DSSWars.GameObject
         ObjectCollection,
         DetailCollection,
         LocationPin,
+        Point,
         NONE,
         NUM,
     }

@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
@@ -18,7 +19,15 @@ namespace VikingEngine.DSSWars.XP
 {
     class TechnologyHud
     {
-        public void technologyOverviewHud(RichBoxContent content, LocalPlayer player, City city, Faction faction)
+        LocalPlayer player; City city;
+        public TechnologyHud(LocalPlayer player, City city)
+        {
+            this.player = player;
+            this.city = city;
+        }
+
+
+        public void technologyOverviewHud(RichBoxContent content, Faction faction)
         {
             TechnologyTemplate technology;
             if (city != null)
@@ -73,7 +82,7 @@ namespace VikingEngine.DSSWars.XP
             }
         }
 
-        public void technologyHud(RichBoxContent content, LocalPlayer player, City city, Faction faction)
+        public void technologyHud(RichBoxContent content, Faction faction)
         {
             bool cityView;
             TechnologyTemplate technology;
@@ -86,6 +95,10 @@ namespace VikingEngine.DSSWars.XP
             }
             else
             {
+                if (faction == null)
+                {
+                    return;
+                }
                 technology = faction.technology;
                 cityView = false;
                 //unlockValue = 1;
@@ -272,11 +285,11 @@ namespace VikingEngine.DSSWars.XP
                 {
                     if (value >= faction.cities.Count)
                     {
-                        caption += $" ({DssRef.lang.Hud_AllCities})";
+                        caption += $"({DssRef.lang.Hud_AllCities})";
                     }
                     else
                     {
-                        caption += $" ({value}/{faction.cities.Count})";
+                        caption += $"({value}/{faction.cities.Count})";
                     }
                 }
 
@@ -297,7 +310,7 @@ namespace VikingEngine.DSSWars.XP
 
                 if (cityView && !unlocked)
                 {
-                    content.space(2f);
+                    content.space(0.5f);
                     content.Add(new RbText($"({value} / {unlock})"));
                 }
 
@@ -310,9 +323,12 @@ namespace VikingEngine.DSSWars.XP
                      new RbAction1Arg<TechnologyTreeType>(godPowerUnLockTech, type)));
                 }
 
-                content.Add(new RbTab(0.7f));
-                CityHudPinId pinId = new CityHudPinId(city.myIndex, new HudPin(type));
-                player.hud.pins.toggleButton(content, pinId);
+                if (city != null)
+                {
+                    content.Add(new RbTab(0.7f));
+                    CityHudPinId pinId = new CityHudPinId(city.myIndex, new HudPin(type));
+                    player.hud.pins.toggleButton(content, pinId);
+                }
                 //bool onHud = player.hud.pins.isPinnedProperty(pinId, false, false);
                 //content.Add(new ArtToggle(onHud, new List<AbsRichBoxMember> {
                 //    new RbImage(SpriteName.HudPinIcon, 1f, onHud? Color.White : Color.Gray) }, new RbAction(() => { player.hud.pins.Set(pinId, !onHud); }),
@@ -349,11 +365,12 @@ namespace VikingEngine.DSSWars.XP
             content.h2(DssRef.lang.Hud_Unlock).overrideColor = HudLib.TitleColor_Label;
             foreach (var item in items)
             {
+                IconName.Item(item, out SpriteName itemIcon, out string itemName);
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbImage(Resource.ResourceLib.Icon(item)));
+                content.Add(new RbImage(itemIcon));
                 content.space();
-                content.Add(new RbText(LangLib.Item(item)));
+                content.Add(new RbText(itemName));
             }
 
             foreach (var item in buildings)

@@ -112,10 +112,13 @@ namespace VikingEngine.DSSWars.Event
                 int totalWorkForce = 0;
                 foreach (var p in DssRef.state.localPlayers)
                 {
-                    var citiesC = p.faction.cities.counter();
-                    while (citiesC.Next())
+                    //var citiesC = p.faction.cities.counter();
+                    //while (citiesC.Next())
+                    //{
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref p.faction.cities, DssRef.world.cities, out City citySel))
                     {
-                        totalWorkForce += citiesC.sel.HousingCount_Workers;
+                        totalWorkForce += citySel.HousingCount_Workers;
                     }
                 }
 
@@ -249,7 +252,8 @@ namespace VikingEngine.DSSWars.Event
         public override void onStart()
         {
             var time = new TimeLength(DssRef.difficulty.aiDelayTimeSec);
-            if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch ||
+                 DssRef.difficulty.setting_gameMode ==  GameModeMainType.QuickBoss)
             {
                 time.seconds *= 0.5f;
             }
@@ -298,7 +302,31 @@ namespace VikingEngine.DSSWars.Event
         }
         public override void onStart()
         {
-            init(false, DssRef.difficulty.extremeAggression? new TimeLength(10) : TimeLength.FromMinutes(30));
+            bool settler = DssRef.storage.gameRuleset.factionStartSize == FactionStartSize.Settler;
+            TimeLength time;
+            if (DssRef.difficulty.extremeAggression)
+            {
+                if (settler) 
+                {
+                    time = new TimeLength(10);
+                }
+                else
+                {
+                    time = TimeLength.FromMinutes(5);
+                }
+            }
+            else
+            {
+                if (settler)
+                {
+                    time = TimeLength.FromMinutes(50);
+                }
+                else
+                {
+                    time = TimeLength.FromMinutes(30); //DEFAULT
+                }
+            }
+            init(false, time);
         }
         public override bool RunAi()
         {
@@ -330,7 +358,7 @@ namespace VikingEngine.DSSWars.Event
 
             if (DssRef.difficulty.extremeAggression)
             {
-                triggerTimeSpan_Minutes = IntervalF.NoInterval(Ref.rnd.Float(9f, 12f));
+                triggerTimeSpan_Minutes = new IntervalF(9f, 12f);
             }
 
             init(
@@ -346,7 +374,7 @@ namespace VikingEngine.DSSWars.Event
                 if (attacker != null)
                 {
                     attacker.player.setMinimumAggression(AbsPlayer.AggressionLevel2_RandomAttacks);
-                    DssRef.diplomacy.declareWar(attacker, p.faction);
+                    DssRef.world.diplomacy.declareWar(attacker, p.faction);
                 }
             }
         }
@@ -404,7 +432,7 @@ namespace VikingEngine.DSSWars.Event
 
             foreach (var p in DssRef.state.localPlayers)
             {
-                List<City> searchcities = p.faction.cities.toList();
+                List<City> searchcities = p.faction.cities.toList(DssRef.world.cities);
 
                 int found = 0;
                 while (found < 3)
@@ -412,11 +440,13 @@ namespace VikingEngine.DSSWars.Event
                     var check = arraylib.RandomListMemberPop(searchcities);
                     if (check != null)
                     {
-                        foreach (var ncityIx in check.neighborCities)
+                        EcsStaticArrayCounter neighbors = check.CityNeighbors();
+                        while (neighbors.Next(out int nCityIx))//foreach (var ncityIx in check.neighborCities)
                         {
-                            if (!attackCities.Contains(ncityIx))
+                            //int nCityIx = DssRef.world.neighborCities.array[ncaIx];
+                            if (!attackCities.Contains(nCityIx))
                             {
-                                var ncity_p = DssRef.world.cities[ncityIx];
+                                var ncity_p = DssRef.world.cities[nCityIx];
                                 if (!completedCities.Contains(ncity_p) &&
                                     !searchcities.Contains(ncity_p))
                                 {
@@ -426,10 +456,11 @@ namespace VikingEngine.DSSWars.Event
                         }
 
                         var player = check.GetPlayer();
-                        if (player.IsBot() &&
+                        if (player != null &&
+                            player.IsBot() &&
                             player.faction.diplomaticSide != DiplomaticSide.Dark &&
                             check.cityType < CityType.Capital &&
-                            DssRef.diplomacy.GetRelationType(check.GetFaction(), p.faction) >= RelationType.RelationType0_Neutral)
+                            DssRef.world.diplomacy.GetRelation(check.GetFaction(), p.faction).Relation >= RelationType.RelationType0_Neutral)
                         {
                             attackCities.Add(check.myIndex);
                             found++;
@@ -466,7 +497,8 @@ namespace VikingEngine.DSSWars.Event
             {
                 
                 ForXYEdgeLoopRandomPicker loop = new ForXYEdgeLoopRandomPicker();
-                for (int radius = Bound.Min(city.cityTileRadius - 2, 4); radius < city.cityTileRadius + 2; ++radius)
+                int cityradius = city.cityTileArea.size.SideLength() / 2;
+                for (int radius = Bound.Min(cityradius - 2, 4); radius < cityradius + 2; ++radius)
                 {
                     loop.start(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
                     while (loop.Next())
@@ -481,7 +513,7 @@ namespace VikingEngine.DSSWars.Event
 
                             if (enemyFac == null)
                             {
-                                enemyFac = DssRef.world.findOrCreate(FactionType.Barbarians);
+                                enemyFac = DssRef.world.findOrCreate(FactionType.Barbarians, DssRef.settings.Faction_Barbarian);
                                 DssRef.settings.Faction_Barbarian = enemyFac.myIndex;
                             }
 
@@ -567,7 +599,7 @@ namespace VikingEngine.DSSWars.Event
 
                             foreach (var p in DssRef.state.localPlayers)
                             {
-                                DssRef.diplomacy.declareWar(enemyFac, p.faction);
+                                DssRef.world.diplomacy.declareWar(enemyFac, p.faction);
                             }
 
                                 return barbarianArmy;
@@ -630,7 +662,13 @@ namespace VikingEngine.DSSWars.Event
 
             Ref.update.AddSyncAction(new SyncAction(() =>
             {
-                var enemyFac = DssRef.world.faction(DssRef.settings.Faction_SouthHara);
+                var enemyFac = DssRef.world.findOrCreate(FactionType.SouthHara, DssRef.settings.Faction_SouthHara);
+
+                if (enemyFac == null)
+                {
+                    return;                    
+                }
+                DssRef.settings.Faction_SouthHara = enemyFac.myIndex;
 
                 for (int playerIx = 0; playerIx < DssRef.state.localPlayers.Count; ++playerIx)
                 {
@@ -674,16 +712,9 @@ namespace VikingEngine.DSSWars.Event
                         {
                             new SoldierGroup(army, DssLib.SoldierProfile_CrossbowMan, army.position);
                         }
-                        army.startInOnePoint();//refreshPositions(true);
+                        army.startInOnePoint();
 
-
-                        //var groupsC = army.groups.counter();
-                        //while (groupsC.Next())
-                        //{
-                        //    groupsC.sel.completeTransform(SoldierTransformType.ToShip);
-                        //}
-
-                        DssRef.diplomacy.declareWar(enemyFac, DssRef.state.localPlayers[playerIx].faction);
+                        DssRef.world.diplomacy.declareWar(enemyFac, DssRef.state.localPlayers[playerIx].faction);
                         army.Order_MoveTo(VectorExt.AddY(playerMostSouthCity[playerIx].tilePos, 3));
                     }
                 }
@@ -692,8 +723,6 @@ namespace VikingEngine.DSSWars.Event
                 new SouthHaraStartAi(enemyFac);
 
                 enemyFac.player.protectedFromDelete = false;
-                //playerMostSouthCity = null;
-                //spawnPos_Player = null;
             }));
         }
 
@@ -708,12 +737,15 @@ namespace VikingEngine.DSSWars.Event
             for (int playerIx = 0; playerIx < DssRef.state.localPlayers.Count; ++playerIx)
             {
                 City mostSouth = null;
-                var citiesC = DssRef.state.localPlayers[playerIx].faction.cities.counter();
-                while (citiesC.Next())
+                //var citiesC = DssRef.state.localPlayers[playerIx].faction.cities.counter();
+                //while (citiesC.Next())
+                //{
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref DssRef.state.localPlayers[playerIx].faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    if (mostSouth == null || citiesC.sel.tilePos.Y > mostSouth.tilePos.Y)
+                    if (mostSouth == null || citySel.tilePos.Y > mostSouth.tilePos.Y)
                     {
-                        mostSouth = citiesC.sel;
+                        mostSouth = citySel;
                     }
                 }
 
@@ -876,7 +908,7 @@ namespace VikingEngine.DSSWars.Event
         {
             player.cohalitionEvent = true;
 
-            var neighbor = DssRef.state.events.findAttackingNeighborFaction(player.faction);
+            Faction neighbor = DssRef.state.events.findAttackingNeighborFaction_keepExpanding(player.faction);
 
             if (neighbor == null)
             {
@@ -885,7 +917,7 @@ namespace VikingEngine.DSSWars.Event
 
             List<Faction> attackers = new List<Faction>() { neighbor };
             int totalSize = neighbor.totalWorkForce;
-            List<Faction> search = adjacentFactions(neighbor);
+            List<Faction> search = neighbor.adjacentFactions(true);
             List<Faction> has_searched = new List<Faction>();
 
             int maxLoops = 100;
@@ -897,7 +929,7 @@ namespace VikingEngine.DSSWars.Event
                     bool bHasSearched = has_searched.Contains(faction);
 
                     if (!bHasSearched &&
-                        DssRef.state.events.factionMayStartWar(faction, player.faction) &&
+                        DssRef.world.diplomacy.botMayStartWar(faction, player.faction) &&
                         !attackers.Contains(faction))
                     {
                         attackers.Add(faction);
@@ -913,12 +945,12 @@ namespace VikingEngine.DSSWars.Event
                 {
                     foreach (var faction in has_searched)
                     {
-                        search.AddRange(adjacentFactions(faction));
+                        search.AddRange(faction.adjacentFactions(true));
                     }
                 }
             }
 
-            Faction attackLeader = null;
+            Faction attackLeader = neighbor;
             //Create an alliance
             foreach (var faction in attackers)
             {
@@ -926,12 +958,11 @@ namespace VikingEngine.DSSWars.Event
                 {
                     if (other != faction)
                     {
-                        DssRef.diplomacy.SetRelationType(faction, other, RelationType.RelationType3_Ally);
+                        DssRef.world.diplomacy.SetRelationType(faction, other, RelationType.RelationType3_Ally);
                     }
                 }
 
-                DssRef.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN1_Enemies);
-
+                DssRef.world.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN1_Enemies);
 
                 if (attackLeader == null || faction.militaryStrength > attackLeader.militaryStrength)
                 {
@@ -942,7 +973,7 @@ namespace VikingEngine.DSSWars.Event
             //Prepare leader
             attackers.Remove(attackLeader);
             attackers.Insert(0, attackLeader);
-            DssRef.diplomacy.GetOrCreateRelation(attackLeader, player.faction).SpeakTerms = SpeakTerms.SpeakTermsN2_None;
+            DssRef.world.diplomacy.SetRelationType(attackLeader, player.faction, null, null, SpeakTerms.SpeakTermsN2_None);
             attackLeader.player.setAggression(Players.AbsPlayer.AggressionLevel1_RevengeOnly);
 
             Ref.update.AddSyncAction(new SyncAction(() =>
@@ -978,45 +1009,44 @@ namespace VikingEngine.DSSWars.Event
                     };
                     city.conscriptArmy(cannonProfile, city.defaultConscriptPos(), 1 + (int)DssRef.difficulty.bossSize);
                 }
-
-                //player.hud.messages.Add(DssRef.lang.EventMessage_EnemyAlliance_Title, DssRef.lang.EventMessage_EnemyAlliance);
             }));
 
-            new Timer.TimedAction2ArgTrigger_InGame<List<Faction>, LocalPlayer>((attackers, player) =>
+            new Timer.TimedAction2ArgTrigger_InGame<Faction[], LocalPlayer>((attackers, player) =>
             {
                 attackers.First().player.setAggression(Players.AbsPlayer.AggressionLevel3_FocusedAttacks);
                 foreach (var faction in attackers)
                 {
                     faction.player.setMinimumAggression(Players.AbsPlayer.AggressionLevel2_RandomAttacks);
-                    DssRef.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN3_War);
+                    DssRef.world.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN3_War);
                 }
 
                 player.hud.messages.Add(DssRef.lang.EventMessage_Event_Title, DssRef.lang.EventMessage_TheCohalition);
-            }, attackers, player, TimeExt.MinuteInSeconds * DssConst.DominationWarTimeDelay_Minutes.GetRandom());
+            }, attackers.ToArray(), player, TimeExt.MinuteInSeconds * DssConst.DominationWarTimeDelay_Minutes.GetRandom());
 
 
-            List<Faction> adjacentFactions(Faction faction)
-            {
-                List<Faction> factions = new List<Faction>();
-                var citiesC = faction.cities.counter();
-                while (citiesC.Next())
-                {
-                    foreach (var n in citiesC.sel.neighborCities)
-                    {
-                        var ncity = DssRef.world.cities[n];
-                        var nCityFaction = ncity.GetFaction();
+            //List<Faction> adjacentFactions(Faction faction)
+            //{
+            //    List<Faction> factions = new List<Faction>();
+                
+            //    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            //    while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+            //    {
+            //        EcsStaticArrayCounter neighbors = citySel.CityNeighbors();
+            //        while (neighbors.Next(DssRef.world.cities, out City nCity))
+            //        {
+            //            var nCityFaction = nCity.GetFaction();
 
-                        if (nCityFaction != faction &&
-                            nCityFaction.player.IsBot() &&
-                            !factions.Contains(nCityFaction))
-                        {
-                            factions.Add(nCityFaction);
-                        }
-                    }
-                }
+            //            if (nCityFaction != faction &&
+            //                nCityFaction.player.IsBot() &&
+            //                !factions.Contains(nCityFaction))
+            //            {
+            //                factions.Add(nCityFaction);
+            //            }
+            //        }
+            //    }
 
-                return factions;
-            }
+            //    return factions;
+            //}
         }
 
         public override void writeGameState(BinaryWriter w)
@@ -1042,8 +1072,23 @@ namespace VikingEngine.DSSWars.Event
         }
         public override void onStart()
         {
+            
+
+            IntervalF hours;
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickBoss)
+            {
+                //1.5 hours passed in quick boss
+                //Warning is one hour before
+                float time = GameRuleset.QuickBossOptions_Time_Difficulty[DssRef.storage.gameRuleset.QuickBossTimeOption].Value1 - 2.5f;
+                hours = new IntervalF(0.9f, 1.1f) * time;
+            }
+            else
+            {
+                hours = new IntervalF(9f, 13f);
+            }
+
             init(
-             triggerTimeSpan_Minutes: new IntervalF(9f, 13f) * TimeExt.HourInMinutes,
+             triggerTimeSpan_Minutes: hours * TimeExt.HourInMinutes,
              nextExpectedPlayerSize: new IntervalF(DssConst.HeadCityStartMaxWorkForce * 4f, DssConst.HeadCityStartMaxWorkForce * 16f));
         }
 
@@ -1090,8 +1135,63 @@ namespace VikingEngine.DSSWars.Event
             init(false, TimeLength.FromHours(1f));
         }
 
+        void setupDistanceFromPlayer()
+        {
+            //HashSet<int> cities = new HashSet<int>();
+            List<City> cityList = new List<City>(32);
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref p.faction.cities, DssRef.world.cities, out City citySel))
+                {
+                    cityList.Add(citySel);
+                    citySel.distanceFromPlayer = 0;
+                }
+            }
+
+            //HashSet<int> alreadyChecked = new HashSet<int>();
+            List<City> nextList = new List<City>(32);
+            for (int i = 0; i < 5; i++)
+            {
+                cityList.AddRange(nextList);
+
+                foreach (var city in cityList)
+                {
+                    int distance = city.distanceFromPlayer + 1;
+                    
+                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var n in city.neighborCities)
+                    {
+                        if (nCity.distanceFromPlayer < 0)
+                        {
+                            nCity.distanceFromPlayer = distance;
+                            nextList.Add(nCity);
+                        }
+                    }
+                }
+
+                cityList.Clear();
+            }
+        }
+
+        bool factionInGoodDistanceFromPlayer(Faction faction)
+        {
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+            {
+                if (citySel.distanceFromPlayer >= 2 && citySel.distanceFromPlayer <= 4)
+                { 
+                    return true;
+                }
+            }
+            return false;
+        }
+
         void asyncPrepare()
         {
+
+            setupDistanceFromPlayer();
+
             Rectangle2 mapCenter = new Rectangle2(IntVector2.Zero, DssRef.world.Size);
             mapCenter.AddRadius(-mapCenter.Height / 8);
 
@@ -1112,25 +1212,26 @@ namespace VikingEngine.DSSWars.Event
                         factionC.sel.factiontype == FactionType.SouthHara
                     ) &&
                     factionC.sel.cities.Count >= 2 &&
-                    !DssRef.diplomacy.PositiveRelationWithPlayer(factionC.sel))
+                    !DssRef.world.diplomacy.PositiveRelationWithPlayer(factionC.sel))
                 {
                     available.Add(factionC.sel);
 
-                    if (factionC.sel.cities.Count >= 4 &&
-                        factionC.sel.mainCity != null &&
-                        mapCenter.IntersectTilePoint(factionC.sel.mainCity.tilePos) &&
-                        !factionC.sel.HasPlayerNeighbor())
+                    //if (factionC.sel.cities.Count >= 4 &&
+                    //    factionC.sel.mainCity != null &&
+                    //    mapCenter.IntersectTilePoint(factionC.sel.mainCity.tilePos) &&
+                    //    !factionC.sel.HasPlayerNeighbor())
+                    if (factionInGoodDistanceFromPlayer(factionC.sel))
                     {
                         perfectPosition.Add(factionC.sel);
                     }
                 }
 
-                if (DssRef.diplomacy.NegativeRelationWithPlayer(factionC.sel) ||
+                if (DssRef.world.diplomacy.NegativeRelationWithPlayer(factionC.sel) ||
                     factionC.sel.diplomaticSide == DiplomaticSide.Dark)
                 {
                     darkLordAllies.Add(factionC.sel);
                 }
-                else if (!DssRef.diplomacy.PositiveRelationWithPlayer(factionC.sel, RelationType.RelationType3_Ally))
+                else if (!DssRef.world.diplomacy.PositiveRelationWithPlayer(factionC.sel, RelationType.RelationType3_Ally))
                 {
                     secondaryChoise.Add(factionC.sel);
                 }
@@ -1160,7 +1261,7 @@ namespace VikingEngine.DSSWars.Event
 
                 //if (arraylib.HasMembers(darkLordAvailableFactions))
                 //{
-                    DssRef.settings.darkLordPlayer.EnterMap(arraylib.RandomListMember(darkLordAvailableFactions), darkLordAllies);
+                    DssRef.settings.darkLordPlayer.EnterMap(darkLordAvailableFactions, darkLordAllies);
 
                     var greenwood = DssRef.world.faction(DssRef.settings.Faction_GreenWood);
 
@@ -1168,9 +1269,9 @@ namespace VikingEngine.DSSWars.Event
                     {
                         p.hud.messages.Add(DssRef.lang.EventMessage_FinalBossEnterTitle, DssRef.lang.EventMessage_FinalBossEnterText);
 
-                        if (greenwood != null && !DssRef.diplomacy.InWar(p.faction, greenwood))
+                        if (greenwood != null && !DssRef.world.diplomacy.GetRelation(p.faction, greenwood).InWar())
                         {
-                            DssRef.diplomacy.GetOrCreateRelation(p.faction, greenwood).SpeakTerms = SpeakTerms.SpeakTerms1_Good;
+                            DssRef.world.diplomacy.SetRelationType(p.faction, greenwood, null, null, SpeakTerms.SpeakTerms1_Good);
                         }
                     }
                 //}
@@ -1317,7 +1418,7 @@ namespace VikingEngine.DSSWars.Event
                         for (var j = i + 1; j < matchFactions.Count; ++j)
                         {
                             var faction2 = matchFactions[j];
-                            if (faction2.isAlive && DssRef.diplomacy.GetRelationType(faction1, faction2) <= RelationType.RelationTypeN3_War)
+                            if (faction2.isAlive && DssRef.world.diplomacy.GetRelation(faction1, faction2).Relation <= RelationType.RelationTypeN3_War)
                             {
                                 return false;
                             }
@@ -1329,7 +1430,7 @@ namespace VikingEngine.DSSWars.Event
                         foreach (var participant in matchFactions)
                         {
                             if (participant == faction1 ||
-                                DssRef.diplomacy.GetRelationType(faction1, participant) >= RelationType.RelationType3_Ally)
+                                DssRef.world.diplomacy.GetRelation(faction1, participant).Relation >= RelationType.RelationType3_Ally)
                             {
                                 matchResult.winner.Add(participant);
                             }

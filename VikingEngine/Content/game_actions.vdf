@@ -1,0 +1,976 @@
+﻿"In Game Actions"
+{
+	"configurations"
+	{
+		"controller_xboxone"
+		{
+			"0"
+			{
+				"path" "official_controller_xbox.vdf"
+			}
+		}
+		"controller_switch_pro"
+		{
+			"0"
+			{
+				"path" "controller_switch_pro.vdf"
+			}
+		}
+		"controller_neptune"
+		{
+			"0"
+			{
+				"path" "steam deck.vdf"
+			}
+		}
+	}
+	"actions"
+	{
+		"InGameControls"
+		{
+			"title"	"#Set_Ingame"
+			"StickPadGyro"
+			{
+				"PanCamera"
+				{
+					"title"			"#Action_Pan"
+					"input_mode"	"joystick_move"
+				}
+				"CameraStick"
+				{
+					"title"			"#Action_CameraStick"
+					"input_mode"	"joystick_move"
+				}
+				"CameraTilt"
+				{
+					"title"			"#Action_CameraTilt"
+					"input_mode"	"joystick_move"
+				}
+
+				"MoveCursor"
+				{
+					"title"			"#Action_Cursor"
+					"input_mode"	"absolute_mouse"
+				}
+			
+				"GameScroll"
+				{
+					"title"		"#Action_ScrollMenu"
+					"input_mode"	"absolute_mouse"
+				}
+			}
+			"Button"
+			{
+				"select"			"#Action_select"
+				"order"			"#Action_order"
+				"quick_select"		"#Action_quick_select"
+				"cancel"			"#Action_cancel"
+				"stop_start"		"#Action_stop_start"
+				"open_menu"				"#Action_menu"
+				"toggle_hud_detail"	"#Action_toggle_hud"
+				"toggle_minimap"	"#Action_toggle_map"
+				"tab_left"			"#Action_tab_l"
+				"tab_right"			"#Action_tab_r"
+				"zoomInKey"			"#Action_zoomInKey"
+				"zoomOutKey"			"#Action_zoomOutKey"
+
+				
+				"build"				"#Action_build"
+				"copy"				"#Action_copy"
+				"paste"				"#Action_paste"
+				"gamespeed"			"#Action_gamespeed"
+				"pause"				"#Action_pause"
+				
+				"next_city"			"#Action_next_city"
+				"next_army"			"#Action_next_army"
+				"next_war"			"#Action_next_war"
+
+				"controller_focus"	"#Action_controller_focus"
+				"controller_faction"	"#Action_controller_faction"
+				"controller_message"	"#Action_controller_message"
+			}
+		}
+		"MenuControls"
+		{
+			"title"	"#Set_Menu"
+			"StickPadGyro"
+			{
+				"Scroll"
+				{
+					"title"		"#Action_ScrollMenu"
+					"input_mode"	"joystick_move"
+				}
+			}
+			"Button"
+			{
+				"close_menu"	"#Action_ReturnToGame"
+			}
+		}
+		"EditorControls"
+		{
+			"title"	"#Set_Editor"
+			"StickPadGyro"
+			{
+				"editor_moveXZ"
+				{
+					"title"		"#Action_moveXZ"
+					"input_mode"	"joystick_move"
+				}
+				"editor_cameraXMoveY"
+				{
+					"title"		"#Action_cameraXMoveY"
+					"input_mode"	"joystick_move"
+				}
+				"editor_cameraZoom"
+				{
+					"title"		"#Action_cameraZoom"
+					"input_mode"	"joystick_move"
+				}
+
+
+			}
+			"Button"
+			{
+				"editor_open_menu"	"#Action_menu"
+				"editor_draw"		"#Action_draw"
+				"editor_erase"		"#Action_erase"
+				"editor_select"	"#Action_select"
+				"editor_colorPick"	"#Action_colorPick"
+				"editor_cancel"	"#Action_cancel"
+				"editor_undo"		"#Action_undo"
+				"editor_tab_left"	"#Action_tab_l"
+				"editor_tab_right"	"#Action_tab_r"
+				"editor_YmovementToggle" "#Action_YmovementToggle"
+				"editor_ToggleCameraMode" "#Action_ToggleCameraMode"
+			}
+		}
+	}
+	"action_layers"
+	{
+		"InGameAlt1"
+		{
+			"title"            "#Layer_InGame_Alt1"
+			"legacy_set"       "0"
+			"set_layer"        "1"
+			"parent_set_name"  "InGameControls"
+		}
+		"InGameAlt2"
+		{
+			"title"            "#Layer_InGame_Alt2"
+			"legacy_set"       "0"
+			"set_layer"        "2"
+			"parent_set_name"  "InGameControls"
+		}
+		"InGameAlt1And2"
+		{
+			"title"            "#Layer_InGame_Alt1And2"
+			"legacy_set"       "0"
+			"set_layer"        "3"
+			"parent_set_name"  "InGameControls"
+		}
+		"editor_selection"
+		{
+			"title"            "#Layer_Editor_Selection"
+			"legacy_set"       "0"
+			"set_layer"        "4"
+			"parent_set_name"  "EditorControls"
+			"Button"
+			{
+				"editor_selection_mirrorX"   "#Action_mirrorX"
+				"editor_selection_mirrorY"   "#Action_mirrorY"
+				"editor_selection_rotateCCW" "#Action_rotateCCW"
+				"editor_selection_rotateCW"  "#Action_rotateCW"
+			}
+		}
+	}
+	"localization"
+	{
+		"english"
+		{
+			"Set_Ingame"			"Game Controls"
+			"Set_Menu"				"Menu Controls"
+			"Set_Editor"			"Editor Controls"
+			"Layer_Editor_Selection" "Editor selection Controls"
+			"Layer_InGame_Alt1" 	"Alt 1"
+			"Layer_InGame_Alt2" 	"Alt 2"
+			"Layer_InGame_Alt1And2" "Alt 1 & 2"
+			
+
+			// Movement & Camera
+			"Action_Pan"			"Pan Camera"
+			"Action_CameraStick"	"Camera Stick"
+			"Action_CameraTilt"		"Camera Tilt"
+			"Action_Cursor"			"Move Cursor"
+			"Action_ScrollMenu"		"Scroll Menu"
+			
+			// Unit & World Actions
+			"Action_select"			"Select"
+			"Action_order"			"Order"
+			"Action_quick_select"	"Quick Select"
+			"Action_cancel"			"Cancel"
+			"Action_stop_start"		"Stop/Start"
+			"Action_menu"			"Menu"
+			"Action_toggle_hud"		"Toggle HUD Details"
+			"Action_toggle_map"		"Toggle Minimap"
+			"Action_tab_l"			"Previous Tab"
+			"Action_tab_r"			"Next Tab"
+			"Action_zoomInKey"		"Zoom In"
+			"Action_zoomOutKey"		"Zoom Out"
+			
+			// Management
+			"Action_build"			"Build"
+			"Action_copy"			"Copy"
+			"Action_paste"			"Paste"
+			"Action_gamespeed"		"Game Speed"
+			"Action_pause"			"Pause"
+			
+			// Cycling
+			"Action_next_city"		"Next City"
+			"Action_next_army"		"Next Army"
+			"Action_next_war"		"Next War"
+			
+			// UI Focus
+			"Action_controller_focus"	"Object Menu Toggle"
+			"Action_controller_faction" "Faction"
+			"Action_controller_message" "Select Message"
+
+			// Menus
+			"Action_ReturnToGame"		"Close"
+
+			// Editor Specific Actions
+			"Action_moveXZ"				"Move XZ"
+			"Action_cameraXMoveY"		"Camera X, Move Y"
+			"Action_cameraZoom"			"Zoom"
+			"Action_draw"				"Draw"
+			"Action_erase"				"Erase"
+			"Action_colorPick"			"Pick Color"
+			"Action_mirrorX"			"Mirror X"
+			"Action_mirrorY"			"Mirror Y"
+			"Action_undo"				"Undo"
+			"Action_YmovementToggle"	"Toggle Y-Axis"
+
+			"Action_rotateCCW"			"Rotate CCW"
+			"Action_rotateCW"			"Rotate CW"
+			"Action_ToggleCameraMode"	"Toggle camera mode"
+		}
+		
+		"french"
+		{
+			"Set_Ingame"            "Commandes de jeu"
+			"Set_Menu"              "Commandes du menu"
+			"Set_Editor"            "Commandes de l'éditeur"
+			
+			// Mouvement et Caméra
+			"Action_Pan"            "Déplacer la caméra"
+			"Action_CameraStick"    "Joystick caméra"
+			"Action_CameraTilt"     "Inclinaison caméra"
+			"Action_Cursor"         "Déplacer le curseur"
+			"Action_ScrollMenu"     "Filer le menu"
+			
+			// Actions d'Unités et du Monde
+			"Action_select"         "Sélectionner"
+			"Action_order"          "Donner un ordre"
+			"Action_quick_select"   "Sélection rapide"
+			"Action_cancel"         "Annuler"
+			"Action_stop_start"     "Arrêter/Démarrer"
+			"Action_menu"           "Menu"
+			"Action_toggle_hud"     "Afficher/Masquer le HUD"
+			"Action_toggle_map"     "Afficher/Masquer la mini-carte"
+			"Action_tab_l"          "Onglet précédent"
+			"Action_tab_r"          "Onglet suivant"
+			"Action_zoomInKey"      "Zoom avant"
+			"Action_zoomOutKey"     "Zoom arrière"
+			
+			// Gestion
+			"Action_build"          "Construire"
+			"Action_copy"           "Copier"
+			"Action_paste"          "Coller"
+			"Action_gamespeed"      "Vitesse du jeu"
+			"Action_pause"          "Pause"
+			
+			// Navigation
+			"Action_next_city"      "Ville suivante"
+			"Action_next_army"      "Armée suivante"
+			"Action_next_war"       "Guerre suivante"
+			
+			// Focus Interface
+			"Action_controller_focus"   "Menu de l'objet"
+			"Action_controller_faction" "Faction"
+			"Action_controller_message" "Sélectionner le message"
+
+			// Menus
+			"Action_ReturnToGame"       "Fermer"
+
+			// Actions Spécifiques à l'Éditeur
+			"Action_moveXZ"             "Déplacement XZ"
+			"Action_cameraXMoveY"       "Caméra X, Déplacement Y"
+			"Action_cameraZoom"         "Zoom"
+			"Action_draw"               "Dessiner"
+			"Action_erase"              "Effacer"
+			"Action_colorPick"          "Pipette de couleur"
+			"Action_mirrorX"            "Miroir X"
+			"Action_mirrorY"            "Miroir Y"
+			"Action_undo"               "Annuler l'action"
+			"Action_YmovementToggle"    "Activer/Désactiver l'axe Y"
+		}
+		"schinese"
+			{
+			"Set_Ingame"            "游戏控制"
+			"Set_Menu"              "菜单控制"
+			"Set_Editor"            "编辑器控制"
+			
+			// 移动与相机
+			"Action_Pan"            "平移视角"
+			"Action_CameraStick"    "镜头摇杆"
+			"Action_CameraTilt"     "镜头倾斜"
+			"Action_Cursor"         "移动光标"
+			"Action_ScrollMenu"     "滚动菜单"
+			
+			// 单位与世界交互
+			"Action_select"         "选择"
+			"Action_order"          "下令"
+			"Action_quick_select"   "快速选择"
+			"Action_cancel"         "取消"
+			"Action_stop_start"     "停止/开始"
+			"Action_menu"           "菜单"
+			"Action_toggle_hud"     "切换HUD详情"
+			"Action_toggle_map"     "切换小地图"
+			"Action_tab_l"          "上一个标签"
+			"Action_tab_r"          "下一个标签"
+			"Action_zoomInKey"      "放大 (Zoom In)"
+			"Action_zoomOutKey"     "缩小 (Zoom Out)"
+			
+			// 管理
+			"Action_build"          "建造"
+			"Action_copy"           "复制"
+			"Action_paste"          "粘贴"
+			"Action_gamespeed"      "游戏速度"
+			"Action_pause"          "暂停"
+			
+			// 切换循环
+			"Action_next_city"      "下一座城市"
+			"Action_next_army"      "下一支军队"
+			"Action_next_war"       "下一场战争"
+			
+			// 界面焦点
+			"Action_controller_focus"   "切换对象菜单"
+			"Action_controller_faction" "派系"
+			"Action_controller_message" "选择消息"
+
+			// 菜单
+			"Action_ReturnToGame"       "关闭"
+
+			// 编辑器专用项
+			"Action_moveXZ"             "XZ轴移动"
+			"Action_cameraXMoveY"       "镜头X轴，移动Y轴"
+			"Action_cameraZoom"         "缩放 (Zoom)"
+			"Action_draw"               "绘制"
+			"Action_erase"              "擦除"
+			"Action_colorPick"          "取色"
+			"Action_mirrorX"            "X轴镜像"
+			"Action_mirrorY"            "Y轴镜像"
+			"Action_undo"               "撤销"
+			"Action_YmovementToggle"    "切换Y轴"
+		}
+		"japanese"
+		{
+			"Set_Ingame"			"ゲーム操作"
+			"Set_Menu"				"メニュー操作"
+			"Set_Editor"			"エディター操作"
+			
+			// 視点とカメラ
+			"Action_Pan"			"視点移動"
+			"Action_CameraStick"	"カメラステック"
+			"Action_CameraTilt"		"カメラチルト"
+			"Action_Cursor"			"カーソル移動"
+			"Action_ScrollMenu"		"メニュースクロール"
+			
+			// ユニット・ワールドアクション
+			"Action_select"			"選択"
+			"Action_order"			"命令"
+			"Action_quick_select"	"クイック選択"
+			"Action_cancel"			"キャンセル"
+			"Action_stop_start"		"停止/開始"
+			"Action_menu"			"メニュー"
+			"Action_toggle_hud"		"HUD詳細切り替え"
+			"Action_toggle_map"		"ミニマップ切り替え"
+			"Action_tab_l"			"前のタブ"
+			"Action_tab_r"			"次のタブ"
+			"Action_zoomInKey"		"ズームイン"
+			"Action_zoomOutKey"		"ズームアウト"
+			
+			// 管理
+			"Action_build"			"建築"
+			"Action_copy"			"コピー"
+			"Action_paste"			"貼り付け"
+			"Action_gamespeed"		"ゲームスピード"
+			"Action_pause"			"一時停止"
+			
+			// 切り替え
+			"Action_next_city"		"次の都市へ"
+			"Action_next_army"		"次の軍勢へ"
+			"Action_next_war"		"次の戦争へ"
+			
+			// UIフォーカス
+			"Action_controller_focus"	"オブジェクトメニュー切り替え"
+			"Action_controller_faction" "勢力"
+			"Action_controller_message" "メッセージ選択"
+
+			// メニュー
+			"Action_ReturnToGame"		"閉じる"
+
+			// エディター専用アクション
+			"Action_moveXZ"				"XZ軸移動"
+			"Action_cameraXMoveY"		"カメラX、移動Y"
+			"Action_cameraZoom"			"ズーム"
+			"Action_draw"				"描画"
+			"Action_erase"				"消去"
+			"Action_colorPick"			"スポイト"
+			"Action_mirrorX"			"X軸反転"
+			"Action_mirrorY"			"Y軸反転"
+			"Action_undo"				"元に戻す"
+			"Action_YmovementToggle"	"Y軸切り替え"
+		}
+
+		"german"
+		{
+			"Set_Ingame"			"Spielsteuerung"
+			"Set_Menu"				"Menüsteuerung"
+			"Set_Editor"			"Editor-Steuerung"
+			
+			// Bewegung & Kamera
+			"Action_Pan"			"Kamera schwenken"
+			"Action_CameraStick"	"Kamera-Stick"
+			"Action_CameraTilt"		"Kamera neigen"
+			"Action_Cursor"			"Cursor bewegen"
+			"Action_ScrollMenu"		"Menü scrollen"
+			
+			// Einheiten- & Welt-Aktionen
+			"Action_select"			"Auswählen"
+			"Action_order"			"Befehl"
+			"Action_quick_select"	"Schnellauswahl"
+			"Action_cancel"			"Abbrechen"
+			"Action_stop_start"		"Stopp/Start"
+			"Action_menu"			"Menü"
+			"Action_toggle_hud"		"HUD-Details umschalten"
+			"Action_toggle_map"		"Minimap umschalten"
+			"Action_tab_l"			"Vorheriger Tab"
+			"Action_tab_r"			"Nächster Tab"
+			"Action_zoomInKey"		"Heranzoomen"
+			"Action_zoomOutKey"		"Herauszoomen"
+			
+			// Management
+			"Action_build"			"Bauen"
+			"Action_copy"			"Kopieren"
+			"Action_paste"			"Einfügen"
+			"Action_gamespeed"		"Spielgeschwindigkeit"
+			"Action_pause"			"Pause"
+			
+			// Zyklus
+			"Action_next_city"		"Nächste Stadt"
+			"Action_next_army"		"Nächste Armee"
+			"Action_next_war"		"Nächster Krieg"
+			
+			// UI-Fokus
+			"Action_controller_focus"	"Objektmenü umschalten"
+			"Action_controller_faction" "Fraktion"
+			"Action_controller_message" "Nachricht auswählen"
+
+			// Menüs
+			"Action_ReturnToGame"		"Schließen"
+
+			// Editor-Aktionen
+			"Action_moveXZ"				"XZ bewegen"
+			"Action_cameraXMoveY"		"Kamera X, Y bewegen"
+			"Action_cameraZoom"			"Zoom"
+			"Action_draw"				"Zeichnen"
+			"Action_erase"				"Löschen"
+			"Action_colorPick"			"Pipette"
+			"Action_mirrorX"			"X spiegeln"
+			"Action_mirrorY"			"Y spiegeln"
+			"Action_undo"				"Rückgängig"
+			"Action_YmovementToggle"	"Y-Achse umschalten"
+		}
+
+		"spanish"
+		{
+			"Set_Ingame"			"Controles de juego"
+			"Set_Menu"				"Controles de menú"
+			"Set_Editor"			"Controles del editor"
+			
+			// Movimiento y Cámara
+			"Action_Pan"			"Desplazar cámara"
+			"Action_CameraStick"	"Joystick de cámara"
+			"Action_CameraTilt"		"Inclinación de cámara"
+			"Action_Cursor"			"Mover cursor"
+			"Action_ScrollMenu"		"Desplazar menú"
+			
+			// Acciones de Unidad y Mundo
+			"Action_select"			"Seleccionar"
+			"Action_order"			"Dar orden"
+			"Action_quick_select"	"Selección rápida"
+			"Action_cancel"			"Cancelar"
+			"Action_stop_start"		"Detener/Iniciar"
+			"Action_menu"			"Menú"
+			"Action_toggle_hud"		"Alternar detalles del HUD"
+			"Action_toggle_map"		"Alternar minimapa"
+			"Action_tab_l"			"Pestaña anterior"
+			"Action_tab_r"			"Pestaña siguiente"
+			"Action_zoomInKey"		"Acercar zoom"
+			"Action_zoomOutKey"		"Alejar zoom"
+			
+			// Gestión
+			"Action_build"			"Construir"
+			"Action_copy"			"Copiar"
+			"Action_paste"			"Pegar"
+			"Action_gamespeed"		"Velocidad de juego"
+			"Action_pause"			"Pausa"
+			
+			// Ciclo de Selección
+			"Action_next_city"		"Siguiente ciudad"
+			"Action_next_army"		"Siguiente ejército"
+			"Action_next_war"		"Siguiente guerra"
+			
+			// Enfoque de Interfaz (UI)
+			"Action_controller_focus"	"Alternar menú de objeto"
+			"Action_controller_faction" "Facción"
+			"Action_controller_message" "Seleccionar mensaje"
+
+			// Menús
+			"Action_ReturnToGame"		"Cerrar"
+
+			// Acciones Específicas del Editor
+			"Action_moveXZ"				"Mover XZ"
+			"Action_cameraXMoveY"		"Cámara X, Mover Y"
+			"Action_cameraZoom"			"Zoom"
+			"Action_draw"				"Dibujar"
+			"Action_erase"				"Borrar"
+			"Action_colorPick"			"Cuentagotas"
+			"Action_mirrorX"			"Reflejar X"
+			"Action_mirrorY"			"Reflejar Y"
+			"Action_undo"				"Deshacer"
+			"Action_YmovementToggle"	"Alternar eje Y"
+		}
+
+		"korean"
+		{
+			"Set_Ingame"			"게임 조작"
+			"Set_Menu"				"메뉴 조작"
+			"Set_Editor"			"에디터 조작"
+			
+			// 이동 및 카메라
+			"Action_Pan"			"카메라 이동"
+			"Action_CameraStick"	"카메라 스틱"
+			"Action_CameraTilt"		"카메라 기울기"
+			"Action_Cursor"			"커서 이동"
+			"Action_ScrollMenu"		"메뉴 스크롤"
+			
+			// 부대 및 월드 액션
+			"Action_select"			"선택"
+			"Action_order"			"명령"
+			"Action_quick_select"	"빠른 선택"
+			"Action_cancel"			"취소"
+			"Action_stop_start"		"정지/시작"
+			"Action_menu"			"메뉴"
+			"Action_toggle_hud"		"HUD 상세 정보 전환"
+			"Action_toggle_map"		"미니맵 전환"
+			"Action_tab_l"			"이전 탭"
+			"Action_tab_r"			"다음 탭"
+			"Action_zoomInKey"		"줌 인"
+			"Action_zoomOutKey"		"줌 아웃"
+			
+			// 관리
+			"Action_build"			"건설"
+			"Action_copy"			"복사"
+			"Action_paste"			"붙여넣기"
+			"Action_gamespeed"		"게임 속도"
+			"Action_pause"			"일시정지"
+			
+			// 순환 선택
+			"Action_next_city"		"다음 도시"
+			"Action_next_army"		"다음 군대"
+			"Action_next_war"		"다음 전쟁"
+			
+			// UI 포커스
+			"Action_controller_focus"	"오브젝트 메뉴 전환"
+			"Action_controller_faction" "세력"
+			"Action_controller_message" "메시지 선택"
+
+			// 메뉴
+			"Action_ReturnToGame"		"닫기"
+
+			// 에디터 전용 액션
+			"Action_moveXZ"				"XZ축 이동"
+			"Action_cameraXMoveY"		"카메라 X, Y축 이동"
+			"Action_cameraZoom"			"줌"
+			"Action_draw"				"그리기"
+			"Action_erase"				"지우기"
+			"Action_colorPick"			"스포이트"
+			"Action_mirrorX"			"X축 대칭"
+			"Action_mirrorY"			"Y축 대칭"
+			"Action_undo"				"실행 취소"
+			"Action_YmovementToggle"	"Y축 전환"
+		}
+
+		"thai"
+		{
+			"Set_Ingame"			"การควบคุมในเกม"
+			"Set_Menu"				"การควบคุมเมนู"
+			"Set_Editor"			"การควบคุมเครื่องมือแก้ไข"
+			
+			// การเคลื่อนที่และกล้อง
+			"Action_Pan"			"เลื่อนมุมกล้อง"
+			"Action_CameraStick"	"อนาล็อกควบคุมกล้อง"
+			"Action_CameraTilt"		"ปรับมุมเงยกล้อง"
+			"Action_Cursor"			"เลื่อนเคอร์เซอร์"
+			"Action_ScrollMenu"		"เลื่อนเมนู"
+			
+			// คำสั่งยูนิตและโลก
+			"Action_select"			"เลือก"
+			"Action_order"			"ออกคำสั่ง"
+			"Action_quick_select"	"เลือกด่วน"
+			"Action_cancel"			"ยกเลิก"
+			"Action_stop_start"		"หยุด/เริ่ม"
+			"Action_menu"			"เมนู"
+			"Action_toggle_hud"		"เปิด/ปิด รายละเอียด HUD"
+			"Action_toggle_map"		"เปิด/ปิด แผนที่ย่อ"
+			"Action_tab_l"			"แถบก่อนหน้า"
+			"Action_tab_r"			"แถบถัดไป"
+			"Action_zoomInKey"		"ซูมเข้า"
+			"Action_zoomOutKey"		"ซูมออก"
+			
+			// การจัดการ
+			"Action_build"			"สร้าง"
+			"Action_copy"			"คัดลอก"
+			"Action_paste"			"วาง"
+			"Action_gamespeed"		"ความเร็วเกม"
+			"Action_pause"			"หยุดเกมชั่วคราว"
+			
+			// การสลับเป้าหมาย
+			"Action_next_city"		"เมืองถัดไป"
+			"Action_next_army"		"กองทัพถัดไป"
+			"Action_next_war"		"สงครามถัดไป"
+			
+			// จุดโฟกัส UI
+			"Action_controller_focus"	"เปิด/ปิด เมนูวัตถุ"
+			"Action_controller_faction" "ฝ่าย"
+			"Action_controller_message" "เลือกข้อความ"
+
+			// เมนู
+			"Action_ReturnToGame"		"ปิด"
+
+			// คำสั่งเฉพาะเครื่องมือแก้ไข
+			"Action_moveXZ"				"เคลื่อนที่แนวแกน XZ"
+			"Action_cameraXMoveY"		"กล้อง X, เคลื่อนที่ Y"
+			"Action_cameraZoom"			"ซูม"
+			"Action_draw"				"วาด"
+			"Action_erase"				"ลบ"
+			"Action_colorPick"			"ดูดสี"
+			"Action_mirrorX"			"กลับด้านแกน X"
+			"Action_mirrorY"			"กลับด้านแกน Y"
+			"Action_undo"				"เลิกทำ"
+			"Action_YmovementToggle"	"เปิด/ปิด แกน Y"
+		}
+
+		"russian"
+		{
+			"Set_Ingame"			"Управление игрой"
+			"Set_Menu"				"Управление меню"
+			"Set_Editor"			"Управление редактором"
+			
+			// Перемещение и камера
+			"Action_Pan"			"Панорамирование"
+			"Action_CameraStick"	"Стик камеры"
+			"Action_CameraTilt"		"Наклон камеры"
+			"Action_Cursor"			"Переместить курсор"
+			"Action_ScrollMenu"		"Прокрутка меню"
+			
+			// Действия юнитов и мира
+			"Action_select"			"Выбрать"
+			"Action_order"			"Приказ"
+			"Action_quick_select"	"Быстрый выбор"
+			"Action_cancel"			"Отмена"
+			"Action_stop_start"		"Стоп/Старт"
+			"Action_menu"			"Меню"
+			"Action_toggle_hud"		"Показать/скрыть интерфейс"
+			"Action_toggle_map"		"Показать/скрыть мини-карту"
+			"Action_tab_l"			"Предыдущая вкладка"
+			"Action_tab_r"			"Следующая вкладка"
+			"Action_zoomInKey"		"Приблизить"
+			"Action_zoomOutKey"		"Отдалить"
+			
+			// Управление
+			"Action_build"			"Строить"
+			"Action_copy"			"Копировать"
+			"Action_paste"			"Вставить"
+			"Action_gamespeed"		"Скорость игры"
+			"Action_pause"			"Пауза"
+			
+			// Переключение
+			"Action_next_city"		"Следующий город"
+			"Action_next_army"		"Следующая армия"
+			"Action_next_war"		"Следующая война"
+			
+			// Фокус интерфейса
+			"Action_controller_focus"	"Меню объекта"
+			"Action_controller_faction" "Фракция"
+			"Action_controller_message" "Выбрать сообщение"
+
+			// Меню
+			"Action_ReturnToGame"		"Закрыть"
+
+			// Действия редактора
+			"Action_moveXZ"				"Переместить XZ"
+			"Action_cameraXMoveY"		"Камера X, Переместить Y"
+			"Action_cameraZoom"			"Зум"
+			"Action_draw"				"Рисовать"
+			"Action_erase"				"Стереть"
+			"Action_colorPick"			"Пипетка"
+			"Action_mirrorX"			"Отразить по X"
+			"Action_mirrorY"			"Отразить по Y"
+			"Action_undo"				"Отменить"
+			"Action_YmovementToggle"	"Ось Y (вкл/выкл)"
+		}
+
+		"brazilian"
+		{
+			"Set_Ingame"			"Controles de Jogo"
+			"Set_Menu"				"Controles do Menu"
+			"Set_Editor"			"Controles do Editor"
+			
+			// Movimentação e Câmera
+			"Action_Pan"			"Mover Câmera"
+			"Action_CameraStick"	"Analógico da Câmera"
+			"Action_CameraTilt"		"Inclinar Câmera"
+			"Action_Cursor"			"Mover Cursor"
+			"Action_ScrollMenu"		"Rolar Menu"
+			
+			// Ações de Unidade e Mundo
+			"Action_select"			"Selecionar"
+			"Action_order"			"Dar Ordem"
+			"Action_quick_select"	"Seleção Rápida"
+			"Action_cancel"			"Cancelar"
+			"Action_stop_start"		"Parar/Iniciar"
+			"Action_menu"			"Menu"
+			"Action_toggle_hud"		"Alternar Detalhes do HUD"
+			"Action_toggle_map"		"Alternar Minimapa"
+			"Action_tab_l"			"Aba Anterior"
+			"Action_tab_r"			"Próxima Aba"
+			"Action_zoomInKey"		"Aproximar Zoom"
+			"Action_zoomOutKey"		"Afastar Zoom"
+			
+			// Gestão
+			"Action_build"			"Construir"
+			"Action_copy"			"Copiar"
+			"Action_paste"			"Colar"
+			"Action_gamespeed"		"Velocidade do Jogo"
+			"Action_pause"			"Pausa"
+			
+			// Ciclo de Seleção
+			"Action_next_city"		"Próxima Cidade"
+			"Action_next_army"		"Próximo Exército"
+			"Action_next_war"		"Próxima Guerra"
+			
+			// Foco da Interface (UI)
+			"Action_controller_focus"	"Alternar Menu do Objeto"
+			"Action_controller_faction" "Facção"
+			"Action_controller_message" "Selecionar Mensagem"
+
+			// Menus
+			"Action_ReturnToGame"		"Fechar"
+
+			// Ações Específicas do Editor
+			"Action_moveXZ"				"Mover XZ"
+			"Action_cameraXMoveY"		"Câmera X, Mover Y"
+			"Action_cameraZoom"			"Zoom"
+			"Action_draw"				"Desenhar"
+			"Action_erase"				"Apagar"
+			"Action_colorPick"			"Conta-gotas"
+			"Action_mirrorX"			"Espelhar X"
+			"Action_mirrorY"			"Espelhar Y"
+			"Action_undo"				"Desfazer"
+			"Action_YmovementToggle"	"Alternar Eixo Y"
+		}
+
+		"turkish"
+		{
+			"Set_Ingame"			"Oyun Kontrolleri"
+			"Set_Menu"				"Menü Kontrolleri"
+			"Set_Editor"			"Editör Kontrolleri"
+			
+			// Hareket ve Kamera
+			"Action_Pan"			"Kamerayı Kaydır"
+			"Action_CameraStick"	"Kamera Çubuğu"
+			"Action_CameraTilt"		"Kamera Eğimi"
+			"Action_Cursor"			"İmleci Hareket Ettir"
+			"Action_ScrollMenu"		"Menüyü Kaydır"
+			
+			// Birim ve Dünya Eylemleri
+			"Action_select"			"Seç"
+			"Action_order"			"Emir Ver"
+			"Action_quick_select"	"Hızlı Seçim"
+			"Action_cancel"			"İptal"
+			"Action_stop_start"		"Durdur/Başlat"
+			"Action_menu"			"Menü"
+			"Action_toggle_hud"		"HUD Detaylarını Aç/Kapat"
+			"Action_toggle_map"		"Mini Haritayı Aç/Kapat"
+			"Action_tab_l"			"Önceki Sekme"
+			"Action_tab_r"			"Sonraki Sekme"
+			"Action_zoomInKey"		"Yakınlaştır"
+			"Action_zoomOutKey"		"Uzaklaştır"
+			
+			// Yönetim
+			"Action_build"			"İnşa Et"
+			"Action_copy"			"Kopyala"
+			"Action_paste"			"Yapıştır"
+			"Action_gamespeed"		"Oyun Hızı"
+			"Action_pause"			"Duraklat"
+			
+			// Döngü
+			"Action_next_city"		"Sonraki Şehir"
+			"Action_next_army"		"Sonraki Ordu"
+			"Action_next_war"		"Sonraki Savaş"
+			
+			// Arayüz Odağı
+			"Action_controller_focus"	"Nesne Menüsünü Aç/Kapat"
+			"Action_controller_faction" "Taraf"
+			"Action_controller_message" "Mesajı Seç"
+
+			// Menüler
+			"Action_ReturnToGame"		"Kapat"
+
+			// Editöre Özel Eylemler
+			"Action_moveXZ"				"XZ Taşı"
+			"Action_cameraXMoveY"		"Kamera X, Y Hareketi"
+			"Action_cameraZoom"			"Zoom"
+			"Action_draw"				"Çiz"
+			"Action_erase"				"Sil"
+			"Action_colorPick"			"Damlalık"
+			"Action_mirrorX"			"X Yansıtma"
+			"Action_mirrorY"			"Y Yansıtma"
+			"Action_undo"				"Geri Al"
+			"Action_YmovementToggle"	"Y Ekseni Aç/Kapat"
+		}
+
+		"italian"
+		{
+			"Set_Ingame"			"Comandi di gioco"
+			"Set_Menu"				"Comandi del menu"
+			"Set_Editor"			"Comandi dell'editor"
+			
+			// Movimento e Visuale
+			"Action_Pan"			"Sposta visuale"
+			"Action_CameraStick"	"Levetta visuale"
+			"Action_CameraTilt"		"Inclinazione visuale"
+			"Action_Cursor"			"Muovi cursore"
+			"Action_ScrollMenu"		"Scorri menu"
+			
+			// Azioni Unità e Mondo
+			"Action_select"			"Seleziona"
+			"Action_order"			"Dai un ordine"
+			"Action_quick_select"	"Selezione rapida"
+			"Action_cancel"			"Annulla"
+			"Action_stop_start"		"Ferma/Avvia"
+			"Action_menu"			"Menu"
+			"Action_toggle_hud"		"Mostra/Nascondi HUD"
+			"Action_toggle_map"		"Mostra/Nascondi minimappa"
+			"Action_tab_l"			"Tab precedente"
+			"Action_tab_r"			"Tab successivo"
+			"Action_zoomInKey"		"Zoom avanti"
+			"Action_zoomOutKey"		"Zoom indietro"
+			
+			// Gestione
+			"Action_build"			"Costruisci"
+			"Action_copy"			"Copia"
+			"Action_paste"			"Incolla"
+			"Action_gamespeed"		"Velocità di gioco"
+			"Action_pause"			"Pausa"
+			
+			// Selezione Ciclica
+			"Action_next_city"		"Città successiva"
+			"Action_next_army"		"Esercito successivo"
+			"Action_next_war"		"Guerra successiva"
+			
+			// Focus Interfaccia
+			"Action_controller_focus"	"Menu oggetto"
+			"Action_controller_faction" "Fazione"
+			"Action_controller_message" "Seleziona messaggio"
+
+			// Menu
+			"Action_ReturnToGame"		"Chiudi"
+
+			// Azioni Editor
+			"Action_moveXZ"				"Muovi XZ"
+			"Action_cameraXMoveY"		"Telecamera X, Muovi Y"
+			"Action_cameraZoom"			"Zoom"
+			"Action_draw"				"Disegna"
+			"Action_erase"				"Cancella"
+			"Action_colorPick"			"Contagocce"
+			"Action_mirrorX"			"Specchia X"
+			"Action_mirrorY"			"Specchia Y"
+			"Action_undo"				"Annulla azione"
+			"Action_YmovementToggle"	"Attiva/Disattiva asse Y"
+		}
+
+		"polish"
+		{
+			"Set_Ingame"			"Sterowanie w grze"
+			"Set_Menu"				"Sterowanie menu"
+			"Set_Editor"			"Sterowanie edytorem"
+			
+			// Ruch i kamera
+			"Action_Pan"			"Przesuń kamerę"
+			"Action_CameraStick"	"Drążek kamery"
+			"Action_CameraTilt"		"Nachylenie kamery"
+			"Action_Cursor"			"Ruch kursorem"
+			"Action_ScrollMenu"		"Przewijanie menu"
+			
+			// Akcje jednostek i świata
+			"Action_select"			"Wybierz"
+			"Action_order"			"Wydaj rozkaz"
+			"Action_quick_select"	"Szybki wybór"
+			"Action_cancel"			"Anuluj"
+			"Action_stop_start"		"Stop/Start"
+			"Action_menu"			"Menu"
+			"Action_toggle_hud"		"Przełącz szczegóły HUD"
+			"Action_toggle_map"		"Przełącz minimapę"
+			"Action_tab_l"			"Poprzednia karta"
+			"Action_tab_r"			"Następna karta"
+			"Action_zoomInKey"		"Przybliż"
+			"Action_zoomOutKey"		"Oddal"
+			
+			// Zarządzanie
+			"Action_build"			"Buduj"
+			"Action_copy"			"Kopiuj"
+			"Action_paste"			"Wklej"
+			"Action_gamespeed"		"Prędkość gry"
+			"Action_pause"			"Pauza"
+			
+			// Przełączanie
+			"Action_next_city"		"Następne miasto"
+			"Action_next_army"		"Następna armia"
+			"Action_next_war"		"Następna wojna"
+			
+			// Menu i Interfejs
+			"Action_controller_focus"	"Przełącz menu obiektu"
+			"Action_controller_faction" "Frakcja"
+			"Action_controller_message" "Wybierz wiadomość"
+
+			// Menu
+			"Action_ReturnToGame"		"Zamknij"
+
+			// Akcje edytora
+			"Action_moveXZ"				"Przesunięcie XZ"
+			"Action_cameraXMoveY"		"Kamera X, Ruch Y"
+			"Action_cameraZoom"			"Zoom"
+			"Action_draw"				"Rysuj"
+			"Action_erase"				"Wymaż"
+			"Action_colorPick"			"Pipeta"
+			"Action_mirrorX"			"Odbicie lustrzane X"
+			"Action_mirrorY"			"Odbicie lustrzane Y"
+			"Action_undo"				"Cofnij"
+			"Action_YmovementToggle"	"Przełącz oś Y"
+		}
+
+}
+}

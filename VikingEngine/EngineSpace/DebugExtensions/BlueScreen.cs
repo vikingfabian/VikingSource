@@ -6,7 +6,7 @@ using VikingEngine.Engine;
 using VikingEngine.Graphics;
 using Microsoft.Xna.Framework.Input;
 using VikingEngine.HUD;
-using Valve.Steamworks;
+
 using VikingEngine.SteamWrapping;
 using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Data;
@@ -43,9 +43,9 @@ namespace VikingEngine.DebugExtensions
         {
             cleanUp();
 
-            logError(Engine.LoadContent.SteamVersion + (AttachMessage== null? string.Empty : AttachMessage + Environment.NewLine) + errorMessageDetailed);
+            logError(Engine.LoadContent.EngineVersion + (AttachMessage== null? string.Empty : AttachMessage + Environment.NewLine) + errorMessageDetailed);
             
-            errorMessageDetailed = Engine.LoadContent.SteamVersion + errorMessageDetailed;
+            errorMessageDetailed = Engine.LoadContent.EngineVersion + errorMessageDetailed;
 
 
             Engine.StateHandler.ReplaceGamestate(this);
@@ -235,11 +235,7 @@ namespace VikingEngine.DebugExtensions
                 try
                 {
                     method();
-                }
-                catch (AbsSteamException e) 
-                {
-                    new SteamBlueScreen(ErrorMessage(e, methodType));
-                }
+                }                
                 catch (Exception e)
                 {
                     new BlueScreen(ErrorMessage(e, methodType));
@@ -271,7 +267,7 @@ namespace VikingEngine.DebugExtensions
                 ThreadException = null;
             }
         }
-        
+
         public static string ErrorMessage(Exception e, TryMethodType methodType)
         {
             string gametypeCode = "-";
@@ -297,6 +293,10 @@ namespace VikingEngine.DebugExtensions
             if (methodType == TryMethodType.U)
             {
                 type += " N" + ((int)Network.NetLib.PacketType).ToString();
+            }
+            if (!Ref.steam.isInitialized)
+            {
+                type += "-P";
             }
 
             string stacktrace = string.Empty;

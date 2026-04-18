@@ -1,8 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis.Text;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
-using Valve.Steamworks;
+
 using VikingEngine.DataLib;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
@@ -39,6 +40,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color TitleColor_Action = Color.LightBlue;
         public static readonly Color TitleColor_Attack = Color.Red;
         public static readonly Color TitleColor_Name = Color.LightYellow;
+        public static readonly Color TitleColor_Name_Dark = Color.Brown;
         public static readonly Color TitleColor_TypeName = Color.LightGray;
         public static readonly Color TitleColor_TypeName_Dark = new Color(50, 50, 50);
         public static readonly Color TitleColor_Label = new Color(0, 128, 153);
@@ -56,7 +58,8 @@ namespace VikingEngine.DSSWars
 
         public static readonly Color OffStandardOrange = new Color(200, 128, 0);
         public static readonly Color InfoYellow_Dark = new Color(160, 128, 0);
-        public static readonly Color InfoYellow_Light = new Color(255, 255, 150);
+        public static readonly Color InfoYellow_Light = new Color(200, 200, 0);//255, 255, 150);
+        public static readonly Color InfoYellow_VeryLight = new Color(255, 255, 200);
         public static readonly Color InfoYellow_BG = new Color(40, 32, 0);
         public const ImageLayers StoryContentLayer = ImageLayers.Lay1_Front;
         public const ImageLayers StoryBgLayer = ImageLayers.Lay1_Back;
@@ -237,7 +240,7 @@ namespace VikingEngine.DSSWars
             };
         }
 
-        public static void copyPaste(RichBoxContent content, LocalPlayer player, AbsRbAction copy, AbsRbAction paste)
+        public static void copyPaste(RichBoxContent content, LocalPlayer player, AbsRbAction copy, AbsRbAction paste, bool copyAvailable = true, bool pasteAvailable = true)
         {
             player.gameControls.input.Copy.ToRichContent(content);
             content.hspace();
@@ -245,7 +248,7 @@ namespace VikingEngine.DSSWars
                     new RbImage(SpriteName.WarsHudIconCopy, WarHudIcons_DefaultScale),
                     new RbSpace(),
                     new RbText(DssRef.lang.Hud_CopySetup) 
-                }, copy));
+                }, copy, null, copyAvailable));
 
             content.space();
             player.gameControls.input.Paste.ToRichContent(content);
@@ -254,7 +257,7 @@ namespace VikingEngine.DSSWars
                     new RbImage(SpriteName.WarsHudIconPaste, WarHudIcons_DefaultScale),
                     new RbSpace(),
                     new RbText(DssRef.lang.Hud_Paste)
-                }, paste));
+                }, paste, null, pasteAvailable));
         }
         public static void buildingMenuTitle(RichBoxContent content, SpriteName icon, string caption, int id, int index, int buildingCount, Action closeAction, Action<int> nextAction)
         {
@@ -280,23 +283,43 @@ namespace VikingEngine.DSSWars
 
         public static void blueprintButton(City city, LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint, CraftBlueprint optionalBp = null, bool roomForAnotherButton = false)
         {
+            if (city != null)
+            {
+                content.Add(new RbTab(0.65f));//roomForAnotherButton? 0.65f : 0.8f));
+
+                var tooltip = new RbTooltip(blueprintTooltip, new BlueprintTooltipArgs()
+                {
+                    blueprint = blueprint,
+                    optionalBp = optionalBp,
+                    city = city.myIndex,
+                });
+
+                if (blueprint == CraftResourceLib.Food1)
+                {
+                    tooltip.tagId = Tooltip.Food_BlueprintId;
+                }
+
+                content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> {
+                new RbImage(SpriteName.WarsBluePrint)
+                },
+                null, tooltip));
+            }
+        }
+
+        public static void butcherBlueprintButton(City city, LocalPlayer player, RichBoxContent content, CraftBlueprint blueprint)
+        {
 
             content.Add(new RbTab(0.65f));//roomForAnotherButton? 0.65f : 0.8f));
 
             var tooltip = new RbTooltip(blueprintTooltip, new BlueprintTooltipArgs()
             {
                 blueprint = blueprint,
-                optionalBp = optionalBp,
+                //optionalBp = optionalBp,
                 city = city.myIndex,
             });
 
-            if (blueprint == CraftResourceLib.Food1)
-            {
-                tooltip.tagId = Tooltip.Food_BlueprintId;
-            }
-
             content.Add(new ArtButton(RbButtonStyle.HoverArea, new List<AbsRichBoxMember> {
-                new RbImage(SpriteName.WarsBluePrint)
+                new RbOverlapImage(new RbImage(SpriteName.WarsBluePrint), SpriteName.WarsSlaughter, Vector2.Zero)
             },
             null, tooltip));
 
@@ -384,16 +407,17 @@ namespace VikingEngine.DSSWars
 
         public static void ResourceCost(RichBoxContent content, ItemResourceType resource, int needResource, int hasResource)
         {
-            SpriteName icon = ResourceLib.Icon( resource);
+            //SpriteName icon = ResourceLib.Icon( resource);
+            IconName.Item(resource, out SpriteName itemIcon, out string itemName);
 
-            if (icon != SpriteName.NO_IMAGE)
+            if (itemIcon != SpriteName.NO_IMAGE)
             {
-                content.Add(new RbImage(icon));
+                content.Add(new RbImage(itemIcon));
                 content.space(0.5f);
             }
 
             string text = string.Format(DssRef.lang.Hud_Purchase_ResourceCostOfAvailable,
-                LangLib.Item(resource), TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
+                itemName, TextLib.LargeNumber(needResource), TextLib.LargeNumber(hasResource));
 
             content.Add(new RbText(text, ResourceCostColor(hasResource >= needResource)));
         }
@@ -401,18 +425,18 @@ namespace VikingEngine.DSSWars
         public static void Upkeep(RichBoxContent content, double value)
         {
             string valuestring = TextLib.OneDecimal(value);
-            content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Hud_Upkeep, valuestring));
+            content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Language_ItemCount, DssRef.lang.Hud_Upkeep, valuestring));
         }
         public static void Upkeep(RichBoxContent content, int value)
         {
             string valuestring = TextLib.LargeNumber(value);
-            content.icontext(SpriteName.rtsUpkeepTime, string.Format( DssRef.lang.Hud_Upkeep, valuestring));  
+            content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Language_ItemCount, DssRef.lang.Hud_Upkeep, valuestring));  
         }
 
         public static void ItemCount(RichBoxContent content, SpriteName icon, string item, string count)
         {
             content.newLine();
-            string text = string.Format( DssRef.lang.Language_ItemCountPresentation, item, count);
+            string text = string.Format( DssRef.lang.Language_ItemCount_Colon, item, count);
             content.Add(new RbImage(icon));
             content.space(0.5f);
             content.Add(new RbText(text));
@@ -421,7 +445,7 @@ namespace VikingEngine.DSSWars
         public static RbText ItemCount(RichBoxContent content, string item, string count)
         {
             
-            string text = string.Format(DssRef.lang.Language_ItemCountPresentation, item, count);
+            string text = string.Format(DssRef.lang.Language_ItemCount_Colon, item, count);
             return content.text(text);
         }
 
@@ -619,7 +643,7 @@ namespace VikingEngine.DSSWars
         {
             bool minuteAverage = (bool)tag;
             //RichBoxContent content = new RichBoxContent();
-            content.text(DssRef.lang.Info_PerSecond);
+            content.text(DssRef.lang.Info_ResourcePerSecond);
             if (minuteAverage)
             {
                 content.text(DssRef.lang.Info_MinuteAverage);
@@ -631,9 +655,31 @@ namespace VikingEngine.DSSWars
             content.text("\"" + description + "\"").overrideColor = InfoYellow_Light;
         }
 
+        public static void Label(RichBoxContent content, SpriteName icon, string text)
+        {
+            content.newLine();
+            content.Add(new RbImage(icon));
+            content.space();
+            content.Add(new RbText(text + ":", TitleColor_Label));
+        }
+
         public static void Label(RichBoxContent content, string text)
         {
-            content.text(text + ":").overrideColor = TitleColor_Label;
+            content.newLine();
+            content.Add(new RbText(text + ":", TitleColor_Label));
+        }
+
+        public static void LabelAndText(RichBoxContent content, SpriteName icon, string label, string text)
+        {
+            content.newLine();
+            if (icon != SpriteName.NO_IMAGE)
+            {
+                content.Add(new RbImage(icon));
+                content.hspace();
+            }
+            content.Add(new RbText(label + ":", TitleColor_Label));
+            content.hspace();
+            content.Add(new RbText(text));
         }
 
         public static void CloseButton(RichBoxContent content, AbsRbAction click)
@@ -674,7 +720,7 @@ namespace VikingEngine.DSSWars
         public static void CityResource(RichBoxContent content, City city, ItemResourceType type)
         {
             bool buffer = false;
-            city.GetGroupedResource(type).toMenu(content, type, city.foodSafeGuardIsActive(type), ref buffer);
+            city.GetGroupedResource(type).toMenu(content, type, ref buffer);
         }
 
         public static List<AbsRichBoxMember> AddLockOnDemo(List<AbsRichBoxMember> buttonContent)
@@ -694,9 +740,9 @@ namespace VikingEngine.DSSWars
                 content.newLine();
                 var wishlistBtn = new RbButton(new List<AbsRichBoxMember> { new RbTab(0.21f), new RbText(DssRef.lang.LobbyDemoMode_WishlistOn, Color.White), new RbSpace(), new RbImage(SpriteName.SteamIcon) }, new RbAction(() =>
                 {
-                    SteamAPI.SteamFriends().ActivateGameOverlayToStore(
-                    3585100,
-                    EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
+                    Steamworks.SteamFriends.ActivateGameOverlayToStore(
+                    new Steamworks.AppId_t( 3585100),
+                    Steamworks.EOverlayToStoreFlag.k_EOverlayToStoreFlag_None);
                 }), null, true);
                 wishlistBtn.overrideBgColor = Color.Green;
                 wishlistBtn.fillWidth = true;
@@ -736,21 +782,21 @@ namespace VikingEngine.DSSWars
             cityEconomy.tax(city, out float taxPerWorker_copp);
             content.text(string.Format(DssRef.lang.Economy_TaxDescription, Resource.Money.CopperToGoldString_Decimal((int)taxPerWorker_copp)));
             content.newParagraph();
-            content.text(DssRef.lang.Info_PerSecond);
+            content.text(DssRef.lang.Info_ResourcePerSecond);
         }
 
         public static void servicemenUpkeepInfo(RichBoxContent content, object tag)
         {
             content.text(string.Format(DssRef.lang.Economy_ServicemenUpkeep_Description, Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerServiceMan_copp)));
             content.newParagraph();
-            content.text(DssRef.lang.Info_PerSecond);
+            content.text(DssRef.lang.Info_ResourcePerSecond);
         }
 
         public static void guardUpkeepInfo(RichBoxContent content, object tag)
         {
             content.text(string.Format(DssRef.lang.Economy_GuardUpkeep_Description, Resource.Money.CopperToGoldString_Decimal(DssConst.UpkeepPerGuard_copp)));
             content.newParagraph();
-            content.text(DssRef.lang.Info_PerSecond);        
+            content.text(DssRef.lang.Info_ResourcePerSecond);        
         }
     }
 }

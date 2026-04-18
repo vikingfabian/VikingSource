@@ -1,14 +1,28 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using VikingEngine.EngineSpace.HUD.RichBox;
 using VikingEngine.Graphics;
+using VikingEngine.Network;
+using VikingEngine.ToGG.HeroQuest.Data.Condition;
 
 namespace VikingEngine.HUD.RichBox
 {
+    /// <summary>
+    /// Track placement of next item
+    /// </summary>
+    struct RichBoxCarriage
+    {
+        public Vector2 position;
+        public int lineCount;
+    }
+
     class RichBoxGroup : ImageGroup
     {
+        static int NextId = 1;
+        public int PageId = NextId++;
+
         public VectorRect area;
         public VectorRect maxArea;
         
@@ -16,8 +30,10 @@ namespace VikingEngine.HUD.RichBox
         public float boxWidth;
         public RichBoxSettings settings;
 
-        public Vector2 position;
-       
+        //public Vector2 position;
+        public RichBoxCarriage carriage;
+        public RichBoxCarriage storedCarriage;
+
         public float imageHeight;
         public float lineSpacing, lineSpacingHalf;
         public ImageLayers layer;
@@ -32,6 +48,7 @@ namespace VikingEngine.HUD.RichBox
 
         int tryCreatePosition = -1;
         bool lockNewLine = false;
+        //public int lineCount = 0;
         public float groupScale = 1f;
 
         public override void SetOffset(Vector2 position)
@@ -48,7 +65,7 @@ namespace VikingEngine.HUD.RichBox
             bool useDynamicWidth = true)
         {
             this.topleft = topleft;
-            this.position = topleft;
+            carriage.position = topleft;
             this.boxWidth = boxWidth;
             this.layer = layer;
             this.settings = settings;
@@ -77,7 +94,7 @@ namespace VikingEngine.HUD.RichBox
                 removeDeadHeightSpace(false);
             }
 
-            area = new VectorRect(topleft, new Vector2(boxWidth, position.Y - topleft.Y));
+            area = new VectorRect(topleft, new Vector2(boxWidth, carriage.position.Y - topleft.Y));
             maxArea = area;
             maxArea.Width = maxWidth;
 
@@ -133,7 +150,7 @@ namespace VikingEngine.HUD.RichBox
 
             if (newParagraph)
             {
-                position.Y += settings.breadIconHeight * 0.4f * lineheight;
+                carriage.position.Y += settings.breadIconHeight * 0.4f * lineheight;
             }
 
             prepLine();
@@ -143,9 +160,18 @@ namespace VikingEngine.HUD.RichBox
         {
             completeLine();
 
-            position.Y = height;
+            carriage.position.Y = height;
            
             prepLine();
+        }
+
+        public void storeCarriage()
+        {
+            storedCarriage = carriage;
+        }
+        public void restoreCarriage()
+        {
+            carriage = storedCarriage;
         }
 
         public void newLine()
@@ -158,29 +184,36 @@ namespace VikingEngine.HUD.RichBox
             }
         }
 
+        public bool LeftCarriage => carriage.position.X == topleft.X;
+
         void prepLine()
         {
             if (buttonGrid_Y_X.Count == 0 || buttonGrid_Y_X.Last().Count > 0)
             {
                 buttonGrid_Y_X.Add(new List<AbsRbButton>());
             }
-            position.X = topleft.X;
+            carriage.position.X = topleft.X;
 
             bTitelFormat = 0;
             setHeight(settings.breadIconHeight);
 
-            position.Y += lineSpacingHalf;
+            carriage.position.Y += lineSpacingHalf;
+
+            if (parentMember.TryPeek(out var parent))
+            {
+                parent.Parent_OnNewLine(this);
+            }
         }
 
         public void prepTitle(int level)
         {
-            position.Y -= lineSpacingHalf;
+            carriage.position.Y -= lineSpacingHalf;
 
             //textFormat = settings.titleText;
             bTitelFormat = level;
             setHeight(settings.titleIconHeight);
 
-            position.Y += lineSpacingHalf;
+            carriage.position.Y += lineSpacingHalf;
         }
 
         void setHeight(float imageHeight)
@@ -192,18 +225,20 @@ namespace VikingEngine.HUD.RichBox
 
         void completeLine()
         {
-            float width = position.X - topleft.X;
+            float width = carriage.position.X - topleft.X;
 
             maxWidth = lib.LargestValue(width, maxWidth);
 
             if (width > 0)
             {
-                position.Y += lineSpacingHalf;
+                carriage.position.Y += lineSpacingHalf;
             }
             else
             {
-                position.Y -= lineSpacingHalf;
+                carriage.position.Y -= lineSpacingHalf;
             }
+
+            carriage.lineCount++;
         }
 
         public Vector2 seperatingLinePlacement()
@@ -212,13 +247,13 @@ namespace VikingEngine.HUD.RichBox
 
             float moveY = Space + imageHeight;
 
-            var storedPos = position;
+            var storedPos = carriage.position;
             completeLine();
             prepLine();
 
-            position.Y = storedPos.Y + moveY;
+            carriage.position.Y = storedPos.Y + moveY;
 
-            Vector2 linePos = position;
+            Vector2 linePos = carriage.position;
             linePos.Y -= moveY / 2;
             return linePos;
         }
@@ -227,24 +262,24 @@ namespace VikingEngine.HUD.RichBox
         {
             if (top)
             {
-                position.Y -= imageHeight * 0.1f;
+                carriage.position.Y -= imageHeight * 0.1f;
             }
             else
             {
-                position.Y -= imageHeight * 0.1f;
+                carriage.position.Y -= imageHeight * 0.1f;
             }
         }
 
         public float RightEdgeSpace()
         {
-            return (topleft.X + boxWidth) - position.X;
+            return (topleft.X + boxWidth) - carriage.position.X;
         }
         
         public void TryCreate_Start()
         { 
             addToRender = false;
             tryCreatePosition = images.Count;
-            lockNewLine = true;
+            //lockNewLine = true;
         }
         public void TryCreate_Complete()
         {
@@ -258,6 +293,7 @@ namespace VikingEngine.HUD.RichBox
         }
         public void TryCreate_Undo()
         {
+            restoreCarriage();
             while (images.Count > tryCreatePosition)
             { 
                 images.RemoveAt(images.Count -1);

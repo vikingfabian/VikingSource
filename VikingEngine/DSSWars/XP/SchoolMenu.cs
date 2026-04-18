@@ -62,7 +62,7 @@ namespace VikingEngine.DSSWars.XP
                 }
                 content.newParagraph();
 
-                if (currentStatus.learnExperience != WorkExperienceType.NONE)
+                if (currentStatus.learnExperience != WorkExperienceType.NUM_NONE)
                 {
                     HudLib.Label(content, DssRef.lang.SchoolHud_ToLevel);
                     content.newLine();
@@ -167,15 +167,19 @@ namespace VikingEngine.DSSWars.XP
                 for (int i = 0; i < city.schoolBuildings.Count; ++i)
                 {
                     var status = city.schoolBuildings[i];
-                    if (count == 1)
+
+                    if (status.learnExperience != WorkExperienceType.NUM_NONE)
                     {
-                        status.que++;
+                        if (count == 1)
+                        {
+                            status.que++;
+                        }
+                        else
+                        {
+                            status.que = count;
+                        }
+                        city.schoolBuildings[i] = status;
                     }
-                    else
-                    {
-                        status.que = count;
-                    }
-                    city.schoolBuildings[i] = status;
                 }
             }
         }

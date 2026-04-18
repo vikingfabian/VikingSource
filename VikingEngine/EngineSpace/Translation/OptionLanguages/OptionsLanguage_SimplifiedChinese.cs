@@ -9,6 +9,33 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_SimplifiedChinese : AbsOptionsLanguage
     {
+        //Mounts
+        public override string InputSteam => "Steam输入";
+        public override string Input_SimulateMouse => "模拟鼠标";
+        public override string Input_LockMouseToWindow => "鼠标锁定至窗口";
+        public override string Input_MouseEdgePush_Title => "边缘平移";
+        public override string Input_NoControl => "无";
+        public override string Input_ActiveControl => "主动";
+        public override string Input_PassiveControl => "被动";
+        public override string Setting_MinimapScale => "小地图缩放";
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "图层淡出";
+        public override string SplitScreen_HorizontalFirst => "水平优先";
+        public override string SplitScreen_VerticalFirst => "垂直优先";
+        public override string SplitScreen_HorizontalOnly => "仅水平";
+        public override string SplitScreen_VerticalOnly => "仅垂直";
+        public override string SplitScreen_Title => "分屏";
+        public override string SplitScreen_AdjustSplit => "调整分割 {0}";
+
+        public override string Settings_ControllerVibration => "手柄震动";
+        public override string GraphicsOption_IngameMenuWidth => "游戏内菜单宽度";
+        public override string DisplayMode => "显示模式";
+        public override string DisplayMode_Windowed => "窗口模式";
+        public override string DisplayMode_BorderlessFullscreen => "无边框全屏";
+        public override string GameSettings_RenderedMouseCursor => "渲染光标";
+
+        public override string GameSettings_MuteControllerDisconnect => "屏蔽手柄断开提示";
+        //--
         public override string GraphicsOption_FarViewDistance => "远距离视野";
         public override string Hud_Cancel => "取消";
         public override string Hud_Back => "返回";

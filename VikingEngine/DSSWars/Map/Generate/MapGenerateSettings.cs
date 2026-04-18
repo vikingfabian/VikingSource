@@ -44,6 +44,8 @@ namespace VikingEngine.DSSWars.Map.Generate
         public IntervalF startRadiusRange;
         public Range chainLengthRange = new Range(2, 20);
 
+        //public Range chainLengthRange2 = new Range(20, 150);
+
         public float BuildChainsCount_per100Tiles = 0.1f; //Per 100 tiles 
         public float DigChainsCount_per100Tiles = 0.07f; //Per 100 tiles 
 
@@ -54,6 +56,8 @@ namespace VikingEngine.DSSWars.Map.Generate
         public IntVector2 customMapSize = new IntVector2(WorldData.CustomMapSize_Min);
         public bool cleanUpSingleTiles = false;
         public bool factionsOnMap = true;
+
+        public float percentageUnclaimed = 0.25f;
 
         public MapSettingsStorage storage;
 
@@ -83,7 +87,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             return cleanUpSingleTiles;
         }
 
-        public int MapXProperty(bool set, int value)
+        public int MapXProperty(object tag, bool set, int value)
         {
             if (set)
             {
@@ -91,7 +95,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             }
             return customMapSize.X;
         }
-        public int MapYProperty(bool set, int value)
+        public int MapYProperty(object tag, bool set, int value)
         {
             if (set)
             {

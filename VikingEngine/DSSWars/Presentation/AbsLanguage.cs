@@ -9,9 +9,444 @@ namespace VikingEngine.DSSWars.Presentation
 {
     abstract partial class AbsLanguage
     {
+        //Mounts update 
+        public abstract string Leaderboards_title { get; }
+        public abstract string Leaderboards_domination { get; }
+        public abstract string Leaderboards_victory { get; }
+        public abstract string Leaderboards_CitySize { get; }
+        public abstract string Leaderboards_Survival { get; }
+
+        public abstract string Message_CannotPayUpkeep { get; }
+        public abstract string Animals_ProductionStop { get; }
+
+        public abstract string Tutorial_ToCapture { get; }
+        public abstract string Tutorial_ClickButton { get; }
+        public abstract string Tutorial_MoveXToY { get; }
+
+        public abstract string Workers_Description1_work { get; }
+        public abstract string Workers_Description2_income { get; }
+        public abstract string Workers_Description3_soldiers { get; }
+
+        public abstract string Hud_Time_ValuePerMinute { get; }
+        public abstract string Hud_Time_ValuePerSecond { get; }
+        public abstract string Hud_Lock { get; }
+        public abstract string Hud_Maximum { get; }
+
+        public abstract string Tutorial_SeeThisInThat { get; }
+        public abstract string Conscript_SkillBonus { get; }
+        public abstract string SoldierStats_UnitCount { get; }
+
+        /// <summary>
+        /// Areas are field, forest, sea and siege
+        /// </summary>
+        public abstract string Conscript_DamagePerSecondInAreaX { get; }
+        public abstract string Conscript_BaseHealth { get; }
+
+        /// <summary>
+        /// Summary value for the ability to get across the map
+        /// </summary>
+        public abstract string Conscript_Mobility { get; }
+
+        public abstract string Conscript_RiderMobility { get; }
+        public abstract string Conscript_LightWagonMobility { get; }
+        public abstract string Conscript_HeavyWagonMobility { get; }
+
+        /// <summary>
+        /// Generelized for any object, like skills, resources and buildings
+        /// </summary>
+        public abstract string Culture_AffectedItems { get; }
+        //## Mounted update ##
+        public abstract string Progress_ClosingCores { get; }
+        public abstract string Editor_ExportFrame { get; }
+        public abstract string Editor_FistFrame { get; }
+        public abstract string Editor_LastFrame { get; }
+
+        public abstract string Economy_AnimalPenUpkeep { get; }
+        public abstract string Work_SlaughterX { get; }
+
+        public abstract string BuildCategory_Farming { get; }
+        public abstract string Resource_TypeName_ManType { get; }
+        public abstract string Resource_TypeName_NobelMen { get; }
+        public abstract string Resource_TypeName_ConservedFood { get; }
+
+        public abstract string UnitType_UnitOnMount { get; }
+        public abstract string UnitType_UnitOnWagon { get; }
+        public abstract string UnitType_NobelUnit { get; }
+
+        /// <summary>
+        /// 0: soldier type, 1: animal
+        /// </summary>
+        public abstract string UnitType_LeashAnimalHandler { get; }
+
+        public abstract string Info_ArmyFood4 { get; }
+        public abstract string Info_ArmyFood5 { get; }
+
+        public abstract string Resource_ConservedFood_Reserves { get; }
+        public abstract string Resource_TypeName_Clay { get; }
+        public abstract string Resource_TypeName_Brick { get; }
+        public abstract string Resource_TypeName_Container { get; }
+        public abstract string Resource_TypeName_Meat { get; }
+        public abstract string Resource_TypeName_Salt { get; }
+        public abstract string Resource_TypeName_Vehicle { get; }
+        public abstract string Resource_TypeName_WagonClosed { get; }
+        public abstract string Resource_TypeName_WagonIron { get; }
+        public abstract string Resource_TypeName_WagonSteel { get; }
+        public abstract string Resource_TypeName_Shield { get; }
+        public abstract string Resource_TypeName_BucklerShield { get; }
+        public abstract string Resource_TypeName_RoundShield { get; }
+        public abstract string Resource_TypeName_HeaterShield { get; }
+        public abstract string Resource_TypeName_TowerShield { get; }
+
+        public abstract string Resource_TypeName_Mount { get; }
+
+        public abstract string Resource_TypeName_MountArmorTitle { get; }
+
+        /// <summary>
+        /// 0: armor type
+        /// </summary>
+        public abstract string Resource_TypeName_MountArmorX { get; }
+        public abstract string Resource_TypeName_Animal { get; }
+
+        //public abstract string Resource_TypeName_WildAnimal { get; }
+
+        /// <summary>
+        /// Area with wild animals
+        /// </summary>
+        public abstract string Terrain_XAnimalHabitat { get; }
+
+        public abstract string Resource_TypeName_Oxen { get; }
+        public abstract string Resource_TypeName_KineOxen { get; }
+
+        /// <summary>
+        /// Low tier hen (for breeding)
+        /// </summary>
+        public abstract string Resource_TypeName_Fowl { get; }
+
+        /// <summary>
+        /// Low tier pig (for breeding)
+        /// </summary>
+        public abstract string Resource_TypeName_Boar { get; }
+        public abstract string Resource_TypeName_Pig { get; }
+        public abstract string Resource_TypeName_Hen { get; }
+        public abstract string Resource_TypeName_Dog { get; }
+        public abstract string Resource_TypeName_Hound { get; }
+
+        public abstract string Resource_TypeName_Pony { get; }
+        public abstract string Resource_TypeName_Horse { get; }
+        public abstract string Resource_TypeName_WarHorse { get; }
+        public abstract string Resource_TypeName_DraftHorse { get; }
+
+        public abstract string Resource_TypeName_WildPig { get; }
+        public abstract string Resource_TypeName_WildHog { get; }
+        public abstract string Resource_TypeName_WarHog { get; }
+        public abstract string Resource_TypeName_StagHog { get; }
+
+        public abstract string Resource_TypeName_Wolf { get; }
+        public abstract string Resource_TypeName_Warg { get; }
+        public abstract string Resource_TypeName_AlphaWarg { get; }
+
+        public abstract string Resource_TypeName_WildCat { get; }
+        public abstract string Resource_TypeName_Lion { get; }
+        public abstract string Resource_TypeName_WarLion { get; }
+
+        public abstract string Resource_TypeName_Elephant { get; }
+        public abstract string Resource_TypeName_WarElephant { get; }
+        public abstract string Resource_TypeName_Oliphant { get; }
+
+        public abstract string BuildHud_Select { get; }
+        public abstract string BuildHud_AreaRadius { get; }
+
+        public abstract string NobleHouse_HousingCount { get; }
+
+
+        public abstract string BuildingType_GreatHall { get; }
+        public abstract string BuildingType_GreatHall_Description { get; }
+
+        public abstract string BuildingType_ClayPit { get; }
+        public abstract string BuildingType_Butcher { get; }
+        public abstract string BuildingType_Butcher_Description { get; }
+        public abstract string BuildingType_Pottery { get; }
+        public abstract string BuildingType_CraftX_Description { get; }
+
+        public abstract string BuildingType_GatherX_Description { get; }
+
+        public abstract string BuildingType_Smoker { get; }
+        public abstract string BuildingType_Dryer { get; }
+        public abstract string BuildingType_Shieldmaker { get; }
+        public abstract string BuildingType_DryingPan { get; }
+
+        public abstract string BuildingType_TrapperHut { get; }
+        public abstract string BuildingType_TrapperHut_Description { get; }
+
+        // --- Storage ---
+        public abstract string BuildingType_MaterialStorage { get; }
+        public abstract string BuildingType_FoodStorage { get; }
+        public abstract string BuildingType_WeaponStorage { get; }
+        public abstract string BuildingType_ArmorStorage { get; }
+        public abstract string BuildingType_AnimalStorage { get; }
+
+        public abstract string BuildingType_Storage_Description { get; }
+
+        public abstract string BuildingType_Cesspit { get; }
+        public abstract string BuildingType_Cesspit_Description { get; }
+
+        public abstract string BuildingType_Cesspit_Info1_StockPile { get; }
+        public abstract string Info_XAmountIsConvertedToY { get; }
+        public abstract string Info_ProductionRestriction { get; }
+
+        public abstract string BuildingType_FowlPen { get; }
+        public abstract string BuildingType_BoarPen { get; }
+
+        // --- Oxen Pens ---
+        public abstract string BuildingType_OxenPen { get; }
+        public abstract string BuildingType_KineOxenPen { get; }
+
+        // --- Dog Cages ---
+        public abstract string BuildingType_DogCage { get; }
+        public abstract string BuildingType_HoundCage { get; }
+
+        // --- Horse Pens ---
+        public abstract string BuildingType_PonyPen { get; }
+        public abstract string BuildingType_HorsePen { get; }
+        public abstract string BuildingType_WarHorsePen { get; }
+        public abstract string BuildingType_DraftHorsePen { get; }
+
+        // --- Pig/Hog Pens ---
+        public abstract string BuildingType_WildPigPen { get; }
+        public abstract string BuildingType_WildHogPen { get; }
+        public abstract string BuildingType_WarHogPen { get; }
+        public abstract string BuildingType_StagHogPen { get; }
+
+        // --- Wolf Cages ---
+        public abstract string BuildingType_WolfCage { get; }
+        public abstract string BuildingType_WargCage { get; }
+        public abstract string BuildingType_AlphaWargCage { get; }
+
+        // --- Cat Cages ---
+        public abstract string BuildingType_WildCatCage { get; }
+        public abstract string BuildingType_LionCage { get; }
+        public abstract string BuildingType_WarLionCage { get; }
+
+        // --- Elephant Cages ---
+        public abstract string BuildingType_ElephantCage { get; }
+        public abstract string BuildingType_WarElephantCage { get; }
+        public abstract string BuildingType_OliphantCage { get; }
+
+        public abstract string BuildingDescription_Animals { get; }
+        public abstract string Pen_Breeding { get; }
+        public abstract string Pen_BreedUpChance { get; }
+        public abstract string Pen_BreedDownChance { get; }
+
+        public abstract string CityCulture_AnimalBreeder2_Description { get; }
+
+        public abstract string CityCulture_EnhancedProduction { get; }
+        public abstract string CityCulture_Production { get; }
+
+        public abstract string CityCulture_Butchers { get; }
+
+        public abstract string CityCulture_Potters { get; }
+
+        public abstract string CityCulture_Wainwright { get; }
+
+        public abstract string CityCulture_Wheelwright { get; }
+        public abstract string CityCulture_Wheelwright_Description { get; }
+
+        public abstract string CityCulture_ShieldMaker { get; }
+
+        //public abstract string CityCulture_Nomads_Description { get; }
+
+        public abstract string CityCulture_Coopers { get; }
+
+        public abstract string CityCulture_Salters { get; }
+
+
+        public abstract string CityBiome_Title { get; }
+        public abstract string CityBiome_Description { get; }
+
+        public abstract string CityBiome_Fields { get; }
+        public abstract string CityBiome_Frozen { get; }
+        public abstract string CityBiome_Forest { get; }
+        public abstract string CityBiome_Mountain { get; }
+        public abstract string CityBiome_Desolate { get; }
+        public abstract string CityBiome_Desert { get; }
+
+        public abstract string Bonus_IncreaseSkin { get; }
+        public abstract string Bonus_FoodStorage { get; }
+
+        public abstract string StockPile_LimitTitle { get; }
+        //--
+        public abstract string Help_Work_Automatic { get; }
+        public abstract string Tutorial_SecondCity { get; }
+//Spring patch
+
+        public abstract string InputAction_SkipAutomated { get; }
+
+        public abstract string Resource_WaterReason { get; }
+        public abstract string BuildingType_Orchard { get; }
+        public abstract string BuildingType_ManorLord { get; }
+        public abstract string BuildingType_ManorLord_Description { get; }
+
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public abstract string Diplomacy_EndRelations { get; }
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public abstract string ItemSource { get; }
+
+        public abstract string ItemSource_Terrain { get; }
+        public abstract string ItemSource_Farm { get; }
+        public abstract string ItemSource_CraftStation { get; }
+        public abstract string ItemSource_Gathering { get; }
+
+        public abstract string CityCulture_Nomad { get; }
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public abstract string Hud_ChangeFactor { get; }
+
+        public abstract string Hud_Purchase_LowXCost { get; }
+
+        public abstract string WorkQueue_Title { get; }
+        public abstract string WorkQueue_Length { get; }
+        public abstract string WorkQueue_ActiveWorkers { get; }
+        public abstract string WorkQueue_IdleWorkers { get; }
+
+        public abstract string WorkTeam_Size { get; }
+
+        public abstract string ObjectUi_ViewOnMap { get; }
+        public abstract string ObjectUi_StuckBuildOrders { get; }
+        public abstract string Hud_AllArmies { get; }
+
+        public abstract string Hud_CurrentPage { get; }
+        public abstract string Hud_AllPages { get; }
+        public abstract string Hud_ToAllCities { get; }
+        public abstract string Hud_ToFaction { get; }
+        public abstract string Hud_FromFaction { get; }
+        public abstract string Hud_FactionWide { get; }
+
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public abstract string Action_PlaceSettlement { get; }
+
+        public abstract string Editor_Animation_RemoveAllFramesButThis { get; }
+
+
+        //Winter patch 3
+        public abstract string Hud_Purchase_AllBuildings { get; }
+        public abstract string Hud_Purchase_AllTech { get; }
+        public abstract string BuildingType_CasualBarracks_Description { get; }
+
+
+        //Winter update patch + spring
+
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public abstract string Language_ItemCount { get; }
+
+        //public abstract string DisplayMode { get; }
+        //public abstract string DisplayMode_Windowed { get; }
+        //public abstract string DisplayMode_BorderlessFullscreen { get; }
+
+        //public abstract string GameSettings_RenderedMouseCursor { get; }
+        //public abstract string GameSettings_MuteControllerDisconnect { get; }
+
+        public abstract string Delivery_MaxDistance { get; }
+        public abstract string Tutorial_WillTakeAWhile { get; }
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public abstract string Tutorial_WaitFor { get; }
+        public abstract string GameOverResults { get; }
+
+        public abstract string UnitType_UnclaimedLand { get; }
+        public abstract string UnitType_Settler { get; }
+        public abstract string UnitType_Settler_Description { get; }
+        public abstract string Resource_ConsumedProduced { get; }
+        public abstract string InputActionName_PlaceTarget { get; }
+
+        public abstract string FactionStartSize { get; }
+        public abstract string FactionStartSize_Full { get; }
+        public abstract string FactionStartSize_OneCity { get; }
+        public abstract string FactionStartSize_Settler { get; }
+
+        //Winter update
         public abstract string Error_SoundInitFailure { get; }
-        public abstract string GameMenu_ControllerDisconnected { get; }
+        public abstract string Resource_StockpileLimit { get; }
+        public abstract string GameMode_QuickMatch { get; }
+        public abstract string GameMode_QuickMatch_Description { get; }
+        public abstract string Lobby_PlayerCount { get; }
+        public abstract string Lobby_TwoTeams { get; }
+        public abstract string Hud_Produce { get; }
+        public abstract string Tutorial_WaitForWorkerLevel { get; }
+
+        /// <summary>
+        /// 0: Production item, 1: School
+        /// </summary>
+        public abstract string Tutorial_PracticeOrSchool { get; }
+        public abstract string Tutorial_AddTag { get; }
+        public abstract string Tutorial_AddPin { get; }
+        public abstract string Tutorial_SelectMostTrees { get; }
+        public abstract string Tutorial_SelectACityWithX { get; }
+
+        /// <summary>
+        /// Will continue on another sentence "Select a city"
+        /// </summary>
+        public abstract string Tutorial_Select_NotCapital { get; }
+
         public abstract string Tutorial_HighPriority { get; }
+
+        public abstract string Tutorial_SetXPriorityToY { get; }
+        public abstract string Tutorial_AdvisorMission { get; }
+
+        public abstract string Tutorial_AdvisorDescription { get; }
+
+        public abstract string Tutorial_EndAdvisor { get; }
+
+        public abstract string Tutorial_AdvisorCompleteTitle { get; }
+        public abstract string Tutorial_AdvisorCompleteMessage { get; }
+
+        public abstract string Hud_Search { get; }
+
+        public abstract string DifficultyDescription_ExtremeAggression { get; }
+
+        public abstract string MapFilter { get; }
+
+        public abstract string Settings_TechMultiplier { get; }
+
+        public abstract string EndScreen_MatchComplete { get; }
+
+        /// <summary>
+        /// Theme: Four headed dragon symbol. Known for having an unpenetrable castle.
+        /// </summary>
+        public abstract string FactionName_DragonGem { get; }
+
+        /// <summary>
+        /// Theme: Easter egg for december. "Tomten" is an old nordic name for father christmas
+        /// </summary>
+        public abstract string FactionName_Tomten { get; }
+
+        /// <summary>
+        /// Theme: The blessed folk. A horde like farmers faction.
+        /// </summary>
+        public abstract string FactionName_Hælfolc { get; }
+
+        /// <summary>
+        /// The Iron Saints, people who guard a mountain pass against evil.
+        /// </summary>
+        public abstract string FactionName_AerimAngren { get; }
+
+        public abstract string HUD_NotAvailbleInX { get; }
+
+        public abstract string InputActionName_MiniMap { get; }
+        //-
+        public abstract string GameMenu_ControllerDisconnected { get; }
         public abstract string BuildingType_Wall_Description { get; }
         public abstract string BuildingType_Wall_Siege { get; }
         public abstract string Conscript_BlockChance { get; }
@@ -20,7 +455,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public abstract string MyLanguage { get; }
 
-        public abstract string Language_ItemCountPresentation { get; }
+        public abstract string Language_ItemCount_Colon { get; }
 
         public abstract string Lobby_Language { get; }
         public abstract string Lobby_Start { get; }
@@ -52,7 +487,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Lobby_MapSizeDesc { get; }
         public abstract string Lobby_ExitGame { get; }
 
-        public abstract string Lobby_GameVersion { get; }
+        //public abstract string Lobby_GameVersion { get; }
 
         public abstract string Player_DefaultName { get; }
 
@@ -218,7 +653,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string Diplomacy_WarDeclarationTitle { get; }
         public abstract string Diplomacy_TruceEndTitle { get; }
 
-        public abstract string EndGameStatistics_Title { get; }
+        public abstract string Statistics_Title { get; }
         public abstract string EndGameStatistics_Time { get; }
         public abstract string EndGameStatistics_SoldiersRecruited { get; }
         public abstract string EndGameStatistics_FriendlySoldiersLost { get; }
@@ -483,7 +918,7 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string DecorType_Pavement { get; }
         public abstract string BuildingType_Smith { get; }
         public abstract string BuildingType_Cook { get; }
-        public abstract string BuildingType_Storage { get; }
+        public abstract string BuildingType_Storehouse { get; }
 
         public abstract string BuildingType_ResourceFarm { get; }
 
@@ -506,7 +941,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public abstract string BuildingType_Nobelhouse_Description { get; }
         public abstract string BuildingType_CoalPit_Description { get; }
-        public abstract string BuildingType_Storage_Description { get; }
+        //public abstract string BuildingType_Storehouse_Description { get; }
 
         public abstract string MenuTab_Info { get; }
         public abstract string MenuTab_Work { get; }
@@ -596,7 +1031,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public abstract string Conscript_WeaponDamage { get; }
         public abstract string Conscript_ArmorHealth { get; }
-        public abstract string Conscript_TrainingSpeed { get; }
+        public abstract string Conscript_AttackSpeed { get; }
         public abstract string Conscript_TrainingTime { get; }
 
         public abstract string Conscript_Training_Minimal { get; }
@@ -631,7 +1066,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public abstract string Info_ButtonIcon { get; }
 
-        public abstract string Info_PerSecond { get; }
+        public abstract string Info_ResourcePerSecond { get; }
 
         public abstract string Info_MinuteAverage { get; }
 
@@ -691,12 +1126,12 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string CityCulture_Networker { get; }
         public abstract string CityCulture_PitMasters { get; }
 
-        public abstract string CityCulture_CultureIsX { get; }
+        public abstract string CityCulture_Culture { get; }
         public abstract string CityCulture_LargeFamilies_Description { get; }
         public abstract string CityCulture_FertileGround_Description { get; }
         public abstract string CityCulture_Archers_Description { get; }
         public abstract string CityCulture_Warriors_Description { get; }
-        public abstract string CityCulture_AnimalBreeder_Description { get; }
+        //public abstract string CityCulture_AnimalBreeder_Description { get; }
         public abstract string CityCulture_Miners_Description { get; }
         public abstract string CityCulture_Woodcutters_Description { get; }
         public abstract string CityCulture_Builders_Description { get; }
@@ -733,10 +1168,12 @@ namespace VikingEngine.DSSWars.Presentation
         public abstract string BuildingType_ResourceMine { get; }
         public abstract string Resource_TypeName_BogIron { get; }
         public abstract string Resource_TypeName_Coal { get; }
-        public abstract string Language_XUpkeepIsY { get; }
+        public abstract string Language_XUpkeep { get; }
         public abstract string Language_XCountIsY { get; }
         public abstract string Message_ArmyOutOfFood_Text { get; }
-        public abstract string Info_ArmyFood { get; }
+        public abstract string Info_ArmyFood1 { get; }
+        public abstract string Info_ArmyFood2 { get; }
+        public abstract string Info_ArmyFood3 { get; }
         public abstract string FactionName_Monger { get; }
         public abstract string FactionName_Hatu { get; }
         public abstract string FactionName_Destru { get; }

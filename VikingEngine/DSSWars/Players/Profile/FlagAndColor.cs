@@ -58,8 +58,8 @@ namespace VikingEngine.DSSWars.Players.Profile
         public Color col3_Skin;
         public Color col4_Hair;
        
-        public Color col6_Tunic = Color.LightGreen;
-        public Color col7_Pants = Color.Beige;
+        public Color col6_Tunic = new Color(129,119,103);
+        public Color col7_Pants = new Color(145, 114, 0);
         public Color col8_Leader = Color.SaddleBrown;
 
         public FlagDesign flagDesign;

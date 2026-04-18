@@ -1,14 +1,17 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using Microsoft.Xna.Framework;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest;
+using VikingEngine.LootFest.GO.Gadgets;
 
 
 namespace VikingEngine.DSSWars
@@ -22,10 +25,10 @@ namespace VikingEngine.DSSWars
         public static readonly string ContentDir = "DSS" + DataStream.FilePath.Dir;
         public static readonly string StoryContentDir = ContentDir + "Story" + DataStream.FilePath.Dir;
 
-#region DEBUG
+        #region DEBUG
         public static readonly bool RandomSeed = PlatformSettings.DebugOptions ? true :
             true;//DO NOT CHANGE
-        
+
         public static readonly bool DebugSquareInfo = PlatformSettings.DebugOptions ? false :
             false;//DO NOT CHANGE 
         public static readonly bool UpdateBorders = PlatformSettings.DebugOptions ? true :
@@ -33,7 +36,7 @@ namespace VikingEngine.DSSWars
 
         public const bool AllowDoubleTime = false;
         #endregion
-        
+
         public const int UserHeraldicWidth = 16;
         public const int MaxLocalPlayers = 4;
         public const int RtsMaxFactions = 2000;
@@ -115,8 +118,11 @@ namespace VikingEngine.DSSWars
         {
             conscript = new ConscriptProfile()
             {
-                weapon = Resource.ItemResourceType.KnightsLance,
+                man = Resource.ItemResourceType.NobleMen,
+                weapon = Resource.ItemResourceType.HandSpear,
                 armorLevel = Resource.ItemResourceType.FullPlateArmor,
+                animal = Resource.ItemResourceType.WarHorse,
+                mountArmor = Resource.ItemResourceType.MountLightPlateArmor,
                 training = TrainingLevel.Skillful,
                 specialization = SpecializationType.Traditional,
             }
@@ -171,6 +177,7 @@ namespace VikingEngine.DSSWars
             conscript = new ConscriptProfile()
             {
                 weapon = Resource.ItemResourceType.Sword,
+                shield = ItemResourceType.TowerShield,
                 armorLevel = Resource.ItemResourceType.FullPlateArmor,
                 training = TrainingLevel.Professional,
                 specialization = SpecializationType.HonorGuard,
@@ -186,7 +193,7 @@ namespace VikingEngine.DSSWars
                 specialization = SpecializationType.Green,
             }
         };
-        public static readonly SoldierConscriptProfile SoldierProfile_Viking= new SoldierConscriptProfile()
+        public static readonly SoldierConscriptProfile SoldierProfile_Viking = new SoldierConscriptProfile()
         {
             conscript = new ConscriptProfile()
             {
@@ -197,9 +204,9 @@ namespace VikingEngine.DSSWars
             }
         };
 
-        
-       
-        
+
+
+
 
         public const float BattleConflictRadius = 2f;
         public const int BattleChainConflictRadius = 3;
@@ -223,9 +230,9 @@ namespace VikingEngine.DSSWars
         //public static float SoldierDefaultEnergyUpkeep = DssConst.ManDefaultEnergyCost;
         public static float GroupDefaultUpkeep = SoldierDefaultUpkeep * DssConst.SoldierGroup_DefaultCount;
         public const int DefalutRecruitTrainingTimeSec = 3 * 60;
-                
 
-        public const float WeeklyArmyActionPoints = 0.05f; 
+
+        public const float WeeklyArmyActionPoints = 0.05f;
         public const float ArmyMoveDoubleTimeCostToFatigue = 0.1f;
         public const float ArmyWeeklyRest = 0.002f;
         public const float ArmyWeeklyCityTraining = 0.010f;
@@ -235,11 +242,11 @@ namespace VikingEngine.DSSWars
         //public const int LargeCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 6;
         //public const int HeadCityStartWorkForce = AbsSoldierData.GroupDefaultCount * 10;
 
-        
+
 
         public static readonly int NobelHouseWorkForceReqiurement = DssConst.HeadCityStartMaxWorkForce;
 
-        
+
         public const float BattleMaxQueTimeMs = 2000;
 
         #region OVERVIEW_LAYERS
@@ -249,16 +256,14 @@ namespace VikingEngine.DSSWars
         public const float ArmyIconMinYpos = CityIconYpos + 0.3f;
         public const float CityIconYpos = OverviewMapYpos + 0.1f;
         public const float OverviewMapYpos = 0.4f;
-#endregion
+        #endregion
 
-      
+
 
         public static string MoneyToString(int amount)
         {
             return amount.ToString() + "gold";
         }
-
-        
     }
 
     enum MapStartAs
@@ -319,36 +324,30 @@ namespace VikingEngine.DSSWars
         NUM
     }
 
-    enum CityCulture
+    enum FactionStartSize
     { 
-        LargeFamilies,//
-        FertileGround,//
-        Archers,//
-        Warriors,//
-        AnimalBreeder,//
-        Miners,//
-        Woodcutters,//
-        Builders,//
-        CrabMentality,// //ingen vill bli expert
-        DeepWell,//
-        Networker,//
-        PitMasters,//
+        Full,
+        OneCity,
+        Settler,
 
-        Stonemason,//.
-        Brewmaster,//.
-        Weavers,//.
-        SiegeEngineer,//.
-        Armorsmith,//.
-        Noblemen,//.
-        Seafaring,//.
-        Backtrader,//.
-        Lawbiding,//.
+        NUM
+    }
 
-        Smelters,//
-        BronzeCasters,//
-        Apprentices,//
+   
+   
 
-        NUM_NONE
+    enum CityResurceSeed
+    { 
+        HenOrPig,
+        Mount,
+        DogOrOxen,
+        Linnen,
+        Storage,
+        Bronze,
+        Iron,
+        ConservedFood,
+        Brick,
+        NUM
     }
 }
 

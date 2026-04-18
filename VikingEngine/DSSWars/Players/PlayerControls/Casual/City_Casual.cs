@@ -17,10 +17,19 @@ namespace VikingEngine.DSSWars.GameObject
         public CasualCityProfile casualCityProfile = new CasualCityProfile();
         CityCasualProgress casualProgress = null;
 
+        public void CasualBuild(List<CasualBuildType> list)
+        {
+            foreach (var build in list)
+            {
+                CasualBuild(build, 1);
+            }
+        }
+
         public void CasualBuild(CasualBuildType type, int count)
         {
             GetCasualProgress().AddBuild(this, new CasualBuildQueueItem() { build = type, count = count });
         }
+
         public void FinishCasualBuild(CasualBuildType casualBuildType)
         {
             switch (casualBuildType)
@@ -30,7 +39,7 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case CasualBuildType.WorkerHut:
                     queuePlaceBuilding(BuildAndExpandType.WorkerHut);
-                    queuePlaceBuilding(BuildAndExpandType.WheatFarm);
+                    queuePlaceBuilding(BuildAndExpandType.OrchardApple);
                     queuePlaceBuilding(BuildAndExpandType.LinenFarm);
                     break;
                 case CasualBuildType.Barracks:
@@ -159,7 +168,7 @@ namespace VikingEngine.DSSWars.GameObject
                 var buildData = BuildLib.BuildOptions[(int)build];
                 IntVector2 buildPos = IntVector2.NegativeOne;
 
-                if (CityStructure.Find(this, buildData.mainType, buildData.subType, out IntVector2 sameBuilding))
+                if (CityStructure.Find(this, buildData.terrainType.mainTerrain, buildData.terrainType.subTerrain, out IntVector2 sameBuilding))
                 {
                     findAdjacentFreeSpot(Casual_EdgeRandomizer, sameBuilding, ref buildPos);
                 }

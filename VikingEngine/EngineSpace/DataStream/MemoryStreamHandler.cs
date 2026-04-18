@@ -8,6 +8,7 @@ namespace VikingEngine.DataStream
 {
     class MemoryStreamHandler: DataLib.ISaveByteArrayObj
     {
+
         System.IO.MemoryStream s;
         System.IO.BinaryWriter w;
         

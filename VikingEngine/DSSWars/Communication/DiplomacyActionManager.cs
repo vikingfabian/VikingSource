@@ -24,16 +24,24 @@ namespace VikingEngine.DSSWars.Communication
 
         public List<DiplomacyOption> diplomacyOptionsToBot(LocalPlayer player, Faction botFaction)
         {
-            List<DiplomacyOption> result = new List<DiplomacyOption>(); 
+            List<DiplomacyOption> result = new List<DiplomacyOption>();
+
+            if (player == null || botFaction == null)
+            {
+                return result;
+            }
 
             this.player = player;
             this.botFaction = botFaction;
-            
-            selectedRelation = player.faction.diplomaticRelations[botFaction.myIndex];
+
+            selectedRelation = DssRef.world.diplomacy.GetRelation(player.faction.myIndex, botFaction.myIndex);//player.faction.diplomaticRelations[botFaction.myIndex];
+            //if (selectedRelation == null)
+            //{
+            //    return result;
+            //}
             againstDark = botFaction.WantToAllyAgainstDark() && player.faction.diplomaticSide == DiplomaticSide.Light;
 
-            if (selectedRelation.SpeakTerms > SpeakTerms.SpeakTermsN2_None &&
-                botFaction.player.IsBot())
+            if (selectedRelation.SpeakTerms > SpeakTerms.SpeakTermsN2_None)
             {
                 if (selectedRelation.Relation <= RelationType.RelationTypeN3_War)
                 {
@@ -111,6 +119,27 @@ namespace VikingEngine.DSSWars.Communication
                 }
             }
 
+            if (selectedRelation.Relation >= RelationType.RelationType2_Good)
+            {
+                DiplomacyOption endRelation = new DiplomacyOption()
+                {
+                    toRelation = RelationType.RelationType0_Neutral,
+                    available = true,
+                    cost = Diplomacy.EndRelationCost(selectedRelation.Relation)
+                };
+                result.Add(endRelation);
+            }
+            if (selectedRelation.Relation > RelationType.RelationTypeN3_War)
+            {
+                DiplomacyOption declareWar = new DiplomacyOption()
+                {
+                    toRelation = RelationType.RelationTypeN3_War,
+                    available = true,
+                    cost = Diplomacy.DeclareWarCost(selectedRelation.Relation)
+                };
+                result.Add(declareWar);
+            }
+
             return result;
         }
 
@@ -136,12 +165,13 @@ namespace VikingEngine.DSSWars.Communication
             return selectedRelation.Relation == RelationType.RelationType3_Ally &&
                 player.faction.militaryStrength >= Diplomacy.MiltitaryStrengthXServant * botFaction.militaryStrength &&
                 player.diplomaticPoints.Int() >= cost &&
-                botFaction.cities.Count <= DssRef.diplomacy.ServantMaxCities &&
+                botFaction.cities.Count <= DssRef.world.diplomacy.ServantMaxCities &&
                 hasStrongerFoe();
         }
         bool hasStrongerFoe()
         {
-            var wars = DssRef.diplomacy.collectWars(botFaction);
+            List<int> wars = new List<int>(8);
+            DssRef.world.diplomacy.collectWars(botFaction, wars);
 
             foreach (var w in wars)
             {

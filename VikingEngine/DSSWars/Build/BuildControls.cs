@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using VikingEngine;
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars;
-using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map;
@@ -35,20 +34,21 @@ namespace VikingEngine.DSSWars.Build
     class BuildControls
     {
         static readonly Build.BuildAndExpandType[] AutoBuildOptions =
-           {
-                Build.BuildAndExpandType.WheatFarm,
-                Build.BuildAndExpandType.LinenFarm,
-                Build.BuildAndExpandType.RapeSeedFarm,
-                Build.BuildAndExpandType.HempFarm,
+        {
+            Build.BuildAndExpandType.OrchardApple,
+            Build.BuildAndExpandType.WheatFarm,
+            Build.BuildAndExpandType.LinenFarm,
+            Build.BuildAndExpandType.RapeSeedFarm,
+            Build.BuildAndExpandType.HempFarm,
 
-                Build.BuildAndExpandType.PigPen,
-                Build.BuildAndExpandType.HenPen,
-            };
+        };
 
         public static readonly MapPaintToolShape[] AvailableToolShapes = { MapPaintToolShape.Free, MapPaintToolShape.Line, MapPaintToolShape.LShape, MapPaintToolShape.Area };
 
+        
         public SelectTileResult buildMode = SelectTileResult.None;
-        public BuildAndExpandType placeBuildingType = BuildAndExpandType.WorkerHut;
+        public BuildAndExpandType placeBuildingType = BuildAndExpandType.OrchardApple;
+        bool availableBuildingType = true;
         public MapPaintToolShape toolShape = MapPaintToolShape.Area;
         LocalPlayer player;
         City city;
@@ -64,19 +64,42 @@ namespace VikingEngine.DSSWars.Build
             return BuildLib.BuildOptions[(int)placeBuildingType];
         }
 
+        public void checkBuildAvailable(City city)
+        {
+            this.city = city;
+            List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
+            BuildLib.AvailableBuildTypes(available, city, false);
+            availableBuildingType = available.Contains(placeBuildingType);
+            
+        }
+
+        public MayBuildResult adjustMayBuild( MayBuildResult mayBuild)
+        {
+            if (!availableBuildingType)
+            {
+                mayBuild = MayBuildResult.No_OutsideRegion;
+            }
+
+            return mayBuild;
+        }
+
         bool actOnTile(IntVector2 subTilePos, bool commit, out int usesBuildQue, out City city)
         {
             if (buildMode == SelectTileResult.Build)
             {
                 usesBuildQue = 1;
-                var mayBuild = SelectedSubTile.MayBuild(subTilePos, player, out bool upgrade, out city);
+                var mayBuild = adjustMayBuild(SelectedSubTile.MayBuild(subTilePos, player, out bool upgrade, out city));
+                
+                //if (!availableBuildingType)
+                //{
+                //    mayBuild = MayBuildResult.No_OutsideRegion;
+                //}
+                
                 if (mayBuild == MayBuildResult.Yes || mayBuild == MayBuildResult.Yes_ChangeCity)
                 {
 
                     if (commit)
                     {
-                        //SoundLib.start_build_contruct.Play();
-
                         if (DssRef.difficulty.GodPowers())
                         {
                             var build = BuildLib.BuildOptions[(int)placeBuildingType];
@@ -91,7 +114,7 @@ namespace VikingEngine.DSSWars.Build
                         }
                         else if (placeBuildingOption().blueprint.meetsRequirements(city))
                         {
-                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.buildOrder.value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
+                            player.orders.addOrder(player.playerData.localPlayerIndex, new BuildOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos, placeBuildingType, upgrade), ActionOnConflict.Toggle);
                         }
                         else
                         {
@@ -117,8 +140,6 @@ namespace VikingEngine.DSSWars.Build
                 {
                     if (commit)
                     {
-                        //SoundLib.start_destroy_contruct.Play();
-
                         if (DssRef.difficulty.GodPowers())
                         {
                             BuildLib.Demolish(city, subTilePos);
@@ -126,12 +147,8 @@ namespace VikingEngine.DSSWars.Build
                         }
                         else
                         {
-                            player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.buildOrder.value, true, city, subTilePos), ActionOnConflict.Toggle);
+                            player.orders.addOrder(player.playerData.localPlayerIndex, new DemolishOrder(city.workTemplate.Get(WorkPriorityType.buildOrders).value, true, city, subTilePos), ActionOnConflict.Toggle);
                         }
-                    }
-                    else
-                    {
-                        //SoundLib.woodcut.Play();
                     }
 
                     return true;
@@ -162,8 +179,6 @@ namespace VikingEngine.DSSWars.Build
 
         public void updateBuildMode()
         {
-            
-
             if (player.gameControls.input.mouseSelect.DownEvent)
             {
                 deleteSelection();
@@ -449,7 +464,7 @@ namespace VikingEngine.DSSWars.Build
                 {
                     List<IntVector2> positions = new List<IntVector2>(count);
                     CityStructure structure = new CityStructure();
-                    structure.update(city, 1);
+                    structure.update( DssRef.world, city, 1);
 
                     findBuildPositons_AutoBuilder(positions);
                     if (count > 0)
@@ -476,13 +491,21 @@ namespace VikingEngine.DSSWars.Build
                         void findAdjacentFreeSpot(IntVector2 center)
                         {
                             ForXYEdgeLoopRandomPicker Auto_EdgeRandomizer = new ForXYEdgeLoopRandomPicker();
-                            for (int r = 1; r <= 2; r++)
+                            for (int r = 0; r <= 2; r++)
                             {
-                                Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
+                                if (r == 0)
+                                {
+                                    Auto_EdgeRandomizer.addDir4(center);
+                                    Auto_EdgeRandomizer.add(center);
+                                }
+                                else
+                                { 
+                                    Auto_EdgeRandomizer.start(Rectangle2.FromCenterTileAndRadius(center, r));
+                                }
 
                                 while (Auto_EdgeRandomizer.Next())
                                 {
-                                    if (structure.MayAutoBuildHere(city, Auto_EdgeRandomizer.Position) &&
+                                    if (city.MayAutoBuildHere(Auto_EdgeRandomizer.Position) &&
                                         !player.orders.orderConflictingSubTile(Auto_EdgeRandomizer.Position, false))
                                     {
                                         result.Add(Auto_EdgeRandomizer.Position);
@@ -501,7 +524,8 @@ namespace VikingEngine.DSSWars.Build
                         IntVector2 topleft;
                         ForXYLoop subTileLoop;
 
-                        for (int radius = 1; radius <= city.cityTileRadius; ++radius)
+                        int cityradius = city.cityTileArea.size.SideLength() / 2;
+                        for (int radius = 1; radius <= cityradius; ++radius)
                         {
                             int distanceValue = -radius;
                             ForXYEdgeLoop cirkleLoop = new ForXYEdgeLoop(Rectangle2.FromCenterTileAndRadius(city.tilePos, radius));
@@ -545,12 +569,12 @@ namespace VikingEngine.DSSWars.Build
             });           
         }
 
-        public List<BuildAndExpandType> availableBuildOptions(City city)
+        public List<BuildAndExpandType> availableBuildOptions(City city, bool viewTabs)
         {
             List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
 
             if (player.tutorial == null || player.tutorial.AdvisorMode())
-            { BuildLib.AvailableBuildTypes(available, city); }
+            { BuildLib.AvailableBuildTypes(available, city, false); }
             else
             { available = player.tutorial.AvailableBuildTypes(); }
 
@@ -572,7 +596,7 @@ namespace VikingEngine.DSSWars.Build
                 foreach (var opt in available)
                 {
                     var build = BuildLib.BuildOptions[(int)opt];
-                    if (build.buildCategory == player.buildCategoryTab)
+                    if (build.buildCategory == player.buildCategoryTab || !viewTabs)
                     {
                         availableFiltered.Add(opt);
                     }
@@ -593,14 +617,17 @@ namespace VikingEngine.DSSWars.Build
         public void toHud(LocalPlayer player, RichBoxContent content, City city)
         {
             this.city = city;
+            bool viewTabs;
 
             if (player.tutorial != null && player.tutorial.DisplayCompressedBuildTab())
             {
+                viewTabs = false;
                 player.buildCategoryTab = BuildCategoryTab.General;
                 content.newParagraph();
             }
             else
             {
+                viewTabs = true;
                 buildTabToHud(content);
             }
 
@@ -650,7 +677,8 @@ namespace VikingEngine.DSSWars.Build
 
                     content.newParagraph();
 
-                    city.workTemplate.autoBuild.toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.faction, city);
+                    city.workTemplate.Get(WorkPriorityType.autoBuild).toHud(player, content, DssRef.lang.Work_OrderPrioTitle, SpriteName.AutomationGearIcon, SpriteName.NO_IMAGE, WorkPriorityType.autoBuild, player.faction, city, ItemResourceType.NONE);
+                    
                 }
             }
             else
@@ -666,7 +694,7 @@ namespace VikingEngine.DSSWars.Build
 
                 upgradeButtons(player, content, city, buildOpt);
 
-                buildOptionsToHud(content);
+                buildOptionsToHud(content, viewTabs);
 
                 if (player.tutorial == null || !player.tutorial.DisplayCompressedBuildTab())
                 {
@@ -732,8 +760,8 @@ namespace VikingEngine.DSSWars.Build
                     content.newLine();
                     HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
                     content.newLine();
-                    city.workTemplate.buildOrder.toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders,
-                        player.faction, city);
+                    city.workTemplate.Get(WorkPriorityType.buildOrders).toHud(player, content, DssRef.lang.Build_Order, SpriteName.WarsHammer, SpriteName.warsBuildCategoryHouse, WorkPriorityType.buildOrders,
+                        player.faction, city, ItemResourceType.NONE);
 
 
                 }
@@ -833,8 +861,9 @@ namespace VikingEngine.DSSWars.Build
         {
             List<BuildCategoryTab> buildCategories = new List<BuildCategoryTab>
             {
-                BuildCategoryTab.General,
+                BuildCategoryTab.General,                
                 BuildCategoryTab.Advanced,
+                BuildCategoryTab.Farming,
                 BuildCategoryTab.Military,
                 BuildCategoryTab.Decor,
                 BuildCategoryTab.Upgrade,
@@ -853,57 +882,21 @@ namespace VikingEngine.DSSWars.Build
 
             foreach (var tab in buildCategories)
             {
-                string category;
-                SpriteName tabIcon;
-                switch (tab)
-                {
-                    case BuildCategoryTab.Filter:
-                        tabIcon = SpriteName.warsBuildCategorySearch;
-                        category = DssRef.lang.HUD_Filter;
-                        break;
-                    case BuildCategoryTab.General:
-                        tabIcon = SpriteName.warsBuildCategoryHouse;
-                        category = DssRef.lang.BuildCategory_General;
-                        break;
-                    case BuildCategoryTab.Advanced:
-                        tabIcon = SpriteName.warsBuildCategoryAdvanced;
-                        category = DssRef.lang.Hud_Advanced;
-                        break;
-                    case BuildCategoryTab.Military:
-                        tabIcon = SpriteName.warsBuildCategoryMilitaryWall;
-                        category = DssRef.lang.BuildCategory_Military;
-                        break;
-                    case BuildCategoryTab.Decor:
-                        tabIcon = SpriteName.warsBuildCategoryDecorTree;
-                        category = DssRef.lang.BuildCategory_Decoration;
-                        break;
-                    case BuildCategoryTab.Upgrade:
-                        tabIcon = SpriteName.warsBuildCategoryUpgrades;
-                        category = DssRef.lang.BuildCategory_Upgrade;
-                        break;
-                    case BuildCategoryTab.GodPower:
-                        tabIcon = SpriteName.WarsGodPowerIcon;
-                        category = DssRef.lang.GodPower;
-                        break;
-                    default:
-                        tabIcon = SpriteName.warsBuildCategoryAutomation;
-                        category = DssRef.lang.Automation_Title;
-                        break;
-
-                }
+                IconName.BuildCategory(tab, out SpriteName tabIcon, out string category);
+                
                 var tabButton = new ArtButton(tab == player.buildCategoryTab ? RbButtonStyle.SubTabSelected : RbButtonStyle.SubTabNotSelected,
                     new List<AbsRichBoxMember> { new RbImage(tabIcon) },
                     new RbAction1Arg<BuildCategoryTab>((BuildCategoryTab selectTab) => { player.buildCategoryTab = selectTab; }, tab, RbSoundType.Tab),
-                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_category, category)));
+                    new RbTooltip_Text(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_category, category)));
                 content.Add(tabButton);
             }
         }
 
 
-        void buildOptionsToHud(RichBoxContent content)
+        void buildOptionsToHud(RichBoxContent content, bool viewTabs)
         {
             bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.Build, out Color focusColor);
-            if (viewControllerTabs)
+            if (viewControllerTabs && player.gameControls.input.Controller_TabLeft.IsActive && player.gameControls.input.Controller_TabRight.IsActive)
             {
                 content.newLine();
                 content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
@@ -912,7 +905,7 @@ namespace VikingEngine.DSSWars.Build
                 content.newLine();
             }
 
-            List<BuildAndExpandType> available = availableBuildOptions(city);
+            List<BuildAndExpandType> available = availableBuildOptions(city, viewTabs);
 
             if (player.buildCategoryTab == BuildCategoryTab.Filter)
             {
@@ -993,7 +986,7 @@ namespace VikingEngine.DSSWars.Build
         {
             BuildAndExpandType type = (BuildAndExpandType)tag;
 
-            var build = BuildLib.BuildOptions[(int)type];
+            BuildOption build = BuildLib.BuildOptions[(int)type];
             content.h2(TextLib.LargeFirstLetter(build.Label())).overrideColor = HudLib.TitleColor_TypeName;
 
             //content.newLine();
@@ -1015,6 +1008,16 @@ namespace VikingEngine.DSSWars.Build
             content.newLine();
             switch (type)
             {
+                case BuildAndExpandType.Cesspit:
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(DssRef.lang.BuildingType_Cesspit_Info1_StockPile));
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(string.Format( DssRef.lang.Info_XAmountIsConvertedToY, TextLib.PercentTextWithSymbol(DssConst.CessPitConvertToFuelPercentage), DssRef.lang.Resource_TypeName_Fuel)));
+
+                    break;
+
                 case BuildAndExpandType.ResearchCenter:
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(SpriteName.WarsUnitLevelBasic));
@@ -1032,8 +1035,6 @@ namespace VikingEngine.DSSWars.Build
                     content.newParagraph();
                     content.Add(new RbText(LangLib.TechnologyExample(), HudLib.InfoYellow_Light));
                     break;
-
-
 
                 case BuildAndExpandType.WaterResovoir:
                     HudLib.BulletPoint(content);
@@ -1097,6 +1098,22 @@ namespace VikingEngine.DSSWars.Build
                     break;
 
                 case BuildAndExpandType.Logistics:
+
+                    HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbImage(SpriteName.WarsResource_Food));
+                    content.space();
+                    bool canBuild = city.CanBuildLogistics(1);
+                    content.Add(new RbImage(canBuild ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
+                    content.hspace();
+                    var reqText = new RbText(string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, DssConst.Logistics1FoodStorage));
+                    reqText.overrideColor = canBuild ? HudLib.AvailableColor : HudLib.NotAvailableColor;
+                    content.Add(reqText);
+
+                    content.newParagraph();
+                    HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Gain);
+                    content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(SpriteName.birdUnLock));
                     if (city.CanBuildLogistics(2))
@@ -1118,23 +1135,32 @@ namespace VikingEngine.DSSWars.Build
                         content.space();
                         content.Add(new RbText(opt.Label()));
                     }
-                    content.newParagraph();
+                    //content.newParagraph();
 
-                    HudLib.Label(content, DssRef.lang.Hud_PurchaseTitle_Requirement);
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbImage(SpriteName.WarsResource_Food));
-                    content.space();
-                    var reqText = new RbText(string.Format(DssRef.lang.Requirements_XItemStorageOfY, DssRef.lang.Resource_TypeName_Food, DssConst.Logistics1FoodStorage));
-                    reqText.overrideColor = city.CanBuildLogistics(1) ? HudLib.AvailableColor : HudLib.NotAvailableColor;
-                    content.Add(reqText);
+                    
                     break;
 
-                case BuildAndExpandType.Nobelhouse:
+                case BuildAndExpandType.ManorLord:
+                    foreach (var building in BuildLib.ManorUnlockBuildings)
+                    {
+                        var opt = BuildLib.BuildOptions[(int)building];
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(DssRef.lang.XP_UnlockBuilding, HudLib.SecondaryTextColor));
+                        content.Add(new RbImage(opt.sprite));
+                        content.space();
+                        content.Add(new RbText(opt.Label()));
+                    }
+
+                    break;
+
+                case BuildAndExpandType.Noblehouse:
 
 
                     HudLib.BulletPoint(content);
-                    content.Add(new RbText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
+                    //content.Add(new RbText(DssRef.lang.Building_NobleHouse_UnlocksKnight));
+                    content.Add(new RbText(string.Format(DssRef.lang.NobleHouse_HousingCount, DssConst.NobleHouseMenCount)));
+                    
                     content.newLine();
 
                     HudLib.BulletPoint(content);
@@ -1152,7 +1178,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Embassy:
                     EmbassyDescription(content);
 
-                    //int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.EmbassyAddDiplomacy * 3600);
+                    //int diplomacydSec = Convert.ToInt32(DssRef.world.diplomacy.EmbassyAddDiplomacy * 3600);
 
                     //HudLib.BulletPoint(content);
                     //content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
@@ -1161,8 +1187,14 @@ namespace VikingEngine.DSSWars.Build
 
                     //HudLib.BulletPoint(content);
                     //content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
-                    //content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.EmbassyAddMaxDiplomacy)));
+                    //content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.world.diplomacy.EmbassyAddMaxDiplomacy)));
                     //content.newLine();
+                    break;
+
+                case BuildAndExpandType.OrchardApple:
+                case BuildAndExpandType.OrchidBanana:
+                    farmHud_any(false, new ItemResource(ItemResourceType.Food_G, DssConst.OrchidFoodAmount), ItemResource.Empty, 
+                        TerrainContent.OrchardReady - TerrainContent.OrchardWatered, DssConst.WorkTime_PluckOrchards, DssConst.OrchardWaterCost);
                     break;
 
                 case BuildAndExpandType.WheatFarm:
@@ -1187,7 +1219,7 @@ namespace VikingEngine.DSSWars.Build
 
                     break;
                 case BuildAndExpandType.RapeSeedFarmUpgraded:
-                    farmHud(false, new ItemResource(ItemResourceType.Fuel_G, DssConst.RapeSeedFuelAmount), ItemResource.Empty);
+                    farmHud(true, new ItemResource(ItemResourceType.Fuel_G, DssConst.RapeSeedFuelAmount), ItemResource.Empty);
                     break;
 
                 case BuildAndExpandType.HempFarm:
@@ -1198,46 +1230,128 @@ namespace VikingEngine.DSSWars.Build
                     farmHud(true, new ItemResource(ItemResourceType.SkinLinen_Group, DssConst.HempLinenAndFuelAmount), new ItemResource(ItemResourceType.Fuel_G, DssConst.HempLinenAndFuelAmount));
                     break;
 
+                case BuildAndExpandType.TrapperHut:
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(DssRef.lang.BuildHud_AreaEffectTitle));
+
+                    content.newLine();
+                    HudLib.BulletPoint(content);
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
+
+                    break;
+                case BuildAndExpandType.FowlPen:
+                    pen(build, TerrainContent.FowlGrowth, ItemResourceType.Fowl, CraftResourceLib.SlaughterFowl, true, false, true);
+
+                    //eggProduction();
+                    break;
                 case BuildAndExpandType.HenPen:
-                    content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.HenReady - 1))));
+                    pen(build, TerrainContent.HenGrowth, ItemResourceType.Hen, CraftResourceLib.SlaughterHen, false, true, true);
 
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce + DssConst.WorkTime_PickUpResource))));
+                    //eggProduction();
+                    break;
 
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbText(DssRef.lang.BuildHud_Produce));
-                    content.space();
-                    content.Add(new RbText((DssConst.HenRawFoodAmout + DssConst.EggRawFoodAmout).ToString()));
-                    content.Add(new RbImage(SpriteName.WarsResource_RawFood));
-                    content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
+                case BuildAndExpandType.BoarPen:
+                    pen(build, TerrainContent.BoarGrowth, ItemResourceType.Boar, CraftResourceLib.SlaughterBoar, true, false);  
                     break;
 
                 case BuildAndExpandType.PigPen:
-                    content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.PigReady - 1))));
+                    pen(build, TerrainContent.PigGrowth, ItemResourceType.Pig, CraftResourceLib.SlaughterPig, false, true);                                    
+                    break;
 
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce))));
+                //content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
+                //content.newLine();
+                //HudLib.BulletPoint(content);
+                //content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.PigGrowth.harvestReady - 1))));
 
-                    content.newLine();
-                    HudLib.BulletPoint(content);
-                    content.Add(new RbText(DssRef.lang.BuildHud_Produce));
-                    content.space();
-                    content.Add(new RbText(DssConst.PigRawFoodAmout.ToString()));
-                    content.Add(new RbImage(SpriteName.WarsResource_RawFood));
-                    content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
-                    content.Add(new RbImage(SpriteName.pjNumPlus));
-                    content.Add(new RbText(DssConst.PigSkinAmount.ToString()));
-                    content.Add(new RbImage(SpriteName.WarsResource_LinenCloth));
-                    content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
+                //content.newLine();
+                //HudLib.BulletPoint(content);
+                //content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce))));
+
+                //content.newLine();
+                //HudLib.BulletPoint(content);
+                //content.Add(new RbText(DssRef.lang.BuildHud_Produce));
+                //content.space();
+                //IconName.Item(ItemResourceType.Pig, out SpriteName itemIcon, out string itemName);
+                //content.Add(new RbImage(itemIcon));
+                //content.hspace();
+                //content.Add(new RbText(itemName));    
+                //content.Add(new RbText(DssConst.PigRawFoodAmout.ToString()));
+                //content.Add(new RbImage(SpriteName.WarsResource_RawFood));
+                //content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
+                //content.Add(new RbImage(SpriteName.pjNumPlus));
+                //content.Add(new RbText(DssConst.PigSkinAmount.ToString()));
+                //content.Add(new RbImage(SpriteName.WarsResource_LinenCloth));
+                //content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
+
+                case BuildAndExpandType.OxenPen:
+                    pen(build, TerrainContent.OxenGrowth, ItemResourceType.Oxen, CraftResourceLib.SlaughterOxen, true, false);
+                    break;
+                case BuildAndExpandType.KineOxenPen:
+                    pen(build, TerrainContent.KineOxenGrowth, ItemResourceType.KineOxen, CraftResourceLib.SlaughterKineOxen, false, true);
+                    break;
+
+                case BuildAndExpandType.DogCage:
+                    pen(build, TerrainContent.DogGrowth, ItemResourceType.Dog, null, true, false);
+                    break;
+                case BuildAndExpandType.HoundCage:
+                    pen(build, TerrainContent.HoundGrowth, ItemResourceType.Hound, null, false, true);
+                    break;
+
+                case BuildAndExpandType.PonyPen:
+                    pen(build, TerrainContent.PonyGrowth, ItemResourceType.Pony, CraftResourceLib.SlaughterPony, true, false);
+                    break;
+                case BuildAndExpandType.HorsePen:
+                    pen(build, TerrainContent.HorseGrowth, ItemResourceType.Horse, CraftResourceLib.SlaughterHorse, true, true);
+                    break;
+                case BuildAndExpandType.WarHorsePen:
+                    pen(build, TerrainContent.WarHorseGrowth, ItemResourceType.WarHorse, CraftResourceLib.SlaughterWarHorse, false, true);
+                    break;
+                case BuildAndExpandType.DraftHorsePen:
+                    pen(build, TerrainContent.DraftHorseGrowth, ItemResourceType.DraftHorse, CraftResourceLib.SlaughterDraftHorse, false, true);
+                    break;
+
+                case BuildAndExpandType.WildPigPen:
+                    pen(build, TerrainContent.WildPigGrowth, ItemResourceType.WildPig, CraftResourceLib.SlaughterWildPig, true, false);
+                    break;
+                case BuildAndExpandType.WildHogPen:
+                    pen(build, TerrainContent.WildHogGrowth, ItemResourceType.WildHog, CraftResourceLib.SlaughterWildHog, true, true);
+                    break;
+                case BuildAndExpandType.WarHogPen:
+                    pen(build, TerrainContent.WarHogGrowth, ItemResourceType.WarHog, CraftResourceLib.SlaughterWarHog, false, true);
+                    break;
+                case BuildAndExpandType.StagHogPen:
+                    pen(build, TerrainContent.StagHogGrowth, ItemResourceType.StagHog, CraftResourceLib.SlaughterStagHog, false, true);
+                    break;
+
+                case BuildAndExpandType.WolfCage:
+                    pen(build, TerrainContent.WolfGrowth, ItemResourceType.Wolf, CraftResourceLib.SlaughterWolf, true, false);
+                    break;
+                case BuildAndExpandType.WargCage:
+                    pen(build, TerrainContent.WargGrowth, ItemResourceType.Warg, CraftResourceLib.SlaughterWarg, true, true);
+                    break;
+                case BuildAndExpandType.AlphaWargCage:
+                    pen(build, TerrainContent.AlphaWargGrowth, ItemResourceType.AlphaWarg, CraftResourceLib.SlaughterAlphaWarg, false, true);
+                    break;
+
+                case BuildAndExpandType.WildCatCage:
+                    pen(build, TerrainContent.WildCatGrowth, ItemResourceType.WildCat, CraftResourceLib.SlaughterWildCat, true, false);
+                    break;
+                case BuildAndExpandType.LionCage:
+                    pen(build, TerrainContent.LionGrowth, ItemResourceType.Lion, CraftResourceLib.SlaughterLion, true, true);
+                    break;
+                case BuildAndExpandType.WarLionCage:
+                    pen(build, TerrainContent.WarLionGrowth, ItemResourceType.WarLion, CraftResourceLib.SlaughterWarLion, false, true);
+                    break;
+
+                case BuildAndExpandType.ElephantCage:
+                    pen(build, TerrainContent.ElephantGrowth, ItemResourceType.Elephant, CraftResourceLib.SlaughterElephant, true, false);
+                    break;
+                case BuildAndExpandType.WarElephantCage:
+                    pen(build, TerrainContent.WarElephantGrowth, ItemResourceType.WarElephant, CraftResourceLib.SlaughterWarElephant, true, true);
+                    break;
+                case BuildAndExpandType.OliphantCage:
+                    pen(build, TerrainContent.OliphantGrowth, ItemResourceType.Oliphant, CraftResourceLib.SlaughterOliphant, false, true);
                     break;
 
                 case BuildAndExpandType.Brewery:
@@ -1246,36 +1360,52 @@ namespace VikingEngine.DSSWars.Build
 
                 case BuildAndExpandType.Cook:
                     mayCraftList(content, CraftResourceLib.Food1);
-
                     break;
 
+                case BuildAndExpandType.Butcher:
+                    //mayCraftList(content, city, CraftList.ButcherAnimalCraftTypes);
+                    break;
+                case BuildAndExpandType.Pottery:
+                    mayCraftList(content, city, CraftList.PotteryCraftTypes);
+                    break;
+                case BuildAndExpandType.ShieldMaker:
+                    mayCraftList(content, city, CraftList.ShieldMakerCraftTypes);
+                    break;
+                case BuildAndExpandType.Smoker:
+                    mayCraftList(content, CraftResourceLib.ConservedFood_Smoked);
+                    break;
+                case BuildAndExpandType.Dryer:
+                    mayCraftList(content, CraftResourceLib.ConservedFood_Dried);
+                    break;
+
+
                 case BuildAndExpandType.Carpenter:
-                    mayCraftList(content, city, CraftBuildingLib.CarpenterCraftTypes);
+                    mayCraftList(content, city, CraftList.CarpenterCraftTypes);
 
                     break;
 
                 case BuildAndExpandType.WorkBench:
-                    mayCraftList(content, city, CraftBuildingLib.BenchCraftTypes);
+                    mayCraftList(content, city, CraftList.BenchCraftTypes);
                     break;
 
                 case BuildAndExpandType.Smelter:
-                    mayCraftList(content, city, CraftBuildingLib.SmelterCraftTypes);
+                    mayCraftList(content, city, CraftList.SmelterCraftTypes);
                     break;
 
                 case BuildAndExpandType.Foundry:
-                    mayCraftList(content, city, CraftBuildingLib.FoundryCraftTypes);
+                    mayCraftList(content, city, CraftList.FoundryCraftTypes);
                     break;
 
                 case BuildAndExpandType.Armory:
-                    mayCraftList(content, city, CraftBuildingLib.ArmoryCraftTypes);
+                    mayCraftList(content, city, CraftList.ArmoryCraftTypes);
                     break;
 
                 case BuildAndExpandType.Smith:
-                    mayCraftList(content, city, CraftBuildingLib.SmithCraftTypes);
+                    mayCraftList(content, city, CraftList.SmithCraftTypes);
                     break;
 
                 case BuildAndExpandType.Gunmaker:
-                    mayCraftList(content, city, CraftBuildingLib.GunmakerCraftTypes);
+                    mayCraftList(content, city, CraftList.GunmakerCraftTypes);
                     break;
 
                 case BuildAndExpandType.CoalPit:
@@ -1338,7 +1468,7 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.StoneWallBlueRoof:
                 case BuildAndExpandType.StoneWallWoodHouse:
 
-                    DefenceMenu.WallDefenceToHud(content, (TerrainWallType)build.subType, true);
+                    DefenceMenu.WallDefenceToHud(content, (TerrainWallType)build.terrainType.subTerrain, true);
                     break;
 
             }
@@ -1389,7 +1519,12 @@ namespace VikingEngine.DSSWars.Build
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Delivery_SendChunk, maxAmount)));
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Delivery_SendChunk, maxAmount)));
+
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(string.Format(DssRef.lang.Delivery_MaxDistance, DssConst.DeliveryMaxDistance)));
+
                 if (speedBonus > 0)
                 {
                     content.newLine();
@@ -1397,27 +1532,36 @@ namespace VikingEngine.DSSWars.Build
                     content.Add(new RbText(string.Format(DssRef.lang.Delivery_SpeedBonus, speedBonus)));
                 }
             }
+
             void farmHud(bool upgrade, ItemResource produce1, ItemResource produce2)
+            { 
+                farmHud_any(upgrade, produce1, produce2, TerrainContent.FarmCulture_ReadySize - 1, DssConst.WorkTime_GatherFoil_FarmCulture, DssConst.PlantWaterCost);
+            }
+
+            void farmHud_any(bool upgrade, ItemResource produce1, ItemResource produce2, int plantToReadyTime, float gatherTime, int PlantWaterCost)
             {
                 float plantTime = upgrade ? DssConst.WorkTime_Plant_Upgraded : DssConst.WorkTime_Plant;
 
                 content.h2(DssRef.lang.BuildHud_PerCycle).overrideColor = HudLib.TitleColor_Label;
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, TerrainContent.FarmCulture_ReadySize - 1))));
+                content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, plantToReadyTime))));
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                var workTimeText = new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, plantTime + DssConst.WorkTime_GatherFoil_FarmCulture)));
+                var workTimeText = new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, plantTime + gatherTime)));
                 if (upgrade)
                 {
                     workTimeText.overrideColor = HudLib.AvailableColor;
+
+                    content.Add(new RbImage(HudLib.AvailableIcon));
+                    content.hspace();
                 }
                 content.Add(workTimeText);
 
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Hud_PurchaseTitle_Cost, DssConst.PlantWaterCost)));
+                content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_PurchaseTitle_Cost, PlantWaterCost)));
                 content.Add(new RbImage(SpriteName.WarsResource_Water));
                 content.Add(new RbText(DssRef.lang.Resource_TypeName_Water));
 
@@ -1426,15 +1570,102 @@ namespace VikingEngine.DSSWars.Build
                 content.Add(new RbText(DssRef.lang.BuildHud_Produce));
                 content.space();
                 content.Add(new RbText(produce1.amount.ToString()));
-                content.Add(new RbImage(ResourceLib.Icon(produce1.type)));//SpriteName.WarsResource_RawFood));
-                content.Add(new RbText(LangLib.Item(produce1.type)));//DssRef.lang.Resource_TypeName_RawFood));
+                IconName.Item(produce1.type, out SpriteName itemIcon, out string itemName);
+                content.Add(new RbImage(itemIcon));
+                content.Add(new RbText(itemName));
                 if (produce2.amount > 0)
                 {
                     content.Add(new RbImage(SpriteName.pjNumPlus));
+
+                    IconName.Item(produce2.type, out itemIcon, out itemName);
                     content.Add(new RbText(DssConst.HempLinenAndFuelAmount.ToString()));
-                    content.Add(new RbImage(SpriteName.WarsResource_LinenCloth));
-                    content.Add(new RbText(DssRef.lang.Resource_TypeName_Linen));
+                    content.Add(new RbImage(itemIcon));
+                    content.Add(new RbText(itemName));
                 }
+            }
+
+            void pen(BuildOption build, AnimalPenGrowth penGrowth, ItemResourceType resourceType, CraftBlueprint slaughterBp, bool canBreedup, bool canBreedDown, bool eggs =false)
+            {
+                content.h2(DssRef.lang.Hud_Upkeep, HudLib.TitleColor_Label);
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbImage(SpriteName.WarsResource_RawFoodRemove));
+                content.hspace();
+                content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood, HudLib.TitleColor_TypeName));
+                content.hspace();
+                content.Add(new RbText(build.upkeep.amount.ToString()));
+
+                content.space();
+                content.Add(new RbText(TextLib.Parentheses(
+                    TextLib.TwoDecimal(build.upkeep.amount * (float)(penGrowth.maxSize)) + " " + DssRef.lang.BuildHud_PerCycle  ), 
+                    HudLib.SecondaryTextColor));
+
+                content.newLine();
+                content.text(DssRef.lang.Hud_Time_ValuePerMinute, HudLib.InfoYellow_Light);
+
+                content.newParagraph();
+                content.h2(DssRef.lang.BuildHud_PerCycle, HudLib.TitleColor_Label);
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(string.Format(DssRef.lang.BuildHud_GrowTime, string.Format(DssRef.lang.Hud_Time_Minutes, penGrowth.maxSize))));
+
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(string.Format(DssRef.lang.BuildHud_WorkTime, string.Format(DssRef.lang.Hud_Time_Seconds, DssConst.WorkTime_PickUpProduce))));
+
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(DssRef.lang.BuildHud_Produce));
+                content.space();
+                IconName.Item(resourceType, out SpriteName itemIcon, out string itemName);
+                content.Add(new RbImage(itemIcon));
+                content.hspace();
+                content.Add(new RbText(itemName));
+
+                
+                if (eggs)
+                {
+                    eggProduction();
+                }
+
+                if (slaughterBp != null)
+                {
+                    content.newParagraph();
+                    content.h2(DssRef.todoLang.SlaughterResult_PerAnimal, HudLib.TitleColor_Label);
+                    content.newLine();
+                    slaughterBp.resultDividedToMenu(content);
+                }
+
+                if (canBreedup || canBreedDown)
+                {
+                    content.h2(DssRef.lang.Pen_Breeding, HudLib.TitleColor_Label);
+                    content.newLine();
+                    if (canBreedup)
+                    {
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(string.Format(DssRef.lang.Pen_BreedUpChance, conv.ToPercentage(DssConst.BreedingUpChance))));
+                    }
+                    if (canBreedDown)
+                    {
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(string.Format(DssRef.lang.Pen_BreedDownChance, conv.ToPercentage(DssConst.BreedingDownChance))));
+                    }
+                }
+            }
+
+            void eggProduction()
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(DssRef.lang.BuildHud_Produce));
+                content.space();
+                content.Add(new RbImage(SpriteName.WarsResource_Egg));
+                content.hspace();
+                content.Add(new RbText((DssConst.HenRawFoodAmout + DssConst.EggRawFoodAmout).ToString()));
+                content.Add(new RbImage(SpriteName.WarsResource_RawFood));
+                content.Add(new RbText(DssRef.lang.Resource_TypeName_RawFood));
             }
         }
 
@@ -1448,7 +1679,7 @@ namespace VikingEngine.DSSWars.Build
             if (type == BuildAndExpandType.Logistics)
             {
                 bool reachedBuffer = false;
-                city.res_food.toMenu(content, ItemResourceType.Food_G, false, ref reachedBuffer);
+                city.GetGroupedResource(EntityComponent.CityResoureIndex.food)/*res_food*/.toMenu(content, ItemResourceType.Food_G, ref reachedBuffer);
             }
 
             if (build.blueprint.levelRequirement > XP.ExperienceLevel.Beginner_1)
@@ -1461,7 +1692,7 @@ namespace VikingEngine.DSSWars.Build
 
         public static void EmbassyDescription(RichBoxContent content)
         {
-            int diplomacydSec = Convert.ToInt32(DssRef.diplomacy.EmbassyAddDiplomacy * 3600);
+            int diplomacydSec = Convert.ToInt32(DssRef.world.diplomacy.EmbassyAddDiplomacy * 3600);
 
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsDiplomaticAddTime));
@@ -1470,8 +1701,23 @@ namespace VikingEngine.DSSWars.Build
 
             HudLib.BulletPoint(content);
             content.Add(new RbImage(SpriteName.WarsDiplomaticPoint));
-            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.diplomacy.EmbassyAddMaxDiplomacy)));
+            content.Add(new RbText(string.Format(DssRef.lang.Building_NobleHouse_DiplomacyPointsLimit, DssRef.world.diplomacy.EmbassyAddMaxDiplomacy)));
             content.newLine();
+        }
+
+        void mayCraftList(RichBoxContent content, City city, CraftBlueprint[] types)
+        {
+            content.h2(DssRef.lang.BuildHud_MayCraft).overrideColor = HudLib.TitleColor_Label;
+
+            foreach (var m in types)
+            {
+                //content.newLine();
+                //content.Add(new RbImage(SpriteName.WarsBluePrint));
+                //content.space();
+                
+                m.toMenu(content, city, false, true, false, false);
+                //bp1?.resultTypeToMenu(content);
+            }
         }
 
         void mayCraftList(RichBoxContent content, City city, ItemResourceType[] types)
@@ -1485,7 +1731,7 @@ namespace VikingEngine.DSSWars.Build
                 content.space();
                 ItemPropertyColl.Blueprint(m, out CraftBlueprint bp1, out CraftBlueprint bp2);
                 //bp1.toMenu(content, city, false);
-                bp1.resultTypeToMenu(content);
+                bp1?.resultTypeToMenu(content);
             }
         }
         void mayCraftList(RichBoxContent content, CraftBlueprint bp1)
@@ -1502,7 +1748,7 @@ namespace VikingEngine.DSSWars.Build
 
         void modeClick(SelectTileResult set)
         {
-            if (player.gameControls.input.inputSource.IsController)
+            if (player.gameControls.input.inputSource.ControllerMode)
             {
                 blockBuildUpdate = true;
             }
@@ -1515,17 +1761,25 @@ namespace VikingEngine.DSSWars.Build
 
         public void buildingTypeClick(BuildAndExpandType type)
         {
-            if (player.gameControls.input.inputSource.IsController)
+            if (player.gameControls.input.inputSource.ControllerMode)
             {
                 blockBuildUpdate = true;
             }
 
-            buildMode = SelectTileResult.Build;
-            placeBuildingType = type;
+            //buildMode = SelectTileResult.Build;
+            //placeBuildingType = type;
+            //availableBuildingType = true;
+            SetBuildMode(type);
             player.gameControls.setMenuFocus(false, true);
 
             
             //player.gameControls.mapControls.setObjectMenuFocus(false);
+        }
+        public void SetBuildMode(BuildAndExpandType type) 
+        {
+            buildMode = SelectTileResult.Build;
+            placeBuildingType = type;
+            availableBuildingType = true;
         }
 
        

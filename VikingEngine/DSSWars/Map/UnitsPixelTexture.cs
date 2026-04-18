@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Map
             }
             else
             {
-                var relation = DssRef.diplomacy.GetRelationType(playerFaction, faction);
+                var relation = DssRef.world.diplomacy.GetRelation(playerFaction, faction).Relation;
                 if (relation <= RelationType.RelationTypeN1_Enemies)
                 {
                     colorProfile1 = Color.Red;
@@ -85,7 +85,7 @@ namespace VikingEngine.DSSWars.Map
                         groupsCounter.sel.position.X - 0.5f,
                         groupsCounter.sel.position.Z - 0.5f);
 
-                    if (DssRef.world.tileBoundsSubOne.IntersectTilePoint(topleft))
+                    if (texture.InBound_TwoPixels(topleft))
                     {
                         if (lib.IsEven(topleft.X + topleft.Y))
                         {

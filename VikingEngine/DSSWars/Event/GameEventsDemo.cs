@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Event
 {
@@ -28,11 +29,17 @@ namespace VikingEngine.DSSWars.Event
 
             if (!DssRef.state.LocalHost().profile.casualControls)
             {
-                var citiesC = DssRef.state.LocalHost().faction.cities.counter();
-                while (citiesC.Next())
+                //var citiesC = DssRef.state.LocalHost().faction.cities.counter();
+                //while (citiesC.Next())
+                //{
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref DssRef.state.LocalHost().faction.cities, DssRef.world.cities, out City citySel))
                 {
-                    citiesC.sel.res_Palisade.amount += 20;
-                    citiesC.sel.res_food.amount += 500;
+                    citySel.AddGroupedResource(EntityComponent.CityResoureIndex.Palisade, 20, false);
+                    citySel.AddGroupedResource(EntityComponent.CityResoureIndex.food, 500, false);
+
+                    //citiesC.sel.res_Palisade.amount += 20;
+                    //citiesC.sel.res_food.amount += 500;
                 }
 
                 var enemy = DssRef.state.LocalHost().getPin("enemy");
@@ -47,7 +54,7 @@ namespace VikingEngine.DSSWars.Event
                     //1. Send one army
                     new Timer.TimedAction0ArgTrigger_InGame(() =>
                     {
-                        DssRef.diplomacy.declareWar(attacker, DssRef.state.LocalHost().faction);
+                        DssRef.world.diplomacy.declareWar(attacker, DssRef.state.LocalHost().faction);
                         attacker.player.GetAiPlayer().armyAi_enabled = false;
 
                         const int FirstAttackerId = 4;

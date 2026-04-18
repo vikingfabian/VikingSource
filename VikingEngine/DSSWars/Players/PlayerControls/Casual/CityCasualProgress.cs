@@ -22,7 +22,6 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
     {
         public int cityIndex;
        
-
         bool payedRecruitCost = false;
         int recruitTimeSeconds = -1;
         List<CasualRecruitQueueItem> recruitQueue = new List<CasualRecruitQueueItem>(16);
@@ -117,7 +116,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             }
         }
 
-        void clearRecruitQueue()
+        public void clearRecruitQueue()
         {
             cancelCurrentRecruit();
             recruitQueue.Clear();
@@ -324,9 +323,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             {
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbImage(ResourceLib.Icon(resourceType)));
+                IconName.Item(resourceType, out SpriteName itemIcon, out string itemName);
+                content.Add(new RbImage(itemIcon));
                 content.hspace();
-                var text = new RbText($"{LangLib.Item(resourceType)} {has}/{need}");
+                var text = new RbText($"{itemName} {has}/{need}");
 
                 if (payedRecruitCost)
                 {
@@ -378,8 +378,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 content.newLine();
                 {
                     var option = CasualBuild.Get(first.build);
-                    //option.ButtonVisuals(first.build, out SpriteName icon, out string caption);
-
+                    
                     content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
                         new RbText(string.Format(DssRef.lang.Hud_XTimes, first.count)),
                         new RbImage(option.icon),
@@ -412,11 +411,12 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
 
             void progressPoint(ItemResourceType resourceType, int has, int need)
             {
+                IconName.Item(resourceType, out SpriteName itemIcon, out string itemName);
                 content.newLine();
                 HudLib.BulletPoint(content);
-                content.Add(new RbImage(ResourceLib.Icon(resourceType)));
+                content.Add(new RbImage(itemIcon));
                 content.hspace();
-                var text = new RbText($"{LangLib.Item(resourceType)} {has}/{need}");
+                var text = new RbText($"{itemName} {has}/{need}");
 
                 if (payedBuildCost)
                 {
@@ -456,7 +456,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             }
         }
 
-        void clearBuildQueue()
+        public void clearBuildQueue()
         {
             cancelCurrentBuild();
             buildQueue.Clear();
@@ -512,7 +512,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 }
             }
 
-            return true;
+            var profile = city.casualCityProfile;
+            profile.availableBuildings(city, out List<CasualBuildType> available, out List<CasualBuildType> complete);
+           
+            return available.Contains(build);
         }
     }
 } 

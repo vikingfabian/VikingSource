@@ -40,21 +40,29 @@ namespace VikingEngine.DataLib
 
         public List<FileEntry> Files { get; private set; } = new List<FileEntry>();
 
-        public FileIndex(string folder, string searchPattern, bool storage, FileSortSettings sort)
+        public FileIndex(string folder, bool fullPath, string searchPattern, bool storage, FileSortSettings sort)
         {
-            LoadFromStorage(folder, searchPattern, storage);
+            LoadFromStorage(folder, fullPath, searchPattern, storage);
             Sort(sort);
         }
 
-        public void LoadFromStorage(string folder, string searchPattern, bool storage)
+        public void LoadFromStorage(string folder, bool fullPath, string searchPattern, bool storage)
         {
             Files.Clear();
             try
             {
-                string baseDir = (storage? DataStream.FilePath.StorageDirectory() : Engine.LoadContent.Content.RootDirectory) + DataStream.FilePath.Dir;
+                string baseDir;
+                if (fullPath)
+                {
+                    baseDir = folder + DataStream.FilePath.Dir;
+                }
+                else
+                {
+                    baseDir = (storage ? DataStream.FilePath.StorageDirectory() : Engine.LoadContent.Content.RootDirectory) + DataStream.FilePath.Dir;
 
-                if (!string.IsNullOrEmpty(folder))
-                    baseDir += folder + DataStream.FilePath.Dir;
+                    if (!string.IsNullOrEmpty(folder))
+                        baseDir += folder + DataStream.FilePath.Dir;
+                }
 
                 string[] filePaths = string.IsNullOrEmpty(searchPattern)
                     ? Directory.GetFiles(baseDir)

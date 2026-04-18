@@ -13,9 +13,9 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public BannerManBuilder():base() 
         {
-            unitType = UnitType.BannerMan;
+            unitBuildType = UnitBuildType.BannerMan;
         }
-        public override AbsSoldierUnit CreateUnit()
+        public override AbsSoldierUnit CreateUnit(bool bannerman)
         {
             return new BannerMan();
         }
@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.GameObject
             : base()
         { }
 
-        protected override DetailUnitModel initModel()
+        protected override DetailUnitModel initModel(bool bannerman)
         {
             updateGroudY(true);
             return new BannerManModel(this);

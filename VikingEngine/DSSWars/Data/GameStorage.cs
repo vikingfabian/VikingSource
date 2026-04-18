@@ -24,13 +24,13 @@ namespace VikingEngine.DSSWars.Data
     {
         public const int MaxLocalPlayerCount = 4;
         public int playerCount = 1;
-        public bool verticalScreenSplit = true;
+        //public bool verticalScreenSplit = true;
 
         DataStream.FilePath path = new DataStream.FilePath(Ref.steam.UserCloudPath, "DSS_gameoptions", ".sav");
         
         public bool autoSave = true;
         public bool runTutorial = true;
-        public bool speed5x = false;
+        public bool speed5x = true;
         public bool blockImportAchievements = true;
         
         public LocalPlayerStorage[] localPlayers = null;
@@ -150,7 +150,7 @@ namespace VikingEngine.DSSWars.Data
             }
             DataStream.BeginReadWrite.BinaryIO(true, path, write, null, callBack, true);
         }
-
+        public const int Version = 35;
         public void writeGameSetup(System.IO.BinaryWriter w)
         {
             w.Write(Version);
@@ -164,7 +164,7 @@ namespace VikingEngine.DSSWars.Data
             DssRef.difficulty.read(r, version);
         }
 
-        const int Version = 32;
+        
         public void write(System.IO.BinaryWriter w)
         {
             w.Write(Version);
@@ -172,17 +172,16 @@ namespace VikingEngine.DSSWars.Data
             metaProgression.write(w);
             writeGameSetup(w);
 
-            w.Write(verticalScreenSplit);
+            //w.Write(verticalScreenSplit);
             for (int i = 0; i < MaxLocalPlayerCount; ++i)
             {
                 localPlayers[i].write(w);
             }
 
-
             w.Write(generateNewMaps);
             w.Write(autoSave);
             w.Write(multiplayerGameSpeed);
-            DssRef.difficulty.write(w);
+            //DssRef.difficulty.write(w);
 
             //w.Write((byte)runTutorial_1short_2normal);
             w.Write(runTutorial);
@@ -213,6 +212,13 @@ namespace VikingEngine.DSSWars.Data
             try
             {
                 int version = r.ReadInt32();
+
+                if (version > Version || version == 32)
+                {
+                    return;
+                }
+
+
                 fileCheck.start(version, Version);
 
                 if (version <= 27)
@@ -232,7 +238,10 @@ namespace VikingEngine.DSSWars.Data
 
                 if (!gamestate)
                 {
-                    verticalScreenSplit = r.ReadBoolean();
+                    if (version < 31)
+                    {
+                        bool verticalScreenSplit = r.ReadBoolean();
+                    }
 
                     for (int i = 0; i < MaxLocalPlayerCount; ++i)
                     {
@@ -245,10 +254,12 @@ namespace VikingEngine.DSSWars.Data
 
                 multiplayerGameSpeed = r.ReadSingle();
 
-                DssRef.difficulty.read(r, version);
+                
+                
 
-                if (version < 32)
+                if (version < 33)
                 {
+                    DssRef.difficulty.read(r, version);
                     runTutorial = r.ReadByte() > 0;
                 }
                 else
@@ -290,6 +301,8 @@ namespace VikingEngine.DSSWars.Data
             catch (Exception e)
             {
                 fileCheck.exception = e;
+                DssRef.storage = new Data.GameStorage();
+                DssRef.difficulty = new Difficulty();
             }
 
             IOLib.fileCheck_gamestorage = fileCheck;
@@ -314,7 +327,7 @@ namespace VikingEngine.DSSWars.Data
 
                 if (!gamestate || version < 16)
                 {
-                    verticalScreenSplit = r.ReadBoolean();
+                    bool verticalScreenSplit = r.ReadBoolean();
 
                     for (int i = 0; i < MaxLocalPlayerCount; ++i)
                     {

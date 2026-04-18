@@ -4,6 +4,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Steamworks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.ToGG.Commander.UnitsData;
@@ -12,78 +13,15 @@ namespace VikingEngine.DSSWars.Presentation
 {
     class TodoTranslation
     {
-        public string GraphicsOption_IngameMenuWidth => "Game menu width";
-        public string DisplayMode => "Display mode";
-        public string DisplayMode_Windowed => "Windowed";
-        public string DisplayMode_BorderlessFullscreen => "Borderless fullscreen";
+        public string StockPile_ItemsAreNotLost => "Items will not be destroyed if you exceed the stockpile!";
 
-        public string GameSettings_RenderedMouseCursor => "Rendered cursor";
-
-        //public string Error_SoundInitFailure => "Sound initialization failed";
-
-        //public string GameMenu_ControllerDisconnected => "Controller disconnected";
-
-        public string Error_SoundInitFailure => "Sound initialization failed";
-          
-        public string GameMode_QuickMatch => "Quick Match";
-        public string GameMode_QuickMatch_Description => "A shorter game format. Enter a full-scale war against rival nations.";
-
-        public string Lobby_PlayerCount => "Player count";
-        public string Lobby_TwoTeams => "Two teams";
-
-        public string Tutorial_HighPriority => "Your men will complete high-priority tasks first";
-        
-
-        public string Tutorial_AdvisorMission => "Advisor mission";
-
-        public string Tutorial_AdvisorDescription => "The full game has started. The advisor will extend the tutorial with helpful missions";
-
-        public string Tutorial_EndAdvisor => "End advisor";
+        public string SlaughterResult_PerAnimal => "Slaughter output, per animal";
 
 
-        public string Tutorial_AdvisorCompleteTitle => "Advisor completed!";
-        public string Tutorial_AdvisorCompleteMessage => "May your next day be blessed!";
+        public string Settings_Mode_QuickBoss => "Quick boss";
+        public string Settings_Mode_QuickBoss_Description => "Prepare for a few hours and meet a final boss";
 
-        public string Hud_Search => "Search";
+        public string QuickBoss_TimeOption => "Boss time (hours)";
 
-        public string DifficultyDescription_ExtremeAggression = "Extreme aggression";
-
-        public string MapFilter => "Map filter";
-
-        public string Settings_TechMultiplier => "Tech research speed";
-
-        public string EndScreen_MatchComplete => "Match result";
-
-        /// <summary>
-        /// Theme: Four headed dragon symbol. Known for having an unpenetrable castle.
-        /// </summary>
-        public string FactionName_DragonGem => "Dragon gem";
-
-        /// <summary>
-        /// Theme: Easter egg for december. "Tomten" is an old nordic name for father christmas
-        /// </summary>
-        public string FactionName_Tomten => "Tomten";
-
-        /// <summary>
-        /// Theme: The blessed folk. A horde like farmers faction.
-        /// </summary>
-        public string FactionName_Hælfolc => "Hælfolc";
-
-        /// <summary>
-        /// The Iron Saints, people who guard a mountain pass against evil.
-        /// </summary>
-        public string FactionName_AerimAngren => "Aerim Angren";
-
-        public string HUD_NotAvailbleInX => "No available in {0}";
-
-        public string InputActionName_MiniMap => "Mini-map";
-
-        //public string UnitType_Faction => "Faction";
     }
-
-
-    //Not in use
-    //public string Settings_Render3dScale_Title => "3D render scale";
-    //public string Settings_Render3dScale_UpX => "Upscale {0}X";
-    //public string Settings_Render3dScale_DownX => "Downscale {0}X";
 }

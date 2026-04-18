@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Resource;
@@ -30,6 +31,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         public SoldierPurchaseOption rangedMen;
         public SoldierPurchaseOption riderMen;
         public SoldierPurchaseOption siegeMen;
+        public SoldierPurchaseOption settler = new SoldierPurchaseOption(4000, ItemResourceType.NONE, ItemResourceType.Settler, TrainingLevel.Minimal);
+
 
         public bool unlock_logistics;
         public bool unlock_research;
@@ -37,6 +40,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
         public int unlock_sword;
         public int unlock_projectile;
         public int unlock_farming;
+
+        public CasualCityProfile()
+        { }
 
         public void onCasualUpgrade()
         {
@@ -46,6 +52,115 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 unlock_farming == FarmingMax)
             {
                 DssRef.achieve.UnlockAchievement(AchievementIndex.maxout_casual);
+            }
+        }
+
+        public void availableBuildings(City city, out List<CasualBuildType> available,out List<CasualBuildType> complete)
+        {
+            available = new List<CasualBuildType>(8);
+            complete = new List<CasualBuildType>(8);
+
+            if (unlock_logistics)
+            {
+                available.Add(CasualBuildType.Tent);
+            }
+            available.Add(CasualBuildType.WorkerHut);
+            available.Add(CasualBuildType.Barracks);
+
+            available.Add(CasualBuildType.GuardTower_Wood);
+
+            if (unlock_logistics)
+            {
+                complete.Add(CasualBuildType.Logistics);
+                available.Add(CasualBuildType.GuardTower_Stone);
+
+                if (city.buildingStructure.Embassy_count == 0)
+                {
+                    available.Add(CasualBuildType.Embassy);
+                }
+                else
+                {
+                    complete.Add(CasualBuildType.Embassy);
+                }
+
+                if (unlock_research)
+                {
+                    complete.Add(CasualBuildType.ResearchCenter);
+
+                    switch (unlock_armor)
+                    {
+                        case 0:
+                            available.Add(CasualBuildType.UnlockIronArmor);
+                            break;
+                        case 1:
+                            complete.Add(CasualBuildType.UnlockIronArmor);
+                            available.Add(CasualBuildType.UnlockSteelArmor);
+                            break;
+                        default:
+                            complete.Add(CasualBuildType.UnlockIronArmor);
+                            complete.Add(CasualBuildType.UnlockSteelArmor);
+                            break;
+                    }
+
+                    switch (unlock_sword)
+                    {
+                        case 0:
+                            available.Add(CasualBuildType.UnlockSword);
+                            break;
+                        case 1:
+                            complete.Add(CasualBuildType.UnlockSword);
+                            available.Add(CasualBuildType.UnlockSteelSword);
+                            break;
+                        default:
+                            complete.Add(CasualBuildType.UnlockSword);
+                            complete.Add(CasualBuildType.UnlockSteelSword);
+                            break;
+                    }
+
+                    switch (unlock_projectile)
+                    {
+                        case 0:
+                            available.Add(CasualBuildType.UnlockCatapult);
+                            break;
+                        case 1:
+                            complete.Add(CasualBuildType.UnlockCatapult);
+                            available.Add(CasualBuildType.UnlockBlackPower);
+                            break;
+                        case 2:
+                            complete.Add(CasualBuildType.UnlockCatapult);
+                            complete.Add(CasualBuildType.UnlockBlackPower);
+                            available.Add(CasualBuildType.UnlockGunPower);
+                            break;
+                        default:
+                            complete.Add(CasualBuildType.UnlockCatapult);
+                            complete.Add(CasualBuildType.UnlockBlackPower);
+                            complete.Add(CasualBuildType.UnlockGunPower);
+                            break;
+                    }
+
+                    switch (unlock_farming)
+                    {
+                        case 0:
+                            available.Add(CasualBuildType.UnlockFarming2);
+                            break;
+                        case 1:
+                            complete.Add(CasualBuildType.UnlockFarming2);
+                            available.Add(CasualBuildType.UnlockFarming3);
+                            break;
+                        default:
+                            complete.Add(CasualBuildType.UnlockFarming2);
+                            complete.Add(CasualBuildType.UnlockFarming3);
+                            break;
+                    }
+                }
+                else
+                {
+                    available.Add(CasualBuildType.ResearchCenter);
+                }
+            }
+            else
+            {
+                available.Add(CasualBuildType.Logistics);
             }
         }
 
@@ -101,8 +216,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             folkmen = new SoldierPurchaseOption(1, ItemResourceType.NONE,ItemResourceType.SharpStick, TrainingLevel.Minimal);
             meleeMen = new SoldierPurchaseOption(1, ItemResourceType.HeavyPaddedArmor, ItemResourceType.ShortSword, TrainingLevel.Basic);
             rangedMen = new SoldierPurchaseOption(1, ItemResourceType.PaddedArmor, ItemResourceType.Bow, TrainingLevel.Basic);
-            riderMen = new SoldierPurchaseOption(0, ItemResourceType.IronArmor, ItemResourceType.KnightsLance, TrainingLevel.Skillful);
+            riderMen = new SoldierPurchaseOption(0, ItemResourceType.IronArmor, ItemResourceType.HandSpear, TrainingLevel.Skillful);
             siegeMen = new SoldierPurchaseOption(1, ItemResourceType.NONE, ItemResourceType.Ballista, TrainingLevel.Basic);
+
+            
 
             if (city.cityType >= CityType.Capital)
             {
@@ -118,7 +235,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                 siegeMen.price = 1;
             }
 
-            if (city.Culture == CityCulture.Seafaring || culture.percWater > 0.5)
+            if (city.cityCulture == CityCulture.Seafaring || culture.percWater > 0.5)
             {
                 shipmen = new SoldierPurchaseOption(  1, ItemResourceType.PaddedArmor, ItemResourceType.ThrowingSpear, TrainingLevel.Basic);
                 
@@ -147,9 +264,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
             if (riderMen.Available) riderMen.price = 3000;
             if (siegeMen.Available) siegeMen.price = 1200;
 
-            switch (city.Culture)
+            switch (city.cityCulture)
             {
-                case CityCulture.AnimalBreeder:
+                //case CityCulture.AnimalBreeder:
                 case CityCulture.FertileGround:
                 case CityCulture.LargeFamilies:
                 case CityCulture.Lawbiding:
@@ -166,6 +283,8 @@ namespace VikingEngine.DSSWars.Players.PlayerControls.Casual
                     break;
             }
         }
+
+       
 
         public void refreshTech()
         {

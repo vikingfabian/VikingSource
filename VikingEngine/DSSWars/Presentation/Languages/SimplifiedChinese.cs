@@ -8,6 +8,419 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class SimplifiedChinese : AbsLanguage
     {
+        //坐骑更新 (Mounts update)
+        public override string Leaderboards_title => "排行榜";
+        public override string Leaderboards_domination => "世界征服最短时间，{0}% 以上";
+        public override string Leaderboards_victory => "剧情胜利，最高 % 难度";
+        public override string Leaderboards_CitySize => "最大城市规模（按工人数计）";
+        public override string Leaderboards_Survival => "存活时间（{0}% 难度）";
+
+        public override string Message_CannotPayUpkeep => "无法支付维护费！";
+        public override string Animals_ProductionStop => "动物生产将会停止";
+
+        public override string Tutorial_ToCapture => "去捕捉";
+        public override string Tutorial_ClickButton => "点击按钮";
+        public override string Tutorial_MoveXToY => "将{0}移动到{1}";
+
+        public override string Workers_Description1_work => "将会进行建造、收集资源和制作物品。";
+        public override string Workers_Description2_income => "通过纳税提供收入。";
+        public override string Workers_Description3_soldiers => "可以被征召入伍成为你军队的士兵。";
+
+        public override string Hud_Time_ValuePerMinute => "每分钟产值";
+        public override string Hud_Time_ValuePerSecond => "每秒产值";
+        public override string Hud_Lock => "锁定";
+        public override string Hud_Maximum => "最大值";
+
+        public override string Tutorial_SeeThisInThat => "在{1}中查看{0}";
+        public override string Conscript_SkillBonus => "技能加成";
+        public override string SoldierStats_UnitCount => "单位数量";
+        /// <summary>
+        /// 区域包括平原、森林、海洋和攻城
+        /// </summary>
+        public override string Conscript_DamagePerSecondInAreaX => "秒伤 - {0}";
+        public override string Conscript_BaseHealth => "基础 HP";
+
+        /// <summary>
+        /// 跨越地图能力的汇总值
+        /// </summary>
+        public override string Conscript_Mobility => "机动力";
+
+        public override string Conscript_RiderMobility => "骑乘机动力";
+        public override string Conscript_LightWagonMobility => "轻型马车机动力";
+        public override string Conscript_HeavyWagonMobility => "重型马车机动力";
+
+        /// <summary>
+        /// 适用于任何对象，如技能、资源和建筑
+        /// </summary>
+        public override string Culture_AffectedItems => "受影响项目";
+        //## 坐骑更新 ##
+        public override string Progress_ClosingCores => "正在关闭 CPU 核心 {0}";
+        public override string Editor_ExportFrame => "导出当前帧";
+        public override string Editor_FistFrame => "第一帧";
+        public override string Editor_LastFrame => "最后一帧";
+
+        public override string Economy_AnimalPenUpkeep => "围栏维护费：{0}";
+        public override string Work_SlaughterX => "宰杀{0}";
+
+        public override string BuildCategory_Farming => "农业";
+        public override string Resource_TypeName_ManType => "人类类型";
+        public override string Resource_TypeName_NobelMen => "贵族";
+        public override string Resource_TypeName_ConservedFood => "保存食品";
+
+        public override string UnitType_UnitOnMount => "骑乘{0}";
+        public override string UnitType_UnitOnWagon => "马车{0}";
+        public override string UnitType_NobelUnit => "贵族{0}";
+
+        /// <summary>
+        /// 0: 士兵类型, 1: 动物
+        /// </summary>
+        public override string UnitType_LeashAnimalHandler => "{0}{1}驯兽师";
+
+        public override string Info_ArmyFood4 => "保存食品可以让你储备更多粮食";
+        public override string Info_ArmyFood5 => "新鲜食物会被优先消耗";
+
+        public override string Resource_ConservedFood_Reserves => "保存食品储备";
+        public override string Resource_TypeName_Clay => "粘土";
+        public override string Resource_TypeName_Brick => "砖块";
+        public override string Resource_TypeName_Container => "容器";
+        public override string Resource_TypeName_Meat => "肉类";
+        public override string Resource_TypeName_Salt => "盐";
+        public override string Resource_TypeName_Vehicle => "载具";
+        public override string Resource_TypeName_WagonClosed => "封闭马车";
+        public override string Resource_TypeName_WagonIron => "铁皮马车";
+        public override string Resource_TypeName_WagonSteel => "钢铁马车";
+        public override string Resource_TypeName_Shield => "盾牌";
+        public override string Resource_TypeName_BucklerShield => "小圆盾";
+        public override string Resource_TypeName_RoundShield => "圆盾";
+        public override string Resource_TypeName_HeaterShield => "熨斗盾";
+        public override string Resource_TypeName_TowerShield => "塔盾";
+
+        public override string Resource_TypeName_Mount => "坐骑";
+
+        public override string Resource_TypeName_MountArmorTitle => "坐骑护甲";
+
+        /// <summary>
+        /// 0: 护甲类型
+        /// </summary>
+        public override string Resource_TypeName_MountArmorX => "坐骑{0}";
+        public override string Resource_TypeName_Animal => "动物";
+
+        //public override string Resource_TypeName_WildAnimal => "野生动物";
+
+        /// <summary>
+        /// 拥有野生动物的区域
+        /// </summary>
+        public override string Terrain_XAnimalHabitat => "{0}栖息地";
+
+        public override string Resource_TypeName_Oxen => "公牛";
+        public override string Resource_TypeName_KineOxen => "母牛";
+
+        /// <summary>
+        /// 低级母鸡 (用于繁育)
+        /// </summary>
+        public override string Resource_TypeName_Fowl => "家禽";
+
+        /// <summary>
+        /// 低级猪 (用于繁育)
+        /// </summary>
+        public override string Resource_TypeName_Boar => "公猪";
+        public override string Resource_TypeName_Pig => "猪";
+        public override string Resource_TypeName_Hen => "母鸡";
+        public override string Resource_TypeName_Dog => "狗";
+        public override string Resource_TypeName_Hound => "猎犬";
+
+        public override string Resource_TypeName_Pony => "小马";
+        public override string Resource_TypeName_Horse => "马";
+        public override string Resource_TypeName_WarHorse => "战马";
+        public override string Resource_TypeName_DraftHorse => "挽马";
+
+        public override string Resource_TypeName_WildPig => "野猪";
+        public override string Resource_TypeName_WildHog => "大野猪";
+        public override string Resource_TypeName_WarHog => "战斗野猪";
+        public override string Resource_TypeName_StagHog => "鹿角野猪";
+
+        public override string Resource_TypeName_Wolf => "狼";
+        public override string Resource_TypeName_Warg => "座狼";
+        public override string Resource_TypeName_AlphaWarg => "首领座狼";
+
+        public override string Resource_TypeName_WildCat => "野猫";
+        public override string Resource_TypeName_Lion => "狮子";
+        public override string Resource_TypeName_WarLion => "战斗狮";
+
+        public override string Resource_TypeName_Elephant => "大象";
+        public override string Resource_TypeName_WarElephant => "战象";
+        public override string Resource_TypeName_Oliphant => "巨象";
+
+        public override string BuildHud_Select => "选择建筑";
+        public override string BuildHud_AreaRadius => "区域半径";
+
+        public override string NobleHouse_HousingCount => "可容纳 {0} 名贵族";
+
+
+        public override string BuildingType_GreatHall => "大领主厅";
+        public override string BuildingType_GreatHall_Description => "解锁高级征兵";
+
+        public override string BuildingType_ClayPit => "采土场";
+        public override string BuildingType_Butcher => "屠宰场";
+        public override string BuildingType_Butcher_Description => "将动物加工成食物和皮革";
+        public override string BuildingType_Pottery => "陶器厂";
+        public override string BuildingType_CraftX_Description => "{0}制作台";
+
+        public override string BuildingType_GatherX_Description => "收集{0}";
+
+        public override string BuildingType_Smoker => "熏肉坊";
+        public override string BuildingType_Dryer => "烘干坊";
+        public override string BuildingType_Shieldmaker => "制盾坊";
+        public override string BuildingType_DryingPan => "烘干盘";
+
+        public override string BuildingType_TrapperHut => "捕猎小屋";
+        public override string BuildingType_TrapperHut_Description => "允许捕捉野生动物";
+
+        // --- Storage ---
+        public override string BuildingType_MaterialStorage => "材料仓库";
+        public override string BuildingType_FoodStorage => "食物仓库";
+        public override string BuildingType_WeaponStorage => "武器库";
+        public override string BuildingType_ArmorStorage => "防具库";
+        public override string BuildingType_AnimalStorage => "动物仓库";
+
+        public override string BuildingType_Storage_Description => "最大库存上限增加 {0}";
+
+        public override string BuildingType_Cesspit => "废弃坑";
+        public override string BuildingType_Cesspit_Description => "销毁资源";
+
+        public override string BuildingType_Cesspit_Info1_StockPile => "销毁超出库存上限的物品";
+        public override string Info_XAmountIsConvertedToY => "{0} 转化为 {1}";
+        public override string Info_ProductionRestriction => "物品生产限制为";
+
+        public override string BuildingType_FowlPen => "家禽圈";
+        public override string BuildingType_BoarPen => "公猪圈";
+
+        // --- Oxen Pens ---
+        public override string BuildingType_OxenPen => "公牛圈";
+        public override string BuildingType_KineOxenPen => "母牛圈";
+
+        // --- Dog Cages ---
+        public override string BuildingType_DogCage => "狗笼";
+        public override string BuildingType_HoundCage => "猎犬笼";
+
+        // --- Horse Pens ---
+        public override string BuildingType_PonyPen => "小马圈";
+        public override string BuildingType_HorsePen => "马圈";
+        public override string BuildingType_WarHorsePen => "战马圈";
+        public override string BuildingType_DraftHorsePen => "挽马圈";
+
+        // --- Pig/Hog Pens ---
+        public override string BuildingType_WildPigPen => "野猪圈";
+        public override string BuildingType_WildHogPen => "大野猪圈";
+        public override string BuildingType_WarHogPen => "战斗野猪圈";
+        public override string BuildingType_StagHogPen => "鹿角野猪圈";
+
+        // --- Wolf Cages ---
+        public override string BuildingType_WolfCage => "狼笼";
+        public override string BuildingType_WargCage => "座狼笼";
+        public override string BuildingType_AlphaWargCage => "首领座狼笼";
+
+        // --- Cat Cages ---
+        public override string BuildingType_WildCatCage => "野猫笼";
+        public override string BuildingType_LionCage => "狮子笼";
+        public override string BuildingType_WarLionCage => "战斗狮笼";
+
+        // --- Elephant Cages ---
+        public override string BuildingType_ElephantCage => "大象圈";
+        public override string BuildingType_WarElephantCage => "战象圈";
+        public override string BuildingType_OliphantCage => "巨象圈";
+
+        public override string BuildingDescription_Animals => "生产用于士兵征召的动物";
+        public override string Pen_Breeding => "动物繁育";
+        public override string Pen_BreedUpChance => "{0}% 几率提升 Tier";
+        public override string Pen_BreedDownChance => "{0}% 几率降低 Tier";
+
+
+        public override string CityCulture_AnimalBreeder2_Description => "提高繁育成功率";
+
+        public override string CityCulture_EnhancedProduction => "强化{0}生产";
+        public override string CityCulture_Production => "{0}生产";
+
+        public override string CityCulture_Butchers => "屠夫";
+
+        public override string CityCulture_Potters => "陶工";
+
+        public override string CityCulture_Wainwright => "造车匠";
+
+        public override string CityCulture_Wheelwright => "车轮匠";
+        public override string CityCulture_Wheelwright_Description => "征召马车的移速加成";
+
+        public override string CityCulture_ShieldMaker => "制盾师";
+
+
+        //public override string CityCulture_Nomads_Description => "低定居成本";
+
+        public override string CityCulture_Coopers => "箍桶匠";
+
+        public override string CityCulture_Salters => "盐工";
+
+
+        public override string CityBiome_Title => "生物群落";
+        public override string CityBiome_Description => "生物群落会影响某些资源和建筑的使用";
+
+        public override string CityBiome_Fields => "平原";
+        public override string CityBiome_Frozen => "冰原";
+        public override string CityBiome_Forest => "森林";
+        public override string CityBiome_Mountain => "山地";
+        public override string CityBiome_Desolate => "荒地";
+        public override string CityBiome_Desert => "沙漠";
+
+        public override string Bonus_IncreaseSkin => "提高皮革产量";
+        public override string Bonus_FoodStorage => "更大的食物仓库";
+
+        public override string StockPile_LimitTitle => "库存上限";
+
+
+
+        public override string Help_Work_Automatic => "工作将自动进行";
+        public override string Tutorial_SecondCity => "获得第二座城市";
+
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "跳过自动化";
+
+        public override string Resource_WaterReason => "水源将限制您的单位上限及生产规模";
+        public override string BuildingType_Orchard => "果园";
+        public override string BuildingType_ManorLord => "领主府"; // "Lord's Manor/House"
+        public override string BuildingType_ManorLord_Description => "解锁食品加工";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "断绝关系";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "物品来源";
+
+        public override string ItemSource_Terrain => "地形";
+        public override string ItemSource_Farm => "农场";
+        public override string ItemSource_CraftStation => "制作台";
+        public override string ItemSource_Gathering => "采集";
+
+        public override string CityCulture_Nomad => "游牧";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "按变动系数：{0}";
+
+        public override string Hud_Purchase_LowXCost => "低 {0} 成本";
+
+        public override string WorkQueue_Title => "工作队列";
+        public override string WorkQueue_Length => "剩余工作目标";
+        public override string WorkQueue_ActiveWorkers => "活跃工作队";
+        public override string WorkQueue_IdleWorkers => "空闲工作队";
+
+        public override string WorkTeam_Size => "村民以 {0} 人为一组工作";
+
+        public override string ObjectUi_ViewOnMap => "在地图上查看";
+        public override string ObjectUi_StuckBuildOrders => "受阻的建造指令";
+        public override string Hud_AllArmies => "所有军队";
+
+        public override string Hud_CurrentPage => "当前页";
+        public override string Hud_AllPages => "所有页";
+        public override string Hud_ToAllCities => "至所有城市";
+        public override string Hud_ToFaction => "至势力";
+        public override string Hud_FromFaction => "从势力";
+        public override string Hud_FactionWide => "使用势力全局设置";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "放置定居点";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "移除除此以外的所有帧";
+        //Winter patch 3
+        public override string Hud_Purchase_AllBuildings => "所有建筑加入队列";
+        public override string Hud_Purchase_AllTech => "所有科技加入队列";
+        public override string BuildingType_CasualBarracks_Description => "士兵招募时间由所有兵营分摊";
+        //Winter update patch + spring
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Language_ItemCount => "{1} {0}";
+
+        //public override string DisplayMode => "显示模式";
+        //public override string DisplayMode_Windowed => "窗口模式";
+        //public override string DisplayMode_BorderlessFullscreen => "无边框窗口";
+
+        //public override string GameSettings_RenderedMouseCursor => "游戏内光标"; // Implies a cursor rendered by the game
+        //public override string GameSettings_MuteControllerDisconnect => "屏蔽手柄断开提示";
+
+        public override string Delivery_MaxDistance => "最大运输距离：{0}";
+        public override string Tutorial_WillTakeAWhile => "这需要一些时间，请稍后再来。";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "等待 {0} 完成";
+        public override string GameOverResults => "游戏历史记录";
+
+        public override string UnitType_UnclaimedLand => "无主之地"; // "Land without a master" - standard gaming term
+        public override string UnitType_Settler => "开拓者"; // The standard term in Civ 6 for Settler
+        public override string UnitType_Settler_Description => "建立新城市";
+        public override string Resource_ConsumedProduced => "消耗 / 产出";
+        public override string InputActionName_PlaceTarget => "放置目标";
+
+        public override string FactionStartSize => "势力初始规模";
+        public override string FactionStartSize_Full => "完整";
+        public override string FactionStartSize_OneCity => "一座城市";
+        public override string FactionStartSize_Settler => "一个开拓者";
+
+        //Winter update
+        public override string Resource_StockpileLimit => "库存上限";
+        public override string GameMode_QuickMatch => "Quick Match";
+        public override string GameMode_QuickMatch_Description =>
+            "更短的游戏模式。投入与敌对国家之间的全面战争吧。";
+        public override string Lobby_PlayerCount => "玩家人数";
+        public override string Lobby_TwoTeams => "两支队伍";
+        public override string Hud_Produce => "生产:";
+        public override string Tutorial_WaitForWorkerLevel => "等待一名工人达到：";
+
+        public override string Tutorial_PracticeOrSchool => "在 {0} 上练习，或使用 {1}";
+        public override string Tutorial_AddTag => "添加标签 (tag):";
+        public override string Tutorial_AddPin => "添加图钉 (pin):";
+        public override string Tutorial_SelectMostTrees => "找到你树木最多的城市";
+        public override string Tutorial_SelectACityWithX => "选择一个拥有 {0} 的城市";
+
+        public override string Tutorial_Select_NotCapital => "。不是你的首都。";
+
+        public override string Tutorial_SetXPriorityToY => "将 {0} 的优先级设置为 {1}";
+        public override string Tutorial_AdvisorMission => "Advisor 任务";
+
+        public override string Tutorial_AdvisorDescription =>
+            "完整游戏已开始。Advisor 将通过更多有用的任务扩展教程。";
+
+        public override string Tutorial_EndAdvisor => "结束 Advisor";
+
+        public override string Tutorial_AdvisorCompleteTitle => "Advisor 完成！";
+        public override string Tutorial_AdvisorCompleteMessage => "愿你接下来的一天被祝福！";
+
+        public override string Hud_Search => "搜索";
+
+        public override string DifficultyDescription_ExtremeAggression => "极端侵略性";
+
+        public override string MapFilter => "地图过滤器";
+
+        public override string Settings_TechMultiplier => "Tech 研究速度";
+
+        public override string EndScreen_MatchComplete => "比赛结果";
+
+        public override string FactionName_DragonGem => "Dragon Gem";
+        public override string FactionName_Tomten => "Tomten";
+        public override string FactionName_Hælfolc => "Hælfolc";
+        public override string FactionName_AerimAngren => "Aerim Angren";
+
+        public override string HUD_NotAvailbleInX => "在 {0} 中不可用";
+
+        public override string InputActionName_MiniMap => "Mini-map";
+
+        //--
         public override string Error_SoundInitFailure => "声音初始化失败";
 
         public override string GameMenu_ControllerDisconnected => "控制器已断开连接";
@@ -33,7 +446,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 如何显示项目的数量。0: 项目, 1: 数量
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// 选择语言选项
@@ -78,7 +491,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 游戏名称和版本号
         /// </summary>
-        public override string Lobby_GameVersion => "DSS 战争派对 - 版本 {0}";
+        //public override string Lobby_GameVersion => "DSS 战争派对 - 版本 {0}";
 
         public override string FlagEditor_Description => "绘制你的旗帜并为你的士兵选择颜色。";
 
@@ -272,7 +685,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 单位黄金成本。
         /// </summary>
-        public override string Hud_Upkeep => "维持费用: {0}";
+        public override string Hud_Upkeep => "维持费用";
         public override string Hud_ArmyUpkeep => "军队维持费用: {0}";
 
         /// <summary>
@@ -284,14 +697,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Hud_GuardCount_MustExpandCityMessage => "你需要扩展城市。";
 
-        public override string Hud_SoldierCount => "士兵数量: {0}";
+        public override string Hud_SoldierCount => "士兵数量";
 
-        public override string Hud_SoldierGroupsCount => "组数量: {0}";
+        public override string Hud_SoldierGroupsCount => "组数量";
 
         /// <summary>
         /// 游戏内显示。单位计算的战斗力。
         /// </summary>
-        public override string Hud_StrengthRating => "战斗力: {0}";
+        public override string Hud_StrengthRating => "战斗力";
 
         /// <summary>
         /// 游戏内显示。整个国家的计算战斗力。
@@ -636,7 +1049,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 游戏结束画面上显示的统计数据。显示标题。
         /// </summary>
-        public override string EndGameStatistics_Title => "统计";
+        public override string Statistics_Title => "统计";
 
         /// <summary>
         /// 游戏结束画面上显示的统计数据。游戏内已过时间。
@@ -831,7 +1244,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// 士兵能承受多少伤害
         /// </summary>
-        public override string SoldierStats_Health => "生命值: {0}";
+        public override string SoldierStats_Health => "生命值";
 
         /// <summary>
         /// 一些士兵会增加军队的移动速度
@@ -1279,7 +1692,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "铺路";
         public override string BuildingType_Smith => "铁匠铺";
         public override string BuildingType_Cook => "厨师";
-        public override string BuildingType_Storage => "仓库";
+        public override string BuildingType_Storehouse => "仓库";
 
         public override string BuildingType_ResourceFarm => "{0}农场";
 
@@ -1302,7 +1715,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "骑士和外交官的住所";
         public override string BuildingType_CoalPit_Description => "高效的燃料生产";
-        public override string BuildingType_Storage_Description => "资源储存点";
+        //public override string BuildingType_Storehouse_Description => "资源储存点";
 
         public override string MenuTab_Info => "信息";
         public override string MenuTab_Work => "工作";
@@ -1390,10 +1803,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "将提高某个领域的攻击力，同时降低所有其他领域的攻击力，幅度为{0}";
         public override string Conscript_SelectBuilding => "选择兵营";
 
-        public override string Conscript_WeaponDamage => "武器伤害: {0}";
-        public override string Conscript_ArmorHealth => "盔甲耐久: {0}";
-        public override string Conscript_TrainingSpeed => "攻击速度: {0}";
-        public override string Conscript_TrainingTime => "训练时间: {0}";
+        public override string Conscript_WeaponDamage => "武器伤害";
+        public override string Conscript_ArmorHealth => "盔甲耐久";
+        public override string Conscript_AttackSpeed => "攻击速度";
+        public override string Conscript_TrainingTime => "训练时间";
 
         public override string Conscript_Training_Minimal => "最低限度";
         public override string Conscript_Training_Basic => "基础";
@@ -1427,7 +1840,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "以每秒资源显示。";
+        public override string Info_ResourcePerSecond => "以每秒资源显示。";
 
         public override string Info_MinuteAverage => "此值是过去一分钟的平均值。";
 
@@ -1487,12 +1900,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "网络专家";
         public override string CityCulture_PitMasters => "燃料大师";
 
-        public override string CityCulture_CultureIsX => "文化: {0}";
+        public override string CityCulture_Culture => "文化";
         public override string CityCulture_LargeFamilies_Description => "提高出生率";
         public override string CityCulture_FertileGround_Description => "农作物产量增加";
         public override string CityCulture_Archers_Description => "生产熟练的弓箭手";
         public override string CityCulture_Warriors_Description => "生产熟练的近战士兵";
-        public override string CityCulture_AnimalBreeder_Description => "动物提供更多资源";
+        //public override string CityCulture_AnimalBreeder_Description => "动物提供更多资源";
         public override string CityCulture_Miners_Description => "矿石产量增加";
         public override string CityCulture_Woodcutters_Description => "树木产量增加";
         public override string CityCulture_Builders_Description => "建筑速度更快";
@@ -1533,12 +1946,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "煤炭";
 
-        public override string Language_XUpkeepIsY => "{0} 维护费用：{1}";
+        public override string Language_XUpkeep => "{0} 维护费用";
         public override string Language_XCountIsY => "{0} 计数：{1}";
 
         public override string Message_ArmyOutOfFood_Text => "将从黑市购买昂贵的食物。当你的钱用完时，饥饿的士兵将会逃离。";
 
-        public override string Info_ArmyFood => "军队将从最近的友好城市补充食物。可以从其他派系购买食物。在敌对区域，食物只能从黑市购买。";
+        public override string Info_ArmyFood1 => "军队将从最近的友好城市补充粮食。";
+        public override string Info_ArmyFood2 => "可以从其他阵营购买粮食。";
+        public override string Info_ArmyFood3 => "在敌对地区，只能从黑市购买粮食。";
 
         public override string FactionName_Monger => "贩夫";
         public override string FactionName_Hatu => "哈图";

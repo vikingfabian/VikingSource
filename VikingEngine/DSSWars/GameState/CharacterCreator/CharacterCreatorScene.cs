@@ -182,19 +182,35 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             content.h1("Diplay options", HudLib.TitleColor_Head);
 
             content.newLine();
-            var weapons = ConscriptMenu.AllHandWeapons();
+            var weapons = ConscriptDataLib.AllHandWeapons();
+
+            weaponOption(ItemResourceType.Settler);
+
             foreach (var wepArray in weapons)
             {
-                foreach (var weapon in wepArray)
+                foreach (ItemResourceType weapon in wepArray)
                 {
-                    var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
+                    weaponOption(weapon);
+                    //var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
+                    //    {
+                    //        new RbImage(ResourceLib.Icon(weapon))
+                    //    },
+                    //new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, RbSoundType.Option)
+                    //);
+                    //content.Add(button);
+                }
+            }
+
+            void weaponOption(ItemResourceType weapon)
+            {
+                IconName.Item(weapon, out var weaponIcon, out _);
+                var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
                         {
-                            new RbImage(ResourceLib.Icon(weapon))
+                            new RbImage(weaponIcon)
                         },
                     new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, RbSoundType.Option)
                     );
-                    content.Add(button);
-                }
+                content.Add(button);
             }
 
             content.newLine();
@@ -204,7 +220,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 switch (armorLevel)
                 {
                     default://case ArmorLevel.None:
-                        armorIcon = CityTag.NoBackSprite;
+                        armorIcon = TagLib.NoBackSprite;
                         break;
                     case ArmorLevel.Leather:
                         armorIcon = SpriteName.WarsResource_PaddedArmor;
@@ -598,7 +614,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         //}
 
 
-        float ScaleProperty(bool set, float value)
+        float ScaleProperty(object tag, bool set, float value)
         {
             var profile = GetProfile();
             if (set) { 

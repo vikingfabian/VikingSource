@@ -245,6 +245,8 @@ namespace VikingEngine.Engine
         abstract protected void asyncLoading_OnRestart(ref int part);
         abstract protected void launch();
 
+        virtual protected bool tasksComplete() { return true; }
+
         public override void Time_Update(float time)
         {
             base.Time_Update(time);

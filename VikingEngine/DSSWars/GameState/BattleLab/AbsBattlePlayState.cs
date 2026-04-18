@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Input;
 
@@ -27,7 +28,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             menuSystem = new GameMenuSystem();
 
             new GameObject.AllUnits();
-            new Diplomacy();
+            //new Diplomacy();
 
             new GameTime();
             HudLib.Init();
@@ -47,7 +48,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             var factionsCounter = DssRef.world.factions.counter();
             while (factionsCounter.Next())
             {
-                factionsCounter.sel.initDiplomacy(DssRef.world);
+                //factionsCounter.sel.initDiplomacy(DssRef.world);
                 if (factionsCounter.sel.factiontype == FactionType.DarkLord)
                 {
                     DssRef.settings.darkLordPlayer = new Players.DarkLordPlayer(factionsCounter.sel, true);
@@ -61,13 +62,15 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             int playerCount = 1;
 
             localPlayers = new List<Players.LocalPlayer>(playerCount);
-            Engine.Screen.SetupSplitScreen(playerCount, !DssRef.storage.verticalScreenSplit);
+            Engine.Screen.SetupSplitScreen(playerCount);
             for (var i = 0; i < playerCount; ++i)
             {
                 var startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
                 var local = createLocalPlayer(startFaction);
                 local.assignPlayer(i, playerCount, true);
                 localPlayers.Add(local);
+
+                Mouse.AddPlayer(local.playerData, playerCount, local.gameControls.input.moveCursor, local.gameControls.input.menuInput.cursor);
             }
         }
 
@@ -142,6 +145,15 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
             if (pauseMenuUpdate())
             {
+                return;
+            }
+
+            if (exitGameStateThreads != null)
+            {
+                if (cutScene == null)
+                {
+                    new ExitScene(exitGameStateThreads);
+                }
                 return;
             }
 

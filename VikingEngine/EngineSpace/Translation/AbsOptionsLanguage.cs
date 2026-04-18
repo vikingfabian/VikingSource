@@ -9,6 +9,29 @@ namespace VikingEngine.EngineSpace.Translation
 {
     abstract class AbsOptionsLanguage
     {
+        //Mounts update
+        public abstract string InputSteam { get; }
+        public abstract string Input_SimulateMouse { get; }
+        public abstract string Input_LockMouseToWindow { get; }
+        public abstract string Input_MouseEdgePush_Title { get; }
+        public abstract string Input_NoControl { get; }
+        public abstract string Input_ActiveControl { get; }
+        public abstract string Input_PassiveControl { get; }
+        public abstract string Setting_MinimapScale { get; }
+
+
+        //Spring patch
+
+        public abstract string Settings_Particles_FadeMapLayers { get; }
+        public abstract string SplitScreen_HorizontalFirst { get; }
+        public abstract string SplitScreen_VerticalFirst { get; }
+        public abstract string SplitScreen_HorizontalOnly { get; }
+        public abstract string SplitScreen_VerticalOnly { get; }
+        public abstract string SplitScreen_Title { get; }
+        public abstract string SplitScreen_AdjustSplit { get; }
+        //
+        public abstract string Settings_ControllerVibration { get; }
+        //
         public abstract string Hud_Cancel { get; }
         public abstract string Hud_Back { get; }
         public abstract string Hud_AreYouSure { get; }
@@ -89,6 +112,14 @@ namespace VikingEngine.EngineSpace.Translation
         /// </summary>
         public abstract string Settings_ImportNoAchievement { get; }
         public abstract string GraphicsOption_FarViewDistance { get; }
+
+        //Winter update
+        public abstract string GraphicsOption_IngameMenuWidth { get; }
+        public abstract string DisplayMode { get; }
+        public abstract string DisplayMode_Windowed { get; }
+        public abstract string DisplayMode_BorderlessFullscreen { get; }
+        public abstract string GameSettings_RenderedMouseCursor { get; }
+        public abstract string GameSettings_MuteControllerDisconnect { get; }
 
         public string ThreeOption(ThreeOptions option)
         {

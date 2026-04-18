@@ -18,10 +18,17 @@ namespace VikingEngine.DSSWars.GameObject
             return false;
         }
 
-        protected override DetailUnitModel initModel()
+        protected override DetailUnitModel initModel(bool bannerman)
         {
             updateGroudY(true);
-            return new SoldierUnitAdvancedModel(this);
+            if (bannerman)
+            {
+                return new BannerManModel(this);
+            }
+            else
+            {
+                return new SoldierUnitAdvancedModel(this);
+            }
         }
 
         public override bool IsSingleTarget()

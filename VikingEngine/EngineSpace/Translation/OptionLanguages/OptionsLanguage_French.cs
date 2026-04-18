@@ -8,7 +8,32 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_French : AbsOptionsLanguage
     {
+        //Mounts
+        public override string InputSteam => "Steam Input";
+        public override string Input_SimulateMouse => "Simuler la souris";
+        public override string Input_LockMouseToWindow => "Verrouiller la souris à la fenêtre";
+        public override string Input_MouseEdgePush_Title => "Défilement sur les bords";
+        public override string Input_NoControl => "Aucun";
+        public override string Input_ActiveControl => "Actif";
+        public override string Input_PassiveControl => "Passif";
+        public override string Setting_MinimapScale => "Échelle de la minimap";
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "Fondu des calques";
+        public override string SplitScreen_HorizontalFirst => "Horizontal en premier";
+        public override string SplitScreen_VerticalFirst => "Vertical en premier";
+        public override string SplitScreen_HorizontalOnly => "Horizontal seulement";
+        public override string SplitScreen_VerticalOnly => "Vertical seulement";
+        public override string SplitScreen_Title => "Écran scindé";
+        public override string SplitScreen_AdjustSplit => "Ajuster la séparation {0}";
 
+        public override string Settings_ControllerVibration => "Vibration de la manette";
+        public override string GraphicsOption_IngameMenuWidth => "Largeur du menu en jeu";
+        public override string DisplayMode => "Mode d’affichage";
+        public override string DisplayMode_Windowed => "Fenêtré";
+        public override string DisplayMode_BorderlessFullscreen => "Plein écran sans bordure";
+        public override string GameSettings_RenderedMouseCursor => "Curseur rendu";
+        public override string GameSettings_MuteControllerDisconnect => "Masquer alertes manette";
+        //-
         public override string GraphicsOption_FarViewDistance => "Vue longue distance";
 
         public override string Hud_Cancel => "Annuler";

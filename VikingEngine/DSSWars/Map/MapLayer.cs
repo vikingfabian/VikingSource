@@ -63,7 +63,22 @@ namespace VikingEngine.DSSWars.Map
                 float zoomBuffer = FullZoomRange.Difference * 0.0025f;
 
                 float minZoom = FullZoomRange.Min;
-                float maxZoom = Ref.gamesett.farViewDistance? 38 : 26;
+
+                float maxZoom;// = Ref.gamesett.farViewDistance? 38 : 26;
+
+                switch (Ref.gamesett.farViewDistance)
+                {
+                    default:
+                        maxZoom = 38;
+                        break;
+                    case ThreeOptions.Medium:
+                        maxZoom = 26;
+                        break;
+                    case ThreeOptions.Low:
+                        maxZoom = 14;
+                        break;
+
+                }
 
                 layers.Add(new MapLayer(MapDetailLayerType.UnitDetail1, minZoom, maxZoom, zoomBuffer));
 
@@ -150,11 +165,29 @@ namespace VikingEngine.DSSWars.Map
         {
             if (prevLayer != null)
             {
-                prevLayer.opacity -= 3f * Ref.DeltaTimeSec;
-                if (prevLayer.opacity <= 0.2f)
+                prevLayer.fadeDelay -= 3f * Ref.DeltaTimeSec;
+
+                if (prevLayer.fadeDelay <= 0)
                 {
-                    prevLayer.opacity = 0;
-                    prevLayer = null;
+                    if (Ref.gamesett.fadeMapLayers &&
+                        prevLayer.type != MapDetailLayerType.FullOverview4 &&
+                        current.type != MapDetailLayerType.FullOverview4
+                        )
+                    {
+                        prevLayer.opacity -= 3f * Ref.DeltaTimeSec;
+
+                        if (prevLayer.opacity <= 0.2f)
+                        {
+                            prevLayer.opacity = 0;
+                            prevLayer = null;
+                        }
+                    }
+                    else
+                    {
+
+                        prevLayer = null;
+
+                    }
                 }
             }
 
@@ -198,6 +231,11 @@ namespace VikingEngine.DSSWars.Map
         {
             return $"Current: {current}, prev {prevLayer}";
         }
+
+        public MapLayer GetLayer(MapDetailLayerType layerType)
+        {
+            return layers[(int)layerType];
+        }
     }
 
     class MapLayer
@@ -214,6 +252,7 @@ namespace VikingEngine.DSSWars.Map
         public IntervalF zoom;
 
         public float opacity = 1f;
+        public float fadeDelay = 1f;
 
         public MapDetailLayerType type;
 

@@ -9,6 +9,34 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_English : AbsOptionsLanguage
     {
+        //Mounts
+        public override string InputSteam => "Steam Input";
+        public override string Input_SimulateMouse => "Simulate mouse";
+        public override string Input_LockMouseToWindow => "Lock mouse to window";
+        public override string Input_MouseEdgePush_Title => "Mouse edge push";
+        public override string Input_NoControl => "None";
+        public override string Input_ActiveControl => "Active";
+        public override string Input_PassiveControl => "Passive";
+        public override string Setting_MinimapScale => "Mini map scale";
+
+        //--
+        public override string Settings_Particles_FadeMapLayers => "Fade layers";
+        public override string SplitScreen_HorizontalFirst => "Horizontal first";
+        public override string SplitScreen_VerticalFirst => "Vertical first";
+        public override string SplitScreen_HorizontalOnly => "Horizontal only";
+        public override string SplitScreen_VerticalOnly => "Vertical only";
+        public override string SplitScreen_Title => "Split-screen";
+        public override string SplitScreen_AdjustSplit => "Adjust split {0}";
+        public override string Settings_ControllerVibration => "Controller vibration";
+
+        //Winter update settings
+        public override string GraphicsOption_IngameMenuWidth => "Game menu width";
+        public override string DisplayMode => "Display mode";
+        public override string DisplayMode_Windowed => "Windowed";
+        public override string DisplayMode_BorderlessFullscreen => "Borderless fullscreen";
+        public override string GameSettings_RenderedMouseCursor => "Rendered cursor";
+        public override string GameSettings_MuteControllerDisconnect => "Mute disconnect messages";
+        //--
         public override string GraphicsOption_FarViewDistance => "Long-distance view";
 
         public override string Hud_Cancel => "Cancel";

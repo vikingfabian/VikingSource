@@ -9,6 +9,33 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_German : AbsOptionsLanguage
     {
+        //Mounts
+        public override string InputSteam => "Steam Input";
+        public override string Input_SimulateMouse => "Maus simulieren";
+        public override string Input_LockMouseToWindow => "Maus ans Fenster binden";
+        public override string Input_MouseEdgePush_Title => "Scrollen am Bildschirmrand";
+        public override string Input_NoControl => "Keine";
+        public override string Input_ActiveControl => "Aktiv";
+        public override string Input_PassiveControl => "Passiv";
+        public override string Setting_MinimapScale => "Minimap-Skalierung";
+
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "Ebenen ausblenden";
+        public override string SplitScreen_HorizontalFirst => "Horizontal zuerst";
+        public override string SplitScreen_VerticalFirst => "Vertikal zuerst";
+        public override string SplitScreen_HorizontalOnly => "Nur horizontal";
+        public override string SplitScreen_VerticalOnly => "Nur vertikal";
+        public override string SplitScreen_Title => "Splitscreen"; // Common term in German gaming
+        public override string SplitScreen_AdjustSplit => "Aufteilung anpassen {0}";
+
+        public override string Settings_ControllerVibration => "Controller-Vibration";
+        public override string GraphicsOption_IngameMenuWidth => "Breite des Ingame-Menüs";
+        public override string DisplayMode => "Anzeigemodus";
+        public override string DisplayMode_Windowed => "Fenstermodus";
+        public override string DisplayMode_BorderlessFullscreen => "Randloser Vollbildmodus";
+        public override string GameSettings_RenderedMouseCursor => "Gerenderter Cursor";
+        public override string GameSettings_MuteControllerDisconnect => "Controller-Warnungen stummschalten";
+        //--
         public override string GraphicsOption_FarViewDistance => "Sichtweite (Long Distance)";
 
         public override string Hud_Cancel => "Abbrechen";

@@ -171,22 +171,22 @@ namespace VikingEngine.DSSWars.Resource
             }
         }
 
-        public void toHud(Players.LocalPlayer player, RichBoxContent content, Faction faction, City city)
-        {
-            content.h2(DssRef.lang.CityMenu_SalePricesTitle);
+        //public void toHud(Players.LocalPlayer player, RichBoxContent content, Faction faction, City city)
+        //{
+        //    content.h2(DssRef.lang.CityMenu_SalePricesTitle);
 
-            wood.toHud(player, content, DssRef.lang.Resource_TypeName_Wood, ItemResourceType.SoftWood, faction, city);
-            stone.toHud(player, content, DssRef.lang.Resource_TypeName_Stone, ItemResourceType.Stone_G, faction, city);
-            food.toHud(player, content, DssRef.lang.Resource_TypeName_Food, ItemResourceType.Food_G, faction, city);
+        //    wood.toHud(player, content, DssRef.lang.Resource_TypeName_Wood, ItemResourceType.SoftWood, faction, city);
+        //    stone.toHud(player, content, DssRef.lang.Resource_TypeName_Stone, ItemResourceType.Stone_G, faction, city);
+        //    food.toHud(player, content, DssRef.lang.Resource_TypeName_Food, ItemResourceType.Food_G, faction, city);
 
-            sharpstick.toHud(player, content, DssRef.lang.Resource_TypeName_SharpStick, ItemResourceType.SharpStick, faction, city);
-            sword.toHud(player, content, DssRef.lang.Resource_TypeName_Sword, ItemResourceType.Sword, faction, city);
-            bow.toHud(player, content, DssRef.lang.Resource_TypeName_Bow, ItemResourceType.Bow, faction, city);
+        //    sharpstick.toHud(player, content, DssRef.lang.Resource_TypeName_SharpStick, ItemResourceType.SharpStick, faction, city);
+        //    sword.toHud(player, content, DssRef.lang.Resource_TypeName_Sword, ItemResourceType.Sword, faction, city);
+        //    bow.toHud(player, content, DssRef.lang.Resource_TypeName_Bow, ItemResourceType.Bow, faction, city);
 
-            lightArmor.toHud(player, content, DssRef.lang.Resource_TypeName_LightArmor, ItemResourceType.PaddedArmor, faction, city);
-            mediumArmor.toHud(player, content, DssRef.lang.Resource_TypeName_MediumArmor, ItemResourceType.IronArmor, faction, city);
-            heavyArmor.toHud(player, content, DssRef.lang.Resource_TypeName_HeavyArmor, ItemResourceType.HeavyIronArmor, faction, city);
-        }
+        //    lightArmor.toHud(player, content, DssRef.lang.Resource_TypeName_LightArmor, ItemResourceType.PaddedArmor, faction, city);
+        //    mediumArmor.toHud(player, content, DssRef.lang.Resource_TypeName_MediumArmor, ItemResourceType.IronArmor, faction, city);
+        //    heavyArmor.toHud(player, content, DssRef.lang.Resource_TypeName_HeavyArmor, ItemResourceType.HeavyIronArmor, faction, city);
+        //}
 
     }
 
@@ -221,51 +221,51 @@ namespace VikingEngine.DSSWars.Resource
             price = factionTemplate.price;
         }
 
-        public void toHud(Players.LocalPlayer player, RichBoxContent content, string name, ItemResourceType resource, Faction faction, City city)
-        {
-            content.newLine();
-            content.Add(new RbText(name));
-            content.newLine();
+        //public void toHud(Players.LocalPlayer player, RichBoxContent content, string name, ItemResourceType resource, Faction faction, City city)
+        //{
+        //    content.newLine();
+        //    content.Add(new RbText(name));
+        //    content.newLine();
 
-            if (city != null)
-            {
-                //var followFactionButton = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(followFaction ? "=F" : "!F") },
-                //        new RbAction2Arg<ItemResourceType, City>(faction.tradeFollowFactionClick, resource, city));
-                //if (!followFaction)
-                //{
-                //    followFactionButton.overrideBgColor = Color.OrangeRed;
-                //}
-                //content.Add(followFactionButton);
-                //content.space();
+        //    if (city != null)
+        //    {
+        //        //var followFactionButton = new RichboxButton(new List<AbsRichBoxMember> { new RichBoxText(followFaction ? "=F" : "!F") },
+        //        //        new RbAction2Arg<ItemResourceType, City>(faction.tradeFollowFactionClick, resource, city));
+        //        //if (!followFaction)
+        //        //{
+        //        //    followFactionButton.overrideBgColor = Color.OrangeRed;
+        //        //}
+        //        //content.Add(followFactionButton);
+        //        //content.space();
 
-                HudLib.FollowFactionButton(followFaction,
-                    faction.tradeTemplate.GetTradeResource(resource).price,
-                    new RbAction2Arg<ItemResourceType, City>(faction.tradeFollowFactionClick, resource, city),
-                    player, content);
-            }
+        //        HudLib.FollowFactionButton(followFaction,
+        //            faction.tradeTemplate.GetTradeResource(resource).price,
+        //            new RbAction2Arg<ItemResourceType, City>(faction.tradeFollowFactionClick, resource, city),
+        //            player, content);
+        //    }
 
-            for (int i = PriceControls.Length - 1; i >= 0; i--)
-            {
-                float change = -PriceControls[i];
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(change)) },
-                    new RbAction3Arg<float, ItemResourceType, City>(faction.changeResourcePrice, change, resource, city)));
+        //    for (int i = PriceControls.Length - 1; i >= 0; i--)
+        //    {
+        //        float change = -PriceControls[i];
+        //        content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(change)) },
+        //            new RbAction3Arg<float, ItemResourceType, City>(faction.changeResourcePrice, change, resource, city)));
 
-                content.space();
-            }
+        //        content.space();
+        //    }
 
-            content.Add(new RbText(TextLib.OneDecimal(price)));
-            content.space();
+        //    content.Add(new RbText(TextLib.OneDecimal(price)));
+        //    content.space();
 
-            for (int i = 0; i < PriceControls.Length; i++)
-            {
-                float change = PriceControls[i];
-                content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(change)) },
-                    new RbAction3Arg<float, ItemResourceType, City>(faction.changeResourcePrice, change, resource, city)));
+        //    for (int i = 0; i < PriceControls.Length; i++)
+        //    {
+        //        float change = PriceControls[i];
+        //        content.Add(new RbButton(new List<AbsRichBoxMember> { new RbText(TextLib.PlusMinus(change)) },
+        //            new RbAction3Arg<float, ItemResourceType, City>(faction.changeResourcePrice, change, resource, city)));
 
-                content.space();
-            }
+        //        content.space();
+        //    }
 
-        }
+        //}
     }
 
 }
