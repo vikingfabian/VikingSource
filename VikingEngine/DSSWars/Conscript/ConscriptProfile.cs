@@ -40,56 +40,25 @@ namespace VikingEngine.DSSWars.Conscript
             training = 0;
             specialization = SpecializationType.None;
         }
+        public bool Equals(ConscriptProfile other)
+        {
+            bool result = man == other.man &&
+                   weapon == other.weapon &&
+                   shield == other.shield &&
+                   armorLevel == other.armorLevel &&
+                   animal == other.animal &&
+                   mountArmor == other.mountArmor &&
+                   vehicle == other.vehicle &&
+                   training == other.training &&
+                   specialization == other.specialization;
 
-        //public ItemResourceType[] AvailableShields()
-        //{
-        //    if (ItemPropertyColl.Get(weapon).Filter_IsTwoHandWeapon)
-        //    {
-        //        return ConscriptDataLib.SideShield;
-        //    }
-        //    else
-        //    {
-        //        return ConscriptDataLib.AllShields;
-        //    }
-        //}
+            if (!result)
+            {
+                lib.DoNothing();
+            }
 
-        //public ItemResourceType[] AvailableWagons()
-        //{
-        //    switch (ItemPropertyColl.Get(animal).wagonPull)
-        //    {
-        //        default:
-        //        case WagonPull.None:
-        //            return null;
-
-        //        case WagonPull.LightOnly:
-        //            return ConscriptDataLib.VehicleTypesLight;
-
-        //        case WagonPull.All:
-        //            return ConscriptDataLib.VehicleTypes;
-        //        case WagonPull.Balcon:
-        //            if (ItemPropertyColl.Get(weapon).Filter_IsWarMashine)
-        //            { 
-        //                return ConscriptDataLib.VehicleRequired;
-        //            }
-        //            return ConscriptDataLib.VehicleTypes;
-        //    }
-        //}
-
-        //public ItemResourceType[] AvailableAnimalArmor()
-        //{
-        //    switch (ItemPropertyColl.Get(animal).armorCarry)
-        //    {
-        //        default:
-        //        case ArmorCarry.None:
-        //            return null;
-
-        //        case ArmorCarry.LightOnly:
-        //            return ConscriptDataLib.MountArmorTypesLight;
-
-        //        case ArmorCarry.All:
-        //            return ConscriptDataLib.MountArmorTypes;
-        //    }
-        //}
+            return result;
+        }
 
         public int menCost()
         {
@@ -280,33 +249,6 @@ namespace VikingEngine.DSSWars.Conscript
 
             return 0;
         }
-
-        //public void defaultSetup(BuildAndExpandType barrackType)
-        //{
-        //    switch (barrackType)
-        //    {
-        //        case BuildAndExpandType.SoldierBarracks:
-        //            weapon = ItemResourceType.SharpStick;
-        //            break;
-        //        case BuildAndExpandType.ArcherBarracks:
-        //            weapon = ItemResourceType.SlingShot;
-        //            break;
-        //        case BuildAndExpandType.WarmachineBarracks:
-        //            weapon = ItemResourceType.Ballista;
-        //            break;
-        //        case BuildAndExpandType.KnightsBarracks:
-        //            weapon = ItemResourceType.Warhammer;
-        //            training = TrainingLevel.Basic;
-        //            break;
-        //        case BuildAndExpandType.GunBarracks:
-        //            weapon = ItemResourceType.HandCannon;
-        //            break;
-        //        case BuildAndExpandType.CannonBarracks:
-        //            weapon = ItemResourceType.ManCannonBronze;
-        //            break;
-        //    }
-
-        //}
 
         public string TypeName()
         {

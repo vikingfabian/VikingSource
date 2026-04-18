@@ -1080,7 +1080,7 @@ namespace VikingEngine.DSSWars.Conscript
         {
             BarracksStatus currentStatus = get();
             currentStatus.que = length;
-            set(currentStatus);
+            set(currentStatus, false);
         }
 
         void selectClick(int index)
@@ -1093,7 +1093,7 @@ namespace VikingEngine.DSSWars.Conscript
             return city.conscriptBuildings[city.selectedConscript];
         }
 
-        void set(BarracksStatus profile)
+        void set(BarracksStatus profile, bool triggerChange = true)
         {
             //var spec = profile.profile.avaialableSpecializations(profile.type, out bool mayGuard);
 
@@ -1107,7 +1107,10 @@ namespace VikingEngine.DSSWars.Conscript
 
             city.conscriptBuildings[city.selectedConscript] = profile;
 
-            city.onConscriptChange();
+            if (triggerChange)
+            {
+                city.onConscriptChange();
+            }
         }
 
         public static void SkillbonusUi(RichBoxContent content, float skillBonus, bool add)

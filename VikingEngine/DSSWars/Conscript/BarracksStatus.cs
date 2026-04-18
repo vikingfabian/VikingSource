@@ -113,24 +113,32 @@ namespace VikingEngine.DSSWars.Conscript
         public int UnitsLeft => unitsNeeded - unitsCollected;
 
         /// <returns>Available/paid count</returns>
-        public int payItems(City city, CommitOption commit, out int totalMen)
+        public int payItems(City city, CommitOption commit, out int totalMen, out bool completed)
         {
+            completed = false;
             ConscriptUnitCount perUnitCount = new ConscriptUnitCount(profile);
             unitsNeeded = perUnitCount.groupUnitCount;
-            int needUnits = unitsNeeded - unitsCollected;
+            //int needUnits = unitsNeeded - unitsCollected;
             var me = this;
 
-            int avaialble = allItems(needUnits, CommitOption.Preview);
+            int avaialble = allItems(unitsNeeded, CommitOption.Preview);
 
             switch (commit)
             {
                 case CommitOption.Commit:
-                    allItems(avaialble, commit);
-                    unitsCollected += avaialble;
+                    unitsCollected = avaialble;
+
+                    if (avaialble >= unitsNeeded)
+                    {
+                        allItems(avaialble, commit);
+                        completed = true;
+                    }
+                    //unitsCollected += avaialble;
                     break;
                 case CommitOption.Revert:
                     allItems(unitsCollected, commit);
                     unitsCollected = 0;
+                    completed = true;
                     break;
             }
             totalMen = perUnitCount.menPerUnit * unitsNeeded;
@@ -182,7 +190,7 @@ namespace VikingEngine.DSSWars.Conscript
 
         public void returnItems(City city)
         {
-            if (active == ConscriptActiveStatus.CollectingEquipment)// ||
+            if (active >= ConscriptActiveStatus.CollectingEquipment)// ||
                     //active == ConscriptActiveStatus.CollectingMen)
             {
                 //return items
@@ -197,7 +205,7 @@ namespace VikingEngine.DSSWars.Conscript
                 //}
 
                 //city.workForce.amount += menCollected;
-                payItems(city, CommitOption.Revert, out _);
+                payItems(city, CommitOption.Revert, out _, out _);
 
                 active = ConscriptActiveStatus.Idle;
 
@@ -284,7 +292,7 @@ namespace VikingEngine.DSSWars.Conscript
                 //    break;
 
                 case ConscriptActiveStatus.Training:
-                    payItems(city, CommitOption.Preview, out _);
+                    payItems(city, CommitOption.Preview, out _, out _);
                     unitsCollected = unitsNeeded;
                     //unitsNeeded = DssConst.SoldierGroup_DefaultCount;
                     //menCollected = DssConst.SoldierGroup_DefaultCount;
@@ -323,6 +331,11 @@ namespace VikingEngine.DSSWars.Conscript
             }
 
             return false;
+        }
+
+        public void RevertCountDown()
+        {
+            que = Math.Min(MaxQue, que + 1);
         }
 
         public TimeLength TimeLength()

@@ -13,6 +13,10 @@ Change Log:
 * increased sharp stick damage 20 > 24
 * City highlight on faction map
 * Low xp workers are lost first
+* The conscript is not locking in until all items are available, 
+	-plus it will take ten seconds to fully lock in, to feel more dynamic
+
+* Fixed: Max population recruitment seems to have broken
 
 
 ##ICONS TODO
@@ -23,26 +27,14 @@ Change Log:
 
 
 ## MOUNTED POST CONTENT UPDATE ##
+x hold recruitment until all is ready, plus undo feature
 x 3k self dying cities
-* reduce loss of worker XP (recruitment)
-x boss closer to player
 x close cores popup on battle lab, plus exit end screen
-x boil salt
+
 x deeper unit category with search for items and melee/ranged/warmashine filters
 (maybe filter out units for remove/split)
 x achievements
-
-
-(Maybe) Breeding tech tree skill (Allowes more reliable animal upgrades)
-x adv build upgrade, no more use of logistics
-x auto options for logistics/hall/manor
-x mounts in casual play
-x Luxurious buildings, raises the nobel house cap
-x hold recruitment until all is ready, plus undo feature
-x lets me build Orchards over orchards
-
-* go through controller best practices
--dpad in menu
+7
 
 #Event timers (are slightly random)#
 - Bot delay: 8 minutes

@@ -65,9 +65,9 @@ namespace VikingEngine.DSSWars.GameObject
 
                             case ConscriptActiveStatus.CollectingEquipment:
                                
-                                status.payItems(this, CommitOption.Commit, out int totalMen);
+                                status.payItems(this, CommitOption.Commit, out int totalMen, out bool allCollected);
 
-                                if (status.unitsCollected == status.unitsNeeded &&
+                                if (allCollected &&
                                     (status.profile.specialization != SpecializationType.CityGuard || AvailableGuardHousing() >= totalMen))
                                 {
                                     status.active++;
@@ -82,7 +82,6 @@ namespace VikingEngine.DSSWars.GameObject
                                     Ref.update.AddSyncAction(new SyncAction3Arg<ConscriptProfile, Vector3, int>(conscriptArmyLink, status.inProgress, startPos, 1));
 
                                     status.active = ConscriptActiveStatus.Idle;
-
                                     status.unitsNeeded = 0;
                                     status.unitsCollected = 0;
 
@@ -141,11 +140,44 @@ namespace VikingEngine.DSSWars.GameObject
                                         }
                                     }
                                 }
+                                //else if (status.countdown.TimePassed().seconds < 10 &&
+                                //    !status.inProgress.Equals(status.profile))
+                                //{
+                                //    status.active = ConscriptActiveStatus.Idle;
+                                //    status.unitsNeeded = 0;
+                                //    status.unitsCollected = 0;
+                                //    status.RevertCountDown();
+                                //    status.returnItems(this);
+                                //}
+
                                 break;
                         }
                     }
                     conscriptBuildings[i] = status;
                 }
+            }
+        }
+
+        public void onConscriptChange()
+        {
+            lock (conscriptBuildings)
+            {
+                conscriptDelay.Seconds = 1;
+
+                BarracksStatus status = conscriptBuildings[selectedConscript];
+                //status.returnItems(this);
+                if (status.countdown.TimePassed().seconds < 10 )
+                    //&&
+                    //!status.inProgress.Equals(status.profile))
+                {
+                    status.active = ConscriptActiveStatus.Idle;
+                    status.unitsNeeded = 0;
+                    status.unitsCollected = 0;
+                    status.RevertCountDown();
+                    status.returnItems(this);
+                }
+
+                conscriptBuildings[selectedConscript] = status;
             }
         }
 
@@ -320,18 +352,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public void onConscriptChange()
-        {
-            lock (conscriptBuildings)
-            {
-                conscriptDelay.Seconds = 1;
-
-                BarracksStatus status = conscriptBuildings[selectedConscript];
-                status.returnItems(this);
-                
-                conscriptBuildings[selectedConscript] = status;
-            }
-        }
+        
 
         public void conscriptSettlerLink()
         {

@@ -108,6 +108,11 @@ namespace VikingEngine.DSSWars.Data
             return Ref.TotalGameTimeSec >= endTimeSec;
         }
 
+        public TimeLength TimePassed()
+        {
+            return new TimeLength(length.seconds - endTimeSec + Ref.TotalGameTimeSec);
+        }
+
         public TimeLength RemainingLength()
         {
             return new TimeLength(Bound.Min(endTimeSec - Ref.TotalGameTimeSec, 0));
