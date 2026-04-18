@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Input;
 
@@ -144,6 +145,15 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
 
             if (pauseMenuUpdate())
             {
+                return;
+            }
+
+            if (exitGameStateThreads != null)
+            {
+                if (cutScene == null)
+                {
+                    new ExitScene(exitGameStateThreads);
+                }
                 return;
             }
 

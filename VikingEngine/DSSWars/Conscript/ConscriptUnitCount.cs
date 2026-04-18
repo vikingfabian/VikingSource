@@ -80,7 +80,7 @@ namespace VikingEngine.DSSWars.Conscript
                 if (weaponProp.Filter_IsWarMachine)
                 {
 #if DEBUG
-                    throw new Exception();
+                    //throw new Exception();
 #endif
                 }
             }

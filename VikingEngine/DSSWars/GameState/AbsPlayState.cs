@@ -302,6 +302,11 @@ namespace VikingEngine.DSSWars.GameState
             exitThreads = true;
             DssRef.ambience.gameEnd();
 
+            if (cutScene is EndScene)
+            {
+                cutScene.Close();
+            }
+
             exitGameStateThreads = new ExitGameStateThreads(exit);
         }
         void exit()

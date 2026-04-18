@@ -783,17 +783,17 @@ namespace VikingEngine.DSSWars
         /// <summary>
         /// Bask in the glory, watch your name on the leaderboard
         /// </summary>
-        leaderboard_glory,
+        leaderboard_glory, //i, t, a
 
         /// <summary>
         /// Alpha warg conscript
         /// </summary>
-        the_alpha, //i, t
+        the_alpha, //i, t, a
 
         /// <summary>
         /// Summon the cannonphant
         /// </summary>
-        cannonphant, //i,
+        cannonphant, //i, t, a
 
 
 

@@ -36,6 +36,8 @@ namespace VikingEngine.DSSWars.Data
         }
         public void toMenu(RichBoxContent content)
         {
+            var id = SteamUser.GetSteamID().m_SteamID;
+
             foreach (var entry in values)
             {
                 content.newLine();
@@ -44,9 +46,13 @@ namespace VikingEngine.DSSWars.Data
 
                 HudLib.BulletSeperationPoint(content);
 
-                content.Add(new RbText(LoadContent.CheckCharsSafety( entry.userName, LoadedFont.Regular), HudLib.TitleColor_Name));
-                
-                
+                content.Add(new RbText(LoadContent.CheckCharsSafety(entry.userName, LoadedFont.Regular), HudLib.TitleColor_Name));
+
+
+                if (entry.user.m_SteamID == id)
+                {
+                    DssRef.achieve.UnlockAchievement(AchievementIndex.leaderboard_glory);
+                }
             }
 
             if (values.Count == 0)
@@ -350,9 +356,12 @@ namespace VikingEngine.DSSWars.Data
                 switch (vType)
                 {
                     case VictoryType.DefeatBoss:
-                        setup(LeaderBoardType.story_difficulty, difficulty);
-                        scoreDetails.Add((int)DssRef.time.TotalIngameTime().TotalSeconds);
-                        BeginUpload();
+                        if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
+                        {
+                            setup(LeaderBoardType.story_difficulty, difficulty);
+                            scoreDetails.Add((int)DssRef.time.TotalIngameTime().TotalSeconds);
+                            BeginUpload();
+                        }
                         break;
 
                     case VictoryType.Domination:
