@@ -118,6 +118,15 @@ namespace VikingEngine.DSSWars
             localPlayers.Add(local);
             local.assignPlayer(0, 1, false);
 
+            int playerCount = 1;
+            for (var i = 0; i < playerCount; ++i)
+            {
+                var pdata = localPlayers[i].playerData;
+                Mouse.AddPlayer(pdata, playerCount, localPlayers[i].gameControls.input.moveCursor, localPlayers[i].gameControls.input.menuInput.cursor);
+
+                localPlayers[i].initPlayerToPlayer(i, playerCount);
+            }
+
             postPlayerInit();
             technologyManager.initGame(false);
 

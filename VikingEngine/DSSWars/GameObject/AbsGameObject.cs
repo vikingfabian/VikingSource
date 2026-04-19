@@ -98,7 +98,7 @@ namespace VikingEngine.DSSWars.GameObject
         public Players.AbsPlayer GetPlayer()
         {
 
-            if (factionIndex < 0)
+            if (factionIndex < 0 || factionIndex >= DssRef.world.factions.Array.Length)
             {
                 return null;
             }
