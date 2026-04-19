@@ -114,9 +114,12 @@ namespace VikingEngine.DSSWars.Players
                             }
 
                             int faction = tile.City().factionIndex;
-                            if (!factionsRecieved[faction])
+                            if (faction >= 0)
                             {
-                                FactionsInView.Add(faction);
+                                if (!factionsRecieved[faction])
+                                {
+                                    FactionsInView.Add(faction);
+                                }
                             }
                         }
                     }
