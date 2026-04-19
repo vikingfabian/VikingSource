@@ -839,7 +839,7 @@ namespace VikingEngine.DSSWars.Conscript
             }
         }
 
-        public static float TrainingTime(TrainingLevel training, BuildAndExpandType type)
+        public static float TrainingTime(TrainingLevel training, ItemResourceType animal, BuildAndExpandType type)
         {
             float result;
             switch (training)
@@ -862,13 +862,15 @@ namespace VikingEngine.DSSWars.Conscript
 
             switch (type)
             { 
-                //case BuildAndExpandType.KnightsBarracks:
-                //    result += DssConst.TrainingTimeSec_NobelmenAdd;
-                //    break;
                 case BuildAndExpandType.GunBarracks:
                 case BuildAndExpandType.CannonBarracks:
                     result /= 2;
                     break;
+            }
+
+            if (animal != ItemResourceType.NONE)
+            {
+                result += DssConst.TrainingTimeSec_Mount;
             }
             
             return result;

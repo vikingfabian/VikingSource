@@ -71,7 +71,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     (status.profile.specialization != SpecializationType.CityGuard || AvailableGuardHousing() >= totalMen))
                                 {
                                     status.active++;
-                                    status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.type)));
+                                    status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.inProgress.animal, status.type)));
                                 }
                                 break;
 

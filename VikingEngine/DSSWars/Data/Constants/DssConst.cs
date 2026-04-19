@@ -140,6 +140,7 @@ namespace VikingEngine.DSSWars
         public static float TrainingTimeSec_Basic = 90;
         public static float TrainingTimeSec_Skillful = 5 * TimeExt.MinuteInSeconds;
         public static float TrainingTimeSec_Professional = 10 * TimeExt.MinuteInSeconds;
+        public static float TrainingTimeSec_Mount = TimeExt.MinuteInSeconds;
 
         public static float TrainingTimeSec_NobelmenAdd = 120;
 

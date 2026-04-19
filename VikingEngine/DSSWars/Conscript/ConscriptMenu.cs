@@ -985,6 +985,7 @@ namespace VikingEngine.DSSWars.Conscript
             HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.lang.Conscript_RiderMobility, TextLib.TwoDecimal( properties.soldierData.mobilityValue()));
             HudLib.LabelAndText(content, SpriteName.WarsResource_Wagon2Wheel, DssRef.lang.Conscript_LightWagonMobility, TextLib.TwoDecimal(SoldierData.Mobility( properties.soldierData.lightWagonSpeed)));
             HudLib.LabelAndText(content, SpriteName.WarsResource_WagonSteel, DssRef.lang.Conscript_HeavyWagonMobility, TextLib.TwoDecimal(SoldierData.Mobility(properties.soldierData.heavyWagonSpeed)));
+            HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_TrainingTime, "+" + new TimeLength(DssConst.TrainingTimeSec_Mount).LongString());
 
             content.newParagraph();
             content.h2(DssRef.lang.Hud_Upkeep, HudLib.TitleColor_Head2);
@@ -1070,7 +1071,7 @@ namespace VikingEngine.DSSWars.Conscript
         {
             TrainingTooltipArgs args = (TrainingTooltipArgs)tag;
 
-            HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(args.training, args.buildtype)).LongString());
+            HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(args.training, ItemResourceType.NONE, args.buildtype)).LongString());
             HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_AttackSpeed, TextLib.PercentTextWithSymbol(ConscriptProfile.TrainingAttackSpeed(args.training)));
 
             HudLib.LabelAndText(content, SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.ResourceType_Gold), TextLib.TwoDecimal(Money.ToGoldF( DssConst.TrainingCopperUpkeep[(int)args.training] * args.soldierCount)));

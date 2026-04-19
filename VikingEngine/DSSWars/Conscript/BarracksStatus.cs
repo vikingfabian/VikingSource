@@ -340,7 +340,7 @@ namespace VikingEngine.DSSWars.Conscript
 
         public TimeLength TimeLength()
         {
-            return new TimeLength(ConscriptProfile.TrainingTime(inProgress.training, type));
+            return new TimeLength(ConscriptProfile.TrainingTime(inProgress.training, inProgress.animal, type));
         }
 
         public string activeStringOf(ConscriptActiveStatus status, int menCount, out bool collected)

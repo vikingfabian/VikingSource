@@ -37,6 +37,7 @@ Change Log:
 
 ##ICONS TODO
 * Better Diplomacy City highlight
+* Mounts will add one minute training time
 
 #MOUNTED TODO
 
@@ -44,7 +45,6 @@ Change Log:
 
 ## MOUNTED POST CONTENT UPDATE ##
 (x 3k self dying cities)
-x add mount training time
 
 
 #Event timers (are slightly random)#
