@@ -34,7 +34,7 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class City : AbsArmy
     {
-        const int MaxWorkerWriteCount = 48;
+        const int MaxWorkerWriteCount = 32;
 
         public int areaSize = 0;
         public CityType cityType;
