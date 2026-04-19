@@ -189,6 +189,10 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void AddGroupedResource(int itemIndex, int add, bool respectLimit)
         {
+            if (factionIndex < 0)
+            {
+                return;
+            }
 #if DEBUG
             if (factionIndex < 0)
             {
@@ -359,6 +363,7 @@ namespace VikingEngine.DSSWars.GameObject
         public ItemResource MakeTrade(ItemResourceType itemResourceType, int payment, float maxWeight = 1f)
         {
             int carry = ItemPropertyColl.CarryAmount(itemResourceType, maxWeight);
+
             AddGroupedResource(itemResourceType, -carry);
             
             return new ItemResource(itemResourceType, 1, payment, carry);

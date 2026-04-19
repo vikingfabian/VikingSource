@@ -583,7 +583,7 @@ namespace VikingEngine.DSSWars.Map
             int faction = city.factionIndex;
 
             Color factionCol;
-            if (faction < 0)
+            if (faction < 0 || faction >= DssRef.world.factions.Array.Length)
             {
                 factionCol = Color.Gray;
             }

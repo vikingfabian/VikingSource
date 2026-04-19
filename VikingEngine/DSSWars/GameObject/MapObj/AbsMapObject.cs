@@ -37,6 +37,7 @@ namespace VikingEngine.DSSWars.GameObject
         public TimeStamp lastNetUpdate = new TimeStamp();
         public int previousIncome_copp = 0;
         public Money money = new Money(0);
+        public bool IsNetHosted = true;
 
         public AbsMapObject()
         {

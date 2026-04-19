@@ -125,7 +125,7 @@ namespace VikingEngine.DSSWars.GameObject
             //if (factionIndex > 0)
             //{
             var f = DssRef.world.faction(factionIndex);
-            return f != null && f.player.profile.casualControls;
+            return f != null && f.player != null && f.player.profile.casualControls;
             //}
             //return false;
         }

@@ -146,41 +146,42 @@ namespace VikingEngine.DSSWars.Work
                             if (workAnimation_soundframe())
                             {
                                 workEffect?.onSoundAnimation();
-                                SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
-
-                                switch ((TerrainSubFoilType)subTile.subTerrain)
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
                                 {
-                                    case TerrainSubFoilType.DryWood:
-                                    case TerrainSubFoilType.TreeSoft:
-                                    case TerrainSubFoilType.TreeHard:
-                                        SoundLib.woodcut.Play(model.position);
-                                        break;
-                                    case TerrainSubFoilType.TreeApple:
-                                    case TerrainSubFoilType.TreeBanana:
-                                    case TerrainSubFoilType.WheatFarm:
-                                    case TerrainSubFoilType.WheatFarmUpgraded:
-                                    case TerrainSubFoilType.LinenFarm:
-                                    case TerrainSubFoilType.LinenFarmUpgraded:
-                                    case TerrainSubFoilType.RapeSeedFarm:
-                                    case TerrainSubFoilType.RapeSeedFarmUpgraded:
-                                    case TerrainSubFoilType.HempFarm:
-                                    case TerrainSubFoilType.HempFarmUpgraded:
-                                        if (SoundStackManager.RareAvailable())
-                                        {
-                                            SoundLib.scythe.Play(model.position);
-                                        }
-                                        break;
-                                    case TerrainSubFoilType.StoneBlock:
-                                        SoundLib.pickaxe.Play(model.position);
-                                        break;
-                                    case TerrainSubFoilType.ClayPit:
-                                    case TerrainSubFoilType.BogIron:
-                                    case TerrainSubFoilType.Stones:
-                                        if (SoundStackManager.RareAvailable())
-                                        {
-                                            SoundLib.dig.Play(model.position);
-                                        }
-                                        break;
+                                    switch ((TerrainSubFoilType)subTile.subTerrain)
+                                    {
+                                        case TerrainSubFoilType.DryWood:
+                                        case TerrainSubFoilType.TreeSoft:
+                                        case TerrainSubFoilType.TreeHard:
+                                            SoundLib.woodcut.Play(model.position);
+                                            break;
+                                        case TerrainSubFoilType.TreeApple:
+                                        case TerrainSubFoilType.TreeBanana:
+                                        case TerrainSubFoilType.WheatFarm:
+                                        case TerrainSubFoilType.WheatFarmUpgraded:
+                                        case TerrainSubFoilType.LinenFarm:
+                                        case TerrainSubFoilType.LinenFarmUpgraded:
+                                        case TerrainSubFoilType.RapeSeedFarm:
+                                        case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                                        case TerrainSubFoilType.HempFarm:
+                                        case TerrainSubFoilType.HempFarmUpgraded:
+                                            if (SoundStackManager.RareAvailable())
+                                            {
+                                                SoundLib.scythe.Play(model.position);
+                                            }
+                                            break;
+                                        case TerrainSubFoilType.StoneBlock:
+                                            SoundLib.pickaxe.Play(model.position);
+                                            break;
+                                        case TerrainSubFoilType.ClayPit:
+                                        case TerrainSubFoilType.BogIron:
+                                        case TerrainSubFoilType.Stones:
+                                            if (SoundStackManager.RareAvailable())
+                                            {
+                                                SoundLib.dig.Play(model.position);
+                                            }
+                                            break;
+                                    }
                                 }
                             }
                             break;
@@ -354,39 +355,42 @@ namespace VikingEngine.DSSWars.Work
             switch (status.work)
             {
                 case WorkType.Craft:
-                    SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
-                    var building = (TerrainBuildingType)subTile.subTerrain;
-
-                    switch (building)
+                    if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
                     {
-                        case TerrainBuildingType.Work_Cook:
-                            workEffect = new CookingWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Work_CoalPit:
-                            workEffect = new CoalPitWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Work_Smith:
-                            workEffect = new SmithWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Smelter:
-                            workEffect = new SmelterWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Foundry:
-                            workEffect = new FoundryWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Brewery:
-                            workEffect = new BreweryWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Pottery:
-                            workEffect = new PotteryWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Butcher:
-                            workEffect = new ButcherWorkEffect(status.subTileEnd);
-                            break;
-                        case TerrainBuildingType.Smoker:
-                            workEffect = new SmokingWorkEffect(status.subTileEnd);
-                            break;
+                        var building = (TerrainBuildingType)subTile.subTerrain;
 
+                        switch (building)
+                        {
+                            case TerrainBuildingType.Work_Cook:
+                                workEffect = new CookingWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Work_CoalPit:
+                                workEffect = new CoalPitWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Work_Smith:
+                                workEffect = new SmithWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Smelter:
+                                workEffect = new SmelterWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Foundry:
+                                workEffect = new FoundryWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Brewery:
+                                workEffect = new BreweryWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Pottery:
+                                workEffect = new PotteryWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Butcher:
+                                workEffect = new ButcherWorkEffect(status.subTileEnd);
+                                break;
+                            case TerrainBuildingType.Smoker:
+                                workEffect = new SmokingWorkEffect(status.subTileEnd);
+                                break;
+
+                        }
+                        
                     }
                     break;
             }

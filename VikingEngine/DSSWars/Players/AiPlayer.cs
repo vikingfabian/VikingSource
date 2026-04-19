@@ -115,7 +115,7 @@ namespace VikingEngine.DSSWars.Players
         public AiPlayer(Faction faction, bool newGame)
             : base(faction, newGame)
         {
-            SetProfile(new Profile.PlayerProfile(faction.factiontype, DssRef.world.metaData));
+            SetProfile(new Profile.PlayerProfile(faction.factiontype, DssRef.world.metaData, faction.myIndex));
        
             switch (faction.factiontype)
             {

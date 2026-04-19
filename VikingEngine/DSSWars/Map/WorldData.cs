@@ -445,6 +445,7 @@ namespace VikingEngine.DSSWars
             {
                 City c = new City(cityIndex);
                 cities.Add(c);
+                c.IsNetHosted = false;
             }
 
             int factionCount = r.ReadInt32();
@@ -543,10 +544,11 @@ namespace VikingEngine.DSSWars
             {
                 ref var tile = ref DssRef.world.subTileGrid.GetRef(loop.Position);
                 tile.read(r, ref previous, int.MaxValue);
-                //DssRef.world.subTileGrid.Set(loop.Position, tile);
 
                 previous = tile;
             }
+
+            DssRef.world.tileGrid.GetRef(tilePos).subtileVisualEdits++;
         }
 
         public void writeNet_Factions(System.IO.BinaryWriter w, HashSet<int> factions)

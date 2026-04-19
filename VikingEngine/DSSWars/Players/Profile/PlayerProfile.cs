@@ -40,9 +40,9 @@ namespace VikingEngine.DSSWars.Players.Profile
             flag = DssRef.storage.flagStorage.flagDesigns[flagIx];
         }
 
-        public PlayerProfile(FactionType factiontype, WorldMetaData worldMeta)
+        public PlayerProfile(FactionType factiontype, WorldMetaData worldMeta, int factionIndex)
         {
-            flag = new FlagAndColor(factiontype, -1, worldMeta);
+            flag = new FlagAndColor(factiontype, -1, worldMeta, factionIndex);
         }
         public PlayerProfile(int index, System.IO.BinaryReader r)
         {

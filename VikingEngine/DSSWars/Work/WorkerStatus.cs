@@ -402,6 +402,9 @@ namespace VikingEngine.DSSWars.Work
                 energyCost *= 0.5f;
             }
             energy -= energyCost;
+            if (!city.IsNetHosted) {
+                return;
+            }
             ref SubTile subTile = ref DssRef.world.subTileGrid.GetRef(subTileEnd);
 
             bool tryRepeatWork = false;
@@ -2014,48 +2017,54 @@ namespace VikingEngine.DSSWars.Work
                     timeSec = DssConst.WorkTime_LocalTrade;
                     break;
                 case WorkType.GatherFoil:
-                    SubTile subTile = DssRef.world.subTileGrid.Get(subTileEnd);
-                    switch ((TerrainSubFoilType)subTile.subTerrain)
+                    if (DssRef.world.subTileGrid.TryGet(subTileEnd, out SubTile subTile))
                     {
-                        case TerrainSubFoilType.TreeSoft:
-                            timeSec = DssConst.WorkTime_GatherFoil_TreeSoft;
-                            break;
-                        case TerrainSubFoilType.TreeHard:
-                            timeSec = DssConst.WorkTime_GatherFoil_TreeHard;
-                            break;
-                        case TerrainSubFoilType.DryWood:
-                            timeSec = DssConst.WorkTime_GatherFoil_DryWood;
-                            break;
+                        switch ((TerrainSubFoilType)subTile.subTerrain)
+                        {
+                            case TerrainSubFoilType.TreeSoft:
+                                timeSec = DssConst.WorkTime_GatherFoil_TreeSoft;
+                                break;
+                            case TerrainSubFoilType.TreeHard:
+                                timeSec = DssConst.WorkTime_GatherFoil_TreeHard;
+                                break;
+                            case TerrainSubFoilType.DryWood:
+                                timeSec = DssConst.WorkTime_GatherFoil_DryWood;
+                                break;
 
-                        case TerrainSubFoilType.TreeApple:
-                        case TerrainSubFoilType.TreeBanana:
-                            timeSec = DssConst.WorkTime_PluckOrchards;
-                            break;
+                            case TerrainSubFoilType.TreeApple:
+                            case TerrainSubFoilType.TreeBanana:
+                                timeSec = DssConst.WorkTime_PluckOrchards;
+                                break;
 
-                        case TerrainSubFoilType.WheatFarm:
-                        case TerrainSubFoilType.WheatFarmUpgraded:
-                        case TerrainSubFoilType.LinenFarm:
-                        case TerrainSubFoilType.LinenFarmUpgraded:
-                        case TerrainSubFoilType.RapeSeedFarm:
-                        case TerrainSubFoilType.RapeSeedFarmUpgraded:
-                        case TerrainSubFoilType.HempFarm:
-                        case TerrainSubFoilType.HempFarmUpgraded:
-                            timeSec = DssConst.WorkTime_GatherFoil_FarmCulture;
-                            break;
-                        case TerrainSubFoilType.Stones:
-                        case TerrainSubFoilType.StoneBlock:
-                            timeSec = DssConst.WorkTime_GatherFoil_Stones;
-                            break;
+                            case TerrainSubFoilType.WheatFarm:
+                            case TerrainSubFoilType.WheatFarmUpgraded:
+                            case TerrainSubFoilType.LinenFarm:
+                            case TerrainSubFoilType.LinenFarmUpgraded:
+                            case TerrainSubFoilType.RapeSeedFarm:
+                            case TerrainSubFoilType.RapeSeedFarmUpgraded:
+                            case TerrainSubFoilType.HempFarm:
+                            case TerrainSubFoilType.HempFarmUpgraded:
+                                timeSec = DssConst.WorkTime_GatherFoil_FarmCulture;
+                                break;
+                            case TerrainSubFoilType.Stones:
+                            case TerrainSubFoilType.StoneBlock:
+                                timeSec = DssConst.WorkTime_GatherFoil_Stones;
+                                break;
 
-                        case TerrainSubFoilType.BogIron:
-                            timeSec = DssConst.WorkTime_BogIron;
-                            break;
-                        case TerrainSubFoilType.ClayPit:
-                            timeSec = DssConst.WorkTime_ClayPit;
-                            break;
-                        default:
-                            return -1;//throw new NotImplementedException();
-                            
+                            case TerrainSubFoilType.BogIron:
+                                timeSec = DssConst.WorkTime_BogIron;
+                                break;
+                            case TerrainSubFoilType.ClayPit:
+                                timeSec = DssConst.WorkTime_ClayPit;
+                                break;
+                            default:
+                                return -1;//throw new NotImplementedException();
+
+                        }
+                    }
+                    else
+                    {
+                        return 15;
                     }
                     break;
                 //case WorkType.Till:
