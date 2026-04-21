@@ -46,8 +46,6 @@ namespace VikingEngine.DSSWars
     class PlayState : AbsPlayState
     {
         public int nextGroupId = 0;
-       
-        
         public bool PartyMode = false;   
         
         TechnologyManager technologyManager = new TechnologyManager();
@@ -278,7 +276,7 @@ namespace VikingEngine.DSSWars
                     }
                     else
                     {
-                        startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
+                        startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, false, localPlayers);
                         local = new Players.LocalPlayer(startFaction, newGame);
                         localPlayers.Add(local);
                     }
@@ -295,7 +293,7 @@ namespace VikingEngine.DSSWars
                     if (localPlayers.Count <= i)
                     {
                         //Drop in support
-                        Faction startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
+                        Faction startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, false, localPlayers);
                         Players.LocalPlayer local = new Players.LocalPlayer(startFaction, newGame) { isDropInPlayer = true };
                         
                         localPlayers.Add(local);
@@ -390,12 +388,10 @@ namespace VikingEngine.DSSWars
 
             new AsynchUpdateable_TryCatch(asyncWorkUpdate, "DSS work update", 63, System.Threading.ThreadPriority.Lowest);
 
-            if (host)
-            {
-                
+            new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58, System.Threading.ThreadPriority.Normal);
 
-                new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58, System.Threading.ThreadPriority.Normal);
-                
+            if (host)
+            {                
                 new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60, System.Threading.ThreadPriority.Lowest);
                 new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62, System.Threading.ThreadPriority.Normal);
                 
@@ -913,8 +909,6 @@ namespace VikingEngine.DSSWars
             return exitThreads;
         }
 
-        
-
         public override void NetworkReadPacket(ReceivedPacket packet)
         {
             switch (packet.type)
@@ -927,7 +921,6 @@ namespace VikingEngine.DSSWars
                         var saveGamestate = new SaveGamestate(meta);
                         saveGamestate.writeNet(w);
                     }
-                    //new SteamLargePacketWriter(file, SendPacketTo.OneSpecific, packet.sender.fullId, PacketType.DssSendWorld).begin();
                     break;
 
                 case PacketType.DssPlayerStatus:
@@ -945,7 +938,7 @@ namespace VikingEngine.DSSWars
                             {
                                 //TODO
                                 var profile = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].Profile();
-                                /*DssRef.storage.flagStorage.flagDesigns[flag]*/profile.flag.write(w);
+                                profile.flag.write(w);
                             }
                         }
                     }
@@ -955,8 +948,14 @@ namespace VikingEngine.DSSWars
                     {
                         var player = GetOrCreateRemotePlayer(packet.sender, 0);
                         int count = packet.r.ReadByte();
-                        player.profile = new FlagAndColor(packet.r);
-                        player.flagTexture = player.profile.flagDesign.CreateTexture(player.profile);
+                        player.flag = new FlagAndColor(packet.r);
+                        player.flagTexture = player.flag.flagDesign.CreateTexture(player.flag);
+
+                        if (host)
+                        {
+                            //Assign faction
+                            DssRef.world.getPlayerAvailableFaction(false, true, localPlayers);
+                        }
                     }
                     break;
 
@@ -1013,6 +1012,8 @@ namespace VikingEngine.DSSWars
         {
             return packet.sender.instancePeers?[packet.senderLocalIndex].Tag as Players.RemotePlayer;
         }
+
+        
 
         public override void NetUpdate()
         {

@@ -871,7 +871,7 @@ namespace VikingEngine.DSSWars
             return centerArea;
         }
 
-        public Faction getPlayerAvailableFaction(bool firstPlayer, List<Players.LocalPlayer> players)
+        public Faction getPlayerAvailableFaction(bool firstPlayer, bool dropIn, List<Players.LocalPlayer> players)
         {
             const int MultiPlayerDistance = GenerateMap.HeadCityNeededFreeRadius * 8;
 
@@ -882,7 +882,7 @@ namespace VikingEngine.DSSWars
             {
                 Faction result = factions.GetRandom(Ref.rnd);
                 
-                if (result.availableForPlayer && result.mainCity != null &&
+                if (result.availableForPlayer && dropInCheck(result) && result.mainCity != null &&
                     (centerArea.IntersectPoint(result.mainCity.tilePos) || loops >= 1000))
                 {
                     if (firstPlayer || loops >= 1000)
@@ -906,6 +906,15 @@ namespace VikingEngine.DSSWars
                 {
                     centerArea.AddRadius(20);
                 }
+            }
+
+            bool dropInCheck(Faction faction)
+            {
+                if (dropIn)
+                {
+                    return faction.isAlive;
+                }
+                return true;
             }
         }
        

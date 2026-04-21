@@ -106,11 +106,12 @@ namespace VikingEngine.DSSWars.Communication
             foreach (var rel in relationFlags)
             {
                 Faction faction = DssRef.world.faction(rel.faction);
-                if (faction!= null && faction.myIndex == 18)
-                {
-                    lib.DoNothing();
-                }
+                //if (faction!= null && faction.myIndex == 18)
+                //{
+                //    lib.DoNothing();
+                //}
                 if (faction != null &&
+                    faction.player != null &&
                     faction.isAlive &&
                     !faction.HasZeroUnits() &&
                     rel.inCullingView &&

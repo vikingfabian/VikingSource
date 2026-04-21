@@ -19,8 +19,8 @@ namespace VikingEngine.DSSWars.Players
     partial class RemotePlayer : AbsHumanPlayer
     {
         PlayerCullingState playerCulling;
-        public FlagAndColor profile = null;
-        public Texture2D flagTexture;
+        public FlagAndColor flag = null;
+        //public Texture2D flagTexture;
         public bool gotStatus = false;
         public bool newPlayer = true;
 
