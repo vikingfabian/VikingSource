@@ -135,10 +135,10 @@ namespace VikingEngine.DSSWars
                     switch (copyPaste)
                     {
                         case CopyPasteOption.FactionToCity:
-                            cityResouces[city.resourceComponentStartIndex + cityResourceIndex].copyLimitFrom(factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex]);
+                            cityResouces[city.resourceComponentStartIndex + cityResourceIndex].copyLimitFrom(factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex], true);
                             break;
                         case CopyPasteOption.CityToFaction:
-                            factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].copyLimitFrom(cityResouces[city.resourceComponentStartIndex + cityResourceIndex]);
+                            factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].copyLimitFrom(cityResouces[city.resourceComponentStartIndex + cityResourceIndex], false);
                             break;
 
                             //if (toCity)
@@ -159,11 +159,11 @@ namespace VikingEngine.DSSWars
 
                             if (city == null)
                             {
-                                player.stockPileCopy[cityResourceIndex].copyLimitFrom(factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex]);
+                                player.stockPileCopy[cityResourceIndex].copyLimitFrom(factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex], false);
                             }
                             else
                             {
-                                player.stockPileCopy[cityResourceIndex].copyLimitFrom(cityResouces[city.resourceComponentStartIndex + cityResourceIndex]);
+                                player.stockPileCopy[cityResourceIndex].copyLimitFrom(cityResouces[city.resourceComponentStartIndex + cityResourceIndex], true);
                             }
                             break;
 
@@ -172,11 +172,11 @@ namespace VikingEngine.DSSWars
                             {
                                 if (city == null)
                                 {
-                                    factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].copyLimitFrom(player.stockPileCopy[cityResourceIndex]);
+                                    factionResourceOverviews[faction.resourceComponentStartIndex + cityResourceIndex].copyLimitFrom(player.stockPileCopy[cityResourceIndex], false);
                                 }
                                 else
                                 {
-                                    cityResouces[city.resourceComponentStartIndex + cityResourceIndex].copyLimitFrom(player.stockPileCopy[cityResourceIndex]);
+                                    cityResouces[city.resourceComponentStartIndex + cityResourceIndex].copyLimitFrom(player.stockPileCopy[cityResourceIndex], true);
                                 }
                             }
                             break;

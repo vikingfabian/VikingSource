@@ -8,7 +8,7 @@ Change Log:
 
 
 #MOUNTED TODO
-
+x translate
 
 
 ## MOUNTED POST CONTENT UPDATE ##

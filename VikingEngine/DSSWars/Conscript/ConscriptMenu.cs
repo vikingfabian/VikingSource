@@ -347,7 +347,7 @@ namespace VikingEngine.DSSWars.Conscript
                     //HudLib.InfoButton(content, new RbTooltip_Text(string.Format(DssRef.lang.Conscript_SpecializationDescription, TextLib.PercentTextWithSymbol(DssConst.Conscript_SpecializePercentage))));
                     content.newLine();
 
-                    SpecializationType[] specializationTypes = currentStatus.profile.avaialableSpecializations( BuildAndExpandType.NUM_NONE, out _);
+                    SpecializationType[] specializationTypes = currentStatus.profile.avaialableSpecializations();
 
 
                     foreach (var specialization in specializationTypes)
@@ -885,7 +885,26 @@ namespace VikingEngine.DSSWars.Conscript
             if (splashCount > 0)
             {
                 content.newLine();
+                HudLib.BulletPoint(content);
                 content.Add(new RbText(splashCount < 6 ? DssRef.lang.Conscript_SplashDamage : DssRef.lang.Conscript_HighSplashDamage));
+            }
+
+            var spez = ConscriptProfile.LockedSpecialization(weapon);
+            if (spez != SpecializationType.None)
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                string text = null;
+                switch (spez)
+                {
+                    case SpecializationType.AntiCavalry:
+                        text = DssRef.lang.Conscript_Specialization_AntiCavalry;
+                        break;
+                    case SpecializationType.Siege:
+                        text = DssRef.lang.Conscript_Specialization_Siege;
+                        break;
+                }
+                content.Add(new RbText(text));
             }
             
             switch (weapon)

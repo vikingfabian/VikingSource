@@ -17,9 +17,8 @@ namespace VikingEngine.DSSWars.Presentation
 
         public string SlaughterResult_PerAnimal => "Slaughter output, per animal";
 
-
         public string Settings_Mode_QuickBoss => "Quick boss";
-        public string Settings_Mode_QuickBoss_Description => "Prepare for a few hours and meet a final boss";
+        public string Settings_Mode_QuickBoss_Description => "Prepare for a few hours, then meet a final boss";
 
         public string QuickBoss_TimeOption => "Boss time (hours)";
 

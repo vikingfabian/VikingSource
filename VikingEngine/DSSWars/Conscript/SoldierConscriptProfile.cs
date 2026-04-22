@@ -79,6 +79,11 @@ namespace VikingEngine.DSSWars.Conscript
                 //        }
                 //        break;
                 //}
+                if (conscript.weapon == ItemResourceType.SiegeCannonBronze)
+                {
+                    return UnitBuildType.ConscriptWagon;
+                }
+
                 return UnitBuildType.ConscriptCavalry;
             }
 
@@ -239,14 +244,24 @@ namespace VikingEngine.DSSWars.Conscript
                 if (animalProperties.Filter_IsRidingAnimal)
                 {
                     soldierData.modelData.riding = true;
-                    soldierData.columnsDepth = animalProperties.soldierData.columnsDepth;
-                    soldierData.rowWidth = animalProperties.soldierData.rowWidth;
+                    if (conscript.weapon != ItemResourceType.SiegeCannonBronze)
+                    {
+                        soldierData.columnsDepth = animalProperties.soldierData.columnsDepth;
+                        soldierData.rowWidth = animalProperties.soldierData.rowWidth;
+                    }
                     soldierData.boundRadius = animalProperties.soldierData.boundRadius;
                     soldierData.groupSpacing = animalProperties.soldierData.groupSpacing;
 
                     soldierData.walkingSpeed = animalProperties.soldierData.walkingSpeed;
 
                     ridingAnimalSetup(conscript.animal, conscript.mountArmor, ref soldierData);
+                }
+                else
+                {
+                    if (soldierData.UnitCount() == 1)
+                    {
+                        soldierData.rowWidth = 2;
+                    }
                 }
                 animalSetup(conscript.animal, 1, ref soldierData);
             }

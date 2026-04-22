@@ -556,7 +556,11 @@ namespace VikingEngine.Input
             get
             {
                 Vector2 result = Vector2.Zero;
-                result.Y = Input.XInput.Instance(controllerIx).RightTrigger - Input.XInput.Instance(controllerIx).LeftTrigger;
+                var ins = Input.XInput.Instance(controllerIx);
+                if (ins != null)
+                {
+                    result.Y = ins.RightTrigger - ins.LeftTrigger;
+                }
                 return result;
             }
         }
