@@ -46,9 +46,13 @@ namespace VikingEngine.DSSWars.EntityComponent
             useStockLimit = false;
         }
 
-        public void copyLimitFrom(GroupedResource copyFrom)
+        public void copyLimitFrom(GroupedResource copyFrom, bool respectCapacity)
         {
             this.stockPileLimit = copyFrom.stockPileLimit;
+            if (respectCapacity && stockPileLimit > capacity)
+            {
+                stockPileLimit = capacity;
+            }
             useStockLimit = copyFrom.useStockLimit;
         }
 

@@ -74,6 +74,9 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
             LootFest.VoxelModelName wagonModelName;
             float wagonMScale = 2f;
             float MGoalDistance = 0.65f;
+
+
+
             switch (soldier.group.soldierConscript.conscript.vehicle)
             {
                 default:
@@ -94,6 +97,12 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Soldiers
                         case Resource.ItemResourceType.ManCannonBronze:
                             wagonMScale = 2.7f;
                             wagonModelName = VoxelModelName.cannonwagon_manbronze;
+                            manType = WagonManType.Riding;
+                            break;
+                        case Resource.ItemResourceType.SiegeCannonBronze:
+                            wagonMScale = 6f;
+                            MGoalDistance = 1.6f;
+                            wagonModelName = VoxelModelName.cannonwagon_siegebronze;
                             manType = WagonManType.Riding;
                             break;
                         case Resource.ItemResourceType.Ballista:

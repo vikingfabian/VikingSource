@@ -16,5 +16,11 @@ namespace VikingEngine.DSSWars.Presentation
         public string StockPile_ItemsAreNotLost => "Items will not be destroyed if you exceed the stockpile!";
 
         public string SlaughterResult_PerAnimal => "Slaughter output, per animal";
+
+        //public string WeaponCategory_Spread => "Spread-fire";
+
+        public string WeaponCategory_Siege => "Siege weapon";
+
+
     }
 }
