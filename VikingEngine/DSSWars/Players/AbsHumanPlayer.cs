@@ -19,9 +19,27 @@ namespace VikingEngine.DSSWars.Players
             : base()
         { }
 
+        virtual public void AssignFaction(Faction faction)
+        {
+            this.faction = faction;
+            setPlayerFaction(faction);
+            faction.SetStartOwner(this);
+        }
+
         override public AbsHumanPlayer GetHumanPlayer()
         {
             return this;
+        }
+
+        public override bool IsHumanPlayer()
+        {
+            return true;
+        }
+
+        public void setPlayerFaction(Faction faction)
+        {
+            faction.factiontype = FactionType.Player;
+            faction.availableForPlayer = false;
         }
     }
 }

@@ -39,6 +39,8 @@ namespace VikingEngine.SteamWrapping
         Timer.Basic lobbyTimeRefresh = new Timer.Basic(TimeExt.SecondsToMS(LobbyTimeRefreshRateSec), true);
         public Time disconnectTime = 0;
 
+        Time heavyTrafficPause = Time.Zero;
+
         public SteamP2PManager()
         {
             autoAcceptSessionRequests = true;
@@ -48,10 +50,16 @@ namespace VikingEngine.SteamWrapping
             sessionRequestCallback = new Callback<P2PSessionRequest_t>(OnSessionRequest, false);
         }
 
+        public void OnSendingLargeDataChunk()
+        {
+            heavyTrafficPause = new Time(2, TimeUnit.Seconds);
+        }
+
         public void update()
         {
             if (disconnectTime.CountDown())
             {
+                heavyTrafficPause.CountDown();
                 ReadAllPackets();
 
                 if (roundtripTimer.Update() && Ref.netSession != null)
@@ -93,14 +101,6 @@ namespace VikingEngine.SteamWrapping
                         {
                             Ref.steamlobby.updateLobbyTime(true);
                         }
-                        //else if (!Ref.steamlobby.hostLobby)
-                        //{
-                        //    if (Math.Abs(Ref.steamlobby.lobbyTimeDelta()) > LobbyTimeOut)
-                        //    {
-                        //        Debug.Log("Lobby server time out");
-                        //        Ref.netSession.Disconnect();
-                        //    }
-                        //}
                     }
                 }
             }
@@ -148,13 +148,17 @@ namespace VikingEngine.SteamWrapping
                                     packet.sender.roundTripTime = packet.sender.roundTripTime * 0.5f + timePassed * 0.5f;
 
                                     int packetCount = 2;
-                                    if (packet.sender.roundTripTime < 40)
+
+                                    if (heavyTrafficPause.TimeOut)
                                     {
-                                        packetCount = 32;
-                                    }
-                                    else if(packet.sender.roundTripTime < 140)
-                                    {
-                                        packetCount = 8;
+                                        if (packet.sender.roundTripTime < 40)
+                                        {
+                                            packetCount = 32;
+                                        }
+                                        else if (packet.sender.roundTripTime < 140)
+                                        {
+                                            packetCount = 8;
+                                        }
                                     }
 
                                     packet.sender.maxPacketCount = Bound.Min(packetCount / remoteGamers.Count, 1);

@@ -33,6 +33,10 @@ namespace VikingEngine.DSSWars.Players
             playerCulling = new PlayerCullingState();
         }
 
+        // public void AssignFaction(Faction faction)
+        //{
+            
+        //}
 
         public void Net_readStatus(System.IO.BinaryReader r)
         {

@@ -110,6 +110,46 @@ namespace VikingEngine.DSSWars.GameObject
             return food + conservedFood <= 10;
         }
 
+        public static void NetFullArmyStatus(Army army)
+        {
+            const int GroupsPerPacket = 8;
+
+            {
+                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, Network.PacketReliability.Unrelyable, out var packet);
+                {
+                    Army.NetWriteArmy(w, army);
+                    army.lastNetUpdate.setNow();
+                }
+                packet.EndWrite_Asynch();
+            }
+
+            if (army.groups.Count > 0)
+            {
+                var groupC = army.groups.counter();
+
+                int count = 0;
+
+                while (groupC.HasMore())
+                {
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierGroupStatus, Network.PacketReliability.Unrelyable, out var packet);
+                    {
+                        w.Write((ushort)army.factionIndex);
+                        w.Write((ushort)army.myIndex);
+
+                        while (--count < GroupsPerPacket && groupC.Next())
+                        {
+                            Army.NetWriteGroup(w, groupC.sel);
+                            army.lastNetUpdate.setNow();
+                        }
+
+                        w.Write(ushort.MaxValue);
+                    }
+                    packet.EndWrite_Asynch();
+
+                }
+            }
+        }
+
         public static void NetWriteArmy(System.IO.BinaryWriter w, Army army)
         {
             w.Write((ushort)army.factionIndex);
@@ -121,6 +161,8 @@ namespace VikingEngine.DSSWars.GameObject
         {
             int factionIx = r.ReadUInt16();
             var faction = DssRef.world.faction(factionIx);
+
+            
             
             int armyIx = r.ReadUInt16();
             Army army = faction.armies.GetIndex_Safe(armyIx);
@@ -133,6 +175,7 @@ namespace VikingEngine.DSSWars.GameObject
                 needInit = true;
             }
 
+            army.IsNetHosted = faction.player.IsLocalPlayer();
             army.readNet(r, needInit);
 
             if (needInit)

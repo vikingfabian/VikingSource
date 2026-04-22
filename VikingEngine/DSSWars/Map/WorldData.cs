@@ -15,8 +15,6 @@ using VikingEngine.LootFest.GO.Characters.Monsters;
 using VikingEngine.LootFest.Map;
 using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
-using VikingEngine.ToGG.Commander.LevelSetup;
-using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
 {   
@@ -871,53 +869,120 @@ namespace VikingEngine.DSSWars
             return centerArea;
         }
 
-        public Faction getPlayerAvailableFaction(bool firstPlayer, bool dropIn, List<Players.LocalPlayer> players)
+        //public Faction getPlayerAvailableFaction(bool firstPlayer, bool dropIn, List<Players.LocalPlayer> players)
+        //{
+        //    const int MultiPlayerDistance = GenerateMap.HeadCityNeededFreeRadius * 8;
+
+        //    Rectangle2 centerArea = CenterArea();
+
+        //    int loops = 0;
+        //    while (true)
+        //    {
+        //        Faction result = factions.GetRandom(Ref.rnd);
+                
+        //        if (result.availableForPlayer && dropInCheck(result) && result.mainCity != null &&
+        //            (centerArea.IntersectPoint(result.mainCity.tilePos) || loops >= 1000))
+        //        {
+        //            if (firstPlayer || loops >= 1000)
+        //            {
+        //                return result;
+        //            }
+        //            else if (!result.HasPlayerNeighbor() && 
+        //                players[0].faction.mainCity.distanceTo(result.mainCity) <= MultiPlayerDistance)
+        //            {
+        //                return result;
+        //            }
+        //            ++loops;
+        //        }
+
+        //        if (++loops > 10000)
+        //        {
+        //            throw new EndlessLoopException("getPlayerAvailableFaction");
+        //        }
+
+        //        if (loops == 100 || loops == 200 || loops == 300 || loops == 400 || loops == 500)
+        //        {
+        //            centerArea.AddRadius(20);
+        //        }
+        //    }
+
+        //    bool dropInCheck(Faction faction)
+        //    {
+        //        if (dropIn)
+        //        {
+        //            return faction.isAlive;
+        //        }
+        //        return true;
+        //    }
+        //}
+
+        public Faction getPlayerAvailableFaction2(List<Players.LocalPlayer> players, bool firstPlayer, bool dropIn)
         {
             const int MultiPlayerDistance = GenerateMap.HeadCityNeededFreeRadius * 8;
 
+            List<Faction> sortedList = new List<Faction>();
+
             Rectangle2 centerArea = CenterArea();
 
-            int loops = 0;
-            while (true)
+            //Calculate scores
+            foreach (var f in factions.Array)
             {
-                Faction result = factions.GetRandom(Ref.rnd);
-                
-                if (result.availableForPlayer && dropInCheck(result) && result.mainCity != null &&
-                    (centerArea.IntersectPoint(result.mainCity.tilePos) || loops >= 1000))
-                {
-                    if (firstPlayer || loops >= 1000)
-                    {
-                        return result;
-                    }
-                    else if (!result.HasPlayerNeighbor() && 
-                        players[0].faction.mainCity.distanceTo(result.mainCity) <= MultiPlayerDistance)
-                    {
-                        return result;
-                    }
-                    ++loops;
-                }
+                if (f != null && f.player.IsBot())
+                { 
+                    sortedList.Add(f);
 
-                if (++loops > 10000)
-                {
-                    throw new EndlessLoopException("getPlayerAvailableFaction");
-                }
+                    f.availableForPlayerScore = Ref.rnd.Int(100);
 
-                if (loops == 100 || loops == 200 || loops == 300 || loops == 400 || loops == 500)
-                {
-                    centerArea.AddRadius(20);
+                    if (f.availableForPlayer)
+                    {
+                        f.availableForPlayerScore += 1000;
+                    }
+
+                    if (f.cities.Count > 0)
+                    {
+                        f.availableForPlayerScore += 1000;
+                    }
+
+                    if (f.mainCity != null)
+                    {
+                        if (centerArea.IntersectPoint(f.mainCity.tilePos))
+                        {
+                            f.availableForPlayerScore += 1000;
+                        }
+                        else
+                        {
+                            f.availableForPlayerScore += 500 - centerArea.LengthToClosestEdge(f.mainCity.tilePos);
+                        }
+
+                        if (!firstPlayer)
+                        {
+                            float offsetToFirstPlayer = players[0].faction.mainCity.distanceTo(f.mainCity) - MultiPlayerDistance;
+                            f.availableForPlayerScore += 200 - Convert.ToInt32(offsetToFirstPlayer);
+                        }
+                    }
+
+                    if (!firstPlayer)
+                    {
+                        if (f.HasPlayerNeighbor())
+                        {
+                            f.availableForPlayerScore -= 200;
+                        }
+                    }
+
+                    if (dropIn)
+                    {
+                        int wars = f.CountWars(out int playerWars);
+                        f.availableForPlayerScore -= wars * 2000 + playerWars * 8000; 
+                    }
                 }
             }
 
-            bool dropInCheck(Faction faction)
-            {
-                if (dropIn)
-                {
-                    return faction.isAlive;
-                }
-                return true;
-            }
+            sortedList.Sort((a, b) => a.availableForPlayerScore.CompareTo(b.availableForPlayerScore));
+
+            return sortedList.FirstOrDefault();
         }
-       
+
+
         public City closestCity(IntVector2 pos, out float dist)
         {
             if (cities.Count == 0)

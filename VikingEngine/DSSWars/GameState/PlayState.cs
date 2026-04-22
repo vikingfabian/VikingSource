@@ -43,7 +43,7 @@ namespace VikingEngine.DSSWars
     //    public DropInPlayer(lo
     //}
 
-    class PlayState : AbsPlayState
+    partial class PlayState : AbsPlayState
     {
         public int nextGroupId = 0;
         public bool PartyMode = false;   
@@ -276,7 +276,7 @@ namespace VikingEngine.DSSWars
                     }
                     else
                     {
-                        startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, false, localPlayers);
+                        startFaction = DssRef.world.getPlayerAvailableFaction2(localPlayers, i == 0, false);
                         local = new Players.LocalPlayer(startFaction, newGame);
                         localPlayers.Add(local);
                     }
@@ -293,7 +293,7 @@ namespace VikingEngine.DSSWars
                     if (localPlayers.Count <= i)
                     {
                         //Drop in support
-                        Faction startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, false, localPlayers);
+                        Faction startFaction = DssRef.world.getPlayerAvailableFaction2(localPlayers, i == 0, false);
                         Players.LocalPlayer local = new Players.LocalPlayer(startFaction, newGame) { isDropInPlayer = true };
                         
                         localPlayers.Add(local);
@@ -647,35 +647,6 @@ namespace VikingEngine.DSSWars
 
         
 
-        public override void NetEvent_GotNetworkId()
-        {
-            //doesnt run
-            base.NetEvent_GotNetworkId();
-            
-        }
-
-        public override void NetworkStatusMessage(NetworkStatusMessage message)
-        {
-            //base.NetworkStatusMessage(message);
-
-            switch (message)
-            {
-                case Network.NetworkStatusMessage.Created_session:
-                    foreach (var p in localPlayers)
-                    {
-                        p.initNetwork();
-                    }
-                    break;
-            }
-        }
-        public override void NetEvent_ConnectionLost(string reason)
-        {
-            base.NetEvent_ConnectionLost(reason);
-            if (!this.host)
-            {
-                new GameState.ExitToLobby(false);
-            }
-        }
         
         //void shareAllHostedObjects(Network.AbsNetworkPeer sender)
         //{
@@ -835,213 +806,6 @@ namespace VikingEngine.DSSWars
 
         
 
-        bool asynchHostNetUpdate(int id, float time)
-        {
-            if (remotePlayers.Count > 0)
-            {
-                if (!sendMap())
-                {
-                    //TODO, rotate user update
-                    //Map sent, start updating units
-                    var remoteC = remotePlayers.counter();
-                    while (remoteC.Next())
-                    {
-                        if (remoteC.sel.gotStatus)
-                        {
-                            remoteC.sel.gotStatus = false;
-                            int maxPackets = remoteC.sel.networkPeer.peer.maxPacketCount;
-
-                            var cities = remoteC.sel.GetAllCitiesInView();
-                            foreach (var c in cities)
-                            {
-                                if (DssRef.world.cities[c].net_roundtrip_asyncupdate())
-                                {
-                                    if (--maxPackets <= 0)
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-
-                            remoteC.sel.Net_UpdateArmies(ref maxPackets);
-                        }
-                    }
-                }
-
-                bool sendMap()
-                {
-                    var remoteC = remotePlayers.counter();
-                    while (remoteC.Next())
-                    {
-                        var netPeer_sp = remoteC.sel.networkPeer;
-                        if (remoteC.sel.gotStatus && netPeer_sp != null)
-                        {
-                            int sendPacketCount = remoteC.sel.networkPeer.peer.maxPacketCount;
-
-                            while (remoteC.sel.Net_HostMapUpdate_async())
-                            {
-                                if (--sendPacketCount <= 0)
-                                {
-                                    remoteC.sel.gotStatus = false;
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-
-                    return false;
-                }
-            }
-            return exitThreads;
-        }
-
-        bool asynchAiPlayersUpdate(int id, float time)
-        {
-            if (cutScene == null)
-            {
-                var factions = DssRef.world.factions.counter();
-                while (factions.Next())
-                {
-                    factions.sel.asynchAiPlayersUpdate(time);
-                }
-            }
-            
-            return exitThreads;
-        }
-
-        public override void NetworkReadPacket(ReceivedPacket packet)
-        {
-            switch (packet.type)
-            {
-                case PacketType.DssJoined_WantWorld:
-                    {
-                        var w = Ref.netSession.BeginWritingPacket(PacketType.DssSendWorld, SendPacketTo.OneSpecific, packet.sender.fullId, PacketReliability.Reliable, null);
-                        var meta = new SaveStateMeta();
-                        meta.netSetup();
-                        var saveGamestate = new SaveGamestate(meta);
-                        saveGamestate.writeNet(w);
-                    }
-                    break;
-
-                case PacketType.DssPlayerStatus:
-                    {
-                        var player = GetRemotePlayer(packet);
-                        player.Net_readStatus(packet.r);
-
-                        if (player.newPlayer)
-                        {
-                            //Present yourself
-                            player.newPlayer = false;
-                            var w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, SendPacketTo.OneSpecific, packet.sender.fullId, PacketReliability.Reliable, null);
-                            w.Write((byte)localPlayers.Count);
-                            foreach (var local in localPlayers)
-                            {
-                                //TODO
-                                var profile = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].Profile();
-                                profile.flag.write(w);
-                            }
-                        }
-                    }
-                    break;
-
-                case PacketType.DssPlayerEnterPresentation:
-                    {
-                        var player = GetOrCreateRemotePlayer(packet.sender, 0);
-                        int count = packet.r.ReadByte();
-                        player.flag = new FlagAndColor(packet.r);
-                        player.flagTexture = player.flag.flagDesign.CreateTexture(player.flag);
-
-                        if (host)
-                        {
-                            //Assign faction
-                            DssRef.world.getPlayerAvailableFaction(false, true, localPlayers);
-                        }
-                    }
-                    break;
-
-                case PacketType.DssWorldTiles:                    
-                    DssRef.world.readNet_Tile(packet.r);//l 32 * 4 * 4
-                    overviewMap.bRefreshDataRecieved = true;
-                    DssRef.world.BordersUpdated = true;
-                    break;
-
-                case PacketType.DssWorldSubTiles:
-                    DssRef.world.readNet_SubTile(packet.r);//l 522
-                    break;
-
-                case PacketType.DssFactions:
-                    DssRef.world.readNet_Factions(packet.r);
-                    break;
-
-                case PacketType.DssCities:
-                    DssRef.world.readNet_Cities(packet.r);
-                    break;
-
-                case PacketType.DssCityStatus:
-                    int cityIx = packet.r.ReadUInt16();
-                    var city = DssRef.world.cities[cityIx];
-                    int part = packet.r.ReadByte();
-                    city.readNet_update(packet.r, part);
-                    break;
-                case PacketType.DssArmyStatus:
-                    Army.NetReadArmy(packet.r); 
-                    break;
-                case PacketType.DssSoldierGroupStatus:
-                    int factionIx = packet.r.ReadUInt16();
-                    int armyIx = packet.r.ReadUInt16();
-
-                    var faction = DssRef.world.factions.GetIndex_Safe(factionIx);
-                    if (faction != null)
-                    {
-                        var army = faction.armies.GetIndex_Safe(armyIx);
-                        if (army != null)
-                        {
-                            bool more = false;
-                            do
-                            {
-                                more = Army.NetReadGroup(packet.r, army);
-                            } while (more);
-                        }
-                    }
-                    break;
-            }
-        }
-
-        
-        public Players.RemotePlayer GetRemotePlayer(ReceivedPacket packet)
-        {
-            return packet.sender.instancePeers?[packet.senderLocalIndex].Tag as Players.RemotePlayer;
-        }
-
-        
-
-        public override void NetUpdate()
-        {
-            foreach (var player in localPlayers)
-            {
-                player.NetUpdate();
-            }
-        }
-
-        public override void NetEvent_PeerJoined(AbsNetworkPeer peer)
-        {
-            base.NetEvent_PeerJoined(peer);
-            GetOrCreateRemotePlayer(peer, 0);
-        }
-
-        public override void NetEvent_PeerLost(AbsNetworkPeer peer)
-        {
-            var remotePlayerC = remotePlayers.counter();
-            while (remotePlayerC.Next())
-            {
-                if (remotePlayerC.sel.networkPeer != null && 
-                    remotePlayerC.sel.networkPeer.peer == peer)
-                {
-                    //TODO return region to AI
-                    remotePlayerC.RemoveAtCurrent();
-                }
-            }
-        }
 
         
 

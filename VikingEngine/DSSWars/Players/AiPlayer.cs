@@ -2688,6 +2688,10 @@ namespace VikingEngine.DSSWars.Players
         {
             return false;
         }
+        public override bool IsHumanPlayer()
+        {
+            return false;
+        }
         public override AiPlayer GetAiPlayer()
         {
             return this;

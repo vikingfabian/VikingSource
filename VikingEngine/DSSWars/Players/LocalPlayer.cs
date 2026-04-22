@@ -148,11 +148,7 @@ namespace VikingEngine.DSSWars.Players
         }
 
 
-        public void setPlayerFaction(Faction faction)
-        {
-            faction.factiontype = FactionType.Player;
-            faction.availableForPlayer = false;
-        }
+        
 
         void baseInit()
         {

@@ -316,6 +316,11 @@ namespace VikingEngine.DSSWars.GameState
 
         public Players.RemotePlayer GetOrCreateRemotePlayer(AbsNetworkPeer peer, int SplitScreenIndex)
         {
+            if (peer.Tag != null)
+            {
+                return peer.Tag as Players.RemotePlayer;
+            }
+
             var remotePlayerC = remotePlayers.counter();
             while (remotePlayerC.Next())
             {

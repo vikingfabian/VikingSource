@@ -1,4 +1,8 @@
 
+## MULTIPLAYER UPDATE ##
+* Remade the player join map algo
+
+
 ﻿UPDATE
 Change Log:
 * Added growing food requirements for ai workerhut building

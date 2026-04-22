@@ -275,6 +275,7 @@ namespace VikingEngine.DSSWars.Players
         abstract public bool IsBot();
 
         abstract public bool IsLocalPlayer();
+        abstract public bool IsHumanPlayer();
 
         virtual public LocalPlayer GetLocalPlayer()
         {

@@ -1089,7 +1089,7 @@ namespace VikingEngine.DSSWars.Event
             //{
                 Task.Run(() =>
                 {
-                    int wars = player.faction.CountWars();
+                    int wars = player.faction.CountWars(out _);
                     maxWarsJuggles = Math.Max(maxWarsJuggles, wars);
                 });
             //}

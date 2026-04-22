@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void Net_UpdateArmies(ref int maxPackets)
         {
-            const int GroupsPerPacket = 8;
+            
 
             if (playerCulling.farLayer == false)
             {
@@ -158,40 +158,41 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (army.lastNetUpdate.secPassed(waitSeconds))
                     {
-                        {
-                            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, Network.PacketReliability.Unrelyable, out var packet);
-                            {
-                                Army.NetWriteArmy(w, army);
-                                army.lastNetUpdate.setNow();
-                            }
-                            packet.EndWrite_Asynch();
-                        }
+                        Army.NetFullArmyStatus(army);
+                        //{
+                        //    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, Network.PacketReliability.Unrelyable, out var packet);
+                        //    {
+                        //        Army.NetWriteArmy(w, army);
+                        //        army.lastNetUpdate.setNow();
+                        //    }
+                        //    packet.EndWrite_Asynch();
+                        //}
 
-                        if (army.groups.Count > 0)
-                        {
-                            var groupC = army.groups.counter();
+                        //if (army.groups.Count > 0)
+                        //{
+                        //    var groupC = army.groups.counter();
 
-                            int count = 0;
+                        //    int count = 0;
 
-                            while (groupC.HasMore())
-                            {                                
-                                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierGroupStatus, Network.PacketReliability.Unrelyable, out var packet);
-                                {
-                                    w.Write((ushort)army.factionIndex);
-                                    w.Write((ushort)army.myIndex);
+                        //    while (groupC.HasMore())
+                        //    {                                
+                        //        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierGroupStatus, Network.PacketReliability.Unrelyable, out var packet);
+                        //        {
+                        //            w.Write((ushort)army.factionIndex);
+                        //            w.Write((ushort)army.myIndex);
 
-                                    while (--count < GroupsPerPacket && groupC.Next())
-                                    {
-                                        Army.NetWriteGroup(w, groupC.sel);
-                                        army.lastNetUpdate.setNow();
-                                    }
+                        //            while (--count < GroupsPerPacket && groupC.Next())
+                        //            {
+                        //                Army.NetWriteGroup(w, groupC.sel);
+                        //                army.lastNetUpdate.setNow();
+                        //            }
 
-                                    w.Write(ushort.MaxValue);
-                                }
-                                packet.EndWrite_Asynch();
+                        //            w.Write(ushort.MaxValue);
+                        //        }
+                        //        packet.EndWrite_Asynch();
                                 
-                            }
-                        }
+                        //    }
+                        //}
                     }
                 }
             }

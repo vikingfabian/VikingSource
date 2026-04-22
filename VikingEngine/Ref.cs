@@ -38,7 +38,7 @@ namespace VikingEngine
         public static PerformanceRandom peRnd = new PerformanceRandom();
 
 
-        public static Network.INetworkUpdateReviever NetUpdateReciever()
+        public static Network.INetworkUpdateReciever NetUpdateReciever()
         {
             if (lobby == null) return gamestate;
 
