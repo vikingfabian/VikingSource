@@ -12,6 +12,13 @@ namespace VikingEngine.DSSWars.Presentation
     //Licenesed 2025 Sep 11, "Astro: you can remix our work freely, any platform"
     partial class Turkish : AbsLanguage
     {
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => "Depo sınırını aşarsanız eşyalar yok olmaz!";
+        public override string SlaughterResult_PerAnimal => "Hayvan başına kesim verimi";
+        public override string Settings_Mode_QuickBoss => "Hızlı boss";
+        public override string Settings_Mode_QuickBoss_Description => "Birkaç saat hazırlık yapın, ardından son boss ile karşılaşın";
+        public override string QuickBoss_TimeOption => "Boss süresi (saat)";
+
         //Binek güncellemesi
         public override string Leaderboards_title => "Leaderboards";
         public override string Leaderboards_domination => "Dünya hakimiyeti en iyi süresi, %{0} artı";

@@ -5,6 +5,13 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Polish : AbsLanguage
     {
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => "Przedmioty nie zostaną zniszczone, jeśli przekroczysz limit zapasów!";
+        public override string SlaughterResult_PerAnimal => "Uzysk z uboju, na zwierzę";
+        public override string Settings_Mode_QuickBoss => "Szybki boss";
+        public override string Settings_Mode_QuickBoss_Description => "Przygotowuj się przez kilka godzin, a następnie zmierz się z finałowym bossem";
+        public override string QuickBoss_TimeOption => "Czas bossa (godziny)";
+
         //Aktualizacja wierzchowców
         public override string Leaderboards_title => "Rankingi";
         public override string Leaderboards_domination => "Rekord dominacji nad światem, {0}% plus";

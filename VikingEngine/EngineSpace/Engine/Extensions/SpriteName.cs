@@ -2690,7 +2690,11 @@ namespace VikingEngine
         WarsDiplomaticAddTime,
         WarsDiplomaticSub,
         WarsDiplomaticSubTime,
-        
+        WarsOverviewCityHover,
+        WarsOverviewCitySelect,
+
+
+
         WarsArmy,
         WarsGuard,
         WarsGuardAdd,

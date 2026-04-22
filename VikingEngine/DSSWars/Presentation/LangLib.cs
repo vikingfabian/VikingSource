@@ -72,8 +72,8 @@ namespace VikingEngine.DSSWars.Presentation
                     break;
 
                 case GameModeMainType.QuickBoss:
-                    caption = DssRef.todoLang.Settings_Mode_QuickBoss;
-                    desc = DssRef.todoLang.Settings_Mode_QuickBoss_Description + ". " + DssRef.lang.Settings_Mode_IncludeAttacks;
+                    caption = DssRef.lang.Settings_Mode_QuickBoss;
+                    desc = DssRef.lang.Settings_Mode_QuickBoss_Description + ". " + DssRef.lang.Settings_Mode_IncludeAttacks;
                     break;
 
                 case GameModeMainType.QuickMatch:

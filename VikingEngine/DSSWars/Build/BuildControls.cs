@@ -1631,7 +1631,7 @@ namespace VikingEngine.DSSWars.Build
                 if (slaughterBp != null)
                 {
                     content.newParagraph();
-                    content.h2(DssRef.todoLang.SlaughterResult_PerAnimal, HudLib.TitleColor_Label);
+                    content.h2(DssRef.lang.SlaughterResult_PerAnimal, HudLib.TitleColor_Label);
                     content.newLine();
                     slaughterBp.resultDividedToMenu(content);
                 }

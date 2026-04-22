@@ -48,8 +48,8 @@ namespace VikingEngine.DSSWars.Communication
                             if (cityCount >= citySelections.Count) 
                             {
                                 Mesh cirkleMesh = new Mesh(LoadedMesh.plane, 
-                                    Vector3.Zero, new Vector3(3f), TextureEffectType.Flat,
-                                    selection? SpriteName.LittleUnitSelectionFilled : SpriteName.LittleUnitSelectionDotted, 
+                                    Vector3.Zero, new Vector3(2.4f), TextureEffectType.Flat,
+                                    selection? SpriteName.WarsOverviewCitySelect : SpriteName.WarsOverviewCityHover, 
                                     Color.White, false);
                                 cirkleMesh.AddToRender(DrawGame.FarLayer);
                                 citySelections.Add(cirkleMesh);

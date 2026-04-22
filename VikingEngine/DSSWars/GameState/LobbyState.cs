@@ -1487,7 +1487,7 @@ namespace VikingEngine.DSSWars
                                 underMenu.CloseDropDown();
                             }, i), null);
                     }
-                    timeOptions.Build(content, SpriteName.cmdIconTimeOut, DssRef.todoLang.QuickBoss_TimeOption, underMenu);
+                    timeOptions.Build(content, SpriteName.cmdIconTimeOut, DssRef.lang.QuickBoss_TimeOption, underMenu);
                     break;
 
                 case GameModeMainType.QuickMatch:

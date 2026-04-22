@@ -4,11 +4,11 @@ Change Log:
 * 
 
 ##ICONS TODO
-* Better Diplomacy City highlight
+* 
 
 
 #MOUNTED TODO
-x translate
+
 
 
 ## MOUNTED POST CONTENT UPDATE ##

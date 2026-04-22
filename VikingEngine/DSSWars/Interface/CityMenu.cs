@@ -1547,7 +1547,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbText(DssRef.lang.Work_BadValueDescription));
-                    content.text(DssRef.todoLang.StockPile_ItemsAreNotLost, HudLib.InfoYellow_Light);
+                    content.text(DssRef.lang.StockPile_ItemsAreNotLost, HudLib.InfoYellow_Light);
                     break;
             }
         }
