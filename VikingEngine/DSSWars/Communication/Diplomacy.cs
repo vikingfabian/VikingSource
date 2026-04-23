@@ -168,7 +168,9 @@ namespace VikingEngine.DSSWars
 
         public DiplomaticRelation GetRelation_Safe(int faction1, int faction2)
         {
-            if (faction1 < 0 || faction2 < 0 || faction1 == faction2)
+            if (faction1 < 0 || faction1 >= DssRef.world.factions.Array.Length || 
+                faction2 < 0 || faction2 >= DssRef.world.factions.Array.Length ||
+                faction1 == faction2)
             {
                 return DiplomaticRelation.Empty;
             }
