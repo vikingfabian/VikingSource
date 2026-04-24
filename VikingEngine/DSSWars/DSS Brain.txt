@@ -9,7 +9,7 @@ Change Log:
 
 
 #MOUNTED TODO
-
+Lower stockpile in tutorial, or insta fill
 
 
 ## MOUNTED POST CONTENT UPDATE ##

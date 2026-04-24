@@ -559,10 +559,10 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.Logistics:
                 case BuildAndExpandType.ManorLord:
                 case BuildAndExpandType.GreatHall:
-
+                case BuildAndExpandType.Palisade:
                     return wallCount;
 #if DEBUG
-                default: throw new NotImplementedException(type.ToString());
+                default: return 0;//throw new NotImplementedException(type.ToString());
 #else
                 default: return 0;
 #endif
