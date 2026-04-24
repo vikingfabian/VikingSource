@@ -2,10 +2,13 @@
 ﻿UPDATE
 Change Log:
 * fixed rare collect opponents crash
+* The tutorial is faster by adjusting the resources
+* Wood cutters always pick up some wood
 
 
 ##ICONS TODO
 * 
+
 
 
 #MOUNTED TODO

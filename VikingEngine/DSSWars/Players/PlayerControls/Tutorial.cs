@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.EntityComponent;
 using VikingEngine.DSSWars.Event;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
@@ -77,6 +78,9 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             EndAdvisor,
         }
+
+        static readonly int[] BaseTutorialResources = { CityResoureIndex.stone, CityResoureIndex.wood, CityResoureIndex.food, CityResoureIndex.ironore };
+            //ItemResourceType.Stone_G, ItemResourceType.Wood_Group, ItemResourceType.SkinLinen_Group, ItemResourceType.IronOre_G };
 
         int tutorialLength = -1;
         List2<TutorialMission> missions;
@@ -2875,6 +2879,10 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 case TutorialMission.ProduceWeaponsArmor:
                     player.gameControls.map.setCameraBounds(false, cityarea);
                     break;
+
+                case TutorialMission.CollectResources:
+                    setBaseResources(DssConst.StorageStartSize * 2);
+                    break;
             }
 
             if (missions.selIndex < nextIx)
@@ -2922,6 +2930,18 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 {
                     player.hud.messages.Add(DssRef.lang.Tutorial_AdvisorCompleteTitle, DssRef.lang.Tutorial_AdvisorCompleteMessage);
                     EndAdvisor();
+                }
+            }
+        }
+
+        void setBaseResources(int amount)
+        {
+            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+            while (citiesC.Next(ref player.faction.cities, DssRef.world.cities, out City citySel))
+            {
+                foreach (var res in BaseTutorialResources)
+                {
+                    citySel.resourceAmountSet(res, amount);
                 }
             }
         }
@@ -2996,6 +3016,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             player.hud.messages.blockFoodWarning(false);
             DssRef.state.events.onTutorialEnd();
             player.gameControls.refreshGameSpeedOptions(false);
+            setBaseResources(50);
 
             if (endAll)
             {
