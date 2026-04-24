@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Presentation;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD;
@@ -720,6 +721,35 @@ namespace VikingEngine.DSSWars.Interface
                 closeMenu();
             })));
 
+
+            content.newParagraph();
+            content.h2("Food calculator");
+            content.text("To reach 1000 food:");
+
+            content.newParagraph();
+            content.text(DssRef.lang.BuildingType_Orchard, HudLib.TitleColor_TypeName);
+            content.newLine();
+            
+            float collectCount = 1000f/ DssConst.OrchidFoodAmount;
+            HudLib.LabelAndText(content, SpriteName.WarsResource_Water, DssRef.lang.Resource_TypeName_Water, (collectCount * (DssConst.OrchardWaterCost)).ToString());
+            HudLib.LabelAndText(content, SpriteName.LittleStatsTime, DssRef.lang.BuildHud_WorkTime, (collectCount * (DssConst.WorkTime_Plant + DssConst.WorkTime_PluckOrchards)).ToString());
+
+
+            content.newParagraph();
+            content.text(DssRef.lang.Resource_TypeName_Wheat, HudLib.TitleColor_TypeName);
+            content.newLine();
+
+            collectCount = 1000f / DssConst.WheatFoodAmount;
+            float craftCount = 1000f / CraftResourceLib.FoodCraftAmount;
+            HudLib.LabelAndText(content, SpriteName.WarsResource_Water, DssRef.lang.Resource_TypeName_Water, (collectCount * DssConst.PlantWaterCost + craftCount * CraftResourceLib.FoodWaterUsage).ToString());
+
+            float workSeconds = collectCount * (DssConst.WorkTime_Plant + DssConst.WorkTime_GatherFoil_FarmCulture);
+            float fuel = CraftResourceLib.FoodFuelUsage / (float)CraftResourceLib.FoodCraftAmount * craftCount;
+
+            workSeconds += fuel * DssConst.WorkTime_Craft;
+        
+            HudLib.LabelAndText(content, SpriteName.LittleStatsTime, DssRef.lang.BuildHud_WorkTime, workSeconds.ToString());
+            HudLib.LabelAndText(content, SpriteName.WarsResource_Fuel, DssRef.lang.Resource_TypeName_Fuel, fuel.ToString());
 
             completeMenu(content);
             //GuiLayout layout = new GuiLayout("DEBUG", menu);

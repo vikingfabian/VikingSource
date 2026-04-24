@@ -130,7 +130,6 @@ namespace VikingEngine.DSSWars.Players
         public StoredCameraPos storedCameraPos;
 
 
-
         public LocalPlayer()
         {
             baseInit();
@@ -909,25 +908,28 @@ namespace VikingEngine.DSSWars.Players
 
 
 
-        public void debugMenu(GuiLayout layout)
-        {
-            new GuiTextButton("Next event", "skip forward in the event timer", new GuiAction(new Action(DssRef.state.events.TestNextEvent) + DssRef.state.menuSystem.closeMenu), false, layout);
-            new GuiTextButton("1000 resources", "add 1000 of all resources to all cities", new GuiAction(new Action(debugAddResources) + DssRef.state.menuSystem.closeMenu), false, layout);
-            //new GuiTextButton("Enemy alliance", "when the player grow to fast", new GuiAction(new Action(()=> { DssRef.state.events.collectAllianceAgainstPlayerDomination(this); }) + DssRef.state.menuSystem.closeMenu), false, layout);
+        //public void debugMenu(GuiLayout layout)
+        //{
+        //    new GuiTextButton("Next event", "skip forward in the event timer", new GuiAction(new Action(DssRef.state.events.TestNextEvent) + DssRef.state.menuSystem.closeMenu), false, layout);
+        //    new GuiTextButton("1000 resources", "add 1000 of all resources to all cities", new GuiAction(new Action(debugAddResources) + DssRef.state.menuSystem.closeMenu), false, layout);
+            
+            
+            
+        //    //new GuiTextButton("Enemy alliance", "when the player grow to fast", new GuiAction(new Action(()=> { DssRef.state.events.collectAllianceAgainstPlayerDomination(this); }) + DssRef.state.menuSystem.closeMenu), false, layout);
 
-            //UnitType[] unitTypes = DssLib.AvailableUnitTypes;
-            //foreach (var type in unitTypes)
-            //{ 
-            //    new GuiTextButton("Battle test - " + type.ToString() + " (Land)", null, 
-            //        new GuiAction2Arg<UnitType, bool>(battleLineTest,type,false), false, layout);
-            //}
+        //    //UnitType[] unitTypes = DssLib.AvailableUnitTypes;
+        //    //foreach (var type in unitTypes)
+        //    //{ 
+        //    //    new GuiTextButton("Battle test - " + type.ToString() + " (Land)", null, 
+        //    //        new GuiAction2Arg<UnitType, bool>(battleLineTest,type,false), false, layout);
+        //    //}
 
-            //foreach (var type in unitTypes)
-            //{
-            //    new GuiTextButton("Battle test - " + type.ToString() + " (Sea)", null,
-            //        new GuiAction2Arg<UnitType, bool>(battleLineTest, type, true), false, layout);
-            //}
-        }
+        //    //foreach (var type in unitTypes)
+        //    //{
+        //    //    new GuiTextButton("Battle test - " + type.ToString() + " (Sea)", null,
+        //    //        new GuiAction2Arg<UnitType, bool>(battleLineTest, type, true), false, layout);
+        //    //}
+        //}
 
         void debugAddResources()
         {

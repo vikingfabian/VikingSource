@@ -9,9 +9,9 @@ namespace VikingEngine.DSSWars.Resource
 {
     static class CraftResourceLib
     {
-        const int FoodWaterUsage = 8;
-        const int FoodFuelUsage = 3;
-        const int FoodCraftAmount = 20;
+        public const int FoodWaterUsage = 3;
+        public const int FoodFuelUsage = 3;
+        public const int FoodCraftAmount = 25;
 
 
         //ORE
@@ -535,7 +535,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public static readonly CraftBlueprint WagonSteel = new CraftBlueprint(
                 CraftResultType.Resource,
-                (int)ItemResourceType.WagonIron,
+                (int)ItemResourceType.WagonSteel,
                 1,
                 new UseResource[]
                 {
