@@ -44,7 +44,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
             do
             {
-                if (DssRef.world.subTileGrid.Get(currentPos).EqualTerrain(terrainType))
+                if (DssRef.world.subTileGrid.TryGet(currentPos, out var subTile) && subTile.EqualTerrain(terrainType))
                 {
                     if (DssRef.world.tileGrid.Get(WP.SubtileToTilePos(currentPos)).CityIndex == cityIx)
                     {                        

@@ -362,7 +362,7 @@ namespace VikingEngine.DSSWars.Resource
                10,
                new UseResource[]
                {
-                new UseResource(ItemResourceType.Water_G, 5),
+                new UseResource(ItemResourceType.Water_G, 8),
                 new UseResource(ItemResourceType.Fuel_G, 1),
                 new UseResource(ItemResourceType.RawFood_Group, 1)
                },
