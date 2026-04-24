@@ -1,16 +1,7 @@
 
 ﻿UPDATE
 Change Log:
-* fixed rare collect opponents crash
-* The tutorial is faster by adjusting the resources
-* Wood cutters always pick up some wood
-
-* Fixed rare city neighbor array out of bounds crash
-* Fixed rare get xp crash
-* fixed：The steel carriage cannot be crafted.
-
-* food calculator in the debug menu
-* Food craft rebalance: water cost 8 > 3, output 20 > 25
+* 
 
 ##ICONS TODO
 * 
