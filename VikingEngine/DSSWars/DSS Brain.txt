@@ -2,7 +2,8 @@
 ﻿UPDATE
 Change Log:
 * Fixed the missing mithril sword option
-* 
+* Maybe fixed: at rare occasions the animal stockpile starts at zero
+
 
 ##ICONS TODO
 * 

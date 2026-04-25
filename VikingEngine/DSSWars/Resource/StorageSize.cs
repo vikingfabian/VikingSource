@@ -36,8 +36,8 @@ namespace VikingEngine.DSSWars.Resource
                 capacity *= 2;
             }
 
-            Task.Run(() =>
-            {
+            //Task.Run(() =>
+            //{
                 for (ResourceGroupType group = 0; group < ResourceGroupType.NUM; group++)
                 {
                     var resources = ResourceLib.ResourceGroupList(group);
@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Resource
                         }
                     }
                 }
-            });
+            //});
         }
 
         public void write(System.IO.BinaryWriter w)
