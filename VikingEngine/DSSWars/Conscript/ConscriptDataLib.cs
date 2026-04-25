@@ -19,6 +19,8 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.HandSpear,
             ItemResourceType.Warhammer,
             ItemResourceType.TwoHandSword,
+            ItemResourceType.MithrilSword,
+
         };
 
         public static readonly ItemResourceType[] ArcherWeapons = {
@@ -30,13 +32,13 @@ namespace VikingEngine.DSSWars.Conscript
             ItemResourceType.MithrilBow,
         };
 
-        public static readonly ItemResourceType[] ArcherGuardWeapons = {
-            ItemResourceType.Stone_G,
-            ItemResourceType.ThrowingSpear,
-            ItemResourceType.Bow,
-            ItemResourceType.LongBow,
-            ItemResourceType.Crossbow,
-        };
+        //public static readonly ItemResourceType[] ArcherGuardWeapons = {
+        //    ItemResourceType.Stone_G,
+        //    ItemResourceType.ThrowingSpear,
+        //    ItemResourceType.Bow,
+        //    ItemResourceType.LongBow,
+        //    ItemResourceType.Crossbow,
+        //};
 
         public static readonly ItemResourceType[] WarmachineWeapons = {
 

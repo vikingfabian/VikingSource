@@ -1,7 +1,8 @@
 
 ﻿UPDATE
 Change Log:
-
+* Fixed the missing mithril sword option
+* 
 
 ##ICONS TODO
 * 
