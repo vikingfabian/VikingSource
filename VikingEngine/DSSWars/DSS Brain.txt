@@ -1,8 +1,7 @@
 
 ﻿UPDATE
 Change Log:
-* Fixed the missing mithril sword option
-* Maybe fixed: at rare occasions the animal stockpile starts at zero
+* Fixed: hog and cat pens had the wrong models
 
 
 ##ICONS TODO
