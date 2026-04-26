@@ -240,6 +240,13 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
                 args.content.space(0.5f);
                 args.content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
+
+                if (faction.player.IsRemotePlayer())
+                {
+                    args.content.space(0.5f);
+                    args.content.Add(new RbGamerIcon(((RemotePlayer)faction.player).networkPeer.peer, 0.8f));
+                }
+
                 args.content.space(0.5f);
                 args.content.Add(new RbText(faction.PlayerName, HudLib.TitleColor_Name));
 

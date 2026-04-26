@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
@@ -10,7 +11,12 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Net;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Profile;
+using VikingEngine.HUD;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.GO.PlayerCharacter;
+using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
+using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars
@@ -138,6 +144,15 @@ namespace VikingEngine.DSSWars
                         int count = packet.r.ReadByte();
                         player.profile.flag = new FlagAndColor(packet.r);
                         player.flagTexture = player.profile.flag.flagDesign.CreateTexture(player.profile.flag);
+                        DssRef.world.BordersUpdated = true;
+
+                        RichBoxContent content = new RichBoxContent();
+
+                        content.h2(SpriteName.MissingImage, ".Player joined", HudLib.TitleColor_Head);
+                        content.newLine();
+                        player.addNetGamerToHud(content);
+                        LocalHost().hud.messages.Add(content);
+
 
                         if (host)
                         {
@@ -336,8 +351,34 @@ namespace VikingEngine.DSSWars
         public override void NetEvent_PeerLost(AbsNetworkPeer peer)
         {
             var player = peer.Tag as RemotePlayer;
+
+            if (player == null)
+            {
+                var remotePlayerC = remotePlayers.counter();
+                while (remotePlayerC.Next())
+                {
+                    if (remotePlayerC.sel.networkPeer != null &&
+                        remotePlayerC.sel.networkPeer.peer == peer)
+                    {
+                        player = remotePlayerC.sel;
+                    }
+                }
+            }
+
             if (player != null)
             {
+                
+
+                remotePlayers.Remove(player);
+
+                RichBoxContent content = new RichBoxContent();
+
+                content.h2(SpriteName.MissingImage, ".Player left", HudLib.TitleColor_Head);
+                
+                content.newLine();
+
+                player.addNetGamerToHud(content);
+
                 if (player.faction != null)
                 {
                     var aiPlayer = player.previousPlayer;
@@ -347,19 +388,14 @@ namespace VikingEngine.DSSWars
                     }
                 }
 
-                remotePlayers.Remove(player);
+                LocalHost().hud.messages.Add(content);
+
             }
-            //var remotePlayerC = remotePlayers.counter();
-            //while (remotePlayerC.Next())
-            //{
-            //    if (remotePlayerC.sel.networkPeer != null &&
-            //        remotePlayerC.sel.networkPeer.peer == peer)
-            //    {
-            //        //TODO return region to AI
-            //        remotePlayerC.RemoveAtCurrent();
-            //    }
-            //}
+
+
         }
+
+        
 
 
         public void NetWritePlayer(System.IO.BinaryWriter w, AbsHumanPlayer player)

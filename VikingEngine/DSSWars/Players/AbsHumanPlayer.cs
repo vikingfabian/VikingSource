@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.HUD.RichBox;
+using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
 
 namespace VikingEngine.DSSWars.Players
@@ -19,9 +22,37 @@ namespace VikingEngine.DSSWars.Players
             : base()
         { }
 
-        virtual public void AssignFaction(Faction faction)
+        public void addNetGamerToHud(RichBoxContent content)
+        {
+            content.Add(new RbBeginTitle(2));
+
+            if (faction == null)
+            {
+                if (profile.flag != null)
+                {
+                    var flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
+                    content.Add(new RbTexture(flagTexture, 1f, 0, 0.2f));
+                    content.space();
+                }
+            }
+            else
+            {
+                content.Add(faction.FlagTextureToHud());
+                content.space();
+            }
+
+            if (networkPeer != null)
+            {
+                content.Add(new RbGamerIcon(networkPeer.peer, 0.8f));
+                content.space();
+                content.Add(new RbText(networkPeer.peer.Gamertag, HudLib.TitleColor_Name));
+            }
+        }
+
+        override public void AssignFaction(Faction faction)
         {
             setPlayerFaction(faction);
+            faction.displayInFullOverview = true;
             base.AssignFaction(faction);
            
         }

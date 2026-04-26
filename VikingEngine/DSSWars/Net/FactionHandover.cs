@@ -22,7 +22,10 @@ namespace VikingEngine.DSSWars.Net
             this.faction = faction;
 
             var remote = DssRef.state.GetOrCreateRemotePlayer(peer, 0);
-            remote.AssignFaction(faction);
+            if (remote.faction != faction)
+            {
+                remote.AssignFaction(faction);
+            }
 
             {
                 var w = Ref.netSession.BeginWritingPacket(PacketType.DssFactionStatus, PacketReliability.Reliable);

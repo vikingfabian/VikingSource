@@ -41,7 +41,8 @@ namespace VikingEngine.DSSWars.Players
         {
             base.AssignFaction(faction);
             faction.factiontype = FactionType.DefaultAi;
-            faction.availableForPlayer = true;      
+            faction.availableForPlayer = true;
+            faction.displayInFullOverview = false;
         }
 
         public override void writeGameState(BinaryWriter w)

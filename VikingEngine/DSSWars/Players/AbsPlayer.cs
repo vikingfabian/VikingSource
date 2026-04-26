@@ -284,6 +284,8 @@ namespace VikingEngine.DSSWars.Players
         abstract public bool IsLocalPlayer();
         abstract public bool IsHumanPlayer();
 
+        virtual public bool IsRemotePlayer() { return false; }
+
         virtual public LocalPlayer GetLocalPlayer()
         {
             return null;

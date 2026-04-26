@@ -67,26 +67,30 @@ namespace VikingEngine.DSSWars.Players
         {
             return false;
         }
+        public override bool IsRemotePlayer()
+        {
+            return true;
+        }
         public RbTexture FlagTextureToHud()
         {
             return new RbTexture(flagTexture, 1f, 0, 0.2f);
         }
 
-        public void RemoteToHud(RichBoxContent content)
-        {
-            if (flagTexture != null)
-            {
-                content.Add(new RbBeginTitle(2));
-                content.Add(FlagTextureToHud());
+        //public void RemoteToHud(RichBoxContent content)
+        //{
+        //    if (flagTexture != null)
+        //    {
+        //        content.Add(new RbBeginTitle(2));
+        //        content.Add(FlagTextureToHud());
 
-                content.space();
-            }
+        //        content.space();
+        //    }
 
-            if (networkPeer != null)
-            {
-                content.Add(new RbText(networkPeer.peer.Gamertag));
-            }
-        }
+        //    if (networkPeer != null)
+        //    {
+        //        content.Add(new RbText(networkPeer.peer.Gamertag));
+        //    }
+        //}
 
         public override bool IsLocal => false;
     }
