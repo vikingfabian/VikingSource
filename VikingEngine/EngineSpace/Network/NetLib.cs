@@ -84,6 +84,8 @@ namespace VikingEngine.Network
 
     struct ReceivedPacket
     {
+        public static readonly ReceivedPacket Empty = new ReceivedPacket();
+
         public System.IO.BinaryReader r;
         public AbsNetworkPeer sender;
         public int senderLocalIndex;

@@ -127,13 +127,7 @@ namespace VikingEngine.DSSWars
                         {
                             //Present yourself
                             player.newPlayer = false;
-                            var w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, SendPacketTo.OneSpecific, packet.sender.fullId, PacketReliability.Reliable, null);
-                            w.Write((byte)localPlayers.Count);
-                            foreach (var local in localPlayers)
-                            {
-                                var profile = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].Profile();
-                                profile.flag.write(w);
-                            }
+                            netPresentYourself(packet);
                         }
                     }
                     break;
@@ -268,6 +262,25 @@ namespace VikingEngine.DSSWars
             }
         }
 
+        void netPresentYourself(ReceivedPacket packet)
+        {
+            System.IO.BinaryWriter w;
+
+            if (packet.sender == null)
+            {
+                w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, PacketReliability.Reliable);
+            }
+            else
+            {
+                w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, SendPacketTo.OneSpecific, packet.sender.fullId, PacketReliability.Reliable, null);
+            }
+            w.Write((byte)localPlayers.Count);
+            foreach (var local in localPlayers)
+            {
+                var profile = DssRef.storage.localPlayers[local.playerData.localPlayerIndex].Profile();
+                profile.flag.write(w);
+            }
+        }
 
         public Players.RemotePlayer GetRemotePlayer(ReceivedPacket packet)
         {

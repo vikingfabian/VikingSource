@@ -927,7 +927,7 @@ namespace VikingEngine.DSSWars
             //Calculate scores
             foreach (var f in factions.Array)
             {
-                if (f != null && f.player.IsBot())
+                if (f != null && f.player.IsBot() && f.cities.Count > 0)
                 { 
                     sortedList.Add(f);
 
@@ -938,10 +938,10 @@ namespace VikingEngine.DSSWars
                         f.availableForPlayerScore += 1000;
                     }
 
-                    if (f.cities.Count > 0)
-                    {
-                        f.availableForPlayerScore += 1000;
-                    }
+                    //if (f.cities.Count > 0)
+                    //{
+                    //    f.availableForPlayerScore += 1000;
+                    //}
 
                     if (f.mainCity != null)
                     {
@@ -979,7 +979,7 @@ namespace VikingEngine.DSSWars
 
             sortedList.Sort((a, b) => a.availableForPlayerScore.CompareTo(b.availableForPlayerScore));
 
-            return sortedList.FirstOrDefault();
+            return sortedList.LastOrDefault();
         }
 
 

@@ -38,11 +38,6 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace VikingEngine.DSSWars
 {
 
-    //class DropInPlayer
-    //{ 
-    //    public DropInPlayer(lo
-    //}
-
     partial class PlayState : AbsPlayState
     {
         public int nextGroupId = 0;
@@ -131,6 +126,8 @@ namespace VikingEngine.DSSWars
             events = new Event.EventManager();
 
             local.onGameStart(false);
+
+            netPresentYourself(ReceivedPacket.Empty);
         }
 
         public void initGameState(bool newGame, ObjectPointerCollection pointers)
