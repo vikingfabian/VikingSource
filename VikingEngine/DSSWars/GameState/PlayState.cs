@@ -379,8 +379,10 @@ namespace VikingEngine.DSSWars
                 new AsynchUpdateable_TryCatch(asynchAiPlayersUpdate, "DSS ai player update", 52, System.Threading.ThreadPriority.BelowNormal);
                 new AsynchUpdateable_TryCatch(asynchArmyAiUpdate, "DSS army ai update", 53, System.Threading.ThreadPriority.BelowNormal);
                 new AsynchUpdateable_TryCatch(asynchSleepObjectsUpdate, "DSS sleep objects update", 55, System.Threading.ThreadPriority.BelowNormal);
-                new AsynchUpdateable_TryCatch(asynchNearObjectsUpdate, "DSS near objects update", 56, System.Threading.ThreadPriority.BelowNormal);
+                
             }
+
+            new AsynchUpdateable_TryCatch(asynchNearObjectsUpdate, "DSS near objects update", 56, System.Threading.ThreadPriority.BelowNormal);
 
             startMapThreads();
 
@@ -403,8 +405,10 @@ namespace VikingEngine.DSSWars
                     Ref.SetGameSpeed(DssRef.storage.multiplayerGameSpeed);
                 }
 
-                initPathFindingThreads();
+                
             }
+
+            initPathFindingThreads();
 
             isReady = true;
             LastAutoSaveTime_TotalSec = Ref.TotalTimeSec;
