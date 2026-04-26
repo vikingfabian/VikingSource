@@ -43,6 +43,13 @@ namespace VikingEngine.DSSWars.Players
             flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
         }
 
+        virtual public void AssignFaction(Faction faction)
+        {
+            this.faction = faction;
+            faction.SetStartOwner(this);
+            faction.onNewPlayerModels();
+        }
+
         public AbsPlayer(Faction faction, bool newGame)
         {
             this.faction = faction;

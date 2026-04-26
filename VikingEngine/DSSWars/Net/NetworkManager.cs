@@ -136,8 +136,8 @@ namespace VikingEngine.DSSWars
                     {
                         var player = GetOrCreateRemotePlayer(packet.sender, 0);
                         int count = packet.r.ReadByte();
-                        player.flag = new FlagAndColor(packet.r);
-                        player.flagTexture = player.flag.flagDesign.CreateTexture(player.flag);
+                        player.profile.flag = new FlagAndColor(packet.r);
+                        player.flagTexture = player.profile.flag.flagDesign.CreateTexture(player.profile.flag);
 
                         if (host)
                         {
@@ -168,6 +168,8 @@ namespace VikingEngine.DSSWars
                                                 NetWritePlayer(w, remote);
                                                 w.Write((ushort)faction.myIndex);
                                             }
+
+                                            factionHandovers.Enqueue(new FactionHandover(packet.sender, faction));
                                         }));
                                     }
                                 }
@@ -333,16 +335,30 @@ namespace VikingEngine.DSSWars
 
         public override void NetEvent_PeerLost(AbsNetworkPeer peer)
         {
-            var remotePlayerC = remotePlayers.counter();
-            while (remotePlayerC.Next())
+            var player = peer.Tag as RemotePlayer;
+            if (player != null)
             {
-                if (remotePlayerC.sel.networkPeer != null &&
-                    remotePlayerC.sel.networkPeer.peer == peer)
+                if (player.faction != null)
                 {
-                    //TODO return region to AI
-                    remotePlayerC.RemoveAtCurrent();
+                    var aiPlayer = player.previousPlayer;
+                    if (aiPlayer != null)
+                    {
+                        aiPlayer.AssignFaction(player.faction);
+                    }
                 }
+
+                remotePlayers.Remove(player);
             }
+            //var remotePlayerC = remotePlayers.counter();
+            //while (remotePlayerC.Next())
+            //{
+            //    if (remotePlayerC.sel.networkPeer != null &&
+            //        remotePlayerC.sel.networkPeer.peer == peer)
+            //    {
+            //        //TODO return region to AI
+            //        remotePlayerC.RemoveAtCurrent();
+            //    }
+            //}
         }
 
 

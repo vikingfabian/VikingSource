@@ -21,9 +21,9 @@ namespace VikingEngine.DSSWars.Players
 
         virtual public void AssignFaction(Faction faction)
         {
-            this.faction = faction;
             setPlayerFaction(faction);
-            faction.SetStartOwner(this);
+            base.AssignFaction(faction);
+           
         }
 
         override public AbsHumanPlayer GetHumanPlayer()

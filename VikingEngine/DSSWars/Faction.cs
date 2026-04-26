@@ -379,6 +379,7 @@ namespace VikingEngine.DSSWars
 
         public void writeNet(System.IO.BinaryWriter w)
         {
+
             w.Write((ushort)factiontype);
             player.profile.write(w, true);
 

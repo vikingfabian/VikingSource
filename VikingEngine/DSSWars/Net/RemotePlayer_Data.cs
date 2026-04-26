@@ -114,7 +114,7 @@ namespace VikingEngine.DSSWars.Players
                             }
 
                             int faction = tile.City().factionIndex;
-                            if (faction >= 0)
+                            if (faction >= 0 && DssRef.world.factions.Array[faction].player.IsLocal)
                             {
                                 if (!factionsRecieved[faction])
                                 {

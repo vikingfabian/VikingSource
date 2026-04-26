@@ -21,6 +21,15 @@ namespace VikingEngine.DSSWars
 
         List<int> processStarted = new List<int>(8);
 
+        public void onNewPlayerModels()
+        {
+            models_loaded.Clear();
+            lock (processStarted)
+            {
+                processStarted.Clear();
+            }
+        }
+
         public Graphics.VoxelModelInstance AutoLoadModelInstance(VoxelModelName name,
            float scale = 1f, bool addToRender = false)
         {
@@ -101,13 +110,13 @@ namespace VikingEngine.DSSWars
                             if (process)
                             {
                                 var model = new CharacterModelBuilder().buildModel(player.profile, modelData);
-                                lock (models_loaded)
-                                {
+                                //lock (models_loaded)
+                                //{
                                     if (!models_loaded.ContainsKey(id))
                                     {
                                         models_loaded.TryAdd(id, model);
                                     }
-                                }
+                                //}
                             }
                         }
 

@@ -1650,7 +1650,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 setModel(faction.AutoLoadModelInstance(
                    LootFest.VoxelModelName.cityicon, IconScale()));
-                //overviewModel?.DeleteMe();
+                
             }
             //if (faction.player?.profile.flag != null)
             //{

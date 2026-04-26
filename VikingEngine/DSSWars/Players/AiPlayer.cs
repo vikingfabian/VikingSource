@@ -37,6 +37,13 @@ namespace VikingEngine.DSSWars.Players
         public bool armyAi_enabled = true;
         protected int diplomacyPoints = 0;
 
+        public override void AssignFaction(Faction faction)
+        {
+            base.AssignFaction(faction);
+            faction.factiontype = FactionType.DefaultAi;
+            faction.availableForPlayer = true;      
+        }
+
         public override void writeGameState(BinaryWriter w)
         {
             base.writeGameState(w);

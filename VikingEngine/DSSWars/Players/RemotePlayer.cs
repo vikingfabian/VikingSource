@@ -19,10 +19,10 @@ namespace VikingEngine.DSSWars.Players
     partial class RemotePlayer : AbsHumanPlayer
     {
         PlayerCullingState playerCulling;
-        public FlagAndColor flag = null;
-        //public Texture2D flagTexture;
         public bool gotStatus = false;
         public bool newPlayer = true;
+
+        public AbsPlayer previousPlayer;
 
         public RemotePlayer(Network.NetworkInstancePeer peer)
             :base()
@@ -32,7 +32,11 @@ namespace VikingEngine.DSSWars.Players
             InitData();
             playerCulling = new PlayerCullingState();
         }
-
+        public override void AssignFaction(Faction faction)
+        {
+            previousPlayer = faction.player;
+            base.AssignFaction(faction);
+        }
         // public void AssignFaction(Faction faction)
         //{
             
