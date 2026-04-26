@@ -314,11 +314,11 @@ namespace VikingEngine.DSSWars.GameState
             new ExitToLobby(false);
         }
 
-        public Players.RemotePlayer GetOrCreateRemotePlayer(AbsNetworkPeer peer, int SplitScreenIndex)
+        public Players.AbsHumanPlayer GetOrCreateRemotePlayer(AbsNetworkPeer peer, int SplitScreenIndex)
         {
             if (peer.Tag != null)
             {
-                return peer.Tag as Players.RemotePlayer;
+                return peer.Tag as Players.AbsHumanPlayer;
             }
 
             var remotePlayerC = remotePlayers.counter();
@@ -341,7 +341,7 @@ namespace VikingEngine.DSSWars.GameState
             {
                 remotePlayers.Add(new Players.RemotePlayer(ins));
             }
-            return (Players.RemotePlayer)peer.instancePeers[SplitScreenIndex].Tag;
+            return (Players.AbsHumanPlayer)peer.instancePeers[SplitScreenIndex].Tag;
         }
         virtual public void OneMinute_Update()
         { }
