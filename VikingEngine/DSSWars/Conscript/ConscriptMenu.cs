@@ -347,7 +347,7 @@ namespace VikingEngine.DSSWars.Conscript
                     //HudLib.InfoButton(content, new RbTooltip_Text(string.Format(DssRef.lang.Conscript_SpecializationDescription, TextLib.PercentTextWithSymbol(DssConst.Conscript_SpecializePercentage))));
                     content.newLine();
 
-                    SpecializationType[] specializationTypes = currentStatus.profile.avaialableSpecializations( BuildAndExpandType.NUM_NONE, out _);
+                    SpecializationType[] specializationTypes = currentStatus.profile.avaialableSpecializations();
 
 
                     foreach (var specialization in specializationTypes)
@@ -885,7 +885,26 @@ namespace VikingEngine.DSSWars.Conscript
             if (splashCount > 0)
             {
                 content.newLine();
+                HudLib.BulletPoint(content);
                 content.Add(new RbText(splashCount < 6 ? DssRef.lang.Conscript_SplashDamage : DssRef.lang.Conscript_HighSplashDamage));
+            }
+
+            var spez = ConscriptProfile.LockedSpecialization(weapon);
+            if (spez != SpecializationType.None)
+            {
+                content.newLine();
+                HudLib.BulletPoint(content);
+                string text = null;
+                switch (spez)
+                {
+                    case SpecializationType.AntiCavalry:
+                        text = DssRef.lang.Conscript_Specialization_AntiCavalry;
+                        break;
+                    case SpecializationType.Siege:
+                        text = DssRef.lang.Conscript_Specialization_Siege;
+                        break;
+                }
+                content.Add(new RbText(text));
             }
             
             switch (weapon)
@@ -985,6 +1004,7 @@ namespace VikingEngine.DSSWars.Conscript
             HudLib.LabelAndText(content, SpriteName.WarsMobilityIcon, DssRef.lang.Conscript_RiderMobility, TextLib.TwoDecimal( properties.soldierData.mobilityValue()));
             HudLib.LabelAndText(content, SpriteName.WarsResource_Wagon2Wheel, DssRef.lang.Conscript_LightWagonMobility, TextLib.TwoDecimal(SoldierData.Mobility( properties.soldierData.lightWagonSpeed)));
             HudLib.LabelAndText(content, SpriteName.WarsResource_WagonSteel, DssRef.lang.Conscript_HeavyWagonMobility, TextLib.TwoDecimal(SoldierData.Mobility(properties.soldierData.heavyWagonSpeed)));
+            HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_TrainingTime, "+" + new TimeLength(DssConst.TrainingTimeSec_Mount).LongString());
 
             content.newParagraph();
             content.h2(DssRef.lang.Hud_Upkeep, HudLib.TitleColor_Head2);
@@ -1070,7 +1090,7 @@ namespace VikingEngine.DSSWars.Conscript
         {
             TrainingTooltipArgs args = (TrainingTooltipArgs)tag;
 
-            HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(args.training, args.buildtype)).LongString());
+            HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_TrainingTime, new TimeLength(ConscriptProfile.TrainingTime(args.training, ItemResourceType.NONE, args.buildtype)).LongString());
             HudLib.LabelAndText(content, SpriteName.NO_IMAGE, DssRef.lang.Conscript_AttackSpeed, TextLib.PercentTextWithSymbol(ConscriptProfile.TrainingAttackSpeed(args.training)));
 
             HudLib.LabelAndText(content, SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.Language_XUpkeep, DssRef.lang.ResourceType_Gold), TextLib.TwoDecimal(Money.ToGoldF( DssConst.TrainingCopperUpkeep[(int)args.training] * args.soldierCount)));

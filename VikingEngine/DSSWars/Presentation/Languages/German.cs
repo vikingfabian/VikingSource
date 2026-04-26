@@ -8,6 +8,12 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class German : AbsLanguage
     {
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => "Gegenstände werden nicht zerstört, wenn das Lagerlimit überschritten wird!";
+        public override string SlaughterResult_PerAnimal => "Schlachtertrag, pro Tier";
+        public override string Settings_Mode_QuickBoss => "Schneller Boss";
+        public override string Settings_Mode_QuickBoss_Description => "Bereite dich ein paar Stunden vor und triff dann auf einen Endboss";
+        public override string QuickBoss_TimeOption => "Boss-Zeit (Stunden)";
         //Reittiere-Update
         public override string Leaderboards_title => "Leaderboards";
         public override string Leaderboards_domination => "Weltherrschaft Bestzeit, {0}% plus";

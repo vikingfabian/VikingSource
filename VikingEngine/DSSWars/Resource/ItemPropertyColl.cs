@@ -138,22 +138,27 @@ namespace VikingEngine.DSSWars.Resource
             {
                 var wagon = new ItemProperties(ItemResourceType.Wagon2Wheel, CityResoureIndex.Wagon2Wheel, DefaultWeight, WorkPriorityType.craftWagon2Wheel, CraftResourceLib.Wagon2Wheel, null, StorageType.MaterialStorage);
                 wagon.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 2);
+                wagon.soldierData.weightClass = 0;
             }
             {
                 var wagon = new ItemProperties(ItemResourceType.Wagon4Wheel, CityResoureIndex.Wagon4Wheel, DefaultWeight, WorkPriorityType.craftWagon4Wheel, CraftResourceLib.Wagon4Wheel, null, StorageType.MaterialStorage);
                 wagon.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 3);
+                wagon.soldierData.weightClass = 0.3f;
             }
             {
                 var wagon = new ItemProperties(ItemResourceType.WagonClosed, CityResoureIndex.WagonClosed, DefaultWeight, WorkPriorityType.craftWagonClosed, CraftResourceLib.WagonClosed, null, StorageType.MaterialStorage);
                 wagon.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 5);
+                wagon.soldierData.weightClass = 0.6f;
             }
             {
                 var wagon = new ItemProperties(ItemResourceType.WagonIron, CityResoureIndex.WagonIron, DefaultWeight, WorkPriorityType.craftWagonIron, CraftResourceLib.WagonIron, null, StorageType.MaterialStorage);
                 wagon.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 10);
+                wagon.soldierData.weightClass = 0.9f;
             }
             {
                 var wagon = new ItemProperties(ItemResourceType.WagonSteel, CityResoureIndex.WagonSteel, DefaultWeight, WorkPriorityType.craftWagonSteel, CraftResourceLib.WagonSteel, null, StorageType.MaterialStorage);
                 wagon.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 30);
+                wagon.soldierData.weightClass = 1;
             }
             
             // --- Gunpowder & Ballistics ---

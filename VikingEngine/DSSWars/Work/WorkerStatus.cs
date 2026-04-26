@@ -1935,6 +1935,12 @@ namespace VikingEngine.DSSWars.Work
                 amount *= 2;
             }
 
+            carry = new Resource.ItemResource(
+                resourceType,
+                subTile.terrainQuality,
+                Convert.ToInt32(processTimeLengthSec),
+                Resource.ItemPropertyColl.Get(resourceType).carryCount);
+
             DssRef.state.resources.addItem(
                 new Resource.ItemResource(
                     resourceType,

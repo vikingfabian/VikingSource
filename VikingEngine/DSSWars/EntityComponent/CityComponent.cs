@@ -91,12 +91,18 @@ namespace VikingEngine.DSSWars
         public WorkExperience GetWorkXp(int index, WorkExperienceType type)
         {
 #if DEBUG
-            if (!workerXp.InBound_Array( index * WorkerXpCOUNT + (int)type))
+            if (!workerXp.InBound_Array(index * WorkerXpCOUNT + (int)type))
             {
                 throw new Exception();
             }
 #endif
-            return workerXp.array[index * WorkerXpCOUNT + (int)type];
+            int arrayIx = index * WorkerXpCOUNT + (int)type;
+            if (workerXp.InBound_Array(arrayIx))
+            {
+                return workerXp.array[arrayIx];
+            }
+
+            return empty;
         }
         public void SetWorkXp(int index, WorkExperienceType type, byte xp)
         {
@@ -208,7 +214,7 @@ namespace VikingEngine.DSSWars
             initWorkerXp(cityCount);
 
             cityResouces = new GroupedResource[CityResoureIndex.COUNT * cityCount];
-            neighborCities = new EcsStaticArray(14, cityCount);
+            neighborCities = new EcsStaticArray(16, cityCount);
             cityWork = new WorkPriority[WorkTemplate.COUNT * cityCount];
             cityStorage = new StorageSize[StorageSize.COUNT * cityCount];
 

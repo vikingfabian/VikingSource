@@ -8,6 +8,12 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class SimplifiedChinese : AbsLanguage
     {
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => "如果超出库存上限，物品也不会被销毁！";
+        public override string SlaughterResult_PerAnimal => "每只动物的屠宰产量";
+        public override string Settings_Mode_QuickBoss => "快速Boss";
+        public override string Settings_Mode_QuickBoss_Description => "准备几个小时，然后迎接最终Boss";
+        public override string QuickBoss_TimeOption => "Boss出现时间（小时）";
         //坐骑更新 (Mounts update)
         public override string Leaderboards_title => "排行榜";
         public override string Leaderboards_domination => "世界征服最短时间，{0}% 以上";

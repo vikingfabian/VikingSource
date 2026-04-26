@@ -238,8 +238,17 @@ namespace VikingEngine.DSSWars.Build
                 case BuildAndExpandType.WarElephantCage: return WarElephantCage_pos;
                 case BuildAndExpandType.OliphantCage: return OliphantCage_pos;
 
+                case BuildAndExpandType.Logistics:
+                    return IntVector2.NegativeOne;
+
+
                 default:
+#if DEBUG
                     throw new NotImplementedException($"getPos() not implemented for {type}");
+#else
+                    return IntVector2.NegativeOne;
+#endif
+
             }
         }
     }

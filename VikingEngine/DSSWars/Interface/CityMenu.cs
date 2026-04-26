@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.Interface
 
             void addSoldier(int count)
             {
-                if (city != null)
+                if (city != null && city.HasFaction())
                 {
                     SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                     {
@@ -1547,7 +1547,7 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbText(DssRef.lang.Work_BadValueDescription));
-                    content.text(DssRef.todoLang.StockPile_ItemsAreNotLost, HudLib.InfoYellow_Light);
+                    content.text(DssRef.lang.StockPile_ItemsAreNotLost, HudLib.InfoYellow_Light);
                     break;
             }
         }

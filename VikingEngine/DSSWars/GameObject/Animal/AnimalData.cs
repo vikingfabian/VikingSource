@@ -53,7 +53,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
                     break;
 
                 case ItemResourceType.Hound:
-                    new Livestock(tilepos, wp, DssVar.dogModel, SoundLib.dog, -0.25f);
+                    new Livestock(tilepos, wp, DssVar.houndModel, SoundLib.dog, -0.25f);
                     break;
 
 
@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars.GameObject.Animal
                     break;
 
                 case ItemResourceType.WildPig:
-                    new Livestock(tilepos, wp, DssVar.hogModel, SoundLib.hog, 0.25f);
+                    new Livestock(tilepos, wp, DssVar.wildpigModel, SoundLib.hog, 0.25f);
                     break;
 
                 case ItemResourceType.WildHog:
@@ -86,11 +86,11 @@ namespace VikingEngine.DSSWars.GameObject.Animal
                     break;
 
                 case ItemResourceType.WarHog:
-                    new Livestock(tilepos, wp, DssVar.hogModel, SoundLib.hog, -0.25f);
+                    new Livestock(tilepos, wp, DssVar.warhogModel, SoundLib.hog, -0.25f);
                     break;
 
                 case ItemResourceType.StagHog:
-                    new Livestock(tilepos, wp, DssVar.hogModel, SoundLib.hog, -0.25f);
+                    new Livestock(tilepos, wp, DssVar.stagHogModel, SoundLib.hog, -0.25f);
                     break;
 
                 case ItemResourceType.Wolf:
@@ -104,13 +104,13 @@ namespace VikingEngine.DSSWars.GameObject.Animal
                     break;
 
                 case ItemResourceType.WildCat:
-                    new Livestock(tilepos, wp, DssVar.lionModel, SoundLib.lion, 0.25f);
+                    new Livestock(tilepos, wp, DssVar.wildcatModel, SoundLib.lion, 0.25f);
                     break;
                 case ItemResourceType.Lion:
                     new Livestock(tilepos, wp, DssVar.lionModel, SoundLib.lion, 0f);
                     break;
                 case ItemResourceType.WarLion:
-                    new Livestock(tilepos, wp, DssVar.lionModel, SoundLib.lion, -0.25f);
+                    new Livestock(tilepos, wp, DssVar.warlionModel, SoundLib.lion, -0.25f);
                     break;
 
                 case ItemResourceType.Elephant:

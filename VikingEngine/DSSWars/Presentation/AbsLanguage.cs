@@ -9,6 +9,16 @@ namespace VikingEngine.DSSWars.Presentation
 {
     abstract partial class AbsLanguage
     {
+        //Post mount update
+        public abstract string StockPile_ItemsAreNotLost { get; }
+
+        public abstract string SlaughterResult_PerAnimal { get; }
+
+        public abstract string Settings_Mode_QuickBoss { get; }
+        public abstract string Settings_Mode_QuickBoss_Description { get; }
+
+        public abstract string QuickBoss_TimeOption { get; }
+
         //Mounts update 
         public abstract string Leaderboards_title { get; }
         public abstract string Leaderboards_domination { get; }

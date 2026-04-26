@@ -287,6 +287,11 @@ namespace VikingEngine
             return Convert.ToInt32(value2 * value1);
         }
 
+        public static int DivideInt(double value, double divBy)
+        {
+            return Convert.ToInt32(value / divBy);
+        }
+
         public static IntVector2 Max(IntVector2 a, IntVector2 b)
         {
             return new IntVector2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));

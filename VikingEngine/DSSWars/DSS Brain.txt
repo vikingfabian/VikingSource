@@ -5,50 +5,19 @@
 
 ﻿UPDATE
 Change Log:
-* Added growing food requirements for ai workerhut building
-* Ai may build larger cities
-* improved messages goto buttons
-* fixed: dark lord player had endless diplomacy
-* Remade the boss enter event to be placed much smarter
-* The story factions are placed closer to the player in large maps
-* added color to minimap enemy/ally
-* new mode: quick boss
-* new culture: Wheelwright, //Speed bonus to conscripted carts
-* increased sharp stick damage 20 > 24
-* City highlight on faction map
-* Low xp workers are lost first
-* The conscript is not locking in until all items are available, 
-	-plus it will take ten seconds to fully lock in, to feel more dynamic
-
-* Fixed: Max population recruitment seems to have broken
-* close cores popup on battle lab, plus exit end screen
-* 3 new achievements
-        /// <summary>
-        /// Bask in the glory, watch your name on the leaderboard
-        /// </summary>
-        leaderboard_glory, //i, t, a
-
-        /// <summary>
-        /// Alpha warg conscript
-        /// </summary>
-        the_alpha, //i, t, a
-
-        /// <summary>
-        /// Summon the cannonphant
-        /// </summary>
-        cannonphant, //i, t, a
-
+* Fixed: hog and cat pens had the wrong models
+* I had forget to set proper wagon weights, making light wagons very slow
 
 ##ICONS TODO
-* Better Diplomacy City highlight
+* 
+
+
 
 #MOUNTED TODO
-
-
+* change the stone mine into brick mine.
 
 ## MOUNTED POST CONTENT UPDATE ##
 (x 3k self dying cities)
-x add mount training time
 
 
 #Event timers (are slightly random)#

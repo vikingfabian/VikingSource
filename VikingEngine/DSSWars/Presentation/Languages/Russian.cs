@@ -8,6 +8,12 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Russian : AbsLanguage
     {
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => "Предметы не будут уничтожены при превышении лимита склада!";
+        public override string SlaughterResult_PerAnimal => "Добыча при забое, за животное";
+        public override string Settings_Mode_QuickBoss => "Быстрый босс";
+        public override string Settings_Mode_QuickBoss_Description => "Подготовьтесь пару часов, а затем встретьтесь с финальным боссом";
+        public override string QuickBoss_TimeOption => "Время босса (в часах)";
         //Обновление с маунтами
         public override string Leaderboards_title => "Лидерборды";
         public override string Leaderboards_domination => "Мировое господство, лучшее время, {0}% и выше";

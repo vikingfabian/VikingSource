@@ -12,6 +12,7 @@ using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.DSSWars.GameObject.DetailObj.Soldiers;
 using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
@@ -458,30 +459,47 @@ namespace VikingEngine.DSSWars.GameObject
                     case ItemResourceType.Dog:
                     case ItemResourceType.Hound:
                     case ItemResourceType.Pig:
-                        int houndColumnExMax = soldierData.columnsDepth / 2;
-                        
-                        for (int y = houndColumnExMax; y < columnDepth; ++y)
+
+                        AbsSoldierBuilder houndbuilder = DssRef.units.Get(UnitBuildType.ConscriptHound);
+                        var houndSoldierData = ItemPropertyColl.Get(soldierConscript.conscript.animal).soldierData;
+
+                        if (soldierData.columnsDepth == 1)
                         {
                             for (int x = 0; x < soldierData.rowWidth; ++x)
                             {
-                                if (!create(x, y, bannerPos.Equals(x, y), builder, ref soldierData))
+                                if (!create(x, 0, bannerPos.Equals(x, 0), lib.IsEven(x) ? builder : houndbuilder, ref soldierData))
                                 {
                                     return;
                                 }
                             }
                         }
-
-                        AbsSoldierBuilder houndbuilder = DssRef.units.Get(UnitBuildType.ConscriptHound);
-                        var houndSoldierData = ItemPropertyColl.Get(soldierConscript.conscript.animal).soldierData;
-                        for (int y = 0; y < houndColumnExMax; ++y)
+                        else
                         {
-                            for (int x = 0; x < soldierData.rowWidth; ++x)
+                            int houndColumnExMax = soldierData.columnsDepth / 2;
+
+                            for (int y = houndColumnExMax; y < columnDepth; ++y)
                             {
-                                if (!create(x, y, false, houndbuilder, ref houndSoldierData))
+                                for (int x = 0; x < soldierData.rowWidth; ++x)
                                 {
-                                    return;
+                                    if (!create(x, y, bannerPos.Equals(x, y), builder, ref soldierData))
+                                    {
+                                        return;
+                                    }
                                 }
                             }
+
+                            
+                            for (int y = 0; y < houndColumnExMax; ++y)
+                            {
+                                for (int x = 0; x < soldierData.rowWidth; ++x)
+                                {
+                                    if (!create(x, y, false, houndbuilder, ref houndSoldierData))
+                                    {
+                                        return;
+                                    }
+                                }
+                            }
+                           
                         }
                         break;
                 }

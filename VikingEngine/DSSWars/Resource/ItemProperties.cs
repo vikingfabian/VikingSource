@@ -117,6 +117,7 @@ namespace VikingEngine.DSSWars.Resource
         /// Weight is measured in man-carry, 1 is a standard carry weight for a worker
         /// </summary>
         public float weight;
+        public int carryCount;
         public WorkPriorityType work;
         public CraftBlueprint bp1;
         public CraftBlueprint bp2;
@@ -140,6 +141,14 @@ namespace VikingEngine.DSSWars.Resource
         {   
             this.cityResourceIndex = cityResourceIndex;
             this.weight = weight;
+            if (weight == 0)
+            {
+                carryCount = 20;
+            }
+            else
+            {
+                this.carryCount = MathExt.DivideInt(1.0, weight);
+            }
             this.work = work;
             this.bp1 = bp1;
             this.bp2 = bp2;

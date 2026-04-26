@@ -8,6 +8,12 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Thai : AbsLanguage
     {
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => TextLib.ThaiConv("ไอเทม|จะ|ไม่|ถูก|ทำลาย|หาก|ของ|เกิน|ความจุ|คลัง|!");
+        public override string SlaughterResult_PerAnimal => TextLib.ThaiConv("ผลผลิต|จาก|การ|ชำแหละ|,|ต่อ|สัตว์|หนึ่ง|ตัว");
+        public override string Settings_Mode_QuickBoss => TextLib.ThaiConv("บอส|แบบ|รวดเร็ว");
+        public override string Settings_Mode_QuickBoss_Description => TextLib.ThaiConv("เตรียมตัว|ไม่|กี่|ชั่วโมง|,|จากนั้น|พบ|กับ|บอส|ตัว|สุดท้าย");
+        public override string QuickBoss_TimeOption => TextLib.ThaiConv("เวลา|บอส|(|ชั่วโมง|)");
         //อัปเดต|สัตว์|พาหนะ
         public override string Leaderboards_title => TextLib.ThaiConv("กระดาน|ผู้นำ");
         public override string Leaderboards_domination => TextLib.ThaiConv("เวลา|ดี|ที่สุด|ใน|การ|ยึดครอง|โลก|ระดับ|{0}%|ขึ้นไป");

@@ -474,7 +474,7 @@ namespace VikingEngine.DSSWars.Resource
                 useLimitProperty, new RbTooltip((RichBoxContent content, object tag)=> {
                     content.h1(DssRef.lang.StockPile_LimitTitle, HudLib.TitleColor_Head);
                     content.text(DssRef.lang.Resource_StockPile_Info);
-                    content.text(DssRef.todoLang.StockPile_ItemsAreNotLost, HudLib.InfoYellow_Light);
+                    content.text(DssRef.lang.StockPile_ItemsAreNotLost, HudLib.InfoYellow_Light);
 
                     content.newParagraph();
                     content.Add(new RbSeperationLine());

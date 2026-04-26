@@ -426,7 +426,7 @@ namespace VikingEngine.DSSWars.Players
                 
                 city.conscriptArmy(profile, city.defaultConscriptPos(), get);
 
-                city.nextAutoConscriptTime.setTimeFromNow(ConscriptProfile.TrainingTime(profile.training, barracksType) / barracksCount);
+                city.nextAutoConscriptTime.setTimeFromNow(ConscriptProfile.TrainingTime(profile.training, profile.animal, barracksType) / barracksCount);
             }
 
             return get > 0;

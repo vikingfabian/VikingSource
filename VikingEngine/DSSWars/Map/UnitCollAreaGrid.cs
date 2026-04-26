@@ -490,7 +490,6 @@ namespace VikingEngine.DSSWars.Map
                         {
                             lock (area.groups)
                             {
-                                //if (DssRef.world.diplomacy.GetRelation_Safe(faction, m.factionIndex).InWar())
                                 foreach (var m in area.groups)
                                 {
                                     if ( DssRef.world.diplomacy.GetRelation_Safe(faction, m.factionIndex).InWar())
@@ -500,7 +499,7 @@ namespace VikingEngine.DSSWars.Map
                                 }
                             }
 
-                            for (int i = 0; i < area.cities.Count; ++i)//foreach (var cityIx in area.cities)
+                            for (int i = 0; i < area.cities.Count; ++i)
                             {
                                 var city = DssRef.world.cities[area.cities[i]];
                                 if (DssRef.world.diplomacy.GetRelation_Safe(faction, city.factionIndex).InWar())

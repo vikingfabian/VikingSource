@@ -76,7 +76,7 @@ namespace VikingEngine.DSSWars
         public static float SwordAttackRange = 0.04f;
         public static float MeleeAwareRange = SwordAttackRange * 3f;
 
-        public static int WeaponDamage_Handspear = 10;
+        public static int WeaponDamage_Handspear = 15;
         public static int WeaponHealthAdd_Handspear = 200;
         public static int WeaponDamage_SharpStick = 24;
         public static int WeaponDamage_BronzeSword = 45;
@@ -140,6 +140,7 @@ namespace VikingEngine.DSSWars
         public static float TrainingTimeSec_Basic = 90;
         public static float TrainingTimeSec_Skillful = 5 * TimeExt.MinuteInSeconds;
         public static float TrainingTimeSec_Professional = 10 * TimeExt.MinuteInSeconds;
+        public static float TrainingTimeSec_Mount = TimeExt.MinuteInSeconds;
 
         public static float TrainingTimeSec_NobelmenAdd = 120;
 

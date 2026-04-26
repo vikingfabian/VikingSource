@@ -2271,6 +2271,9 @@ namespace VikingEngine
 
                 add(SpriteName.WarsAttackSpeedIcon);
                 add(SpriteName.WarsMobilityIcon);
+                add(SpriteName.WarsOverviewCityHover);
+                add(SpriteName.WarsOverviewCitySelect);
+
             }
 
             currentIndex = numTilesWidth * 87;

@@ -168,7 +168,9 @@ namespace VikingEngine.DSSWars
 
         public DiplomaticRelation GetRelation_Safe(int faction1, int faction2)
         {
-            if (faction1 < 0 || faction2 < 0 || faction1 == faction2)
+            if (faction1 < 0 || faction1 >= DssRef.world.factions.Array.Length || 
+                faction2 < 0 || faction2 >= DssRef.world.factions.Array.Length ||
+                faction1 == faction2)
             {
                 return DiplomaticRelation.Empty;
             }
@@ -983,7 +985,7 @@ namespace VikingEngine.DSSWars
             RelationType toRelation = ally_notFriend ? RelationType.RelationType3_Ally : RelationType.RelationType2_Good;
             int diff = toRelation - relation; //1 or 2
 
-            int cost = diff * 2 /*+ 1*/;
+            int cost = diff * 2;
             allyCountCost = 0;
 
             if (ally_notFriend)
@@ -997,7 +999,7 @@ namespace VikingEngine.DSSWars
             }
             cost += allyCountCost;
 
-            cost += toFaction.WorkForceInCityCount() / 3;
+            cost += toFaction.WorkForceInCityCount() / 3; //WorkForceInCityCount = totalWorkForce / DssConst.HeadCityStartMaxWorkForce;
             cost -= (int)speakterms;//0
 
             int minCost = 2;

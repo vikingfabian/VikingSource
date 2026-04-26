@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars
             warhogModel = hogModel.Copy(VoxelModelName.warhog1, 1.2f);
             stagHogModel = hogModel.Copy(VoxelModelName.staghog1, 1.2f);
 
-            lionModel = new AnimalProfile(VoxelModelName.lion1, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f), AnimalNoiseType.lion, WalkSoundType.Foot, 0.018f);
+            lionModel = new AnimalProfile(VoxelModelName.lion1, DssConst.Men_StandardModelScale * 1.1f, new WalkingAnimation(2, 6, WalkingAnimation.StandardMoveFrames * 0.9f), AnimalNoiseType.lion, WalkSoundType.Foot, 0.018f, 0.23f);
             wildcatModel = lionModel.Copy(VoxelModelName.wildcat1, 0.9f);
             warlionModel = lionModel.Copy(VoxelModelName.warlion1, 1.2f);
 

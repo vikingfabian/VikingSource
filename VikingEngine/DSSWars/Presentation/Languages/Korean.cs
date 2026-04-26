@@ -11,6 +11,12 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Korean : AbsLanguage
     {
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => "비축량을 초과해도 아이템이 파괴되지 않습니다!";
+        public override string SlaughterResult_PerAnimal => "동물당 도축 생산량";
+        public override string Settings_Mode_QuickBoss => "빠른 보스";
+        public override string Settings_Mode_QuickBoss_Description => "몇 시간 동안 준비한 후 최종 보스를 만납니다";
+        public override string QuickBoss_TimeOption => "보스 시간 (시간)";
         //탈것 업데이트
         public override string Leaderboards_title => "리더보드";
         public override string Leaderboards_domination => "세계 정복 최단 시간, {0}% 이상";

@@ -6,6 +6,17 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class English : AbsLanguage
     {
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => "Items will not be destroyed if you exceed the stockpile!";
+
+        public override string SlaughterResult_PerAnimal => "Slaughter output, per animal";
+
+        public override string Settings_Mode_QuickBoss => "Quick boss";
+        public override string Settings_Mode_QuickBoss_Description => "Prepare for a few hours, then meet a final boss";
+
+        public override string QuickBoss_TimeOption => "Boss time (hours)";
+
+
         //Mounts update
         public override string Leaderboards_title => "Leaderboards";
         public override string Leaderboards_domination => "World domination top time, {0}% plus";

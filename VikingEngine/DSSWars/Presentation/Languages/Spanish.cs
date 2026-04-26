@@ -8,6 +8,12 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class Spanish : AbsLanguage
     {
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => "¡Los objetos no se destruirán si excedes el límite del almacén!";
+        public override string SlaughterResult_PerAnimal => "Producción de sacrificio, por animal";
+        public override string Settings_Mode_QuickBoss => "Jefe rápido";
+        public override string Settings_Mode_QuickBoss_Description => "Prepárate durante unas horas y luego enfréntate a un jefe final";
+        public override string QuickBoss_TimeOption => "Tiempo del jefe (horas)";
         //Actualización de monturas
         public override string Leaderboards_title => "Leaderboards";
         public override string Leaderboards_domination => "Mejor tiempo dominación mundial, {0}% o más";

@@ -9,6 +9,12 @@ namespace VikingEngine.DSSWars.Presentation
     partial class Japanese : AbsLanguage
     {
 
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => "備蓄上限を超えてもアイテムは破壊されません！";
+        public override string SlaughterResult_PerAnimal => "動物1匹あたりの屠殺生産量";
+        public override string Settings_Mode_QuickBoss => "クイックボス";
+        public override string Settings_Mode_QuickBoss_Description => "数時間準備して、最終ボスに挑みます";
+        public override string QuickBoss_TimeOption => "ボス出現時間（時間）";
         //マウントアップデート
         public override string Leaderboards_title => "リーダーボード";
         public override string Leaderboards_domination => "世界統一タイム、{0}%以上";

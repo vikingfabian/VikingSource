@@ -76,6 +76,11 @@ namespace VikingEngine.DSSWars.Conscript
                         }
                         break;
                 }
+
+                if (profile.weapon == ItemResourceType.SiegeCannonBronze)
+                {
+                    AvailableWagons = null;
+                }
             }
         }
 
