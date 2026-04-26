@@ -2,7 +2,7 @@
 ﻿UPDATE
 Change Log:
 * Fixed: hog and cat pens had the wrong models
-
+* I had forget to set proper wagon weights, making light wagons very slow
 
 ##ICONS TODO
 * 

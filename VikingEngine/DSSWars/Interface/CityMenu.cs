@@ -221,7 +221,7 @@ namespace VikingEngine.DSSWars.Interface
 
             void addSoldier(int count)
             {
-                if (city != null)
+                if (city != null && city.HasFaction())
                 {
                     SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
                     {
