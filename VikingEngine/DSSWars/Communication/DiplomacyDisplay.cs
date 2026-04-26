@@ -66,17 +66,21 @@ namespace VikingEngine.DSSWars.Interface
                 FactionRelationDisplay(botFaction, selectedRelation.Relation, content);
 
                 content.newLine();
-                if (DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
+            if (DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
+            {
+                if (otherfaction.player.IsBot())
                 {
-                    if (otherfaction.player.IsBot())
-                    {
-                        playerToAi();
-                    }
-                    else
-                    {
-                        playerToPlayer(content);
-                    }
+                    playerToAi();
                 }
+                else if (otherfaction.player.IsLocalPlayer())
+                {
+                    playerToPlayer(content);
+                }
+                else
+                {
+                    content.text("TODO: remote diplomacy");
+                }
+            }
             //}
             
             if (player.gameControls.diplomacy.previousFactionsLookedAt.Count > 1)

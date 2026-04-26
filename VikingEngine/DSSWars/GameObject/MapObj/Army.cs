@@ -175,7 +175,7 @@ namespace VikingEngine.DSSWars.GameObject
                 needInit = true;
             }
 
-            army.IsNetHosted = faction.player.IsLocalPlayer();
+            army.IsNetHosted = faction.player != null && faction.player.IsLocalPlayer();
             army.readNet(r, needInit);
 
             if (needInit)
