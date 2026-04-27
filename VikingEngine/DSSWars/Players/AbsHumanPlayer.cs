@@ -43,6 +43,11 @@ namespace VikingEngine.DSSWars.Players
 
             if (networkPeer != null)
             {
+                if (Ref.netSession.Host() == networkPeer.peer)
+                {
+                    content.Add(new RbImage(SpriteName.birdRotatingCrown1));
+                    content.space();
+                }
                 content.Add(new RbGamerIcon(networkPeer.peer, 0.8f));
                 content.space();
                 content.Add(new RbText(networkPeer.peer.Gamertag, HudLib.TitleColor_Name));

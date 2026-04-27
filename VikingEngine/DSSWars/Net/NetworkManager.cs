@@ -23,6 +23,7 @@ namespace VikingEngine.DSSWars
 {
     partial class PlayState
     {
+        public const SpriteName NetworkIcon = SpriteName.birdPlayerCount;
         ConcurrentQueue<FactionHandover> factionHandovers = new ConcurrentQueue<FactionHandover>();      
 
         bool asynchHostNetUpdate(int id, float time)
@@ -148,7 +149,7 @@ namespace VikingEngine.DSSWars
 
                         RichBoxContent content = new RichBoxContent();
 
-                        content.h2(SpriteName.MissingImage, ".Player joined", HudLib.TitleColor_Head);
+                        content.h2(NetworkIcon, ".Player joined", HudLib.TitleColor_Head);
                         content.newLine();
                         player.addNetGamerToHud(content);
                         LocalHost().hud.messages.Add(content);
@@ -217,6 +218,17 @@ namespace VikingEngine.DSSWars
                         int factionIx = packet.r.ReadUInt16();
                         var faction = DssRef.world.faction(factionIx);
 
+                        IntVector2 centerCamera = IntVector2.FromReadUshort(packet.r);
+                        if (centerCamera.X > 0)
+                        {
+                            foreach (var lp in localPlayers)
+                            {
+                                if (lp.faction == faction)
+                                {
+                                    lp.gameControls.map.setCameraPos(centerCamera);
+                                }
+                            }
+                        }
                         SpottedPointerArray cities = new SpottedPointerArray();
                         cities.read_ushort_compressed(packet.r);
 
@@ -373,7 +385,7 @@ namespace VikingEngine.DSSWars
 
                 RichBoxContent content = new RichBoxContent();
 
-                content.h2(SpriteName.MissingImage, ".Player left", HudLib.TitleColor_Head);
+                content.h2(NetworkIcon, ".Player left", HudLib.TitleColor_Head);
                 
                 content.newLine();
 

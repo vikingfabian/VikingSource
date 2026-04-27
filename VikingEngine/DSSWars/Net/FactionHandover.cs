@@ -47,6 +47,12 @@ namespace VikingEngine.DSSWars.Net
                 case HandoverPart.Cities:
                     var w = Ref.netSession.BeginWritingPacket(PacketType.DssAssignFactionCities, PacketReliability.Reliable);
                     w.Write((ushort)faction.myIndex);
+                    IntVector2 centerCamera = IntVector2.Zero;
+                    if (faction.mainCity != null)
+                    {
+                        centerCamera = faction.mainCity.tilePos;
+                    }
+                    centerCamera.writeUshort(w);
                     faction.cities.write_ushort_compressed(w);
                     part++;
                     armyCounter = faction.armies.counter();
