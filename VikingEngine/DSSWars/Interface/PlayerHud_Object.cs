@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.HUD.RichBox;
@@ -14,16 +15,16 @@ using VikingEngine.LootFest.Players;
 
 namespace VikingEngine.DSSWars.Interface
 {
-    class PlayerHud_Object
+    class PlayerHud_Object : IPlayerHud_Menu
     {
         List<GameObject.AbsGameObject> selectHistory = new List<AbsGameObject>();
         
-        DiplomacyDisplay diplomacy;
+        public DiplomacyDisplay diplomacy;
         public RichMenu menu;
         public AbsArmy otherArmy;
 
-
-
+        public RichMenu Menu => menu;
+        public bool IsFactionMenu { get { return false; } }
         public PlayerHud_Object(LocalPlayer player)
         {
             diplomacy = new DiplomacyDisplay(player);
@@ -68,23 +69,15 @@ namespace VikingEngine.DSSWars.Interface
                 var hoverCity = tile.City();
                 hoverCity.CityPresentationHud(new ObjectHudArgs(content), true);
 
-                if (hoverCity.factionIndex == player.faction.myIndex)
+                if (hoverCity.factionIndex == player.faction.myIndex &&
+                    player.mapLayer() <= Map.MapDetailLayerType.TerrainOverview2)
                 {
                     content.newLine();
-                    //RichBoxContent buttonContent = new RichBoxContent();
-                    SpriteName buttonIcon;
-                    if (player.gameControls.input.inputSource.IsController)
-                    {
-                        buttonIcon = player.gameControls.input.Controller_SubTabLeft.Icon;
-                    }
-                    else
-                    {
-                        buttonIcon = player.gameControls.input.QuickSelect.Icon;
-                    }
+                   
+                    player.gameControls.input.QuickSelect.ToRichContent(content);
+                    content.space();
                     content.Add(new ArtButton(RbButtonStyle.Primary,
                         new List<AbsRichBoxMember> {
-                            new RbImage(buttonIcon),
-                            new RbSpace(),
                             new RbText(DssRef.lang.Hud_SelectCity)
                         }, new RbAction(player.gameControls.selectAreaCity)));
                 }
@@ -116,10 +109,11 @@ namespace VikingEngine.DSSWars.Interface
                 else
                 {
                     content.newLine();
-                    content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
-                    new RbText(obj.Name(out _), HudLib.TitleColor_Name),
-                    new RbImage(SpriteName.warsBulletSeperationPoint),
-                    new RbText(obj.TypeName(), HudLib.TitleColor_TypeName) },
+                    RichBoxContent buttonContent = new RichBoxContent();
+                    obj.toButtonContent(buttonContent, false);
+                    content.Add(new ArtButton(RbButtonStyle.Outline,
+                        buttonContent,
+                    
                         new RbAction1Arg<AbsGameObject>((AbsGameObject obj) =>
                         {
                             player.gameControls.selectObject(obj);
@@ -143,24 +137,30 @@ namespace VikingEngine.DSSWars.Interface
                 return;
             }
 
-            if (player.hud.detailLevel == HudDetailLevel.Minimal &&
+            if (!player.hud.maximizedHud &&
                 (faction == null || !selected))
             {
                 deleteMenu();
                 return;
             }
 
-            if (faction == null)
-            {
-                historyDisplay(player);
-            }
-            else
-            {
-                createMenu(player);
+            createMenu(player);
 
+            if (faction != null)
+            {
                 var content = new RichBoxContent();
                 diplomacy.toHud(content, faction, selected);
                 menu.Refresh(content, player.gameControls.controllerPointer);
+            }
+            else if (player.factionPixelTexture.HeatMap())
+            {
+                var content = new RichBoxContent();
+                player.factionPixelTexture.HeatMapInfoHud(content);
+                menu.Refresh(content, player.gameControls.controllerPointer);
+            }
+            else
+            {
+                historyDisplay(player);
             }
         }
 
@@ -171,7 +171,7 @@ namespace VikingEngine.DSSWars.Interface
                 return;
             }
 
-            if (player.hud.detailLevel == HudDetailLevel.Minimal && 
+            if (!player.hud.maximizedHud && 
                 (obj == null || !selected))
             {
                 deleteMenu();

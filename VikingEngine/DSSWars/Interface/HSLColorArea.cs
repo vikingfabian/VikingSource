@@ -21,6 +21,8 @@ namespace VikingEngine.DSSWars.Interface
         Vector2 previewOffset;
         Graphics.Image preview, previewOutline;
 
+        public VectorRect area;
+
         public HSLColorArea(InputMap input, PaintFlagState state) 
         {
             Vector2 pos = state.paintArea.RightTop;
@@ -46,6 +48,9 @@ namespace VikingEngine.DSSWars.Interface
             previewOffset = new Vector2(Engine.Screen.SmallIconSize * 0.7f);
 
             updatePreview(false, Vector2.Zero);
+
+            area = hueArea;
+            area.SetBottom(darkArea.Bottom, true);
         }
 
         public void setColor(Color color)

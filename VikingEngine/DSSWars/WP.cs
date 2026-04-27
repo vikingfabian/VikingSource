@@ -17,6 +17,11 @@ namespace VikingEngine.DSSWars
         public static readonly Vector2 TileScaleV2 = new Vector2(TileDrawScale);
         static readonly Vector2 TileHalfScaleV2 = TileScaleV2 * PublicConstants.Half;
 
+        //public bool InBound(Vector3 position)
+        //{ 
+        //    return DssRef.world.unitBounds.in
+        //}
+
         public static Vector2 ToWorldPosXZ(IntVector2 tile)
         {
             return tile.Vec * TileScaleV2;
@@ -49,6 +54,12 @@ namespace VikingEngine.DSSWars
         public static IntVector2 ToSubTilePos_TopLeft(IntVector2 pos)
         {
             return new IntVector2(pos.X * WorldData.TileSubDivitions, pos.Y * WorldData.TileSubDivitions);
+        }
+
+        public static Rectangle2 ToSubTilePos(Rectangle2 area)
+        {
+            area *= WorldData.TileSubDivitions;
+            return area;
         }
 
         public static Vector3 SubtileToWorldPosXZ(IntVector2 subtilePos)

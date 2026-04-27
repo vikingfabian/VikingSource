@@ -298,7 +298,7 @@ namespace VikingEngine.Voxels
         {
             //menu.Visible = false;
             //Input.Mouse.CenterMouse = true;
-            Input.Mouse.Visible = false;
+            Input.Mouse.CenterLockAndHideAll();//Input.Mouse.Visible = false;
             Input.Mouse.Update();
             //Input.Mouse.Update();
         }

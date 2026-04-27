@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.DSSWars.Defence
 {
@@ -88,6 +89,13 @@ namespace VikingEngine.DSSWars.Defence
             return autoAssign && soldierGroupId == NoSoldiers;
         }
 
+        public bool AvailableForAutoAssign(City city, bool autoTurnOn)
+        {
+            autoAssign |= autoTurnOn;
+            checkSoldierAssignment(city);
+            return autoAssign && soldierGroupId == NoSoldiers;
+        }
+
         public Vector3 WorldPos()
         {
             var subPos = conv.IntToIntVector2(idAndPosition);
@@ -113,5 +121,31 @@ namespace VikingEngine.DSSWars.Defence
             autoAssign = bools.Get(1);
             tower = bools.Get(2);
         }
-    }
+
+        public static float WallDefenceChance(TerrainWallType wallType, out int soldierAttackDamageBonus)
+        {
+            soldierAttackDamageBonus = 3;
+
+            switch (wallType)
+            {
+                case Map.TerrainWallType.NUM_NONE:
+                    return 0;
+
+                case Map.TerrainWallType.Palisade:                    
+                    soldierAttackDamageBonus = 2; 
+                    return DssConst.GuardPostDefenceChance_Palisade;
+                
+                case Map.TerrainWallType.DirtWall:
+                case Map.TerrainWallType.DirtTower:
+                    return DssConst.GuardPostDefenceChance_Dirt;
+
+                case Map.TerrainWallType.WoodWall:
+                case Map.TerrainWallType.WoodTower:
+                    return DssConst.GuardPostDefenceChance_Wood;
+
+                default:
+                    return DssConst.GuardPostDefenceChance_Stone;
+            }
+        }
+}
 }

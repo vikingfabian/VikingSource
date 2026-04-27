@@ -25,6 +25,12 @@ namespace VikingEngine.DSSWars.XP
         public TimeInGameCountdown countdown;
         public int idAndPosition;
         public int que;
+
+        public void copyFrom(SchoolStatus template)
+        {
+            learnExperience = template.learnExperience;
+            toLevel = template.toLevel;
+        }
         public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write(idAndPosition);
@@ -43,7 +49,7 @@ namespace VikingEngine.DSSWars.XP
 
         public void defaulSetup()
         {
-            toLevel = ExperienceLevel.Expert_3;
+            toLevel = ExperienceLevel.Practitioner_2;
         }
 
         public string shortActiveString(City city)

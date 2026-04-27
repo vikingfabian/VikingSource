@@ -24,8 +24,7 @@ namespace VikingEngine.Engine
 
         public void GotFocus(GameState previousGameState)
         {
-            //if (previousGameState != null)
-                this.previousGameState = previousGameState;
+            this.previousGameState = previousGameState;
 
             if (Ref.draw != null)
             {
@@ -88,8 +87,6 @@ namespace VikingEngine.Engine
 
         virtual public void FirstUpdate()
         { }
-
-        
 
         virtual protected void createDrawManager()
         {
@@ -156,7 +153,7 @@ namespace VikingEngine.Engine
 
         virtual public void OnAppSuspend(bool fullExit)
         { }
-        //virtual public void onClosingApplication() { }
+
         virtual public void OnAppResume()
         { }
 
@@ -165,7 +162,6 @@ namespace VikingEngine.Engine
                               
         virtual public void OnResolutionChange()
         { }
-        
 
         virtual public void NetUpdate()
         { }
@@ -179,15 +175,7 @@ namespace VikingEngine.Engine
 
         public bool IsActiveGameState { get { return Ref.gamestate == this; } }
     }
-    //enum GameStateType
-    //{
-    //    LoadingContent,
-    //    PressStart,
-    //    MainMenu,
-    //    LoadingGame,
-    //    InGame,
-    //    Editor,
-    //    Other,
-    //}
+
+    
 
 }

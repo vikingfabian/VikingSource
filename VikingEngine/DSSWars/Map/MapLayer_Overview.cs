@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.Graphics;
 
@@ -11,6 +12,7 @@ namespace VikingEngine.DSSWars.Map
     {
         Timer.Basic waterAnimTimer = new Timer.Basic(3000, true);
         int waterFrame = 0;
+        //int waterEdgeFrame = 0;
         double waterMoveCurve = 0;
 
         protected Graphics.Mesh waterSurface, waterBottom;
@@ -46,8 +48,11 @@ namespace VikingEngine.DSSWars.Map
             const float SurfaceTrans = 0.8f;
             waterSurface.Opacity = SurfaceTrans;
 
-            int drawLayer = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.TerrainLayer;
-            waterSurface.AddToRender(drawLayer);
+            int drawLayer = detailLayer ? DrawGame.UnitDetailLayer : DrawGame.MidLayer;
+            //if (!detailLayer)
+            {
+                waterSurface.AddToRender(drawLayer);
+            }
             waterBottom.AddToRender(drawLayer);
             //waterSurface.Visible = true;
         }
@@ -71,6 +76,11 @@ namespace VikingEngine.DSSWars.Map
                     waterFrame = 0;
                 }
 
+                //if (++waterEdgeFrame >= DssRef.models.waterEdgeTextures.Length)
+                //{ 
+                //    waterEdgeFrame = 0;
+                //}
+
                 waterSurface.texture = WaterTex()[waterFrame];
             }
 
@@ -78,6 +88,11 @@ namespace VikingEngine.DSSWars.Map
             waterSurface.TextureSource.SourceF.X += Ref.DeltaGameTimeSec * -0.05f;
             waterSurface.TextureSource.SourceF.Y = (float)(Math.Sin(waterMoveCurve) * 0.1);
         }
+
+        //public Texture2D waterEdgeTex()
+        //{
+        //    return DssRef.models.waterEdgeTextures[waterEdgeFrame];
+        //}
 
         #region DRAW
 
@@ -136,7 +151,7 @@ namespace VikingEngine.DSSWars.Map
         public MapLayer_Overview(Map.MapLayer_Factions factionsMap)
         {
             this.factionsMap = factionsMap;
-            Ref.draw.CurrentRenderLayer = DrawGame.TerrainLayer;
+            Ref.draw.CurrentRenderLayer = DrawGame.MidLayer;
 
             createModel(generateTerrain());
 
@@ -275,7 +290,7 @@ namespace VikingEngine.DSSWars.Map
             heightMapModel?.DeleteMe();
             heightMapModel = new Graphics.GeneratedObjColor(new Graphics.PolygonsAndTrianglesColor(
                 polygons, null), LoadedTexture.SpriteSheet, false);
-            heightMapModel.AddToRender(DrawGame.TerrainLayer);
+            heightMapModel.AddToRender(DrawGame.MidLayer);
         }
 
 
@@ -320,7 +335,7 @@ namespace VikingEngine.DSSWars.Map
             {
                 DssRef.world.BordersUpdated = false;
                 borders?.SetNewModel();
-                factionsMap.syncTask();
+                //factionsMap.syncTask();
 
                 state_Processing_Sych_Complete = 2;
             }

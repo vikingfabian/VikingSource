@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using VikingEngine.DSSWars;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.ToGG.Commander.Players;
 
@@ -30,14 +31,16 @@ namespace VikingEngine.ToGG
                 winner.TurnsCount.ToString() + " turns", Color.White, ImageLayers.Lay3);
             turnText.Ypos += Engine.Screen.Height * 0.1f;
 
-            //if (winner is LocalPlayer)
-            //{
-            //    toggRef.storage.wonQuickPlay++;
-            //}
-            //else
-            //{
-            //    toggRef.storage.lostQuickPlay++;
-            //}
+            if (winner is LocalPlayer)
+            {
+                DssRef.stats.commander_won.addOne();
+                //toggRef.storage.wonQuickPlay++;
+            }
+            else
+            {
+                DssRef.stats.commander_lost.addOne();
+                //toggRef.storage.lostQuickPlay++;
+            }
             //toggRef.storage.saveLoad(true);
         }
 

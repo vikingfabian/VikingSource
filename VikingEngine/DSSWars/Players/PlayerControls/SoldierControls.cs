@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.LootFest.Players;
@@ -14,6 +15,12 @@ using static VikingEngine.PJ.Bagatelle.BagatellePlayState;
 
 namespace VikingEngine.DSSWars.Players.PlayerControls
 {
+    struct WallPosition
+    {
+        public IntVector2 Position;
+        public bool available;
+    }
+
     class SoldierControls
     {
         List<SoldierGroup> groups;
@@ -146,6 +153,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                             }
                         }
 
+                        List<WallPosition> nextWalls = null;
 
                         for (int i = 0; i < groups_sp.Count; ++i)
                         {
@@ -170,7 +178,93 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
 
                                 if (wall)
                                 {
-                                    if (EnterPostCommand.tryClaimPost(group, city, subTile))
+                                    if (i > 0)
+                                    {
+                                        if (nextWalls == null)
+                                        {
+                                            nextWalls = new List<WallPosition>(groups_sp.Count + 8);
+                                            int nextWallIx = 0;
+                                            int goalCount = groups_sp.Count - 1;
+                                            int available = 0;
+                                            findSourroundingWalls(subTile);
+
+                                            while (nextWallIx < nextWalls.Count && available < goalCount)
+                                            {
+                                                findSourroundingWalls(nextWalls[nextWallIx].Position);
+                                                nextWallIx++;
+                                            }
+
+                                            //clear out
+                                            for (int wallIx = nextWalls.Count - 1; wallIx >= 0; wallIx--)
+                                            {
+                                                if (!nextWalls[wallIx].available)
+                                                {
+                                                    nextWalls.RemoveAt(wallIx);
+                                                }
+                                            }
+
+                                            void findSourroundingWalls(IntVector2 center)
+                                            {
+                                                ForXYLoop loop = new ForXYLoop(Rectangle2.FromCenterTileAndRadius(center, 2));
+                                                while (loop.Next())
+                                                {
+                                                    if (loop.Position != center)
+                                                    {
+                                                        if (DssRef.world.subTileGrid.TryGet(loop.Position, out var tile))
+                                                        {
+                                                            if (tile.mainTerrain == Map.TerrainMainType.Wall &&
+                                                                !containsWall(loop.Position))
+                                                            {
+                                                                if (group.army.TryGetTarget(out var tArmy))
+                                                                {
+                                                                    var city = tArmy.GetCity();
+
+                                                                    if (DssRef.world.tileGrid.Get(WP.SubtileToTilePos(loop.Position)).CityIndex == city.myIndex)
+                                                                    {
+                                                                        WallPosition wallPosition = new WallPosition();
+                                                                        wallPosition.Position = loop.Position;
+                                                                        if (city.tryGetDefence(loop.Position, out var defence))
+                                                                        {
+                                                                            if (defence.soldierGroupId == DefenceStatus.NoSoldiers)
+                                                                            {
+                                                                                wallPosition.available = true;
+                                                                                available++;
+                                                                            }
+
+                                                                            nextWalls.Add(wallPosition);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            bool containsWall(IntVector2 pos)
+                                            {
+                                                foreach (var wall in nextWalls)
+                                                {
+                                                    if (wall.Position == pos)
+                                                    { 
+                                                        return true;
+                                                    }
+                                                }
+
+                                                return false;
+                                            }
+                                        }
+
+                                        if (nextWalls.Count > 0)
+                                        {
+                                            var enterCommand = new EnterPostCommand(group, arraylib.PullFirstMember(nextWalls).Position, true);
+                                        }
+                                        else
+                                        {
+                                            new MoveCommand(group, VectorExt.V2toV3XZ(place.currentPlacement), goalRot.radians, false);
+                                        }
+                                    }
+                                    else if (EnterPostCommand.tryClaimPost(group, city, subTile))
                                     {
                                         var enterCommand = new EnterPostCommand(group, subTile, true);
                                     }

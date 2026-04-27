@@ -5,6 +5,7 @@ using System.Text;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameObject.DetailObj.Data;
+using VikingEngine.DSSWars.Resource;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -44,27 +45,30 @@ namespace VikingEngine.DSSWars.GameObject
 
         protected int startMultiAttack(bool fullUpdate, AbsDetailUnit target, bool mainAttack, int attackCount, bool local)
         {
-            int hitCount=0;
+            int hitCount = 0;
 
-            if (attackTarget.IsSingleTarget())
+            if (target != null)
             {
-                for (int i = 0; i < attackCount; i++)
+                if (target.IsSingleTarget())
                 {
-                    startAttack(fullUpdate, target, mainAttack, local);
-                }
-
-                hitCount = attackCount;
-            }
-            else
-            {
-                attackCount += 1;
-                for (int i = 0; i < attackCount; i++)
-                {
-                    var groupTarget = target.group.soldiers.GetRandomUnsafe(Ref.peRnd);
-                    if (groupTarget != null)
+                    for (int i = 0; i < attackCount; i++)
                     {
-                        startAttack(fullUpdate, groupTarget, mainAttack, local);
-                        ++hitCount;
+                        startAttack(fullUpdate, target, mainAttack, local);
+                    }
+
+                    hitCount = attackCount;
+                }
+                else
+                {
+                    attackCount += 1;
+                    for (int i = 0; i < attackCount; i++)
+                    {
+                        var groupTarget = target.group.soldiers?.GetRandomUnsafe(Ref.peRnd);
+                        if (groupTarget != null)
+                        {
+                            startAttack(fullUpdate, groupTarget, mainAttack, local);
+                            ++hitCount;
+                        }
                     }
                 }
             }
@@ -76,6 +80,10 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (target != null)
             {
+                //if (target.GetAbsArmy().debugTagged)
+                //{
+                //    lib.DoNothing();
+                //}
                 attackCooldownTime.MilliSeconds = soldierData.attackTimePlusCoolDown;
                 prevAttackTime = attackCooldownTime.MilliSeconds;
                 attackFrameTime.MilliSeconds = Profile().attackFrameTime;
@@ -102,10 +110,15 @@ namespace VikingEngine.DSSWars.GameObject
                     damage = soldierData.attackDamage;
 
                     if (group != null &&
-                        group.soldierConscript.conscript.specialization == SpecializationType.AntiCavalry && 
-                        target.DetailUnitType() == UnitType.ConscriptCavalry)
+                        group.soldierConscript.conscript.specialization == SpecializationType.AntiCavalry)
                     {
-                        damage = MathExt.MultiplyInt(DssConst.AntiCavalryBonusMultiply, damage);
+                        switch (target.DetailUnitType())
+                        {
+                            case UnitBuildType.ConscriptCavalry:
+                            case UnitBuildType.ConscriptBalkong:
+                                damage = MathExt.MultiplyInt(DssConst.AntiCavalryBonusMultiply, damage);
+                                break;
+                        }
                     }
                 }
                 else
@@ -133,7 +146,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 case Resource.ItemResourceType.HandSpear:
                                 case Resource.ItemResourceType.Pike:
                                 case Resource.ItemResourceType.SharpStick:
-                                case Resource.ItemResourceType.KnightsLance:
+                                //case Resource.ItemResourceType.KnightsLance:
                                     SoundLib.spear_whoosh.Play(position);
 
                                     break;
@@ -178,6 +191,31 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         Projectile.ProjectileAttack(fullUpdate, this, soldierData.secondaryAttack, target, damage, blockReduce, soldierData.attackSplashCount);
                     }
+                }
+
+                var f = this.GetFaction();
+                if (f != null && f.player.IsLocalPlayer())
+                {
+                    if (group.soldierConscript.conscript.isKnight())
+                    {
+                        DssRef.achieve.UnlockAchievement(AchievementIndex.rear_flanking);
+                    }
+                    //switch (group.soldierConscript.conscript.weapon)
+                    //{
+                    //    case Resource.ItemResourceType.KnightsLance:
+                    //        if (ItemPropertyColl.Get(target.group.soldierConscript.conscript.weapon).Filter_IsSiegeWeapon)
+                    //        { 
+                    //            DssRef.achieve.UnlockAchievement(AchievementIndex.rear_flanking);
+                    //        }                           
+                    //        break;
+
+                        //    //case ItemResourceType.SiegeCannonBronze:
+                        //    //    if (target.group.InGuardPost())
+                        //    //    {
+                        //    //        DssRef.achieve.UnlockAchievement(AchievementIndex.ottoman);
+                        //    //    }
+                        //    //    break;
+                        //}
                 }
             }
         }

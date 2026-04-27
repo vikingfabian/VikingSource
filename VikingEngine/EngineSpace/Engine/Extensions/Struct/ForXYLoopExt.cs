@@ -23,6 +23,19 @@ namespace VikingEngine
             }
         }
 
+        public void addDir4(IntVector2 center)
+        {
+            foreach (var dir in IntVector2.Dir4Array)
+            {
+                positions.Add(center + dir);
+            }
+        }
+
+        public void add(IntVector2 pos)
+        {
+            positions.Add(pos);
+        }
+
         public bool Next()
         {
             if (positions.Count == 0) return false;
@@ -30,6 +43,5 @@ namespace VikingEngine
             Position = arraylib.RandomListMemberPop(positions);
             return true;
         }
-
     }
 }

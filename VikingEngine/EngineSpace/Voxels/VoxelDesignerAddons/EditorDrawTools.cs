@@ -45,6 +45,11 @@ namespace VikingEngine.Voxels
                 }
             }
 
+            //if (inputMap.draw.IsDown)
+            //{
+            //    lib.DoNothing();
+            //}
+
             if (InputLib.ChangedEvent(inputMap.draw, out keydown))
             {
                 drawKeyDown(keydown, drawAction);

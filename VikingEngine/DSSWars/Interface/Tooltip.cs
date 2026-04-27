@@ -5,20 +5,22 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Text;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Delivery;
-using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Orders;
+using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.GO.NPC;
 using VikingEngine.PJ.CarBall;
+using VikingEngine.DSSWars.Defence;
+using VikingEngine.DSSWars.Map;
 
 namespace VikingEngine.DSSWars.Interface
 {
@@ -81,7 +83,36 @@ namespace VikingEngine.DSSWars.Interface
             }
             else
             {
-                if (!player.gameControls.diplomacy.hasSelection())
+                //Relation arrow
+                if (player.gameControls.diplomacy.relationArrowHover >= 0)
+                {
+                    RichBoxContent content = new RichBoxContent();
+
+                    //input(map.mouseSelect.Icon, DssRef.lang.InputActionName_ControllerSelect);
+                    content.newLine();
+                    content.Add(new RbImage(player.gameControls.input.mouseSelect.Icon));
+                    content.space();
+                    content.Add(new RbText(DssRef.lang.Tutorial_SelectInput, HudLib.TitleColor_Action));
+
+
+                    content.newLine();
+                    content.h2(DssRef.lang.Diplomacy_RelationWithOthers, HudLib.TitleColor_Label);
+                    content.newLine();
+
+                    Faction thirdPartFaction = DssRef.world.faction(player.gameControls.diplomacy.relationArrowHover);
+                    var relation = DssRef.world.diplomacy.GetRelation(player.gameControls.diplomacy.mainSelection(out _), thirdPartFaction).Relation;
+
+                    content.Add(thirdPartFaction.FlagTextureToHud());
+                    content.hspace();
+                    content.Add(new RbText(thirdPartFaction.PlayerName));
+
+                    content.Add(new RbText(": "));
+                    content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
+                    content.Add(new RbText(Diplomacy.RelationString(relation)));
+
+                    create(player, content, false);
+                }
+                else if (!player.gameControls.diplomacy.hasSelection())
                 {
                     images.DeleteAll();
                 }
@@ -93,27 +124,27 @@ namespace VikingEngine.DSSWars.Interface
         {
             if (images.HasMembers)
             {
-                if (player.gameControls.input.inputSource.IsController)
+                //if (player.gameControls.input.inputSource.IsXnaController)
+                //{
+                //    if (!images.HasOffset())
+                //    {
+                //        if (menuToolTip)
+                //        {
+                //            //images.SetOffset(new Vector2(
+                //            //    player.hud.displays.headDisplay.area.Right + 10,
+                //            //    player.hud.displays.controllerSelectionPos().Y)
+                //            //    );
+                //        }
+                //        else
+                //        {
+                //            images.SetOffset(player.playerData.view.DrawAreaF.Center + Engine.Screen.SmallIconSizeV2);
+                //        }
+                //    }
+                //}
+                //else
                 {
-                    if (!images.HasOffset())
-                    {
-                        if (menuToolTip)
-                        {
-                            //images.SetOffset(new Vector2(
-                            //    player.hud.displays.headDisplay.area.Right + 10,
-                            //    player.hud.displays.controllerSelectionPos().Y)
-                            //    );
-                        }
-                        else
-                        {
-                            images.SetOffset(player.playerData.view.DrawAreaF.Center + Engine.Screen.SmallIconSizeV2);
-                        }
-                    }
-                }
-                else
-                {
-                    Vector2 offset = Input.Mouse.Position;// + Engine.Screen.SmallIconSizeV2;
-                    offset.X += Engine.Screen.SmallIconSize;
+                    Vector2 offset = player.gameControls.input.mouse.Position;// + Engine.Screen.SmallIconSizeV2;
+                    offset.X += Engine.Screen.IconSize;
                     if (aboveMouse)
                     {
                         offset.Y -= 5 + size.Y;
@@ -128,7 +159,7 @@ namespace VikingEngine.DSSWars.Interface
 
                     if (maxPos.X > Engine.Screen.SafeArea.Right)
                     { 
-                        offset.X = Engine.Screen.SafeArea.Right - (Engine.Screen.SmallIconSize + size.X);
+                        offset.X = player.gameControls.input.mouse.Position.X - (Engine.Screen.IconSize + size.X);
                     }
 
                     if (offset.Y < Engine.Screen.SafeArea.Y)
@@ -179,9 +210,10 @@ namespace VikingEngine.DSSWars.Interface
                 bool avaialableAction = true;
                 switch (subTile.selectTileResult)
                 {
+
                     case Players.SelectTileResult.Build:
                         var buildOpt = BuildLib.BuildOptions[(int)player.gameControls.build.placeBuildingType];
-                        title = new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Build_PlaceBuilding, buildOpt.Label()));
+                        title = new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Build_PlaceBuilding, buildOpt.Label()));
                         content.Add(title);
 
                         cancelInput();
@@ -192,11 +224,11 @@ namespace VikingEngine.DSSWars.Interface
                         bp.toMenu(content, subTile.city);
 
                         var mayBuild = player.gameControls.map.hover.subTile.mayBuild(player, out bool upgrade);
-                        
+                         mayBuild = player.gameControls.build.adjustMayBuild(mayBuild);
                         switch (mayBuild)
-                        { 
+                        {
                             case Players.MayBuildResult.Yes_ChangeCity:
-                                content.text(DssRef.lang.BuildHud_OutsideCity).overrideColor = HudLib.InfoYellow_Light; 
+                                content.text(DssRef.lang.BuildHud_OutsideCity).overrideColor = HudLib.InfoYellow_Light;
                                 break;
 
                             case Players.MayBuildResult.No_OutsideRegion:
@@ -240,13 +272,27 @@ namespace VikingEngine.DSSWars.Interface
                         break;
 
                     case Players.SelectTileResult.Wall:
-                        title = new RbText("Guard post");
+                        title = new RbText(DssRef.lang.Defence_GuardPost);
                         content.Add(title);
+
+                        if (player.gameControls.map.selection.obj != null &&
+                            player.gameControls.map.selection.obj.IsGuardGroup())
+                        {
+                            content.newLine();
+                            content.Add(new RbBeginTitle(2));
+                            content.Add(new RbImage(player.gameControls.input.mouseOrder.Icon));
+                            content.space(0.5f);
+                            content.Add(new RbText(DssRef.lang.Tutorial_MoveInput, HudLib.TitleColor_Action));
+                        }
+
+                        content.Add(new RbSeperationLine());
+                        DefenceMenu.WallDefenceToHud(content, (TerrainWallType)subTile.subTile.subTerrain, false);
+
                         break;
 
                     case Players.SelectTileResult.Postal:
                         {
-                            title = new RbText(DssRef.lang.BuildingType_Postal);                            
+                            title = new RbText(DssRef.lang.BuildingType_Postal);
                             content.Add(title);
 
                             content.newLine();
@@ -259,6 +305,18 @@ namespace VikingEngine.DSSWars.Interface
                     case Players.SelectTileResult.Recruitment:
                         {
                             title = new RbText(DssRef.lang.BuildingType_Recruitment);
+                            content.Add(title);
+
+                            content.newLine();
+                            if (subTile.city.GetDelivery(subTile.subTilePos, out DeliveryStatus status))
+                            {
+                                status.tooltip(player, subTile.city, content);
+                            }
+                        }
+                        break;
+                    case Players.SelectTileResult.GoldDeliver:
+                        {
+                            title = new RbText(DssRef.lang.BuildingType_GoldDelivery);
                             content.Add(title);
 
                             content.newLine();
@@ -286,6 +344,11 @@ namespace VikingEngine.DSSWars.Interface
                         content.Add(title);
                         break;
 
+                    case SelectTileResult.CessPit:
+                        title = new RbText(DssRef.lang.BuildingType_Cesspit);
+                        content.Add(title);
+                        break;
+
                     case Players.SelectTileResult.Conscript:
                         {
                             title = new RbText(DssRef.lang.Conscription_Title);
@@ -299,15 +362,97 @@ namespace VikingEngine.DSSWars.Interface
                         }
                         break;
                 }
-                title.overrideColor = avaialableAction ? HudLib.TitleColor_Action: HudLib.NotAvailableColor;
+                title.overrideColor = avaialableAction ? HudLib.TitleColor_Action : HudLib.NotAvailableColor;
 
                 content.Add(new RbSeperationLine());
                 content.newParagraph();
-             
+
             }
+            //else
+            //{
+            //    lib.DoNothing();
+            //}
             content.h2(DssRef.lang.TerrainType, HudLib.TitleColor_Label);
-            content.text(subTile.subTile.TypeToString());
-            
+            content.newLine();
+            IconName.Terrain(subTile.subTile.mainTerrain, subTile.subTile.subTerrain, out SpriteName tileIcon, out string tileName);
+            if (tileIcon != SpriteName.NO_IMAGE)
+            {
+                content.Add(new RbImage(tileIcon));
+                content.hspace();
+            }
+            content.Add(new RbText(tileName));
+
+            if (BuildLib.BuildTypeFromTerrain(subTile.subTile.mainTerrain, subTile.subTile.subTerrain) != BuildAndExpandType.NUM_NONE)
+            {
+                content.newLine();
+                player.gameControls.input.Build.ToRichContent(content);
+                content.hspace();
+                content.Add(new RbImage(SpriteName.WarsConstructBuildingIcon));
+                content.hspace();
+                content.Add(new RbText(DssRef.lang.Hud_Copy));
+                HudLib.BulletSeperationPoint(content);
+                content.Add(new RbText(DssRef.lang.Building_BuildAction));
+            }
+
+            if (subTile.subTile.mainTerrain == TerrainMainType.Building)
+            {
+                switch ((TerrainBuildingType)subTile.subTile.subTerrain)
+                {
+                    case TerrainBuildingType.BoarHabitat:
+                    case TerrainBuildingType.FowlHabitat:
+                    case TerrainBuildingType.OxHabitat:
+                    case TerrainBuildingType.PonyHabitat:
+                    case TerrainBuildingType.WolfHabitat:
+                    case TerrainBuildingType.CatHabitat:
+                    case TerrainBuildingType.ElephantHabitat:
+                        content.Add(new RbSeperationLine());
+                        content.h2(DssRef.lang.Tutorial_ToCapture, HudLib.TitleColor_Head2);
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(string.Format(DssRef.lang.Tutorial_PlaceBuildOrder, DssRef.lang.BuildingType_TrapperHut)));
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.BuildHud_AreaRadius, DssConst.TrapperHutRadius)));
+
+                        content.newLine();
+                        HudLib.BulletPoint(content);
+                        content.Add(new RbText(TextLib.LabelColon( DssRef.lang.Work_OrderPrioTitle)));
+                        content.space();
+                        content.Add(new RbImage(SpriteName.WarsWorkMove));
+                        content.hspace();
+                        content.Add(new RbText(DssRef.lang.Work_Move));
+                        break;
+
+                    case TerrainBuildingType.Smoker:
+                        content.newParagraph();
+                        content.Add(new RbSeperationLine());
+                        Resource.CraftResourceLib.ConservedFood_Smoked.toMenu(content, subTile.city);
+                        break;
+
+                    case TerrainBuildingType.Dryer:
+                        content.newParagraph();
+                        content.Add(new RbSeperationLine());
+                        Resource.CraftResourceLib.ConservedFood_Dried.toMenu(content, subTile.city);
+                        break;
+
+                    case TerrainBuildingType.Work_CoalPit:
+                        content.newParagraph();
+                        content.Add(new RbSeperationLine());
+                        Resource.CraftResourceLib.Charcoal.toMenu(content, subTile.city);
+                        break;
+
+                    case TerrainBuildingType.Brewery:
+                        content.newParagraph();
+                        content.Add(new RbSeperationLine());
+                        Resource.CraftResourceLib.Beer.toMenu(content, subTile.city);
+                        break;
+
+                }
+            }
+
+            //content.text(subTile.subTile.TypeToString());
+
             create(player, content, false);
 
             void cancelInput()
@@ -327,48 +472,30 @@ namespace VikingEngine.DSSWars.Interface
             if (StartupSettings.BlockTooltip) return;
 
             RichBoxContent content = new RichBoxContent();
+            var faction = obj.GetFaction();
+            bool attackTarget = false;
 
-            bool attackTarget = player.gameControls.army != null &&
-                obj.GetFaction() != player.faction;
-
-            if (attackTarget)
+            if (faction != null)
             {
-                content.h2(DssRef.lang.ArmyOption_Attack).overrideColor = HudLib.TitleColor_Attack;
-                content.newLine();
+                attackTarget = player.gameControls.army != null &&
+                    faction != player.faction;
+
+                if (attackTarget)
+                {
+                    content.h2(DssRef.lang.ArmyOption_Attack).overrideColor = HudLib.TitleColor_Attack;
+                    content.newLine();
+                }
             }
 
             obj.toTooltip(new ObjectHudArgs(content, player, false));
-            //string name = obj.Name(out _);
-            //if (name != null)
-            //{
-            //    content.text(name).overrideColor = HudLib.TitleColor_Name;
-            //}
-            //content.h2(obj.TypeName()).overrideColor = HudLib.TitleColor_TypeName;
-
-            //if (obj.GetFaction() != player.faction)
-            //{
-            //    var relation = DssRef.diplomacy.GetRelationType(player.faction, obj.GetFaction());
-
-            //    content.newLine();
-            //    content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
-            //    content.space(0.5f);
-            //    content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
-            //    content.space(0.5f);
-            //    content.Add(new RbText(obj.GetFaction().PlayerName, HudLib.TitleColor_Name));
-            //    //content.newLine();
-                
-            //    //content.Add(new RbText(Diplomacy.RelationString(relation), HudLib.TextColor_Relation));
-            //    content.newLine();
-                
-            //}
-
+            
             if (attackTarget)
             {
-                if (!DssRef.diplomacy.InWar(player.faction, obj.GetFaction()))
+                if (!DssRef.world.diplomacy.GetRelation(player.faction, obj.GetFaction()).InWar())
                 {
                     content.Add(new RbSeperationLine());
 
-                    RelationType rel = DssRef.diplomacy.GetRelationType(player.faction, obj.GetFaction());
+                    RelationType rel = DssRef.world.diplomacy.GetRelation(player.faction, obj.GetFaction()).Relation;
                     
                     content.h1(DssRef.lang.Hud_WardeclarationTitle);
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Cost);
@@ -383,11 +510,13 @@ namespace VikingEngine.DSSWars.Interface
 
                 var attacker = player.gameControls.map.selection.obj as Army;
                 var defender = obj as AbsMapObject;
-                if (attacker != null && defender!= null)
+                
+                if (attacker != null && 
+                    defender != null)
                 {
                     content.Add(new RbBeginTitle(2));
                     content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-                    content.Add(new RbText(string.Format(DssRef.lang.Hud_StrengthRating, string.Empty)));//"Strength ratings:"));
+                    content.Add(new RbText(DssRef.lang.Hud_StrengthRating));//"Strength ratings:"));
                     
                     content.newLine();
                     content.Add(new RbTexture(player.flagTexture, 1f, 0, 0.2f));
@@ -396,92 +525,9 @@ namespace VikingEngine.DSSWars.Interface
                     content.newLine();
                     content.text(DssRef.lang.Hud_Versus);
                     content.newLine();
-                    content.Add(new RbTexture(obj.GetFaction().player.flagTexture, 1f, 0, 0.2f));
+                    content.Add(new RbTexture(faction.player.flagTexture, 1f, 0, 0.2f));
                     content.Add(new RbText(": " + TextLib.OneDecimal(defender.strengthValue)));
                     content.newLine();
-                }
-            }
-            else
-            {
-                //switch (obj.gameobjectType())
-                //{
-                //    //case GameObjectType.City:
-                    //    {   
-                    //        var mapObj = obj as AbsMapObject;
-                    //        if (mapObj != null)
-                    //        {
-                    //            const int LowAmount = 10;
-                    //            var city = mapObj.GetCity();
-                    //            content.newLine();
-                    //            HudLib.CityResource(content, city, ItemResourceType.Food_G);
-
-                    //            if (city.res_food.amount <= LowAmount)
-                    //            {
-                    //                if (city.res_water.amount <= 2)
-                    //                {
-                    //                    HudLib.CityResource(content, city, ItemResourceType.Water_G);
-                    //                }
-                    //                if (city.res_rawFood.amount <= LowAmount)
-                    //                {
-                    //                    HudLib.CityResource(content, city, ItemResourceType.RawFood_Group);
-                    //                }
-                    //                if (city.res_fuel.amount <= LowAmount)
-                    //                {
-                    //                    HudLib.CityResource(content, city, ItemResourceType.Fuel_G);
-                    //                }
-                    //            }
-
-
-                    //            warStrength(mapObj);
-                    //        }
-                    //    }
-                    //    break;
-
-                    //case GameObjectType.Army:
-                    //    {
-                    //        var mapObj = obj as AbsMapObject;
-                    //        if (mapObj != null)
-                    //        {
-                                
-                    //            var army = obj.GetArmy();
-                    //            if (army.food < army.foodUpkeep * 2)
-                    //            {
-                    //                HudLib.ItemCount(content, SpriteName.WarsResource_Food, DssRef.lang.Resource_TypeName_Food, TextLib.OneDecimal(army.food));
-                    //            }
-                    //            warStrength(mapObj);
-                                
-                    //            content.newLine();
-                    //            content.Add(new RbImage(SpriteName.WarsGroupIcon));
-                    //            content.space(1);
-
-                                
-                    //            var typeCounts = army.Status().getTypeCounts_Sorted(army.faction);
-
-                    //            foreach (var kv in typeCounts)
-                    //            {
-                    //                content.Add(new RbText(kv.Value.ToString()));
-                    //                content.Add(new RbImage(AllUnits.UnitFilterIcon(kv.Key)));
-                    //                content.space(2);
-                    //            }
-
-                    //        }
-                    //    }
-                    //    break;
-
-                    //case GameObjectType.ObjectCollection:
-                    //    obj.GetMapCollection().Tooltip(content);
-                    //    break;
-
-                    //case GameObjectType.Worker:
-                    //    obj.GetWorker().toolTip(content);
-                    //    break;
-                //}
-
-                void warStrength(AbsMapObject mapObj)
-                {
-                    content.newLine();
-                    content.Add(new RbImage(SpriteName.WarsStrengthIcon));
-                    content.Add(new RbText(TextLib.OneDecimal(mapObj.strengthValue)));
                 }
             }
             

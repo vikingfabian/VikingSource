@@ -45,12 +45,51 @@ namespace VikingEngine.DSSWars.GameState
             //layout.End();
 
             menu.Refresh(content);
+
+            DssRef.stats.pickLanguageStart.addOne();
         }
 
         void selectLanguegeLink(LanguageType language)
         {
+            switch (language)
+            {
+                case LanguageType.English:
+                    DssRef.stats.language_english.addOne();
+                    break;
+                case LanguageType.Japanese:
+                    DssRef.stats.language_japanese.addOne();
+                    break;
+                case LanguageType.Russian:
+                    DssRef.stats.language_russian.addOne();
+                    break;
+                case LanguageType.Spanish:
+                    DssRef.stats.language_spanish.addOne();
+                    break;
+                case LanguageType.German:
+                    DssRef.stats.language_german.addOne();
+                    break;
+                case LanguageType.French:
+                    DssRef.stats.language_french.addOne();
+                    break;
+                case LanguageType.Turkish:
+                    DssRef.stats.language_turkish.addOne();
+                    break;
+                case LanguageType.Portuguese:
+                    DssRef.stats.language_brazilian_portuguese.addOne();
+                    break;
+                case LanguageType.Italian:
+                    DssRef.stats.language_italian.addOne();
+                    break;
+                case LanguageType.Korean:
+                    DssRef.stats.language_korean.addOne();
+                    break;
+                case LanguageType.Chinese:
+                    DssRef.stats.language_simplified_chinese.addOne();
+                    break;
+            }
+
             Ref.gamesett.language = language;
-            Ref.gamesett.fullscreenProperty(null, true, true);
+            Ref.gamesett.SetDisplayMode(WindowDisplayMode.BorderlessFullscreen);//fullscreenProperty(null, true, true);
             new ChangeLanguageRefresh();
             
         }

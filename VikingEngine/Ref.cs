@@ -55,13 +55,14 @@ namespace VikingEngine
             get { return steam.P2PManager; }
         }
 #endif
-
+        //public static long UpdateCount = 0;
         public static float DeltaTimeMs;
         public static float TargetDeltaTimeMs;
+        public static float TargetDeltaTimeSec;
         public static float DeltaTimeSec;
         public static float TotalTimeSec, PrevTotalTimeSec;
         public static float TotalGameTimeSec, PrevTotalGameTimeSec;
-        public static int TotalFrameCount = 0;
+        public static long TotalFrameCount = 0;
 
         
         public static float TargetGameTimeSpeed = 1f;
@@ -92,8 +93,14 @@ namespace VikingEngine
         /// <summary>How many times faster the update is than 30fps</summary>
         public static int UpdateTimes30FPS;
 
+        /// <summary>
+        /// For example 30fps is = 0.5
+        /// </summary>
+        public static float UpdateTimes60FPS;
+
+
         /// <summary>For 60fps, acceleration and other processes sensitive to change in FPS</summary>
-        public static bool TimePassed16ms = false;
+        //public static bool TimePassed16ms = false;
 
         /// <summary>For 60fps or more, how many times * 60fps game runs</summary>
         public static int GameTimePassed16ms = 0;

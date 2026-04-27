@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using VikingEngine.Voxels;
 
 namespace VikingEngine.DataStream
 {
@@ -188,7 +189,7 @@ namespace VikingEngine.DataStream
         
         public void CheckFileLength()
         {
-            const int MaxFileLength = 40;
+            const int MaxFileLength = 250;
             if (FileName.Length + 4 > MaxFileLength)
                 throw new Exception("To long file name: " + this.ToString());
         }
@@ -217,6 +218,11 @@ namespace VikingEngine.DataStream
             }
 
             return fileName;
+        }
+
+        public string searchPattern()
+        {
+            return "*" + FileEnd;
         }
     }
     

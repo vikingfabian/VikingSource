@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DebugExtensions;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.LootFest.GO.Characters.Monsters;
@@ -196,6 +196,11 @@ namespace VikingEngine.DSSWars.Map
                         tasks.Clear();
                     }
 
+                    //foreach (var city in world.cities)
+                    //{ 
+                    //    city.cityTileArea = city.buildArea.max
+                    //}
+
 
                     Rectangle2 cityArea(int part, int divitions, bool insertEdges)
                     {
@@ -316,10 +321,12 @@ namespace VikingEngine.DSSWars.Map
 
         void bindTiles(WorldData world, Rectangle2 area)
         {
+            
+
             //End by binding tiles to cities
             //inflenceMap.LoopBegin();
             ForXYLoop loop = new ForXYLoop(area);
-            Debug.Log("bindTiles " + area.ToString());
+            //Debug.Log("bindTiles " + area.ToString());
             while (loop.Next())
             {
                 var city = inflenceMap.Get(loop.Position).city;
@@ -332,11 +339,22 @@ namespace VikingEngine.DSSWars.Map
                 tile.CityIndex = city.myIndex;
                 world.tileGrid.Set(loop.Position, tile);
 
-                var r = loop.Position.SideLength(city.tilePos);
-                if (city.cityTileRadius < r)
+                //var r = loop.Position.SideLength(city.tilePos);
+
+                lock (city)
                 {
-                    city.cityTileRadius = r;
+                   city.cityTileArea.includeTile(loop.Position);
                 }
+                
+                //if (city.cityTileArea.size.X == 0)
+                //{
+                //    city.cityTileArea = Rectangle2.FromCenterTileAndRadius(city.tilePos, 3);
+                //}
+                //city.buildArea.Next(ref loop.Position);//cityTileArea.includeTile(loop.Position);
+                //if (city.cityTileRadius < r)
+                //{
+                //    city.cityTileRadius = r;
+                //}
             }
         }
 

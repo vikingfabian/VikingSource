@@ -18,7 +18,8 @@ namespace VikingEngine.DSSWars.Work
         public static void Init()
         {
             
-            WorkToXPTable = new byte[(int)WorkExperienceType.NUM];
+            WorkToXPTable = new byte[(int)WorkExperienceType.NUM_NONE];
+            //WorkToXPTable[(int)WorkExperienceType.NUM_NONE] = byte.MaxValue;
             WorkToXPTable[(int)WorkExperienceType.Farm] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.AnimalCare] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.HouseBuilding] = (byte)(DssConst.DefaultWorkXpGain * 2);
@@ -28,16 +29,30 @@ namespace VikingEngine.DSSWars.Work
             WorkToXPTable[(int)WorkExperienceType.Transport] = 2;
             WorkToXPTable[(int)WorkExperienceType.Cook] = 2;
             WorkToXPTable[(int)WorkExperienceType.Fletcher] = DssConst.DefaultWorkXpGain;
+            WorkToXPTable[(int)WorkExperienceType.Smelting] = DssConst.DefaultWorkXpGain;
+            WorkToXPTable[(int)WorkExperienceType.CastMetal] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.CraftMetal] = DssConst.DefaultWorkXpGain;
             WorkToXPTable[(int)WorkExperienceType.CraftArmor] = DssConst.DefaultWorkXpGain;
-            WorkToXPTable[(int)WorkExperienceType.CraftWeapon] = DssConst.DefaultWorkXpGain;
-            WorkToXPTable[(int)WorkExperienceType.CraftFuel] = 1;
+            //WorkToXPTable[(int)WorkExperienceType.CraftWeapon] = DssConst.DefaultWorkXpGain;
+            WorkToXPTable[(int)WorkExperienceType.CraftFuel] = 2;
+            WorkToXPTable[(int)WorkExperienceType.Chemistry] = DssConst.DefaultWorkXpGain;
+
+
+#if DEBUG
+            foreach (var xp in WorkToXPTable)
+            {
+                if (xp == 0)
+                {
+                    throw new Exception();
+                }
+            }
+#endif
         }
 
         public static WorkExperienceType WorkToExperienceType(WorkType work, int workSubType, byte bonus, IntVector2 subTileEnd, City city, 
             out ExperienceLevel requiredLvl, out int requiredXp, out int maxXp)
         {
-            WorkExperienceType gainXp = WorkExperienceType.NONE;
+            WorkExperienceType gainXpType = WorkExperienceType.NUM_NONE;
             maxXp = int.MaxValue;
             requiredXp = 0;
             requiredLvl = ExperienceLevel.Beginner_1;
@@ -53,24 +68,27 @@ namespace VikingEngine.DSSWars.Work
                             case TerrainSubFoilType.TreeSoft:
                             case TerrainSubFoilType.TreeHard:
                             case TerrainSubFoilType.DryWood:
-                                gainXp = WorkExperienceType.WoodWork;
+                                gainXpType = WorkExperienceType.WoodWork;
                                 break;
 
+                            case TerrainSubFoilType.TreeApple:
+                            case TerrainSubFoilType.TreeBanana:
                             case TerrainSubFoilType.WheatFarm:
                             case TerrainSubFoilType.LinenFarm:
                             case TerrainSubFoilType.RapeSeedFarm:
                             case TerrainSubFoilType.HempFarm:
-                                gainXp = WorkExperienceType.Farm;
+                                gainXpType = WorkExperienceType.Farm;
                                 break;
 
 
                             case TerrainSubFoilType.StoneBlock:
                             case TerrainSubFoilType.Stones:
-                                gainXp = WorkExperienceType.StoneCutter;
+                            case TerrainSubFoilType.ClayPit:
+                                gainXpType = WorkExperienceType.StoneCutter;
                                 break;
 
                             case TerrainSubFoilType.BogIron:
-                                gainXp = WorkExperienceType.Mining;
+                                gainXpType = WorkExperienceType.Mining;
                                 break;
 
                             
@@ -83,39 +101,39 @@ namespace VikingEngine.DSSWars.Work
                 //    break;
 
                 case WorkType.Plant:
-                    gainXp = WorkExperienceType.Farm;
+                    gainXpType = WorkExperienceType.Farm;
                     break;
 
                 case WorkType.PickUpProduce:
-                    gainXp = WorkExperienceType.AnimalCare;
+                    gainXpType = WorkExperienceType.AnimalCare;
                     break;
 
                 case WorkType.DropOff:
                 case WorkType.PickUpResource:
-                    gainXp = WorkExperienceType.Transport;
+                    gainXpType = WorkExperienceType.Transport;
                     break;
 
                 case WorkType.Mine:
-                    gainXp = WorkExperienceType.Mining;
+                    gainXpType = WorkExperienceType.Mining;
                     break;
 
                 case WorkType.Craft:
                     ItemResourceType item = (ItemResourceType)workSubType;
                     ItemPropertyColl.Blueprint(item, out CraftBlueprint bp1, out var bp2);
-                    gainXp = bp1.experienceType;
+                    gainXpType = bp1.experienceType;
                     requiredLvl = bp1.levelRequirement;
                     requiredXp = DssConst.WorkXpToLevel * (int)requiredLvl;
                     break;
 
                 case WorkType.Build:
                     var build = BuildLib.BuildOptions[workSubType];
-                    gainXp = build.experienceType();
+                    gainXpType = build.experienceType();
                     requiredLvl = build.blueprint.levelRequirement;
                     requiredXp = DssConst.WorkXpToLevel * (int)requiredLvl;
                     break;
 
                 case WorkType.School:
-                    gainXp = (WorkExperienceType)workSubType;
+                    gainXpType = (WorkExperienceType)workSubType;
                     maxXp = bonus * DssConst.WorkXpToLevel;
                     //lock (city.schoolBuildings)
                     //{
@@ -128,7 +146,7 @@ namespace VikingEngine.DSSWars.Work
                     break;
             }
 
-            return gainXp;
+            return gainXpType;
         }
 
         
@@ -146,11 +164,8 @@ namespace VikingEngine.DSSWars.Work
         Exit,
         Starving,
         Eat,
-
-        //Till,
         Plant,
         GatherFoil,
-        //GatherCityProduce,
         Mine,
         PickUpResource,
         PickUpProduce,

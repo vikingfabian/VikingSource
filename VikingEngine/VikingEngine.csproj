@@ -25,13 +25,13 @@
     <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME;DEMO</DefineConstants>
+    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME;DEMO</DefineConstants>
+    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <DefineConstants>$(DefineConstants);DSS;PCGAME;DEMO</DefineConstants>
+    <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Linux ARM|AnyCPU'">
     <DefineConstants>$(DefineConstants);DSS;PCGAME</DefineConstants>
@@ -70,9 +70,14 @@
     <Compile Remove="EngineSpace\Translation\OptionsLanguage_Swedish.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Content\DSS\Music\Endless Plains.mp3" />
     <None Remove="Content\Modding\ModConst.txt" />
+    <None Remove="Content\Shaders\OceanEffect.fx" />
+    <None Remove="Content\Shaders\OceanShaderTest.fx" />
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
+    <None Remove="steam_api64.dll" />
+    <None Remove="VikingEngine-linux-x64.tar.gz" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Content\Modding\ModConst.txt" />
@@ -97,16 +102,20 @@
     <PackageReference Include="Sentry" Version="5.7.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj" />
+    <ProjectReference Include="..\..\..\monogame\MonoGame\MonoGame.Framework\MonoGame.Framework.DesktopGL.csproj">
+      <Properties Condition="'$(Configuration)' == 'Release'">Platform=x64</Properties>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Steamworks repo\Steamworks.NET\Standalone2.0\Steamworks.NET.Standard.csproj">
+      <Properties Condition="'$(Configuration)' == 'Release'">Platform=x64</Properties>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Framework">
-      <HintPath>..\..\..\monogame\MonoGame\MonoGame.Framework\obj\DesktopGL\Release\MonoGame.Framework.dll</HintPath>
-    </Reference>
+    <Folder Include="Content\VoxelModel\Temp\" />
   </ItemGroup>
+  
   <PropertyGroup>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
 </PropertyGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

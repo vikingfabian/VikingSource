@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
 using VikingEngine.DSSWars.Presentation;
@@ -19,10 +19,18 @@ namespace VikingEngine.DSSWars.Presentation
             return new List<LanguageType> { 
                 LanguageType.English,
                 LanguageType.German,
-                LanguageType.Chinese,
-                LanguageType.Japanese,
-                LanguageType.Russian,
+                LanguageType.French,
                 LanguageType.Spanish,
+                LanguageType.Portuguese,
+                LanguageType.Italian,
+                LanguageType.Polish,
+                LanguageType.Turkish,
+                LanguageType.Russian,
+                LanguageType.Chinese,
+                LanguageType.Thai,
+                LanguageType.Korean,
+                LanguageType.Japanese,              
+                
             };
         }
 
@@ -30,11 +38,19 @@ namespace VikingEngine.DSSWars.Presentation
         {
             switch (language)
             {
+                default:
+#if DEBUG
+                    throw new NotImplementedException();
+#endif
+
                 case LanguageType.English:
                     return SpriteName.LangButton_English;
 
                 case LanguageType.German:
                     return SpriteName.LangButton_German;
+
+                case LanguageType.Polish:
+                    return SpriteName.LangButton_Polish;
 
                 case LanguageType.Chinese:
                     return SpriteName.LangButton_Chinese;
@@ -42,14 +58,32 @@ namespace VikingEngine.DSSWars.Presentation
                 case LanguageType.Japanese:
                     return SpriteName.LangButton_Japanese;
 
+                case LanguageType.Thai:
+                    return SpriteName.LangButton_Thai;
+
+                case LanguageType.Korean:
+                    return SpriteName.LangButton_Korean;
+
                 case LanguageType.Russian:
                     return SpriteName.LangButton_Russian;
 
                 case LanguageType.Spanish:
                     return SpriteName.LangButton_Spanish;
 
-                default:
-                    throw new NotImplementedException();
+                case LanguageType.Portuguese:
+                    return SpriteName.LangButton_Portuguese;
+
+                case LanguageType.French:
+                    return SpriteName.LangButton_Frensh;
+
+                case LanguageType.Italian:
+                    return SpriteName.LangButton_Italian;
+
+                case LanguageType.Turkish:
+                    return SpriteName.LangButton_Turkish;
+
+                //default:
+                //    throw new NotImplementedException();
             }
         }
 
@@ -109,9 +143,37 @@ namespace VikingEngine.DSSWars.Presentation
                     }
                     break;
 
+                case LanguageType.Korean:
+                    DssRef.lang = new Korean();
+                    Ref.langOpt = new OptionsLanguage_Korean();
+                    LoadContent.setFontLanguage(FontLanguage.Korean);
+
+                    if (onChange)
+                    {
+                        Ref.gamesett.UiScale = Math.Max(Ref.gamesett.UiScale, 1.2f);
+                    }
+                    break;
+
+                case LanguageType.Thai:
+                    DssRef.lang = new Thai();
+                    Ref.langOpt = new OptionsLanguage_Thai();
+                    LoadContent.setFontLanguage(FontLanguage.Thai);
+
+                    if (onChange)
+                    {
+                        Ref.gamesett.UiScale = Math.Max(Ref.gamesett.UiScale, 1.1f);
+                    }
+                    break;
+
                 case LanguageType.German:
                     DssRef.lang = new German();
                     Ref.langOpt = new OptionsLanguage_German();
+                    LoadContent.setFontLanguage(FontLanguage.Western);
+                    break;
+
+                case LanguageType.Polish:
+                    DssRef.lang = new Polish();
+                    Ref.langOpt = new OptionsLanguage_Polish();
                     LoadContent.setFontLanguage(FontLanguage.Western);
                     break;
 
@@ -124,6 +186,30 @@ namespace VikingEngine.DSSWars.Presentation
                 case LanguageType.Spanish:
                     DssRef.lang = new Spanish();
                     Ref.langOpt = new OptionsLanguage_Spanish();
+                    LoadContent.setFontLanguage(FontLanguage.Western);
+                    break;
+
+                case LanguageType.Turkish:
+                    DssRef.lang = new Turkish();
+                    Ref.langOpt = new OptionsLanguage_Turkish();
+                    LoadContent.setFontLanguage(FontLanguage.Western);
+                    break;
+
+                case LanguageType.French:
+                    DssRef.lang = new French();
+                    Ref.langOpt = new OptionsLanguage_French();
+                    LoadContent.setFontLanguage(FontLanguage.Western);
+                    break;
+
+                case LanguageType.Portuguese:
+                    DssRef.lang = new Portuguese();
+                    Ref.langOpt = new OptionsLanguage_Portuguese();
+                    LoadContent.setFontLanguage(FontLanguage.Western);
+                    break;
+
+                case LanguageType.Italian:
+                    DssRef.lang = new Italian();
+                    Ref.langOpt = new OptionsLanguage_Italian();
                     LoadContent.setFontLanguage(FontLanguage.Western);
                     break;
             }

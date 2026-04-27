@@ -193,6 +193,19 @@ namespace VikingEngine.DSSWars.Map.Settings
             }
             return result;
         }
+
+        public Color Tile2Color(float y)
+        { 
+            int level = MathExt.SplitFloat(y / Height.DefaultGroundYoffset, out float fraction);
+            //float percFraction = fraction;
+
+
+            var col1 = arraylib.GetClamped(colors_height, level);
+            var col2 = arraylib.GetClamped(colors_height, level+1);
+
+            return ColorExt.Mix(col1.Color, col2.Color, fraction);
+
+        }
     }
 
     struct TileColor

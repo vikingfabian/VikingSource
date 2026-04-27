@@ -68,7 +68,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (armyGroups.Count > 0)
                 {
                     args.content.Add(new RbImage(SpriteName.WarsArmy));
-                    args.content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_Soldiers_ArmyType, armyGroups.Count)));
+                    args.content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Conscript_Soldiers_ArmyType, armyGroups.Count)));
 
                     if (guardGroups.Count > 0)
                     {
@@ -78,7 +78,7 @@ namespace VikingEngine.DSSWars.GameObject
                 if (guardGroups.Count > 0)
                 {
                     args.content.Add(new RbImage(SpriteName.WarsGuard));
-                    args.content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_Soldiers_GuardType, guardGroups.Count)));
+                    args.content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Conscript_Soldiers_GuardType, guardGroups.Count)));
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace VikingEngine.DSSWars.GameObject
                     else
                     {
                         args.content.newLine();
-                        objects[i].toGroupHud(args.content);
+                        objects[i].toGroupHud(args);
                         if (i < objects.Count - 1)
                         {
                             args.content.Add(new RbSeperationLine());
@@ -254,6 +254,15 @@ namespace VikingEngine.DSSWars.GameObject
         public override int CollectionCount()
         {
             return armyGroups.Count + guardGroups.Count;
+        }
+
+        public override bool IsGuardGroup()
+        {
+            return guardGroups.Count > 0;
+        }
+        public override bool IsSoldiers()
+        {
+            return true;
         }
 
         public override string TypeName()

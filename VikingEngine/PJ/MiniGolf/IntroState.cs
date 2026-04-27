@@ -12,7 +12,7 @@ namespace VikingEngine.PJ.MiniGolf
         public IntroState(List2<GamerData> joinedGamers)
             :base(false)
         {
-            Input.Mouse.Visible = false;
+            Input.Mouse.Hide();//Input.Mouse.Visible = false;
 
             this.joinedLocalGamers = joinedGamers;
             Ref.draw.ClrColor = Color.Black;
@@ -22,11 +22,11 @@ namespace VikingEngine.PJ.MiniGolf
             Microsoft.Xna.Framework.Media.MediaPlayer.Stop();
             Ref.music.SetPlaylist(new List<Sound.SongData>
                 {
-                    new Sound.SongData(PjLib.MusicFolder + "lazy_town", "Lazy Town", true, MusicVol),
-                    new Sound.SongData(PjLib.MusicFolder + "loot", "Loot", true, 1.4f * MusicVol),
-                    new Sound.SongData(PjLib.MusicFolder + "RM 6 - Auderesne", "Auderesne", true, MusicVol),
-                    new Sound.SongData(PjLib.MusicFolder + "RM 10 - Incubation","Incubation", false, MusicVol),
-                    new Sound.SongData(PjLib.MusicFolder + "void", "Void", true, 1.6f *MusicVol),
+                    new Sound.SongData(PjLib.MusicFolder + "lazy_town", "Lazy Town", null, true, MusicVol),
+                    new Sound.SongData(PjLib.MusicFolder + "loot", "Loot", null, true, 1.4f * MusicVol),
+                    new Sound.SongData(PjLib.MusicFolder + "RM 6 - Auderesne", "Auderesne", null, true, MusicVol),
+                    new Sound.SongData(PjLib.MusicFolder + "RM 10 - Incubation","Incubation", null, false, MusicVol),
+                    new Sound.SongData(PjLib.MusicFolder + "void", "Void", null, true, 1.6f *MusicVol),
                 }, false);
 
             new Timer.AsynchActionTrigger(loadContent_Asynch, true);

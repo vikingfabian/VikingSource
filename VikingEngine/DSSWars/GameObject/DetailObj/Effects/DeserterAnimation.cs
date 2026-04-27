@@ -33,7 +33,7 @@ namespace VikingEngine.DSSWars.GameObject
             float speed = DssConst.Men_StandardWalkingSpeed * 1.2f * time_ms;
             model.position += speed * movedir ;
 
-            walkingAnimation.update(speed, model);
+            walkingAnimation.update(speed, model, out _);
 
             lifeTime -= time_ms;
             if (lifeTime < 0)

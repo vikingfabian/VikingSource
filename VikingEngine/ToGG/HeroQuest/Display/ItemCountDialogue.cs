@@ -78,7 +78,7 @@ namespace VikingEngine.ToGG.HeroQuest.Display
                 m.Move(area.Position);
             }
 
-            Input.Mouse.SetPosition(new IntVector2(vAll.area.Center));
+            Input.Mouse.Instances[0].SetPosition(new IntVector2(vAll.area.Center));
 
             completeWindow(area, SpriteName.NO_IMAGE, "Select amount", HudLib.PopupLayer, true);
         }

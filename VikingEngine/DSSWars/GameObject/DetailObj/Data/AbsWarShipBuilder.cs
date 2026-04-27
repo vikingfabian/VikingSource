@@ -10,14 +10,14 @@ namespace VikingEngine.DSSWars.GameObject
 {
     abstract class AbsWarShipBuilder : AbsSoldierBuilder
     {      
-        public AbsWarShipBuilder(UnitType shipUnitType) 
+        public AbsWarShipBuilder(UnitBuildType shipUnitType) 
         {
-            boundRadius = DssVar.StandardBoundRadius * 6f;
+            //boundRadius = DssVar.StandardBoundRadius * 6f;
             
-            this.unitType = shipUnitType;
+            this.unitBuildType = shipUnitType;
         }
 
-        public override AbsSoldierUnit CreateUnit()
+        public override AbsSoldierUnit CreateUnit(bool bannerman)
         {
             return new BaseWarship();
         }

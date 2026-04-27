@@ -135,10 +135,10 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         public void setupNewInput(bool controller, int playerIndex)
         {
-            if (dssInput == null || dssInput.inputSource.IsController != controller)
+            if (dssInput == null || dssInput.inputSource.HasControllerInput != controller)
             {
                 dssInput = new InputMap(playerIndex);
-                dssInput.setInputSource(controller? InputSourceType.XController : InputSourceType.KeyboardMouse, playerIndex);
+                dssInput.setInputSource(new InputSource( controller? InputSourceType.XController : InputSourceType.KeyboardMouse, playerIndex));
                 if (controller)
                 {
                     dssInput.copyDataFrom(Ref.gamesett.controllerMap);
@@ -445,17 +445,23 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             templateSent = false;
         }
 
-        public void LinkAnimUnlockFrame()
+        public void LinkAnimUnlockFirstFrame()
         {
-            voxelProject.lockFirstFrames = 0;
-            menusystem.closeMenu();
+            voxelProject.lockFirstFrame = null;
+            //menusystem.closeMenu();
         }
-        public void LinkAnimLockFrame(bool start)
-        {
-            //lockFirstFrames = currentFrame.Value;
-            voxelProject.LockAnimation(start);
-            menusystem.closeMenu();
-        }
+        //public void LinkAnimLockFrame(bool start)
+        //{
+        //    //lockFirstFrames = currentFrame.Value;
+        //    voxelProject.LockAnimation(start);
+        //    menusystem.closeMenu();
+        //}
+
+        //public void LockFrame(bool asFirst, bool bLock)
+        //{
+        //    voxelProject.LockAnimation(start);
+        //    menusystem.closeMenu();
+        //}
 
         //public void LinkAnimAddFrame()
         //{
@@ -721,10 +727,13 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
 
         protected override void pickColor()
         {
-            base.pickColor();
-            if (drawCoordMaterial.HasMaterial())
+            //base.pickColor();
+            BlockHD pickMaterial = BlockHD.Empty;
+            pickMaterial.BlockValue = PickSafe(designerInterface.drawCoord);
+
+            if (pickMaterial.HasMaterial())
             {
-                SelectedMaterial = drawCoordMaterial;
+                SelectedMaterial = pickMaterial;
                 //if (inGame)
                 //{
                 //    parent.Print("Picked: " + Settings.Material.ToString());
@@ -759,7 +768,7 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
             if (voxelProject.drawLimits.pointInBounds(designerInterface.drawCoord))
             {
                 //Map.WorldPosition wp = Map.WorldPosition.EmptyPos;
-                drawCoordMaterial.BlockValue = Get(designerInterface.drawCoord);
+                drawCoordMaterial.BlockValue = GetSafe(designerInterface.drawCoord);
 
                 infoText.TextString = "X" + designerInterface.drawCoord.X.ToString() + " Y" + designerInterface.drawCoord.Y.ToString() + " Z" + designerInterface.drawCoord.Z.ToString();
 

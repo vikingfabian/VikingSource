@@ -12,6 +12,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.Players;
+using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -54,6 +55,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override void toHud(ObjectHudArgs args)
         {
+            refreshAlive();
             GroupPresentation(args, false);
             
             for (int i = 0; i < objects.Count;++i)
@@ -132,19 +134,24 @@ namespace VikingEngine.DSSWars.GameObject
             return this;
         }
 
-        public override bool aliveAndBelongTo(int faction)
+        void refreshAlive()
         {
             for (int i = objects.Count - 1; i >= 0; i--)
             {
-                if (!objects[i].army.aliveAndBelongTo(faction))
+                if (objects[i].army.isDeleted)
                 {
                     lock (objects)
                     {
+                        objects[i].DeleteMe();
                         objects.RemoveAt(i);
                     }
                 }
             }
-            
+        }
+
+        public override bool aliveAndBelongTo(int faction)
+        {
+            refreshAlive();
 
             return objects.Count > 0;
         }

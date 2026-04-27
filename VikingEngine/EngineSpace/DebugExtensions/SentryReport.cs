@@ -28,6 +28,34 @@ namespace VikingEngine.EngineSpace.DebugExtensions
 
                 // This option is recommended. It enables Sentry's "Release Health" feature.
                 //options.AutoSessionTracking = true;
+
+                options.SetBeforeSend((sentryEvent, hint) =>
+                {
+                    if (sentryEvent.Exception is System.ExecutionEngineException)
+                    {
+                        // ignore this event
+                        return null;
+                    }
+                    sentryEvent.ServerName = null; // Never send Server Name to Sentry
+                    return sentryEvent;
+                });
+
+                options.NetworkStatusListener = null;
+                options.AutoSessionTracking = false;
+                options.InitCacheFlushTimeout = TimeSpan.FromSeconds(30);
+
+                //if (Config.SentryMode >= 1)
+                //{
+                //    options.NetworkStatusListener = null;
+                //    if (Config.SentryMode >= 2)
+                //    {
+                //        options.AutoSessionTracking = false;
+                //        if (Config.SentryMode >= 3)
+                //        {
+                //            options.InitCacheFlushTimeout = TimeSpan.FromSeconds(30);
+                //        }
+                //    }
+                //}
             });
 
         }

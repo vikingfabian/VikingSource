@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.LootFest.Data;
@@ -57,9 +58,8 @@ namespace VikingEngine.DSSWars.Players.Profile
         public Color col3_Skin;
         public Color col4_Hair;
        
-
-        public Color col6_Tunic = Color.LightGreen;
-        public Color col7_Pants = Color.Beige;
+        public Color col6_Tunic = new Color(129,119,103);
+        public Color col7_Pants = new Color(145, 114, 0);
         public Color col8_Leader = Color.SaddleBrown;
 
         public FlagDesign flagDesign;
@@ -2862,6 +2862,15 @@ namespace VikingEngine.DSSWars.Players.Profile
             System.Diagnostics.Debug.WriteLine($"col0_Main = new Color({col0_Main.R}, {col0_Main.G}, {col0_Main.B});");
             System.Diagnostics.Debug.WriteLine($"col1_Detail1 = new Color({col1_Detail1.R}, {col1_Detail1.G}, {col1_Detail1.B});");
             System.Diagnostics.Debug.WriteLine($"col2_Detail2 = new Color({col2_Detail2.R}, {col2_Detail2.G}, {col2_Detail2.B});");
+            System.Diagnostics.Debug.WriteLine("-");
+            System.Diagnostics.Debug.WriteLine($"col5_AltMain = new Color({col5_AltMain.R}, {col5_AltMain.G}, {col5_AltMain.B});");
+            System.Diagnostics.Debug.WriteLine($"col3_Skin = new Color({col3_Skin.R}, {col3_Skin.G}, {col3_Skin.B});");
+            System.Diagnostics.Debug.WriteLine($"col4_Hair = new Color({col4_Hair.R}, {col4_Hair.G}, {col4_Hair.B});");
+            System.Diagnostics.Debug.WriteLine($"col6_Tunic = new Color({col6_Tunic.R}, {col6_Tunic.G}, {col6_Tunic.B});");
+            System.Diagnostics.Debug.WriteLine($"col7_Pants = new Color({col7_Pants.R}, {col7_Pants.G}, {col7_Pants.B});");
+            System.Diagnostics.Debug.WriteLine($"col8_Leader = new Color({col8_Leader.R}, {col8_Leader.G}, {col8_Leader.B});");
+
+
         }
 
         public void setColor(ProfileColorType type, Color color)
@@ -2926,9 +2935,9 @@ namespace VikingEngine.DSSWars.Players.Profile
             button.icon.SetFullTextureSource();
         }
 
-        public List<AbsRichBoxMember> RbButton()
+        public DropDownOption RbButton()
         {
-            List<AbsRichBoxMember> result = new List<AbsRichBoxMember>(2);
+            DropDownOption result = new DropDownOption();
             result.Add(new RbTexture(flagDesign.CreateTexture(this)));
             result.Add(new RbSpace());
             result.Add(new RbText(string.Format(DssRef.lang.Lobby_FlagNumbered, StorageIndex + 1)));

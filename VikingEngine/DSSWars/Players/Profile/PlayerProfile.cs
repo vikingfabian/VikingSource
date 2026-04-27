@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.Engine;
+using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichBox;
 
 namespace VikingEngine.DSSWars.Players.Profile
@@ -91,9 +92,9 @@ namespace VikingEngine.DSSWars.Players.Profile
             character = DssRef.storage.characterStorage.profiles[character.StorageIndex];
         }
 
-        public List<AbsRichBoxMember> RbButton()
+        public DropDownOption RbButton()
         {
-            List<AbsRichBoxMember> result = new List<AbsRichBoxMember>(2);
+            DropDownOption result = new DropDownOption();
             result.Add(new RbTexture(flag.flagDesign.CreateTexture(flag)));
             result.Add(new RbSpace());
             result.Add(new RbText(DisplayName()));
@@ -140,6 +141,17 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         const int Version = 3;
 
+
+        public void writeBot(System.IO.BinaryWriter w)
+        {
+            flag.write(w);
+        }
+
+        public void readBot(System.IO.BinaryReader r)
+        {
+            flag.read(r);
+        }
+
         public void write(System.IO.BinaryWriter w)
         {
             write(w, false);
@@ -148,8 +160,8 @@ namespace VikingEngine.DSSWars.Players.Profile
         {
             w.Write(Version);
 
-            bool customFlag = net || flag.StorageIndex >= 0;
-            bool customCharacter = net || character.StorageIndex >= 0;
+            bool customFlag = flag.StorageIndex >= 0;
+            bool customCharacter = character.StorageIndex >= 0;
            
             EightBit bools = new EightBit(
                 customCharacter,
@@ -190,6 +202,7 @@ namespace VikingEngine.DSSWars.Players.Profile
 
         }
 
+
         public void read(System.IO.BinaryReader r)
         {
             int version = r.ReadInt32();
@@ -219,7 +232,10 @@ namespace VikingEngine.DSSWars.Players.Profile
             if (customFlag)
             {
                 int index = r.ReadUInt16();
-                flag = DssRef.storage.flagStorage.flagDesigns[index];
+                if (arraylib.InBound(DssRef.storage.flagStorage.flagDesigns, index))
+                {
+                    flag = DssRef.storage.flagStorage.flagDesigns[index];
+                }
             }
             else
             { 

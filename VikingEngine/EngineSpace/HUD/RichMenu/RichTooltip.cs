@@ -48,21 +48,33 @@ namespace VikingEngine.HUD.RichMenu
         {
             if (content != null)
             {
-                Debug.Log("tooltip view");
+                //Debug.Log("tooltip view");
                 const float ButtonSpaceing = 10;
                 float borderW = settings.windowBackground.BorderWidth();
                 float width = Engine.Screen.IconSize * 8;
 
-                bool rightSide = buttonArea.Right + ButtonSpaceing + borderW * 2 + width < playerScreen.Right;
-                Vector2 pos = new Vector2(0, buttonArea.Position.Y);
-                if (rightSide)
+                float totalW = /*ButtonSpaceing +*/ borderW * 2 + width;
+                bool rightSide = buttonArea.Right + totalW < playerScreen.Right;
+                //Vector2 pos = new Vector2(0, buttonArea.Position.Y);
+                //if (rightSide)
+                //{
+                //    pos.X = buttonArea.Right + ButtonSpaceing + borderW;
+                //}
+                //else 
+                //{
+                //    pos.X = buttonArea.Position.X - ButtonSpaceing - width - borderW * 2;
+                //}
+
+                Vector2 pos = buttonArea.RightBottom;//.PercentToPosition(1f, 1f);//.CenterBottom;
+                pos.X += ButtonSpaceing;
+                pos.Y += ButtonSpaceing;
+
+                if (!rightSide)
                 {
-                    pos.X = buttonArea.Right + ButtonSpaceing + borderW;
+                    pos.X = buttonArea.X - totalW/* - ButtonSpaceing*/;
                 }
-                else 
-                {
-                    pos.X = buttonArea.Position.X - ButtonSpaceing - width - borderW * 2;
-                }
+
+
                 richBox = new RichBoxGroup(pos, width, layer - 1, settings, content);
 
                 Vector2 adjust = Vector2.Zero;

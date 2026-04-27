@@ -5,9 +5,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Valve.Steamworks;
+using System.Threading.Tasks;
+
 using VikingEngine.DSSWars.Build;
+using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.GameState;
 using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players.PlayerControls.Casual;
@@ -16,7 +19,6 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.Engine;
 using VikingEngine.Graphics;
-using VikingEngine.PJ;
 using VikingEngine.Sound;
 using VikingEngine.SteamWrapping;
 using VikingEngine.Voxels;
@@ -30,13 +32,16 @@ namespace VikingEngine.DSSWars
     {
         Texture2D bgTex;
 
+        bool bSpriteSheetTexture = false;
+       
         public IntroState(bool isReset)
             : base(isReset)
         {
         }
         protected override void preLoading()
         {
-            if (PlatformSettings.DebugLevel > BuildDebugLevel.Dev)
+            if (PlatformSettings.DebugLevel > BuildDebugLevel.Dev &&
+                !Config.BlockSentry)
             {
                 new EngineSpace.DebugExtensions.SentryReport();
             }
@@ -55,24 +60,16 @@ namespace VikingEngine.DSSWars
         }
 
         override protected void asyncContentLoading(ref int part)
-        {
-            
+        {            
             part++;
             Engine.LoadContent.LoadTexture(LoadedTexture.SpriteSheet, Engine.LoadContent.TexturePath + "Lf3Tiles2");
+            bSpriteSheetTexture = true;
+            part++;
+            Engine.LoadContent.LoadTexture(LoadedTexture.waterEdge, DssLib.ContentDir + "wave_mask1");
             part++;
             Engine.LoadContent.LoadTextures(new List<LoadedTexture> {
                     LoadedTexture.particle3,
-                    });
-            part++;
-            new SpriteSheet();
-            part++;
-            Block.Init();
-            part++;
-            FlagAndColor.Init();
-            part++;
-            ItemPropertyColl.Init();
-            part++;
-            WorkLib.Init();
+                    });            
             part++;
             DssRef.ambience = new Ambience();
             part++;
@@ -80,6 +77,8 @@ namespace VikingEngine.DSSWars
             part++;
 
             new Models().loadContent();
+            part++;
+            ElephantModelBuilder.Init();
             part++;
 
             Engine.LoadContent.LoadMesh(LoadedMesh.cube_repeating, Engine.LoadContent.ModelPath + "cube_repeating");
@@ -104,12 +103,45 @@ namespace VikingEngine.DSSWars
             part++;
             DataStream.FilePath.CreateStorageFolder(DesignerStorage.VoxelProjectFolder);
             part++;
-            UserGeneratedContent.UGClib.GameInit();
+            UserGeneratedContent.UGClib.GameContentInit();
             part++;
             bgTex = LobbyState.LoadBg();
             part++;
+        }
 
-            //DrawGame.LoadContent();
+        protected override async void asyncDataProcessLoading()
+        {
+            ConscriptDataLib.Init();
+            dataProcessPart++;
+            FlagDesign.Init();
+            dataProcessPart++;
+            Block.Init();
+            dataProcessPart++;
+            FlagAndColor.Init();
+            dataProcessPart++;
+
+            ItemPropertyColl.Init();
+            dataProcessPart++;
+            WorkLib.Init();
+            dataProcessPart++;
+            BuildLib.Init();
+            dataProcessPart++;
+            
+
+            int loops = 0;
+            while (!bSpriteSheetTexture)
+            {
+                if (++loops > 1000)
+                {
+                    throw new EndlessLoopException("asyncDataProcessLoading part " + dataProcessPart.ToString());
+                }
+                await Task.Delay(20);                
+            }
+
+            new SpriteSheet();
+            dataProcessPart++;
+            WaterEdgeBuilder.Init();
+            dataProcessPart++;
         }
 
         protected override void asyncLoading_OnRestart(ref int part)
@@ -120,29 +152,36 @@ namespace VikingEngine.DSSWars
 
         protected override void asyncLoadIntro()
         {
-#if !DEBUG
-            introSound = new SoundContainerSingle(SoundLib.SoundDir + "intro_beat", 0.7f);
-#endif
+
+            try
+            {
+                introSound = new SoundContainerSingle(SoundLib.SoundDir + "intro_beat", 0.7f);
+            }
+            catch (Exception ex)
+            {                
+                SoundManager.OnLaunchException(ex);
+                
+                introSound = null;
+            }
+
         }
 
         override protected void asyncStorageLoading(ref int part)
-        {
-            FlagDesign.Init();
-            part++;
+        {  
             DssRef.storage = new Data.GameStorage();
             DssRef.storage.Load();
             part++;
             DssRef.storage.meta.CreateImportFolders();
             part++;
-            Ref.gamesett.Load();
-            part++;
             new Presentation.Translation().setupLanguage(true);
-            part++;
-
-            BuildLib.Init();
             part++;
             CasualBuild.Init();
             part++;
+        }
+
+        protected override bool tasksComplete()
+        {
+            return ElephantModelBuilder.WaitingCount <= 0;
         }
 
 
@@ -155,10 +194,11 @@ namespace VikingEngine.DSSWars
 
         protected override void launch()
         {
-
+            DssRef.models.rawModels_temporary = null;
             Ref.main.criticalContentIsLoaded = true;
             new Achievements();
-            new GameStats();
+            //new GameStats();
+            DssRef.stats.startUp.addOne();
 
             if (Ref.gamesett.language == LanguageType.NONE)
             {
@@ -166,6 +206,20 @@ namespace VikingEngine.DSSWars
             }
             else
             {
+#if DEBUG
+                //for (int i = 0; i < 1000000; ++i)
+                //{
+                //    ForXYEdgeLoopRandomPicker loop = new ForXYEdgeLoopRandomPicker();
+                //    for (int radius = 10; radius < 14; ++radius)
+                //    {
+                //        loop.start(Rectangle2.FromCenterTileAndRadius(new IntVector2(10, 10), radius));
+                //        while (loop.Next())
+                //        {
+                //        }
+                //    }
+                //}
+#endif
+
                 new LobbyState(bgTex);
             }
         }
@@ -175,5 +229,6 @@ namespace VikingEngine.DSSWars
         {
             draw = new Draw2D();
         }
+
     }
 }

@@ -113,14 +113,5 @@ namespace VikingEngine
         }
     }
 
-    struct IntPair
-    {
-        public int key, value;
-
-        public IntPair(int key, int value)
-        {
-            this.key = key;
-            this.value = value;
-        }
-    }
+    
 }

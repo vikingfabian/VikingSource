@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.Graphics;
+using VikingEngine.LootFest.GO.NPC;
 
 namespace VikingEngine.DSSWars.GameObject
 {
@@ -162,11 +163,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (lookingForTerrain)
             {
-                //if (DssRef.world.tileGrid.TryGet(group.tilePos, out Tile tile) &&
-                //    tile.IsWater() == toGuard)
-                //{
-                    begin();
-                //}
+                begin();
             }
             else
             {
@@ -188,6 +185,58 @@ namespace VikingEngine.DSSWars.GameObject
         protected override void completeTransform()
         {
             group.completeTransform(toGuard ? SoldierTransformType.EnterGuard : SoldierTransformType.ExitGuard, postIdAndPosition);
+        }
+    }
+
+    class SettlerTransform : AbsSoldierStateTransform
+    {
+        IntVector2 subTile;
+        public SettlerTransform(SoldierGroup group, IntVector2 subTile)
+            : base(group, true)
+        {
+            this.subTile = subTile;
+        }
+
+        protected override void init(out float timeSec)
+        {            
+            timeSec = DssConst.SettlerTransform_TimeSec;
+        }
+
+        public override void Time_Update(float time_ms)
+        {
+            
+            if (transformTimer.CountDownGameTime())
+            {
+                DeleteMe();
+                return;
+            }
+            
+            base.Time_Update(time_ms);
+        }
+
+        //override protected int modelFrame()
+        //{
+        //    return 0;
+        //}
+
+        protected override void completeTransform()
+        {
+            //group.completeTransform(toGuard ? SoldierTransformType.EnterGuard : SoldierTransformType.ExitGuard, postIdAndPosition);
+            var city = DssRef.world.tileGrid.Get(WP.SubtileToTilePos(subTile)).City();
+
+            if (group.soldierCount > 0 &&
+                city.cityType == CityType.UnClaimed)
+            {
+                if (city.claimCity(group.GetFaction(), subTile))
+                {
+                    group.DeleteMe(DeleteReason.Transform, true);
+                }
+            }
+        }
+
+        override protected int modelFrame()
+        {
+            return 4;
         }
     }
 }

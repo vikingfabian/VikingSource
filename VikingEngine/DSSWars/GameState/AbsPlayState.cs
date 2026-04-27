@@ -14,7 +14,10 @@ using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Resource;
+using VikingEngine.DSSWars.XP;
+using VikingEngine.Engine;
 using VikingEngine.Graphics;
+using VikingEngine.Input;
 using VikingEngine.LootFest.GO.Characters.CastleEnemy;
 using VikingEngine.Network;
 
@@ -22,7 +25,8 @@ namespace VikingEngine.DSSWars.GameState
 {
     abstract class AbsPlayState : AbsDssState
     {
-       
+        public bool isReady = false;
+        public bool hasManorLords = false;
         public WorldResources resources = new WorldResources();
         public Map.MapLayer_Factions factionsMap;
         protected Map.MapLayer_Overview overviewMap;
@@ -48,38 +52,30 @@ namespace VikingEngine.DSSWars.GameState
         public int NextArmyId = 0;
         protected int stepFramesCount = 0;
         public Ambience ambience;
+        public bool importedWorld = false;
 
-        //protected int detailUpdateChanges = 0;
+        public Stack<SpriteText3D> Text3DPool = new Stack<SpriteText3D>();
+       
+        protected ExitGameStateThreads exitGameStateThreads;
 
-        //protected void MayChangeDetail_OnNewUpdate()
-        //{
-        //    //if (detailUpdateChanges > 16)
-        //    //{
-        //    //    detailUpdateChanges /= 2;
-        //    //}
-        //    //else
-        //    {
-        //        detailUpdateChanges = 0;
-        //    }
-        //}
-        //public void OnDetailChange()
-        //{
-        //    detailUpdateChanges++;
-        //}
-        //public bool MayChangeDetail()
-        //{
-        //    if (detailUpdateChanges >= 16)
-        //    {
-        //        lib.DoNothing();
-        //    }
-        //    return detailUpdateChanges < 4;
-        //}
+        TimeStamp gameStartTime = TimeStamp.Now();
 
         public AbsPlayState() 
             :base() 
         {
             DssRef.state = this;
-            DssRef.storage.profileStorage.refreshProfiles();
+            
+        }
+
+        virtual protected void onGameStart(bool newGame)
+        {
+            gameStartTime = TimeStamp.Now();
+            Input.Mouse.SetMenuMode(SteamWrapping.SteamActionSet.InGameControls);
+        }
+
+        public bool resourceCheckTime()
+        {
+            return gameStartTime.secPassed(5);
         }
 
         public void stepFrames(int frameCount)
@@ -106,7 +102,14 @@ namespace VikingEngine.DSSWars.GameState
             new AsynchUpdateable_TryCatch(asyncMapBorders, "DSS map borders update", 59, System.Threading.ThreadPriority.Lowest);
         }
 
-        protected void baseInit()
+        protected void prePlayerInit()
+        {
+            XpLib.Unlock = new TechnologyUnlock(DssRef.difficulty.setting_techMulti);
+            DssRef.storage.profileStorage.refreshProfiles();
+            CityMenu.InitGame();
+        }
+
+        protected void postPlayerInit()
         {
             DssRef.ambience.gameStart();
             culling = new Culling();
@@ -114,11 +117,14 @@ namespace VikingEngine.DSSWars.GameState
             factionsMap = new MapLayer_Factions();
             overviewMap = new Map.MapLayer_Overview(factionsMap);
             detailMap = new Map.MapLayer_Detail();
+            ((DrawGame)draw).initMapShaders();
 
             foreach (var p in localPlayers)
             {
                 p.hud.initMap();
             }
+
+            
         }
 
         public ConcurrentStack<Graphics.VoxelModelInstance> modelPool(bool detail)
@@ -151,7 +157,7 @@ namespace VikingEngine.DSSWars.GameState
         {
             foreach (var local in localPlayers)
             {
-                if (local.gameControls.input.Menu.DownEvent)
+                if (local.gameControls.input.menuInput.openCloseInputEvent())
                 {
                     return true;
                 }
@@ -159,7 +165,6 @@ namespace VikingEngine.DSSWars.GameState
             return false;
         }
 
-        
 
         protected bool asynchArmyAiUpdate(int id, float time)
         {
@@ -283,11 +288,29 @@ namespace VikingEngine.DSSWars.GameState
 
         }
 
-        public void exit()
+        public void updateMouseVisible()
+        {
+            Input.Mouse.SetMenuMode(menuSystem != null && menuSystem.IsOpen());
+
+            //Mouse.Hide();
+            
+        }
+
+        public void beginExit()
         {
             Ref.music.stop(true);
             exitThreads = true;
             DssRef.ambience.gameEnd();
+
+            if (cutScene is EndScene)
+            {
+                cutScene.Close();
+            }
+
+            exitGameStateThreads = new ExitGameStateThreads(exit);
+        }
+        void exit()
+        {            
             new ExitToLobby(false);
         }
 

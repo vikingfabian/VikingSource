@@ -26,7 +26,7 @@ namespace VikingEngine.Voxels
         public ColorPicker(BlockHD current, int player)
         {
             result = current;
-            Input.Mouse.Visible = true;
+            Input.Mouse.ViewAll();//Input.Mouse.Visible = true;
             pickSurface = new Graphics.PixelImage(Engine.Screen.CenterScreen, new Vector2(Engine.Screen.Height * 0.24f), ImageLayers.Foreground7, false, new IntVector2(Width), true);
             pickSurface.Position -= pickSurface.Size * 0.5f;
             hls = lib.RGB2HSL(current.color);

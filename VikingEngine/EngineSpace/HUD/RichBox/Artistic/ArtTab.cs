@@ -14,12 +14,12 @@ namespace VikingEngine.HUD.RichBox.Artistic
         List<ArtTabMember> members;
         public List<AbsRichBoxMember> endAttach = null;
         public Image linePointer;
-        public ArtTabgroup(List<ArtTabMember> members, int selected, Action<int> click, Action<int> enter = null, RbSoundProfile clickSound = null, RbSoundProfile hoverSound = null)
+        public ArtTabgroup(List<ArtTabMember> members, int selected, Action<int> click, Action<int> enter = null, RbSoundType clickSound = RbSoundType.Tab)
         {
             this.members = members;
             for (int i = 0; i < members.Count; i++)
             {
-                members[i].initGroup(i, selected, click, enter, clickSound, hoverSound);
+                members[i].initGroup(i, selected, click, enter, clickSound);
             }
         }
 
@@ -38,7 +38,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
                 }
             }
 
-            Vector2 pos = new Vector2(group.area.X - 2, group.position.Y + group.lineSpacingHalf - 2);
+            Vector2 pos = new Vector2(group.area.X - 2, group.carriage.position.Y + group.lineSpacingHalf - 2);
             linePointer = new Image(SpriteName.WhiteArea, pos,
                 new Vector2(group.boxWidth + 4, 4), group.layer, false, group.addToRender);
             linePointer.Color = group.settings.tabSelected.BgColor;
@@ -66,7 +66,7 @@ namespace VikingEngine.HUD.RichBox.Artistic
             this.enter = enterAction;
         }
 
-        public void initGroup(int index, int selectedIx, Action<int> click, Action<int> enter, RbSoundProfile clickSound, RbSoundProfile hoverSound)
+        public void initGroup(int index, int selectedIx, Action<int> click, Action<int> enter, RbSoundType clickSound)
         {
             this.selected = index == selectedIx;
             buttonStyle = selected? RbButtonStyle.TabSelected : RbButtonStyle.TabNotSelected;
@@ -75,14 +75,14 @@ namespace VikingEngine.HUD.RichBox.Artistic
             {
                 this.click = new RbAction1Arg<int>(click, index, clickSound);
             }
-            if (enter != null)
-            {
-                this.enter = new RbAction1Arg<int>(enter, index, hoverSound);
-            }
-            else
-            {
-                this.enter = new RbSoundAction(hoverSound);
-            }
+            //if (enter != null)
+            //{
+            //    this.enter = new RbAction1Arg<int>(enter, index, hoverSound);
+            //}
+            //else
+            //{
+            //    this.enter = new RbSoundAction(hoverSound);
+            //}
         }
 
         public override void Create(RichBoxGroup group)

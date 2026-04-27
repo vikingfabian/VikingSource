@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Interface
 
         public void createMenu(LocalPlayer player)
         {
-            if (menu == null)
+            if (player.hud.pins.Count > 0 && menu == null)
             {
                 var menuArea = player.playerData.view.safeScreenArea;
                 menuArea.X = player.hud.head.Right;
@@ -56,9 +56,12 @@ namespace VikingEngine.DSSWars.Interface
         {
             createMenu(player);
 
-            var content = new RichBoxContent();
-            player.hud.pins.toHUD(player, content);
-            menu.Refresh(content, player.gameControls.controllerPointer);
+            if (menu != null)
+            {
+                var content = new RichBoxContent();
+                player.hud.pins.toHUD(player, content);
+                menu.Refresh(content, player.gameControls.controllerPointer);
+            }
         }
     }
 }

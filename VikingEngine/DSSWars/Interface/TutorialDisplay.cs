@@ -38,13 +38,13 @@ namespace VikingEngine.DSSWars.Interface
                 area.SetBottom(player.playerData.view.safeScreenArea.Bottom, true);
 
                 display = new RichMenu(HudLib.TutorialRbSettings, area, new Vector2(16), RichMenu.DefaultRenderEdge, HudLib.GUILayer, player.playerData);
-                display.addBackground(HudLib.HudTutorialBackground, HudLib.GUILayer + 2);
+                //display.addBackground(HudLib.HudTutorialBackground, HudLib.GUILayer + 2);
             }
         }
 
         public void update(ref bool mouseOverHud)
         {
-            if (player.hud.detailLevel == HudDetailLevel.Normal)
+            if (player.hud.maximizedHud)
             {
                 openMenu();
 
@@ -54,8 +54,10 @@ namespace VikingEngine.DSSWars.Interface
                     RichBoxContent content = new RichBoxContent();
                     player.tutorial.tutorial_ToHud(content);
                     display.Refresh(content);
-                    //displayPart.refresh(player, player.tutorial);
                     display.updateMouseInput(ref mouseOverHud);
+
+                    display.updateHeightFromContent();
+                    display.addBackground(HudLib.HudTutorialBackground, HudLib.GUILayer + 2);
                 }
             }
             else

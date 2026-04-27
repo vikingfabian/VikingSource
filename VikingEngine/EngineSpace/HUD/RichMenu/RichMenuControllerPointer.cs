@@ -17,11 +17,13 @@ namespace VikingEngine.HUD.RichMenu
         public RichMenu menu;
         public float maxInteractDistance;
 
-        const float LowAccelerate = 0.3f;
-        float moveAcc = LowAccelerate;
+        float LowAccelerate;
+        float moveAcc;
         Rotation1D accelerateDir = Rotation1D.D0;
         public RichMenuControllerPointer(InputMap inputMap)
         {
+            LowAccelerate = Engine.Screen.IconSize * 0.004f;
+            moveAcc = LowAccelerate;
             this.inputMap = inputMap;
         }
 
@@ -64,7 +66,7 @@ namespace VikingEngine.HUD.RichMenu
             }
             else
             {
-                moveAcc = Bound.Max(moveAcc + Ref.DeltaTimeSec * 2f, 1f);
+                moveAcc = Bound.Max(moveAcc + Ref.DeltaTimeSec * 2f, 1.2f);
             }
 
             return result;

@@ -34,6 +34,12 @@ namespace VikingEngine.DSSWars.Players
             //model.Visible = false;
         }
 
+        public void clear()
+        {
+            hasSelection = false;
+            selectTileResult = SelectTileResult.None;
+        }
+
         public static Mesh CreateOutlineModel(LocalPlayer player, bool isHover)
         {
             LoadedMesh loadedMesh;
@@ -98,8 +104,10 @@ namespace VikingEngine.DSSWars.Players
                                 switch (subTile.mainTerrain)
                                 {
                                     case TerrainMainType.Building:
+                                        tileOfInterest = true;
                                         switch ((TerrainBuildingType)subTile.subTerrain)
                                         {
+                                            case Map.TerrainBuildingType.CityHall_Tent:
                                             case Map.TerrainBuildingType.CityHall_Village:
                                             case Map.TerrainBuildingType.CityHall_Town:
                                             case Map.TerrainBuildingType.CityHall_Capital:
@@ -115,11 +123,16 @@ namespace VikingEngine.DSSWars.Players
                                             case Map.TerrainBuildingType.RecruitmentLevel3:
                                                 selectTileResult = SelectTileResult.Recruitment;
                                                 break;
+                                            case Map.TerrainBuildingType.GoldDeliveryLevel1:
+                                            case Map.TerrainBuildingType.GoldDeliveryLevel2:
+                                            case Map.TerrainBuildingType.GoldDeliveryLevel3:
+                                                selectTileResult = SelectTileResult.GoldDeliver;
+                                                break;
 
                                             case Map.TerrainBuildingType.SoldierBarracks:
                                             case Map.TerrainBuildingType.ArcherBarracks:
                                             case Map.TerrainBuildingType.WarmachineBarracks:
-                                            case Map.TerrainBuildingType.KnightsBarracks:
+                                            //case Map.TerrainBuildingType.KnightsBarracks:
                                             case Map.TerrainBuildingType.GunBarracks:
                                             case Map.TerrainBuildingType.CannonBarracks:
                                                 selectTileResult = SelectTileResult.Conscript;
@@ -134,6 +147,10 @@ namespace VikingEngine.DSSWars.Players
                                             case Map.TerrainBuildingType.BookPress:
                                                 selectTileResult = SelectTileResult.BookPress;
                                                 break;
+
+                                            case Map.TerrainBuildingType.Cesspit:
+                                                selectTileResult = SelectTileResult.CessPit;
+                                                break;
                                         }
                                         break;
 
@@ -144,15 +161,23 @@ namespace VikingEngine.DSSWars.Players
                                     case TerrainMainType.Foil:
                                         switch ((TerrainSubFoilType)subTile.subTerrain)
                                         {
-                                            case TerrainSubFoilType.BogIron:
+                                            //case TerrainSubFoilType.WheatFarm:
+                                            //case TerrainSubFoilType.WheatFarmUpgraded:
+                                            //case TerrainSubFoilType.ClayPit:
+                                            //case TerrainSubFoilType.BogIron:
+                                            default:
                                                 tileOfInterest = true;
                                                 break;
                                         }
                                         break;
                                     case TerrainMainType.Wall:
                                         selectTileResult = SelectTileResult.Wall;
+                                        tileOfInterest = true;
                                         //hasSelection = true;
                                         //model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTilePos);
+                                        break;
+                                    case TerrainMainType.Decor:
+                                        tileOfInterest = true;
                                         break;
                                 }
 
@@ -205,7 +230,7 @@ namespace VikingEngine.DSSWars.Players
             upgrade = false;
             if (city != null)
             {
-                if (city.GetPlayer() == player)
+                if (city.GetPlayer() == player || DssRef.difficulty.GodPowers())
                 {
                     if (subTile.MayBuild(player.gameControls.build.placeBuildingType, out upgrade))
                     {
@@ -214,8 +239,17 @@ namespace VikingEngine.DSSWars.Players
                             return MayBuildResult.Yes;
                         }
                         else
-                        { 
-                            return MayBuildResult.Yes_ChangeCity;
+                        {
+                            List<BuildAndExpandType> available = new List<BuildAndExpandType>((int)BuildAndExpandType.NUM_NONE);
+                            BuildLib.AvailableBuildTypes(available, city, false);
+                            if (!available.Contains(player.gameControls.build.placeBuildingType))
+                            {
+                                return MayBuildResult.Yes_ChangeCity;
+                            }
+                            else
+                            {
+                                return MayBuildResult.No_OutsideRegion;
+                            }
                         }
                     }
                     else
@@ -266,9 +300,9 @@ namespace VikingEngine.DSSWars.Players
                 {
                     city = tile.City();
                     
-                        if (city.GetPlayer() == player)
+                        if (city.GetPlayer() == player || DssRef.difficulty.GodPowers())
                         {
-                            if (subTilePos != city.cityStorageCenter && subTilePos != city.cityHallSubtilePos) //center tile is protected
+                            if (subTilePos != city.citySquareSubtilePos && subTilePos != city.cityHallSubtilePos) //center tile is protected
                             {
                                 var buildingType = BuildLib.GetType(subTile.mainTerrain, subTile.subTerrain);
                                 if (buildingType != BuildAndExpandType.NUM_NONE)
@@ -327,11 +361,13 @@ namespace VikingEngine.DSSWars.Players
         CityHall,
         Postal,
         Recruitment,
+        GoldDeliver,
         Conscript,
         School,
         ResearchCenter,
         BookPress,
         Wall,
+        CessPit,
         //Resources,
         
         Build,

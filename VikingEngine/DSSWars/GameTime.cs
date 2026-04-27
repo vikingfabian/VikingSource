@@ -33,6 +33,9 @@ namespace VikingEngine.DSSWars
         public Vector4 ShaderDayLight_Map = Vector4.One;
         public float ShaderDayLight_RedTint = 0f;
 
+        public Vector3 shadow_LightDirection = new Vector3(-0.2f, -1f, -0.2f);
+        public Vector3 shadow_SunColor = new Vector3(0.5f, 0.45f, 0.45f);
+
         public GameTime()
         {
             DssRef.time = this;
@@ -56,14 +59,20 @@ namespace VikingEngine.DSSWars
                 }
 
                 switch (quarter)
-                { 
-                    case 0: 
+                {
+                    case 0:
                         oneSecond = true;
 
-                        if (Ref.gamesett.ModelLightShaderEffect)
+                        float diff = Math.Abs(secondsToMinute - 30) / 30f;
+                        float light = 1f - diff;
+
+                        if (Ref.gamesett.modelShadow)
                         {
-                            float diff = Math.Abs(secondsToMinute - 30) / 30f;
-                            float light = 1f - diff;
+                            shadow_LightDirection = new Vector3(-(0.2f + 0.15f * diff), -(1f - 0.15f * diff), -(0.2f + 0.15f * diff));
+                            shadow_SunColor = new Vector3(0.4f + diff * 0.12f, 0.45f, 0.45f) * (0.7f + light);
+                        }
+                        else if (Ref.gamesett.ModelLightShaderEffect)
+                        {
                             ShaderDayLight_Objects = new Vector3(DayLight_Min + DayLight_Add * light);
                             ShaderDayLight_Map = new Vector4(DayLight_Terrain_Min + DayLight_Terrain_Add * light);
                             ShaderDayLight_Map.W = 1f;
@@ -85,6 +94,7 @@ namespace VikingEngine.DSSWars
                             secondsToMinute = 0;
                             ++totalMinutes;
                             oneMinute = true;
+                            DssRef.storage.metaProgression.totalGameTimeMinutes++;
                             DssRef.state.OneMinute_Update();
                         }
                         break;

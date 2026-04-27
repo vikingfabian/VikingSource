@@ -193,6 +193,11 @@ namespace VikingEngine
             Reset();
         }
 
+        public bool AtCorner
+        {
+            get { return stepsLeft == 1; }
+        }
+
         public bool AtRight
         {
             get { return Position.X == area.RightTile; }

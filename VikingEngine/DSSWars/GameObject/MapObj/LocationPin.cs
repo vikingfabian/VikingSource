@@ -81,7 +81,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             overviewModel = GetFaction().AutoLoadModelInstance(
                LootFest.VoxelModelName.wars_flag, 1f, false);
-            overviewModel.AddToRender(DrawGame.TerrainLayer);
+            overviewModel.AddToRender(DrawGame.MidLayer);
             overviewModel.position = position;
         }
         public override void asynchCullingUpdate(float time, bool bStateA)
@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.GameObject
         {
             throw new NotImplementedException();
         }
-        public override void OnNewOwner(Faction newFaction)
+        public override void OnNewOwner(Faction newFaction, bool convert)
         {
             throw new NotImplementedException();
         }
@@ -153,7 +153,7 @@ namespace VikingEngine.DSSWars.GameObject
            return GameObjectType.LocationPin;
         }
 
-        protected override void NameEditEvent(string result, object tag)
+        public override void NameEditEvent(string result, object tag)
         {
             name.setCustom(result);
         }

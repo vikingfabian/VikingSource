@@ -9,6 +9,34 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
 {
     class OptionsLanguage_Spanish : AbsOptionsLanguage
     {
+        //Mounts
+        public override string InputSteam => "Steam Input";
+        public override string Input_SimulateMouse => "Simular ratón";
+        public override string Input_LockMouseToWindow => "Bloquear ratón en la ventana";
+        public override string Input_MouseEdgePush_Title => "Desplazamiento en los bordes";
+        public override string Input_NoControl => "Ninguno";
+        public override string Input_ActiveControl => "Activo";
+        public override string Input_PassiveControl => "Pasivo";
+        public override string Setting_MinimapScale => "Escala del minimapa";
+
+        //##Settings
+        public override string Settings_Particles_FadeMapLayers => "Desvanecer capas";
+        public override string SplitScreen_HorizontalFirst => "Horizontal primero";
+        public override string SplitScreen_VerticalFirst => "Vertical primero";
+        public override string SplitScreen_HorizontalOnly => "Solo horizontal";
+        public override string SplitScreen_VerticalOnly => "Solo vertical";
+        public override string SplitScreen_Title => "Pantalla dividida";
+        public override string SplitScreen_AdjustSplit => "Ajustar división {0}";
+
+        public override string Settings_ControllerVibration => "Vibración del mando";
+        public override string GraphicsOption_IngameMenuWidth => "Ancho del menú del juego";
+        public override string DisplayMode => "Modo de visualización";
+        public override string DisplayMode_Windowed => "Ventana";
+        public override string DisplayMode_BorderlessFullscreen => "Pantalla completa sin bordes";
+        public override string GameSettings_RenderedMouseCursor => "Cursor renderizado";
+        public override string GameSettings_MuteControllerDisconnect => "Silenciar desconexión del mando";
+        //--
+        public override string GraphicsOption_FarViewDistance => "Vista de larga distancia";
         public override string Hud_Cancel => "Cancelar";
         public override string Hud_Back => "Atrás";
 
@@ -132,6 +160,21 @@ namespace VikingEngine.EngineSpace.Translation.OptionLanguages
         public override string Settings_KeyMapPanSpeed => "Velocidad de desplazamiento";
         public override string Settings_StoreCameraPosition => "Guardar posición de la cámara";
         public override string Settings_LoadCameraPosition => "Cargar posición";
+
+
+        //Shadow update
+        public override string Settings_ModelWaterFoam => "Espuma del agua";
+        public override string Settings_ModelShadow => "Sombras";
+        public override string Settings_ModelShadowMapSize => "Tamaño del Shadow Map";
+        public override string Settings_Brightness => "Brillo";
+        public override string Settings_Mode_No_Achivements => "Logros no disponibles.";
+        public override string Settings_FrameRate => "Tasa de fotogramas";
+
+        /// <summary>
+        /// Steam Achievements
+        /// </summary>
+        public override string Settings_ImportNoAchievement => "Bloquear logros para archivos de guardado importados";
+
 
     }
 }

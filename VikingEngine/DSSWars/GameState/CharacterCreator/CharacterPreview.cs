@@ -27,7 +27,10 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         bool mouseDown = false;
         int viewFrame = 0;
 
-        public SoldierModelData soldierModelData = new SoldierModelData(ArmorLevel.None, Resource.ItemResourceType.Sword, Conscript.SpecializationType.None, VisualExperience.Experienced, 0, 0);
+        public SoldierModelData soldierModelData = new SoldierModelData( ItemResourceType.Men,  Resource.ItemResourceType.Sword, ItemResourceType.NONE, ArmorLevel.None, false, Conscript.SpecializationType.None, VisualExperience.Experienced, 0, 0)
+        {
+
+        };
         AbsVoxelObj model;
         public CharacterPreview(VectorRect screenArea, CharacterPreviewType previewType) 
         {
@@ -134,7 +137,17 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
 
             if (mouseDown)
             {
-                camera.TiltX += Input.Mouse.MoveDistance.X * 0.01f;
+                
+                if (Input.Keyboard.Shift)
+                {
+                    float move = Input.Mouse.MoveDistance.Y * -0.01f;
+                    camera.TiltY += move;
+                }
+                else
+                {
+                    float move = Input.Mouse.MoveDistance.X * 0.01f;
+                    camera.TiltX += move;
+                }
                 camera.RecalculateMatrices();
 
                 if (!Input.Mouse.IsButtonDown(MouseButton.Left))

@@ -64,6 +64,12 @@ namespace VikingEngine.Graphics
             moveTowards(goalLookTarget);            
         }
 
+        public override Vector3 Right()
+        {
+            Vector2 dir = lib.AngleToV2(tilt.X, 1f);
+            return VectorExt.V2toV3XZ(dir);
+        }
+
         public void moveTowards(Vector3 goal)
         {
             Vector3 diff = goal - lookTarget;
@@ -72,7 +78,7 @@ namespace VikingEngine.Graphics
             const float MinChaseSpeed = 0.05f;
             if (l > MinChaseSpeed)
             {
-                if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
                 {
                     currentChaseLength = l * positionChaseLengthPercentage;
                     currentChaseLength = Bound.Set(currentChaseLength, MinChaseSpeed, maxChaseLength);

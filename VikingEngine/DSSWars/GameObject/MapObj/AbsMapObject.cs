@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 //using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
+using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.EngineSpace;
 using VikingEngine.HUD.RichBox;
@@ -29,16 +30,55 @@ namespace VikingEngine.DSSWars.GameObject
         public bool inRender_detailLayer = false;
 
         public int previousWarAgainstFaction = -1;
-        public float strengthValue=-1;
+        public float strengthValue = -1;
+        public float mobilityValue = 0;
+
         public IntVector2 tilePos;
         public TimeStamp lastNetUpdate = new TimeStamp();
+        public int previousIncome_copp = 0;
+        public Money money = new Money(0);
 
         public AbsMapObject()
         {
             
             //battlesCounter = new SpottedArrayCounter<AbsMapObject>(battles);
         }
-        
+
+        virtual public bool lowFood() { throw new NotImplementedException(); }
+        public bool payGold(int cost)
+        {
+            if (DssRef.storage.gameRuleset.centralGold)
+            {
+                var faction = GetFaction();
+                if (faction == null)
+                {
+                    return false;
+                }
+                return faction.payGold(cost, false, null);
+            }
+            else
+            {
+                return money.PayGold(cost, false);
+            }
+        }
+
+        public bool payGold(int cost, bool allowDept)
+        {
+            if (DssRef.storage.gameRuleset.centralGold)
+            {
+                var faction = GetFaction();
+                if (faction == null)
+                {
+                    return false;
+                }
+                return faction.payGold(cost, allowDept, null);
+            }
+            else
+            {
+                return money.PayGold(cost, allowDept);
+            }
+        }
+
         virtual public bool rayCollision(Ray ray)
         {
             return false;
@@ -90,7 +130,15 @@ namespace VikingEngine.DSSWars.GameObject
         {
             return DssRef.world.tileGrid.Get(tilePos);
         }
+        public override void toButtonContent(RichBoxContent content, bool dark)
+        {
+            content.Add(new RbText(Name(out _), dark ? HudLib.TitleColor_Name_Dark : HudLib.TitleColor_Name));
+            content.Add(new RbImage(SpriteName.warsBulletSeperationPoint));
+            TypeIcon(content);
+            content.hspace();
+            content.Add(new RbText(TypeName(), dark? HudLib.TitleColor_TypeName_Dark : HudLib.TitleColor_TypeName));
 
+        }
         virtual public void tagSprites(out SpriteName back, out SpriteName art)
         { 
             throw new NotImplementedException();
@@ -98,9 +146,9 @@ namespace VikingEngine.DSSWars.GameObject
         public bool tagToHud(RichBoxContent content)
         {
             tagSprites(out SpriteName back, out SpriteName art);
-            if (back != CityTag.NoBackSprite)
+            if (back != TagLib.NoBackSprite)
             {
-                if (art == CityTag.NoBackSprite)
+                if (art == SpriteName.NO_IMAGE)
                 {
                     content.Add(new RbImage(back));
                 }
@@ -118,16 +166,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool LocalMember
         {
-            get { return GetFaction().player.IsLocal; }
+            get { return GetPlayer().IsLocal; }
         }
 
         //abstract public Faction Faction();
 
-        virtual public void setFaction(Faction newFaction, bool duringStartup)
+        virtual public void setFaction(Faction newFaction, bool duringStartup, bool convert)
         {
             this.factionIndex = newFaction.myIndex;
             
-            OnNewOwner(newFaction);
+            OnNewOwner(newFaction, convert);
         }
 
         //override public Faction GetFaction()
@@ -135,7 +183,7 @@ namespace VikingEngine.DSSWars.GameObject
         //    return faction;
         //}
 
-        abstract public void OnNewOwner(Faction newFaction);
+        abstract public void OnNewOwner(Faction newFaction, bool convert);
 
         public override AbsMapObject RelatedMapObject()
         {
@@ -160,8 +208,7 @@ namespace VikingEngine.DSSWars.GameObject
                     Ref.TotalGameTimeSec > status.processTimeStartStampSec + status.processTimeLengthSec)
                 {
                     //Work complete
-                    onWorkComplete_async(ref status);
-                    //workerStatuses[i] = status;
+                    onWorkComplete_async(ref status); //index out  of bounds here
                 }
 
             }

@@ -17,10 +17,19 @@ namespace VikingEngine.DSSWars.GameObject
         public CasualCityProfile casualCityProfile = new CasualCityProfile();
         CityCasualProgress casualProgress = null;
 
+        public void CasualBuild(List<CasualBuildType> list)
+        {
+            foreach (var build in list)
+            {
+                CasualBuild(build, 1);
+            }
+        }
+
         public void CasualBuild(CasualBuildType type, int count)
         {
             GetCasualProgress().AddBuild(this, new CasualBuildQueueItem() { build = type, count = count });
         }
+
         public void FinishCasualBuild(CasualBuildType casualBuildType)
         {
             switch (casualBuildType)
@@ -30,7 +39,7 @@ namespace VikingEngine.DSSWars.GameObject
                     break;
                 case CasualBuildType.WorkerHut:
                     queuePlaceBuilding(BuildAndExpandType.WorkerHut);
-                    queuePlaceBuilding(BuildAndExpandType.WheatFarm);
+                    queuePlaceBuilding(BuildAndExpandType.OrchardApple);
                     queuePlaceBuilding(BuildAndExpandType.LinenFarm);
                     break;
                 case CasualBuildType.Barracks:
@@ -62,10 +71,15 @@ namespace VikingEngine.DSSWars.GameObject
                     queuePlaceBuilding(BuildAndExpandType.Logistics);
                     break;
 
+                case CasualBuildType.Embassy:
+                    buildingStructure.Embassy_count++;
+                    queuePlaceBuilding(BuildAndExpandType.Embassy);
+                    break;
+
                 case CasualBuildType.ResearchCenter:
                     casualCityProfile.unlock_research = true;
                     queuePlaceBuilding(BuildAndExpandType.ResearchCenter);
-                    technology.advancedBuilding.points = TechnologyTemplate.AdvancedBuildingUnlock;
+                    technology.advancedBuilding.points = XpLib.Unlock.AdvancedBuildingUnlock;
                     break;
 
                 case CasualBuildType.UnlockIronArmor:
@@ -77,29 +91,31 @@ namespace VikingEngine.DSSWars.GameObject
 
                     break;
                 case CasualBuildType.UnlockSteelArmor:
-                    casualCityProfile.unlock_armor = 2;
+                    casualCityProfile.unlock_armor = CasualCityProfile.ArmorMax_Steel;
+                    casualCityProfile.onCasualUpgrade();
                     casualCityProfile.refreshTech();
                     queuePlaceBuilding(BuildAndExpandType.Armory);
                     queuePlaceBuilding(BuildAndExpandType.Smith);
                     queuePlaceBuilding(BuildAndExpandType.Smelter);
 
-                    technology.steel.points = TechnologyTemplate.SteelUnlock;
+                    technology.steel.points = XpLib.Unlock.SteelUnlock;
                     break;
 
                 case CasualBuildType.UnlockSword:
                     casualCityProfile.unlock_sword = 1;
                     casualCityProfile.refreshTech();
                     queuePlaceBuilding(BuildAndExpandType.Smith);
-                    technology.iron.points = TechnologyTemplate.IronUnlock;
+                    technology.iron.points = XpLib.Unlock.IronUnlock;
                     break;
 
                 case CasualBuildType.UnlockSteelSword:
-                    casualCityProfile.unlock_sword = 2;
+                    casualCityProfile.unlock_sword = CasualCityProfile.SwordMax_Steel;
+                    casualCityProfile.onCasualUpgrade();
                     casualCityProfile.refreshTech();
                     queuePlaceBuilding(BuildAndExpandType.Smith);
                     queuePlaceBuilding(BuildAndExpandType.Smelter);
 
-                    technology.steel.points = TechnologyTemplate.SteelUnlock;
+                    technology.steel.points = XpLib.Unlock.SteelUnlock;
                     break;
 
                 case CasualBuildType.UnlockCatapult:
@@ -107,7 +123,7 @@ namespace VikingEngine.DSSWars.GameObject
                     queuePlaceBuilding(BuildAndExpandType.Carpenter);
                     casualCityProfile.refreshTech();
 
-                    technology.catapult.points = TechnologyTemplate.CatapultUnlock;
+                    technology.catapult.points = XpLib.Unlock.CatapultUnlock;
                     break;
                 case CasualBuildType.UnlockBlackPower:
                     casualCityProfile.unlock_projectile = 2;
@@ -116,24 +132,26 @@ namespace VikingEngine.DSSWars.GameObject
                     queuePlaceBuilding(BuildAndExpandType.GunBarracks);
                     casualCityProfile.refreshTech();
 
-                    technology.blackPowder.points = TechnologyTemplate.BlackPowderUnlock;
+                    technology.blackPowder.points = XpLib.Unlock.BlackPowderUnlock;
                     break;
                 case CasualBuildType.UnlockGunPower:
-                    casualCityProfile.unlock_projectile = 3;
+                    casualCityProfile.unlock_projectile = CasualCityProfile.ProjectileMax_GunPowder;
+                    casualCityProfile.onCasualUpgrade();
                     queuePlaceBuilding(BuildAndExpandType.GunBarracks);
                     casualCityProfile.refreshTech();
 
-                    technology.gunPowder.points = TechnologyTemplate.GunPowderUnlock;
+                    technology.gunPowder.points = XpLib.Unlock.GunPowderUnlock;
                     break;
 
                 case CasualBuildType.UnlockFarming2:
                     casualCityProfile.unlock_farming = 1;
                     queuePlaceBuilding(BuildAndExpandType.Bank);
                     casualCityProfile.refreshTech();
-                    technology.advancedFarming.points = TechnologyTemplate.AdvancedFarmingUnlock;
+                    technology.advancedFarming.points = XpLib.Unlock.AdvancedFarmingUnlock;
                     break;
                 case CasualBuildType.UnlockFarming3:
-                    casualCityProfile.unlock_farming = 2;
+                    casualCityProfile.unlock_farming = CasualCityProfile.FarmingMax;
+                    casualCityProfile.onCasualUpgrade();
                     queuePlaceBuilding(BuildAndExpandType.CoinMinter);
                     casualCityProfile.refreshTech();
                     break;
@@ -150,9 +168,9 @@ namespace VikingEngine.DSSWars.GameObject
                 var buildData = BuildLib.BuildOptions[(int)build];
                 IntVector2 buildPos = IntVector2.NegativeOne;
 
-                if (CityStructure.Find(this, buildData.mainType, buildData.subType, out IntVector2 sameBuilding))
+                if (CityStructure.Find(this, buildData.terrainType.mainTerrain, buildData.terrainType.subTerrain, out IntVector2 sameBuilding))
                 {
-                    findAdjacentFreeSpot(sameBuilding, ref buildPos);
+                    findAdjacentFreeSpot(Casual_EdgeRandomizer, sameBuilding, ref buildPos);
                 }
 
                 if (buildPos.X < 0)
@@ -175,6 +193,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
         }
+
+        
 
         public CityCasualProgress GetCasualProgress()
         {
@@ -216,30 +236,34 @@ namespace VikingEngine.DSSWars.GameObject
 
                 case CasualBuildType.Logistics:
                     return lib.BoolToInt01(casualCityProfile.unlock_logistics);
+                
+                case CasualBuildType.Embassy:
+                    return buildingStructure.Embassy_count;
+                
                 case CasualBuildType.ResearchCenter:
                     return lib.BoolToInt01(casualCityProfile.unlock_research);
 
                 case CasualBuildType.UnlockIronArmor:
                     return lib.BoolToInt01(casualCityProfile.unlock_armor >= 1);
                 case CasualBuildType.UnlockSteelArmor:
-                    return lib.BoolToInt01(casualCityProfile.unlock_armor >= 2);
+                    return lib.BoolToInt01(casualCityProfile.unlock_armor >= CasualCityProfile.ArmorMax_Steel);
 
                 case CasualBuildType.UnlockSword:
                     return lib.BoolToInt01(casualCityProfile.unlock_sword >= 1);
                 case CasualBuildType.UnlockSteelSword:
-                    return lib.BoolToInt01(casualCityProfile.unlock_sword >= 2);
+                    return lib.BoolToInt01(casualCityProfile.unlock_sword >= CasualCityProfile.SwordMax_Steel);
 
                 case CasualBuildType.UnlockCatapult:
-                    return lib.BoolToInt01(casualCityProfile.unlock_projectile >= 1);
+                    return lib.BoolToInt01(casualCityProfile.unlock_projectile >= CasualCityProfile.Projectile1_Catapult);
                 case CasualBuildType.UnlockBlackPower:
-                    return lib.BoolToInt01(casualCityProfile.unlock_projectile >= 2);
+                    return lib.BoolToInt01(casualCityProfile.unlock_projectile >= CasualCityProfile.Projectile2_BlackPowder);
                 case CasualBuildType.UnlockGunPower:
-                    return lib.BoolToInt01(casualCityProfile.unlock_projectile >= 3);
+                    return lib.BoolToInt01(casualCityProfile.unlock_projectile >= CasualCityProfile.ProjectileMax_GunPowder);
 
                 case CasualBuildType.UnlockFarming2:
                     return lib.BoolToInt01(casualCityProfile.unlock_farming >= 1);
                 case CasualBuildType.UnlockFarming3:
-                    return lib.BoolToInt01(casualCityProfile.unlock_farming >= 2);
+                    return lib.BoolToInt01(casualCityProfile.unlock_farming >= CasualCityProfile.FarmingMax);
 
                 default: return 0;
             }

@@ -47,7 +47,7 @@ namespace VikingEngine.ToGG.ToggEngine.Display3D
         {
             ++updateCount;
 
-            if (Ref.TimePassed16ms)
+            for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
             {
                 if (model.Y < goalPos.Y + 0.05f)
                 {

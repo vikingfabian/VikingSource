@@ -53,46 +53,49 @@ namespace VikingEngine.ToGG.Effects
 
         public override void Time_Update(float time_ms)
         {
-            if (delay.CountDown() && Ref.TimePassed16ms)
+            if (delay.CountDown() /*&& Ref.TimePassed16ms*/)
             {
-                update++;
+                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//
+                {
+                    update++;
 
-                if (update > 9)
-                {
-                    model.Opacity -= 0.2f;
-                    if (model.Opacity <= 0)
+                    if (update > 9)
                     {
-                        DeleteMe();
+                        model.Opacity -= 0.2f;
+                        if (model.Opacity <= 0)
+                        {
+                            DeleteMe();
+                        }
                     }
-                }
-                else
-                {
-                    switch (update)
+                    else
                     {
-                        case 1:
-                            model.SetSpriteName(SpriteName.DamageSlashEffect2);
-                            break;
-                        case 2:
-                            model.SetSpriteName(SpriteName.DamageSlashEffect3);
-                            break;
-                        case 3:
-                            model.SetSpriteName(SpriteName.DamageSlashEffect4);
-                            if (unit != null && unit.Alive)
-                            {
-                                new Effects.BounceUnitAnim(unit, source.mirrorTilePos(unit.visualPos), 0.15f);
-                            }
-                            break;
-                        case 4:
-                            model.SetSpriteName(SpriteName.DamageSlashEffect5);
-                            
-                            break;
-                        case 5:
-                            model.SetSpriteName(SpriteName.DamageSlashEffect6);
-                            
-                            break;
-                        case 9:
-                            model.SetSpriteName(SpriteName.DamageSlashEffect7);
-                            break;
+                        switch (update)
+                        {
+                            case 1:
+                                model.SetSpriteName(SpriteName.DamageSlashEffect2);
+                                break;
+                            case 2:
+                                model.SetSpriteName(SpriteName.DamageSlashEffect3);
+                                break;
+                            case 3:
+                                model.SetSpriteName(SpriteName.DamageSlashEffect4);
+                                if (unit != null && unit.Alive)
+                                {
+                                    new Effects.BounceUnitAnim(unit, source.mirrorTilePos(unit.visualPos), 0.15f);
+                                }
+                                break;
+                            case 4:
+                                model.SetSpriteName(SpriteName.DamageSlashEffect5);
+
+                                break;
+                            case 5:
+                                model.SetSpriteName(SpriteName.DamageSlashEffect6);
+
+                                break;
+                            case 9:
+                                model.SetSpriteName(SpriteName.DamageSlashEffect7);
+                                break;
+                        }
                     }
                 }
             }

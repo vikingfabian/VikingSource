@@ -14,17 +14,7 @@ namespace VikingEngine.Voxels
 {
     class ObjExporterScript
     {
-        //private static int StartIndex = 0;
-
-        //public static void Start()
-        //{
-        //    StartIndex = 0;
-        //}
-        //public static void End()
-        //{
-        //    StartIndex = 0;
-        //}
-
+        
         public static FilePath ExportPath(string name)
         {
             return new FilePath(null, name, ".obj", true, false);
@@ -182,92 +172,5 @@ namespace VikingEngine.Voxels
             }
         }
 
-
-        //public static void Export(List<PolygonNormal> polygons, string name)
-        //{
-        //    //This method is outdated
-        //    //replace List<PolygonNormal> polygons with VoxelObjGridDataHD
-        //    //calculate faces by checking is the adjacent block is empty
-
-        //    StringBuilder sbVertices = new StringBuilder();
-        //    StringBuilder sbNormals = new StringBuilder();
-        //    StringBuilder sbUVs = new StringBuilder();
-        //    StringBuilder sbFaces = new StringBuilder();
-
-        //    int index = 1;
-
-        //    foreach (PolygonNormal poly in polygons)
-        //    {
-        //        sbFaces.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n",
-        //            index + 0, index + 1, index + 2));
-        //        sbFaces.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n",
-        //            index + 2, index + 1, index + 3));
-
-        //        index += 4;
-
-
-        //        foreach (var v in poly.VerticeData)
-        //        {
-        //            sbVertices.Append(string.Format("v {0} {1} {2}\n", v.Position.X, v.Position.Y, -v.Position.Z));
-
-        //            sbNormals.Append(string.Format("vn {0} {1} {2}\n", v.Normal.X, v.Normal.Y, v.Normal.Z));
-
-        //            sbUVs.Append(string.Format("vt {0} {1}\n", v.TextureCoordinate.X, 1 - v.TextureCoordinate.Y));
-        //        }
-        //    }
-
-        //    string file =
-        //        sbVertices.ToString() + Environment.NewLine +
-        //        sbUVs.ToString() + Environment.NewLine +
-        //        sbNormals.ToString() + Environment.NewLine +
-        //        "s off" + Environment.NewLine +
-        //        sbFaces.ToString();
-
-        //    //Ta bort kommas
-        //    //StringBuilder commaFreeText = new StringBuilder();
-        //    foreach (char c in file)
-        //    {
-        //        if (c == ',')
-        //        {
-        //            commaFreeText.Append('.');
-        //        }
-        //        else
-        //        {
-        //            commaFreeText.Append(c);
-        //        }
-        //    }
-
-
-        //    DataStream.FilePath path = new FilePath(null, name, ".obj", true, false);
-        //    new DataLib.TextFileToStorage(true, path.CompletePath(true),
-        //        commaFreeText.ToString(),
-        //        null, DataLib.ThreadType.SaveOnly);
-        //}
-
-
-        //static string MeshToString(List<Vector3> vertices, List<Vector3> normals, List<Vector2> uvs)
-        //{
-            
-
-        //    StringBuilder sb = new StringBuilder();
-
-        //    foreach (Vector3 vv in vertices)
-        //    {
-        //        sb.Append(string.Format("v {0} {1} {2}\n", vv.X, vv.Y, -vv.Z));
-        //    }
-        //    sb.Append("\n");
-        //    foreach (Vector3 nn in normals)
-        //    {
-        //        //Vector3 v = r * nn;
-        //        sb.Append(string.Format("vn {0} {1} {2}\n", -nn.X, -nn.Y, nn.Z));
-        //    }
-        //    sb.Append("\n");
-        //    foreach (Vector2 v in uvs)
-        //    {
-        //        sb.Append(string.Format("vt {0} {1}\n", v.X, v.Y));
-        //    }
-          
-        //    return sb.ToString();
-        //}
     }
 }

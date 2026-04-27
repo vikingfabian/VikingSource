@@ -22,10 +22,12 @@ namespace VikingEngine.DSSWars.Players
         public bool IsPlayerNeighbor = false;
         public Faction faction;
         public int aggressionLevel = AggressionLevel0_Passive;
-        public bool protectedPlayer = false;
+        public bool protectedFromBotAttacks = false;
         protected bool ignorePlayerCapture = false;
+        public bool personality_loner = false;
+        public bool protectedFromDelete = false;
+        public bool mayAttackPlayer = true;
 
-        //public List<AbsOrder> orders = new List<AbsOrder>();
         public Orders.Orders orders;
         abstract public void AutoExpandType(City city, out bool work, out Build.BuildAndExpandType buildType, out bool intelligent);
 
@@ -49,6 +51,7 @@ namespace VikingEngine.DSSWars.Players
             if (newGame)
             {
                 createStartupBarracks();
+                faction.addGold_factionWide(DssRef.difficulty.setting_gameMode == GameModeMainType.Sandbox? 500 : 200);
             }
         }
 
@@ -81,11 +84,23 @@ namespace VikingEngine.DSSWars.Players
 
         }
 
-        protected void readAiPlayerGameState(BinaryReader r, int version)
+        
+
+        protected void readAiPlayerGameState(BinaryReader r, int subversion)
         {
-            IsPlayerNeighbor = r.ReadBoolean();
-            aggressionLevel = r.ReadByte();
-            protectedPlayer = r.ReadBoolean();
+            if (subversion < 72)
+            {
+                IsPlayerNeighbor = r.ReadBoolean();
+                aggressionLevel = r.ReadByte();
+                protectedFromBotAttacks = r.ReadBoolean();
+            }
+            else
+            {
+                aggressionLevel = r.ReadByte();
+                var bools = new EightBit(r);
+                bools.Get(out IsPlayerNeighbor, out protectedFromBotAttacks, out personality_loner, out protectedFromDelete, out mayAttackPlayer);
+                
+            }
         }
 
         virtual public void readGameState(System.IO.BinaryReader r, int version, ObjectPointerCollection pointers)
@@ -108,17 +123,17 @@ namespace VikingEngine.DSSWars.Players
         virtual public void aiPlayerAsynchUpdate(float time)
         { }
 
-        virtual public void onNewRelation(Faction otherFaction, DiplomaticRelation rel, RelationType previousRelation)
+        virtual public void onNewRelation(Faction otherFaction, Communication.DiplomaticRelation rel, RelationType previousRelation)
         {
             //On peace, stop all attacking armies
-            bool fromWar = Diplomacy.IsWar(rel.Relation);
+            bool fromWar = Diplomacy.IsWar(previousRelation);
             bool toWar = Diplomacy.IsWar(rel.Relation);
 
             if (fromWar != toWar)
             {
                 if (toWar)
                 {
-                    faction.tradeAllianceWars(otherFaction);
+                    faction.tradeAllianceWars(otherFaction, rel);
                 }
                 else
                 {
@@ -129,7 +144,7 @@ namespace VikingEngine.DSSWars.Players
             if (rel.Relation == RelationType.RelationType3_Ally &&
                 !rel.secret)
             {
-                faction.tradeAllianceWars(otherFaction);
+                faction.tradeAllianceWars(otherFaction, rel);
             }
         }
 
@@ -185,19 +200,71 @@ namespace VikingEngine.DSSWars.Players
                     }
                 }
 
-                player.GetAiPlayer().refreshAggression();
+                //player.GetAiPlayer().refreshAggression();
 
-                var relation = DssRef.diplomacy.GetOrCreateRelation(faction, player.faction);
-                relation.SetWorseSpeakTerms(DssRef.diplomacy.SpeakTermsOnNeigbor_BadChance, DssRef.diplomacy.SpeakTermsOnNeigbor_NoneChance);
+                ref var relation = ref DssRef.world.diplomacy.GetRefRelation(faction.myIndex, player.faction.myIndex);
+                relation.SetWorseSpeakTerms(DssRef.world.diplomacy.SpeakTermsOnNeigbor_BadChance, DssRef.world.diplomacy.SpeakTermsOnNeigbor_NoneChance);
 
                 if (faction.Size() >= FactionSize.Big)
                 {
-                    protectedPlayer = true;
+                    protectedFromBotAttacks = true;
                 }
             }
         }
 
-        virtual public void createStartUnits()
+        protected bool quickMatchUnits(bool checkIfParticipant)
+        {
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
+            {
+                if (!checkIfParticipant || IsLocalPlayer() || DssRef.world.quickMatchFactions.Contains(faction.myIndex))
+                {
+                    IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
+                    Army mainArmy = faction.NewArmy(onTile);
+
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        new SoldierGroup(mainArmy, DssLib.SoldierProfile_StandardArcher, mainArmy.position);
+                    }
+                    for (int i = 0; i < 1; ++i)
+                    {
+                        new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
+                    }
+
+                    if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
+                    {
+                        for (int i = 0; i < 1; ++i)
+                        {
+                            new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
+                        }
+                    }
+
+                    mainArmy.setAsStartArmy();
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        protected void settlerGuardUnits()
+        {
+            IntVector2 onTile = faction.mainCity.ArmySpawnTilePos();
+            Army mainArmy = faction.NewArmy(onTile);
+
+            if (IsLocalPlayer() && DssRef.difficulty.honorGuard)
+            {
+                new SoldierGroup(mainArmy, DssLib.SoldierProfile_HonorGuard, mainArmy.position);
+            }
+            else
+            {
+                new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
+            }
+
+            mainArmy.setAsStartArmy();
+        }
+
+
+        virtual public void createStartUnits(double unitCountMulti, bool settlerGuard)
         {   
         }
 
@@ -234,7 +301,7 @@ namespace VikingEngine.DSSWars.Players
             if (aggressionLevel != agg)
             {
                 aggressionLevel = agg;
-                GetAiPlayer()?.refreshAggression();
+                //GetAiPlayer()?.refreshAggression();
             }
         }
         public void setMinimumAggression(int minAgg)
@@ -243,6 +310,11 @@ namespace VikingEngine.DSSWars.Players
             {
                 setAggression(minAgg);
             }
+        }
+
+        public override string ToString()
+        {
+            return "Player (" + Name + ")";
         }
     }
 

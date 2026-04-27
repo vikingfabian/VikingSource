@@ -9,6 +9,7 @@ using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.HUD.RichBox;
+using Microsoft.Xna.Framework.Content;
 
 namespace VikingEngine.DSSWars.Conscript
 {
@@ -41,24 +42,31 @@ namespace VikingEngine.DSSWars.Conscript
 
             void resource(bool weapon, ItemResourceType resourceType)
             {
+                IconName.Item(resourceType, out var icon, out var name);    
+
                 content.newLine();
                 content.Add(new RbImage(SpriteName.WarsHudCheckNo));
                 content.space(0.5f);
                 content.Add(new RbText((weapon ? DssRef.lang.Conscript_WeaponTitle : DssRef.lang.Conscript_ArmorTitle) + ":", HudLib.TitleColor_TypeName));
                 content.space();
-                content.Add(new RbImage(ResourceLib.Icon(resourceType)));
+                content.Add(new RbImage(icon));
                 content.space();
-                content.Add(new RbText(LangLib.Item(resourceType), HudLib.NotAvailableColor));
+                content.Add(new RbText(name, HudLib.NotAvailableColor));
             }
         }
 
-        public static bool MayUseItemInConscript(City city, ItemResourceType item, bool isWeapon)
+        public static bool MayUseItemInConscript(City city, ItemResourceType item, bool isWeapon, bool guard)
         {
             
             if (isWeapon && city.warAutoWeaponType != WarAutoWeaponType.Mix)
             {
                 ConscriptProfile profile = new ConscriptProfile() { weapon = item };
-                profile.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmachine);
+                profile.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
+
+                //if (guard && knight)
+                //{
+                //    return false;
+                //}
 
                 switch (city.warAutoWeaponType)
                 {
@@ -122,101 +130,164 @@ namespace VikingEngine.DSSWars.Conscript
             return city.workForce.amount < city.HousingCount_Workers - DssConst.SoldierGroup_DefaultCount;
         }
 
-        public static bool HasEnoughFood(City city)
+        public static bool HasEnoughFoodAndGold(Faction faction, City city, bool guard, bool aggresive)
         {
-            switch (city.warAutoQuality)
+            if (faction.GetGold(city) > DssConst.Gold_RichStatus)
             {
-                default:
-                    return city.res_food.amount > 20;
-                case WarAutoQuality.Medium:
-                    return city.res_food.amount > 50;
-                case WarAutoQuality.High:
-                    return city.res_food.amount > city.res_food.goalBuffer / 2;
+                //Too rich to care
+                return true;
+            }
+               
+
+            if (guard)
+            {
+                if (DssRef.storage.gameRuleset.centralGold)
+                {
+                    return faction.money.copper > 0 && (aggresive || faction.GoldSecDiff() > -(DssConst.UpkeepPerGuard_copp * Money.CopperToGold * 50));
+                }
+                else
+                {
+                    return city.money.GetGold() > 0 && (aggresive || city.previousIncome_copp > -(DssConst.UpkeepPerGuard_copp * 10));
+                }
+            }
+            else
+            {
+                var res_food = city.GetRefGroupedResource(EntityComponent.CityResoureIndex.food);
+
+                if (aggresive || res_food.changeRate.Change > -20)
+                {
+                    switch (city.warAutoQuality)
+                    {
+                        default:
+                            return res_food.amount > 50;
+                        case WarAutoQuality.Medium:
+                            return res_food.amount > 200;
+                        case WarAutoQuality.High:
+                            return res_food.amount > res_food.stockPileLimit / 2;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 
         public static void WorkPriority(City city, ref WorkTemplate workTemplate)
         {
-            if (city.warAutoQuality >= WarAutoQuality.Medium)
+            int weaponPrio = city.automationFocus == AutomationFocus.Military ? 2 : 1;
+
+            int lowQuality = weaponPrio;
+            int mediumQuality = weaponPrio;
+
+            int gunPrio = weaponPrio;
+            int meleePrio = weaponPrio;
+            int rangedPrio = weaponPrio;
+            int warmashinePrio = weaponPrio;
+
+            if (city.automationFocus == AutomationFocus.Military)
             {
-                workTemplate.craft_slingshot.set(0);
-                workTemplate.craft_sharpstick.set(0);
+                if (city.warAutoWeaponType != WarAutoWeaponType.Mix)
+                {
+
+                    switch (city.warAutoWeaponType)
+                    {
+                        case WarAutoWeaponType.Melee:
+
+                            //workTemplate.craft_blackpowder.set(0);
+                            //workTemplate.craft_gunpowder.set(0);
+                            //workTemplate.craft_bullet.set(0);
+                            gunPrio = 0;
+                            rangedPrio = 0;
+                            warmashinePrio = 0;
+                            //setRanged(ref workTemplate);
+                            //setWarmachines(ref workTemplate);
+                            break;
+
+                        case WarAutoWeaponType.Ranged:
+                            meleePrio = 0;
+                            warmashinePrio = 0;
+                            //setMelee(ref workTemplate);
+                            //setWarmachines(ref workTemplate);
+                            break;
+                        case WarAutoWeaponType.Warmachine:
+                            meleePrio = 0;
+                            rangedPrio = 0;
+                            //setMelee(ref workTemplate);
+                            //setRanged(ref workTemplate);
+                            break;
+                    }
+                }
+            }
+
+            setGunPowder(ref workTemplate, gunPrio);
+            setMelee(ref workTemplate, meleePrio);
+            setRanged(ref workTemplate, rangedPrio);
+            setWarmachines(ref workTemplate, warmashinePrio);
+
+
+            if (city.automationFocus == AutomationFocus.Military &&
+                city.warAutoQuality >= WarAutoQuality.Medium)
+            {
+                workTemplate.Get(WorkPriorityType.craftSlingshot).set(0);
+                workTemplate.Get(WorkPriorityType.craftSharpStick).set(0);
 
                 if (city.warAutoQuality >= WarAutoQuality.High)
                 {
-                    workTemplate.craft_throwingspear.set(0);
+                    workTemplate.Get(WorkPriorityType.craftThrowingspear).set(0);
                 }
             }
 
-            if (city.warAutoWeaponType != WarAutoWeaponType.Mix)
+            void setGunPowder(ref WorkTemplate workTemplate, int prio)
             {
-
-                switch (city.warAutoWeaponType)
-                {
-                    case WarAutoWeaponType.Melee:
-
-                        workTemplate.craft_blackpowder.set(0);
-                        workTemplate.craft_gunpowder.set(0);
-                        workTemplate.craft_bullet.set(0);
-
-                        removeRanged(ref workTemplate);
-                        removeWarmachines(ref workTemplate);
-                        break;
-
-                    case WarAutoWeaponType.Ranged:
-                        removeMelee(ref workTemplate);
-                        removeWarmachines(ref workTemplate);
-                        break;
-                    case WarAutoWeaponType.Warmachine:
-                        removeMelee(ref workTemplate);
-                        removeRanged(ref workTemplate);
-                        break;
-                }
-
-
-                void removeMelee(ref WorkTemplate workTemplate)
-                {
-                    workTemplate.craft_sharpstick.set(0);
-                    workTemplate.craft_bronzesword.set(0);
-                    workTemplate.craft_shortsword.set(0);
-                    workTemplate.craft_sword.set(0);
-                    workTemplate.craft_longsword.set(0);
-                    workTemplate.craft_handspear.set(0);
-                    workTemplate.craft_mithrilsword.set(0);
-                    workTemplate.craft_warhammer.set(0);
-                    workTemplate.craft_twohandsword.set(0);
-                    workTemplate.craft_knightslance.set(0);
-                }
-
-                void removeRanged(ref WorkTemplate workTemplate)
-                {
-                    workTemplate.craft_slingshot.set(0);
-                    workTemplate.craft_throwingspear.set(0);
-                    workTemplate.craft_bow.set(0);
-                    workTemplate.craft_longbow.set(0);
-                    workTemplate.craft_crossbow.set(0);
-                    workTemplate.craft_mithrilbow.set(0);
-
-                    workTemplate.craft_handcannon.set(0);
-                    workTemplate.craft_handculverin.set(0);
-                    workTemplate.craft_rifle.set(0);
-                    workTemplate.craft_blunderbus.set(0);
-                }
-
-                void removeWarmachines(ref WorkTemplate workTemplate)
-                {
-                    workTemplate.craft_ballista.set(0);
-                    workTemplate.craft_manuballista.set(0);
-                    workTemplate.craft_catapult.set(0);
-                    workTemplate.craft_batteringram.set(0);
-
-                    workTemplate.craft_siegecannonbronze.set(0);
-                    workTemplate.craft_mancannonbronze.set(0);
-                    workTemplate.craft_siegecannoniron.set(0);
-                    workTemplate.craft_mancannoniron.set(0);
-                }
-
+                workTemplate.Get(WorkPriorityType.craftBlackPowder).set(prio);
+                workTemplate.Get(WorkPriorityType.craftGunPowder).set(prio);
+                workTemplate.Get(WorkPriorityType.craftBullet).set(prio);
             }
+
+            void setMelee(ref WorkTemplate workTemplate, int prio)
+            {
+                workTemplate.Get(WorkPriorityType.craftSharpStick).set(prio);
+                workTemplate.Get(WorkPriorityType.craftBronzeSword).set(prio);
+                workTemplate.Get(WorkPriorityType.craftShortSword).set(prio);
+                workTemplate.Get(WorkPriorityType.craftSword).set(prio);
+                workTemplate.Get(WorkPriorityType.craftLongSword).set(prio);
+                workTemplate.Get(WorkPriorityType.craftHandSpear).set(prio);
+                workTemplate.Get(WorkPriorityType.craftMithrilSword).set(prio);
+                workTemplate.Get(WorkPriorityType.craftWarhammer).set(prio);
+                workTemplate.Get(WorkPriorityType.craftTwoHandSword).set(prio);
+                // workTemplate.Get(WorkPriorityType.craftKnightslance).set(prio); // TODO: Add to Enum
+            }
+
+            void setRanged(ref WorkTemplate workTemplate, int prio)
+            {
+                workTemplate.Get(WorkPriorityType.craftSlingshot).set(prio);
+                workTemplate.Get(WorkPriorityType.craftThrowingspear).set(prio);
+                workTemplate.Get(WorkPriorityType.craftBow).set(prio);
+                workTemplate.Get(WorkPriorityType.craftLongbow).set(prio);
+                workTemplate.Get(WorkPriorityType.craftCrossbow).set(prio);
+                workTemplate.Get(WorkPriorityType.craftMithrilbow).set(prio);
+
+                workTemplate.Get(WorkPriorityType.craftHandCannon).set(prio);
+                workTemplate.Get(WorkPriorityType.craftHandCulverin).set(prio);
+                workTemplate.Get(WorkPriorityType.craftRifle).set(prio);
+                workTemplate.Get(WorkPriorityType.craftBlunderbuss).set(prio);
+            }
+
+            void setWarmachines(ref WorkTemplate workTemplate, int prio)
+            {
+                workTemplate.Get(WorkPriorityType.craftBallista).set(prio);
+                workTemplate.Get(WorkPriorityType.craftManuBallista).set(prio);
+                workTemplate.Get(WorkPriorityType.craftCatapult).set(prio);
+                workTemplate.Get(WorkPriorityType.craftBatteringRam).set(prio);
+
+                workTemplate.Get(WorkPriorityType.craftSiegeCannonBronze).set(prio);
+                workTemplate.Get(WorkPriorityType.craftManCannonBronze).set(prio);
+                workTemplate.Get(WorkPriorityType.craftSiegeCannonIron).set(prio);
+                workTemplate.Get(WorkPriorityType.craftManCannonIron).set(prio);
+            }
+
+
 
         }
     }

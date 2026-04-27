@@ -1,30 +1,34 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VikingEngine.DebugExtensions;
+using VikingEngine.DSSWars.Battle;
+using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.Data;
-using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Event
 {
-    class EventManager
+    partial class EventManager
     {
-
         public List<City> factories = new List<City>(3);
 
         Time dyingFactionsTimer = Time.Zero;
 
-        Time toPeacefulCheckTimer = new Time(3, TimeUnit.Minutes);
+        ConcurrentQueue<AbsStoryEvent> mainStory = new ConcurrentQueue<AbsStoryEvent>();
 
-        List<AbsStoryEvent> mainStory = new List<AbsStoryEvent>();
+        public int maxWarsJuggles = 0;
+        bool gameHasEnded = false;
 
         public EventManager()
-        {//eventTriggerGameTimeSec = DssRef.difficulty.aiDelayTimeSec;
+        {
         }
 
         virtual public void onGameStarted()
@@ -42,21 +46,18 @@ namespace VikingEngine.DSSWars.Event
         protected void onDemoTimeUp()
         {
             DssRef.state.LocalHost().hud.messages.Add(DssRef.lang.Demo_TimesUp_Title, DssRef.lang.Demo_EndInOneMinuteDescription);
-            new Timer.TimedAction1ArgTrigger_InGame<GameEndReason>(viewEndScreen, GameEndReason.TimesUp, TimeExt.MinuteInSeconds * 1f);
-        }
-        protected void viewEndScreen(GameEndReason endReason)
-        {
-            new EndScene(endReason, false);
+            new Timer.TimedAction3ArgTrigger_InGame<GameEndReason, VictoryType, MatchResult>(triggerGameEnd, GameEndReason.TimesUp, VictoryType.None, null, TimeExt.MinuteInSeconds * 1f);
         }
 
         public AbsStoryEvent CurrentEvent()
         {
-            return mainStory.FirstOrDefault();
+            mainStory.TryPeek(out var ev);
+            return ev;
         }
 
         public int StoryIndex()
-        { 
-            var ev = mainStory.FirstOrDefault();
+        {
+            mainStory.TryPeek(out var ev);
             if (ev == null)
             {
                 return EventsOrder.StoryEnd;
@@ -66,21 +67,20 @@ namespace VikingEngine.DSSWars.Event
 
         virtual public void asyncUpdate(float time)
         {
-            if (DssRef.state.localPlayers[0].tutorial != null)// ||
-                //!DssRef.difficulty.runEvents)
-            {
-                return;
-            }
+            //if (DssRef.state.localPlayers[0].tutorial != null)
+            //{
+            //    return;
+            //}
 
-            var ev = mainStory.FirstOrDefault();
+            mainStory.TryPeek(out var ev);//var ev = mainStory.FirstOrDefault();
             if (ev != null)
             {
                 if (ev.asyncUpdate(time))
                 {
-                    mainStory.RemoveAt(0);
-                    if (mainStory.Count > 0)
+                    mainStory.TryDequeue(out _);
+                    if (mainStory.TryPeek(out var next))
                     {
-                        mainStory.First().onStart();
+                        next.onStart();
                     }
                 }
             }
@@ -89,26 +89,128 @@ namespace VikingEngine.DSSWars.Event
 
             asyncUpdateTooPeaceful(time);
 
-            asyncCheckPlayerDominance();
-        }
-
-        void asyncCheckPlayerDominance()
-        {
-            foreach (var p in DssRef.state.localPlayers)
+            if (Ref.peRnd.ChanceF(0.1f))
             {
-                if (p.faction.cities.Count >= p.nextDominationSize)
-                {
-                    p.nextDominationSize = p.faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();
-                    p.dominationEvents++;
-
-                    collectAllianceAgainstPlayerDomination(p);
-                }
+                asyncCheckVictory();
             }
         }
 
+        void asyncCheckVictory()
+        {
+            if (DssRef.difficulty.setting_gameMode == GameModeMainType.Spectator)
+            {
+                return;
+            }
+
+            int dominationCount = DssRef.storage.gameRuleset.mapSize > MapSize.Small ? 5 : 3;
+            
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                int hillFriends = 0;
+                int allyCount = 0;
+                int warCount = 0;
+                bool worldPeace = true;
+
+                float warStrength = 0;
+                float peaceStrength = p.faction.PotensialMilitaryStrength();
+
+                RelationsLoop loop = new RelationsLoop(p.faction.myIndex);
+                while (loop.Next())
+                {
+                    
+
+                        if (loop.OtherFaction(out var otherFaction) && otherFaction.isAlive)
+                        {
+                       
+                        var relation = loop.Relation();
+
+                            if (relation.Relation >= RelationType.RelationType3_Ally)
+                            {
+                                allyCount++;
+                                if (otherFaction.factiontype == FactionType.BramblebrookHill ||
+                                    otherFaction.factiontype == FactionType.Tumblehill)
+                                {
+                                    hillFriends++;
+                                }
+                            }
+                            else if (relation.Relation <= RelationType.RelationTypeN3_War)
+                            { 
+                                warCount++;
+                                warStrength += otherFaction.PotensialMilitaryStrength();
+                            }
+
+                            if (relation.Relation < RelationType.RelationType1_Peace && relation.SpeakTerms != SpeakTerms.SpeakTermsN2_None)
+                            {
+                                worldPeace = false;
+                            }
+                            else
+                            {
+                                peaceStrength += otherFaction.PotensialMilitaryStrength();
+                            }
+                        //}
+                    }
+                }
+
+                p.warCount = warCount;
+                if (allyCount != p.allyCount)
+                { 
+                    p.allyCount = allyCount;
+                    DssRef.achieve.onAllyCount(allyCount);
+                }
+                if (hillFriends >= 2)
+                {
+                    DssRef.achieve.UnlockAchievement_async(AchievementIndex.worthy_friends);
+                }
+
+                if (worldPeace && peaceStrength > warStrength && p.faction.cities.Count < DssRef.world.cities.Count / 2)
+                {
+                    Ref.update.AddSyncAction(new SyncAction1Arg<VictoryType>(victory, VictoryType.WorldPeace));
+                    return;
+                }
+
+
+                bool domination = true;
+
+                int missingCities = 0;
+                foreach (var city in DssRef.world.cities)
+                {
+                    if (city.factionIndex != p.faction.myIndex)
+                    {
+                        missingCities++;
+                        if (missingCities > dominationCount)
+                        { 
+                            domination = false;
+                            break;
+                        }
+                    }
+                }
+                if (domination)
+                {
+                    Ref.update.AddSyncAction(new SyncAction1Arg<VictoryType>(victory, VictoryType.Domination));
+                    return;
+                }
+
+            }            
+            
+        }
+
+        //void asyncCheckPlayerDominance()
+        //{
+        //    foreach (var p in DssRef.state.localPlayers)
+        //    {
+        //        if (p.faction.cities.Count >= p.nextDominationSize)
+        //        {
+        //            //p.nextDominationSize = p.faction.cities.Count + DssConst.DominationSizeIncrease.GetRandom();
+        //            p.cohalitionEvent = true;
+
+        //            collectAllianceAgainstPlayerDomination(p);
+        //        }
+        //    }
+        //}
+
         public bool RunAi()
         {
-            var storyevent = mainStory.FirstOrDefault();
+            mainStory.TryPeek(out var storyevent);
             if (storyevent != null)
             {
                 return storyevent.RunAi();
@@ -119,7 +221,7 @@ namespace VikingEngine.DSSWars.Event
 
         public bool MayAttackPlayer()
         {
-            var storyevent = mainStory.FirstOrDefault();
+            mainStory.TryPeek(out var storyevent);
             if (storyevent != null)
             {
                 return storyevent.MayAttackPlayer();
@@ -137,48 +239,105 @@ namespace VikingEngine.DSSWars.Event
         {
             if (newGame)
             {
-                if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
+                if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickMatch)
                 {
                     addStoryEvent(new List<AbsStoryEvent>
-                    {
-                        new StoryEvent_AiDelay(),
-                        new StoryEvent_AiWarDelay(),
-                        new StoryEvent_WarmanagerDelay(),
-                    }, true);
-
-                    if (DssRef.difficulty.runStory &&
-                        PlatformSettings.STEAM_DEMO == false)
-                    {
-                        addStoryEvent(new List<AbsStoryEvent>
                         {
-                            new StoryEvent_SouthShips(),
-                            new StoryEvent_DarkLordWarning(),
-                            new StoryEvent_DarkLord(),
-                            new StoryEvent_Factories(),
-                            //new StoryEvent_FactoriesDestroyed(),
-                        }, false);
-                    }
+                            new StoryEvent_Tutorial(),
+                            new StoryEvent_AiDelay(),
+                            new StoryEvent_QuickMatch(),
+                        }, true);
                 }
+                else
+                {
 
-                //Prepare secret alliances
-                var DarkFollower = DssRef.world.factions.Array[DssRef.settings.Faction_DarkFollower];
-                var SouthHara = DssRef.world.factions.Array[DssRef.settings.Faction_SouthHara];
-                var UnitedKingdom = DssRef.world.factions.Array[DssRef.settings.Faction_UnitedKingdom];
 
-                DssRef.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType3_Ally).secret = true;
-                DssRef.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, RelationType.RelationType3_Ally).secret = true;
-                DssRef.diplomacy.SetRelationType(UnitedKingdom, SouthHara, RelationType.RelationType3_Ally).secret = true;
+                    if (DssRef.difficulty.setting_gameMode != GameModeMainType.Spectator)
+                    {
 
-                //Setup dying war
-                dyingFactionsTimer = new Time(5, TimeUnit.Minutes);
+                        if (DssRef.difficulty.runStory &&
+                            PlatformSettings.STEAM_DEMO == false)
+                        {
+                            if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
+                            {
+                                addStoryEvent(new List<AbsStoryEvent>
+                                {
+                                    new StoryEvent_Tutorial(),
+                                    new StoryEvent_AiDelay(),
+                                    new StoryEvent_AiWarDelay(),
+                                    new StoryEvent_FirstAttack(),
+                                    new StoryEvent_WarmanagerDelay(),
+                                    new StoryEvent_Barbarians(),
+                                    new StoryEvent_Mercenaries(),
+                                    new StoryEvent_Cohalition(),
+                                    new StoryEvent_DarkLordWarning(),
+                                    new StoryEvent_DarkLord(),
+                                    new StoryEvent_DefeatTheBoss(),
+                                }, true);
+                            }
+                            else if (DssRef.difficulty.setting_gameMode == GameModeMainType.QuickBoss)
+                            {
+                                addStoryEvent(new List<AbsStoryEvent>
+                                {
+                                    new StoryEvent_Tutorial(),
+                                    new StoryEvent_AiDelay(),
+                                    new StoryEvent_AiWarDelay(),
+                                    new StoryEvent_WarmanagerDelay(),
+                                    new StoryEvent_DarkLordWarning(),
+                                    new StoryEvent_DarkLord(),
+                                    new StoryEvent_DefeatTheBoss(),
+                                }, true);
+                            }
+                            else
+                            {
+                                throw new NotImplementedException();
+                            }
+                        }
+                        else
+                        {
+                            addStoryEvent(new List<AbsStoryEvent>
+                            {
+                                new StoryEvent_Tutorial(),
+                                new StoryEvent_AiDelay(),
+                                new StoryEvent_AiWarDelay(),
+                                new StoryEvent_WarmanagerDelay(),
+                            }, true);
+                        }
+                    }
 
-                var monger = DssRef.world.factions.Array[DssRef.settings.Faction_DyingMonger];
-                var hate = DssRef.world.factions.Array[DssRef.settings.Faction_DyingHate];
-                var destru = DssRef.world.factions.Array[DssRef.settings.Faction_DyingDestru];
+                    if (DssRef.difficulty.runStory/* == GameModeMainType.FullStory*/)
+                    {
+                        //Prepare secret alliances
+                        var DarkFollower = DssRef.world.faction(DssRef.settings.Faction_DarkFollower);
+                        var SouthHara = DssRef.world.faction(DssRef.settings.Faction_SouthHara);
+                        var UnitedKingdom = DssRef.world.faction(DssRef.settings.Faction_UnitedKingdom);
 
-                DssRef.diplomacy.SetRelationType(monger, hate, RelationType.RelationTypeN4_TotalWar);
-                DssRef.diplomacy.SetRelationType(monger, destru, RelationType.RelationTypeN4_TotalWar);
-                DssRef.diplomacy.SetRelationType(hate, destru, RelationType.RelationTypeN4_TotalWar);
+
+                        DssRef.world.diplomacy.SetRelationType(DarkFollower, SouthHara, RelationType.RelationType2_Good, null, null, true);
+                        DssRef.world.diplomacy.SetRelationType(DarkFollower, UnitedKingdom, RelationType.RelationType3_Ally, null, null, true);
+                        DssRef.world.diplomacy.SetRelationType(UnitedKingdom, SouthHara, RelationType.RelationType2_Good, null, null, true);
+                    }
+
+                    DssRef.world.diplomacy.SetRelationType(null, null, RelationType.RelationType2_Good, null, null, true); //test
+
+                    //Setup dying war
+                    dyingFactionsTimer = new Time(5, TimeUnit.Minutes);
+
+                    var monger = DssRef.world.faction(DssRef.settings.Faction_DyingMonger);
+                    var hate = DssRef.world.faction(DssRef.settings.Faction_DyingHate);
+                    var destru = DssRef.world.faction(DssRef.settings.Faction_DyingDestru);
+
+                    DssRef.world.diplomacy.SetRelationType(monger, hate, RelationType.RelationTypeN4_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(monger, destru, RelationType.RelationTypeN4_TotalWar);
+                    DssRef.world.diplomacy.SetRelationType(hate, destru, RelationType.RelationTypeN4_TotalWar);
+
+                    //void secretAlliance(Faction faction1, Faction faction2)
+                    //{
+                    //    ref var relation =  ref DssRef.world.diplomacy.GetRefRelation_Safe(faction1.myIndex, faction2.myIndex);
+                    //    relation.SetRelation(RelationType.RelationType3_Ally, out _);
+                    //    relation.secret = true;
+                    //}
+                }
             }
         }
 
@@ -186,12 +345,21 @@ namespace VikingEngine.DSSWars.Event
         {
             if (replace)
             {
-                mainStory = events;
-                mainStory.First().onStart();
+                mainStory.Clear();
             }
-            else
+
+            foreach (var m in events)
             {
-                mainStory.AddRange(events);
+                mainStory.Enqueue(m);
+            }
+            
+            if (replace)
+            {
+
+                if (mainStory.TryPeek(out var first))
+                {
+                    first.onStart();
+                }
             }
         }
 
@@ -213,12 +381,14 @@ namespace VikingEngine.DSSWars.Event
             //IOLib.WriteBinaryList(w, spawnPos_Player);
             //IOLib.WriteObjectList(w, darkLordAvailableFactions);
             //IOLib.WriteObjectList(w, darkLordAllies);
+            w.Write(gameHasEnded);
 
+            var storyArray = mainStory.ToArray();
             w.Write((byte)mainStory.Count);
 
-            for (int i = 0; i < mainStory.Count; ++i)
+            for (int i = 0; i < storyArray.Length; ++i)
             {
-                var ev = mainStory[i];
+                var ev = storyArray[i];
                 w.Write((byte)ev.StoryEventType());
                 if (ev.HasSaveData())
                 {
@@ -232,7 +402,7 @@ namespace VikingEngine.DSSWars.Event
             }
 
             dyingFactionsTimer.write(w);
-
+            w.Write((ushort)maxWarsJuggles);
             
             
         }
@@ -244,7 +414,12 @@ namespace VikingEngine.DSSWars.Event
 
             //if (subVersion >= 47)
             //{
-                Ref.TotalGameTimeSec = r.ReadSingle();
+            Ref.TotalGameTimeSec = r.ReadSingle();
+            
+            if (subVersion >= 90)
+            {
+                gameHasEnded = r.ReadBoolean();
+            }
             //}
             if (subVersion < 57)
             {
@@ -272,14 +447,32 @@ namespace VikingEngine.DSSWars.Event
                 //NEW
                 mainStory.Clear();
                 int mainStoryCount = r.ReadByte();
-                for (int i = 0; i < mainStory.Count; ++i)
+                for (int i = 0; i < mainStoryCount; ++i)
                 {
                     var type = (EventType)r.ReadByte();
+                    if (subVersion < 82)
+                    { //old
+                        if (type == (EventType)255)
+                        {
+                            type = EventType.Tutorial;
+                        }
+                        else
+                        {
+                            type++;
+                        }
+                    }
                     var ev = CreateEvent(type);
-                    mainStory.Add(ev);
-                    if (r.ReadBoolean())
+                    if (ev != null)
                     {
-                        ev.readGameState(r, subVersion, pointers);
+                        mainStory.Enqueue(ev);
+                        if (r.ReadBoolean())
+                        {
+                            ev.readGameState(r, subVersion, pointers);
+                        }
+                    }
+                    else
+                    {
+                        r.ReadBoolean();
                     }
                 }
             }
@@ -287,10 +480,187 @@ namespace VikingEngine.DSSWars.Event
             dyingFactionsTimer.read(r);
             dyingFactionsTimer.MilliSeconds = Bound.Min(dyingFactionsTimer.MilliSeconds, 1);
 
-            //if (subVersion < 47)
+            if (subVersion >= 72)
+            { 
+                maxWarsJuggles = r.ReadUInt16();
+            }
+        }
+
+        public void loadCleanup()
+        {
+            //var current = CurrentEvent();
+            //if (current != null)
             //{
-            //    Ref.TotalGameTimeSec = r.ReadSingle();
+            //    if (current.StoryEventType() > EventType.Barbarians)
+            //    {
+            //        var f = DssRef.world.faction(DssRef.settings.Faction_Barbarian);
+            //        if (f != null)
+            //        {
+            //            f.GetPlayer().protectedFromDelete = false;
+            //        }
+            //    }
+
+            //    if (current.StoryEventType() > EventType.Mercenaries)
+            //    {
+            //        var f = DssRef.world.faction(DssRef.settings.Faction_SouthHara);
+            //        if (f != null)
+            //        {
+            //            f.GetPlayer().protectedFromDelete = false;
+            //        }
+            //    }
+
+            //    if (current.StoryEventType() > EventType.Boss)
+            //    {
+            //        if (DssRef.settings.darkLordPlayer != null)
+            //        {
+            //            DssRef.settings.darkLordPlayer.protectedFromDelete = false;
+            //        }
+            //    }
             //}
+        }
+
+        public void onBattleEnd_async(AbsArmy army, InBattleWith inBattleWith)
+        {
+            if (army.GetPlayer().IsLocalPlayer() &&
+                inBattleWith.ContainsFaction(FactionType.Barbarians) && 
+                Bound.IsWithin(StoryIndex(), EventsOrder.Barbarians, EventsOrder.Barbarians +1))
+            {
+                army.GetPlayer().GetLocalPlayer().barbarianKiller = true;
+            }
+        }
+
+        public void onFactionDestroyed(Faction faction)
+        {
+            //Happens in one second update
+            switch (faction.factiontype)
+            { 
+                case FactionType.Barbarians:
+                    foreach (var p in DssRef.state.localPlayers)
+                    {
+                        if (p.barbarianKiller)
+                        {
+                            p.barbarianKiller = false;
+
+                            IntVector2 onTile = p.faction.mainCity.ArmySpawnTilePos();
+                            var mainArmy = p.faction.NewArmy(onTile);
+                            {
+                                SoldierConscriptProfile SoldierProfile = new SoldierConscriptProfile()
+                                {
+                                    conscript = new ConscriptProfile()
+                                    {
+                                        man = Resource.ItemResourceType.NobleMen,
+                                        weapon = Resource.ItemResourceType.HandSpear,
+                                        armorLevel = Resource.ItemResourceType.FullPlateArmor,
+                                        animal = Resource.ItemResourceType.WarHorse,
+                                        mountArmor = Resource.ItemResourceType.MountFullPlateArmor,
+                                        training = TrainingLevel.Champion,
+                                        specialization = SpecializationType.Traditional,
+                                    }
+                                };
+
+                                for (int i = 0; i < 4; ++i)
+                                {
+                                    new SoldierGroup(mainArmy, SoldierProfile, mainArmy.position);
+                                }
+                            }
+                            //mainArmy.tagBack = CityTagBack.Blue;
+                            //mainArmy.tagArt = ArmyTagArt.LevelMaster;
+                            mainArmy.Tag = new MapObjectTag(CityTagBack.Blue, MapObjectTag.Tag_LevelMaster);
+                            mainArmy.setAsStartArmy();
+
+                            p.hud.messages.Add(DssRef.lang.EventMessage_DarkHordeKiller_Title, DssRef.lang.EventMessage_DarkHordeKiller_Message);
+
+                            DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.barbarian_bane_any, AchievementIndex.barbarian_bane_100);
+                        }
+                    }
+                    break;
+                
+                case FactionType.DarkLord:
+//#if DEBUG
+//                    if (DssRef.settings.darkLordPlayer != faction.player)
+//                    {
+//                        throw new Exception();
+//                    }
+//#endif
+                    victory(VictoryType.DefeatBoss);
+                    break;
+
+                case FactionType.UnitedKingdom:
+                    if (IsStoryBeforeBoss() && DssRef.world.diplomacy.InWarWithPlayer(faction))
+                    {
+                        DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.early_uk_any, AchievementIndex.early_uk_100);
+                    }
+                    break;
+
+                case FactionType.DarkFollower:
+                    if (IsStoryBeforeBoss() && DssRef.world.diplomacy.InWarWithPlayer(faction))
+                    {
+                        DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.early_dread_any, AchievementIndex.early_dread_100);
+                    }
+                    break;
+            }
+
+            foreach (var p in DssRef.state.localPlayers)
+            {
+                if (DssRef.world.diplomacy.GetRelation(faction, p.faction).InWar())
+                {
+                    //var citiesC = p.faction.cities.counter();
+                    //while (citiesC.Next())
+                    //{
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref p.faction.cities, DssRef.world.cities, out City citySel))
+                    {
+                        if (citySel.previousOwner == faction.myIndex && 
+                            (citySel.myIndex == faction.lostCity_Time0 || citySel.myIndex == faction.lostCity_Time1))
+                        { //Credited with killing off the faction
+                            p.factionsTerminated++;
+
+                            if (DssRef.difficulty.setting_gameMode == GameModeMainType.FullStory)
+                            {
+                                switch (p.factionsTerminated)
+                                {
+                                    case 0:
+                                        DssRef.achieve.UnlockAchievement_on75(AchievementIndex.purge_nation_tier1);
+                                        break;
+                                    case 4:
+                                        DssRef.achieve.UnlockAchievement_on75(AchievementIndex.purge_nation_tier2);
+                                        break;
+                                    case 12:
+                                        DssRef.achieve.UnlockAchievement_on75(AchievementIndex.purge_nation_tier3);
+                                        break;
+
+                                }
+                            }
+
+                            if (p.firstAttacker == faction.myIndex)
+                            { 
+                                DssRef.achieve.UnlockAchievement_onAny_100(AchievementIndex.destroy_first_attacker_any, AchievementIndex.destroy_first_attacker_100);
+
+                                if (DssRef.achieve.difficultyPerc >= 290)
+                                {
+                                    DssRef.achieve.UnlockAchievement(AchievementIndex.destroy_first_attacker_300);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+                
+            
+        }
+
+        bool IsStoryBeforeBoss()
+        {
+            if (DssRef.difficulty.runStory/* .setting_gameMode == GameModeMainType.FullStory*/)
+            {
+                var current = CurrentEvent();
+                if (current != null && current.OrderIndex() < EventsOrder.DarkLord)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         //void prepareNext()
@@ -333,26 +703,28 @@ namespace VikingEngine.DSSWars.Event
 
         public void TestNextEvent()
         {
-            var ev = mainStory.FirstOrDefault();
-            if (ev != null)
+            mainStory.TryPeek(out var storyevent);
+            if (storyevent != null)
             {
                 DssRef.state.localPlayers[0].hud.messages.Add(
-                        "Test event", ev.StoryEventType().ToString());
-                ev.TriggerNow();
+                        "Test event", storyevent.StoryEventType().ToString());
+                storyevent.TriggerNow();
                 //checkTime.start(1);
                 //triggerTime.start(2);
                 //triggerTimeSpan_Minutes = IntervalF.NoInterval(0.1f);
             }
         }
 
+        
+
 
         void asyncUpdateDyingFactions(float time)
         { 
             if (dyingFactionsTimer.CountDown_IfActive(time))
             {
-                var monger = DssRef.world.factions.Array[DssRef.settings.Faction_DyingMonger];
-                var hate = DssRef.world.factions.Array[DssRef.settings.Faction_DyingHate];
-                var destru = DssRef.world.factions.Array[DssRef.settings.Faction_DyingDestru];
+                var monger = DssRef.world.faction(DssRef.settings.Faction_DyingMonger);
+                var hate = DssRef.world.faction(DssRef.settings.Faction_DyingHate);
+                var destru = DssRef.world.faction(DssRef.settings.Faction_DyingDestru);
 
                 var factions =  new List<Faction>() 
                 { 
@@ -361,35 +733,23 @@ namespace VikingEngine.DSSWars.Event
 
                 foreach (var faction in factions)
                 {
-                    faction.growthMultiplier = 0.5f;
-                    faction.addGold_factionWide( -10000);
-                    //var citiesC = faction.cities.counter();
-                    //while (citiesC.Next())
-                    //{
-                    //    citiesC.sel.gold = -2000;
-                    //}
-                    faction.hasDeserters = true;
-                }
-            }
-        }
-
-        void asyncUpdateTooPeaceful(float time)
-        {
-            var storyevent = mainStory.FirstOrDefault();
-            if (storyevent == null || storyevent.RunWarManager())
-            {
-                if (toPeacefulCheckTimer.CountDown(time) &&
-                    DssRef.difficulty.toPeacefulPercentage > 0)
-                {
-                    toPeacefulCheckTimer = new Time(30, TimeUnit.Minutes);
-
-                    foreach (var p in DssRef.state.localPlayers)
+                    if (faction != null)
                     {
-                        p.toPeacefulCheck_asynch();
+                        faction.growthMultiplier = 0.5f;
+                        faction.addGold_factionWide(-10000);
+                        //var citiesC = faction.cities.counter();
+                        //while (citiesC.Next())
+                        //{
+                        //    citiesC.sel.gold = -2000;
+                        //}
+                        faction.hasDeserters = true;
                     }
                 }
             }
         }
+
+        
+                   
 
         
 
@@ -437,7 +797,7 @@ namespace VikingEngine.DSSWars.Event
         //                        factionC.sel.factiontype == FactionType.SouthHara
         //                    ) &&
         //                    factionC.sel.cities.Count >= 2 &&
-        //                    !DssRef.diplomacy.PositiveRelationWithPlayer(factionC.sel))
+        //                    !DssRef.world.diplomacy.PositiveRelationWithPlayer(factionC.sel))
         //                {
         //                    available.Add(factionC.sel);
 
@@ -450,7 +810,7 @@ namespace VikingEngine.DSSWars.Event
         //                    }
         //                }
 
-        //                if (DssRef.diplomacy.NegativeRelationWithPlayer(factionC.sel) ||
+        //                if (DssRef.world.diplomacy.NegativeRelationWithPlayer(factionC.sel) ||
         //                    factionC.sel.diplomaticSide == DiplomaticSide.Dark)
         //                {
         //                    darkLordAllies.Add(factionC.sel);
@@ -475,107 +835,267 @@ namespace VikingEngine.DSSWars.Event
 
         
 
-        public void OnPlayerDeclareWar()
-        {
-            const int DelayReduceToSec = 10;
+       
 
-            var ev = mainStory.FirstOrDefault();
-            if (ev != null)
+        //public void onFactoryBuilt(City city)
+        //{
+        //    factories.Add(city);
+        //}
+
+        //public void onFactoryDestroyed(City city)
+        //{
+        //    factories.Remove(city);
+        //    if (factories.Count == 0)
+        //    {
+        //        DssRef.settings.darkLordPlayer.factoriesLeft = 0;
+
+        //        addStoryEvent(new List<AbsStoryEvent>{
+        //            //new StoryEvent_FactoriesDestroyed(),
+        //            new StoryEvent_DarkLordInPerson(),
+        //            new StoryEvent_KillTheDarkLord() }, 
+        //            true );
+
+        //        //nextEvent = EventType.DarkLordInPerson;
+        //        //Ref.update.AddSyncAction(new SyncAction1Arg<EventType>(RunNextEvent_synced, nextEvent));
+        //    }
+        //}
+
+        //public void onDarkLordSpawn()
+        //{
+        //    var ev = mainStory.FirstOrDefault();
+        //    if (ev != null)
+        //    {
+        //        if (ev.StoryEventType() != EventType.KillTheDarkLord)
+        //        {
+        //            addStoryEvent(new List<AbsStoryEvent>{
+        //                new StoryEvent_KillTheDarkLord() 
+        //            },
+        //            true);
+        //        }
+        //    }
+
+        //    //    if (nextEvent < EventType.KillTheDarkLord)
+        //    //{
+        //    //    nextEvent = EventType.KillTheDarkLord;
+
+        //    //    foreach (var p in DssRef.state.localPlayers)
+        //    //    {
+        //    //        p.hud.messages.Add(DssRef.lang.EventMessage_FinalBattleTitle, DssRef.lang.EventMessage_FinalBattleText);
+        //    //    }
+        //    //}
+        //}
+        //public void onDarkLorDeath()
+        //{
+
+        //    if (mainStory.Count > 0)
+        //    {
+        //        victory(true);
+        //    }
+        //}
+        public Faction findAttackingNeighborFaction(Faction defender)
+        {
+            var cities = defender.cities.toList(DssRef.world.cities);
+
+            while (cities.Count > 0)
             {
-                if (ev.RunWarManager() == false)
+                var city = arraylib.RandomListMemberPop(cities);
+
+                if (city != null)
                 {
-                    if (ev.triggerTime.length.seconds > DelayReduceToSec)
+                    EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                    while (neighbors.Next(DssRef.world.cities, out City nCity))//foreach (var cindex in city.neighborCities)
                     {
-                        ev.triggerTime.start(DelayReduceToSec);
+                        var otherfaction = nCity.GetFaction();
+                        if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender))
+                        {
+                            return otherfaction;
+                        }
                     }
                 }
             }
-
-            
+            return null;
         }
 
-        public void onFactoryBuilt(City city)
+        public Faction findFriendsToDefender(Faction attacker, Faction defender)
         {
-            factories.Add(city);
-        }
-
-        public void onFactoryDestroyed(City city)
-        {
-            factories.Remove(city);
-            if (factories.Count == 0)
+            if (attacker != null && defender != null)
             {
-                DssRef.settings.darkLordPlayer.factoriesLeft = 0;
+                var cities = attacker.cities.toList(DssRef.world.cities);
 
-                addStoryEvent(new List<AbsStoryEvent>{
-                    //new StoryEvent_FactoriesDestroyed(),
-                    new StoryEvent_DarkLordInPerson(),
-                    new StoryEvent_KillTheDarkLord() }, 
-                    true );
-
-                //nextEvent = EventType.DarkLordInPerson;
-                //Ref.update.AddSyncAction(new SyncAction1Arg<EventType>(RunNextEvent_synced, nextEvent));
-            }
-        }
-
-        public void onDarkLordSpawn()
-        {
-            var ev = mainStory.FirstOrDefault();
-            if (ev != null)
-            {
-                if (ev.StoryEventType() != EventType.KillTheDarkLord)
+                while (cities.Count > 0)
                 {
-                    addStoryEvent(new List<AbsStoryEvent>{
-                        new StoryEvent_KillTheDarkLord() 
-                    },
-                    true);
+                    var city = arraylib.RandomListMemberPop(cities);
+
+                    if (city != null)
+                    {
+                        //foreach (var cindex in city.neighborCities)
+                        EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                        while (neighbors.Next(DssRef.world.cities, out City nCity))//
+                        {
+                            var otherfaction = nCity.GetFaction();
+                            if (otherfaction != attacker && otherfaction != defender &&
+                                DssRef.world.diplomacy.GetRelation(otherfaction, defender).Relation >= RelationType.RelationType2_Good)
+                            {
+                                return otherfaction;
+                            }
+                        }
+                    }
                 }
             }
-
-            //    if (nextEvent < EventType.KillTheDarkLord)
-            //{
-            //    nextEvent = EventType.KillTheDarkLord;
-
-            //    foreach (var p in DssRef.state.localPlayers)
-            //    {
-            //        p.hud.messages.Add(DssRef.lang.EventMessage_FinalBattleTitle, DssRef.lang.EventMessage_FinalBattleText);
-            //    }
-            //}
+            return null;
         }
-        public void onDarkLorDeath()
+
+        public Faction findAttackingNeighborFaction_keepExpanding(Faction defender)
         {
-            
-            if (mainStory.Count > 0)
+            //var cities = defender.cities.toList();
+            bool[] factionsChecked = new bool[DssRef.world.factions.Array.Length];
+            List<Faction> factionsToCheck = new List<Faction>(8);
+            factionsToCheck.Add(defender);
+            factionsChecked[defender.myIndex] = true;
+
+            while (factionsToCheck.Count > 0)
             {
-                victory(true);
+                int checkIx = Math.Min(Ref.rnd.Int(factionsToCheck.Count), Ref.rnd.Int(factionsToCheck.Count));
+                Faction check = arraylib.Pull(factionsToCheck, checkIx);
+
+                var cities = check.cities.toList(DssRef.world.cities);
+
+                while (cities.Count > 0)
+                {
+                    var city = arraylib.RandomListMemberPop(cities);
+
+                    if (city != null)
+                    {
+                        //foreach (var cindex in city.neighborCities)
+                        EcsStaticArrayCounter neighbors = city.CityNeighbors();
+                        while (neighbors.Next(DssRef.world.cities, out City nCity))//
+                        {
+                            var otherfactionIx = nCity.factionIndex;
+                            if (otherfactionIx >= 0 &&
+                                otherfactionIx != city.factionIndex &&
+                                !factionsChecked[otherfactionIx])
+                            {
+                                var otherfaction = DssRef.world.faction(otherfactionIx);
+                                if (DssRef.world.diplomacy.botMayStartWar(otherfaction, defender))
+                                {
+                                    return otherfaction;
+                                }
+                                else
+                                {
+                                    factionsToCheck.Add(otherfaction);
+                                    factionsChecked[otherfactionIx] = true;
+                                }
+                            }
+                        }
+                    }
+                }
             }
+            return null;
+        }
+
+        public bool botMayStartWar(Faction attacker, Faction defender)
+        {
+            if (attacker != null && defender != null)
+            {
+                if (attacker.armies.Count > 0)
+                {
+                    if (!attacker.player.mayAttackPlayer && 
+                        (defender.player.IsLocalPlayer() || DssRef.world.diplomacy.InplayerAlliance(defender)))
+                    {
+                        return false;
+                    }
+
+                    if (attacker.player.IsLocalPlayer())
+                    {
+                        return false;
+                    }
+                    if (defender.player.IsLocalPlayer())
+                    {
+                        if (attacker.militaryStrength < Math.Min(defender.militaryStrength * 0.25f, 6) ||
+                            attacker.militaryStrength > defender.militaryStrength * 3f)
+                        {
+                            return false;
+                        }
+                    }
+                    
+                    var rel = DssRef.world.diplomacy.GetRelation(defender, attacker);
+                    if (rel.Relation >= RelationType.RelationTypeN1_Enemies && rel.Relation <= RelationType.RelationType1_Peace)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         public void onAllDarkCitiesDestroyed()
         {
-            if (mainStory.Count > 0)
-            {
-                if (DssRef.settings.darkLordPlayer.darkLordUnit == null)
-                {
-                    DssRef.achieve.UnlockAchievement(AchievementIndex.no_darklord);
-                }
-                victory(true);
-            }
+            //if (mainStory.Count > 0)
+            //{
+                //if (DssRef.settings.darkLordPlayer.darkLordUnit == null)
+                //{
+                //    DssRef.achieve.UnlockAchievement(AchievementIndex.no_darklord);
+                //}
+                victory(VictoryType.DefeatBoss);
+            //}
         }
 
-        public void onWorldDomination()
-        {
-            victory(false);
-        }
+        //public void onWorldDomination()
+        //{
+        //    victory( VictoryType.Domination);
+        //}
 
-        void victory(bool bossVictory)
+        public void victory(VictoryType vType)
         {
             if (mainStory.Count > 0)
             {
                 mainStory.Clear();
-                DssRef.achieve.onVictory();
-
-                new EndScene( GameEndReason.Victory, bossVictory);
             }
+
+            triggerGameEnd(GameEndReason.Victory, vType, null);
+        }
+
+        public void onPlayerEnterWar(Players.LocalPlayer player, Faction other, bool isAggressor)
+        {
+            if (isAggressor)
+            {
+                const int DelayReduceToSec = 10;
+
+                if (other.factiontype != FactionType.Barbarians)
+                {
+                    mainStory.TryPeek(out var storyevent);
+                    if (storyevent != null)
+                    {
+                        if (storyevent.RunWarManager() == false)
+                        {
+                            if (storyevent.triggerTime.length.seconds > DelayReduceToSec)
+                            {
+                                storyevent.triggerTime.start(DelayReduceToSec);
+                            }
+                        }
+                    }
+                }
+
+                ++player.statistics.WarsStartedByYou;
+            }
+            else
+            {
+                ++player.statistics.WarsStartedByEnemy;
+
+                if (player.firstAttacker == ushort.MaxValue)
+                { 
+                    player.firstAttacker = other.myIndex;
+                }
+            }
+
+            //if (isAggressor)
+            //{
+                Task.Run(() =>
+                {
+                    int wars = player.faction.CountWars();
+                    maxWarsJuggles = Math.Max(maxWarsJuggles, wars);
+                });
+            //}
         }
 
         public void onPlayerDeath()
@@ -590,233 +1110,118 @@ namespace VikingEngine.DSSWars.Event
                     }
                 }
 
-                new EndScene(GameEndReason.Defeat, false);
+                //new EndScene(GameEndReason.Defeat,  VictoryType.None);
+                triggerGameEnd(GameEndReason.Defeat,  VictoryType.None, null);
             }
         }
 
-        public void collectAllianceAgainstPlayerDomination(LocalPlayer player)
+        public void triggerGameEnd(GameEndReason endReason, VictoryType vType, MatchResult matchResult)
         {
-            var neighbor = findAttackingNeighborFaction(player.faction);
-
-            if (neighbor == null)
+            if (!gameHasEnded)
             {
-                return;
-            }
+                gameHasEnded = true;
 
-            List<Faction> attackers = new List<Faction>() { neighbor };
-            int totalSize = neighbor.totalWorkForce;
-            List<Faction> search = adjacentFactions(neighbor);
-            List<Faction> has_searched = new List<Faction>();
-
-            int maxLoops = 100;
-            while (--maxLoops > 0 && totalSize < player.faction.totalWorkForce * 1.5f)
-            {
-                if (search.Count > 0)
-                {   
-                    var faction = arraylib.RandomListMemberPop(search);
-                    bool bHasSearched = has_searched.Contains(faction);
-
-                    if (!bHasSearched &&
-                        factionMayStartWar(faction, player.faction) &&
-                        !attackers.Contains(faction))
-                    {
-                        attackers.Add(faction);
-                        totalSize += faction.totalWorkForce;
-                    }
-
-                    if (!bHasSearched)
-                    {
-                        has_searched.Add(faction);
-                    }
-                }
-                else
+                if (endReason == GameEndReason.Victory)
                 {
-                    foreach (var faction in has_searched)
-                    {
-                        search.AddRange(adjacentFactions(faction));
-                    }
+                    new Data.VictoryLeaderBoard(endReason, vType);
                 }
-            }
 
-            Faction attackLeader = null;
-            //Create an alliance
-            foreach (var faction in attackers)
-            {
-                foreach (var other in attackers)
+                if (endReason != GameEndReason.TimesUp &&
+                    DssRef.difficulty.TotalDifficulty() >= SurviveLeaderBoard.Difficulty300)
                 {
-                    if (other != faction)
-                    { 
-                        DssRef.diplomacy.SetRelationType(faction, other, RelationType.RelationType3_Ally);
+                    new SurviveLeaderBoard(DssRef.time.TotalIngameTime());
+                }
+
+                new EndScene(endReason, vType, matchResult);
+
+                new GameOverResult(endReason, vType, matchResult);
+
+                if (!PlatformSettings.STEAM_DEMO &&
+                    (endReason == GameEndReason.Victory || DssRef.time.TotalIngameTime().TotalHours > 10))
+                {
+                    if (!DssRef.storage.metaProgression.unlockedDangerousSettings)
+                    {
+                        DssRef.storage.metaProgression.unlockedDangerousSettings = true;
+
                     }
                 }
 
-                DssRef.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN1_Enemies);
-                
-
-                if (attackLeader == null || faction.militaryStrength > attackLeader.militaryStrength)
-                { 
-                    attackLeader = faction;
-                }
-            }
-
-            //Prepare leader
-            attackers.Remove(attackLeader); 
-            attackers.Insert(0, attackLeader);
-            DssRef.diplomacy.GetOrCreateRelation(attackLeader, player.faction).SpeakTerms = SpeakTerms.SpeakTermsN2_None;
-            attackLeader.player.setAggression(AbsPlayer.AggressionLevel1_RevengeOnly);
-
-            Ref.update.AddSyncAction(new SyncAction(() =>
-            {
-                var city = attackLeader.mainCity;
-
-                var meleeProfile = new ConscriptProfile()
+                if (endReason == GameEndReason.Victory)
                 {
-                    weapon = Resource.ItemResourceType.Pike,
-                    armorLevel = Resource.ItemResourceType.IronArmor,
-                    training = TrainingLevel.Basic,
-                    specialization = SpecializationType.Traditional,
-                };
-                var rangedProfile = new ConscriptProfile()
-                {
-                    weapon = player.dominationEvents < 3? Resource.ItemResourceType.Crossbow : Resource.ItemResourceType.HandCannon,
-                    armorLevel = Resource.ItemResourceType.PaddedArmor,
-                    training = TrainingLevel.Basic,
-                    specialization = SpecializationType.Traditional,
-                };
+                    DssRef.achieve.onVictory(vType);
 
-                city.conscriptArmy(meleeProfile, city.defaultConscriptPos(), 3 + player.dominationEvents * 2);
-                city.conscriptArmy(rangedProfile, city.defaultConscriptPos(), 3 + player.dominationEvents * 2);
-
-                if (player.dominationEvents >= 3)
-                {
-                    var cannonProfile = new ConscriptProfile()
+                    int difficulty = Convert.ToInt32(DssRef.difficulty.TotalDifficulty() * 100);
+                    switch (vType)
                     {
-                        weapon = Resource.ItemResourceType.ManCannonBronze,
-                        armorLevel = Resource.ItemResourceType.PaddedArmor,
-                        training = TrainingLevel.Basic,
-                        specialization = SpecializationType.Siege,
-                    };
-                    city.conscriptArmy(cannonProfile, city.defaultConscriptPos(), 2 + player.dominationEvents);
-                }
+                        case VictoryType.DefeatBoss:
+                            DssRef.storage.metaProgression.Act1_Victory_Boss.addVictory(difficulty);
+                            break;
+                        case VictoryType.Domination:
+                            DssRef.storage.metaProgression.Act1_Victory_Domination.addVictory(difficulty);
+                            break;
+                        case VictoryType.WorldPeace:
+                            DssRef.storage.metaProgression.Act1_Victory_WorldPeace.addVictory(difficulty);
+                            break;
 
-                player.hud.messages.Add(DssRef.lang.EventMessage_EnemyAlliance_Title, DssRef.lang.EventMessage_EnemyAlliance);
-            }));
-            
-            new Timer.TimedAction2ArgTrigger_InGame<List<Faction>, LocalPlayer>((attackers, player) =>
-            {
-                attackers.First().player.setAggression(AbsPlayer.AggressionLevel3_FocusedAttacks);
-                foreach (var faction in attackers)
-                {
-                    faction.player.setMinimumAggression(AbsPlayer.AggressionLevel2_RandomAttacks);
-                    DssRef.diplomacy.SetRelationType(faction, player.faction, RelationType.RelationTypeN3_War);                    
-                }
-            }, attackers, player, TimeExt.MinuteInSeconds * DssConst.DominationWarTimeDelay_Minutes.GetRandom());
-
-
-            List<Faction> adjacentFactions(Faction faction)
-            {
-                List<Faction> factions = new List<Faction>();
-                var citiesC = faction.cities.counter();
-                while (citiesC.Next())
-                {
-                    foreach (var n in citiesC.sel.neighborCities)
-                    {
-                        var ncity = DssRef.world.cities[n];
-                        var nCityFaction = ncity.GetFaction();
-
-                        if (nCityFaction != faction &&
-                            nCityFaction.player.IsBot() &&
-                            !factions.Contains(nCityFaction))
-                        { 
-                            factions.Add(nCityFaction);
-                        }
                     }
                 }
-                
-                return factions;
+
+                DssRef.storage.Save(null);
             }
         }
 
-        public Faction findAttackingNeighborFaction(Faction defender)
-        {
-            var cities = defender.cities.toList();
-
-            while (cities.Count > 0)
-            {
-                var city = arraylib.RandomListMemberPop(cities);
-
-                if (city != null)
-                {
-                    foreach (var cindex in city.neighborCities)
-                    {
-                        var otherfaction = DssRef.world.cities[cindex].GetFaction();
-                        if (factionMayStartWar(otherfaction, defender))
-                        {
-                            return otherfaction;
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
-        bool factionMayStartWar(Faction attacker, Faction defender)
-        {
-            if ((attacker.factiontype == FactionType.DefaultAi || attacker.diplomaticSide == DiplomaticSide.Dark) &&
-                attacker.armies.Count > 0)
-            {
-                var rel = DssRef.diplomacy.GetRelationType(defender, attacker);
-                if (rel >= RelationType.RelationTypeN1_Enemies && rel <= RelationType.RelationType1_Peace)
-                {
-                    return true;
-                } 
-            }
-
-            return false;
-        }
+       
 
         AbsStoryEvent CreateEvent(EventType type)
         {
             switch (type)
             {
+                case EventType.Tutorial:
+                    return new StoryEvent_Tutorial();
                 case EventType.AiDelay:
                     return new StoryEvent_AiDelay();
                 case EventType.AiWarDelay:
                     return new StoryEvent_AiWarDelay();
+                case EventType.FirstAttack:
+                    return new StoryEvent_FirstAttack();
                 case EventType.WarmanagerDelay:
                     return new StoryEvent_WarmanagerDelay();
-                case EventType.SouthShips:
-                    return new StoryEvent_SouthShips();
-                case EventType.DarkLordWarning:
+                case EventType.Barbarians:
+                    return new StoryEvent_Barbarians();
+                case EventType.Mercenaries:
+                    return new StoryEvent_Mercenaries();
+                case EventType.Cohalition:
+                    return new StoryEvent_Cohalition();
+                case EventType.BossWarning:
                     return new StoryEvent_DarkLordWarning();
-                case EventType.DarkLord:
+                case EventType.Boss:
                     return new StoryEvent_DarkLord();
-                case EventType.Factories:
-                    return new StoryEvent_Factories();
-                case EventType.FactoriesDestroyed:
-                    return new StoryEvent_FactoriesDestroyed();
-                case EventType.DarkLordInPerson:
-                    return new StoryEvent_DarkLordInPerson();
-                case EventType.KillTheDarkLord:
-                    return new StoryEvent_KillTheDarkLord();
+                case EventType.DefeatTheBoss:
+                    return new StoryEvent_DefeatTheBoss();
+
+                case EventType.QuickMatch:
+                    return new StoryEvent_QuickMatch();
+
                 default:
+#if DEBUG
                     throw new ArgumentOutOfRangeException(nameof(type), type, "Unhandled event type.");
+#endif
+                    return null;
             }
         }
 
 
     }
 
-    //enum BossTimeSettings
-    //{ 
-    //    Immediate,
-    //    Early,
-    //    Normal,
-    //    Late,
-    //    VeryLate,
-    //    //Never,
-    //    NUM
-    //}
 
+    enum VictoryType
+    { 
+        None = 0,
+        DefeatBoss,
+        WorldPeace,
+        Domination,
+        DarkSide,
+        QuickMatchComplete,
+    }
 
 }

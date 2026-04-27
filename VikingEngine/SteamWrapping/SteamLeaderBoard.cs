@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.Steamworks;
+using Steamworks;
 
 namespace VikingEngine.SteamWrapping
 {
@@ -56,20 +56,23 @@ namespace VikingEngine.SteamWrapping
 
     class SteamLeaderBoardLocal : AbsSteamLeaderBoardInstance
     {        
-        string name;
+        protected string name;
         bool uploadOnFind;
 
         Action<List<SteamLeaderBoardRemote>> downloadCallback = null;
         //
-        SteamCallResult<LeaderboardFindResult_t> findLeaderboardCallback;
-        SteamCallResult<LeaderboardScoreUploaded_t> leaderboardScoreUploadedCallback;
-        SteamCallResult<LeaderboardScoresDownloaded_t> leaderboardScoreDownloadedCallback;
+        CallResult<LeaderboardFindResult_t> findLeaderboardCallback;
+        CallResult<LeaderboardScoreUploaded_t> leaderboardScoreUploadedCallback;
+        CallResult<LeaderboardScoresDownloaded_t> leaderboardScoreDownloadedCallback;
+
+        public SteamLeaderBoardLocal()
+        { }
         public SteamLeaderBoardLocal(string name)
         {
             this.name = name;
         }
         
-        public void BeginUpload()
+        virtual public void BeginUpload()
         {
             uploadOnFind = true;
             find();
@@ -84,32 +87,39 @@ namespace VikingEngine.SteamWrapping
 
         void find()
         {
-            if (Ref.steam.isInitialized && Ref.steam.leaderboardsInitialized)
+            if (Ref.steam.isInitialized /*&& Ref.steam.leaderboardsInitialized*/)
             {
-                findLeaderboardCallback = new SteamCallResult<LeaderboardFindResult_t>(onFindLeaderboard);
-                var apiCall = SteamAPI.SteamUserStats().FindLeaderboard(name);//"Error");
+                findLeaderboardCallback = new CallResult<LeaderboardFindResult_t>(onFindLeaderboard);
+                var apiCall = SteamUserStats.FindLeaderboard(name);//"Error");
                 findLeaderboardCallback.Set(apiCall);
             }
         }
-        
+        //void findOrCreate()
+        //{
+        //    if (Ref.steam.isInitialized /*&& Ref.steam.leaderboardsInitialized*/)
+        //    {
+               
+        //    }
+        //}
+
         void onFindLeaderboard(LeaderboardFindResult_t caller, bool ioFailure)
         {
             if (caller.m_bLeaderboardFound != byte.MinValue)
             {
-                SteamLeaderboard_t leaderboard = new SteamLeaderboard_t(caller.m_hSteamLeaderboard);
+                SteamLeaderboard_t leaderboard = new SteamLeaderboard_t(caller.m_hSteamLeaderboard.m_SteamLeaderboard);
 
                 if (uploadOnFind)
                 {
-                    leaderboardScoreUploadedCallback = new SteamCallResult<LeaderboardScoreUploaded_t>(onLeaderboardScoreUploaded);
-                    ulong apiCall = SteamAPI.SteamUserStats().UploadLeaderboardScore(leaderboard,
-                        ELeaderboardUploadScoreMethod.k_ELeaderboardUploadScoreMethodForceUpdate,
+                    leaderboardScoreUploadedCallback = new CallResult<LeaderboardScoreUploaded_t>(onLeaderboardScoreUploaded);
+                    SteamAPICall_t apiCall = SteamUserStats.UploadLeaderboardScore(leaderboard,
+                        ELeaderboardUploadScoreMethod.k_ELeaderboardUploadScoreMethodKeepBest,
                         score, scoreDetails.Array, scoreDetails.Count);
                     leaderboardScoreUploadedCallback.Set(apiCall);
                 }
                 else
                 {
-                    leaderboardScoreDownloadedCallback = new SteamCallResult<LeaderboardScoresDownloaded_t>(onLeaderboardScoreDownloaded);
-                    ulong apiCall = SteamAPI.SteamUserStats().DownloadLeaderboardEntries(leaderboard,
+                    leaderboardScoreDownloadedCallback = new CallResult<LeaderboardScoresDownloaded_t>(onLeaderboardScoreDownloaded);
+                    SteamAPICall_t apiCall = SteamUserStats.DownloadLeaderboardEntries(leaderboard,
                         ELeaderboardDataRequest.k_ELeaderboardDataRequestGlobal,
                         0, 100);
                     leaderboardScoreDownloadedCallback.Set(apiCall);
@@ -140,14 +150,14 @@ namespace VikingEngine.SteamWrapping
 
     class SteamLeaderBoardRemote : AbsSteamLeaderBoardInstance
     {
-        public ulong user;
+        public CSteamID user;
         public string userName;
 
         public SteamLeaderBoardRemote(LeaderboardScoresDownloaded_t caller, int index)
         {
             LeaderboardEntry_t entry = new LeaderboardEntry_t();
             
-            SteamAPI.SteamUserStats().GetDownloadedLeaderboardEntry(caller.m_hSteamLeaderboardEntries, index, ref entry,
+            SteamUserStats.GetDownloadedLeaderboardEntry(caller.m_hSteamLeaderboardEntries, index, out entry,
                 scoreDetails.Array, MaxScoreDetails);
 
             scoreDetails.Count = scoreDetails.Array.Length;
@@ -155,7 +165,7 @@ namespace VikingEngine.SteamWrapping
             score = entry.m_nScore;
             user = entry.m_steamIDUser;
 
-            userName = SteamAPI.SteamFriends().GetFriendPersonaName(user);
+            userName = SteamFriends.GetFriendPersonaName(user);
         }
 
         public override string ToString()

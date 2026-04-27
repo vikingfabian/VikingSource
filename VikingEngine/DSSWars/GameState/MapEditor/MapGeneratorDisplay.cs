@@ -11,11 +11,13 @@ using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Generate;
 using VikingEngine.Engine;
 using VikingEngine.EngineSpace.HUD.RichBox.Artistic;
+using VikingEngine.Graphics;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.LootFest.GO.Gadgets;
+using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.DSSWars.GameState.MapEditor
 {
@@ -26,23 +28,43 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         static readonly List<float> MapSizeAdd = new List<float> { 8, 64, 1024 };
 
         RichMenu menu;
-        MapEditor_Generator state;
+        MapEditor_GeneratorScene state;
         MapGeneratorTab tab=0;
         public Vector2 topRight;
-        public MapGeneratorDisplay(MapEditor_Generator state) 
+
+        public ImageGroup2D loadingDisplay;
+        
+
+        public MapGeneratorDisplay(MapEditor_GeneratorScene state) 
         { 
             this.state = state;
 
             var area = Screen.SafeArea;
             area.Width = Screen.IconSize * 8;
             
-            state.GenerateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.mapSize);
+            state.GenerateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.gameRuleset.mapSize);
 
             topRight = area.RightTop;
             topRight.X += Engine.Screen.BorderWidth;
 
-            menu = new RichMenu(HudLib.RbSettings, area, new Vector2(10), RichMenu.DefaultRenderEdge, ImageLayers.Top1, new PlayerData(PlayerData.AllPlayers));
-            menu.addBackground(HudLib.HudMenuBackground, ImageLayers.Top1_Back);
+            menu = new RichMenu(HudLib.RbSettings, area, new Vector2(10), RichMenu.DefaultRenderEdge, HudLib.GUILayer, new PlayerData(PlayerData.AllPlayers));
+            menu.addBackground(HudLib.HudMenuBackground, HudLib.GUILayer +1);
+
+
+            TextG loadingText = new TextG(LoadedFont.Regular, Engine.Screen.Area.PercentToPosition(0.5f, 0.2f), Screen.TextSizeV2 * 2f, Align.CenterAll, DssRef.lang.Hud_Loading, Color.White, ImageLayers.Top0_Front, true);
+            var loadArea = loadingText.GetArea();
+            loadArea.Size.X += Screen.IconSize * 0.5f;
+            Graphics.Image loadingSpinner =new Image(SpriteName.WhiteArea, loadArea.RightCenter, Screen.IconSizeV2 * 0.6f, ImageLayers.Top1_Front, true);
+            loadArea.Size.X += Screen.IconSize * 0.5f;
+            loadArea.AddRadius(Screen.IconSize * 0.5f);
+
+            Graphics.Image loadingBg = new Image(SpriteName.WhiteArea, loadArea.Position, loadArea.Size, ImageLayers.Top1_Back, false);
+            loadingBg.ColorAndAlpha(Color.Black, 0.2f);
+
+            new Motion2d(MotionType.ROTATE, loadingSpinner, new Vector2(MathHelper.Tau * 0.5f), MotionRepeate.Loop, 1000, true);
+
+            loadingDisplay = new ImageGroup2D(new List<AbsDraw2D> { loadingText, loadingSpinner, loadingBg });
+            loadingDisplay.Hide();
 
             refreshMenu();
         }
@@ -85,12 +107,12 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                         content.newLine();
                         content.Add(new RbText(DssRef.lang.Hud_Vector_X + ":", HudLib.TitleColor_Label));
                         content.space();
-                        RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.GenerateSettings.MapXProperty);
+                        RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.GenerateSettings.MapXProperty, false);
 
                         content.newLine();
                         content.Add(new RbText(DssRef.lang.Hud_Vector_Y + ":", HudLib.TitleColor_Label));
                         content.space();
-                        RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.GenerateSettings.MapYProperty);
+                        RbDragButton.RbDragButtonGroup(content, MapSizeAdd, new DragButtonSettings(WorldData.CustomMapSize_Min, WorldData.CustomMapSize_Max, 8), state.GenerateSettings.MapYProperty, false);
                     }
                     else
                     {
@@ -99,7 +121,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                         {
                             for (MapSize sz = 0; sz < MapSize.NUM; ++sz)
                             {
-                                mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.mapSize == sz, defaultOptions.mapSize == sz,
+                                mapSzOptions.AddOption(WorldData.SizeString(sz), DssRef.storage.gameRuleset.mapSize == sz, defaultOptions.gameRuleset.mapSize == sz,
                                     new RbAction1Arg<MapSize>(setMapSize, sz), null);
                             }
                             mapSzOptions.Build(content, SpriteName.NO_IMAGE, DssRef.lang.Lobby_MapSizeTitle, menu);
@@ -146,7 +168,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     HudLib.Label(content, DssRef.lang.MapGenerator_Terrain_BuildDigLoops);
                     content.space();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 1 }, BuildDigLoopBounds,
-                        (bool set, int value) =>
+                        (object tag, bool set, int value) =>
                         {
 
                             if (set)
@@ -154,14 +176,14 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                                 this.Sett.repeatBuildDigCount = value;
                             }
                             return this.Sett.repeatBuildDigCount;
-                        });
+                        }, false);
 
                     content.newLine();
 
                     HudLib.Label(content, DssRef.lang.MapGenerator_Terrain_BuildStrokes);
                     content.space();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f }, StrokeCountBounds,
-                        (bool set, float value) =>
+                        (object tag, bool set, float value) =>
                         {
                             if (set)
                             {
@@ -183,7 +205,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
                     HudLib.Label(content, DssRef.lang.MapGenerator_Terrain_DigStrokes);
                     content.space();
                     RbDragButton.RbDragButtonGroup(content, new List<float> { 0.1f }, StrokeCountBounds,
-                        (bool set, float value) =>
+                        (object tag, bool set, float value) =>
                         {
                             if (set)
                             {
@@ -266,7 +288,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
         public void beginEditName()
         {
-            new TextInput(state.mapStorage.Name, NameEditEvent, null);
+           var reciever =  new TextInputState(state.mapStorage.Name, NameEditEvent, null);
+            SteamInputManager.tryOpenSteamKeyboard(reciever);
         }
 
         virtual protected void NameEditEvent(string result, object tag)
@@ -279,8 +302,8 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
         }
         public void setMapSize(MapSize value)
         {
-            DssRef.storage.mapSize = value;
-            state.GenerateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.mapSize);
+            DssRef.storage.gameRuleset.mapSize = value;
+            state.GenerateSettings.customMapSize = WorldData.SizeDimentions(DssRef.storage.gameRuleset.mapSize);
             menu.CloseDropDown();
         }
 

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
+	<Asset Type="Graphics:FontDescription">
+
+		<!--
+    Malgun Gothic is ideal for Korean.
+    You can swap to "Microsoft YaHei" or another font if needed.
+    -->
+		<FontName>NanumGothic</FontName>
+
+		<Size>24</Size>
+		<Spacing>0</Spacing>
+		<UseKerning>true</UseKerning>
+		<Style>Regular</Style>
+
+		<!-- Optional fallback character -->
+		<!-- <DefaultCharacter>*</DefaultCharacter> -->
+
+		<CharacterRegions>
+
+			<!-- Basic Latin and Extended Latin -->
+			<CharacterRegion>
+				<Start>&#32;</Start>
+				<End>&#511;</End>
+			</CharacterRegion>
+
+			<!-- CJK Symbols and Punctuation -->
+			<CharacterRegion>
+				<Start>&#x3000;</Start>
+				<End>&#x303F;</End>
+			</CharacterRegion>
+
+			<!-- Hangul Jamo (basic consonants and vowels) -->
+			<CharacterRegion>
+				<Start>&#x1100;</Start>
+				<End>&#x11FF;</End>
+			</CharacterRegion>
+
+			<!-- Hangul Compatibility Jamo -->
+			<CharacterRegion>
+				<Start>&#x3130;</Start>
+				<End>&#x318F;</End>
+			</CharacterRegion>
+
+			<!-- Hangul Syllables (modern Korean) -->
+			<CharacterRegion>
+				<Start>&#xAC00;</Start>
+				<End>&#xD7AF;</End>
+			</CharacterRegion>
+
+			<!-- Full-width punctuation and forms -->
+			<CharacterRegion>
+				<Start>&#xFF00;</Start>
+				<End>&#xFFEF;</End>
+			</CharacterRegion>
+
+		</CharacterRegions>
+	</Asset>
+</XnaContent>

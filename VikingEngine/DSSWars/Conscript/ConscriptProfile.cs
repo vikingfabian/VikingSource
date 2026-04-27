@@ -13,20 +13,51 @@ namespace VikingEngine.DSSWars.Conscript
 {
     struct ConscriptProfile
     {
+        
         public static readonly ConscriptProfile Empty = new ConscriptProfile();
-
+        
+        public ItemResourceType man;
         public ItemResourceType weapon;
+        public ItemResourceType shield;
         public ItemResourceType armorLevel;
+        public ItemResourceType animal;
+        public ItemResourceType mountArmor;
+        public ItemResourceType vehicle;
         public TrainingLevel training;
         public SpecializationType specialization;
 
         public ConscriptProfile()
         {
+            man = ItemResourceType.Men;
             weapon = ItemResourceType.SharpStick;
+            shield = ItemResourceType.NONE;
             armorLevel = ItemResourceType.NONE;
+
+            animal = ItemResourceType.NONE;
+            mountArmor = ItemResourceType.NONE;
+            vehicle = ItemResourceType.NONE;
 
             training = 0;
             specialization = SpecializationType.None;
+        }
+        public bool Equals(ConscriptProfile other)
+        {
+            bool result = man == other.man &&
+                   weapon == other.weapon &&
+                   shield == other.shield &&
+                   armorLevel == other.armorLevel &&
+                   animal == other.animal &&
+                   mountArmor == other.mountArmor &&
+                   vehicle == other.vehicle &&
+                   training == other.training &&
+                   specialization == other.specialization;
+
+            if (!result)
+            {
+                lib.DoNothing();
+            }
+
+            return result;
         }
 
         public int menCost()
@@ -35,14 +66,83 @@ namespace VikingEngine.DSSWars.Conscript
             {
                 conscript = this,
             };
-            var data = SoldierProfile.init();
+            var data = SoldierProfile.createSoldierData();
             return data.workForceCount();
         }
 
-        public void classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmachine)
+        public float copperUpkeepPerSoldier()
         {
+            var result = DssConst.TrainingCopperUpkeep[(int)training];
+            if (man == ItemResourceType.NobleMen)
+            {
+                result += DssConst.Nobel_GoldUpkeep;
+            }
+            return result;
+        }
+
+        public bool isKnight()
+        {
+            if (man == ItemResourceType.NobleMen)
+            {
+                switch (animal)
+                {
+                    case ItemResourceType.Horse:
+                    case ItemResourceType.WarHorse:
+                    case ItemResourceType.WildCat:
+                    case ItemResourceType.Lion:
+                    case ItemResourceType.WarLion:
+                    case ItemResourceType.Wolf:
+                    case ItemResourceType.Warg:
+                    case ItemResourceType.AlphaWarg:
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public void classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide)
+        {
+            switch (animal)
+            {
+                case ItemResourceType.NONE:
+                    animalCompanion = false;
+                    animalMount = false;
+                    break;
+
+                case ItemResourceType.Pig:
+                case ItemResourceType.Dog:
+                case ItemResourceType.Hound:
+                    animalCompanion = true;
+                    animalMount = false;
+                    break;
+
+                default:                    
+                    animalCompanion = false;
+                    animalMount = true;
+                    break;
+            }
+
+            if (vehicle == ItemResourceType.NONE)
+            {
+                wagonRide = false;
+            }
+            else
+            {
+                if (animalMount)
+                {
+                    animalMount = false;
+                    wagonRide = true;
+                }
+                else
+                {
+                    wagonRide = false;
+                }
+            }
+
             switch (weapon)
             {
+                case ItemResourceType.Settler:
                 case ItemResourceType.SharpStick:
                 case ItemResourceType.BronzeSword:
                 case ItemResourceType.ShortSword:
@@ -53,7 +153,7 @@ namespace VikingEngine.DSSWars.Conscript
                     ranged = false;
                     rangedMan = false;
                     meleeMan = true;
-                    knight = false; 
+                    
                     warmachine = false;
                     break;
 
@@ -70,18 +170,18 @@ namespace VikingEngine.DSSWars.Conscript
                     ranged = true;
                     rangedMan = true;
                     meleeMan = false;
-                    knight = false;
+                    
                     warmachine = false;
                     break;
 
                 case ItemResourceType.Warhammer:
                 case ItemResourceType.TwoHandSword:
-                case ItemResourceType.KnightsLance:
+                //case ItemResourceType.KnightsLance:
                 case ItemResourceType.MithrilSword:
                     ranged = false;
                     rangedMan = false;
                     meleeMan = true;
-                    knight = true;
+                    
                     warmachine = false;
                     break;
 
@@ -89,7 +189,7 @@ namespace VikingEngine.DSSWars.Conscript
                     ranged = true;
                     rangedMan = true;
                     meleeMan = false;
-                    knight = true;
+                    
                     warmachine = false;
                     break;
 
@@ -104,7 +204,7 @@ namespace VikingEngine.DSSWars.Conscript
                     ranged = true;
                     rangedMan = false;
                     meleeMan = false;
-                    knight = false;
+                    
                     warmachine = true;
                     break;
 
@@ -112,7 +212,7 @@ namespace VikingEngine.DSSWars.Conscript
                     ranged = false;
                     rangedMan = false;
                     meleeMan = false;
-                    knight = false;
+                    
                     warmachine = true;
                     break;
 
@@ -121,48 +221,14 @@ namespace VikingEngine.DSSWars.Conscript
             }
         }
 
-        //public bool RangedManUnit()
-        //{
-        //    return weapon == ItemResourceType.Bow || weapon == ItemResourceType.Crossbow;    
-        //}
-
-        //public bool MeleeSoldier()
-        //{
-        //    return weapon == ItemResourceType.SharpStick || weapon == ItemResourceType.Sword || weapon == ItemResourceType.TwoHandSword;
-        //}
-
-        //public bool KnightUnit()
-        //{
-        //    return weapon == ItemResourceType.TwoHandSword || weapon == ItemResourceType.KnightsLance;
-        //}
-
-        //public bool Warmashine()
-        //{
-        //    return weapon == ItemResourceType.Ballista;
-        //}
-
-        //public int DefaultArmyRow()
-        //{
-        //    switch (weapon)
-        //    {
-        //        case MainWeapon.Bow:
-        //        case MainWeapon.CrossBow:
-        //            return ArmyPlacementGrid.Row_Second;
-        //        case MainWeapon.Ballista:
-        //            return ArmyPlacementGrid.Row_Behind;
-        //        default:
-        //            return ArmyPlacementGrid.Row_Body;
-        //    }
-        //}
-
         public double armySpeedBonus(bool land)
         {
             if (land)
             {
                 switch (weapon)
                 {
-                    case ItemResourceType.KnightsLance:
-                        return 0.8;
+                    //case ItemResourceType.KnightsLance:
+                    //    return 0.8;
                     case ItemResourceType.Ballista:
                     case ItemResourceType.Manuballista:
                     case ItemResourceType.Catapult:
@@ -184,210 +250,468 @@ namespace VikingEngine.DSSWars.Conscript
             return 0;
         }
 
-        public void defaultSetup(BuildAndExpandType barrackType)
-        {
-            switch (barrackType)
-            {
-                case BuildAndExpandType.SoldierBarracks:
-                    weapon = ItemResourceType.SharpStick;
-                    break;
-                case BuildAndExpandType.ArcherBarracks:
-                    weapon = ItemResourceType.SlingShot;
-                    break;
-                case BuildAndExpandType.WarmachineBarracks:
-                    weapon = ItemResourceType.Ballista;
-                    break;
-                case BuildAndExpandType.KnightsBarracks:
-                    weapon = ItemResourceType.Warhammer;
-                    training = TrainingLevel.Basic;
-                    break;
-                case BuildAndExpandType.GunBarracks:
-                    weapon = ItemResourceType.HandCannon;
-                    break;
-                case BuildAndExpandType.CannonBarracks:
-                    weapon = ItemResourceType.ManCannonBronze;
-                    break;
-            }
-
-        }
-
         public string TypeName()
         {
+            string name = null;
+
             switch (specialization)
             {
                 case SpecializationType.HonorGuard:
-                    return DssRef.lang.UnitType_HonorGuard;
+                    name = DssRef.lang.UnitType_HonorGuard; break;
                 case SpecializationType.Viking:
-                    return DssRef.lang.UnitType_Viking;
+                    name = DssRef.lang.UnitType_Viking; break;
                 case SpecializationType.Green:
-                    return DssRef.lang.UnitType_GreenSoldier;
+                    name = DssRef.lang.UnitType_GreenSoldier; break;
                 case SpecializationType.DarkLord:
-                    return DssRef.lang.UnitType_DarkLord;
+                    name = DssRef.lang.UnitType_DarkLord; break;
 
                 default:
                     switch (weapon)
                     {
+                        case ItemResourceType.Settler:
+                            name = DssRef.lang.UnitType_Settler; break;
+
                         case ItemResourceType.SharpStick:
-                            return DssRef.lang.UnitType_Folkman;
+                            name = DssRef.lang.UnitType_Folkman; break;
                         case ItemResourceType.Pike:
-                            return DssRef.lang.UnitType_Pikeman;
+                            name = DssRef.lang.UnitType_Pikeman; break;
 
                         case ItemResourceType.BronzeSword:
                         case ItemResourceType.ShortSword:
                         case ItemResourceType.Sword:
                         case ItemResourceType.LongSword:
-                            return DssRef.lang.UnitType_Soldier;
+                            name = DssRef.lang.UnitType_Soldier; break;
 
                         case ItemResourceType.HandSpear:
-                            return  DssRef.lang.UnitType_SpearAndShield;
+                            name =  DssRef.lang.UnitType_SpearAndShield; break;
 
                         case ItemResourceType.Warhammer:
-                            return DssRef.lang.UnitType_Warhammer;
-                        case ItemResourceType.KnightsLance:
-                            return DssRef.lang.UnitType_CavalryKnight;
+                            name = DssRef.lang.UnitType_Warhammer; break;
+                        //case ItemResourceType.KnightsLance:
+                        //    name = DssRef.lang.UnitType_CavalryKnight; break;
                         case ItemResourceType.TwoHandSword:
-                            return DssRef.lang.UnitType_FootKnight;
+                            name = DssRef.lang.UnitType_FootKnight; break;
                         case ItemResourceType.MithrilSword:
-                            return DssRef.lang.UnitType_MithrilSwordsman;
+                            name = DssRef.lang.UnitType_MithrilSwordsman; break;
                         case ItemResourceType.MithrilBow:
-                            return DssRef.lang.UnitType_MithrilArcher;
+                            name = DssRef.lang.UnitType_MithrilArcher; break;
 
                         case ItemResourceType.SlingShot:
-                            return DssRef.lang.Resource_TypeName_SlingShot;
+                            name = DssRef.lang.Resource_TypeName_SlingShot; break;
                         case ItemResourceType.ThrowingSpear:
-                            return DssRef.lang.Resource_TypeName_ThrowingSpear;
+                            name = DssRef.lang.Resource_TypeName_ThrowingSpear; break;
                         case ItemResourceType.Bow:
                         case ItemResourceType.LongBow:
-                            return DssRef.lang.UnitType_Archer;
+                            name = DssRef.lang.UnitType_Archer; break;
                         case ItemResourceType.Crossbow:
-                            return DssRef.lang.UnitType_Crossbow;
+                            name = DssRef.lang.UnitType_Crossbow; break;
 
                         case ItemResourceType.HandCannon:
-                            return DssRef.lang.Resource_TypeName_HandCannon;
+                            name = DssRef.lang.Resource_TypeName_HandCannon; break;
                         case ItemResourceType.HandCulverin:
-                            return DssRef.lang.Resource_TypeName_HandCulverin;
+                            name = DssRef.lang.Resource_TypeName_HandCulverin; break;
                         case ItemResourceType.Rifle:
-                            return DssRef.lang.Resource_TypeName_Rifle;
+                            name = DssRef.lang.Resource_TypeName_Rifle; break;
                         case ItemResourceType.Blunderbuss:
-                            return DssRef.lang.Resource_TypeName_Blunderbuss;
+                            name = DssRef.lang.Resource_TypeName_Blunderbuss; break;
 
 
                         case ItemResourceType.Ballista:
-                            return DssRef.lang.UnitType_Ballista;
+                            name = DssRef.lang.UnitType_Ballista; break;
                         case ItemResourceType.Manuballista:
-                            return DssRef.lang.Resource_TypeName_Manuballista;
+                            name = DssRef.lang.Resource_TypeName_Manuballista; break;
                         case ItemResourceType.Catapult:
-                            return DssRef.lang.Resource_TypeName_Catapult;
+                            name = DssRef.lang.Resource_TypeName_Catapult; break;
                         case ItemResourceType.UN_BatteringRam:
-                            return DssRef.lang.Resource_TypeName_BatteringRam;
+                            name = DssRef.lang.Resource_TypeName_BatteringRam; break;
 
                         case ItemResourceType.SiegeCannonBronze:
-                            return DssRef.lang.Resource_TypeName_SiegeCannonBronze;
+                            name = DssRef.lang.Resource_TypeName_SiegeCannonBronze; break;
                         case ItemResourceType.ManCannonBronze:
-                            return DssRef.lang.Resource_TypeName_ManCannonBronze;
+                            name = DssRef.lang.Resource_TypeName_ManCannonBronze; break;
                         case ItemResourceType.SiegeCannonIron:
-                            return DssRef.lang.Resource_TypeName_SiegeCannonIron;
+                            name = DssRef.lang.Resource_TypeName_SiegeCannonIron; break;
                         case ItemResourceType.ManCannonIron:
-                            return DssRef.lang.Resource_TypeName_ManCannonIron;
+                            name = DssRef.lang.Resource_TypeName_ManCannonIron; break;
 
 
                         default:
-                            return TextLib.Error;
+                            name = TextLib.Error; break;
                     }
+                    break;
             }
+
+            //switch (animal)
+            //{
+            //    case ItemResourceType.NONE:
+            //        break;
+            //    //case ItemResourceType.Pig:
+            //    //case ItemResourceType.Dog:
+            //    //case ItemResourceType.Hound:
+            //    //    break;
+
+            //    case ItemResourceType.Pony:
+            //    case ItemResourceType.Horse:
+            //    case ItemResourceType.WarHorse:
+            //    case ItemResourceType.DraftHorse:
+            //        if (vehicle == ItemResourceType.NONE)
+            //        {
+            //            name += " .horse rider";
+            //        }
+            //        else
+            //        {
+            //            name += " .wagon";
+            //        }
+            //        break;
+
+            //    case ItemResourceType.WildPig:
+            //    case ItemResourceType.WildHog:
+            //    case ItemResourceType.WarHog:
+            //    case ItemResourceType.StagHog:
+            //        if (vehicle == ItemResourceType.NONE)
+            //        {
+            //            name += " .hog rider";
+            //        }
+            //        else
+            //        {
+            //            name += " .wagon";
+            //        }
+            //        break;
+
+            //    case ItemResourceType.Elephant:
+            //    case ItemResourceType.WarElephant:
+            //    case ItemResourceType.Oliphant:
+            //        if (vehicle == ItemResourceType.NONE)
+            //        {
+            //            name += " .elephant rider";
+            //        }
+            //        else
+            //        {
+            //            name += " .howdah";
+            //        }
+            //        break;
+            //}
+
+            if (animal != ItemResourceType.NONE)
+            {
+                if (ItemPropertyColl.Get(animal).Filter_IsRidingAnimal)
+                {
+                    if (vehicle == ItemResourceType.NONE)
+                    {
+                        name = string.Format(DssRef.lang.UnitType_UnitOnMount, name);
+                    }
+                    else
+                    {
+                        name = string.Format(DssRef.lang.UnitType_UnitOnWagon, name);
+                    }
+                }
+                else
+                {
+                    IconName.Item(animal, out _, out string animalName);
+                    name = string.Format(DssRef.lang.UnitType_LeashAnimalHandler, name, animalName);
+                }
+            }
+
+            if (man == ItemResourceType.NobleMen)
+            {
+                name = string.Format(DssRef.lang.UnitType_NobelUnit, name);
+            }
+
+            return TextLib.LargeFirstLetter(name);
         }
 
-        public SpecializationType[] avaialableSpecializations()
-        {
-            SpecializationType[] specializationTypes;
-            if (weapon == ItemResourceType.TwoHandSword)
-            {
-                specializationTypes = new SpecializationType[] { SpecializationType.AntiCavalry };
-            }
-            else if (weapon == ItemResourceType.Ballista)
-            {
-                specializationTypes = new SpecializationType[] { SpecializationType.Siege };
-            }
-            else
-            {
-                specializationTypes = new SpecializationType[]
-                    {
+        static readonly SpecializationType[] Specializations_AntiCavalry = { SpecializationType.AntiCavalry };
+        static readonly SpecializationType[] Specializations_Siege = { SpecializationType.Siege };
+        static readonly SpecializationType[] Specializations_Default = {
                             SpecializationType.None,
                             SpecializationType.Field,
                             SpecializationType.Sea,
                             SpecializationType.Siege,
-                    };
+        };
+
+
+        public SpecializationType[] avaialableSpecializations()
+        {
+            //SpecializationType[] specializationTypes;
+
+            //switch (weapon)
+            //{
+
+            //    case ItemResourceType.Pike:
+            //    case ItemResourceType.HandSpear:
+            //    case ItemResourceType.TwoHandSword:
+            //        specializationTypes = Specializations_AntiCavalry;
+            //        break;
+
+            //    case ItemResourceType.Ballista:
+            //    case ItemResourceType.SiegeCannonIron:
+            //    case ItemResourceType.SiegeCannonBronze:
+            //        specializationTypes = Specializations_Siege;
+            //        break;
+
+            //    default:
+            //        specializationTypes = Specializations_Default;
+            //        break;
+
+            //}
+            switch (LockedSpecialization(weapon))
+            {
+                case SpecializationType.AntiCavalry:
+                    return Specializations_AntiCavalry;
+
+                case SpecializationType.Siege:
+                    return Specializations_Siege;
             }
 
-            return specializationTypes;
+            return Specializations_Default;
+        }
+
+        public static SpecializationType LockedSpecialization(ItemResourceType weapon)
+        {
+            switch (weapon)
+            {
+
+                case ItemResourceType.Pike:
+                case ItemResourceType.HandSpear:
+                case ItemResourceType.TwoHandSword:
+                    return SpecializationType.AntiCavalry;
+
+                case ItemResourceType.Ballista:
+                case ItemResourceType.SiegeCannonIron:
+                case ItemResourceType.SiegeCannonBronze:
+                    return SpecializationType.Siege;
+
+                default:
+                    return SpecializationType.None;
+
+            }
         }
 
         public void toHud(RichBoxContent content, bool compact)
         {
-            content.newLine();
+            IconName.Item(weapon, out var weaponIcon, out string weaponName);
+            IconName.Item(armorLevel, out var armorIcon, out string armorName);
+
+            //content.newLine();
 
             if (compact)
             {
-                //HudLib.BulletSeperationPoint(content);
                 content.Add(new RbImage(LangLib.Training_Icon(training)));
 
-                content.Add(new RbImage(ResourceLib.Icon(weapon)));
+                if (animal != ItemResourceType.NONE)
+                {
+                    IconName.Item(animal, out SpriteName animalIcon, out string animalName);
+                    content.Add(new RbImage(animalIcon));
+                    if (mountArmor != ItemResourceType.NONE)
+                    {
+                        IconName.Item(mountArmor, out SpriteName mountArmorIcon, out string mountArmorName);
+                        content.Add(new RbImage(mountArmorIcon));
+                    }
 
+                    if (vehicle != ItemResourceType.NONE)
+                    {
+                        IconName.Item(vehicle, out SpriteName vehicleIcon, out string vehicleName);
+                        content.Add(new RbImage(vehicleIcon));
+                    }
+                }
+
+                content.Add(new RbImage(weaponIcon));
+                if (shield != ItemResourceType.NONE)
+                {
+                    IconName.Item(shield, out SpriteName shieldIcon, out string shieldName);
+                    content.Add(new RbImage(shieldIcon));
+                }
                 if (armorLevel != ItemResourceType.NONE)
                 {
-                    content.Add(new RbImage(ResourceLib.Icon(armorLevel)));
+                    content.Add(new RbImage(armorIcon));
+                }
+
+                if (specialization != SpecializationType.None)
+                {
+                    IconName.SpecializationTypeName(specialization, out var specIcon, out string specName);
+                    content.Add(new RbImage(specIcon));
                 }
             }
             else
             {
 
-                HudLib.BulletSeperationPoint(content);
+                //HudLib.BulletSeperationPoint(content);
 
-                content.Add(new RbImage(LangLib.Training_Icon(training)));
-                content.Add(new RbText(LangLib.Training(training), HudLib.TitleColor_TypeName));
+                //content.Add(new RbImage(LangLib.Training_Icon(training)));
+                //content.Add(new RbText(LangLib.Training(training), HudLib.TitleColor_TypeName));
+                label(DssRef.lang.Conscript_TrainingTitle, LangLib.Training_Icon(training), LangLib.Training(training));
 
-                HudLib.BulletSeperationPoint(content);
-
-                content.Add(new RbImage(ResourceLib.Icon(weapon)));
-                content.Add(new RbText(LangLib.Item(weapon), HudLib.TitleColor_TypeName));
-
-                if (armorLevel != ItemResourceType.NONE)
+                if (animal != ItemResourceType.NONE)
                 {
-                    HudLib.BulletSeperationPoint(content);
-
-                    content.Add(new RbImage(ResourceLib.Icon(armorLevel)));
-                    content.Add(new RbText(LangLib.Item(armorLevel), HudLib.TitleColor_TypeName));
+                    labelItem(DssRef.lang.Resource_TypeName_Animal, animal);
+                    labelItem(DssRef.lang.Resource_TypeName_MountArmorTitle, mountArmor);
+                    labelItem(DssRef.lang.Resource_TypeName_Vehicle, vehicle);
                 }
+                //    IconName.Item(animal, out SpriteName animalIcon, out string animalName);
+                //    HudLib.BulletSeperationPoint(content);
+                //    content.Add(new RbImage(animalIcon));
+                //    content.Add(new RbText(animalName, HudLib.TitleColor_TypeName));
+                //    if (mountArmor != ItemResourceType.NONE)
+                //    {
+                //        IconName.Item(mountArmor, out SpriteName mountArmorIcon, out string mountArmorName);
+                //        HudLib.BulletSeperationPoint(content);
+                //        content.Add(new RbImage(mountArmorIcon));
+                //        content.Add(new RbText(mountArmorName, HudLib.TitleColor_TypeName));
+                //    }
+
+                //    if (vehicle != ItemResourceType.NONE)
+                //    {
+                //        IconName.Item(vehicle, out SpriteName vehicleIcon, out string vehicleName);
+                //        HudLib.BulletSeperationPoint(content);
+                //        content.Add(new RbImage(vehicleIcon));
+                //        content.Add(new RbText(vehicleName, HudLib.TitleColor_TypeName));
+                //    }
+                //}
+
+
+                //HudLib.BulletSeperationPoint(content);
+                labelItem(DssRef.lang.Conscript_WeaponTitle, weapon);
+                labelItem(DssRef.lang.Resource_TypeName_Shield, shield);
+                labelItem(DssRef.lang.Conscript_ArmorTitle, armorLevel);
+
+
+                //content.Add(new RbImage(weaponIcon));
+                //content.Add(new RbText(weaponName, HudLib.TitleColor_TypeName));
+
+                //if (armorLevel != ItemResourceType.NONE)
+                //{
+                //    HudLib.BulletSeperationPoint(content);
+
+                //    content.Add(new RbImage(armorIcon));
+                //    content.Add(new RbText(armorName, HudLib.TitleColor_TypeName));
+                //}
 
                 if (specialization != SpecializationType.None)
                 {
-                    content.newLine();
-                    HudLib.BulletSeperationPoint(content);
-                    content.space();
-                    content.Add(new RbText(LangLib.SpecializationTypeName(specialization, out var specIcon), HudLib.TitleColor_TypeName));
+                    IconName.SpecializationTypeName(specialization, out var specIcon, out string specName);
+                    label(DssRef.lang.Conscript_SpecializationTitle, specIcon, specName);
+                    //    content.newLine();
+                    //    HudLib.BulletSeperationPoint(content);
+                    //    content.space();
+                    //    content.Add(new RbText(LangLib.SpecializationTypeName(specialization, out var specIcon), HudLib.TitleColor_TypeName));
                 }
+
+                void label(string label, SpriteName icon, string name)
+                {
+                    HudLib.Label(content, TextLib.LargeFirstLetter(label));
+                    content.Add(new RbImage(icon));
+                    content.hspace();
+                    content.Add(new RbText(TextLib.LargeFirstLetter(name), HudLib.TitleColor_TypeName));
+                }
+                void labelItem(string label, ItemResourceType item)
+                {
+                    if (item != ItemResourceType.NONE)
+                    {
+                        IconName.Item(item, out SpriteName icon, out string name);
+
+                        HudLib.Label(content, TextLib.LargeFirstLetter(label));
+                        content.Add(new RbImage(icon));
+                        content.hspace();
+                        content.Add(new RbText(TextLib.LargeFirstLetter(name), HudLib.TitleColor_TypeName));
+                    }
+                }
+
             }
 
-            //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_WeaponTitle, LangLib.Item(weapon)));
-            //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_ArmorTitle, LangLib.Item(armorLevel)));
-            //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_TrainingTitle, LangLib.Training(training)));
-            //content.text(string.Format(DssRef.lang.Language_ItemCountPresentation, DssRef.lang.Conscript_SpecializationTitle, LangLib.SpecializationTypeName(specialization)));
         }
 
         public void writeGameState(System.IO.BinaryWriter w)
         {
+            //if ((byte)weapon > 200)
+            //{
+            //    lib.DoNothing();
+            //}
+
+            //    public ItemResourceType man;
+            //public ItemResourceType weapon;
+            //public ItemResourceType armorLevel;
+            //public ItemResourceType animal;
+            //public ItemResourceType mountArmor;
+            //public ItemResourceType vehicle;
+            //public TrainingLevel training;
+            //public SpecializationType specialization;
+
+            bool special_man = man != ItemResourceType.Men;
+            bool special_shield = shield != ItemResourceType.NONE;
+            bool special_animal = animal != ItemResourceType.NONE;
+            bool special_mountArmor = mountArmor != ItemResourceType.NONE;
+            bool special_vehicle = vehicle != ItemResourceType.NONE;
+            bool special_specialization = specialization != SpecializationType.None;
+
+            new EightBit(special_man, special_shield, special_animal, special_mountArmor, special_vehicle, special_specialization).write(w);
+
+            if (special_man)
+            {
+                w.Write((byte)man);
+            }
             w.Write((byte)weapon);
+            if (special_shield)
+            {
+                w.Write((byte)shield);
+            }
             w.Write((byte)armorLevel);
+            if (special_animal)
+            {
+                w.Write((byte)animal);
+            }
+            if (special_mountArmor)
+            {
+                w.Write((byte)mountArmor);
+            }
+            if (special_vehicle)
+            {
+                w.Write((byte)vehicle);
+            }
             w.Write((byte)training);
-            w.Write((byte)specialization);
+            if (special_specialization)
+            {
+                w.Write((byte)specialization);
+            }
         }
 
         public void readGameState(System.IO.BinaryReader r)
         {
+            EightBit specials = EightBit.FromStream(r);
+            specials.Get(out bool special_man, out bool special_shield, out bool special_animal, out bool special_mountArmor, out bool special_vehicle, out bool special_specialization);
+
+            if (special_man)
+            {
+                man = (ItemResourceType)r.ReadByte();
+            }
+
+            if (man == ItemResourceType.NONE)
+            {
+                man = ItemResourceType.Men;
+            }
+
             weapon = (ItemResourceType)r.ReadByte();
+            if (special_shield)
+            {
+                shield = (ItemResourceType)r.ReadByte();
+            }
             armorLevel = (ItemResourceType)r.ReadByte();
+            if (special_animal)
+            {
+                animal = (ItemResourceType)r.ReadByte();
+            }
+            if (special_mountArmor)
+            {
+                mountArmor = (ItemResourceType)r.ReadByte();
+            }
+            if (special_vehicle)
+            {
+                vehicle = (ItemResourceType)r.ReadByte();
+            }
             training = (TrainingLevel)r.ReadByte();
-            specialization = (SpecializationType)r.ReadByte();
+            if (special_specialization)
+            {
+                specialization = (SpecializationType)r.ReadByte();
+            }
         }
 
         //make these static
@@ -517,11 +841,16 @@ namespace VikingEngine.DSSWars.Conscript
                 case TrainingLevel.Basic: return DssConst.TrainingAttackSpeed_Basic;
                 case TrainingLevel.Skillful: return DssConst.TrainingAttackSpeed_Skillful;
                 case TrainingLevel.Professional: return DssConst.TrainingAttackSpeed_Professional;
+                case TrainingLevel.Champion: return DssConst.TrainingAttackSpeed_Champion;
+#if DEBUG
                 default: throw new NotImplementedException();
+#else
+                default: return DssConst.TrainingAttackSpeed_Basic; 
+#endif
             }
         }
 
-        public static float TrainingTime(TrainingLevel training, BuildAndExpandType type)
+        public static float TrainingTime(TrainingLevel training, ItemResourceType animal, BuildAndExpandType type)
         {
             float result;
             switch (training)
@@ -544,13 +873,15 @@ namespace VikingEngine.DSSWars.Conscript
 
             switch (type)
             { 
-                case BuildAndExpandType.KnightsBarracks:
-                    result += DssConst.TrainingTimeSec_NobelmenAdd;
-                    break;
                 case BuildAndExpandType.GunBarracks:
                 case BuildAndExpandType.CannonBarracks:
                     result /= 2;
                     break;
+            }
+
+            if (animal != ItemResourceType.NONE)
+            {
+                result += DssConst.TrainingTimeSec_Mount;
             }
             
             return result;
@@ -607,7 +938,7 @@ namespace VikingEngine.DSSWars.Conscript
     {
         Idle,
         CollectingEquipment,
-        CollectingMen,
+        //CollectingMen,
         Training,
     }
 

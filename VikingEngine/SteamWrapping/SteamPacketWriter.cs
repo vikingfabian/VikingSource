@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using VikingEngine.Network;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VikingEngine.SteamWrapping
 {
@@ -26,6 +27,14 @@ namespace VikingEngine.SteamWrapping
         public SteamWriter()
         { }
 
+        public void CheckPacketLength()
+        {
+            if (memoryLength > SteamWrapping.SteamP2PManager.SteamPackageByteLimit)
+            {
+                throw new Exception("Passed steam package limit");
+            }
+        }
+
         public void EndWrite_Asynch()
         {
             Ref.update.AddSyncAction(new SyncAction1Arg<float>(Time_Update, 0));
@@ -47,7 +56,7 @@ namespace VikingEngine.SteamWrapping
 #if PCGAME
             if (Ref.steam.isNetworkInitialized)
             {
-                Ref.steam.P2PManager.Send(this.ByteArray(), relyability, To, SpecificGamerID);
+                Ref.steam.P2PManager.Send(this.ByteArray(), relyability, To, new Steamworks.CSteamID(SpecificGamerID));
             }
 #endif
         }

@@ -9,10 +9,10 @@ namespace VikingEngine.DSSWars.Resource
 {
     static class CraftResourceLib
     {
-        const int FoodWaterUsage = 8;
-        const int FoodFuelUsage = 3;
-        const int FoodCraftAmount = 20;
-       
+        public const int FoodWaterUsage = 3;
+        public const int FoodFuelUsage = 3;
+        public const int FoodCraftAmount = 25;
+
 
         //ORE
         public static readonly CraftBlueprint Copper = new CraftBlueprint(
@@ -27,7 +27,7 @@ namespace VikingEngine.DSSWars.Resource
             },
             XP.WorkExperienceType.Smelting,
             XP.ExperienceLevel.Beginner_1,
-            CraftRequirement.Smelter
+             Build.BuildAndExpandType.Smelter
         );
 
         public static readonly CraftBlueprint Cupper_AndCooling = new CraftBlueprint(
@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.Smelting,
            XP.ExperienceLevel.Beginner_1,
-            CraftRequirement.Smelter
+            Build.BuildAndExpandType.Smelter
         );
 
         public static readonly CraftBlueprint Iron = new CraftBlueprint(
@@ -57,7 +57,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.Smelting,
            XP.ExperienceLevel.Beginner_1,
-            CraftRequirement.Smelter
+            Build.BuildAndExpandType.Smelter
         );
 
         public static readonly CraftBlueprint Iron_AndCooling = new CraftBlueprint(
@@ -72,7 +72,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.Smelting,
            XP.ExperienceLevel.Beginner_1,
-            CraftRequirement.Smelter
+            Build.BuildAndExpandType.Smelter
         );
 
         public static readonly CraftBlueprint Silver = new CraftBlueprint(
@@ -87,7 +87,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.Smelting,
            XP.ExperienceLevel.Practitioner_2,
-            CraftRequirement.Smelter
+            Build.BuildAndExpandType.Smelter
         );
 
         public static readonly CraftBlueprint Silver_AndCooling = new CraftBlueprint(
@@ -102,7 +102,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.Smelting,
            XP.ExperienceLevel.Practitioner_2,
-            CraftRequirement.Smelter
+            Build.BuildAndExpandType.Smelter
         );
 
         public static readonly CraftBlueprint Tin = new CraftBlueprint(
@@ -117,7 +117,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.Smelting,
            XP.ExperienceLevel.Beginner_1,
-            CraftRequirement.Smelter
+            Build.BuildAndExpandType.Smelter
         );
 
         public static readonly CraftBlueprint Lead = new CraftBlueprint(
@@ -132,7 +132,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.Smelting,
            XP.ExperienceLevel.Beginner_1,
-            CraftRequirement.Smelter
+            Build.BuildAndExpandType.Smelter
         );
 
 
@@ -148,7 +148,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CastMetal,
            XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Foundry
+            Build.BuildAndExpandType.Foundry
         );
 
         public static readonly CraftBlueprint Steel = new CraftBlueprint(
@@ -162,7 +162,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CraftMetal,
            XP.ExperienceLevel.Expert_3,
-           CraftRequirement.Smith
+           Build.BuildAndExpandType.Smith
         );
 
         public static readonly CraftBlueprint Steel_AndCooling = new CraftBlueprint(
@@ -176,7 +176,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CraftMetal,
            XP.ExperienceLevel.Expert_3,
-           CraftRequirement.Smith
+           Build.BuildAndExpandType.Smith
         );
 
         public static readonly CraftBlueprint CastIron = new CraftBlueprint(
@@ -187,11 +187,11 @@ namespace VikingEngine.DSSWars.Resource
            {
                 new UseResource(ItemResourceType.Fuel_G, 40),
                 new UseResource(ItemResourceType.Stone_G, 2),
-                new UseResource(ItemResourceType.Iron_G, 4),               
+                new UseResource(ItemResourceType.Iron_G, 4),
            },
           XP.WorkExperienceType.CastMetal,
-          XP.ExperienceLevel.Expert_3,
-           CraftRequirement.Foundry
+          XP.ExperienceLevel.Practitioner_2,
+           Build.BuildAndExpandType.Foundry
        );
 
         public static readonly CraftBlueprint Bronze = new CraftBlueprint(
@@ -207,7 +207,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CastMetal,
            XP.ExperienceLevel.Beginner_1,
-            CraftRequirement.Foundry
+            Build.BuildAndExpandType.Foundry
         );
 
         public static readonly CraftBlueprint Mithril = new CraftBlueprint(
@@ -222,7 +222,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CastMetal,
            XP.ExperienceLevel.Master_4,
-            CraftRequirement.Foundry
+            Build.BuildAndExpandType.Smelter
         );
 
         //NON METAL
@@ -248,10 +248,22 @@ namespace VikingEngine.DSSWars.Resource
             },
             XP.WorkExperienceType.CraftFuel,
             XP.ExperienceLevel.Practitioner_2,
-             CraftRequirement.CoalPit
+             Build.BuildAndExpandType.CoalPit
         );
 
-       
+        public static readonly CraftBlueprint ClayBrick = new CraftBlueprint(
+             CraftResultType.Resource,
+             (int)ItemResourceType.Brick,
+             10,
+             new UseResource[]
+             {
+                new UseResource(ItemResourceType.Fuel_G, 10),
+                new UseResource(ItemResourceType.Clay, 10),
+             },
+             XP.WorkExperienceType.CraftFuel,
+             XP.ExperienceLevel.Beginner_1,
+              Build.BuildAndExpandType.Pottery
+         );
 
 
         //public static readonly CraftBlueprint Food1 = new CraftBlueprint(
@@ -290,7 +302,7 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Water_G, FoodWaterUsage),
                 new UseResource(ItemResourceType.Fuel_G, FoodFuelUsage),
                 new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
-          },XP.WorkExperienceType.Cook
+          }, XP.WorkExperienceType.Cook
       )
         { tooltipId = Tooltip.Food_BlueprintId };
 
@@ -303,11 +315,46 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Beer, FoodWaterUsage),
                 new UseResource(ItemResourceType.Fuel_G, FoodFuelUsage),
                 new UseResource(ItemResourceType.RawFood_Group, FoodCraftAmount)
-            },XP.WorkExperienceType.Cook
+            }, XP.WorkExperienceType.Cook
         )
         { tooltipId = Tooltip.Food_BlueprintId };
 
+        public static readonly CraftBlueprint ConservedFood_Barrel = new CraftBlueprint(
+          CraftResultType.Resource,
+          (int)ItemResourceType.ConservedFood,
+          20,
+          new UseResource[]
+          {
+              new UseResource(ItemResourceType.Beer, FoodWaterUsage),
+                new UseResource(ItemResourceType.Container, 1),
+                new UseResource(ItemResourceType.Salt, 4),
+                new UseResource(ItemResourceType.RawFood_Group, 20)
+          }, XP.WorkExperienceType.Chemistry
+        );
 
+        public static readonly CraftBlueprint ConservedFood_Smoked = new CraftBlueprint(
+          CraftResultType.Resource,
+          (int)ItemResourceType.ConservedFood,
+          10,
+          new UseResource[]
+          {
+                new UseResource(ItemResourceType.Beer, FoodWaterUsage),
+                new UseResource(ItemResourceType.RawFood_Group, 10),
+                new UseResource(ItemResourceType.Fuel_G, FoodFuelUsage),
+          }, XP.WorkExperienceType.CraftFuel, XP.ExperienceLevel.Beginner_1, Build.BuildAndExpandType.Smoker
+        );
+
+        public static readonly CraftBlueprint ConservedFood_Dried = new CraftBlueprint(
+          CraftResultType.Resource,
+          (int)ItemResourceType.ConservedFood,
+          10,
+          new UseResource[]
+          {
+                new UseResource(ItemResourceType.Beer, FoodWaterUsage / 2),
+                new UseResource(ItemResourceType.Salt, 1),
+                new UseResource(ItemResourceType.RawFood_Group, 10),
+          }, XP.WorkExperienceType.CraftFuel, XP.ExperienceLevel.Beginner_1, Build.BuildAndExpandType.Dryer
+        );
 
         public static readonly CraftBlueprint Beer = new CraftBlueprint(
                 CraftResultType.Resource,
@@ -315,20 +362,20 @@ namespace VikingEngine.DSSWars.Resource
                10,
                new UseResource[]
                {
-                new UseResource(ItemResourceType.Water_G, 5),
+                new UseResource(ItemResourceType.Water_G, 8),
                 new UseResource(ItemResourceType.Fuel_G, 1),
                 new UseResource(ItemResourceType.RawFood_Group, 1)
                },
             XP.WorkExperienceType.Chemistry,
             XP.ExperienceLevel.Beginner_1,
-            CraftRequirement.Brewery
+            Build.BuildAndExpandType.Brewery
 
            );
 
         public static readonly CraftBlueprint CoolingFluid = new CraftBlueprint(
                 CraftResultType.Resource,
                 (int)ItemResourceType.CoolingFluid,
-               10,
+               15,
                new UseResource[]
                {
                 new UseResource(ItemResourceType.Water_G, 5),
@@ -349,7 +396,7 @@ namespace VikingEngine.DSSWars.Resource
                },
                XP.WorkExperienceType.Chemistry,
                XP.ExperienceLevel.Practitioner_2,
-                CraftRequirement.Chemist
+                Build.BuildAndExpandType.Chemist
            );
 
         public static readonly CraftBlueprint Palisade = new CraftBlueprint(
@@ -363,7 +410,7 @@ namespace VikingEngine.DSSWars.Resource
               },
               XP.WorkExperienceType.WoodWork,
               XP.ExperienceLevel.Beginner_1,
-               CraftRequirement.Carpenter
+               Build.BuildAndExpandType.Carpenter
           );
 
         public static readonly CraftBlueprint Toolkit = new CraftBlueprint(
@@ -377,10 +424,53 @@ namespace VikingEngine.DSSWars.Resource
                },
                XP.WorkExperienceType.CraftMetal,
                XP.ExperienceLevel.Beginner_1,
-                CraftRequirement.Smith
+                Build.BuildAndExpandType.Smith
            );
 
-        public static readonly CraftBlueprint WagonLight = new CraftBlueprint(
+
+        public static readonly CraftBlueprint Container_wood = new CraftBlueprint(
+                CraftResultType.Resource,
+                (int)ItemResourceType.Container,
+               1,
+               new UseResource[]
+               {
+                    new UseResource(ItemResourceType.Wood_Group, 10),
+               },
+               XP.WorkExperienceType.WoodWork,
+
+               XP.ExperienceLevel.Beginner_1,
+                Build.BuildAndExpandType.Carpenter
+           );
+        public static readonly CraftBlueprint Container_clay = new CraftBlueprint(
+                CraftResultType.Resource,
+                (int)ItemResourceType.Container,
+               1,
+               new UseResource[]
+               {
+                    new UseResource(ItemResourceType.Clay, 10),
+               },
+               XP.WorkExperienceType.Chemistry,
+
+               XP.ExperienceLevel.Beginner_1,
+                Build.BuildAndExpandType.Pottery
+           );
+
+        const int BrickCount = 10;
+        public static readonly CraftBlueprint Brick = new CraftBlueprint(
+                    CraftResultType.Resource,
+                    (int)ItemResourceType.Brick,
+                   BrickCount,
+                   new UseResource[]
+                   {
+                    new UseResource(ItemResourceType.Clay, BrickCount),
+                   },
+                   XP.WorkExperienceType.Chemistry,
+
+                   XP.ExperienceLevel.Beginner_1,
+                    Build.BuildAndExpandType.Pottery
+               );
+
+        public static readonly CraftBlueprint Wagon2Wheel = new CraftBlueprint(
                 CraftResultType.Resource,
                 (int)ItemResourceType.Wagon2Wheel,
                1,
@@ -391,13 +481,13 @@ namespace VikingEngine.DSSWars.Resource
                },
                XP.WorkExperienceType.WoodWork,
 
-               XP.ExperienceLevel.Practitioner_2,
-                CraftRequirement.Carpenter
-
+               XP.ExperienceLevel.Beginner_1,
+                Build.BuildAndExpandType.Carpenter
            );
-        public static readonly CraftBlueprint WagonHeavy = new CraftBlueprint(
+
+        public static readonly CraftBlueprint Wagon4Wheel = new CraftBlueprint(
                 CraftResultType.Resource,
-                (int)ItemResourceType.Wagon2Wheel,
+                (int)ItemResourceType.Wagon4Wheel,
                1,
                new UseResource[]
                {
@@ -407,10 +497,57 @@ namespace VikingEngine.DSSWars.Resource
                },
                XP.WorkExperienceType.WoodWork,
 
-               XP.ExperienceLevel.Expert_3,
-                CraftRequirement.Carpenter
-
+               XP.ExperienceLevel.Practitioner_2,
+                Build.BuildAndExpandType.Carpenter
            );
+
+        public static readonly CraftBlueprint WagonClosed = new CraftBlueprint(
+                CraftResultType.Resource,
+                (int)ItemResourceType.WagonClosed,
+                1,
+                new UseResource[]
+                {
+                    new UseResource(ItemResourceType.SkinLinen_Group, 4),
+                    new UseResource(ItemResourceType.Wood_Group, 64),
+                    new UseResource(ItemResourceType.Iron_G, 4),
+                },
+                XP.WorkExperienceType.WoodWork,
+
+                XP.ExperienceLevel.Practitioner_2,
+                Build.BuildAndExpandType.Carpenter
+            );
+
+        public static readonly CraftBlueprint WagonIron = new CraftBlueprint(
+                CraftResultType.Resource,
+                (int)ItemResourceType.WagonIron,
+                1,
+                new UseResource[]
+                {
+                    new UseResource(ItemResourceType.SkinLinen_Group, 4),
+                    new UseResource(ItemResourceType.Wood_Group, 32),
+                    new UseResource(ItemResourceType.Iron_G, 32),
+                },
+                XP.WorkExperienceType.WoodWork,
+
+                XP.ExperienceLevel.Expert_3,
+                Build.BuildAndExpandType.Carpenter
+            );
+
+        public static readonly CraftBlueprint WagonSteel = new CraftBlueprint(
+                CraftResultType.Resource,
+                (int)ItemResourceType.WagonSteel,
+                1,
+                new UseResource[]
+                {
+                    new UseResource(ItemResourceType.SkinLinen_Group, 4),
+                    new UseResource(ItemResourceType.Wood_Group, 32),
+                    new UseResource(ItemResourceType.Steel, 32),
+                },
+                XP.WorkExperienceType.WoodWork,
+
+                XP.ExperienceLevel.Expert_3,
+                Build.BuildAndExpandType.Carpenter
+            );
 
         public static readonly CraftBlueprint GunPowder = new CraftBlueprint(
                 CraftResultType.Resource,
@@ -424,7 +561,7 @@ namespace VikingEngine.DSSWars.Resource
                XP.WorkExperienceType.Chemistry,
 
                XP.ExperienceLevel.Expert_3,
-                CraftRequirement.Chemist
+                Build.BuildAndExpandType.Chemist
            );
         public static readonly CraftBlueprint LedBullets = new CraftBlueprint(
            CraftResultType.Resource,
@@ -438,20 +575,20 @@ namespace VikingEngine.DSSWars.Resource
            },
           XP.WorkExperienceType.CastMetal,
           XP.ExperienceLevel.Beginner_1,
-           CraftRequirement.Foundry
+           Build.BuildAndExpandType.Foundry
        );
 
         //WEAPONS
         public static readonly CraftBlueprint SharpStick = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.SharpStick,
-            1,
+            8,
             new UseResource[]
             {
-                new UseResource(ItemResourceType.Wood_Group, 1),
-                new UseResource(ItemResourceType.Stone_G, 1),
+                new UseResource(ItemResourceType.Wood_Group, 4),
+                new UseResource(ItemResourceType.Stone_G, 4),
             },
-            XP.WorkExperienceType.CraftWeapon
+            XP.WorkExperienceType.CraftMetal
         );
 
         public static readonly CraftBlueprint BronzeSword = new CraftBlueprint(
@@ -463,11 +600,11 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 1),
                 new UseResource(ItemResourceType.Bronze, 3),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Practitioner_2,
-            CraftRequirement.Smith
+            Build.BuildAndExpandType.Smith
         );
-        
+
         public static readonly CraftBlueprint ShortSword = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.ShortSword,
@@ -477,9 +614,9 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 1),
                 new UseResource(ItemResourceType.Iron_G, 3),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Practitioner_2,
-            CraftRequirement.Smith
+            Build.BuildAndExpandType.Smith
         );
 
         public static readonly CraftBlueprint Sword = new CraftBlueprint(
@@ -491,9 +628,9 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 1),
                 new UseResource(ItemResourceType.Iron_G, 4),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Smith
+            Build.BuildAndExpandType.Smith
         );
 
         public static readonly CraftBlueprint LongSword = new CraftBlueprint(
@@ -505,9 +642,9 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 1),
                 new UseResource(ItemResourceType.Steel, 4),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
              XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Smith
+            Build.BuildAndExpandType.Smith
         );
 
         public static readonly CraftBlueprint HandSpearIron = new CraftBlueprint(
@@ -519,9 +656,9 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Wood_Group, 5),
                 new UseResource(ItemResourceType.Iron_G, 1),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
              XP.ExperienceLevel.Beginner_1,
-            CraftRequirement.Smith
+            Build.BuildAndExpandType.Smith
         );
 
         public static readonly CraftBlueprint HandSpearBronze = new CraftBlueprint(
@@ -533,9 +670,9 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Wood_Group, 5),
                 new UseResource(ItemResourceType.Bronze, 1),
            },
-           XP.WorkExperienceType.CraftWeapon,
+           XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Beginner_1,
-           CraftRequirement.Smith
+           Build.BuildAndExpandType.Smith
        );
 
         public static readonly CraftBlueprint MithrilSword = new CraftBlueprint(
@@ -548,9 +685,9 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Bronze, 1),
                 new UseResource(ItemResourceType.Mithril, 3),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
              XP.ExperienceLevel.Master_4,
-            CraftRequirement.Smith
+            Build.BuildAndExpandType.Smith
         );
 
         public static readonly CraftBlueprint WarhammerIron = new CraftBlueprint(
@@ -563,9 +700,9 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Wood_Group, 4),
                 new UseResource(ItemResourceType.Iron_G, 2),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Practitioner_2,
-            CraftRequirement.Smith
+            Build.BuildAndExpandType.Smith
         );
         public static readonly CraftBlueprint WarhammerBronze = new CraftBlueprint(
             CraftResultType.Resource,
@@ -577,26 +714,26 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Wood_Group, 4),
                 new UseResource(ItemResourceType.Bronze, 2),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Practitioner_2,
-            CraftRequirement.Smith
+            Build.BuildAndExpandType.Smith
         );
 
-        public static readonly CraftBlueprint KnightsLance = new CraftBlueprint(
-            CraftResultType.Resource,
-            (int)ItemResourceType.KnightsLance,
-            1,
-            new UseResource[]
-            {
-                new UseResource(ItemResourceType.Gold, 60),
-                new UseResource(ItemResourceType.RawFood_Group, 20),
-                new UseResource(ItemResourceType.Wood_Group, 5),
-                new UseResource(ItemResourceType.Iron_G, 5),
-            },
-           XP.WorkExperienceType.CraftWeapon,
-            XP.ExperienceLevel.Practitioner_2,
-            CraftRequirement.Smith
-        );
+        //public static readonly CraftBlueprint KnightsLance = new CraftBlueprint(
+        //    CraftResultType.Resource,
+        //    (int)ItemResourceType.KnightsLance,
+        //    1,
+        //    new UseResource[]
+        //    {
+        //        new UseResource(ItemResourceType.Gold, 60),
+        //        new UseResource(ItemResourceType.RawFood_Group, 20),
+        //        new UseResource(ItemResourceType.Wood_Group, 5),
+        //        new UseResource(ItemResourceType.Iron_G, 5),
+        //    },
+        //   XP.WorkExperienceType.CraftMetal,
+        //    XP.ExperienceLevel.Practitioner_2,
+        //    Build.BuildAndExpandType.Smith
+        //);
 
         public static readonly CraftBlueprint TwoHandSword = new CraftBlueprint(
             CraftResultType.Resource,
@@ -607,30 +744,32 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.SkinLinen_Group, 1),
                 new UseResource(ItemResourceType.Steel, 5),
             },
-            XP.WorkExperienceType.CraftWeapon,
+            XP.WorkExperienceType.CraftMetal,
             XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Smith
+            Build.BuildAndExpandType.Smith
         );
 
         public static readonly CraftBlueprint Slingshot = new CraftBlueprint(
            CraftResultType.Resource,
            (int)ItemResourceType.SlingShot,
-           4,
+           8,
            new UseResource[]
            {
-                new UseResource(ItemResourceType.Stone_G, 4),
-                new UseResource(ItemResourceType.SkinLinen_Group, 4),
+                new UseResource(ItemResourceType.Stone_G, 8),
+                new UseResource(ItemResourceType.SkinLinen_Group, 8),
            },
            XP.WorkExperienceType.Fletcher
        );
 
+        const int ThrowingSpearResultCount = 2;
+
         public static readonly CraftBlueprint ThrowingSpear1 = new CraftBlueprint(
           CraftResultType.Resource,
           (int)ItemResourceType.ThrowingSpear,
-          4,
+          ThrowingSpearResultCount,
           new UseResource[]
           {
-                 new UseResource(ItemResourceType.Wood_Group, 8),
+                 new UseResource(ItemResourceType.Wood_Group, 6),
                 new UseResource(ItemResourceType.Iron_G, 1),
           },
           XP.WorkExperienceType.Fletcher
@@ -638,10 +777,10 @@ namespace VikingEngine.DSSWars.Resource
         public static readonly CraftBlueprint ThrowingSpear2 = new CraftBlueprint(
           CraftResultType.Resource,
           (int)ItemResourceType.ThrowingSpear,
-          4,
+          ThrowingSpearResultCount,
           new UseResource[]
           {
-                 new UseResource(ItemResourceType.Wood_Group, 8),
+                 new UseResource(ItemResourceType.Wood_Group, 6),
                 new UseResource(ItemResourceType.Bronze, 1),
           },
           XP.WorkExperienceType.Fletcher
@@ -657,9 +796,9 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Iron_G, 1),
                 new UseResource(ItemResourceType.SkinLinen_Group, 2),
             },
-            XP.WorkExperienceType.Fletcher, 
+            XP.WorkExperienceType.Fletcher,
             XP.ExperienceLevel.Practitioner_2,
-            CraftRequirement.Carpenter
+            Build.BuildAndExpandType.Carpenter
 
         );
         public static readonly CraftBlueprint LongBow = new CraftBlueprint(
@@ -674,7 +813,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.Fletcher,
             XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Carpenter
+            Build.BuildAndExpandType.Carpenter
         );
 
         public static readonly CraftBlueprint CrossBow = new CraftBlueprint(
@@ -689,7 +828,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.Fletcher,
             XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Carpenter
+            Build.BuildAndExpandType.Carpenter
         );
 
         public static readonly CraftBlueprint MithrilBow = new CraftBlueprint(
@@ -705,7 +844,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.Fletcher,
            XP.ExperienceLevel.Master_4,
-            CraftRequirement.Carpenter
+            Build.BuildAndExpandType.Carpenter
         );
 
         public static readonly CraftBlueprint BronzeHandCannon = new CraftBlueprint(
@@ -720,7 +859,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CastMetal,
             XP.ExperienceLevel.Practitioner_2,
-            CraftRequirement.Gunmaker
+            Build.BuildAndExpandType.Gunmaker
         );
 
         public static readonly CraftBlueprint BronzeHandCulverin = new CraftBlueprint(
@@ -735,7 +874,7 @@ namespace VikingEngine.DSSWars.Resource
            },
           XP.WorkExperienceType.CastMetal,
             XP.ExperienceLevel.Practitioner_2,
-           CraftRequirement.Gunmaker
+           Build.BuildAndExpandType.Gunmaker
         );
 
         public static readonly CraftBlueprint Rifle = new CraftBlueprint(
@@ -750,10 +889,10 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CastMetal,
             XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Gunmaker
+            Build.BuildAndExpandType.Gunmaker
         );
 
-        public static readonly CraftBlueprint Blunderbus = new CraftBlueprint(
+        public static readonly CraftBlueprint Blunderbuss = new CraftBlueprint(
             CraftResultType.Resource,
             (int)ItemResourceType.Blunderbuss,
             1,
@@ -765,7 +904,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CastMetal,
             XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Gunmaker
+            Build.BuildAndExpandType.Gunmaker
         );
 
         public static readonly CraftBlueprint Ballista_Iron = new CraftBlueprint(
@@ -780,7 +919,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.Fletcher,
             XP.ExperienceLevel.Practitioner_2,
-            CraftRequirement.Carpenter
+            Build.BuildAndExpandType.Carpenter
         );
 
         public static readonly CraftBlueprint Ballista_Bronze = new CraftBlueprint(
@@ -795,7 +934,7 @@ namespace VikingEngine.DSSWars.Resource
            },
           XP.WorkExperienceType.Fletcher,
            XP.ExperienceLevel.Practitioner_2,
-           CraftRequirement.Carpenter
+           Build.BuildAndExpandType.Carpenter
        );
 
         public static readonly CraftBlueprint ManuBallista = new CraftBlueprint(
@@ -810,7 +949,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.Fletcher,
             XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Carpenter
+            Build.BuildAndExpandType.Carpenter
         );
 
         public static readonly CraftBlueprint Catapult = new CraftBlueprint(
@@ -825,7 +964,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.Fletcher,
             XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Carpenter
+            Build.BuildAndExpandType.Carpenter
         );
 
         public static readonly CraftBlueprint SiegeCannonBronze = new CraftBlueprint(
@@ -840,7 +979,7 @@ namespace VikingEngine.DSSWars.Resource
             },
            XP.WorkExperienceType.CastMetal,
             XP.ExperienceLevel.Master_4,
-            CraftRequirement.Gunmaker
+            Build.BuildAndExpandType.Gunmaker
         );
 
         public static readonly CraftBlueprint ManCannonBronze = new CraftBlueprint(
@@ -849,11 +988,13 @@ namespace VikingEngine.DSSWars.Resource
             1,
             new UseResource[]
             {
+                new UseResource(ItemResourceType.BlackPowder, 10),
+                new UseResource(ItemResourceType.Stone_G, 10),
                 new UseResource(ItemResourceType.Bronze, 20),
             },
            XP.WorkExperienceType.CastMetal,
             XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Gunmaker
+            Build.BuildAndExpandType.Gunmaker
         );
 
         public static readonly CraftBlueprint SiegeCannonIron = new CraftBlueprint(
@@ -868,7 +1009,7 @@ namespace VikingEngine.DSSWars.Resource
            },
           XP.WorkExperienceType.CraftMetal,
            XP.ExperienceLevel.Master_4,
-           CraftRequirement.Gunmaker
+           Build.BuildAndExpandType.Gunmaker
        );
 
         public static readonly CraftBlueprint ManCannonIron = new CraftBlueprint(
@@ -883,7 +1024,7 @@ namespace VikingEngine.DSSWars.Resource
            },
           XP.WorkExperienceType.CraftMetal,
            XP.ExperienceLevel.Master_4,
-           CraftRequirement.Gunmaker
+           Build.BuildAndExpandType.Gunmaker
        );
 
         public static readonly CraftBlueprint PaddedArmor = new CraftBlueprint(
@@ -917,7 +1058,7 @@ namespace VikingEngine.DSSWars.Resource
         new UseResource(ItemResourceType.SkinLinen_Group, 4),
         new UseResource(ItemResourceType.Bronze, 2),
             },
-           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Beginner_1
+           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Beginner_1, Build.BuildAndExpandType.Armory
         );
 
         public static readonly CraftBlueprint MailArmor = new CraftBlueprint(
@@ -930,7 +1071,7 @@ namespace VikingEngine.DSSWars.Resource
         new UseResource(ItemResourceType.Iron_G, 2),
             },
            XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Practitioner_2,
-            CraftRequirement.Smith
+             Build.BuildAndExpandType.Armory
         );
 
         public static readonly CraftBlueprint HeavyMailArmor = new CraftBlueprint(
@@ -943,20 +1084,20 @@ namespace VikingEngine.DSSWars.Resource
         new UseResource(ItemResourceType.Iron_G, 6),
             },
            XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Smith
+            Build.BuildAndExpandType.Armory
         );
 
         public static readonly CraftBlueprint PlateArmor = new CraftBlueprint(
             CraftResultType.Resource,
-            (int)ItemResourceType.IronArmor,
+            (int)ItemResourceType.LightPlateArmor,
             1,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.SkinLinen_Group, 4),
+        new UseResource(ItemResourceType.PaddedArmor, 1),
         new UseResource(ItemResourceType.Steel, 2),
             },
            XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Practitioner_2,
-            CraftRequirement.Smith
+            Build.BuildAndExpandType.Armory
         );
 
         public static readonly CraftBlueprint FullPlateArmor = new CraftBlueprint(
@@ -965,11 +1106,11 @@ namespace VikingEngine.DSSWars.Resource
             1,
             new UseResource[]
             {
-        new UseResource(ItemResourceType.SkinLinen_Group, 2),
-        new UseResource(ItemResourceType.Steel, 6),
+                new UseResource(ItemResourceType.IronArmor, 1),
+                new UseResource(ItemResourceType.Steel, 6),
             },
            XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Expert_3,
-            CraftRequirement.Smith
+            Build.BuildAndExpandType.Armory
         );
 
         public static readonly CraftBlueprint MithrilArmor = new CraftBlueprint(
@@ -982,9 +1123,458 @@ namespace VikingEngine.DSSWars.Resource
                 new UseResource(ItemResourceType.Mithril, 3),
            },
           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Master_4,
-           CraftRequirement.Smith
+           Build.BuildAndExpandType.Armory
        );
 
-        
+        //MOUNT
+        public static readonly CraftBlueprint MountBronzeArmor = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.MountBronzeArmor,
+            1,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.SkinLinen_Group, 16),
+        new UseResource(ItemResourceType.Bronze, 8),
+            },
+           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Beginner_1, Build.BuildAndExpandType.Armory
+        );
+
+        public static readonly CraftBlueprint MountPaddedArmor = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.MountPaddedArmor,
+            1,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.SkinLinen_Group, 16),
+            },
+           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Beginner_1
+        );
+
+        public static readonly CraftBlueprint MountHeavyPaddedArmor = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.MountHeavyPaddedArmor,
+            1,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.SkinLinen_Group, 32),
+            },
+           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Practitioner_2
+        );
+
+
+        public static readonly CraftBlueprint MountIronArmor = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.MountIronArmor,
+            1,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.SkinLinen_Group, 16),
+        new UseResource(ItemResourceType.Iron_G, 8),
+            },
+           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Practitioner_2,
+             Build.BuildAndExpandType.Armory
+        );
+
+        public static readonly CraftBlueprint MountHeavyIronArmor = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.MountHeavyIronArmor,
+            1,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.SkinLinen_Group, 8),
+        new UseResource(ItemResourceType.Iron_G, 24),
+            },
+           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Expert_3,
+            Build.BuildAndExpandType.Armory
+        );
+
+        public static readonly CraftBlueprint MountLightPlateArmor = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.MountLightPlateArmor,
+            1,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.SkinLinen_Group, 16),
+        new UseResource(ItemResourceType.Steel, 8),
+            },
+           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Practitioner_2,
+            Build.BuildAndExpandType.Armory
+        );
+
+        public static readonly CraftBlueprint MountFullPlateArmor = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.MountFullPlateArmor,
+            1,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.SkinLinen_Group, 8),
+        new UseResource(ItemResourceType.Steel, 24),
+            },
+           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Expert_3,
+            Build.BuildAndExpandType.Armory
+        );
+
+        public static readonly CraftBlueprint MountMithrilArmor = new CraftBlueprint(
+           CraftResultType.Resource,
+           (int)ItemResourceType.MountMithrilArmor,
+           1,
+           new UseResource[]
+           {
+                new UseResource(ItemResourceType.PaddedArmor, 4),
+                new UseResource(ItemResourceType.Mithril, 12),
+           },
+          XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Master_4,
+           Build.BuildAndExpandType.Armory
+       );
+
+
+        public static readonly CraftBlueprint BucklerShield = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.BucklerShield,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Wood_Group, 2),
+                new UseResource(ItemResourceType.Iron_G, 2),
+            },
+           XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Practitioner_2
+        );
+
+        public static readonly CraftBlueprint RoundShield = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RoundShield,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Wood_Group, 4),
+                new UseResource(ItemResourceType.SkinLinen_Group, 2),
+                new UseResource(ItemResourceType.Iron_G, 2),
+            },
+            XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Beginner_1
+        );
+
+        public static readonly CraftBlueprint HeaterShield = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.HeaterShield,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Wood_Group, 8),
+                new UseResource(ItemResourceType.SkinLinen_Group, 8),
+                new UseResource(ItemResourceType.Iron_G, 2),
+            },
+            XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Beginner_1
+        );
+
+        public static readonly CraftBlueprint TowerShield = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.TowerShield,
+            1,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Wood_Group, 16),
+                new UseResource(ItemResourceType.SkinLinen_Group, 16),
+                new UseResource(ItemResourceType.Iron_G, 2),
+            },
+            XP.WorkExperienceType.CraftArmor, XP.ExperienceLevel.Practitioner_2
+        );
+
+
+        const int HenSlaughterCount = 4;
+        const int LargeAnimalSlaughterCount = 2;
+
+        public static readonly CraftBlueprint SlaughterFowl = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            9 * HenSlaughterCount,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Fowl, HenSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterFowl }.addSecondResult(ItemResourceType.SkinLinen_Group, 1 * HenSlaughterCount);
+
+        public static readonly CraftBlueprint SlaughterHen = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            16 * HenSlaughterCount,
+            new UseResource[]
+            {
+                new UseResource(ItemResourceType.Hen, HenSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterHen }.addSecondResult(ItemResourceType.SkinLinen_Group, 1 * HenSlaughterCount);
+
+        // --- Pigs / Hogs ---
+
+        public static readonly CraftBlueprint SlaughterBoar = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            40,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.Boar, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterBoar }.addSecondResult(ItemResourceType.SkinLinen_Group, 6);
+
+
+        public static readonly CraftBlueprint SlaughterPig = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            60,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.Pig, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterPig }.addSecondResult(ItemResourceType.SkinLinen_Group, 5);
+
+        public static readonly CraftBlueprint SlaughterWildPig = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            60,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.WildPig, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterWildPig }.addSecondResult(ItemResourceType.SkinLinen_Group, 5);
+
+        public static readonly CraftBlueprint SlaughterWildHog = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            100,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.WildHog, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterWildHog }.addSecondResult(ItemResourceType.SkinLinen_Group, 5);
+
+        public static readonly CraftBlueprint SlaughterWarHog = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            60,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.WarHog, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterWarHog }.addSecondResult(ItemResourceType.SkinLinen_Group, 5);
+
+        public static readonly CraftBlueprint SlaughterStagHog = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            120,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.StagHog, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterStagHog }.addSecondResult(ItemResourceType.SkinLinen_Group, 10);
+
+        // --- Oxen ---
+
+        public static readonly CraftBlueprint SlaughterOxen = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            80,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.Oxen, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterOxen }.addSecondResult(ItemResourceType.SkinLinen_Group, 50);
+
+        public static readonly CraftBlueprint SlaughterKineOxen = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            100,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.KineOxen, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterKineOxen }.addSecondResult(ItemResourceType.SkinLinen_Group, 80);
+
+
+        // --- Horses ---
+
+        public static readonly CraftBlueprint SlaughterPony = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            40,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.Pony, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterPony }.addSecondResult(ItemResourceType.SkinLinen_Group, 10);
+
+        public static readonly CraftBlueprint SlaughterHorse = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            80,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.Horse, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterHorse }.addSecondResult(ItemResourceType.SkinLinen_Group, 12);
+
+        public static readonly CraftBlueprint SlaughterWarHorse = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            40,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.WarHorse, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterWarHorse }.addSecondResult(ItemResourceType.SkinLinen_Group, 12);
+
+        public static readonly CraftBlueprint SlaughterDraftHorse = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            80,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.DraftHorse, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterDraftHorse }.addSecondResult(ItemResourceType.SkinLinen_Group, 12);
+
+
+        // --- Cats (Skin Focus) ---
+
+        public static readonly CraftBlueprint SlaughterWildCat = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.SkinLinen_Group,
+            50,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.WildCat, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterWildCat };
+
+        public static readonly CraftBlueprint SlaughterLion = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.SkinLinen_Group,
+            120,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.Lion, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterLion };
+
+        public static readonly CraftBlueprint SlaughterWarLion = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.SkinLinen_Group,
+            120,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.WarLion, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterWarLion };
+
+
+        // --- Wolves (Skin Focus) ---
+
+        public static readonly CraftBlueprint SlaughterWolf = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.SkinLinen_Group,
+            50,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.Wolf, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterWolf };
+
+        public static readonly CraftBlueprint SlaughterWarg = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.SkinLinen_Group,
+            70,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.Warg, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterWarg };
+
+        public static readonly CraftBlueprint SlaughterAlphaWarg = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.SkinLinen_Group,
+            70,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.AlphaWarg, LargeAnimalSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterAlphaWarg };
+
+
+        // --- Elephants ---
+        const int ElephantSlaughterCount = 1;
+
+        public static readonly CraftBlueprint SlaughterElephant = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            100,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.Elephant, ElephantSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterElephant }.addSecondResult(ItemResourceType.SkinLinen_Group, 20);
+
+        public static readonly CraftBlueprint SlaughterWarElephant = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            80,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.WarElephant, ElephantSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterWarElephant }.addSecondResult(ItemResourceType.SkinLinen_Group, 16);
+
+        public static readonly CraftBlueprint SlaughterOliphant = new CraftBlueprint(
+            CraftResultType.Resource,
+            (int)ItemResourceType.RawFood_Group,
+            200,
+            new UseResource[]
+            {
+        new UseResource(ItemResourceType.Oliphant, ElephantSlaughterCount),
+            },
+            XP.WorkExperienceType.AnimalCare, XP.ExperienceLevel.Beginner_1
+        )
+        { workTag = (int)ItemResourceType.SlaughterOliphant }.addSecondResult(ItemResourceType.SkinLinen_Group, 30);
     }
 }

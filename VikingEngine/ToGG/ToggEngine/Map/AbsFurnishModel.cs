@@ -68,7 +68,7 @@ namespace VikingEngine.ToGG.ToggEngine.Map
                 model.Position += speed * time_ms;
                 model.Rotation.RotateAxis(new Vector3(rotationSpeed * time_ms, 0, 0));
 
-                if (Ref.TimePassed16ms)
+                for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
                 {
                     speed.Y += Gravity;
                 }

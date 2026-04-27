@@ -43,11 +43,17 @@ namespace VikingEngine.Input
         public static void Init()
         {
             controllers = new List2<XController>(GamePad.MaximumGamePadCount);
+
             Update();                
         }
         
         public static void Update()
         {
+            if (Ref.steam.isInitialized)
+            {
+                Ref.steam.input.update();
+            }
+
             if (controllers == null)
             {
                 return;
@@ -69,20 +75,29 @@ namespace VikingEngine.Input
 
         public static void OnGameStateChange()
         {
+            if (controllers == null)
+            {
+                return;
+            }
+
             for (int i = 0; i < controllers.Count; i++)
             {
                 controllers[i].onGameStateChange();
             }
+            
         }
 
         static public bool KeyDownEvent(Buttons button, out int player)
         {
-            for (int i = 0; i < controllers.Count; i++)
+            if (controllers != null)
             {
-                if (controllers[i].KeyDownEvent(button))
+                for (int i = 0; i < controllers.Count; i++)
                 {
-                    player = Instance(i).Index;
-                    return true;
+                    if (controllers[i].KeyDownEvent(button))
+                    {
+                        player = Instance(i).Index;
+                        return true;
+                    }
                 }
             }
             player = -1;
@@ -91,12 +106,15 @@ namespace VikingEngine.Input
 
         static public bool AnyActivationKey_DownEvent(out int player)
         {
-            for (int i = 0; i < controllers.Count; i++)
+            if (controllers != null)
             {
-                if (controllers[i].KeyDownEvent(Buttons.A, Buttons.X, Buttons.Start))
+                for (int i = 0; i < controllers.Count; i++)
                 {
-                    player = Instance(i).Index;
-                    return true;
+                    if (controllers[i].KeyDownEvent(Buttons.A, Buttons.X, Buttons.Start))
+                    {
+                        player = Instance(i).Index;
+                        return true;
+                    }
                 }
             }
             player = -1;
@@ -105,12 +123,15 @@ namespace VikingEngine.Input
 
         static public bool KeyIsDown(Buttons button, ref int player)
         {
-            for (int i = 0; i < controllers.Count; i++)
+            if (controllers != null)
             {
-                if (controllers[i].IsButtonDown(button))
+                for (int i = 0; i < controllers.Count; i++)
                 {
-                    player = Instance(i).Index;
-                    return true;
+                    if (controllers[i].IsButtonDown(button))
+                    {
+                        player = Instance(i).Index;
+                        return true;
+                    }
                 }
             }
             return false;
@@ -118,12 +139,15 @@ namespace VikingEngine.Input
 
         static public bool KeyDownEvent_index(Buttons button, out int index)
         {
-            for (int i = 0; i < controllers.Count; i++)
+            if (controllers != null)
             {
-                if (controllers[i].KeyDownEvent(button))
+                for (int i = 0; i < controllers.Count; i++)
                 {
-                    index = i;
-                    return true;
+                    if (controllers[i].KeyDownEvent(button))
+                    {
+                        index = i;
+                        return true;
+                    }
                 }
             }
             index= -1;
@@ -132,11 +156,14 @@ namespace VikingEngine.Input
 
         static public bool KeyDownEvent(Buttons button)
         {
-            for (int i = 0; i < controllers.Count; i++)
+            if (controllers != null)
             {
-                if (controllers[i].KeyDownEvent(button))
+                for (int i = 0; i < controllers.Count; i++)
                 {
-                    return true;
+                    if (controllers[i].KeyDownEvent(button))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -144,11 +171,14 @@ namespace VikingEngine.Input
 
         static public bool KeyDownEvent(Buttons button1, Buttons button2)
         {
-            for (int i = 0; i < controllers.Count; i++)
+            if (controllers != null)
             {
-                if (controllers[i].KeyDownEvent(button1, button2))
+                for (int i = 0; i < controllers.Count; i++)
                 {
-                    return true;
+                    if (controllers[i].KeyDownEvent(button1, button2))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -156,16 +186,20 @@ namespace VikingEngine.Input
 
         public static XController Instance(int index)
         {
-            return controllers[index];
+            arraylib.TryGet(controllers, index, out var instance);
+            return instance;
         }
 
         public static int MaxIndex()
         {
-            for (int i = controllers.Count - 1; i >= 0; --i)
+            if (controllers != null)
             {
-                if (controllers[i].Connected)
+                for (int i = controllers.Count - 1; i >= 0; --i)
                 {
-                    return i;
+                    if (controllers[i].Connected)
+                    {
+                        return i;
+                    }
                 }
             }
             return 0;
@@ -173,11 +207,14 @@ namespace VikingEngine.Input
 
         public static bool HasConnectedController()
         {
-            for (int i = controllers.Count - 1; i >= 0; --i)
+            if (controllers != null)
             {
-                if (controllers[i].Connected)
+                for (int i = controllers.Count - 1; i >= 0; --i)
                 {
-                    return true;
+                    if (controllers[i].Connected)
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -185,18 +222,21 @@ namespace VikingEngine.Input
 
         public static XController Default()
         {
-            var c = controllers[(int)Engine.XGuide.LocalHostIndex];
-            if (c.Connected)
+            if (controllers != null)
             {
-                return c;
-            }
-
-            controllers.loopBegin();
-            while (controllers.loopNext())
-            {
-                if (controllers.sel.Connected)
+                var c = controllers[(int)Engine.XGuide.LocalHostIndex];
+                if (c.Connected)
                 {
-                    return controllers.sel;
+                    return c;
+                }
+
+                controllers.loopBegin();
+                while (controllers.loopNext())
+                {
+                    if (controllers.sel.Connected)
+                    {
+                        return controllers.sel;
+                    }
                 }
             }
 
@@ -230,7 +270,7 @@ namespace VikingEngine.Input
         public JoyStickValue UpdateStepBuffer(Vector2 input)
         {
             this.value.Direction = input;
-            this.value.Stepping = stepping.update(input);
+            this.value.Stepping = stepping.update(input, true);
             return this.value;
         }
 
@@ -243,11 +283,11 @@ namespace VikingEngine.Input
         public DirectionalStepping x;
         public DirectionalStepping y;
 
-        public IntVector2 update(Vector2 input)
+        public IntVector2 update(Vector2 input, bool useTime)
         {
             IntVector2 result = new IntVector2(
-                x.Update(input.X),
-                y.Update(input.Y));
+                x.Update(input.X, useTime),
+                y.Update(input.Y, useTime));
 
             return result;
         }
@@ -261,7 +301,7 @@ namespace VikingEngine.Input
         const float HspeedFalloverVal = 170;
         float fallOver;
 
-        public int Update(float dirInput)
+        public int Update(float dirInput, bool useTime)
         {
             const float InputBuffer = 0.3f;
             if (Math.Abs(dirInput) <= InputBuffer)
@@ -273,7 +313,11 @@ namespace VikingEngine.Input
             }
             else
             {
-                accumulation += dirInput * Ref.DeltaTimeMs;
+                if (useTime)
+                {
+                    dirInput *= Ref.DeltaTimeMs;
+                }
+                accumulation += dirInput;
                 if (!keyDown)
                 {
                     keyDown = true;

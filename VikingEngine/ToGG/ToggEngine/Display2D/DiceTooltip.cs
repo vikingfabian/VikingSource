@@ -43,7 +43,7 @@ namespace VikingEngine.ToGG.ToggEngine.Display2D
                 Graphics.TextBoxSimple desc = new Graphics.TextBoxSimple(LoadedFont.Regular, 
                     VectorExt.AddX(icon.RightCenter, Engine.Screen.BorderWidth),
                     Engine.Screen.TextBreadScale, Graphics.Align.CenterHeight,
-                    BattleDice.ResultDesc(m.result) + " (" + TextLib.PercentText(chance) + ")", Color.White, 
+                    BattleDice.ResultDesc(m.result) + " (" + TextLib.PercentTextWithSymbol(chance) + ")", Color.White, 
                     HudLib.TooltipLayer, descW);
 
                 Add(icon); Add(desc);

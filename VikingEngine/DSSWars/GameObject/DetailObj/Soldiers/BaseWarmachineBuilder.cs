@@ -14,13 +14,13 @@ namespace VikingEngine.DSSWars.GameObject
 
     class WarmachineProfile : ConscriptedSoldierBuilder
     {
-        public const float BallistaRange = 3;
+        public const float BallistaRange = 2;
         public WarmachineProfile() 
             :base()
         {
-            unitType = UnitType.ConscriptWarmachine;
+            unitBuildType = UnitBuildType.ConscriptWarmachine;
             
-            boundRadius = DssVar.StandardBoundRadius * 2.2f;
+            //boundRadius = DssVar.StandardBoundRadius * 2.2f;
 
             //walkingSpeed = DssConst.Men_StandardWalkingSpeed * 0.6f;
             //ArmySpeedBonusLand = -0.5;
@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             
         }
-        public override AbsSoldierUnit CreateUnit()
+        public override AbsSoldierUnit CreateUnit(bool bannerman)
         {
             
             return new BaseWarmachineBuilder();
@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.GameObject
             : base()
         { }
 
-        protected override DetailUnitModel initModel()
+        protected override DetailUnitModel initModel(bool bannerman)
         {
             updateGroudY(true);
             switch (group.soldierConscript.conscript.weapon)
@@ -138,7 +138,7 @@ namespace VikingEngine.DSSWars.GameObject
             if (parent.state.walking || parent.state.rotating)
             {
                 float move = parent.walkingSpeedWithModifiers(Ref.DeltaTimeMs);
-                walkingAnimation.update(move, model);
+                walkingAnimation.update(move, model, out _);
             }
             else
             {

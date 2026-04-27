@@ -2,10 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Build;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Map.Settings;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.LootFest.Players;
@@ -14,6 +15,8 @@ namespace VikingEngine.DSSWars.Map
 {
     struct SubTile
     {
+        public static readonly SubTile Empty = new SubTile() { mainTerrain = TerrainMainType.NUM };
+
         public Color color;
         public float groundY;
         //public FoilType foil = FoilType.None;
@@ -31,6 +34,13 @@ namespace VikingEngine.DSSWars.Map
         /// </summary>
         public int collectionPointer = -1;
 
+        public SubTile(TerrainMainType type, int subType)
+        {
+            this.mainTerrain = type;
+            this.subTerrain = subType;
+            terrainAmount = 1;
+        }
+
         public SubTile(TerrainMainType type, int subType, Color color, float groundY)
         {
 #if DEBUG
@@ -41,6 +51,7 @@ namespace VikingEngine.DSSWars.Map
 #endif
             this.color = color;
             this.groundY = groundY;
+
             this.mainTerrain = type;
             this.subTerrain = subType;
         }
@@ -173,6 +184,16 @@ namespace VikingEngine.DSSWars.Map
 #endif
         }
 
+        public bool EqualTerrain(SubTile other)
+        {
+            return mainTerrain == other.mainTerrain &&
+                subTerrain == other.subTerrain;
+        }
+        public bool EqualTerrain(TerrainMainType main, int sub)
+        {
+            return mainTerrain == main &&
+                subTerrain == sub;
+        }
         public bool EqualSaveData(ref SubTile other)
         {
             return  terrainAmount == other.terrainAmount && 
@@ -251,6 +272,8 @@ namespace VikingEngine.DSSWars.Map
                         //case TerrainSubFoilType.RapeSeedFarmUpgraded:
                         //case TerrainSubFoilType.HempFarmUpgraded:
                         case TerrainSubFoilType.BogIron:
+                        case TerrainSubFoilType.ClayPit:
+                        case TerrainSubFoilType.SaltPit:
                             return false;
                         
                     }
@@ -295,7 +318,8 @@ namespace VikingEngine.DSSWars.Map
 
         public string TypeToString()
         {
-            return LangLib.TerrainName(mainTerrain, subTerrain);
+            IconName.Terrain(mainTerrain, subTerrain, out _, out string name);
+            return name;
         }
 
         public bool IsWater()

@@ -149,6 +149,25 @@ namespace VikingEngine.DSSWars.GameObject
             return -1;
         }
 
+        public bool tryGetDefence(IntVector2 position, out DefenceStatus defence)
+        {
+            int idAndPosition = conv.IntVector2ToInt(position);
+            lock (defenceBuildings.array)
+            {
+                for (int i = 0; i < defenceBuildings.Count; ++i)
+                {
+                    if (defenceBuildings[i].idAndPosition == idAndPosition)
+                    {
+                        defence = defenceBuildings[i];
+                        return true;
+                    }
+                }
+            }
+
+            defence = DefenceStatus.Empty;
+            return false;
+        }
+
         public void setAllDefenceAutoAssign(bool toValue, bool towersOnly, bool message = true)
         {
             Task.Run(() =>
@@ -190,10 +209,17 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void defence_assignGuard_toIndex(GuardGroup guard, int index)
         {
-            var defence = defenceBuildings[index];
-            guard.onEnterGuard(this, defence.idAndPosition);
-            defence.soldierGroupId = guard.myIndex;
-            defenceBuildings[index] = defence;
+            lock (defenceBuildings.array)
+            {
+                if (arraylib.InBound(defenceBuildings.array, index))
+                {
+                    var defence = defenceBuildings[index];
+                    guard.onEnterGuard(this, defence.idAndPosition);
+                    defence.soldierGroupId = guard.myIndex;
+                    defenceBuildings[index] = defence;
+                }                
+            }
+            
 
             //guard.refreshSoldierDefence();
             //switch (DssRef.world.subTileGrid.Get(conv.IntToIntVector2(defence.idAndPosition)).GetWallType())

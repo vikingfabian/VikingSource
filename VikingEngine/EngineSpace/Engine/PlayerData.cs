@@ -1,14 +1,15 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using VikingEngine.SteamWrapping;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using VikingEngine.DSSWars;
+using VikingEngine.Input;
+using VikingEngine.SteamWrapping;
 ////xna
 
 namespace VikingEngine.Engine
@@ -159,7 +160,8 @@ namespace VikingEngine.Engine
         public VikingEngine.Input.PlayerInputMap inputMap = null;
         
         public bool IsActive = false; 
-        public bool IsAlive = false; 
+        public bool IsAlive = false;
+        public bool IgnoreLostController = false;
        
         public PlayerData(int localPlayerIndex, int globalIndex = -1)
         {
@@ -172,18 +174,24 @@ namespace VikingEngine.Engine
             this.globalPlayerIndex = globalIndex;
             inputMap = null;
         }
+
+        
         
         public bool LostController
         {
             get
             {
-                if (PlatformSettings.RunningWindows)
-                    return false;
+                //if (PlatformSettings.RunningWindows)
+                //    return false;
 
-                if (IsActive)
+                if (IsActive && !Ref.gamesett.muteControllerDisconnect)
                 {
-                    return !inputMap.Connected;
+                    if (!inputMap.Connected)
+                    {
+                        return !IgnoreLostController;
+                    }
                 }
+                IgnoreLostController = false;
                 return false;
             }
         }

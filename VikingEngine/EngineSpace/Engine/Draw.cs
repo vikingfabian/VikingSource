@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using HardwareInstancing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
 using VikingEngine.Graphics;
-using HardwareInstancing;
+using VikingEngine.Input;
 using VikingEngine.LootFest;
 
 namespace VikingEngine.Engine
@@ -36,8 +37,8 @@ namespace VikingEngine.Engine
         public static GraphicsDeviceManager graphicsDeviceManager;
         //public static GraphicsDevice GraphicsDevice;
         public static Viewport defaultViewport;
-        public static bool horizontalSplit = true;
-        public static Effect effectBR, effectFlag;//effectSeaNoise;
+        //public static bool horizontalSplit = true;
+        public static Effect effectBR, effectFlag, effectWaveXz, shadowEffect/*, oceanEffect*/;//effectSeaNoise;
         //public static Effect PixelShader;
         public static Graphics.CustomEffect[] TextureEffects;
         static protected RenderTarget2D MainRenderTarget;
@@ -47,6 +48,7 @@ namespace VikingEngine.Engine
         public static int MaxScreenSplit = 4;
 
         public DrawBatchCollection drawBatch;
+       
 
         public static void Init()
         {
@@ -66,15 +68,18 @@ namespace VikingEngine.Engine
 
             effectBR = LoadContent.LoadShader("Effect");
             effectFlag = LoadContent.LoadShader("FlagWaveEffect");
-            
+            effectWaveXz = LoadContent.LoadShader("WaveXzEffect");
+            shadowEffect = Engine.LoadContent.LoadShader("ShadowEffect");
+            //oceanEffect = Engine.LoadContent.LoadShader("OceanEffectFlat");
+
             //effectSeaNoise = LoadContent.LoadShader("SeaNoiseEffect");
 
             TextureEffects = new VikingEngine.Graphics.CustomEffect[(int)Graphics.TextureEffectType.NUM_NON];
 
             TextureEffects[(int)Graphics.TextureEffectType.Flat] = new Graphics.CustomEffect("Flat", false);
             TextureEffects[(int)Graphics.TextureEffectType.SeaNoise] = new Graphics.SeaNoiseEffect();
-            TextureEffects[(int)Graphics.TextureEffectType.Shadow] = new Graphics.CustomEffect("Shadow", false);
-            TextureEffects[(int)Graphics.TextureEffectType.MonoShadow] = new Graphics.CustomEffect("RenderTextured", false);
+            TextureEffects[(int)Graphics.TextureEffectType.BillboardShadow] = new Graphics.CustomEffect("Shadow", false);
+            //TextureEffects[(int)Graphics.TextureEffectType.MonoShadow] = new Graphics.CustomEffect("RenderTextured", false);
 #if TOGG
             TextureEffects[(int)Graphics.TextureEffectType.FlatNoOpacity] = new Graphics.CustomEffect("FlatNoOpacity", false);
             
@@ -97,16 +102,26 @@ namespace VikingEngine.Engine
             return TextureEffects[(int)type]; 
         }
 
+        const int MinWidth = 800;
+        const int MinHeigth = 600;
+
         public static void ApplyScreenResolution()
         {
-            graphicsDeviceManager.PreferredBackBufferWidth = Bound.Min(Screen.MonitorTargetResolution.X, 800); //Screen.RenderingResolution.X;
-            graphicsDeviceManager.PreferredBackBufferHeight = Bound.Min(Screen.MonitorTargetResolution.Y, 600);//Screen.RenderingResolution.Y;
+            graphicsDeviceManager.PreferredBackBufferWidth = Bound.Min(Screen.MonitorTargetResolution.X, MinWidth); //Screen.RenderingResolution.X;
+            graphicsDeviceManager.PreferredBackBufferHeight = Bound.Min(Screen.MonitorTargetResolution.Y, MinHeigth);//Screen.RenderingResolution.Y;
             graphicsDeviceManager.ApplyChanges();
             defaultViewport = Engine.Draw.graphicsDeviceManager.GraphicsDevice.Viewport;
 
-            MainRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice, 
-                Screen.RenderingResolution.X, Screen.RenderingResolution.Y, 
-                false, SurfaceFormat.Color, DepthFormat.Depth24);
+            CreateMainTarget(false);
+        }
+
+        protected static void CreateMainTarget(bool splitscreen)
+        {
+            MainRenderTarget?.Dispose();
+            MainRenderTarget = new RenderTarget2D(graphicsDeviceManager.GraphicsDevice,
+                 Bound.Min(Screen.RenderingResolution.X, MinWidth),
+                 Bound.Min(Screen.RenderingResolution.Y, MinHeigth),
+                false, SurfaceFormat.Color, DepthFormat.Depth24, 0, splitscreen ? RenderTargetUsage.PreserveContents : RenderTargetUsage.DiscardContents);
         }
 
         /* Properties */
@@ -147,21 +162,35 @@ namespace VikingEngine.Engine
             }
             Camera = new VikingEngine.Graphics.TopViewCamera();
             spriteBatch = new SpriteBatch(graphicsDeviceManager.GraphicsDevice);
-            //spriteBatch.GraphicsDevice.DeviceLost = null;
             spriteBatch.GraphicsDevice.DeviceLost += this.onLostSpiteBatch;
 
-
-            // TODO(Martin): This is test code
-            if (DebugSett.Debug3DParticles)
-            {
-                instancing = new ParticleSystem2(new ParticleSystem2Data(Vector3.Zero, 6000, 0.5f, 500f));
-                instancing.Initialize(graphicsDeviceManager.GraphicsDevice);
-                instancing.Load();
-            }
-            // NOTE(Martin): Ends here
+            //// TODO(Martin): This is test code
+            //if (DebugSett.Debug3DParticles)
+            //{
+            //    instancing = new ParticleSystem2(new ParticleSystem2Data(Vector3.Zero, 6000, 0.5f, 500f));
+            //    instancing.Initialize(graphicsDeviceManager.GraphicsDevice);
+            //    instancing.Load();
+            //}
+            Input.Mouse.Reset();
+            //refreshCursor();
         }
 
-        public void DeleteMe()
+        //public void refreshCursor()
+        //{
+        //    //foreach (var ins in Input.Mouse.Instances)
+        //    //{ 
+        //    //    ins.RefreshMouseVisible();
+        //    //}
+        //    //customMousePointer = null;
+
+        //    //if (Ref.gamesett.customCursor)
+        //    //{
+        //    //    customMousePointer = new Image(SpriteName.cmdPointer, Vector2.Zero, Engine.Screen.IconSizeV2, ImageLayers.AbsoluteTopLayer, true, false);
+        //    //}
+        //    //Input.Mouse.RefreshMouseVisible();// = !Ref.gamesett.customMouse;
+        //}
+
+        virtual public void DeleteMe()
         {
             spriteBatch.GraphicsDevice.DeviceLost -= this.onLostSpiteBatch;
         }
@@ -305,6 +334,11 @@ namespace VikingEngine.Engine
             }
         }
 
+        public void SetMainRenderTarget()
+        {
+            graphicsDeviceManager.GraphicsDevice.SetRenderTarget(MainRenderTarget);
+        }
+
         public void settingsChanged2dImagesRefresh() 
         {
             SpottedArrayCounter<AbsDraw> renderList2D = new SpottedArrayCounter<AbsDraw>(renderList[0].GetList(Graphics.DrawObjType.Texture2D));
@@ -314,9 +348,22 @@ namespace VikingEngine.Engine
             }
         }
 
+        public void DebugDrawRenderTarget(RenderTarget2D renderTarget, Rectangle destination)
+        {
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+            spriteBatch.Draw(renderTarget, destination, Color.White);
+            spriteBatch.End();
+        }
 
         public void Draw2d(int layer)
         {
+#if DEBUG
+            if (Input.Keyboard.Ctrl)
+            {
+                lib.DoNothing();
+            }
+#endif
+
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, renderList[layer].TransformMatrix);
 
             KeepDraw2D(layer);
@@ -454,13 +501,21 @@ namespace VikingEngine.Engine
 
                 graphicsDeviceManager.GraphicsDevice.SetRenderTarget(null);
 
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Immediate);
                 spriteBatch.Draw(MainRenderTarget, Screen.MonitorTargetRect, Color.White);
+                foreach (var ins in Input.Mouse.Instances)
+                {
+                    ins.Draw();
+                }
                 spriteBatch.End();
             }
             else
             {
+
+                graphicsDeviceManager.GraphicsDevice.SetRenderTarget(null);
                 graphicsDeviceManager.GraphicsDevice.Clear(ClrColor);
+                Draw2d(0);
+                
             }
         }
 
@@ -470,6 +525,9 @@ namespace VikingEngine.Engine
         }
 
         virtual protected void drawInContainersEvent()
+        { }
+
+        virtual public void OnShaderChange(ShaderChangeType changeType)
         { }
 
         virtual protected void drawEvent()
@@ -661,5 +719,10 @@ namespace VikingEngine.Engine
             this.add = add;
             this.layer = Ref.draw.CurrentRenderLayer;
         }
+    }
+
+    enum ShaderChangeType
+    {
+        ShadowMap,
     }
 }

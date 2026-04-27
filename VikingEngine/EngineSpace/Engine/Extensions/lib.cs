@@ -992,8 +992,11 @@ namespace VikingEngine
         public static Vector2 AngleToV2(float angle, float lenght)
         {
             Vector2 direction = Vector2.Zero;
-            direction.X = (float)(Math.Sin(angle) * lenght);
-            direction.Y = (float)(Math.Cos(angle) * -lenght);
+            if (lenght != 0)
+            {
+                direction.X = (float)(Math.Sin(angle) * lenght);
+                direction.Y = (float)(Math.Cos(angle) * -lenght);
+            }
             return direction;
         }
         public static float V2ToAngle(Vector2 direction)
@@ -1001,6 +1004,13 @@ namespace VikingEngine
             if (direction == Vector2.Zero) return 0;
             direction.Normalize();
             return (float)Math.Atan2(direction.X, -direction.Y);
+        }
+
+        public static float V3XZToAngle(Vector3 direction)
+        {
+            if (direction.X == 0 && direction.Z == 0) return 0;
+            direction.Normalize();
+            return (float)Math.Atan2(direction.X, -direction.Z);
         }
 
         public static float V2ToAngle_PreNorm_Unsafe(Vector2 direction)
@@ -1012,11 +1022,7 @@ namespace VikingEngine
         {   
             return (float)Math.Atan2(xDir, yDir);
         }
-        //public static Vector2 ChangeV2Angle(Vector2 dir, Rotation1D angleDiff)
-        //{
-        //    angleDiff.Add(Rotation1D.FromDirection(dir));
-        //    return angleDiff.Direction(dir.Length());
-        //}
+        
 
         //public static Color HSL2RGB(double h, double sl, double l)
         /// <param name="hue">Hue in 0-1</param>
@@ -1632,6 +1638,15 @@ namespace VikingEngine
         {
             a1 += a2;
             return a1;
+        }
+
+        public static bool EqualToAny<T>(T value, T compare1, T compare2)
+        { 
+            return value.Equals(compare1) || value.Equals(compare2);
+        }
+        public static bool EqualToAny<T>(T value, T compare1, T compare2, T compare3)
+        {
+            return value.Equals(compare1) || value.Equals(compare2) || value.Equals(compare3);
         }
     }
 }

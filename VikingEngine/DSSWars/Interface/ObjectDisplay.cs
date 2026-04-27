@@ -19,9 +19,10 @@ namespace VikingEngine.DSSWars.Interface
             if (obj != null)
             {
                 beginRefresh();
-                if (obj.CanMenuFocus() && player.gameControls.input.inputSource.IsController)
+                if (obj.CanMenuFocus() && player.gameControls.input.inputSource.IsXnaController &&
+                    player.gameControls.input.Controller_ObjectMenuToggle.IsActive)
                 {
-                    content.Add(new HUD.RichBox.RbImage(player.gameControls.input.ControllerFocus.Icon));
+                    content.Add(new HUD.RichBox.RbImage(player.gameControls.input.Controller_ObjectMenuToggle.Icon));
                     content.Add(new HUD.RichBox.RbText(":"));
                     content.newLine();
                 }
@@ -30,7 +31,7 @@ namespace VikingEngine.DSSWars.Interface
                 if (gui.menuState.Count > 0) 
                 {
                     content.newLine();
-                    content.Button(Ref.langOpt.Hud_Back, new RbAction(gui.menuBack, SoundLib.menuBack), 
+                    content.Button(Ref.langOpt.Hud_Back, new RbAction(gui.menuBack, RbSoundType.Back), 
                         null, true);
                 }
                 endRefresh(pos, selected);
@@ -62,6 +63,6 @@ namespace VikingEngine.DSSWars.Interface
             this.selected = false;
         }
 
-        public bool ShowFull => player.hud.detailLevel == HudDetailLevel.Normal;
+        public bool ShowFull => player.hud.maximizedHud;
     }
 }

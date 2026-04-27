@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 using VikingEngine.Graphics;
+using VikingEngine.ToGG.Commander.UnitsData;
 using VikingEngine.ToGG.HeroQuest.Data.UnitAction;
 
 namespace VikingEngine.DSSWars.Map
@@ -17,7 +20,8 @@ namespace VikingEngine.DSSWars.Map
 
         const int MaxRemoveCount = 32;
         int MaxSychToRenderCount;
-        public List<Graphics.PolygonColor> polygons = new List<Graphics.PolygonColor>(256);
+        public List<Graphics.PolygonColor> terrainPolygons = new List<Graphics.PolygonColor>(256);
+        public List<Graphics.PolygonColor> waterEdgePolygons = new List<Graphics.PolygonColor>(64);
 
         public static Graphics.CustomEffect_NoColor ModelEffect = new Graphics.CustomEffect_NoColor("FlatVerticeColor", false);
         
@@ -38,6 +42,11 @@ namespace VikingEngine.DSSWars.Map
 
         }
 
+        //public OceanProcess createOceanProcess()
+        //{
+        //    return new OceanProcess(waterSurface);
+        //}
+
         public void refreshLoadSpeed()
         {
             switch (Ref.gamesett.MapLoadingSpeed)
@@ -55,7 +64,7 @@ namespace VikingEngine.DSSWars.Map
             }
         }
 
-        public void updateAndDraw(int cameraIndex)
+        public void updateAndDraw(bool depth, Effect shader, LightProjection light, int cameraIndex)
         {
             updateWaterTexture();
 
@@ -73,12 +82,47 @@ namespace VikingEngine.DSSWars.Map
 
                 if (tilesC.sel.renderState == DetailMapTileState.InRender)
                 {
-                    tilesC.sel.model.Draw(cameraIndex);
+                    tilesC.sel.model.DrawDepthOnly(depth, shader, light, cameraIndex);
                 }
             }
 
             // Signal the thread (each call resumes the thread *once*)
             pauseEvent.Set();
+        }
+
+        public void drawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light)
+        {
+            var tilesC = tiles.counter();
+            while (tilesC.Next())
+            {
+
+                if (tilesC.sel.renderState == DetailMapTileState.InRender)
+                {
+                    tilesC.sel.model.DrawWithShadow(cameraIndex, camera, shader, light);
+                }
+            }
+        }
+
+        public void drawWaterEdges(int cameraIndex)
+        {
+            //LoadContent.Textures[(int)LoadedTexture.waterEdge] = texture;
+            WaveXzEffect.GetWaveSingletonSafe().beginDraw();
+
+            //ModelEffect.SetColor(Vector4.One);
+
+            var tilesC = tiles.counter();
+            while (tilesC.Next())
+            {
+                if (tilesC.sel.renderState == DetailMapTileState.InRender)
+                {
+                    var model = tilesC.sel.waterEdgeModel;
+                    if (model != null)
+                    {
+                        
+                        model.Draw(cameraIndex);
+                    }
+                }
+            }
         }
 
         public void Update_outOfFocus()
@@ -88,8 +132,6 @@ namespace VikingEngine.DSSWars.Map
 
         public void asynchUpdate()
         {
-           
-
             var tileC = tiles.counter();
             while (tileC.Next())
             {

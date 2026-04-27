@@ -18,7 +18,7 @@ namespace VikingEngine.DSSWars
 
         public static WorldData world = null;
         public static MapSettings map = null;
-        public static Diplomacy diplomacy = null;
+        //public static Diplomacy diplomacy = null;
         public static GameStorage storage;
         public static Achievements achieve = null;
         public static GameStats stats = null;
@@ -31,6 +31,8 @@ namespace VikingEngine.DSSWars
         public static TodoTranslation todoLang = new Presentation.TodoTranslation();
         public static PlaySettings settings;
         public static Difficulty difficulty = new Difficulty();
+
+        public static LeaderBoardType LastLeaderBoardUpload = LeaderBoardType.NUM_NONE;
         //public static Data.Constants.Const Const = new Data.Constants.Const();
     }
 }

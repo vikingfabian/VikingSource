@@ -42,13 +42,14 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         ListCirkleCounter<FrameTime> autoAnimateCounter;
         Time autoAnimateTimer = new Time(2000);
         List<FrameTime> autoAnimate;
-
+        EditorBackground bg;
         public CharacterCreatorScene()
             : base()
         {
+            bg = new Interface.EditorBackground();
             openMenu();
 
-            new Interface.EditorBackground();
+            
 
             float backWidth = Engine.Screen.SafeArea.Width - menu.backgroundArea.Width;
             Vector2 previewSz = new Vector2(backWidth * 0.4f);
@@ -181,19 +182,35 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             content.h1("Diplay options", HudLib.TitleColor_Head);
 
             content.newLine();
-            var weapons = ConscriptMenu.AllHandWeapons();
+            var weapons = ConscriptDataLib.AllHandWeapons();
+
+            weaponOption(ItemResourceType.Settler);
+
             foreach (var wepArray in weapons)
             {
-                foreach (var weapon in wepArray)
+                foreach (ItemResourceType weapon in wepArray)
                 {
-                    var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
-                        {
-                            new RbImage(ResourceLib.Icon(weapon))
-                        },
-                    new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, SoundLib.menu)
-                    );
-                    content.Add(button);
+                    weaponOption(weapon);
+                    //var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
+                    //    {
+                    //        new RbImage(ResourceLib.Icon(weapon))
+                    //    },
+                    //new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, RbSoundType.Option)
+                    //);
+                    //content.Add(button);
                 }
+            }
+
+            void weaponOption(ItemResourceType weapon)
+            {
+                IconName.Item(weapon, out var weaponIcon, out _);
+                var button = new ArtOption(soldierPreview.soldierModelData.weapon == weapon, new List<AbsRichBoxMember>()
+                        {
+                            new RbImage(weaponIcon)
+                        },
+                    new RbAction1Arg<ItemResourceType>((ItemResourceType weapon) => { soldierPreview.soldierModelData.weapon = weapon; refreshPreview(); }, weapon, RbSoundType.Option)
+                    );
+                content.Add(button);
             }
 
             content.newLine();
@@ -203,7 +220,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                 switch (armorLevel)
                 {
                     default://case ArmorLevel.None:
-                        armorIcon = CityTag.NoBackSprite;
+                        armorIcon = TagLib.NoBackSprite;
                         break;
                     case ArmorLevel.Leather:
                         armorIcon = SpriteName.WarsResource_PaddedArmor;
@@ -223,7 +240,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         {
                             new RbImage(armorIcon)
                         },
-                    new RbAction1Arg<ArmorLevel>((ArmorLevel armor) => { soldierPreview.soldierModelData.armor = armor; refreshPreview(); }, armorLevel, SoundLib.menu)
+                    new RbAction1Arg<ArmorLevel>((ArmorLevel armor) => { soldierPreview.soldierModelData.armor = armor; refreshPreview(); }, armorLevel, RbSoundType.Option)
                     );
                 content.Add(button);
             }
@@ -252,7 +269,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                     }, frame)));
             }
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbImage(SpriteName.VoxelEditorFrameNext) }, new RbAction1Arg<bool>(soldierPreview.nextFrame, true)));
-            content.Add(new ArtOption(bAutoAnimate, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPlayIcon) }, new RbAction(() => { bAutoAnimate = true; })));
+            content.Add(new ArtOption(bAutoAnimate, new List<AbsRichBoxMember> { new RbImage(SpriteName.WarsHudHeadBarPlayIcon) }, new RbAction(() => { bAutoAnimate = true; }, RbSoundType.Option)));
 
             optMenu.Refresh(content);
         }
@@ -328,7 +345,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                             SetProfile(profile);
 
                             refreshPreview();
-                        }, i)));
+                        }, i, RbSoundType.Option)));
                 }
                 //content.newLine();
                 //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
@@ -350,7 +367,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         SetProfile(profile);
 
                         refreshPreview();
-                    }, i)));
+                    }, i, RbSoundType.Option)));
             }
             //content.newLine();
             //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { 
@@ -371,7 +388,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         SetProfile(profile);
 
                         refreshPreview();
-                    }, i)));
+                    }, i, RbSoundType.Option)));
             }
             //content.newLine();
             //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
@@ -392,7 +409,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         SetProfile(profile);
 
                         refreshPreview();
-                    }, i)));
+                    }, i, RbSoundType.Option)));
             }
 
             content.newParagraph();
@@ -408,7 +425,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                     SetProfile(profile);
 
                     refreshPreview();
-                }, -1)));
+                }, -1, RbSoundType.Option)));
             for (int i = 0; i < DssRef.models.rawModels[VoxelModelName.modsoldier_addons].Frames.Count; i++)
             {                
                 content.Add(new ArtOption(i == profile.accessoryBack, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.lang.Character_Back, i)) },
@@ -420,7 +437,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         SetProfile(profile);
 
                         refreshPreview();
-                    }, i)));
+                    }, i, RbSoundType.Option)));
             }
 
 
@@ -436,7 +453,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                     SetProfile(profile);
 
                     refreshPreview();
-                }, -1)));
+                }, -1, RbSoundType.Option)));
             for (int i = 0; i < DssRef.models.rawModels[VoxelModelName.modsoldier_face_access].Frames.Count; i++)
             {
                 content.Add(new ArtOption(i == profile.accessoryFace, new List<AbsRichBoxMember> { new RbText(TextLib.AddIndexToString(DssRef.lang.Character_Face, i)) },
@@ -448,7 +465,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
                         SetProfile(profile);
 
                         refreshPreview();
-                    }, i)));
+                    }, i, RbSoundType.Option)));
             }
             //content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
             //    new RbImage(SpriteName.pjNumPlus, 1, Color.Green),
@@ -456,6 +473,12 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             //    new RbText("Add accessory")
             //}, new RbAction2Arg<string, StackOption>(menu.OpenMenu, Page_Accessory, StackOption.Stack)));
             content.Add(new RbSeperationLine());
+
+            //DssRef.lang.Editor_Settings_BackgroundColor
+
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Editor_Settings_BackgroundColor) },
+                bg.visibleProperty_inv));
+
             content.newParagraph();
             
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> {
@@ -507,7 +530,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
             {
                 for (int i = 0; i < DssRef.storage.characterStorage.profiles.Count; ++i)
                 {
-                    flagOptions.AddSubOption(DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, false), i == DssRef.storage.characterStorage.selectedIx, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
+                    flagOptions.AddSubOption((DropDownOption)DssRef.storage.characterStorage.profiles[i].RbButton(DssRef.storage.flagStorage.selectedIx, false), i == DssRef.storage.characterStorage.selectedIx, false, new RbAction1Arg<int>(selectCharacterLink, i), null);
                 }
                 flagOptions.menuCaption = DssRef.storage.characterStorage.Selected().RbButton(DssRef.storage.flagStorage.selectedIx, false);
                 
@@ -591,7 +614,7 @@ namespace VikingEngine.DSSWars.GameState.CharacterCreator
         //}
 
 
-        float ScaleProperty(bool set, float value)
+        float ScaleProperty(object tag, bool set, float value)
         {
             var profile = GetProfile();
             if (set) { 

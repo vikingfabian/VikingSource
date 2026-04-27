@@ -21,7 +21,8 @@ namespace VikingEngine.DSSWars.GameState
             waitUpdatesCount = quick ? 3 : 60;
             this.startLoadingMap = startLoadingMap;
             draw.ClrColor = Color.Black;
-            Ref.lobby?.disconnect(null);            
+            Ref.lobby?.disconnect(null);
+            //Input.Mouse.RestoreDefault();//Input.Mouse.Visible = true;
         }
         void load_asynch()
         {
@@ -43,6 +44,7 @@ namespace VikingEngine.DSSWars.GameState
 
         virtual protected void launch()
         {
+            DssRef.state = null;
             DssRef.world = null;
             var lobby = new LobbyState(bgTex, startLoadingMap);
 

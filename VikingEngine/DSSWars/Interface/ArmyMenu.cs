@@ -5,10 +5,13 @@ using System.Reflection.Metadata;
 using System.Text;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Players;
+using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Presentation;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
+using VikingEngine.ToGG.HeroQuest.Players.Ai;
 using VikingEngine.ToGG.MoonFall;
 using VikingEngine.ToGG.ToggEngine.Map;
 
@@ -62,12 +65,12 @@ namespace VikingEngine.DSSWars.Interface
             this.player = player;
             this.army = army;
 
-            if (!DssRef.storage.centralGold)
+            if (!DssRef.storage.gameRuleset.centralGold)
             {
                 content.newLine();
                 content.Add(new RbImage(SpriteName.rtsMoney));
                 content.space();
-                content.Add(new RbText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(army.gold), HudLib.NegativeRed(army.gold)));
+                content.Add(new RbText(DssRef.lang.ResourceType_Gold + ": " + TextLib.LargeNumber(army.money.GetGold()), HudLib.NegativeRed(army.money.GetGold())));
                 content.Add(new RbNewLine());
             }
 
@@ -83,7 +86,7 @@ namespace VikingEngine.DSSWars.Interface
                     List<MenuTab> availableTabs = player.AvailableArmyTabs();
                     for (int i = 0; i < availableTabs.Count; ++i)
                     {
-                        var text = new RbText(LangLib.Tab(availableTabs[i], out string description));
+                        var text = new RbText(LangLib.Tab(availableTabs[i], out string description, out _));
                         text.overrideColor = HudLib.RbSettings.tabSelected.Color;
 
                         AbsRbAction enter = null;
@@ -110,19 +113,19 @@ namespace VikingEngine.DSSWars.Interface
                     }
 
                     bool viewControllerTabs = player.gameControls.tabFocusColor(Players.PlayerControls.ControllerTabFocus.ArmyMenu, out Color focusColor);
-                    if (viewControllerTabs)
+                    if (viewControllerTabs && player.gameControls.input.Controller_TabLeft.IsActive)
                     {
                         content.Add(new RbImage(player.gameControls.input.Controller_TabLeft.Icon) { color = focusColor });
                         content.space(0.5f);
                     }
-                    var tabGroup = new ArtTabgroup(tabs, tabSel, player.armyTabClick, null, SoundLib.menutab, null);
-                    if (viewControllerTabs)
+                    var tabGroup = new ArtTabgroup(tabs, tabSel, player.armyTabClick);
+                    if (viewControllerTabs && player.gameControls.input.Controller_TabRight.IsActive)
                     {
                         tabGroup.endAttach = new List<AbsRichBoxMember> { new RbSpace(0.5f), new RbImage(player.gameControls.input.Controller_TabRight.Icon) { color = focusColor } };
                     }
 
                     content.Add(tabGroup);
-                    content.newParagraph();
+                    //content.newParagraph();
                     //content.newLine();
                     switch (player.armyTab)
                     {
@@ -136,7 +139,8 @@ namespace VikingEngine.DSSWars.Interface
                             disbandTab(content);
                             break;
                         case MenuTab.Tag:
-                            tagsToMenu(content);
+                            //tagsToMenu(content);
+                            TagLib.TagsToMenu(content, player, army);
                             break;
 
 
@@ -171,7 +175,7 @@ namespace VikingEngine.DSSWars.Interface
                         {
                         new HUD.RichBox.RbText(Ref.langOpt.Hud_Yes),
                         },
-                        new RbAction(disbandAllYes, SoundLib.menu), 
+                        new RbAction(disbandAllYes, RbSoundType.Default), 
                         null);
                     content.Add(buttonyes);
 
@@ -180,7 +184,7 @@ namespace VikingEngine.DSSWars.Interface
                        {
                         new HUD.RichBox.RbText(Ref.langOpt.Hud_Cancel),
                        },
-                       new RbAction(player.hud.objMenu.menu.menuBack, SoundLib.menu),
+                       new RbAction(player.hud.objMenu.menu.menuBack, RbSoundType.Default),
                        null);
             content.Add(buttonno);
         }
@@ -190,14 +194,60 @@ namespace VikingEngine.DSSWars.Interface
         {
             army.basicInfoHud(new ObjectHudArgs( content, player, true));
 
+            content.newLine();
+            ColumnWidth(content, army);
+
+            content.newLine();
+            if (army.HasSettler(out var unit))
+            {
+                settlerButton(player, content, unit);
+            }
+
+            content.newLine();
             var haltButton = new ArtButton( RbButtonStyle.Primary,
                         new List<AbsRichBoxMember>
                         {
                         new HUD.RichBox.RbText(DssRef.lang.ArmyOption_Halt),
                         },
                         new RbAction(halt), null);
-            //haltButton.addShortCutButton(player.input.Stop, false);
+            
             content.Add(haltButton);
+
+            
+        }
+
+        public static void ColumnWidth(RichBoxContent content, AbsArmy army)
+        {
+            HudLib.Label(content, DssRef.lang.ArmyStructure_ColumnWidth);
+            content.newLine();
+            for (int w = Army.MinColumnWidth; w <= Army.MaxColumnWidth; w += 2)
+            {
+                var button = new ArtOption(w == army.armyColumnWidth,
+                    new List<AbsRichBoxMember> { new RbText(w.ToString()) },
+                    new RbAction1Arg<int>(army.armyColumnWidthClick, w, RbSoundType.Option));
+
+                content.Add(button);
+            }
+        }
+
+        public static void settlerButton(LocalPlayer player, RichBoxContent content, SoldierGroup unit)
+        {
+            if (DssRef.world.tileGrid.TryGet(unit.tilePos, out var tile))
+            {
+                bool unclaimedLand = tile.City().cityType == CityType.UnClaimed;
+
+                content.newLine();
+                content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember>{
+                        new RbText(DssRef.lang.Action_PlaceSettlement) }, new RbAction(() =>
+                        {
+                            if (!unit.isDeleted)
+                            {
+                                new SettlerCommandTarget(player, unit);
+                            }
+                        }), null, unclaimedLand));
+
+                content.newLine();
+            }
         }
 
         void divideTab(RichBoxContent content)
@@ -242,7 +292,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                                 new HUD.RichBox.RbText(DssRef.lang.ArmyOption_DivideHalf),
                 },
-                new RbAction(splitArmyInHalf, SoundLib.menu), null);
+                new RbAction(splitArmyInHalf, RbSoundType.Default), null);
             halfAndHalfbutton.enabled = splitable;
             content.Add(halfAndHalfbutton);
 
@@ -252,7 +302,7 @@ namespace VikingEngine.DSSWars.Interface
             HudLib.Label(content, string.Format(DssRef.lang.ArmyOption_SendToX, string.Empty));
             content.newLine();
             var newArmyButton = new ArtOption(player.hud.objMenu.otherArmy == null, new List<AbsRichBoxMember> { new RbText(DssRef.lang.ArmyOption_NewArmy) },
-                new RbAction1Arg<Army>(selectArmyTrade, null, SoundLib.menutab));
+                new RbAction1Arg<Army>(selectArmyTrade, null, RbSoundType.Option));
             //newArmyButton.setGroupSelectionColor(HudLib.RbSettings, player.hud.objMenu.otherArmy == null);
             content.Add(newArmyButton);
 
@@ -270,7 +320,7 @@ namespace VikingEngine.DSSWars.Interface
                 buttonContent.Add(new RbText(otherArmy.TypeName()));
 
                 var button = new ArtOption(player.hud.objMenu.otherArmy == otherArmy, buttonContent,
-                new RbAction1Arg<AbsArmy>(selectArmyTrade, otherArmy, SoundLib.menutab));
+                new RbAction1Arg<AbsArmy>(selectArmyTrade, otherArmy, RbSoundType.Option));
                 //button.setGroupSelectionColor(HudLib.RbSettings, player.hud.objMenu.otherArmy == otherArmy);
                 content.Add(button);
             }
@@ -286,20 +336,20 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbText(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, LangLib.UnitFilterName(kv.Key))));//kv.Key.ToString() + " groups: " + kv.Value);
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.ArmyOption_SendX, 1)) },//"Send 1",
-                    new RbAction2Arg<UnitFilterType, int>(tradeSoldiersAction, kv.Key, 1, SoundLib.menu),
+                    new RbAction2Arg<UnitFilterType, int>(tradeSoldiersAction, kv.Key, 1, RbSoundType.Default),
                     null, true));
 
                 content.space();
 
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.ArmyOption_SendX, 5)) },//"Send 5",
-                    new RbAction2Arg<UnitFilterType, int>(tradeSoldiersAction, kv.Key, 5, SoundLib.menu),
+                    new RbAction2Arg<UnitFilterType, int>(tradeSoldiersAction, kv.Key, 5, RbSoundType.Default),
                     null,
                     kv.Value >= 5));
 
                 content.space();
 
                 content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.ArmyOption_SendAll) },//"Send All",
-                    new RbAction2Arg<UnitFilterType, int>(tradeSoldiersAction, kv.Key, kv.Value, SoundLib.menu),
+                    new RbAction2Arg<UnitFilterType, int>(tradeSoldiersAction, kv.Key, kv.Value, RbSoundType.Default),
                     null, true));
 
             }
@@ -312,7 +362,7 @@ namespace VikingEngine.DSSWars.Interface
                     {
                         new HUD.RichBox.RbText(DssRef.lang.ArmyOption_MergeAllArmies),
                     },
-                    new RbAction1Arg<List<GameObject.AbsArmy>>(mergeAllArmies, tradeAbleArmies, SoundLib.menu), null);
+                    new RbAction1Arg<List<GameObject.AbsArmy>>(mergeAllArmies, tradeAbleArmies, RbSoundType.Default), null);
             mergeAllButton.enabled = tradeAbleArmies.Count > 0;
             content.Add(mergeAllButton);
         }
@@ -357,7 +407,7 @@ namespace VikingEngine.DSSWars.Interface
                 {
                                 new HUD.RichBox.RbText(DssRef.lang.ArmyOption_MergeArmies),
                 },
-                new RbAction(mergeArmies, SoundLib.menu), null);
+                new RbAction(mergeArmies, RbSoundType.Default), null);
                 content.Add(allbutton);
             }
 
@@ -377,13 +427,13 @@ namespace VikingEngine.DSSWars.Interface
                 content.Add(new RbText(string.Format(DssRef.lang.ArmyOption_XGroupsOfType, kv.Value, LangLib.UnitFilterName(kv.Key))));//kv.Key.ToString() + " groups: " + kv.Value);
                 content.newLine();
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.ArmyOption_RemoveX, 1)) },//"Remove 1",
-                    new RbAction2Arg<UnitFilterType, int>(army.disbandSoldiersAction, kv.Key, 1, SoundLib.menu),
+                    new RbAction2Arg<UnitFilterType, int>(army.disbandSoldiersAction, kv.Key, 1, RbSoundType.Default),
                     null, true));
 
                 content.space();
 
                 content.Add(new ArtButton(RbButtonStyle.Secondary, new List<AbsRichBoxMember> { new RbText(string.Format(DssRef.lang.ArmyOption_RemoveX, 5)) },//"Remove 5",
-                    new RbAction2Arg<UnitFilterType, int>(army.disbandSoldiersAction, kv.Key, 5, SoundLib.menu),
+                    new RbAction2Arg<UnitFilterType, int>(army.disbandSoldiersAction, kv.Key, 5, RbSoundType.Default),
                     null,
                     kv.Value >= 5));
 
@@ -399,49 +449,47 @@ namespace VikingEngine.DSSWars.Interface
                             {
                         new HUD.RichBox.RbText(DssRef.lang.ArmyOption_DisbandAll),
                             },
-                            new RbAction2Arg<string, StackOption>(player.hud.objMenu.menu.OpenMenu, DisbandAllMenuState, StackOption.Stack, SoundLib.menu),
+                            new RbAction2Arg<string, StackOption>(player.hud.objMenu.menu.OpenMenu, DisbandAllMenuState, StackOption.Stack, RbSoundType.Default),
                             null);
             content.Add(allbutton);
         }
 
-        public void tagsToMenu(RichBoxContent content)
-        {
-            content.newLine();
-            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Tag_ViewOnMap) }, player.ArmyTagsOnMapProperty));
-            content.newParagraph();
+        //public void tagsToMenu(RichBoxContent content)
+        //{
+        //    TagLib.TagsToMenu(content, player, army);
+        //    //HudLib.Label(content, DssRef.lang.ObjectUi_ViewOnMap + string.Format(" ({0})", DssRef.lang.Hud_AllArmies));
+        //    //content.newLine();
+        //    //player.armyHudSettings.toHud(content, false, player.profile.casualControls);
+            
+        //    //content.newParagraph();
 
-            for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
-            {
-                var button = new ArtToggle(back == army.tagBack, new List<AbsRichBoxMember> {
-                    new RbImage(Data.CityTag.BackSprite(back))
-                }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { army.tagBack = back; }, back));
-                //button.setGroupSelectionColor(HudLib.RbSettings, back == army.tagBack);
-                content.Add(button);
+        //    //for (CityTagBack back = CityTagBack.NONE; back < CityTagBack.NUM; back++)
+        //    //{
+        //    //    var button = new ArtToggle(back == army.Tag.tagBackType, new List<AbsRichBoxMember> {
+        //    //        new RbImage(Data.TagLib.BackSprite(back))
+        //    //    }, new RbAction1Arg<CityTagBack>((CityTagBack back) => { army.Tag.tagBackType = back; }, back, back == CityTagBack.NONE? RbSoundType.Deselect : RbSoundType.Option));
+        //    //    content.Add(button);
 
-                if (back == CityTagBack.NONE)
-                {
-                    content.newLine();
-                }
-                //else
-                //{
-                //    content.space();
-                //}
-            }
+        //    //    if (back == CityTagBack.NONE)
+        //    //    {
+        //    //        content.newLine();
+        //    //    }
+            
+        //    //}
 
-            if (army.tagBack != CityTagBack.NONE)
-            {
-                content.newParagraph();
-                for (ArmyTagArt art = ArmyTagArt.None; art < ArmyTagArt.NUM; art++)
-                {
-                    var button = new ArtToggle(art == army.tagArt, new List<AbsRichBoxMember> {
-                    new RbImage(Data.CityTag.ArtSprite(art))
-                    }, new RbAction1Arg<ArmyTagArt>((ArmyTagArt art) => { army.tagArt = art; }, art));
-                    //button.setGroupSelectionColor(HudLib.RbSettings, art == army.tagArt);
-                    content.Add(button);
-                    //content.space();
-                }
-            }
-        }
+        //    //if (army.tagBack != CityTagBack.NONE)
+        //    //{
+        //    //    content.newParagraph();
+        //    //    for (ArmyTagArt art = ArmyTagArt.None; art < ArmyTagArt.NUM; art++)
+        //    //    {
+        //    //        var button = new ArtToggle(art == army.tagArt, new List<AbsRichBoxMember> {
+        //    //        new RbImage(Data.TagLib.ArtSprite(art))
+        //    //        }, new RbAction1Arg<ArmyTagArt>((ArmyTagArt art) => { army.tagArt = art; }, art, art == ArmyTagArt.None ? RbSoundType.Deselect : RbSoundType.Option));
+        //    //        content.Add(button);
+                    
+        //    //    }
+        //    //}
+        //}
         void splitArmyInHalf()
         {
             player.hud.objMenu.otherArmy = null;

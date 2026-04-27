@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars;
@@ -12,6 +14,7 @@ using VikingEngine.Graphics;
 using VikingEngine.LootFest;
 using VikingEngine.Sound;
 using VikingEngine.SteamWrapping;
+using VikingEngine.ToGG.HeroQuest.Display;
 
 namespace VikingEngine.Engine
 {
@@ -43,11 +46,13 @@ namespace VikingEngine.Engine
         bool loadingDefaltContentComplete = false;
         bool loadingContentComplete = false;
         bool loadingDataComplete = false;
+        bool dataProcessComplete = false;
         WaitForCloudSynch waitForCloudSynch = new WaitForCloudSynch();
 
         protected int mainPart = 0;
         protected int contentPart = 0;
         protected int storagePart = 0;
+        protected int dataProcessPart = 0;
         int updateCounter = 0;
 
         string exceptionString;
@@ -73,6 +78,7 @@ namespace VikingEngine.Engine
                         asyncLoading_OnRestart(ref contentPart);
                         loadingDataComplete = true;
                         loadingContentComplete = true;
+                        dataProcessComplete = true;
                     }
                     catch (Exception ex)
                     {
@@ -114,8 +120,20 @@ namespace VikingEngine.Engine
                 {
                     try
                     {
+                        SoundEffect.Initialize();
+                    }
+                    catch (Exception ex)
+                    {
+                        SoundManager.OnLaunchException(ex);
+                    }
+
+                    try
+                    {
                         load = LoadState.Splash;
+                        //throw new Exception("Test splash crash");
                         mainPart = 10;
+
+                        mainPart++;
                         asyncLoadIntro();
                         mainPart++;
                         bgTex = Ref.main.Content.Load<Texture2D>(LoadContent.TexturePath + "monogame_splash");
@@ -131,7 +149,7 @@ namespace VikingEngine.Engine
                     {
                         exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
                     }
-                });     
+                });
             }
             catch (Exception ex)
             {
@@ -171,7 +189,19 @@ namespace VikingEngine.Engine
                     {
                         exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
                     }
-                });                
+                });
+                new Timer.AsynchActionTrigger(() =>
+                {
+                    try
+                    {
+                        asyncDataProcessLoading();
+                        dataProcessComplete = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptionString = ex.Message + " :: " + Environment.NewLine + ex.StackTrace;
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -192,7 +222,15 @@ namespace VikingEngine.Engine
             bgImage.Texture = bgTex;
             bgImage.SetFullTextureSource();
 
-            introSound?.Play();
+            try
+            {
+                introSound?.Play();
+            }
+            catch (Exception ex)
+            {
+                SoundManager.OnLaunchException(ex);
+            }
+            
         }
 
         virtual protected void asyncLoadIntro() { }
@@ -203,9 +241,11 @@ namespace VikingEngine.Engine
         abstract protected void preLoading();
         abstract protected void asyncContentLoading(ref int part);
         abstract protected void asyncStorageLoading(ref int part);
-
+        virtual protected async void asyncDataProcessLoading() { throw new NotImplementedException(); }
         abstract protected void asyncLoading_OnRestart(ref int part);
         abstract protected void launch();
+
+        virtual protected bool tasksComplete() { return true; }
 
         public override void Time_Update(float time)
         {
@@ -218,8 +258,6 @@ namespace VikingEngine.Engine
 
             try
             {
-
-
                 if (bgTex != null)
                 {
                     createSplash();
@@ -239,7 +277,7 @@ namespace VikingEngine.Engine
                 {
                     if (waitForCloudSynch.update())
                     {
-                        if (loadingContentComplete && loadingDataComplete)
+                        if (loadingContentComplete && loadingDataComplete && dataProcessComplete)
                         {
                             launch();
                         }
@@ -253,7 +291,7 @@ namespace VikingEngine.Engine
                     { 
                         updateCounter = 0;
                     }
-                    progressString.TextString = $"State{(int)load}, m{mainPart}, c{contentPart}, s{storagePart}, u{updateCounter}";
+                    progressString.TextString = $"State{(int)load}, m{mainPart}, c{contentPart}, s{storagePart}, d{dataProcessPart}, u{updateCounter}";
                 }
             }
             catch (Exception ex)
@@ -263,6 +301,19 @@ namespace VikingEngine.Engine
 
             if (exceptionString != null)
             {
+                if (Ref.sentry == null && PlatformSettings.DebugLevel > BuildDebugLevel.Dev)
+                {
+                    try
+                    {
+                        new EngineSpace.DebugExtensions.SentryReport();
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptionString = "Sentry fail + " + exceptionString;
+                    }
+                }
+                Ref.sentry?.sendReport("Launch fail: " + exceptionString);
+
                 if (bgImage != null)
                 {
                     bgImage.Visible = false;
@@ -290,8 +341,8 @@ namespace VikingEngine.Engine
 
                 if (load > LoadState.Font)
                 {
-                    new Graphics.TextBoxSimple(LoadedFont.Console, Vector2.Zero, Vector2.One, Graphics.Align.Zero, exceptionString,
-                        Color.White, ImageLayers.AbsoluteTopLayer, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width);
+                    new Graphics.TextBoxSimple(LoadedFont.Console, new Vector2(20), Vector2.One, Graphics.Align.Zero, exceptionString,
+                        Color.White, ImageLayers.AbsoluteTopLayer, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.8f);
                 }
             }
         }

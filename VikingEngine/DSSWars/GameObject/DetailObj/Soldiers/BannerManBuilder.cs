@@ -13,9 +13,9 @@ namespace VikingEngine.DSSWars.GameObject
     {
         public BannerManBuilder():base() 
         {
-            unitType = UnitType.BannerMan;
+            unitBuildType = UnitBuildType.BannerMan;
         }
-        public override AbsSoldierUnit CreateUnit()
+        public override AbsSoldierUnit CreateUnit(bool bannerman)
         {
             return new BannerMan();
         }
@@ -28,7 +28,7 @@ namespace VikingEngine.DSSWars.GameObject
             : base()
         { }
 
-        protected override DetailUnitModel initModel()
+        protected override DetailUnitModel initModel(bool bannerman)
         {
             updateGroudY(true);
             return new BannerManModel(this);
@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.GameObject
         public BannerManModel(AbsSoldierUnit soldier)
             : base(soldier)
         {
-            banner = new Banner(soldier.GetFaction(), soldier.soldierData.modelScale, (int)soldier.group.soldierConscript.conscript.training);
+            banner = new Banner(soldier.GetFaction_NoChecks(), soldier.soldierData.modelScale, (int)soldier.group.soldierConscript.conscript.training);
         }
 
         //protected override void updateShipAnimation(AbsSoldierUnit soldier)
@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.GameObject
         public override void DeleteMe()
         {
             base.DeleteMe();
-            banner.DeleteMe();
+            banner?.DeleteMe();
             banner = null;
         }
 

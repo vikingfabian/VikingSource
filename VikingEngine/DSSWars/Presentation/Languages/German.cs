@@ -8,6 +8,437 @@ namespace VikingEngine.DSSWars.Presentation
 {
     partial class German : AbsLanguage
     {
+        //Post mount update
+        public override string StockPile_ItemsAreNotLost => "Gegenstände werden nicht zerstört, wenn das Lagerlimit überschritten wird!";
+        public override string SlaughterResult_PerAnimal => "Schlachtertrag, pro Tier";
+        public override string Settings_Mode_QuickBoss => "Schneller Boss";
+        public override string Settings_Mode_QuickBoss_Description => "Bereite dich ein paar Stunden vor und triff dann auf einen Endboss";
+        public override string QuickBoss_TimeOption => "Boss-Zeit (Stunden)";
+        //Reittiere-Update
+        public override string Leaderboards_title => "Leaderboards";
+        public override string Leaderboards_domination => "Weltherrschaft Bestzeit, {0}% plus";
+        public override string Leaderboards_victory => "Story-Sieg, Top % Schwierigkeit";
+        public override string Leaderboards_CitySize => "Größte Stadt, in Arbeitern";
+        public override string Leaderboards_Survival => "Survival-Dauer bei {0}% Schwierigkeit";
+
+        public override string Message_CannotPayUpkeep => "Unterhalt kann nicht bezahlt werden!";
+        public override string Animals_ProductionStop => "Tierproduktion wird gestoppt";
+
+        public override string Tutorial_ToCapture => "Zum Einfangen";
+        public override string Tutorial_ClickButton => "Button klicken";
+        public override string Tutorial_MoveXToY => "Bewege {0} nach {1}";
+
+        public override string Workers_Description1_work => "Baut, sammelt Ressourcen und stellt Gegenstände her.";
+        public override string Workers_Description2_income => "Bringen Steuereinnahmen.";
+        public override string Workers_Description3_soldiers => "Können als Soldaten für deine Armeen rekrutiert werden.";
+
+        public override string Hud_Time_ValuePerMinute => "Wert pro Minute";
+        public override string Hud_Time_ValuePerSecond => "Wert pro Sekunde";
+        public override string Hud_Lock => "Sperren";
+        public override string Hud_Maximum => "Max.";
+
+        public override string Tutorial_SeeThisInThat => "Siehe {0} in {1}";
+        public override string Conscript_SkillBonus => "Skill-Bonus";
+        public override string SoldierStats_UnitCount => "Anzahl der Einheiten";
+        /// <summary>
+        /// Zonen sind Feld, Wald, Meer und Belagerung
+        /// </summary>
+        public override string Conscript_DamagePerSecondInAreaX => "Schaden pro Sekunde - {0}";
+        public override string Conscript_BaseHealth => "Basis-HP";
+
+        /// <summary>
+        /// Zusammenfassender Wert für die Fähigkeit, sich über die Karte zu bewegen
+        /// </summary>
+        public override string Conscript_Mobility => "Mobilität";
+
+        public override string Conscript_RiderMobility => "Reiter-Mobilität";
+        public override string Conscript_LightWagonMobility => "Mobilität (Leichter Wagen)";
+        public override string Conscript_HeavyWagonMobility => "Mobilität (Schwerer Wagen)";
+
+        /// <summary>
+        /// Verallgemeinert für jedes Objekt, wie Skills, Ressourcen und Gebäude
+        /// </summary>
+        public override string Culture_AffectedItems => "Betroffene Items";
+        //## Reittiere-Update ##
+        public override string Progress_ClosingCores => "Schließe CPU-Kerne {0}";
+        public override string Editor_ExportFrame => "Aktuellen Frame exportieren";
+        public override string Editor_FistFrame => "Erster Frame";
+        public override string Editor_LastFrame => "Letzter Frame";
+
+        public override string Economy_AnimalPenUpkeep => "Gehege-Unterhalt: {0}";
+        public override string Work_SlaughterX => "Schlachte {0}";
+
+        public override string BuildCategory_Farming => "Landwirtschaft";
+        public override string Resource_TypeName_ManType => "menschentyp";
+        public override string Resource_TypeName_NobelMen => "adlige";
+        public override string Resource_TypeName_ConservedFood => "haltbare nahrung";
+
+        public override string UnitType_UnitOnMount => "reitet {0}";
+        public override string UnitType_UnitOnWagon => "wagen {0}";
+        public override string UnitType_NobelUnit => "adlige {0}";
+
+        /// <summary>
+        /// 0: soldier type, 1: animal
+        /// </summary>
+        public override string UnitType_LeashAnimalHandler => "{0} {1}-Bändiger";
+
+        public override string Info_ArmyFood4 => "Haltbare Nahrung ermöglicht eine größere Nahrungsreserve";
+        public override string Info_ArmyFood5 => "Frische Nahrung wird zuerst verbraucht";
+
+        public override string Resource_ConservedFood_Reserves => "Reserven an haltbarer Nahrung";
+        public override string Resource_TypeName_Clay => "lehm";
+        public override string Resource_TypeName_Brick => "ziegel";
+        public override string Resource_TypeName_Container => "behälter";
+        public override string Resource_TypeName_Meat => "fleisch";
+        public override string Resource_TypeName_Salt => "salz";
+        public override string Resource_TypeName_Vehicle => "fahrzeug";
+        public override string Resource_TypeName_WagonClosed => "geschlossener wagen";
+        public override string Resource_TypeName_WagonIron => "eiserne kutsche";
+        public override string Resource_TypeName_WagonSteel => "stählerne kutsche";
+        public override string Resource_TypeName_Shield => "schild";
+        public override string Resource_TypeName_BucklerShield => "buckler";
+        public override string Resource_TypeName_RoundShield => "rundschild";
+        public override string Resource_TypeName_HeaterShield => "dreiecksschild";
+        public override string Resource_TypeName_TowerShield => "turmschild";
+
+        public override string Resource_TypeName_Mount => "reittier";
+
+        public override string Resource_TypeName_MountArmorTitle => "reittier-rüstung";
+
+        /// <summary>
+        /// 0: armor type
+        /// </summary>
+        public override string Resource_TypeName_MountArmorX => "reittier-{0}";
+        public override string Resource_TypeName_Animal => "tier";
+
+        //public override string Resource_TypeName_WildAnimal => "wildtier";
+
+        /// <summary>
+        /// Area with wild animals
+        /// </summary>
+        public override string Terrain_XAnimalHabitat => "{0}-Habitat";
+
+        public override string Resource_TypeName_Oxen => "ochse";
+        public override string Resource_TypeName_KineOxen => "zuchtrind";
+
+        /// <summary>
+        /// Low tier hen (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Fowl => "geflügel";
+
+        /// <summary>
+        /// Low tier pig (for breeding)
+        /// </summary>
+        public override string Resource_TypeName_Boar => "eber";
+        public override string Resource_TypeName_Pig => "schwein";
+        public override string Resource_TypeName_Hen => "huhn";
+        public override string Resource_TypeName_Dog => "hund";
+        public override string Resource_TypeName_Hound => "jagdhund";
+
+        public override string Resource_TypeName_Pony => "pony";
+        public override string Resource_TypeName_Horse => "pferd";
+        public override string Resource_TypeName_WarHorse => "schlachtross";
+        public override string Resource_TypeName_DraftHorse => "zugpferd";
+
+        public override string Resource_TypeName_WildPig => "wildschwein";
+        public override string Resource_TypeName_WildHog => "keiler";
+        public override string Resource_TypeName_WarHog => "kampfkeiler";
+        public override string Resource_TypeName_StagHog => "hirschkeiler";
+
+        public override string Resource_TypeName_Wolf => "wolf";
+        public override string Resource_TypeName_Warg => "warg";
+        public override string Resource_TypeName_AlphaWarg => "alpha-warg";
+
+        public override string Resource_TypeName_WildCat => "wildkatze";
+        public override string Resource_TypeName_Lion => "löwe";
+        public override string Resource_TypeName_WarLion => "kampflöwe";
+
+        public override string Resource_TypeName_Elephant => "elefant";
+        public override string Resource_TypeName_WarElephant => "kriegselefant";
+        public override string Resource_TypeName_Oliphant => "olifant";
+
+        public override string BuildHud_Select => "Gebäude auswählen";
+        public override string BuildHud_AreaRadius => "Bereichsradius";
+
+        public override string NobleHouse_HousingCount => "Bietet Platz für {0} Adlige";
+
+        public override string BuildingType_GreatHall => "Große Halle";
+        public override string BuildingType_GreatHall_Description => "Schaltet erweiterte Rekrutierung frei";
+
+        public override string BuildingType_ClayPit => "Lehmgrube";
+        public override string BuildingType_Butcher => "Schlachter";
+        public override string BuildingType_Butcher_Description => "Verarbeitet Tiere zu Nahrung und Häuten";
+        public override string BuildingType_Pottery => "Töpferei";
+        public override string BuildingType_CraftX_Description => "{0}-Crafting-Station";
+
+        public override string BuildingType_GatherX_Description => "Sammelt {0}";
+
+        public override string BuildingType_Smoker => "Räucherei";
+        public override string BuildingType_Dryer => "Trockner";
+        public override string BuildingType_Shieldmaker => "Schildmacher";
+        public override string BuildingType_DryingPan => "Trockenpfanne";
+
+        public override string BuildingType_TrapperHut => "Trapperhütte";
+        public override string BuildingType_TrapperHut_Description => "Erlaubt das Einfangen von Wildtieren";
+
+        // --- Storage ---
+        public override string BuildingType_MaterialStorage => "Materiallager";
+        public override string BuildingType_FoodStorage => "Nahrungslager";
+        public override string BuildingType_WeaponStorage => "Waffenlager";
+        public override string BuildingType_ArmorStorage => "Rüstungslager";
+        public override string BuildingType_AnimalStorage => "Tierlager";
+
+        public override string BuildingType_Storage_Description => "Erhöht das max. Lagerlimit um {0}";
+
+        public override string BuildingType_Cesspit => "Abfallgrube";
+        public override string BuildingType_Cesspit_Description => "Zerstört Ressourcen";
+
+        public override string BuildingType_Cesspit_Info1_StockPile => "Zerstört Items, die das Lagerlimit überschreiten";
+        public override string Info_XAmountIsConvertedToY => "{0} wird umgewandelt in {1}";
+        public override string Info_ProductionRestriction => "Item-Produktion beschränkt auf";
+
+        public override string BuildingType_FowlPen => "Geflügelstall";
+        public override string BuildingType_BoarPen => "Ebergehege";
+
+        // --- Oxen Pens ---
+        public override string BuildingType_OxenPen => "Ochsengehege";
+        public override string BuildingType_KineOxenPen => "Zuchtrindergehege";
+
+        // --- Dog Cages ---
+        public override string BuildingType_DogCage => "Hundezwinger";
+        public override string BuildingType_HoundCage => "Jagdhundzwinger";
+
+        // --- Horse Pens ---
+        public override string BuildingType_PonyPen => "Ponykoppel";
+        public override string BuildingType_HorsePen => "Pferdekoppel";
+        public override string BuildingType_WarHorsePen => "Schlachtrosskoppel";
+        public override string BuildingType_DraftHorsePen => "Zugpferdekoppel";
+
+        // --- Pig/Hog Pens ---
+        public override string BuildingType_WildPigPen => "Wildschweingehege";
+        public override string BuildingType_WildHogPen => "Keilergehege";
+        public override string BuildingType_WarHogPen => "Kampfkeilergehege";
+        public override string BuildingType_StagHogPen => "Hirschkeilergehege";
+
+        // --- Wolf Cages ---
+        public override string BuildingType_WolfCage => "Wolfszwinger";
+        public override string BuildingType_WargCage => "Wargzwinger";
+        public override string BuildingType_AlphaWargCage => "Alpha-Wargzwinger";
+
+        // --- Cat Cages ---
+        public override string BuildingType_WildCatCage => "Wildkatzenzwinger";
+        public override string BuildingType_LionCage => "Löwenzwinger";
+        public override string BuildingType_WarLionCage => "Kampflöwenzwinger";
+
+        // --- Elephant Cages ---
+        public override string BuildingType_ElephantCage => "Elefantengehege";
+        public override string BuildingType_WarElephantCage => "Kriegselefantengehege";
+        public override string BuildingType_OliphantCage => "Olifantengehege";
+
+        public override string BuildingDescription_Animals => "Produziert Tiere für die Soldaten-Rekrutierung";
+        public override string Pen_Breeding => "Tierzucht";
+        public override string Pen_BreedUpChance => "{0}% Chance auf ein höheres Level";
+        public override string Pen_BreedDownChance => "{0}% Chance auf ein niedrigeres Level";
+
+        public override string CityCulture_AnimalBreeder2_Description => "Höhere Chance auf erfolgreiche Zucht";
+
+        public override string CityCulture_EnhancedProduction => "Verbesserte {0}-Produktion";
+        public override string CityCulture_Production => "{0}-Produktion";
+
+        public override string CityCulture_Butchers => "Schlachter";
+
+        public override string CityCulture_Potters => "Töpfer";
+
+        public override string CityCulture_Wainwright => "Wagenbauer";
+
+        public override string CityCulture_Wheelwright => "Radmacher";
+        public override string CityCulture_Wheelwright_Description => "Speed-Bonus für rekrutierte Karren";
+
+        public override string CityCulture_ShieldMaker => "Schildmacher";
+
+        //public override string CityCulture_Nomads_Description => "Niedrige Siedler-Kosten";
+
+        public override string CityCulture_Coopers => "Fassbinder";
+
+        public override string CityCulture_Salters => "Salzsieder";
+
+        public override string CityBiome_Title => "Biom";
+        public override string CityBiome_Description => "Biome beeinflussen den Zugang zu bestimmten Ressourcen und Gebäuden";
+
+        public override string CityBiome_Fields => "Felder";
+        public override string CityBiome_Frozen => "Eisig";
+        public override string CityBiome_Forest => "Wald";
+        public override string CityBiome_Mountain => "Gebirge";
+        public override string CityBiome_Desolate => "Ödland";
+        public override string CityBiome_Desert => "Wüste";
+
+        public override string Bonus_IncreaseSkin => "Erhöhte Häute-Produktion";
+        public override string Bonus_FoodStorage => "Größeres Nahrungslager";
+
+        public override string StockPile_LimitTitle => "Lagerlimit";
+
+
+        public override string Help_Work_Automatic => "Die Arbeit erfolgt automatisch";
+        public override string Tutorial_SecondCity => "Erhalte eine zweite Stadt";
+        //## Spring update
+
+        public override string InputAction_SkipAutomated => "Automatisiertes überspringen";
+
+        public override string Resource_WaterReason => "Wasser begrenzt die Anzahl deiner Einheiten und die Größe deiner Produktion";
+        public override string BuildingType_Orchard => "Obstgarten";
+        public override string BuildingType_ManorLord => "Gutsherr";
+        public override string BuildingType_ManorLord_Description => "Schaltet Nahrungsmittelverarbeitung frei";
+        /// <summary>
+        /// Will end diplomatic relations like alliance
+        /// </summary>
+        public override string Diplomacy_EndRelations => "Beziehungen beenden";
+
+        /// <summary>
+        /// Where a resource is produced or found
+        /// </summary>
+        public override string ItemSource => "Herkunft";
+
+        public override string ItemSource_Terrain => "Gelände";
+        public override string ItemSource_Farm => "Bauernhof";
+        public override string ItemSource_CraftStation => "Handwerksstation";
+        public override string ItemSource_Gathering => "Sammeln";
+
+        public override string CityCulture_Nomad => "Nomade";
+
+        /// <summary>
+        /// A generalized display of buffs and boons, example "+100%" or "Doubled"
+        /// </summary>
+        public override string Hud_ChangeFactor => "Änderungsfaktor: {0}";
+
+        public override string Hud_Purchase_LowXCost => "Niedrige {0}-Kosten";
+
+        public override string WorkQueue_Title => "Arbeitsliste";
+        public override string WorkQueue_Length => "Verbleibende Aufgaben";
+        public override string WorkQueue_ActiveWorkers => "Aktive Arbeitstrupps";
+        public override string WorkQueue_IdleWorkers => "Untätige Arbeitstrupps";
+
+        public override string WorkTeam_Size => "Dorfbewohner arbeiten in Teams von {0}";
+
+        public override string ObjectUi_ViewOnMap => "Auf Karte zeigen";
+        public override string ObjectUi_StuckBuildOrders => "Blockierte Bauaufträge";
+        public override string Hud_AllArmies => "Alle Armeen";
+
+        public override string Hud_CurrentPage => "Aktuelle Seite";
+        public override string Hud_AllPages => "Alle Seiten";
+        public override string Hud_ToAllCities => "An alle Städte";
+        public override string Hud_ToFaction => "An Fraktion";
+        public override string Hud_FromFaction => "Von Fraktion";
+        public override string Hud_FactionWide => "Fraktionsweite Einstellung nutzen";
+        /// <summary>
+        /// This start a new city
+        /// </summary>
+        public override string Action_PlaceSettlement => "Siedlung platzieren";
+
+        public override string Editor_Animation_RemoveAllFramesButThis => "Alle anderen Frames entfernen";
+        //Winter patch 3
+        public override string Hud_Purchase_AllBuildings => "Alle Gebäude einreihen";
+        public override string Hud_Purchase_AllTech => "Alle Technologien einreihen";
+        public override string BuildingType_CasualBarracks_Description => "Die Rekrutierungszeit wird auf die Kasernen aufgeteilt";
+
+        //Winter update patch + spring
+        /// <summary>
+        /// How much of a resource that will be used, e.g. "5 gold". There will be a "cost" title above the text. 0: Resource, 1: cost
+        /// </summary>
+        public override string Language_ItemCount => "{1} {0}";
+
+        //public override string DisplayMode => "Anzeigemodus";
+        //public override string DisplayMode_Windowed => "Fenstermodus";
+        //public override string DisplayMode_BorderlessFullscreen => "Rahmenloses Fenster";
+
+        //public override string GameSettings_RenderedMouseCursor => "Gerenderter Mauszeiger";
+        //public override string GameSettings_MuteControllerDisconnect => "Controller-Warnungen stummschalten";
+
+        public override string Delivery_MaxDistance => "Max. Lieferdistanz: {0}";
+        public override string Tutorial_WillTakeAWhile => "Das wird eine Weile dauern, komm später wieder.";
+
+        /// <summary>
+        /// 0: name of building
+        /// </summary>
+        public override string Tutorial_WaitFor => "Warte auf Fertigstellung von: {0}";
+        public override string GameOverResults => "Spielverlauf";
+
+        public override string UnitType_UnclaimedLand => "Niemandsland";
+        public override string UnitType_Settler => "Siedler";
+        public override string UnitType_Settler_Description => "Eine neue Stadt gründen";
+        public override string Resource_ConsumedProduced => "Verbraucht/Produziert";
+        public override string InputActionName_PlaceTarget => "Ziel platzieren";
+
+        public override string FactionStartSize => "Startgröße der Fraktion";
+        public override string FactionStartSize_Full => "Vollständig";
+        public override string FactionStartSize_OneCity => "Eine Stadt";
+        public override string FactionStartSize_Settler => "Ein Siedler";
+
+        //Winter update
+        public override string Resource_StockpileLimit => "Lagerlimit";
+        public override string GameMode_QuickMatch => "Quick Match";
+        public override string GameMode_QuickMatch_Description =>
+            "Ein kürzeres Spielformat. Stürze dich in einen groß angelegten Krieg gegen rivalisierende Nationen.";
+        public override string Lobby_PlayerCount => "Spieleranzahl";
+        public override string Lobby_TwoTeams => "Zwei Teams";
+        public override string Hud_Produce => "Produzieren:";
+        public override string Tutorial_WaitForWorkerLevel => "Warte, bis ein Arbeiter erreicht:";
+
+        public override string Tutorial_PracticeOrSchool => "Trainiere an {0} oder nutze eine {1}";
+        public override string Tutorial_AddTag => "Tag hinzufügen:";
+        public override string Tutorial_AddPin => "Pin hinzufügen:";
+        public override string Tutorial_SelectMostTrees => "Finde deine Stadt mit den meisten Bäumen";
+        public override string Tutorial_SelectACityWithX => "Wähle eine Stadt mit {0}";
+
+        public override string Tutorial_Select_NotCapital => ". Nicht deine Hauptstadt.";
+
+        public override string Tutorial_SetXPriorityToY => "Setze die Priorität von {0} auf {1}";
+        public override string Tutorial_AdvisorMission => "Advisor-Mission";
+
+        public override string Tutorial_AdvisorDescription =>
+            "Das vollständige Spiel hat begonnen. Der Advisor erweitert das Tutorial mit hilfreichen Missionen.";
+
+        public override string Tutorial_EndAdvisor => "Advisor beenden";
+
+        public override string Tutorial_AdvisorCompleteTitle => "Advisor abgeschlossen!";
+        public override string Tutorial_AdvisorCompleteMessage => "Möge dein nächster Tag gesegnet sein!";
+
+        public override string Hud_Search => "Suchen";
+
+        public override string DifficultyDescription_ExtremeAggression => "Extreme Aggression";
+
+        public override string MapFilter => "Kartenfilter";
+
+        public override string Settings_TechMultiplier => "Tech-Forschungsgeschwindigkeit";
+
+        public override string EndScreen_MatchComplete => "Spielergebnis";
+
+        public override string FactionName_DragonGem => "Dragon Gem";
+        public override string FactionName_Tomten => "Tomten";
+        public override string FactionName_Hælfolc => "Hælfolc";
+        public override string FactionName_AerimAngren => "Aerim Angren";
+
+        public override string HUD_NotAvailbleInX => "Nicht verfügbar in {0}";
+
+        public override string InputActionName_MiniMap => "Mini-map";
+
+        //--
+        public override string Error_SoundInitFailure => "Sound-Initialisierung fehlgeschlagen";
+
+        public override string GameMenu_ControllerDisconnected => "Controller wurde getrennt";
+
+        public override string Tutorial_HighPriority => "Deine Männer erledigen zuerst die Aufgaben mit hoher Priorität.";
+
+        public override string BuildingType_Wall_Description => "Mauern schützen deine Truppen vor Angriffen und geben einen kleinen Angriffs-Boost.";
+
+        public override string BuildingType_Wall_Siege => "Belagerungswaffen schwächen die Verteidigung der Mauern.";
+
+        public override string Conscript_BlockChance => "{0}% Chance, einen Angriff zu blocken.";
+
+        public override string Battle_DeclarWarReminder => "Du musst den Krieg erklären, bevor du angreifen kannst.";
+
+        //--
+
+
         /// <summary>
         /// Name dieser Sprache
         /// </summary>
@@ -16,7 +447,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Darstellung der Anzahl von Gegenständen. 0: Gegenstand, 1: Anzahl
         /// </summary>
-        public override string Language_ItemCountPresentation => "{0}: {1}";
+        public override string Language_ItemCount_Colon => "{0}: {1}";
 
         /// <summary>
         /// Sprache auswählen
@@ -61,7 +492,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Spielname und Versionsnummer
         /// </summary>
-        public override string Lobby_GameVersion => "DSS Kriegsparty - Ver {0}";
+        //public override string Lobby_GameVersion => "DSS Kriegsparty - Ver {0}";
 
         public override string FlagEditor_Description => "Gestalte deine Flagge und wähle Farben für deine Soldaten.";
 
@@ -146,15 +577,15 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_GameSpeedLabel => "Spielgeschwindigkeit: {0}x";
         public override string Input_GameSpeed => "Spielgeschwindigkeit";
         public override string Hud_TotalIncome => "Gesamteinnahmen/Sekunde: {0}";
-        public override string Hud_Upkeep => "Unterhalt: {0}";
+        public override string Hud_Upkeep => "Unterhalt";
         public override string Hud_ArmyUpkeep => "Armeeunterhalt: {0}";
 
         public override string Hud_GuardCount => "Wachen";
         public override string Hud_IncreaseMaxGuardCount => "Maximale Wachengröße {0}";
         public override string Hud_GuardCount_MustExpandCityMessage => "Du musst die Stadt erweitern.";
-        public override string Hud_SoldierCount => "Soldatenanzahl: {0}";
-        public override string Hud_SoldierGroupsCount => "Gruppenanzahl: {0}";
-        public override string Hud_StrengthRating => "Stärkewertung: {0}";
+        public override string Hud_SoldierCount => "Soldatenanzahl";
+        public override string Hud_SoldierGroupsCount => "Gruppenanzahl";
+        public override string Hud_StrengthRating => "Stärkewertung";
         public override string Hud_TotalStrengthRating => "Militärische Stärke: {0}";
         public override string Hud_Immigrants => "Einwanderer";
         public override string Hud_CityCount => "Stadtanzahl: {0}";
@@ -498,7 +929,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Statistiken, die auf dem Endspiel-Bildschirm angezeigt werden. Titel.
         /// </summary>
-        public override string EndGameStatistics_Title => "Statistiken";
+        public override string Statistics_Title => "Statistiken";
 
         /// <summary>
         /// Statistiken, die auf dem Endspiel-Bildschirm angezeigt werden. Gesamtspielzeit.
@@ -695,7 +1126,7 @@ namespace VikingEngine.DSSWars.Presentation
         /// <summary>
         /// Wie viele Treffer ein Soldat aushalten kann
         /// </summary>
-        public override string SoldierStats_Health => "Lebenspunkte: {0}";
+        public override string SoldierStats_Health => "Lebenspunkte";
 
         /// <summary>
         /// Einige Soldaten erhöhen die Bewegungsgeschwindigkeit der Armee an Land
@@ -1140,7 +1571,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string DecorType_Pavement => "Pflaster";
         public override string BuildingType_Smith => "Schmied";
         public override string BuildingType_Cook => "Koch";
-        public override string BuildingType_Storage => "Lagerhaus";
+        public override string BuildingType_Storehouse => "Lagerhaus";
 
         public override string BuildingType_ResourceFarm => "{0}-Farm";
 
@@ -1163,7 +1594,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string BuildingType_Nobelhouse_Description => "Wohnsitz für Ritter und Diplomaten";
         public override string BuildingType_CoalPit_Description => "Effiziente Brennstoffproduktion";
-        public override string BuildingType_Storage_Description => "Ablagepunkt für Ressourcen";
+        //public override string BuildingType_Storehouse_Description => "Ablagepunkt für Ressourcen";
 
         public override string MenuTab_Info => "Info";
         public override string MenuTab_Work => "Arbeit";
@@ -1252,10 +1683,10 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Conscript_SpecializationDescription => "Erhöht den Angriff in einem Bereich und verringert ihn in allen anderen um {0}";
         public override string Conscript_SelectBuilding => "Kaserne auswählen";
 
-        public override string Conscript_WeaponDamage => "Waffenschaden: {0}";
-        public override string Conscript_ArmorHealth => "Rüstungsschutz: {0}";
-        public override string Conscript_TrainingSpeed => "Angriffsgeschwindigkeit: {0}";
-        public override string Conscript_TrainingTime => "Trainingszeit: {0}";
+        public override string Conscript_WeaponDamage => "Waffenschaden";
+        public override string Conscript_ArmorHealth => "Rüstungsschutz";
+        public override string Conscript_AttackSpeed => "Angriffsgeschwindigkeit";
+        public override string Conscript_TrainingTime => "Trainingszeit";
 
         public override string Conscript_Training_Minimal => "Minimal";
         public override string Conscript_Training_Basic => "Grundlegend";
@@ -1289,7 +1720,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Info_ButtonIcon => "i";
 
-        public override string Info_PerSecond => "Angezeigt als Ressourcen pro Sekunde.";
+        public override string Info_ResourcePerSecond => "Angezeigt als Ressourcen pro Sekunde.";
 
         public override string Info_MinuteAverage => "Der Wert ist ein Durchschnitt der letzten Minute.";
 
@@ -1350,12 +1781,12 @@ namespace VikingEngine.DSSWars.Presentation
         public override string CityCulture_Networker => "Netzwerker";
         public override string CityCulture_PitMasters => "Grubenmeister";
 
-        public override string CityCulture_CultureIsX => "Kultur: {0}";
+        public override string CityCulture_Culture => "Kultur";
         public override string CityCulture_LargeFamilies_Description => "Erhöhte Geburtenrate";
         public override string CityCulture_FertileGround_Description => "Erhöhte Ernteerträge";
         public override string CityCulture_Archers_Description => "Produziert erfahrene Bogenschützen";
         public override string CityCulture_Warriors_Description => "Produziert erfahrene Nahkämpfer";
-        public override string CityCulture_AnimalBreeder_Description => "Tiere liefern mehr Ressourcen";
+        //public override string CityCulture_AnimalBreeder_Description => "Tiere liefern mehr Ressourcen";
         public override string CityCulture_Miners_Description => "Schürft mehr Erz";
         public override string CityCulture_Woodcutters_Description => "Bäume liefern mehr Holz";
         public override string CityCulture_Builders_Description => "Schnelleres Bauen";
@@ -1396,13 +1827,14 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Resource_TypeName_Coal => "Kohle";
 
-        public override string Language_XUpkeepIsY => "{0}-Unterhalt: {1}";
+        public override string Language_XUpkeep => "{0}-Unterhalt";
         public override string Language_XCountIsY => "{0}-Anzahl: {1}";
 
         public override string Message_ArmyOutOfFood_Text => "Teure Nahrung wird vom Schwarzmarkt gekauft. Hungrige Soldaten werden desertieren, wenn dein Geld aufgebraucht ist.";
 
-        public override string Info_ArmyFood => "Armeen versorgen sich mit Nahrung aus der nächstgelegenen freundlichen Stadt. Nahrung kann von anderen Fraktionen gekauft werden. In feindlichen Gebieten kann Nahrung nur auf dem Schwarzmarkt erworben werden.";
-
+        public override string Info_ArmyFood1 => "Armeen füllen ihre Nahrung in der nächstgelegenen verbündeten Stadt auf.";
+        public override string Info_ArmyFood2 => "Nahrung kann von anderen Fraktionen gekauft werden.";
+        public override string Info_ArmyFood3 => "In feindlichen Gebieten kann Nahrung nur auf dem Schwarzmarkt gekauft werden.";
         public override string FactionName_Monger => "Monger";
         public override string FactionName_Hatu => "Hatu";
         public override string FactionName_Destru => "Destru";
@@ -1696,8 +2128,7 @@ namespace VikingEngine.DSSWars.Presentation
         public override string Hud_AddX => "{0} hinzufügen";
         public override string Hud_Both => "Beide";
         public override string Hud_Direction => "Richtung";
-        public override string MusicIsBroken => "Musik ist derzeit defekt";
-
+       
         /// <summary>
         /// 0: object collection type name, 1: number of objects
         /// </summary>
@@ -2051,7 +2482,7 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Settings_Mode_Spectator => "Zuschauer";
 
-        public override string Settings_Mode_Spectator_Description => "Nur zuschauen";
+        //public override string Settings_Mode_Spectator_Description => "Nur zuschauen";
 
         public override string Automation_AutomationFocus_NoFocus_Description => "Baut von allem ein wenig";
 
@@ -2379,6 +2810,59 @@ namespace VikingEngine.DSSWars.Presentation
 
         public override string Tutorial_CasualRecruitSoldiers => "Kaufe eine Soldatengruppe";
 
+        //Shadow update
+        public override string Technology_CannotReassign => "Tech kann nicht neu zugewiesen werden, bis die Forschung abgeschlossen ist";
+        public override string Diplomacy_DeclareWarAgainst => "Du erklärst den Krieg gegen";
+        public override string Diplomacy_AllyCount => "Anzahl der Verbündeten";
+        public override string Diplomacy_CostPerAlly => "Kosten steigen um {0} pro Verbündetem";
 
+        public override string Event_ChanceOfFailure => "{0}% Chance auf Fehlschlag";
+        public override string EventMessage_Event_Title => "Ereignis";
+        public override string EventMessage_TheCohalition => "Die Koalition";
+
+        public override string EventMessage_DarkHorde => "Dunkle Horde";
+        public override string EventMessage_DarkHordeKiller_Title => "Killer der Dunklen Horde";
+        public override string EventMessage_DarkHordeKiller_Message => "Champion-Ritter treten in deinen Dienst";
+
+        public override string Settings_Mode_Spectator_Description => "Nur zuschauen – oder mit God Powers eingreifen.";
+        public override string GodPower => "God Power";
+
+        public override string Building_TreeSprout_Description => "Einen Baum pflanzen";
+        public override string Building_TreeSprout_Soft => "Weichholz-Setzling";
+        public override string Building_TreeSprout_Hard => "Hartholz-Setzling";
+
+        public override string GeneralSetting_SetAll => "Auf alle anwenden";
+
+        public override string Hud_All => "Alle";
+
+        public override string Hud_Previous => "Zurück";
+
+        public override string Hud_EffectWillStack => "Der Effekt stackt";
+
+        public override string Info_WhenFoodRunsOut => "Wenn die Nahrung ausgeht, kaufen Städte und Armeen sie automatisch auf dem Schwarzmarkt.";
+
+        //Launch test
+        
+        public override string InputActionName_NextWar => "Nächste Fraktion im Krieg";
+
+        /// <summary>
+        /// These symbols are needed to fit large numbers on the HUD,
+        /// there will be a tooltip to explain what number it represents
+        /// </summary>
+        public override string EngineHud_SymbolFor100 => "c";
+        public override string EngineHud_SymbolFor1000 => "k";
+        public override string EngineHud_SymbolFor10000 => "10k";
+
+        /// <summary>
+        /// When loading files from other players, you won’t get their achievement progress
+        /// </summary>
+        public override string GameMenu_BlockImportAchievements => "Erfolge bei importierten Spielständen blockieren";
+
+        public override string EndScreen_PeaceVictoryQuote => "Lasst uns die Schwerter niederlegen und eine bessere Zukunft annehmen";
+
+        public override string VictoryType_DefeatBoss => "Boss besiegt";
+        public override string VictoryType_Domination => "Domination";
+        public override string VictoryType_WorldPeace => "Weltfrieden";
+        
     }
 }

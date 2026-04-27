@@ -121,9 +121,9 @@ namespace VikingEngine.DSSWars.Map
             const float ModelGroundYAdj = 0.01f;
             const float TileThird = 1f / 3f;
 
-            var area = new Rectangle2(current.tilePos, current.cityTileRadius);
-            area.SetBounds(DssRef.world.tileBounds);
-            ForXYLoop loop = new ForXYLoop(area);
+            //var area = new Rectangle2(current.tilePos, current.cityTileRadius);
+            //area.SetBounds(DssRef.world.tileBounds);
+            ForXYLoop loop = new ForXYLoop(current.cityTileArea);
             while (loop.Next())
             {
                 if (token.IsCancellationRequested)

@@ -495,7 +495,7 @@ namespace VikingEngine.ToGG.Commander.LevelSetup
 
             AiModifier_TargetUnit targetLeader = new AiModifier_TargetUnit(Commander.cmdRef.players.localHost.GetUnits(UnitPropertyType.Leader)[0]);
 
-            AbsUnit ram = aiPlayer.GetUnits(UnitUnderType.Warmashine_BatteringRam)[0];
+            AbsUnit ram = aiPlayer.GetUnits(UnitUnderType.Warmachine_BatteringRam)[0];
 
             moveBattleRam1 = new AiModifier_MoveUnit(
                 ram, toggRef.board.GetTag(1)[0]);
@@ -518,7 +518,7 @@ namespace VikingEngine.ToGG.Commander.LevelSetup
             }
             else
             {
-                if (u.cmd().data.underType == UnitUnderType.Warmashine_BatteringRam)
+                if (u.cmd().data.underType == UnitUnderType.Warmachine_BatteringRam)
                 {
                     battleRamDestroyed = true;
                 }

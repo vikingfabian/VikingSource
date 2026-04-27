@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Win32;
+using VikingEngine.Engine;
+using System.Runtime.CompilerServices;
 
 namespace VikingEngine.Input
 {
@@ -11,58 +13,89 @@ namespace VikingEngine.Input
     {
         static MouseState previousMouseState;
         static MouseState currentMouseState;
-
-        //static MainGame main;
-        static bool swapLeftRightButtons = false;
-        public static bool LockToScreenArea
-        {
-            set
-            {
-#if PCGAME
-                if (!PlatformSettings.DevBuild)
-                {
-                    if (value)
-                    {
-                        var bounds = Ref.main.Window.ClientBounds;
-                        //System.Windows.Forms.Cursor.Clip = new System.Drawing.Rectangle(bounds.X, bounds.Y, bounds.Width, bounds.Height);// .form.RectangleToScreen(Ref.main.form.ClientRectangle);
-                    }
-                    else
-                    {
-                        //System.Windows.Forms.Cursor.Clip = System.Drawing.Rectangle.Empty;
-                    }
-                }
-#endif
-            }
-        }
-
-//        public static void Init(MainGame _main)
-//        {
-//            //main = _main;
-
-////#if PCGAME
-////            var key = Registry.CurrentUser.CreateSubKey("Control Panel\\Mouse\\");
-////            var newValue = key.GetValue("SwapMouseButtons");
-////            if (newValue != null)
-////            {
-////                swapLeftRightButtons = Convert.ToInt32(newValue) != 0;
-////            }
-////#endif
-//        }
-
-        public static bool Visible
-        {
-            get {
-                return PlatformSettings.PC_platform && Ref.main.IsMouseVisible;
-            }
-            set { 
-
-                if (PlatformSettings.PC_platform && (PlatformSettings.Debug_HideMouse || !PlatformSettings.DevBuild))
-                    Ref.main.IsMouseVisible = value; 
-            }
-        }
-
         public static Vector2 MoveDistance;
         public static Vector2 RealMoveDistance;
+        //static MainGame main;
+        static bool swapLeftRightButtons = false;
+
+        static MouseInstance mouse;
+        public static List<MouseInstance> Instances = new List<MouseInstance>(4);
+        
+        /// <summary>
+        /// Will display mouse even if unused, and everyone shares one pointer
+        /// </summary>
+        public static bool MenuMode = true;
+
+        public static void Reset()
+        {
+            mouse = new MouseInstance();
+            Instances.Clear();
+            Instances.Add(mouse);
+            Ref.main.IsMouseVisible = true;
+            MenuMode = true;
+
+            mouse.RefreshMouseVisible();
+        }
+
+        public static void SetMenuMode(bool menu)
+        {
+            SetMenuMode(menu? SteamWrapping.SteamActionSet.MenuControls : SteamWrapping.SteamActionSet.InGameControls);
+        }
+
+        public static void SetMenuMode(SteamWrapping.SteamActionSet actionSet)
+        { 
+            MenuMode = actionSet == SteamWrapping.SteamActionSet.MenuControls;
+            foreach (var ins in Instances)
+            {
+                ins.RefreshMouseVisible();
+            }
+
+            Ref.steam.input?.SetActionSet(actionSet);
+            if (Input.Keyboard.Ctrl)
+            {
+                lib.DoNothing();
+            }
+        }
+
+        public static void AddPlayer(PlayerData playerData, int playerCount, IDirectionalMap directionalMap1 = null, IDirectionalMap directionalMap2 = null)
+        {
+            //if (playerData.inputMap.inputSource.HasMouseInstance)
+            //{
+                if (playerData.inputMap.inputSource.HasMouse)
+                {
+                    mouse.SetPlayer(playerData, playerCount);
+                    playerData.inputMap.mouse = mouse;
+                }
+                else
+                {
+                    MouseInstance instance = new MouseInstance(playerData, playerCount, directionalMap1, directionalMap2);
+                    Instances.Add(instance);
+                    playerData.inputMap.SetMouse(instance);
+                }
+            //}
+        }
+
+        public static void CenterLockAndHideAll()
+        {
+            foreach (var ins in Instances)
+            {
+                ins.CenterLockAndHide();
+            }
+        }
+        public static void ViewAll()
+        {
+            foreach (var ins in Instances)
+            {
+                ins.View();
+            }
+        }
+        public static void Hide()
+        {
+            foreach (var ins in Instances)
+            {
+                ins.Hide();
+            }
+        }
         
         public static bool bMoveInput
         {
@@ -77,6 +110,13 @@ namespace VikingEngine.Input
 
         public static void Update()
         {
+            if (Ref.update.textInput != null)
+            {
+                currentMouseState = new MouseState();
+                previousMouseState = currentMouseState;
+                return;
+            }
+
             previousMouseState = currentMouseState;
             currentMouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
 
@@ -84,9 +124,9 @@ namespace VikingEngine.Input
             PrevRealPosition = RealPosition;
 
             RealPosition = new Vector2(currentMouseState.X, currentMouseState.Y);
-            Position = RealPosition * Engine.Screen.RenderScaleF;
+            Position = RealPosition * Engine.Screen.WindowScaleF;
 
-            if (Ref.main.IsMouseVisible)
+            if (!mouse.centerlockAndHide)//Ref.main.IsMouseVisible)
             {
                 hiddenFramesCount = 0;
                 RealMoveDistance = RealPosition - PrevRealPosition;
@@ -97,7 +137,7 @@ namespace VikingEngine.Input
                 if (++hiddenFramesCount > 2)
                 {
                     RealMoveDistance = RealPosition - Engine.Screen.MonitorCenter.Vec;
-                    MoveDistance = RealMoveDistance * Engine.Screen.RenderScaleF;
+                    MoveDistance = RealMoveDistance * Engine.Screen.WindowScaleF;
                 }
                 else
                 {
@@ -106,63 +146,23 @@ namespace VikingEngine.Input
                 }
             }
 
-            if (MainGame.GameIsActive)
+            foreach (MouseInstance ins in Instances)
             {
-                if (!Ref.main.IsMouseVisible)
-                {
-                    SetPosition(Engine.Screen.MonitorCenter);
-                }
+                ins.Update();
             }
         }
 
-        public static Vector2 EdgePush()
+        public static void refreshCursor()
         {
-            Vector2 result = Vector2.Zero;
-            if (Engine.Screen.Area.IntersectPoint(Position))
+            foreach (var ins in Input.Mouse.Instances)
             {
-                if (Position.X < Engine.Screen.MousePushEdge.X &&
-                    Position.X > Engine.Screen.MousePushEdgeMax.X)
-                {
-                    result.X = -1;
-                }
-                else if (Position.X > Engine.Screen.MousePushEdge.Right &&
-                    Position.X < Engine.Screen.MousePushEdgeMax.Right)
-                {
-                    result.X = 1;
-                }
-
-                if (Position.Y < Engine.Screen.MousePushEdge.Y &&
-                    Position.Y > Engine.Screen.MousePushEdgeMax.Y)
-                {
-                    result.Y = -1;
-                }
-                else if (Position.Y > Engine.Screen.MousePushEdge.Bottom &&
-                    Position.Y < Engine.Screen.MousePushEdgeMax.Bottom)
-                {
-                    result.Y = 1;
-                }
+                ins.RefreshMouseVisible();
             }
-            return result;
-        }
-
-
-        public static bool HasEdgePush()
-        {
-            return Engine.Screen.PcTargetFullScreen && !Engine.Screen.MousePushEdge.IntersectPoint(Position);
-        }
-
-
-        public static void SetPosition(IntVector2 position)
-        {
-#if PCGAME
-            Position = position.Vec;
-            Microsoft.Xna.Framework.Input.Mouse.SetPosition(position.X, position.Y);
-#endif
         }
 
         static bool IsActive
         {
-            get { return MainGame.GameIsActive && Engine.Screen.Area.IntersectPoint(Position); }
+            get { return MainGame.GameIsActive && mouse.inBounds; }
         }
 
         public static bool IsButtonDown(MouseButton button)
@@ -267,6 +267,7 @@ namespace VikingEngine.Input
             return false;
         }
 
+       
         public static bool Scroll
         {
             get { return currentMouseState.ScrollWheelValue != previousMouseState.ScrollWheelValue; }

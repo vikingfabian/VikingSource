@@ -18,13 +18,13 @@ namespace VikingEngine.DSSWars.Players.Orders
 {
     abstract class AbsBuildOrder : AbsOrder
     {
-        protected City city;
+        public City city;
         protected IntVector2 subTile;
         protected VoxelModelInstance model;
 
         protected void createModel(int frame, int playerIx)
         {
-            Debug.CrashIfThreaded();
+            //Debug.CrashIfThreaded();
             model = DssRef.models.ModelInstance_drawbatch(LootFest.VoxelModelName.buildarea, WorldData.SubTileWidth * 1.4f);
             model.Frame = frame;
             model.position = WP.SubtileToWorldPosXZgroundY_Centered(subTile);
@@ -86,7 +86,7 @@ namespace VikingEngine.DSSWars.Players.Orders
 
             Vector3 iconPos = model.position;
             iconPos.Y += model.scale.Y * 6f;
-            iconPos.Z += model.scale.Y * 0.15f;
+            iconPos.Z += model.scale.Y * 0.3f;
 
             icon = new Mesh(LoadedMesh.plane, iconPos, model.scale * 9.6f, TextureEffectType.Flat, Build.BuildLib.BuildOptions[(int)buildingType].sprite, Color.White, false);
 #if DEBUG
@@ -107,6 +107,8 @@ namespace VikingEngine.DSSWars.Players.Orders
             HudLib.Label(content, DssRef.lang.Work_OrderPrioTitle);
             content.space();
             content.Add(new RbText(priority.ToString()));
+
+            BuildControls.buildTooltip_YouOwn(city, content, buildingType);
 
             return content;
         }

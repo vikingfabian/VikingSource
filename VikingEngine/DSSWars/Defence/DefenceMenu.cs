@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Conscript;
 using VikingEngine.DSSWars.GameObject;
+using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
@@ -18,7 +19,7 @@ namespace VikingEngine.DSSWars.Defence
         public void ToHud(City city, LocalPlayer player, RichBoxContent content)
         {
             this.city = city;
-            if (city.defenceBuildings.InBound(city.selectedDefenceBuilding))
+            if (city.defenceBuildings.InBound_List(city.selectedDefenceBuilding))
             {
                 DefenceStatus currentStatus = getSelected();
                 content.Add(new RbBeginTitle(1));
@@ -26,7 +27,7 @@ namespace VikingEngine.DSSWars.Defence
                 content.space();
                 content.Add(new RbText(DssRef.lang.Defence_GuardPost + " " + currentStatus.idAndPosition.ToString(), HudLib.TitleColor_Head));
                 content.space();
-                HudLib.CloseButton(content, new RbAction(() => { city.selectedDefenceBuilding = -1; }, SoundLib.menuBack));
+                HudLib.CloseButton(content, new RbAction(() => { city.selectedDefenceBuilding = -1; }, RbSoundType.Back));
 
                 content.newLine();
                 content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.lang.Defence_AutoAssign) }, autoAssignProperty, new RbTooltip_Text(DssRef.lang.Defence_AutoAssign_Description)));
@@ -106,6 +107,36 @@ namespace VikingEngine.DSSWars.Defence
                setSelected(defence);
             }
             return defence.autoAssign;
+        }
+
+        public static void WallDefenceToHud(RichBoxContent content, TerrainWallType wallType, bool extended)
+        {
+            var chance = DefenceStatus.WallDefenceChance(wallType, out _);
+
+            if (extended)
+            {
+                HudLib.BulletPoint(content);
+                content.Add(new RbText( DssRef.lang.BuildingType_Wall_Description));
+                content.newLine();
+
+                HudLib.BulletPoint(content);
+            }
+
+           
+            content.Add(new RbImage(SpriteName.warsArmyTag_Shield));
+            content.space();
+            content.Add(new RbText(string.Format( DssRef.lang.Conscript_BlockChance,
+                Convert.ToInt32(chance * 100))));
+            
+
+            if (extended)
+            {
+                content.newLine();
+
+                HudLib.BulletPoint(content);
+                content.Add(new RbText(DssRef.lang.BuildingType_Wall_Siege));
+                content.newLine();
+            }
         }
     }
 }

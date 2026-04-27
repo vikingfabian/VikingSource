@@ -473,6 +473,11 @@ namespace VikingEngine
             get { return new Rectangle2(IntVector2.Zero, size); }
         }
 
+        public Rectangle2 TileBound()
+        {
+            return new Rectangle2(IntVector2.Zero, size -1); 
+        }
+
         public void Print()
         {
             Debug.Log("GRID PRINT " + size.ToString());

@@ -129,8 +129,15 @@ namespace VikingEngine.DSSWars.Interface
         {
             this.player = player;
         }
+
+        bool highEconomyWarningBlock()
+        { 
+            return DssRef.storage.gameRuleset.centralGold && player.faction.money.GetGold() > DssConst.Gold_RichStatus;
+        }
+
         public void blockFoodWarning(bool block)
         {
+            //Blocked during tutorial
             if (block)
             {
                 cityLowFoodMessageCooldown.start(new TimeLength(100000));
@@ -157,13 +164,18 @@ namespace VikingEngine.DSSWars.Interface
         public void onGameStart()
         { 
             screenAreaBottom = player.playerData.view.DrawArea.Bottom + Engine.Screen.SmallIconSize;
+            //if (player.hud.head.Right > player.playerData.view.DrawArea.Width / 2)
+            //{
+                
+            //}
         }
 
         
 
         public static void ControllerInputIcons(LocalPlayer player, List<AbsRichBoxMember> button)
         {
-            if (player.gameControls.input.inputSource.IsController)
+            if (player.gameControls.input.inputSource.HasControllerInput &&
+               player.gameControls.input.ControllerMessageClick.IsActive)
             {
                 RichBoxContent.ButtonMap(player.gameControls.input.ControllerMessageClick, button);
                 button.Add(new RbSpace());
@@ -172,7 +184,8 @@ namespace VikingEngine.DSSWars.Interface
 
         public void cityLowFoodMessage(City city)
         {   
-            if (DssRef.storage.runTutorial_1short_2normal == 0 && 
+            if (!highEconomyWarningBlock() &&
+                DssRef.storage.runTutorial == false && 
                 cityLowFoodMessageCooldown.TimeOut())
             {
                 cityLowFoodMessageCooldown.start();
@@ -183,12 +196,14 @@ namespace VikingEngine.DSSWars.Interface
 
                 content.newParagraph();
 
-                var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                MessageGroup_Ingame.ControllerInputIcons(player,gotoBattleButtonContent);
-                gotoBattleButtonContent.Add(new RbText(city.TypeName()));
+                var gotoButtonContent = new RichBoxContent();
+                MessageGroup_Ingame.ControllerInputIcons(player,gotoButtonContent);
+                //gotoButtonContent.Add(new RbText(city.TypeName()));
+                city.toButtonContent(gotoButtonContent, true);
 
-                content.Add(new ArtButton( RbButtonStyle.Primary,gotoBattleButtonContent,
-                    new RbAction1Arg<AbsGameObject>(goToMapObject, city, SoundLib.menu)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, city, RbSoundType.Default))
+                { fillWidth = true });
 
                 Add(content);
             }
@@ -196,7 +211,8 @@ namespace VikingEngine.DSSWars.Interface
 
         public void armyLowFoodMessage(Army army)
         {
-            if (DssRef.storage.runTutorial_1short_2normal == 0 &&
+            if (!highEconomyWarningBlock() &&
+                DssRef.storage.runTutorial == false &&
                 armyLowFoodMessageCooldown.TimeOut())
             {
                 armyLowFoodMessageCooldown.start();
@@ -207,12 +223,14 @@ namespace VikingEngine.DSSWars.Interface
 
                 content.newParagraph();
 
-                var gotoBattleButtonContent = new List<AbsRichBoxMember>(6);
-                ControllerInputIcons(player, gotoBattleButtonContent);
-                gotoBattleButtonContent.Add(new RbText(army.TypeName()));
+                var gotoButtonContent = new RichBoxContent();
+                MessageGroup_Ingame.ControllerInputIcons(player, gotoButtonContent);
+                //gotoButtonContent.Add(new RbText(city.TypeName()));
+                army.toButtonContent(gotoButtonContent, true);
 
-                content.Add(new ArtButton(RbButtonStyle.Primary, gotoBattleButtonContent,
-                    new RbAction1Arg<AbsGameObject>(goToMapObject, army, SoundLib.menu)));
+                content.Add(new ArtButton(RbButtonStyle.Primary, gotoButtonContent,
+                    new RbAction1Arg<AbsGameObject>(goToMapObject, army, RbSoundType.Default))
+                { fillWidth = true });
 
                 Add(content);
             }
@@ -237,14 +255,18 @@ namespace VikingEngine.DSSWars.Interface
             Add(content);
         }
 
-        public void Add(RichBoxContent content)
+        public void Add(RichBoxContent content, bool vibrate = true)
         {
             if (StartupSettings.BlockMessages)
                 return;
 
             SoundLib.message.Play(Pan.Right);
+            if (vibrate)
+            {
+                player.gameControls.input.Vibrate(300, 0, 1);
+            }
 
-            if (player.hud.detailLevel == HudDetailLevel.Minimal)
+            if (player.hud.maximizedHud == false)
             {
                 RichBoxContent compact = new RichBoxContent();
                 foreach (var m in content)

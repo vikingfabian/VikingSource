@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Graphics.DrawProcess;
 using VikingEngine.ToGG;
 
 namespace VikingEngine.Graphics
@@ -11,6 +12,9 @@ namespace VikingEngine.Graphics
     {
         /* Properties */
         //public int InDrawBatchCount = 0;
+#if DEBUG
+        public string DebugName = null;
+#endif
 
         public abstract DrawObjType DrawType { get; }
 
@@ -42,7 +46,8 @@ namespace VikingEngine.Graphics
         protected bool visible = true;
         protected bool inRenderList = false;
         public int inRenderLayer = 0;
-        
+
+        public int idOrIndex = int.MinValue;
         private int spottedArrayMemberIndex;
         private int inSpottedArray = 0;
 
@@ -63,7 +68,11 @@ namespace VikingEngine.Graphics
         /* Methods */
         public abstract AbsDraw CloneMe();
         public abstract void Draw(int cameraIndex);
-        public virtual void DrawShadow(int cameraIndex, AbsEffect shader) { }
+        public virtual void DrawWave(int cameraIndex, Effect shader) { throw new NotImplementedException(); }
+        //public abstract void Draw(Texture2D texture);
+        //public virtual void DrawShadow(int cameraIndex, AbsEffect shader) { }
+
+        public virtual void DrawWithShadow(int cameraIndex, AbsCamera camera, Effect shader, LightProjection light) { }
         public abstract void UpdateCulling();
 
         public virtual void DrawInDynamicCam(Vector2 camPos)

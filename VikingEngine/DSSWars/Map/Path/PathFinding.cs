@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Valve.Steamworks;
+
 using VikingEngine.DSSWars.Map.Path;
 using VikingEngine.Graphics;
 using VikingEngine.LootFest.Map;
@@ -110,6 +110,12 @@ namespace VikingEngine.DSSWars.Map
             * 3.Varje kollad center ruta ska till en sluten lista
             * 4.Varje ny ruta ska till en öppen lista
             */
+
+            if (!DssRef.world.tileGrid.InBounds(center) ||
+                !DssRef.world.tileGrid.InBounds(goal))
+            {
+                return new WalkingPath();
+            }
 
             PathNode startNode = new PathNode(center, startDir, startAsShip);
 
@@ -239,7 +245,7 @@ namespace VikingEngine.DSSWars.Map
         const int IgnoreDirChangeTimes = 10;
         const float NodeMinDistance = 0.3f;
 
-        public int timeStamp;
+        public double timeStamp;
         public int currentNodeIx;
         public List<PathNodeResult> nodes = new List<PathNodeResult>(64);
 

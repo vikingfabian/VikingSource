@@ -13,7 +13,7 @@ using VikingEngine.ToGG.HeroQuest.Data.Condition;
 
 namespace VikingEngine
 {
-    public struct Rectangle2
+    struct Rectangle2
     {
         /*Properties */
         public IntVector2 BottomRight { get { return pos + size; } }
@@ -480,6 +480,15 @@ namespace VikingEngine
                 size.Y = value.Height;
             }
         }
+
+        public Intvector2MinMax MinMax
+        {
+            get
+            {
+                return new Intvector2MinMax(pos, pos + size);
+            }
+        }
+
         public bool IntersectPoint(IntVector2 point)
         {
             if (point.X >= pos.X && point.Y >= pos.Y)
@@ -535,6 +544,42 @@ namespace VikingEngine
             }
 
             return point;
+        }
+
+        public void KeepTilePointInArea(Vector2 point, out Vector2 result, out bool offBounds, out Vector2 rest)
+        {
+            result = point;
+            rest = Vector2.Zero;
+
+            float maxX = pos.X + size.X - 1;
+            float maxY = pos.Y + size.Y - 1;
+
+            // Horizontal logic
+            if (point.X < pos.X)
+            {
+                rest.X = point.X - pos.X;
+                result.X = pos.X;
+            }
+            else if (point.X > maxX)
+            {
+                rest.X = point.X - maxX;
+                result.X = maxX;
+            }
+
+            // Vertical logic
+            if (point.Y < pos.Y)
+            {
+                rest.Y = point.Y - pos.Y;
+                result.Y = pos.Y;
+            }
+            else if (point.Y > maxY)
+            {
+                rest.Y = point.Y - maxY;
+                result.Y = maxY;
+            }
+
+            // It's off-bounds if the rest vector isn't zero
+            offBounds = rest.X != 0 || rest.Y != 0;
         }
 
         public bool IntersectRect(Rectangle2 otherRect)

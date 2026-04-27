@@ -106,7 +106,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         override public void Time_Update(float time)
         {
             base.Time_Update(time);
-            //switch (state_0Hold_1Save_2meta_3Done)
+
             if (StartupSettings.Saves)
             {
 
@@ -118,8 +118,11 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                             //Begin save
                             state_0Hold_1Save_2meta_3Done++;
                             meta = new SaveStateMeta(autoSave);
+                            meta.storageSetup();
                             saveGamestate = new SaveGamestate(meta);
                             saveGamestate.save();
+
+                            DssRef.storage.Save(null);
                         }
                         break;
                     case 1:
@@ -137,7 +140,8 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                     case 3:
                         if (ExitGame)
                         {
-                            DssRef.state.exit();
+                            DssRef.state.beginExit();
+                            Close();
                         }
                         else if (autoSave)
                         {
@@ -162,7 +166,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
                 Close();
                 if (ExitGame)
                 {
-                    DssRef.state.exit();
+                    DssRef.state.beginExit();
                 }
             }
         }

@@ -100,15 +100,17 @@ namespace VikingEngine.DSSWars.Defence
         {
             IntVector2 subPos = conv.IntToIntVector2(assignedToPost_IdAndPosition);
             Vector3 center = WP.SubtileToWorldPosXZgroundY_Centered(subPos);
-            var tile = DssRef.world.subTileGrid.Get(subPos);
-            postYPos = center.Y + tile.BuildingHeight();
-            setArmyPlacement2(center, false, true);
+            if (DssRef.world.subTileGrid.TryGet(subPos, out var tile))
+            {
+                postYPos = center.Y + tile.BuildingHeight();
+                setArmyPlacement2(center, false, true);
+            }
         }
 
         public void onEnterGuard(City city, int IdAndPosition)
         {
             assignedToPost_IdAndPosition = IdAndPosition;
-            soldierConscript.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool knight, out bool warmachine);
+            soldierConscript.conscript.classify(out bool ranged, out bool rangedMan, out bool meleeMan, out bool warmachine, out bool animalCompanion, out bool animalMount, out bool wagonRide);
 
             if (DssRef.world.subTileGrid.TryGet(conv.IntToIntVector2(assignedToPost_IdAndPosition), out SubTile subTile))
             {
@@ -121,29 +123,31 @@ namespace VikingEngine.DSSWars.Defence
                 {
                     soldierAttackRangeBonus = 0.03f;
                 }
-                soldierAttackDamageBonus = 3;
 
-                switch (subTile.GetWallType())
-                {
-                    case Map.TerrainWallType.NUM_NONE:
-                        damageBlockChance_fromTerrain = 0;
-                        break;
-                    case Map.TerrainWallType.Palisade:
-                        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Palisade;
-                        soldierAttackDamageBonus = 2;
-                        break;
-                    case Map.TerrainWallType.DirtWall:
-                    case Map.TerrainWallType.DirtTower:
-                        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Dirt;
-                        break;
-                    case Map.TerrainWallType.WoodWall:
-                    case Map.TerrainWallType.WoodTower:
-                        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Wood;
-                        break;
-                    default:
-                        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Stone;
-                        break;
-                }
+                damageBlockChance_fromTerrain = DefenceStatus.WallDefenceChance(subTile.GetWallType(), out soldierAttackDamageBonus);
+                //soldierAttackDamageBonus = 3;
+
+                //switch (subTile.GetWallType())
+                //{
+                //    case Map.TerrainWallType.NUM_NONE:
+                //        damageBlockChance_fromTerrain = 0;
+                //        break;
+                //    case Map.TerrainWallType.Palisade:
+                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Palisade;
+                //        soldierAttackDamageBonus = 2;
+                //        break;
+                //    case Map.TerrainWallType.DirtWall:
+                //    case Map.TerrainWallType.DirtTower:
+                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Dirt;
+                //        break;
+                //    case Map.TerrainWallType.WoodWall:
+                //    case Map.TerrainWallType.WoodTower:
+                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Wood;
+                //        break;
+                //    default:
+                //        damageBlockChance_fromTerrain = DssConst.GuardPostDefenceChance_Stone;
+                //        break;
+                //}
             }
         }
 
@@ -193,14 +197,14 @@ namespace VikingEngine.DSSWars.Defence
             }
         }
 
-        public override void update(float time, bool fullUpdate)
-        {
-            if (attackTarget_soldierGroupOrCity != null)
-            {
-                lib.DoNothing();
-            }
-            base.update(time, fullUpdate);
-        }
+        //public override void update(float time, bool fullUpdate)
+        //{
+        //    if (attackTarget_soldierGroupOrCity != null)
+        //    {
+        //        lib.DoNothing();
+        //    }
+        //    base.update(time, fullUpdate);
+        //}
 
         public override void setGroundY()
         {
@@ -213,11 +217,11 @@ namespace VikingEngine.DSSWars.Defence
                 base.setGroundY();
             }
         }
-        protected override void createAllSoldiers(UnitType type, int count, bool createModels)
+        protected override void createAllSoldiers(UnitBuildType type, int count, bool createModels)
         {
             var typeProfile = DssRef.units.Get(type);
             soldiers = new SpottedArray<AbsSoldierUnit>(count);
-            soldierData = soldierConscript.init();
+            soldierData = soldierConscript.createSoldierData();
 
             if (typeProfile.IsShip())
             {
@@ -226,7 +230,7 @@ namespace VikingEngine.DSSWars.Defence
 
             if (count > 0)
             {
-                AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.Zero, tilePos, ref soldierData, createModels);
+                AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.Zero, false, tilePos, ref soldierData, createModels);
                 unit.firstUpdate();
                 refillGuardUnits(typeProfile, count - 1, createModels);
             }
@@ -234,10 +238,14 @@ namespace VikingEngine.DSSWars.Defence
 
         private void refillGuardUnits(AbsSoldierBuilder typeProfile, int count, bool createModels)
         {
+
             for (int i = 0; i < count; ++i)
             {
-                AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.AllDiagonalsArray[i], tilePos, ref soldierData, createModels);
-                unit.firstUpdate();
+                if (i < IntVector2.AllDiagonalsArray.Length)
+                {
+                    AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.AllDiagonalsArray[i], false, tilePos, ref soldierData, createModels);
+                    unit.firstUpdate();
+                }
             }
         }
 

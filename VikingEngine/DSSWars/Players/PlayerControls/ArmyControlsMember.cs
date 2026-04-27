@@ -63,7 +63,7 @@ namespace VikingEngine.DSSWars.Players
                     if (detailBanner == null)
                     {
 
-                        detailBanner = player.faction.AutoLoadModelInstance_batched(
+                        detailBanner = army.GetFaction().AutoLoadModelInstance_batched(
                              LootFest.VoxelModelName.armystand_detail, 0.3f);
                         //detailBanner.AddToRender(DrawGame.UnitDetailLayer);
                     }

@@ -125,7 +125,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
                     Velocity.Set(moveDir, WalkingSpeed);
                     Velocity.Update(Ref.DeltaTimeMs, image);
 
-                    if (Ref.TimePassed16ms)
+                    //if (Ref.TimePassed16ms)
                     {
                         float yDiff = groundY + WalkY - image.position.Y;
                         image.position.Y += yDiff * 0.2f;
@@ -390,7 +390,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
 
             if (exdrudedState)
             {
-                if (Ref.TimePassed16ms)
+                for(int i = 0; i < Ref.GameTimePassed16ms; ++i)//f (Ref.TimePassed16ms)
                 {
                     Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.BulletTrace, damageBound.center, 0.5f, 4);
                 }
@@ -410,7 +410,7 @@ namespace VikingEngine.LootFest.GO.Characters.Boss
                 if (!smokeTimer.TimeOut)
                 {
                     smokeTimer.CountDown();
-                    if (Ref.TimePassed16ms)
+                    for (int i = 0; i < Ref.GameTimePassed16ms; ++i)//if (Ref.TimePassed16ms)
                     {
                         Engine.ParticleHandler.AddParticleArea(Graphics.ParticleSystemType.Smoke, collisionBound.center, 0.5f, 4);
                     }

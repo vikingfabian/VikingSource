@@ -504,9 +504,29 @@ namespace VikingEngine
             }
             else
             {
-                value = default(T);
+                value = default;
                 return false;
             }
+        }
+
+        public static T GetClamped<T>(List<T> list, int index)
+        {
+            if (index < 0)
+                return list[0];
+            if (index >= list.Count)
+                return list[list.Count - 1];
+
+            return list[index];
+        }
+
+        public static T GetClamped<T>(T[] array, int index)
+        {
+            if (index < 0)
+                return array[0];
+            if (index >= array.Length)
+                return array[array.Length - 1];
+
+            return array[index];
         }
 
         public static bool InBound<T>(List<T> list, int index)

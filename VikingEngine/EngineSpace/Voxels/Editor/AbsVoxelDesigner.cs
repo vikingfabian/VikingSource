@@ -249,15 +249,18 @@ namespace VikingEngine.Voxels
 
         public void nextFrame(bool forward)
         {
-            if (voxelProject.lockFirstFrames > voxelProject.currentFrame.Max)
-            {
-                voxelProject.lockFirstFrames = 0;
-            }
+            //if (voxelProject.lockFirstFrame > voxelProject.currentFrame.Max)
+            //{
+            //    voxelProject.lockFirstFrame = null;
+            //}
 
-            do
-            {
-                voxelProject.currentFrame.Next(lib.BoolToLeftRight(forward));
-            } while (voxelProject.currentFrame.Value < voxelProject.lockFirstFrames);
+            var counter = voxelProject.currentFrame.AddBound(voxelProject.FrameBounds());
+            counter.Next(lib.BoolToLeftRight(forward));
+            voxelProject.currentFrame.Value = counter.Value;
+            //do
+            //{
+            //    voxelProject.currentFrame.Next(lib.BoolToLeftRight(forward));
+            //} while (voxelProject.lockFirstFrame != null && voxelProject.currentFrame.Value < voxelProject.lockFirstFrame);
             updateFrameInfo();
             updateVoxelObj();
         }
@@ -347,7 +350,7 @@ namespace VikingEngine.Voxels
         //    return setDrawLimit(new IntervalIntV3(drawLimits.Min, drawLimits.Min + animationFrames.Frames[0].Limits));
         //}
 
-        protected void UpdateDrawLimits()
+        public void UpdateDrawLimits()
         {
             if (bUpdateDrawLimits)
             {
@@ -822,6 +825,30 @@ namespace VikingEngine.Voxels
         {
             return voxelProject.layers.Selected().GetFrame(voxelProject.currentFrame.Value).Get(drawPoint);
         }
+        public ushort GetSafe(IntVector3 drawPoint)
+        {
+            return voxelProject.layers.Selected().GetFrame(voxelProject.currentFrame.Value).GetSafe(drawPoint);
+        }
+
+        public ushort PickSafe(IntVector3 drawPoint)
+        {
+            var selectedLayerCol = voxelProject.layers.Selected().GetFrame(voxelProject.currentFrame.Value).GetSafe(drawPoint);
+            if (selectedLayerCol == BlockHD.EmptyBlock)
+            {
+                for (int layerIx = 0; layerIx < voxelProject.layers.list.Count; ++layerIx)
+                {
+                    if (layerIx != voxelProject.layers.selectedIndex && voxelProject.layers.list[layerIx].visible)
+                    {
+                        selectedLayerCol = voxelProject.layers.list[layerIx].GetFrame(voxelProject.currentFrame.Value).GetSafe(drawPoint);
+                        if (selectedLayerCol != BlockHD.EmptyBlock)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            return selectedLayerCol;//voxelProject.layers.Selected().GetFrame(voxelProject.currentFrame.Value).GetSafe(drawPoint);
+        }
 
         virtual public void SetVoxel(int frame, IntVector3 drawPoint, ushort material)
         {
@@ -947,8 +974,7 @@ namespace VikingEngine.Voxels
                     npos.AddDimension(d, lib.BoolToLeftRight(dir == 0));
 
                     //bool nMateriel = GetVoxel(npos) != BlockHD.EmptyBlock;
-                    if (voxelProject.drawLimits.pointInBounds(npos) &&
-                        GetVoxel(CurrentFrame, npos) != BlockHD.EmptyBlock)//wp.GetNeighborPos(pos).BlockHasMaterial())
+                    if (GetSafe(npos) != BlockHD.EmptyBlock)//wp.GetNeighborPos(pos).BlockHasMaterial())
                     {
 
                         return true;

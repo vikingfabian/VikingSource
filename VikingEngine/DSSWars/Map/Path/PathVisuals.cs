@@ -38,7 +38,7 @@ namespace VikingEngine.DSSWars.Map
                     //dot.AddToRender(DrawGame.TerrainLayer);
                     //dot.AddToRender(DrawGame.UnitDetailLayer);
                     dot.AddToLayer1(DrawGame.UnitDetailLayer);
-                    dot.AddToLayer2(DrawGame.TerrainLayer);
+                    dot.AddToLayer2(DrawGame.MidLayer);
                     dot.setVisibleCamera(playerIndex);
                     moveDots.Add(dot);
                 }

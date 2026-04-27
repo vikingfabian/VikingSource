@@ -14,7 +14,7 @@ namespace VikingEngine.ToGG
         public AbsToggState()
             : base()
         {
-            Input.Mouse.LockToScreenArea = DefaultMouseLock;
+            Input.Mouse.SetMenuMode(true);
         }
 
         protected void createNetStatusText()

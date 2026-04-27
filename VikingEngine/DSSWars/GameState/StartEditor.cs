@@ -11,8 +11,6 @@ namespace VikingEngine.DSSWars.GameState
 {
     class StartEditor : AbsDssState
     {
-
-
         EditorType editor;
         int waitUpdates = 2;
         int ProfileIx;
@@ -42,10 +40,12 @@ namespace VikingEngine.DSSWars.GameState
                         new PaintFlagState(ProfileIx, controller);
                         break;
                     case  EditorType.Voxel:
+                        DssRef.stats.start_voxeleditor.addOne_ifUnset();
                         XGuide.LocalHost.inputMap = new InputMap(false);
                         new VoxelEditor.VoxelDesignState(false, XGuide.LocalHostIndex);
                         break;
                     case   EditorType.Character:
+                        DssRef.stats.start_character_creator.addOne_ifUnset();
                         new CharacterCreator.CharacterCreatorScene();
                         break;
 
@@ -54,6 +54,9 @@ namespace VikingEngine.DSSWars.GameState
                         break;
                     case EditorType.Files:
                         new FileLab.FileLabScene();
+                        break;
+                    case EditorType.Map2:
+                        new MapEditor2.MapEditor2_Scene();
                         break;
                 }
             }
@@ -67,5 +70,6 @@ namespace VikingEngine.DSSWars.GameState
         Character,
         Shader,
         Files,
+        Map2,
     }
 }
