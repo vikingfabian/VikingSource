@@ -109,6 +109,10 @@ namespace VikingEngine.DSSWars
 
                             if (process)
                             {
+                                if (player.IsRemotePlayer())
+                                {
+                                    lib.DoNothing();
+                                }
                                 var model = new CharacterModelBuilder().buildModel(player.profile, modelData);
                                 //lock (models_loaded)
                                 //{

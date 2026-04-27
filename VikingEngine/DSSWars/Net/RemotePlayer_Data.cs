@@ -143,15 +143,15 @@ namespace VikingEngine.DSSWars.Players
                 int waitSeconds;
                 if ( netCollArmies.Count <= 2)
                 {
-                    waitSeconds = 5;
+                    waitSeconds = 2;
                 }
                 else if (netCollArmies.Count <= 10)
                 {
-                    waitSeconds = 10;
+                    waitSeconds = 4;
                 }
                 else 
                 {
-                    waitSeconds = 20;
+                    waitSeconds = 10;
                 }
 
                 foreach (Army army in netCollArmies)

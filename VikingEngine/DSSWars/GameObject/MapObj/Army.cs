@@ -84,11 +84,13 @@ namespace VikingEngine.DSSWars.GameObject
             nextNodePos = tilePos;
             setMaxFood();
 
+            init(faction);
             postInit(faction);
         }
 
         public Army()
         { }
+
 
 
         void init(Faction faction, int overrideIx = -1)
@@ -130,17 +132,19 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 var groupC = army.groups.counter();
 
-                int count = 0;
+                
 
                 while (groupC.HasMore())
                 {
+                    int count = GroupsPerPacket;
+
                     var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierGroupStatus, reliability, out var packet);
                     {
                         //w.Write((ushort)army.factionIndex);
                         //w.Write((ushort)army.myIndex);
                         NetWriteArmyId(w, army);
 
-                        while (--count < GroupsPerPacket && groupC.Next())
+                        while (--count >= 0 && groupC.Next())
                         {
                             Army.NetWriteGroup(w, groupC.sel);
                             army.lastNetUpdate.setNow();
@@ -368,6 +372,7 @@ namespace VikingEngine.DSSWars.GameObject
             
             readSoldierGroups(r, subVersion, pointers);
 
+            init(faction);
             postInit(faction);
             refreshPositions(true);
             position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
