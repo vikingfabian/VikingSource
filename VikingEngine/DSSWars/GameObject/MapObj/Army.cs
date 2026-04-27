@@ -84,13 +84,12 @@ namespace VikingEngine.DSSWars.GameObject
             nextNodePos = tilePos;
             setMaxFood();
 
-            init(faction);
+            postInit(faction);
         }
 
         public Army()
         { }
 
-        
 
         void init(Faction faction, int overrideIx = -1)
         {
@@ -100,9 +99,13 @@ namespace VikingEngine.DSSWars.GameObject
                 throw new Exception();
             }
 #endif
-            bound = new BoundingSphere(Vector3.Zero, 0.5f);
-            asynchCullingUpdate(1f, DssRef.state.culling.cullingStateA);
             faction.AddArmy(this, overrideIx);
+            bound = new BoundingSphere(Vector3.Zero, 0.5f);
+        }
+        
+        void postInit(Faction faction)
+        {
+            asynchCullingUpdate(1f, DssRef.state.culling.cullingStateA);   
         }
 
         override public bool lowFood()
@@ -133,8 +136,9 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierGroupStatus, reliability, out var packet);
                     {
-                        w.Write((ushort)army.factionIndex);
-                        w.Write((ushort)army.myIndex);
+                        //w.Write((ushort)army.factionIndex);
+                        //w.Write((ushort)army.myIndex);
+                        NetWriteArmyId(w, army);
 
                         while (--count < GroupsPerPacket && groupC.Next())
                         {
@@ -150,37 +154,67 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public static void NetWriteArmy(System.IO.BinaryWriter w, Army army)
+        public static void NetWriteArmyId(System.IO.BinaryWriter w, Army army)
         {
             w.Write((ushort)army.factionIndex);
             w.Write((ushort)army.myIndex);
-
-            army.writeNet(w);
         }
-        public static void NetReadArmy(System.IO.BinaryReader r)
+
+        public static void NetReadArmyId(System.IO.BinaryReader r, out Faction faction, out Army army, out bool needInit)
         {
             int factionIx = r.ReadUInt16();
-            var faction = DssRef.world.faction(factionIx);
+            faction = DssRef.world.faction(factionIx);
 
-            
-            
             int armyIx = r.ReadUInt16();
-            Army army = faction.armies.GetIndex_Safe(armyIx);
-            bool needInit = false;
+            army = faction.armies.GetIndex_Safe(armyIx);
+            needInit = false;
             if (army == null)
-            { 
+            {
                 army = new Army();
                 army.factionIndex = factionIx;
                 faction.armies.HardSet(army, armyIx);
+                army.init(faction, armyIx);
                 needInit = true;
             }
 
             army.IsNetHosted = faction.player != null && faction.player.IsLocalPlayer();
+        }
+
+        public static void NetWriteArmy(System.IO.BinaryWriter w, Army army)
+        {
+            NetWriteArmyId(w, army);
+            //w.Write((ushort)army.factionIndex);
+            //w.Write((ushort)army.myIndex);
+
+            army.writeNet(w);
+        }
+
+        
+
+        public static void NetReadArmy(System.IO.BinaryReader r)
+        {
+            //int factionIx = r.ReadUInt16();
+            //var faction = DssRef.world.faction(factionIx);
+
+            //int armyIx = r.ReadUInt16();
+            //Army army = faction.armies.GetIndex_Safe(armyIx);
+            //bool needInit = false;
+            //if (army == null)
+            //{ 
+            //    army = new Army();
+            //    army.factionIndex = factionIx;
+            //    faction.armies.HardSet(army, armyIx);
+            //    needInit = true;
+            //}
+
+            //army.IsNetHosted = faction.player != null && faction.player.IsLocalPlayer();
+            NetReadArmyId(r, out Faction faction, out Army army, out bool needInit);
+
             army.readNet(r, needInit);
 
             if (needInit)
             {
-                army.init(faction, armyIx);
+                army.postInit(faction);
             }
 
             army.net_onUpdate();
@@ -223,12 +257,12 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-
         public void writeNet(System.IO.BinaryWriter w)
         {
             WP.WritePosXZPercentU16(w, position);
             writeResources(w);
         }
+
         public void readNet(System.IO.BinaryReader r, bool needInit)
         {
             WP.ReadPosXZPercentU16(r, out position, out tilePos);
@@ -334,7 +368,7 @@ namespace VikingEngine.DSSWars.GameObject
             
             readSoldierGroups(r, subVersion, pointers);
 
-            init(faction);
+            postInit(faction);
             refreshPositions(true);
             position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
 

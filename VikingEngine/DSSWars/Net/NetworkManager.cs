@@ -285,27 +285,33 @@ namespace VikingEngine.DSSWars
                         city.readNet_update(packet.r, part);
                     }
                     break;
+
                 case PacketType.DssArmyStatus:
                     Army.NetReadArmy(packet.r);
                     break;
+
                 case PacketType.DssSoldierGroupStatus:
                     {
-                        int factionIx = packet.r.ReadUInt16();
-                        int armyIx = packet.r.ReadUInt16();
+                        //int factionIx = packet.r.ReadUInt16();
+                        //int armyIx = packet.r.ReadUInt16();
 
-                        var faction = DssRef.world.factions.GetIndex_Safe(factionIx);
-                        if (faction != null)
+                        //var faction = DssRef.world.factions.GetIndex_Safe(factionIx);
+                        //if (faction != null)
+                        //{
+                        //    var army = faction.armies.GetIndex_Safe(armyIx);
+                        //    if (army != null)
+                        //    {
+                        Army.NetReadArmyId(packet.r, out Faction faction, out Army army, out bool needInit);
+                        if (army != null)
                         {
-                            var army = faction.armies.GetIndex_Safe(armyIx);
-                            if (army != null)
+                            bool more = false;
+                            do
                             {
-                                bool more = false;
-                                do
-                                {
-                                    more = Army.NetReadGroup(packet.r, army);
-                                } while (more);
-                            }
+                                more = Army.NetReadGroup(packet.r, army);
+                            } while (more);
                         }
+                        //    }
+                        //}
                     }
                     break;
             }
@@ -417,6 +423,7 @@ namespace VikingEngine.DSSWars
                     if (aiPlayer != null)
                     {
                         aiPlayer.AssignFaction(player.faction);
+                        DssRef.world.BordersUpdated = true;
                     }
                 }
 
