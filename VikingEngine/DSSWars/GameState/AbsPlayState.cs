@@ -247,21 +247,28 @@ namespace VikingEngine.DSSWars.GameState
         protected bool asyncBattlesUpdate(int id, float time)
         {
             if (cutScene == null)
-            {
+            {                
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
-                    var armiesC = factions.sel.armies.counter();
-                    while (armiesC.Next())
+                    if (factions.sel.IsNetHosted())
                     {
-                        armiesC.sel.asyncBattleUpdate();
+                        var armiesC = factions.sel.armies.counter();
+                        while (armiesC.Next())
+                        {
+                            armiesC.sel.asyncBattleUpdate();
+                        }
                     }
                 }
 
                 foreach (var m in DssRef.world.cities)
                 {
-                    m.asyncBattleUpdate();
+                    if (m.IsNetHosted)
+                    {
+                        m.asyncBattleUpdate();
+                    }
                 }
+               
             }
             return exitThreads;
         }

@@ -278,33 +278,15 @@ namespace VikingEngine.DSSWars
                 RelationsLoop loop = new RelationsLoop(p.faction.myIndex);
                 while (loop.Next())
                 {
-                    if (loop.otherFactionIx == 108)
-                    {
-                        lib.DoNothing();
-                       var relation =  diplomaticRelations[loop.RelationIndex()];
-                    }
+                    //if (loop.otherFactionIx == 108)
+                    //{
+                    //    lib.DoNothing();
+                    //   var relation =  diplomaticRelations[loop.RelationIndex()];
+                    //}
                     diplomaticRelations[loop.RelationIndex()].truce_update();
                 }
-                //for (int otherFaction = 0; otherFaction < DssRef.world.factions.Array.Length; otherFaction++)
-                //{
-                //    if (p.faction.myIndex != otherFaction)
-                //    {
-                //        diplomaticRelations[RelationIndex(p.faction.myIndex, otherFaction)].truce_update();
-                //    }
-                //}
             }
 
-            //foreach (var p in DssRef.state.localPlayers)
-            //{
-            //    for (int relIx = 0; relIx < p.faction.diplomaticRelations.Length; ++relIx)
-            //    {
-            //        var rel = p.faction.diplomaticRelations[relIx];
-            //        if (rel != null)
-            //        {
-            //            rel.truce_update();
-            //        }
-            //    }
-            //}
         }
     
 

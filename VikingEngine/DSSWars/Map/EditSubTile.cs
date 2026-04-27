@@ -13,9 +13,21 @@ namespace VikingEngine.DSSWars.Map
         public bool editTerrain;
         public bool editAmount;
         public bool editCollection;
+        public bool hostedTile;
 
-        public EditSubTile(IntVector2 position, SubTile value, bool editTerrain, bool editAmount, bool editCollection)
-        { 
+        public EditSubTile(Faction faction, IntVector2 position, SubTile value, bool editTerrain, bool editAmount, bool editCollection)
+        {
+            hostedTile = faction != null && faction.IsNetHosted();
+            this.position = position;
+            this.value = value;
+            this.editTerrain = editTerrain;
+            this.editAmount = editAmount;
+            this.editCollection = editCollection;
+        }
+
+        public EditSubTile(bool hosted, IntVector2 position, SubTile value, bool editTerrain, bool editAmount, bool editCollection)
+        {
+            hostedTile = hosted;
             this.position = position;
             this.value = value;
             this.editTerrain = editTerrain;
@@ -38,8 +50,11 @@ namespace VikingEngine.DSSWars.Map
 
 
         public void Submit()
-        { 
-            DssRef.state.resources.editSubTiles.Enqueue(this);
+        {
+            if (hostedTile)
+            {
+                DssRef.state.resources.editSubTiles.Enqueue(this);
+            }
         }
 
         public void ExecuteEdit()

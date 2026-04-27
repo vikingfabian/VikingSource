@@ -1137,7 +1137,9 @@ namespace VikingEngine.DSSWars.GameObject
                                         subPos.Y += Ref.peRnd.Int(1, WorldData.TileSubDivitions - 1);
 
 
-                                        if (Build.BuildLib.TryAutoBuild(subPos, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, 1))
+                                        var faction = GetFaction();
+
+                                        if (Build.BuildLib.TryAutoBuild(faction, subPos, TerrainMainType.Building, (int)TerrainBuildingType.WorkerHut, 1))
                                         {
                                             ++totalWorkerHutAndLevelCount;
 
@@ -1197,7 +1199,7 @@ namespace VikingEngine.DSSWars.GameObject
                                                     //    }
                                                     //}
 
-                                                    if (Build.BuildLib.TryAutoBuild(farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))
+                                                    if (Build.BuildLib.TryAutoBuild(faction, farmLoop.Position, terrain, sub, Ref.peRnd.Int(1, maxAmount)))
                                                     {
                                                         ++cultureCount;
                                                         if (cultureCount >= CulturesPerFarm)
@@ -4175,7 +4177,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 SubTile subTile = new SubTile();
                 subTile.SetType(TerrainMainType.Building, (int)hall, 1);
-                new EditSubTile(cityHallSubtilePos, subTile, true, false, false).Submit();
+                new EditSubTile(GetFaction(), cityHallSubtilePos, subTile, true, false, false).Submit();
 
                 refreshCitySize();
             }

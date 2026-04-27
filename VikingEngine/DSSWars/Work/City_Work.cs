@@ -1223,7 +1223,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (structure.NextEmptyLand(this, Ref.peRnd.Int(64), out var freeSubTilePos))
                     {
-                        BuildLib.TryAutoBuild(freeSubTilePos, TerrainMainType.Foil, fuelType, Ref.peRnd.Int(1, TerrainContent.FarmCulture_MaxSize));
+                        BuildLib.TryAutoBuild(GetFaction(), freeSubTilePos, TerrainMainType.Foil, fuelType, Ref.peRnd.Int(1, TerrainContent.FarmCulture_MaxSize));
                     }
                 }
             }

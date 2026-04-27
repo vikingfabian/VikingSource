@@ -1366,7 +1366,7 @@ namespace VikingEngine.DSSWars.Build
             return false;
         }
 
-        public static bool TryAutoBuild(IntVector2 subTilePos, TerrainMainType mainType, int terrainSubType, int amount)
+        public static bool TryAutoBuild(Faction faction, IntVector2 subTilePos, TerrainMainType mainType, int terrainSubType, int amount)
         {
             SubTile subTile;
             if (DssRef.world.subTileGrid.TryGet(subTilePos, out subTile))
@@ -1374,7 +1374,7 @@ namespace VikingEngine.DSSWars.Build
                 if (CanAutoBuildHere(ref subTile))
                 {
                     subTile.SetType(mainType, terrainSubType, amount);
-                    EditSubTile edit = new EditSubTile(subTilePos, subTile, true, true, false);
+                    EditSubTile edit = new EditSubTile(faction,subTilePos, subTile, true, true, false);
                     edit.Submit();
                     return true;
                 }
@@ -1429,7 +1429,7 @@ namespace VikingEngine.DSSWars.Build
                     subTile.subTerrain = 0;
                 }
             
-                EditSubTile edit = new EditSubTile(subTilePos, subTile, true, true, true);
+                EditSubTile edit = new EditSubTile(city.GetFaction(), subTilePos, subTile, true, true, true);
                 edit.Submit();
             }
         }

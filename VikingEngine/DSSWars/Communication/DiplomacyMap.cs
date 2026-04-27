@@ -115,7 +115,7 @@ namespace VikingEngine.DSSWars.Communication
                     faction.isAlive &&
                     !faction.HasZeroUnits() &&
                     rel.inCullingView &&
-                    (!player.mapLayersManager.current.DrawFullOverview || faction.displayInFullOverview || rel == selected))
+                    (!player.mapLayersManager.current.DrawFullOverview || faction.displayInFullOverview() || rel == selected))
                 {
                     
                     rel.updatePos(player, faction);

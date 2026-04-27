@@ -218,7 +218,7 @@ namespace VikingEngine.DSSWars.Players
 
             inputConnected = input.Connected;
 
-            faction.displayInFullOverview = true;
+            //faction.displayInFullOverview = true;
 
             playerData = Engine.XGuide.GetPlayer(playerindex);
             playerData.Tag = this;

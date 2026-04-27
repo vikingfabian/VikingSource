@@ -1114,9 +1114,11 @@ namespace VikingEngine.DSSWars.Map
         {
             if (!city.PenUpkeep_IsPayed)
             {
+                Faction faction = city.GetFaction();
+
                 foreach (var pos in AnimalPens)
                 {
-                    EditSubTile editValue = new EditSubTile(pos, new SubTile() { terrainAmount = 1 }, false, true, false);
+                    EditSubTile editValue = new EditSubTile(faction, pos, new SubTile() { terrainAmount = 1 }, false, true, false);
                     editValue.Submit();
                 }
             }

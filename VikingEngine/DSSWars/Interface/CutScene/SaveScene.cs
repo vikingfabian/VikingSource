@@ -212,7 +212,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             }
             else
             {
-                if (InputLib.AnyKeyDownEvent())
+                if (InputLib.AnyKeyDownEvent() || Ref.netSession.IsClient)
                 {
                     Close();
                     

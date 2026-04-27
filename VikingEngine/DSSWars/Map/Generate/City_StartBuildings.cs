@@ -21,8 +21,9 @@ namespace VikingEngine.DSSWars.GameObject
         public void createCampSite(IntVector2 subtilepos)
         {
             cityHallSubtilePos = subtilepos;
-            EditSubTile edit = new EditSubTile(subtilepos, new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false);
-           edit.SubmitOrExecute();
+            EditSubTile edit = new EditSubTile(true, subtilepos, new SubTile(TerrainMainType.Building, (int)TerrainBuildingType.CityHall_Tent), true, true, false);
+           
+            edit.SubmitOrExecute();
 
             Span<Dir4> testDirs = stackalloc Dir4[] { Dir4.S, Dir4.E, Dir4.W, Dir4.N };
 
@@ -34,7 +35,7 @@ namespace VikingEngine.DSSWars.GameObject
                     if (!tile.IsWater())
                     {
                         citySquareSubtilePos = pos;
-                        new EditSubTile(pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.CitySquare].terrainType, true, true, false).SubmitOrExecute();
+                        new EditSubTile(true, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.CitySquare].terrainType, true, true, false).SubmitOrExecute();
                         break;
                     }
                 }
@@ -47,7 +48,7 @@ namespace VikingEngine.DSSWars.GameObject
                 {
                     if (!tile.IsWater())
                     {
-                        new EditSubTile(pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.WorkerTent].terrainType, true, true, false).SubmitOrExecute();
+                        new EditSubTile(true, pos, Build.BuildLib.BuildOptions[(int)BuildAndExpandType.WorkerTent].terrainType, true, true, false).SubmitOrExecute();
                         break;
                     }
                 }

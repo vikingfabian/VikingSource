@@ -118,6 +118,11 @@ namespace VikingEngine.SteamWrapping
                 if (SteamNetworking.ReadP2PPacket(data, msgSize, out bytesRead, out senderId, 0))
                 {
                     DataStream.MemoryStreamHandler stream = new DataStream.MemoryStreamHandler();
+
+                    if (data.Length <= 1)
+                    {
+                        continue;
+                    }
                     stream.SetByteArray(data);
 
                     AbsNetworkPeer peer = getOrCreatePeer(senderId);

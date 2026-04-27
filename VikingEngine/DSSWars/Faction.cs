@@ -39,6 +39,7 @@ namespace VikingEngine.DSSWars
 
         public int previousWarAgainstFaction = -1;
         //public DiplomaticRelation[] diplomaticRelations = null;
+        public bool storyFaction = false;
         public DiplomaticSide diplomaticSide = DiplomaticSide.None;
 
         public bool textureLoaded = false;
@@ -55,7 +56,7 @@ namespace VikingEngine.DSSWars
         public int availableForPlayerScore = -1;
         public FactionType factiontype;
         public FactionGroupType grouptype = FactionGroupType.Other;
-        public bool displayInFullOverview = false;
+        
         public float growthMultiplier = 1f;
 
         public float militaryStrength = 0;
@@ -105,7 +106,16 @@ namespace VikingEngine.DSSWars
             cities = new SpottedPointerArray(8);
             armies = new SpottedArray<Army>(16);
         }
+        
+        public bool displayInFullOverview()
+        {
+            return storyFaction || player.IsHumanPlayer() || quickMatchFaction;
+        }
 
+        public bool IsNetHosted()
+        {
+            return (Ref.netSession.IsHost && player.IsLocal) || (player != null && player.IsLocalPlayer());
+        }
         //public void initClient(WorldData world)
         //{
         //    initDiplomacy(world);

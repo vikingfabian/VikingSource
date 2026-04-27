@@ -42,8 +42,7 @@ namespace VikingEngine.DSSWars.Players
             base.AssignFaction(faction);
             faction.factiontype = FactionType.DefaultAi;
             faction.availableForPlayer = true;
-            faction.displayInFullOverview = false;
-
+           
             if (Ref.netSession.IsHost)
             {
                 SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
@@ -654,7 +653,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.5f;
                     name = DssRef.lang.FactionName_DarkLord;
-                    faction.displayInFullOverview = true;
+                    faction.storyFaction = true;
                     protectedFromDelete = true;
 
                     techSetup();
@@ -677,7 +676,7 @@ namespace VikingEngine.DSSWars.Players
                         faction.diplomaticSide = DiplomaticSide.Dark;
                         aggressionLevel = AggressionLevel3_FocusedAttacks;
                         faction.growthMultiplier = 1.5f;
-                        faction.displayInFullOverview = true;
+                        faction.storyFaction = true;
                         faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 10);
                         techSetup();
                         faction.technology.blackPowder.points = TechnologyTemplate.FactionUnlock;
@@ -695,7 +694,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.5f;
                     name = DssRef.lang.FactionName_Barbarian;
-                    faction.displayInFullOverview = false;
+                    faction.storyFaction = false;
                     faction.hasDeserters = false;
 
                     techSetup();
@@ -710,7 +709,7 @@ namespace VikingEngine.DSSWars.Players
                         DssRef.settings.Faction_UnitedKingdom = faction.myIndex;
                         aggressionLevel = AggressionLevel1_RevengeOnly;
                         
-                        faction.displayInFullOverview = true;
+                        faction.storyFaction = true;
                         personality_loner = true;
 
                         techSetup();
@@ -820,7 +819,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 1.1f;
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_SouthHara;
-                    faction.displayInFullOverview = true;
+                    faction.storyFaction = true;
                     faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 5);
 
                     techSetup();

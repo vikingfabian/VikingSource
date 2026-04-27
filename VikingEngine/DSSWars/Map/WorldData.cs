@@ -409,7 +409,7 @@ namespace VikingEngine.DSSWars
                     if (f != null)
                     {
                         f.quickMatchFaction = true;
-                        f.displayInFullOverview = true;
+                        //f.displayInFullOverview = true;
                         quickMatchFactions.Add(fIx);
                     }
                 }

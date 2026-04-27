@@ -201,25 +201,27 @@ namespace VikingEngine.DSSWars.Work
                         case WorkType.Craft:
                             if (workAnimation_soundframe())
                             {
-                                SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
-                                var building = (TerrainBuildingType)subTile.subTerrain;
-
-                                switch (building)
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
                                 {
-                                    case TerrainBuildingType.Brewery:
-                                    case TerrainBuildingType.Work_Bench:
-                                    case TerrainBuildingType.Work_Cook:
-                                        if (SoundStackManager.RareAvailable())
-                                        {
-                                            SoundLib.genericWork.Play(model.position);
-                                        }
-                                        break;
-                                    case TerrainBuildingType.Work_Smith:
-                                        if (SoundStackManager.RareAvailable())
-                                        {
-                                            SoundLib.anvil.Play(model.position);
-                                        }
-                                        break;
+                                    var building = (TerrainBuildingType)subTile.subTerrain;
+
+                                    switch (building)
+                                    {
+                                        case TerrainBuildingType.Brewery:
+                                        case TerrainBuildingType.Work_Bench:
+                                        case TerrainBuildingType.Work_Cook:
+                                            if (SoundStackManager.RareAvailable())
+                                            {
+                                                SoundLib.genericWork.Play(model.position);
+                                            }
+                                            break;
+                                        case TerrainBuildingType.Work_Smith:
+                                            if (SoundStackManager.RareAvailable())
+                                            {
+                                                SoundLib.anvil.Play(model.position);
+                                            }
+                                            break;
+                                    }
                                 }
                             }
 
@@ -252,23 +254,25 @@ namespace VikingEngine.DSSWars.Work
                         switch (status.work)
                         {
                             case WorkType.GatherFoil:
-                                SubTile subTile = DssRef.world.subTileGrid.Get(status.subTileEnd);
-                                switch ((TerrainSubFoilType)subTile.subTerrain)
+                                if (DssRef.world.subTileGrid.TryGet(status.subTileEnd, out SubTile subTile))
                                 {
-                                    case TerrainSubFoilType.DryWood:
-                                    case TerrainSubFoilType.TreeSoft:
-                                    case TerrainSubFoilType.TreeHard:
-                                        SoundLib.tree_falling.Play(model.position);
-                                        break;
+                                    switch ((TerrainSubFoilType)subTile.subTerrain)
+                                    {
+                                        case TerrainSubFoilType.DryWood:
+                                        case TerrainSubFoilType.TreeSoft:
+                                        case TerrainSubFoilType.TreeHard:
+                                            SoundLib.tree_falling.Play(model.position);
+                                            break;
 
-                                    case TerrainSubFoilType.Stones:
-                                        if (SoundStackManager.RareAvailable())
-                                        {
-                                            SoundLib.pickup.Play(model.position);
-                                        }
-                                        break;
+                                        case TerrainSubFoilType.Stones:
+                                            if (SoundStackManager.RareAvailable())
+                                            {
+                                                SoundLib.pickup.Play(model.position);
+                                            }
+                                            break;
+                                    }
+                                    EditSubTile.OntileChange(WP.SubtileToTilePos(status.subTileEnd));
                                 }
-                                EditSubTile.OntileChange(WP.SubtileToTilePos(status.subTileEnd));
                                 break;
                             case WorkType.Plant:
                                 int waterCost;
