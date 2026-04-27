@@ -166,7 +166,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 BarracksStatus status = conscriptBuildings[selectedConscript];
                 //status.returnItems(this);
-                if (status.countdown.TimePassed().seconds < 10 )
+                if (status.active < ConscriptActiveStatus.Training || status.countdown.TimePassed().seconds < 10 )
                     //&&
                     //!status.inProgress.Equals(status.profile))
                 {

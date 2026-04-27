@@ -49,19 +49,23 @@ namespace VikingEngine.DSSWars.GameObject
         void addMissingWorkerUnits()
         {
             ExistingWorkers.Clear();
-            foreach (var unit in workerUnits)
-            {
-                ExistingWorkers.Add(unit.myIndex);
-            }
 
-            lock (workerStatuses.array)
+            if (HasFaction())
             {
-                for (int i = 0; i < workerStatuses.Count; i++)
+                foreach (var unit in workerUnits)
                 {
-                    if (workerStatuses.array[i].work != WorkType.IsDeleted &&
-                        !ExistingWorkers.Contains(i))
+                    ExistingWorkers.Add(unit.myIndex);
+                }
+
+                lock (workerStatuses.array)
+                {
+                    for (int i = 0; i < workerStatuses.Count; i++)
                     {
-                        workerUnits.Add(new WorkerUnit(this, workerStatuses.array[i], i));
+                        if (workerStatuses.array[i].work != WorkType.IsDeleted &&
+                            !ExistingWorkers.Contains(i))
+                        {
+                            workerUnits.Add(new WorkerUnit(this, workerStatuses.array[i], i));
+                        }
                     }
                 }
             }

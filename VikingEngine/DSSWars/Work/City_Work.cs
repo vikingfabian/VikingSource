@@ -124,14 +124,16 @@ namespace VikingEngine.DSSWars.GameObject
                 //workerCullingMinMax = new Intvector2MinMax(WP.SubtileToTilePos(minMax_workerCulling.min), WP.SubtileToTilePos(minMax_workerCulling.max));
 
                 int workTeamGoalCount = Bound.Min(workForce.amount / WorkTeamSize, 1);
-                int exitCount = (workTeamsTotalCount - mayExitCount) - (workTeamGoalCount + 1);
+                int exitCount = (workTeamsTotalCount - mayExitCount) - (workTeamGoalCount/* + 1*/);
+
+                if (myIndex == 54)
+                {
+                    lib.DoNothing();
+                }
 
                 if (workTeamsTotalCount < workTeamGoalCount)
                 {
-                    if (myIndex == 220)
-                    {
-                        lib.DoNothing();
-                    }
+                    
                     int deletedIx = 0;
                     int newWorkers = /*Bound.Max(*/workTeamGoalCount - workTeamsTotalCount;/*, 2);*/
                     IntVector2 startPos = citySquareSubtilePos;//WP.ToSubTilePos_Centered(tilePos);
@@ -186,7 +188,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 else if (exitCount > 0)//workTeamsTotalCount - mayExitCount > workTeamGoalCount + 1)
                 {
-                    if (myIndex == 270)
+                    if (myIndex == 54)
                     {
                         lib.DoNothing();
                     }
@@ -209,7 +211,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
                 {
-                    if (myIndex == 90 || debugTagged)
+                    if (myIndex == 54 || debugTagged)
                     {
                         lib.DoNothing();
                         
@@ -238,7 +240,8 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         if (exitCount > 0 &&
                             (status.GetXpScore() < DssConst.WorkXpToLevel_Squared ||
-                            markedForExit.Contains(i))
+                            markedForExit.Contains(i) || 
+                            exitCount >= 4)
                             )/*workTeamsTotalCount - mayExitCount > workTeamGoalCount + 1)*/
                         {
                             //if (myIndex == 270)
@@ -1242,35 +1245,38 @@ namespace VikingEngine.DSSWars.GameObject
 
             for (int i = 0; i < workerStatuses.Count; i++)
             {
-                int score = workerStatuses.array[i].GetXpScore();
-
-                // Check against lowest1
-                if (lowest1.Value1 < 0 || score < lowest1.Value2)
+                if (workerStatuses.array[i].work != WorkType.IsDeleted)
                 {
-                    // Shift down
-                    lowest3 = lowest2;
-                    lowest2 = lowest1;
+                    int score = workerStatuses.array[i].GetXpScore();
 
-                    // Assign new lowest1
-                    lowest1.Value1 = i;
-                    lowest1.Value2 = score;
-                }
-                // Check against lowest2
-                else if (lowest2.Value1 < 0 || score < lowest2.Value2)
-                {
-                    // Shift down
-                    lowest3 = lowest2;
+                    // Check against lowest1
+                    if (lowest1.Value1 < 0 || score < lowest1.Value2)
+                    {
+                        // Shift down
+                        lowest3 = lowest2;
+                        lowest2 = lowest1;
 
-                    // Assign new lowest2
-                    lowest2.Value1 = i;
-                    lowest2.Value2 = score;
-                }
-                // Check against lowest3
-                else if (lowest3.Value1 < 0 || score < lowest3.Value2)
-                {
-                    // Assign new lowest3
-                    lowest3.Value1 = i;
-                    lowest3.Value2 = score;
+                        // Assign new lowest1
+                        lowest1.Value1 = i;
+                        lowest1.Value2 = score;
+                    }
+                    // Check against lowest2
+                    else if (lowest2.Value1 < 0 || score < lowest2.Value2)
+                    {
+                        // Shift down
+                        lowest3 = lowest2;
+
+                        // Assign new lowest2
+                        lowest2.Value1 = i;
+                        lowest2.Value2 = score;
+                    }
+                    // Check against lowest3
+                    else if (lowest3.Value1 < 0 || score < lowest3.Value2)
+                    {
+                        // Assign new lowest3
+                        lowest3.Value1 = i;
+                        lowest3.Value2 = score;
+                    }
                 }
             }
 

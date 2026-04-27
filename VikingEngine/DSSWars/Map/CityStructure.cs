@@ -272,7 +272,7 @@ namespace VikingEngine.DSSWars.Map
 
 
             int serviceMenHousing = 0;
-            
+            int housingCount_Workers = 0;
 
             Rectangle2 emptyArea= Rectangle2.Zero;
             buildingPosition = new BuildingPosition();
@@ -452,14 +452,17 @@ namespace VikingEngine.DSSWars.Map
                                     case TerrainBuildingType.WorkerTent:
                                         ++buildingStructure.TentHuts_count;
                                         buildingPosition.WorkerHuts_pos = subTileLoop.Position;
+                                        housingCount_Workers += DssConst.HousingCount_WorkerTent;
                                         break;
                                     case TerrainBuildingType.WorkerHut:
                                         ++buildingStructure.WorkerHuts_count;
                                         buildingPosition.WorkerHuts_pos = subTileLoop.Position;
+                                        housingCount_Workers += DssConst.HousingCount_WorkerHut;
                                         break;
                                     case TerrainBuildingType.WorkerHutLarge:
                                         ++buildingStructure.WorkerHuts_Large_count;
                                         buildingPosition.WorkerHuts_pos = subTileLoop.Position;
+                                        housingCount_Workers += DssConst.HousingCount_WorkerHutLarge;
                                         break;
 
                                     case TerrainBuildingType.ServiceMenHouse_small:
@@ -1096,6 +1099,11 @@ namespace VikingEngine.DSSWars.Map
 
             city.buildingStructure = buildingStructure;
             city.terrainStructure = terrainStructure;
+
+            if (city.HousingCount_Workers != housingCount_Workers && housingCount_Workers > 0)
+            {
+                city.HousingCount_Workers = housingCount_Workers;
+            }
 
             void farming(ref SubTile subTile)
             {

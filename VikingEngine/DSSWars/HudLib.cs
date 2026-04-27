@@ -451,7 +451,7 @@ namespace VikingEngine.DSSWars
 
         public static void returnButton(RichBoxContent content, RichMenu menu, bool bReturn, Action close)
         {
-            if (bReturn)
+            if (bReturn && menu != null)
             {
                 content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
                     new RbImage( SpriteName.WarsHudIconReturn, 0.8f),
