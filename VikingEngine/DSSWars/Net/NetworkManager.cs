@@ -23,8 +23,20 @@ namespace VikingEngine.DSSWars
 {
     partial class PlayState
     {
+        bool factionHandOverComplete = false;
+
         public const SpriteName NetworkIcon = SpriteName.birdPlayerCount;
-        ConcurrentQueue<FactionHandover> factionHandovers = new ConcurrentQueue<FactionHandover>();      
+        ConcurrentQueue<FactionHandover> factionHandovers = new ConcurrentQueue<FactionHandover>();
+
+        bool asynchClientNetUpdate(int id, float time)
+        {
+            if (remotePlayers.Count > 0 && factionHandOverComplete)
+            {
+                netSendMapObjectsInView();
+            }
+
+            return exitThreads;
+        }
 
         bool asynchHostNetUpdate(int id, float time)
         {
@@ -45,29 +57,7 @@ namespace VikingEngine.DSSWars
                 {
                     //TODO, rotate user update
                     //Map sent, start updating units
-                    var remoteC = remotePlayers.counter();
-                    while (remoteC.Next())
-                    {
-                        if (remoteC.sel.gotStatus)
-                        {
-                            remoteC.sel.gotStatus = false;
-                            int maxPackets = remoteC.sel.networkPeer.peer.maxPacketCount;
-
-                            var cities = remoteC.sel.GetAllCitiesInView();
-                            foreach (var c in cities)
-                            {
-                                if (DssRef.world.cities[c].net_roundtrip_asyncupdate())
-                                {
-                                    if (--maxPackets <= 0)
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-
-                            remoteC.sel.Net_UpdateArmies(ref maxPackets);
-                        }
-                    }
+                    netSendMapObjectsInView();
                 }
 
                 bool sendMap()
@@ -95,6 +85,33 @@ namespace VikingEngine.DSSWars
                 }
             }
             return exitThreads;
+        }
+
+        private void netSendMapObjectsInView()
+        {
+            var remoteC = remotePlayers.counter();
+            while (remoteC.Next())
+            {
+                if (remoteC.sel.gotStatus)
+                {
+                    remoteC.sel.gotStatus = false;
+                    int maxPackets = remoteC.sel.networkPeer.peer.maxPacketCount;
+
+                    var cities = remoteC.sel.GetAllCitiesInView();
+                    foreach (var c in cities)
+                    {
+                        if (DssRef.world.cities[c].net_roundtrip_asyncupdate())
+                        {
+                            if (--maxPackets <= 0)
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    remoteC.sel.Net_UpdateArmies(ref maxPackets);
+                }
+            }
         }
 
         bool asynchAiPlayersUpdate(int id, float time)
@@ -238,6 +255,9 @@ namespace VikingEngine.DSSWars
                             city.setFaction(faction, false, true);
                         }
                     }
+                    break;
+                case PacketType.DssAssignFactionComplete:
+                    factionHandOverComplete = true;
                     break;
                 case PacketType.DssWorldTiles:
                     DssRef.world.readNet_Tile(packet.r);//l 32 * 4 * 4

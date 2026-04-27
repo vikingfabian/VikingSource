@@ -1031,7 +1031,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public bool net_roundtrip_asyncupdate()
         {
-            if (lastNetUpdate.secPassed(10))
+            if (IsNetHosted && lastNetUpdate.secPassed(10))
             {
                 lastNetUpdate.setNow();
 

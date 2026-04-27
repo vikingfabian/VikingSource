@@ -391,13 +391,13 @@ namespace VikingEngine.DSSWars
             new AsynchUpdateable_TryCatch(asyncUserUpdate, "DSS user update", 58, System.Threading.ThreadPriority.Normal);
 
             if (host)
-            {                
+            {
                 new AsynchUpdateable_TryCatch(asyncDiplomacyUpdate, "DSS diplomacy update", 60, System.Threading.ThreadPriority.Lowest);
                 new AsynchUpdateable_TryCatch(asyncBattlesUpdate, "DSS battles update", 62, System.Threading.ThreadPriority.Normal);
-                
+
                 new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61, System.Threading.ThreadPriority.Lowest);
                 new AsynchUpdateable_TryCatch(asyncSlowUpdate, "DSS slow update", 62, System.Threading.ThreadPriority.Lowest);
-                
+
                 new AsynchUpdateable_TryCatch(asynchHostNetUpdate, "DSS host net update", 62, System.Threading.ThreadPriority.Lowest);
 
                 if (localPlayers.Count > 1)
@@ -405,7 +405,11 @@ namespace VikingEngine.DSSWars
                     Ref.SetGameSpeed(DssRef.storage.multiplayerGameSpeed);
                 }
 
-                
+
+            }
+            else
+            {
+                new AsynchUpdateable_TryCatch(asynchClientNetUpdate, "DSS client net update", 65, System.Threading.ThreadPriority.Lowest);
             }
 
             initPathFindingThreads();

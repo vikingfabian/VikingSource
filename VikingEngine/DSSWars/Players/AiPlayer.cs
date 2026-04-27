@@ -43,6 +43,15 @@ namespace VikingEngine.DSSWars.Players
             faction.factiontype = FactionType.DefaultAi;
             faction.availableForPlayer = true;
             faction.displayInFullOverview = false;
+
+            if (Ref.netSession.IsHost)
+            {
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+                {
+                    citySel.IsNetHosted = true;
+                }
+            }
         }
 
         public override void writeGameState(BinaryWriter w)

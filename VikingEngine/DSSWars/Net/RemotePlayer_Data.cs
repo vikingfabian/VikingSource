@@ -156,43 +156,9 @@ namespace VikingEngine.DSSWars.Players
 
                 foreach (Army army in netCollArmies)
                 {
-                    if (army.lastNetUpdate.secPassed(waitSeconds))
+                    if (army.IsNetHosted && army.lastNetUpdate.secPassed(waitSeconds))
                     {
                         Army.NetFullArmyStatus(army);
-                        //{
-                        //    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, Network.PacketReliability.Unrelyable, out var packet);
-                        //    {
-                        //        Army.NetWriteArmy(w, army);
-                        //        army.lastNetUpdate.setNow();
-                        //    }
-                        //    packet.EndWrite_Asynch();
-                        //}
-
-                        //if (army.groups.Count > 0)
-                        //{
-                        //    var groupC = army.groups.counter();
-
-                        //    int count = 0;
-
-                        //    while (groupC.HasMore())
-                        //    {                                
-                        //        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierGroupStatus, Network.PacketReliability.Unrelyable, out var packet);
-                        //        {
-                        //            w.Write((ushort)army.factionIndex);
-                        //            w.Write((ushort)army.myIndex);
-
-                        //            while (--count < GroupsPerPacket && groupC.Next())
-                        //            {
-                        //                Army.NetWriteGroup(w, groupC.sel);
-                        //                army.lastNetUpdate.setNow();
-                        //            }
-
-                        //            w.Write(ushort.MaxValue);
-                        //        }
-                        //        packet.EndWrite_Asynch();
-                                
-                        //    }
-                        //}
                     }
                 }
             }

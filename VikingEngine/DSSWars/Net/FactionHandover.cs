@@ -45,17 +45,19 @@ namespace VikingEngine.DSSWars.Net
             switch (part)
             {
                 case HandoverPart.Cities:
-                    var w = Ref.netSession.BeginWritingPacket(PacketType.DssAssignFactionCities, PacketReliability.Reliable);
-                    w.Write((ushort)faction.myIndex);
-                    IntVector2 centerCamera = IntVector2.Zero;
-                    if (faction.mainCity != null)
                     {
-                        centerCamera = faction.mainCity.tilePos;
+                        var w = Ref.netSession.BeginWritingPacket(PacketType.DssAssignFactionCities, PacketReliability.Reliable);
+                        w.Write((ushort)faction.myIndex);
+                        IntVector2 centerCamera = IntVector2.Zero;
+                        if (faction.mainCity != null)
+                        {
+                            centerCamera = faction.mainCity.tilePos;
+                        }
+                        centerCamera.writeUshort(w);
+                        faction.cities.write_ushort_compressed(w);
+                        part++;
+                        armyCounter = faction.armies.counter();
                     }
-                    centerCamera.writeUshort(w);
-                    faction.cities.write_ushort_compressed(w);
-                    part++;
-                    armyCounter = faction.armies.counter();
                     break;
                 case HandoverPart.Armies:
                     int maxArmies = 2;
@@ -70,7 +72,12 @@ namespace VikingEngine.DSSWars.Net
                         part++;
                     }
                     break;
-
+                case HandoverPart.HandOverComplete:
+                    {
+                        Ref.netSession.BeginWritingPacket(PacketType.DssAssignFactionComplete, SendPacketTo.OneSpecific, peer.fullId, PacketReliability.Reliable, null);
+                        part++;
+                    }
+                    break;
             }
 
             return part < HandoverPart.DONE;
@@ -80,6 +87,7 @@ namespace VikingEngine.DSSWars.Net
         { 
             Cities,
             Armies,
+            HandOverComplete,
             DONE
         }
     }

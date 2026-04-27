@@ -157,6 +157,7 @@ namespace VikingEngine.Network
         DssPlayerEnterPresentation,
         DssAssignFaction,
         DssAssignFactionCities,
+        DssAssignFactionComplete,
         DssWorldTiles,
         DssWorldSubTiles,
         DssFactions,
