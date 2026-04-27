@@ -110,12 +110,12 @@ namespace VikingEngine.DSSWars.GameObject
             return food + conservedFood <= 10;
         }
 
-        public static void NetFullArmyStatus(Army army)
+        public static void NetFullArmyStatus(Army army, Network.PacketReliability reliability )
         {
             const int GroupsPerPacket = 8;
 
             {
-                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, Network.PacketReliability.Unrelyable, out var packet);
+                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, reliability, out var packet);
                 {
                     Army.NetWriteArmy(w, army);
                     army.lastNetUpdate.setNow();
@@ -131,7 +131,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 while (groupC.HasMore())
                 {
-                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierGroupStatus, Network.PacketReliability.Unrelyable, out var packet);
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierGroupStatus, reliability, out var packet);
                     {
                         w.Write((ushort)army.factionIndex);
                         w.Write((ushort)army.myIndex);
@@ -227,16 +227,15 @@ namespace VikingEngine.DSSWars.GameObject
         public void writeNet(System.IO.BinaryWriter w)
         {
             WP.WritePosXZPercentU16(w, position);
-            //WP.writePosXZ(w, position);
-            //net_writeGroups(w);
+            writeResources(w);
         }
         public void readNet(System.IO.BinaryReader r, bool needInit)
         {
             WP.ReadPosXZPercentU16(r, out position, out tilePos);
-            //WP.readPosXZ(r, out position, out tilePos);
-            position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();   
             
-            //net_readGroups(r);
+            position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
+
+            readResources(r);
         }
 
         public void net_onUpdate()
@@ -271,6 +270,21 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        void writeResources(System.IO.BinaryWriter w)
+        {
+            w.Write(food);
+            w.Write(conservedFood);
+            money.write(w);
+        }
+
+        public void readResources(System.IO.BinaryReader r)
+        {
+            food = r.ReadSingle();
+            conservedFood = r.ReadSingle();
+
+            money.read(r);
+        }
+
         public void writeGameState(System.IO.BinaryWriter w)
         {
             w.Write(id);
@@ -281,9 +295,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             writeAiState(w);
 
-            w.Write(food);
-            w.Write(conservedFood);
-            money.write(w);
+            writeResources(w);
             Tag.write(w);
             //w.Write((byte)tagBack);
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
@@ -298,6 +310,8 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         
+
+
         public void readGameState(Faction faction, System.IO.BinaryReader r, int subVersion, ObjectPointerCollection pointers)
         {
             this.factionIndex = faction.myIndex;
@@ -326,11 +340,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             readAiState(r, subVersion, pointers);
 
-            food = r.ReadSingle();
-            conservedFood = r.ReadSingle();
-            
-            money.read(r);
-            
+            readResources(r);
+
             Tag.read(r, subVersion);
             //tagBack = (CityTagBack)r.ReadByte();
 

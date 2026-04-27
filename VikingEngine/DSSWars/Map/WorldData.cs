@@ -918,7 +918,7 @@ namespace VikingEngine.DSSWars
 
         public Faction getPlayerAvailableFaction2(List<Players.LocalPlayer> players, bool firstPlayer, bool dropIn)
         {
-            const int MultiPlayerDistance = GenerateMap.HeadCityNeededFreeRadius * 8;
+            const int MultiPlayerDistance = GenerateMap.HeadCityNeededFreeRadius * 2;
 
             List<Faction> sortedList = new List<Faction>();
 
@@ -936,6 +936,22 @@ namespace VikingEngine.DSSWars
                     if (f.availableForPlayer)
                     {
                         f.availableForPlayerScore += 1000;
+                    }
+
+                    if (f.storyFaction)
+                    {
+                        f.availableForPlayerScore -= 1000;
+                    }
+                    else
+                    {
+                        var adj = f.adjacentFactions(true);
+                        foreach (var nFaction in adj)
+                        {
+                            if (nFaction.storyFaction)
+                            {
+                                f.availableForPlayerScore -= 500;
+                            }
+                        }
                     }
 
                     //if (f.cities.Count > 0)
@@ -956,8 +972,8 @@ namespace VikingEngine.DSSWars
 
                         if (!firstPlayer)
                         {
-                            float offsetToFirstPlayer = players[0].faction.mainCity.distanceTo(f.mainCity) - MultiPlayerDistance;
-                            f.availableForPlayerScore += 200 - Convert.ToInt32(offsetToFirstPlayer);
+                            float offsetToFirstPlayer = Math.Abs( players[0].faction.mainCity.distanceTo(f.mainCity) - MultiPlayerDistance);
+                            f.availableForPlayerScore += 200 - Convert.ToInt32(offsetToFirstPlayer * 4);
                         }
                     }
 

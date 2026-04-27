@@ -374,13 +374,16 @@ namespace VikingEngine.DSSWars
                 {
                     initStartUnits();
                 }
-
-                new AsynchUpdateable_TryCatch(asynchGameObjectsUpdate, "DSS gameobjects update", 51, System.Threading.ThreadPriority.BelowNormal);
+                
                 new AsynchUpdateable_TryCatch(asynchAiPlayersUpdate, "DSS ai player update", 52, System.Threading.ThreadPriority.BelowNormal);
-                new AsynchUpdateable_TryCatch(asynchArmyAiUpdate, "DSS army ai update", 53, System.Threading.ThreadPriority.BelowNormal);
-                new AsynchUpdateable_TryCatch(asynchSleepObjectsUpdate, "DSS sleep objects update", 55, System.Threading.ThreadPriority.BelowNormal);
                 
             }
+
+            new AsynchUpdateable_TryCatch(asynchGameObjectsUpdate, "DSS gameobjects update", 51, System.Threading.ThreadPriority.BelowNormal);
+
+            new AsynchUpdateable_TryCatch(asynchArmyAiUpdate, "DSS army ai update", 53, System.Threading.ThreadPriority.BelowNormal);
+
+            new AsynchUpdateable_TryCatch(asynchSleepObjectsUpdate, "DSS sleep objects update", 55, System.Threading.ThreadPriority.BelowNormal);
 
             new AsynchUpdateable_TryCatch(asynchNearObjectsUpdate, "DSS near objects update", 56, System.Threading.ThreadPriority.BelowNormal);
 
@@ -396,11 +399,10 @@ namespace VikingEngine.DSSWars
 
             new AsynchUpdateable_TryCatch(asyncResourcesUpdate, "DSS resources update", 61, System.Threading.ThreadPriority.Lowest);
 
+            new AsynchUpdateable_TryCatch(asyncSlowUpdate, "DSS slow update", 62, System.Threading.ThreadPriority.Lowest);
+
             if (host)
             { 
-                
-                new AsynchUpdateable_TryCatch(asyncSlowUpdate, "DSS slow update", 62, System.Threading.ThreadPriority.Lowest);
-
                 new AsynchUpdateable_TryCatch(asynchHostNetUpdate, "DSS host net update", 62, System.Threading.ThreadPriority.Lowest);
 
                 if (localPlayers.Count > 1)
@@ -706,13 +708,19 @@ namespace VikingEngine.DSSWars
 
                 foreach (var m in DssRef.world.cities)
                 {
-                    m.asynchGameObjectsUpdate(minute);
+                    if (m.IsNetHosted)
+                    {
+                        m.asynchGameObjectsUpdate(minute);
+                    }
                 }
 
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
-                    factions.sel.asynchGameObjectsUpdate(time, seconds, minute);
+                    if (factions.sel.IsNetHosted())
+                    {
+                        factions.sel.asynchGameObjectsUpdate(time, seconds, minute);
+                    }
                 }
 
             }

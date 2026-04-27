@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.Net
                     while (--maxArmies > 0 && armyCounter.Next())
                     {
                         armyCounter.sel.IsNetHosted = false;
-                        Army.NetFullArmyStatus(armyCounter.sel);
+                        Army.NetFullArmyStatus(armyCounter.sel, PacketReliability.Reliable);
                     }
 
                     if (!armyCounter.HasMore())
