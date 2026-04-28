@@ -1,0 +1,37 @@
+name: Build MonoGame for Linux
+
+on:
+  push:
+    branches: [ "linux_build" ]
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x' # Change this to match your project's .NET version
+
+    - name: Publish Linux Build
+      run: dotnet publish VikingEngine.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o ./build/linux
+
+    - name: Fix Permissions and Package
+      run: |
+        # Make the main binary executable. Replace 'YourGame' with your actual output binary name.
+        chmod +x ./build/linux/VikingEngine
+        
+        # Package into a tarball to preserve the executable flag
+        cd build/linux
+        tar -czvf ../../VikingEngine-Linux.tar.gz *
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-build
+        path: VikingEngine-Linux.tar.gz
