@@ -5,6 +5,7 @@ using System.Text;
 using VikingEngine.LootFest.GO.Gadgets;
 using VikingEngine.LootFest.BlockMap;
 using VikingEngine.LootFest.BlockMap.Level;
+using System.IO;
 
 namespace VikingEngine.LootFest
 {
@@ -22,27 +23,27 @@ namespace VikingEngine.LootFest
         public const int DungeonWallHeight = 6;
 
         #region SAVE_LOAD
-        public const string ContentFolder =
+        public static readonly string ContentFolder =
 #if DSS
-            "WarsContent\\";
+            "WarsContent" + Path.DirectorySeparatorChar;
 #else
-            "LfContent\\";
+            "LfContent" + Path.DirectorySeparatorChar;
 #endif
-        public const string DataFolder = ContentFolder + "Data\\";
-        public const string MusicFolder = ContentFolder + "Music\\";
-        public const string VoxelModelFolder = "VoxelModel\\";//ContentFolder + "VoxelModel\\";
+        public static readonly string DataFolder = ContentFolder + "Data" + Path.DirectorySeparatorChar;
+        public static readonly string MusicFolder = ContentFolder + "Music" + Path.DirectorySeparatorChar;
+        public static readonly string VoxelModelFolder = "VoxelModel" + Path.DirectorySeparatorChar;
 
-        public const string ModelsCategoryAppearance = VoxelModelFolder + "Appearance";
-        public const string ModelsCategoryCharacter = VoxelModelFolder + "Character";
-        public const string ModelsCategoryOther = VoxelModelFolder + "Other";
-        public const string ModelsCategoryTerrain = VoxelModelFolder + "Terrain";
-        public const string ModelsCategoryBlockpattern = VoxelModelFolder + "BlockPattern";
-        public const string ModelsCategoryWeapon = VoxelModelFolder + "Weapon";
-        public const string ModelsCategoryWars = VoxelModelFolder + "LfWars";
+        public static readonly string ModelsCategoryAppearance = VoxelModelFolder + "Appearance";
+        public static readonly string ModelsCategoryCharacter = VoxelModelFolder + "Character";
+        public static readonly string ModelsCategoryOther = VoxelModelFolder + "Other";
+        public static readonly string ModelsCategoryTerrain = VoxelModelFolder + "Terrain";
+        public static readonly string ModelsCategoryBlockpattern = VoxelModelFolder + "BlockPattern";
+        public static readonly string ModelsCategoryWeapon = VoxelModelFolder + "Weapon";
+        public static readonly string ModelsCategoryWars = VoxelModelFolder + "LfWars";
 
-        public const string SceneFolder = DataFolder + "Scene";
-        public const string SceneModelFolder = SceneFolder + "\\Models";
-        public const string OverrideModelsFolder = "ReplaceModels";
+        public static readonly string SceneFolder = DataFolder + "Scene";
+        public static readonly string SceneModelFolder = SceneFolder + Path.DirectorySeparatorChar + "Models";
+        public static readonly string OverrideModelsFolder = "ReplaceModels";
 #endregion
 
 #region HEALTH_N_DAMAGE

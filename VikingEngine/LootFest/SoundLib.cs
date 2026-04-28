@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -7,8 +8,8 @@ namespace VikingEngine.LootFest
 {
     static class SoundLib
     {
-        public const string SoundDir = LfLib.ContentFolder + "Sound\\";
-        public const string NewSoundDir = SoundDir + "NEW\\";
+        public static readonly string SoundDir = LfLib.ContentFolder + "Sound" + Path.DirectorySeparatorChar;
+        public static readonly string NewSoundDir = SoundDir + "NEW" + Path.DirectorySeparatorChar;
 
         public static readonly Sound.SoundSettings UnavailableActionSound = new Sound.SoundSettings(LoadedSound.out_of_ammo);
         public static readonly Sound.SoundSettings SmallSuccessSound = new Sound.SoundSettings(LoadedSound.CraftSuccessful);

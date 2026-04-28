@@ -211,7 +211,7 @@ namespace VikingEngine
         }
         public static string XboxVersion = "UNKNOWN";
 
-        public const string SteamApiDll = "Steam_api64";
+        //public const string SteamApiDll = "Steam_api64";
 
         public const string GameTitle =
 #if TOGG

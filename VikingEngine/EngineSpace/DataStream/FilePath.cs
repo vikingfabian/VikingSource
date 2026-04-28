@@ -9,7 +9,7 @@ namespace VikingEngine.DataStream
 {
     struct FilePath
     {
-        public static readonly char Dir = System.IO.Path.DirectorySeparatorChar;//'\\';
+        public static readonly char Dir = System.IO.Path.DirectorySeparatorChar;
 
         public static readonly string StorageFolderName =
 #if PJ

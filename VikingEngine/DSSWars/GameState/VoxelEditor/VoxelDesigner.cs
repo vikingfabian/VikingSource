@@ -22,6 +22,7 @@ using VikingEngine.LootFest.Data;
 using VikingEngine.LootFest.Map.HDvoxel;
 using VikingEngine.PJ;
 using VikingEngine.Voxels;
+using System.IO;
 
 namespace VikingEngine.DSSWars.GameState.VoxelEditor
 {
@@ -722,8 +723,8 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
         //    menusystem.listTemplates();
         //}
 
-        const string ThrallordPath = LfLib.DataFolder + "Thrallords";
-        const string RaceTrackPath = LfLib.DataFolder + "Data\\RaceTracks";
+        static readonly string ThrallordPath = LfLib.DataFolder + "Thrallords";
+        static readonly string RaceTrackPath = LfLib.DataFolder + "Data" + Path.DirectorySeparatorChar + "RaceTracks";
 
         protected override void pickColor()
         {
