@@ -918,7 +918,7 @@ namespace VikingEngine.DSSWars
 
         public Faction getPlayerAvailableFaction2(List<Players.LocalPlayer> players, bool firstPlayer, bool dropIn)
         {
-            int MultiPlayerDistance = MathExt.MultiplyInt( GenerateMap.HeadCityNeededFreeRadius, 2.5);
+            int MultiPlayerDistance = MathExt.MultiplyInt( GenerateMap.HeadCityNeededFreeRadius, 3);
 
             List<Faction> sortedList = new List<Faction>();
 
@@ -950,6 +950,10 @@ namespace VikingEngine.DSSWars
                             if (nFaction.storyFaction)
                             {
                                 f.availableForPlayerScore -= 500;
+                            }
+                            if (nFaction.player.IsHumanPlayer())
+                            {
+                                f.availableForPlayerScore -= 200;
                             }
                         }
                     }

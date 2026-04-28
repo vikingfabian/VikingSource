@@ -162,7 +162,7 @@ namespace VikingEngine.DSSWars
                         int count = packet.r.ReadByte();
                         player.profile.flag = new FlagAndColor(packet.r);
                         player.flagTexture = player.profile.flag.flagDesign.CreateTexture(player.profile.flag);
-                        DssRef.world.BordersUpdated = true;
+                        //DssRef.world.BordersUpdated = true;
 
                         RichBoxContent content = new RichBoxContent();
 

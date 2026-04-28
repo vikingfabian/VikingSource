@@ -391,7 +391,7 @@ namespace VikingEngine.DSSWars
         {
 
             w.Write((ushort)factiontype);
-            player.profile.write(w, true);
+            player.profile.writeNet(w);
 
             if (factiontype == FactionType.Player)
             {
@@ -415,7 +415,7 @@ namespace VikingEngine.DSSWars
                     break;
             }
 
-            player.profile.read(r);
+            player.profile.readNet(r);
             //FlagAndColor profile = new FlagAndColor(r);
             //SetProfile(profile);
 

@@ -36,6 +36,8 @@ namespace VikingEngine.DSSWars.Players
         {
             previousPlayer = faction.player;
             base.AssignFaction(faction);
+            this.profile.StorageIndex = -1;
+            this.profile.character = new CharacterProfile(-1);
         }
         // public void AssignFaction(Faction faction)
         //{

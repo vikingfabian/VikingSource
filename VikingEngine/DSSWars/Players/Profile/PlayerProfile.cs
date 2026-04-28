@@ -152,54 +152,76 @@ namespace VikingEngine.DSSWars.Players.Profile
             flag.read(r);
         }
 
-        public void write(System.IO.BinaryWriter w)
+        //public void write(System.IO.BinaryWriter w)
+        //{
+        //    write(w, false);
+        //}
+        public void writeNet(System.IO.BinaryWriter w)
         {
-            write(w, false);
-        }
-        public void write(System.IO.BinaryWriter w, bool net)
-        {
-            w.Write(Version);
+            w.Write(character.custom);
 
-            bool customFlag = flag.StorageIndex >= 0;
-            bool customCharacter = character.StorageIndex >= 0;
-           
-            EightBit bools = new EightBit(
-                customCharacter,
-                customFlag,
-                TextLib.HasValue(city1),
-                TextLib.HasValue(city2),
-                TextLib.HasValue(city3),
-                TextLib.HasValue(city4),
-                TextLib.HasValue(name),
-                casualControls);
-
-            bools.write(w);
-
-
-            if (customCharacter)
-            {
-                w.Write((ushort)character.StorageIndex);
-            }
-            else
+            if (character.custom)
             {
                 character.write(w);
-            }            
+            }
+        }
+        public void readNet(System.IO.BinaryReader r)
+        {
+            character.custom = r.ReadBoolean();
 
-            if (customFlag)
+            if (character.custom)
             {
-                w.Write((ushort)flag.StorageIndex);
+                character.read(r);
             }
-            else
-            { 
-                flag.write(w);
-            }
+            flag.StorageIndex = -1;
+            character.StorageIndex = -1;
+        }
 
-            if (TextLib.HasValue(city1)) StreamLib.WriteString(w, city1);
-            if (TextLib.HasValue(city2)) StreamLib.WriteString(w, city2);
-            if (TextLib.HasValue(city3)) StreamLib.WriteString(w, city3);
-            if (TextLib.HasValue(city4)) StreamLib.WriteString(w, city4);
-            if (TextLib.HasValue(name)) StreamLib.WriteString(w, name);
+        public void write(System.IO.BinaryWriter w)
+        {
+            
+                w.Write(Version);
 
+                bool customFlag = flag.StorageIndex >= 0;
+                bool customCharacter = character.StorageIndex >= 0;
+
+                EightBit bools = new EightBit(
+                    customCharacter,
+                    customFlag,
+                    TextLib.HasValue(city1),
+                    TextLib.HasValue(city2),
+                    TextLib.HasValue(city3),
+                    TextLib.HasValue(city4),
+                    TextLib.HasValue(name),
+                    casualControls);
+
+                bools.write(w);
+
+
+                if (customCharacter)
+                {
+                    w.Write((ushort)character.StorageIndex);
+                }
+                else
+                {
+                    character.write(w);
+                }
+
+                if (customFlag)
+                {
+                    w.Write((ushort)flag.StorageIndex);
+                }
+                else
+                {
+                    flag.write(w);
+                }
+
+                if (TextLib.HasValue(city1)) StreamLib.WriteString(w, city1);
+                if (TextLib.HasValue(city2)) StreamLib.WriteString(w, city2);
+                if (TextLib.HasValue(city3)) StreamLib.WriteString(w, city3);
+                if (TextLib.HasValue(city4)) StreamLib.WriteString(w, city4);
+                if (TextLib.HasValue(name)) StreamLib.WriteString(w, name);
+            
         }
 
 
