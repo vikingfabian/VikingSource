@@ -89,7 +89,9 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         public Army()
-        { }
+        {
+            id = ++DssRef.state.NextArmyId;
+        }
 
 
 
@@ -176,7 +178,7 @@ namespace VikingEngine.DSSWars.GameObject
             {
                 army = new Army();
                 army.factionIndex = factionIx;
-                faction.armies.HardSet(army, armyIx);
+                //faction.armies.HardSet(army, armyIx);
                 army.init(faction, armyIx);
                 needInit = true;
             }
@@ -187,9 +189,7 @@ namespace VikingEngine.DSSWars.GameObject
         public static void NetWriteArmy(System.IO.BinaryWriter w, Army army)
         {
             NetWriteArmyId(w, army);
-            //w.Write((ushort)army.factionIndex);
-            //w.Write((ushort)army.myIndex);
-
+            
             army.writeNet(w);
         }
 
@@ -263,14 +263,29 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void writeNet(System.IO.BinaryWriter w)
         {
+            name.write(w);
+            if (!name.custom)
+            {
+                w.Write((ushort)id);
+            }
+
             WP.WritePosXZPercentU16(w, position);
             writeResources(w);
         }
 
         public void readNet(System.IO.BinaryReader r, bool needInit)
         {
-            WP.ReadPosXZPercentU16(r, out position, out tilePos);
-            
+            name.read(r, int.MaxValue);
+            if (!name.custom)
+            {
+                int nameId = r.ReadUInt16();
+                if (name.name == null)
+                {
+                    name.name = Data.NameGenerator.ArmyName(nameId);
+                }
+            }
+
+            WP.ReadPosXZPercentU16(r, out position, out tilePos);            
             position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
 
             readResources(r);

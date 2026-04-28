@@ -28,14 +28,18 @@ namespace VikingEngine.DSSWars.Net
             }
 
             {
-                var w = Ref.netSession.BeginWritingPacket(PacketType.DssFactionStatus, PacketReliability.Reliable);
+                var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssFactionStatus, PacketReliability.Reliable, out var packet);
                 w.Write((ushort)faction.myIndex);
                 faction.writeNet_Status(w);
+
+                packet.EndWrite_Asynch();
             }
             {
-                var w = Ref.netSession.BeginWritingPacket(PacketType.DssAssignFaction, PacketReliability.Reliable);
+                var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssAssignFaction, PacketReliability.Reliable, out var packet);
                 ((PlayState)DssRef.state).NetWritePlayer(w, remote);
                 w.Write((ushort)faction.myIndex);
+
+                packet.EndWrite_Asynch();
             }
 
         }
@@ -46,7 +50,7 @@ namespace VikingEngine.DSSWars.Net
             {
                 case HandoverPart.Cities:
                     {
-                        var w = Ref.netSession.BeginWritingPacket(PacketType.DssAssignFactionCities, PacketReliability.Reliable);
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssAssignFactionCities, PacketReliability.Reliable, out var packet);
                         w.Write((ushort)faction.myIndex);
                         IntVector2 centerCamera = IntVector2.Zero;
                         if (faction.mainCity != null)
@@ -57,6 +61,8 @@ namespace VikingEngine.DSSWars.Net
                         faction.cities.write_ushort_compressed(w);
                         part++;
                         armyCounter = faction.armies.counter();
+
+                        packet.EndWrite_Asynch();
                     }
                     break;
                 case HandoverPart.Armies:
@@ -74,7 +80,8 @@ namespace VikingEngine.DSSWars.Net
                     break;
                 case HandoverPart.HandOverComplete:
                     {
-                        Ref.netSession.BeginWritingPacket(PacketType.DssAssignFactionComplete, SendPacketTo.OneSpecific, peer.fullId, PacketReliability.Reliable, null);
+                        Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssAssignFactionComplete, PacketReliability.Reliable, SendPacketTo.OneSpecific, peer.fullId, out var packet);
+                        packet.EndWrite_Asynch();
                         part++;
                     }
                     break;

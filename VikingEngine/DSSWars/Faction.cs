@@ -512,6 +512,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
+                army.myIndex = overrideIx;
                 armies.HardSet(army, overrideIx);
             }
             army.factionIndex = myIndex;

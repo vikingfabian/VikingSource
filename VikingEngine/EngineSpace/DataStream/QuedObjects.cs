@@ -98,7 +98,7 @@ namespace VikingEngine.DataStream
         {
             if (data != null && data.Length > 0)
             {
-                System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(packetType, Network.SendPacketTo.All/*to*/, toSpecific, rely,
+                System.IO.BinaryWriter w = Ref.netSession.BeginWritingPacket(packetType, rely, Network.SendPacketTo.All, toSpecific,
                      null);
 
                 prefix?.Invoke(w);                

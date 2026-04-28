@@ -300,7 +300,13 @@ namespace VikingEngine.Network
             packet = new SteamWrapping.SteamWriter(relyability, false, SendPacketTo.All, 0);
             return packet.writeHead(type, null);
         }
-        
+
+        public System.IO.BinaryWriter BeginWritingPacket_Asynch(PacketType type, PacketReliability relyability, SendPacketTo sendPacketTo, ulong specificGamerID, out SteamWrapping.SteamWriter packet)
+        {
+            packet = new SteamWrapping.SteamWriter(relyability, false, sendPacketTo, specificGamerID);
+            return packet.writeHead(type, null);
+        }
+
         public System.IO.BinaryWriter BeginWritingPacket(PacketType Type, PacketReliability relyability)
         {
             return BeginWritingPacket(Type, relyability, null);
@@ -309,7 +315,7 @@ namespace VikingEngine.Network
 
         public System.IO.BinaryWriter BeginWritingPacket(PacketType type, SendPacketToOptions to, PacketReliability relyability, int? player)
         {
-            return BeginWritingPacket(type, to.To, to.SpecificGamerID, relyability, player);
+            return BeginWritingPacket(type, relyability, to.To, to.SpecificGamerID, player);
         }
 
         public System.IO.BinaryWriter BeginWritingPacket(PacketType type, ulong? to, PacketReliability relyability, int? player)
@@ -325,24 +331,27 @@ namespace VikingEngine.Network
                 sendToType = Network.SendPacketTo.OneSpecific;
                 toGamer = to.Value;
             }
-            return BeginWritingPacket(type, sendToType, toGamer, relyability, player);
+            return BeginWritingPacket(type, relyability, sendToType, toGamer, player);
         }
 
 
         public System.IO.BinaryWriter BeginWritingPacket(PacketType type, PacketReliability relyability, int? player)
         {
-            return BeginWritingPacket(type, SendPacketTo.All, 0, relyability, player);
+            return BeginWritingPacket(type, relyability, SendPacketTo.All, 0,  player);
         }
-        public System.IO.BinaryWriter BeginWritingPacket(PacketType type, SendPacketTo to, ulong specificGamerID, 
-            PacketReliability relyability, int? sender)
+        public System.IO.BinaryWriter BeginWritingPacket(PacketType type, PacketReliability relyability, SendPacketTo to, ulong specificGamerID, 
+             int? sender)
         {
+#if DEBUG
+            Debug.CrashIfThreaded();
+#endif
             SteamWrapping.SteamWriter stream = new SteamWrapping.SteamWriter(relyability, true, to, specificGamerID);
             return stream.writeHead(type, sender);
         }
 
         public System.IO.BinaryWriter BeginWritingPacketToHost(PacketType Type, PacketReliability relyability, int? player)
         {
-            return BeginWritingPacket(Type, SendPacketTo.Host, 0, relyability, player);
+            return BeginWritingPacket(Type, relyability, SendPacketTo.Host, 0, player);
         }
 
         public void SendAllQuedPackets()

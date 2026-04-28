@@ -134,7 +134,7 @@ namespace VikingEngine.DSSWars
             {
                 case PacketType.DssJoined_WantWorld:
                     {
-                        var w = Ref.netSession.BeginWritingPacket(PacketType.DssSendWorld, SendPacketTo.OneSpecific, packet.sender.fullId, PacketReliability.Reliable, null);
+                        var w = Ref.netSession.BeginWritingPacket(PacketType.DssSendWorld, PacketReliability.Reliable, SendPacketTo.OneSpecific, packet.sender.fullId,  null);
                         var meta = new SaveStateMeta();
                         meta.netSetup();
                         var saveGamestate = new SaveGamestate(meta);
@@ -327,7 +327,7 @@ namespace VikingEngine.DSSWars
             }
             else
             {
-                w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, SendPacketTo.OneSpecific, packet.sender.fullId, PacketReliability.Reliable, null);
+                w = Ref.netSession.BeginWritingPacket(PacketType.DssPlayerEnterPresentation, PacketReliability.Reliable,SendPacketTo.OneSpecific, packet.sender.fullId,  null);
             }
             w.Write((byte)localPlayers.Count);
             foreach (var local in localPlayers)

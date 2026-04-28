@@ -48,6 +48,7 @@ namespace VikingEngine.DSSWars.Players
             this.faction = faction;
             faction.SetStartOwner(this);
             faction.onNewPlayerModels();
+            DssRef.world.BordersUpdated = true;
         }
 
         public AbsPlayer(Faction faction, bool newGame)
