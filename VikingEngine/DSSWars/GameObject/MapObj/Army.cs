@@ -197,21 +197,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static void NetReadArmy(System.IO.BinaryReader r)
         {
-            //int factionIx = r.ReadUInt16();
-            //var faction = DssRef.world.faction(factionIx);
-
-            //int armyIx = r.ReadUInt16();
-            //Army army = faction.armies.GetIndex_Safe(armyIx);
-            //bool needInit = false;
-            //if (army == null)
-            //{ 
-            //    army = new Army();
-            //    army.factionIndex = factionIx;
-            //    faction.armies.HardSet(army, armyIx);
-            //    needInit = true;
-            //}
-
-            //army.IsNetHosted = faction.player != null && faction.player.IsLocalPlayer();
             NetReadArmyId(r, out Faction faction, out Army army, out bool needInit);
 
             army.readNet(r, needInit);
@@ -270,6 +255,9 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             WP.WritePosXZPercentU16(w, position);
+
+            writeAiState(w);
+
             writeResources(w);
         }
 
@@ -287,6 +275,8 @@ namespace VikingEngine.DSSWars.GameObject
 
             WP.ReadPosXZPercentU16(r, out position, out tilePos);            
             position.Y = DssRef.world.tileGrid.Get(tilePos).GroundY_aboveWater();
+
+            readAiState(r, int.MaxValue, null);
 
             readResources(r);
         }
@@ -859,6 +849,8 @@ namespace VikingEngine.DSSWars.GameObject
             scale = new Vector3(0.6f);
         }
 
+        float emptyDeleteDelay = 3000;
+
         virtual public void update()
         {
             if (debugTagged || id == -1)
@@ -886,7 +878,11 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (groups.Count == 0)
             {
-                DeleteMe(DeleteReason.EmptyGroup, true);
+                emptyDeleteDelay -= Ref.DeltaTimeMs;
+                if (emptyDeleteDelay <= 0)
+                {
+                    DeleteMe(DeleteReason.EmptyGroup, true);
+                }
             }
         }
         void updateArmyMovement(float time)
