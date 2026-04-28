@@ -106,6 +106,13 @@ namespace VikingEngine
                     ReleasePlatform.Xbox;
 #endif
 
+        public static readonly bool LinuxBuild = OperatingSystem.IsLinux();//Does not work with publish
+//#if LINUX
+//    true;
+//#else
+//    false;
+//#endif
+
         public static readonly bool PC_platform = TargetPlatform == ReleasePlatform.PC;
 
         public static bool STEAM_DEMO =
@@ -137,8 +144,8 @@ namespace VikingEngine
 
         public static readonly bool ReleaseBuild = DebugLevel > BuildDebugLevel.DebugDemo;
 
-        public static readonly bool SteamAPI = false;
-            //DebugLevel >= BuildDebugLevel.Release ? LockedToTrue : Debug_SteamAPI;
+        public static readonly bool SteamAPI =//= false;
+            DebugLevel >= BuildDebugLevel.Release ? LockedToTrue : Debug_SteamAPI;
 
 
         public static bool PlayMusic =
