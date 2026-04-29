@@ -1213,35 +1213,36 @@ namespace VikingEngine.DSSWars.GameObject
 
             async_SoldiersUpdate(time, oneMinute);
 
-            if (oneMinute)
+            if (IsNetHosted)
             {
-                foodCosts_import.minuteUpdate();
-                foodCosts_blackmarket.minuteUpdate();
-            }
-
-
-            if (!DssRef.storage.gameRuleset.centralGold && time > 0)
-            {
-                var onCity = DssRef.world.tileGrid.Get(tilePos).City();
-
-                if (onCity.factionIndex == factionIndex)
+                if (oneMinute)
                 {
-                    var faction = GetFaction();
-                    if (faction != null)
+                    foodCosts_import.minuteUpdate();
+                    foodCosts_blackmarket.minuteUpdate();
+                }
+
+                if (!DssRef.storage.gameRuleset.centralGold && time > 0)
+                {
+                    var onCity = DssRef.world.tileGrid.Get(tilePos).City();
+
+                    if (onCity.factionIndex == factionIndex)
                     {
-                        if (money.GetGold() < goldCarryCapacity)
+                        var faction = GetFaction();
+                        if (faction != null)
                         {
-                            money.AddGold(onCity.money.payGold_MuchAsPossible(goldCarryCapacity - money.GetGold()));
-                        }
-                        else if (money.GetGold() > goldCarryCapacity)
-                        {
-                            faction.addGold(money.GetGold() - goldCarryCapacity, onCity);
-                            money.SetGold(goldCarryCapacity);
+                            if (money.GetGold() < goldCarryCapacity)
+                            {
+                                money.AddGold(onCity.money.payGold_MuchAsPossible(goldCarryCapacity - money.GetGold()));
+                            }
+                            else if (money.GetGold() > goldCarryCapacity)
+                            {
+                                faction.addGold(money.GetGold() - goldCarryCapacity, onCity);
+                                money.SetGold(goldCarryCapacity);
+                            }
                         }
                     }
                 }
             }
-           
         }
 
         override public void asynchCullingUpdate(float time, bool bStateA)

@@ -2027,17 +2027,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asynchGameObjectsUpdate(bool minute)
         {
-            //collectBattles_asynch();
-            //detailObj.asynchUpdate();
-            //strength
-            //strengthValue = 2.5f * guardCount / DssConst.SoldierGroup_DefaultCount;
             async_SoldiersUpdate(minute);
 
             if (minute)
             {
                 blackMarketCosts_food.minuteUpdate();
-                //foodProduction.minuteUpdate();
-                //foodSpending.minuteUpdate();
                 soldResources.minuteUpdate();
             }
         }

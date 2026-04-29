@@ -708,19 +708,22 @@ namespace VikingEngine.DSSWars
 
                 foreach (var m in DssRef.world.cities)
                 {
-                    if (m.IsNetHosted)
-                    {
+                    //if (m.IsNetHosted)
+                    //{
                         m.asynchGameObjectsUpdate(minute);
-                    }
+                    //}
                 }
 
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
-                    if (factions.sel.IsNetHosted())
+                    //if (factions.sel.IsNetHosted())
+                    //{
+                    if (factions.sel.player != null)
                     {
                         factions.sel.asynchGameObjectsUpdate(time, seconds, minute);
                     }
+                    //}
                 }
 
             }
