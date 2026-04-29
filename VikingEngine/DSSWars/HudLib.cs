@@ -239,7 +239,10 @@ namespace VikingEngine.DSSWars
                 RbSettings = RbSettings,
             };
         }
-
+        public static void IndexToHud(RichBoxContent content, int myIndex, bool IsNetHosted)
+        {
+            content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex) + (IsNetHosted ? "H" : "C"), HudLib.SecondaryTextColor));
+        }
         public static void copyPaste(RichBoxContent content, LocalPlayer player, AbsRbAction copy, AbsRbAction paste, bool copyAvailable = true, bool pasteAvailable = true)
         {
             player.gameControls.input.Copy.ToRichContent(content);

@@ -452,7 +452,8 @@ namespace VikingEngine.DSSWars.GameObject
             args.content.Add(new RbText(DssRef.lang.UnitType_Army, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
             args.content.space(1);
-            args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
+
+            IndexToHud(args.content);//args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
 
             ownerToHud(args, !tooltip); 
         }

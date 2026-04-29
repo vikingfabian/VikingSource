@@ -45,6 +45,11 @@ namespace VikingEngine.DSSWars.GameObject
             //battlesCounter = new SpottedArrayCounter<AbsMapObject>(battles);
         }
 
+        public void IndexToHud(RichBoxContent content)
+        {
+            content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex.ToString() + (IsNetHosted ? " h" : " c")) , HudLib.SecondaryTextColor));
+        }
+
         virtual public bool lowFood() { throw new NotImplementedException(); }
         public bool payGold(int cost)
         {
