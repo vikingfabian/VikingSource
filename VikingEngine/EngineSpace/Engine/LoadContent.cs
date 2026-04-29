@@ -27,8 +27,8 @@ namespace VikingEngine.Engine
         public static Model[] Models = new Model[(int)LoadedMesh.NUM];//Dictionary<LoadedMesh, Model> modelList = new Dictionary<LoadedMesh, Model>();
         static Effect[] effectList = new Effect[(int)LoadedEffect.NUM_NoEffect];
 
-        public const string TexturePath = "Texture\\";
-        public const string ModelPath = "Model\\";
+        public static readonly string TexturePath = "Texture" + Path.DirectorySeparatorChar;
+        public static readonly string ModelPath = "Model" + Path.DirectorySeparatorChar;
 
         //static SpriteFont regular, bold, console;
         static FontLanguage currentFontLanguage = FontLanguage.NONE;
@@ -51,7 +51,7 @@ namespace VikingEngine.Engine
 
         public static void LoadConsoleFont()
         { 
-            var console = Content.Load<SpriteFont>("Font\\Console");
+            var console = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "Console");
             Fonts[(int)LoadedFont.Console] = console;
         }
 
@@ -82,18 +82,18 @@ namespace VikingEngine.Engine
                 switch (fontLanguage)
                 {
                     case FontLanguage.Western:
-                        var regular = Content.Load<SpriteFont>("Font\\Regular");
-                        var bold = Content.Load<SpriteFont>("Font\\Bold");
-                        var console = Content.Load<SpriteFont>("Font\\Console");
+                        var regular = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "Regular");
+                        var bold = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "Bold");
+                        var console = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "Console");
 
                         Fonts[(int)LoadedFont.Regular] = regular;
                         Fonts[(int)LoadedFont.Bold] = bold;
                         Fonts[(int)LoadedFont.Console] = console;
                         break;
                     case FontLanguage.Chinese:
-                        var chinese_regular = Content.Load<SpriteFont>("Font\\ChineseRegular");
-                        var chinese_bold = Content.Load<SpriteFont>("Font\\ChineseBold");
-                        var chinese_console = Content.Load<SpriteFont>("Font\\ChineseConsole");
+                        var chinese_regular = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "ChineseRegular");
+                        var chinese_bold = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "ChineseBold");
+                        var chinese_console = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "ChineseConsole");
 
                         Fonts[(int)LoadedFont.Regular] = chinese_regular;
                         Fonts[(int)LoadedFont.Bold] = chinese_bold;
@@ -101,9 +101,9 @@ namespace VikingEngine.Engine
                         break;
 
                     case FontLanguage.Japanese:
-                        var japanese_regular = Content.Load<SpriteFont>("Font\\JapaneseRegular");
-                        var japanese_bold = Content.Load<SpriteFont>("Font\\JapaneseBold");
-                        var japanese_console = Content.Load<SpriteFont>("Font\\JapaneseConsole");
+                        var japanese_regular = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "JapaneseRegular");
+                        var japanese_bold = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "JapaneseBold");
+                        var japanese_console = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "JapaneseConsole");
 
                         Fonts[(int)LoadedFont.Regular] = japanese_regular;
                         Fonts[(int)LoadedFont.Bold] = japanese_bold;
@@ -111,9 +111,9 @@ namespace VikingEngine.Engine
                         break;
 
                     case FontLanguage.Thai:
-                        var thai_regular = Content.Load<SpriteFont>("Font\\ThaiRegular");
-                        var thai_bold = Content.Load<SpriteFont>("Font\\ThaiBold");
-                        var thai_console = Content.Load<SpriteFont>("Font\\ThaiConsole");
+                        var thai_regular = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "ThaiRegular");
+                        var thai_bold = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "ThaiBold");
+                        var thai_console = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "ThaiConsole");
 
                         Fonts[(int)LoadedFont.Regular] = thai_regular;
                         Fonts[(int)LoadedFont.Bold] = thai_bold;
@@ -121,9 +121,9 @@ namespace VikingEngine.Engine
                         break;
 
                     case FontLanguage.Korean:
-                        var korean_regular = Content.Load<SpriteFont>("Font\\KoreanRegular");
-                        var korean_bold = Content.Load<SpriteFont>("Font\\KoreanBold");
-                        var korean_console = Content.Load<SpriteFont>("Font\\KoreanConsole");
+                        var korean_regular = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "KoreanRegular");
+                        var korean_bold = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "KoreanBold");
+                        var korean_console = Content.Load<SpriteFont>("Font" + Path.DirectorySeparatorChar + "KoreanConsole");
 
                         Fonts[(int)LoadedFont.Regular] = korean_regular;
                         Fonts[(int)LoadedFont.Bold] = korean_bold;
@@ -154,7 +154,7 @@ namespace VikingEngine.Engine
 
         public static void LoadSteamVersion()
         {
-            var versionFile = DataLib.SaveLoad.LoadTextFile(Engine.LoadContent.Content.RootDirectory + "\\Version Number.txt");
+            var versionFile = DataLib.SaveLoad.LoadTextFile(Engine.LoadContent.Content.RootDirectory + Path.DirectorySeparatorChar + "Version Number.txt");
             if (versionFile != null && versionFile.Count > 0)
             {
                 EngineVersion = versionFile[0];
@@ -166,7 +166,7 @@ namespace VikingEngine.Engine
        {
             foreach (LoadedTexture loadThis in loadThese)
             {
-                Textures[(int)loadThis] = Content.Load<Texture2D>("Texture//" + loadThis.ToString());
+                Textures[(int)loadThis] = Content.Load<Texture2D>("Texture" + Path.DirectorySeparatorChar + loadThis.ToString());
             }
         }
 
@@ -255,7 +255,7 @@ namespace VikingEngine.Engine
 
         public static Effect LoadShader(string name)
         { 
-            return Content.Load<Effect>("Shaders\\" + name);
+            return Content.Load<Effect>("Shaders" + Path.DirectorySeparatorChar + name);
         }
     }
     

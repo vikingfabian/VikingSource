@@ -256,7 +256,15 @@ namespace VikingEngine.Engine
             IconSizeV2 = new Vector2(IconSize);
             SmallIconSizeV2 = new Vector2(SmallIconSize);
             BorderWidth = (int)(IconSize * 0.12f);
-            MinClickSize = (int)(IconSize * 0.4f);
+
+            if (Ref.gamesett.wideScrollbars)
+            {
+                MinClickSize = (int)(IconSize * 0.8f);
+            }
+            else
+            {
+                MinClickSize = (int)(IconSize * 0.4f);
+            }
 
             TextSize = MinWidthHeight * 0.0006f * Ref.gamesett.UiScale;
             TextSizeV2 = new Vector2(TextSize);

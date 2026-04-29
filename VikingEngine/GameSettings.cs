@@ -25,7 +25,7 @@ namespace VikingEngine
     {
         public static FileCheck FileCheck;
 
-        const int Version = 36;
+        const int Version = 37;
         const string FileName = "technicalsettings";
         const string FileEnd = ".set";
 
@@ -42,6 +42,7 @@ namespace VikingEngine
         public const int MaxBlood = 100;
         public int Blood = 100;
         public float UiScale = 1f;
+        public bool wideScrollbars = false;
         public float MinimapScale = 1f;
         public float IngameMenuWidth = 1f;
         public bool customCursor = false;
@@ -104,6 +105,7 @@ namespace VikingEngine
         {
             UiScale = 1.5f;
             MinimapScale = 0.7f;
+            wideScrollbars = true;
         }
 
         public void Save()
@@ -129,6 +131,7 @@ namespace VikingEngine
             w.Write(SoundVolume);
             w.Write((byte)VibrationLevel);
             w.Write(UiScale);
+            w.Write(wideScrollbars);
             w.Write(IngameMenuWidth);
             w.Write((byte)language);
             w.Write(dyslexiaFont);
@@ -202,6 +205,11 @@ namespace VikingEngine
             if (UiScale < 0.5f)
             {
                 UiScale = 1f;
+            }
+
+            if (version >= 37)
+            {
+                wideScrollbars = r.ReadBoolean();
             }
 
             if (version >= 33)
@@ -762,6 +770,13 @@ namespace VikingEngine
             content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Apply) },
                 new RbAction(Ref.gamestate.OnResolutionChange)));
 
+            content.newLine();
+            content.Add(new ArtCheckbox(new List<AbsRichBoxMember> { new RbText(DssRef.todoLang.GameSettings_WideScrollbar) },
+               wideScrollProperty));
+            content.space();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText(DssRef.lang.Hud_Apply) },
+                new RbAction(Ref.gamestate.OnResolutionChange)));
+
             HudLib.Label(content, Ref.langOpt.GraphicsOption_IngameMenuWidth);
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.8f, 1.6f, 0.1f), IngameMenuWProperty, true));
@@ -769,8 +784,6 @@ namespace VikingEngine
             HudLib.Label(content, Ref.langOpt.Setting_MinimapScale);
             content.space();
             content.Add(new RbDragButton(new DragButtonSettings(0.2f, 2f, 0.1f), minimapScaleProperty, true));
-
-            //new GuiFloatSlider(SpriteName.LFIconLetter, Ref.langOpt.GraphicsOption_UiScale, uiScaleProperty, new IntervalF(0.5f, 2f), false, layout);
         }
 
         public void SetDisplayMode(WindowDisplayMode mode)
@@ -1176,6 +1189,17 @@ namespace VikingEngine
                 Screen.RefreshUiSize();
             }
             return UiScale;
+        }
+
+        public bool wideScrollProperty(object tag, bool set, bool value)
+        {
+            if (set)
+            {
+                wideScrollbars = value;
+                settingsHasChanged = true;
+                Screen.RefreshUiSize();
+            }
+            return wideScrollbars;
         }
 
         public float minimapScaleProperty(object tag, bool set, float value)

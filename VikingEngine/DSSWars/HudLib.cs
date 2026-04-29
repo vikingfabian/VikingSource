@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars
 
         public static readonly Color MenuMoreOptionsArrowCol = new Color(131, 63, 17);
 
-        public const string EngineVersionString = "VikingEngine ver: {0}";
+        public static readonly string EngineVersionString = "VikingEngine ver: {0}" + (PlatformSettings.LinuxBuild? " linux" : " windows");
         public static void Init()
         {
             const float TextToIconSz = 1.2f;
