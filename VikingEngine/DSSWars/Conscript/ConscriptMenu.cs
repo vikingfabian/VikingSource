@@ -595,7 +595,7 @@ namespace VikingEngine.DSSWars.Conscript
                         progressPoint(DssRef.lang.Conscript_FoodAbundance, true, hasFood);
                     }
 
-                    progressPoint(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingEquipment, currentStatus.unitsCollected, out bool gotEquipment), currentStatus.active > ConscriptActiveStatus.CollectingEquipment, gotEquipment);
+                    progressPoint(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingEquipment, /*currentStatus.unitsCollected,*/ out bool gotEquipment), currentStatus.active > ConscriptActiveStatus.CollectingEquipment, gotEquipment);
                     //progressPoint(currentStatus.activeStringOf(ConscriptActiveStatus.CollectingMen, menCostProgress, out bool gotMen), currentStatus.active > ConscriptActiveStatus.CollectingMen, gotMen);
 
                     {

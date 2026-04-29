@@ -55,7 +55,7 @@ namespace VikingEngine.DSSWars.GameObject
                         switch (status.active)
                         {
                             case ConscriptActiveStatus.Idle:
-                                if (status.CountDownQue())
+                                if (status.que >0)//status.CountDownQue())
                                 {
                                     status.active++;
                                     status.inProgress = status.profile;
@@ -64,14 +64,24 @@ namespace VikingEngine.DSSWars.GameObject
                                 break;
 
                             case ConscriptActiveStatus.CollectingEquipment:
-                               
-                                status.payItems(this, CommitOption.Commit, out int totalMen, out bool allCollected);
 
-                                if (allCollected &&
-                                    (status.profile.specialization != SpecializationType.CityGuard || AvailableGuardHousing() >= totalMen))
+                                if (status.que == 0)
                                 {
-                                    status.active++;
-                                    status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.inProgress.animal, status.type)));
+                                    resetActive(ref status);
+                                }
+                                else
+                                {
+                                    status.payItems(this, CommitOption.Commit, out int totalMen, out bool allCollected);
+
+                                    if (allCollected &&
+                                        (status.profile.specialization != SpecializationType.CityGuard || AvailableGuardHousing() >= totalMen))
+                                    {
+                                        if (status.CountDownQue())
+                                        {
+                                            status.active++;
+                                            status.countdown = new TimeInGameCountdown(new TimeLength(ConscriptProfile.TrainingTime(status.inProgress.training, status.inProgress.animal, status.type)));
+                                        }
+                                    }
                                 }
                                 break;
 
@@ -81,9 +91,7 @@ namespace VikingEngine.DSSWars.GameObject
                                     Vector3 startPos = WP.SubtileToWorldPosXZgroundY_Centered(conv.IntToIntVector2(status.idAndPosition));
                                     Ref.update.AddSyncAction(new SyncAction3Arg<ConscriptProfile, Vector3, int>(conscriptArmyLink, status.inProgress, startPos, 1));
 
-                                    status.active = ConscriptActiveStatus.Idle;
-                                    status.unitsNeeded = 0;
-                                    status.unitsCollected = 0;
+                                    resetActive(ref status);
 
                                     if (GetPlayer().IsLocalPlayer())
                                     {
@@ -158,6 +166,13 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        private static void resetActive(ref BarracksStatus status)
+        {
+            status.active = ConscriptActiveStatus.Idle;
+            status.unitsNeeded = 0;
+            status.unitsCollected = 0;
+        }
+
         public void onConscriptChange()
         {
             lock (conscriptBuildings)
@@ -170,10 +185,14 @@ namespace VikingEngine.DSSWars.GameObject
                     //&&
                     //!status.inProgress.Equals(status.profile))
                 {
+                    if (status.active == ConscriptActiveStatus.Training)
+                    {
+                        status.RevertCountDown();
+                    }
                     status.active = ConscriptActiveStatus.Idle;
                     status.unitsNeeded = 0;
                     status.unitsCollected = 0;
-                    status.RevertCountDown();
+                    
                     status.returnItems(this);
                 }
 
