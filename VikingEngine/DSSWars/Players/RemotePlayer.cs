@@ -23,6 +23,7 @@ namespace VikingEngine.DSSWars.Players
         public bool newPlayer = true;
 
         public AbsPlayer previousPlayer;
+        public RemotePlayerPointer pointer;
 
         public RemotePlayer(Network.NetworkInstancePeer peer)
             :base()
@@ -31,6 +32,8 @@ namespace VikingEngine.DSSWars.Players
             this.networkPeer = peer;
             InitData();
             playerCulling = new PlayerCullingState();
+
+            pointer = new RemotePlayerPointer(peer.peer, true);
         }
         public override void AssignFaction(Faction faction)
         {
@@ -95,6 +98,11 @@ namespace VikingEngine.DSSWars.Players
         //}
 
         public override bool IsLocal => false;
+
+        public void DeleteMe()
+        { 
+            pointer.DeleteMe();
+        }
     }
 
 

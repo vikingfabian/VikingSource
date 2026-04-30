@@ -1767,7 +1767,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
             else
             {
-                requirements &= resourceAmount(CityResoureIndex.food)/*res_food.amount*/ > 0 &&
+                requirements &= resourceAmount(CityResoureIndex.food) > DssConst.ChildFoodRequirement &&
                     homeUsers() < workersMax();
             }
 
@@ -2027,17 +2027,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void asynchGameObjectsUpdate(bool minute)
         {
-            //collectBattles_asynch();
-            //detailObj.asynchUpdate();
-            //strength
-            //strengthValue = 2.5f * guardCount / DssConst.SoldierGroup_DefaultCount;
             async_SoldiersUpdate(minute);
 
             if (minute)
             {
                 blackMarketCosts_food.minuteUpdate();
-                //foodProduction.minuteUpdate();
-                //foodSpending.minuteUpdate();
                 soldResources.minuteUpdate();
             }
         }
@@ -2337,7 +2331,8 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.Add(new RbText(DssRef.lang.UnitType_UnclaimedLand, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
                 args.content.space(1);
-                args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
+                IndexToHud(args.content);
+                //args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
             }
             else
             {
@@ -2354,7 +2349,9 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.Add(new RbText(DssRef.lang.UnitType_City, tooltip ? HudLib.TitleColor_TypeName : HudLib.TitleColor_Head));
 
                 args.content.space(1);
-                args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
+
+                IndexToHud(args.content);
+                //args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
 
                 ownerToHud(args, !tooltip);
             }
@@ -3230,16 +3227,15 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (!city.GetCasual())
             {
-
                 {
-                    bool available = city.resourceAmount(CityResoureIndex.food) /*.res_food.amount*/ > 0;
+                    bool available = city.resourceAmount(CityResoureIndex.food) > DssConst.ChildFoodRequirement;
                     content.newLine();
                     HudLib.BulletPoint(content);
                     content.Add(new RbImage(available ? HudLib.AvailableIcon : HudLib.NotAvailableIcon));
                     content.hspace();
                     content.Add(new RbImage(SpriteName.WarsResource_Food));
                     content.hspace();
-                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Resource_TypeName_Food, city.resourceAmount(CityResoureIndex.food)/*city.res_food.amount*/), HudLib.ResourceCostColor(available)));
+                    content.Add(new RbText(string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Resource_TypeName_Food, DssConst.ChildFoodRequirement), HudLib.ResourceCostColor(available)));
                     //HudLib.ItemCount(content, DssRef.lang.Resource_TypeName_Food, city.res_food.amount.ToString()).overrideColor = HudLib.ResourceCostColor(city.res_food.amount > 0);
                 }
                 if (cityType < CityType.Capital)

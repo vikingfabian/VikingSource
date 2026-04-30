@@ -146,6 +146,7 @@ namespace VikingEngine.DSSWars
                     {
                         var player = GetRemotePlayer(packet);
                         player.Net_readStatus(packet.r);
+                        player.pointer.netRead(packet.r);
 
                         if (player.newPlayer)
                         {
@@ -405,8 +406,8 @@ namespace VikingEngine.DSSWars
 
             if (player != null)
             {
-                
 
+                player.DeleteMe();
                 remotePlayers.Remove(player);
 
                 RichBoxContent content = new RichBoxContent();

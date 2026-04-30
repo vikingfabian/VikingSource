@@ -22,11 +22,13 @@ using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Map.Path;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.DSSWars.Resource;
 using VikingEngine.DSSWars.XP;
 using VikingEngine.Graphics;
 using VikingEngine.Input;
+using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.Commander.LevelSetup;
@@ -473,23 +475,27 @@ namespace VikingEngine.DSSWars
                 {
                     menuSystem.pauseMenu();
                 }
+                setPlayerNetState(PlayerNetState.InMenu);
                 return;
             }
 
             if (cutScene != null)
             {
                 cutScene.Time_Update(time);
+                setPlayerNetState(PlayerNetState.InMenu);
                 return;
             }
 
             if (pauseMenuUpdate())
             {
+                setPlayerNetState(PlayerNetState.InMenu);
                 return;
             }
 
             if (exitGameStateThreads != null)
             {
                 new ExitScene(exitGameStateThreads);
+                setPlayerNetState(PlayerNetState.InMenu);
                 return;
             }
             
@@ -584,6 +590,14 @@ namespace VikingEngine.DSSWars
         float LastAutoSaveTime_TotalSec = 0;
 
 
+        void setPlayerNetState(PlayerNetState netState)
+        {
+            foreach (var local in localPlayers)
+            {
+                local.playerNetState = netState;
+            }
+        }
+
         protected void updatePauseInput()
         {
             if (localPlayers != null)
@@ -604,11 +618,6 @@ namespace VikingEngine.DSSWars
                     }
                 }
             }
-
-            //if (Ref.steam.isInitialized && Ref.steam.inOverlay && !menuSystem.IsOpen())
-            //{
-            //    menuSystem.pauseMenu();
-            //}
 
             if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape) && !menuSystem.IsOpen())
             {
@@ -711,19 +720,22 @@ namespace VikingEngine.DSSWars
 
                 foreach (var m in DssRef.world.cities)
                 {
-                    if (m.IsNetHosted)
-                    {
+                    //if (m.IsNetHosted)
+                    //{
                         m.asynchGameObjectsUpdate(minute);
-                    }
+                    //}
                 }
 
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
-                    if (factions.sel.IsNetHosted())
+                    //if (factions.sel.IsNetHosted())
+                    //{
+                    if (factions.sel.player != null)
                     {
                         factions.sel.asynchGameObjectsUpdate(time, seconds, minute);
                     }
+                    //}
                 }
 
             }

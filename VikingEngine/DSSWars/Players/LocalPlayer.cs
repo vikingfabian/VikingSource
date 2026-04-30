@@ -128,7 +128,7 @@ namespace VikingEngine.DSSWars.Players
         public bool isDropInPlayer = false;
 
         public StoredCameraPos storedCameraPos;
-
+        public PlayerNetState playerNetState = PlayerNetState.InMenu;
 
         public LocalPlayer()
         {
@@ -294,11 +294,13 @@ namespace VikingEngine.DSSWars.Players
 
         public void NetUpdate()
         {
-            if (Ref.netSession.IsClient)
-            {
-                var w = Ref.netSession.BeginWritingPacketToHost(Network.PacketType.DssPlayerStatus, Network.PacketReliability.Unrelyable, playerData.localPlayerIndex);
-                DssRef.state.culling.players[playerData.localPlayerIndex].GetState().writeNet(w);
-            }
+            //if (Ref.netSession.IsClient)
+            //{
+            var w = Ref.netSession.BeginWritingPacketToHost(Network.PacketType.DssPlayerStatus, Network.PacketReliability.Unrelyable, playerData.localPlayerIndex);
+            DssRef.state.culling.players[playerData.localPlayerIndex].GetState().writeNet(w);
+
+            RemotePlayerPointer.netWrite(w, this);
+            //}
         }
 
         public override void writeGameState(BinaryWriter w)

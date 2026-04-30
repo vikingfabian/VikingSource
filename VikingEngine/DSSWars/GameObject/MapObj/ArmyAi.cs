@@ -684,6 +684,7 @@ namespace VikingEngine.DSSWars.GameObject
                         }
                     }
                     break;
+
                 case ArmyObjective.TeleportAttack:
                     {
                         var targetPointer = new ArmyAttackObjectPointer(r, this, true);
@@ -699,11 +700,12 @@ namespace VikingEngine.DSSWars.GameObject
                         teleportTime = r.ReadSingle();
                     }
                     break;
+
                 case ArmyObjective.MoveTo:
                     walkGoal = WP.readTilePos(r);
-                    Order_MoveTo(walkGoal);
-                    
+                    Order_MoveTo(walkGoal);                    
                     break;
+
                 case ArmyObjective.TeleportMove:
                     walkGoal = WP.readTilePos(r);
                     Order_MoveTo_Setup(walkGoal);

@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars
 
         public static readonly Color MenuMoreOptionsArrowCol = new Color(131, 63, 17);
 
-        public const string EngineVersionString = "VikingEngine ver: {0}";
+        public static readonly string EngineVersionString = "VikingEngine ver: {0}" + (PlatformSettings.LinuxBuild? " linux" : " windows");
         public static void Init()
         {
             const float TextToIconSz = 1.2f;
@@ -239,7 +239,10 @@ namespace VikingEngine.DSSWars
                 RbSettings = RbSettings,
             };
         }
-
+        public static void IndexToHud(RichBoxContent content, int myIndex, bool IsNetHosted)
+        {
+            content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex) + (IsNetHosted ? "H" : "C"), HudLib.SecondaryTextColor));
+        }
         public static void copyPaste(RichBoxContent content, LocalPlayer player, AbsRbAction copy, AbsRbAction paste, bool copyAvailable = true, bool pasteAvailable = true)
         {
             player.gameControls.input.Copy.ToRichContent(content);
@@ -451,7 +454,7 @@ namespace VikingEngine.DSSWars
 
         public static void returnButton(RichBoxContent content, RichMenu menu, bool bReturn, Action close)
         {
-            if (bReturn)
+            if (bReturn && menu != null)
             {
                 content.Add(new ArtButton(RbButtonStyle.Outline, new List<AbsRichBoxMember> {
                     new RbImage( SpriteName.WarsHudIconReturn, 0.8f),

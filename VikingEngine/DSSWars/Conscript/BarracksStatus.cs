@@ -345,7 +345,7 @@ namespace VikingEngine.DSSWars.Conscript
             return new TimeLength(ConscriptProfile.TrainingTime(inProgress.training, inProgress.animal, type));
         }
 
-        public string activeStringOf(ConscriptActiveStatus status, int menCount, out bool collected)
+        public string activeStringOf(ConscriptActiveStatus status, out bool collected)
         {
             string result = null;
             collected = false;
@@ -358,8 +358,8 @@ namespace VikingEngine.DSSWars.Conscript
 
                 case ConscriptActiveStatus.CollectingEquipment:
                     {
-                        collected = unitsCollected >= menCount;
-                        var progress = string.Format(DssRef.lang.Language_CollectProgress, unitsCollected, menCount);
+                        collected = unitsCollected >= unitsNeeded;
+                        var progress = string.Format(DssRef.lang.Language_CollectProgress, unitsCollected, unitsNeeded);
                         result = string.Format(DssRef.lang.Conscription_Status_CollectingEquipment, progress);
                     }
                     break;
@@ -385,8 +385,8 @@ namespace VikingEngine.DSSWars.Conscript
             }
             else
             {
-                int menCostProgress = unitsNeeded;
-                result = activeStringOf(active, menCostProgress, out _) + ", " + string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
+                //int menCostProgress = unitsNeeded;
+                result = activeStringOf(active, out _) + ", " + string.Format(DssRef.lang.Language_ItemCount_Colon, DssRef.lang.Hud_ProductionQueue, que <= MaxQue ? que.ToString() : DssRef.lang.Hud_NoLimit);
             }
 
             return result;
