@@ -296,7 +296,7 @@ namespace VikingEngine.DSSWars.Players
         {
             //if (Ref.netSession.IsClient)
             //{
-            var w = Ref.netSession.BeginWritingPacketToHost(Network.PacketType.DssPlayerStatus, Network.PacketReliability.Unrelyable, playerData.localPlayerIndex);
+            var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerStatus, Network.PacketReliability.Unrelyable, playerData.localPlayerIndex);
             DssRef.state.culling.players[playerData.localPlayerIndex].GetState().writeNet(w);
 
             RemotePlayerPointer.netWrite(w, this);
