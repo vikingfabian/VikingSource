@@ -37,7 +37,7 @@ namespace VikingEngine.ToGG.HeroQuest.Players
             movelines.setFocus(2);
         }
 
-        override  public void update()
+        override public void update()
         {
             pointer.Update();
         }

@@ -1706,25 +1706,31 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void update()
         {
-            if (myIndex == 441)
+            //if (myIndex == 441)
+            //{
+            //    lib.DoNothing();
+            //}
+            if (HasPlayer())
             {
-                lib.DoNothing();
+                updateDetailLevel();
+
+                //detailObj.update(Ref.DeltaGameTimeMs, true);
+
+                if (inRender_detailLayer)
+                {
+                    updateArmyMembers(Ref.DeltaGameTimeMs, true);
+                }
+
+                updateWorkerUnits();
             }
-            updateDetailLevel();
-
-            //detailObj.update(Ref.DeltaGameTimeMs, true);
-
-            if (inRender_detailLayer)
-            {
-                updateArmyMembers(Ref.DeltaGameTimeMs, true);
-            }
-
-            updateWorkerUnits();
         }
 
         public void update_client()
         {
-            updateDetailLevel();
+            if (HasPlayer())
+            {
+                updateDetailLevel();
+            }
         }
 
         public int income_oneSecUpdate(double incomeMultiplier)
@@ -2334,7 +2340,7 @@ namespace VikingEngine.DSSWars.GameObject
                 IndexToHud(args.content);
                 //args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
             }
-            else
+            else if (faction.player != null)
             {
                 nameToHud(args.content, !tooltip);
 

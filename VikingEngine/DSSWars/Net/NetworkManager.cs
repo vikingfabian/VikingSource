@@ -145,14 +145,17 @@ namespace VikingEngine.DSSWars
                 case PacketType.DssPlayerStatus:
                     {
                         var player = GetRemotePlayer(packet);
-                        player.Net_readStatus(packet.r);
-                        player.pointer.netRead(packet.r);
-
-                        if (player.newPlayer)
+                        if (player != null)
                         {
-                            //Present yourself
-                            player.newPlayer = false;
-                            netPresentYourself(packet);
+                            player.Net_readStatus(packet.r);
+                            player.pointer.netRead(packet.r);
+
+                            if (player.newPlayer)
+                            {
+                                //Present yourself
+                                player.newPlayer = false;
+                                netPresentYourself(packet);
+                            }
                         }
                     }
                     break;

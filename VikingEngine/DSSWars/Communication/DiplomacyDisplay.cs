@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             otherfaction = botFaction;
 
-            if (player.faction == botFaction)
+            if (player.faction == botFaction || botFaction.player == player)
             {
                 return;
             }
@@ -355,7 +355,6 @@ namespace VikingEngine.DSSWars.Interface
             }
 
             PtoP.suggestedBy = player.playerData.localPlayerIndex;
-
 
             var message = new RichBoxContent();
             message.h1(string.Format(DssRef.lang.Diplomacy_PlayerOfferAlliance, player.Name));

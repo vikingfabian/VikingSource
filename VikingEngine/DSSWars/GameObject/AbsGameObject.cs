@@ -49,6 +49,16 @@ namespace VikingEngine.DSSWars.GameObject
             return factionIndex >= 0 && factionIndex < DssRef.world.factions.Count;
         }
 
+        public bool HasPlayer()
+        {
+            if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
+            {
+                var f = DssRef.world.factions.Array[factionIndex];
+                return f != null && f.player != null;
+            }
+            return false;
+        }
+
         public bool HasAliveFaction()
         {
             if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)

@@ -14,6 +14,7 @@ namespace VikingEngine.DSSWars.Players
     {
         PlayerNetState playerNetState = PlayerNetState.InMenu;
         MapDetailLayerType mapLayer = MapDetailLayerType.TerrainOverview2;
+        Vector2 pointerPos;
         Vector2 pointerSpeed = Vector2.Zero;
         Vector2 goalPointerPos = Vector2.Zero;
         Vector2 pointerIconPosDiff;
@@ -45,14 +46,38 @@ namespace VikingEngine.DSSWars.Players
             new SteamWrapping.LoadGamerIcon(pointerGamerIcon, peer, false);
         }
 
-        public void Update(MapDetailLayerType viewLayer)
+        public void Update(LocalPlayer playerView)
         {
             if (playerNetState != PlayerNetState.InMenu)
             {
+                MapDetailLayerType viewLayer = playerView.mapLayer();
                 if (viewLayer >= MapDetailLayerType.FullOverview4)
                 {
                     viewLayer = MapDetailLayerType.FactionColors3;
                 }
+
+                if (playerView.gameControls.map.camera.LookTarget != playerView.gameControls.map.camera.prevLookTarget)
+                {
+                    Vector2 moveCamera =
+                        Ref.draw.Camera.From3DToScreenPos(playerView.gameControls.map.camera.prevLookTarget, playerView.playerData.view.Viewport) -
+                        Ref.draw.Camera.From3DToScreenPos(playerView.gameControls.map.camera.LookTarget, playerView.playerData.view.Viewport);
+                    pointer.Position += moveCamera; 
+                }
+
+                goalPointerPos = Ref.draw.Camera.From3DToScreenPos(
+                        VectorExt.V3FromXZ(pointerPos, 0.1f), playerView.playerData.view.Viewport);
+                Vector2 diff = goalPointerPos - pointer.Position;
+
+                if (diff.Length() > 2)
+                {
+                    float expectedUpdates = (Ref.netSession.netUpdateRate / Ref.main.TargetElapsedTime.Milliseconds) * 1.5f;
+                    pointerSpeed = diff / expectedUpdates;
+                }
+                else
+                {
+                    pointerSpeed = Vector2.Zero;
+                }
+
 
                 float transparent = viewLayer == mapLayer ? 1f : 0.5f;
 
@@ -146,29 +171,19 @@ namespace VikingEngine.DSSWars.Players
                     mapLayer = MapDetailLayerType.FactionColors3;
                 }
 
-                Vector2 pointerPos = StreamLib.ReadVector2(r);
+                pointerPos = StreamLib.ReadVector2(r);
 
-                if (inGame)
-                {
-                    goalPointerPos = Ref.draw.Camera.From3DToScreenPos(
-                        VectorExt.V3FromXZ(pointerPos, 0.1f), Engine.Draw.defaultViewport);
-                }
-                else
-                {
-                    goalPointerPos = pointerPos * Engine.Screen.Area.Size;
-                }
+                //if (inGame)
+                //{
+                //    goalPointerPos = Ref.draw.Camera.From3DToScreenPos(
+                //        VectorExt.V3FromXZ(pointerPos, 0.1f), Engine.Draw.defaultViewport);
+                //}
+                //else
+                //{
+                //    goalPointerPos = pointerPos * Engine.Screen.Area.Size;
+                //}
 
-                Vector2 diff = goalPointerPos - pointer.Position;
-
-                if (diff.Length() > 2)
-                {
-                    float expectedUpdates = (Ref.netSession.netUpdateRate / Ref.main.TargetElapsedTime.Milliseconds) * 1.5f;
-                    pointerSpeed = diff / expectedUpdates;
-                }
-                else
-                {
-                    pointerSpeed = Vector2.Zero;
-                }
+                
             }
             else
             {

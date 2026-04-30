@@ -35,6 +35,11 @@ namespace VikingEngine.DSSWars.Players
 
             pointer = new RemotePlayerPointer(peer.peer, true);
         }
+        public void UpdateClient(LocalPlayer playerView)
+        {
+            base.Update();
+            pointer.Update(playerView);
+        }
         public override void AssignFaction(Faction faction)
         {
             previousPlayer = faction.player;

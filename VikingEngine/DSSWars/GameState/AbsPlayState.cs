@@ -45,7 +45,8 @@ namespace VikingEngine.DSSWars.GameState
         public AbsCutScene cutScene = null;
         public bool host = true;
         public GameMenuSystem menuSystem;
-        public SpottedArray<Players.RemotePlayer> remotePlayers = new SpottedArray<Players.RemotePlayer>();
+        public SpottedArray<Players.RemotePlayer> remotePlayers;
+        protected SpottedArrayCounter<Players.RemotePlayer> remotePlayersCounter;
         public List<Players.LocalPlayer> localPlayers;
         public EventManager events;
         public Progress progress = new Progress();
@@ -63,6 +64,9 @@ namespace VikingEngine.DSSWars.GameState
         public AbsPlayState() 
             :base() 
         {
+            remotePlayers = new SpottedArray<Players.RemotePlayer>();
+            remotePlayersCounter = new SpottedArrayCounter<RemotePlayer>(remotePlayers);
+
             DssRef.state = this;
             
         }

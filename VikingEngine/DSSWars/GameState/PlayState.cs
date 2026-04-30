@@ -33,6 +33,7 @@ using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG.MoonFall;
+using VikingEngine.ToGG.ToggEngine;
 using static System.Net.WebRequestMethods;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 //
@@ -613,8 +614,18 @@ namespace VikingEngine.DSSWars
                         local.playerData.IgnoreLostController = true;
                         menuSystem.controllerDisconnectMenu(); //todo lost menu
                     }
+
+                    remotePlayersCounter.Reset();
+                    while (remotePlayersCounter.Next())
+                    {
+                        remotePlayersCounter.sel.UpdateClient(local);
+                    }
+
+                    local.gameControls.map.camera.prevLookTarget = local.gameControls.map.camera.LookTarget;
                 }
             }
+
+           
 
             if (Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.Escape) && !menuSystem.IsOpen())
             {
