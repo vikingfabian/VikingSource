@@ -441,7 +441,7 @@ namespace VikingEngine.DSSWars
             Init_CityComponents(cityCount);
             for (int cityIndex = 0; cityIndex < cityCount; ++cityIndex)
             {
-                City c = new City(cityIndex);
+                City c = new City(cityIndex, this);
                 cities.Add(c);
                 c.IsNetHosted = false;
             }

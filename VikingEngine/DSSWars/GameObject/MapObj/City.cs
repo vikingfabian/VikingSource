@@ -299,11 +299,11 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
-        public City(int index)
+        public City(int index, WorldData world)
         {
             this.myIndex = index;
             workTemplate = new WorkTemplate(true, index);
-            DssRef.world.InitCity(this);
+            world.InitCity(this);
         }
 
         public City(WorldData world, int index, System.IO.BinaryReader r, int version)

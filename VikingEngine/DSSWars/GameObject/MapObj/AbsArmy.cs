@@ -45,7 +45,10 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public static void NetWriteMapObjId(System.IO.BinaryWriter w, AbsArmy army)
         {
-            w.Write((ushort)army.factionIndex);
+            if (army.IsArmy())
+            {
+                w.Write((ushort)army.factionIndex);
+            }
             w.Write((ushort)army.myIndex);
         }
 
