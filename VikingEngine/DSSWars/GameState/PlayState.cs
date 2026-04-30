@@ -522,7 +522,10 @@ namespace VikingEngine.DSSWars
                         var factionsC = DssRef.world.factions.counter();
                         while (factionsC.Next())
                         {
-                            factionsC.sel.update_client(culling.playerInDetailView);
+                            if (factionsC.sel.player != null)
+                            {
+                                factionsC.sel.update_client(culling.playerInDetailView);
+                            }
                         }
 
                         foreach (var m in DssRef.world.cities)
