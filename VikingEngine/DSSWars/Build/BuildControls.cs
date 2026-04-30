@@ -54,6 +54,19 @@ namespace VikingEngine.DSSWars.Build
         City city;
         bool blockBuildUpdate = false;
 
+        public BuildAndExpandType CompressedBuildMode()
+        {
+            switch (buildMode)
+            {
+                case SelectTileResult.None:
+                    return BuildAndExpandType.NUM_NONE;
+                case SelectTileResult.Demolish:
+                    return BuildAndExpandType.DEMOLISH;
+                default:
+                    return placeBuildingType;
+            }
+        }
+
         public BuildControls(LocalPlayer player) 
         { 
             this.player = player;

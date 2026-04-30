@@ -192,7 +192,7 @@ namespace VikingEngine.DSSWars
 
         //public const int ExpandGuardSizeCost = 12000;
         //public const int ReleaseGuardSizeGain = ExpandGuardSizeCost / 2;
-
+        public const int ChildFoodRequirement = 100;
         public const int HousingCount_WorkerTent = 20;
         public const int HousingCount_WorkerHut = 30;
         public const int HousingCount_WorkerHutLarge = 50;

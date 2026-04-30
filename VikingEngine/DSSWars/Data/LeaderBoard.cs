@@ -1,4 +1,5 @@
-﻿using Steamworks;
+﻿using Microsoft.Xna.Framework;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,17 +43,25 @@ namespace VikingEngine.DSSWars.Data
             {
                 content.newLine();
 
-                leaderBoard.toMenu(content, entry);
+                leaderBoard.toMenu(content, entry, out bool wide);
 
+                if (wide)
+                {
+                    content.newLine();
+                }
                 HudLib.BulletSeperationPoint(content);
 
-                content.Add(new RbText(LoadContent.CheckCharsSafety(entry.userName, LoadedFont.Regular), HudLib.TitleColor_Name));
-
-
+                Color nameCol = HudLib.TitleColor_Name;
                 if (entry.user.m_SteamID == id)
                 {
+                    nameCol = HudLib.AvailableColor;
                     DssRef.achieve.UnlockAchievement(AchievementIndex.leaderboard_glory);
                 }
+
+                content.Add(new RbText(LoadContent.CheckCharsSafety(entry.userName, LoadedFont.Regular), nameCol));
+
+
+                
             }
 
             if (values.Count == 0)
@@ -288,7 +297,7 @@ namespace VikingEngine.DSSWars.Data
             base.BeginUpload();
         }
 
-        abstract public void toMenu(RichBoxContent content, SteamWrapping.SteamLeaderBoardRemote entry);
+        abstract public void toMenu(RichBoxContent content, SteamWrapping.SteamLeaderBoardRemote entry, out bool wideContent);
     }
 
     class CitySizeLeaderBoard : AbsLeaderBoard
@@ -309,8 +318,9 @@ namespace VikingEngine.DSSWars.Data
             BeginUpload();
         }
 
-        public override void toMenu(RichBoxContent content, SteamLeaderBoardRemote entry)
+        public override void toMenu(RichBoxContent content, SteamLeaderBoardRemote entry, out bool wideContent)
         {
+            wideContent = false;
             content.Add(new RbText(TextLib.LargeNumber(entry.score)));
         }
     }
@@ -332,8 +342,9 @@ namespace VikingEngine.DSSWars.Data
                         
         }
 
-        public override void toMenu(RichBoxContent content, SteamLeaderBoardRemote entry)
+        public override void toMenu(RichBoxContent content, SteamLeaderBoardRemote entry, out bool wideContent)
         {
+            wideContent = true;
             content.Add(new RbText(HudLib.TimeSpan_LongText(TimeSpan.FromSeconds(entry.score))));
         }
     }
@@ -387,14 +398,16 @@ namespace VikingEngine.DSSWars.Data
             }
         }
 
-        public override void toMenu(RichBoxContent content, SteamLeaderBoardRemote entry)
+        public override void toMenu(RichBoxContent content, SteamLeaderBoardRemote entry, out bool wideContent)
         {
             if (type == LeaderBoardType.story_difficulty)
             {
+                wideContent = false;
                 content.Add(new RbText( $"{entry.score}%"));
             }
             else
-            { 
+            {
+                wideContent = true;
                 content.Add(new RbText(HudLib.TimeSpan_LongText(TimeSpan.FromSeconds(entry.score))));
             }
         }

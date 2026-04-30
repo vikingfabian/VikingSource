@@ -163,7 +163,7 @@ namespace VikingEngine.DSSWars
                             }
                             else
                             {
-                                player.stockPileCopy[cityResourceIndex].copyLimitFrom(cityResouces[city.resourceComponentStartIndex + cityResourceIndex], true);
+                                player.stockPileCopy[cityResourceIndex].copyLimitFrom(cityResouces[city.resourceComponentStartIndex + cityResourceIndex], false);
                             }
                             break;
 

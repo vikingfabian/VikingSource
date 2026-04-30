@@ -145,6 +145,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
             else if (diplomacy != null)
             {   
+                player.playerNetState = PlayerNetState.Diplomacy;
                 map.mapControlsUpdate();
                 player.hud.updateToolTip_menu();
 
@@ -159,6 +160,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
             else
             {
+                player.playerNetState = PlayerNetState.Map;
+                if (map.selection.obj != null && map.selection.obj.gameobjectType() == GameObjectType.City)
+                {
+                    player.playerNetState = PlayerNetState.City;
+                }
                 inputHelpState = InputHelpState.Map;
                 map.focusedUpdate();
 
@@ -173,6 +179,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
                 else if ((map.hover.subTile.hasSelection && InBuildOrdersMode()) || build.buildKeyDown)
                 {
+                    player.playerNetState = PlayerNetState.Building;
                     inputHelpState = InputHelpState.Build;
                     map.cancelRectangleSelect();
                     build.updateBuildMode();                    
@@ -215,6 +222,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             if (army != null)
             {
                 inputHelpState = InputHelpState.Army;
+                player.playerNetState = PlayerNetState.Army;
                 army.update();
             }
             else
