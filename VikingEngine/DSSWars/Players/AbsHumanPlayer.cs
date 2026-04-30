@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Players
             : base()
         { }
 
-        public void addNetGamerToHud(RichBoxContent content)
+        virtual public void addNetGamerToHud(RichBoxContent content)
         {
             content.Add(new RbBeginTitle(2));
 
@@ -51,6 +51,8 @@ namespace VikingEngine.DSSWars.Players
                 content.Add(new RbGamerIcon(networkPeer.peer, 0.8f));
                 content.space();
                 content.Add(new RbText(networkPeer.peer.Gamertag, HudLib.TitleColor_Name));
+
+                
             }
         }
 

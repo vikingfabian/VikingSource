@@ -1029,10 +1029,12 @@ namespace VikingEngine.DSSWars.GameObject
 
         
 
-        public bool net_roundtrip_asyncupdate()
+        public void net_roundtrip_asyncupdate(out int packetCount)
         {
+            packetCount = 0;
             if (IsNetHosted && lastNetUpdate.secPassed(10))
             {
+                packetCount++;
                 lastNetUpdate.setNow();
 
                 int count = MathExt.Div_Ceiling(workerStatuses.Count, MaxWorkerWriteCount) + 1;
@@ -1048,10 +1050,13 @@ namespace VikingEngine.DSSWars.GameObject
                     packet.CheckPacketLength();
                     packet.EndWrite_Asynch();
                 }
-                return true;
+
+                netWriteGroups(Network.PacketReliability.Unrelyable, ref packetCount);
+
+                
             }
 
-            return false;
+           
         }
 
         public void writeNet_update(System.IO.BinaryWriter w, int part)

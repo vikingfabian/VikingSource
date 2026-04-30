@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,23 @@ namespace VikingEngine.DSSWars.Players
         {
             base.Update();
             pointer.Update(playerView);
+        }
+
+        public override void addNetGamerToHud(RichBoxContent content)
+        {
+            base.addNetGamerToHud(content);
+            if (pointer.statusIcon !=  SpriteName.NO_IMAGE)
+            {
+                content.space();
+                if (pointer.itemIcon != SpriteName.NO_IMAGE)
+                {
+                    content.Add(new RbOverlapImage( new RbImage(pointer.itemIcon), pointer.statusIcon, Vector2.Zero, 0.7f ));
+                }
+                else
+                {
+                    content.Add(new RbImage(pointer.statusIcon));
+                }
+            }
         }
         public override void AssignFaction(Faction faction)
         {

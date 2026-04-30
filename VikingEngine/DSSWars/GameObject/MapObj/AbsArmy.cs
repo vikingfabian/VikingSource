@@ -43,6 +43,107 @@ namespace VikingEngine.DSSWars.GameObject
             group.army = new WeakReference<AbsArmy>(this);
             group.factionIndex = factionIndex;
         }
+        public static void NetWriteMapObjId(System.IO.BinaryWriter w, AbsArmy army)
+        {
+            w.Write((ushort)army.factionIndex);
+            w.Write((ushort)army.myIndex);
+        }
+
+        public static void NetReadMapObjId(System.IO.BinaryReader r, out Faction faction, bool bArmy, out AbsArmy mapObj, out bool needInit)
+        {
+            if (bArmy)
+            {
+                int factionIx = r.ReadUInt16();
+                faction = DssRef.world.faction(factionIx);
+
+                int armyIx = r.ReadUInt16();
+
+                Army army = faction.armies.GetIndex_Safe(armyIx);
+                needInit = false;
+                if (army == null)
+                {
+                    army = new Army();
+                    army.factionIndex = factionIx;
+                    //faction.armies.HardSet(army, armyIx);
+                    army.init(faction, armyIx);
+                    needInit = true;
+                }
+                army.IsNetHosted = faction.player != null && faction.player.IsLocalPlayer();
+                mapObj = army;
+            }
+            else
+            {
+                needInit = false;
+                int cityIx = r.ReadUInt16();
+                mapObj = DssRef.world.cities[cityIx];
+                faction = mapObj.GetFaction();
+            }
+        }
+        public void netWriteGroups(Network.PacketReliability reliability, ref int packetCount)
+        {
+            const int GroupsPerPacket = 8;
+            if (groups.Count > 0)
+            {
+                var groupC = groups.counter();
+
+                while (groupC.HasMore())
+                {
+                    int packetGroupCount = GroupsPerPacket;
+
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(IsArmy() ? Network.PacketType.DssSoldierGroupStatus_Army : Network.PacketType.DssSoldierGroupStatus_City, reliability, out var packet);
+                    {
+                        packetCount++;
+                        NetWriteMapObjId(w, this);
+
+                        while (--packetGroupCount >= 0 && groupC.Next())
+                        {
+                            NetWriteGroup(w, groupC.sel);
+                            lastNetUpdate.setNow();
+                        }
+
+                        w.Write(ushort.MaxValue);
+                    }
+                    packet.EndWrite_Asynch();
+                }
+            }
+        }
+        public static void NetWriteGroup(System.IO.BinaryWriter w, SoldierGroup group)
+        {
+            w.Write((ushort)group.myIndex);
+            group.writeNet(w);
+        }
+
+        public static bool NetReadGroup(System.IO.BinaryReader r, AbsArmy army)
+        {
+            int index = r.ReadUInt16();
+            if (index != ushort.MaxValue)
+            {
+                var group = army.groups.GetIndex_Safe(index);
+                bool needInit = false;
+                if (group == null)
+                {
+                    needInit = true;
+                    if (army.IsCity())
+                    {
+                        group = new GuardGroup(army);
+                    }
+                    else
+                    {
+                        group = new SoldierGroup(army);
+                    }
+                    army.groups.HardSet(group, index);
+                }
+
+                group.readNet(army, r, needInit);
+                group.net_onUpdate();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         virtual public void remove(SoldierGroup group)
         {
             Debug.CrashIfThreaded();

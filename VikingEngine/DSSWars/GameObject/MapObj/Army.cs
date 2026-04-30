@@ -9,8 +9,6 @@ using System.Xml.Linq;
 using System.Xml.Xsl;
 
 using VikingEngine.DebugExtensions;
-
-//using VikingEngine.DSSWars.Battle;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.Defence;
 using VikingEngine.DSSWars.EntityComponent;
@@ -65,14 +63,8 @@ namespace VikingEngine.DSSWars.GameObject
         public MinuteStats foodCosts_import = new MinuteStats();
         public MinuteStats foodCosts_blackmarket = new MinuteStats();
 
-        //public CityTagBack tagBack = CityTagBack.NONE;
-        //public TagArt tagArt = TagArt.None;
-        
-
         public int goldCarryCapacity = 0;
-        //public int gold = 0;
         
-
         public Army(Faction faction, IntVector2 startPosition)
         {
             id = ++DssRef.state.NextArmyId;
@@ -93,9 +85,7 @@ namespace VikingEngine.DSSWars.GameObject
             id = ++DssRef.state.NextArmyId;
         }
 
-
-
-        void init(Faction faction, int overrideIx = -1)
+        public void init(Faction faction, int overrideIx = -1)
         {
 #if DEBUG
             if (faction == null || faction.isDeleted)
@@ -119,86 +109,29 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static void NetFullArmyStatus(Army army, Network.PacketReliability reliability )
         {
-            const int GroupsPerPacket = 8;
-
+            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, reliability, out var packet);
             {
-                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, reliability, out var packet);
-                {
-                    Army.NetWriteArmy(w, army);
-                    army.lastNetUpdate.setNow();
-                }
-                packet.EndWrite_Asynch();
+                Army.NetWriteArmy(w, army);
+                army.lastNetUpdate.setNow();
             }
+            packet.EndWrite_Asynch();
 
-            if (army.groups.Count > 0)
-            {
-                var groupC = army.groups.counter();
-
-                
-
-                while (groupC.HasMore())
-                {
-                    int count = GroupsPerPacket;
-
-                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierGroupStatus, reliability, out var packet);
-                    {
-                        //w.Write((ushort)army.factionIndex);
-                        //w.Write((ushort)army.myIndex);
-                        NetWriteArmyId(w, army);
-
-                        while (--count >= 0 && groupC.Next())
-                        {
-                            Army.NetWriteGroup(w, groupC.sel);
-                            army.lastNetUpdate.setNow();
-                        }
-
-                        w.Write(ushort.MaxValue);
-                    }
-                    packet.EndWrite_Asynch();
-
-                }
-            }
-        }
-
-        public static void NetWriteArmyId(System.IO.BinaryWriter w, Army army)
-        {
-            w.Write((ushort)army.factionIndex);
-            w.Write((ushort)army.myIndex);
-        }
-
-        public static void NetReadArmyId(System.IO.BinaryReader r, out Faction faction, out Army army, out bool needInit)
-        {
-            int factionIx = r.ReadUInt16();
-            faction = DssRef.world.faction(factionIx);
-
-            int armyIx = r.ReadUInt16();
-            army = faction.armies.GetIndex_Safe(armyIx);
-            needInit = false;
-            if (army == null)
-            {
-                army = new Army();
-                army.factionIndex = factionIx;
-                //faction.armies.HardSet(army, armyIx);
-                army.init(faction, armyIx);
-                needInit = true;
-            }
-
-            army.IsNetHosted = faction.player != null && faction.player.IsLocalPlayer();
+            int packetCount = 1;
+            army.netWriteGroups(reliability, ref packetCount);
         }
 
         public static void NetWriteArmy(System.IO.BinaryWriter w, Army army)
         {
-            NetWriteArmyId(w, army);
+            NetWriteMapObjId(w, army);
             
             army.writeNet(w);
         }
 
-        
-
         public static void NetReadArmy(System.IO.BinaryReader r)
         {
-            NetReadArmyId(r, out Faction faction, out Army army, out bool needInit);
+            NetReadMapObjId(r, out Faction faction, true, out AbsArmy mapObj, out bool needInit);
 
+            Army army = mapObj.GetArmy();
             army.readNet(r, needInit);
 
             if (needInit)
@@ -209,42 +142,7 @@ namespace VikingEngine.DSSWars.GameObject
             army.net_onUpdate();
         }
 
-        public static void NetWriteGroup(System.IO.BinaryWriter w, SoldierGroup group)
-        {
-            w.Write((ushort)group.myIndex);
-            group.writeNet(w);
-        }
-
-        public static bool NetReadGroup(System.IO.BinaryReader r, Army army)
-        {
-            int index = r.ReadUInt16();
-            if (index != ushort.MaxValue)
-            {
-                var group = army.groups.GetIndex_Safe(index);
-                bool needInit = false;
-                if (group == null)
-                {
-                    needInit = true;
-                    if (army.IsCity())
-                    {
-                        group = new GuardGroup(army);
-                    }
-                    else
-                    {
-                        group = new SoldierGroup(army);
-                    }
-                    army.groups.HardSet(group, index);
-                }
-
-                group.readNet(army, r, needInit);
-                group.net_onUpdate();
-                return true;
-            }
-            else
-            { 
-                return false;
-            }
-        }
+        
 
         public void writeNet(System.IO.BinaryWriter w)
         {
@@ -340,13 +238,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             writeResources(w);
             Tag.write(w);
-            //w.Write((byte)tagBack);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-            //if (tagBack != CityTagBack.NONE)
-            //{
-            //    w.Write((ushort)tagArt);
-            //}
-
+            
             w.Write((byte)armyColumnWidth);
 
             Debug.WriteCheck(w);
@@ -536,9 +428,6 @@ namespace VikingEngine.DSSWars.GameObject
 
         void foodAndUpkeepToHud(ObjectHudArgs args, bool mayInteract)
         {
-            //float upkeepConvert = GetPlayer().ConvertUpkeep(totalGoldUpkeep, out bool casual);
-
-            
             args.content.newLine();
             args.content.Add(new RbImage(SpriteName.rtsUpkeepTime));
             args.content.space();
@@ -548,14 +437,12 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (!GetPlayer().profile.casualControls)
             {
-
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
                 args.content.space();
                 args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.TwoDecimal(/*Army.ManUpkeepToFoodUpkeep(*/totalUpkeep.food/*)*/))));
                 args.content.space();
                 HudLib.PerSecondInfo(args.player, args.content, false);
-
 
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsResource_Food));
@@ -601,20 +488,8 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-
-
         public void toGroupHud(RichBoxContent content)
         {
-            //string name = Name(out _);
-
-            //if (name != null)
-            //{
-            //    content.text(name).overrideColor = Color.LightYellow;
-            //    content.newLine();
-            //}
-
-            //content.Add(new RbBeginTitle());
-
             RichBoxContent buttonContent = new RichBoxContent();
 
             buttonContent.Add(GetFaction().FlagTextureToHud());

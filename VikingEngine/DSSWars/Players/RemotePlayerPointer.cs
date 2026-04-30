@@ -14,9 +14,10 @@ namespace VikingEngine.DSSWars.Players
     {
         PlayerNetState playerNetState = PlayerNetState.InMenu;
         MapDetailLayerType mapLayer = MapDetailLayerType.TerrainOverview2;
-        Vector2 pointerPos;
-        Vector2 pointerSpeed = Vector2.Zero;
-        Vector2 goalPointerPos = Vector2.Zero;
+        Vector3 pointerGoalWp;
+        Vector3 pointerWp;
+        Vector3 pointerSpeed = Vector3.Zero;
+        //Vector2 goalPointerPos = Vector2.Zero;
         Vector2 pointerIconPosDiff;
 
         public Graphics.Image pointer;
@@ -24,6 +25,7 @@ namespace VikingEngine.DSSWars.Players
         public Graphics.Image item;
         bool inGame;
         public SpriteName statusIcon;
+        public SpriteName itemIcon = SpriteName.NO_IMAGE;
 
         public RemotePlayerPointer(Network.AbsNetworkPeer peer, bool inGame)
         {
@@ -31,7 +33,7 @@ namespace VikingEngine.DSSWars.Players
 
             ImageLayers layer = inGame ? ImageLayers.Background4 : ImageLayers.Foreground1;
 
-            pointer = new Graphics.Image(SpriteName.cmdClientPointer, goalPointerPos,
+            pointer = new Graphics.Image(SpriteName.cmdClientPointer, Vector2.Zero,
                 Engine.Screen.SmallIconSizeV2, layer, false);
             pointerGamerIcon = new Graphics.ImageAdvanced(SpriteName.defaultGamerIcon,
                 Vector2.Zero, Engine.Screen.SmallIconSizeV2, ImageLayers.AbsoluteBottomLayer, false);
@@ -39,7 +41,7 @@ namespace VikingEngine.DSSWars.Players
             pointerIconPosDiff = pointer.Size * 0.4f;
 
             item = new Graphics.Image(SpriteName.MissingImage, Vector2.Zero,
-                Engine.Screen.IconSizeV2, ImageLayers.AbsoluteBottomLayer, true);
+                Engine.Screen.IconSizeV2 * 0.8f, ImageLayers.AbsoluteBottomLayer, true);
             item.LayerBelow(pointer);
             item.Visible = false;
 
@@ -48,6 +50,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void Update(LocalPlayer playerView)
         {
+
             if (playerNetState != PlayerNetState.InMenu)
             {
                 MapDetailLayerType viewLayer = playerView.mapLayer();
@@ -56,26 +59,26 @@ namespace VikingEngine.DSSWars.Players
                     viewLayer = MapDetailLayerType.FactionColors3;
                 }
 
-                if (playerView.gameControls.map.camera.LookTarget != playerView.gameControls.map.camera.prevLookTarget)
-                {
-                    Vector2 moveCamera =
-                        Ref.draw.Camera.From3DToScreenPos(playerView.gameControls.map.camera.prevLookTarget, playerView.playerData.view.Viewport) -
-                        Ref.draw.Camera.From3DToScreenPos(playerView.gameControls.map.camera.LookTarget, playerView.playerData.view.Viewport);
-                    pointer.Position += moveCamera; 
-                }
+                //if (playerView.gameControls.map.camera.LookTarget != playerView.gameControls.map.camera.prevLookTarget)
+                //{
+                //    Vector2 moveCamera =
+                //        Ref.draw.Camera.From3DToScreenPos(playerView.gameControls.map.camera.prevLookTarget, playerView.playerData.view.Viewport) -
+                //        Ref.draw.Camera.From3DToScreenPos(playerView.gameControls.map.camera.LookTarget, playerView.playerData.view.Viewport);
+                //    pointer.Position += moveCamera; 
+                //}
 
-                goalPointerPos = Ref.draw.Camera.From3DToScreenPos(
-                        VectorExt.V3FromXZ(pointerPos, 0.1f), playerView.playerData.view.Viewport);
-                Vector2 diff = goalPointerPos - pointer.Position;
+                //goalPointerPos = Ref.draw.Camera.From3DToScreenPos(
+                //        pointerGoalWp, playerView.playerData.view.Viewport);
+                Vector3 diff = pointerGoalWp - pointerWp;
 
-                if (diff.Length() > 2)
+                if (diff.Length() > 0.1f)
                 {
                     float expectedUpdates = (Ref.netSession.netUpdateRate / Ref.main.TargetElapsedTime.Milliseconds) * 1.5f;
                     pointerSpeed = diff / expectedUpdates;
                 }
                 else
                 {
-                    pointerSpeed = Vector2.Zero;
+                    pointerSpeed = Vector3.Zero;
                 }
 
 
@@ -86,7 +89,12 @@ namespace VikingEngine.DSSWars.Players
                 pointerGamerIcon.Visible = true;
                 pointerGamerIcon.Opacity = transparent;
 
-                pointer.Position += pointerSpeed;
+                pointerWp += pointerSpeed;
+
+
+                pointer.Position = Ref.draw.Camera.From3DToScreenPos(
+                    pointerWp, playerView.playerData.view.Viewport);
+
                 pointerGamerIcon.Position = pointer.Position + pointerIconPosDiff;
 
                 if (playerNetState == PlayerNetState.Building)
@@ -134,6 +142,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void netRead(System.IO.BinaryReader r)
         {
+            itemIcon = SpriteName.NO_IMAGE;
             playerNetState = (PlayerNetState)r.ReadByte();
 
             if (playerNetState > PlayerNetState.InMenu)
@@ -142,8 +151,24 @@ namespace VikingEngine.DSSWars.Players
                 if (playerNetState == PlayerNetState.Building)
                 {
                     Build.BuildAndExpandType build = (Build.BuildAndExpandType)r.ReadByte();
-                    IconName.Building(build, out statusIcon, out _);
-                    item.SetSpriteName(statusIcon);
+                    
+                    switch (build)
+                    {
+                        case Build.BuildAndExpandType.NUM_NONE:
+                            statusIcon = SpriteName.WarsHammer;
+                            break;
+                        case Build.BuildAndExpandType.DEMOLISH:
+                            statusIcon = SpriteName.WarsHammerSub;
+
+                            break;
+                        default:
+                            statusIcon = SpriteName.WarsHammerAdd;
+                            IconName.Building(build, out itemIcon, out _);
+                            item.SetSpriteName(itemIcon);
+                            break;
+                    }
+                    
+                    
                 }
                 else
                 {
@@ -171,7 +196,7 @@ namespace VikingEngine.DSSWars.Players
                     mapLayer = MapDetailLayerType.FactionColors3;
                 }
 
-                pointerPos = StreamLib.ReadVector2(r);
+                pointerGoalWp = VectorExt.V3FromXZ(StreamLib.ReadVector2(r), 0.1f);
 
                 //if (inGame)
                 //{
@@ -191,15 +216,15 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-        public bool Visible
-        {
-            set
-            {
-                pointer.Visible = value;
-                pointerGamerIcon.Visible = value;
-                item.Visible = false;
-            }
-        }
+        //public bool Visible
+        //{
+        //    set
+        //    {
+        //        pointer.Visible = value;
+        //        pointerGamerIcon.Visible = value;
+        //        item.Visible = false;
+        //    }
+        //}
 
         public void DeleteMe()
         {

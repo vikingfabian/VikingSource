@@ -100,15 +100,13 @@ namespace VikingEngine.DSSWars
                     var cities = remoteC.sel.GetAllCitiesInView();
                     foreach (var c in cities)
                     {
-                        if (DssRef.world.cities[c].net_roundtrip_asyncupdate())
+                        DssRef.world.cities[c].net_roundtrip_asyncupdate(out int packetCount);
+                        maxPackets -= packetCount;
+                        if (maxPackets <= 0)
                         {
-                            if (--maxPackets <= 0)
-                            {
-                                break;
-                            }
+                            break;
                         }
                     }
-
                     remoteC.sel.Net_UpdateArmies(ref maxPackets);
                 }
             }
@@ -162,59 +160,64 @@ namespace VikingEngine.DSSWars
 
                 case PacketType.DssPlayerEnterPresentation:
                     {
+
                         var player = GetOrCreateRemotePlayer(packet.sender, 0);
                         int count = packet.r.ReadByte();
-                        player.profile.flag = new FlagAndColor(packet.r);
-                        player.flagTexture = player.profile.flag.flagDesign.CreateTexture(player.profile.flag);
-                        //DssRef.world.BordersUpdated = true;
 
-                        RichBoxContent content = new RichBoxContent();
-
-                        content.h2(NetworkIcon, ".Player joined", HudLib.TitleColor_Head);
-                        content.newLine();
-                        player.addNetGamerToHud(content);
-                        LocalHost().hud.messages.Add(content);
-
-
-                        if (host)
+                        if (player.profile.flag == null)
                         {
-                            //Assign faction
-                            Task.Run(() =>
+                            player.profile.flag = new FlagAndColor(packet.r);
+                            player.flagTexture = player.profile.flag.flagDesign.CreateTexture(player.profile.flag);
+                            //DssRef.world.BordersUpdated = true;
+
+                            RichBoxContent content = new RichBoxContent();
+
+                            content.h2(NetworkIcon, ".Player joined", HudLib.TitleColor_Head);
+                            content.newLine();
+                            player.addNetGamerToHud(content);
+                            LocalHost().hud.messages.Add(content);
+
+
+                            if (host)
                             {
-                                try
+                                //Assign faction
+                                Task.Run(() =>
                                 {
-                                    Faction faction = DssRef.world.getPlayerAvailableFaction2(localPlayers, false, true);
-
-                                    if (faction != null && faction.player.IsBot())
+                                    try
                                     {
-                                        Ref.update.AddSyncAction(new SyncAction(() =>
+                                        Faction faction = DssRef.world.getPlayerAvailableFaction2(localPlayers, false, true);
+
+                                        if (faction != null && faction.player.IsBot())
                                         {
-                                            var remote = GetOrCreateRemotePlayer(packet.sender, 0);
-                                            remote.AssignFaction(faction);
-
-                                            Ref.steam.P2PManager.OnSendingLargeDataChunk();
-
+                                            Ref.update.AddSyncAction(new SyncAction(() =>
                                             {
-                                                var w = Ref.netSession.BeginWritingPacket(PacketType.DssFactionStatus, PacketReliability.Reliable);
-                                                w.Write((ushort)faction.myIndex);
-                                                faction.writeNet_Status(w);
+                                                var remote = GetOrCreateRemotePlayer(packet.sender, 0);
+                                                remote.AssignFaction(faction);
 
-                                            }
-                                            {
-                                                var w = Ref.netSession.BeginWritingPacket(PacketType.DssAssignFaction, PacketReliability.Reliable);
-                                                NetWritePlayer(w, remote);
-                                                w.Write((ushort)faction.myIndex);
-                                            }
+                                                Ref.steam.P2PManager.OnSendingLargeDataChunk();
 
-                                            factionHandovers.Enqueue(new FactionHandover(packet.sender, faction));
-                                        }));
+                                                {
+                                                    var w = Ref.netSession.BeginWritingPacket(PacketType.DssFactionStatus, PacketReliability.Reliable);
+                                                    w.Write((ushort)faction.myIndex);
+                                                    faction.writeNet_Status(w);
+
+                                                }
+                                                {
+                                                    var w = Ref.netSession.BeginWritingPacket(PacketType.DssAssignFaction, PacketReliability.Reliable);
+                                                    NetWritePlayer(w, remote);
+                                                    w.Write((ushort)faction.myIndex);
+                                                }
+
+                                                factionHandovers.Enqueue(new FactionHandover(packet.sender, faction));
+                                            }));
+                                        }
                                     }
-                                }
-                                catch (Exception ex)
-                                {
-                                    BlueScreen.ThreadException = ex;
-                                }
-                            });
+                                    catch (Exception ex)
+                                    {
+                                        BlueScreen.ThreadException = ex;
+                                    }
+                                });
+                            }
                         }
                     }
                     break;
@@ -294,30 +297,26 @@ namespace VikingEngine.DSSWars
                     Army.NetReadArmy(packet.r);
                     break;
 
-                case PacketType.DssSoldierGroupStatus:
-                    {
-                        //int factionIx = packet.r.ReadUInt16();
-                        //int armyIx = packet.r.ReadUInt16();
-
-                        //var faction = DssRef.world.factions.GetIndex_Safe(factionIx);
-                        //if (faction != null)
-                        //{
-                        //    var army = faction.armies.GetIndex_Safe(armyIx);
-                        //    if (army != null)
-                        //    {
-                        Army.NetReadArmyId(packet.r, out Faction faction, out Army army, out bool needInit);
-                        if (army != null)
-                        {
-                            bool more = false;
-                            do
-                            {
-                                more = Army.NetReadGroup(packet.r, army);
-                            } while (more);
-                        }
-                        //    }
-                        //}
-                    }
+                case PacketType.DssSoldierGroupStatus_Army:
+                    readGroupStatus(true);
                     break;
+                case PacketType.DssSoldierGroupStatus_City:
+                    readGroupStatus(false);
+                    break;
+
+            }
+
+            void readGroupStatus(bool bArmy)
+            { 
+                AbsArmy.NetReadMapObjId(packet.r, out Faction faction, bArmy, out AbsArmy mapObj, out bool needInit);
+                if (mapObj != null)
+                {
+                    bool more = false;
+                    do
+                    {
+                        more = AbsArmy.NetReadGroup(packet.r, mapObj);
+                    } while (more);
+                }
             }
         }
 

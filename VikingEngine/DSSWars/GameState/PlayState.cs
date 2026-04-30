@@ -131,7 +131,7 @@ namespace VikingEngine.DSSWars
             local.onGameStart(false);
 
             Ref.p2p.localPeer.Tag = LocalHost();
-            netPresentYourself(ReceivedPacket.Empty);
+            //netPresentYourself(ReceivedPacket.Empty);
         }
 
         public void initGameState(bool newGame, ObjectPointerCollection pointers)
