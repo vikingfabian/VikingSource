@@ -648,7 +648,11 @@ namespace VikingEngine.DSSWars.Resource
                     restrictedToBiom = Data.CityBiome.Desert,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.ElephantCage));
-                animal.soldierData.ElephantSetup();
+                //animal.soldierData.ElephantSetup();
+                animal.soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.6f;
+                animal.soldierData.boundRadius = DssVar.StandardBoundRadius * 2.1f;
+                animal.soldierData.rowWidth = ElephantRowWidth;
+                animal.soldierData.columnsDepth = ElephantCumnDepth;
                 animal.wagonPull = WagonPull.Balcon;
                 animal.armorCarry = ArmorCarry.All;
 
@@ -660,8 +664,7 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 10);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 10);
 
-                animal.soldierData.rowWidth = ElephantRowWidth;
-                animal.soldierData.columnsDepth = ElephantCumnDepth;
+                
                 animal.soldierData.animalFoodMultiplier = 4f;
             }
 
@@ -672,7 +675,10 @@ namespace VikingEngine.DSSWars.Resource
                     restrictedToBiom = Data.CityBiome.Desert,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.WarElephantCage));
-                animal.soldierData.ElephantSetup();
+                animal.soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.6f;
+                animal.soldierData.boundRadius = DssVar.StandardBoundRadius * 2.3f;
+                animal.soldierData.rowWidth = ElephantRowWidth;
+                animal.soldierData.columnsDepth = ElephantCumnDepth;
                 animal.wagonPull = WagonPull.Balcon;
                 animal.armorCarry = ArmorCarry.All;
 
@@ -684,8 +690,7 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 15);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 15);
 
-                animal.soldierData.rowWidth = ElephantRowWidth;
-                animal.soldierData.columnsDepth = ElephantCumnDepth;
+                
                 animal.soldierData.animalFoodMultiplier = 5f;
             }
 
@@ -696,7 +701,10 @@ namespace VikingEngine.DSSWars.Resource
                     restrictedToBiom = Data.CityBiome.Desert,
                 };
                 animal.AddItemSource(new ItemSource(ItemSourceType.Farm, Build.BuildAndExpandType.OliphantCage));
-                animal.soldierData.ElephantSetup();
+                animal.soldierData.groupSpacing = DssVar.DefaultGroupSpacing * 2.8f;
+                animal.soldierData.boundRadius = DssVar.StandardBoundRadius * 2.5f;
+                animal.soldierData.rowWidth = 3;
+                animal.soldierData.columnsDepth = 1;
                 animal.wagonPull = WagonPull.Balcon;
                 animal.armorCarry = ArmorCarry.All;
 
@@ -708,8 +716,7 @@ namespace VikingEngine.DSSWars.Resource
                 animal.soldierData.basehealth = MathExt.MultiplyInt(DssConst.Soldier_DefaultHealth, 40);
                 animal.soldierData.attackDamage = MathExt.MultiplyInt(DssConst.WeaponDamage_Sword, 30);
 
-                animal.soldierData.rowWidth = ElephantRowWidth;
-                animal.soldierData.columnsDepth = ElephantCumnDepth;
+                
                 animal.soldierData.animalFoodMultiplier = 8f;
             }
 

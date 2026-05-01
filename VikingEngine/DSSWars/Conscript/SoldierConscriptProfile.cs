@@ -221,14 +221,26 @@ namespace VikingEngine.DSSWars.Conscript
 
             if (conscript.vehicle != ItemResourceType.NONE)
             {
-                soldierData.WagonSetup();
+                var wagonProperties = Resource.ItemPropertyColl.Get(conscript.vehicle);
+                var animalProperties = Resource.ItemPropertyColl.Get(conscript.animal);
+
+                if (animalProperties.wagonPull == WagonPull.Balcon)
+                {
+                    soldierData.columnsDepth = animalProperties.soldierData.columnsDepth;
+                    soldierData.rowWidth = animalProperties.soldierData.rowWidth;                    
+                    soldierData.boundRadius = animalProperties.soldierData.boundRadius;
+                    soldierData.groupSpacing = animalProperties.soldierData.groupSpacing;
+                }
+                else
+                {
+                    soldierData.WagonSetup();
+                }
                 if (conscript.vehicle == ItemResourceType.Wagon4Wheel &&
                    weaponProperties.Filter_IsWarMachine)
                 {
                     soldierData.modelData.riding = true;
                 }
-                var wagonProperties = Resource.ItemPropertyColl.Get(conscript.vehicle);
-                var animalProperties = Resource.ItemPropertyColl.Get(conscript.animal);
+                
 
                 soldierData.walkingSpeed = new IntervalF(animalProperties.soldierData.lightWagonSpeed, animalProperties.soldierData.heavyWagonSpeed).GetFromPercent(wagonProperties.soldierData.weightClass);
 

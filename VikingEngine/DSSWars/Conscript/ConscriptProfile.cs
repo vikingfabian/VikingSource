@@ -394,9 +394,10 @@ namespace VikingEngine.DSSWars.Conscript
 
             if (animal != ItemResourceType.NONE)
             {
-                if (ItemPropertyColl.Get(animal).Filter_IsRidingAnimal)
+                var animalProp = ItemPropertyColl.Get(animal);
+                if (animalProp.Filter_IsRidingAnimal)
                 {
-                    if (vehicle == ItemResourceType.NONE)
+                    if (vehicle == ItemResourceType.NONE || animalProp.wagonPull == WagonPull.Balcon)
                     {
                         name = string.Format(DssRef.lang.UnitType_UnitOnMount, name);
                     }

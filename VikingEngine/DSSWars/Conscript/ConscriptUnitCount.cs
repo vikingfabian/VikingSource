@@ -28,60 +28,68 @@ namespace VikingEngine.DSSWars.Conscript
             menPerUnit = 1;
             var weaponProp = Resource.ItemPropertyColl.Get(conscript.weapon);
 
-            if (conscript.vehicle != Resource.ItemResourceType.NONE)
+            if (conscript.animal != Resource.ItemResourceType.NONE)
             {
-                vehiclesPerUnit = 1;
-                animalsPerUnit = 2;
-                groupUnitCount = Resource.ItemPropertyColl.WagonRowWidth * Resource.ItemPropertyColl.WagonColumnDepth;
                 var animalProp = Resource.ItemPropertyColl.Get(conscript.animal);
 
-                if (animalProp.wagonPull == Resource.WagonPull.Balcon)
+                if (conscript.vehicle != Resource.ItemResourceType.NONE)
+                    //&&
+                    //animalProp.wagonPull != Resource.WagonPull.Balcon)
                 {
-                    //Elephant riders
-                    menPerUnit = 2;
+                    vehiclesPerUnit = 1;
+                    animalsPerUnit = 2;
+                    groupUnitCount = Resource.ItemPropertyColl.WagonRowWidth * Resource.ItemPropertyColl.WagonColumnDepth;
 
-                    if (weaponProp.Filter_IsWarMachine)
-                    {   
-                        weaponsPerUnit = 1;
+                    if (animalProp.wagonPull == Resource.WagonPull.Balcon)
+                    {
+                        //Elephant riders
+                        menPerUnit = 2;
+                        groupUnitCount = animalProp.soldierData.UnitCount();
+                        animalsPerUnit = 1;
+
+                        if (weaponProp.Filter_IsWarMachine)
+                        {
+                            weaponsPerUnit = 1;
+                        }
+                        else
+                        {
+                            weaponsPerUnit = menPerUnit;
+                        }
+                    }
+                    else if (weaponProp.Filter_IsWarMachine)
+                    {
+                        //The wagon is one big weapon
+                        menPerUnit = 2;
                     }
                     else
                     {
-                        weaponsPerUnit = menPerUnit;
+                        //Carries soldiers
+                        menPerUnit = 4;
+                        weaponsPerUnit = 4;
                     }
-                }
-                else if (weaponProp.Filter_IsWarMachine)
-                {
-                    //The wagon is one big weapon
-                    menPerUnit = 2;
+
                 }
                 else
                 {
-                    //Carries soldiers
-                    menPerUnit = 4;
-                    weaponsPerUnit = 4;
-                }
+                    animalsPerUnit = 1;
 
-            }
-            else if (conscript.animal != Resource.ItemResourceType.NONE)
-            {
-                animalsPerUnit = 1;
-                var animalProp = Resource.ItemPropertyColl.Get(conscript.animal);
-                seperateAnimalUnit = !animalProp.Filter_IsRidingAnimal;
+                    seperateAnimalUnit = !animalProp.Filter_IsRidingAnimal;
 
-                if (seperateAnimalUnit)
-                {
-                    groupUnitCount = weaponProp.soldierData.UnitCount() / 2;
-                }
-                else
-                {
-                    groupUnitCount = animalProp.soldierData.UnitCount();
-                }
+                    if (seperateAnimalUnit)
+                    {
+                        groupUnitCount = weaponProp.soldierData.UnitCount() / 2;
+                    }
+                    else
+                    {
+                        groupUnitCount = animalProp.soldierData.UnitCount();
+                    }
 
-                if (weaponProp.Filter_IsWarMachine)
-                {
+                    if (weaponProp.Filter_IsWarMachine)
+                    {
 #if DEBUG
-                    //throw new Exception();
+                        //throw new Exception();
 #endif
+                    }
                 }
             }
             else
