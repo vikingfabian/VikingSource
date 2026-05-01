@@ -135,6 +135,7 @@ namespace VikingEngine.DSSWars.GameObject
                         group = new SoldierGroup(army);
                     }
                     army.groups.HardSet(group, index);
+                    group.myIndex = index;
                     if (group.factionIndex < 0)
                     {
                         throw new Exception();

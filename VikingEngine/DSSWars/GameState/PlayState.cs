@@ -593,9 +593,12 @@ namespace VikingEngine.DSSWars
 
         void setPlayerNetState(PlayerNetState netState)
         {
-            foreach (var local in localPlayers)
+            if (localPlayers != null)
             {
-                local.playerNetState = netState;
+                foreach (var local in localPlayers)
+                {
+                    local.playerNetState = netState;
+                }
             }
         }
 

@@ -542,7 +542,7 @@ namespace VikingEngine.DSSWars
                     city.setFaction(this, duringStartUp, false);
                     if (!duringStartUp)
                     {
-                        player.OnCityCapture(city);
+                        player?.OnCityCapture(city);
 
                         city.workTemplate.setAllToFollowFaction();
                         city.workTemplate.onFactionChange(city, workTemplate);
