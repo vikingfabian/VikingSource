@@ -78,34 +78,6 @@ namespace VikingEngine.DSSWars.GameObject
             upgradeUnit.position = position;
         }
 
-
-
-        //public void write(System.IO.BinaryWriter w)
-        //{
-        //    w.Write((byte)data.unitType);
-        //    WritePosition(w, position);
-        //    w.Write(rotation.ByteDir);
-        //}
-
-        //public void read(System.IO.BinaryReader r, Players.AbsPlayer player, SoldierGroup group)
-        //{
-
-        //}
-
-        //public void writeGameState(System.IO.BinaryWriter w)
-        //{
-        //    w.Write((byte)aiState);
-        //    WP.writePosXZ(w, position);
-        //    w.Write(rotation.ByteDir);
-
-        //}
-        //public void readGameState(System.IO.BinaryReader r, int version)
-        //{
-        //    aiState = (SoldierAiState)r.ReadByte();
-        //    WP.readPosXZ(r, out position, out tilePos);
-        //    rotation.ByteDir = r.ReadByte();
-        //}
-
         public static void OldRead(System.IO.BinaryReader r)
         {
             SoldierAiState aiState = (SoldierAiState)r.ReadByte();
@@ -210,22 +182,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
         override public void netShareUnit()
         {
-            //var w = beginWriteAddUnit(player);
-            //WritePosition(w, model.position);
         }
-
-        //override public void InitRemote(Players.AbsPlayer player, System.IO.BinaryReader r)
-        //{
-        //    //base.InitRemote(player, r);
-
-        //    //readId(r);
-        //    //Vector3 startPos = ReadPosition(r);
-        //    //clientPosition = startPos;
-
-        //    //init(startPos);
-        //}
-
-        //abstract protected void initData();
 
         public static void WritePosition(System.IO.BinaryWriter w, Vector3 position)
         {
@@ -302,79 +259,16 @@ namespace VikingEngine.DSSWars.GameObject
 
         public Vector3 groupPosition(Vector3 groupCenter, float groupRotation)
         {
-            //if (debugTagged)
-            //{
-            //    lib.DoNothing();
-            //}
             Vector3 result = position;
             Vector2 rotatedOffset = VectorExt.RotateVector(groupOffset, groupRotation);
-            //if (Math.Abs(rotatedOffset.X) > 0.5f)
-            //{
-            //    lib.DoNothing();
-            //}
+           
             result.X = groupCenter.X + rotatedOffset.X;
             result.Z = groupCenter.Z + rotatedOffset.Y;
 
             return result;
         }
 
-        override public void update(float time, bool fullUpdate)
-        {
-            //    if (!lockMovement)
-            //    {
-            //        if (fullUpdate)
-            //        {
-            //            switch (aiState)
-            //            {
-            //                case SoldierAiState.ColumnQue:
-            //                    if (soldierData.mainAttack != AttackType.Melee ||
-            //                       bonusProjectiles > 0)
-            //                    {
-            //                        updateRangeAttackIfAble(time, fullUpdate);
-            //                    }
-            //                    updateFollowQue(time);
-            //                    break;
-            //                case SoldierAiState.FreeAttack:
-            //                    updateMoveAttackPrio(time, fullUpdate);
-            //                    //collisionUpdate();
-            //                    break;
-            //                case SoldierAiState.Idle:
-            //                    state.idle = true;
-            //                    state.walking = false;
-            //                    break;
-            //                case SoldierAiState.ReGroup:
-            //                    if (!walkTowards(time, walkingGoal))
-            //                    {
-            //                        rotateToAngle(group.rotation.radians);
-            //                        state.idle = !state.rotating;
-            //                    }
-            //                    //collisionUpdate();
-            //                    break;
-            //                case SoldierAiState.GroupLock:
-            //                    //In wrong state
-            //                    setFreeAttack();
-            //                    break;
-            //            }
-
-            //            updateGroudY(false);
-            //        }
-            //        else
-            //        {
-            //            switch (aiState)
-            //            {
-            //                case SoldierAiState.FreeAttack:
-            //                    updateMoveAttackPrio(time, fullUpdate);
-            //                    break;
-            //                case SoldierAiState.GroupLock:
-            //                    //In wrong state
-            //                    setFreeAttack();
-            //                    break;
-            //            }
-            //        }
-
-            //        model?.update(this);
-            //    }
-            }
+       
 
             public void update_GroupLocked(bool walking)
         {
