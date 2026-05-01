@@ -229,6 +229,11 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
+        public override void update(float time, bool fullUpdate)
+        {
+            //throw new NotImplementedException();
+        }
+
         public override bool rectangleCollision(ScreenToSpaceRectangleBound rectangle)
         {
             return rectangle.Intersects(position, boundRadius);
@@ -268,9 +273,7 @@ namespace VikingEngine.DSSWars.GameObject
             return result;
         }
 
-       
-
-            public void update_GroupLocked(bool walking)
+        public void update_GroupLocked(bool walking)
         {
             if (walking)
             {
@@ -281,10 +284,12 @@ namespace VikingEngine.DSSWars.GameObject
             state.idle = !walking;
             model?.update(this);
         }
+
         public void update_client()
         {
             updateGroudY(false);
         }
+
         public void update2(float time, bool fullUpdate, float groupWalkSpeed)
         {
             if (state2 == SoldierState2.wakeup)

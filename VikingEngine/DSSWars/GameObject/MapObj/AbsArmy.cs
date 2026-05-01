@@ -45,30 +45,29 @@ namespace VikingEngine.DSSWars.GameObject
         }
         public static void NetWriteMapObjId(System.IO.BinaryWriter w, AbsArmy army)
         {
-            if (army.IsArmy())
-            {
+            //if (army.IsArmy())
+            //{
                 w.Write((ushort)army.factionIndex);
-            }
+            //}
             w.Write((ushort)army.myIndex);
         }
 
         public static void NetReadMapObjId(System.IO.BinaryReader r, out Faction faction, bool bArmy, out AbsArmy mapObj, out bool needInit)
         {
+            int factionIx = r.ReadUInt16();
+            faction = DssRef.world.faction(factionIx);
+            int unitIx = r.ReadUInt16();
+
             if (bArmy)
             {
-                int factionIx = r.ReadUInt16();
-                faction = DssRef.world.faction(factionIx);
-
-                int armyIx = r.ReadUInt16();
-
-                Army army = faction.armies.GetIndex_Safe(armyIx);
+                Army army = faction.armies.GetIndex_Safe(unitIx);
                 needInit = false;
                 if (army == null)
                 {
                     army = new Army();
                     army.factionIndex = factionIx;
                     //faction.armies.HardSet(army, armyIx);
-                    army.init(faction, armyIx);
+                    army.init(faction, unitIx);
                     needInit = true;
                 }
                 army.IsNetHosted = faction.player != null && faction.player.IsLocalPlayer();
@@ -77,8 +76,9 @@ namespace VikingEngine.DSSWars.GameObject
             else
             {
                 needInit = false;
-                int cityIx = r.ReadUInt16();
-                mapObj = DssRef.world.cities[cityIx];
+                //int unitIx = r.ReadUInt16();
+                mapObj = DssRef.world.cities[unitIx];
+                mapObj.setFaction(faction, false, true);
                 faction = mapObj.GetFaction();
             }
         }
@@ -135,6 +135,10 @@ namespace VikingEngine.DSSWars.GameObject
                         group = new SoldierGroup(army);
                     }
                     army.groups.HardSet(group, index);
+                    if (group.factionIndex < 0)
+                    {
+                        throw new Exception();
+                    }
                 }
 
                 group.readNet(army, r, needInit);

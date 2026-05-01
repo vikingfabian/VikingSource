@@ -944,7 +944,7 @@ namespace VikingEngine.DSSWars.GameObject
         //        }
         //    }
         //}
-
+        
         virtual public void update(float time, bool fullUpdate)
         {
             if (debugTagged)
