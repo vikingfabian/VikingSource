@@ -18,7 +18,7 @@ namespace VikingEngine.SteamWrapping
         private const int MAX_PAYLOAD_SIZE = 1024;
         private byte[] _compressedVoiceBuffer = new byte[MAX_PAYLOAD_SIZE];
         byte[] _uncompressedVoiceBuffer = new byte[1024 * 22]; // Max size of an uncompressed voice chunk
-
+        public bool recordingOn = false;
         public void InitVoice()
         {
             // Steam optimally records at 11025, 22050, or 44100 Hz depending on the user's hardware/settings.
@@ -77,12 +77,26 @@ namespace VikingEngine.SteamWrapping
 
         public void StartRecording()
         {
+            recordingOn = true;
             SteamUser.StartVoiceRecording();
         }
 
         public void StopRecording()
         {
+            recordingOn = false;
             SteamUser.StopVoiceRecording();
+        }
+
+        public void ToggleRecording()
+        {
+            if (recordingOn)
+            {
+                StopRecording();
+            }
+            else
+            { 
+                StartRecording();
+            }
         }
 
         public void UpdateVolume()

@@ -13,6 +13,7 @@ using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Players.Profile;
 using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
+using VikingEngine.Input;
 using VikingEngine.LootFest.GO.PlayerCharacter;
 using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
@@ -174,7 +175,7 @@ namespace VikingEngine.DSSWars
 
                             content.h2(NetworkIcon, ".Player joined", HudLib.TitleColor_Head);
                             content.newLine();
-                            player.addNetGamerToHud(content);
+                            player.addNetGamerToHud(content, false);
                             LocalHost().hud.messages.Add(content, SoundLib.netJoined);
 
 
@@ -309,7 +310,7 @@ namespace VikingEngine.DSSWars
                         RichBoxContent content = new RichBoxContent();
                         var player = GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex);
                         
-                        player.addNetGamerToHud(content);
+                        player.addNetGamerToHud(content, false);
                         content.icontext(SpriteName.LfChatBobbleIcon, text);
 
                         LocalHost().hud.messages.Add(content, SoundLib.netMessage);
@@ -399,6 +400,11 @@ namespace VikingEngine.DSSWars
         {
             base.NetEvent_PeerJoined(peer);
             GetOrCreateRemotePlayer(peer, 0);
+
+            if (Ref.netsett.voiceOption == VoiceOption.AlwaysOn)
+            {                
+                Ref.steam.StartRecording();                
+            }
         }
 
         public override void NetEvent_PeerLost(AbsNetworkPeer peer)
@@ -430,7 +436,7 @@ namespace VikingEngine.DSSWars
                 
                 content.newLine();
 
-                player.addNetGamerToHud(content);
+                player.addNetGamerToHud(content, false);
 
                 if (player.faction != null)
                 {

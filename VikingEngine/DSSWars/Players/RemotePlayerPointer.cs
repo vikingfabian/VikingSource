@@ -186,7 +186,9 @@ namespace VikingEngine.DSSWars.Players
                         case PlayerNetState.Army:
                             statusIcon = SpriteName.WarsArmy;
                             break;
-
+                        case PlayerNetState.TypingChat:
+                            statusIcon = SpriteName.LfChatBobbleIcon;
+                            break;
                     }
                 }
 
@@ -238,6 +240,7 @@ namespace VikingEngine.DSSWars.Players
     {
         InMenu,
 
+        TypingChat,
         Map,
         City,
         Building,

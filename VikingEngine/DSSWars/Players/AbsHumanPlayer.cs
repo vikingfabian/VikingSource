@@ -22,7 +22,7 @@ namespace VikingEngine.DSSWars.Players
             : base()
         { }
 
-        virtual public void addNetGamerToHud(RichBoxContent content)
+        virtual public void addNetGamerToHud(RichBoxContent content, bool addStatus)
         {
             content.Add(new RbBeginTitle(2));
 

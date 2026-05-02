@@ -42,10 +42,10 @@ namespace VikingEngine.DSSWars.Players
             pointer.Update(playerView);
         }
 
-        public override void addNetGamerToHud(RichBoxContent content)
+        public override void addNetGamerToHud(RichBoxContent content, bool addStatus)
         {
-            base.addNetGamerToHud(content);
-            if (pointer.statusIcon !=  SpriteName.NO_IMAGE)
+            base.addNetGamerToHud(content, addStatus);
+            if (addStatus && pointer.statusIcon !=  SpriteName.NO_IMAGE)
             {
                 content.space();
                 if (pointer.itemIcon != SpriteName.NO_IMAGE)

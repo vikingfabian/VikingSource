@@ -91,7 +91,7 @@ namespace VikingEngine.DSSWars.Interface
                 while(remoteC.Next())
                 {
                     content.newLine();
-                    remoteC.sel.addNetGamerToHud(content);//RemoteToHud(content);
+                    remoteC.sel.addNetGamerToHud(content, true);//RemoteToHud(content);
                 }
                 content.Add(new RbSeperationLine());
             }

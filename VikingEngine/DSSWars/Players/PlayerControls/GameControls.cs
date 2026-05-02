@@ -319,52 +319,37 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     player.hud.messages.onControllerClick();
                 }
 
+                
+            }
+
+            if (Ref.netSession.InMultiplayerSession)
+            {
                 if (input.TextChat.DownEvent)
                 {
                     new TextChat();
                 }
+                switch (Ref.netsett.voiceOption)
+                {
+                    case Network.VoiceOption.ButtonToggle:
+                        if (input.VoiceChat.DownEvent)
+                        {
+                            Ref.steam.ToggleRecording();
+                        }
+                        break;
+
+                    case Network.VoiceOption.ButtonHold:
+                        if (input.VoiceChat.DownEvent)
+                        {
+                            Ref.steam.StartRecording();
+                        }
+                        else if (input.VoiceChat.UpEvent)
+                        { 
+                            Ref.steam.StopRecording();
+                        }
+                        break;
+                }
             }
-
-            //if (input.inputSource.IsController)
-            //{
-
-            //    bool friendlyHoverObj = mapControls.hover.obj != null && mapControls.hover.obj.GetFaction() == faction;
-            //    if (!menuFocusState &&
-            //    !hud.menuFocus &&
-            //        (input.Select.DownEvent || (friendlyHoverObj && input.ControllerFocus.DownEvent)))
-            //    {
-            //        if (armyControls != null &&
-            //            (mapControls.hover.obj == null || mapControls.armyMayAttackHoverObj()))
-            //        {
-            //            mapExecute();
-            //        }
-            //        else
-            //        {
-            //            mapSelect();
-            //        }
-            //    }
-
-            //    if (input.ControllerMessageClick.DownEvent)
-            //    {
-            //        hud.messages.onControllerClick();
-            //    }
-
-            //    if (inputConnected && !input.Connected)
-            //    {
-            //        DssRef.state.menuSystem.controllerLost();
-            //    }
-            //    inputConnected = input.Connected;
-            //}
-            //else
-            //{
-            //    if (!hud.mouseOverHud)
-            //    {
-
-            //    }
-            //}
-
-
-
+            
             gameSpeedInput();
 
             updateObjectTabbing();

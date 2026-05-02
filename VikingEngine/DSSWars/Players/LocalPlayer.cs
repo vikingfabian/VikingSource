@@ -847,11 +847,11 @@ namespace VikingEngine.DSSWars.Players
                     //battleLineUpTest2(false);
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.testTooPeacefulCheck();
-                    Ref.steam.StartRecording();
+                    //Ref.steam.StartRecording();
                 }
                 else if (Input.Keyboard.KeyUpEvent(Microsoft.Xna.Framework.Input.Keys.Y))
                 {
-                    Ref.steam.StopRecording();
+                    //Ref.steam.StopRecording();
                 }
 
                     if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))

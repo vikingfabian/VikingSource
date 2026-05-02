@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameState.VoxelEditor;
+using VikingEngine.DSSWars.Players;
 using VikingEngine.Engine;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
@@ -15,6 +16,7 @@ using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
 using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace VikingEngine.DSSWars.Interface.CutScene
 {
@@ -38,7 +40,7 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         {
             RichBoxContent content = new RichBoxContent();
             content.h1(".Text chat - everyone", HudLib.TitleColor_Head);
-
+            content.newLine();
             content.Add(new RbButton(new List<AbsRichBoxMember> {
                     new RbImage(SpriteName.cmdSpyglass),
                     new RbSpace(),
@@ -56,6 +58,11 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             {
                 var w = Ref.netSession.BeginWritingPacket(PacketType.TextChat, PacketReliability.Reliable);
                 StreamLib.WriteString(w, result);
+
+                RichBoxContent content = new RichBoxContent();
+                DssRef.state.LocalHost().addNetGamerToHud(content, false);
+                content.icontext(SpriteName.LfChatBobbleIcon, result);
+                DssRef.state.LocalHost().hud.messages.Add(content, null);
             }
             Close();
         }
@@ -65,6 +72,11 @@ namespace VikingEngine.DSSWars.Interface.CutScene
             base.Close();
             menu.DeleteMe();
             bg.DeleteMe();
+        }
+
+        public override PlayerNetState NetState()
+        {
+            return PlayerNetState.TypingChat;
         }
     }
 
