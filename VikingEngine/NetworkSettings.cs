@@ -21,5 +21,10 @@ namespace VikingEngine
         public bool NetVoiceMuted() { return netVoiceVolume * Ref.gamesett.MasterVolume <= 0; }
 
         public VoiceOption voiceOption = VoiceOption.ButtonHold;
+
+        public NetworkSettings()
+        {
+            Ref.netsett = this;
+        }
     }
 }
