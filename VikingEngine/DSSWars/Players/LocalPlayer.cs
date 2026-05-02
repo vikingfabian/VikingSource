@@ -846,9 +846,14 @@ namespace VikingEngine.DSSWars.Players
                     //battleLineUpTest2(false);
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.testTooPeacefulCheck();
+                    Ref.steam.StartRecording();
+                }
+                else if (Input.Keyboard.KeyUpEvent(Microsoft.Xna.Framework.Input.Keys.Y))
+                {
+                    Ref.steam.StopRecording();
                 }
 
-                if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
+                    if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
                     //battleLineUpTest3_friendly_only();
                     //battleLineUpTest2(false);
