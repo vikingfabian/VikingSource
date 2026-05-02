@@ -162,7 +162,12 @@ namespace VikingEngine.DSSWars
             {
                 return DiplomaticRelation.Empty;
             }
-
+#if DEBUG
+            if (arraylib.InBound(diplomaticRelations, RelationIndex(faction1.myIndex, faction2.myIndex)) == false)
+            {
+                lib.DoNothing();
+            }
+#endif
             return diplomaticRelations[RelationIndex(faction1.myIndex, faction2.myIndex)];
         }
 

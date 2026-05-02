@@ -170,7 +170,10 @@ namespace VikingEngine.DSSWars.GameObject
             refreshAttackRadius();
             refreshRotateSpeed();
 
-            tArmy.AddSoldierGroup(this);
+            if (myIndex < 0)
+            {
+                tArmy.AddSoldierGroup(this);
+            }
             rotation = tArmy.rotation;
         }
         public SoldierGroup(AbsArmy army)
