@@ -482,8 +482,9 @@ namespace VikingEngine.DSSWars
 
             if (cutScene != null)
             {
+                setPlayerNetState(cutScene.NetState());
                 cutScene.Time_Update(time);
-                setPlayerNetState(PlayerNetState.InMenu);
+                
                 return;
             }
 

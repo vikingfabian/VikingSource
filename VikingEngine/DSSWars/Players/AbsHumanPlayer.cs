@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -50,7 +51,7 @@ namespace VikingEngine.DSSWars.Players
                 }
                 content.Add(new RbGamerIcon(networkPeer.peer, 0.8f));
                 content.space();
-                content.Add(new RbText(networkPeer.peer.Gamertag, HudLib.TitleColor_Name));
+                content.Add(new RbText(networkPeer.peer.Gamertag, IsLocal? HudLib.TitleColor_Self : HudLib.TitleColor_Name));
 
                 
             }
