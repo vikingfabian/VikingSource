@@ -736,6 +736,8 @@ namespace VikingEngine.DSSWars
         {
             if (attacker != null && 
                 defender != null &&
+                attacker.player != null &&
+                defender.player != null &&
                 attacker != defender &&
                 !GetRelation(attacker, defender).InWar())
             {
