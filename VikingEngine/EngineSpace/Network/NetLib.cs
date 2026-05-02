@@ -107,6 +107,14 @@ namespace VikingEngine.Network
         }
     }
 
+    enum VoiceOption
+    { 
+        Off,
+        ButtonHold,
+        ButtonToggle,
+        AlwaysOn,
+    }
+
     enum SendPacketTo
     {
         All,
@@ -147,7 +155,7 @@ namespace VikingEngine.Network
         Steam_InviteAccepted,
         Steam_LargePacket,
         Steam_LargePacket_Recieved,
-        Chat,
+        TextChat,
         WorldSeed,
         AddGameObject,
 

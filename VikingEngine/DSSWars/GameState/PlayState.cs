@@ -677,6 +677,7 @@ namespace VikingEngine.DSSWars
         public override void OnDestroy()
         {
             exitThreads = true;
+            
             base.OnDestroy();
         }
 

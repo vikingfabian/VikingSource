@@ -175,7 +175,7 @@ namespace VikingEngine.DSSWars
                             content.h2(NetworkIcon, ".Player joined", HudLib.TitleColor_Head);
                             content.newLine();
                             player.addNetGamerToHud(content);
-                            LocalHost().hud.messages.Add(content);
+                            LocalHost().hud.messages.Add(content, SoundLib.netJoined);
 
 
                             if (host)
@@ -302,6 +302,18 @@ namespace VikingEngine.DSSWars
                     break;
                 case PacketType.DssSoldierGroupStatus_City:
                     readGroupStatus(false);
+                    break;
+                case PacketType.TextChat:
+                    {
+                        string text = StreamLib.ReadString_safe(packet.r);
+                        RichBoxContent content = new RichBoxContent();
+                        var player = GetOrCreateRemotePlayer(packet.sender, packet.senderLocalIndex);
+                        
+                        player.addNetGamerToHud(content);
+                        content.icontext(SpriteName.LfChatBobbleIcon, text);
+
+                        LocalHost().hud.messages.Add(content, SoundLib.netMessage);
+                    }
                     break;
 
             }
@@ -430,7 +442,7 @@ namespace VikingEngine.DSSWars
                     }
                 }
 
-                LocalHost().hud.messages.Add(content);
+                LocalHost().hud.messages.Add(content, SoundLib.netJoined);
 
             }
 

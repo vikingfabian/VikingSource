@@ -227,8 +227,8 @@ namespace VikingEngine.SteamWrapping
                                     }
                                 }
                                 break;
-                            case PacketType.Chat:
-                                Ref.steam.readChat(packet.r);
+                            case PacketType.TextChat:
+                                Ref.steam.readVoice(packet.r);
                                 break;
                         }
                     }

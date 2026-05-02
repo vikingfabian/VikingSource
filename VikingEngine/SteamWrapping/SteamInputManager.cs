@@ -707,6 +707,11 @@ namespace VikingEngine.SteamWrapping
         zoomInKey,
         zoomOutKey,
 
+        TextChat,
+        TeamTextChat,
+        VoiceChat,
+
+
         // MenuControls
         close_menu,
 

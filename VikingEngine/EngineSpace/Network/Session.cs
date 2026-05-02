@@ -160,6 +160,7 @@ namespace VikingEngine.Network
 
                 Ref.steam.LobbyMatchmaker.disconnect();
                 Ref.steam.P2PManager.disconnectSession();
+                Ref.steam.StopRecording();
 
                 Ref.NetUpdateReciever().NetEvent_ConnectionLost(reason);
             }

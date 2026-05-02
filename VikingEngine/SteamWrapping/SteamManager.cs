@@ -130,7 +130,7 @@ namespace VikingEngine.SteamWrapping
         {
             if (Ref.steam.isInitialized)
             {
-                DisposeChat();
+                DisposeVoice();
                 SteamInput.Shutdown();
             }
         }
@@ -277,7 +277,7 @@ namespace VikingEngine.SteamWrapping
             {
                 if (PlatformSettings.OnlineMultiplayer)
                 {
-                    InitChat();
+                    InitVoice();
                     P2PManager = new SteamP2PManager();
                     LobbyMatchmaker = new SteamLobbyMatchmaker();
                     //VOIP = new SteamVOIP();
@@ -300,7 +300,7 @@ namespace VikingEngine.SteamWrapping
                 if (P2PManager != null)
                 {
                     P2PManager.update();
-                    UpdateChat();
+                    UpdateVoice();
                 }
 
                 if (statsNeedUpdate)

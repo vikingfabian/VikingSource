@@ -2,6 +2,8 @@
 ## MULTIPLAYER UPDATE ##
 * Remade the player join map algo
 
+x new keys mapping
+x new steam input
 
 ﻿UPDATE
 Change Log:

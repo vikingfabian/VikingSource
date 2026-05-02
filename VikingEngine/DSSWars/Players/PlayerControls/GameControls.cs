@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Players.Orders;
@@ -300,13 +301,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         setMenuFocus(false, true);
                         clearSelection();
-                    }
-                
+                    }                
 
                     if (input.Controller_TabLeft.DownEvent)
                     {
                         controllerTabbing(-1, true);
                     }
+
                     if (input.Controller_TabRight.DownEvent)
                     {
                         controllerTabbing(1, true);
@@ -317,7 +318,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 {
                     player.hud.messages.onControllerClick();
                 }
-                
+
+                if (input.TextChat.DownEvent)
+                {
+                    new TextChat();
+                }
             }
 
             //if (input.inputSource.IsController)

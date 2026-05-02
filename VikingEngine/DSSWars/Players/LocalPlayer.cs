@@ -30,6 +30,7 @@ using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
+using VikingEngine.Sound;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG.HeroQuest.HeroStrategy;
@@ -771,7 +772,7 @@ namespace VikingEngine.DSSWars.Players
                     RichBoxContent content = new RichBoxContent();
                     MessageGroup_Ingame.Title(content, title);
                     DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content);
-                    Ref.update.AddSyncAction(new SyncAction2Arg<RichBoxContent, bool>(hud.messages.Add, content, true));
+                    Ref.update.AddSyncAction(new SyncAction3Arg<RichBoxContent, SoundContainerBase, bool>(hud.messages.Add, content, SoundLib.message_loud, true));
                 }
 
             }

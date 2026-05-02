@@ -369,7 +369,7 @@ namespace VikingEngine.DSSWars.Interface
             message.Add(new ArtButton(RbButtonStyle.Primary,
                 acceptButtonContent,
                 new RbAction(acceptToPlayerRelation)));
-            otherPlayer.hud.messages.Add(message);
+            otherPlayer.hud.messages.Add(message, SoundLib.netMessage);
         }
 
         void acceptToPlayerRelation()
