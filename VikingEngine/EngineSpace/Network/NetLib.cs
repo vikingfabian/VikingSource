@@ -148,6 +148,8 @@ namespace VikingEngine.Network
 
 
         VoiceChat,
+        TextChat,
+
         Steam_AssignClientId,
         Steam_SuccesfulJoinPing,
         Steam_SendRoundtrip,
@@ -155,7 +157,7 @@ namespace VikingEngine.Network
         Steam_InviteAccepted,
         Steam_LargePacket,
         Steam_LargePacket_Recieved,
-        TextChat,
+        
         WorldSeed,
         AddGameObject,
 
