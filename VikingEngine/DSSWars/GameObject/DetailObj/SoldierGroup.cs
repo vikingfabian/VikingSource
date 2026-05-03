@@ -950,7 +950,7 @@ namespace VikingEngine.DSSWars.GameObject
         
         virtual public void update(float time, bool fullUpdate)
         {
-            if (debugTagged)
+            if (army.TryGetTarget(out var tArmy2) && tArmy2.debugTagged)
             {
                  lib.DoNothing();
             }

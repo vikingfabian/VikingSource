@@ -587,6 +587,70 @@ namespace VikingEngine.DSSWars.GameObject
             
         }
 
+        void writeHousing(System.IO.BinaryWriter w)
+        {
+            w.Write((byte)cityType);
+
+            w.Write(workForce.amount);
+            w.Write(HousingCount_Workers);
+            w.Write(Bound.UShort(HousingCount_Guard));
+            w.Write(Bound.Short(freeServiceMen.amount));
+            w.Write(Bound.Short(workingAndFreeServiceMen));
+
+            w.Write(Bound.UShort(HousingCount_NobelMen));
+            w.Write(Bound.Short(freeNobelMen.amount));
+            w.Write(Bound.UShort(PenFoodUpkeep_minute));
+
+            cityHallSubtilePos.writeUshort(w);
+            citySquareSubtilePos.writeUshort(w);
+
+            Debug.WriteCheck(w);
+
+            childrenAge0.write16bit(w);
+            w.Write(Bound.UShort(childrenAge1));
+
+            immigrants.write16bit(w);
+
+            w.Write(Bound.Byte(maxWaterBase));
+            w.Write(waterAddPerSec);
+
+            Debug.WriteCheck(w);
+        }
+
+        void readHousing(System.IO.BinaryReader r, int subversion)
+        {
+            cityType = (CityType)r.ReadByte();
+
+            workForce.amount = r.ReadInt32();
+            HousingCount_Workers = r.ReadInt32();
+
+            HousingCount_Guard = r.ReadUInt16();
+            freeServiceMen.amount = r.ReadInt16();
+
+            workingAndFreeServiceMen = r.ReadInt16();
+
+            HousingCount_NobelMen = r.ReadUInt16();
+            freeNobelMen.amount = r.ReadInt16();
+            PenFoodUpkeep_minute = r.ReadUInt16();
+
+            cityHallSubtilePos.readUshort(r);
+            citySquareSubtilePos.readUshort(r);
+
+
+            Debug.ReadCheck(r);
+
+            childrenAge0.read16bit(r);
+            childrenAge1 = r.ReadUInt16();
+
+            immigrants.read16bit(r);
+
+            maxWaterBase = r.ReadByte();
+            maxWaterTotal = maxWaterBase;
+            waterAddPerSec = r.ReadSingle();
+
+            Debug.ReadCheck(r);
+        }
+
         public void writeGameState(System.IO.BinaryWriter w)
         {
             try
@@ -596,32 +660,7 @@ namespace VikingEngine.DSSWars.GameObject
                     lib.DoNothing();
                 }
 
-                w.Write((byte)cityType);
-
-                w.Write(workForce.amount);
-                w.Write(HousingCount_Workers);
-                w.Write(Bound.UShort(HousingCount_Guard));
-                w.Write(Bound.Short(freeServiceMen.amount));
-                w.Write(Bound.Short(workingAndFreeServiceMen));
-
-                w.Write(Bound.UShort(HousingCount_NobelMen));
-                w.Write(Bound.Short(freeNobelMen.amount));
-                w.Write(Bound.UShort(PenFoodUpkeep_minute));
-                
-                cityHallSubtilePos.writeUshort(w);
-                citySquareSubtilePos.writeUshort(w);
-
-                Debug.WriteCheck(w);
-
-                childrenAge0.write16bit(w);
-                w.Write(Bound.UShort(childrenAge1));
-
-                immigrants.write16bit(w);
-
-                w.Write(Bound.Byte(maxWaterBase));
-                w.Write(waterAddPerSec);
-
-                Debug.WriteCheck(w);
+                writeHousing(w);
 
                 workTemplate.writeGameState(w);
 
@@ -723,36 +762,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public void readGameState(System.IO.BinaryReader r, int subversion, ObjectPointerCollection pointers)
         {
-            cityType = (CityType)r.ReadByte();
-            
-            workForce.amount = r.ReadInt32();
-            HousingCount_Workers = r.ReadInt32();
-            
-            HousingCount_Guard = r.ReadUInt16();
-            freeServiceMen.amount = r.ReadInt16();
-            
-            workingAndFreeServiceMen = r.ReadInt16();
-
-            HousingCount_NobelMen = r.ReadUInt16();
-            freeNobelMen.amount = r.ReadInt16();
-            PenFoodUpkeep_minute = r.ReadUInt16();
-
-            cityHallSubtilePos.readUshort(r);
-            citySquareSubtilePos.readUshort(r);
-            
-
-            Debug.ReadCheck(r);
-
-            childrenAge0.read16bit(r);
-            childrenAge1 = r.ReadUInt16();
-
-            immigrants.read16bit(r);
-
-            maxWaterBase = r.ReadByte();
-            maxWaterTotal = maxWaterBase;
-            waterAddPerSec = r.ReadSingle();
-
-            Debug.ReadCheck(r);
+            readHousing(r, subversion);
 
             workTemplate.readGameState(r, subversion, true);
 
@@ -971,6 +981,9 @@ namespace VikingEngine.DSSWars.GameObject
             Debug.ReadCheck(r);
         }
 
+        
+
+
         //TODO change on big update
         void writeResources(System.IO.BinaryWriter w)
         {
@@ -1077,6 +1090,7 @@ namespace VikingEngine.DSSWars.GameObject
             switch (part)
             {
                 case 0:
+                    writeHousing(w);
                     workTemplate.writeGameState(w);
                     writeResources(w);
                     break;
@@ -1092,8 +1106,8 @@ namespace VikingEngine.DSSWars.GameObject
             switch (part)
             {
                 case 0:
+                    readHousing(r, int.MaxValue);
                     workTemplate.readGameState(r, int.MaxValue, true);
-
                     readResources(r, int.MaxValue);
                     break;
 
