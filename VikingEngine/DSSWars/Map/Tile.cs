@@ -524,6 +524,10 @@ namespace VikingEngine.DSSWars.Map
             float brightness = 1f - ((int)heightLevel - 2) * 0.05f;
 
             City city = City();
+            //if (city.IsNetHosted)
+            //{
+            //    lib.DoNothing();
+            //}
             int faction = city.factionIndex;
             float red = 0;
             float green = 0;

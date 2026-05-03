@@ -59,6 +59,7 @@ namespace VikingEngine.DSSWars.Players
 
         override public void AssignFaction(Faction faction)
         {
+            
             setPlayerFaction(faction);
             //faction.displayInFullOverview = true;
             base.AssignFaction(faction);

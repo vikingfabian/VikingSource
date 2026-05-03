@@ -1687,11 +1687,11 @@ namespace VikingEngine.DSSWars.Players
 
         public void baseOnGameStart()
         {
-            factionPixelTexture = new FactionPixelTexture(faction, true,
+            factionPixelTexture = new FactionPixelTexture(playerData.localPlayerIndex, true,
                 (DssRef.settings.playType == GameState.PlayStateType.Play || DssRef.settings.playType == GameState.PlayStateType.MapEditor) ?
                 FactionMapFilter.FactionCols : FactionMapFilter.Terrain);
-            minimapPixelTexture = new FactionPixelTexture(faction, true, FactionMapFilter.Minimap);
-            unitsPixelTexture = new UnitsPixelTexture(faction);
+            minimapPixelTexture = new FactionPixelTexture(playerData.localPlayerIndex, true, FactionMapFilter.Minimap);
+            unitsPixelTexture = new UnitsPixelTexture(playerData.localPlayerIndex);
         }
 
         public override void onGameStart(bool newGame)
