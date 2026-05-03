@@ -16,6 +16,7 @@ namespace VikingEngine.DSSWars.Net
         HandoverPart part = HandoverPart.Cities;
         
         SpottedArrayCounter<Army> armyCounter;
+        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
         public FactionHandover(AbsNetworkPeer peer, Faction faction) 
         {
             this.peer = peer;
@@ -62,7 +63,23 @@ namespace VikingEngine.DSSWars.Net
                         part++;
                         armyCounter = faction.armies.counter();
 
+                        //SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                        //while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
+                            //faction.cities
+
                         packet.EndWrite_Asynch();
+                    }
+                    break;
+                case HandoverPart.CityStatus:
+                    {
+                        if (citiesC.Next(ref faction.cities, DssRef.world.cities, out City city))
+                        {
+                            city.net_handover();
+                        }
+                        else
+                        {
+                            part++;
+                        }
                     }
                     break;
                 case HandoverPart.Armies:
@@ -80,7 +97,14 @@ namespace VikingEngine.DSSWars.Net
                     break;
                 case HandoverPart.HandOverComplete:
                     {
-                        Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssAssignFactionComplete, PacketReliability.Reliable, SendPacketTo.OneSpecific, peer.fullId, out var packet);
+                        citiesC.Reset();
+                        while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City city))
+                        {
+                            city.IsNetHosted = false;
+                        }
+
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(PacketType.DssAssignFactionComplete, PacketReliability.Reliable, out var packet);
+                        w.Write((ushort)faction.myIndex);
                         packet.EndWrite_Asynch();
                         part++;
                     }
@@ -93,6 +117,7 @@ namespace VikingEngine.DSSWars.Net
         enum HandoverPart
         { 
             Cities,
+            CityStatus,
             Armies,
             HandOverComplete,
             DONE

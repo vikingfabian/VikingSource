@@ -1041,7 +1041,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 for (int part = 0; part < count; ++part)
                 {
-                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityStatus, Network.PacketReliability.Reliable, out var packet);
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityStatus, Network.PacketReliability.Unrelyable, out var packet);
                     {
                         w.Write((ushort)myIndex);
                         w.Write((byte)part);
@@ -1058,6 +1058,24 @@ namespace VikingEngine.DSSWars.GameObject
 
            
         }
+
+        public void net_handover()
+        {
+            int count = MathExt.Div_Ceiling(workerStatuses.Count, MaxWorkerWriteCount) + 1;
+
+            for (int part = 0; part < count; ++part)
+            {
+                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssCityHandOver, Network.PacketReliability.Reliable/*, out var packet*/);
+                {
+                    w.Write((ushort)myIndex);
+                    w.Write((byte)part);
+                    writeNet_update(w, part);
+                }
+                //packet.CheckPacketLength();
+                //packet.EndWrite_Asynch();
+            }
+        }
+
 
         public void writeNet_update(System.IO.BinaryWriter w, int part)
         {
@@ -1076,6 +1094,8 @@ namespace VikingEngine.DSSWars.GameObject
 
            
         }
+
+       
         public void readNet_update(System.IO.BinaryReader r, int part)
         {
             switch (part)
@@ -3970,7 +3990,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 factionIndex = newFaction.myIndex;
-                IsNetHosted = newFaction.IsNetHosted();
+                //IsNetHosted = newFaction.IsNetHosted();
                 //TODO request city status
                 
                 if (!duringStartup)

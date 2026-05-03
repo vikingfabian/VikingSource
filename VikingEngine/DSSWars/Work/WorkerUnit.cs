@@ -58,7 +58,6 @@ namespace VikingEngine.DSSWars.Work
         public bool update(City city)
         {
 
-
             //if (myIndex == 6)
             //{
             //    lib.DoNothing();

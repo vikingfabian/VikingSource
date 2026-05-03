@@ -146,7 +146,6 @@ namespace VikingEngine.Network
     {
         NON,
 
-
         VoiceChat,
         TextChat,
 
@@ -174,6 +173,7 @@ namespace VikingEngine.Network
         DssCities,
         DssFactionStatus,
         DssCityStatus,
+        DssCityHandOver,
         DssArmyStatus,
         DssSoldierGroupStatus_Army,
         DssSoldierGroupStatus_City,

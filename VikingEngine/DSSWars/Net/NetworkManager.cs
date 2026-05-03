@@ -265,7 +265,20 @@ namespace VikingEngine.DSSWars
                     }
                     break;
                 case PacketType.DssAssignFactionComplete:
-                    factionHandOverComplete = true;
+                    {
+                        factionHandOverComplete = true;
+                        int factionIx = packet.r.ReadUInt16();
+                        var faction = DssRef.world.faction(factionIx);
+                        if (faction != null)
+                        {
+                            bool hosted = faction.IsNetHosted();
+                            SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                            while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City city))
+                            {
+                                city.IsNetHosted = hosted;
+                            }
+                        }
+                    }
                     break;
                 case PacketType.DssWorldTiles:
                     DssRef.world.readNet_Tile(packet.r);//l 32 * 4 * 4
@@ -286,6 +299,14 @@ namespace VikingEngine.DSSWars
                     break;
 
                 case PacketType.DssCityStatus:
+                    {
+                        int cityIx = packet.r.ReadUInt16();
+                        var city = DssRef.world.cities[cityIx];
+                        int part = packet.r.ReadByte();
+                        city.readNet_update(packet.r, part);
+                    }
+                    break;
+                case PacketType.DssCityHandOver:
                     {
                         int cityIx = packet.r.ReadUInt16();
                         var city = DssRef.world.cities[cityIx];
