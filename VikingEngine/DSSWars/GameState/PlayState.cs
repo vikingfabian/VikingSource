@@ -509,13 +509,22 @@ namespace VikingEngine.DSSWars
                 {
                     foreach (var m in DssRef.world.cities)
                     {
-                        m.update();
+                        if (m.IsNetHosted)
+                        {
+                            m.update();
+                        }
+                        else
+                        {
+                            m.update_client();
+                        }
                     }
 
-                    if (host)
+                    //if (host)
+                    //{
+                    var factionsC = DssRef.world.factions.counter();
+                    while (factionsC.Next())
                     {
-                        var factionsC = DssRef.world.factions.counter();
-                        while (factionsC.Next())
+                        if (factionsC.sel.IsNetHosted())
                         {
                             factionsC.sel.update();
 
@@ -524,23 +533,29 @@ namespace VikingEngine.DSSWars
                                 factionsC.sel.oneSecUpdate(DssRef.time.oneMinute);
                             }
                         }
-                    }
-                    else
-                    {
-                        var factionsC = DssRef.world.factions.counter();
-                        while (factionsC.Next())
+                        else
                         {
-                            if (factionsC.sel.player != null)
-                            {
-                                factionsC.sel.update_client(culling.playerInDetailView);
-                            }
-                        }
+                            factionsC.sel.update_client(culling.playerInDetailView);
 
-                        foreach (var m in DssRef.world.cities)
-                        {
-                            m.update_client();
                         }
                     }
+                    //}
+                    //else
+                    //{
+                    //    var factionsC = DssRef.world.factions.counter();
+                    //    while (factionsC.Next())
+                    //    {
+                    //        if (factionsC.sel.player != null)
+                    //        {
+                    //            factionsC.sel.update_client(culling.playerInDetailView);
+                    //        }
+                    //    }
+
+                    //    foreach (var m in DssRef.world.cities)
+                    //    {
+                    //        m.update_client();
+                    //    }
+                    //}
                 }
                 
             }

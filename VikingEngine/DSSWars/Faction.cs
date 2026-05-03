@@ -114,7 +114,7 @@ namespace VikingEngine.DSSWars
 
         public bool IsNetHosted()
         {
-            return (Ref.netSession.IsHost && player.IsLocal) || (player != null && player.IsLocalPlayer());
+            return player != null && ((Ref.netSession.IsHost && player.IsLocal) || player.IsLocalPlayer());
         }
         //public void initClient(WorldData world)
         //{

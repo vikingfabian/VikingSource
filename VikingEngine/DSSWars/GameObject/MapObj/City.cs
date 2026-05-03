@@ -3970,9 +3970,9 @@ namespace VikingEngine.DSSWars.GameObject
                 }
 
                 factionIndex = newFaction.myIndex;
+                IsNetHosted = newFaction.IsNetHosted();
+                //TODO request city status
                 
-                
-
                 if (!duringStartup)
                 {
                     
