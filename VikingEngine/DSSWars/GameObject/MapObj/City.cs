@@ -1005,6 +1005,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             w.Write((byte)Tile().heightLevel);
         }
+
         public void readNet_map(WorldData world, System.IO.BinaryReader r)
         {
             readMapFile(world, r, int.MaxValue);
@@ -1026,8 +1027,6 @@ namespace VikingEngine.DSSWars.GameObject
 
             DssRef.world.unitCollAreaGrid.add(this);
         }
-
-        
 
         public void net_roundtrip_asyncupdate(out int packetCount)
         {
@@ -1051,12 +1050,8 @@ namespace VikingEngine.DSSWars.GameObject
                     packet.EndWrite_Asynch();
                 }
 
-                netWriteGroups(Network.PacketReliability.Unrelyable, ref packetCount);
-
-                
-            }
-
-           
+                netWriteGroups(Network.PacketReliability.Unrelyable, ref packetCount);                
+            }           
         }
 
         public void net_handover()
@@ -1065,17 +1060,17 @@ namespace VikingEngine.DSSWars.GameObject
 
             for (int part = 0; part < count; ++part)
             {
-                var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssCityHandOver, Network.PacketReliability.Reliable/*, out var packet*/);
+                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityHandOver, Network.PacketReliability.Reliable, out var packet);
                 {
                     w.Write((ushort)myIndex);
                     w.Write((byte)part);
                     writeNet_update(w, part);
+
+                    packet.CheckPacketLength();
+                    packet.EndWrite_Asynch();
                 }
-                //packet.CheckPacketLength();
-                //packet.EndWrite_Asynch();
             }
         }
-
 
         public void writeNet_update(System.IO.BinaryWriter w, int part)
         {
@@ -1090,11 +1085,7 @@ namespace VikingEngine.DSSWars.GameObject
                     writeWorkerStatuses(w, true, part -1);
                     break;
             }
-            
-
-           
         }
-
        
         public void readNet_update(System.IO.BinaryReader r, int part)
         {
@@ -1110,19 +1101,12 @@ namespace VikingEngine.DSSWars.GameObject
                     readWorkerStatuses(r, true, part - 1, int.MaxValue);
                     break;
             }
-            
-
-           
         }
-
-        
-
 
         public int expandWorkForceCost()
         {
             return 40000 + HousingCount_Workers * 10;
         }
-
       
         const int WorkerHutsPerTile = 4;
         const int WorkerHutsPerTile_MaxLevel = WorkerHutsPerTile * HutMaxLevel;
