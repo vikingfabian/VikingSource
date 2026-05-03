@@ -78,6 +78,20 @@ namespace VikingEngine.DSSWars.Net
                         }
                         else
                         {
+                            citiesC.Reset();
+                            part++;
+                        }
+                    }
+                    break;
+                case HandoverPart.CityGuard:
+                    {
+                        if (citiesC.Next(ref faction.cities, DssRef.world.cities, out City city))
+                        {
+                            int packetCount = 0;
+                            city.netWriteGroups(Network.PacketReliability.Reliable, ref packetCount);
+                        }
+                        else
+                        {
                             part++;
                         }
                     }
@@ -118,6 +132,7 @@ namespace VikingEngine.DSSWars.Net
         { 
             Cities,
             CityStatus,
+            CityGuard,
             Armies,
             HandOverComplete,
             DONE

@@ -1083,6 +1083,8 @@ namespace VikingEngine.DSSWars.GameObject
                     packet.EndWrite_Asynch();
                 }
             }
+
+            
         }
 
         public void writeNet_update(System.IO.BinaryWriter w, int part)

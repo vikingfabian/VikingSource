@@ -533,7 +533,7 @@ namespace VikingEngine.DSSWars
                                 factionsC.sel.oneSecUpdate(DssRef.time.oneMinute);
                             }
                         }
-                        else
+                        else if (factionsC.sel.HasPlayer())
                         {
                             factionsC.sel.update_client(culling.playerInDetailView);
 

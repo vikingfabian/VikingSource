@@ -341,15 +341,17 @@ namespace VikingEngine.DSSWars
             }
 
             void readGroupStatus(bool bArmy)
-            { 
-                AbsArmy.NetReadMapObjId(packet.r, out Faction faction, bArmy, out AbsArmy mapObj, out bool needInit);
-                if (mapObj != null)
+            {
+                if (AbsArmy.NetReadMapObjId(packet.r, out Faction faction, bArmy, out AbsArmy mapObj, out bool needInit))
                 {
-                    bool more = false;
-                    do
+                    if (mapObj != null)
                     {
-                        more = AbsArmy.NetReadGroup(packet.r, mapObj);
-                    } while (more);
+                        bool more = false;
+                        do
+                        {
+                            more = AbsArmy.NetReadGroup(packet.r, mapObj);
+                        } while (more);
+                    }
                 }
             }
         }

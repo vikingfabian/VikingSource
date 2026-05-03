@@ -129,20 +129,19 @@ namespace VikingEngine.DSSWars.GameObject
 
         public static void NetReadArmy(System.IO.BinaryReader r)
         {
-            NetReadMapObjId(r, out Faction faction, true, out AbsArmy mapObj, out bool needInit);
-
-            Army army = mapObj.GetArmy();
-            army.readNet(r, needInit);
-
-            if (needInit)
+            if (NetReadMapObjId(r, out Faction faction, true, out AbsArmy mapObj, out bool needInit))
             {
-                army.postInit(faction);
+                Army army = mapObj.GetArmy();
+                army.readNet(r, needInit);
+
+                if (needInit)
+                {
+                    army.postInit(faction);
+                }
+
+                army.net_onUpdate();
             }
-
-            army.net_onUpdate();
-        }
-
-        
+        }        
 
         public void writeNet(System.IO.BinaryWriter w)
         {
@@ -817,7 +816,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         void updateArmyMembers(float time, bool fullUpdate)
         {
-            if (debugTagged || id == -1)
+            if (debugTagged || id == -1 || IsNetHosted)
             {
                 lib.DoNothing();
             }

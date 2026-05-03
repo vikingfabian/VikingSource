@@ -52,10 +52,18 @@ namespace VikingEngine.DSSWars.GameObject
             w.Write((ushort)army.myIndex);
         }
 
-        public static void NetReadMapObjId(System.IO.BinaryReader r, out Faction faction, bool bArmy, out AbsArmy mapObj, out bool needInit)
+        public static bool NetReadMapObjId(System.IO.BinaryReader r, out Faction faction, bool bArmy, out AbsArmy mapObj, out bool needInit)
         {
             int factionIx = r.ReadUInt16();
             faction = DssRef.world.faction(factionIx);
+
+            if (faction == null)
+            {
+                mapObj = null;
+                needInit = false;
+                return false;
+            }
+
             int unitIx = r.ReadUInt16();
 
             if (bArmy)
@@ -81,6 +89,8 @@ namespace VikingEngine.DSSWars.GameObject
                 mapObj.setFaction(faction, false, true);
                 faction = mapObj.GetFaction();
             }
+
+            return true;
         }
         public void netWriteGroups(Network.PacketReliability reliability, ref int packetCount)
         {
