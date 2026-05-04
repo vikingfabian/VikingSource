@@ -20,6 +20,9 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace VikingEngine.DSSWars.Interface.CutScene
 {
+    abstract class AbsTextInputScene
+    { }
+
     class TextChat : AbsCutScene
     {
         RichMenu menu;
