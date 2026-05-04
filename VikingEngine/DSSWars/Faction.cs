@@ -309,7 +309,7 @@ namespace VikingEngine.DSSWars
             citiesC.Reset();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
             {
-                city.workTemplate.onFactionChange(city, workTemplate);
+                city.workTemplate.onFactionChange(city, workTemplate, true);
             }
 
 
@@ -523,12 +523,13 @@ namespace VikingEngine.DSSWars
                         player.OnCityCapture(city);
 
                         city.workTemplate.setAllToFollowFaction();
-                        city.workTemplate.onFactionChange(city, workTemplate);
+                        city.workTemplate.onFactionChange(city, workTemplate, duringStartUp);
                         city.defaultResourceBuffer(DssRef.world);
 
                         if (mainCity == null || mainCity.factionIndex != myIndex)
                         {
                             refreshMainCity();
+
                         }
                     }
                 }

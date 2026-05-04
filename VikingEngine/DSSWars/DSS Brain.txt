@@ -1,7 +1,8 @@
 
 ﻿UPDATE
 Change Log:
-* fixed unit count and display text for elephant+wagon units
+* fixed: load from save, build priorities in all cities get reduced to 2
+
 
 
 ##ICONS TODO

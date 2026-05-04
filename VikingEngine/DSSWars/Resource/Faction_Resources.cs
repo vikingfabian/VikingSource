@@ -391,7 +391,7 @@ namespace VikingEngine.DSSWars
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
             {
-                citySel.workTemplate.onFactionChange(citySel, workTemplate);
+                citySel.workTemplate.onFactionChange(citySel, workTemplate, false);
             }
         }
 

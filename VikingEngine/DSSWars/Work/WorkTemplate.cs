@@ -222,10 +222,10 @@ namespace VikingEngine.DSSWars.Work
         public void setAllToFollowFactionAndUpdate(City city, WorkTemplate factionTemplate)
         {
             setAllToFollowFaction();
-            onFactionChange(city, factionTemplate);
+            onFactionChange(city, factionTemplate, false);
         }
 
-        public void onFactionChange(City city, WorkTemplate factionTemplate)
+        public void onFactionChange(City city, WorkTemplate factionTemplate, bool duringStartup)
         {
             for (int i = 0; i < COUNT; i++)
             {
@@ -233,7 +233,10 @@ namespace VikingEngine.DSSWars.Work
                 DssRef.world.cityWork[workComponentStartIndex + i].onFactionValueChange(factionValue);
             }
 
-            city.workTemplate.checkBuildMax(city);
+            if (!duringStartup)
+            {
+                city.workTemplate.checkBuildMax(city);
+            }
         }
 
         public void setAllToFollowFaction()
