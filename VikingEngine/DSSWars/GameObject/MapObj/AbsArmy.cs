@@ -80,6 +80,10 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 army.IsNetHosted = faction.player != null && faction.player.IsLocalPlayer();
                 mapObj = army;
+
+#if DEBUG
+                Debug.Log($"NET read army ({army.myIndex}), faction ({faction.PlayerName}), army count: {faction.armies.Count}");
+#endif
             }
             else
             {

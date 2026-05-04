@@ -1312,7 +1312,11 @@ namespace VikingEngine.DSSWars
         {
             get
             {
-                return player.Name;
+                if (player == null)
+                {
+                    return "NONE";
+                }
+                return  player.Name;
             }
         }
 
