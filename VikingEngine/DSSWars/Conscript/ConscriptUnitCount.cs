@@ -19,6 +19,8 @@ namespace VikingEngine.DSSWars.Conscript
 
         public int TotalMen => menPerUnit * groupUnitCount;
         public int TotalAnimals => animalsPerUnit * groupUnitCount;
+        public int TotalWeapons => weaponsPerUnit * groupUnitCount;
+        public int TotalVehicles => vehiclesPerUnit * groupUnitCount;
 
         public ConscriptUnitCount(ConscriptProfile conscript)
         {

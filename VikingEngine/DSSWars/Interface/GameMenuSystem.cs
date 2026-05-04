@@ -766,17 +766,19 @@ namespace VikingEngine.DSSWars.Interface
 
         void beginFindCityId()
         {
-            var reciever = new TextInputState(string.Empty, findCityIdEvent, null);
-            SteamInputManager.tryOpenSteamKeyboard(reciever);
+            closeMenu();
+            new TextInputScene("City id", findCityIdEvent);
+            //var reciever = new TextInputState(string.Empty, findCityIdEvent, null);
+            //SteamInputManager.tryOpenSteamKeyboard(reciever);
         }
         void findCityIdEvent(string result, object tag)
         {
-            Engine.Screen.SetupSplitScreen(DssRef.state.localPlayers.Count);
+            //Engine.Screen.SetupSplitScreen(DssRef.state.localPlayers.Count);
             if (int.TryParse(result, out int id) && arraylib.InBound(DssRef.world.cities, id))
             { 
-                //DssRef.state.LocalHost().gameControls.map.hover.obj = DssRef.world.cities[id];
+                DssRef.state.LocalHost().gameControls.map.setCameraPos( DssRef.world.cities[id].tilePos);
             }
-            closeMenu();
+            
         }
 
         public void controllerLost()

@@ -373,6 +373,12 @@ namespace VikingEngine.DSSWars.Map
                                     case TerrainSubFoilType.RapeSeedFarm:
                                     case TerrainSubFoilType.RapeSeedFarmUpgraded:
                                         ++buildingStructure.RapeSeedFarm_count;
+//#if DEBUG
+//                                        if (buildingStructure.RapeSeedFarm_count >= 8)
+//                                        {
+//                                            lib.DoNothing();
+//                                        }
+//#endif
                                         ++fuelSpots;
                                         farming(ref subTile);
                                         buildingPosition.RapeSeedFarm_pos = subTileLoop.Position;

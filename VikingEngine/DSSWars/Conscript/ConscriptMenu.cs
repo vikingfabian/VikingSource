@@ -143,7 +143,7 @@ namespace VikingEngine.DSSWars.Conscript
                         new RbImage(weaponicon),
                     };
 
-                    if (city.GetGroupedResource(weapon).amount >= menCostNext)
+                    if (city.GetGroupedResource(weapon).amount >= unitCount.TotalWeapons)
                     {
                         buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
                     }
@@ -174,7 +174,7 @@ namespace VikingEngine.DSSWars.Conscript
                         new RbImage(itemIcon),
                     };
 
-                        if (city.GetGroupedResource(item).amount >= menCostNext)
+                        if (city.GetGroupedResource(item).amount >= unitCount.TotalWeapons)
                         {
                             buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
                         }
@@ -225,7 +225,18 @@ namespace VikingEngine.DSSWars.Conscript
 
                         var buttonContent = new List<AbsRichBoxMember>(3) { new RbImage(itemIcon)};
 
-                        if (city.GetGroupedResource(item).amount >= menCostNext)
+                        int animalCount = unitCount.TotalAnimals;
+                        if (animalCount == 0)
+                        {
+                            var animalProp = ItemPropertyColl.Get(item);
+                            animalCount = animalProp.soldierData.UnitCount();
+                            if (!animalProp.Filter_IsRidingAnimal)
+                            {
+                                animalCount /= 2;
+                            }
+                        }
+
+                        if (city.GetGroupedResource(item).amount >= animalCount)
                         {
                             buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
                         }
@@ -254,7 +265,7 @@ namespace VikingEngine.DSSWars.Conscript
                                 new RbImage(itemIcon),
                             };
 
-                                if (city.GetGroupedResource(item).amount >= menCostNext)
+                                if (city.GetGroupedResource(item).amount >= unitCount.TotalAnimals)
                                 {
                                     buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
                                 }
@@ -282,11 +293,18 @@ namespace VikingEngine.DSSWars.Conscript
                                     new RbImage(itemIcon),
                                 };
 
-                                if (city.GetGroupedResource(item).amount >= menCostNext)
+                                if (item != ItemResourceType.NONE)
                                 {
-                                    buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
-                                }
+                                    var testProfile = currentStatus.profile;
+                                    testProfile.vehicle = item;
+                                    ConscriptUnitCount unitCount_wagon = new ConscriptUnitCount(testProfile);
+                                    int vehicleCount = unitCount_wagon.TotalVehicles;                                    
 
+                                    if (city.GetGroupedResource(item).amount >= vehicleCount)
+                                    {
+                                        buttonContent.Insert(0, new RbImage(SpriteName.warsResourceChunkAvailable));
+                                    }
+                                }
                                 var button = new ArtOption(item == currentStatus.profile.vehicle, buttonContent,
                                 new RbAction1Arg<ItemResourceType>(vehicleClick, item, RbSoundType.Option),
                                 new RbTooltip(vehicleTooltip, item)
