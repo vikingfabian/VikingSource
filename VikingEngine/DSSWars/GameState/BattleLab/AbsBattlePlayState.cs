@@ -65,7 +65,7 @@ namespace VikingEngine.DSSWars.GameState.BattleLab
             Engine.Screen.SetupSplitScreen(playerCount);
             for (var i = 0; i < playerCount; ++i)
             {
-                var startFaction = DssRef.world.getPlayerAvailableFaction(i == 0, localPlayers);
+                var startFaction = DssRef.world.getPlayerAvailableFaction2(localPlayers, i == 0, false);
                 var local = createLocalPlayer(startFaction);
                 local.assignPlayer(i, playerCount, true);
                 localPlayers.Add(local);

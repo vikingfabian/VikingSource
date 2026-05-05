@@ -132,7 +132,7 @@ namespace VikingEngine.DSSWars.Conscript
 
                     if (avaialble >= unitsNeeded)
                     {
-                        allItems(avaialble, commit);
+                        allItems(unitsNeeded, commit);
                         completed = true;
                     }
                     //unitsCollected += avaialble;

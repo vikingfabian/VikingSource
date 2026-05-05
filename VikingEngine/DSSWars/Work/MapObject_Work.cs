@@ -52,6 +52,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             if (HasFaction())
             {
+
                 foreach (var unit in workerUnits)
                 {
                     ExistingWorkers.Add(unit.myIndex);

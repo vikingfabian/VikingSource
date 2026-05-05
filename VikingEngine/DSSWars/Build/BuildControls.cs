@@ -54,6 +54,19 @@ namespace VikingEngine.DSSWars.Build
         City city;
         bool blockBuildUpdate = false;
 
+        public BuildAndExpandType CompressedBuildMode()
+        {
+            switch (buildMode)
+            {
+                case SelectTileResult.None:
+                    return BuildAndExpandType.NUM_NONE;
+                case SelectTileResult.Demolish:
+                    return BuildAndExpandType.DEMOLISH;
+                default:
+                    return placeBuildingType;
+            }
+        }
+
         public BuildControls(LocalPlayer player) 
         { 
             this.player = player;
@@ -106,7 +119,7 @@ namespace VikingEngine.DSSWars.Build
                             SubTile subTile = DssRef.world.subTileGrid.Get(subTilePos);
                             if (build.execute_async(city, subTilePos, ref subTile, upgrade, false))
                             {
-                                EditSubTile edit = new EditSubTile(subTilePos, subTile, true, true, false);
+                                EditSubTile edit = new EditSubTile(player.faction, subTilePos, subTile, true, true, false);
                                 edit.Submit();
                             }
 

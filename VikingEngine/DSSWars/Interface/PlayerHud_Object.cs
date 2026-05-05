@@ -86,12 +86,12 @@ namespace VikingEngine.DSSWars.Interface
 
             if (DssRef.state.remotePlayers.Count > 0)
             {
-                content.h2("Net session", HudLib.TitleColor_Head);
+                content.h2(".Net session", HudLib.TitleColor_Head);
                 var remoteC = DssRef.state.remotePlayers.counter();
                 while(remoteC.Next())
                 {
                     content.newLine();
-                    remoteC.sel.RemoteToHud(content);
+                    remoteC.sel.addNetGamerToHud(content, true);//RemoteToHud(content);
                 }
                 content.Add(new RbSeperationLine());
             }

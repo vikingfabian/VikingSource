@@ -37,11 +37,18 @@ namespace VikingEngine.ToGG.HeroQuest.Players
             movelines.setFocus(2);
         }
 
-        override  public void update()
+        override public void update()
         {
             pointer.Update();
         }
 
+        public void writeUpdate(System.IO.BinaryWriter w)
+        {
+
+            //var w = Ref.netSession.BeginWritingPacket(Network.PacketType.hqPlayerStatus, Network.PacketReliability.Unrelyable);
+            StreamLib.WriteVector(w, mapControls.selectionV2);
+
+        }
         public void readNetUpdate(System.IO.BinaryReader r)
         {
             pointer.netRead(r);

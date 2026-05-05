@@ -37,6 +37,22 @@ namespace VikingEngine.DSSWars.Players
         public bool armyAi_enabled = true;
         protected int diplomacyPoints = 0;
 
+        public override void AssignFaction(Faction faction)
+        {
+            base.AssignFaction(faction);
+            faction.factiontype = FactionType.DefaultAi;
+            faction.availableForPlayer = true;
+           
+            if (Ref.netSession.IsHost)
+            {
+                SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
+                {
+                    citySel.IsNetHosted = true;
+                }
+            }
+        }
+
         public override void writeGameState(BinaryWriter w)
         {
             base.writeGameState(w);
@@ -115,7 +131,7 @@ namespace VikingEngine.DSSWars.Players
         public AiPlayer(Faction faction, bool newGame)
             : base(faction, newGame)
         {
-            SetProfile(new Profile.PlayerProfile(faction.factiontype, DssRef.world.metaData));
+            SetProfile(new Profile.PlayerProfile(faction.factiontype, DssRef.world.metaData, faction.myIndex));
        
             switch (faction.factiontype)
             {
@@ -637,7 +653,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.5f;
                     name = DssRef.lang.FactionName_DarkLord;
-                    faction.displayInFullOverview = true;
+                    faction.storyFaction = true;
                     protectedFromDelete = true;
 
                     techSetup();
@@ -660,7 +676,7 @@ namespace VikingEngine.DSSWars.Players
                         faction.diplomaticSide = DiplomaticSide.Dark;
                         aggressionLevel = AggressionLevel3_FocusedAttacks;
                         faction.growthMultiplier = 1.5f;
-                        faction.displayInFullOverview = true;
+                        faction.storyFaction = true;
                         faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 10);
                         techSetup();
                         faction.technology.blackPowder.points = TechnologyTemplate.FactionUnlock;
@@ -678,7 +694,7 @@ namespace VikingEngine.DSSWars.Players
                     aggressionLevel = AggressionLevel3_FocusedAttacks;
                     faction.growthMultiplier = 1.5f;
                     name = DssRef.lang.FactionName_Barbarian;
-                    faction.displayInFullOverview = false;
+                    faction.storyFaction = false;
                     faction.hasDeserters = false;
 
                     techSetup();
@@ -693,7 +709,7 @@ namespace VikingEngine.DSSWars.Players
                         DssRef.settings.Faction_UnitedKingdom = faction.myIndex;
                         aggressionLevel = AggressionLevel1_RevengeOnly;
                         
-                        faction.displayInFullOverview = true;
+                        faction.storyFaction = true;
                         personality_loner = true;
 
                         techSetup();
@@ -803,7 +819,7 @@ namespace VikingEngine.DSSWars.Players
                     faction.growthMultiplier = 1.1f;
                     faction.hasDeserters = false;
                     name = DssRef.lang.FactionName_SouthHara;
-                    faction.displayInFullOverview = true;
+                    faction.storyFaction = true;
                     faction.addGold_factionWide(DssConst.HeadCityStartMaxWorkForce * 5);
 
                     techSetup();
@@ -2685,6 +2701,10 @@ namespace VikingEngine.DSSWars.Players
             return true;
         }
         public override bool IsLocalPlayer()
+        {
+            return false;
+        }
+        public override bool IsHumanPlayer()
         {
             return false;
         }

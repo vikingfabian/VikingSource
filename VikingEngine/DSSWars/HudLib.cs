@@ -40,10 +40,12 @@ namespace VikingEngine.DSSWars
         public static readonly Color TitleColor_Action = Color.LightBlue;
         public static readonly Color TitleColor_Attack = Color.Red;
         public static readonly Color TitleColor_Name = Color.LightYellow;
+        public static readonly Color TitleColor_Self = Color.CornflowerBlue;
         public static readonly Color TitleColor_Name_Dark = Color.Brown;
         public static readonly Color TitleColor_TypeName = Color.LightGray;
         public static readonly Color TitleColor_TypeName_Dark = new Color(50, 50, 50);
         public static readonly Color TitleColor_Label = new Color(0, 128, 153);
+        public static readonly Color TitleColor_Label2 = new Color(60, 108, 133);
         public static readonly Color TitleColor_Label_Dark = new Color(0, 63, 76);
         public static readonly Color AvailableColor = Color.LightGreen;
         public static readonly Color AvailableColor_Dark = Color.DarkGreen;
@@ -239,7 +241,10 @@ namespace VikingEngine.DSSWars
                 RbSettings = RbSettings,
             };
         }
-
+        public static void IndexToHud(RichBoxContent content, int myIndex, bool IsNetHosted)
+        {
+            content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex) + (IsNetHosted ? "H" : "C"), HudLib.SecondaryTextColor));
+        }
         public static void copyPaste(RichBoxContent content, LocalPlayer player, AbsRbAction copy, AbsRbAction paste, bool copyAvailable = true, bool pasteAvailable = true)
         {
             player.gameControls.input.Copy.ToRichContent(content);

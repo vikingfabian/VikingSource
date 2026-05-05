@@ -162,7 +162,12 @@ namespace VikingEngine.DSSWars
             {
                 return DiplomaticRelation.Empty;
             }
-
+#if DEBUG
+            if (arraylib.InBound(diplomaticRelations, RelationIndex(faction1.myIndex, faction2.myIndex)) == false)
+            {
+                lib.DoNothing();
+            }
+#endif
             return diplomaticRelations[RelationIndex(faction1.myIndex, faction2.myIndex)];
         }
 
@@ -278,33 +283,15 @@ namespace VikingEngine.DSSWars
                 RelationsLoop loop = new RelationsLoop(p.faction.myIndex);
                 while (loop.Next())
                 {
-                    if (loop.otherFactionIx == 108)
-                    {
-                        lib.DoNothing();
-                       var relation =  diplomaticRelations[loop.RelationIndex()];
-                    }
+                    //if (loop.otherFactionIx == 108)
+                    //{
+                    //    lib.DoNothing();
+                    //   var relation =  diplomaticRelations[loop.RelationIndex()];
+                    //}
                     diplomaticRelations[loop.RelationIndex()].truce_update();
                 }
-                //for (int otherFaction = 0; otherFaction < DssRef.world.factions.Array.Length; otherFaction++)
-                //{
-                //    if (p.faction.myIndex != otherFaction)
-                //    {
-                //        diplomaticRelations[RelationIndex(p.faction.myIndex, otherFaction)].truce_update();
-                //    }
-                //}
             }
 
-            //foreach (var p in DssRef.state.localPlayers)
-            //{
-            //    for (int relIx = 0; relIx < p.faction.diplomaticRelations.Length; ++relIx)
-            //    {
-            //        var rel = p.faction.diplomaticRelations[relIx];
-            //        if (rel != null)
-            //        {
-            //            rel.truce_update();
-            //        }
-            //    }
-            //}
         }
     
 
@@ -417,15 +404,6 @@ namespace VikingEngine.DSSWars
         {
             aiPlayerAsynchUpdate_collectAlliances.Clear();
 
-            //for (int relIx = 0; relIx < aifaction.diplomaticRelations.Length; ++relIx)
-            //{
-            //    if (aifaction.diplomaticRelations[relIx] != null &&
-            //        relIx != aifaction.myIndex &&
-            //       aifaction.diplomaticRelations[relIx].Relation >= RelationType.RelationType3_Ally)
-            //    {
-            //        aiPlayerAsynchUpdate_collectAlliances.Add(relIx);                    
-            //    }
-            //}
             RelationsLoop loop = new RelationsLoop(aifaction.myIndex);
             while (loop.Next())
             {
@@ -436,6 +414,20 @@ namespace VikingEngine.DSSWars
             }
 
             return aiPlayerAsynchUpdate_collectAlliances;
+        }
+
+        public bool nextAlly(Faction faction, ref RelationsLoop loop, out Faction ally)
+        {
+            while (loop.Next())
+            {
+                if (loop.Relation().Relation >= RelationType.RelationType3_Ally)
+                {
+                    loop.OtherFaction(out ally);    
+                    return true;
+                }
+            }
+            ally = null;
+            return false;
         }
 
         public bool aiPlayerAsynchUpdate_mayAlly_checkConflict(Faction faction1, Faction faction2, Faction enemyFaction, bool tryEndOtherWars)
@@ -754,6 +746,8 @@ namespace VikingEngine.DSSWars
         {
             if (attacker != null && 
                 defender != null &&
+                attacker.player != null &&
+                defender.player != null &&
                 attacker != defender &&
                 !GetRelation(attacker, defender).InWar())
             {

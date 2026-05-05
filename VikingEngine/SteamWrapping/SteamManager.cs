@@ -28,7 +28,7 @@ namespace VikingEngine.SteamWrapping
         }
     }
 
-    class SteamManager
+    partial class SteamManager
     {
         public bool IsGameOverlayActive { get; private set; }
         public SteamAchievements Achievements = null;
@@ -130,6 +130,7 @@ namespace VikingEngine.SteamWrapping
         {
             if (Ref.steam.isInitialized)
             {
+                DisposeVoice();
                 SteamInput.Shutdown();
             }
         }
@@ -276,6 +277,7 @@ namespace VikingEngine.SteamWrapping
             {
                 if (PlatformSettings.OnlineMultiplayer)
                 {
+                    InitVoice();
                     P2PManager = new SteamP2PManager();
                     LobbyMatchmaker = new SteamLobbyMatchmaker();
                     //VOIP = new SteamVOIP();
@@ -297,9 +299,8 @@ namespace VikingEngine.SteamWrapping
                 
                 if (P2PManager != null)
                 {
-                    //VOIP.Update();
-
                     P2PManager.update();
+                    UpdateVoice();
                 }
 
                 if (statsNeedUpdate)

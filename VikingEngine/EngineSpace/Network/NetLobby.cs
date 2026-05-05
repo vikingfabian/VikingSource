@@ -6,7 +6,7 @@ using System.Text;
 
 namespace VikingEngine.Network
 {
-    interface INetworkUpdateReviever
+    interface INetworkUpdateReciever
     {
         void NetworkStatusMessage(Network.NetworkStatusMessage message);
         void NetEvent_PeerJoined(Network.AbsNetworkPeer gamer);
@@ -33,7 +33,7 @@ namespace VikingEngine.Network
         Closing,
     }
 
-    class NetLobby : INetworkUpdateReviever
+    class NetLobby : INetworkUpdateReciever
     {
         public bool autoCreateSession = true;
         public bool searchLobbies = false;

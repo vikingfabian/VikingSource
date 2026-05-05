@@ -48,8 +48,8 @@ namespace VikingEngine.DSSWars.Communication
                     SpeakTerms = SpeakTerms.SpeakTermsN2_None;
                 }
 
-                faction1?.player.onNewRelation(faction2, this, previousRelation);
-                faction2?.player.onNewRelation(faction1, this, previousRelation);
+                faction1?.player?.onNewRelation(faction2, this, previousRelation);
+                faction2?.player?.onNewRelation(faction1, this, previousRelation);
             }
         }
 

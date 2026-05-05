@@ -671,17 +671,41 @@ namespace VikingEngine.DSSWars.GameObject
             switch (objective)
             {
                 case ArmyObjective.Attack:
-                    pointers.pointers.Add(new ArmyAttackObjectPointer(r, this, false));
+                    {
+                        var targetPointer = new ArmyAttackObjectPointer(r, this, false);
+
+                        if (pointers == null)
+                        {
+                            targetPointer.SetPointer();
+                        }
+                        else
+                        {
+                            pointers.pointers.Add(targetPointer);
+                        }
+                    }
                     break;
+
                 case ArmyObjective.TeleportAttack:
-                    pointers.pointers.Add(new ArmyAttackObjectPointer(r, this, true));
-                    teleportTime = r.ReadSingle();
+                    {
+                        var targetPointer = new ArmyAttackObjectPointer(r, this, true);
+
+                        if (pointers == null)
+                        {
+                            targetPointer.SetPointer();
+                        }
+                        else
+                        {
+                            pointers.pointers.Add(targetPointer);
+                        }
+                        teleportTime = r.ReadSingle();
+                    }
                     break;
+
                 case ArmyObjective.MoveTo:
                     walkGoal = WP.readTilePos(r);
-                    Order_MoveTo(walkGoal);
-                    
+                    Order_MoveTo(walkGoal);                    
                     break;
+
                 case ArmyObjective.TeleportMove:
                     walkGoal = WP.readTilePos(r);
                     Order_MoveTo_Setup(walkGoal);

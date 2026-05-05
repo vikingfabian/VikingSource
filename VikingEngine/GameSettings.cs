@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.Input;
+using VikingEngine.Network;
 
 
 namespace VikingEngine
@@ -33,7 +35,7 @@ namespace VikingEngine
         public bool HasSaveFile = false;
         public int ChunkLoadRadius = LootFest.Map.World.StandardOpenRadius;
         public ThreeOptions MapLoadingSpeed = ThreeOptions.Medium;
-        static readonly int[] FrameRateOptions = new int[] { 30, 60, 75, 100, 120, 144, 165, 240, 360 };
+        static readonly int[] FrameRateOptions = { 30, 60, 75, 100, 120, 144, 165, 240, 360 };
         public int FrameRate = 60;
         public int DetailLevel = 1;
         public bool AutoJoinToCoopLevel = true;
@@ -76,7 +78,7 @@ namespace VikingEngine
         public float keyPanSpeed = 1f;
 
 
-        float MasterVolume = 0.5f;
+        public float MasterVolume = 0.5f;
         float MusicMasterVolume = 0f;//1f;
         float SoundVolume = Engine.Sound.SoundStandardVolume;
         float AmbientVolume = Engine.Sound.SoundStandardVolume;

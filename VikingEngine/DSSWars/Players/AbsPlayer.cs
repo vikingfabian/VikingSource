@@ -43,6 +43,14 @@ namespace VikingEngine.DSSWars.Players
             flagTexture = profile.flag.flagDesign.CreateTexture(profile.flag);
         }
 
+        virtual public void AssignFaction(Faction faction)
+        {
+            this.faction = faction;
+            faction.SetStartOwner(this);
+            faction.onNewPlayerModels();
+            DssRef.world.BordersUpdated = true;
+        }
+
         public AbsPlayer(Faction faction, bool newGame)
         {
             this.faction = faction;
@@ -275,6 +283,9 @@ namespace VikingEngine.DSSWars.Players
         abstract public bool IsBot();
 
         abstract public bool IsLocalPlayer();
+        abstract public bool IsHumanPlayer();
+
+        virtual public bool IsRemotePlayer() { return false; }
 
         virtual public LocalPlayer GetLocalPlayer()
         {

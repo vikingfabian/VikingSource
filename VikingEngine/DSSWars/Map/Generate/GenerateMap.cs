@@ -1423,7 +1423,7 @@ namespace VikingEngine.DSSWars.Map.Generate
             {               
                 var faction = new Faction(world, opponents[i]);
                 faction.quickMatchFaction = true;
-                faction.displayInFullOverview = true;
+                //faction.displayInFullOverview = true;
                 region.GetStartFactionRegion(nationWorkForce, oneCity, randomCity_inMapCenter(), world, faction);
 
                 world.quickMatchFactions.Add(faction.myIndex);

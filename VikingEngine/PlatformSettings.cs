@@ -172,7 +172,7 @@ namespace VikingEngine
         public static readonly bool ViewCollisionBounds =
           DebugLevel != BuildDebugLevel.Dev ? LockedToFalse : Debug_ViewCollisionBounds;
 
-        public static readonly bool OnlineMultiplayer = false;
+        public static readonly bool OnlineMultiplayer = true;
         //public static readonly bool Demo =
         //    DebugLevel == BuildDebugLevel.DebugDemo ||
         //    DebugLevel == BuildDebugLevel.PublicDemo || 

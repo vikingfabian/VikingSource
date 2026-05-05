@@ -391,7 +391,7 @@ namespace VikingEngine.DSSWars
             SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
             while (citiesC.Next(ref cities, DssRef.world.cities, out City citySel))
             {
-                citySel.workTemplate.onFactionChange(citySel, workTemplate);
+                citySel.workTemplate.onFactionChange(citySel, workTemplate, false);
             }
         }
 
@@ -432,6 +432,11 @@ namespace VikingEngine.DSSWars
 
         public bool hasGold(int cost, AbsMapObject mapObj)
         {
+            if (cost <= 0)
+            {
+                return true;
+            }
+
             if (DssRef.storage.gameRuleset.centralGold)
             {
                 return money.GetGold() >= cost;
@@ -467,7 +472,7 @@ namespace VikingEngine.DSSWars
 
         }
 
-        public bool payGold(int cost, bool allowDept, City city)
+        public bool payGold(int cost, bool allowDept, AbsArmy city)
         {
 #if DEBUG
             if (player.IsLocalPlayer() && StartupSettings.EndlessResources)

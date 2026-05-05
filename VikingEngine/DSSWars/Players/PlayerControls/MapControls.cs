@@ -42,7 +42,7 @@ namespace VikingEngine.DSSWars.Players
         SafeCollectAsynchList<AbsMapObject> nearMapObjects = new SafeCollectAsynchList<AbsMapObject>(8);
         SafeCollectAsynchList<AbsSoldierUnit> nearDetailUnits = new SafeCollectAsynchList<AbsSoldierUnit>(64);
 
-        public Vector3 playerPointerPos = Vector3.Zero, pointerPosWP = Vector3.Zero;
+        public Vector3 playerPointerPos = Vector3.Zero, pointerPosWP = Vector3.Zero, prevPointerPosWP = Vector3.Zero;
         ScreenToSpaceRectangleBound rectangleBound;
         Graphics.RectangleLines rectangleLines = null;
         float multiSelectMoveLenght = 0;
@@ -211,6 +211,7 @@ namespace VikingEngine.DSSWars.Players
 
         private void updatePointer()
         {
+            prevPointerPosWP = pointerPosWP;
             pointerPosWP = screenPosToWorldPos(pointerPos());
             IntVector2 prevTile = tilePosition;
             tilePosition = DssRef.world.tileBounds.KeepTilePointInArea(WP.ToTilePos(pointerPosWP));
@@ -1304,6 +1305,8 @@ namespace VikingEngine.DSSWars.Players
             controllerPointer.Visible = focus;
         }
 
+
+
         void panCamera(Vector2 pan, bool followCamRotation)
         {
             //pan.Y = 0;
@@ -1322,6 +1325,7 @@ namespace VikingEngine.DSSWars.Players
         public void setCameraPosition(Vector2 worldXZ)
         {
             camera.LookTargetXZ = worldXZ;
+            camera.clearGoalTarget();
             onPan();
         }
 
@@ -1329,6 +1333,9 @@ namespace VikingEngine.DSSWars.Players
         {
             playerPointerPos = WP.ToWorldPos(tile);
             camera.LookTarget = playerPointerPos;
+            camera.clearGoalTarget();
+            cameraFocus = null;
+            onPan();
         }
 
         void onPan()
@@ -1360,6 +1367,8 @@ namespace VikingEngine.DSSWars.Players
 
         private void updateCamera()
         {
+
+
             Vector3 camTarget = playerPointerPos;
             camTarget.Y = 0.1f;
 
@@ -1371,8 +1380,9 @@ namespace VikingEngine.DSSWars.Players
             {
                 camera.GoalLookTarget = camTarget;
             }
-
             camera.Time_Update(Ref.DeltaTimeMs);
+
+            
         }
 
         public GameObjectType SelectionType

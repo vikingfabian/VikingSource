@@ -32,12 +32,12 @@ namespace VikingEngine.DSSWars.Map
     {
         int lastCheckVersion = 0;
         public int version = 0;
-        protected Faction playerFaction;
+        protected int playerIx;
         public Graphics.PixelTexture texture;
 
-        public AbsMapPixelTexture(Faction faction)
+        public AbsMapPixelTexture(int playerIx)
         {
-            this.playerFaction = faction;
+            this.playerIx = playerIx;
         }
 
         public void initTexture()
@@ -67,8 +67,8 @@ namespace VikingEngine.DSSWars.Map
         float max = 1;
         public FactionMapFilter filter;
         public ItemResourceType resourceFilter = ItemResourceType.Wood_Group;
-        public FactionPixelTexture(Faction faction, bool init, FactionMapFilter filter)
-            : base(faction)
+        public FactionPixelTexture(int playerIx, bool init, FactionMapFilter filter)
+            : base(playerIx)
         {
             this.filter = filter;
             if (init)
@@ -205,6 +205,7 @@ namespace VikingEngine.DSSWars.Map
                     }
                     break;
                 case FactionMapFilter.Minimap:
+                    Faction playerFaction = DssRef.state.localPlayers[playerIx].faction;
                     while (loop.Next())
                     {
                         t = DssRef.world.tileGrid.Get(loop.Position);

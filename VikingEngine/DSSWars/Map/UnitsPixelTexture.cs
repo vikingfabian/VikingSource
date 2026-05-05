@@ -17,8 +17,8 @@ namespace VikingEngine.DSSWars.Map
 
         //Faction playerFaction;
 
-        public UnitsPixelTexture(Faction faction) 
-            :base(faction)
+        public UnitsPixelTexture(int playerIx) 
+            :base(playerIx)
         {
             
             initTexture();
@@ -44,6 +44,8 @@ namespace VikingEngine.DSSWars.Map
 
         public void updateColorProfile(Faction faction)
         {
+            var playerFaction = DssRef.state.localPlayers[playerIx].faction;
+
             if (faction == playerFaction)
             {
                 colorProfile1 = Color.Green;
@@ -51,7 +53,7 @@ namespace VikingEngine.DSSWars.Map
             }
             else
             {
-                var relation = DssRef.world.diplomacy.GetRelation(playerFaction, faction).Relation;
+                var relation = DssRef.world.diplomacy.GetRefRelation_Safe(playerFaction.myIndex, faction.myIndex).Relation;
                 if (relation <= RelationType.RelationTypeN1_Enemies)
                 {
                     colorProfile1 = Color.Red;

@@ -20,6 +20,7 @@ using VikingEngine.LootFest.GO.PickUp;
 using VikingEngine.LootFest.Players;
 using VikingEngine.PJ;
 using VikingEngine.PJ.Display;
+using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.HeroQuest;
 using VikingEngine.ToGG.HeroQuest.Display;
@@ -720,7 +721,11 @@ namespace VikingEngine.DSSWars.Interface
                 DssRef.state.events.TestNextEvent();
                 closeMenu();
             })));
-
+            content.newLine();
+            content.Add(new ArtButton(RbButtonStyle.Primary, new List<AbsRichBoxMember> { new RbText("Find city from id") }, new RbAction(beginFindCityId))
+            {
+                fillWidth = true
+            });
 
             content.newParagraph();
             content.h2("Food calculator");
@@ -757,6 +762,23 @@ namespace VikingEngine.DSSWars.Interface
             //    DssRef.state.localPlayers[0].debugMenu(layout);
             //}
             //layout.End();
+        }
+
+        void beginFindCityId()
+        {
+            closeMenu();
+            new TextInputScene("City id", findCityIdEvent);
+            //var reciever = new TextInputState(string.Empty, findCityIdEvent, null);
+            //SteamInputManager.tryOpenSteamKeyboard(reciever);
+        }
+        void findCityIdEvent(string result, object tag)
+        {
+            //Engine.Screen.SetupSplitScreen(DssRef.state.localPlayers.Count);
+            if (int.TryParse(result, out int id) && arraylib.InBound(DssRef.world.cities, id))
+            { 
+                DssRef.state.LocalHost().gameControls.map.setCameraPos( DssRef.world.cities[id].tilePos);
+            }
+            
         }
 
         public void controllerLost()

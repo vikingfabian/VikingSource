@@ -45,7 +45,8 @@ namespace VikingEngine.DSSWars.GameState
         public AbsCutScene cutScene = null;
         public bool host = true;
         public GameMenuSystem menuSystem;
-        public SpottedArray<Players.RemotePlayer> remotePlayers = new SpottedArray<Players.RemotePlayer>();
+        public SpottedArray<Players.RemotePlayer> remotePlayers;
+        protected SpottedArrayCounter<Players.RemotePlayer> remotePlayersCounter;
         public List<Players.LocalPlayer> localPlayers;
         public EventManager events;
         public Progress progress = new Progress();
@@ -63,6 +64,9 @@ namespace VikingEngine.DSSWars.GameState
         public AbsPlayState() 
             :base() 
         {
+            remotePlayers = new SpottedArray<Players.RemotePlayer>();
+            remotePlayersCounter = new SpottedArrayCounter<RemotePlayer>(remotePlayers);
+
             DssRef.state = this;
             
         }
@@ -123,8 +127,6 @@ namespace VikingEngine.DSSWars.GameState
             {
                 p.hud.initMap();
             }
-
-            
         }
 
         public ConcurrentStack<Graphics.VoxelModelInstance> modelPool(bool detail)
@@ -173,10 +175,13 @@ namespace VikingEngine.DSSWars.GameState
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
-                    var armiesC = factions.sel.armies.counter();
-                    while (armiesC.Next())
+                    if (factions.sel.IsNetHosted())
                     {
-                        armiesC.sel.asynchAiUpdate(time);
+                        var armiesC = factions.sel.armies.counter();
+                        while (armiesC.Next())
+                        {
+                            armiesC.sel.asynchAiUpdate(time);
+                        }
                     }
                 }
             }
@@ -223,14 +228,19 @@ namespace VikingEngine.DSSWars.GameState
                     var factions = DssRef.world.factions.counter();
                     while (factions.Next())
                     {
-                        
-                        factions.sel.asynchSleepObjectsUpdate(time);
+                        if (factions.sel.IsNetHosted())
+                        {
+                            factions.sel.asynchSleepObjectsUpdate(time);
+                        }
                     }
 
 
                     foreach (var m in DssRef.world.cities)
                     {
-                        m.async_sleepUpate(time);
+                        if (m.IsNetHosted)
+                        {
+                            m.async_sleepUpate(time);
+                        }
                     }
 
                 }
@@ -247,21 +257,28 @@ namespace VikingEngine.DSSWars.GameState
         protected bool asyncBattlesUpdate(int id, float time)
         {
             if (cutScene == null)
-            {
+            {                
                 var factions = DssRef.world.factions.counter();
                 while (factions.Next())
                 {
-                    var armiesC = factions.sel.armies.counter();
-                    while (armiesC.Next())
+                    if (factions.sel.IsNetHosted())
                     {
-                        armiesC.sel.asyncBattleUpdate();
+                        var armiesC = factions.sel.armies.counter();
+                        while (armiesC.Next())
+                        {
+                            armiesC.sel.asyncBattleUpdate();
+                        }
                     }
                 }
 
                 foreach (var m in DssRef.world.cities)
                 {
-                    m.asyncBattleUpdate();
+                    if (m.IsNetHosted)
+                    {
+                        m.asyncBattleUpdate();
+                    }
                 }
+               
             }
             return exitThreads;
         }
@@ -314,8 +331,13 @@ namespace VikingEngine.DSSWars.GameState
             new ExitToLobby(false);
         }
 
-        public Players.RemotePlayer GetOrCreateRemotePlayer(AbsNetworkPeer peer, int SplitScreenIndex)
+        public Players.AbsHumanPlayer GetOrCreateRemotePlayer(AbsNetworkPeer peer, int SplitScreenIndex)
         {
+            if (peer.Tag != null)
+            {
+                return peer.Tag as Players.AbsHumanPlayer;
+            }
+
             var remotePlayerC = remotePlayers.counter();
             while (remotePlayerC.Next())
             {
@@ -336,7 +358,7 @@ namespace VikingEngine.DSSWars.GameState
             {
                 remotePlayers.Add(new Players.RemotePlayer(ins));
             }
-            return (Players.RemotePlayer)peer.instancePeers[SplitScreenIndex].Tag;
+            return (Players.AbsHumanPlayer)peer.instancePeers[SplitScreenIndex].Tag;
         }
         virtual public void OneMinute_Update()
         { }

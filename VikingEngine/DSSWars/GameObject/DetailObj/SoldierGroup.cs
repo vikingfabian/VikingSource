@@ -170,7 +170,10 @@ namespace VikingEngine.DSSWars.GameObject
             refreshAttackRadius();
             refreshRotateSpeed();
 
-            tArmy.AddSoldierGroup(this);
+            if (myIndex < 0)
+            {
+                tArmy.AddSoldierGroup(this);
+            }
             rotation = tArmy.rotation;
         }
         public SoldierGroup(AbsArmy army)
@@ -272,11 +275,25 @@ namespace VikingEngine.DSSWars.GameObject
         public void writeNet(System.IO.BinaryWriter w)
         {
             writeGameState(w);
+            w.Write((byte)state);
+            if (state == GroupState.FindArmyPlacement)
+            {
+                WP.WritePosXZPercentU16(w, goalWp); 
+            }
         }
         public void readNet(AbsArmy tArmy, System.IO.BinaryReader r, bool needInit)
         {
             readGameState(tArmy, r, int.MaxValue, needInit, null);
             setGroundY();
+            state = (GroupState)r.ReadByte();
+            if (state == GroupState.FindArmyPlacement)
+            {
+                WP.ReadPosXZPercentU16(r, out goalWp, out _);
+            }
+            else
+            {
+                goalWp = position;
+            }
         }
 
         public void net_onUpdate()
@@ -944,10 +961,10 @@ namespace VikingEngine.DSSWars.GameObject
         //        }
         //    }
         //}
-
+        
         virtual public void update(float time, bool fullUpdate)
         {
-            if (debugTagged)
+            if (army.TryGetTarget(out var tArmy2) && tArmy2.debugTagged)
             {
                  lib.DoNothing();
             }
@@ -2374,7 +2391,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public AbsSoldierUnit FirstSoldier()
         {
-            return soldiers.First();
+            return soldiers?.First();
         }
 
         public override void AddDebugTag()

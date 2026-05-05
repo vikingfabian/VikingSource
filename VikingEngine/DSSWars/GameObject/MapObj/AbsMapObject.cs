@@ -37,11 +37,17 @@ namespace VikingEngine.DSSWars.GameObject
         public TimeStamp lastNetUpdate = new TimeStamp();
         public int previousIncome_copp = 0;
         public Money money = new Money(0);
+        public bool IsNetHosted = true;
 
         public AbsMapObject()
         {
             
             //battlesCounter = new SpottedArrayCounter<AbsMapObject>(battles);
+        }
+
+        public void IndexToHud(RichBoxContent content)
+        {
+            content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex.ToString() + (IsNetHosted ? " h" : " c")) , HudLib.SecondaryTextColor));
         }
 
         virtual public bool lowFood() { throw new NotImplementedException(); }

@@ -12,7 +12,7 @@ using System.Runtime;
 
 namespace VikingEngine.Engine
 {
-    abstract class GameState : VikingEngine.AbsInput, VikingEngine.Network.INetworkUpdateReviever
+    abstract class GameState : VikingEngine.AbsInput, VikingEngine.Network.INetworkUpdateReciever
     {
         /// <summary>
         /// Overriding another gamestate

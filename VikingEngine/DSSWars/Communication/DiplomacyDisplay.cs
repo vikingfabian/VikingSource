@@ -49,7 +49,7 @@ namespace VikingEngine.DSSWars.Interface
         {
             otherfaction = botFaction;
 
-            if (player.faction == botFaction)
+            if (player.faction == botFaction || botFaction.player == player)
             {
                 return;
             }
@@ -66,17 +66,21 @@ namespace VikingEngine.DSSWars.Interface
                 FactionRelationDisplay(botFaction, selectedRelation.Relation, content);
 
                 content.newLine();
-                if (DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
+            if (DssRef.difficulty.setting_gameMode != Data.GameModeMainType.Spectator)
+            {
+                if (otherfaction.player.IsBot())
                 {
-                    if (otherfaction.player.IsBot())
-                    {
-                        playerToAi();
-                    }
-                    else
-                    {
-                        playerToPlayer(content);
-                    }
+                    playerToAi();
                 }
+                else if (otherfaction.player.IsLocalPlayer())
+                {
+                    playerToPlayer(content);
+                }
+                else
+                {
+                    content.text("TODO: remote diplomacy");
+                }
+            }
             //}
             
             if (player.gameControls.diplomacy.previousFactionsLookedAt.Count > 1)
@@ -352,7 +356,6 @@ namespace VikingEngine.DSSWars.Interface
 
             PtoP.suggestedBy = player.playerData.localPlayerIndex;
 
-
             var message = new RichBoxContent();
             message.h1(string.Format(DssRef.lang.Diplomacy_PlayerOfferAlliance, player.Name));
             message.newLine();
@@ -366,7 +369,7 @@ namespace VikingEngine.DSSWars.Interface
             message.Add(new ArtButton(RbButtonStyle.Primary,
                 acceptButtonContent,
                 new RbAction(acceptToPlayerRelation)));
-            otherPlayer.hud.messages.Add(message);
+            otherPlayer.hud.messages.Add(message, SoundLib.netMessage);
         }
 
         void acceptToPlayerRelation()

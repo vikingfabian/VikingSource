@@ -2579,7 +2579,7 @@ namespace VikingEngine.DSSWars
                 maploading.TextString = mapBackgroundLoading.ProgressString();
             }
 
-            messages.Update(ref mouseOver);
+            messages?.Update(ref mouseOver);
             //if (StartupSettings.AutoStartLevel && PlatformSettings.DevBuild)
             //{
             //    startGame();

@@ -298,6 +298,8 @@ namespace VikingEngine.DSSWars
             
             var profileColors = profile.flag.GetColorReplaceTable();
 
+         
+
             if (modelData.riding)
             {
                 var legsRiding = legRawModel.Frame(LegsRidingFrame).GetVoxelArray(legOffSet, profileColors, GridSize);

@@ -1711,6 +1711,12 @@
 /processorParam:Quality=Best
 /build:DSS/Sound/pig.wav
 
+#begin DSS/Sound/player_enters.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/player_enters.wav
+
 #begin DSS/Sound/reload_ballista1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -1854,6 +1860,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:DSS/Sound/tab_hover.wav
+
+#begin DSS/Sound/TalkingShort.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:DSS/Sound/TalkingShort.wav
 
 #begin DSS/Sound/throw.wav
 /importer:WavImporter

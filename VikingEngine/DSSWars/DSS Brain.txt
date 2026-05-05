@@ -1,8 +1,14 @@
 
+## MULTIPLAYER UPDATE ##
+* Remade the player join map algo
+x can send resources to allies
+
+x new keys mapping
+x new steam input
+
 ﻿UPDATE
 Change Log:
-* fixed unit count and display text for elephant+wagon units
-
+* 
 
 ##ICONS TODO
 * 

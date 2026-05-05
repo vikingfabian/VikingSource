@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,11 @@ namespace VikingEngine.DSSWars.Players
     partial class RemotePlayer : AbsHumanPlayer
     {
         PlayerCullingState playerCulling;
-        public FlagAndColor profile = null;
-        public Texture2D flagTexture;
         public bool gotStatus = false;
         public bool newPlayer = true;
+
+        public AbsPlayer previousPlayer;
+        public RemotePlayerPointer pointer;
 
         public RemotePlayer(Network.NetworkInstancePeer peer)
             :base()
@@ -31,8 +33,42 @@ namespace VikingEngine.DSSWars.Players
             this.networkPeer = peer;
             InitData();
             playerCulling = new PlayerCullingState();
+
+            pointer = new RemotePlayerPointer(peer.peer, true);
+        }
+        public void UpdateClient(LocalPlayer playerView)
+        {
+            base.Update();
+            pointer.Update(playerView);
         }
 
+        public override void addNetGamerToHud(RichBoxContent content, bool addStatus)
+        {
+            base.addNetGamerToHud(content, addStatus);
+            if (addStatus && pointer.statusIcon !=  SpriteName.NO_IMAGE)
+            {
+                content.space();
+                if (pointer.itemIcon != SpriteName.NO_IMAGE)
+                {
+                    content.Add(new RbOverlapImage( new RbImage(pointer.itemIcon), pointer.statusIcon, Vector2.Zero, 0.7f ));
+                }
+                else
+                {
+                    content.Add(new RbImage(pointer.statusIcon));
+                }
+            }
+        }
+        public override void AssignFaction(Faction faction)
+        {
+            previousPlayer = faction.player;
+            base.AssignFaction(faction);
+            this.profile.StorageIndex = -1;
+            this.profile.character = new CharacterProfile(-1);
+        }
+        // public void AssignFaction(Faction faction)
+        //{
+            
+        //}
 
         public void Net_readStatus(System.IO.BinaryReader r)
         {
@@ -59,28 +95,37 @@ namespace VikingEngine.DSSWars.Players
         {
             return false;
         }
+        public override bool IsRemotePlayer()
+        {
+            return true;
+        }
         public RbTexture FlagTextureToHud()
         {
             return new RbTexture(flagTexture, 1f, 0, 0.2f);
         }
 
-        public void RemoteToHud(RichBoxContent content)
-        {
-            if (flagTexture != null)
-            {
-                content.Add(new RbBeginTitle(2));
-                content.Add(FlagTextureToHud());
+        //public void RemoteToHud(RichBoxContent content)
+        //{
+        //    if (flagTexture != null)
+        //    {
+        //        content.Add(new RbBeginTitle(2));
+        //        content.Add(FlagTextureToHud());
 
-                content.space();
-            }
+        //        content.space();
+        //    }
 
-            if (networkPeer != null)
-            {
-                content.Add(new RbText(networkPeer.peer.Gamertag));
-            }
-        }
+        //    if (networkPeer != null)
+        //    {
+        //        content.Add(new RbText(networkPeer.peer.Gamertag));
+        //    }
+        //}
 
         public override bool IsLocal => false;
+
+        public void DeleteMe()
+        { 
+            pointer.DeleteMe();
+        }
     }
 
 

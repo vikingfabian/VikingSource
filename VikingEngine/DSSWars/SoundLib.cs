@@ -24,7 +24,7 @@ namespace VikingEngine.DSSWars
             buy, wrong, soft_buzz_error, start_build_contruct, start_destroy_contruct,
             copy, paste, start, stop,
             select_army, select_city, select_faction,
-            ordermove, orderstop, message, trophy,
+            ordermove, orderstop, message_loud, trophy,
             woodcut, tree_falling, breaking, scythe, drop_item, pickaxe, 
             
             hen, pig,
@@ -37,7 +37,9 @@ namespace VikingEngine.DSSWars
            blade_light, blade_medium, blade_heavy, spear_whoosh,
            musket, cannon, block_attack, wood_bonk,
             
-           painvoice, fleshgore;
+           painvoice, fleshgore,
+            
+            netMessage, netJoined;
 
         public static SoundContainerBase[] WalkSounds;
         public static SoundContainerBase[] AnimalNoises;
@@ -76,7 +78,7 @@ namespace VikingEngine.DSSWars
 
             ordermove = new SoundContainerSingle(SoundDir + "ordermove");
             orderstop = new SoundContainerSingle(SoundDir + "orderstop");
-            message = new SoundContainerSingle(SoundDir + "chat_message", 0.75f);
+            message_loud = new SoundContainerSingle(SoundDir + "chat_message", 0.75f);
             trophy = new SoundContainerSingle(SoundDir + "trophy", 0.2f);
 
             woodcut = new SoundContainerSingle(SoundDir + "woodcut", 0.4f, 0.2f);
@@ -90,6 +92,11 @@ namespace VikingEngine.DSSWars
             pig = new SoundContainerSingle(SoundDir + "pig", 0.6f, 0.8f);
 
             hog = new SoundContainerMultiple([SoundDir + "hog1", SoundDir + "hog2"], 0.6f, 0.4f);
+
+            netMessage = new SoundContainerSingle(SoundDir + "TalkingShort");
+            netJoined = new SoundContainerSingle(SoundDir + "player_enters");
+            //Engine.LoadContent.LoadSound(LoadedSound.chat_message, SoundDir + "chat_message");
+            //Engine.LoadContent.LoadSound(LoadedSound.player_enters, SoundDir + "player_enters");
 
             SoundContainerMultiple dogGrowl = new SoundContainerMultiple([SoundDir + "dog_growl1", SoundDir + "dog_growl2"]);
             SoundContainerBuilder dogBuilder = new SoundContainerBuilder(0.6f, 0.4f);

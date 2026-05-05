@@ -114,9 +114,12 @@ namespace VikingEngine.DSSWars.Players
                             }
 
                             int faction = tile.City().factionIndex;
-                            if (!factionsRecieved[faction])
+                            if (faction >= 0 && DssRef.world.factions.Array[faction].player.IsLocal)
                             {
-                                FactionsInView.Add(faction);
+                                if (!factionsRecieved[faction])
+                                {
+                                    FactionsInView.Add(faction);
+                                }
                             }
                         }
                     }
@@ -131,7 +134,7 @@ namespace VikingEngine.DSSWars.Players
 
         public void Net_UpdateArmies(ref int maxPackets)
         {
-            const int GroupsPerPacket = 8;
+            
 
             if (playerCulling.farLayer == false)
             {
@@ -140,55 +143,22 @@ namespace VikingEngine.DSSWars.Players
                 int waitSeconds;
                 if ( netCollArmies.Count <= 2)
                 {
-                    waitSeconds = 5;
+                    waitSeconds = 2;
                 }
                 else if (netCollArmies.Count <= 10)
                 {
-                    waitSeconds = 10;
+                    waitSeconds = 4;
                 }
                 else 
                 {
-                    waitSeconds = 20;
+                    waitSeconds = 10;
                 }
 
                 foreach (Army army in netCollArmies)
                 {
-                    if (army.lastNetUpdate.secPassed(waitSeconds))
+                    if (army.IsNetHosted && army.lastNetUpdate.secPassed(waitSeconds))
                     {
-                        {
-                            var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssArmyStatus, Network.PacketReliability.Unrelyable, out var packet);
-                            {
-                                Army.NetWriteArmy(w, army);
-                                army.lastNetUpdate.setNow();
-                            }
-                            packet.EndWrite_Asynch();
-                        }
-
-                        if (army.groups.Count > 0)
-                        {
-                            var groupC = army.groups.counter();
-
-                            int count = 0;
-
-                            while (groupC.HasMore())
-                            {                                
-                                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssSoldierGroupStatus, Network.PacketReliability.Unrelyable, out var packet);
-                                {
-                                    w.Write((ushort)army.factionIndex);
-                                    w.Write((ushort)army.myIndex);
-
-                                    while (--count < GroupsPerPacket && groupC.Next())
-                                    {
-                                        Army.NetWriteGroup(w, groupC.sel);
-                                        army.lastNetUpdate.setNow();
-                                    }
-
-                                    w.Write(ushort.MaxValue);
-                                }
-                                packet.EndWrite_Asynch();
-                                
-                            }
-                        }
+                        Army.NetFullArmyStatus(army, Network.PacketReliability.Unrelyable);
                     }
                 }
             }

@@ -179,6 +179,8 @@ namespace VikingEngine
             mainThreadID = System.Threading.Thread.CurrentThread.ManagedThreadId;
 #endif
             var sett = new GameSettings();
+            new NetworkSettings();
+
             if (PlatformSettings.PC_platform)
             {
                 targetFrameRate = sett.FrameRate;
@@ -256,7 +258,9 @@ namespace VikingEngine
                 try
                 {
                     //System.ExecutionEngineException
+#if !DEBUG
                     Environment.FailFast("Forces shutdown on threads");
+#endif
 
                 }
                 catch

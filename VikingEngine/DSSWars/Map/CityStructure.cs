@@ -373,6 +373,12 @@ namespace VikingEngine.DSSWars.Map
                                     case TerrainSubFoilType.RapeSeedFarm:
                                     case TerrainSubFoilType.RapeSeedFarmUpgraded:
                                         ++buildingStructure.RapeSeedFarm_count;
+//#if DEBUG
+//                                        if (buildingStructure.RapeSeedFarm_count >= 8)
+//                                        {
+//                                            lib.DoNothing();
+//                                        }
+//#endif
                                         ++fuelSpots;
                                         farming(ref subTile);
                                         buildingPosition.RapeSeedFarm_pos = subTileLoop.Position;
@@ -1122,9 +1128,11 @@ namespace VikingEngine.DSSWars.Map
         {
             if (!city.PenUpkeep_IsPayed)
             {
+                Faction faction = city.GetFaction();
+
                 foreach (var pos in AnimalPens)
                 {
-                    EditSubTile editValue = new EditSubTile(pos, new SubTile() { terrainAmount = 1 }, false, true, false);
+                    EditSubTile editValue = new EditSubTile(faction, pos, new SubTile() { terrainAmount = 1 }, false, true, false);
                     editValue.Submit();
                 }
             }

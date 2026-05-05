@@ -15,6 +15,7 @@ using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.HUD.RichMenu;
 using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
+using VikingEngine.Sound;
 using VikingEngine.ToGG;
 
 namespace VikingEngine.DSSWars.Interface
@@ -205,7 +206,7 @@ namespace VikingEngine.DSSWars.Interface
                     new RbAction1Arg<AbsGameObject>(goToMapObject, city, RbSoundType.Default))
                 { fillWidth = true });
 
-                Add(content);
+                Add(content, SoundLib.message_loud);
             }
         }
 
@@ -232,7 +233,7 @@ namespace VikingEngine.DSSWars.Interface
                     new RbAction1Arg<AbsGameObject>(goToMapObject, army, RbSoundType.Default))
                 { fillWidth = true });
 
-                Add(content);
+                Add(content, SoundLib.message_loud);
             }
         }
 
@@ -243,7 +244,7 @@ namespace VikingEngine.DSSWars.Interface
             content.space();
             content.Add(new RbText(onOff ? DssRef.lang.Hud_On : DssRef.lang.Hud_Off, HudLib.InfoYellow_Light));
 
-            Add(content);
+            Add(content, null);
         }
 
         public void Add(string title, string text)
@@ -252,15 +253,19 @@ namespace VikingEngine.DSSWars.Interface
             Title(content, title);
             content.text(text);
 
-            Add(content);
+            Add(content, SoundLib.message_loud);
+        }
+        public void Add(RichBoxContent content)
+        {
+            Add(content, SoundLib.message_loud);
         }
 
-        public void Add(RichBoxContent content, bool vibrate = true)
+        public void Add(RichBoxContent content, SoundContainerBase sound, bool vibrate = true)
         {
             if (StartupSettings.BlockMessages)
                 return;
 
-            SoundLib.message.Play(Pan.Right);
+            sound?.Play(Pan.Right);
             if (vibrate)
             {
                 player.gameControls.input.Vibrate(300, 0, 1);

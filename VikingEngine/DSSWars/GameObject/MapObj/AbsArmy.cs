@@ -43,6 +43,129 @@ namespace VikingEngine.DSSWars.GameObject
             group.army = new WeakReference<AbsArmy>(this);
             group.factionIndex = factionIndex;
         }
+        public static void NetWriteMapObjId(System.IO.BinaryWriter w, AbsArmy army)
+        {
+            //if (army.IsArmy())
+            //{
+                w.Write((ushort)army.factionIndex);
+            //}
+            w.Write((ushort)army.myIndex);
+        }
+
+        public static bool NetReadMapObjId(System.IO.BinaryReader r, out Faction faction, bool bArmy, out AbsArmy mapObj, out bool needInit)
+        {
+            int factionIx = r.ReadUInt16();
+            faction = DssRef.world.faction(factionIx);
+
+            if (faction == null)
+            {
+                mapObj = null;
+                needInit = false;
+                return false;
+            }
+
+            int unitIx = r.ReadUInt16();
+
+            if (bArmy)
+            {
+                Army army = faction.armies.GetIndex_Safe(unitIx);
+                needInit = false;
+                if (army == null)
+                {
+                    army = new Army();
+                    army.factionIndex = factionIx;
+                    //faction.armies.HardSet(army, armyIx);
+                    army.init(faction, unitIx);
+                    needInit = true;
+                }
+                army.IsNetHosted = faction.player != null && faction.player.IsLocalPlayer();
+                mapObj = army;
+
+#if DEBUG
+                Debug.Log($"NET read army ({army.myIndex}), faction ({faction.PlayerName}), army count: {faction.armies.Count}");
+#endif
+            }
+            else
+            {
+                needInit = false;
+                //int unitIx = r.ReadUInt16();
+                mapObj = DssRef.world.cities[unitIx];
+                mapObj.setFaction(faction, false, true);
+                faction = mapObj.GetFaction();
+            }
+
+            return true;
+        }
+        public void netWriteGroups(Network.PacketReliability reliability, ref int packetCount)
+        {
+            const int GroupsPerPacket = 8;
+            if (groups.Count > 0)
+            {
+                var groupC = groups.counter();
+
+                while (groupC.HasMore())
+                {
+                    int packetGroupCount = GroupsPerPacket;
+
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(IsArmy() ? Network.PacketType.DssSoldierGroupStatus_Army : Network.PacketType.DssSoldierGroupStatus_City, reliability, out var packet);
+                    {
+                        packetCount++;
+                        NetWriteMapObjId(w, this);
+
+                        while (--packetGroupCount >= 0 && groupC.Next())
+                        {
+                            NetWriteGroup(w, groupC.sel);
+                            lastNetUpdate.setNow();
+                        }
+
+                        w.Write(ushort.MaxValue);
+                    }
+                    packet.EndWrite_Asynch();
+                }
+            }
+        }
+        public static void NetWriteGroup(System.IO.BinaryWriter w, SoldierGroup group)
+        {
+            w.Write((ushort)group.myIndex);
+            group.writeNet(w);
+        }
+
+        public static bool NetReadGroup(System.IO.BinaryReader r, AbsArmy army)
+        {
+            int index = r.ReadUInt16();
+            if (index != ushort.MaxValue)
+            {
+                var group = army.groups.GetIndex_Safe(index);
+                bool needInit = false;
+                if (group == null)
+                {
+                    needInit = true;
+                    if (army.IsCity())
+                    {
+                        group = new GuardGroup(army);
+                    }
+                    else
+                    {
+                        group = new SoldierGroup(army);
+                    }
+                    army.groups.HardSet(group, index);
+                    group.myIndex = index;
+                    if (group.factionIndex < 0)
+                    {
+                        throw new Exception();
+                    }
+                }
+
+                group.readNet(army, r, needInit);
+                group.net_onUpdate();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         virtual public void remove(SoldierGroup group)
         {
             Debug.CrashIfThreaded();

@@ -8,6 +8,7 @@ using VikingEngine.DSSWars.Communication;
 using VikingEngine.DSSWars.Data;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.DSSWars.Interface;
+using VikingEngine.DSSWars.Interface.CutScene;
 using VikingEngine.DSSWars.Map;
 using VikingEngine.DSSWars.Players.Command;
 using VikingEngine.DSSWars.Players.Orders;
@@ -145,6 +146,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
             else if (diplomacy != null)
             {   
+                player.playerNetState = PlayerNetState.Diplomacy;
                 map.mapControlsUpdate();
                 player.hud.updateToolTip_menu();
 
@@ -159,6 +161,11 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             }
             else
             {
+                player.playerNetState = PlayerNetState.Map;
+                if (map.selection.obj != null && map.selection.obj.gameobjectType() == GameObjectType.City)
+                {
+                    player.playerNetState = PlayerNetState.City;
+                }
                 inputHelpState = InputHelpState.Map;
                 map.focusedUpdate();
 
@@ -173,6 +180,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 }
                 else if ((map.hover.subTile.hasSelection && InBuildOrdersMode()) || build.buildKeyDown)
                 {
+                    player.playerNetState = PlayerNetState.Building;
                     inputHelpState = InputHelpState.Build;
                     map.cancelRectangleSelect();
                     build.updateBuildMode();                    
@@ -215,6 +223,7 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
             if (army != null)
             {
                 inputHelpState = InputHelpState.Army;
+                player.playerNetState = PlayerNetState.Army;
                 army.update();
             }
             else
@@ -292,13 +301,13 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                     {
                         setMenuFocus(false, true);
                         clearSelection();
-                    }
-                
+                    }                
 
                     if (input.Controller_TabLeft.DownEvent)
                     {
                         controllerTabbing(-1, true);
                     }
+
                     if (input.Controller_TabRight.DownEvent)
                     {
                         controllerTabbing(1, true);
@@ -309,49 +318,38 @@ namespace VikingEngine.DSSWars.Players.PlayerControls
                 {
                     player.hud.messages.onControllerClick();
                 }
+
                 
             }
 
-            //if (input.inputSource.IsController)
-            //{
+            if (Ref.netSession.InMultiplayerSession)
+            {
+                if (input.TextChat.DownEvent)
+                {
+                    new TextChat();
+                }
+                switch (Ref.netsett.voiceOption)
+                {
+                    case Network.VoiceOption.ButtonToggle:
+                        if (input.VoiceChat.DownEvent)
+                        {
+                            Ref.steam.ToggleRecording();
+                        }
+                        break;
 
-            //    bool friendlyHoverObj = mapControls.hover.obj != null && mapControls.hover.obj.GetFaction() == faction;
-            //    if (!menuFocusState &&
-            //    !hud.menuFocus &&
-            //        (input.Select.DownEvent || (friendlyHoverObj && input.ControllerFocus.DownEvent)))
-            //    {
-            //        if (armyControls != null &&
-            //            (mapControls.hover.obj == null || mapControls.armyMayAttackHoverObj()))
-            //        {
-            //            mapExecute();
-            //        }
-            //        else
-            //        {
-            //            mapSelect();
-            //        }
-            //    }
-
-            //    if (input.ControllerMessageClick.DownEvent)
-            //    {
-            //        hud.messages.onControllerClick();
-            //    }
-
-            //    if (inputConnected && !input.Connected)
-            //    {
-            //        DssRef.state.menuSystem.controllerLost();
-            //    }
-            //    inputConnected = input.Connected;
-            //}
-            //else
-            //{
-            //    if (!hud.mouseOverHud)
-            //    {
-
-            //    }
-            //}
-
-
-
+                    case Network.VoiceOption.ButtonHold:
+                        if (input.VoiceChat.DownEvent)
+                        {
+                            Ref.steam.StartRecording();
+                        }
+                        else if (input.VoiceChat.UpEvent)
+                        { 
+                            Ref.steam.StopRecording();
+                        }
+                        break;
+                }
+            }
+            
             gameSpeedInput();
 
             updateObjectTabbing();

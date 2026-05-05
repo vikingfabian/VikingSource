@@ -50,7 +50,6 @@ namespace VikingEngine.DSSWars
         MouseButtonAction X1MouseAction = MouseButtonAction.None;
         MouseButtonAction X2MouseAction = MouseButtonAction.None;
 
-
         public IButtonMap NextArmy;
         public IButtonMap NextCity;
         public IButtonMap NextWar;
@@ -64,16 +63,17 @@ namespace VikingEngine.DSSWars
         public IButtonMap WorkPriorityShortcut;
         public IButtonMap StockpileShortcut;
 
-
         public IButtonMap FlagDesign_ToggleColor_Prev;
         public IButtonMap FlagDesign_ToggleColor_Next;
         public IButtonMap FlagDesign_PaintBucket;
         public IButtonMap Controller_FlagDesign_Colorpicker;
         public IButtonMap Controller_TabLeft, Controller_TabRight;
-        //public IButtonMap Controller_SubTabLeft, Controller_SubTabRight;
+
+        public IButtonMap TextChat;
+        public IButtonMap TeamTextChat;
+        public IButtonMap VoiceChat;
 
         public Voxels.EditorInputMap editorInput = new Voxels.EditorInputMap();
-
         override public IButtonMap RbClick() { return Input.Mouse.MenuMode? mouseSelect_InMenuMode : mouseSelect; }
         override public IDirectionalMap RbScroll() { return Input.Mouse.MenuMode? menuInput.scroll : guiScroll; }
         override public IntVector2 RbMoveSteps() { return move.stepping + dpadMove.stepping; }
@@ -216,6 +216,10 @@ namespace VikingEngine.DSSWars
 
             Controller_TabLeft = new NoButtonMap();
             Controller_TabRight = new NoButtonMap();
+
+            TextChat = new KeyboardButtonMap(Keys.T);
+            VoiceChat = new KeyboardButtonMap(Keys.Space);
+
         }
         void refreshKeyBoardInput()
         {
@@ -382,6 +386,10 @@ namespace VikingEngine.DSSWars
             Controller_TabLeft = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.tab_left, idx);
             Controller_TabRight = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.tab_right, idx);
 
+            TextChat = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.TextChat, idx);
+            TeamTextChat = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.TeamTextChat, idx);
+            VoiceChat = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.VoiceChat, idx);
+
             // --- Strategy / RTS Actions ---
             Build = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.build, idx);
             Copy = new SteamButtonMap(SteamActionSet.InGameControls, SteamDigitalAction.copy, idx);
@@ -449,8 +457,10 @@ namespace VikingEngine.DSSWars
             WorkPriorityShortcut = new NoButtonMap();//
             StockpileShortcut = new NoButtonMap();//
 
-            GameSpeed = Controller_TabRight;//
-            PauseGame = Controller_TabLeft;//
+            GameSpeed = Controller_TabRight;
+            PauseGame = Controller_TabLeft;
+            TextChat = Controller_TabRight;
+            VoiceChat = Controller_TabLeft;
 
             menuInput?.xboxSetup(inputSource.controllerIndex);
 

@@ -30,6 +30,7 @@ using VikingEngine.HUD;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.Input;
 using VikingEngine.LootFest.Players;
+using VikingEngine.Sound;
 using VikingEngine.ToGG;
 using VikingEngine.ToGG.Commander.LevelSetup;
 using VikingEngine.ToGG.HeroQuest.HeroStrategy;
@@ -128,7 +129,7 @@ namespace VikingEngine.DSSWars.Players
         public bool isDropInPlayer = false;
 
         public StoredCameraPos storedCameraPos;
-
+        public PlayerNetState playerNetState = PlayerNetState.InMenu;
 
         public LocalPlayer()
         {
@@ -147,11 +148,7 @@ namespace VikingEngine.DSSWars.Players
         }
 
 
-        public void setPlayerFaction(Faction faction)
-        {
-            faction.factiontype = FactionType.Player;
-            faction.availableForPlayer = false;
-        }
+        
 
         void baseInit()
         {
@@ -222,7 +219,7 @@ namespace VikingEngine.DSSWars.Players
 
             inputConnected = input.Connected;
 
-            faction.displayInFullOverview = true;
+            //faction.displayInFullOverview = true;
 
             playerData = Engine.XGuide.GetPlayer(playerindex);
             playerData.Tag = this;
@@ -298,11 +295,13 @@ namespace VikingEngine.DSSWars.Players
 
         public void NetUpdate()
         {
-            if (Ref.netSession.IsClient)
-            {
-                var w = Ref.netSession.BeginWritingPacketToHost(Network.PacketType.DssPlayerStatus, Network.PacketReliability.Unrelyable, playerData.localPlayerIndex);
-                DssRef.state.culling.players[playerData.localPlayerIndex].GetState().writeNet(w);
-            }
+            //if (Ref.netSession.IsClient)
+            //{
+            var w = Ref.netSession.BeginWritingPacket(Network.PacketType.DssPlayerStatus, Network.PacketReliability.Unrelyable, playerData.localPlayerIndex);
+            DssRef.state.culling.players[playerData.localPlayerIndex].GetState().writeNet(w);
+
+            RemotePlayerPointer.netWrite(w, this);
+            //}
         }
 
         public override void writeGameState(BinaryWriter w)
@@ -773,7 +772,7 @@ namespace VikingEngine.DSSWars.Players
                     RichBoxContent content = new RichBoxContent();
                     MessageGroup_Ingame.Title(content, title);
                     DiplomacyDisplay.FactionRelationDisplay(otherFaction, rel.Relation, content);
-                    Ref.update.AddSyncAction(new SyncAction2Arg<RichBoxContent, bool>(hud.messages.Add, content, true));
+                    Ref.update.AddSyncAction(new SyncAction3Arg<RichBoxContent, SoundContainerBase, bool>(hud.messages.Add, content, SoundLib.message_loud, true));
                 }
 
             }
@@ -848,9 +847,14 @@ namespace VikingEngine.DSSWars.Players
                     //battleLineUpTest2(false);
                     //DssRef.state.events.TestNextEvent();
                     //DssRef.state.events.testTooPeacefulCheck();
+                    //Ref.steam.StartRecording();
+                }
+                else if (Input.Keyboard.KeyUpEvent(Microsoft.Xna.Framework.Input.Keys.Y))
+                {
+                    //Ref.steam.StopRecording();
                 }
 
-                if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
+                    if (Input.Keyboard.KeyDownEvent(Microsoft.Xna.Framework.Input.Keys.X))
                 {
                     //battleLineUpTest3_friendly_only();
                     //battleLineUpTest2(false);
@@ -1683,11 +1687,11 @@ namespace VikingEngine.DSSWars.Players
 
         public void baseOnGameStart()
         {
-            factionPixelTexture = new FactionPixelTexture(faction, true,
+            factionPixelTexture = new FactionPixelTexture(playerData.localPlayerIndex, true,
                 (DssRef.settings.playType == GameState.PlayStateType.Play || DssRef.settings.playType == GameState.PlayStateType.MapEditor) ?
                 FactionMapFilter.FactionCols : FactionMapFilter.Terrain);
-            minimapPixelTexture = new FactionPixelTexture(faction, true, FactionMapFilter.Minimap);
-            unitsPixelTexture = new UnitsPixelTexture(faction);
+            minimapPixelTexture = new FactionPixelTexture(playerData.localPlayerIndex, true, FactionMapFilter.Minimap);
+            unitsPixelTexture = new UnitsPixelTexture(playerData.localPlayerIndex);
         }
 
         public override void onGameStart(bool newGame)
@@ -1703,29 +1707,30 @@ namespace VikingEngine.DSSWars.Players
             {
                 commandPoints.value = commandPoints.max * 0.5;
                 diplomaticPoints.value = diplomaticPoints.max * 0.6;
-            }
 
-            if (DssRef.difficulty.resourcesStartHelp)
-            {
-                Task.Factory.StartNew(() =>
+
+                if (DssRef.difficulty.resourcesStartHelp)
                 {
-                    try
+                    //Task.Factory.StartNew(() =>
+                    //{
+                    //    try
+                    //    {
+                            //var citiesC = faction.cities.counter();
+                            //while (citiesC.Next())
+                            //{
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                     {
-                        //var citiesC = faction.cities.counter();
-                        //while (citiesC.Next())
-                        //{
-                        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                        while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
-                        {
-                            citySel.checkPlayerFuelAccess_OnGamestart_async();
-                        }
+                        citySel.checkPlayerFuelAccess_OnGamestart_async();
                     }
-                    catch (Exception ex)
-                    {
-                        BlueScreen.ThreadException = ex;
-                    }
+                    //    }
+                    //    catch (Exception ex)
+                    //    {
+                    //        BlueScreen.ThreadException = ex;
+                    //    }
 
-                });
+                    //});
+                }
             }
 
             faction.refreshMainCity();

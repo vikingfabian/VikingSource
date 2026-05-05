@@ -25,6 +25,7 @@ namespace VikingEngine
         public static MainGame main;
         public static Sound.SoundManager sound;
         public static GameSettings gamesett;
+        public static NetworkSettings netsett;
         public static VikingEngine.SteamWrapping.SteamManager steam;
         //public static DataLib.Language language;
         public static AbsOptionsLanguage langOpt;                                                                                                                                                               
@@ -38,7 +39,7 @@ namespace VikingEngine
         public static PerformanceRandom peRnd = new PerformanceRandom();
 
 
-        public static Network.INetworkUpdateReviever NetUpdateReciever()
+        public static Network.INetworkUpdateReciever NetUpdateReciever()
         {
             if (lobby == null) return gamestate;
 

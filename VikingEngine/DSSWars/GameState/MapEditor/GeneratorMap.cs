@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.GameState.MapEditor
 
         public GeneratorMap(Vector2 pos)
         {
-            texture = new FactionPixelTexture(null, false, FactionMapFilter.Terrain);
+            texture = new FactionPixelTexture(-1, false, FactionMapFilter.Terrain);
             image = new Graphics.ImageAdvanced(SpriteName.NO_IMAGE, pos, Vector2.One, ImageLayers.Lay8, false);
         }
 

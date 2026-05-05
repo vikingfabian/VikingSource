@@ -84,6 +84,8 @@ namespace VikingEngine.Network
 
     struct ReceivedPacket
     {
+        public static readonly ReceivedPacket Empty = new ReceivedPacket();
+
         public System.IO.BinaryReader r;
         public AbsNetworkPeer sender;
         public int senderLocalIndex;
@@ -103,6 +105,14 @@ namespace VikingEngine.Network
         {
             return sender.ToString() + ": " + type.ToString() + " L" + r.BaseStream.Length.ToString();
         }
+    }
+
+    enum VoiceOption
+    { 
+        Off,
+        ButtonHold,
+        ButtonToggle,
+        AlwaysOn,
     }
 
     enum SendPacketTo
@@ -136,8 +146,9 @@ namespace VikingEngine.Network
     {
         NON,
 
-
         VoiceChat,
+        TextChat,
+
         Steam_AssignClientId,
         Steam_SuccesfulJoinPing,
         Steam_SendRoundtrip,
@@ -145,7 +156,7 @@ namespace VikingEngine.Network
         Steam_InviteAccepted,
         Steam_LargePacket,
         Steam_LargePacket_Recieved,
-        Chat,
+        
         WorldSeed,
         AddGameObject,
 
@@ -153,13 +164,19 @@ namespace VikingEngine.Network
         DssSendWorld,
         DssPlayerStatus,
         DssPlayerEnterPresentation,
+        DssAssignFaction,
+        DssAssignFactionCities,
+        DssAssignFactionComplete,
         DssWorldTiles,
         DssWorldSubTiles,
         DssFactions,
         DssCities,
+        DssFactionStatus,
         DssCityStatus,
+        DssCityHandOver,
         DssArmyStatus,
-        DssSoldierGroupStatus,
+        DssSoldierGroupStatus_Army,
+        DssSoldierGroupStatus_City,
 
         LF2_WorldOverview,
         LF2_StartAttack,

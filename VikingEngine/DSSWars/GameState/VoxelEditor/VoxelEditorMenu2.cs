@@ -1365,7 +1365,6 @@ namespace VikingEngine.DSSWars.GameState.VoxelEditor
                         var reciever = new SearchInput(this);
                         SteamInputManager.tryOpenSteamKeyboard(reciever);
 
-
                     }), new RbTooltip_Text(DssRef.lang.Hud_Search))
                 { overrideBgColor = Color.White });
 

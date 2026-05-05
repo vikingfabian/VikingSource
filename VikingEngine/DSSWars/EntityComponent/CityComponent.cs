@@ -257,34 +257,8 @@ namespace VikingEngine.DSSWars
                 cityResouces[resStartIndex + CityResoureIndex.iron].amount = 20;
 
                 resourceStart += CityResoureIndex.COUNT;
-                //workStart += WorkTemplate.COUNT;
 
-                //int exEnd = startIndex + WorkTemplate.COUNT;
-
-                //for (int i = startIndex; i < exEnd; i++)
-                //{
-                //    cityWork[i] = new WorkPriority(0);
-                //}
                 WorkTemplate.InitComponents(cityWork, startIndex);
-                //cityWork[startIndex + (int)WorkPriorityType.move].value = 3;
-                //cityWork[startIndex + (int)WorkPriorityType.wood].value = 2;
-                //cityWork[startIndex + (int)WorkPriorityType.stone].value = 2;
-                //cityWork[startIndex + (int)WorkPriorityType.craftFuel].value = 1;
-                //cityWork[startIndex + (int)WorkPriorityType.farmFood].value = 4;
-                //cityWork[startIndex + (int)WorkPriorityType.farmRawFood].value = 1;
-                //cityWork[startIndex + (int)WorkPriorityType.craftBeer].value = 1;
-
-                //cityWork[startIndex + (int)WorkPriorityType.smeltIron].value = 3;
-                //cityWork[startIndex + (int)WorkPriorityType.craftSharpStick].value = 1;
-                //cityWork[startIndex + (int)WorkPriorityType.craftPaddedArmor].value = 1;
-                //cityWork[startIndex + (int)WorkPriorityType.farmfuel].value = 2;
-                //cityWork[startIndex + (int)WorkPriorityType.farmlinen].value = 1;
-                //cityWork[startIndex + (int)WorkPriorityType.bogiron].value = 1;
-                //cityWork[startIndex + (int)WorkPriorityType.miningIron].value = 3;
-                //cityWork[startIndex + (int)WorkPriorityType.trading].value = 2;
-                //cityWork[startIndex + (int)WorkPriorityType.autoBuild].value = 1;
-                //cityWork[startIndex + (int)WorkPriorityType.buildOrders].value = 2;
-                //cityWork[startIndex + (int)WorkPriorityType.smeltGold].value = 3;
 
                 startIndex += WorkTemplate.COUNT;
             }

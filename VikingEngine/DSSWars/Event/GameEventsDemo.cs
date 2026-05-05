@@ -104,7 +104,7 @@ namespace VikingEngine.DSSWars.Event
                     var mission = new RichBoxContent();
                     mission.h1(DssRef.lang.Demo_MissionObjective_Title, HudLib.TitleColor_Head);
                     mission.text(DssRef.lang.Demo_MissionObjective_Description);
-                    DssRef.state.LocalHost().hud.messages.Add(mission);
+                    DssRef.state.LocalHost().hud.messages.Add(mission, SoundLib.message_loud);
                 }
             }
         }

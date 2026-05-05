@@ -49,6 +49,16 @@ namespace VikingEngine.DSSWars.GameObject
             return factionIndex >= 0 && factionIndex < DssRef.world.factions.Count;
         }
 
+        public bool HasPlayer()
+        {
+            if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
+            {
+                var f = DssRef.world.factions.Array[factionIndex];
+                return f != null && f.player != null;
+            }
+            return false;
+        }
+
         public bool HasAliveFaction()
         {
             if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
@@ -98,7 +108,7 @@ namespace VikingEngine.DSSWars.GameObject
         public Players.AbsPlayer GetPlayer()
         {
 
-            if (factionIndex < 0)
+            if (factionIndex < 0 || factionIndex >= DssRef.world.factions.Array.Length)
             {
                 return null;
             }
@@ -125,7 +135,7 @@ namespace VikingEngine.DSSWars.GameObject
             //if (factionIndex > 0)
             //{
             var f = DssRef.world.faction(factionIndex);
-            return f != null && f.player.profile.casualControls;
+            return f != null && f.player != null && f.player.profile.casualControls;
             //}
             //return false;
         }
@@ -229,17 +239,24 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
-        protected void ownerToHud(Interface.ObjectHudArgs args, bool divider)
+        public void ownerToHud(Interface.ObjectHudArgs args, bool divider)
         {
             var faction = GetFaction();
             if (args.player != null && faction != null && faction != args.player.faction)
             {
                 var relation = DssRef.world.diplomacy.GetRelation(args.player.faction, faction).Relation;
 
-                args.content.newLine();
+                //args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
                 args.content.space(0.5f);
                 args.content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
+
+                if (faction.player.IsRemotePlayer())
+                {
+                    args.content.space(0.5f);
+                    args.content.Add(new RbGamerIcon(((RemotePlayer)faction.player).networkPeer.peer, 0.8f));
+                }
+
                 args.content.space(0.5f);
                 args.content.Add(new RbText(faction.PlayerName, HudLib.TitleColor_Name));
 

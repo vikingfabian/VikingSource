@@ -114,7 +114,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public bool PayUpkeep(float payCopper)
         {
-            if (payCopper == 0)
+            if (payCopper <= 0)
                 return true;
 
             if (copper >= payCopper)
