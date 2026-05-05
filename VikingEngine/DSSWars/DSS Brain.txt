@@ -1,10 +1,6 @@
 
 ﻿UPDATE
 Change Log:
-* fixed: load from save, build priorities in all cities get reduced to 2
-* fixed: loading gave rapeseed farms to player cities without trees
-* fixed the conscript available resource preview
-* fixed: conscript sometimes spent all resources
 * 
 
 ##ICONS TODO

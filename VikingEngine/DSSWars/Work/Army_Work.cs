@@ -51,10 +51,13 @@ namespace VikingEngine.DSSWars.GameObject
 
         void getFoodGoalBuffer(out float bufferGoalFood, out float bufferGoalConservedFood)
         {
+            const float FoodBuffer_minutes = 15f;
+            const float ConservedFoodBuffer_minutes = FoodBuffer_minutes * 2f;
+
             float energy = DssConst.ManDefaultEnergyCost / DssRef.difficulty.FoodEnergySett * DssConst.SoldierGroup_DefaultCount * Bound.Min(groups.Count, 1);
             float minuteEnergy = TimeExt.MinuteInSeconds * energy;
-            bufferGoalFood = friendlyAreaFoodBuffer_minutes * minuteEnergy;
-            bufferGoalConservedFood = friendlyAreaConservedFoodBuffer_minutes * minuteEnergy;
+            bufferGoalFood = FoodBuffer_minutes * minuteEnergy;
+            bufferGoalConservedFood = ConservedFoodBuffer_minutes * minuteEnergy;
         }
 
         public void async_workUpdate(Faction faction, float seconds)
@@ -96,10 +99,10 @@ namespace VikingEngine.DSSWars.GameObject
         void foodUpkeepUpdate_async(Faction faction, float seconds)
         {
 
-            //if (debugTagged)
-            //{
-            //    lib.DoNothing();
-            //}
+            if (debugTagged)
+            {
+                lib.DoNothing();
+            }
 
             //float energyUpkeep = totalUpkeep * DssConst.ManDefaultEnergyCost;
             //float foodUpkeep = energyUpkeep * DssRef.difficulty.FoodEnergySett;
@@ -115,41 +118,47 @@ namespace VikingEngine.DSSWars.GameObject
                 City city = DssRef.world.tileGrid.Get(tilePos).City();
                 if (city != null && city.HasFaction())
                 {
-                    float bufferGoal_minutes = -1;
+                    float bufferGoal_percentage = -1;
+                    int goldCostMulti = 1;
                     if (city.factionIndex == factionIndex)
                     {
-                        bufferGoal_minutes = friendlyAreaFoodBuffer_minutes;
+                        bufferGoal_percentage = 1f;
+                        goldCostMulti = 0;
                     }
                     else if (!DssRef.world.diplomacy.GetRelation(city.factionIndex, factionIndex).InWar())
                     {
-                        bufferGoal_minutes = foodBuffer_minutes;
+                        bufferGoal_percentage = 0.5f;
                     }
 
                     //float bufferGoalFood = bufferGoal_minutes * TimeExt.MinuteInSeconds * totalUpkeep.food;
-                    if (bufferGoal_minutes > 0)
+                    if (bufferGoal_percentage > 0)
                     {
                         getFoodGoalBuffer(out float bufferGoalFood, out float bufferGoalConservedFood);
+                        bufferGoalFood *= bufferGoal_percentage;
+                        bufferGoalConservedFood *= bufferGoal_percentage;
 
                         if (Ref.peRnd.ChanceF(0.6f))
                         {
-                            orderMissingFood(food, bufferGoalFood, city.resourceAmount(EntityComponent.CityResoureIndex.food), DssConst.FoodGoldValue, ItemResourceType.Food_G);
+                            orderMissingFood(food, bufferGoalFood, city.resourceAmount(EntityComponent.CityResoureIndex.food), DssConst.FoodGoldValue * goldCostMulti, ItemResourceType.Food_G);
                         }
                         else
                         {
-                            orderMissingFood(conservedFood, bufferGoalConservedFood, city.resourceAmount(EntityComponent.CityResoureIndex.ConservedFood), DssConst.ConservedFoodGoldValue, ItemResourceType.ConservedFood);
+                            orderMissingFood(conservedFood, bufferGoalConservedFood, city.resourceAmount(EntityComponent.CityResoureIndex.ConservedFood), DssConst.ConservedFoodGoldValue * goldCostMulti, ItemResourceType.ConservedFood);
                         }
 
                         void orderMissingFood(float hasAmount, float goalAmount, int cityAmount, int goldValue, ItemResourceType foodType)
                         {
-                            if (bufferGoal_minutes > 0 &&
-                                (food + conservedFood) < bufferGoalFood &&
+                            goldValue *= ItemPropertyColl.CarryFood;
+
+                            if (
+                                hasAmount < goalAmount &&
                                 cityAmount >= ItemPropertyColl.CarryFood &&
-                                faction.hasGold(goldValue * ItemPropertyColl.CarryFood, this))
+                                faction.payGold(goldValue, false, this))
                             {
                                 int statusIx = getOrCreateFreeWorker();
                                 var status = workerStatuses[statusIx];
                                 status.createWorkOrder(WorkType.TrossCityTrade, (int)foodType, 0, XP.WorkExperienceType.NUM_NONE, -1, WP.ToSubTilePos_Centered(city.tilePos), null);
-                                if (city.factionIndex != factionIndex)
+                                if (goldValue > 0)
                                 {
                                     foodCosts_import.add(status.carry.amount);
                                 }

@@ -95,7 +95,7 @@ namespace VikingEngine.DSSWars.GameObject
                                 addStorageBuilding(StorageType.ArmorStorage, build);
                                 break;
                             case TerrainBuildingType.AnimalStorage:
-                                addStorageBuilding(StorageType.ArmorStorage, build);
+                                addStorageBuilding(StorageType.AnimalStorage, build);
                                 break;
 
                             case TerrainBuildingType.SoldierBarracks:
