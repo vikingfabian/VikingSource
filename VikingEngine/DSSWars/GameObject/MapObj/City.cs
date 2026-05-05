@@ -2383,7 +2383,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                 IndexToHud(args.content);
                 //args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
-
+                args.content.newLine();  
                 ownerToHud(args, !tooltip);
             }
         }

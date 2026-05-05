@@ -580,6 +580,7 @@ namespace VikingEngine.DSSWars.Work
             args.content.space();
             args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
 
+            args.content.newLine();
             ownerToHud(args, false);
         }
         public override void toHud(ObjectHudArgs args)

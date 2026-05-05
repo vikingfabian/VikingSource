@@ -45,6 +45,7 @@ namespace VikingEngine.DSSWars
         public static readonly Color TitleColor_TypeName = Color.LightGray;
         public static readonly Color TitleColor_TypeName_Dark = new Color(50, 50, 50);
         public static readonly Color TitleColor_Label = new Color(0, 128, 153);
+        public static readonly Color TitleColor_Label2 = new Color(60, 108, 133);
         public static readonly Color TitleColor_Label_Dark = new Color(0, 63, 76);
         public static readonly Color AvailableColor = Color.LightGreen;
         public static readonly Color AvailableColor_Dark = Color.DarkGreen;

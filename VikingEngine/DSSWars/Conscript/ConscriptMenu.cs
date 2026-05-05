@@ -421,7 +421,7 @@ namespace VikingEngine.DSSWars.Conscript
                 if (city.conscriptBuildings.Count == 0)
                 {
                     //EMPTY
-                    content.text(DssRef.lang.Hud_EmptyList).overrideColor = HudLib.InfoYellow_Light;
+                    content.text(DssRef.lang.Hud_EmptyList, HudLib.InfoYellow_Light);
                     content.newParagraph();
                     content.h2(DssRef.lang.Hud_PurchaseTitle_Requirement).overrideColor = HudLib.TitleColor_Label;
                     content.newLine();

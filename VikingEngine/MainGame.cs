@@ -258,7 +258,9 @@ namespace VikingEngine
                 try
                 {
                     //System.ExecutionEngineException
+#if !DEBUG
                     Environment.FailFast("Forces shutdown on threads");
+#endif
 
                 }
                 catch

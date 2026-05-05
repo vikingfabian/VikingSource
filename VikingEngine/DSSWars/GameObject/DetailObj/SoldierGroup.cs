@@ -2391,7 +2391,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public AbsSoldierUnit FirstSoldier()
         {
-            return soldiers.First();
+            return soldiers?.First();
         }
 
         public override void AddDebugTag()

@@ -344,8 +344,9 @@ namespace VikingEngine.DSSWars.GameObject
 
             args.content.space(1);
 
-            IndexToHud(args.content);//args.content.Add(new RbText(string.Format(DssRef.lang.UnitId, myIndex), HudLib.SecondaryTextColor));
+            IndexToHud(args.content);
 
+            args.content.newLine();
             ownerToHud(args, !tooltip); 
         }
 

@@ -239,14 +239,14 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
-        protected void ownerToHud(Interface.ObjectHudArgs args, bool divider)
+        public void ownerToHud(Interface.ObjectHudArgs args, bool divider)
         {
             var faction = GetFaction();
             if (args.player != null && faction != null && faction != args.player.faction)
             {
                 var relation = DssRef.world.diplomacy.GetRelation(args.player.faction, faction).Relation;
 
-                args.content.newLine();
+                //args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsGovernmentIcon));
                 args.content.space(0.5f);
                 args.content.Add(new RbImage(Diplomacy.RelationSprite(relation)));
