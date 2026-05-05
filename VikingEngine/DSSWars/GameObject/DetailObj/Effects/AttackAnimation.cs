@@ -11,19 +11,11 @@ namespace VikingEngine.DSSWars.GameObject
 {
     partial class AbsDetailUnit
     {
-        //public AbsDetailUnit soldier;
-
         public float prevAttackTime;
         public Time attackCooldownTime = 0;
         Time attackFrameTime;
-        //public int attackSetIndex;
 
         public Rotation1D attackDir;
-
-        //public AttackAnimation(AbsDetailUnit soldier)
-        //{
-        //    this.soldier = soldier;
-        //}
 
         public void updateAttack(float time)
         {
@@ -34,8 +26,6 @@ namespace VikingEngine.DSSWars.GameObject
                     attackFrameTime.CountDown(time);
                 }
             }
-
-            //if (attackCooldownTime.MilliSeconds
         }
 
         public bool inAttackAnimation()
@@ -80,10 +70,6 @@ namespace VikingEngine.DSSWars.GameObject
         {
             if (target != null)
             {
-                //if (target.GetAbsArmy().debugTagged)
-                //{
-                //    lib.DoNothing();
-                //}
                 attackCooldownTime.MilliSeconds = soldierData.attackTimePlusCoolDown;
                 prevAttackTime = attackCooldownTime.MilliSeconds;
                 attackFrameTime.MilliSeconds = Profile().attackFrameTime;
@@ -146,7 +132,6 @@ namespace VikingEngine.DSSWars.GameObject
                                 case Resource.ItemResourceType.HandSpear:
                                 case Resource.ItemResourceType.Pike:
                                 case Resource.ItemResourceType.SharpStick:
-                                //case Resource.ItemResourceType.KnightsLance:
                                     SoundLib.spear_whoosh.Play(position);
 
                                     break;
@@ -200,30 +185,9 @@ namespace VikingEngine.DSSWars.GameObject
                     {
                         DssRef.achieve.UnlockAchievement(AchievementIndex.rear_flanking);
                     }
-                    //switch (group.soldierConscript.conscript.weapon)
-                    //{
-                    //    case Resource.ItemResourceType.KnightsLance:
-                    //        if (ItemPropertyColl.Get(target.group.soldierConscript.conscript.weapon).Filter_IsSiegeWeapon)
-                    //        { 
-                    //            DssRef.achieve.UnlockAchievement(AchievementIndex.rear_flanking);
-                    //        }                           
-                    //        break;
-
-                        //    //case ItemResourceType.SiegeCannonBronze:
-                        //    //    if (target.group.InGuardPost())
-                        //    //    {
-                        //    //        DssRef.achieve.UnlockAchievement(AchievementIndex.ottoman);
-                        //    //    }
-                        //    //    break;
-                        //}
                 }
             }
         }
-
-        //public bool mustCompleteAttackSet()
-        //{
-        //    return attackSetIndex > 0;
-        //}
 
         public bool IsAttacking
         {

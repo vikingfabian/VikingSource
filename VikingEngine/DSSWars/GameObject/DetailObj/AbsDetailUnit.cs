@@ -11,54 +11,23 @@ namespace VikingEngine.DSSWars.GameObject
 {
     abstract partial class AbsDetailUnit : AbsWorldObject
     {
-        //const float DropTargetAdd = 1;
-        //public int id;
-
         public int health;
         public float radius;
 
-        //protected Damage previousDamage = Damage.NoDamage;
         protected bool recievedProjectileAttackWhileIdle = false;
         protected int lockedIncomingDamage = 0;
 
-        //public AbsDetailUnit closestAttackTarget = null;
         public AbsDetailUnit attackTarget = null, nextAttackTarget = null;
 
-
-        //public AttackAnimation attack;
         public IntVector2 tilePos = IntVector2.NegativeOne;
 
         public SoldierGroup group;
         public Rotation1D rotation;
         public SoldierState state = new SoldierState();
-
-        //public float walkingSpeedMultiplier = 1f;
-        //public float terrainSpeedMultiplier = 1f;
-
         public int updatesCount = 0;
 
-        //public bool debug_addedByRemote = false;
-        //public float attackSoundPitch = 0f;
-        //public bool usedInOrderCheck;
-
-        //public Vector3 position;
-
         public SoldierData soldierData;
-        //protected Vector2 collisionForce = Vector2.Zero;
-        //const int CollGroupSize = 8;
-
-        //protected SafeCollectAsynchStaticList<AbsDetailUnit> collisionGroup = new SafeCollectAsynchStaticList<AbsDetailUnit>(CollGroupSize);
-        //protected int collisionFrames = 0;
         public DetailUnitModel model;
-        //public Physics.AbsBound2D bound;
-
-        //bool isDeleted = false;
-
-        //virtual public void InitRemote(Players.AbsPlayer player, System.IO.BinaryReader r)
-        //{
-        //    debug_addedByRemote = true;
-        //}
-
         virtual public void netShareUnit() { }
 
         public float angleDiff(AbsDetailUnit target)
@@ -132,66 +101,9 @@ namespace VikingEngine.DSSWars.GameObject
 
         abstract public void update(float time, bool fullUpdate);
 
-        //abstract public void asynchUpdate();
-
-        //public void setDetailLevel(bool unitDetailView)
-        //{
-        //    Debug.CrashIfThreaded();
-        //    if (unitDetailView)
-        //    {
-        //        if (model == null)
-        //        {
-        //            model = initModel();
-        //            model.update(this);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        model?.DeleteMe();
-        //        model = null;
-        //    }
-        //}
 
         abstract protected DetailUnitModel initModel(bool bannerman);
 
-        //    protected void updateTargetAim()
-        //    {
-        //        //if (attackTarget == null)
-        //        //{
-        //        //    var closest = closestAttackTarget;
-
-        //        //    if (closest != null && distanceToUnit(closest) <= Data().targetSpotRange)
-        //        //    {
-        //        //        attackTarget = closest;
-        //        //    }
-        //        //}
-        //        //else
-
-        //        var attack_sp = attackTarget;
-
-        //        if (attack_sp != null)
-        //        {
-        //            if (distanceToUnit(attackTarget) > Data().targetSpotRange + DropTargetAdd)
-        //            {
-        //                //Target got to far away
-        //                attackTarget = null;
-        //            }
-        //            else if (attackTarget.IsStructure())
-        //            {
-        //                if (attackTarget.Faction() == this.Faction())
-        //                {
-        //                    attackTarget = null;
-        //                }
-        //            } 
-        //            else
-        //            {
-        //                if (attackTarget.Dead())
-        //                {
-        //                    attackTarget = null;
-        //                }
-        //            }
-        //    }
-        //}
         protected void refreshAttackTarget()
         {
             if (debugTagged)
@@ -213,7 +125,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        //abstract public bool defeated(Faction attacker);
 
         public void closestTargetCheck(AbsDetailUnit unit,
             ref AbsDetailUnit closestOpponent,
@@ -248,19 +159,6 @@ namespace VikingEngine.DSSWars.GameObject
                 }
             }
         }
-
-        //protected void collisionGroupCheck(AbsDetailUnit unit, float distance)
-        //{
-        //    if (distance < DssVar.Men_AsynchCollisionGroupRadius)
-        //    {
-        //        if (collisionGroup.processList.Count < CollGroupSize)
-        //        {
-        //            collisionGroup.processList.Add(unit);
-        //        }
-        //    }
-        //}
-
-        
 
         virtual protected AbsMapObject ParentMapObject()
         {
@@ -322,161 +220,12 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        //void onMyGroupDestroyed(AttackAnimation fromAttack)
-        //{
-        //    fromAttack.soldier.onKilledGroup();
-        //}
-
-        //public void onKilledGroup()
-        //{
-        //    //groupKills++;
-        //    //UnitStats stats = GetStats();
-        //    //if (stats != null && !warsRef.IsCustomMapGame)
-        //    //{
-        //    //    stats.groupKills++;
-
-        //    //    if (groupKills == warsLib.AchiveOneGroupKills5)
-        //    //    {
-        //    //        warsLib.SetAchievement(AchievementIndex.OneGroupKills5);
-        //    //    }
-        //    //}
-        //}
-
-        bool isLocalUnitInOnlineMatch()
-        {
-            return false;//player.IsLocal && warsRef.gamestate.settings.onlineMatch;
-        }
-
-        public void onFlagCapture()
-        {
-            //flagCaptures++;
-
-            //UnitStats stats = GetStats();
-            //if (stats != null && !warsRef.IsCustomMapGame)
-            //{
-            //    stats.flagCaptures++;
-
-            //    if (flagCaptures == warsLib.AchiveOneGroupCaptures5Flags)
-            //    {
-            //        warsLib.SetAchievement(AchievementIndex.OneGroupCaptures5);
-            //    }
-            //}
-        }
-
-
-        //protected UnitStats GetStats()
-        //{
-        //    if (player is Players.LocalPlayer)
-        //    {
-        //        return warsRef.storage.unitStats[(int)Type];
-        //    }
-
-        //    return null;
-        //}
-
-        virtual public void onEvent(UnitEventType type)
-        {
-            //if (type == UnitEventType.Death && isKing)
-            //{ warsRef.gamestate.gameover = GameOverReason.KingDeath; }
-
-            if (localMember)
-            {
-                //var w = Ref.netSession.BeginWritingPacket(Network.PacketType.stupUnitEvent, Network.PacketReliability.Reliable);
-                //warsRef.gamestate.writeUnit(w, this);
-                ////writeId(w);
-                //w.Write((byte)type);
-            }
-        }
-
-        //virtual public void onDealtProjectileHit(Projectile projectile)
-        //{ }
-
-        //protected System.IO.BinaryWriter beginWriteAddUnit(AbsPlayer2 player)
-        //{
-        //    var w = Ref.netSession.BeginWritingPacket(Network.PacketType.stupAddUnit, Network.PacketReliability.Reliable);
-        //    warsRef.gamestate.writePlayer(player, w);
-        //    w.Write((byte)Type);
-        //    w.Write((ushort)id);
-
-        //    return w;
-        //}
-
-        //protected void readId(System.IO.BinaryReader r)
-        //{
-        //    id = r.ReadUInt16();
-        //}
-
-        //public void writeAttack(int index, AbsUnit target)
-        //{
-        //    if (localMember)
-        //    {
-        //        var w = Ref.netSession.BeginWritingPacket(Network.PacketType.stupBeginAttack, Network.PacketReliability.Reliable);
-        //        warsRef.gamestate.writeUnit(w, this);
-
-        //        w.Write((byte)index);
-
-        //        if (target == null)
-        //        {
-        //            w.Write(false);
-        //        }
-        //        else
-        //        {
-        //            w.Write(true);
-        //            warsRef.gamestate.writeUnit(w, target);
-        //        }
-        //    }
-        //}
-
-        //public void readAttack(System.IO.BinaryReader r)
-        //{
-        //    int index = r.ReadByte();
-
-        //    AbsUnit target = null;
-        //    if (r.ReadBoolean())
-        //    {
-        //        target = warsRef.gamestate.readUnit(r);
-        //    }
-
-        //    if (index == 0)
-        //    {
-        //        if (target != null)
-        //        {
-        //            attack.startAttack(target, false);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        createAlternativeAttack(index, target);
-        //    }
-        //}
-
-        virtual protected void createAlternativeAttack(int index, AbsDetailUnit target) 
-        {
-            if (localMember)
-            {
-                //writeAttack(index, target);
-            }
-        }
-
-        //virtual public void DeleteMe(bool quickDelete)
-        //{
-        //    isDeleted = true;
-        //    deleteModels();
-        //}
-
+        
         public void deleteModels()
         {
             if (model != null)
-            {
-                //if (fullUpdate)
-                //{
-                    Debug.CrashIfThreaded();
-                    model.DeleteMe();
-                //}
-                //else
-                //{
-                //    Ref.update.AddSyncAction(new SyncAction(model.DeleteMe));
-                //}
+            {                
+                model.DeleteMe();
             }
         }
 
@@ -529,11 +278,6 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        //override public Faction GetFaction()
-        //{
-        //    return group.army.faction;
-        //}
-
         public Players.AbsPlayer player()
         {
             return GetFaction()?.player;
@@ -542,7 +286,6 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public Vector3 projectileStartPos()
         {
             Vector3 pos = position;
-            //pos.Y += DssConst.Men_StandardModelScale * 0.6f;
             model?.RotateVector(soldierData.attackStart, ref pos);
             return pos;
         }
@@ -565,8 +308,6 @@ namespace VikingEngine.DSSWars.GameObject
             get { return false; }
         }
 
-        //public bool HasShield { get { return Data().shieldDamageReduction > 0; } }
-
         virtual public int MaxHealth()
         {
             return soldierData.basehealth;
@@ -576,7 +317,7 @@ namespace VikingEngine.DSSWars.GameObject
 
         public override string TypeName()
         {
-            return TextLib.Error;//((ConscriptedSoldierData)Data()).profile.conscript.TypeName() + "(" + parentArrayIndex.ToString() + ")";
+            return TextLib.Error;
         }
 
         public override string ToString()
