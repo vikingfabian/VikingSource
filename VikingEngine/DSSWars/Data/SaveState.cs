@@ -102,6 +102,7 @@ namespace VikingEngine.DSSWars.Data
             Debug.WriteCheck(w);
 
             //WORLD
+
             DssRef.world.writeMapFile(w); MainProgress++;
 
             //STATE

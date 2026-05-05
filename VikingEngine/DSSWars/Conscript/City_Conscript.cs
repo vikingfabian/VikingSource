@@ -35,7 +35,7 @@ namespace VikingEngine.DSSWars.GameObject
         public IntVector2 recruitToTile;
         public void async_conscriptUpdate(float time)
         {
-            if (myIndex == 153)
+            if (myIndex == 250)
             {
                 lib.DoNothing();
             }

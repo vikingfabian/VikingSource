@@ -105,7 +105,15 @@ namespace VikingEngine.DSSWars.Data
         }
         public bool TimeOut()
         {
-            return Ref.TotalGameTimeSec >= endTimeSec;
+            if (endTimeSec > 0)
+            {
+                return Ref.TotalGameTimeSec >= endTimeSec;
+            }
+            else
+            {
+                start();
+                return false;
+            }
         }
 
         public TimeLength TimePassed()
@@ -128,7 +136,7 @@ namespace VikingEngine.DSSWars.Data
             float remaining = r.ReadUInt16();
             if (remaining > 0)
             {
-                start(new TimeLength(remaining));
+                length = new TimeLength(remaining);
             }
         }
 
