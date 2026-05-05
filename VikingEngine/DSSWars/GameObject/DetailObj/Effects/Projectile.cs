@@ -8,8 +8,8 @@ namespace VikingEngine.DSSWars.GameObject
 {
     class Projectile : AbsUpdateable
     {
-        public static void ProjectileAttack(bool fullUpdate, AbsDetailUnit attacker,
-            AttackType type, AbsDetailUnit target, int damage, float blockReduce_inv, int splashCount) /*int splashCount, float splashPercDamage)*/
+        public static void ProjectileAttack(bool fullUpdate, AbsSoldierUnit attacker,
+            AttackType type, AbsSoldierUnit target, int damage, float blockReduce_inv, int splashCount) /*int splashCount, float splashPercDamage)*/
         {
             if (fullUpdate)
             {
@@ -27,8 +27,8 @@ namespace VikingEngine.DSSWars.GameObject
         //const float MinDistance = AbsSoldierData.StandardModelScale * 0.2f;
 
         Graphics.VoxelModelInstance model;
-        AbsDetailUnit fromAttack;
-        GameObject.AbsDetailUnit target; 
+        AbsSoldierUnit fromAttack;
+        GameObject.AbsSoldierUnit target; 
         int damage;
         int splashCount;
         //float splashPercDamage;
@@ -45,8 +45,8 @@ namespace VikingEngine.DSSWars.GameObject
         Vector3 blankTarget;
         float blockReduce_inv;
 
-        public Projectile(Vector3 start, AbsDetailUnit fromAttack, AttackType type, 
-            AbsDetailUnit target, int damage, float blockReduce_inv, int splashCount)
+        public Projectile(Vector3 start, AbsSoldierUnit fromAttack, AttackType type, 
+            AbsSoldierUnit target, int damage, float blockReduce_inv, int splashCount)
             : base(true)
         {
             this.fromAttack = fromAttack;
@@ -320,7 +320,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        public static void ProjectileHit(bool fullUpdate, AbsDetailUnit target, int damage, float blockReduce_inv, int splashCount, AbsDetailUnit fromAttack)
+        public static void ProjectileHit(bool fullUpdate, AbsSoldierUnit target, int damage, float blockReduce_inv, int splashCount, AbsSoldierUnit fromAttack)
         {
 
             target.takeDamage(damage, blockReduce_inv, null, fromAttack.attackDir, fromAttack.GetFaction(), fullUpdate, out _);

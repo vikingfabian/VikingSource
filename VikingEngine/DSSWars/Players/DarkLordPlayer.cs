@@ -21,7 +21,7 @@ namespace VikingEngine.DSSWars.Players
 
         public int factoriesLeft;
 
-        public AbsDetailUnit darkLordUnit = null;
+        public AbsSoldierUnit darkLordUnit = null;
 
         int servantCountdown = 20;
 
