@@ -26,8 +26,8 @@ namespace VikingEngine.DSSWars.GameObject
         protected static float GoalReachDist_GROUP = DssVar.StandardBoundRadius * 2f;
         protected static float GoalReachDist_WhenColliding = GoalReachDist_GROUP * 3f;
 
-        IntVector2 prevTilePos;
-        GameTimeStamp prevTileTimeStamp = GameTimeStamp.None;
+        //IntVector2 prevTilePos;
+        //GameTimeStamp prevTileTimeStamp = GameTimeStamp.None;
 
         public Vector3 walkingGoal;
         public Vector2 groupOffset;
@@ -252,11 +252,6 @@ namespace VikingEngine.DSSWars.GameObject
                 refreshGroupOffset();
                 updateGroupPosition();
             }
-        }
-
-        public virtual void update(float time, bool fullUpdate)
-        {
-            //throw new NotImplementedException();
         }
 
         public override bool rectangleCollision(ScreenToSpaceRectangleBound rectangle)
@@ -850,12 +845,12 @@ namespace VikingEngine.DSSWars.GameObject
         {
             var newTilePos = WP.ToTilePos(position);
 
-            if (newTilePos != tilePos)
-            {
+            //if (newTilePos != tilePos)
+            //{
                 tilePos = newTilePos;
-                prevTilePos = tilePos;
-                prevTileTimeStamp.setNow();
-            }
+                //prevTilePos = tilePos;
+                //prevTileTimeStamp.setNow();
+            //}
 
             battleData?.asycUpdate(this);
         }

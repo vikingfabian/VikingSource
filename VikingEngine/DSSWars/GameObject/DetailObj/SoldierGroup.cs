@@ -689,7 +689,6 @@ namespace VikingEngine.DSSWars.GameObject
                     tArmy.inRender_detailLayer && models)
                 {
                     s.setDetailLevel(true);
-                    s.update(1f, true);
                 }
 
                 if (soldiers == null)
