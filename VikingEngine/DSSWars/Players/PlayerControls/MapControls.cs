@@ -1325,6 +1325,7 @@ namespace VikingEngine.DSSWars.Players
         public void setCameraPosition(Vector2 worldXZ)
         {
             camera.LookTargetXZ = worldXZ;
+            camera.clearGoalTarget();
             onPan();
         }
 
@@ -1332,6 +1333,9 @@ namespace VikingEngine.DSSWars.Players
         {
             playerPointerPos = WP.ToWorldPos(tile);
             camera.LookTarget = playerPointerPos;
+            camera.clearGoalTarget();
+            cameraFocus = null;
+            onPan();
         }
 
         void onPan()

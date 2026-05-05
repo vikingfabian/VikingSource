@@ -7,12 +7,7 @@ x new steam input
 
 ﻿UPDATE
 Change Log:
-* leaderboard ui improvements
-* native linux build (beta)
-* wide scrollbars for Steam Deck
-* fixed conscript, its returning the queue, but bugs out when not started 
-* conscripts wont count down queues until all items are collected
-* fixed storage paste to city set all to zero
+* 
 
 ##ICONS TODO
 * 

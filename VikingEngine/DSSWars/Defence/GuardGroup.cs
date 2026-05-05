@@ -243,7 +243,8 @@ namespace VikingEngine.DSSWars.Defence
             {
                 if (i < IntVector2.AllDiagonalsArray.Length)
                 {
-                    AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.AllDiagonalsArray[i], false, tilePos, ref soldierData, createModels);
+                    AbsSoldierUnit unit = createUnit(typeProfile, IntVector2.AllDiagonalsArray[i], 
+                        false, tilePos, ref soldierData, createModels);
                     unit.firstUpdate();
                 }
             }

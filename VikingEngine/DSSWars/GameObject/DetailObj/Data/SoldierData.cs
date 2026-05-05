@@ -201,14 +201,17 @@ namespace VikingEngine.DSSWars.GameObject.DetailObj.Data
             groupSpacing = DssVar.DefaultGroupSpacing * 1.4f;
             boundRadius = DssVar.StandardBoundRadius * 1.4f;
         }
-        public void ElephantSetup()
+        //public void ElephantSetup()
+        //{
+        //    //rowWidth = ItemPropertyColl.ElephantRowWidth;
+        //    //columnsDepth = ItemPropertyColl.ElephantCumnDepth;
+        //    groupSpacing = DssVar.DefaultGroupSpacing * 2.6f;
+        //    boundRadius = DssVar.StandardBoundRadius * 2.5f;
+        //}
+        public void BalcongSetup()
         {
-            rowWidth = ItemPropertyColl.ElephantRowWidth;
-            columnsDepth = ItemPropertyColl.ElephantCumnDepth;
-            groupSpacing = DssVar.DefaultGroupSpacing * 2.6f;
-            boundRadius = DssVar.StandardBoundRadius * 2.5f;
-        }
 
+        }
         public void WagonSetup()
         {
             rowWidth = ItemPropertyColl.WagonRowWidth;

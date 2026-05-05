@@ -1218,7 +1218,7 @@ namespace VikingEngine.DSSWars.GameObject
             int fuelType = (int)TerrainSubFoilType.RapeSeedFarm;
 
             CityStructure structure = new CityStructure();
-            structure.update(DssRef.world,this, 32, FuelFarmCount);
+            structure.update(DssRef.world, this, 32, FuelFarmCount);
             if (structure.fuelSpots <= 8)
             {
                 //int count = Math.Min(structure.EmptyLand.Count, FuelFarmCount);
@@ -1232,7 +1232,7 @@ namespace VikingEngine.DSSWars.GameObject
             }
         }
 
-        
+
         void findLowXpWorkers()
         {
             

@@ -1707,29 +1707,30 @@ namespace VikingEngine.DSSWars.Players
             {
                 commandPoints.value = commandPoints.max * 0.5;
                 diplomaticPoints.value = diplomaticPoints.max * 0.6;
-            }
 
-            if (DssRef.difficulty.resourcesStartHelp)
-            {
-                Task.Factory.StartNew(() =>
+
+                if (DssRef.difficulty.resourcesStartHelp)
                 {
-                    try
+                    //Task.Factory.StartNew(() =>
+                    //{
+                    //    try
+                    //    {
+                            //var citiesC = faction.cities.counter();
+                            //while (citiesC.Next())
+                            //{
+                    SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+                    while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
                     {
-                        //var citiesC = faction.cities.counter();
-                        //while (citiesC.Next())
-                        //{
-                        SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                        while (citiesC.Next(ref faction.cities, DssRef.world.cities, out City citySel))
-                        {
-                            citySel.checkPlayerFuelAccess_OnGamestart_async();
-                        }
+                        citySel.checkPlayerFuelAccess_OnGamestart_async();
                     }
-                    catch (Exception ex)
-                    {
-                        BlueScreen.ThreadException = ex;
-                    }
+                    //    }
+                    //    catch (Exception ex)
+                    //    {
+                    //        BlueScreen.ThreadException = ex;
+                    //    }
 
-                });
+                    //});
+                }
             }
 
             faction.refreshMainCity();

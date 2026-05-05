@@ -57,8 +57,8 @@ namespace VikingEngine.DSSWars.GameObject
         public SoldierUpkeep totalUpkeep = new SoldierUpkeep();
         public int missingUpkeepSeconds = 0;
         public float foodBuffer_minutes = 2f;
-        public float friendlyAreaFoodBuffer_minutes = 3f;
-        public float friendlyAreaConservedFoodBuffer_minutes = 6f;
+        //public float friendlyAreaFoodBuffer_minutes = 3f;
+        //public float friendlyAreaConservedFoodBuffer_minutes = 6f;
 
         public MinuteStats foodCosts_import = new MinuteStats();
         public MinuteStats foodCosts_blackmarket = new MinuteStats();
@@ -439,7 +439,7 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.newLine();
                 args.content.Add(new RbImage(SpriteName.WarsResource_FoodSub));
                 args.content.space();
-                args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.TwoDecimal(/*Army.ManUpkeepToFoodUpkeep(*/totalUpkeep.food/*)*/))));
+                args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Upkeep_X, TextLib.TwoDecimal(totalUpkeep.food))));
                 args.content.space();
                 HudLib.PerSecondInfo(args.player, args.content, false);
 
@@ -447,6 +447,9 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.Add(new RbImage(SpriteName.WarsResource_Food));
                 args.content.space();
                 args.content.Add(new RbText(string.Format(DssRef.lang.ArmyHud_Food_Reserves_X, TextLib.LargeNumber((int)food))));
+
+                getFoodGoalBuffer(out float bufferGoalFood, out float bufferGoalConservedFood);
+                args.content.Add(new RbText(" / "+ TextLib.LargeNumber((int)bufferGoalFood), HudLib.SecondaryTextColor));
 
                 if (mayInteract)
                 {
@@ -480,6 +483,7 @@ namespace VikingEngine.DSSWars.GameObject
                 args.content.Add(new RbImage(SpriteName.WarsResource_ConservedFood));
                 args.content.space();
                 args.content.Add(new RbText(DssRef.lang.Resource_ConservedFood_Reserves +": " + TextLib.LargeNumber((int)conservedFood)));
+                args.content.Add(new RbText(" / " + TextLib.LargeNumber((int)bufferGoalConservedFood), HudLib.SecondaryTextColor));
 
                 args.content.icontext(SpriteName.rtsUpkeepTime, string.Format(DssRef.lang.ArmyHud_Food_Costs_X, TextLib.TwoDecimal(foodCosts_import.displayValue_gold_sec + foodCosts_blackmarket.displayValue_gold_sec)));
                 args.content.space();
