@@ -96,23 +96,23 @@ namespace VikingEngine.DSSWars.Interface.CutScene
         {
             if (!string.IsNullOrEmpty(result))
             {
-                //var w = Ref.netSession.BeginWritingPacket(PacketType.TextChat, PacketReliability.Reliable);
-                //StreamLib.WriteString(w, result);
+                var w = Ref.netSession.BeginWritingPacket(PacketType.TextChat, PacketReliability.Reliable);
+                StreamLib.WriteString(w, result);
 
-                //RichBoxContent content = new RichBoxContent();
-                //DssRef.state.LocalHost().addNetGamerToHud(content, false);
-                //content.icontext(SpriteName.LfChatBobbleIcon, result);
-                //DssRef.state.LocalHost().hud.messages.Add(content, null);
+                RichBoxContent content = new RichBoxContent();
+                DssRef.state.LocalHost().addNetGamerToHud(content, false);
+                content.icontext(SpriteName.LfChatBobbleIcon, result);
+                DssRef.state.LocalHost().hud.messages.Add(content, null);
             }
             base.textInput_complete(result, tag);
-            //Close();
+            Close();
         }
 
 
-        //public override PlayerNetState NetState()
-        //{
-        //    return PlayerNetState.TypingChat;
-        //}
+        public override PlayerNetState NetState()
+        {
+            return PlayerNetState.TypingChat;
+        }
     }
 
     class ChatInput : AbsTextInputUpdate
