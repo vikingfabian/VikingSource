@@ -8,7 +8,7 @@ x new steam input
 
 ﻿UPDATE
 Change Log:
-* 
+* Fixed: all conscript time out on load
 
 ##ICONS TODO
 * 
