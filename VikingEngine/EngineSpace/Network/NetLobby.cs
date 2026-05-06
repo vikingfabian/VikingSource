@@ -239,7 +239,12 @@ namespace VikingEngine.Network
             }
         }
 
-        virtual public void NetEvent_LargePacket(Network.ReceivedPacket packet) { }
+        virtual public void NetEvent_LargePacket(Network.ReceivedPacket packet)
+        {
+            Ref.gamestate.NetEvent_LargePacket(packet);
+        }
+
+
 
         virtual public void NetEvent_PingReturned(Network.AbsNetworkPeer gamer)
         {

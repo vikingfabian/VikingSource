@@ -307,16 +307,7 @@ namespace VikingEngine.DSSWars
                         city.readNet_update(packet.r, part);
                     }
                     break;
-                case PacketType.DssCityHandOver:
-                    {
-                        //int cityIx = packet.r.ReadUInt16();
-                        //var city = DssRef.world.cities[cityIx];
-                        //int part = packet.r.ReadByte();
-                        //city.readNet_update(packet.r, part);
-                        City.NetReadHandOver(packet.r);
-                    }
-                    break;
-
+                
                 case PacketType.DssArmyStatus:
                     Army.NetReadArmy(packet.r);
                     break;
@@ -355,6 +346,23 @@ namespace VikingEngine.DSSWars
                         } while (more);
                     }
                 }
+            }
+        }
+
+        public override void NetEvent_LargePacket(ReceivedPacket packet)
+        {
+            switch (packet.type)
+            {
+                case PacketType.DssCityHandOver:
+                    {
+                        //int cityIx = packet.r.ReadUInt16();
+                        //var city = DssRef.world.cities[cityIx];
+                        //int part = packet.r.ReadByte();
+                        //city.readNet_update(packet.r, part);
+                        City.NetReadHandOver(packet.r);
+                    }
+                    break;
+
             }
         }
 

@@ -680,7 +680,7 @@ namespace VikingEngine.DSSWars
                 previuosMoney = storeMoney;
                 storeMoney = money;
 
-                if (cities.Count == 0 && !player.protectedFromDelete)
+                if (cities.Count == 0 && !player.protectedFromDelete && Ref.netSession.IsHost)
                 {
                     if (armies.Count == 0)
                     {

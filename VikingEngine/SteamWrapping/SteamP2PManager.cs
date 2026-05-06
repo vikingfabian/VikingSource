@@ -461,7 +461,7 @@ namespace VikingEngine.SteamWrapping
                     return peer;
             }
 
-            if (localPeer.SteamID == peerId)
+            if (localPeer != null && localPeer.SteamID == peerId)
                 return localPeer;
 
             return null;

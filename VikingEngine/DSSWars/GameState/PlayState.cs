@@ -833,7 +833,10 @@ namespace VikingEngine.DSSWars
             if (cutScene == null)
             {
                 DssRef.world.diplomacy.async_update();
-                events.asyncUpdate(time);
+                if (host)
+                {
+                    events.asyncUpdate(time);
+                }
             }
             return exitThreads;
         }

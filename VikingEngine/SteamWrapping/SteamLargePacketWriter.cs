@@ -24,6 +24,7 @@ namespace VikingEngine.SteamWrapping
         int writerPos = 0;
         PacketType largePacketType;
         bool fileComplete = false;
+        TimeStamp 
 
         public bool Complete => fileComplete;
 
