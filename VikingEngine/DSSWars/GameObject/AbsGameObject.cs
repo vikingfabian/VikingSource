@@ -10,6 +10,7 @@ using VikingEngine.DSSWars.Interface;
 using VikingEngine.DSSWars.Players;
 using VikingEngine.DSSWars.Work;
 using VikingEngine.Engine;
+using VikingEngine.EngineSpace.Graphics.In3D;
 using VikingEngine.HUD.RichBox;
 using VikingEngine.HUD.RichBox.Artistic;
 using VikingEngine.SteamWrapping;
@@ -18,18 +19,97 @@ using VikingEngine.SteamWrapping;
 
 namespace VikingEngine.DSSWars.GameObject
 {
+    struct UnitBaseData
+    {
+        public int factionIndex = -1;
+        public int myIndex = -1;
+        public bool isDeleted = false;
+        public Vector3 position = Vector3.Zero;
+        public bool debugTagged = false;
+
+        public UnitBaseData() { }
+
+        public Faction GetFaction()
+        {
+
+            if (factionIndex < 0)
+            {
+                return null;
+            }
+
+            return DssRef.world.faction(factionIndex);
+        }
+
+        public bool TryGetFaction(out Faction faction)
+        {
+            if (factionIndex >= 0 && factionIndex < DssRef.world.factions.Count)
+            {
+                faction = DssRef.world.factions.Array[factionIndex];
+                return true;
+            }
+            faction = null;
+            return false;
+        }
+
+        public Faction GetFaction_Safe()
+        {
+            return DssRef.world?.faction(factionIndex);
+        }
+
+        public Players.AbsPlayer GetPlayer()
+        {
+
+            if (factionIndex < 0 || factionIndex >= DssRef.world.factions.Array.Length)
+            {
+                return null;
+            }
+
+            return DssRef.world.factions.Array[factionIndex]?.player;
+        }
+
+        public bool TryGetPlayer(out Players.AbsPlayer player)
+        {
+
+            if (factionIndex < 0 || factionIndex >= DssRef.world.factions.Array.Length)
+            {
+                player = null;
+            }
+            else
+            {
+                player = DssRef.world.factions.Array[factionIndex]?.player;
+            }
+            return player != null;
+        }
+
+        public bool GetCasual()
+        {
+            //if (factionIndex > 0)
+            //{
+            var f = DssRef.world.faction(factionIndex);
+            return f != null && f.player != null && f.player.profile.casualControls;
+            //}
+            //return false;
+        }
+
+        public Vector2 posXZ()
+        { return new Vector2(position.X, position.Z); }
+
+    }
+
     abstract class AbsGameObject
     {
         public int factionIndex = -1;
         public int myIndex = -1;
         public bool isDeleted = false;
-        
+        public Vector3 position = Vector3.Zero;
+        public bool debugTagged = false;
+
         abstract public GameObjectType gameobjectType();
 
-        virtual public AbsWorldObject GetWorldObject() 
-        {
-            return null;
-        }
+        //virtual public AbsWorldObject GetWorldObject() 
+        //{
+        //    return null;
+        //}
 
         virtual public bool IsDeleted()
         {
@@ -159,10 +239,10 @@ namespace VikingEngine.DSSWars.GameObject
             throw new NotImplementedException();
         }
 
-        virtual public Vector3 WorldPos()
-        {
-            throw new NotImplementedException();
-        }
+        //virtual public Vector3 WorldPos()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         virtual public string TypeName() { return null; }
 
@@ -301,6 +381,53 @@ namespace VikingEngine.DSSWars.GameObject
         virtual public bool IsCollection() { return false; }
         virtual public int CollectionCount() { return 0; }
         //abstract public bool IsDeleted();
+
+        abstract public bool defeatedBy(int attackerFaction);
+
+        virtual public bool defeated()
+        {
+            return isDeleted;
+        }
+
+        abstract public bool aliveAndBelongTo(int faction);
+
+        //public override AbsWorldObject GetWorldObject()
+        //{
+        //    return this;
+        //}
+
+        //public override Vector3 WorldPos()
+        //{
+        //    return position;
+        //}
+        virtual public void stateDebugText(HUD.RichBox.RichBoxContent content)
+        { }
+
+        virtual public void DeleteMe(DeleteReason reason, bool removeFromParent)
+        {
+            isDeleted = true;
+        }
+
+        protected void debugTagButton(RichBoxContent content)
+        {
+#if DEBUG
+            content.Button(string.Format("debug tag ({0})", debugTagged), new HUD.RichBox.RbAction(AddDebugTag), null, true);
+#endif
+        }
+
+        virtual public void AddDebugTag()
+        {
+            lib.Invert(ref debugTagged);
+            Debug.Log((debugTagged ? "Tagged: " : "Remove tag: ") + this.ToString());
+        }
+
+        public Vector2 posXZ()
+        { return new Vector2(position.X, position.Z); }
+
+        virtual public bool rectangleCollision(ScreenToSpaceRectangleBound rectangle)
+        {
+            throw new NotImplementedException();
+        }
     }
     enum GameObjectType
     {
@@ -318,6 +445,15 @@ namespace VikingEngine.DSSWars.GameObject
         Point,
         NONE,
         NUM,
+    }
+    enum DeleteReason
+    {
+        Death,
+        Transform,
+        EmptyGroup,
+        Disband,
+        Desert,
+        CameraCulling,
     }
 }
 
