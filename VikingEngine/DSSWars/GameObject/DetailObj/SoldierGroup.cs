@@ -339,6 +339,10 @@ namespace VikingEngine.DSSWars.GameObject
             }
 
             isShip = r.ReadBoolean();
+            if (isShip)
+            {
+                lib.DoNothing();
+            }
             currentBuilder = isShip ? shipBuilder : landBuilder;
 
             armyGridPlacement2.readShort(r);
@@ -2548,7 +2552,7 @@ namespace VikingEngine.DSSWars.GameObject
             tArmy.stateDebugText(content);
         }
 
-        public void setArmyPlacement2(Vector3 wp, bool resetCommand, bool telePort)
+        public void setArmyPlacement2(Vector3 wp, bool resetCommand, bool telePort, bool hostedAction)
         {
             goalWp = wp;
             armyPlacementWp = goalWp;
@@ -2565,7 +2569,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 //state = GroupState.Idle;
 
-                if (DssRef.world.tileGrid.TryGet(tilePos, out Tile tile))
+                if (hostedAction && DssRef.world.tileGrid.TryGet(tilePos, out Tile tile))
                 {
                     bool waterNode = DssRef.world.tileGrid.Get(tilePos).IsWater();
                     if (waterNode != isShip)

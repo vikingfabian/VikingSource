@@ -10,9 +10,12 @@ using VikingEngine.Network;
 
 namespace VikingEngine.SteamWrapping
 {
+    /// <summary>
+    /// Will auto add to update and keep sending until done
+    /// </summary>
     class SteamLargePacketWriter: SteamWriter
     {
-        const int SendChunkSize = 600;
+        const int SendChunkSize = 1024;
 
         DataStream.MemoryStreamHandler file;
         int id;
@@ -20,6 +23,9 @@ namespace VikingEngine.SteamWrapping
         int packetCount;
         int writerPos = 0;
         PacketType largePacketType;
+        bool fileComplete = false;
+
+        public bool Complete => fileComplete;
 
         public SteamLargePacketWriter(DataStream.MemoryStreamHandler file, SendPacketTo To, ulong SpecificGamerID, PacketType type)
             :base(PacketReliability.Reliable, false, To, SpecificGamerID)
@@ -27,7 +33,7 @@ namespace VikingEngine.SteamWrapping
             this.largePacketType = type;
             this.file = file;
             id = Ref.rnd.Int();
-            packetCount = (int)(file.memoryLength / SendChunkSize);
+            packetCount = MathExt.Div_Ceiling(file.memoryLength, SendChunkSize);
 
             Ref.netSession.largePackets.Add(id, this);
         }
@@ -67,6 +73,7 @@ namespace VikingEngine.SteamWrapping
 
         public override void Time_Update(float time)
         {
+            //Not used
             base.Time_Update(time);
             if (writerPos >= file.memoryLength)
             {
@@ -84,7 +91,7 @@ namespace VikingEngine.SteamWrapping
 
                 Debug.Log($"Recieve large {nextPacketIndex}/{packetCount}");
 
-                bool fileComplete = file.ReadPartialDataToMemory(packet.r);
+                fileComplete = file.ReadPartialDataToMemory(packet.r);
 
                 Ref.update.AddSyncAction(new SyncAction(() =>
                 {

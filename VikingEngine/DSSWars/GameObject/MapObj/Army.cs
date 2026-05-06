@@ -880,7 +880,7 @@ namespace VikingEngine.DSSWars.GameObject
                     var groupsC = groups.counter();
                     while (groupsC.Next())
                     {
-                        groupsC.sel.setArmyPlacement2(position, false, true);
+                        groupsC.sel.setArmyPlacement2(position, false, true, true);
                     }
                 }
                 catch (Exception ex)

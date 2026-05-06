@@ -379,7 +379,7 @@ namespace VikingEngine.DSSWars.GameObject
                 }
                 if (success)
                 {
-                    group.setArmyPlacement2(goalWp, resetCommand, teleport);
+                    group.setArmyPlacement2(goalWp, resetCommand, teleport, true);
                 }
                 return success;
             }
@@ -485,7 +485,7 @@ namespace VikingEngine.DSSWars.GameObject
                             failedPlacements.Add(group);
                         }
 
-                        group.setArmyPlacement2(goalWp, resetCommand, teleport);
+                        group.setArmyPlacement2(goalWp, resetCommand, teleport, true);
 
 
                         if (++colX >= cols)

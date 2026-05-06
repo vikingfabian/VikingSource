@@ -719,12 +719,7 @@ namespace VikingEngine.DSSWars.GameObject
                 w.Write((byte)autoExpandFarmType);
 
                 Tag.write(w);
-                //w.Write((byte)tagBack);
-                //if (tagBack != CityTagBack.NONE)
-                //{
-                //    w.Write((ushort)tagArt);
-                //}
-
+                
                 w.Write(res_food_safeguard);
 
                 technology.writeGameState(w, false);
@@ -1067,25 +1062,48 @@ namespace VikingEngine.DSSWars.GameObject
             }           
         }
 
-        public void net_handover()
+        public static void NetWriteHandover(System.IO.BinaryWriter w, City city)
         {
-            int count = MathExt.Div_Ceiling(workerStatuses.Count, MaxWorkerWriteCount) + 1;
+            w.Write((ushort)city.myIndex);
+            city.writeGameState(w);
+            city.IsNetHosted = false;
+        }
 
-            for (int part = 0; part < count; ++part)
-            {
-                var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityHandOver, Network.PacketReliability.Reliable, out var packet);
-                {
-                    w.Write((ushort)myIndex);
-                    w.Write((byte)part);
-                    writeNet_update(w, part);
+        public static void NetReadHandOver(System.IO.BinaryReader r)
+        { 
+            int cityIx = r.ReadUInt16();
+            var city = DssRef.world.cities[cityIx];
 
-                    packet.CheckPacketLength();
-                    packet.EndWrite_Asynch();
-                }
-            }
+            city.readGameState(r, int.MaxValue, null);
+            city.IsNetHosted = true;
+        }
+        //public void net_handover()
+        //{
+        //    int count = MathExt.Div_Ceiling(workerStatuses.Count, MaxWorkerWriteCount) + 1;
+
+        //    for (int part = 0; part < count; ++part)
+        //    {
+        //        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssCityHandOver, Network.PacketReliability.Reliable, out var packet);
+        //        {
+        //            w.Write((ushort)myIndex);
+        //            w.Write((byte)part);
+        //            writeNet_update(w, part);
+
+        //            packet.CheckPacketLength();
+        //            packet.EndWrite_Asynch();
+        //        }
+        //    }
 
             
-        }
+        //}
+
+        //public void net_handover2(System.IO.BinaryWriter w)
+        //{
+            
+        //            w.Write((ushort)myIndex);
+            
+            
+        //}
 
         public void writeNet_update(System.IO.BinaryWriter w, int part)
         {

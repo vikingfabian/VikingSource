@@ -28,6 +28,7 @@ namespace VikingEngine.DSSWars
 
         public const SpriteName NetworkIcon = SpriteName.birdPlayerCount;
         ConcurrentQueue<FactionHandover> factionHandovers = new ConcurrentQueue<FactionHandover>();
+       
 
         bool asynchClientNetUpdate(int id, float time)
         {
@@ -308,10 +309,11 @@ namespace VikingEngine.DSSWars
                     break;
                 case PacketType.DssCityHandOver:
                     {
-                        int cityIx = packet.r.ReadUInt16();
-                        var city = DssRef.world.cities[cityIx];
-                        int part = packet.r.ReadByte();
-                        city.readNet_update(packet.r, part);
+                        //int cityIx = packet.r.ReadUInt16();
+                        //var city = DssRef.world.cities[cityIx];
+                        //int part = packet.r.ReadByte();
+                        //city.readNet_update(packet.r, part);
+                        City.NetReadHandOver(packet.r);
                     }
                     break;
 

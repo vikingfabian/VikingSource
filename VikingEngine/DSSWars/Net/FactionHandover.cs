@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VikingEngine.DSSWars.GameObject;
 using VikingEngine.Network;
+using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.MoonFall;
 
 namespace VikingEngine.DSSWars.Net
@@ -17,6 +18,7 @@ namespace VikingEngine.DSSWars.Net
         
         SpottedArrayCounter<Army> armyCounter;
         SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
+        SteamLargePacketWriter cityWriter = null;
         public FactionHandover(AbsNetworkPeer peer, Faction faction) 
         {
             this.peer = peer;
@@ -47,6 +49,11 @@ namespace VikingEngine.DSSWars.Net
 
         public bool Next()
         {
+            if (cityWriter != null && !cityWriter.Complete)
+            {
+                return false;
+            }
+
             switch (part)
             {
                 case HandoverPart.Cities:
@@ -72,9 +79,20 @@ namespace VikingEngine.DSSWars.Net
                     break;
                 case HandoverPart.CityStatus:
                     {
+                        //TODO: write gamestate and stream over
+
                         if (citiesC.Next(ref faction.cities, DssRef.world.cities, out City city))
                         {
-                            city.net_handover();
+                            //city.net_handover();
+
+                            DataStream.MemoryStreamHandler cityData = new DataStream.MemoryStreamHandler();
+                            var w = cityData.GetWriter();
+
+                            //w.Write((ushort)city.myIndex);
+                            //city.writeGameState(w);
+                            City.NetWriteHandover(w, city);
+
+                            cityWriter = new SteamLargePacketWriter(cityData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssCityHandOver);
                         }
                         else
                         {
@@ -83,19 +101,19 @@ namespace VikingEngine.DSSWars.Net
                         }
                     }
                     break;
-                case HandoverPart.CityGuard:
-                    {
-                        if (citiesC.Next(ref faction.cities, DssRef.world.cities, out City city))
-                        {
-                            int packetCount = 0;
-                            city.netWriteGroups(Network.PacketReliability.Reliable, ref packetCount);
-                        }
-                        else
-                        {
-                            part++;
-                        }
-                    }
-                    break;
+                //case HandoverPart.CityGuard:
+                //    {
+                //        if (citiesC.Next(ref faction.cities, DssRef.world.cities, out City city))
+                //        {
+                //            int packetCount = 0;
+                //            city.netWriteGroups(Network.PacketReliability.Reliable, ref packetCount);
+                //        }
+                //        else
+                //        {
+                //            part++;
+                //        }
+                //    }
+                //    break;
                 case HandoverPart.Armies:
                     int maxArmies = 2;
                     while (--maxArmies > 0 && armyCounter.Next())
@@ -132,7 +150,7 @@ namespace VikingEngine.DSSWars.Net
         { 
             Cities,
             CityStatus,
-            CityGuard,
+            //CityGuard,
             Armies,
             HandOverComplete,
             DONE
