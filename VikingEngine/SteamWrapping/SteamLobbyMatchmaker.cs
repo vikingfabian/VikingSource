@@ -171,10 +171,7 @@ namespace VikingEngine.SteamWrapping
                 Ref.steamlobby.updateLobbyTime(true);
                 statusMessage(Network.NetworkStatusMessage.Created_session);
 
-                // --- ADD THIS (or call a method in your P2PManager that does this) ---
-                // Create the Listen Socket so clients can connect to you.
-                HSteamListenSocket myListenSocket = SteamNetworkingSockets.CreateListenSocketP2P(0, 0, null);
-                Ref.p2p.StartListening(myListenSocket);//TODO
+                Ref.p2p.StartListening();
             }
         }
 
@@ -424,6 +421,9 @@ namespace VikingEngine.SteamWrapping
 
         void ConnectToLobbyMembers(CSteamID currentLobbyID)
         {
+            CSteamID lobbyHost = SteamMatchmaking.GetLobbyOwner(currentLobbyID);
+            CSteamID myID = SteamUser.GetSteamID();
+
             // User info
             int memberCount = SteamMatchmaking.GetNumLobbyMembers(currentLobbyID);
             for (int i = 0; i < memberCount; ++i)
@@ -432,7 +432,11 @@ namespace VikingEngine.SteamWrapping
                 if (userID != CSteamID.Nil)
                 {
                     Debug.Log("Lobby member: " + SteamFriends.GetFriendPersonaName(userID));
-                    Ref.p2p.AddPeer(userID);
+                    //Ref.p2p.AddPeer(userID);
+                    if (!hostLobby && userID == lobbyHost && userID != myID)
+                    {
+                        Ref.p2p.ConnectToServer(userID);
+                    }
                 }
             }
         }

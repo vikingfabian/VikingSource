@@ -1,9 +1,10 @@
 ﻿#if PCGAME
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
-using Steamworks;
 using VikingEngine.Network;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -29,8 +30,8 @@ namespace VikingEngine.SteamWrapping
 
         public bool IsHostingSession => Ref.steamlobby.InLobby && hostSession;
 
-        Callback<P2PSessionConnectFail_t> connectFailCallback;
-        Callback<P2PSessionRequest_t> sessionRequestCallback;
+        //Callback<P2PSessionConnectFail_t> connectFailCallback;
+        //Callback<P2PSessionRequest_t> sessionRequestCallback;
 
         const int LobbyTimeRefreshRateSec = 3;
         public const int LobbyTimeOut = LobbyTimeRefreshRateSec + 3;
@@ -41,13 +42,27 @@ namespace VikingEngine.SteamWrapping
 
         Time heavyTrafficPause = Time.Zero;
 
+
+        Callback<SteamNetConnectionStatusChangedCallback_t> connectionStatusCallback;
+        HSteamListenSocket listenSocket;
+        HSteamNetPollGroup pollGroup;
+        public Dictionary<CSteamID, HSteamNetConnection> connectionHandles = new Dictionary<CSteamID, HSteamNetConnection>();
+
         public SteamP2PManager()
         {
-            autoAcceptSessionRequests = true;
+            //autoAcceptSessionRequests = true;
+            //remoteGamers = new List<AbsNetworkPeer>();
+
+            //connectFailCallback = new Callback<P2PSessionConnectFail_t>(OnConnectionFail, false);
+            //sessionRequestCallback = new Callback<P2PSessionRequest_t>(OnSessionRequest, false);
             remoteGamers = new List<AbsNetworkPeer>();
-            
-            connectFailCallback = new Callback<P2PSessionConnectFail_t>(OnConnectionFail, false);
-            sessionRequestCallback = new Callback<P2PSessionRequest_t>(OnSessionRequest, false);
+
+            // 1. Initialize the single modern callback
+            connectionStatusCallback = Callback<SteamNetConnectionStatusChangedCallback_t>.Create(OnConnectionStatusChanged);
+
+            // 2. Create the Poll Group (we will throw all connections into this basket to read them)
+            SteamNetworkingUtils.InitRelayNetworkAccess();
+            pollGroup = SteamNetworkingSockets.CreatePollGroup();
         }
 
         public void OnSendingLargeDataChunk()
@@ -55,36 +70,44 @@ namespace VikingEngine.SteamWrapping
             heavyTrafficPause = new Time(2, TimeUnit.Seconds);
         }
 
-        public bool HasAvailableTrafficSpace()
+        // Helper method to safely pass the byte array to C++
+        private void SendDataToHandle(CSteamID targetId, byte[] data, int sendFlags)
         {
-            // Assuming connectionHandle is your active HSteamNetConnection
-            SteamNetConnectionRealTimeStatus_t connectionStatus = new SteamNetConnectionRealTimeStatus_t();
-
-            EResult result = SteamNetworkingSockets.GetConnectionRealTimeStatus(
-                connectionHandle, //TODO need handle
-                ref connectionStatus, 
-                0,
-                IntPtr.Zero
-            );
-
-            if (result == EResult.k_EResultOK)
+            if (connectionHandles.TryGetValue(targetId, out HSteamNetConnection handle))
             {
-                // These tell you how many bytes are currently sitting in Steam's local outbox
-                int pendingUnreliable = connectionStatus.m_cbPendingUnreliable;
-                int pendingReliable = connectionStatus.m_cbPendingReliable;
-
-                // This tells you Steam's current estimate of the connection's bandwidth capacity (Bytes/sec)
-                int estimatedBandwidthBps = connectionStatus.m_nSendRateBytesPerSecond;
-
-                // --- EXAMPLE LOGIC ---
-
-                // Calculate total pending bytes
-                int totalPending = pendingUnreliable + pendingReliable;
-
-                // If we have more than 1 second worth of data queued up, we are sending too fast!
-                return totalPending < estimatedBandwidthBps / 2;
+                unsafe
+                {
+                    // Pin the byte array in memory so the Garbage Collector doesn't move it while Steam reads it
+                    fixed (byte* pData = data)
+                    {
+                        SteamNetworkingSockets.SendMessageToConnection(
+                            handle,
+                            (IntPtr)pData,
+                            (uint)data.Length,
+                            sendFlags,
+                            out long msgNum
+                        );
+                    }
+                }
             }
+        }
+        public bool HasAvailableTrafficSpace(CSteamID targetId)
+        {
+            // We now look up the specific handle for the user we want to check
+            if (connectionHandles.TryGetValue(targetId, out HSteamNetConnection handle))
+            {
+                SteamNetConnectionRealTimeStatus_t connectionStatus = new SteamNetConnectionRealTimeStatus_t();
+                SteamNetConnectionRealTimeLaneStatus_t pLanes = new SteamNetConnectionRealTimeLaneStatus_t();
+                EResult result = SteamNetworkingSockets.GetConnectionRealTimeStatus(handle, ref connectionStatus, 0, ref pLanes);
 
+                if (result == EResult.k_EResultOK)
+                {
+                    int totalPending = connectionStatus.m_cbPendingUnreliable + connectionStatus.m_cbPendingReliable;
+                    int estimatedBandwidthBps = connectionStatus.m_nSendRateBytesPerSecond;
+
+                    return totalPending < (estimatedBandwidthBps / 2);
+                }
+            }
             return false;
         }
 
@@ -141,27 +164,28 @@ namespace VikingEngine.SteamWrapping
 
         void ReadAllPackets()
         {
-            uint msgSize = 0;
-            while (SteamNetworking.IsP2PPacketAvailable(out msgSize, 0))
-            {
-                byte[] data = new byte[msgSize];
-                uint bytesRead;
-                CSteamID senderId;
+            // Read up to 32 messages at a time from the Poll Group
+            IntPtr[] messages = new IntPtr[32];
+            int numMessages = SteamNetworkingSockets.ReceiveMessagesOnPollGroup(pollGroup, messages, messages.Length);
 
-                if (SteamNetworking.ReadP2PPacket(data, msgSize, out bytesRead, out senderId, 0))
+            for (int i = 0; i < numMessages; i++)
+            {
+                // Marshal the unmanaged C++ pointer into a C# struct
+                SteamNetworkingMessage_t netMessage = Marshal.PtrToStructure<SteamNetworkingMessage_t>(messages[i]);
+                CSteamID senderId = netMessage.m_identityPeer.GetSteamID();
+
+                // Create a byte array and copy the data from unmanaged memory
+                byte[] data = new byte[netMessage.m_cbSize];
+                Marshal.Copy(netMessage.m_pData, data, 0, netMessage.m_cbSize);
+
+                // --- YOUR ORIGINAL GAME LOGIC REMAINS HERE ---
+                if (data.Length > 1)
                 {
                     DataStream.MemoryStreamHandler stream = new DataStream.MemoryStreamHandler();
-
-                    if (data.Length <= 1)
-                    {
-                        continue;
-                    }
                     stream.SetByteArray(data);
 
                     AbsNetworkPeer peer = getOrCreatePeer(senderId);
-
                     peer.lastHeardFrom = Ref.TotalTimeSec;
-
                     var packet = new Network.ReceivedPacket(peer, stream.GetReader());
 
                     if (peer.approved)
@@ -273,6 +297,8 @@ namespace VikingEngine.SteamWrapping
                         Ref.netSession.writeKick(peer);//peer.kickFromNetwork();
                     }
                 }
+                // VERY IMPORTANT: Free the unmanaged memory to prevent memory leaks!
+                SteamNetworkingMessage_t.Release(messages[i]);
             }
         }
 
@@ -510,7 +536,6 @@ namespace VikingEngine.SteamWrapping
 #endif
         }
 
-
         public void Send(byte[] data, VikingEngine.Network.PacketReliability rely, SendPacketTo to, CSteamID specificGamerID)
         {
 #if DEBUG
@@ -520,40 +545,70 @@ namespace VikingEngine.SteamWrapping
                 throw new Exception("Passed steam package limit: " + packet);
             }
 #endif
-            EP2PSend sendType;
-
-            if (rely == Network.PacketReliability.Unrelyable)
-            {
-                //SendUnreliable(data);
-                sendType = EP2PSend.k_EP2PSendUnreliable;
-            }
-            else
-            {
-                //SendReliable(data);
-                sendType = EP2PSend.k_EP2PSendReliable;
-            }
+            int sendFlags = rely == Network.PacketReliability.Unrelyable ?
+                Constants.k_nSteamNetworkingSend_Unreliable :
+                Constants.k_nSteamNetworkingSend_Reliable;
 
             if (to == SendPacketTo.OneSpecific)
             {
-
-                bool result = SteamNetworking.SendP2PPacket(specificGamerID, data, (uint)data.Length, sendType, 0);
+                SendDataToHandle(specificGamerID, data, sendFlags);
             }
-            else if (to == SendPacketTo.Host)
+            else if (to == SendPacketTo.Host && Host != null)
             {
-                if (Host != null)
-                {
-                    SteamNetworking.SendP2PPacket(Host.SteamID, data, (uint)data.Length, sendType, 0);
-                }
+                SendDataToHandle(Host.SteamID, data, sendFlags);
             }
             else
             {
+                // Broadcast to all
                 foreach (SteamNetworkPeer peer in remoteGamers)
                 {
-                    SteamNetworking.SendP2PPacket(peer.SteamID, data, (uint)data.Length, sendType, 0);
+                    SendDataToHandle(peer.SteamID, data, sendFlags);
                 }
             }
-
         }
+        //        public void Send(byte[] data, VikingEngine.Network.PacketReliability rely, SendPacketTo to, CSteamID specificGamerID)
+        //        {
+        //#if DEBUG
+        //            if (data.Length > SteamPackageByteLimit)
+        //            {
+        //                var packet = (PacketType)data[1];
+        //                throw new Exception("Passed steam package limit: " + packet);
+        //            }
+        //#endif
+        //            EP2PSend sendType;
+
+        //            if (rely == Network.PacketReliability.Unrelyable)
+        //            {
+        //                //SendUnreliable(data);
+        //                sendType = EP2PSend.k_EP2PSendUnreliable;
+        //            }
+        //            else
+        //            {
+        //                //SendReliable(data);
+        //                sendType = EP2PSend.k_EP2PSendReliable;
+        //            }
+
+        //            if (to == SendPacketTo.OneSpecific)
+        //            {
+
+        //                bool result = SteamNetworking.SendP2PPacket(specificGamerID, data, (uint)data.Length, sendType, 0);
+        //            }
+        //            else if (to == SendPacketTo.Host)
+        //            {
+        //                if (Host != null)
+        //                {
+        //                    SteamNetworking.SendP2PPacket(Host.SteamID, data, (uint)data.Length, sendType, 0);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                foreach (SteamNetworkPeer peer in remoteGamers)
+        //                {
+        //                    SteamNetworking.SendP2PPacket(peer.SteamID, data, (uint)data.Length, sendType, 0);
+        //                }
+        //            }
+
+        //        }
 
         public void SendUnreliable(byte[] data)
         {
@@ -611,16 +666,22 @@ namespace VikingEngine.SteamWrapping
 
         public void disconnectSession()
         {
-            for (int i = remoteGamers.Count - 1; i >= 0; --i)
+            // Clean up handles and sockets properly
+            foreach (var kvp in connectionHandles)
             {
-                RemovePeer(remoteGamers[i]);
+                SteamNetworkingSockets.CloseConnection(kvp.Value, 0, "Disconnecting", false);
+            }
+            connectionHandles.Clear();
+
+            if (listenSocket != HSteamListenSocket.Invalid)
+            {
+                SteamNetworkingSockets.CloseListenSocket(listenSocket);
+                listenSocket = HSteamListenSocket.Invalid;
             }
 
             localPeer = null;
             Host = null;
             endSession();
-            //SteamAPI.clearMem();
-
             disconnectTime.Seconds = 6f;
         }
 
@@ -648,7 +709,64 @@ namespace VikingEngine.SteamWrapping
                 //remoteGamers.Add(new SteamNetworkPeer(peerID));
             }
         }
+        // --- NEW: SERVER INITIALIZATION ---
+        public void StartListening()
+        {
+            listenSocket = SteamNetworkingSockets.CreateListenSocketP2P(0, 0, null);
+            Debug.Log("Server Listen Socket Created.");
+        }
 
+        // --- NEW: CLIENT INITIALIZATION ---
+        public void ConnectToServer(CSteamID hostId)
+        {
+            SteamNetworkingIdentity identity = new SteamNetworkingIdentity();
+            identity.SetSteamID(hostId);
+
+            HSteamNetConnection clientHandle = SteamNetworkingSockets.ConnectP2P(ref identity, 0, 0, null);
+
+            // Add to our dictionary immediately so we can track it
+            connectionHandles[hostId] = clientHandle;
+
+            // Assign this connection to our poll group so we can read from it
+            SteamNetworkingSockets.SetConnectionPollGroup(clientHandle, pollGroup);
+            Debug.Log($"Attempting to connect to Host: {hostId}");
+        }
+        // --- NEW: THE MASTER CONNECTION CALLBACK ---
+        void OnConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t callbackData)
+        {
+            HSteamNetConnection handle = callbackData.m_hConn;
+            CSteamID remoteSteamId = callbackData.m_info.m_identityRemote.GetSteamID();
+
+            switch (callbackData.m_info.m_eState)
+            {
+                case ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_Connecting:
+                    // A client is trying to join us!
+                    if (hostSession)
+                    {
+                        // Accept them, assign them to the PollGroup, and store their handle
+                        SteamNetworkingSockets.AcceptConnection(handle);
+                        SteamNetworkingSockets.SetConnectionPollGroup(handle, pollGroup);
+                        connectionHandles[remoteSteamId] = handle;
+                        Debug.Log($"Incoming connection accepted from {remoteSteamId}");
+                    }
+                    break;
+
+                case ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_Connected:
+                    // The handshake is complete. Safe to add as a peer and send data.
+                    AddPeer(remoteSteamId);
+                    Debug.Log($"Successfully connected to {remoteSteamId}");
+                    break;
+
+                case ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_ClosedByPeer:
+                case ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
+                    // Player left or crashed
+                    Debug.Log($"Connection closed with {remoteSteamId}. Reason: {callbackData.m_info.m_eEndReason}");
+                    SteamNetworkingSockets.CloseConnection(handle, 0, "Closing", false);
+                    connectionHandles.Remove(remoteSteamId);
+                    RemovePeer(remoteSteamId);
+                    break;
+            }
+        }
         public void OnConnectionFail(P2PSessionConnectFail_t connectionFailInfo)
         {
             CSteamID peerID = connectionFailInfo.m_steamIDRemote;
