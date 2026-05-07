@@ -25,7 +25,7 @@ namespace VikingEngine.SteamWrapping
         PacketType largePacketType;
         bool fileComplete = false;
 
-        public bool Complete => fileComplete;
+        public bool Complete => writerPos >= file.memoryLength;
 
         public SteamLargePacketWriter(DataStream.MemoryStreamHandler file, SendPacketTo To, ulong SpecificGamerID, PacketType type)
             :base(PacketReliability.Reliable, false, To, SpecificGamerID)
