@@ -718,7 +718,20 @@ namespace VikingEngine.SteamWrapping
             }
             return gamer;
         }
+        public void ConnectNewPeer(CSteamID userID)
+        {
+            CSteamID lobbyHost = SteamMatchmaking.GetLobbyOwner(Ref.steamlobby.currentLobbyID);
+            CSteamID myID = SteamUser.GetSteamID();
 
+            Debug.Log("Lobby member: " + SteamFriends.GetFriendPersonaName(userID));
+
+            var gamer = getOrCreatePeer(userID);
+            if (!Ref.steamlobby.hostLobby && userID == lobbyHost && userID != myID)
+            {
+                ConnectToServerHost(userID);
+                Host = gamer as SteamNetworkPeer;
+            }
+        }
         // --- NEW: CLIENT INITIALIZATION ---
         public void ConnectToServerHost(CSteamID hostId)
         {

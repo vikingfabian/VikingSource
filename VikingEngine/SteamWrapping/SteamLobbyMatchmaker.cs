@@ -505,43 +505,92 @@ namespace VikingEngine.SteamWrapping
             Debug.Log("Received message MSG:[" + msg + "]");
         }
 
-        void OnLobbyChatUpdate(LobbyChatUpdate_t lobbyChatUpdate)
+        void OnLobbyChatUpdate(LobbyChatUpdate_t callbackData)
         {
-            if (lobbyChatUpdate.m_ulSteamIDLobby == currentLobbyID.m_SteamID)
+            // 1. Identify who just triggered the event
+            CSteamID lobbyId = new CSteamID(callbackData.m_ulSteamIDLobby);
+            CSteamID changedUserId = new CSteamID(callbackData.m_ulSteamIDUserChanged);
+            //CSteamID myId = SteamUser.GetSteamID();
+            //CSteamID hostId = SteamMatchmaking.GetLobbyOwner(lobbyId);
+
+            // 2. Check what kind of state change happened (Did they Enter? Leave? Disconnect?)
+            uint stateChange = callbackData.m_rgfChatMemberStateChange;
+
+            // --- SOMEONE ENTERED THE LOBBY ---
+            if ((stateChange & (uint)EChatMemberStateChange.k_EChatMemberStateChangeEntered) != 0)
             {
-                //ulong changedGamerID = lobbyChatUpdate.m_ulSteamIDUserChanged;
-                ////ulong changerID = new ulong(lobbyChatUpdate.m_ulSteamIDMakingChange);
-                //uint changeFlags = lobbyChatUpdate.m_rgfChatMemberStateChange;
+                Debug.Log($"Player {SteamFriends.GetFriendPersonaName(changedUserId)} entered the lobby!");
 
-                //string changedName = SteamFriends.GetFriendPersonaName(changedGamerID);
-                ////string changerName = SteamFriends.GetFriendPersonaName(changerID);
+                Ref.p2p.ConnectNewPeer(changedUserId);
+                //// Are WE the person who just joined?
+                //if (changedUserId == myId)
+                //{
+                //    // If we are a client who just arrived, we must immediately try to establish 
+                //    // a direct socket connection to the Host.
+                //    if (myId != hostId)
+                //    {
+                //        Ref.p2p.ConnectToServerHost(hostId);
+                //    }
+                //}
+                //else
+                //{
+                //    // Someone ELSE joined the lobby. 
+                //    // If we are the Host, we actually DON'T do anything here!
+                //    // Our Listen Socket is already running. It will automatically catch the 
+                //    // new player's ConnectToServer request and trigger OnConnectionStatusChanged 
+                //    // inside SteamP2PManager.
 
-                //if (((uint)EChatMemberStateChange.k_EChatMemberStateChangeBanned & changeFlags) != 0)
-                //{
-                //    Debug.Log(changedName + " was banned (chat)");
-                //    Ref.steam.P2PManager.RemovePeer(changedGamerID);
-                //}
-                //if (((uint)EChatMemberStateChange.k_EChatMemberStateChangeDisconnected & changeFlags) != 0)
-                //{
-                //    Debug.Log(changedName + " was disconnected (chat)");
-                //    Ref.steam.P2PManager.RemovePeer(changedGamerID);
-                //}
-                //if (((uint)EChatMemberStateChange.k_EChatMemberStateChangeEntered & changeFlags) != 0)
-                //{
-                //    Ref.steam.P2PManager.AddPeer(changedGamerID);
-                //    Debug.Log(changedName + " entered (chat)");
-                //}
-                //if (((uint)EChatMemberStateChange.k_EChatMemberStateChangeKicked & changeFlags) != 0)
-                //{
-                //    Debug.Log(changedName + " was kicked (chat)");
-                //    Ref.steam.P2PManager.RemovePeer(changedGamerID);
-                //}
-                //if (((uint)EChatMemberStateChange.k_EChatMemberStateChangeLeft & changeFlags) != 0)
-                //{
-                //    Debug.Log(changedName + " left (chat)");
-                //    Ref.steam.P2PManager.RemovePeer(changedGamerID);
+                //    if (Ref.p2p.hostSession)
+                //    {
+                //        // (Optional) Update your Host UI here to show a new player is connecting
+                //        Debug.Log("Waiting for new player to establish socket connection...");
+                //    }
                 //}
             }
+            // --- SOMEONE LEFT OR DISCONNECTED ---
+            else if ((stateChange & (uint)EChatMemberStateChange.k_EChatMemberStateChangeLeft) != 0 ||
+                     (stateChange & (uint)EChatMemberStateChange.k_EChatMemberStateChangeDisconnected) != 0)
+            {
+                Debug.Log($"Player {changedUserId} left the lobby.");
+
+                // Clean up their peer data if necessary
+                // The actual socket cleanup is handled in P2PManager when the connection drops
+            }
+            //if (lobbyChatUpdate.m_ulSteamIDLobby == currentLobbyID.m_SteamID)
+            //{
+            //ulong changedGamerID = lobbyChatUpdate.m_ulSteamIDUserChanged;
+            ////ulong changerID = new ulong(lobbyChatUpdate.m_ulSteamIDMakingChange);
+            //uint changeFlags = lobbyChatUpdate.m_rgfChatMemberStateChange;
+
+            //string changedName = SteamFriends.GetFriendPersonaName(changedGamerID);
+            ////string changerName = SteamFriends.GetFriendPersonaName(changerID);
+
+            //if (((uint)EChatMemberStateChange.k_EChatMemberStateChangeBanned & changeFlags) != 0)
+            //{
+            //    Debug.Log(changedName + " was banned (chat)");
+            //    Ref.steam.P2PManager.RemovePeer(changedGamerID);
+            //}
+            //if (((uint)EChatMemberStateChange.k_EChatMemberStateChangeDisconnected & changeFlags) != 0)
+            //{
+            //    Debug.Log(changedName + " was disconnected (chat)");
+            //    Ref.steam.P2PManager.RemovePeer(changedGamerID);
+            //}
+            //if (((uint)EChatMemberStateChange.k_EChatMemberStateChangeEntered & changeFlags) != 0)
+            //{
+            //    Ref.steam.P2PManager.AddPeer(changedGamerID);
+            //    Debug.Log(changedName + " entered (chat)");
+            //}
+            //if (((uint)EChatMemberStateChange.k_EChatMemberStateChangeKicked & changeFlags) != 0)
+            //{
+            //    Debug.Log(changedName + " was kicked (chat)");
+            //    Ref.steam.P2PManager.RemovePeer(changedGamerID);
+            //}
+            //if (((uint)EChatMemberStateChange.k_EChatMemberStateChangeLeft & changeFlags) != 0)
+            //{
+            //    Debug.Log(changedName + " left (chat)");
+            //    Ref.steam.P2PManager.RemovePeer(changedGamerID);
+            //}
+            //}
         }
 
         public long GetLobbyTimeStamp(CSteamID lobbyId)
