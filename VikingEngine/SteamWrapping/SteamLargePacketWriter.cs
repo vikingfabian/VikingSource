@@ -26,7 +26,7 @@ namespace VikingEngine.SteamWrapping
         bool fileComplete = false;
         TimeStamp sendTime;
 
-        public bool Complete => fileComplete;
+        public bool Complete => writerPos >= file.memoryLength;
 
         public bool TimeOut => sendTime.secPassed(2);
 
