@@ -36,7 +36,7 @@ namespace VikingEngine.SteamWrapping
         string gamertag = null;
         bool localPeer;
         CSteamID id;
-        public HSteamNetConnection connection;
+        //public HSteamNetConnection connection;
 
         public SteamNetworkPeer(CSteamID id, bool local)
         {
@@ -147,38 +147,38 @@ namespace VikingEngine.SteamWrapping
             }
         }
 
-        public bool HasAvailableTrafficSpace()
-        {
-            // Assuming connectionHandle is your active HSteamNetConnection
-            SteamNetConnectionRealTimeStatus_t connectionStatus = new SteamNetConnectionRealTimeStatus_t();
-            SteamNetConnectionRealTimeLaneStatus_t pLanes = new SteamNetConnectionRealTimeLaneStatus_t();
-            EResult result = SteamNetworkingSockets.GetConnectionRealTimeStatus(
-                connection, //TODO need handle
-                ref connectionStatus,
-                0,
-                ref pLanes
-            );
+        //public bool HasAvailableTrafficSpace()
+        //{
+        //    // Assuming connectionHandle is your active HSteamNetConnection
+        //    SteamNetConnectionRealTimeStatus_t connectionStatus = new SteamNetConnectionRealTimeStatus_t();
+        //    SteamNetConnectionRealTimeLaneStatus_t pLanes = new SteamNetConnectionRealTimeLaneStatus_t();
+        //    EResult result = SteamNetworkingSockets.GetConnectionRealTimeStatus(
+        //        connection, //TODO need handle
+        //        ref connectionStatus,
+        //        0,
+        //        ref pLanes
+        //    );
 
-            if (result == EResult.k_EResultOK)
-            {
-                // These tell you how many bytes are currently sitting in Steam's local outbox
-                int pendingUnreliable = connectionStatus.m_cbPendingUnreliable;
-                int pendingReliable = connectionStatus.m_cbPendingReliable;
+        //    if (result == EResult.k_EResultOK)
+        //    {
+        //        // These tell you how many bytes are currently sitting in Steam's local outbox
+        //        int pendingUnreliable = connectionStatus.m_cbPendingUnreliable;
+        //        int pendingReliable = connectionStatus.m_cbPendingReliable;
 
-                // This tells you Steam's current estimate of the connection's bandwidth capacity (Bytes/sec)
-                int estimatedBandwidthBps = connectionStatus.m_nSendRateBytesPerSecond;
+        //        // This tells you Steam's current estimate of the connection's bandwidth capacity (Bytes/sec)
+        //        int estimatedBandwidthBps = connectionStatus.m_nSendRateBytesPerSecond;
 
-                // --- EXAMPLE LOGIC ---
+        //        // --- EXAMPLE LOGIC ---
 
-                // Calculate total pending bytes
-                int totalPending = pendingUnreliable + pendingReliable;
+        //        // Calculate total pending bytes
+        //        int totalPending = pendingUnreliable + pendingReliable;
 
-                // If we have more than 1 second worth of data queued up, we are sending too fast!
-                return totalPending < estimatedBandwidthBps / 2;
-            }
+        //        // If we have more than 1 second worth of data queued up, we are sending too fast!
+        //        return totalPending < estimatedBandwidthBps / 2;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
     }
 }
 #endif

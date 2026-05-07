@@ -173,7 +173,7 @@ namespace VikingEngine.SteamWrapping
 
                 // --- ADD THIS (or call a method in your P2PManager that does this) ---
                 // Create the Listen Socket so clients can connect to you.
-                Ref.p2p.StartListening();//TODO
+                //Ref.p2p.StartListening();//TODO
             }
         }
 
