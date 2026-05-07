@@ -51,7 +51,7 @@ namespace VikingEngine.DSSWars.Net
         {
             if (cityWriter != null && !cityWriter.Complete)
             {
-                return false;
+                return true;
             }
 
             switch (part)
@@ -93,6 +93,7 @@ namespace VikingEngine.DSSWars.Net
                             City.NetWriteHandover(w, city);
 
                             cityWriter = new SteamLargePacketWriter(cityData, SendPacketTo.OneSpecific, peer.fullId, PacketType.DssCityHandOver);
+                            cityWriter.begin();
                         }
                         else
                         {
