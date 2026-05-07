@@ -432,10 +432,12 @@ namespace VikingEngine.SteamWrapping
                 if (userID != CSteamID.Nil)
                 {
                     Debug.Log("Lobby member: " + SteamFriends.GetFriendPersonaName(userID));
-                    //Ref.p2p.AddPeer(userID);
+
+                    var gamer = Ref.p2p.AddPeer(userID);
                     if (!hostLobby && userID == lobbyHost && userID != myID)
                     {
-                        Ref.p2p.ConnectToServer(userID);
+                        Ref.p2p.ConnectToServerHost(userID);
+                        Ref.p2p.Host = gamer as SteamNetworkPeer;
                     }
                 }
             }

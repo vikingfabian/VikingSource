@@ -313,48 +313,7 @@ namespace VikingEngine.SteamWrapping
             return peer;
         }
 
-        public AbsNetworkPeer AddPeer(CSteamID peerId)
-        {
-            if (localPeer == null)
-            {
-                createLocalPeer();
-            }
-
-            if (peerId == CSteamID.Nil)
-            {
-                throw new Exception();
-            }
-
-            if (peerId == localPeer.SteamID)
-            {
-                //local gamer, never add
-                return null;
-            }
-
-            for (int i = 0; i < remoteGamers.Count; ++i)
-            {
-                if (peerId == remoteGamers[i].SteamID) // already added
-                    return remoteGamers[i];
-            }
-            
-            var gamer = new SteamNetworkPeer(peerId, false);
-            remoteGamers.Add(gamer);
-
-            gamer.approved = approveNewPeer(gamer);
-
-            if (gamer.approved)
-            {
-                assignIdToGamer(gamer);
-                netWriteGamerIds();
-
-                Ref.NetUpdateReciever().NetEvent_PeerJoined(gamer);
-            }
-            else
-            {
-
-            }
-            return gamer;
-        }
+        
 
         bool approveNewPeer(SteamNetworkPeer peer)
         {
@@ -716,8 +675,52 @@ namespace VikingEngine.SteamWrapping
             Debug.Log("Server Listen Socket Created.");
         }
 
+
+        public AbsNetworkPeer AddPeer(CSteamID peerId)
+        {
+            if (localPeer == null)
+            {
+                createLocalPeer();
+            }
+
+            if (peerId == CSteamID.Nil)
+            {
+                throw new Exception();
+            }
+
+            if (peerId == localPeer.SteamID)
+            {
+                //local gamer, never add
+                return null;
+            }
+
+            for (int i = 0; i < remoteGamers.Count; ++i)
+            {
+                if (peerId == remoteGamers[i].SteamID) // already added
+                    return remoteGamers[i];
+            }
+
+            var gamer = new SteamNetworkPeer(peerId, false);
+            remoteGamers.Add(gamer);
+
+            gamer.approved = approveNewPeer(gamer);
+
+            if (gamer.approved)
+            {
+                assignIdToGamer(gamer);
+                netWriteGamerIds();
+
+                Ref.NetUpdateReciever().NetEvent_PeerJoined(gamer);
+            }
+            else
+            {
+
+            }
+            return gamer;
+        }
+
         // --- NEW: CLIENT INITIALIZATION ---
-        public void ConnectToServer(CSteamID hostId)
+        public void ConnectToServerHost(CSteamID hostId)
         {
             SteamNetworkingIdentity identity = new SteamNetworkingIdentity();
             identity.SetSteamID(hostId);
@@ -728,8 +731,11 @@ namespace VikingEngine.SteamWrapping
             connectionHandles[hostId] = clientHandle;
 
             // Assign this connection to our poll group so we can read from it
-            SteamNetworkingSockets.SetConnectionPollGroup(clientHandle, pollGroup);
-            Debug.Log($"Attempting to connect to Host: {hostId}");
+            if (SteamNetworkingSockets.SetConnectionPollGroup(clientHandle, pollGroup))
+            {
+                Host = new SteamNetworkPeer(hostId, false);
+            }
+            //Debug.Log($"Attempting to connect to Host: {hostId}");
         }
         // --- NEW: THE MASTER CONNECTION CALLBACK ---
         void OnConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t callbackData)
