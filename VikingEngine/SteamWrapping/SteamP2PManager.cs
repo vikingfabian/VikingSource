@@ -55,6 +55,39 @@ namespace VikingEngine.SteamWrapping
             heavyTrafficPause = new Time(2, TimeUnit.Seconds);
         }
 
+        public bool HasAvailableTrafficSpace()
+        {
+            // Assuming connectionHandle is your active HSteamNetConnection
+            SteamNetConnectionRealTimeStatus_t connectionStatus = new SteamNetConnectionRealTimeStatus_t();
+
+            EResult result = SteamNetworkingSockets.GetConnectionRealTimeStatus(
+                connectionHandle, //TODO need handle
+                ref connectionStatus, 
+                0,
+                IntPtr.Zero
+            );
+
+            if (result == EResult.k_EResultOK)
+            {
+                // These tell you how many bytes are currently sitting in Steam's local outbox
+                int pendingUnreliable = connectionStatus.m_cbPendingUnreliable;
+                int pendingReliable = connectionStatus.m_cbPendingReliable;
+
+                // This tells you Steam's current estimate of the connection's bandwidth capacity (Bytes/sec)
+                int estimatedBandwidthBps = connectionStatus.m_nSendRateBytesPerSecond;
+
+                // --- EXAMPLE LOGIC ---
+
+                // Calculate total pending bytes
+                int totalPending = pendingUnreliable + pendingReliable;
+
+                // If we have more than 1 second worth of data queued up, we are sending too fast!
+                return totalPending < estimatedBandwidthBps / 2;
+            }
+
+            return false;
+        }
+
         public void update()
         {
             if (disconnectTime.CountDown())

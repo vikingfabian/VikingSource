@@ -170,6 +170,11 @@ namespace VikingEngine.SteamWrapping
             {
                 Ref.steamlobby.updateLobbyTime(true);
                 statusMessage(Network.NetworkStatusMessage.Created_session);
+
+                // --- ADD THIS (or call a method in your P2PManager that does this) ---
+                // Create the Listen Socket so clients can connect to you.
+                HSteamListenSocket myListenSocket = SteamNetworkingSockets.CreateListenSocketP2P(0, 0, null);
+                Ref.p2p.StartListening(myListenSocket);//TODO
             }
         }
 

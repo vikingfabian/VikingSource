@@ -49,9 +49,18 @@ namespace VikingEngine.DSSWars.Net
 
         public bool Next()
         {
-            if (cityWriter != null && !cityWriter.Complete)
+            if (cityWriter != null)
             {
-                return true;
+                if (cityWriter.Complete)
+                {
+                    return true;
+                }
+                if (cityWriter.TimeOut)
+                { //Cancel the handover
+                    Ref.NetUpdateReciever().NetEvent_ErrorMessage("Faction handover timeout", peer, false);
+                    part = HandoverPart.DONE;
+                    return false;
+                }
             }
 
             switch (part)

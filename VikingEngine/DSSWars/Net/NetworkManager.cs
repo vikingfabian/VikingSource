@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
 using VikingEngine.ToGG.MoonFall;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace VikingEngine.DSSWars
 {
@@ -42,6 +44,8 @@ namespace VikingEngine.DSSWars
 
         bool asynchHostNetUpdate(int id, float time)
         {
+            //TODO: behöver throttle av sänd hastighet, beroende på bakåt ping
+
             if (remotePlayers.Count > 0)
             {
                 if (factionHandovers.Count > 0)
@@ -85,6 +89,10 @@ namespace VikingEngine.DSSWars
 
                     return false;
                 }
+            }
+            else
+            {
+                factionHandovers.Clear();
             }
             return exitThreads;
         }
@@ -354,13 +362,7 @@ namespace VikingEngine.DSSWars
             switch (packet.type)
             {
                 case PacketType.DssCityHandOver:
-                    {
-                        //int cityIx = packet.r.ReadUInt16();
-                        //var city = DssRef.world.cities[cityIx];
-                        //int part = packet.r.ReadByte();
-                        //city.readNet_update(packet.r, part);
-                        City.NetReadHandOver(packet.r);
-                    }
+                    City.NetReadHandOver(packet.r);
                     break;
 
             }
@@ -396,6 +398,7 @@ namespace VikingEngine.DSSWars
             //doesnt run
             base.NetEvent_GotNetworkId();
 
+
         }
 
         public override void NetworkStatusMessage(NetworkStatusMessage message)
@@ -410,6 +413,24 @@ namespace VikingEngine.DSSWars
                         p.initNetwork();
                     }
                     break;
+            }
+        }
+
+        public override void NetEvent_ErrorMessage(string message, AbsNetworkPeer peer, bool peerIsSender)
+        {
+            RichBoxContent content = new RichBoxContent();
+
+            content.h1(SpriteName.RedErrorCross, "Network error", HudLib.NotAvailableColor);
+            content.text(message);
+
+            RemotePlayer player = peer.Tag as RemotePlayer;
+
+            if (player != null)
+            {
+                content.newLine();
+                HudLib.Label(content, peerIsSender ? "Sender" : "Reciever");
+                content.newLine();
+                player.addNetGamerToHud(content, false);
             }
         }
         public override void NetEvent_ConnectionLost(string reason)
@@ -438,6 +459,8 @@ namespace VikingEngine.DSSWars
             {                
                 Ref.steam.StartRecording();                
             }
+
+            NetEvent_ErrorMessage("test test", peer, true);
         }
 
         public override void NetEvent_PeerLost(AbsNetworkPeer peer)
@@ -482,10 +505,7 @@ namespace VikingEngine.DSSWars
                 }
 
                 LocalHost().hud.messages.Add(content, SoundLib.netJoined);
-
             }
-
-
         }
 
         

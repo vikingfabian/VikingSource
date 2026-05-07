@@ -175,6 +175,11 @@ namespace VikingEngine.DSSWars.Net
             DssRef.state?.NetEvent_PeerLost(gamer);
         }
 
+        public override void NetEvent_ErrorMessage(string message, AbsNetworkPeer peer, bool peerIsSender)
+        {
+            DssRef.state?.NetEvent_ErrorMessage(message, peer, peerIsSender);
+        }
+
         //public override void NetEvent_PeerJoined(AbsNetworkPeer gamer)
         //{
         //    if (state == NetLobbyState.Lobby)

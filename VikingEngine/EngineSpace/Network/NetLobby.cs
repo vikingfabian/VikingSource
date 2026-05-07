@@ -9,6 +9,8 @@ namespace VikingEngine.Network
     interface INetworkUpdateReciever
     {
         void NetworkStatusMessage(Network.NetworkStatusMessage message);
+
+        void NetEvent_ErrorMessage(string message, Network.AbsNetworkPeer peer, bool peerIsSender);
         void NetEvent_PeerJoined(Network.AbsNetworkPeer gamer);
         void NetEvent_JoinedLobby(string name, ulong lobbyHost, bool fromInvite);
         void NetEvent_GotNetworkId();
@@ -130,6 +132,8 @@ namespace VikingEngine.Network
                 }
             }
         }
+        virtual public void NetEvent_ErrorMessage(string message, Network.AbsNetworkPeer peer, bool peerIsSender)
+        { }
 
         public void tryJoin(AbsAvailableSession session)
         {
