@@ -671,8 +671,18 @@ namespace VikingEngine.SteamWrapping
         // --- NEW: SERVER INITIALIZATION ---
         public void StartListening()
         {
+            Debug.Log("[SERVER] Attempting to create listen socket...");
             listenSocket = SteamNetworkingSockets.CreateListenSocketP2P(0, 0, null);
-            Debug.Log("Server Listen Socket Created.");
+
+            // An invalid socket returns 0. If it's 0, the server doors are closed!
+            if (listenSocket.m_HSteamListenSocket != 0)
+            {
+                Debug.Log($"[SERVER] SUCCESS! Listen Socket Created. Handle: {listenSocket.m_HSteamListenSocket}");
+            }
+            else
+            {
+                Debug.LogError("[SERVER] CRITICAL ERROR: Failed to create Listen Socket!");
+            }
         }
 
 
@@ -739,7 +749,11 @@ namespace VikingEngine.SteamWrapping
             identity.SetSteamID(hostId);
 
             HSteamNetConnection clientHandle = SteamNetworkingSockets.ConnectP2P(ref identity, 0, 0, null);
-
+            
+            if (clientHandle.m_HSteamNetConnection == 0)
+            {
+                Debug.LogError("[CLIENT] CRITICAL ERROR: Failed to generate connection handle!");
+            }
             // Add to our dictionary immediately so we can track it
             connectionHandles[hostId] = clientHandle;
 
