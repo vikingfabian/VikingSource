@@ -31,6 +31,7 @@ namespace VikingEngine.SteamWrapping
 
         Callback<P2PSessionConnectFail_t> connectFailCallback;
         Callback<P2PSessionRequest_t> sessionRequestCallback;
+        Callback<SteamNetConnectionStatusChangedCallback_t> connectionChangedCallback;
 
         const int LobbyTimeRefreshRateSec = 3;
         public const int LobbyTimeOut = LobbyTimeRefreshRateSec + 3;
@@ -40,6 +41,9 @@ namespace VikingEngine.SteamWrapping
         public Time disconnectTime = 0;
 
         Time heavyTrafficPause = Time.Zero;
+        HSteamListenSocket m_listenSocket;
+        //HSteamNetConnection connection;
+
 
         public SteamP2PManager()
         {
@@ -48,6 +52,14 @@ namespace VikingEngine.SteamWrapping
             
             connectFailCallback = new Callback<P2PSessionConnectFail_t>(OnConnectionFail, false);
             sessionRequestCallback = new Callback<P2PSessionRequest_t>(OnSessionRequest, false);
+            connectionChangedCallback = new Callback<SteamNetConnectionStatusChangedCallback_t>(OnConnectionStatusChanged, false);
+
+            m_listenSocket = SteamNetworkingSockets.CreateListenSocketP2P(0, 0, null);
+
+            if (m_listenSocket != HSteamListenSocket.Invalid)
+            {
+                Debug.Log("P2P Listen Socket created successfully!");
+            }
         }
 
         public void OnSendingLargeDataChunk()
@@ -55,38 +67,62 @@ namespace VikingEngine.SteamWrapping
             heavyTrafficPause = new Time(2, TimeUnit.Seconds);
         }
 
-        public bool HasAvailableTrafficSpace()
+        public void StartListening()
         {
-            // Assuming connectionHandle is your active HSteamNetConnection
-            SteamNetConnectionRealTimeStatus_t connectionStatus = new SteamNetConnectionRealTimeStatus_t();
-
-            EResult result = SteamNetworkingSockets.GetConnectionRealTimeStatus(
-                connectionHandle, //TODO need handle
-                ref connectionStatus, 
-                0,
-                IntPtr.Zero
-            );
-
-            if (result == EResult.k_EResultOK)
+            m_listenSocket = SteamNetworkingSockets.CreateListenSocketP2P(0, 0, null);
+        }
+        private void OnConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t pCallback)
+        {
+            // Ignore connections that don't belong to our listen socket
+            // (Useful if you have multiple sockets running)
+            if (pCallback.m_info.m_hListenSocket != m_listenSocket && pCallback.m_info.m_hListenSocket != HSteamListenSocket.Invalid)
             {
-                // These tell you how many bytes are currently sitting in Steam's local outbox
-                int pendingUnreliable = connectionStatus.m_cbPendingUnreliable;
-                int pendingReliable = connectionStatus.m_cbPendingReliable;
-
-                // This tells you Steam's current estimate of the connection's bandwidth capacity (Bytes/sec)
-                int estimatedBandwidthBps = connectionStatus.m_nSendRateBytesPerSecond;
-
-                // --- EXAMPLE LOGIC ---
-
-                // Calculate total pending bytes
-                int totalPending = pendingUnreliable + pendingReliable;
-
-                // If we have more than 1 second worth of data queued up, we are sending too fast!
-                return totalPending < estimatedBandwidthBps / 2;
+                return;
             }
 
-            return false;
+            // Handle the connection state
+            switch (pCallback.m_info.m_eState)
+            {
+                case ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_Connecting:
+
+                    // HERE IS YOUR HSteamNetConnection!
+                    HSteamNetConnection incomingConnection = pCallback.m_hConn;
+
+                    var id = pCallback.m_info.m_identityRemote.GetSteamID();
+                    Debug.Log($"Incoming connection from {pCallback.m_info.m_identityRemote.GetSteamID()}!");
+
+                    // You must accept the connection to establish it
+                    EResult result = SteamNetworkingSockets.AcceptConnection(incomingConnection);
+
+                    if (result == EResult.k_EResultOK)
+                    {
+                        Debug.Log("Connection accepted.");
+                        // You can now store 'incomingConnection' in a List/Dictionary 
+                        // to send messages to this specific user later.
+                        //connection = incomingConnection;
+                        (getOrCreatePeer(id) as SteamNetworkPeer).connection = incomingConnection;
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to accept connection.");
+                        SteamNetworkingSockets.CloseConnection(incomingConnection, 0, "Failed to accept", false);
+                    }
+                    break;
+
+                case ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_Connected:
+                    Debug.Log("Client has fully connected.");
+                    break;
+
+                case ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_ClosedByPeer:
+                case ESteamNetworkingConnectionState.k_ESteamNetworkingConnectionState_ProblemDetectedLocally:
+                    Debug.Log("Connection closed or dropped.");
+                    // Clean up the connection handle
+                    SteamNetworkingSockets.CloseConnection(pCallback.m_hConn, 0, null, false);
+                    break;
+            }
         }
+
+       
 
         public void update()
         {
