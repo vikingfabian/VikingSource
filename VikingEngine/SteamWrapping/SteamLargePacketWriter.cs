@@ -24,9 +24,11 @@ namespace VikingEngine.SteamWrapping
         int writerPos = 0;
         PacketType largePacketType;
         bool fileComplete = false;
-        TimeStamp 
+        TimeStamp sendTime;
 
         public bool Complete => fileComplete;
+
+        public bool TimeOut => sendTime.secPassed(2);
 
         public SteamLargePacketWriter(DataStream.MemoryStreamHandler file, SendPacketTo To, ulong SpecificGamerID, PacketType type)
             :base(PacketReliability.Reliable, false, To, SpecificGamerID)
@@ -69,6 +71,7 @@ namespace VikingEngine.SteamWrapping
                 writerPos += SendChunkSize;
 
                 EndWrite_Asynch();
+                sendTime = TimeStamp.Now();
             });
         }
 
