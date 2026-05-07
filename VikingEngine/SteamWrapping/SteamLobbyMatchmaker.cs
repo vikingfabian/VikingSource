@@ -433,7 +433,7 @@ namespace VikingEngine.SteamWrapping
                 {
                     Debug.Log("Lobby member: " + SteamFriends.GetFriendPersonaName(userID));
 
-                    var gamer = Ref.p2p.AddPeer(userID);
+                    var gamer = Ref.p2p.getOrCreatePeer(userID);
                     if (!hostLobby && userID == lobbyHost && userID != myID)
                     {
                         Ref.p2p.ConnectToServerHost(userID);
