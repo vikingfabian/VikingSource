@@ -51,11 +51,11 @@ namespace VikingEngine.DSSWars.Net
         {
             if (cityWriter != null)
             {
-                if (cityWriter.Complete)
+                if (!cityWriter.Complete)
                 {
                     return true;
                 }
-                if (cityWriter.TimeOut)
+                else if (cityWriter.TimeOut)
                 { //Cancel the handover
                     Ref.NetUpdateReciever().NetEvent_ErrorMessage("Faction handover timeout", peer, false);
                     part = HandoverPart.DONE;
