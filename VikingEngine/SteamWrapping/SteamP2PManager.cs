@@ -221,17 +221,17 @@ namespace VikingEngine.SteamWrapping
                                     float timePassed = TimeExt.SecondsToMS(Ref.TotalTimeSec - timestamp);
                                     packet.sender.roundTripTime = packet.sender.roundTripTime * 0.5f + timePassed * 0.5f;
 
-                                    int packetCount = 2;
+                                    int packetCount = 32;
 
                                     if (heavyTrafficPause.TimeOut)
                                     {
                                         if (packet.sender.roundTripTime < 40)
                                         {
-                                            packetCount = 32;
+                                            packetCount = 512;
                                         }
                                         else if (packet.sender.roundTripTime < 140)
                                         {
-                                            packetCount = 8;
+                                            packetCount = 256;
                                         }
                                     }
 
