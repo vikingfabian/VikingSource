@@ -104,6 +104,14 @@ namespace VikingEngine.DSSWars.Build
         public IntVector2 OliphantCage_pos;
 
 
+        public static void Set(ref IntVector2 pos, ref IntVector2 loopPos)
+        {
+            if (pos.X <= 0 || Ref.peRnd.ChanceF(0.1f))
+            {
+                pos = loopPos;
+            }
+        }
+
         public IntVector2 getPos(BuildAndExpandType type)
         {
             switch (type)

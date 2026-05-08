@@ -614,13 +614,17 @@ namespace VikingEngine.DSSWars
                     //{
                     //    lib.DoNothing();
                     //}
-
-                    float copperUpkeep = armyUpkeep.copper * oneSecondUpdate; // DssRef.difficulty.setting_foodMulti;
-                    if (!money.PayUpkeep(copperUpkeep) && hasDeserters)
+                    if (this.myIndex == 72)
                     {
-                        missingUpkeep = true;
-                        //Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
+                        lib.DoNothing();
                     }
+                    float copperUpkeep = armyUpkeep.copper * oneSecondUpdate; // DssRef.difficulty.setting_foodMulti;
+                    money.PayUpkeep(copperUpkeep, true);
+                    //if (! && hasDeserters)
+                    //{
+                    //    missingUpkeep = true;
+                    //    //Ref.update.AddSyncAction(new SyncAction(armiesC.sel.hungerDeserters));
+                    //}
 
 
                     if (!casual)

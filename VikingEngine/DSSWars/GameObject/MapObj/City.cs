@@ -1428,7 +1428,7 @@ namespace VikingEngine.DSSWars.GameObject
         public void onGameStart(bool newGame)
         {
 
-
+            
             groupRadius = 0.6f;
 
             //initEconomy(newGame, DssRef.world);
@@ -1446,15 +1446,16 @@ namespace VikingEngine.DSSWars.GameObject
             if (newGame && cityType > CityType.UnClaimed)
             {
                 refreshWorkerSubtiles();
-                int freeGuardSpace = 0;
-                
+                int maxGuards = Bound.Max(HousingCount_Guard, 6);
+                //int freeGuardSpace = 0;
+
                 for (int i = 0;i <defenceBuildings.Count;i++) 
                 {
                     var post = defenceBuildings[i];
                     if (post.autoAssign)
                     {
                         newGamePlaceGuard(post.idAndPosition, i);
-                        if (soldiersCount + freeGuardSpace >= HousingCount_Guard)
+                        if (soldiersCount /*+ freeGuardSpace*/ >= maxGuards)
                         {
                             break;
                         }

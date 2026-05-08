@@ -1226,7 +1226,7 @@ namespace VikingEngine.DSSWars.Players
                         {
                             default:                                
                                 mainArmy = startMainArmy();
-                                for (int i = 0; i < MathExt.MultiplyInt(5, unitCountMulti); ++i)
+                                for (int i = 0; i < MathExt.MultiplyInt(3, unitCountMulti); ++i)
                                 {
                                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);//, UnitType.Soldier, false);
                                 }
@@ -1234,7 +1234,7 @@ namespace VikingEngine.DSSWars.Players
 
                             case FactionFlavorType.Mystical:
                                 mainArmy = startMainArmy();
-                                for (int i = 0; i < MathExt.MultiplyInt(3, unitCountMulti); ++i)
+                                for (int i = 0; i < MathExt.MultiplyInt(2, unitCountMulti); ++i)
                                 {
                                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_Pikeman, mainArmy.position);
                                 }
@@ -1246,7 +1246,7 @@ namespace VikingEngine.DSSWars.Players
 
                             case FactionFlavorType.Sea:
                                 mainArmy = startMainArmy();
-                                for (int i = 0; i < MathExt.MultiplyInt(5, unitCountMulti); ++i)
+                                for (int i = 0; i < MathExt.MultiplyInt(3, unitCountMulti); ++i)
                                 {
                                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_Sailor, mainArmy.position);
                                 }
@@ -1254,7 +1254,7 @@ namespace VikingEngine.DSSWars.Players
 
                             case FactionFlavorType.Mountain:
                                 mainArmy = startMainArmy();
-                                for (int i = 0; i < MathExt.MultiplyInt(5, unitCountMulti); ++i)
+                                for (int i = 0; i < MathExt.MultiplyInt(3, unitCountMulti); ++i)
                                 {
                                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_Dwarf, mainArmy.position);
                                 }
@@ -1262,7 +1262,7 @@ namespace VikingEngine.DSSWars.Players
 
                             case FactionFlavorType.Horse:
                                 mainArmy = startMainArmy();
-                                for (int i = 0; i < MathExt.MultiplyInt(5, unitCountMulti); ++i)
+                                for (int i = 0; i < MathExt.MultiplyInt(3, unitCountMulti); ++i)
                                 {
                                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_Knight, mainArmy.position);
                                 }
@@ -1270,7 +1270,7 @@ namespace VikingEngine.DSSWars.Players
 
                             case FactionFlavorType.Noble:
                                 mainArmy = startMainArmy();
-                                for (int i = 0; i < MathExt.MultiplyInt(5, unitCountMulti); ++i)
+                                for (int i = 0; i < MathExt.MultiplyInt(3, unitCountMulti); ++i)
                                 {
                                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_FootKnight, mainArmy.position);
                                 }
@@ -1278,11 +1278,11 @@ namespace VikingEngine.DSSWars.Players
 
                             case FactionFlavorType.City:
                                 mainArmy = startMainArmy();
-                                for (int i = 0; i < MathExt.MultiplyInt(3, unitCountMulti); ++i)
+                                for (int i = 0; i < MathExt.MultiplyInt(2, unitCountMulti); ++i)
                                 {
                                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_Swordsman, mainArmy.position);
                                 }
-                                for (int i = 0; i < MathExt.MultiplyInt(3, unitCountMulti); ++i)
+                                for (int i = 0; i < MathExt.MultiplyInt(1, unitCountMulti); ++i)
                                 {
                                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_StandardBallista, mainArmy.position);
                                 }
@@ -1290,7 +1290,7 @@ namespace VikingEngine.DSSWars.Players
 
                             case FactionFlavorType.Forest:
                                 mainArmy = startMainArmy();
-                                for (int i = 0; i < MathExt.MultiplyInt(4, unitCountMulti); ++i)
+                                for (int i = 0; i < MathExt.MultiplyInt(2, unitCountMulti); ++i)
                                 {
                                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_GreenSoldier, mainArmy.position);
                                 }
@@ -1298,11 +1298,11 @@ namespace VikingEngine.DSSWars.Players
 
                             case FactionFlavorType.People:
                                 mainArmy = startMainArmy();
-                                for (int i = 0; i < MathExt.MultiplyInt(6, unitCountMulti); ++i)
+                                for (int i = 0; i < MathExt.MultiplyInt(3, unitCountMulti); ++i)
                                 {
                                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_Farmer, mainArmy.position);
                                 }
-                                for (int i = 0; i < MathExt.MultiplyInt(2, unitCountMulti); ++i)
+                                for (int i = 0; i < MathExt.MultiplyInt(1, unitCountMulti); ++i)
                                 {
                                     new SoldierGroup(mainArmy, DssLib.SoldierProfile_StandardArcher, mainArmy.position);
                                 }
@@ -1364,7 +1364,7 @@ namespace VikingEngine.DSSWars.Players
                         }
 
                         mainArmy = startMainArmy();
-                        for (int i = 0; i < MathExt.MultiplyInt(5, unitCountMulti); ++i)
+                        for (int i = 0; i < MathExt.MultiplyInt(4, unitCountMulti); ++i)
                         {
                             new SoldierGroup(mainArmy, DssLib.SoldierProfile_GreenSoldier, mainArmy.position);//UnitType.GreenSoldier, false);
                         }
@@ -1381,7 +1381,7 @@ namespace VikingEngine.DSSWars.Players
                         }
 
                         mainArmy = startMainArmy();
-                        for (int i = 0; i < MathExt.MultiplyInt(5, unitCountMulti); ++i)
+                        for (int i = 0; i < MathExt.MultiplyInt(3, unitCountMulti); ++i)
                         {
                             new SoldierGroup(mainArmy, DssLib.SoldierProfile_Viking, mainArmy.position);
                         }
