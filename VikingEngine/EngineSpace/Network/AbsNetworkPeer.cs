@@ -85,6 +85,11 @@ namespace VikingEngine.Network
         {
             return packetLoad + potensialLoad >= maxPacketCount;
         }
+
+        public int packetsLeft()
+        {
+           return Bound.Min((int)(maxPacketCount - packetLoad - potensialLoad), 0);
+        }
         //abstract public void kickFromNetwork();
 
         public override bool Equals(object obj)

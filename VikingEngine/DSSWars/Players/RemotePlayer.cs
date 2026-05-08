@@ -21,6 +21,7 @@ namespace VikingEngine.DSSWars.Players
     {
         PlayerCullingState playerCulling;
         public bool gotStatus = false;
+        public bool ready = false;
         public bool newPlayer = true;
 
         public AbsPlayer previousPlayer;
@@ -79,6 +80,7 @@ namespace VikingEngine.DSSWars.Players
         {
             playerCulling.readNet(r);
             gotStatus = true;
+            ready = true;
         }
 
         public override void AutoExpandType(City city, out bool work, out BuildAndExpandType buildType, out bool intelligent)

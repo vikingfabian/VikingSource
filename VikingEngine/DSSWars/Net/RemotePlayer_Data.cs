@@ -135,20 +135,28 @@ namespace VikingEngine.DSSWars.Players
 
         public bool Net_FullMapSend_async()
         {
-            if (fullMapSendPosition.Next())
+            if (!fullMapSendPosition.Done)
             {
-                if (!remoteTileGrid.Get(fullMapSendPosition.Position).HasTile(false))
-                {
-                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, out var packet);
-                    {
-                        DssRef.world.writeNet_Tile(w, fullMapSendPosition.Position);
-                    }
-                    packet.EndWrite_Asynch();
+                int sendChunkSize = 8;
 
-                    return true;
+                while (fullMapSendPosition.Next())
+                {
+                    if (!remoteTileGrid.Get(fullMapSendPosition.Position).HasTile(false))
+                    {
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, out var packet);
+                        {
+                            DssRef.world.writeNet_Tile(w, fullMapSendPosition.Position);
+                        }
+                        packet.EndWrite_Asynch();
+
+                        sendChunkSize--;
+                        if (sendChunkSize <= 0)
+                        {
+                            return true;
+                        }
+                    }
                 }
             }
-
             return false;
         }
 

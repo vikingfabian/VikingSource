@@ -88,6 +88,7 @@ namespace VikingEngine.DSSWars
                     while (remoteC.Next())
                     {
                         if (remoteC.sel.networkPeer.peer != handoverPlayer &&
+                            remoteC.sel.ready &&
                             remoteC.sel.networkPeer.peer.lowPotensialLoad(0.5f))
                         {
                             bool sentAnythingToPlayer = false;
@@ -123,7 +124,7 @@ namespace VikingEngine.DSSWars
 
             if (player.gotStatus)
             {
-                int sendPacketCount = player.networkPeer.peer.maxPacketCount;
+                int sendPacketCount = player.networkPeer.peer.packetsLeft();
 
                 while (player.Net_HostMapUpdate_async())
                 {
@@ -245,7 +246,7 @@ namespace VikingEngine.DSSWars
                                         {
                                             Ref.update.AddSyncAction(new SyncAction(() =>
                                             {
-                                                var remote = GetOrCreateRemotePlayer(packet.sender, 0);
+                                                AbsHumanPlayer remote = GetOrCreateRemotePlayer(packet.sender, 0);
                                                 remote.AssignFaction(faction);
 
                                                 Ref.steam.P2PManager.OnSendingLargeDataChunk();
