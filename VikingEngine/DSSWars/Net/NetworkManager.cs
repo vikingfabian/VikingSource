@@ -90,14 +90,21 @@ namespace VikingEngine.DSSWars
                         if (remoteC.sel.networkPeer.peer != handoverPlayer &&
                             remoteC.sel.networkPeer.peer.lowPotensialLoad(0.5f))
                         {
-                            if (!sendMap(remoteC.sel, ref sentAnything))
+                            bool sentAnythingToPlayer = false;
+
+                            if (!sendMap(remoteC.sel, ref sentAnythingToPlayer))
                             {
-                                //TODO, rotate user update
-                                //Map sent, start updating units
-                                netSendMapObjectsInView(remoteC.sel, ref sentAnything);
+                                netSendMapObjectsInView(remoteC.sel, ref sentAnythingToPlayer);
+
+                                if (!sentAnythingToPlayer)
+                                {
+                                    sentAnythingToPlayer = remoteC.sel.Net_FullMapSend_async();
+                                }
                             }
+
+                            sentAnything |= sentAnythingToPlayer;
                         }
-                    }
+                    }                    
                 }                
             }
             else

@@ -59,7 +59,7 @@ namespace VikingEngine.DSSWars.Net
                 {
                     return true;
                 }
-                if (cityWriter.TimeOut)
+                else if (cityWriter.TimeOut)
                 { //Cancel the handover
                     Ref.NetUpdateReciever().NetEvent_ErrorMessage("Faction handover timeout", peer, false);
                     part = HandoverPart.DONE;
@@ -111,19 +111,7 @@ namespace VikingEngine.DSSWars.Net
                         }
                     }
                     break;
-                //case HandoverPart.CityGuard:
-                //    {
-                //        if (citiesC.Next(ref faction.cities, DssRef.world.cities, out City city))
-                //        {
-                //            int packetCount = 0;
-                //            city.netWriteGroups(Network.PacketReliability.Reliable, ref packetCount);
-                //        }
-                //        else
-                //        {
-                //            part++;
-                //        }
-                //    }
-                //    break;
+               
                 case HandoverPart.Armies:
                     int maxArmies = 2;
                     while (--maxArmies > 0 && armyCounter.Next())
@@ -138,6 +126,7 @@ namespace VikingEngine.DSSWars.Net
                         part++;
                     }
                     break;
+
                 case HandoverPart.HandOverComplete:
                     {
                         citiesC.Reset();

@@ -21,9 +21,12 @@ namespace VikingEngine.DSSWars.Players
         public bool[] citiesRecieved;
         public bool[] factionsRecieved;
 
+        ForXYLoop fullMapSendPosition;
+
         public void InitData()
         {
             remoteTileGrid = new Grid2D<RemoteTile>(DssRef.world.Size);
+            fullMapSendPosition = new ForXYLoop(DssRef.world.Size);
             citiesRecieved = new bool[DssRef.world.cities.Count];
             factionsRecieved = new bool[DssRef.world.factions.Count];
         }
@@ -81,11 +84,11 @@ namespace VikingEngine.DSSWars.Players
 
             return false;
 
-            bool findMissingTile(out IntVector2 tilePos, bool subTile)
+            bool findMissingTile(out IntVector2 tilePos, bool isSubTile)
             {
                 Rectangle2 area;
 
-                if (subTile)
+                if (isSubTile)
                 {
                     area = playerCulling.enterArea;
                 }
@@ -100,12 +103,12 @@ namespace VikingEngine.DSSWars.Players
                 {
                     if (remoteTileGrid.InBounds(loop.Position))
                     {
-                        if (!remoteTileGrid.Get(loop.Position).HasTile(subTile))
+                        if (!remoteTileGrid.Get(loop.Position).HasTile(isSubTile))
                         {
                             tilePos = loop.Position;
                             return true;
                         }
-                        if (!subTile)
+                        if (!isSubTile)
                         {
                             var tile = DssRef.world.tileGrid.Get(loop.Position);
                             if (!citiesRecieved[tile.CityIndex])
@@ -128,8 +131,25 @@ namespace VikingEngine.DSSWars.Players
                 tilePos = IntVector2.NegativeOne;
                 return false;
             }
+        }
 
-            
+        public bool Net_FullMapSend_async()
+        {
+            if (fullMapSendPosition.Next())
+            {
+                if (!remoteTileGrid.Get(fullMapSendPosition.Position).HasTile(false))
+                {
+                    var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, out var packet);
+                    {
+                        DssRef.world.writeNet_Tile(w, fullMapSendPosition.Position);
+                    }
+                    packet.EndWrite_Asynch();
+
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public void Net_UpdateArmies(ref int maxPackets)
@@ -192,9 +212,9 @@ namespace VikingEngine.DSSWars.Players
     {
         public bool overview, detail;
 
-        public bool HasTile(bool subTile)
+        public bool HasTile(bool isSubTile)
         { 
-            return subTile? detail : overview;
+            return isSubTile? detail : overview;
         }
     }
 }
