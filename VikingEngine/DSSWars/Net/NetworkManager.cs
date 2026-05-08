@@ -19,6 +19,7 @@ using VikingEngine.LootFest.GO.PlayerCharacter;
 using VikingEngine.LootFest.Players;
 using VikingEngine.Network;
 using VikingEngine.SteamWrapping;
+using VikingEngine.ToGG.HeroQuest.Display;
 using VikingEngine.ToGG.MoonFall;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -30,13 +31,28 @@ namespace VikingEngine.DSSWars
 
         public const SpriteName NetworkIcon = SpriteName.birdPlayerCount;
         ConcurrentQueue<FactionHandover> factionHandovers = new ConcurrentQueue<FactionHandover>();
-       
+
+        const int MaxSendLoops = 8;
 
         bool asynchClientNetUpdate(int id, float time)
         {
             if (remotePlayers.Count > 0 && factionHandOverComplete)
             {
-                netSendMapObjectsInView();
+                bool sentAnything = true;
+
+                for (int loop = 0; loop < MaxSendLoops && sentAnything; loop++)
+                {
+                    sentAnything = false;
+
+                    var remoteC = remotePlayers.counter();
+                    while (remoteC.Next())
+                    {
+                        if (remoteC.sel.networkPeer.peer.lowLoad())
+                        {
+                            netSendMapObjectsInView(remoteC.sel, ref sentAnything);
+                        }
+                    }
+                }
             }
 
             return exitThreads;
@@ -44,7 +60,7 @@ namespace VikingEngine.DSSWars
 
         bool asynchHostNetUpdate(int id, float time)
         {
-            //TODO: behöver throttle av sänd hastighet, beroende på bakåt ping
+            AbsNetworkPeer handoverPlayer = null;
 
             if (remotePlayers.Count > 0)
             {
@@ -52,6 +68,8 @@ namespace VikingEngine.DSSWars
                 {
                     if (factionHandovers.TryPeek(out var factionHandover))
                     {
+                        handoverPlayer = factionHandover.peer;
+
                         if (factionHandover.Next() == false)
                         {
                             //remove
@@ -59,36 +77,28 @@ namespace VikingEngine.DSSWars
                         }
                     }
                 }
-                else if (!sendMap())
-                {
-                    //TODO, rotate user update
-                    //Map sent, start updating units
-                    netSendMapObjectsInView();
-                }
 
-                bool sendMap()
+                bool sentAnything = true;
+
+                for (int loop = 0; loop < MaxSendLoops && sentAnything; loop++)
                 {
+                    sentAnything = false;
+
                     var remoteC = remotePlayers.counter();
                     while (remoteC.Next())
                     {
-                        var netPeer_sp = remoteC.sel.networkPeer;
-                        if (remoteC.sel.gotStatus && netPeer_sp != null)
+                        if (remoteC.sel.networkPeer.peer != handoverPlayer &&
+                            remoteC.sel.networkPeer.peer.lowPotensialLoad(0.5f))
                         {
-                            int sendPacketCount = remoteC.sel.networkPeer.peer.maxPacketCount;
-
-                            while (remoteC.sel.Net_HostMapUpdate_async())
+                            if (!sendMap(remoteC.sel, ref sentAnything))
                             {
-                                if (--sendPacketCount <= 0)
-                                {
-                                    remoteC.sel.gotStatus = false;
-                                    return true;
-                                }
+                                //TODO, rotate user update
+                                //Map sent, start updating units
+                                netSendMapObjectsInView(remoteC.sel, ref sentAnything);
                             }
                         }
                     }
-
-                    return false;
-                }
+                }                
             }
             else
             {
@@ -96,30 +106,57 @@ namespace VikingEngine.DSSWars
             }
             return exitThreads;
         }
-
-        private void netSendMapObjectsInView()
+        bool sendMap(RemotePlayer player, ref bool sentAnything)
         {
-            var remoteC = remotePlayers.counter();
-            while (remoteC.Next())
-            {
-                if (remoteC.sel.gotStatus)
-                {
-                    remoteC.sel.gotStatus = false;
-                    int maxPackets = remoteC.sel.networkPeer.peer.maxPacketCount;
+            
+            //var remoteC = remotePlayers.counter();
+            //while (remoteC.Next())
+            //{
+            //    var netPeer_sp = remoteC.sel.networkPeer;
 
-                    var cities = remoteC.sel.GetAllCitiesInView();
+            if (player.gotStatus)
+            {
+                int sendPacketCount = player.networkPeer.peer.maxPacketCount;
+
+                while (player.Net_HostMapUpdate_async())
+                {
+                    sentAnything = true;
+                    if (--sendPacketCount <= 0)
+                    {
+                        player.gotStatus = false;
+                        return true;
+                    }
+                }
+            }
+
+            //}
+
+            return false;
+        }
+        private void netSendMapObjectsInView(RemotePlayer player, ref bool sentAnything)
+        {
+            //var remoteC = remotePlayers.counter();
+            //while (remoteC.Next())
+            //{
+                if (player.gotStatus)
+                {
+                    player.gotStatus = false;
+                    int maxPackets = player.networkPeer.peer.maxPacketCount;
+
+                    var cities = player.GetAllCitiesInView();
                     foreach (var c in cities)
                     {
                         DssRef.world.cities[c].net_roundtrip_asyncupdate(out int packetCount);
+                        sentAnything |= packetCount > 0;
                         maxPackets -= packetCount;
                         if (maxPackets <= 0)
                         {
                             break;
                         }
                     }
-                    remoteC.sel.Net_UpdateArmies(ref maxPackets);
+                    player.Net_UpdateArmies(ref maxPackets);
                 }
-            }
+            //}
         }
 
         bool asynchAiPlayersUpdate(int id, float time)
