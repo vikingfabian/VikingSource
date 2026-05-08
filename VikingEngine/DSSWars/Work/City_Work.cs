@@ -126,7 +126,7 @@ namespace VikingEngine.DSSWars.GameObject
                 int workTeamGoalCount = Bound.Min(workForce.amount / WorkTeamSize, 1);
                 int exitCount = (workTeamsTotalCount - mayExitCount) - (workTeamGoalCount/* + 1*/);
 
-                if (myIndex == 54)
+                if (myIndex == 383)
                 {
                     lib.DoNothing();
                 }
@@ -194,20 +194,8 @@ namespace VikingEngine.DSSWars.GameObject
                     }
 
                     findLowXpWorkers();
-                        //--workTeamsTotalCount;
-                        //mayExitCount++;
-                        //status.createWorkOrder(WorkType.Exit, -1, 0, WorkExperienceType.NUM_NONE, -1, citySquareSubtilePos/*WP.ToSubTilePos_Centered(tilePos)*/, this);
                 }
-                //else if (workerStatusActiveCount > workTeamCount +1)
-                //{ 
-                //    //too few homes
-
-                //}
-
-                //if (myIndex == 185 || debugTagged)
-                //{
-                //    lib.DoNothing();
-                //}
+              
 
                 if (idleCount > 0 && previousWorkQueUpdate.secPassed(10))
                 {
@@ -242,13 +230,9 @@ namespace VikingEngine.DSSWars.GameObject
                             (status.GetXpScore() < DssConst.WorkXpToLevel_Squared ||
                             markedForExit.Contains(i) || 
                             exitCount >= 4)
-                            )/*workTeamsTotalCount - mayExitCount > workTeamGoalCount + 1)*/
+                            )
                         {
-                            //if (myIndex == 270)
-                            //{
-                            //    lib.DoNothing();
-                            //}
-                            //--workTeamsTotalCount;
+                            
                             exitCount--;
                             mayExitCount++;
                             status.createWorkOrder(WorkType.Exit, -1, 0, WorkExperienceType.NUM_NONE, -1, citySquareSubtilePos/*WP.ToSubTilePos_Centered(tilePos)*/, this);
@@ -329,7 +313,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                                 var xp = worker.getXpFor(experienceType);
 
-                                if (xp.InBound(xpRequired, maxXp))//xp.xp >= xpRequired && xp.xp < maxXp)
+                                if (xp.InBound(xpRequired, maxXp))
                                 {
                                     var distance = work.subTile.SideLength(worker.subTileEnd);
                                     int value = distance * distanceValue - xp.xp * experienceValue;
@@ -349,7 +333,7 @@ namespace VikingEngine.DSSWars.GameObject
 
                                 ref var status = ref workerStatuses.array[worderIx];
                                 status.createWorkOrder(work.work, work.subWork, work.workBonus, experienceType, work.orderId, work.subTile, this);
-                                //workerStatuses[worderIx] = status;
+                                
                                 --maxWorkerOrderCount;
 
                                 if (work.orderId >= 0)
@@ -382,20 +366,6 @@ namespace VikingEngine.DSSWars.GameObject
                 if (!inRender_detailLayer)
                 {
                     processAsynchWork(ref workerStatuses);
-
-//#if !DEBUG
-//                        try
-//                        {
-//#endif
-//                            processAsynchWork(ref workerStatuses);
-//#if !DEBUG
-//                        }
-//                        catch
-//                        {
-//                            //muted
-//                            lib.DoNothing();
-//                        }
-//#endif
                 }
 
                 void buildWorkQue2()

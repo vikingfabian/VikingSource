@@ -64,13 +64,17 @@ namespace VikingEngine.DSSWars.Players
                     }
                     packet.EndWrite_Asynch();
                 }
-                else if (playerCulling.detailLayer && findMissingTile(out IntVector2 subtilePos, true))
+                else if (playerCulling.detailLayer && findMissingTile(out IntVector2 tilePosForSubtiles, true))
                 {
                     var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldSubTiles, Network.PacketReliability.Reliable, out var packet);
                     {
-                        DssRef.world.writeNet_SubTile(w, subtilePos);
+                        DssRef.world.writeNet_SubTile(w, tilePosForSubtiles);
                     }
                     packet.EndWrite_Asynch();
+                }//TODO make sure owned cities are map ready
+                else if (Net_SendCityTiles_async())
+                { 
+                    //no code
                 }
                 else
                 {
@@ -131,6 +135,45 @@ namespace VikingEngine.DSSWars.Players
                 tilePos = IntVector2.NegativeOne;
                 return false;
             }
+        }
+
+        public bool Net_SendCityTiles_async()
+        {
+            if (faction.cities.Count > 0)
+            {
+                int chunkSize = 4;
+
+                int cityIx = faction.cities.GetRandom(Ref.rnd);
+                var city = DssRef.world.cities[cityIx];
+                ForXYLoop loop = new ForXYLoop(city.cityTileArea);
+                while (loop.Next() && chunkSize > 0)
+                {
+                    var hasRecieved = remoteTileGrid.Get(loop.Position);
+                    if (!hasRecieved.overview)
+                    {
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldTiles, Network.PacketReliability.Reliable, out var packet);
+                        {
+                            DssRef.world.writeNet_Tile(w, loop.Position);
+                        }
+                        packet.EndWrite_Asynch();
+                        chunkSize--;
+                    }
+
+                    if (!hasRecieved.detail)
+                    {
+                        var w = Ref.netSession.BeginWritingPacket_Asynch(Network.PacketType.DssWorldSubTiles, Network.PacketReliability.Reliable, out var packet);
+                        {
+                            DssRef.world.writeNet_SubTile(w, loop.Position);
+                        }
+                        packet.EndWrite_Asynch();
+                        chunkSize--;
+                    }
+                }
+
+                return chunkSize <= 0;
+            }
+
+            return false;
         }
 
         public bool Net_FullMapSend_async()
