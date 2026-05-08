@@ -12,7 +12,7 @@ namespace VikingEngine.DSSWars.Net
 {
     class FactionHandover
     {
-        AbsNetworkPeer peer; 
+        public AbsNetworkPeer peer; 
         Faction faction;
         HandoverPart part = HandoverPart.Cities;
         
@@ -44,11 +44,15 @@ namespace VikingEngine.DSSWars.Net
 
                 packet.EndWrite_Asynch();
             }
-
         }
 
         public bool Next()
         {
+            if (peer.highLoad())
+            {
+                return true;
+            }
+
             if (cityWriter != null)
             {
                 if (!cityWriter.Complete)
@@ -78,10 +82,6 @@ namespace VikingEngine.DSSWars.Net
                         faction.cities.write_ushort_compressed(w);
                         part++;
                         armyCounter = faction.armies.counter();
-
-                        //SpottedPointerArrayCounter citiesC = new SpottedPointerArrayCounter();
-                        //while (citiesC.Next(ref cities, DssRef.world.cities, out City city))
-                            //faction.cities
 
                         packet.EndWrite_Asynch();
                     }
@@ -130,6 +130,7 @@ namespace VikingEngine.DSSWars.Net
                     {
                         armyCounter.sel.IsNetHosted = false;
                         Army.NetFullArmyStatus(armyCounter.sel, PacketReliability.Reliable);
+
                     }
 
                     if (!armyCounter.HasMore())

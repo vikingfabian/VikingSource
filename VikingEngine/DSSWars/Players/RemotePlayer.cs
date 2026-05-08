@@ -57,6 +57,11 @@ namespace VikingEngine.DSSWars.Players
                     content.Add(new RbImage(pointer.statusIcon));
                 }
             }
+
+            if (addStatus)
+            {
+                content.text(networkPeer.peer.LoadString(), HudLib.SecondaryTextColor);
+            }
         }
         public override void AssignFaction(Faction faction)
         {

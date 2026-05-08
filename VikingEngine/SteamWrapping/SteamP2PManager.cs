@@ -235,6 +235,8 @@ namespace VikingEngine.SteamWrapping
                                         }
                                     }
 
+                                    packet.sender.packetLoad *= 0.2f;
+                                    packet.sender.potensialLoad = 0;
                                     packet.sender.maxPacketCount = Bound.Min(packetCount / remoteGamers.Count, 1);
                                     Ref.NetUpdateReciever().NetEvent_PingReturned(packet.sender);
                                 }
@@ -557,11 +559,12 @@ namespace VikingEngine.SteamWrapping
             }
 #endif
             EP2PSend sendType;
-
+            float load = data.Length / 1000f + 0.2f;
             if (rely == Network.PacketReliability.Unrelyable)
             {
                 //SendUnreliable(data);
                 sendType = EP2PSend.k_EP2PSendUnreliable;
+                load *= 0.5f;
             }
             else
             {
@@ -571,22 +574,30 @@ namespace VikingEngine.SteamWrapping
 
             if (to == SendPacketTo.OneSpecific)
             {
-
-                bool result = SteamNetworking.SendP2PPacket(specificGamerID, data, (uint)data.Length, sendType, 0);
+                //bool result = SteamNetworking.SendP2PPacket(specificGamerID, data, (uint)data.Length, sendType, 0);
+                send(getOrCreatePeer(specificGamerID));
             }
             else if (to == SendPacketTo.Host)
             {
                 if (Host != null)
                 {
-                    SteamNetworking.SendP2PPacket(Host.SteamID, data, (uint)data.Length, sendType, 0);
+                    send(Host);
+                    //SteamNetworking.SendP2PPacket(Host.SteamID, data, (uint)data.Length, sendType, 0);
                 }
             }
             else
             {
                 foreach (SteamNetworkPeer peer in remoteGamers)
                 {
-                    SteamNetworking.SendP2PPacket(peer.SteamID, data, (uint)data.Length, sendType, 0);
+                    send(peer);
+                    //SteamNetworking.SendP2PPacket(peer.SteamID, data, (uint)data.Length, sendType, 0);
                 }
+            }
+
+            void send(AbsNetworkPeer peer)
+            {
+                peer.packetLoad += load;
+                SteamNetworking.SendP2PPacket(peer.SteamID, data, (uint)data.Length, sendType, 0);
             }
 
         }
