@@ -680,7 +680,7 @@ namespace VikingEngine.DSSWars
 
         public void asynchAiPlayersUpdate(float time)
         {
-            player.aiPlayerAsynchUpdate(time);
+            player?.aiPlayerAsynchUpdate(time);
         }
         
         public void asynchGameObjectsUpdate(float time, float oneSecondUpdate, bool oneMinute)

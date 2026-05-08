@@ -8,6 +8,9 @@ Change Log:
 * Bot gold requirement for black market increased 1000 > 10 000
 * Some improvements to the auto build grouping
 
+* fixed rare set relations empty player crash
+* fixed rare set empty player update crash
+
 ##ICONS TODO
 * 
 

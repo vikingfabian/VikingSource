@@ -2065,7 +2065,7 @@ namespace VikingEngine.DSSWars.GameObject
 
             ai_armyDefenceValue = armyDefence;
 
-            DssRef.world.unitCollAreaGrid.collectOpponentGroups(factionIndex, tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
+            //DssRef.world.unitCollAreaGrid.collectOpponentGroups(factionIndex, tilePos, out List<GameObject.SoldierGroup> groups, out List<City> cities);
             //detailObj.asynchFindBattleTarget(groups);
 
             //if (guardCount <= 0 && armyDefence == 0)
