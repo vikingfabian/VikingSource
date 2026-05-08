@@ -547,6 +547,8 @@ namespace VikingEngine.DSSWars
             }
 
             DssRef.world.tileGrid.GetRef(tilePos).subtileVisualEdits++;
+
+            unitCollAreaGrid.netSubTilesRecieved(tilePos);
         }
 
         public void writeNet_Factions(System.IO.BinaryWriter w, HashSet<int> factions)

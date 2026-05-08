@@ -187,10 +187,10 @@ namespace VikingEngine.DSSWars.Map
                             lock (area.groups)
                             {
                                 
-                                    for (int i = 0; i < area.groups.Count; ++i)
-                                    {
-                                        area.groups[i].soldiers?.toList(ref playerNearDetailUnits);
-                                    }
+                                for (int i = 0; i < area.groups.Count; ++i)
+                                {
+                                    area.groups[i].soldiers?.toList(ref playerNearDetailUnits);
+                                }
                                 
                             }
                         }
@@ -199,6 +199,32 @@ namespace VikingEngine.DSSWars.Map
             }
 
             return playerNearDetailUnits;
+        }
+
+        public void netSubTilesRecieved(IntVector2 tilePos)
+        {            
+            IntVector2 areaPos = tilePos / UnitGridSquareWidth;
+            UnitCollArea area;
+            
+            if (grid.TryGet(areaPos, out area))
+            {
+                //var groups_sp = area.groups;
+                lock (area.groups)
+                {
+                    for (int i = 0; i < area.groups.Count; ++i)
+                    {
+                        var soldiers_sp = area.groups[i].soldiers;
+                        if (soldiers_sp != null)
+                        {
+                            var soldiersC = soldiers_sp.counter();
+                            while (soldiersC.Next())
+                            {
+                                soldiersC.sel.updateGroudY(true);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public List<AbsMapObject> MapControlsMultiselectMapObjects(IntVector2 tilePosStart, IntVector2 tilePosEnd, int faction)
@@ -716,16 +742,14 @@ namespace VikingEngine.DSSWars.Map
                     if (grid.TryGet(x, y, out area))
                     {
                         lock (area.armies)
-                        {
-                           
-                                foreach (var m in area.armies)
+                        {                           
+                            foreach (var m in area.armies)
+                            {
+                                if (!armies.Contains(m))
                                 {
-                                    if (!armies.Contains(m))
-                                    {
-                                        armies.Add(m);
-                                    }                                    
-                                }
-                            
+                                    armies.Add(m);
+                                }                                    
+                            }                            
                         }
                     }
                 }

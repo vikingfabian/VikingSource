@@ -466,7 +466,7 @@ namespace VikingEngine.DSSWars.GameObject
         }
 
         const float ModelGroundYAdj = -0.0001f;
-        protected void updateGroudY(bool set)
+        public void updateGroudY(bool set)
         {
             if (unitBuildType == UnitBuildType.CityGuard)
             {
