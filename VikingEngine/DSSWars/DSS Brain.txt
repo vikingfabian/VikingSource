@@ -9,6 +9,14 @@ x new steam input
 ﻿UPDATE
 Change Log:
 * Fixed: all conscript time out on load
+* Doubled food requirement for auto building huts, plus it requires stored gold
+* Army gold upkeep will allow dept
+* Cities start with smaller guards, armies and less servicemen for a more stable start economy
+* Bot gold requirement for black market increased 1000 > 10 000
+* Some improvements to the auto build grouping
+
+* fixed rare set relations empty player crash
+* fixed rare set empty player update crash
 
 ##ICONS TODO
 * 

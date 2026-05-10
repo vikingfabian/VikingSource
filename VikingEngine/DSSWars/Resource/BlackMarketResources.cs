@@ -64,7 +64,7 @@ namespace VikingEngine.DSSWars.Resource
 
         public static void AiPurchaseUpdate(City city, Faction faction)
         {
-            if (city != null && city.GetFaction().GetGold(city) > 100000) 
+            if (city != null && city.GetFaction().GetGold(city) > 1000000) 
             {
                 for (int i = 0; i < 3; i++)
                 {

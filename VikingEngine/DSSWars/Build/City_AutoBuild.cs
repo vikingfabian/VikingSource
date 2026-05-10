@@ -445,18 +445,28 @@ namespace VikingEngine.DSSWars.GameObject
                     case BuildAndExpandType.WorkerHutLarge:
                     case BuildAndExpandType.WorkerHut:
                         int availableHomes =  HousingCount_Workers - workForce.amount;
-                        int foodRequirement = 200 + 100 * (HousingCount_Workers / 1000);
-                        bBuild = WorkersMaxLimit > HousingCount_Workers && 
+                        int increasedEcomonomyReq = HousingCount_Workers / 500;
+                        int foodRequirement = 200 + 100 * increasedEcomonomyReq;
+                        int copperRequirement = 50000 + 25000 * increasedEcomonomyReq;
+                        //}
+                        //else
+                        //{
+                        //    copperRequirement = 10000 + 10000 * increasedEcomonomyReq;
+                        //}
+
+                        bBuild = WorkersMaxLimit > HousingCount_Workers &&
                             availableHomes < 30 &&
-                            GetGroupedResource(EntityComponent.CityResoureIndex.food).amount > foodRequirement;
+                            GetGroupedResource(EntityComponent.CityResoureIndex.food).amount > foodRequirement &&
+                            hasCopperRequirement(copperRequirement);
+                            //TryGetFaction(out var faction) && faction.hasMoney(new Money(copperRequirement), this);
                         maxCount = 500;
                         chance = automationFocus == AutomationFocus.Grow ? 4000 : 200;
-                        repeat = 4;
+                        repeat = 1;
                         break;
 
                     case BuildAndExpandType.ArcherBarracks:
                         maxCount = 3;
-                        chance = automationFocus == AutomationFocus.Military ? 150 : 100;
+                        chance = automationFocus == AutomationFocus.Military ? 150 : 100;                        
                         break;
 
                     case BuildAndExpandType.SoldierBarracks:
@@ -488,7 +498,7 @@ namespace VikingEngine.DSSWars.GameObject
                             canUpgradeCityHall(out _, out _, out int nextUpgradeRequirement, out _);
                             goalNumber = lib.LargestValue(goalNumber, nextUpgradeRequirement);
                         }
-                        bBuild = freeServiceMen.amount < goalNumber;
+                        bBuild = freeServiceMen.amount < goalNumber && hasCopperRequirement(40000);
                         break;
 
                     case BuildAndExpandType.Cook:
@@ -649,7 +659,9 @@ namespace VikingEngine.DSSWars.GameObject
 
                     case BuildAndExpandType.Noblehouse:
                         chance = 20;
-                        bBuild = buildingStructure.AllBarracksCount() >= 4 && Money.ToGold(previousIncome_copp) > 10;
+                        bBuild = buildingStructure.AllBarracksCount() >= 4 && 
+                            Money.ToGold(previousIncome_copp) > 10 &&
+                            hasCopperRequirement(100000);
                         break;
 
                     case BuildAndExpandType.School:
@@ -698,6 +710,13 @@ namespace VikingEngine.DSSWars.GameObject
 
                         if (currentCount < maxCount)
                         {
+                            //if (buildType == BuildAndExpandType.WorkerHut)
+                            //{
+                            //    int food = GetGroupedResource(EntityComponent.CityResoureIndex.food).amount;
+                            //    lib.DoNothing();
+                                
+                            //}
+
                             repeat = Ref.peRnd.Int(repeat) + 1;
                             for (int i = 0; i < repeat; ++i)
                             {
@@ -705,6 +724,15 @@ namespace VikingEngine.DSSWars.GameObject
                             }
                         }
                     }
+                }
+
+                bool hasCopperRequirement(int copperRequirement)
+                {
+                    if (!DssRef.storage.gameRuleset.centralGold)
+                    {
+                        copperRequirement /= 4;
+                    }
+                    return TryGetFaction(out var faction) && faction.hasMoney(new Money(copperRequirement), this);
                 }
             }
 

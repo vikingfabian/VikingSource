@@ -90,7 +90,7 @@ namespace VikingEngine.DSSWars.Resource
             }
             else
             {
-                return PayUpkeep(payGold * GoldToCopper);
+                return PayUpkeep(payGold * GoldToCopper, allowDept);
             }
             
         }
@@ -103,6 +103,10 @@ namespace VikingEngine.DSSWars.Resource
                 return true;
             }
 #endif
+            //if (player.faction.myIndex == 72)
+            //{
+            //    lib.DoNothing();
+            //}
 
             if (allowDept || cost.copper <= copper)
             {
@@ -112,12 +116,12 @@ namespace VikingEngine.DSSWars.Resource
             return false;
         }
 
-        public bool PayUpkeep(float payCopper)
+        public bool PayUpkeep(float payCopper, bool allowDept)
         {
             if (payCopper <= 0)
                 return true;
 
-            if (copper >= payCopper)
+            if (allowDept || copper >= payCopper)
             {
                 copper -= (int)payCopper;
                 return true;
