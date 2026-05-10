@@ -110,6 +110,11 @@ namespace VikingEngine.DSSWars.GameObject
 
         public SoldierGroup(AbsArmy tArmy, SoldierConscriptProfile conscript, Vector3 startPos)
         {
+            //if (tArmy.IsCity())
+            //{
+            //    lib.DoNothing();
+            //}
+
             this.army =new WeakReference<AbsArmy>( tArmy);
             this.factionIndex = tArmy.factionIndex;
             soldierConscript = conscript;

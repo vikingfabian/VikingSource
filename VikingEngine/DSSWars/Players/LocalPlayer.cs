@@ -1058,12 +1058,8 @@ namespace VikingEngine.DSSWars.Players
             }
         }
 
-
-
-
         void updateMapOverlays()
         {
-
             if (mapLayersManager.current.DrawFar)
             {
                 if (gameControls.diplomacy == null)
@@ -1099,18 +1095,7 @@ namespace VikingEngine.DSSWars.Players
                 }
             }
         }
-
-
-
-        void cityBuilderTest()
-        {
-            //IntVector2 position = mapControls.subTilePosition;
-
-            //var model = DssRef.models.ModelInstance( LootFest.VoxelModelName.city_tower24, WorldData.SubTileWidth * 1.4f, false);//1.4f
-            //model.AddToRender(DrawGame.UnitDetailLayer);
-            //model.position = WP.ToSubTilePos_Centered(position);
-
-        }
+                
         void battleLineUpTest3_friendly_only()
         {
             Rotation1D enemyRot = Rotation1D.FromDegrees(-90 + Ref.rnd.Plus_Minus(1));

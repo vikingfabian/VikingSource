@@ -107,7 +107,7 @@ namespace VikingEngine.DSSWars.GameObject
                         largeServiceHouse = false;
                         road = (int)TerrainDecorType.CobbleStones;
                         centerHall = (int)TerrainBuildingType.CityHall_Village;
-                        percBuilding = 0.3;
+                        percBuilding = 0.15;
                         percWallGuard = 0;
                         cityServiceCount = DssConst.VillageHall_RequiredStaff;
                         break;
@@ -119,7 +119,7 @@ namespace VikingEngine.DSSWars.GameObject
                         largeServiceHouse = false;
                         road = (int)TerrainDecorType.Square;
                         centerHall = (int)TerrainBuildingType.CityHall_Town;
-                        percBuilding = 0.5;
+                        percBuilding = 0.15;
                         percWallGuard = 0.1;
                         cityServiceCount = DssConst.TownHall_RequiredStaff;
                         break;
@@ -132,14 +132,14 @@ namespace VikingEngine.DSSWars.GameObject
                         largeServiceHouse = true;
                         road = (int)TerrainDecorType.Square;
                         centerHall = (int)TerrainBuildingType.CityHall_Capital;
-                        percBuilding = 0.6;
+                        percBuilding = 0.15;
                         percWallGuard = 0.25;
                         cityServiceCount = DssConst.CapitalHall_RequiredStaff;
                         break;
 
                 }
 
-                freeServiceMen.amount -= cityServiceCount;
+                
 
                 //cityServiceCount += 1;
 
@@ -260,7 +260,8 @@ namespace VikingEngine.DSSWars.GameObject
 
                 }
 
-                int total = workingAndFreeServiceMen;
+                freeServiceMen.amount -= cityServiceCount;
+                //int total = workingAndFreeServiceMen;
 
                 while (freeServiceMen.amount < 1 && emptyGeneral.Count > 0)
                 {
